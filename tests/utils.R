@@ -1,4 +1,3 @@
-library("globals")
 printf <- function(...) cat(sprintf(...))
 hpaste <- future:::hpaste
 
