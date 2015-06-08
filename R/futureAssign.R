@@ -13,7 +13,7 @@
 #' @param substitute Controls whether \code{expr} should be
 #' \code{substitute()}:d or not.
 #'
-#' @return A \code{\link[future]{Future}} invisibly.
+#' @return A \link{Future} invisibly.
 #'
 #' @example incl/futureAssign_OP.R
 #'
@@ -24,6 +24,10 @@
 #' \code{assign.env}.  The name of the promise is given by \code{name}
 #' and the name of the future is \code{.future_<name>}.
 #' The future is also returned invisibly.
+#'
+#' @seealso
+#' The \code{\link{futureOf}()} function can be used to get the
+#' Future object of a future variable.
 #'
 #' @aliases %<=% %=>%
 #' @aliases %<=% %=>%

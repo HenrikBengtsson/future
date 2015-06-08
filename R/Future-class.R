@@ -14,15 +14,12 @@
 #' @return An object of class \code{Future}.
 #'
 #' @seealso
-#' Any function may return a Future.
-#' One such function is \code{\link{future}()}, which asynchroneously
-#' evaluates an R expression and returns a future, which the can be
-#' inspected for being resolved or not and when resolved can have its
-#' value retrieved.
-#' %% An alternative approach is to use the \code{\link{\%<=\%}} infix
-#' %% operator, which asynchroneously evaluates an R expression and returns
-#' %% a \emph{\link[base]{promise}} to assign the value to a variable, if
-#' %% requested.
+#' One function that creates a Future is \code{\link{future}()}.
+#' It returns a Future that evaluates an R expression in the future.
+#' An alternative approach is to use the \code{\link{\%<=\%}} infix
+#' operator, which asynchroneously evaluates an R expression and returns
+#' a \emph{\link[base]{promise}} to assign the value to a variable, if
+#' requested.
 #'
 #' @export
 #' @name Future-class

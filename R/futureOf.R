@@ -10,6 +10,8 @@
 #' @return A \link{Future} (or NA).  If \code{var} is NULL, then a
 #' named list of Future:s are returned.
 #'
+#' @example incl/futureOf.R
+#'
 #' @export
 #' @importFrom listenv map parse_env_subset
 futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA_character_) {

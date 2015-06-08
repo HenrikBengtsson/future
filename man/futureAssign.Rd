@@ -25,7 +25,7 @@ be assigned.}
 \code{substitute()}:d or not.}
 }
 \value{
-A \code{\link[future]{Future}} invisibly.
+A \link{Future} invisibly.
 }
 \description{
 Method and infix operators for future assignments of the value
@@ -56,5 +56,9 @@ message("Value 'A': ", A)
 
 ## Sleep until 'C' is available
 message("Value 'B': ", B)
+}
+\seealso{
+The \code{\link{futureOf}()} function can be used to get the
+Future object of a future variable.
 }
 
