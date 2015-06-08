@@ -3,6 +3,8 @@ library("future")
 ovars <- ls(envir=globalenv())
 oopts <- options(future=lazy, warn=1)
 
+message("*** futureAssign() ...")
+
 delayedAssign("a", {
   cat("Delayed assignment evaluated\n")
   1
@@ -38,6 +40,7 @@ cat(sprintf("v$a=%s\n", v$a))
 stopifnot(identical(u$a, 2))
 stopifnot(identical(v$a, 4))
 
+message("*** futureAssign() ... DONE")
 
 ## Cleanup
 options(oopts)

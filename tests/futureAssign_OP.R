@@ -6,6 +6,7 @@ printf <- function(...) cat(sprintf(...))
 
 rm(list=intersect(c("x", "y"), ls()))
 
+message("*** %<=% ...")
 
 message("** Future evaluation without globals")
 v1 %<=% { x <- 1 }
@@ -75,6 +76,7 @@ stopifnot(a == 10)
 printf("b=%s\n", b)
 stopifnot(b == a + 1)
 
+message("*** %<=% ... DONE")
 
 ## Cleanup
 options(oopts)
