@@ -1,9 +1,11 @@
 Package: future
 Version: 0.4.0
 Title: The Future of R
+Imports:
+  listenv
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
-Description: A Future API for R.
+Description: A Future API for R.  The purpose of this package is to provide a very lightweight interface for using futures in R.  Except from a "lazy future", actual implementation of futures is done by other packages enhancing this package.
 License: Private for now [will become LGPL (>= 2.1) when published]
 LazyLoad: TRUE
 URL: https://github.com/HenrikBengtsson/future

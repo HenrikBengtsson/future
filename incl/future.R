@@ -1,3 +1,5 @@
+options(future=lazy)
+
 f <- future({
   a <- 7
   b <- 3
