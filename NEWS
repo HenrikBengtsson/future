@@ -1,0 +1,5 @@
+Package: future
+===============
+
+Version: 0.4.0 [2015-06-07]
+o Distilled Future API from (in-house) 'async' package.

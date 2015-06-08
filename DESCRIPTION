@@ -1,0 +1,10 @@
+Package: future
+Version: 0.4.0
+Title: The Future of R
+Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
+                                          email = "henrikb@braju.com"))
+Description: A Future API for R.
+License: Private for now [will become LGPL (>= 2.1) when published]
+LazyLoad: TRUE
+URL: https://github.com/HenrikBengtsson/future
+BugReports: https://github.com/HenrikBengtsson/future/issues

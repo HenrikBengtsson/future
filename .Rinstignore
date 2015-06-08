@@ -1,0 +1,5 @@
+# Certain LaTeX files (e.g. bib, bst, sty) must be part of the build 
+# such that they are available for R CMD check.  These are excluded
+# from the install using .Rinstignore in the top-level directory
+# such as this one.
+doc/.*[.](bib|bst|sty)$
