@@ -1,5 +1,12 @@
 library("future")
 
+ovars <- ls(envir=globalenv())
+oopts <- options(future=lazy, warn=1)
+
+message("*** lazy() ...")
+
+message("*** lazy() without globals")
+
 f <- lazy({
   42L
 })
@@ -11,9 +18,7 @@ print(y)
 stopifnot(y == 42L)
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Lazy futures uses "lazy" globals
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** lazy() with globals")
 ## A global variable
 a <- 0
 f <- lazy({
@@ -21,11 +26,20 @@ f <- lazy({
   c <- 2
   a * b * c
 })
+print(f)
 
 ## Since 'a' is a global variable in _lazy_ future 'f',
 ## which still hasn't been resolved, any changes to
 ## 'a' until 'f' is resolved, will affect its value.
 a <- 7
-v <- value(f)
-print(v)
-stopifnot(v == 42)
+if (!"covr" %in% loadedNamespaces()) {
+  v <- value(f)
+  print(v)
+  stopifnot(v == 42)
+}
+
+message("*** lazy() ... DONE")
+
+## Cleanup
+options(oopts)
+rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())

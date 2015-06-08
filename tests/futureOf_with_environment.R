@@ -1,8 +1,13 @@
 library("future")
 library("listenv")
+mstr <- function(...) message(paste(capture.output(str(...)), collapse="\n"))
+
+suppressWarnings(rm(list=c("x", "z")))
 
 ovars <- ls(envir=globalenv())
 oopts <- options(future=lazy, warn=1)
+
+message("*** futureOf() with environment ...")
 
 x <- listenv()
 x$a %<=% { 1 }
@@ -30,13 +35,15 @@ stopifnot(is.na(futureOf(x[[10]], mustExist=FALSE)))
 res <- try(futureOf(x[[10]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
+## Non-existing object
+res <- try(futureOf(z[[1]], mustExist=TRUE), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
 ## Invalid subscript
 res <- try(futureOf(x[[1+2i]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-## Non-existing object
-res <- try(futureOf(z[[1]], mustExist=TRUE), silent=TRUE)
-stopifnot(inherits(res, "try-error"))
+message("*** futureOf() with environment ... DONE")
 
 
 ## Cleanup
