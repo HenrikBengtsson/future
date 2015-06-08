@@ -1,8 +1,9 @@
 library("future")
 library("listenv")
-
 ovars <- ls(envir=globalenv())
 oopts <- options(future=lazy, warn=1)
+
+message("*** futureOf() with listenv ...")
 
 x <- listenv()
 x$a %<=% { 1 }
@@ -38,6 +39,7 @@ stopifnot(inherits(res, "try-error"))
 res <- try(futureOf(z[[1]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
+message("*** futureOf() with listenv ... DONE")
 
 ## Cleanup
 options(oopts)

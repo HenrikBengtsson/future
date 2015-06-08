@@ -1,6 +1,8 @@
 library("future")
 library("listenv")
 
+message("*** futureOf() ...")
+
 ovars <- ls(envir=globalenv())
 oopts <- options(future=lazy, warn=1)
 
@@ -18,6 +20,8 @@ print(fs)
 ## Non-existing object
 res <- try(futureOf("non-exiting-object", mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
+
+message("*** futureOf() ... DONE")
 
 
 ## Cleanup

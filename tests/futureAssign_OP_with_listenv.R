@@ -17,6 +17,10 @@ z[[1]] %<=% { 2 }
 stopifnot(length(z) == 1)
 stopifnot(length(names(z)) == 0)
 
+z[[1]] %<=% { 2 }
+stopifnot(length(z) == 1)
+stopifnot(length(names(z)) == 0)
+
 z[[4]] %<=% { "async!" }
 stopifnot(length(z) == 4)
 stopifnot(length(names(z)) == 0)
