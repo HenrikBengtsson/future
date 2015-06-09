@@ -1,6 +1,6 @@
 library("future")
 
-ovars <- ls(envir=globalenv())
+ovars <- ls()
 oopts <- options(future=lazy, warn=1)
 printf <- function(...) cat(sprintf(...))
 
@@ -10,12 +10,12 @@ message("*** %<=% ...")
 
 message("** Future evaluation without globals")
 v1 %<=% { x <- 1 }
-stopifnot(!exists("x") || !identical(x, 1))
+stopifnot(!exists("x"), identical(v1, 1))
 
 message("** Future evaluation with globals")
 a <- 2
 v2 %<=% { x <- a }
-stopifnot(!exists("x") || !identical(x, a))
+stopifnot(!exists("x"), identical(v2, a))
 
 message("** Future evaluation with errors")
 v3 %<=% {
@@ -23,9 +23,11 @@ v3 %<=% {
   stop("Woops!")
   x
 }
-stopifnot(!exists("x") || !identical(x, 3))
+stopifnot(!exists("x"))
+res <- try(identical(v3, 3), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
 
-message("** Future evaluation with progress bar (~5s)")
+message("** Future evaluation with progress bar")
 v4 %<=% {
   cat("Processing: ")
   for (ii in 1:10) { cat("."); Sys.sleep(0.1) }
@@ -80,4 +82,4 @@ message("*** %<=% ... DONE")
 
 ## Cleanup
 options(oopts)
-rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())
+rm(list=setdiff(ls(), ovars))

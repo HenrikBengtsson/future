@@ -4,7 +4,7 @@ mstr <- function(...) message(paste(capture.output(str(...)), collapse="\n"))
 
 suppressWarnings(rm(list=c("x", "z")))
 
-ovars <- ls(envir=globalenv())
+ovars <- ls()
 oopts <- options(future=lazy, warn=1)
 
 message("*** futureOf() with environment ...")
@@ -48,4 +48,4 @@ message("*** futureOf() with environment ... DONE")
 
 ## Cleanup
 options(oopts)
-rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())
+rm(list=setdiff(ls(), ovars))

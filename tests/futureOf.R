@@ -3,7 +3,7 @@ library("listenv")
 
 message("*** futureOf() ...")
 
-ovars <- ls(envir=globalenv())
+ovars <- ls()
 oopts <- options(future=lazy, warn=1)
 
 a %<=% { 1 }
@@ -26,4 +26,4 @@ message("*** futureOf() ... DONE")
 
 ## Cleanup
 options(oopts)
-rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())
+rm(list=setdiff(ls(), ovars))
