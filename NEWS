@@ -1,5 +1,9 @@
 Package: future
 ===============
 
+Version: 0.4.0-9000 [2015-06-09]
+o Added eager future - useful for troubleshooting.
+
+
 Version: 0.4.0 [2015-06-07]
 o Distilled Future API from (in-house) 'async' package.

@@ -8,7 +8,6 @@
 #' @seealso
 #' To evaluate an expression using "lazy future", see function
 #' \code{\link{lazy}()}.
-#' %% Alternatively, use the infix assignment operator \code{\link{\%<-\%}}.
 #'
 #' @export
 #' @name LazyFuture-class

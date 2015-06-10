@@ -21,6 +21,5 @@ A lazy future represents a \link{Future} whose value will be resolved at the tim
 \seealso{
 To evaluate an expression using "lazy future", see function
 \code{\link{lazy}()}.
-%% Alternatively, use the infix assignment operator \code{\link{\%<-\%}}.
 }
 

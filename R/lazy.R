@@ -36,7 +36,6 @@
 #' create a "\emph{\link[base]{promise}}", which hold the future's value.
 #'
 #' @export
-#' @name lazy
 lazy <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
