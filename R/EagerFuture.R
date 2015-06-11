@@ -25,6 +25,6 @@ value.EagerFuture <- function(future, onCondition=c("signal", "return"), ...) {
 }
 
 #' @export
-isResolved.EagerFuture <- function(future, ...) {
+resolved.EagerFuture <- function(future, ...) {
   TRUE
 }

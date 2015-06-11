@@ -7,7 +7,7 @@ f <- future({
   42L
 })
 
-print(isResolved(f))
+print(resolved(f))
 y <- value(f)
 print(y)
 stopifnot(y == 42L)

@@ -12,7 +12,7 @@ f <- lazy({
 })
 stopifnot(inherits(f, "LazyFuture"))
 
-print(isResolved(f))
+print(resolved(f))
 y <- value(f)
 print(y)
 stopifnot(y == 42L)

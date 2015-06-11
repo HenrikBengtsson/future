@@ -7,6 +7,6 @@ f <- future({
   a * b * c
 })
 
-print(isResolved(f))
+print(resolved(f))
 y <- value(f)
 print(y)

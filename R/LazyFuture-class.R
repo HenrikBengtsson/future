@@ -25,7 +25,7 @@ value.LazyFuture <- function(future, onCondition=c("signal", "return"), ...) {
 }
 
 #' @export
-isResolved.LazyFuture <- function(future, ...) {
+resolved.LazyFuture <- function(future, ...) {
   value(future, onCondition="return")
   TRUE
 }

@@ -3,7 +3,7 @@
 #' A \emph{future} is an abstraction for a \emph{value} that may
 #' available at some point in the future.  A future can either be
 #' \code{unresolved} or \code{resolved}, which can be checked with
-#' \code{isResolved()}.  As long as it is \emph{unresolved}, the value
+#' \code{resolved()}.  As long as it is \emph{unresolved}, the value
 #' is not available.  As soon as it is \emph{resolved}, the value is
 #' available, which can take the form of an object of any data type
 #' or a \link[base]{condition}.
@@ -72,13 +72,13 @@ value <- function(...) UseMethod("value")
 #' but only return either TRUE or FALSE.
 #' It should also be possible to use the method for polling the
 #' future until it is resolved (without having to wait infinitly long),
-#' e.g. \code{while (!isResolved(future)) Sys.sleep(5)}.
+#' e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
 #'
 #' @export
-#' @export isResolved
-#' @aliases isResolved
-isResolved.Future <- function(future, ...) {
-  stop(sprintf("isResolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+#' @export resolved
+#' @aliases resolved
+resolved.Future <- function(future, ...) {
+  stop(sprintf("resolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
 }
 
-isResolved <- function(...) UseMethod("isResolved")
+resolved <- function(...) UseMethod("resolved")
