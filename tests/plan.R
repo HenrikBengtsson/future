@@ -67,4 +67,10 @@ fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
+
+message("*** %plan% ")
+plan(lazy)
+x %<=% { a <- 1 } %plan% eager
+stopifnot(identical(plan(), lazy))
+
 message("*** plan() ... DONE")
