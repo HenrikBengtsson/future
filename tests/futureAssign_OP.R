@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls()
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 printf <- function(...) cat(sprintf(...))
 
 rm(list=intersect(c("x", "y"), ls()))

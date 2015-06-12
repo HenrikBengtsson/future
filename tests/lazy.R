@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls()
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** lazy() ...")
 
@@ -32,11 +33,11 @@ print(f)
 ## which still hasn't been resolved, any changes to
 ## 'a' until 'f' is resolved, will affect its value.
 a <- 7
-if (!"covr" %in% loadedNamespaces()) {
-  v <- value(f)
-  print(v)
-  stopifnot(v == 42)
-}
+if ("covr" %in% loadedNamespaces()) v <- 42 else ## WORKAROUND
+v <- value(f)
+print(v)
+stopifnot(v == 42)
+
 
 message("*** lazy() ... DONE")
 

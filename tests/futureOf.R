@@ -4,7 +4,8 @@ library("listenv")
 message("*** futureOf() ...")
 
 ovars <- ls()
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 a %<=% { 1 }
 

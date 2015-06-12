@@ -1,4 +1,4 @@
-options(future=lazy)
+plan(lazy)
 
 f <- future({
   a <- 7

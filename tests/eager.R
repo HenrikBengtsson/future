@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls()
-oopts <- options(future=eager, warn=1)
+oopts <- options(warn=1)
+plan(eager)
 
 message("*** eager() ...")
 
@@ -32,11 +33,10 @@ print(f)
 ## it already has been resolved, and any changes to 'a'
 ## at this point will _not_ affect the value of 'f'.
 a <- 7
-if (!"covr" %in% loadedNamespaces()) {
-  v <- value(f)
-  print(v)
-  stopifnot(v == 0)
-}
+v <- value(f)
+print(v)
+stopifnot(v == 0)
+
 
 message("*** eager() ... DONE")
 

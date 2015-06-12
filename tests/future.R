@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls()
-oopts <- options("future"=lazy)
+oopts <- options(warn=1)
+plan(lazy)
 
 f <- future({
   42L

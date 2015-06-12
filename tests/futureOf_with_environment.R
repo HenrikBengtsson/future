@@ -5,7 +5,8 @@ mstr <- function(...) message(paste(capture.output(str(...)), collapse="\n"))
 suppressWarnings(rm(list=c("x", "z")))
 
 ovars <- ls()
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** futureOf() with environment ...")
 

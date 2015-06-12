@@ -34,7 +34,7 @@ which the can be inspected for being resolved or not and when
 resolved can have its value retrieved.
 }
 \examples{
-options(future=lazy)
+plan(lazy)
 
 f <- future({
   a <- 7

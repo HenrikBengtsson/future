@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls(envir=globalenv())
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** futureAssign() ...")
 

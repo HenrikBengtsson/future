@@ -2,7 +2,8 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** futureOf() with listenv ...")
 
