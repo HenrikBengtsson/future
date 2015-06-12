@@ -30,7 +30,7 @@
 #'
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, ..., evaluator=getOption("future", lazy)) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, ..., evaluator=plan()) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {

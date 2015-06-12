@@ -5,7 +5,7 @@
 \title{Asynchroneously evaluates an expression whose value should be available at some point in the future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, ...,
-  evaluator = getOption("future", lazy))
+  evaluator = plan())
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

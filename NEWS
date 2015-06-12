@@ -1,7 +1,8 @@
 Package: future
 ===============
 
-Version: 0.4.0-9000 [2015-06-10]
+Version: 0.4.0-9000 [2015-06-11]
+o Added plan().
 o Added eager future - useful for troubleshooting.
 
 
