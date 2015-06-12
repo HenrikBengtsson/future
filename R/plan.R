@@ -19,43 +19,46 @@
 #' \code{\link{eager}()} and \code{\link{lazy}()}.
 #'
 #' @export
-plan <- function(strategy=NULL, ...) {
-  ostrategy <- getOption("future", lazy)
-  if (is.null(strategy)) return(ostrategy)
-  if (is.character(strategy)) {
-    if (!exists(strategy, mode="function", envir=parent.frame(), inherits=TRUE)) {
-      stop("No such strategy for futures: ", sQuote(strategy))
-    }
-    strategy <- get(strategy, mode="function", envir=parent.frame(), inherits=TRUE)
-  }
-  if (!is.function(strategy)) {
-    stop("Argument 'strategy' must be a string or a function: ", mode(strategy))
-  }
+plan <- local({
+  .strategy <- lazy
 
-  ## Override defaults?
-  args <- list(...)
-  if (length(args) > 0L) {
-    names <- names(args)
-    if (is.null(names)) {
-      stop("Additional arguments to plan() must be named.")
+  function(strategy=NULL, ...) {
+    if (is.null(strategy)) return(.strategy)
+    if (is.character(strategy)) {
+      if (!exists(strategy, mode="function", envir=parent.frame(), inherits=TRUE)) {
+        stop("No such strategy for futures: ", sQuote(strategy))
+      }
+      strategy <- get(strategy, mode="function", envir=parent.frame(), inherits=TRUE)
     }
-    formals <- names(formals(strategy))
-    unknown <- NULL
-    for (kk in seq_along(args)) {
-      name <- names[kk]
-      if (is.element(name, formals)) {
-        formals(strategy)[[name]] <- args[[name]]
-      } else {
-        unknown <- c(unknown, name)
+    if (!is.function(strategy)) {
+      stop("Argument 'strategy' must be a string or a function: ", mode(strategy))
+    }
+
+    ## Override defaults?
+    args <- list(...)
+    if (length(args) > 0L) {
+      names <- names(args)
+      if (is.null(names)) {
+        stop("Additional arguments to plan() must be named.")
+      }
+      formals <- names(formals(strategy))
+      unknown <- NULL
+      for (kk in seq_along(args)) {
+        name <- names[kk]
+        if (is.element(name, formals)) {
+          formals(strategy)[[name]] <- args[[name]]
+        } else {
+          unknown <- c(unknown, name)
+        }
+      }
+      if (length(unknown) > 0L) {
+        warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse=", ")))
       }
     }
-    if (length(unknown) > 0L) {
-      warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse=", ")))
-    }
-  }
 
-  ## Set new strategy for futures
-  options(future=strategy)
+    ## Set new strategy for futures
+    .strategy <<- strategy
 
-  invisible(ostrategy)
-} # plan()
+    invisible(.strategy)
+  } # function()
+}) # plan()

@@ -48,11 +48,19 @@ plan(eager)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == TRUE)
+x <- 0
+f <- future({ x <- 1 })
+print(value(f))
+stopifnot(x == 0)
 
 plan(eager, local=FALSE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
+x <- 0
+f <- future({ x <- 1 })
+print(value(f))
+stopifnot(x == 1)
 
 plan(eager, local=FALSE, abc=1, def=TRUE)
 fcn <- plan()
