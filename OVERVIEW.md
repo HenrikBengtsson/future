@@ -23,7 +23,7 @@ Resolving...
 ```
 Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the [future] package is to evaluate them in an "eager" and synchroneous manner, which emulates R itself in _when_ it evaluates expressions.
 
-We can swithc to using a "lazy" evaluation strategy using the `plan()` function, e.g.
+We can switch to using a "lazy" evaluation strategy using the `plan()` function, e.g.
 
 ```r
 > plan(lazy)
@@ -82,6 +82,23 @@ This shows that `a` in the global environment is unaffected by the expression ev
 [1] 3.14
 > a
 [1] 3.14
+```
+
+### Different evaluation strategies for different futures
+Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
+```r
+> plan(eager) # The default
+> a <- 0
+> x %<=% { 3.14 }
+> y %<=% { a <- 2.71 } %plan% lazy(local=FALSE)
+> x
+[1] 3.14
+> a
+[1] 0
+> y
+[1] 2.71
+> a
+[1] 2.71
 ```
 
 
