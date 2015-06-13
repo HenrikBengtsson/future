@@ -1,22 +1,58 @@
 Copyright Henrik Bengtsson, 2015
 
-## Future evaluation
+## Introduction
 A _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
 _unresolved_ or _resolved_.  As soon as it is resolved, the value is available immediately.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved and the value can be returned.  Exactly how and when futures are resolved, depends on what strategy is used to evaluate them.  For instance, a future can resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another strategy is to "eagerly" resolve the future, which means that it is resolved at the moment it is created.  Alternative strategies is to resolve futures asynchroneously, for instance, by evaluating expressions concurrently on a compute cluster.
 
+### Futures in R
+
 The [future] package in R defines a minimalistic Future API.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the framework of the [BatchJobs] package provides, e.g. processing using multiple core on a single machine, on a compute cluster via a job queue and so on.
 
-
-
+Here is an example illustrating how to create a future:
 ```r
 > library(future)
-> f <- future({ 3.14 })
+> plan(eager)
+> f <- future({
++   message("Resolving...")
++   3.14
++ })
+Resolving...
 > v <- value(f)
 > v
 [1] 3.14
 ```
+Note how the future is resolved as soon as we create it the future via `future()`.  This is because the default strategy for resolving futures is "eager", which emulates R itself in _when_ it evaluates expressions.
 
-It is important to understand that the above 
+We can use a "lazy" evaluation strategy as follows:
+> plan(lazy)
+> f <- future({
++   message("Resolving...")
++   3.14
++ })
+> v <- value(f)
+> v
+Resolving...
+[1] 3.14
+```
+Note how the future is unresolved until the point where we as for its value (which also means that a lazy future many never be resolved).
+
+
+### Future evaluation and promises
+An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it provides a "promise" of resolving its value if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair is to use the `%<=%` infix operator.  For example,
+
+```r
+> plan(lazy)
+> v %<=% {
++   message("Resolving...")
++   3.14
++ }
+> v
+Resolving...
+[1] 3.14
+```
+
+This works by (i) creating a future and assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are constructs that are part of R, cf. `help(delayedAssign)`.
+
 
 ```r
 > library('async')
