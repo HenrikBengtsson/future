@@ -140,7 +140,7 @@ The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` 
 Error: Subsetting can not be done on a 'list'; only to an environment: 'x$a'
 ```
 
-This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments using the `assign()` function, which means you can only assign futures to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign to an environment, just do:
+This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments using the `assign()` function, which means you can only assign futures to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign to a future value to an environment, do:
 
 ```r
 > env <- new.env()
