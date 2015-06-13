@@ -4,7 +4,7 @@
 \alias{plan}
 \title{The plan used to resolve the future}
 \usage{
-plan(strategy = NULL, ...)
+plan(strategy = NULL, ..., substitute = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function to use for resolving a future.
@@ -12,6 +12,9 @@ If NULL, then the current strategy is returned.}
 
 \item{...}{Additional arguments overriding the default arguments
 of the evaluation function.}
+
+\item{substitute}{If TRUE, the \code{strategy} expression is
+\code{substitute()}:d, otherwise not.}
 }
 \value{
 If a new strategy is choosen, then the previous one is returned

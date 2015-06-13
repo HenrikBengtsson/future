@@ -8,6 +8,8 @@
 #' If NULL, then the current strategy is returned.
 #' @param ... Additional arguments overriding the default arguments
 #' of the evaluation function.
+#' @param substitute If TRUE, the \code{strategy} expression is
+#' \code{substitute()}:d, otherwise not.
 #'
 #' @return If a new strategy is choosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
@@ -22,8 +24,19 @@
 plan <- local({
   .strategy <- lazy
 
-  function(strategy=NULL, ...) {
+  function(strategy=NULL, ..., substitute=TRUE) {
+    if (substitute) strategy <- substitute(strategy)
+    args <- list(...)
+
+    ## Return current plan
     if (is.null(strategy)) return(.strategy)
+
+    if (is.symbol(strategy) || is.language(strategy)) {
+      strategy <- as.list(strategy)
+      args <- c(args, strategy[-1])
+      strategy <- eval(strategy[[1L]], envir=parent.frame())
+    }
+
     if (is.character(strategy)) {
       if (!exists(strategy, mode="function", envir=parent.frame(), inherits=TRUE)) {
         stop("No such strategy for futures: ", sQuote(strategy))
@@ -35,7 +48,6 @@ plan <- local({
     }
 
     ## Override defaults?
-    args <- list(...)
     if (length(args) > 0L) {
       names <- names(args)
       if (is.null(names)) {

@@ -5,13 +5,13 @@
 #' @export
 `%plan%` <- function(x, y) {
   lhs <- substitute(x)
-  strategy <- y
+  strategy <- substitute(y)
   envir <- parent.frame(1)
 
   ## Temporary use a different plan
   oplan <- plan()
-  on.exit(plan(oplan))
-  plan(strategy)
+  on.exit(plan(oplan, substitute=FALSE))
+  plan(strategy, substitute=FALSE)
 
   eval(lhs, envir=envir)
 }
