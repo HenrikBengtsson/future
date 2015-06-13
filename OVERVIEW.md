@@ -1,18 +1,17 @@
 Copyright Henrik Bengtsson, 2015
 
 ## Introduction
-A _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
-_unresolved_ or _resolved_.  As soon as it is resolved, the value is available immediately.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved and the value can be returned.  Exactly how and when futures are resolved, depends on what strategy is used to evaluate them.  For instance, a future can resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another strategy is to "eagerly" resolve the future, which means that it is resolved at the moment it is created.  Alternative strategies is to resolve futures asynchroneously, for instance, by evaluating expressions concurrently on a compute cluster.
+I programming, a _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
+_unresolved_ or _resolved_.  As soon as it is resolved, the value is available immediately.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved and the value can be obtained.  Exactly how and when futures are resolved, depends on what strategy is used to evaluate them.  For instance, a future can resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another aproach is an "eager" strategy, which means that it is starts to resolve the future as soon as it is created.  Alternative strategies is to resolve futures asynchroneously, for instance, by evaluating expressions concurrently on a compute cluster.
 
 ### Futures in R
 
-The [future] package in R defines a minimalistic Future API.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the framework of the [BatchJobs] package provides, e.g. processing using multiple core on a single machine, on a compute cluster via a job queue and so on.
+The [future] package in R defines a minimalistic Future API.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the [BatchJobs] framework provides, e.g. processing using multiple cores on a single machine, on a compute cluster via a job queue and so on.
 
 Here is an example illustrating how to create a future:
 
 ```r
 > library(future)
-> plan(eager)
 > f <- future({
 +   message("Resolving...")
 +   3.14
@@ -22,9 +21,9 @@ Resolving...
 > v
 [1] 3.14
 ```
-Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures is "eager", which emulates R itself in _when_ it evaluates expressions.
+Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the [future] package is to evaluate them in an "eager" and synchroneous manner, which emulates R itself in _when_ it evaluates expressions.
 
-We can use a "lazy" evaluation strategy as follows:
+We can swithc to using a "lazy" evaluation strategy using the `plan()` function, e.g.
 
 ```r
 > plan(lazy)
