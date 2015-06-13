@@ -55,7 +55,7 @@ Resolving...
 [1] 3.14
 ```
 
-This works by (i) creating a future and assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R, cf. `help(delayedAssign)`.
+This works by (i) creating a future and (ii) assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R, cf. `help(delayedAssign)`.
 
 
 ```r
