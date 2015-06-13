@@ -1,23 +1,22 @@
 Copyright Henrik Bengtsson, 2015
 
-## Asynchronous evaluation
-_Asynchronous evaluation_ is a method for evaluating multiple R
-expressions in, typically, a parallel or distributed fashion such that
-the "observed" total time for computing all values is less that if
-the expressions would be evaluated synchronously (sequentially).
+## Future evaluation
+A _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
+_unresolved_ or _resolved_.  As soon as it is resolved, the value is available immediately.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved and the value can be returned.  Exactly how and when futures are resolved, depends on what strategy is used to evaluate them.  For instance, a future can resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another strategy is to "eagerly" resolve the future, which means that it is resolved at the moment it is created.  Alternative strategies is to resolve futures asynchroneously, for instance, by evaluating expressions concurrently on a compute cluster.
 
-For instance, the following evaluation, which is synchronous, takes about 10 seconds to complete:
+The [future] package in R defines a minimalistic Future API.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the framework of the [BatchJobs] package provides, e.g. processing using multiple core on a single machine, on a compute cluster via a job queue and so on.
+
+
 
 ```r
-> x <- { Sys.sleep(5); 3.14 }
-> y <- { Sys.sleep(5); 2.71 }
-> z <- x + y
-[1] 5.85
+> library(future)
+> f <- future({ 3.14 })
+> v <- value(f)
+> v
+[1] 3.14
 ```
 
-whereas the following _asynchronous_ evaluation only takes
-about 5 seconds to complete when done on a
-multi-core system:
+It is important to understand that the above 
 
 ```r
 > library('async')
@@ -26,6 +25,9 @@ multi-core system:
 > z <- x + y
 [1] 5.85
 ```
+
+A _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
+_unresolved_ or _resolved_, a state which can be checked with _resolved()_.  As long as it is unresolved, the value is not available.  As soon as it is resolved, the value is available immediately via _value()_, which can take the form of an object of any data type or a _condition_ (e.g. an error).
 
 
 ### Evaluation is done in a "local" environment
@@ -408,6 +410,7 @@ For further details and examples on how to configure BatchJobs,
 see the [BatchJobs configuration] wiki page.
 
 
+[future]: https://github.com/UCSF-CBC/future/
 [listenv]: https://github.com/HenrikBengtsson/listenv/
 [async]: https://github.com/UCSF-CBC/async/
 [brew]: http://cran.r-project.org/package=brew
