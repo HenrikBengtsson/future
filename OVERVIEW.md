@@ -175,7 +175,7 @@ The future values of a list environment can be retrieved individually as `x[["b"
 > x$b
 [1] -0.6735019  0.9873067
 ```
-Just as for any type of environment, all the value of a list environment can be retrieved as a list using `as.list(x)`.  Note that as with any future promise, if it is not yet resolved, the current process will be blocked until the requested values are available.
+Just as for any type of environment, all the value of a list environment can be retrieved as a list using `as.list(x)`.  Remember though that future assignments are used, which means that until they are all resolved, the calling process will be blocked until all values are available.
 
 
 ## Exception handling
