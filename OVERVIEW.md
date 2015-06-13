@@ -42,7 +42,7 @@ Note how the future is unresolved until the point where we as for its value (whi
 
 
 ### Future evaluation and promises
-An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it provides a "promise" of resolving its value if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair is to use the `%<=%` infix operator.  For example,
+An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it provides a "promise" of resolving its value if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
 
 ```r
 > plan(lazy)
