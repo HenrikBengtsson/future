@@ -55,7 +55,7 @@ Resolving...
 [1] 3.14
 ```
 
-This works by (i) creating a future and assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are constructs that are part of R, cf. `help(delayedAssign)`.
+This works by (i) creating a future and assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R, cf. `help(delayedAssign)`.
 
 
 ```r
@@ -70,12 +70,25 @@ A _future_ is an abstraction for a _value_ that may available at some point in t
 _unresolved_ or _resolved_, a state which can be checked with _resolved()_.  As long as it is unresolved, the value is not available.  As soon as it is resolved, the value is available immediately via _value()_, which can take the form of an object of any data type or a _condition_ (e.g. an error).
 
 
-### Evaluation is done in a "local" environment
-Each _asynchronous expression_ is evaluated in its own unique _asynchronous environment_, which is different from the calling environment.  The only way to transfer information from the asynchronous environment to the calling environment is via the (return) value, just as when functions are called and their values are returned.   In other words,
+### About the built-in "eager" and "lazy" futures
+The [future] package provides two evaluation strategies of futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms tries to emulate those as far as possible while still evaluating them in a synchroneous way.
+
+Specifically, variable in the future expression are (by default) created in a local temporary environment and will therefore _not_ be assigned to the global environment of the main calling process.  Here is an example:
 
 ```r
-x %<=% { a <- 3.14 }
+> a <- 2.71
+> x %<=% { a <- 3.14 }
+> x
+[1] 3.14
+> a
+[1] 2.71
 ```
+This shows that `a` in the global environment is unaffected by the expression evaluated by the future.
+
+
+ Evaluation is done in a "local" environment
+Each _asynchronous expression_ is evaluated in its own unique _asynchronous environment_, which is different from the calling environment.  The only way to transfer information from the asynchronous environment to the calling environment is via the (return) value, just as when functions are called and their values are returned.   In other words,
+
 
 is effectively equivalent to
 
