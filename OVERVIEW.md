@@ -41,7 +41,7 @@ Note how the future is unresolved until the point where we as for its value (whi
 
 
 ### Future evaluation and promises
-An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it provides a "promise" of resolving its value if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
+An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it provides a "promise" of resolving its value if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
 
 ```r
 > plan(lazy)
@@ -54,25 +54,14 @@ Resolving...
 [1] 3.14
 ```
 
-This works by (i) creating a future and (ii) assigning its value to variable `v` as a _promise_, which formally means that expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R, cf. `help(delayedAssign)`.
+This works by (i) creating a future and (ii) assigning its value to variable `v` as a _promise_.   Promises are constructs that are built-in in R (see `help(delayedAssign)`).  Specifally, the expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.
 
-
-```r
-> library('async')
-> x %<=% { Sys.sleep(5); 3.14 }
-> y %<=% { Sys.sleep(5); 2.71 }
-> z <- x + y
-[1] 5.85
-```
-
-A _future_ is an abstraction for a _value_ that may available at some point in the future.  A future can either be
-_unresolved_ or _resolved_, a state which can be checked with _resolved()_.  As long as it is unresolved, the value is not available.  As soon as it is resolved, the value is available immediately via _value()_, which can take the form of an object of any data type or a _condition_ (e.g. an error).
 
 
 ### About the built-in "eager" and "lazy" futures
 The [future] package provides two evaluation strategies of futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms tries to emulate those as far as possible while still evaluating them in a synchroneous way.
 
-Specifically, variable in the future expression are (by default) created in a local temporary environment and will therefore _not_ be assigned to the global environment of the main calling process.  Here is an example:
+For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variable such that the global environment of the main/calling process is unaffected.  Here is an example:
 
 ```r
 > a <- 2.71
@@ -82,20 +71,18 @@ Specifically, variable in the future expression are (by default) created in a lo
 > a
 [1] 2.71
 ```
-This shows that `a` in the global environment is unaffected by the expression evaluated by the future.
-
-
- Evaluation is done in a "local" environment
-Each _asynchronous expression_ is evaluated in its own unique _asynchronous environment_, which is different from the calling environment.  The only way to transfer information from the asynchronous environment to the calling environment is via the (return) value, just as when functions are called and their values are returned.   In other words,
-
-
-is effectively equivalent to
-
+This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  For anyone interested, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
 ```r
-x %<=% local({ a <- 3.14 })
+> plan(lazy, local=FALSE)
+> a <- 2.71
+> x %<=% { a <- 3.14 }
+> a
+[1] 2.71
+> x
+[1] 3.14
+> a
+[1] 3.14
 ```
-
-I both cases _asynchronous variable_ 'a' will be assigned value `3.14` in a "local" environment.  Since this is the last value in the expression, it is also the value of the asynchronous expression, which is therefore also the value "returned" (in R there is no need to "return" values; it is always the last value of the expression that will be used).  This is the value that will be assigned to variable `x` in the calling environment.  Asynchronous variable `a` is gone forever.  As a matter of fact, it is _not_ possible for an asynchronous expression to assign variables in the calling environment, i.e. assignments such as `<-`, `<<-` and `assign()` only affects the asynchronous environment.
 
 
 ### Global variables
