@@ -85,6 +85,36 @@ This shows that `a` in the global environment is unaffected by the expression ev
 ```
 
 
+### Nested futures
+It is possible to nest futures in multiple levels and each of the nested future may be resolved using a different strategy, e.g.
+```r
+> plan(lazy)
+> c %<=% {
++   message("Resolving 'c'")
++   a %<=% { 
++     message("Resolving 'a'")
++   } %plan% eager
++   b %<=% {
++     message("Resolving 'b'")
++     -9 * a 
++   }
++   message("Local variable 'x'")
++   x <- b / 3
++   abs(x)
++ }
+> d <- 42
+> d
+[1] 42
+>
+> c
+Resolving 'c'
+Local variable 'x'
+Resolving 'b'
+Resolving 'a'
+[1] 6
+```
+
+
 ### Global variables
 
 Although the following expression is evaluated in an asynchronous environment - separated from the calling one - the asynchronous environment "inherits"(*) any "global" variables in the calling environment and its parents.  For example,
