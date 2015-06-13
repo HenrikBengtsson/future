@@ -9,6 +9,7 @@ _unresolved_ or _resolved_.  As soon as it is resolved, the value is available i
 The [future] package in R defines a minimalistic Future API.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the framework of the [BatchJobs] package provides, e.g. processing using multiple core on a single machine, on a compute cluster via a job queue and so on.
 
 Here is an example illustrating how to create a future:
+
 ```r
 > library(future)
 > plan(eager)
@@ -24,6 +25,8 @@ Resolving...
 Note how the future is resolved as soon as we create it the future via `future()`.  This is because the default strategy for resolving futures is "eager", which emulates R itself in _when_ it evaluates expressions.
 
 We can use a "lazy" evaluation strategy as follows:
+
+```r
 > plan(lazy)
 > f <- future({
 +   message("Resolving...")
@@ -34,6 +37,7 @@ We can use a "lazy" evaluation strategy as follows:
 Resolving...
 [1] 3.14
 ```
+
 Note how the future is unresolved until the point where we as for its value (which also means that a lazy future many never be resolved).
 
 
