@@ -22,7 +22,7 @@ Resolving...
 > v
 [1] 3.14
 ```
-Note how the future is resolved as soon as we create it the future via `future()`.  This is because the default strategy for resolving futures is "eager", which emulates R itself in _when_ it evaluates expressions.
+Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures is "eager", which emulates R itself in _when_ it evaluates expressions.
 
 We can use a "lazy" evaluation strategy as follows:
 
