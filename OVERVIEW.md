@@ -442,7 +442,7 @@ see the [BatchJobs configuration] wiki page.
 
 
 [future]: https://github.com/UCSF-CBC/future/
-[listenv]: https://github.com/HenrikBengtsson/listenv/
+[listenv]: http://cran.r-project.org/package=listenv
 [async]: https://github.com/UCSF-CBC/async/
 [brew]: http://cran.r-project.org/package=brew
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
