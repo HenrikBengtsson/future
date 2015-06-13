@@ -159,7 +159,7 @@ $c
 [1] 3
 ```
 
-If _indexed subsetting_ is needed for assignments, one can instead use _"list environments"_ (implemented by the [listenv] package), which emulates some of the indexed subsetting that lists provides.  For example,
+If _indexed subsetting_ is needed for assignments, the [listenv] package provides _"list environments"_, which technically are environments, but also emulates how lists are subsetted using indices.  For example,
 ```r
 > library(listenv)
  x <- listenv()
@@ -170,6 +170,8 @@ If _indexed subsetting_ is needed for assignments, one can instead use _"list en
 ```
 The future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b` just as with regular environments, but also as `x[[2]]`, e.g.
 ```r
+> x[[2]]
+[1] -0.6735019  0.9873067
 > x$b
 [1] -0.6735019  0.9873067
 ```
