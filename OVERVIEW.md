@@ -131,106 +131,49 @@ Resolving 'a'
 [1] 6
 ```
 
+## Assigning futures to environments and list environments
+The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` assignment operator can be used.  For instance, it is not possible to assign future value to a _list_, e.g.
 
-### Global variables
-
-Although the following expression is evaluated in an asynchronous environment - separated from the calling one - the asynchronous environment "inherits"(*) any "global" variables in the calling environment and its parents.  For example,
 ```r
-a <- 2
-y %<=% { b <- a*3.14; b }
+> x <- list()
+> x$a %<=% { 2.71 }
+Error: Subsetting can not be done on a 'list'; only to an environment: 'x$a'
 ```
-results in `y` being assigned `6.28`.
 
-If a global variable is one that is assigned by another asynchronous expression, then dependent asynchronous expressions will wait for the former to complete in order to resolve the global variables.  For example, in
-```r
-a %<=% { Sys.sleep(7); runif(1) }
-b %<=% { Sys.sleep(2); rnorm(1) }
-c %<=% { x <- a*b; Sys.sleep(2); abs(x) }
-d <- runif(1)
-```
-the third asynchronous expression will not be evaluated until `a` and `b` have taken their values.  As a matter of fact, even if `c` is also an asynchronous assignment, R will pause (**) until global variables `a` and `b` are resolved.  In other words, the assignment of `d` will not take place until `a` and `b` are resolved (but there is no need to wait for `c`).  This pause can be avoided using nested asynchronous evaluation (see Section below).
+This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments using the `assign()` function, which means you can only assign futures to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign to an environment, just do:
 
-
-_Footnotes_:  
-(\*) Since the asynchronous environment may be in a separate R session
-on a physically different machine, the "inheritance" of "global"
-variables is achieved by first identifying which variables in the
-asynchronous expression are global and then copy them from the calling
-environment to the asynchronous environment (using serialization).
-This has to be taken into consideration when working with large
-objects, which can take a substantial time to serialize.  Serialized
-objects may also be written to file which then a compute node reads
-back in. The global environments are identified using code inspection,
-cf. the [codetools] package.  
-(\*\*) There is currently no lazy-evaluation mechanism for global
-variables from asynchronous evaluations.  However, theoretically, one
-could imagine that parts of an asynchronous expression can be
-evaluated while the required one is still being evaluated.  However,
-the current implementation is such that the asynchronous evaluation
-will not be _initiated_ until all global variables can be resolved.
-
-
-## Nested asynchronous evaluation
-It is possible to nest multiple levels of asynchronous evaluations, e.g.
-```r
-c %<=% {
-  a %<=% { Sys.sleep(7); runif(1) }
-  b %<=% { Sys.sleep(2); rnorm(1) }
-  x <- a*b; Sys.sleep(2); abs(x)
-}
-d <- runif(1)
-```
-This will evaluate the expression for `c` asynchronously such that `d` is assigned almost momentarily.  In turn, the value for `c` will be resolved when _nested asynchronous expressions_ for local variables `a` and `b` have been evaluated.
-
-
-## Other types of asynchronous assignments
-The `%<=%` assignment operator _cannot_ be used in all cases where
-regular `<-` assignment operator can be used.  As shown above, `%<=%`
-can be used for assignment of (asynchronous) values to variables
-(formally symbols).  It can also be use to assign to variables in
-_environments_.  For example,
 ```r
 > env <- new.env()
 > env$a %<=% { 1 }
 > env[["b"]] %<=% { 2 }
 > name <- "c"
 > env[[name]] %<=% { 3 }
+> as.list(env)
+$a
+[1] 1
+
+$b
+[1] 2
+
+$c
+[1] 3
 ```
 
-These limitations of assignments via `%<=%` are because it performs
-a _delayed assignment_ using `delayedAssign()`, which in turn has very
-similar constraints as of what you can assign using the `assign()`
-function, i.e. you can specify the name and target environment (which
-defaults to the current environment) of the variable you want to
-assign.  This means that you, for instance, cannot assign a value to
-an element of a vector, matrix, list or a data.frame.  If tried, an
-informative error will be generated, e.g.
+If _indexed subsetting_ is needed for assignments, one can instead use _"list environments"_ (implemented by the [listenv] package), which emulates some of the indexed subsetting that lists provides.  For example,
 ```r
-> x <- list()
-> x$a %<=% { 1 }
-Error: Delayed assignments can not be done to a 'list'; only to a
-variable or an environment: x$a
-```
-
-If _indexed subsetting_ is needed for assignments, one can instead use
-_"list environments"_ (implemented by the [listenv] package), which
-emulates some of the index subsetting that lists have.  For example,
-```r
-x <- listenv()
-for (ii in 1:3) {
+> library(listenv)
+ x <- listenv()
+ for (ii in 1:3) {
   x[[ii]] %<=% { rnorm(ii) }
 }
-names(x) <- c("a", "b", "c")
+> names(x) <- c("a", "b", "c")
 ```
-The asynchronous values of a list environment can be retrieved
-individually as `x[["b"]]` and `x$b` just as with regular
-environments, but also as  `x[[2]]`.
-To retrieve all values of an environment as a list, use `as.list(x)`.
-As with any asynchronous values, retrieving one or more of
-them from and list environment will cause R to pause until all
-requested values are available, that is, until all corresponding
-asynchronous evaluations have been completed.
-
+The future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b` just as with regular environments, but also as `x[[2]]`, e.g.
+```r
+> x$b
+[1] -0.6735019  0.9873067
+```
+Just as for any type of environment, all the value of a list environment can be retrieved as a list using `as.list(x)`.  Note that as with any future promise, if it is not yet resolved, the current process will be blocked until the requested values are available.
 
 
 ## Exception handling
