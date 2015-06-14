@@ -253,6 +253,10 @@ The 'future' package does not provide mechanisms for controlling how global vari
 _Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, pun intended).
 
 
+## Contributing
+The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is a early but sincere attempt for achieving this goal.  I am open to all types of feedback and I welcome contributions of any kind.
+
+
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
 [globals]: http://cran.r-project.org/package=globals
