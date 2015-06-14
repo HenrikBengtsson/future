@@ -25,12 +25,12 @@
 #' It is recommended that the evaluator is \emph{non-blocking}
 #' (returns immediately), but it is not required.
 #
-#' The default evaluator function is \code{\link{lazy}()},
-#' but can be changed via option \code{"future"}.
+#' The default evaluator function is \code{\link{eager}()},
+#' but can be changed via \code{"plan"} function.
 #'
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, ..., evaluator=getOption("future", lazy)) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, ..., evaluator=plan()) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {

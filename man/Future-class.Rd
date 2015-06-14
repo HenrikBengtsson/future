@@ -18,10 +18,10 @@ An object of class \code{Future}.
 \description{
 A \emph{future} is an abstraction for a \emph{value} that may
 available at some point in the future.  A future can either be
-\code{unresolved} or \code{resolved}, which can be checked with
-\code{isResolved()}.  As long as it is \emph{unresolved}, the value
-is not available.  As soon as it is \emph{resolved}, the value is
-available, which can take the form of an object of any data type
+\code{unresolved} or \code{resolved}, a state which can be checked
+with \code{resolved()}.  As long as it is \emph{unresolved}, the
+value is not available.  As soon as it is \emph{resolved}, the value
+is available, which can take the form of an object of any data type
 or a \link[base]{condition}.
 }
 \seealso{

@@ -1,8 +1,9 @@
 library("future")
 library("listenv")
 
-ovars <- ls(envir=globalenv())
-oopts <- options(future=lazy, warn=1)
+ovars <- ls()
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** %<=% to listenv ...")
 
@@ -65,4 +66,4 @@ message("*** %<=% to listenv ... DONE")
 
 ## Cleanup
 options(oopts)
-rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())
+rm(list=setdiff(ls(), ovars))

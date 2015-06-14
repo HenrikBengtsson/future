@@ -5,7 +5,7 @@
 \title{Asynchroneously evaluates an expression whose value should be available at some point in the future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, ...,
-  evaluator = getOption("future", lazy))
+  evaluator = plan())
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -34,7 +34,7 @@ which the can be inspected for being resolved or not and when
 resolved can have its value retrieved.
 }
 \examples{
-options(future=lazy)
+plan(lazy)
 
 f <- future({
   a <- 7
@@ -43,14 +43,14 @@ f <- future({
   a * b * c
 })
 
-print(isResolved(f))
+print(resolved(f))
 y <- value(f)
 print(y)
 }
 \seealso{
 It is recommended that the evaluator is \emph{non-blocking}
 (returns immediately), but it is not required.
-The default evaluator function is \code{\link{lazy}()},
-but can be changed via option \code{"future"}.
+The default evaluator function is \code{\link{eager}()},
+but can be changed via \code{"plan"} function.
 }
 

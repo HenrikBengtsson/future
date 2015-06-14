@@ -1,11 +1,14 @@
 library("future")
-oopts <- options("future"=lazy)
+
+ovars <- ls()
+oopts <- options(warn=1)
+plan(lazy)
 
 f <- future({
   42L
 })
 
-print(isResolved(f))
+print(resolved(f))
 y <- value(f)
 print(y)
 stopifnot(y == 42L)
@@ -13,3 +16,4 @@ stopifnot(y == 42L)
 
 ## Cleanup
 options(oopts)
+rm(list=setdiff(ls(), ovars))

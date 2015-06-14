@@ -1,7 +1,8 @@
 library("future")
 
 ovars <- ls(envir=globalenv())
-oopts <- options(future=lazy, warn=1)
+oopts <- options(warn=1)
+plan(lazy)
 
 message("*** futureAssign() ...")
 
@@ -44,4 +45,4 @@ message("*** futureAssign() ... DONE")
 
 ## Cleanup
 options(oopts)
-rm(list=setdiff(ls(envir=globalenv()), ovars), envir=globalenv())
+rm(list=setdiff(ls(), ovars))

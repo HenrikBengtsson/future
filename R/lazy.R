@@ -30,13 +30,12 @@
 #' the future is created.  See example for an illustration of this.
 #'
 #' This function can be registered as the default \link{future} evaluator,
-#' i.e. \code{options(future=lazy)}.
+#' i.e. \code{plan(lazy)}.
 #'
 #' @seealso Internally, \code{\link[base]{delayedAssign}()} is utilized to
 #' create a "\emph{\link[base]{promise}}", which hold the future's value.
 #'
 #' @export
-#' @name lazy
 lazy <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 

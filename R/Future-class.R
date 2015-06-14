@@ -2,10 +2,10 @@
 #'
 #' A \emph{future} is an abstraction for a \emph{value} that may
 #' available at some point in the future.  A future can either be
-#' \code{unresolved} or \code{resolved}, which can be checked with
-#' \code{isResolved()}.  As long as it is \emph{unresolved}, the value
-#' is not available.  As soon as it is \emph{resolved}, the value is
-#' available, which can take the form of an object of any data type
+#' \code{unresolved} or \code{resolved}, a state which can be checked
+#' with \code{resolved()}.  As long as it is \emph{unresolved}, the
+#' value is not available.  As soon as it is \emph{resolved}, the value
+#' is available, which can take the form of an object of any data type
 #' or a \link[base]{condition}.
 #'
 #' @param object An R object of a class that implements the Future API.
@@ -36,11 +36,11 @@ Future <- function(object, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
-#' @param onCondition A character string specifying how
-#' \link[base]{conditions} should be handled in case they occur.
-#' If \code{"signal"}, the condition is generated, e.g. captured
-#' errors and warnings are \emph{"signaled"} (re-thrown).
-#' If \code{"return"}, they are instead \emph{returned} as is.
+#' @param onError A character string specifying how errors
+#' (\link[base]{conditions}) should be handled in case they occur.
+#' If \code{"signal"}, the error is signalled, e.g. captured
+#' errors and re-thrown.  If instead \code{"return"}, they are
+#' \emph{returned} as is.
 #' @param ... Not used.
 #'
 #' @return An R object of any data type.
@@ -52,7 +52,7 @@ Future <- function(object, ...) {
 #' @export
 #' @export value
 #' @aliases value
-value.Future <- function(future, onCondition=c("signal", "return"), ...) {
+value.Future <- function(future, onError=c("signal", "return"), ...) {
   stop(sprintf("value() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
 }
 
@@ -72,13 +72,13 @@ value <- function(...) UseMethod("value")
 #' but only return either TRUE or FALSE.
 #' It should also be possible to use the method for polling the
 #' future until it is resolved (without having to wait infinitly long),
-#' e.g. \code{while (!isResolved(future)) Sys.sleep(5)}.
+#' e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
 #'
 #' @export
-#' @export isResolved
-#' @aliases isResolved
-isResolved.Future <- function(future, ...) {
-  stop(sprintf("isResolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+#' @export resolved
+#' @aliases resolved
+resolved.Future <- function(future, ...) {
+  stop(sprintf("resolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
 }
 
-isResolved <- function(...) UseMethod("isResolved")
+resolved <- function(...) UseMethod("resolved")
