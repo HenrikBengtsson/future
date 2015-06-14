@@ -41,7 +41,7 @@ this particular future.  Ideally, globals are resolved at the time when
 the future is created.  See example for an illustration of this.
 
 This function can be registered as the default \link{future} evaluator,
-i.e. \code{options(future=lazy)}.
+i.e. \code{plan(lazy)}.
 }
 \examples{
 ## A global variable

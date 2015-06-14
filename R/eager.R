@@ -2,7 +2,7 @@
 #'
 #' A eager future is a future that uses eager evaluation, which means
 #' that its \emph{value is computed and resolved immediately}, which is
-#' how regular expressions are evaluated in R.  This type of future 
+#' how regular expressions are evaluated in R.  This type of future
 #' exists mainly for the purpose of troubleshooting code that fails
 #' with other types of futures.
 #'
@@ -22,7 +22,7 @@
 #'
 #' @details
 #' This function can be registered as the default \link{future} evaluator,
-#' i.e. \code{options(future=eager)}.
+#' i.e. \code{plan(future)}.
 #'
 #' @export
 eager <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {

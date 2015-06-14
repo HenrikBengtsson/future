@@ -38,6 +38,17 @@ print(v)
 stopifnot(v == 0)
 
 
+message("*** eager() and errors")
+res <- try({
+f <- eager({
+  stop("Whoops!")
+  1
+})
+}, silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+
 message("*** eager() ... DONE")
 
 ## Cleanup

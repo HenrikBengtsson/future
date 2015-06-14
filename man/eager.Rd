@@ -33,7 +33,7 @@ with other types of futures.
 }
 \details{
 This function can be registered as the default \link{future} evaluator,
-i.e. \code{options(future=eager)}.
+i.e. \code{plan(future)}.
 }
 \examples{
 ## A global variable

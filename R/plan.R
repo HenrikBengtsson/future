@@ -22,7 +22,7 @@
 #'
 #' @export
 plan <- local({
-  .strategy <- lazy
+  .strategy <- eager
 
   function(strategy=NULL, ..., substitute=TRUE) {
     if (substitute) strategy <- substitute(strategy)

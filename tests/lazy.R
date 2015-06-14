@@ -39,6 +39,21 @@ print(v)
 stopifnot(v == 42)
 
 
+message("*** lazy() and errors")
+f <- lazy({
+  stop("Whoops!")
+  1
+})
+print(f)
+v <- value(f, onError="return")
+print(v)
+stopifnot(inherits(v, "simpleError"))
+
+res <- try({ v <- value(f) }, silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+
 message("*** lazy() ... DONE")
 
 ## Cleanup

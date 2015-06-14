@@ -20,9 +20,16 @@ EagerFuture <- function(object=new.env(parent=emptyenv()), ...) {
 
 
 #' @export
-value.EagerFuture <- function(future, onCondition=c("signal", "return"), ...) {
+value.EagerFuture <- function(future, ...) {
+  ## NOTE: Because the expression of an eager future is evaluated
+  ##       at the same time the future is created (and before it is
+  ##       returned), the returned future will:
+  ##       (a) always be resolved, and
+  ##       (b) it's value can never throw an error (because then the
+  ##           future would never have created in the first place)
   get("value", envir=future, inherits=FALSE)
 }
+
 
 #' @export
 resolved.EagerFuture <- function(future, ...) {

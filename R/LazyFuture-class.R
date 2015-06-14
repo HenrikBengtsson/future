@@ -20,12 +20,28 @@ LazyFuture <- function(object=new.env(parent=emptyenv()), ...) {
 
 
 #' @export
-value.LazyFuture <- function(future, onCondition=c("signal", "return"), ...) {
-  get("value", envir=future, inherits=FALSE)
+value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
+  onError <- match.arg(onError)
+
+  if (onError == "signal") {
+    value <- suppressWarnings({
+      get("value", envir=future, inherits=FALSE)
+    })
+  } else {
+    value <- tryCatch({
+      suppressWarnings({
+        get("value", envir=future, inherits=FALSE)
+      })
+    }, simpleError = function(ex) {
+      ex
+    })
+  }
+
+  value
 }
 
 #' @export
 resolved.LazyFuture <- function(future, ...) {
-  value(future, onCondition="return")
+  value(future, onError="return")
   TRUE
 }

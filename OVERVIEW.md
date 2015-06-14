@@ -206,21 +206,44 @@ To retrieve the error object without signalling an error, use:
 Exception handling of future assignments via `%<=%` works analogously, e.g.
 ```r
 > plan(lazy)
-> a %<=% ({ 
-+ stop("Whoops!")
-+ 42
+> x %<=% ({ 
++   stop("Whoops!")
++   42
 + })
-> b <- 3.14
-> b
+> y <- 3.14
+> y
 [1] 3.14
-> a
+> x
 Error in eval(expr, envir, enclos) : Whoops!
-> a
+> x
 Error in eval(expr, envir, enclos) : Whoops!
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
 That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
+
+Finally, the provided "eager future" it very special in the sense that
+it is resolves immediately.  More specifically, the expression is
+evaluated _before the future itself is created_.  Because of this,
+the value of an "eager future" can never throw an error; if an error
+would occur, it would have prevented the future from being created in
+the first place, and without the future the corresponding future
+value/promise will also not exists.  For example:
+```r
+> plan(eager, local=FALSE)
+> a <- 0
+> x %<=% ({
++   a <- 3.14
++   stop("Whoops!")
++   42
++ })
+Error in eval(expr, envir, enclos) : Whoops!
+> x
+Error: object 'x' not found
+> a
+[1] 3.14
+```
+
 
 
 [future]: https://github.com/UCSF-CBC/future/
