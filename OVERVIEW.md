@@ -134,9 +134,9 @@ It is possible to nest futures in multiple levels and each of the nested future 
 >
 > c
 Resolving 'c'
+Resolving 'a'
 Local variable 'x'
 Resolving 'b'
-Resolving 'a'
 [1] 6
 ```
 
