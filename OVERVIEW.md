@@ -252,7 +252,7 @@ _Footnote_: \(*\) The task of identifying globals is a challenging problem and w
 
 
 ## Contributing
-The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt for achieving this goal.  I am open to all types of feedback and I welcome contributions and collaborations of any kind.
+The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  I am open to all types of feedback and I welcome contributions and collaborations of any kind.
 
 ---
 Copyright Henrik Bengtsson, 2015
