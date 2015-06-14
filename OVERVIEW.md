@@ -40,8 +40,8 @@ Resolving...
 In this case the future is unresolved until the point where we ask for its value (which also means that a lazy future may never be resolved).
 
 
-### Future evaluation and promises
-An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it makes a "promise" that its value will be resolved if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
+### Futures and promises
+An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it makes a "promise" that its value will be resolved if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
 
 ```r
 > plan(lazy)
