@@ -49,7 +49,7 @@ In this case the future is unresolved until the point in time when we ask for it
 
 
 ### The promises of futures
-An important part of a future is the fact that, although we do not necessarily control _when_ a future is resolved, it makes a "promise" that it _will_ be resolved (at least if its value is requested).  In other words, if we ask for the value of a future, we are guaranteed that the expression of the future will be evaluated and its value will be returned to us (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the 'future' package).  For example,
+An important part of a future is the fact that, although we do not necessarily control _when_ a future is resolved, it makes a "promise" that it _will_ be resolved (at least if its value is requested).  In other words, if we ask for the value of a future, we are guaranteed that the expression of the future will be evaluated and its value will be returned to us (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix assignment operator (also provided by the 'future' package).  For example,
 
 ```r
 > plan(lazy)
