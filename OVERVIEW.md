@@ -1,5 +1,3 @@
-Copyright Henrik Bengtsson, 2015
-
 ## Introduction
 In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another approach is an "eager" strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
 
@@ -256,6 +254,8 @@ _Footnote_: \(*\) The task of identifying globals is a challenging problem and w
 ## Contributing
 The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt for achieving this goal.  I am open to all types of feedback and I welcome contributions and collaborations of any kind.
 
+---
+Copyright Henrik Bengtsson, 2015
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
