@@ -7,7 +7,7 @@ md <- unlist(strsplit(md, split="\n", fixed=TRUE))
 md <- md[-seq_len(grep("^## ", md)[1]-1)]
 
 ## Drop the footer
-md <- md[seq(from=grep("^---", md), to=length(md))]
+md <- md[seq_len(grep("^---", md)[1]-1)]
 
 ## Output
 cat(md, collapse="\n")
