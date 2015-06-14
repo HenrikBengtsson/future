@@ -179,273 +179,49 @@ Just as for any type of environment, all the value of a list environment can be 
 
 
 ## Exception handling
-If an error occurs during the evaluation of an asynchronous
-expression, that error is thrown when the asynchronous value is
-retrieved.  For example:
+If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, 
 ```r
-> e %<=% { stop("Whoops!") }
-> 1+2
-[1] 3
-> e
-Error: BatchJobError: 'Error in eval(expr, envir = envir) : Whoops! '
+> plan(lazy)
+> f <- future({ 
++ stop("Whoops!")
++ 42
++ })
+> value(f)
+Error in eval(expr, envir, enclos) : Whoops!
 ```
-This error is rethrown each time `e` is retrieved, so it is not
-possible to "inspect" `e` any further using standard R functions such
-as `print()` and `str()`.
-In order to troubleshoot an error, one can use the `inspect()` function
-to retrieve the underlying asynchronous "task" object, e.g.
+The error is thrown each time the value is requested, that is, trying to get the value again will generate the same error:
+> value(f)
+Error in eval(expr, envir, enclos) : Whoops!
+```
+
+To retrieve the error object without signalling an error, use:
 ```r
-> inspect(e)
-AsyncTask:
-Expression:
-  {
-      stop("Whoops!")
-  }
-Status: 'error', 'started', 'submitted'
-Error: 'Error in eval(expr, envir = envir) : Whoops! '
-Backend:
-Job registry:  async1189072551
-  Number of jobs:  1
-  Files dir: T:/async1189072551-files
-  Work dir: T:/
-  Multiple result files: FALSE
-  Seed: 544948890
-  Required packages: BatchJobs
+> v <- value(f, onError="return")
+> v
+<simpleError in eval(expr, envir, enclos): Whoops!>
 ```
 
-### Interrupts
-Interrupts such as user interrupts ("Ctrl-C") will only interrupt any
-evaluation running in the same R session.  They will not interrupts
-the evaluation of asynchronous expressions running in separate R
-processes such as those pushed out on a cluster.  This can be useful
-when one tries to get the value of a asynchronous evaluation that
-took longer than expected causing R to pause.  By hitting Ctrl-C one
-can get back to the main prompt and do other tasks while waiting for
-the long-running evaluation to complete.
-
-
-## Choosing backend
-The asynchronous evaluation done by the [async] package uses the [BatchJobs] package as a backend for effectuating the computations.  This can be configured using the `backend()` function.  Examples:
-
-* `backend("default")` - use `.BatchJobs.R` configuration file,
-   if available. If not, use `"multicore-1"` if supported,
-   otherwise use `"local"`
-* `backend("multicore")` - parallel processing using all available
-   cores on the local machine.
-* `backend("multicore-1")` - parallel processing using all but one
-   of the available cores on the local machine.
-* `backend("local")` - non-parallel processing in a separate R process.
-* `backend("interactive")` - non-parallel processing in the
-   current R session.
-* `backend(".BatchJobs.R")` - use `.BatchJobs.R` configuration file.
-
-It is possible to specify a set of possible backends,
-e.g. `backend(c("multicore", "local"))`.  The first
-available/supported backend will be used.
-
-If none of the requested backends work/are supported, the fallback is
-always to use the `"local"` which is available on all systems.
-
-To see what the most recently set backend was, use `backend()`.
-To reset, use `backend("reset")`
-(which is equivalent to `backend("default")`).
-
-
-
-### Multi-core processing
-Multi-core processing is when multiple R processes are used (instead of the
-default single-thread single-process R session we are all used to).
-Note that multi-core processing is not available on Windows (this is a
-limitation of the R core package `parallel`).
-When specifying `backend("multicore")`, all available cores are used on the
-machine.  For heavy computations, this might render the machine very slow and
-useless for other things.  To avoid this, one can specify how many cores to
-"spare", e.g. `backend("multicore-2")` will use all but two cores.
-Note how the default (see above) is `backend("multicore-1")`.
-As an alternative, it is also possible to specify the exact number of cores
-to be used, e.g. `backend("multicore=3")`.
-
-
-### Advanced configuration
-For more complicated backends (e.g. clusters), one has to use
-BatchJobs-specific configuration files as explained in the Appendix.
-The default is to use such configuration files, if available.  To
-explicitly use such backend configurations, use `backend(".BatchJobs.R")`.
-
-
-### Backend aliases
-It is possible to create aliases for favorite sets of backends.  For instance,
+Exception handling of future assignments via `%<=%` works analogously, e.g.
 ```r
-backend(cluster=c(".BatchJobs.R", "multicore", "local"))
+> plan(lazy)
+> a %<=% ({ 
++ stop("Whoops!")
++ 42
++ })
+> b <- 3.14
+> b
+[1] 3.14
+> a
+Error in eval(expr, envir, enclos) : Whoops!
+> a
+Error in eval(expr, envir, enclos) : Whoops!
+In addition: Warning message:
+restarting interrupted promise evaluation
 ```
-creates backend alias `"cluster"` using whatever BatchJobs
-configuration file is available with fallback to `"multicore"`
-and `"local"`.  After setting an alias it can be specified as:
-```r
-backend("cluster")
-```
+That latter warning is from R itself, notifying us that it already tried to evaluate the promise and retried again.
 
-
-### Evaluate asynchronous expression on specific backend
-Asynchronous expressions are processed by the default backend as given by `backend()`.  If another backend should be used to evaluate for a particular expression, operator `%backend%` can be used.  For example,
-```r
-a %<=% { Sys.sleep(7); runif(1) } %backend% "multicore-2"
-b %<=% { Sys.sleep(2); rnorm(1) } %backend% "cluster"
-c %<=% { x <- a*b; Sys.sleep(2); abs(x) }
-d <- runif(1)
-```
-In this case expression `a` will be processed by the `multicore-2` backend, expression `c` by the `cluster` backend, and expression `c` by the default backend.
-
-Backend specifications can also be used in nested asynchronous evaluations:
-```r
-backend("cluster")
-a %<=% { Sys.sleep(7); runif(1) }
-c %<=% {
-  b %<=% { Sys.sleep(2); rnorm(1) } %backend% "multicore=2"
-  x <- a*b; Sys.sleep(2); abs(x)
-}
-d <- runif(1)
-```
-
-## Examples
-
-### Download files in parallel
-```r
-library('async')
-library('R.utils')
-repos <- c(CRAN="http://cran.r-project.org",
-           Bioc="http://www.bioconductor.org/packages/release/bioc")
-urls <- sapply(repos, file.path, "src/contrib/PACKAGES", fsep="/")
-files <- new.env()
-for (name in names(urls)) {
-  files[[name]] %<=% downloadFile(urls[[name]], path=name)
-}
-str(as.list(files))
-```
-
-
-## Availability
-This package is only available via GitHub.  Install in R as:
-
-```s
-source('http://callr.org/install#listenv,globals')
-source('http://callr.org/install#UCSF-CBC/future')
-source('http://callr.org/install#UCSF-CBC/async')
-```
-
-
-## Future directions
-The above, which is a fully functional prototype, relies 100% on
-[BatchJobs] as the backend.  Unfortunately, BatchJobs has some
-limitations as it stands.  The most important one is the fact that [all
-machines, including the head machine, have to share the same file
-system](https://github.com/tudo-r/BatchJobs/issues/71).  This means
-that it is, for instance, not possible to do asynchronous evaluation
-on remote hosts, e.g. over ssh.  If that would be possible, then one
-can imagine doing things such as:
-```r
-# The world's computer resources at your R prompt
-tasks %<=% {
-  update.packages()
-} %backends% c("local", "cluster", "AmazonEC2", "GoogleCompEngine")
-
-tcga %<=% {
-  backend("cluster")
-
-  a %<=% {
-    doCRMAv2("BreastCancer", chipType="GenomeWideSNP_6")
-  }
-
-  b %<=% {
-    doCRMAv2("ProstateCancer", chipType="Mapping250K_Nsp")
-  }
-
-  list(a=a, b=b)
-} %backend% "AmazonEC2"
-
-hapmap %<=% {
-  backend("cluster")
-
-  normals %<=% {
-    doCRMAv2("HapMap2", chipType="GenomeWideSNP_6")
-  }
-
-  normals
-} %backend% "GoogleCompEngine"
-```
-Obviously great care needs to be taken in order to minimize the amount
-of data sent back and forth, e.g. returning really large objects.
-
-In order for the above to work, one would have to extend the
-BatchJobs Registry framework to work across file systems, which
-would requiring serialization and communicating over sockets.
-A better approach is probably to instead use the [BiocParallel]
-package as the main framework for backends.  BiocParallel "aims to
-provide a unified interface to existing parallel infrastructure where
-code can be easily executed in different environments".  It already
-has built in support for BatchJobs.  More importantly, it support many
-other backends, including Simple Network of Workstations ("SNOW")
-style clusters. A SNOW cluster consists of a set of local or remote
-workers that communicates with the head node/machine via sockets such
-that data and commands can be transferred across using a serialized
-protocol.  For example, from the BiocParallel vignette:
-```r
-hosts <- c("rhino01", "rhino01", "rhino02")
-param <- SnowParam(workers = hosts, type = "PSOCK")
-Execute FUN 4 times across the workers.
-> FUN <- function(i) system("hostname", intern=TRUE)
-> bplapply(1:4, FUN, BPPARAM = param)
-```
-
-Because of this, the next plan is to update 'async' to work on top of
-BiocParallel instead.
-
-
-## Appendix
-
-### Configuration of backend for parallel / distributed processing
-Basic backends can be configured using the `backend()` function.
-For full control, or for more complicated backends such as clusters,
-one can use the configuration options available from the BatchJobs
-package.  In summary, this type of configuration is done via a
-`.BatchJobs.R` configuration file that can reside in either the
-current directory or the user's home directory
-(this file is only needed on compute nodes if nested asynchronous
-calls should also use the same configuration).  These settings
-are used by default if available.  They also be explicitly specified
-by `backend(".BatchJobs.R")`.
-
-For example, to configure BatchJobs to distribute computations on a
-set of known machines (for which you have ssh access and that
-[share the same file system as your head
-machine](https://github.com/tudo-r/BatchJobs/issues/71)), let the
-`.BatchJobs.R` file contain:
-```r
-cluster.functions <- makeClusterFunctionsSSH(
-  makeSSHWorker(nodename="n6", max.jobs=2),
-  makeSSHWorker(nodename="n8"),
-  makeSSHWorker(nodename="n12")
-)
-```
-
-To use a more formal cluster system with a Torque/PBS job queue mechanism, use:
-```r
-cluster.functions <- local({
-  tmpl <- system.file(package="async", "config", "pbs.tmpl")
-  makeClusterFunctionsTorque(tmpl)
-})
-```
-where the "tmpl" file is a [brew]-embedded PBS script template.
-
-For further details and examples on how to configure BatchJobs,
-see the [BatchJobs configuration] wiki page.
 
 
 [future]: https://github.com/UCSF-CBC/future/
 [listenv]: http://cran.r-project.org/package=listenv
 [async]: https://github.com/UCSF-CBC/async/
-[brew]: http://cran.r-project.org/package=brew
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
-[BatchJobs configuration]: https://github.com/tudo-r/BatchJobs/wiki/Configuration
-[codetools]: http://cran.r-project.org/package=codetools
-[BiocParallel]: http://bioconductor.org/packages/release/bioc/html/BiocParallel.html
