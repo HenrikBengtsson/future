@@ -67,7 +67,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 ### Eager, lazy and parallel futures
 You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Although not implemented by this package, other R packages may provide strategies for "parallel futures" that are evaluated asynchronously on, for instance, a compute cluster.  Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchronous_ way.
 
-For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only such that the environment of the main/calling process is unaffected.  Here is an example:
+For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
 ```r
 > a <- 2.71
