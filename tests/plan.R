@@ -92,4 +92,25 @@ print(x)
 stopifnot(x == 0)
 stopifnot(identical(plan(), lazy))
 
+message("*** Nested futures with different plans ")
+plan(lazy)
+c %<=% {
+  message("Resolving 'c'")
+  a %<=% {
+    message("Resolving 'a'")
+    2
+  } %plan% eager
+  b %<=% {
+    message("Resolving 'b'")
+    -9 * a
+  }
+  message("Local variable 'x'")
+  x <- b / 3
+  abs(x)
+}
+d <- 42
+print(d)
+print(c)
+stopifnot(c == 6)
+
 message("*** plan() ... DONE")
