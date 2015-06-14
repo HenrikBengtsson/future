@@ -48,7 +48,7 @@ Resolving...
 In this case the future is unresolved until the point in time when we first ask for its value (which also means that a lazy future may never be resolved).
 
 
-### The promises of futures
+### Promises of futures
 An important part of a future is the fact that, although we do not necessarily control _when_ a future is resolved, it makes a "promise" that it _will_ be resolved (at least if its value is requested).  In other words, if we ask for the value of a future, we are guaranteed that the expression of the future will be evaluated and its value will be returned to us (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix assignment operator (also provided by the 'future' package).  For example,
 
 ```r
@@ -66,7 +66,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 
-### The built-in "eager" and "lazy" futures
+### Built-in "eager" and "lazy" futures
 The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Alternative strategies such as asynchroneous evaluation on a compute cluster are implemented by other R packages. Since an asynchroneous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only such that the environment of the main/calling process is unaffected.  Here is an example:
@@ -92,7 +92,7 @@ This shows that `a` in the calling environment is unaffected by the expression e
 [1] 3.14
 ```
 
-### Different evaluation strategies for different futures
+### Different strategies for different futures
 Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
 > plan(eager) # The default
