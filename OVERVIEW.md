@@ -67,7 +67,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### The built-in "eager" and "lazy" futures
-The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Alternative strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. '[async]'. Since an asynchroneous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
+The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Alternative strategies such as asynchroneous evaluation on a compute cluster are implemented by other R packages. Since an asynchroneous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -79,7 +79,7 @@ For instance, the default is that the future expression is evaluated in _a local
 > a
 [1] 2.71
 ```
-This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
+This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
 ```r
 > plan(lazy, local=FALSE)
 > a <- 2.71
