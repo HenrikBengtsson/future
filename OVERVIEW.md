@@ -3,7 +3,7 @@ In programming, a _future_ is an abstraction for a _value_ that may be available
 
 ### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchronously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the 'future' package.  For instance, the '[async]' package resolves futures _asynchronously_ via any of the backends that the '[BatchJobs]' framework provides, e.g. multicore processing on a single machine, or distributed on a compute cluster via a job queue.  The lazy and the eager futures provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
+The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchronously_ via "lazy" and "eager" futures.  More advanced strategies will be implemented by other packages extending the 'future' package.  For instance, the '[async]' package resolves futures _asynchronously_ via any of the backends that the '[BatchJobs]' framework provides, e.g. multicore processing on a single machine, or distributed on a compute cluster via a job queue.  The lazy and the eager futures provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
 
 Here is an example illustrating how to create a future:
 
