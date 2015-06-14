@@ -20,7 +20,16 @@ Resolving...
 > v
 [1] 3.14
 ```
-Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the 'future' package is to evaluate them in an "eager" and synchroneous manner, which emulates R itself in _when_ it evaluates expressions.
+Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the 'future' package is to evaluate them in an "eager" and synchroneous manner, which emulates how R itself evaluates expressions by default, cf.
+```r
+> v <- {
++   message("Resolving...")
++   3.14
++ }
+Resolving...
+> v
+[1] 3.14
+```
 
 We can switch to using a "lazy" evaluation strategy using the `plan()` function, e.g.
 
