@@ -10,5 +10,5 @@ md <- md[-seq_len(grep("^## ", md)[1]-1)]
 md <- md[seq_len(grep("^---", md)[1]-1)]
 
 ## Output
-cat(md, collapse="\n")
+cat(md, sep="\n")
 %>
