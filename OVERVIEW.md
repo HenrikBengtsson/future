@@ -45,7 +45,7 @@ Resolving...
 [1] 3.14
 ```
 
-In this case the future is unresolved until the point in time when we ask for its value (which also means that a lazy future may never be resolved).
+In this case the future is unresolved until the point in time when we first ask for its value (which also means that a lazy future may never be resolved).
 
 
 ### The promises of futures
