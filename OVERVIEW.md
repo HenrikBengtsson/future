@@ -79,7 +79,7 @@ For instance, the default is that the future expression is evaluated in _a local
 > a
 [1] 2.71
 ```
-This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  For anyone interested, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
+This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
 ```r
 > plan(lazy, local=FALSE)
 > a <- 2.71
@@ -93,7 +93,7 @@ This shows that `a` in the global environment is unaffected by the expression ev
 ```
 
 ### Different evaluation strategies for different futures
-Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
+Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
 > plan(eager) # The default
 > a <- 0
