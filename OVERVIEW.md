@@ -119,6 +119,7 @@ It is possible to nest futures in multiple levels and each of the nested future 
 +   message("Resolving 'c'")
 +   a %<=% { 
 +     message("Resolving 'a'")
++     3
 +   } %plan% eager
 +   b %<=% {
 +     message("Resolving 'b'")
