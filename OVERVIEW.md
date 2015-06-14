@@ -169,7 +169,7 @@ $c
 [1] 3
 ```
 
-If _indexed subsetting_ is needed for assignments, the '[listenv]' package provides _"list environments"_, which technically are environments, but at the same time emulates how lists can be indexed.  For example,
+If _indexed subsetting_ is needed for assignments, the '[listenv]' package provides _list environments_, which technically are environments, but at the same time emulate how lists can be indexed.  For example,
 ```r
 > library(listenv)
 > x <- listenv()
