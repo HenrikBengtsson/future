@@ -6,7 +6,7 @@ _unresolved_ or _resolved_.  As soon as it is resolved, the value is available i
 
 ### Futures in R
 
-The purpose of the [future] package is to provide/define a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the [BatchJobs] framework provides, e.g. processing using multiple cores on a single machine, on a compute cluster via a job queue and so on.
+The purpose of the [future] package is to provide/define a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the [BatchJobs] framework provides, e.g. processing using multiple cores on a single machine, on a compute cluster via a job queue and so on.  The lazy and the eager futures exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses futures but for some reason fails when using for instance asynchroneous futures.
 
 Here is an example illustrating how to create a future:
 
