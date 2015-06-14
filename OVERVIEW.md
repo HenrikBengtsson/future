@@ -59,9 +59,9 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### The built-in "eager" and "lazy" futures
-The [future] package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms tries to emulate those as far as possible while still evaluating them in a synchroneous way.
+The [future] package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
-For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variable such that the global environment of the main/calling process is unaffected.  Here is an example:
+For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variable such that the environment of the main/calling process is unaffected.  Here is an example:
 
 ```r
 > a <- 2.71
@@ -133,7 +133,7 @@ Resolving 'a'
 ```
 
 ## Assigning futures to environments and list environments
-The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` assignment operator can be used.  For instance, it is not possible to assign future value to a _list_, e.g.
+The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` assignment operator can be used.  For instance, it is not possible to assign future values to a _list_, e.g.
 
 ```r
 > x <- list()
@@ -141,7 +141,7 @@ The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` 
 Error: Subsetting can not be done on a 'list'; only to an environment: 'x$a'
 ```
 
-This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments using the `assign()` function, which means you can only assign futures to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign to a future value to an environment, do:
+This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments via the `assign()` function, which means you can only assign _future values_ to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign a future value to an environment, do:
 
 ```r
 > env <- new.env()
@@ -160,7 +160,7 @@ $c
 [1] 3
 ```
 
-If _indexed subsetting_ is needed for assignments, the [listenv] package provides _"list environments"_, which technically are environments, but also emulates how lists are subsetted using indices.  For example,
+If _indexed subsetting_ is needed for assignments, the [listenv] package provides _"list environments"_, which technically are environments, but at the same time emulates how lists can be indexed.  For example,
 ```r
 > library(listenv)
 > x <- listenv()
@@ -220,7 +220,7 @@ Error in eval(expr, envir, enclos) : Whoops!
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
-That latter warning is from R itself, notifying us that it already tried to evaluate the promise and retried again.
+That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
 
 [future]: https://github.com/UCSF-CBC/future/
