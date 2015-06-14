@@ -188,7 +188,7 @@ Future values of a list environment can be retrieved individually as `x[["b"]]` 
 Just as for any type of environment, all  values of a list environment can be retrieved as a list using `as.list(x)`.  However, remember that future assignments were used, which means that unless they are all resolved, the calling process will be blocked until all values are available.
 
 
-## Exception handling
+## Failed futures
 If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, 
 ```r
 > plan(lazy)
