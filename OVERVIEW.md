@@ -191,6 +191,7 @@ If an error occurs while evaluating a future, the error is propagated and thrown
 Error in eval(expr, envir, enclos) : Whoops!
 ```
 The error is thrown each time the value is requested, that is, trying to get the value again will generate the same error:
+```r
 > value(f)
 Error in eval(expr, envir, enclos) : Whoops!
 ```
@@ -220,7 +221,6 @@ In addition: Warning message:
 restarting interrupted promise evaluation
 ```
 That latter warning is from R itself, notifying us that it already tried to evaluate the promise and retried again.
-
 
 
 [future]: https://github.com/UCSF-CBC/future/
