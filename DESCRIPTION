@@ -3,6 +3,10 @@ Version: 0.4.0-9000
 Title: The Future of R
 Imports:
   listenv
+Suggests:
+  R.rsp
+VignetteBuilder:
+  R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Description: A Future API for R.  The purpose of this package is to provide a very lightweight interface for using futures in R.  Except from a "lazy future", actual implementation of futures is done by other packages enhancing this package.
