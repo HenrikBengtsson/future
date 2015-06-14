@@ -108,7 +108,7 @@ Sometimes one wish to use a different evaluation strategy for a specific future.
 > a
 [1] 2.71
 ```
-Above, `x` is evaluated eagerly (in a local environment), whereas `y` is evaluated lazily in the calling environment.
+Above, the expression for `x` is evaluated eagerly (in a local environment), whereas the one for `y` is evaluated lazily in the calling environment.
 
 
 ### Nested futures
