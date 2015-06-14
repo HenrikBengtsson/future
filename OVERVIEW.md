@@ -59,14 +59,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### The built-in "eager" and "lazy" futures
-The 'future' package provides two evaluation strategies for futures,
-namely "lazy" and "eager", implemented by functions `lazy()` and
-`eager()`.  Other strategies such as asynchroneous evaluation on a
-computer cluster are implemented by other R packages, e.g. '[async]'.
-Since an asynchroneous strategy are more likely to be used in
-practice, the built-in eager and lazy mechanisms try to emulate those
-as far as possible while still evaluating them in a _synchroneous_
-way.
+The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. '[async]'. Since an asynchroneous strategy are more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variable such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -251,8 +244,13 @@ Error: object 'x' not found
 [1] 3.14
 ```
 
+## Globals variables
+The 'future' package does not provide mechanisms for controlling how global variables and functions are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategies implemented in this package evaluate futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and makes sure they are available when the future expression is evaluated.
+
+_Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a few different strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (another pun intended).
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
+[globals]: http://cran.r-project.org/package=globals
 [async]: https://github.com/UCSF-CBC/async/
