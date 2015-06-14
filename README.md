@@ -189,7 +189,7 @@ Just as for any type of environment, all  values of a list environment can be re
 
 
 ## Failed futures
-If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, 
+Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, 
 ```r
 > plan(lazy)
 > f <- future({ 
