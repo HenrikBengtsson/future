@@ -93,7 +93,7 @@ This shows that `a` in the calling environment is unaffected by the expression e
 ### Different strategies for different futures
 Sometimes one may want to use an alternative evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and afterward `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
-> plan(eager) # The default
+> plan(eager)
 > a <- 0
 > x %<=% { 3.14 }
 > y %<=% { a <- 2.71 } %plan% lazy(local=FALSE)
