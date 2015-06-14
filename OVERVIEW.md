@@ -142,7 +142,7 @@ Resolving 'b'
 ```
 
 ## Assigning futures to environments and list environments
-The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` assignment operator can be used.  For instance, it is not possible to assign future values to a _list_, e.g.
+The `%<=%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  For instance, it is _not_ possible to assign future values to a _list_;
 
 ```r
 > x <- list()
@@ -150,7 +150,7 @@ The `%<=%` assignment operator _cannot_ be used in all cases where regular `<-` 
 Error: Subsetting can not be done on a 'list'; only to an environment: 'x$a'
 ```
 
-This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments via the `assign()` function, which means you can only assign _future values_ to environment (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign a future value to an environment, do:
+This is because _promises_ themselves cannot be assigned to lists.  More precisely, the limitation of future assignments are the same as those for assignments via the `assign()` function, which means you can only assign _future values_ to environments (defaulting to the current environment) but nothing else, i.e. not to elements of a vector, matrix, list or a data.frame and so on.  To assign a future value to an environment, do:
 
 ```r
 > env <- new.env()
@@ -178,14 +178,14 @@ If _indexed subsetting_ is needed for assignments, the '[listenv]' package provi
 + }
 > names(x) <- c("a", "b", "c")
 ```
-The future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b` just as with regular environments, but also as `x[[2]]`, e.g.
+Future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b` just as with regular environments, but also as `x[[2]]`, e.g.
 ```r
 > x[[2]]
 [1] -0.6735019  0.9873067
 > x$b
 [1] -0.6735019  0.9873067
 ```
-Just as for any type of environment, all the value of a list environment can be retrieved as a list using `as.list(x)`.  Remember though that future assignments are used, which means that until they are all resolved, the calling process will be blocked until all values are available.
+Just as for any type of environment, all  values of a list environment can be retrieved as a list using `as.list(x)`.  However, remember that future assignments were used, which means that until they are all resolved, the calling process will be blocked until all values are available.
 
 
 ## Exception handling
