@@ -203,13 +203,6 @@ The error is thrown each time the value is requested, that is, trying to get the
 Error in eval(expr, envir, enclos) : Whoops!
 ```
 
-To retrieve the error object without signaling an error, use:
-```r
-> v <- value(f, onError="return")
-> v
-<simpleError in eval(expr, envir, enclos): Whoops!>
-```
-
 Exception handling of future assignments via `%<=%` works analogously, e.g.
 ```r
 > plan(lazy)
