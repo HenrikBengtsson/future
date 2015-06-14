@@ -178,7 +178,7 @@ If _indexed subsetting_ is needed for assignments, the '[listenv]' package provi
 + }
 > names(x) <- c("a", "b", "c")
 ```
-Future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b` just as with regular environments, but also as `x[[2]]`, e.g.
+Future values of a list environment can be retrieved individually as `x[["b"]]` and `x$b`, but also as `x[[2]]`, e.g.
 ```r
 > x[[2]]
 [1] -0.6735019  0.9873067
