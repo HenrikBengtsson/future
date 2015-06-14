@@ -33,7 +33,7 @@ Resolving...
 [1] 3.14
 ```
 
-We can switch to using a "lazy" evaluation strategy using the `plan()` function, e.g.
+We can switch to  a "lazy" evaluation strategy using the `plan()` function, e.g.
 
 ```r
 > plan(lazy)
@@ -69,7 +69,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### The built-in "eager" and "lazy" futures
-The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. '[async]'. Since an asynchroneous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
+The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Alternative strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. '[async]'. Since an asynchroneous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -81,7 +81,7 @@ For instance, the default is that the future expression is evaluated in _a local
 > a
 [1] 2.71
 ```
-This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  For anyone interested, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
+This shows that `a` in the global environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
 ```r
 > plan(lazy, local=FALSE)
 > a <- 2.71
@@ -95,7 +95,7 @@ This shows that `a` in the global environment is unaffected by the expression ev
 ```
 
 ### Different evaluation strategies for different futures
-Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
+Sometimes one wish to use a different evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and then `plan(old)` to temporarily switch strategy, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
 > plan(eager) # The default
 > a <- 0
@@ -171,7 +171,7 @@ $c
 [1] 3
 ```
 
-If _indexed subsetting_ is needed for assignments, the '[listenv]' package provides _"list environments"_, which technically are environments, but at the same time emulates how lists can be indexed.  For example,
+If _indexed subsetting_ is needed for assignments, the '[listenv]' package provides _list environments_, which technically are environments, but at the same time emulate how lists can be indexed.  For example,
 ```r
 > library(listenv)
 > x <- listenv()
@@ -233,13 +233,7 @@ restarting interrupted promise evaluation
 ```
 That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
-The provided "eager future" is very special in the sense that
-it is resolved immediately.  More specifically, the expression is
-evaluated _before the future itself is created_.  Because of this,
-the value of an "eager future" can never throw an error; if an error
-would occur, it would have prevented the future from being created in
-the first place, and without the future the corresponding future
-value/promise will also not exists.  For example:
+The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exist.  For example,
 ```r
 > plan(eager, local=FALSE)
 > a <- 0
@@ -256,9 +250,9 @@ Error: object 'x' not found
 ```
 
 ## Globals variables
-The 'future' package does not provide mechanisms for controlling how global variables and functions are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategy implemented in this package evaluates futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and makes sure they are available when the future expression is evaluated.
+The 'future' package does not provide mechanisms for controlling how global variables and functions are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategy implemented in this package evaluates futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and make sure they are available when the future expression is evaluated.
 
-_Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a few different strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, pun intended).
+_Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, pun intended).
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
