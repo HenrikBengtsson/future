@@ -6,7 +6,7 @@ _unresolved_ or _resolved_.  As soon as it is resolved, the value is available i
 
 ### Futures in R
 
-The purpose of the [future] package is to provide/define a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the [BatchJobs] framework provides, e.g. processing using multiple cores on a single machine, on a compute cluster via a job queue and so on.  The lazy and the eager futures provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses futures but for some reason fails, when for instance using asynchroneous futures.
+The purpose of the 'future' package is to provide/define a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchroneously_ via "lazy" and "eager" futures.  More advanced strategies can be implemented by other packages extending the future package.  For instance, the [async] package resolves futures _asynchroneously_ via any of the backends that the [BatchJobs] framework provides, e.g. processing using multiple cores on a single machine, on a compute cluster via a job queue and so on.  The lazy and the eager futures provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses futures but for some reason fails, when for instance using asynchroneous futures.
 
 Here is an example illustrating how to create a future:
 
@@ -21,7 +21,7 @@ Resolving...
 > v
 [1] 3.14
 ```
-Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the [future] package is to evaluate them in an "eager" and synchroneous manner, which emulates R itself in _when_ it evaluates expressions.
+Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures in the 'future' package is to evaluate them in an "eager" and synchroneous manner, which emulates R itself in _when_ it evaluates expressions.
 
 We can switch to using a "lazy" evaluation strategy using the `plan()` function, e.g.
 
@@ -41,7 +41,7 @@ In this case the future is unresolved until the point where we ask for its value
 
 
 ### Futures and promises
-An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it makes a "promise" that its value will be resolved if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the [future] package).  For example,
+An important part of a future is the fact that although we do not necessarily control _when_ a future is resolved, it makes a "promise" that its value will be resolved if requested.  In other words, if we ask for the value of a future, we are guaranteed that its expression will be evaluated and a value will be returned (or an error will be generated if the evaluation caused an error).  An alternative to a `future-value` pair of function calls is to use the `%<=%` infix operator (also provided by the 'future' package).  For example,
 
 ```r
 > plan(lazy)
@@ -59,7 +59,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### The built-in "eager" and "lazy" futures
-The [future] package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
+The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Other strategies such as asynchroneous evaluation on a computer cluster are implemented by other R packages, e.g. [async].  Since the asynchroneous strategies are more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchroneous_ way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variable such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -246,7 +246,6 @@ Error: object 'x' not found
 
 
 
-[future]: https://github.com/UCSF-CBC/future/
+[BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
 [async]: https://github.com/UCSF-CBC/async/
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
