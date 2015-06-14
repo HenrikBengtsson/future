@@ -231,7 +231,7 @@ restarting interrupted promise evaluation
 ```
 That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
-The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exists.  For example,
+The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exist.  For example,
 ```r
 > plan(eager, local=FALSE)
 > a <- 0
@@ -248,9 +248,9 @@ Error: object 'x' not found
 ```
 
 ## Globals variables
-The 'future' package does not provide mechanisms for controlling how global variables and functions are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategy implemented in this package evaluates futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and makes sure they are available when the future expression is evaluated.
+The 'future' package does not provide mechanisms for controlling how global variables and functions are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategy implemented in this package evaluates futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and make sure they are available when the future expression is evaluated.
 
-_Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a few different strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, pun intended).
+_Footnote_: \(*\) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended and troubleshooting can sometimes be tricky.  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, pun intended).
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
