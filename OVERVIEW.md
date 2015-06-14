@@ -226,3 +226,4 @@ That latter warning is from R itself, notifying us that it already tried to eval
 [future]: https://github.com/UCSF-CBC/future/
 [listenv]: http://cran.r-project.org/package=listenv
 [async]: https://github.com/UCSF-CBC/async/
+[BatchJobs]: http://cran.r-project.org/package=BatchJobs
