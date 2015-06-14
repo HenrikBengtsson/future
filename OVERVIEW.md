@@ -222,8 +222,8 @@ restarting interrupted promise evaluation
 ```
 That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
-Finally, the provided "eager future" is very special in the sense that
-it is resolves immediately.  More specifically, the expression is
+The provided "eager future" is very special in the sense that
+it is resolved immediately.  More specifically, the expression is
 evaluated _before the future itself is created_.  Because of this,
 the value of an "eager future" can never throw an error; if an error
 would occur, it would have prevented the future from being created in
