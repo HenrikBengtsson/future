@@ -165,7 +165,7 @@ If _indexed subsetting_ is needed for assignments, the [listenv] package provide
 > library(listenv)
 > x <- listenv()
 > for (ii in 1:3) {
-+  x[[ii]] %<=% { rnorm(ii) }
++   x[[ii]] %<=% { rnorm(ii) }
 + }
 > names(x) <- c("a", "b", "c")
 ```
@@ -184,8 +184,8 @@ If an error occurs while evaluating a future, the error is propagated and thrown
 ```r
 > plan(lazy)
 > f <- future({ 
-+ stop("Whoops!")
-+ 42
++   stop("Whoops!")
++   42
 + })
 > value(f)
 Error in eval(expr, envir, enclos) : Whoops!
