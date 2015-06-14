@@ -31,7 +31,7 @@ Resolving...
 [1] 3.14
 ```
 
-We can switch to using a "lazy" evaluation strategy using the `plan()` function, e.g.
+We can switch to  a "lazy" evaluation strategy using the `plan()` function, e.g.
 
 ```r
 > plan(lazy)
