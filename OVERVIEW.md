@@ -37,7 +37,7 @@ Resolving...
 [1] 3.14
 ```
 
-Note how the future is unresolved until the point where we as for its value (which also means that a lazy future many never be resolved).
+In this case the future is unresolved until the point where we ask for its value (which also means that a lazy future may never be resolved).
 
 
 ### Future evaluation and promises
