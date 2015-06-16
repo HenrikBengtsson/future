@@ -76,12 +76,12 @@ stopifnot(formals(fcn)$local == FALSE)
 message("*** %plan% 'eager'")
 plan(lazy)
 x %<=% { a <- 1 } %plan% "eager"
-stopifnot(identical(plan(), lazy))
+stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** %plan% eager")
 plan(lazy)
 x %<=% { a <- 1 } %plan% eager
-stopifnot(identical(plan(), lazy))
+stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** %plan% eager(local=FALSE) ")
 plan(lazy)
@@ -90,7 +90,7 @@ x %<=% { a } %plan% eager(local=FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
-stopifnot(identical(plan(), lazy))
+stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** Nested futures with different plans ")
 plan(lazy)
