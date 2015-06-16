@@ -79,9 +79,9 @@ For instance, the default is that the future expression is evaluated in _a local
 > a
 [1] 2.71
 ```
-This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment.  For instance,
+This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment (but the global variables cannot be "frozen").  For instance,
 ```r
-> plan(lazy, local=FALSE)
+> plan(lazy, local=FALSE, globals=FALSE)
 > a <- 2.71
 > x %<=% { a <- 3.14 }
 > a
@@ -98,7 +98,7 @@ Sometimes one may want to use an alternative evaluation strategy for a specific 
 > plan(eager)
 > a <- 0
 > x %<=% { 3.14 }
-> y %<=% { a <- 2.71 } %plan% lazy(local=FALSE)
+> y %<=% { a <- 2.71 } %plan% lazy(local=FALSE, globals=FALSE)
 > x
 [1] 3.14
 > a
@@ -225,8 +225,7 @@ That latter warning is from R itself, notifying us that it already tried to eval
 
 The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exist.  For example,
 ```r
-> plan(eager, local=FALSE)
-> a <- 0
+> plan(eager)
 > x %<=% ({
 +   a <- 3.14
 +   stop("Whoops!")
@@ -235,14 +234,10 @@ The provided "eager future" is very special in the sense that it is resolved imm
 Error in eval(expr, envir, enclos) : Whoops!
 > x
 Error: object 'x' not found
-> a
-[1] 3.14
 ```
 
 ## Globals
-The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.
-Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.
-If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
+The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
 
 _Footnote_: (*) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other types of futures with an automatic service for dealing with globals (except for lazy futures).  This may change in the future (yes, this pun was also intended).
 
