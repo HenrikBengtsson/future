@@ -11,7 +11,7 @@ VignetteBuilder:
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Description: A Future API for R.  The purpose of this package is to provide a very lightweight interface for using futures in R.  Except from a "lazy future", actual implementation of futures is done by other packages enhancing this package.
-License: Private for now [will become LGPL (>= 2.1) when published]
+License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
