@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.4.1-9000 [2015-06-15]
+Version: 0.4.2 [2015-06-15]
 o Now plan() records the call.
 o Added demo("mandelbrot", package="future"), which can be
   re-used by other future packages.

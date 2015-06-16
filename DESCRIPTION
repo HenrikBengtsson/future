@@ -1,5 +1,5 @@
 Package: future
-Version: 0.4.1-9000
+Version: 0.4.2
 Title: The Future of R
 Imports:
   listenv
