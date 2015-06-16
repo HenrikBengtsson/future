@@ -1,0 +1,80 @@
+#----------------------------------------------------------------
+# Travis-CI configuration for R packages
+#
+# REFERENCES:
+# * Travis CI: https://travis-ci.org/
+# * r-builder: https://github.com/metacran/r-builder
+# * covr: https://github.com/jimhester/covr
+#
+# Validate your .travis.yml file at http://lint.travis-ci.org/
+#----------------------------------------------------------------
+language: c
+
+env:
+  global:
+    - RENV="./pkg-build.sh"    # r-builder
+    - R_BUILD_ARGS="--no-manual"
+    - R_CHECK_ARGS="--no-manual --as-cran"
+    - _R_CHECK_CRAN_INCOMING_=TRUE
+    - _R_CHECK_FORCE_SUGGESTS_=false
+    # Need LaTeX? (very time consuming!)
+    - BOOTSTRAP_LATEX=""
+    # Skip building vignettes, which iff LaTeX-based are very
+    # time consuming because LaTeX needs to be installed
+#    - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
+#    - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
+
+  # R versions r-builder should test on (ignored by r-travis)
+  matrix:
+    - RVERSION=3.1.3
+    - RVERSION=3.2.0
+    - RVERSION=devel _R_COVR_=TRUE _R_CHECK_FULL_=TRUE
+
+
+before_install:
+  - echo RENV=$RENV
+  - curl -OL https://raw.githubusercontent.com/HenrikBengtsson/r-builder/master/pkg-build.sh;
+  - chmod 755 $RENV
+  - $RENV bootstrap
+  - if [ "BOOTSTRAP_LATEX" == "true" ]; then
+      (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash);
+    else
+      export R_RSP_COMPILELATEX_FALLBACK="copy-force";
+    fi
+
+install:
+
+
+
+ - $RENV install_r R.rsp
+
+ - $RENV install_r globals listenv
+
+ - $RENV install_r R.rsp
+
+script:
+  - $RENV run_build
+  - $RENV run_check
+
+after_success:
+  - $RENV dump_logs_by_extension out
+  - if [[ "$_R_COVR_" == "TRUE" && -f ".covr.R" ]]; then
+      $RENV install_devtools;
+      $RENV install_github jimhester/covr;
+      curl -OL https://raw.githubusercontent.com/HenrikBengtsson/covr-utils/master/covr-utils.R;
+    fi
+  - if [[ "$_R_COVR_" == "TRUE" && -f ".covr.R" ]]; then
+      $RENV run_script .covr.R;
+    fi
+
+after_failure:
+  - $RENV dump_logs
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+branches:
+  except:
+   - /-expt$/
