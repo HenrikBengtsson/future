@@ -40,8 +40,8 @@ We can switch to  a "lazy" evaluation strategy using the `plan()` function, e.g.
 +   3.14
 + })
 > v <- value(f)
-> v
 Resolving...
+> v
 [1] 3.14
 ```
 

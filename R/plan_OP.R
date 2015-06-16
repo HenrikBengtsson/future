@@ -10,8 +10,8 @@
 
   ## Temporary use a different plan
   oplan <- plan()
-  on.exit(plan(oplan, substitute=FALSE))
-  plan(strategy, substitute=FALSE)
+  on.exit(plan(oplan, substitute=FALSE, .call=attr(oplan, "call")))
+  plan(strategy, substitute=FALSE, .call=NULL)
 
   eval(lhs, envir=envir)
 }

@@ -4,7 +4,7 @@
 \alias{plan}
 \title{The plan used to resolve the future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE)
+plan(strategy = NULL, ..., substitute = TRUE, .call = sys.call())
 }
 \arguments{
 \item{strategy}{The evaluation function to use for resolving a future.
@@ -15,6 +15,8 @@ of the evaluation function.}
 
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
+
+\item{.call}{(internal) Used to record the call to this function.}
 }
 \value{
 If a new strategy is choosen, then the previous one is returned
