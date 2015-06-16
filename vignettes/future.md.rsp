@@ -143,7 +143,6 @@ It is possible to nest futures in multiple levels and each of the nested future 
 > d <- 42
 > d
 [1] 42
->
 > c
 Resolving 'c'
 Resolving 'a'
