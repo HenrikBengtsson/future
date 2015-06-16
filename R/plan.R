@@ -10,6 +10,7 @@
 #' of the evaluation function.
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
+#' @param .call (internal) Used to record the call to this function.
 #'
 #' @return If a new strategy is choosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
@@ -24,7 +25,7 @@
 plan <- local({
   .strategy <- eager
 
-  function(strategy=NULL, ..., substitute=TRUE) {
+  function(strategy=NULL, ..., substitute=TRUE, .call=sys.call()) {
     if (substitute) strategy <- substitute(strategy)
     args <- list(...)
 
@@ -69,7 +70,7 @@ plan <- local({
     }
 
     ## Record call
-    attr(strategy, "call") <- sys.call()
+    attr(strategy, "call") <- .call
 
     ## Set new strategy for futures
     .strategy <<- strategy
