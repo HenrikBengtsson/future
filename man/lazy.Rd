@@ -2,7 +2,7 @@
 % Please edit documentation in R/lazy.R
 \name{lazy}
 \alias{lazy}
-\title{A lazy future represents a future whose value will be resolved at the time when it is requested}
+\title{Create a lazy future whose value will be resolved at the time when requested}
 \usage{
 lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   local = TRUE, ...)
@@ -16,9 +16,9 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{If TRUE, global objects are resolved at the point of
-time when the future is created, otherwise they are resolved when
-the future is resolved.}
+\item{globals}{If TRUE, global objects are resolved ("frozen") at
+the point of time when the future is created, otherwise they are
+resolved when the future is resolved.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
@@ -36,23 +36,17 @@ value is requested}.  This means that the future will not be resolved
 if the value is never requested.
 }
 \details{
-Note that the "lazy future" strategy also applies to any global variables
-used in the expression, i.e. if the value of a global variables changes
-between the time point the lazy future was created and its acutally
-resolvement, then the value will be based on the most recent value of
-global variable (not the value at the time the future was created).
-This is a special "feature" due to the "lazy" (delayed) evaluation of
-this particular future.  Ideally, globals are resolved at the time when
-the future is created.  See example for an illustration of this.
-
-This function can be registered as the default \link{future} evaluator,
-i.e. \code{plan(lazy)}.
+The preferred way to create a lazy future is not to call this function
+directly, but to register it via \code{\link{plan}(lazy)} such that it
+becomes the default mechanism for all futures.  After this
+\code{\link{future}()} and \code{\link{\%<=\%}} will create
+\emph{lazy futures}.
 }
 \examples{
 ## A global variable
 a <- 0
 
-## Create lazy future
+## Create lazy future (explicitly)
 f <- lazy({
   b <- 3
   c <- 2

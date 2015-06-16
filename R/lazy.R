@@ -1,4 +1,4 @@
-#' A lazy future represents a future whose value will be resolved at the time when it is requested
+#' Create a lazy future whose value will be resolved at the time when requested
 #'
 #' A lazy future is a future that uses lazy evaluation, which means
 #' that its \emph{value is only computed and resolved at the time when the
@@ -13,9 +13,9 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param globals If TRUE, global objects are resolved at the point of
-#' time when the future is created, otherwise they are resolved when
-#' the future is resolved.
+#' @param globals If TRUE, global objects are resolved ("frozen") at
+#' the point of time when the future is created, otherwise they are
+#' resolved when the future is resolved.
 #' @param ... Not used.
 #'
 #' @return A \link{LazyFuture}.
@@ -23,17 +23,11 @@
 #' @example incl/lazy.R
 #'
 #' @details
-#' Note that the "lazy future" strategy also applies to any global variables
-#' used in the expression, i.e. if the value of a global variables changes
-#' between the time point the lazy future was created and its acutally
-#' resolvement, then the value will be based on the most recent value of
-#' global variable (not the value at the time the future was created).
-#' This is a special "feature" due to the "lazy" (delayed) evaluation of
-#' this particular future.  Ideally, globals are resolved at the time when
-#' the future is created.  See example for an illustration of this.
-#'
-#' This function can be registered as the default \link{future} evaluator,
-#' i.e. \code{plan(lazy)}.
+#' The preferred way to create a lazy future is not to call this function
+#' directly, but to register it via \code{\link{plan}(lazy)} such that it
+#' becomes the default mechanism for all futures.  After this
+#' \code{\link{future}()} and \code{\link{\%<=\%}} will create
+#' \emph{lazy futures}.
 #'
 #' @seealso Internally, \code{\link[base]{delayedAssign}()} is utilized to
 #' create a "\emph{\link[base]{promise}}", which hold the future's value.

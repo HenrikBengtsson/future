@@ -3,7 +3,7 @@
 \name{resolved.Future}
 \alias{resolved}
 \alias{resolved.Future}
-\title{Checks whether a future is resolved or not}
+\title{Check whether a future is resolved or not}
 \usage{
 \method{resolved}{Future}(future, ...)
 }
@@ -16,7 +16,7 @@
 TRUE if future is resolved and FALSE if unresolved.
 }
 \description{
-Checks whether a future is resolved or not
+Check whether a future is resolved or not
 }
 \details{
 This method needs to be implemented by the class that implement

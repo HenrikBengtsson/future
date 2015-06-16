@@ -275,7 +275,7 @@ source('http://callr.org/install#UCSF-CBC/future')
 ```
 
 
-## Software quality
+## Software status
 
 | Resource:     | GitHub        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |

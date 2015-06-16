@@ -2,7 +2,7 @@
 % Please edit documentation in R/plan.R
 \name{plan}
 \alias{plan}
-\title{The plan used to resolve the future}
+\title{Plan how to resolve a future}
 \usage{
 plan(strategy = NULL, ..., substitute = TRUE, .call = sys.call())
 }
@@ -71,5 +71,6 @@ str(list(a=a, b=b, c=c)) ## Assigned the new values
 \seealso{
 Evaluation functions provided by this package are
 \code{\link{eager}()} and \code{\link{lazy}()}.
+Other package may provide additional evaluation strategies/functions.
 }
 

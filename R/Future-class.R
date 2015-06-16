@@ -1,12 +1,11 @@
-#' A future represents a value which may become available in the future
+#' A future represents a value that will be available at some point in the future
 #'
 #' A \emph{future} is an abstraction for a \emph{value} that may
 #' available at some point in the future.  A future can either be
 #' \code{unresolved} or \code{resolved}, a state which can be checked
-#' with \code{resolved()}.  As long as it is \emph{unresolved}, the
+#' with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 #' value is not available.  As soon as it is \emph{resolved}, the value
-#' is available, which can take the form of an object of any data type
-#' or a \link[base]{condition}.
+#' is available via \code{\link{value}()}.
 #'
 #' @param object An R object of a class that implements the Future API.
 #' @param ... Not used.
@@ -17,9 +16,9 @@
 #' One function that creates a Future is \code{\link{future}()}.
 #' It returns a Future that evaluates an R expression in the future.
 #' An alternative approach is to use the \code{\link{\%<=\%}} infix
-#' operator, which asynchroneously evaluates an R expression and returns
-#' a \emph{\link[base]{promise}} to assign the value to a variable, if
-#' requested.
+#' assignment operator, which creates a future from the
+#' right-hand-side (RHS) R expression and assigns its future value
+#' to a variable as a \emph{\link[base]{promise}}.
 #'
 #' @export
 #' @name Future-class
@@ -30,7 +29,7 @@ Future <- function(object, ...) {
 
 
 
-#' Gets the value of a future
+#' The value of a future
 #'
 #' Gets the value of a future.  If the future is unresolved, then
 #' the evaluation blocks until the future is resolved.
@@ -59,7 +58,7 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
 value <- function(...) UseMethod("value")
 
 
-#' Checks whether a future is resolved or not
+#' Check whether a future is resolved or not
 #'
 #' @param future A \link{Future}.
 #' @param ... Not used

@@ -1,4 +1,4 @@
-#' The plan used to resolve the future
+#' Plan how to resolve a future
 #'
 #' This function allows you to plan the future, more specifically,
 #' it specifies how \code{\link{future}()}:s are resolved,
@@ -20,6 +20,7 @@
 #' @seealso
 #' Evaluation functions provided by this package are
 #' \code{\link{eager}()} and \code{\link{lazy}()}.
+#' Other package may provide additional evaluation strategies/functions.
 #'
 #' @export
 plan <- local({

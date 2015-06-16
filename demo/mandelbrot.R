@@ -10,6 +10,10 @@
 #'                   divergence (Mod(z) > tau).
 #'
 #' @return Returns an integer matrix of non-negative counts
+#'
+#' @author This \code{mandelbrot()} function was inspired by and
+#' adopted from similar GPL code of Martin Maechler (available
+#' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=200L, tau=2) {
   ## Validate arguments
   dx <- diff(xlim)

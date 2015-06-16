@@ -2,7 +2,7 @@
 % Please edit documentation in R/eager.R
 \name{eager}
 \alias{eager}
-\title{An eager future represents a future whose value will be resolved immediately}
+\title{Create an eager future whose value will be resolved immediately}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, local = TRUE, ...)
 }
@@ -22,24 +22,27 @@ the assignments are done in the calling environment.}
 \item{...}{Not used.}
 }
 \value{
-A \link{EagerFuture}.
+An \link{EagerFuture}.
 }
 \description{
-A eager future is a future that uses eager evaluation, which means
+An eager future is a future that uses eager evaluation, which means
 that its \emph{value is computed and resolved immediately}, which is
 how regular expressions are evaluated in R.  This type of future
 exists mainly for the purpose of troubleshooting code that fails
 with other types of futures.
 }
 \details{
-This function can be registered as the default \link{future} evaluator,
-i.e. \code{plan(future)}.
+The preferred way to create an eager future is not to call this function
+directly, but to register it via \code{\link{plan}(eager)} such that it
+becomes the default mechanism for all futures.  After this
+\code{\link{future}()} and \code{\link{\%<=\%}} will create
+\emph{eager futures}.
 }
 \examples{
 ## A global variable
 a <- 0
 
-## Create eager future
+## Create eager future (explicitly)
 f <- eager({
   b <- 3
   c <- 2

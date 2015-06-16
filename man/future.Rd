@@ -2,7 +2,7 @@
 % Please edit documentation in R/future.R
 \name{future}
 \alias{future}
-\title{Asynchroneously evaluates an expression whose value should be available at some point in the future}
+\title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, ...,
   evaluator = plan())
@@ -29,9 +29,10 @@ should accept all the same arguments as this function
 A \link{Future}.
 }
 \description{
-Asynchroneously evaluates an R expression and returns a future,
-which the can be inspected for being resolved or not and when
-resolved can have its value retrieved.
+Creates a future from an expression and returns it.
+The state of the future is either unresolved or resolved.
+When it becomes resolved, at some point in the future,
+its value can be retrieved.
 }
 \examples{
 plan(lazy)
@@ -51,6 +52,6 @@ print(y)
 It is recommended that the evaluator is \emph{non-blocking}
 (returns immediately), but it is not required.
 The default evaluator function is \code{\link{eager}()},
-but can be changed via \code{"plan"} function.
+but this can be changed via \code{\link{plan}()} function.
 }
 

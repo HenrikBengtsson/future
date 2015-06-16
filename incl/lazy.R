@@ -1,7 +1,7 @@
 ## A global variable
 a <- 0
 
-## Create lazy future
+## Create lazy future (explicitly)
 f <- lazy({
   b <- 3
   c <- 2

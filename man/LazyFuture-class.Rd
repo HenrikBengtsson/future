@@ -3,7 +3,7 @@
 \name{LazyFuture-class}
 \alias{LazyFuture}
 \alias{LazyFuture-class}
-\title{A lazy future represents a \link{Future} whose value will be resolved at the time when it is requested}
+\title{A lazy future is a future whose value will be resolved at the time when it is requested}
 \usage{
 LazyFuture(object = new.env(parent = emptyenv()), ...)
 }
@@ -16,10 +16,11 @@ LazyFuture(object = new.env(parent = emptyenv()), ...)
 An object of class \code{LazyFuture}.
 }
 \description{
-A lazy future represents a \link{Future} whose value will be resolved at the time when it is requested
+A lazy future is a future whose value will be resolved at the time when it is requested
 }
 \seealso{
 To evaluate an expression using "lazy future", see function
 \code{\link{lazy}()}.
 }
+\keyword{internal}
 
