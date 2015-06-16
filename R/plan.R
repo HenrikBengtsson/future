@@ -68,6 +68,9 @@ plan <- local({
       }
     }
 
+    ## Record call
+    attr(strategy, "call") <- sys.call()
+
     ## Set new strategy for futures
     .strategy <<- strategy
 
