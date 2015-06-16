@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.5.0 [2015-06-16]
+o Submitted to CRAN.
+
+
 Version: 0.4.3 [2015-06-16]
 o lazy() "freezes" global variables at the time when
   the future is created.  This way the result of a lazy
