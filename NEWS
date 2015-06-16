@@ -1,6 +1,14 @@
 Package: future
 ===============
 
+Version: 0.4.2-9000 [2015-06-15]
+o Now lazy() "freezes" global variables at the time when
+  the future is created.  This way the result of a lazy
+  future is much more likely to be the same as an eager 
+  future.  This is also how globals are likely to be
+  handled by asynchroneous futures.
+
+
 Version: 0.4.2 [2015-06-15]
 o Now plan() records the call.
 o Added demo("mandelbrot", package="future"), which can be

@@ -132,7 +132,6 @@ It is possible to nest futures in multiple levels and each of the nested future 
 > d <- 42
 > d
 [1] 42
->
 > c
 Resolving 'c'
 Resolving 'a'
@@ -244,6 +243,22 @@ Error: object 'x' not found
 The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  In other words, how global objects are identified and resolved will depend on what evaluation strategy is used.  Since both the eager and the lazy strategy implemented in this package evaluate futures synchronously in the current R session, there is no immediate need to identify globals and export them to the environment in which the future is evaluated.  In contrast, concurrent evaluation on a compute cluster would require that globals are exported to each compute node.  For instance, the future strategies implemented in the 'async' package, identify global objects (using the '[globals]' package) and make sure they are available when the future expression is evaluated.
 
 _Footnote_: (*) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended (and troubleshooting can sometimes be tricky).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to identify and export globals.  This may change in the future (yes, this pun was also intended).
+
+
+## Demos
+To see another illustration how the lazy and eager evaluations of futures differ, run the Mandelbrot demo of this package.  First try with the eager evaluation,
+```r
+library(future)
+plan(eager)
+demo("mandelbrot", package="future", ask=FALSE)
+```
+which closely immitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
+```r
+plan(lazy)
+demo("mandelbrot", package="future", ask=FALSE)
+```
+and see if you can notice the difference in how and when statements are evaluated.
+
 
 
 ## Contributing

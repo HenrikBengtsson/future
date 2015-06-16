@@ -4,7 +4,8 @@
 \alias{lazy}
 \title{A lazy future represents a future whose value will be resolved at the time when it is requested}
 \usage{
-lazy(expr, envir = parent.frame(), substitute = TRUE, local = TRUE, ...)
+lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -14,6 +15,10 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{If TRUE, global objects are resolved at the point of
+time when the future is created, otherwise they are resolved when
+the future is resolved.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
@@ -54,13 +59,18 @@ f <- lazy({
   a * b * c
 })
 
-## Since 'a' is a global variable in _lazy_ future 'f',
-## which still hasn't been resolved, any changes to
-## 'a' until 'f' is resolved, will affect its value.
+## Although 'f' is a _lazy_ future and therefore
+## resolved/evaluates the future expression only
+## when the value is requested, any global variables
+## identified in the expression (here 'a') are
+## "frozen" at the time point when the future is
+## created.  Because of this, 'a' preserved the
+## zero value although we reassign it below
 a <- 7
 v <- value(f)
 print(v)
-stopifnot(v == 42)
+stopifnot(v == 0)
+
 }
 \seealso{
 Internally, \code{\link[base]{delayedAssign}()} is utilized to

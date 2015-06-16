@@ -13,6 +13,9 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#' @param globals If TRUE, global objects are resolved at the point of
+#' time when the future is created, otherwise they are resolved when
+#' the future is resolved.
 #' @param ... Not used.
 #'
 #' @return A \link{LazyFuture}.
@@ -35,15 +38,55 @@
 #' @seealso Internally, \code{\link[base]{delayedAssign}()} is utilized to
 #' create a "\emph{\link[base]{promise}}", which hold the future's value.
 #'
+#' @importFrom globals globalsOf packagesOf cleanup
 #' @export
-lazy <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {
+lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-
-  ## Evaluate in local() environment?
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
+  globals <- as.logical(globals)
+  local <- as.logical(local)
+  if (!local && globals) {
+    stop("Argument 'globals' must be FALSE whenever 'local' is FALSE. Lazy future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time (globals=FALSE).")
   }
+
+
+  ## Evaluate in "local" environment?
+  if (local || globals) {
+    envir <- new.env(parent=envir)
+  }
+
+
+  ## Resolve futures at this point in time?
+  if (globals) {
+    globals <- globalsOf(expr, envir=envir, tweak=tweakExpression,
+                         primitive=FALSE, base=FALSE, unlist=TRUE)
+
+    if (length(globals) > 0L) {
+      ## Append packages associated with globals
+      pkgs <- packagesOf(globals)
+
+      ## Drop all globals which are already part of one of
+      ## the packages in 'pkgs'.  They will be available
+      ## when those packages are attached.
+      pkgsG <- sapply(globals, FUN=function(obj) {
+        environmentName(environment(obj))
+      })
+      keep <- !is.element(pkgsG, pkgs)
+      globals <- globals[keep]
+      pkgsG <- keep <- NULL ## Not needed anymore
+
+      ## Now drop globals that are primitive functions or
+      ## that are part of the base packages, which now are
+      ## part of 'pkgs' if needed.
+      globals <- cleanup(globals)
+    }
+
+    ## Inject global objects?
+    for (name in names(globals)) {
+      envir[[name]] <- globals[[name]]
+    }
+    globals <- NULL ## Not needed anymore
+  }
+
 
   future <- LazyFuture()
   delayedAssign("value", eval(expr, envir=envir), assign.env=future)

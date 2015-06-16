@@ -1,8 +1,9 @@
 Package: future
-Version: 0.4.2
+Version: 0.4.2-9000
 Title: The Future of R
 Imports:
-  listenv
+  listenv,
+  globals
 Suggests:
   R.rsp
 VignetteBuilder:
