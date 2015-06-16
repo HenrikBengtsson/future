@@ -1,8 +1,9 @@
-#' Asynchroneously evaluates an expression whose value should be available at some point in the future
+#' Create a future
 #'
-#' Asynchroneously evaluates an R expression and returns a future,
-#' which the can be inspected for being resolved or not and when
-#' resolved can have its value retrieved.
+#' Creates a future from an expression and returns it.
+#' The state of the future is either unresolved or resolved.
+#' When it becomes resolved, at some point in the future,
+#' its value can be retrieved.
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} from where global
@@ -26,7 +27,7 @@
 #' (returns immediately), but it is not required.
 #
 #' The default evaluator function is \code{\link{eager}()},
-#' but can be changed via \code{"plan"} function.
+#' but this can be changed via \code{\link{plan}()} function.
 #'
 #' @export
 #' @name future

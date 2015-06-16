@@ -3,7 +3,7 @@
 \name{value.Future}
 \alias{value}
 \alias{value.Future}
-\title{Gets the value of a future}
+\title{The value of a future}
 \usage{
 \method{value}{Future}(future, onError = c("signal", "return"), ...)
 }

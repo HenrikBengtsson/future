@@ -2,11 +2,21 @@
 % Please edit documentation in R/plan_OP.R
 \name{\%plan\%}
 \alias{\%plan\%}
-\title{Evaluate a future using a specific plan}
+\title{Use a specific plan for a future assignment}
 \usage{
-x %<=% { expr } %plan% strategy
+fassignment \%plan\% strategy
+}
+\arguments{
+\item{fassignment}{The future assignment, e.g.
+\code{x \%<=\% \{ expr \}}.}
+
+\item{strategy}{The mechanism for how the future should be
+       resolved. See \code{\link{plan}()} for further details.}
 }
 \description{
-Evaluate a future using a specific plan
+Use a specific plan for a future assignment
+}
+\seealso{
+The \code{\link{plan}()} function sets the default plan for all futures.
 }
 

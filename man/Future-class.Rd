@@ -3,7 +3,7 @@
 \name{Future-class}
 \alias{Future}
 \alias{Future-class}
-\title{A future represents a value which may become available in the future}
+\title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(object, ...)
 }
@@ -19,17 +19,16 @@ An object of class \code{Future}.
 A \emph{future} is an abstraction for a \emph{value} that may
 available at some point in the future.  A future can either be
 \code{unresolved} or \code{resolved}, a state which can be checked
-with \code{resolved()}.  As long as it is \emph{unresolved}, the
+with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 value is not available.  As soon as it is \emph{resolved}, the value
-is available, which can take the form of an object of any data type
-or a \link[base]{condition}.
+is available via \code{\link{value}()}.
 }
 \seealso{
 One function that creates a Future is \code{\link{future}()}.
 It returns a Future that evaluates an R expression in the future.
 An alternative approach is to use the \code{\link{\%<=\%}} infix
-operator, which asynchroneously evaluates an R expression and returns
-a \emph{\link[base]{promise}} to assign the value to a variable, if
-requested.
+assignment operator, which creates a future from the
+right-hand-side (RHS) R expression and assigns its future value
+to a variable as a \emph{\link[base]{promise}}.
 }
 

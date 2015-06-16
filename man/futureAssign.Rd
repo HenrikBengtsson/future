@@ -4,7 +4,7 @@
 \alias{\%<=\%}
 \alias{\%=>\%}
 \alias{futureAssign}
-\title{Future evaluation and assignment}
+\title{Create a future and assign its value to a variable as a promise}
 \usage{
 futureAssign(name, value, envir = parent.frame(), assign.env = envir,
   substitute = TRUE)
@@ -12,7 +12,7 @@ futureAssign(name, value, envir = parent.frame(), assign.env = envir,
 \arguments{
 \item{name}{the name of the variable (and the future) to assign.}
 
-\item{value}{the R expression to be evaluated in the future and
+\item{value}{the expression to be evaluated in the future and
 whose value will be assigned to the variable.}
 
 \item{envir}{The environment from which global variables used by
@@ -28,12 +28,18 @@ be assigned.}
 A \link{Future} invisibly.
 }
 \description{
-Method and infix operators for future assignments of the value
-of an expression which is evaluated in the future.
+Method and infix operators for creating futures and assigning
+their values as variables using \link[base]{promise}s.  Trying
+to access such a "future variable" will correspond to requesting
+the value of the underlying future.  If the the future is already
+resolved at this time, then the value will be available
+instantaneously and the future variable will appear as any other
+variable.  If the future is unresolved, then the current process
+will block until the future is resolved and the value is available.
 }
 \details{
 This function creates a future and a corresponding
-"\emph{\link[base]{promise}}", which hold the future's value.
+\emph{\link[base]{promise}}, which hold the future's value.
 Both the future and the promise are assigned to environment
 \code{assign.env}.  The name of the promise is given by \code{name}
 and the name of the future is \code{.future_<name>}.

@@ -1,6 +1,6 @@
-#' An eager future represents a future whose value will be resolved immediately
+#' Create an eager future whose value will be resolved immediately
 #'
-#' A eager future is a future that uses eager evaluation, which means
+#' An eager future is a future that uses eager evaluation, which means
 #' that its \emph{value is computed and resolved immediately}, which is
 #' how regular expressions are evaluated in R.  This type of future
 #' exists mainly for the purpose of troubleshooting code that fails
@@ -16,13 +16,16 @@
 #' the assignments are done in the calling environment.
 #' @param ... Not used.
 #'
-#' @return A \link{EagerFuture}.
+#' @return An \link{EagerFuture}.
 #'
 #' @example incl/eager.R
 #'
 #' @details
-#' This function can be registered as the default \link{future} evaluator,
-#' i.e. \code{plan(future)}.
+#' The preferred way to create an eager future is not to call this function
+#' directly, but to register it via \code{\link{plan}(eager)} such that it
+#' becomes the default mechanism for all futures.  After this
+#' \code{\link{future}()} and \code{\link{\%<=\%}} will create
+#' \emph{eager futures}.
 #'
 #' @export
 eager <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {

@@ -23,7 +23,8 @@ A \link{Future} (or NA).  If \code{var} is NULL, then a
 named list of Future:s are returned.
 }
 \description{
-Get the future of a future variable
+Get the future of a future variable that has been created directly
+or indirectly via \code{\link{future}()}.
 }
 \examples{
 a \%<=\% { 1 }

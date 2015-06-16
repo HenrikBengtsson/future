@@ -1,10 +1,16 @@
-#' Future evaluation and assignment
+#' Create a future and assign its value to a variable as a promise
 #'
-#' Method and infix operators for future assignments of the value
-#' of an expression which is evaluated in the future.
+#' Method and infix operators for creating futures and assigning
+#' their values as variables using \link[base]{promise}s.  Trying
+#' to access such a "future variable" will correspond to requesting
+#' the value of the underlying future.  If the the future is already
+#' resolved at this time, then the value will be available
+#' instantaneously and the future variable will appear as any other
+#' variable.  If the future is unresolved, then the current process
+#' will block until the future is resolved and the value is available.
 #'
 #' @param name the name of the variable (and the future) to assign.
-#' @param value the R expression to be evaluated in the future and
+#' @param value the expression to be evaluated in the future and
 #' whose value will be assigned to the variable.
 #' @param envir The environment from which global variables used by
 #' the expression should be search for.
@@ -19,7 +25,7 @@
 #'
 #' @details
 #' This function creates a future and a corresponding
-#' "\emph{\link[base]{promise}}", which hold the future's value.
+#' \emph{\link[base]{promise}}, which hold the future's value.
 #' Both the future and the promise are assigned to environment
 #' \code{assign.env}.  The name of the promise is given by \code{name}
 #' and the name of the future is \code{.future_<name>}.
@@ -29,7 +35,6 @@
 #' The \code{\link{futureOf}()} function can be used to get the
 #' Future object of a future variable.
 #'
-#' @aliases %<=% %=>%
 #' @aliases %<=% %=>%
 #' @export
 #' @export %<=% %=>%

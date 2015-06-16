@@ -1,7 +1,7 @@
 ## A global variable
 a <- 0
 
-## Create eager future
+## Create eager future (explicitly)
 f <- eager({
   b <- 3
   c <- 2

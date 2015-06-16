@@ -1,4 +1,4 @@
-#' A lazy future represents a \link{Future} whose value will be resolved at the time when it is requested
+#' A lazy future is a future whose value will be resolved at the time when it is requested
 #'
 #' @param object An R \link[base]{environment}.
 #' @param ... Not used.
@@ -11,6 +11,7 @@
 #'
 #' @export
 #' @name LazyFuture-class
+#' @keywords internal
 LazyFuture <- function(object=new.env(parent=emptyenv()), ...) {
   if (!is.environment(object)) {
     stop(sprintf("Argument 'object' is not an environment: ", class(object)))

@@ -12,11 +12,11 @@ f <- future({
   c <- 2
   a * b * c
 })
-a <- 7
-if ("covr" %in% loadedNamespaces()) v <- 42 else ## WORKAROUND
+a <- 7  ## Make sure globals are frozen
+if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
 v <- value(f)
 print(v)
-stopifnot(v == 42)
+stopifnot(v == 0)
 
 
 message("*** plan(eager)")

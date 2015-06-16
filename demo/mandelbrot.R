@@ -1,6 +1,6 @@
 #' Mandelbrot convergence counts
 #'
-#' @param xlim,ylim  Range of values for which convergence counts
+#' @param xlim,ylim  The complex plane for which convergence counts
 #'                   should be calculated.
 #' @param resolution Number of bins along the real axis.  The number
 #'                   of bins along the imaginary axis will be such
@@ -10,6 +10,10 @@
 #'                   divergence (Mod(z) > tau).
 #'
 #' @return Returns an integer matrix of non-negative counts
+#'
+#' @author This \code{mandelbrot()} function was inspired by and
+#' adopted from similar GPL code of Martin Maechler (available
+#' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=200L, tau=2) {
   ## Validate arguments
   dx <- diff(xlim)
@@ -79,31 +83,32 @@ library("future")
 library("listenv")
 
 center <- c(0.282989, -0.010)
-sizes <- c(2, 0.2, 0.02, 0.002, 0.0002, 0.00002, 0.000002)
+sizes <- 2 * 10^-(0:8)
 
 counts <- listenv()
 for (ii in seq_along(sizes)) {
-  cat(sprintf("Calculating set #%d of %d...\n", ii, length(sizes)))
+  cat(sprintf("Mandelbrot plane #%d of %d ...\n", ii, length(sizes)))
   size <- sizes[ii]
   counts[[ii]] %<=% {
+    cat("Calculating ...")
     xlim <- center[1] + size/2 * c(-1,1)
     ylim <- center[2] + size/2 * c(-1,1)
-    mandelbrot(xlim=xlim, ylim=ylim)
+    fit <- mandelbrot(xlim=xlim, ylim=ylim)
+    cat("\n")
+    fit
   }
 }
 
 ## Plot
+oopts <- options(preferRaster=TRUE) ## Faster plotting, iff supported
+layout(matrix(1:9, nrow=3L, ncol=3L, byrow=TRUE))
+opar <- par(mar=c(0,0,0,0))
 for (ii in seq_along(counts)) {
-  cat(sprintf("Plotting set #%d of %d...\n", ii, length(sizes)))
-  opar <- par(mar=c(0,0,0,0), ask=TRUE)
+  cat(sprintf("Plotting plane #%d of %d ...\n", ii, length(sizes)))
   image(counts[[ii]], axes=FALSE)
-  par(opar)
+  box(lwd=3)
 }
+par(opar)
+options(oopts)
 
-
-### FIXME: Note that plan(lazy) will use the most recent set of
-### global variables.  This is actually a good argument for that
-### the 'future' package should also handle globals, i.e. it
-### should "freeze" the globals when the 'lazy future' is created
-### and not when it is resolved. /HB 2015-06-15
-### message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
+message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")

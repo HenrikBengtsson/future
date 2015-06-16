@@ -3,7 +3,7 @@
 \name{EagerFuture-class}
 \alias{EagerFuture}
 \alias{EagerFuture-class}
-\title{A eager future represents a \link{Future} whose value will be resolved immediately}
+\title{An eager future is a future whose value will be resolved immediately}
 \usage{
 EagerFuture(object = new.env(parent = emptyenv()), ...)
 }
@@ -16,10 +16,11 @@ EagerFuture(object = new.env(parent = emptyenv()), ...)
 An object of class \code{EagerFuture}.
 }
 \description{
-A eager future represents a \link{Future} whose value will be resolved immediately
+An eager future is a future whose value will be resolved immediately
 }
 \seealso{
 To evaluate an expression using "eager future", see function
 \code{\link{eager}()}.
 }
+\keyword{internal}
 
