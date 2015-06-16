@@ -96,6 +96,7 @@ for (ii in seq_along(sizes)) {
 }
 
 ## Plot
+oopts <- options(preferRaster=TRUE) ## Faster plotting, iff supported
 layout(matrix(1:9, nrow=3L, ncol=3L, byrow=TRUE))
 opar <- par(mar=c(0,0,0,0))
 for (ii in seq_along(counts)) {
@@ -104,6 +105,6 @@ for (ii in seq_along(counts)) {
   box(lwd=3)
 }
 par(opar)
-
+options(oopts)
 
 message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
