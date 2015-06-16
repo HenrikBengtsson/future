@@ -106,4 +106,4 @@ for (ii in seq_along(counts)) {
 ### the 'future' package should also handle globals, i.e. it
 ### should "freeze" the globals when the 'lazy future' is created
 ### and not when it is resolved. /HB 2015-06-15
-### message("SUGGESTION: Try to rerun this demo using after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
+### message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
