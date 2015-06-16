@@ -4,6 +4,11 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
+## BACKWARD COMPATIBILITY
+if (getRversion() < "3.2.0") {
+  names <- function(x) if (is.environment(x)) ls(envir=x) else base::names(x)
+}
+
 message("*** %<=% to environment ...")
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - -
