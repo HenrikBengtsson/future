@@ -1,6 +1,6 @@
 Package: future
 Version: 0.5.0
-Title: The Future of R
+Title: A Future for R
 Imports:
   listenv,
   globals
