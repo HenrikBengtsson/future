@@ -26,6 +26,11 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
+Not all systems support multicore futures.  For instance,
+it is not supported on Microsoft Windows.  Use
+\code{\link{supportsMulticore}()} to check whether multicore
+futures are supported or not.
+
 The preferred way to create an multicore future is not to call this function
 directly, but to register it via \code{\link{plan}(multicore)} such that it
 becomes the default mechanism for all futures.  After this
@@ -33,24 +38,31 @@ becomes the default mechanism for all futures.  After this
 \emph{multicore futures}.
 }
 \examples{
-## A global variable
-a <- 0
+if (supportsMulticore()) {
+  ## A global variable
+  a <- 0
 
-## Create lazy future (explicitly)
-f <- multicore({
-  b <- 3
-  c <- 2
-  a * b * c
-})
+  ## Create multicore future (explicitly)
+  f <- multicore({
+    b <- 3
+    c <- 2
+    a * b * c
+  })
 
-## A multicore future is evaluated in a separated
-## forked process.  Changing the value of a global
-## variable should not affect the result of the
-## future.
-a <- 7
-v <- value(f)
-print(v)
-stopifnot(v == 0)
+  ## A multicore future is evaluated in a separated
+  ## forked process.  Changing the value of a global
+  ## variable should not affect the result of the
+  ## future.
+  a <- 7
+  v <- value(f)
+  print(v)
+  stopifnot(v == 0)
+}
 
+
+}
+\seealso{
+\code{\link{supportsMulticore}()} to check whether multicore
+futures are supported or not.
 }
 

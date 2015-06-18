@@ -7,61 +7,64 @@ plan(multicore)
 
 message("*** multicore() ...")
 
-message("*** multicore() without globals")
+if (supportsMulticore()) {
+  message("*** multicore() without globals")
 
-f <- multicore({
-  42L
-})
-stopifnot(inherits(f, "MulticoreFuture"))
+  f <- multicore({
+    42L
+  })
+  stopifnot(inherits(f, "MulticoreFuture"))
 
-print(resolved(f))
-y <- value(f)
-print(y)
-stopifnot(y == 42L)
-
-
-message("*** multicore() with globals")
-## A global variable
-a <- 0
-f <- multicore({
-  b <- 3
-  c <- 2
-  a * b * c
-})
-print(f)
-
-## A multicore future is evaluated in a separated
-## forked process.  Changing the value of a global
-## variable should not affect the result of the
-## future.
-a <- 7  ## Make sure globals are frozen
-if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
-v <- value(f)
-print(v)
-stopifnot(v == 0)
+  print(resolved(f))
+  y <- value(f)
+  print(y)
+  stopifnot(y == 42L)
 
 
-message("*** multicore() with globals")
-x <- listenv()
-for (ii in 1:5) x[[ii]] <- multicore({ ii })
-v <- sapply(x, FUN=value)
-stopifnot(all(v == 1:5))
+  message("*** multicore() with globals")
+  ## A global variable
+  a <- 0
+  f <- multicore({
+    b <- 3
+    c <- 2
+    a * b * c
+  })
+  print(f)
+
+  ## A multicore future is evaluated in a separated
+  ## forked process.  Changing the value of a global
+  ## variable should not affect the result of the
+  ## future.
+  a <- 7  ## Make sure globals are frozen
+  if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
+  v <- value(f)
+  print(v)
+  stopifnot(v == 0)
 
 
-message("*** multicore() and errors")
-f <- multicore({
-  stop("Whoops!")
-  1
-})
-print(f)
-v <- value(f, onError="return")
-print(v)
-stopifnot(inherits(v, "simpleError"))
+  message("*** multicore() with globals")
+  x <- listenv()
+  for (ii in 1:5) x[[ii]] <- multicore({ ii })
+  v <- sapply(x, FUN=value)
+  stopifnot(all(v == 1:5))
 
-res <- try({ v <- value(f) }, silent=TRUE)
-print(res)
-stopifnot(inherits(res, "try-error"))
 
+  message("*** multicore() and errors")
+  f <- multicore({
+    stop("Whoops!")
+    1
+  })
+  print(f)
+  v <- value(f, onError="return")
+  print(v)
+  stopifnot(inherits(v, "simpleError"))
+
+  res <- try({ v <- value(f) }, silent=TRUE)
+  print(res)
+  stopifnot(inherits(res, "try-error"))
+} else {
+  message("Multicore futures are not supporting on this system: ", .Platform$OS)
+}
 
 message("*** multicore() ... DONE")
 
