@@ -1,7 +1,14 @@
 #' An eager future is a future whose value will be resolved immediately
 #'
-#' @param object An R \link[base]{environment}.
-#' @param ... Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done in the calling environment.
+#' @param ... Additional named elements of the future.
 #'
 #' @return An object of class \code{EagerFuture}.
 #'
@@ -12,11 +19,14 @@
 #' @export
 #' @name EagerFuture-class
 #' @keywords internal
-EagerFuture <- function(object=new.env(parent=emptyenv()), ...) {
-  if (!is.environment(object)) {
-    stop(sprintf("Argument 'object' is not an environment: ", class(object)))
+EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
+  if (substitute) expr <- substitute(expr)
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
   }
-  Future(structure(object, class=c("EagerFuture", class(object))))
+  f <- Future(expr=expr, envir=envir, local=local, ...)
+  structure(f, class=c("EagerFuture", class(f)))
 }
 
 

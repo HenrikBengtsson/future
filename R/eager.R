@@ -35,7 +35,7 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) 
     expr <- substitute(local(a), list(a=expr))
   }
 
-  future <- EagerFuture()
+  future <- EagerFuture(expr=expr, envir=envir, local=local)
   assign("value", eval(expr, envir=envir), envir=future, inherits=FALSE)
 
   future

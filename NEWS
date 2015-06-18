@@ -1,8 +1,14 @@
 Package: future
 ===============
 
+Version: 0.5.0-9000 [2015-06-18]
+o All Future objects are environments themselves that record
+  the expression, the call environment and optional variables.
+
+
 Version: 0.5.0 [2015-06-16]
-o Submitted to CRAN (never released due to ambigous title).
+o Submitted to CRAN (never released due to ambiguous title;
+  in the meanwhile I went ahead with the above).
 
 
 Version: 0.4.3 [2015-06-16]
