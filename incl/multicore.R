@@ -1,7 +1,7 @@
 ## A global variable
 a <- 0
 
-## Create lazy future (explicitly)
+## Create multicore future (explicitly)
 f <- multicore({
   b <- 3
   c <- 2

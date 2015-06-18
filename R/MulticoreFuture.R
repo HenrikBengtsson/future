@@ -16,7 +16,7 @@ MulticoreFuture <- function(object=new.env(parent=emptyenv()), expr, envir=paren
   if (!is.environment(object)) {
     stop(sprintf("Argument 'object' is not an environment: ", class(object)))
   }
-  
+
   if (substitute) expr <- substitute(expr)
   if (!is.environment(envir)) {
     stop(sprintf("Argument 'envir' is not an environment: ", class(object)))
@@ -33,7 +33,7 @@ importMulticore <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
     stop("Multicore processing is not supported on this system: ",
-         sQuote(.Platform$OS))
+         sQuote(.Platform$OS), call.=FALSE)
   }
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
@@ -49,7 +49,7 @@ run.MulticoreFuture <- function(future, ...) {
 
   job <- eval(call, envir=envir)
   future$job <- job
-  
+
   invisible(future)
 }
 
@@ -57,7 +57,7 @@ run.MulticoreFuture <- function(future, ...) {
 resolved.MulticoreFuture <- function(future, timeout=0.2, ...) {
   ## Is value already collected?
   if (exists("value", envir=future, inherits=TRUE)) return(TRUE)
-  
+
   selectChildren <- importMulticore("selectChildren")
   job <- future$job
   stopifnot(inherits(job, "parallelJob"))
@@ -94,6 +94,6 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
   if (onError == "signal" && isTRUE(future$errored)) {
     signalCondition(future$value)
   }
-  
+
   future$value
 }
