@@ -5,6 +5,7 @@ Imports:
   listenv,
   globals
 Suggests:
+  parallel,
   R.rsp
 VignetteBuilder:
   R.rsp

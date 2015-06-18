@@ -1,6 +1,12 @@
 Package: future
 ===============
 
+Version: 0.5.0-9000 [2015-06-17]
+o Add multicore futures, which are futures that are resolved
+  asynchronously in a separate process.  These are only
+  supported on Unix-like systems, i.e. not on Windows.
+
+
 Version: 0.5.0 [2015-06-16]
 o Submitted to CRAN.
 
