@@ -1,15 +1,4 @@
-<%@meta language="R-vignette" content="--------------------------------
-%\VignetteIndexEntry{A Future for R}
-%\VignetteAuthor{Henrik Bengtsson}
-%\VignetteKeyword{R}
-%\VignetteKeyword{package}
-%\VignetteKeyword{vignette}
-%\VignetteKeyword{future}
-%\VignetteKeyword{promise}
-%\VignetteEngine{R.rsp::rsp}
-%\VignetteTangle{FALSE}
---------------------------------------------------------------------"%>
-# <%@meta name="title"%>
+# future: A Future API for R
 
 ## Introduction
 In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another approach is an "eager" strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
@@ -263,5 +252,18 @@ The goal of this package is to provide a standardized and unified API for using 
 [globals]: http://cran.r-project.org/package=globals
 [async]: https://github.com/HenrikBengtsson/async/
 
----
-Copyright Henrik Bengtsson, 2015
+
+## Installation
+R package future is only available via [GitHub](https://github.com/HenrikBengtsson/future) and can be installed in R as:
+```r
+source('http://callr.org/install#HenrikBengtsson/future')
+```
+
+
+## Software status
+
+| Resource:     | GitHub        | Travis CI     | Appveyor         |
+| ------------- | ------------------- | ------------- | ---------------- |
+| _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
+| R CMD check   |  | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| Test coverage |                     | <a href="https://coveralls.io/r/HenrikBengtsson/future"><img src="https://coveralls.io/repos/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |

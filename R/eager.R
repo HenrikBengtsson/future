@@ -30,13 +30,7 @@
 #' @export
 eager <- function(expr, envir=parent.frame(), substitute=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
-  }
 
-  future <- EagerFuture()
-  assign("value", eval(expr, envir=envir), envir=future, inherits=FALSE)
-
-  future
+  future <- EagerFuture(expr=expr, envir=envir, local=local)
+  evaluate(future)
 }

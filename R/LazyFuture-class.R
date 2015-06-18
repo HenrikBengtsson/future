@@ -1,7 +1,14 @@
 #' A lazy future is a future whose value will be resolved at the time when it is requested
 #'
-#' @param object An R \link[base]{environment}.
-#' @param ... Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done in the calling environment.
+#' @param ... Additional named elements of the future.
 #'
 #' @return An object of class \code{LazyFuture}.
 #'
@@ -12,30 +19,29 @@
 #' @export
 #' @name LazyFuture-class
 #' @keywords internal
-LazyFuture <- function(object=new.env(parent=emptyenv()), ...) {
-  if (!is.environment(object)) {
-    stop(sprintf("Argument 'object' is not an environment: ", class(object)))
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
+  if (substitute) expr <- substitute(expr)
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
   }
-  Future(structure(object, class=c("LazyFuture", class(object))))
+  f <- Future(expr=expr, envir=envir, local=local, ...)
+  structure(f, class=c("LazyFuture", class(f)))
 }
+
+
+evaluate.LazyFuture <- evaluate.EagerFuture
 
 
 #' @export
 value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
   onError <- match.arg(onError)
 
-  if (onError == "signal") {
-    value <- suppressWarnings({
-      get("value", envir=future, inherits=FALSE)
-    })
-  } else {
-    value <- tryCatch({
-      suppressWarnings({
-        get("value", envir=future, inherits=FALSE)
-      })
-    }, simpleError = function(ex) {
-      ex
-    })
+  future <- evaluate(future, skip=TRUE)
+
+  value <- future$value
+  if (isTRUE(future$errored) && onError == "signal") {
+    stop(value)
   }
 
   value
@@ -43,6 +49,5 @@ value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
 
 #' @export
 resolved.LazyFuture <- function(future, ...) {
-  value(future, onError="return")
-  TRUE
+  exists("value", envir=future, inherits=FALSE)
 }

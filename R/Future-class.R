@@ -7,10 +7,17 @@
 #' value is not available.  As soon as it is \emph{resolved}, the value
 #' is available via \code{\link{value}()}.
 #'
-#' @param object An R object of a class that implements the Future API.
-#' @param ... Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param ... Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
+#'
+#' @details
+#' A Future object is itself an \link{environment}.
 #'
 #' @seealso
 #' One function that creates a Future is \code{\link{future}()}.
@@ -22,11 +29,19 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(object, ...) {
-  structure(object, class=c(class(object), "Future"))
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+  if (substitute) expr <- substitute(expr)
+  args <- list(...)
+
+  core <- new.env(parent=emptyenv())
+  core$expr <- expr
+  core$envir <- envir
+
+  ## Additional named arguments
+  for (key in names(args)) core[[key]] <- args[[key]]
+
+  structure(core, class=c("Future", class(core)))
 }
-
-
 
 
 #' The value of a future
