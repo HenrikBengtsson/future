@@ -2,7 +2,7 @@
 % Please edit documentation in R/multicore.R
 \name{multicore}
 \alias{multicore}
-\title{Create an multicore future whose value will be resolved asynchroneously in a parallel process}
+\title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE, ...)
 }
@@ -18,48 +18,47 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{...}{Not used.}
 }
 \value{
-An \link{MulticoreFuture}.
+A \link{MulticoreFuture} (or a \link{LazyFuture}
+if multicore futures are not supported).
 }
 \description{
-An multicore future is a future that uses multicore evaluation,
+A multicore future is a future that uses multicore evaluation,
 which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
 Not all systems support multicore futures.  For instance,
-it is not supported on Microsoft Windows.  Use
-\code{\link{supportsMulticore}()} to check whether multicore
-futures are supported or not.
+it is not supported on Microsoft Windows.  Trying to create
+multicore futures on non-supported systems will silently
+fall back to using \link{lazy} futures, which effectively
+corresponds to a multicore future that can handle one parallel
+process (the current one) before blocking.
 
-The preferred way to create an multicore future is not to call this function
-directly, but to register it via \code{\link{plan}(multicore)} such that it
-becomes the default mechanism for all futures.  After this
-\code{\link{future}()} and \code{\link{\%<=\%}} will create
-\emph{multicore futures}.
+The preferred way to create an multicore future is not to call
+this function directly, but to register it via
+\code{\link{plan}(multicore)} such that it becomes the default
+mechanism for all futures.  After this \code{\link{future}()}
+and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 }
 \examples{
-if (supportsMulticore()) {
-  ## A global variable
-  a <- 0
+## A global variable
+a <- 0
 
-  ## Create multicore future (explicitly)
-  f <- multicore({
-    b <- 3
-    c <- 2
-    a * b * c
-  })
+## Create multicore future (explicitly)
+f <- multicore({
+  b <- 3
+  c <- 2
+  a * b * c
+})
 
-  ## A multicore future is evaluated in a separated
-  ## forked process.  Changing the value of a global
-  ## variable should not affect the result of the
-  ## future.
-  a <- 7
-  v <- value(f)
-  print(v)
-  stopifnot(v == 0)
-}
-
-
+## A multicore future is evaluated in a separated
+## forked process.  Changing the value of a global
+## variable should not affect the result of the
+## future.
+a <- 7
+v <- value(f)
+print(v)
+stopifnot(v == 0)
 }
 \seealso{
 \code{\link{supportsMulticore}()} to check whether multicore

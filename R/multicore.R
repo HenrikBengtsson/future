@@ -1,6 +1,6 @@
-#' Create an multicore future whose value will be resolved asynchroneously in a parallel process
+#' Create a multicore future whose value will be resolved asynchroneously in a parallel process
 #'
-#' An multicore future is a future that uses multicore evaluation,
+#' A multicore future is a future that uses multicore evaluation,
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
@@ -11,21 +11,24 @@
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param ... Not used.
 #'
-#' @return An \link{MulticoreFuture}.
+#' @return A \link{MulticoreFuture} (or a \link{LazyFuture}
+#' if multicore futures are not supported).
 #'
 #' @example incl/multicore.R
 #'
 #' @details
 #' Not all systems support multicore futures.  For instance,
-#' it is not supported on Microsoft Windows.  Use
-#' \code{\link{supportsMulticore}()} to check whether multicore
-#' futures are supported or not.
+#' it is not supported on Microsoft Windows.  Trying to create
+#' multicore futures on non-supported systems will silently
+#' fall back to using \link{lazy} futures, which effectively
+#' corresponds to a multicore future that can handle one parallel
+#' process (the current one) before blocking.
 #'
-#' The preferred way to create an multicore future is not to call this function
-#' directly, but to register it via \code{\link{plan}(multicore)} such that it
-#' becomes the default mechanism for all futures.  After this
-#' \code{\link{future}()} and \code{\link{\%<=\%}} will create
-#' \emph{multicore futures}.
+#' The preferred way to create an multicore future is not to call
+#' this function directly, but to register it via
+#' \code{\link{plan}(multicore)} such that it becomes the default
+#' mechanism for all futures.  After this \code{\link{future}()}
+#' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
 #' \code{\link{supportsMulticore}()} to check whether multicore
@@ -34,6 +37,13 @@
 #' @export
 multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
+
+  ## Fall back to lazy futures, iff multicore is not suported
+  if (!supportsMulticore()) {
+    ## covr: skip=1
+    return(lazy(expr, envir=envir, substitute=FALSE, local=TRUE))
+  }
+
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
   future <- run(future)
   future
@@ -52,8 +62,15 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
 #' To use multicore futures, use \code{\link{plan}(\link{multicore})}.
 #'
 #' @export
-supportsMulticore <- function() {
-  ns <- getNamespace("parallel")
-  exists("mcparallel", mode="function", envir=ns, inherits=FALSE)
-}
+supportsMulticore <- local({
+  supported <- NA
+  function() {
+    if (is.na(supported)) {
+      ns <- getNamespace("parallel")
+      supported <<- exists("mcparallel", mode="function", envir=ns, inherits=FALSE)
+    }
+    supported
+  }
+})
+
 
