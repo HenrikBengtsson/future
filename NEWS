@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.5.0-9000 [2015-06-18]
+Version: 0.5.1 [2015-06-18]
 o Eager and lazy futures now records the result internally
   such that the expression is only evaluated once, even if
   their errored values are requested multiple times.
