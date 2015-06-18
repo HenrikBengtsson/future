@@ -32,7 +32,9 @@ MulticoreFuture <- function(object=new.env(parent=emptyenv()), expr, envir=paren
 importMulticore <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    stop("Multicore processing is not supported on this system: ", sQuote(.Platform$OS), call.=FALSE)
+    ## covr: skip=2
+    stop("Multicore processing is not supported on this system: ",
+         sQuote(.Platform$OS), call.=FALSE)
   }
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
