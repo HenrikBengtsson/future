@@ -218,23 +218,8 @@ Exception handling of future assignments via `%<=%` works analogously, e.g.
 Error in eval(expr, envir, enclos) : Whoops!
 > x
 Error in eval(expr, envir, enclos) : Whoops!
-In addition: Warning message:
-restarting interrupted promise evaluation
 ```
-That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
-The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exist.  For example,
-```r
-> plan(eager)
-> x %<=% ({
-+   a <- 3.14
-+   stop("Whoops!")
-+   42
-+ })
-Error in eval(expr, envir, enclos) : Whoops!
-> x
-Error: object 'x' not found
-```
 
 ## Globals
 The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
