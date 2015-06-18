@@ -30,22 +30,18 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=
 }
 
 
+evaluate.LazyFuture <- evaluate.EagerFuture
+
+
 #' @export
 value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
   onError <- match.arg(onError)
 
-  if (onError == "signal") {
-    value <- suppressWarnings({
-      get("value", envir=future, inherits=FALSE)
-    })
-  } else {
-    value <- tryCatch({
-      suppressWarnings({
-        get("value", envir=future, inherits=FALSE)
-      })
-    }, simpleError = function(ex) {
-      ex
-    })
+  future <- evaluate(future, skip=TRUE)
+
+  value <- future$value
+  if (isTRUE(future$errored) && onError == "signal") {
+    signalCondition(value)
   }
 
   value

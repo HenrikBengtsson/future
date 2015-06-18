@@ -81,9 +81,5 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
     globals <- NULL ## Not needed anymore
   }
 
-
-  future <- LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
-  delayedAssign("value", eval(expr, envir=envir), assign.env=future)
-
-  future
+  LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
 }

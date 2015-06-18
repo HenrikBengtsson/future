@@ -29,16 +29,31 @@ EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local
   structure(f, class=c("EagerFuture", class(f)))
 }
 
+evaluate <- function(...) UseMethod("evaluate")
+
+evaluate.EagerFuture <- function(future, skip=TRUE, ...) {
+ if (!skip || !exists("value", envir=future, inherits=FALSE)) {
+   tryCatch({
+     future$value <- eval(future$expr, envir=future$envir)
+     future$errored <- FALSE
+   }, simpleError = function(ex) {
+     future$errored <- TRUE
+     future$value <- ex
+   })
+ }
+ invisible(future)
+}
+
 
 #' @export
-value.EagerFuture <- function(future, ...) {
-  ## NOTE: Because the expression of an eager future is evaluated
-  ##       at the same time the future is created (and before it is
-  ##       returned), the returned future will:
-  ##       (a) always be resolved, and
-  ##       (b) it's value can never throw an error (because then the
-  ##           future would never have created in the first place)
-  get("value", envir=future, inherits=FALSE)
+value.EagerFuture <- function(future, onError=c("signal", "return"), ...) {
+  onError <- match.arg(onError)
+
+  value <- future$value
+  if (future$errored && onError == "signal") {
+    signalCondition(value)
+  }
+  value
 }
 
 
