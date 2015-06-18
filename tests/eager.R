@@ -14,6 +14,8 @@ f <- eager({
 stopifnot(inherits(f, "EagerFuture"))
 
 print(resolved(f))
+stopifnot(resolved(f))
+
 y <- value(f)
 print(y)
 stopifnot(y == 42L)
@@ -46,6 +48,11 @@ f <- eager({
 print(f)
 stopifnot(inherits(f, "EagerFuture"))
 
+res <- try(value(f), silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+## Error is repeated
 res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))

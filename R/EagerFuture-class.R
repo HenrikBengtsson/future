@@ -51,7 +51,7 @@ value.EagerFuture <- function(future, onError=c("signal", "return"), ...) {
 
   value <- future$value
   if (future$errored && onError == "signal") {
-    signalCondition(value)
+    stop(value)
   }
   value
 }

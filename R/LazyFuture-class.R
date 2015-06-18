@@ -41,7 +41,7 @@ value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
 
   value <- future$value
   if (isTRUE(future$errored) && onError == "signal") {
-    signalCondition(value)
+    stop(value)
   }
 
   value
@@ -49,6 +49,5 @@ value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
 
 #' @export
 resolved.LazyFuture <- function(future, ...) {
-  value(future, onError="return")
-  TRUE
+  exists("value", envir=future, inherits=FALSE)
 }
