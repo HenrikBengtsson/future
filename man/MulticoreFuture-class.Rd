@@ -5,13 +5,13 @@
 \alias{MulticoreFuture-class}
 \title{An multicore future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-MulticoreFuture(object = new.env(parent = emptyenv()), expr,
-  envir = parent.frame(), substitute = TRUE, ...)
+MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
+  ...)
 }
 \arguments{
-\item{object}{An R \link[base]{environment}.}
-
 \item{...}{Not used.}
+
+\item{object}{An R \link[base]{environment}.}
 }
 \value{
 An object of class \code{MulticoreFuture}.

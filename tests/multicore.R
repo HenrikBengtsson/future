@@ -62,7 +62,12 @@ v <- value(f, onError="return")
 print(v)
 stopifnot(inherits(v, "simpleError"))
 
-res <- try({ v <- value(f) }, silent=TRUE)
+res <- try(value(f), silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+## Error is repeated
+res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 

@@ -12,20 +12,11 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(object=new.env(parent=emptyenv()), expr, envir=parent.frame(), substitute=TRUE, ...) {
-  if (!is.environment(object)) {
-    stop(sprintf("Argument 'object' is not an environment: ", class(object)))
-  }
-
+MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  if (!is.environment(envir)) {
-    stop(sprintf("Argument 'envir' is not an environment: ", class(object)))
-  }
 
-  object$expr <- expr
-  object$envir <- envir
-  object$job <- NULL
-  Future(structure(object, class=c("MulticoreFuture", class(object))))
+  f <- Future(expr=expr, envir=envir, job=NULL, ...)
+  structure(f, class=c("MulticoreFuture", class(f)))
 }
 
 
@@ -48,6 +39,8 @@ run.MulticoreFuture <- function(future, ...) {
   envir <- future$envir
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 
+  future$state <- 'running'
+
   job <- eval(call, envir=envir)
   future$job <- job
 
@@ -57,7 +50,7 @@ run.MulticoreFuture <- function(future, ...) {
 #' @export
 resolved.MulticoreFuture <- function(future, timeout=0.2, ...) {
   ## Is value already collected?
-  if (exists("value", envir=future, inherits=TRUE)) return(TRUE)
+  if (future$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
   selectChildren <- importMulticore("selectChildren")
   job <- future$job
@@ -74,27 +67,28 @@ resolved.MulticoreFuture <- function(future, timeout=0.2, ...) {
 #' @export
 value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
   ## Has the value already been collected?
-  if (!exists("value", envir=future, inherits=TRUE)) {
-    ## If not, wait for process to finish, and
-    ## then collect and record the value
-    mccollect <- importMulticore("mccollect")
-    job <- future$job
-    stopifnot(inherits(job, "parallelJob"))
-    res <- mccollect(job, wait=TRUE)[[1L]]
-    ## Record both value and error state
-    condition <- attr(res, "condition")
-    future$errored <- inherits(condition, "simpleError")
-    if (future$errored) {
-      future$value <- condition
-    } else {
-      future$value <- res
-    }
-    res <- NULL ## Not needed anymore
+  if (future$state %in% c('finished', 'failed', 'interrupted')) {
+    return(NextMethod("value"))
   }
 
-  if (onError == "signal" && isTRUE(future$errored)) {
-    signalCondition(future$value)
-  }
+  ## If not, wait for process to finish, and
+  ## then collect and record the value
+  mccollect <- importMulticore("mccollect")
+  job <- future$job
+  stopifnot(inherits(job, "parallelJob"))
+  res <- mccollect(job, wait=TRUE)[[1L]]
 
-  future$value
+  ## Update value and state
+  condition <- attr(res, "condition")
+  if (inherits(condition, "simpleError")) {
+    future$state <- 'failed'
+    future$value <- condition
+  } else {
+    future$value <- res
+    future$state <- 'finished'
+  }
+  res <- NULL ## Not needed anymore
+
+  NextMethod("value")
 }
+

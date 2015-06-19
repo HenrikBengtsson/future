@@ -45,8 +45,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
   }
 
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
-  future <- run(future)
-  future
+  run(future)
 }
 
 
