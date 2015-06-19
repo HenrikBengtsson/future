@@ -37,17 +37,10 @@ evaluate.LazyFuture <- evaluate.EagerFuture
 value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
   onError <- match.arg(onError)
 
-  future <- evaluate(future, skip=TRUE)
+  future <- evaluate(future)
 
   value <- future$value
-  if (isTRUE(future$errored) && onError == "signal") {
-    stop(value)
-  }
+  if (future$state == 'failed' && onError == "signal") stop(value)
 
   value
-}
-
-#' @export
-resolved.LazyFuture <- function(future, ...) {
-  exists("value", envir=future, inherits=FALSE)
 }

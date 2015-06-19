@@ -31,33 +31,19 @@ EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local
 
 evaluate <- function(...) UseMethod("evaluate")
 
-evaluate.EagerFuture <- function(future, skip=TRUE, ...) {
- if (!skip || !exists("value", envir=future, inherits=FALSE)) {
-   tryCatch({
-     future$value <- eval(future$expr, envir=future$envir)
-     future$errored <- FALSE
-   }, simpleError = function(ex) {
-     future$errored <- TRUE
-     future$value <- ex
-   })
- }
+evaluate.EagerFuture <- function(future, ...) {
+ if (resolved(future)) return(invisible(future))
+
+ ## Run future
+ future$state <- 'running'
+
+ tryCatch({
+   future$value <- eval(future$expr, envir=future$envir)
+   future$state <- 'finished'
+ }, simpleError = function(ex) {
+   future$state <- 'failed'
+   future$value <- ex
+ })
+
  invisible(future)
-}
-
-
-#' @export
-value.EagerFuture <- function(future, onError=c("signal", "return"), ...) {
-  onError <- match.arg(onError)
-
-  value <- future$value
-  if (future$errored && onError == "signal") {
-    stop(value)
-  }
-  value
-}
-
-
-#' @export
-resolved.EagerFuture <- function(future, ...) {
-  TRUE
 }

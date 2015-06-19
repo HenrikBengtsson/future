@@ -37,6 +37,10 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   core$expr <- expr
   core$envir <- envir
 
+  ## The current state of the future, e.g.
+  ## 'created', 'running', 'finished', 'failed', 'interrupted'.
+  core$state <- 'created'
+
   ## Additional named arguments
   for (key in names(args)) core[[key]] <- args[[key]]
 
@@ -66,8 +70,14 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
 #' @export
 #' @export value
 #' @aliases value
+#' @export
 value.Future <- function(future, onError=c("signal", "return"), ...) {
-  stop(sprintf("value() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+  onError <- match.arg(onError)
+
+  value <- future$value
+  if (future$state == 'failed' && onError == "signal") stop(value)
+
+  value
 }
 
 value <- function(...) UseMethod("value")
@@ -92,7 +102,7 @@ value <- function(...) UseMethod("value")
 #' @export resolved
 #' @aliases resolved
 resolved.Future <- function(future, ...) {
-  stop(sprintf("resolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+  future$state %in% c('finished', 'failed', 'interrupted')
 }
 
 resolved <- function(...) UseMethod("resolved")
