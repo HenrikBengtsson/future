@@ -15,7 +15,7 @@ f <- lazy({
 stopifnot(inherits(f, "LazyFuture"))
 
 print(resolved(f))
-stopifnot(!resolved(f))
+stopifnot(resolved(f))
 
 y <- value(f)
 print(y)

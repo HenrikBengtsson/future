@@ -10,7 +10,7 @@ multicore(expr, envir = parent.frame(), substitute = TRUE, ...)
 \item{expr}{An R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
+is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
@@ -53,9 +53,10 @@ f <- multicore({
 
 ## A multicore future is evaluated in a separated
 ## forked process.  Changing the value of a global
-## variable should not affect the result of the
-## future.
+## variable will not affect the result of the future.
 a <- 7
+print(a)
+
 v <- value(f)
 print(v)
 stopifnot(v == 0)

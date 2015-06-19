@@ -11,7 +11,8 @@ lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
 \item{expr}{An R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
+is done (or inherits from if \code{local} is TRUE)
+and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
@@ -58,16 +59,15 @@ f <- lazy({
 ## when the value is requested, any global variables
 ## identified in the expression (here 'a') are
 ## "frozen" at the time point when the future is
-## created.  Because of this, 'a' preserved the
-## zero value although we reassign it below
+## created.  Because of this, the 'a' in the
+## the future expression preserved the zero value
+## although we reassign it in the global environment
 a <- 7
+print(a)
+
 v <- value(f)
 print(v)
 stopifnot(v == 0)
 
-}
-\seealso{
-Internally, \code{\link[base]{delayedAssign}()} is utilized to
-create a "\emph{\link[base]{promise}}", which hold the future's value.
 }
 

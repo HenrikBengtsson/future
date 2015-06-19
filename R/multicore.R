@@ -6,7 +6,7 @@
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
+#' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param ... Not used.
