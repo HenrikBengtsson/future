@@ -66,7 +66,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 
-### Eager, lazy and multicore futures
+### Eager, lazy and parallel futures
 You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  It also provides one _asynchronous_ future, the "multicore" future, implemented by function `multicore()`.  The latter is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes lazy futures.
 
 Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
