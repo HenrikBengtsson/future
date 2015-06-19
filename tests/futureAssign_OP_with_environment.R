@@ -55,5 +55,6 @@ stopifnot(identical(v$a, 2))
 message("*** %<=% to environment ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

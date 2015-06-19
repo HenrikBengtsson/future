@@ -114,3 +114,5 @@ print(c)
 stopifnot(c == 6)
 
 message("*** plan() ... DONE")
+
+plan(eager)

@@ -7,7 +7,8 @@
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
+#' is done (or inherits from if \code{local} is TRUE)
+#' and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param local If TRUE, the expression is evaluated such that
@@ -28,9 +29,6 @@
 #' becomes the default mechanism for all futures.  After this
 #' \code{\link{future}()} and \code{\link{\%<=\%}} will create
 #' \emph{lazy futures}.
-#'
-#' @seealso Internally, \code{\link[base]{delayedAssign}()} is utilized to
-#' create a "\emph{\link[base]{promise}}", which hold the future's value.
 #'
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @export
@@ -81,9 +79,5 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
     globals <- NULL ## Not needed anymore
   }
 
-
-  future <- LazyFuture()
-  delayedAssign("value", eval(expr, envir=envir), assign.env=future)
-
-  future
+  LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
 }

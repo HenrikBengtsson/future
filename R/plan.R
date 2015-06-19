@@ -18,8 +18,8 @@
 #' @example incl/plan.R
 #'
 #' @seealso
-#' Evaluation functions provided by this package are
-#' \code{\link{eager}()} and \code{\link{lazy}()}.
+#' Evaluation functions provided by this package are \code{\link{eager}()},
+#' \code{\link{lazy}()} and \code{\link{multicore}()}.
 #' Other package may provide additional evaluation strategies/functions.
 #'
 #' @export

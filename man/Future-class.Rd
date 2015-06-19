@@ -5,12 +5,18 @@
 \alias{Future-class}
 \title{A future represents a value that will be available at some point in the future}
 \usage{
-Future(object, ...)
+Future(expr = NULL, envir = parent.frame(), substitute = FALSE, ...)
 }
 \arguments{
-\item{object}{An R object of a class that implements the Future API.}
+\item{expr}{An R \link[base]{expression}.}
 
-\item{...}{Not used.}
+\item{envir}{The \link{environment} in which the evaluation
+is done (or inherits from if \code{local} is TRUE).}
+
+\item{substitute}{If TRUE, argument \code{expr} is
+\code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{...}{Additional named elements of the future.}
 }
 \value{
 An object of class \code{Future}.
@@ -22,6 +28,9 @@ available at some point in the future.  A future can either be
 with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 value is not available.  As soon as it is \emph{resolved}, the value
 is available via \code{\link{value}()}.
+}
+\details{
+A Future object is itself an \link{environment}.
 }
 \seealso{
 One function that creates a Future is \code{\link{future}()}.
