@@ -5,7 +5,7 @@ In programming, a _future_ is an abstraction for a _value_ that may be available
 
 ### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchronously_ via "lazy" and "eager" futures.  More advanced strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. multicore processing on a single machine, or distributed on a compute cluster via a job queue.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
+The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and one _asynchronous_ one for "multicore" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
 
 Here is an example illustrating how the basics of futures work:
 
@@ -67,9 +67,9 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### Eager, lazy and parallel futures
-You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Although not implemented by this package, other R packages may provide strategies for "parallel futures" that are evaluated asynchronously on, for instance, a compute cluster.  Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.
+You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  It also provides one _asynchronous_ future, the "multicore" future, implemented by function `multicore()`.  The latter is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes lazy futures.
 
-For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
+Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
 ```r
 > a <- 2.71
@@ -79,7 +79,9 @@ For instance, the default is that the future expression is evaluated in _a local
 > a
 [1] 2.71
 ```
-This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.  If needed, it is possible to evaluate both lazy and eager futures in the calling environment (but the global variables cannot be "frozen").  For instance,
+This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.
+
+If needed, it is possible to evaluate both lazy and eager futures in the calling environment (but then global variables cannot be "frozen").  For instance,
 ```r
 > plan(lazy, local=FALSE, globals=FALSE)
 > a <- 2.71
@@ -91,6 +93,7 @@ This shows that `a` in the calling environment is unaffected by the expression e
 > a
 [1] 3.14
 ```
+
 
 ### Different strategies for different futures
 Sometimes one may want to use an alternative evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and afterward `plan(old)` to temporarily switch strategies, a simpler approach is to use the `%plan%` operator, e.g.

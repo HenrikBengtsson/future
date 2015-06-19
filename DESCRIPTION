@@ -1,10 +1,11 @@
 Package: future
-Version: 0.5.1
+Version: 0.5.9-9000
 Title: A Future API for R
 Imports:
   listenv,
   globals
 Suggests:
+  parallel,
   R.rsp
 VignetteBuilder:
   R.rsp

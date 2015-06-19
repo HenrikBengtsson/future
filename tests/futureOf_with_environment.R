@@ -48,5 +48,6 @@ message("*** futureOf() with environment ... DONE")
 
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

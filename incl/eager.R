@@ -12,6 +12,8 @@ f <- eager({
 ## it already has been resolved, and any changes to 'a'
 ## at this point will _not_ affect the value of 'f'.
 a <- 7
+print(a)
+
 v <- value(f)
 print(v)
 stopifnot(v == 0)

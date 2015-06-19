@@ -32,7 +32,9 @@ EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local
 evaluate <- function(...) UseMethod("evaluate")
 
 evaluate.EagerFuture <- function(future, ...) {
- if (resolved(future)) return(invisible(future))
+ if (future$state %in% c('finished', 'failed', 'interrupted')) {
+   return(invisible(future))
+ }
 
  ## Run future
  future$state <- 'running'

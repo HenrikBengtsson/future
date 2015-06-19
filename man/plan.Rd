@@ -56,6 +56,19 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
+# A multicore future evaluated in a local environment
+plan(multicore)
+f <- future({
+  a <- 7
+  b <- 3
+  c <- 2
+  a * b * c
+})
+y <- value(f)
+print(y)
+str(list(a=a, b=b, c=c)) ## All NAs
+
+
 # An eager future evaluated in the global environment
 plan(eager, local=FALSE)
 f <- future({
@@ -69,8 +82,8 @@ print(y)
 str(list(a=a, b=b, c=c)) ## Assigned the new values
 }
 \seealso{
-Evaluation functions provided by this package are
-\code{\link{eager}()} and \code{\link{lazy}()}.
+Evaluation functions provided by this package are \code{\link{eager}()},
+\code{\link{lazy}()} and \code{\link{multicore}()}.
 Other package may provide additional evaluation strategies/functions.
 }
 

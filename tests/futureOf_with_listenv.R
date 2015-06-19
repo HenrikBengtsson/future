@@ -44,5 +44,6 @@ stopifnot(inherits(res, "try-error"))
 message("*** futureOf() with listenv ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

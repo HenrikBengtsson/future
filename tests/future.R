@@ -15,5 +15,6 @@ stopifnot(y == 42L)
 
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))
