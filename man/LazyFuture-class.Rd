@@ -5,12 +5,23 @@
 \alias{LazyFuture-class}
 \title{A lazy future is a future whose value will be resolved at the time when it is requested}
 \usage{
-LazyFuture(object = new.env(parent = emptyenv()), ...)
+LazyFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
+  local = TRUE, ...)
 }
 \arguments{
-\item{object}{An R \link[base]{environment}.}
+\item{expr}{An R \link[base]{expression}.}
 
-\item{...}{Not used.}
+\item{envir}{The \link{environment} in which the evaluation
+is done (or inherits from if \code{local} is TRUE).}
+
+\item{substitute}{If TRUE, argument \code{expr} is
+\code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done in the calling environment.}
+
+\item{...}{Additional named elements of the future.}
 }
 \value{
 An object of class \code{LazyFuture}.

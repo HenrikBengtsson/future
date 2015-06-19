@@ -1,13 +1,13 @@
-# future: A Future for R
+# future: A Future API for R
 
 ## Introduction
 In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested, if at all.  Another approach is an "eager" strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
 
 ### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchronously_ via "lazy" and "eager" futures.  More advanced strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. multicore processing on a single machine, or distributed on a compute cluster via a job queue.  The lazy and the eager futures provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
+The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself only provides mechanisms for evaluating expressions _synchronously_ via "lazy" and "eager" futures.  More advanced strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. multicore processing on a single machine, or distributed on a compute cluster via a job queue.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
 
-Here is an example illustrating how to create and resolve a future:
+Here is an example illustrating how the basics of futures work:
 
 ```r
 > library(future)
@@ -67,7 +67,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### Eager, lazy and parallel futures
-You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Although not implemented by this package, other R packages may provide strategies for "parallel futures" that are evaluated asynchronously on, for instance, a compute cluster.  Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while still evaluating them in a _synchronous_ way.
+You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ evaluation strategies for futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  Although not implemented by this package, other R packages may provide strategies for "parallel futures" that are evaluated asynchronously on, for instance, a compute cluster.  Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.
 
 For instance, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -112,7 +112,7 @@ Above, the expression for `x` is evaluated eagerly (in a local environment), whe
 
 
 ### Nested futures
-It is possible to nest futures in multiple levels and each of the nested future may be resolved using a different strategy, e.g.
+It is possible to nest futures in multiple levels and each of the nested futures may be resolved using a different strategy, e.g.
 ```r
 > plan(lazy)
 > c %<=% {
@@ -218,28 +218,13 @@ Exception handling of future assignments via `%<=%` works analogously, e.g.
 Error in eval(expr, envir, enclos) : Whoops!
 > x
 Error in eval(expr, envir, enclos) : Whoops!
-In addition: Warning message:
-restarting interrupted promise evaluation
 ```
-That latter warning is from R itself, notifying us that it already tried to evaluate the promise and tried another time.
 
-The provided "eager future" is very special in the sense that it is resolved immediately.  More specifically, the expression is evaluated _before the future itself is created_.  Because of this, the value of an "eager future" can never throw an error; if an error would occur, it would have prevented the future from being created in the first place, and without the future the corresponding future value/promise will also not exist.  For example,
-```r
-> plan(eager)
-> x %<=% ({
-+   a <- 3.14
-+   stop("Whoops!")
-+   42
-+ })
-Error in eval(expr, envir, enclos) : Whoops!
-> x
-Error: object 'x' not found
-```
 
 ## Globals
 The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
 
-_Footnote_: (*) The task of identifying globals is a challenging problem and with concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other types of futures with an automatic service for dealing with globals (except for lazy futures).  This may change in the future (yes, this pun was also intended).
+_Footnote_: (*) The task of identifying globals is a challenging problem and with asynchronous/concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other types of futures with an automatic service for dealing with globals (except for lazy futures).  This may change in the future (yes, this pun was also intended).
 
 
 ## Demos
@@ -259,7 +244,7 @@ and see if you can notice the difference in how and when statements are evaluate
 
 
 ## Contributing
-The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  I am open to all types of feedback and I welcome contributions and collaborations of any kind.
+The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas how to improve the 'future' package, I would love to hear about it.  The prefer way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open contributions and collaborations of any kind.
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs

@@ -7,10 +7,17 @@
 #' value is not available.  As soon as it is \emph{resolved}, the value
 #' is available via \code{\link{value}()}.
 #'
-#' @param object An R object of a class that implements the Future API.
-#' @param ... Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param ... Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
+#'
+#' @details
+#' A Future object is itself an \link{environment}.
 #'
 #' @seealso
 #' One function that creates a Future is \code{\link{future}()}.
@@ -22,11 +29,23 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(object, ...) {
-  structure(object, class=c(class(object), "Future"))
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+  if (substitute) expr <- substitute(expr)
+  args <- list(...)
+
+  core <- new.env(parent=emptyenv())
+  core$expr <- expr
+  core$envir <- envir
+
+  ## The current state of the future, e.g.
+  ## 'created', 'running', 'finished', 'failed', 'interrupted'.
+  core$state <- 'created'
+
+  ## Additional named arguments
+  for (key in names(args)) core[[key]] <- args[[key]]
+
+  structure(core, class=c("Future", class(core)))
 }
-
-
 
 
 #' The value of a future
@@ -51,8 +70,18 @@ Future <- function(object, ...) {
 #' @export
 #' @export value
 #' @aliases value
+#' @export
 value.Future <- function(future, onError=c("signal", "return"), ...) {
-  stop(sprintf("value() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+  onError <- match.arg(onError)
+
+  if (!future$state %in% c('finished', 'failed', 'interrupted')) {
+    stop("Internal error: value() called on a non-finished future: ", class(future)[1])
+  }
+
+  value <- future$value
+  if (future$state == 'failed' && onError == "signal") stop(value)
+
+  value
 }
 
 value <- function(...) UseMethod("value")
@@ -77,7 +106,7 @@ value <- function(...) UseMethod("value")
 #' @export resolved
 #' @aliases resolved
 resolved.Future <- function(future, ...) {
-  stop(sprintf("resolved() is not implemented for objects of class ", paste(sQuote(class(future)), collapse=", ")))
+  future$state %in% c('finished', 'failed', 'interrupted')
 }
 
 resolved <- function(...) UseMethod("resolved")
