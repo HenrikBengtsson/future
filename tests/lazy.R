@@ -14,6 +14,8 @@ f <- lazy({
 })
 stopifnot(inherits(f, "LazyFuture"))
 
+## Check whether a lazy future is resolved
+## or not will force evaluation
 print(resolved(f))
 stopifnot(resolved(f))
 
