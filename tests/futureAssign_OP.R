@@ -82,5 +82,6 @@ stopifnot(b == a + 1)
 message("*** %<=% ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

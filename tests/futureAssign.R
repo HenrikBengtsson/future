@@ -44,5 +44,6 @@ stopifnot(identical(v$a, 4))
 message("*** futureAssign() ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

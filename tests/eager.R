@@ -61,5 +61,6 @@ stopifnot(inherits(res, "try-error"))
 message("*** eager() ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

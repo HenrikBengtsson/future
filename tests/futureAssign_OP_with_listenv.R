@@ -65,5 +65,6 @@ message("*** %<=% to listenv ... DONE")
 
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

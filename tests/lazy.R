@@ -99,5 +99,6 @@ stopifnot(inherits(res, "try-error"))
 message("*** lazy() ... DONE")
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))
