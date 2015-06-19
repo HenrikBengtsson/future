@@ -1,10 +1,10 @@
 Package: future
 ===============
 
-Version: 0.5.9-9000 [2015-06-18]
+Version: 0.6.0 [2015-06-18]
 o Add multicore futures, which are futures that are resolved
   asynchronously in a separate process.  These are only
-  supported on Unix-like systems, i.e. not on Windows.
+  supported on Unix-like systems, but not on Windows.
 
 
 Version: 0.5.1 [2015-06-18]
@@ -17,11 +17,6 @@ o All Future objects are environments themselves that record
 
 
 Version: 0.5.0 [2015-06-16]
-o Submitted to CRAN (never released due to ambiguous title;
-  in the meanwhile I went ahead with the above).
-
-
-Version: 0.4.3 [2015-06-16]
 o lazy() "freezes" global variables at the time when
   the future is created.  This way the result of a lazy
   future is more likely to be the same as an eager future.

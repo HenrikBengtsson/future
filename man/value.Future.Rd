@@ -13,7 +13,7 @@
 \item{onError}{A character string specifying how errors
 (\link[base]{conditions}) should be handled in case they occur.
 If \code{"signal"}, the error is signalled, e.g. captured
-errors and re-thrown.  If instead \code{"return"}, they are
+and re-thrown.  If instead \code{"return"}, they are
 \emph{returned} as is.}
 
 \item{...}{Not used.}

@@ -11,7 +11,7 @@
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param ... Not used.
 #'
-#' @return A \link{MulticoreFuture} (or a \link{LazyFuture}
+#' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
 #' if multicore futures are not supported).
 #'
 #' @example incl/multicore.R
@@ -20,7 +20,7 @@
 #' Not all systems support multicore futures.  For instance,
 #' it is not supported on Microsoft Windows.  Trying to create
 #' multicore futures on non-supported systems will silently
-#' fall back to using \link{lazy} futures, which effectively
+#' fall back to using \link{eager} futures, which effectively
 #' corresponds to a multicore future that can handle one parallel
 #' process (the current one) before blocking.
 #'
@@ -41,7 +41,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
   ## Fall back to lazy futures, iff multicore is not suported
   if (!supportsMulticore()) {
     ## covr: skip=1
-    return(lazy(expr, envir=envir, substitute=FALSE, local=TRUE))
+    return(eager(expr, envir=envir, substitute=FALSE, local=TRUE))
   }
 
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)

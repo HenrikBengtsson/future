@@ -67,7 +67,7 @@ This works by (i) creating a future and (ii) assigning its value to variable `v`
 
 
 ### Eager, lazy and parallel futures
-You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  It also provides one _asynchronous_ future, the "multicore" future, implemented by function `multicore()`.  The latter is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes lazy futures.
+You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, namely "lazy" and "eager", implemented by functions `lazy()` and `eager()`.  It also provides one _asynchronous_ future, the "multicore" future, implemented by function `multicore()`.  The latter is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes eager futures.
 
 Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -120,13 +120,13 @@ It is possible to nest futures in multiple levels and each of the nested futures
 > plan(lazy)
 > c %<=% {
 +   message("Resolving 'c'")
-+   a %<=% { 
++   a %<=% {
 +     message("Resolving 'a'")
 +     3
 +   } %plan% eager
 +   b %<=% {
 +     message("Resolving 'b'")
-+     -9 * a 
++     -9 * a
 +   }
 +   message("Local variable 'x'")
 +   x <- b / 3
@@ -191,10 +191,10 @@ Just as for any type of environment, all  values of a list environment can be re
 
 
 ## Failed futures
-Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, 
+Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example,
 ```r
 > plan(lazy)
-> f <- future({ 
+> f <- future({
 +   stop("Whoops!")
 +   42
 + })
@@ -210,7 +210,7 @@ Error in eval(expr, envir, enclos) : Whoops!
 Exception handling of future assignments via `%<=%` works analogously, e.g.
 ```r
 > plan(lazy)
-> x %<=% ({ 
+> x %<=% ({
 +   stop("Whoops!")
 +   42
 + })
@@ -225,9 +225,9 @@ Error in eval(expr, envir, enclos) : Whoops!
 
 
 ## Globals
-The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
+The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).  Due to how multicore processing is done, globals are also automatically taken care of when you are using multicore futures.
 
-_Footnote_: (*) The task of identifying globals is a challenging problem and with asynchronous/concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other types of futures with an automatic service for dealing with globals (except for lazy futures).  This may change in the future (yes, this pun was also intended).
+_Footnote_: (*) The task of identifying globals is a challenging problem and with asynchronous/concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other packages implementing futures with an automatic service for dealing with globals.  This may change in the future (yes, this pun was also intended).
 
 
 ## Demos
@@ -257,16 +257,16 @@ The goal of this package is to provide a standardized and unified API for using 
 
 
 ## Installation
-R package future is only available via [GitHub](https://github.com/HenrikBengtsson/future) and can be installed in R as:
+R package future is available on [CRAN](http://cran.r-project.org/package=future) and can be installed in R as:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future')
+install.packages('future')
 ```
 
 
 ## Software status
 
-| Resource:     | GitHub        | Travis CI     | Appveyor         |
+| Resource:     | CRAN        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
-| R CMD check   |  | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
 | Test coverage |                     | <a href="https://coveralls.io/r/HenrikBengtsson/future"><img src="https://coveralls.io/repos/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |
