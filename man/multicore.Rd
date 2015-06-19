@@ -18,7 +18,7 @@ is done and from which globals are obtained.}
 \item{...}{Not used.}
 }
 \value{
-A \link{MulticoreFuture} (or a \link{LazyFuture}
+A \link{MulticoreFuture} (or a \link{EagerFuture}
 if multicore futures are not supported).
 }
 \description{
@@ -30,7 +30,7 @@ parallel in another process}.
 Not all systems support multicore futures.  For instance,
 it is not supported on Microsoft Windows.  Trying to create
 multicore futures on non-supported systems will silently
-fall back to using \link{lazy} futures, which effectively
+fall back to using \link{eager} futures, which effectively
 corresponds to a multicore future that can handle one parallel
 process (the current one) before blocking.
 
