@@ -27,6 +27,12 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
+This function will block if all CPU cores are occupied and
+will be unblocked as soon as one of the already running
+multicore futures is resolved.  For the total number of
+CPU cores availble to the current R process, see
+\code{\link{availableCores}()}.
+
 Not all systems support multicore futures.  For instance,
 it is not supported on Microsoft Windows.  Trying to create
 multicore futures on non-supported systems will silently
@@ -62,7 +68,7 @@ print(v)
 stopifnot(v == 0)
 }
 \seealso{
-\code{\link{supportsMulticore}()} to check whether multicore
+\code{\link{availableCores}() > 1L} to check whether multicore
 futures are supported or not.
 }
 

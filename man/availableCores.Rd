@@ -5,7 +5,7 @@
 \title{Get number of available cores on current machine}
 \usage{
 availableCores(methods = getOption("availableCoresMethods", c("PBS",
-  "system")))
+  "mc.cores", "system")))
 }
 \arguments{
 \item{methods}{A character vector specifying how to infer the number
@@ -13,6 +13,7 @@ of available cores (and in what order).}
 }
 \value{
 Return a positive integer equal or greater to one.
+        If multicore processing is not supported, then one is returned.
 }
 \description{
 Get number of available cores on current machine
@@ -26,6 +27,8 @@ The following methods for inferring the number of cores are supported:
    may or may not default to one.  It can be specified when submitting
    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
    requests four nodes each with two cores.
+ \item \code{"mc.cores"} -
+   Query option \code{mc.cores}, cf. \code{\link[parallel]{mclapply}()}.
  \item \code{"system"} -
    Query \code{\link[parallel]{detectCores}()}.
 }
