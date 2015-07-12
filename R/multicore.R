@@ -72,4 +72,3 @@ supportsMulticore <- local({
   }
 })
 
-

@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.6.0-9000 [2015-07-11]
+o Add availableMulticore() [from (in-house) 'async' package].
+
+
 Version: 0.6.0 [2015-06-18]
 o Add multicore futures, which are futures that are resolved
   asynchronously in a separate process.  These are only
