@@ -40,6 +40,7 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("PBS", "
       ## Number of cores available according to parallel::detectCores()
       ncores <- detectCores()
     } else {
+      ## covr: skip=1
       ncores <- NA_integer_
     }
     if (is.finite(ncores) && ncores > 0L) break
@@ -68,7 +69,7 @@ usedCores <- function() {
   futures <- MulticoreFutureRegistry("list")
   nfutures <- length(futures)
   ncores <- nfutures
-  
+
   ## Total number of multicore processes
   ## To please R CMD check
   ns <- getNamespace("parallel")
@@ -83,6 +84,7 @@ usedCores <- function() {
     ## wait for one of these futures to be resolved, then
     ## a CPU core will always be available at some point in
     ## the future.
+    ## covr: skip=7
     ncores <- nchildren
 
     ## However, ...
@@ -91,7 +93,7 @@ usedCores <- function() {
       ncores <- 0L
     }
   }
-  
+
   return(ncores + 1L)
 }
 
@@ -136,7 +138,7 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", Sys.getenv
 
     ## Finish/close cores, iff possible
     await()
-    
+
     interval <- alpha*interval
     tries <- tries + 1L
   }
@@ -144,6 +146,6 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", Sys.getenv
   if (!finished) {
     stop(sprintf("TIMEOUT: All %d CPU cores are still occupied", total))
   }
-  
+
   invisible(finished)
 }
