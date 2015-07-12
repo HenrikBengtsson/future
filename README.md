@@ -250,7 +250,7 @@ plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 
-_Footnote_: (*) If you system does not support multicore processing, such as Windows, then it will automatically fall back to use eager futures instead of multicore ones.
+_Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use eager futures instead of multicore ones.
 
 
 
