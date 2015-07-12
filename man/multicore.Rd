@@ -4,7 +4,8 @@
 \alias{multicore}
 \title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-multicore(expr, envir = parent.frame(), substitute = TRUE, ...)
+multicore(expr, envir = parent.frame(), substitute = TRUE,
+  maxCores = availableCores(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -14,6 +15,9 @@ is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{maxCores}{The maximum number of CPU cores that can
+be active at the same time before blocking.}
 
 \item{...}{Not used.}
 }

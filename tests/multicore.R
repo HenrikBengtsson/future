@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(mc.cores=2L, warn=1)
+oopts <- options(mc.cores=2+1, warn=1)
 plan(multicore)
 
 message("*** multicore() ...")

@@ -9,6 +9,8 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param maxCores The maximum number of CPU cores that can
+#' be active at the same time before blocking.
 #' @param ... Not used.
 #'
 #' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
@@ -41,14 +43,19 @@
 #' futures are supported or not.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
+  maxCores <- as.integer(maxCores)
+  stopifnot(is.finite(maxCores), maxCores >= 1L)
 
   ## Fall back to lazy futures, iff multicore is not suported
-  if (availableCores() <= 1L) {
+  if (maxCores == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, local=TRUE))
   }
+
+  oopts <- options(mc.cores=maxCores)
+  on.exit(options(oopts))
 
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
   run(future)
