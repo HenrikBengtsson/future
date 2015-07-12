@@ -35,7 +35,7 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   y <- seq(from=ylim[1], to=ylim[2], length.out=ny)
 
   ## By default, assume none of the elements will converge
-  counts <- matrix(maxIter+1L, nrow=nx, ncol=ny)
+  counts <- matrix(maxIter, nrow=ny, ncol=nx)
   dim <- dim(counts)
 
   ## But as a start, flag the to all be non-diverged
@@ -43,14 +43,14 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   idxOfNonDiverged <- seq_along(nonDiverged)
 
   ## Set of complex numbers to be investigated
-  C <- outer(x, y, FUN=function(x,y) complex(real=x, imag=y))
+  C <- outer(y, x, FUN=function(y,x) complex(real=x, imag=y))
 
   ## SPEEDUP: The Mandelbrot sequence will only be calculated on the
   ## "remaining set" of complex numbers that yet hasn't diverged.
   sC <- C ## The Mandelbrot sequence of the "remaining" set
   Cr <- C ## The original complex number of the "remaining" set
 
-  for(ii in seq_len(maxIter)) {
+  for(ii in seq_len(maxIter-1L)) {
     sC <- sC*sC + Cr
 
     ## Did any of the "remaining" points diverge?
@@ -82,8 +82,11 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
 library("future")
 library("listenv")
 
-center <- c(0.282989, -0.010)
-sizes <- 2 * 10^-(0:8)
+n <- 9L
+sizes <- 2 * 10^-(0:(n-1))
+xs <- rep(0.282989, times=n)
+xs[1] <- xs[1] - 0.8
+ys <- rep(-0.010, times=n)
 
 counts <- listenv()
 for (ii in seq_along(sizes)) {
@@ -91,8 +94,8 @@ for (ii in seq_along(sizes)) {
   size <- sizes[ii]
   counts[[ii]] %<=% {
     cat("Calculating ...")
-    xlim <- center[1] + size/2 * c(-1,1)
-    ylim <- center[2] + size/2 * c(-1,1)
+    xlim <- xs[ii] + size/2 * c(-1,1)
+    ylim <- ys[ii] + size/2 * c(-1,1)
     fit <- mandelbrot(xlim=xlim, ylim=ylim)
     cat("\n")
     fit
@@ -100,15 +103,22 @@ for (ii in seq_along(sizes)) {
 }
 
 ## Plot
-oopts <- options(preferRaster=TRUE) ## Faster plotting, iff supported
 layout(matrix(1:9, nrow=3L, ncol=3L, byrow=TRUE))
 opar <- par(mar=c(0,0,0,0))
 for (ii in seq_along(counts)) {
   cat(sprintf("Plotting plane #%d of %d ...\n", ii, length(sizes)))
-  image(counts[[ii]], axes=FALSE)
+  img <- structure({
+    x <- counts[[ii]]
+    maxIter <- attr(x, "params")$maxIter
+    img <- hsv(h=x/maxIter, s=1, v=1)
+    img[x == maxIter] <- "#000000"
+    dim(img) <- dim(x)
+    t(img)
+  }, class="raster")
+  plot(img)
   box(lwd=3)
 }
 par(opar)
-options(oopts)
+
 
 message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
