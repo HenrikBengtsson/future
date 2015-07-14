@@ -12,7 +12,7 @@
 #' \code{substitute()}:d, otherwise not.
 #' @param .call (internal) Used to record the call to this function.
 #'
-#' @return If a new strategy is choosen, then the previous one is returned
+#' @return If a new strategy is chosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
 #'
 #' @example incl/plan.R
@@ -24,9 +24,9 @@
 #'
 #' @export
 plan <- local({
-  .strategy <- eager
+  .strategy <- structure(eager, call=substitute(plan(eager)))
 
-  function(strategy=NULL, ..., substitute=TRUE, .call=sys.call()) {
+  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
     if (substitute) strategy <- substitute(strategy)
     args <- list(...)
 
@@ -37,6 +37,11 @@ plan <- local({
       strategy <- as.list(strategy)
       args <- c(args, strategy[-1])
       strategy <- eval(strategy[[1L]], envir=parent.frame())
+    }
+
+    if (isTRUE(.call)) {
+      .call <- attr(strategy, "call")
+      if (is.null(.call)) .call <- sys.call()
     }
 
     if (is.character(strategy)) {
@@ -73,9 +78,12 @@ plan <- local({
     ## Record call
     attr(strategy, "call") <- .call
 
+    ## Return old strategy
+    old <- .strategy
+
     ## Set new strategy for futures
     .strategy <<- strategy
 
-    invisible(.strategy)
+    invisible(old)
   } # function()
 }) # plan()

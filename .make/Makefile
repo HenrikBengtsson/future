@@ -3,7 +3,7 @@
 # CORE MACROS
 ifeq ($(OS), Windows_NT)
 CD=cd
-CURDIR=$(subst \,/,"$(shell cmd.exe /C cd)")
+CURDIR=$(subst \,/,$(shell cmd.exe /C cd))
 else
 CD=cd -P "$(CURDIR)"; cd   # This handles the case when CURDIR is a softlink
 endif
@@ -13,6 +13,7 @@ MV=mv
 RM=rm -f
 MKDIR=mkdir -p
 RMDIR=$(RM) -r
+GIT=git
 
 # PACKAGE MACROS
 PKG_VERSION := $(shell grep -i ^version DESCRIPTION | cut -d : -d \  -f 2)
@@ -65,6 +66,10 @@ R_CRAN_OUTDIR := $(R_OUTDIR)/$(PKG_NAME)_$(PKG_VERSION).CRAN
 
 HAS_ASPELL := $(shell $(R_SCRIPT) -e "cat(Sys.getenv('HAS_ASPELL', !inherits(try(aspell('DESCRIPTION', control=c('--master=en_US', '--add-extra-dicts=en_GB'), dictionaries='en_stats', program='aspell'), silent=TRUE), 'try-error')))")
 
+## Git related
+GIT_BRANCH := $(shell $(GIT) symbolic-ref --short HEAD)
+GIT_BRANCH := $(subst /,-,$(GIT_BRANCH))
+R_LIBS_BRANCH := .R/$(GIT_BRANCH)
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -127,7 +132,9 @@ debug_full: debug
 	@echo
 	@echo DIR_VIGNS=\'$(DIR_VIGNS)\'
 	@echo dirname\(DIR_VIGNS\)=\'$(shell dirname $(DIR_VIGNS))\'
-
+	@echo
+	@echo GIT_BRANCH=\'$(GIT_BRANCH)\'
+	@echo R_LIBS_BRANCH=\'$(R_LIBS_BRANCH)\'
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -200,6 +207,15 @@ install_force:
 install_fast:
 	$(CD) $(R_OUTDIR);\
 	$(R) --no-init-file CMD INSTALL --no-docs --no-multiarch --no-byte-compile --no-test-load $(PKG_TARBALL)
+
+
+$(R_LIBS_BRANCH)/$(PKG_NAME)/DESCRIPTION: $(R_OUTDIR)/$(PKG_TARBALL) build_fix
+	$(CD) $(R_OUTDIR);\
+	$(MKDIR) $(CURDIR)/$(R_LIBS_BRANCH);\
+	$(R) --no-init-file CMD INSTALL --library=$(CURDIR)/$(R_LIBS_BRANCH) $(PKG_TARBALL)
+
+install_branch: $(R_LIBS_BRANCH)/$(PKG_NAME)/DESCRIPTION
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -314,6 +330,23 @@ test_full: $(R_OUTDIR)/tests/%.R
 	$(CD) $(R_OUTDIR)/tests;\
 	export _R_CHECK_FULL_=TRUE;\
 	$(R_SCRIPT) -e "for (f in list.files(pattern='[.]R$$')) { print(f); source(f, echo=TRUE) }"
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Benchmarking
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+R_branch:
+	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(R_LIBS_BRANCH)" $(R)
+
+benchmark:
+	$(MKDIR) .benchmark/$(PKG_VERSION);\
+	$(CD) .benchmark/$(PKG_VERSION);\
+	$(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
+
+benchmark_branch:
+	$(MKDIR) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH);\
+	$(CD) .benchmark/$(PKG_VERSION)_$(GIT_BRANCH);\
+	R_LIBS="$(R_LIBS_USER_X):$(R_LIBS)" R_LIBS_USER="$(CURDIR)/$(R_LIBS_BRANCH)" $(R_SCRIPT) -e "$(PKG_NAME):::benchmark('index')"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

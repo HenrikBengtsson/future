@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1)
+oopts <- options(mc.cores=2+1, warn=1)
 plan(multicore)
 
 message("*** multicore() ...")
@@ -45,11 +45,11 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** multicore() with globals")
+message("*** multicore() with globals and blocking")
 x <- listenv()
-for (ii in 1:5) x[[ii]] <- multicore({ ii })
+for (ii in 1:4) x[[ii]] <- multicore({ ii })
 v <- sapply(x, FUN=value)
-stopifnot(all(v == 1:5))
+stopifnot(all(v == 1:4))
 
 
 message("*** multicore() and errors")

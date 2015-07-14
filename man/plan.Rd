@@ -4,7 +4,7 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .call = sys.call())
+plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function to use for resolving a future.
@@ -19,7 +19,7 @@ of the evaluation function.}
 \item{.call}{(internal) Used to record the call to this function.}
 }
 \value{
-If a new strategy is choosen, then the previous one is returned
+If a new strategy is chosen, then the previous one is returned
 (invisible), otherwise the current one is returned (visibly).
 }
 \description{

@@ -255,15 +255,14 @@ demo("mandelbrot", package="future", ask=FALSE)
 ```
 and see if you can notice the difference in how and when statements are evaluated.
 
-<%---
 Finally, if you are on a system where R supports multicore processing(*), try
 ```r
 plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 
-_Footnote_: (*) If you system does not support multicore processing, such as Windows, then it will automatically fall back to use eager futures instead of multicore ones.
----%>
+_Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use eager futures instead of multicore ones.
+
 
 
 ## Contributing

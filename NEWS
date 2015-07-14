@@ -1,6 +1,18 @@
 Package: future
 ===============
 
+Version: 0.7.0 [2015-07-13]
+o ROBUSTNESS: multicore() blocks until one of the CPU cores
+  is available, iff all are currently occupied by other
+  multicore futures.
+o multicore() gained argument 'maxCores', which makes it
+  possible to use for instance plan(multicore, maxCores=4L).
+o Add availableMulticore() [from (in-house) 'async' package].
+o More colorful demo("mandelbrot", package="future").
+o BUG FIX: old <- plan(new) now returns the old plan/strategy
+  (was the newly set one).
+
+
 Version: 0.6.0 [2015-06-18]
 o Add multicore futures, which are futures that are resolved
   asynchronously in a separate process.  These are only

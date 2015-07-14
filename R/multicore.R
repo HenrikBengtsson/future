@@ -9,6 +9,8 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param maxCores The maximum number of CPU cores that can
+#' be active at the same time before blocking.
 #' @param ... Not used.
 #'
 #' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
@@ -17,6 +19,12 @@
 #' @example incl/multicore.R
 #'
 #' @details
+#' This function will block if all CPU cores are occupied and
+#' will be unblocked as soon as one of the already running
+#' multicore futures is resolved.  For the total number of
+#' CPU cores availble to the current R process, see
+#' \code{\link{availableCores}()}.
+#'
 #' Not all systems support multicore futures.  For instance,
 #' it is not supported on Microsoft Windows.  Trying to create
 #' multicore futures on non-supported systems will silently
@@ -31,18 +39,23 @@
 #' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
-#' \code{\link{supportsMulticore}()} to check whether multicore
+#' \code{\link{availableCores}() > 1L} to check whether multicore
 #' futures are supported or not.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
+  maxCores <- as.integer(maxCores)
+  stopifnot(is.finite(maxCores), maxCores >= 1L)
 
   ## Fall back to lazy futures, iff multicore is not suported
-  if (!supportsMulticore()) {
+  if (maxCores == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, local=TRUE))
   }
+
+  oopts <- options(mc.cores=maxCores)
+  on.exit(options(oopts))
 
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
   run(future)
@@ -71,5 +84,4 @@ supportsMulticore <- local({
     supported
   }
 })
-
 

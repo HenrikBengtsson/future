@@ -28,6 +28,8 @@ README[.]md
 ^incl
 ^NAMESPACE,.*[.]txt$
 ^nohup.*$
+^[.]R
+^[.]benchmark
 ^[.]devel
 ^[.]test
 ^[.]check

@@ -4,7 +4,8 @@
 \alias{multicore}
 \title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-multicore(expr, envir = parent.frame(), substitute = TRUE, ...)
+multicore(expr, envir = parent.frame(), substitute = TRUE,
+  maxCores = availableCores(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -14,6 +15,9 @@ is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{maxCores}{The maximum number of CPU cores that can
+be active at the same time before blocking.}
 
 \item{...}{Not used.}
 }
@@ -27,6 +31,12 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
+This function will block if all CPU cores are occupied and
+will be unblocked as soon as one of the already running
+multicore futures is resolved.  For the total number of
+CPU cores availble to the current R process, see
+\code{\link{availableCores}()}.
+
 Not all systems support multicore futures.  For instance,
 it is not supported on Microsoft Windows.  Trying to create
 multicore futures on non-supported systems will silently
@@ -62,7 +72,7 @@ print(v)
 stopifnot(v == 0)
 }
 \seealso{
-\code{\link{supportsMulticore}()} to check whether multicore
+\code{\link{availableCores}() > 1L} to check whether multicore
 futures are supported or not.
 }
 
