@@ -73,6 +73,19 @@ fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
+message("*** old <- plan(new)")
+truth <- plan()
+old <- plan(lazy, local=FALSE)
+stopifnot(identical(old, truth))
+
+curr <- plan()    ## curr == lazy(local=FALSE)
+prev <- plan(old) ## prev == lazy(local=FALSE)
+stopifnot(identical(curr, prev))
+
+curr <- plan()    ## curr == old
+stopifnot(identical(curr, old))
+stopifnot(identical(curr, truth))
+
 message("*** %plan% 'eager'")
 plan(lazy)
 x %<=% { a <- 1 } %plan% "eager"

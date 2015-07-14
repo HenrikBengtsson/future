@@ -4,7 +4,7 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .call = sys.call())
+plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function to use for resolving a future.
