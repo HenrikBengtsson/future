@@ -12,7 +12,7 @@
 #' \code{substitute()}:d, otherwise not.
 #' @param .call (internal) Used to record the call to this function.
 #'
-#' @return If a new strategy is choosen, then the previous one is returned
+#' @return If a new strategy is chosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
 #'
 #' @example incl/plan.R
