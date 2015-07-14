@@ -8,6 +8,7 @@ o ROBUSTNESS: multicore() blocks until one of the CPU cores
 o multicore() gained argument 'maxCores', which makes it
   possible to use for instance plan(multicore, maxCores=4L).
 o Add availableMulticore() [from (in-house) 'async' package].
+o More colorful demo("mandelbrot", package="future").
 
 
 Version: 0.6.0 [2015-06-18]
