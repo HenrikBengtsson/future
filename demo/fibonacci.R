@@ -5,7 +5,7 @@ library("listenv")
 ## (0, 1, 1, 2, 3, 5, 8, ...)
 ## but calculate only the ones need when
 ## a number is actually requested.
-plan(lazy)
+oplan <- plan(lazy)
 
 x <- listenv()
 x[[1]] <- 0
@@ -25,3 +25,6 @@ print(x[[7]])
 
 ## Let's get the 50:th number.
 print(x[[50]])
+
+## Reset plan
+plan(oplan)

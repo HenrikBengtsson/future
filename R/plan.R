@@ -24,7 +24,7 @@
 #'
 #' @export
 plan <- local({
-  .strategy <- eager
+  .strategy <- structure(eager, call=substitute(plan(eager)))
 
   function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
     if (substitute) strategy <- substitute(strategy)
