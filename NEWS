@@ -1,6 +1,12 @@
 Package: future
 ===============
 
+Version: 0.7.0-9000 [2015-07-26]
+o availableCores("mc.cores") returns getOption("mc.cores") + 1L,
+  because option 'mc.cores' specifies "allowed number of _additional_
+  R processes" to be used in addition to the main R process.
+
+
 Version: 0.7.0 [2015-07-13]
 o ROBUSTNESS: multicore() blocks until one of the CPU cores
   is available, iff all are currently occupied by other
