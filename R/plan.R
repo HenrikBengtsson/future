@@ -33,11 +33,16 @@ plan <- local({
     ## Return current plan
     if (is.null(strategy)) return(.strategy)
 
-    if (is.symbol(strategy) || is.language(strategy)) {
-      strategy <- as.list(strategy)
-      args <- c(args, strategy[-1])
-      strategy <- eval(strategy[[1L]], envir=parent.frame())
+    if (is.symbol(strategy)) {
+    } else if (is.language(strategy)) {
+      strategyT <- as.list(strategy)
+      isSymbol <- sapply(strategyT, FUN=is.symbol)
+      if (!all(isSymbol)) {
+        args <- c(args, strategyT[-1L])
+        strategy <- strategyT[[1L]]
+      }
     }
+    strategy <- eval(strategy, envir=parent.frame())
 
     if (isTRUE(.call)) {
       .call <- attr(strategy, "call")

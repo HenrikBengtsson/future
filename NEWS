@@ -5,6 +5,7 @@ Version: 0.7.0-9000 [2015-07-26]
 o availableCores("mc.cores") returns getOption("mc.cores") + 1L,
   because option 'mc.cores' specifies "allowed number of _additional_
   R processes" to be used in addition to the main R process.
+o BUG FIX: plan(future::lazy) and similar gave errors.
 
 
 Version: 0.7.0 [2015-07-13]

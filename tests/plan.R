@@ -1,6 +1,22 @@
-library("future")
-
 message("*** plan() ...")
+oopts <- options(warn=1)
+
+oplan <- future::plan(future::lazy)
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+oplan <- future::plan(future::lazy, local=FALSE)
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+oplan <- future::plan(future::lazy(local=FALSE))
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+library("future")
 
 message("*** plan() by (lazy) function")
 
@@ -129,3 +145,5 @@ stopifnot(c == 6)
 message("*** plan() ... DONE")
 
 plan(eager)
+options(oopts)
+rm(list="oopts")
