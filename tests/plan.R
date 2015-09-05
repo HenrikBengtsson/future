@@ -16,6 +16,12 @@ print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
+message("*** plan('default')")
+oplan <- future::plan("default")
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
 library("future")
 
 message("*** plan() by (lazy) function")
