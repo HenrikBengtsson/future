@@ -63,7 +63,7 @@ Resolving...
 ```
 
 This works by (i) creating a future and (ii) assigning its value to variable `v` as a _promise_.  Specifically, the expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R (see `help(delayedAssign)`).
-
+To get the future of a future variable, use the `futureOf()` function, e.g. `f <- futureOf(v)`.
 
 
 ### Eager, lazy and parallel futures
