@@ -17,6 +17,12 @@
 #'
 #' @example incl/plan.R
 #'
+#' @details
+#' The default strategy is \code{\link{eager}}, which can be set by
+#' option \code{future_plan} and, if that is not set,
+#' system environment variable \code{R_FUTURE_PLAN}.
+#' To reset the strategy back to the default, use \code{plan("default")}.
+#'
 #' @seealso
 #' Evaluation functions provided by this package are \code{\link{eager}()},
 #' \code{\link{lazy}()} and \code{\link{multicore}()}.
@@ -28,6 +34,15 @@ plan <- local({
 
   function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
     if (substitute) strategy <- substitute(strategy)
+
+    ## Reset plan?
+    if (identical(strategy, "default")) {
+      ## Set default plan according to option/sysenv variable?
+      strategy <- getOption("future_plan", Sys.getenv("R_FUTURE_PLAN"))
+      if (!nzchar(strategy)) strategy <- eager
+      substitute <- FALSE
+    }
+
     args <- list(...)
 
     ## Return current plan

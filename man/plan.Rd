@@ -27,6 +27,12 @@ This function allows you to plan the future, more specifically,
 it specifies how \code{\link{future}()}:s are resolved,
 e.g. by eager or by lazy evaluation.
 }
+\details{
+The default strategy is \code{\link{eager}}, which can be set by
+option \code{future_plan} and, if that is not set,
+system environment variable \code{R_FUTURE_PLAN}.
+To reset the strategy back to the default, use \code{plan("default")}.
+}
 \examples{
 a <- b <- c <- NA_real_
 
