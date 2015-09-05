@@ -33,7 +33,7 @@ env:
 
 before_install:
   - echo RENV=$RENV
-  - curl -OL https://raw.githubusercontent.com/HenrikBengtsson/r-builder/master/pkg-build.sh;
+  - curl -OL https://raw.githubusercontent.com/HenrikBengtsson/r-builder/develop/pkg-build.sh;
   - chmod 755 $RENV
   - $RENV bootstrap
   - if [ "BOOTSTRAP_LATEX" == "true" ]; then
