@@ -40,7 +40,6 @@ plan <- local({
       ## Set default plan according to option/sysenv variable?
       strategy <- getOption("future_plan", Sys.getenv("R_FUTURE_PLAN"))
       if (!nzchar(strategy)) strategy <- eager
-      substitute <- FALSE
     }
 
     args <- list(...)
@@ -65,10 +64,17 @@ plan <- local({
     }
 
     if (is.character(strategy)) {
-      if (!exists(strategy, mode="function", envir=parent.frame(), inherits=TRUE)) {
-        stop("No such strategy for futures: ", sQuote(strategy))
+      ## Search attached packages and the 'future' package
+      envirs <- list(parent.frame(), future=getNamespace("future"), NULL)
+      for (envir in envirs) {
+        if (is.null(envir)) {
+          stop("No such strategy for futures: ", sQuote(strategy))
+        }
+        if (exists(strategy, mode="function", envir=envir, inherits=TRUE)) {
+          strategy <- get(strategy, mode="function", envir=envir, inherits=TRUE)
+          break
+        }
       }
-      strategy <- get(strategy, mode="function", envir=parent.frame(), inherits=TRUE)
     }
     if (!is.function(strategy)) {
       stop("Argument 'strategy' must be a string or a function: ", mode(strategy))
