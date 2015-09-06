@@ -14,7 +14,7 @@
 #' @author This \code{mandelbrot()} function was inspired by and
 #' adopted from similar GPL code of Martin Maechler (available
 #' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
-mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=100L, maxIter=200L, tau=2) {
+mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=200L, tau=2) {
   ## Validate arguments
   dx <- diff(xlim)
   dy <- diff(ylim)
@@ -94,16 +94,17 @@ for (ii in seq_along(sizes)) {
   cat(sprintf("Mandelbrot plane #%d of %d ...\n", ii, length(sizes)))
   size <- sizes[ii]
   counts[[ii]] %<=% {
-    cat("Calculating ...")
+    cat(sprintf("Calculating plane #%d of %d ...\n", ii, length(sizes)))
     xlim <- xs[ii] + size/2 * c(-1,1)
     ylim <- ys[ii] + size/2 * c(-1,1)
     fit <- mandelbrot(xlim=xlim, ylim=ylim)
-    cat("\n")
+    cat(sprintf("Calculating plane #%d of %d ... done\n", ii, length(sizes)))
     fit
   }
 }
 
 ## Plot as each plane gets ready
+plot.new()
 split.screen(c(3,3))
 resolved <- logical(length(counts))
 while (!all(resolved)) {
@@ -129,6 +130,8 @@ while (!all(resolved)) {
   ## Wait a bit before checking again
   if (!all(resolved)) Sys.sleep(1.0)
 } # while (...)
+
+close.screen()
 
 
 message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
