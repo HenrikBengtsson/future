@@ -31,6 +31,12 @@ print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
+message("*** plan('unknown strategy')")
+res <- try(plan('unknown strategy'))
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+
 library("future")
 
 message("*** plan() by (lazy) function")
