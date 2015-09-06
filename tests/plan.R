@@ -1,22 +1,26 @@
 message("*** plan() ...")
 oopts <- options(warn=1)
 
+message("*** Set strategy via future::plan(future::lazy)")
 oplan <- future::plan(future::lazy)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
+message("*** Set strategy via future::plan(future::lazy, local=FALSE)")
 oplan <- future::plan(future::lazy, local=FALSE)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
+message("*** Set strategy via future::plan(future::lazy(local=FALSE)")
 oplan <- future::plan(future::lazy(local=FALSE))
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-oplan <- future::plan("eager")
+message("*** Set strategy via future::plan('lazy')")
+oplan <- future::plan("lazy")
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
