@@ -74,7 +74,7 @@ Resolving...
 ```
 
 This works by (i) creating a future and (ii) assigning its value to variable `v` as a _promise_.  Specifically, the expression/value assigned to variable `v` is promised to be evaluated/resolved (no later than) when it is requested.  Promises are built-in constructs of R (see `help(delayedAssign)`).
-
+To get the future of a future variable, use the `futureOf()` function, e.g. `f <- futureOf(v)`.
 
 
 ### Eager, lazy and parallel futures
@@ -266,7 +266,7 @@ _Footnote_: (*) If your system does not support multicore processing, such as Wi
 
 
 ## Contributing
-The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas how to improve the 'future' package, I would love to hear about it.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open contributions and collaborations of any kind.
+The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas how to improve the 'future' package, I would love to hear about it.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs

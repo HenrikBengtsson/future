@@ -17,6 +17,12 @@
 #'
 #' @example incl/plan.R
 #'
+#' @details
+#' The default strategy is \code{\link{eager}}, which can be set by
+#' option \code{future_plan} and, if that is not set,
+#' system environment variable \code{R_FUTURE_PLAN}.
+#' To reset the strategy back to the default, use \code{plan("default")}.
+#'
 #' @seealso
 #' Evaluation functions provided by this package are \code{\link{eager}()},
 #' \code{\link{lazy}()} and \code{\link{multicore}()}.
@@ -28,16 +34,29 @@ plan <- local({
 
   function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
     if (substitute) strategy <- substitute(strategy)
+
+    ## Reset plan?
+    if (identical(strategy, "default")) {
+      ## Set default plan according to option/sysenv variable?
+      strategy <- getOption("future_plan", Sys.getenv("R_FUTURE_PLAN"))
+      if (!nzchar(strategy)) strategy <- eager
+    }
+
     args <- list(...)
 
     ## Return current plan
     if (is.null(strategy)) return(.strategy)
 
-    if (is.symbol(strategy) || is.language(strategy)) {
-      strategy <- as.list(strategy)
-      args <- c(args, strategy[-1])
-      strategy <- eval(strategy[[1L]], envir=parent.frame())
+    if (is.symbol(strategy)) {
+    } else if (is.language(strategy)) {
+      strategyT <- as.list(strategy)
+      isSymbol <- sapply(strategyT, FUN=is.symbol)
+      if (!all(isSymbol)) {
+        args <- c(args, strategyT[-1L])
+        strategy <- strategyT[[1L]]
+      }
     }
+    strategy <- eval(strategy, envir=parent.frame())
 
     if (isTRUE(.call)) {
       .call <- attr(strategy, "call")
@@ -45,10 +64,17 @@ plan <- local({
     }
 
     if (is.character(strategy)) {
-      if (!exists(strategy, mode="function", envir=parent.frame(), inherits=TRUE)) {
-        stop("No such strategy for futures: ", sQuote(strategy))
+      ## Search attached packages and the 'future' package
+      envirs <- list(parent.frame(), future=getNamespace("future"), NULL)
+      for (envir in envirs) {
+        if (is.null(envir)) {
+          stop("No such strategy for futures: ", sQuote(strategy))
+        }
+        if (exists(strategy, mode="function", envir=envir, inherits=TRUE)) {
+          strategy <- get(strategy, mode="function", envir=envir, inherits=TRUE)
+          break
+        }
       }
-      strategy <- get(strategy, mode="function", envir=parent.frame(), inherits=TRUE)
     }
     if (!is.function(strategy)) {
       stop("Argument 'strategy' must be a string or a function: ", mode(strategy))

@@ -81,6 +81,7 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
 
 library("future")
 library("listenv")
+library("graphics")
 
 n <- 9L
 sizes <- 2 * 10^-(0:(n-1))
@@ -93,32 +94,44 @@ for (ii in seq_along(sizes)) {
   cat(sprintf("Mandelbrot plane #%d of %d ...\n", ii, length(sizes)))
   size <- sizes[ii]
   counts[[ii]] %<=% {
-    cat("Calculating ...")
+    cat(sprintf("Calculating plane #%d of %d ...\n", ii, length(sizes)))
     xlim <- xs[ii] + size/2 * c(-1,1)
     ylim <- ys[ii] + size/2 * c(-1,1)
     fit <- mandelbrot(xlim=xlim, ylim=ylim)
-    cat("\n")
+    cat(sprintf("Calculating plane #%d of %d ... done\n", ii, length(sizes)))
     fit
   }
 }
 
-## Plot
-layout(matrix(1:9, nrow=3L, ncol=3L, byrow=TRUE))
-opar <- par(mar=c(0,0,0,0))
-for (ii in seq_along(counts)) {
-  cat(sprintf("Plotting plane #%d of %d ...\n", ii, length(sizes)))
-  img <- structure({
-    x <- counts[[ii]]
-    maxIter <- attr(x, "params")$maxIter
-    img <- hsv(h=x/maxIter, s=1, v=1)
-    img[x == maxIter] <- "#000000"
-    dim(img) <- dim(x)
-    t(img)
-  }, class="raster")
-  plot(img)
-  box(lwd=3)
-}
-par(opar)
+## Plot as each plane gets ready
+if (interactive()) plot.new()
+split.screen(c(3,3))
+resolved <- logical(length(counts))
+while (!all(resolved)) {
+  for (ii in which(!resolved)) {
+    if (!resolved(futureOf(counts[[ii]]))) next
+    cat(sprintf("Plotting plane #%d of %d ...\n", ii, length(sizes)))
+    screen(ii)
+    opar <- par(mar=c(0,0,0,0))
+    img <- structure({
+      x <- counts[[ii]]
+      maxIter <- attr(x, "params")$maxIter
+      img <- hsv(h=x/maxIter, s=1, v=1)
+      img[x == maxIter] <- "#000000"
+      dim(img) <- dim(x)
+      t(img)
+    }, class="raster")
+    plot(img)
+    box(lwd=3)
+    par(opar)
+    resolved[ii] <- TRUE
+  } # for (ii ...)
+
+  ## Wait a bit before checking again
+  if (!all(resolved)) Sys.sleep(1.0)
+} # while (...)
+
+close.screen()
 
 
 message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")

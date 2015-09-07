@@ -27,7 +27,7 @@ env:
   # R versions r-builder should test on (ignored by r-travis)
   matrix:
     - RVERSION=3.1.3
-    - RVERSION=3.2.1
+    - RVERSION=3.2.2
     - RVERSION=devel _R_COVR_=TRUE _R_CHECK_FULL_=TRUE
 
 

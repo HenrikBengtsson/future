@@ -69,5 +69,38 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
+
+## Lazy futures goes hand-in-hand with
+## lazy evaluation of arguments
+plan(lazy)
+
+## A function that may or may not touch it's argument
+foo <- function(a, use=FALSE) {
+  cat("foo() called\\n")
+  if (use) cat("a=", a, "\\n", sep="")
+}
+
+## Create a future
+x \%<=\% { cat("Pow!\\n"); 1 }
+
+## Lazy evaluation where argument is not used
+foo(x, use=FALSE)
+# Outputs:
+# foo() called
+
+## Lazy evaluation where argument is used
+## Hint: 'x' will be resolved
+foo(x, use=TRUE)
+# Outputs:
+# foo() called
+# Pow!
+# a=1
+
+## Lazy evaluation where argument is used (again)
+## Hint: 'x' is already resolved
+foo(x, use=TRUE)
+# Outputs:
+# foo() called
+# a=1
 }
 

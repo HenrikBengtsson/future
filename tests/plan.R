@@ -1,6 +1,43 @@
-library("future")
-
 message("*** plan() ...")
+oopts <- options(warn=1)
+
+message("*** Set strategy via future::plan(future::lazy)")
+oplan <- future::plan(future::lazy)
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+message("*** Set strategy via future::plan(future::lazy, local=FALSE)")
+oplan <- future::plan(future::lazy, local=FALSE)
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+message("*** Set strategy via future::plan(future::lazy(local=FALSE)")
+oplan <- future::plan(future::lazy(local=FALSE))
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+message("*** Set strategy via future::plan('lazy')")
+oplan <- future::plan("lazy")
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+message("*** plan('default')")
+oplan <- future::plan("default")
+print(future::plan())
+future::plan(oplan)
+print(future::plan())
+
+message("*** plan('unknown strategy')")
+res <- try(plan('unknown strategy'))
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+
+library("future")
 
 message("*** plan() by (lazy) function")
 
@@ -129,3 +166,5 @@ stopifnot(c == 6)
 message("*** plan() ... DONE")
 
 plan(eager)
+options(oopts)
+rm(list="oopts")

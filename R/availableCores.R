@@ -35,7 +35,7 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("PBS", "
       ncores <- as.integer(Sys.getenv("PBS_NUM_PPN", NA_character_))
     } else if (method == "mc.cores") {
       ## Number of cores by option defined by 'parallel' package
-      ncores <- as.integer(getOption("mc.cores", NA_integer_))
+      ncores <- as.integer(getOption("mc.cores", NA_integer_)) + 1L
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       ncores <- detectCores()

@@ -1,6 +1,16 @@
 Package: future
 ===============
 
+Version: 0.8.0 [2015-09-06]
+o plan("default") resets to the default strategy, which is
+  synchroneous eager evaluation unless option 'future_plan'
+  or environment variable 'R_FUTURE_PLAN' has been set.
+o availableCores("mc.cores") returns getOption("mc.cores") + 1L,
+  because option 'mc.cores' specifies "allowed number of _additional_
+  R processes" to be used in addition to the main R process.
+o BUG FIX: plan(future::lazy) and similar gave errors.
+
+
 Version: 0.7.0 [2015-07-13]
 o ROBUSTNESS: multicore() blocks until one of the CPU cores
   is available, iff all are currently occupied by other
