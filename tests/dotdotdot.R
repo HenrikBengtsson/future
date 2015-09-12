@@ -37,7 +37,6 @@ sum_fcns$D <- function(x, y) {
 }
 
 
-
 for (strategy in c("eager", "lazy", "multicore")) {
   plan(strategy, substitute=FALSE)
 

@@ -1,0 +1,103 @@
+<%@meta language="R-vignette" content="--------------------------------
+%\VignetteIndexEntry{Futures in R: Common issues with solutions}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{R}
+%\VignetteKeyword{package}
+%\VignetteKeyword{vignette}
+%\VignetteKeyword{future}
+%\VignetteKeyword{promise}
+%\VignetteEngine{R.rsp::rsp}
+%\VignetteTangle{FALSE}
+--------------------------------------------------------------------"%>
+# <%@meta name="title"%>
+
+In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
+
+However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
+
+
+## False globals due to non-standard evaluation
+
+### subset(data, x < 3)
+
+Consider the following use of `subset()`:
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> v <- subset(data, x < 3)$y
+> v
+[1] 1 2
+```
+From a static code inspection point of view, the expression `x < 3` asks for variable `x` to be compared to 3, and there is nothing specifying that `x` is part of `data` and not the global environment.  That `x` is indeed part of the `data` object can only safely be inferred at run time when `subset()` is called.  This is not a problem in the above snipped, but when using futures all global/unknown variables need to be captured when the future is created (it is too late to do it when the future is resolved), e.g.
+```r
+> library(future)
+> plan(lazy)
+> data <- data.frame(x=1:5, y=1:5)
+> v %<=% subset(data, x < 3)$y
+Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
+  Identified a global by static code inspection, but failed to locate the corresponding
+  object in the relevant environments: 'x'
+```
+Above, code inspection of the future expression `subset(data, x < 3)$y` incorrectly identifies `x` as a global variables that needs to be captured ("frozen") for the (lazy) future.  Since no such variable `x` exists, we get an error.
+
+The most clear and backward-compatible solution to this problem is to explicitly specify the context of `x`, i.e.
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> v %<=% subset(data, data$x < 3)$y
+> v
+[1] 1 2
+```
+
+An alternative is to use a dummy variable.  In contrast to the code-inspection algorithm used to identify globals, _we know from reading the documentation_ that `subset()` will look for `x` in the `data` object, not in the parent environments.  Armed with this knowledge, we can trick the [future] package (more precisely the [globals] package) to pickup a dummy variable `x` instead, e.g.
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> x <- NULL ## To please future et al.
+> v %<=% subset(data, x < 3)$y
+> v
+[1] 1 2
+```
+
+
+## Missing or incorrect globals when same name is reused locally
+In plain R, it is straightforward to understand what value is assigned to `x`:
+```r
+> a <- 1
+> x <- { y <- 2*a; a <- 2; a*y }
+> rm(a)
+> x
+[1] 4
+```
+
+If we analogously use a future assignment, we instead get:
+```r
+> library(future)
+> plan(lazy)
+> a <- 1
+> x %<=% { y <- 2*a; a <- 2; a*y }
+> rm(a)
+> x
+Error in eval(expr, envir, enclos) : object 'a' not found
+```
+(For lazy futures it can even be worse because if we don't remove `a` but instead reassign it, say, `a <- 3`, we will get an incorrect value `x == 6`, because `y <- a` is resolved at the time when the lazy future is resolved.)
+
+The reason for this problem is that the static code inspection (done by the [globals] and [codetools] packages) fail to identify that the first occurance of `a` is a global variable whereas the second occurance creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  The rule of thumb is that the order of expression within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
+
+The solution to this problem to avoid using local variables with the same name as global ones.  For example,
+```r
+> library(future)
+> plan(lazy)
+> a <- 1
+> x %<=% { y <- 2*a; b <- 2; b*y }
+> rm(a)
+> x
+[1] 4
+```
+
+
+[BatchJobs]: http://cran.r-project.org/package=BatchJobs
+[future]: http://cran.r-project.org/package=future
+[globals]: http://cran.r-project.org/package=globals
+[listenv]: http://cran.r-project.org/package=listenv
+[async]: https://github.com/HenrikBengtsson/async/
+
+---
+Copyright Henrik Bengtsson, 2015
