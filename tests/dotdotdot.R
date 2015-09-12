@@ -29,6 +29,15 @@ sum_fcns[[3]] <- function(x, ...) {
   sumt(x)
 }
 
+sum_fcns[[4]] <- function(x, ...) {
+  sumt <- function(...) {
+    message("Arguments '...' exists: ", exists("...", inherits=TRUE))
+    y %<=% { sum(...) }
+    y
+  }
+  sumt(x, ...)
+}
+
 
 for (strategy in c("eager", "lazy", "multicore")) {
   plan(strategy, substitute=FALSE)
