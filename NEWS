@@ -1,6 +1,13 @@
 Package: future
 ===============
 
+Version: 0.8.0-9000 [2015-09-12]
+o lazy(sum(x, ...), globals=TRUE) now properly passes `...`
+  from the function from which the future is setup.  If not
+  called within a function or called within a function without
+  `...` arguments, an informative error message is thrown.
+
+
 Version: 0.8.0 [2015-09-06]
 o plan("default") resets to the default strategy, which is
   synchroneous eager evaluation unless option 'future_plan'
