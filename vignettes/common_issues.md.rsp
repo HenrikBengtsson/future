@@ -57,7 +57,9 @@ An alternative is to use a dummy variable.  In contrast to the code-inspection a
 ```
 
 
-## Missing or incorrect globals when same name is reused locally
+## Missing or incorrect globals
+
+### Global variables has the same name as a local one
 In plain R, it is straightforward to understand what value is assigned to `x`:
 ```r
 > a <- 1
@@ -79,7 +81,7 @@ Error in eval(expr, envir, enclos) : object 'a' not found
 ```
 (For lazy futures it can even be worse because if we don't remove `a` but instead reassign it, say, `a <- 3`, we will get an incorrect value `x == 6`, because `y <- a` is resolved at the time when the lazy future is resolved.)
 
-The reason for this problem is that the static code inspection (done by the [globals] and [codetools] packages) fail to identify that the first occurance of `a` is a global variable whereas the second occurance creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  The rule of thumb is that the order of expression within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
+The reason for this problem is that the static code inspection fails to identify that the first occurance of `a` is a global variable whereas the second occurance creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  This is a limitation of the [globals] and [codetools] packages.  In order to avoid this problem, it useful to understand that from the code inspector's point of view the order of expressions within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
 
 The solution to this problem to avoid using local variables with the same name as global ones.  For example,
 ```r

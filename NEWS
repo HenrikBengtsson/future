@@ -1,11 +1,12 @@
 Package: future
 ===============
 
-Version: 0.8.0-9000 [2015-09-12]
+Version: 0.8.0-9000 [2015-09-23]
 o lazy(sum(x, ...), globals=TRUE) now properly passes `...`
   from the function from which the future is setup.  If not
   called within a function or called within a function without
   `...` arguments, an informative error message is thrown.
+o Added vignette 'Futures in R: Common issues with solutions'.
 
 
 Version: 0.8.0 [2015-09-06]
