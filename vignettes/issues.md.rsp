@@ -15,6 +15,8 @@ In the ideal case all it takes to start using futures in R is to replace any sta
 
 However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
+_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed.
+
 
 ## False globals due to non-standard evaluation
 
