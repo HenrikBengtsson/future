@@ -66,7 +66,7 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("PBS", "
 #' @keywords internal
 usedCores <- function() {
   ## Number of unresolved multicore futures
-  futures <- MulticoreFutureRegistry("list")
+  futures <- FutureRegistry("multicore", action="list")
   nfutures <- length(futures)
   ncores <- nfutures
 
