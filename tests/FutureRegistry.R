@@ -7,33 +7,34 @@ FutureRegistry <- future:::FutureRegistry
 
 message("*** FutureRegistry() ...")
 
-message("*** FutureRegistry('add') ...")
-future <- Future({ 1 }, substitute=TRUE)
-print(future)
+for (where in c("multicore", "rscript")) {
+  message(sprintf("*** FutureRegistry('%s', 'add') ...", where))
+  future <- Future({ 1 }, substitute=TRUE)
+  print(future)
 
-FutureRegistry("multicore", action="add", future=future)
-
-
-message("*** FutureRegistry('list') ...")
-futures <- FutureRegistry("multicore", action="list")
-print(futures)
+  FutureRegistry(where, action="add", future=future)
 
 
-message("*** FutureRegistry('remove') ...")
-FutureRegistry("multicore", action="remove", future=future)
+  message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
+  futures <- FutureRegistry(where, action="list")
+  print(futures)
 
 
-message("*** FutureRegistry('list') ...")
-futures <- FutureRegistry("multicore", action="list")
-print(futures)
+  message(sprintf("*** FutureRegistry('%s', 'remove') ...", where))
+  FutureRegistry(where, action="remove", future=future)
 
 
-message("*** FutureRegistry('collect') ...")
-FutureRegistry("multicore", action="collect")
+  message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
+  futures <- FutureRegistry(where, action="list")
+  print(futures)
 
-futures <- FutureRegistry("multicore", action="list")
-print(futures)
 
+  message(sprintf("*** FutureRegistry('%s', 'collect') ...", where))
+  FutureRegistry(where, action="collect")
+
+  futures <- FutureRegistry(where, action="list")
+  print(futures)
+}
 
 message("*** FutureRegistry() ... DONE")
 
