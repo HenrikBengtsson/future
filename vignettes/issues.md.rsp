@@ -11,7 +11,7 @@
 --------------------------------------------------------------------"%>
 # <%@meta name="title"%>
 
-In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
+In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`) and make sure your right-hand side (RHS) expression is within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
 However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
@@ -57,6 +57,39 @@ An alternative is to use a dummy variable.  In contrast to the code-inspection a
 > v
 [1] 1 2
 ```
+
+### ggplot2
+Another common use case for non-standard evaluation is when creating ggplot2 figures.  For instance, in
+```r
+> library(ggplot2)
+> p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+> p
+```
+fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following errror:
+```r
+> library(ggplot2)
+> library(future)
+> plan(lazy)
+> p %<=% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
+Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "re
+turn",  :
+  Identified a global by static code inspection, but failed to locate the corres
+ponding object in the relevant environments: 'wt'
+```
+A few comments are needed here.  First of all, because `%<=%` has higher priority than `+`, we need to place all of the ggplot2 expression within curly brackets, otherwise we get an error.  Second, the reason for only `wt` being listed as a missing global variable and not `mpg` is because the latter is (incorrectly) located to be `ggplot2::mpg`.
+
+One workaround is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.  An alternative workaround is to make use of dummy variables `wt` and `mpg`, i.e.
+```r
+> library(ggplot2)
+> library(future)
+> plan(lazy)
+> p %<=% {
++   wt <- mpg <- NULL
++   ggplot(mtcars, aes(wt, mpg)) + geom_point()
++ }
+> p
+```
+By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
 
 
 ## Missing or incorrect globals
