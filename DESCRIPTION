@@ -3,7 +3,7 @@ Version: 0.8.0-9000
 Title: A Future API for R
 Imports:
   listenv,
-  globals
+  globals (>= 0.4.0)
 Suggests:
   parallel,
   R.rsp
