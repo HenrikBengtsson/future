@@ -15,7 +15,7 @@ In the ideal case all it takes to start using futures in R is to replace any sta
 
 However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
-_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed.
+_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
 
 ## False globals due to non-standard evaluation
@@ -67,22 +67,23 @@ Another common use case for non-standard evaluation is when creating ggplot2 fig
 ```
 fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following errror:
 ```r
-> library(ggplot2)
 > library(future)
 > plan(lazy)
+> library(ggplot2)
 > p %<=% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
-Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "re
-turn",  :
-  Identified a global by static code inspection, but failed to locate the corres
-ponding object in the relevant environments: 'wt'
+Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
+  Identified a global by static code inspection, but failed to locate the corresponding
+  object in the relevant environments: 'wt'
 ```
 A few comments are needed here.  First of all, because `%<=%` has higher priority than `+`, we need to place all of the ggplot2 expression within curly brackets, otherwise we get an error.  Second, the reason for only `wt` being listed as a missing global variable and not `mpg` is because the latter is (incorrectly) located to be `ggplot2::mpg`.
 
-One workaround is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.  An alternative workaround is to make use of dummy variables `wt` and `mpg`, i.e.
+One workaround is to make use of the `*_string()` functions of ggplot2, e.g.
 ```r
-> library(ggplot2)
-> library(future)
-> plan(lazy)
+> p %<=% { ggplot(mtcars, aes_string('wt', 'mpg')) + geom_point() }
+> p
+```
+Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.  A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
+```r
 > p %<=% {
 +   wt <- mpg <- NULL
 +   ggplot(mtcars, aes(wt, mpg)) + geom_point()
