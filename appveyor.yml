@@ -26,13 +26,7 @@ install:
 
 build_script:
   - echo Current directory=%CD%
-
-
-
-  - travis-tool.sh install_r R.rsp
-
   - travis-tool.sh install_r globals listenv
-
   - travis-tool.sh install_r R.rsp
 
 test_script:
@@ -56,3 +50,7 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
+
+on_failure:
+  - 7z a failure.zip *.Rcheck\*
+  - appveyor PushArtifact failure.zip
