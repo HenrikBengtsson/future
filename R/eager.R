@@ -11,11 +11,10 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param globals If TRUE, global objects are identified and located
-#' at the point of time when the future is created and before it is
-#' resolved.  If some globals cannot be located, an informative error
-#' is generated, similar to how it is done with, say, \link{lazy}
-#' futures.
+#' @param globals If TRUE, global objects are validated at the point
+#' in time when the future is created (always before it is resolved),
+#' that is, they identified and located.  If some globals fail to be
+#' located, an informative error is generated.
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
@@ -41,7 +40,7 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, lo
     stop("Non-supported call to eager(): Argument 'globals' must be FALSE whenever 'local' is FALSE. Eager future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time (globals=FALSE).")
   }
 
-  ## Resolve globals at this point in time?  That is, validate them.
+  ## Validate globals at this point in time?
   if (globals) {
     exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression)
   }

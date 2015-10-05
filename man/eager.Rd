@@ -16,11 +16,10 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{If TRUE, global objects are identified and located
-at the point of time when the future is created and before it is
-resolved.  If some globals cannot be located, an informative error
-is generated, similar to how it is done with, say, \link{lazy}
-futures.}
+\item{globals}{If TRUE, global objects are validated at the point
+in time when the future is created (always before it is resolved),
+that is, they identified and located.  If some globals fail to be
+located, an informative error is generated.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

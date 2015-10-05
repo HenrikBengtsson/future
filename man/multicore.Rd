@@ -5,7 +5,7 @@
 \title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE,
-  maxCores = availableCores(), ...)
+  globals = FALSE, maxCores = availableCores(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -15,6 +15,11 @@ is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{If TRUE, global objects are validated at the point
+in time when the future is created (always before it is resolved),
+that is, they identified and located.  If some globals fail to be
+located, an informative error is generated.}
 
 \item{maxCores}{The maximum number of CPU cores that can
 be active at the same time before blocking.}
