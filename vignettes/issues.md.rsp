@@ -41,6 +41,7 @@ Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "re
   object in the relevant environments: 'x'
 ```
 Above, code inspection of the future expression `subset(data, x < 3)$y` incorrectly identifies `x` as a global variables that needs to be captured ("frozen") for the (lazy) future.  Since no such variable `x` exists, we get an error.
+The same error would be reported when using `plan(eager, globals=TRUE)` or `plan(multicore, globals=TRUE)`, which validates globals _before_ the future is created.
 
 The most clear and backward-compatible solution to this problem is to explicitly specify the context of `x`, i.e.
 ```r
