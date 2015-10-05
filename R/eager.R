@@ -36,9 +36,6 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, lo
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   local <- as.logical(local)
-  if (!local && globals) {
-    stop("Non-supported call to eager(): Argument 'globals' must be FALSE whenever 'local' is FALSE. Eager future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time (globals=FALSE).")
-  }
 
   ## Validate globals at this point in time?
   if (globals) {
