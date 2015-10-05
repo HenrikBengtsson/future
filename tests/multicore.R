@@ -8,7 +8,7 @@ plan(multicore)
 message("*** multicore() ...")
 
 if (!supportsMulticore()) {
-  message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchroneous lazy futures", .Platform$OS))
+  message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchroneous eager futures", .Platform$OS))
 }
 
 message("*** multicore() without globals")
