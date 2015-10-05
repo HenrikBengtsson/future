@@ -46,7 +46,7 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
   }
 
 
-  ## Resolve futures at this point in time?
+  ## Resolve globals at this point in time?
   if (globals) {
     exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression)
   }
