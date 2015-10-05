@@ -44,7 +44,7 @@ run.MulticoreFuture <- function(future, ...) {
 
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 
-  requestCore(await=function() FutureRegistry("multicore", action="collect"))
+  requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
 
   future$state <- 'running'
 

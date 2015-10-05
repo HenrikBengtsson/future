@@ -8,7 +8,7 @@ FutureRegistry <- local({
     NA_integer_
   }
 
-  function(where, action=c("add", "remove", "collect", "list"), future=NULL, ...) {
+  function(where, action=c("add", "remove", "list", "collect-first"), future=NULL, ...) {
     futures <- db[[where]]
 
     ## Automatically create?
@@ -31,11 +31,24 @@ FutureRegistry <- local({
       }
       futures[[idx]] <- NULL
       db[[where]] <<- futures
-    } else if (action == "collect") {
+    } else if (action == "collect-first") {
       for (ii in seq_along(futures)) {
         future <- futures[[ii]]
         if (resolved(future)) {
+	  ## (a) Let future cleanup after itself, iff needed
+	  ##     This may result in a call to FutureRegistry(..., action="remove")
 	  value(future)
+
+          ## (b) Make sure future is removed from registry, unless
+	  ##     already done via above value() call
+          futures <- db[[where]]
+          idx <- indexOf(futures, future)
+	  if (!is.na(idx)) {
+	    futures[[idx]] <- NULL
+            db[[where]] <<- futures
+	  }
+
+          ## (c) Collect only the first resolved future
 	  break
 	}
       }

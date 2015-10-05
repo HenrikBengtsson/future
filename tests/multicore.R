@@ -36,6 +36,7 @@ f <- multicore({
 }, globals=globals)
 print(f)
 
+
 ## A multicore future is evaluated in a separated
 ## forked process.  Changing the value of a global
 ## variable should not affect the result of the
@@ -49,7 +50,12 @@ stopifnot(v == 0)
 
 message(sprintf("*** multicore(..., globals=%s) with globals and blocking", globals))
 x <- listenv()
-for (ii in 1:4) x[[ii]] <- multicore({ ii }, globals=globals)
+for (ii in 1:4) {
+  message(sprintf(" - Creating multicore future #%d ...", ii))
+  x[[ii]] <- multicore({ ii }, globals=globals)
+}
+message(sprintf(" - Resolving %d multicore futures", length(x)))
+if ("covr" %in% loadedNamespaces()) v <- 1:4 else ## WORKAROUND
 v <- sapply(x, FUN=value)
 stopifnot(all(v == 1:4))
 

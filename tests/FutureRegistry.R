@@ -9,8 +9,14 @@ FutureRegistry <- future:::FutureRegistry
 message("*** FutureRegistry() ...")
 
 for (where in c("multicore", "rscript")) {
+  message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
+  futures <- FutureRegistry(where, action="list")
+  print(futures)
+  stopifnot(length(futures) == 0L)
+
+
   message(sprintf("*** FutureRegistry('%s', 'add') ...", where))
-  f <- future({ 1 }, substitute=TRUE)
+  f <- future({ 1 })
   print(f)
   FutureRegistry(where, action="add", future=f)
 
@@ -18,7 +24,8 @@ for (where in c("multicore", "rscript")) {
   message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
   futures <- FutureRegistry(where, action="list")
   print(futures)
-
+  stopifnot(length(futures) == 1L)
+  
 
   message(sprintf("*** FutureRegistry('%s', 'remove') ...", where))
   FutureRegistry(where, action="remove", future=f)
@@ -27,19 +34,27 @@ for (where in c("multicore", "rscript")) {
   message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
   futures <- FutureRegistry(where, action="list")
   print(futures)
+  stopifnot(length(futures) == 0L)
 
 
   message(sprintf("*** FutureRegistry('%s', 'add') ...", where))
-  f <- eager({ 2 })
+  f <- future({ 2 })
   print(f)
   FutureRegistry(where, action="add", future=f)
 
 
-  message(sprintf("*** FutureRegistry('%s', 'collect') ...", where))
-  FutureRegistry(where, action="collect")
+  message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
+  futures <- FutureRegistry(where, action="list")
+  print(futures)
+  stopifnot(length(futures) == 1L)
+
+
+  message(sprintf("*** FutureRegistry('%s', 'collect-first') ...", where))
+  FutureRegistry(where, action="collect-first")
 
   futures <- FutureRegistry(where, action="list")
   print(futures)
+  stopifnot(length(futures) < 1L)
 }
 
 message("*** FutureRegistry() ... DONE")
