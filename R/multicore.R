@@ -9,6 +9,10 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param globals If TRUE, global objects are validated at the point
+#' in time when the future is created (always before it is resolved),
+#' that is, they identified and located.  If some globals fail to be
+#' located, an informative error is generated.
 #' @param maxCores The maximum number of CPU cores that can
 #' be active at the same time before blocking.
 #' @param ... Not used.
@@ -43,15 +47,21 @@
 #' futures are supported or not.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
+  globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
   stopifnot(is.finite(maxCores), maxCores >= 1L)
 
   ## Fall back to lazy futures, iff multicore is not suported
   if (maxCores == 1L) {
     ## covr: skip=1
-    return(eager(expr, envir=envir, substitute=FALSE, local=TRUE))
+    return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
+  }
+
+  ## Validate globals at this point in time?
+  if (globals) {
+    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression)
   }
 
   oopts <- options(mc.cores=maxCores)

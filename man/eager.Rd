@@ -4,7 +4,8 @@
 \alias{eager}
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
-eager(expr, envir = parent.frame(), substitute = TRUE, local = TRUE, ...)
+eager(expr, envir = parent.frame(), substitute = TRUE, globals = FALSE,
+  local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -14,6 +15,11 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{If TRUE, global objects are validated at the point
+in time when the future is created (always before it is resolved),
+that is, they identified and located.  If some globals fail to be
+located, an informative error is generated.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

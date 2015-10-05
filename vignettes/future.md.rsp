@@ -92,7 +92,7 @@ Since an asynchronous strategy is more likely to be used in practice, the built-
 ```
 This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.
 
-If needed, it is possible to evaluate both lazy and eager futures in the calling environment (but then global variables cannot be "frozen").  For instance,
+If needed (but not recommended), it is possible to evaluate both lazy and eager futures in the calling environment (but then global variables cannot be "frozen").  For instance,
 ```r
 > plan(lazy, local=FALSE, globals=FALSE)
 > a <- 2.71
@@ -236,7 +236,11 @@ Error in eval(expr, envir, enclos) : Whoops!
 
 
 ## Globals
-The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.  Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).  Due to how multicore processing is done, globals are also automatically taken care of when you are using multicore futures.
+The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.
+
+Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  Similarly, because multicore processing is done via forks, globals are also automatically taken care of when you are using multicore futures.
+
+Furthermore, in order to provide a more consistent behavior across different types of futures, both eager and multicore futures can be setup to validate global variables at the point in time when the future is created by specifying `globals=TRUE`, i.e. `plan(eager, globals=TRUE)` and `plan(multicore, globals=TRUE)`.  This will give early informative error messages on missing globals (similarly to how it works for lazy futures).  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
 
 _Footnote_: (*) The task of identifying globals is a challenging problem and with asynchronous/concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other packages implementing futures with an automatic service for dealing with globals.  This may change in the future (yes, this pun was also intended).
 
@@ -248,7 +252,7 @@ library(future)
 plan(eager)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-which closely immitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
+which closely imitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
 ```r
 plan(lazy)
 demo("mandelbrot", package="future", ask=FALSE)

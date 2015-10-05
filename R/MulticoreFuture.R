@@ -31,46 +31,6 @@ importMulticore <- function(name=NULL) {
 }
 
 
-MulticoreFutureRegistry <- local({
-  futures <- list()
-
-  indexOf <- function(future) {
-    for (ii in seq_along(futures)) {
-      if (identical(future, futures[[ii]])) return(ii)
-    }
-    NA_integer_
-  }
-  
-  function(action=c("add", "remove", "collect", "list"), future=NULL, ...) {
-    if (action == "add") {
-      idx <- indexOf(future)
-      if (!is.na(idx)) {
-        stop(sprintf("Cannot add to registry. %s is already registered.", class(future)[1]))
-      }
-      futures[[length(futures)+1L]] <<- future
-    } else if (action == "remove") {
-      idx <- indexOf(future)
-      if (is.na(idx)) {
-        stop(sprintf("Cannot remove from registry. %s not registered.", class(future)[1]))
-      }
-      futures[[idx]] <<- NULL
-    } else if (action == "collect") {
-      for (ii in seq_along(futures)) {
-        future <- futures[[ii]]
-        if (resolved(future)) {
-	  value(future)
-	  break
-	}
-      }
-    } else if (action == "list") {
-      return(futures)
-    } else {
-      stop("INTERNAL ERROR: Unknown action: ", action)
-    }
-  }
-})
-
-
 run <- function(...) UseMethod("run")
 
 run.MulticoreFuture <- function(future, ...) {
@@ -79,17 +39,17 @@ run.MulticoreFuture <- function(future, ...) {
   envir <- future$envir
 
   ## Inject plan(eager) to prevent that nested multicore futures
-  ## are spawned of recursively by mistake.
+  ## are spawned off recursively by mistake.
   expr <- substitute({ plan(eager); e }, list(e=expr))
 
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 
-  requestCore(await=function() MulticoreFutureRegistry("collect"))
+  requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
 
   future$state <- 'running'
 
   ## Add to registry
-  MulticoreFutureRegistry("add", future=future)
+  FutureRegistry("multicore", action="add", future=future)
 
   job <- eval(call, envir=envir)
   future$job <- job
@@ -140,7 +100,7 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
   res <- NULL ## Not needed anymore
 
   ## Remove from registry
-  MulticoreFutureRegistry("remove", future=future)
+  FutureRegistry("multicore", action="remove", future=future)
 
   NextMethod("value")
 }

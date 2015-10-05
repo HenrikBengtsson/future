@@ -6,11 +6,13 @@ plan(eager)
 
 message("*** eager() ...")
 
-message("*** eager() without globals")
+for (globals in c(FALSE, TRUE)) {
+
+message(sprintf("*** eager(..., globals=%s) without globals", globals))
 
 f <- eager({
   42L
-})
+}, globals=globals)
 stopifnot(inherits(f, "EagerFuture"))
 
 print(resolved(f))
@@ -21,14 +23,14 @@ print(y)
 stopifnot(y == 42L)
 
 
-message("*** eager() with globals")
+message(sprintf("*** eager(..., globals=%s) with globals", globals))
 ## A global variable
 a <- 0
 f <- eager({
   b <- 3
   c <- 2
   a * b * c
-})
+}, globals=globals)
 print(f)
 
 ## Since 'a' is a global variable in _eager_ future 'f',
@@ -40,11 +42,11 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** eager() and errors")
+message(sprintf("*** eager(..., globals=%s) and errors", globals))
 f <- eager({
   stop("Whoops!")
   1
-})
+}, globals=globals)
 print(f)
 stopifnot(inherits(f, "EagerFuture"))
 
@@ -57,6 +59,7 @@ res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
+} # for (globals ...)
 
 message("*** eager() ... DONE")
 

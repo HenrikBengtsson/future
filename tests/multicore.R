@@ -8,14 +8,16 @@ plan(multicore)
 message("*** multicore() ...")
 
 if (!supportsMulticore()) {
-  message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchroneous lazy futures", .Platform$OS))
+  message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchroneous eager futures", .Platform$OS))
 }
 
-message("*** multicore() without globals")
+for (globals in c(FALSE, TRUE)) {
+
+message(sprintf("*** multicore(..., globals=%s) without globals", globals))
 
 f <- multicore({
   42L
-})
+}, globals=globals)
 stopifnot(inherits(f, "MulticoreFuture") || (!supportsMulticore() && inherits(f, "Future")))
 
 print(resolved(f))
@@ -24,15 +26,16 @@ print(y)
 stopifnot(y == 42L)
 
 
-message("*** multicore() with globals")
+message(sprintf("*** multicore(..., globals=%s) with globals", globals))
 ## A global variable
 a <- 0
 f <- multicore({
   b <- 3
   c <- 2
   a * b * c
-})
+}, globals=globals)
 print(f)
+
 
 ## A multicore future is evaluated in a separated
 ## forked process.  Changing the value of a global
@@ -45,18 +48,23 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** multicore() with globals and blocking")
+message(sprintf("*** multicore(..., globals=%s) with globals and blocking", globals))
 x <- listenv()
-for (ii in 1:4) x[[ii]] <- multicore({ ii })
+for (ii in 1:4) {
+  message(sprintf(" - Creating multicore future #%d ...", ii))
+  x[[ii]] <- multicore({ ii }, globals=globals)
+}
+message(sprintf(" - Resolving %d multicore futures", length(x)))
+if ("covr" %in% loadedNamespaces()) v <- 1:4 else ## WORKAROUND
 v <- sapply(x, FUN=value)
 stopifnot(all(v == 1:4))
 
 
-message("*** multicore() and errors")
+message(sprintf("*** multicore(..., globals=%s) and errors", globals))
 f <- multicore({
   stop("Whoops!")
   1
-})
+}, globals=globals)
 print(f)
 v <- value(f, onError="return")
 print(v)
@@ -70,6 +78,9 @@ stopifnot(inherits(res, "try-error"))
 res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
+
+} # for (globals ...)
+
 
 message("*** multicore() ... DONE")
 

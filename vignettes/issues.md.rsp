@@ -1,0 +1,160 @@
+<%@meta language="R-vignette" content="--------------------------------
+%\VignetteIndexEntry{Futures in R: Common issues with solutions}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{R}
+%\VignetteKeyword{package}
+%\VignetteKeyword{vignette}
+%\VignetteKeyword{future}
+%\VignetteKeyword{promise}
+%\VignetteEngine{R.rsp::rsp}
+%\VignetteTangle{FALSE}
+--------------------------------------------------------------------"%>
+# <%@meta name="title"%>
+
+In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`) and make sure your right-hand side (RHS) expression is within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
+
+However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
+
+_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
+
+
+
+## False globals due to non-standard evaluation
+
+### subset(data, x < 3)
+
+Consider the following use of `subset()`:
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> v <- subset(data, x < 3)$y
+> v
+[1] 1 2
+```
+From a static code inspection point of view, the expression `x < 3` asks for variable `x` to be compared to 3, and there is nothing specifying that `x` is part of `data` and not the global environment.  That `x` is indeed part of the `data` object can only safely be inferred at run time when `subset()` is called.  This is not a problem in the above snipped, but when using futures all global/unknown variables need to be captured when the future is created (it is too late to do it when the future is resolved), e.g.
+```r
+> library(future)
+> plan(lazy)
+> data <- data.frame(x=1:5, y=1:5)
+> v %<=% subset(data, x < 3)$y
+Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
+  Identified a global by static code inspection, but failed to locate the corresponding
+  object in the relevant environments: 'x'
+```
+Above, code inspection of the future expression `subset(data, x < 3)$y` incorrectly identifies `x` as a global variables that needs to be captured ("frozen") for the (lazy) future.  Since no such variable `x` exists, we get an error.
+The same error would be reported when using `plan(eager, globals=TRUE)` or `plan(multicore, globals=TRUE)`, which validates globals _before_ the future is created.
+
+The most clear and backward-compatible solution to this problem is to explicitly specify the context of `x`, i.e.
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> v %<=% subset(data, data$x < 3)$y
+> v
+[1] 1 2
+```
+
+An alternative is to use a dummy variable.  In contrast to the code-inspection algorithm used to identify globals, _we know from reading the documentation_ that `subset()` will look for `x` in the `data` object, not in the parent environments.  Armed with this knowledge, we can trick the [future] package (more precisely the [globals] package) to pickup a dummy variable `x` instead, e.g.
+```r
+> data <- data.frame(x=1:5, y=1:5)
+> x <- NULL ## To please future et al.
+> v %<=% subset(data, x < 3)$y
+> v
+[1] 1 2
+```
+
+### ggplot2
+Another common use case for non-standard evaluation is when creating ggplot2 figures.  For instance, in
+```r
+> library(ggplot2)
+> p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
+> p
+```
+fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
+```r
+> library(future)
+> plan(lazy)
+> library(ggplot2)
+> p %<=% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
+Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
+  Identified a global by static code inspection, but failed to locate the corresponding
+  object in the relevant environments: 'wt'
+```
+A few comments are needed here.  First of all, because `%<=%` has higher precedence than `+`, we need to place all of the ggplot2 expression within curly brackets, otherwise we get an error.  Second, the reason for only `wt` being listed as a missing global variable and not `mpg` is because the latter is (incorrectly) located to be `ggplot2::mpg`.
+
+One workaround is to make use of the `*_string()` functions of ggplot2, e.g.
+```r
+> p %<=% { ggplot(mtcars, aes_string('wt', 'mpg')) + geom_point() }
+> p
+```
+Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.  A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
+```r
+> p %<=% {
++   wt <- mpg <- NULL
++   ggplot(mtcars, aes(wt, mpg)) + geom_point()
++ }
+> p
+```
+By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
+
+
+## Missing or incorrect globals
+
+### Global variables has the same name as a local one
+In plain R, it is straightforward to understand what value is assigned to `x`:
+```r
+> a <- 1
+> x <- { y <- 2*a; a <- 2; a*y }
+> rm(a)
+> x
+[1] 4
+```
+
+If we analogously use a future assignment, we instead get:
+```r
+> library(future)
+> plan(lazy)
+> a <- 1
+> x %<=% { y <- 2*a; a <- 2; a*y }
+> rm(a)
+> x
+Error in eval(expr, envir, enclos) : object 'a' not found
+```
+(For lazy futures it can even be worse because if we don't remove `a` but instead reassign it, say, `a <- 3`, we will get an incorrect value `x == 6`, because `y <- a` is resolved at the time when the lazy future is resolved.)
+
+The reason for this problem is that the static code inspection fails to identify that the first occurrence of `a` is a global variable whereas the second occurrence creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  This is a limitation of the [globals] and [codetools] packages.  In order to avoid this problem, it useful to understand that from the code inspector's point of view the order of expressions within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
+
+The solution to this problem to avoid using local variables with the same name as global ones.  For example,
+```r
+> library(future)
+> plan(lazy)
+> a <- 1
+> x %<=% { y <- 2*a; b <- 2; b*y }
+> rm(a)
+> x
+[1] 4
+```
+
+
+## Error "non-numeric argument to binary operator"
+
+The future assignment operator `%<=%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
+```r
+> x %<=% 2 * runif(1)
+Error in x %<=% 2 * runif(1) : non-numeric argument to binary operator
+```
+What effectively is happening here is that because of the higher priority of `%<=%`, we first create a future `x %<=% 2` and then we try to multiply it (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need need to put the future expression within curly brackets;
+```r
+> x %<=% { 2 * runif(1) }
+> x
+[1] 1.030209
+```
+Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
+
+
+
+[BatchJobs]: http://cran.r-project.org/package=BatchJobs
+[future]: http://cran.r-project.org/package=future
+[globals]: http://cran.r-project.org/package=globals
+[listenv]: http://cran.r-project.org/package=listenv
+[async]: https://github.com/HenrikBengtsson/async/
+
+---
+Copyright Henrik Bengtsson, 2015
