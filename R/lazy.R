@@ -30,7 +30,6 @@
 #' \code{\link{future}()} and \code{\link{\%<=\%}} will create
 #' \emph{lazy futures}.
 #'
-#' @importFrom globals globalsOf packagesOf cleanup
 #' @export
 lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
@@ -49,54 +48,7 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
 
   ## Resolve futures at this point in time?
   if (globals) {
-    globals <- globalsOf(expr, envir=envir, tweak=tweakExpression,
-                         dotdotdot="return",
-                         primitive=FALSE, base=FALSE, unlist=TRUE)
-
-    ## Tweak expression to be called with global ... arguments?
-    if (inherits(globals$`...`, "DotDotDotList")) {
-      ## Missing global '...'?
-      if (!is.list(globals$`...`)) {
-        stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", paste(deparse(expr), collapse="; "))
-      }
-
-      globals$`<future-call-arguments>` <- globals$`...`
-      globals$`...` <- NULL
-
-      ## To please R CMD check
-      a <- `<future-call-arguments>` <- NULL
-      rm(list=c("a", "<future-call-arguments>"))
-
-      expr <- substitute({
-        do.call(function(...) a, args=`<future-call-arguments>`)
-      }, list(a=expr))
-    }
-
-    if (length(globals) > 0L) {
-      ## Append packages associated with globals
-      pkgs <- packagesOf(globals)
-
-      ## Drop all globals which are already part of one of
-      ## the packages in 'pkgs'.  They will be available
-      ## when those packages are attached.
-      pkgsG <- sapply(globals, FUN=function(obj) {
-        environmentName(environment(obj))
-      })
-      keep <- !is.element(pkgsG, pkgs)
-      globals <- globals[keep]
-      pkgsG <- keep <- NULL ## Not needed anymore
-
-      ## Now drop globals that are primitive functions or
-      ## that are part of the base packages, which now are
-      ## part of 'pkgs' if needed.
-      globals <- cleanup(globals)
-    }
-
-    ## Inject global objects?
-    for (name in names(globals)) {
-      envir[[name]] <- globals[[name]]
-    }
-    globals <- NULL ## Not needed anymore
+    exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression)
   }
 
   LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
