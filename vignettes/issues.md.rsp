@@ -67,7 +67,7 @@ Another common use case for non-standard evaluation is when creating ggplot2 fig
 > p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
 > p
 ```
-fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following errror:
+fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
 ```r
 > library(future)
 > plan(lazy)
@@ -119,7 +119,7 @@ Error in eval(expr, envir, enclos) : object 'a' not found
 ```
 (For lazy futures it can even be worse because if we don't remove `a` but instead reassign it, say, `a <- 3`, we will get an incorrect value `x == 6`, because `y <- a` is resolved at the time when the lazy future is resolved.)
 
-The reason for this problem is that the static code inspection fails to identify that the first occurance of `a` is a global variable whereas the second occurance creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  This is a limitation of the [globals] and [codetools] packages.  In order to avoid this problem, it useful to understand that from the code inspector's point of view the order of expressions within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
+The reason for this problem is that the static code inspection fails to identify that the first occurrence of `a` is a global variable whereas the second occurrence creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  This is a limitation of the [globals] and [codetools] packages.  In order to avoid this problem, it useful to understand that from the code inspector's point of view the order of expressions within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
 
 The solution to this problem to avoid using local variables with the same name as global ones.  For example,
 ```r
@@ -146,7 +146,7 @@ What effectively is happening here is that because of the higher priority of `%<
 > x
 [1] 1.030209
 ```
-Parentheses will also do.  For details on precendence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
+Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
 
 
 

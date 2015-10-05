@@ -252,7 +252,7 @@ library(future)
 plan(eager)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-which closely immitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
+which closely imitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
 ```r
 plan(lazy)
 demo("mandelbrot", package="future", ask=FALSE)
