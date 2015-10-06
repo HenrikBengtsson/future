@@ -1,5 +1,5 @@
 Package: future
-Version: 0.8.1
+Version: 0.8.1-9000
 Title: A Future API for R
 Imports:
   listenv,
