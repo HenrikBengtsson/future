@@ -1,10 +1,11 @@
 Package: future
 ===============
 
-Version: 0.8.1-9000 [2015-10-05]
-o ROBUSTNESS: The future package had to be attached or
+Version: 0.8.1-9000 [2015-10-09]
+o BUG FIX: The future package had to be attached or
   future::future() had to be imported, if %<=% was used 
-  internally in another package.
+  internally in another package.  Similarly, it also had
+  to be attached if multicore futures where used.
 
 
 Version: 0.8.1 [2015-10-05]
