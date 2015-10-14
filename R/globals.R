@@ -58,17 +58,33 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   if (length(globals) == 0) return(invisible(globals))
 
 
-  ## Append packages associated with globals
-  pkgs <- packagesOf(globals)
   ## Drop all globals which are already part of one of
   ## the packages in 'pkgs'.  They will be available
-  ## when those packages are attached.
-  pkgsG <- sapply(globals, FUN=function(obj) {
-    environmentName(environment(obj))
-  })
-  keep <- !is.element(pkgsG, pkgs)
+  ## since those packages are attached.
+  keep <- rep(TRUE, times=length(globals))
+  pkgs <- packagesOf(globals)
+  names <- names(globals)
+  for (kk in seq_along(globals)) {
+    name <- names[kk]
+    obj <- globals[[kk]]
+    mode <- mode(obj)
+    envir <- environment(obj)
+
+    ## Not part of a package?
+    if (is.null(envir)) next
+
+    ## Does an object of such a name exist in the package environment?
+    if (!exists(name, mode=mode, envir=envir, inherits=FALSE)) next
+
+    pkgObj <- get(name, mode=mode, envir=envir, inherits=FALSE)
+    if (!identical(pkgObj, obj)) next
+
+    keep[kk] <- FALSE
+  }
+
   globals <- globals[keep]
-  pkgsG <- keep <- NULL ## Not needed anymore
+  keep <- NULL ## Not needed anymore
+
   ## Now drop globals that are primitive functions or
   ## that are part of the base packages, which now are
   ## part of 'pkgs' if needed.
