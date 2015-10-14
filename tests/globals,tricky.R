@@ -3,7 +3,7 @@ library("listenv")
 
 ovars <- ls()
 oopts <- options(warn=1)
-plan(lazy)
+
 
 message("*** Trick use cases related to globals ...")
 
@@ -33,6 +33,7 @@ y0 <- lapply(x, FUN=base::vector, length=2L)
 str(list(y0=y0))
 
 for (strategy in c("eager", "lazy", "multicore")) {
+  plan(strategy)
   y <- flapply(x, FUN=base::vector, length=2L)
   str(list(y=y))
   stopifnot(identical(y, y0))
@@ -48,6 +49,7 @@ y0 <- lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
 str(list(y0=y0))
 
 for (strategy in c("eager", "lazy", "multicore")) {
+  plan(strategy)
   y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
   str(list(y=y))
   stopifnot(identical(y, y0))
@@ -73,6 +75,7 @@ y0 <- lapply(x, FUN=listenv::map)
 str(list(y0=y0))
 
 for (strategy in c("eager", "lazy", "multicore")) {
+  plan(strategy)
   y <- flapply(x, FUN=listenv::map)
   str(list(y=y))
   stopifnot(identical(y, y0))
@@ -83,5 +86,6 @@ message("*** Trick use cases related to globals ... DONE")
 
 
 ## Cleanup
+plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))
