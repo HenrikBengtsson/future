@@ -23,6 +23,9 @@ flapply <- function(x, FUN, ...) {
   as.list(res)
 }
 
+strategies <- c("eager", "lazy")
+if (supportsMulticore()) strategies <- c(strategies, "multicore")
+
 
 message("- flapply(x, FUN=base::vector, ...) ...")
 
@@ -32,7 +35,8 @@ str(list(x=x))
 y0 <- lapply(x, FUN=base::vector, length=2L)
 str(list(y0=y0))
 
-for (strategy in c("eager", "lazy", "multicore")) {
+for (strategy in strategies) {
+  message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
   y <- flapply(x, FUN=base::vector, length=2L)
   str(list(y=y))
@@ -48,7 +52,8 @@ str(list(x=x))
 y0 <- lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
 str(list(y0=y0))
 
-for (strategy in c("eager", "lazy", "multicore")) {
+for (strategy in strategies) {
+  message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
   y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
   str(list(y=y))
@@ -74,7 +79,8 @@ print(x)
 y0 <- lapply(x, FUN=listenv::map)
 str(list(y0=y0))
 
-for (strategy in c("eager", "lazy", "multicore")) {
+for (strategy in strategies) {
+  message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
   y <- flapply(x, FUN=listenv::map)
   str(list(y=y))

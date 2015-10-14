@@ -37,7 +37,11 @@ sum_fcns$D <- function(x, y) {
 }
 
 
-for (strategy in c("eager", "lazy", "multicore")) {
+strategies <- c("eager", "lazy")
+if (supportsMulticore()) strategies <- c(strategies, "multicore")
+
+for (strategy in strategies) {
+  message(sprintf("- plan('%s') ...", strategy))
   plan(strategy, substitute=FALSE)
 
   for (name in names(sum_fcns)) {
