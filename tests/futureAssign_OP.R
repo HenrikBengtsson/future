@@ -11,12 +11,12 @@ message("*** %<=% ...")
 
 message("** Future evaluation without globals")
 v1 %<=% { x <- 1 }
-stopifnot(!exists("x"), identical(v1, 1))
+stopifnot(!exists("x", inherits=FALSE), identical(v1, 1))
 
 message("** Future evaluation with globals")
 a <- 2
 v2 %<=% { x <- a }
-stopifnot(!exists("x"), identical(v2, a))
+stopifnot(!exists("x", inherits=FALSE), identical(v2, a))
 
 message("** Future evaluation with errors")
 v3 %<=% {
@@ -24,7 +24,7 @@ v3 %<=% {
   stop("Woops!")
   x
 }
-stopifnot(!exists("x"))
+stopifnot(!exists("x", inherits=FALSE))
 res <- try(identical(v3, 3), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
