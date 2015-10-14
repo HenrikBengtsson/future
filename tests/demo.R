@@ -3,6 +3,8 @@ library(future)
 ovars <- ls()
 oopts <- options(warn=1L)
 
+options("R_FUTURE_DEMO_MANDELBROT_PLANES"=4L)
+
 message("*** Demos ...")
 
 message("*** Mandelbrot demo of the 'future' package ...")
