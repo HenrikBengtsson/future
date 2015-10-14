@@ -4,6 +4,7 @@
 ^.svn
 ^.git
 ^.make
+INSTALL[.]md
 OVERVIEW[.]md
 README[.]md
 

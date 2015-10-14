@@ -1,9 +1,18 @@
 Package: future
 ===============
 
+Version: 0.8.2 [2015-10-14]
+o BUG FIX: Globals that were copies of package objects 
+  were not exported to the future environments.
+o BUG FIX: The future package had to be attached or
+  future::future() had to be imported, if %<=% was used 
+  internally in another package.  Similarly, it also had
+  to be attached if multicore futures where used.
+
+
 Version: 0.8.1 [2015-10-05]
 o eager() and multicore() gained argument 'globals', where
-  globals=TRUE will validate that all global variables 
+  globals=TRUE will validate that all global variables
   identified can be located already before the future is
   created.  This provides the means for providing the same
   tests on global variables with eager and multicore futures

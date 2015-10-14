@@ -40,7 +40,7 @@ run.MulticoreFuture <- function(future, ...) {
 
   ## Inject plan(eager) to prevent that nested multicore futures
   ## are spawned off recursively by mistake.
-  expr <- substitute({ plan(eager); e }, list(e=expr))
+  expr <- substitute({ future::plan(future::eager); e }, list(e=expr))
 
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 
