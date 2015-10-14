@@ -16,7 +16,7 @@ flapply <- function(x, FUN, ...) {
 
   ## Make sure 'x', 'FUN' and 'ii' are truly
   ## exported to the future environment
-  if (packageVersion("globals") > "0.8.1") {
+  if (packageVersion("globals") >= "0.5.0") {
     rm(list=c("x", "FUN", "ii"))
   }
 
