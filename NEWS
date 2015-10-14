@@ -1,7 +1,9 @@
 Package: future
 ===============
 
-Version: 0.8.1-9000 [2015-10-09]
+Version: 0.8.1-9000 [2015-10-13]
+o BUG FIX: Globals that were copies of package objects 
+  were not exported to the future environments.
 o BUG FIX: The future package had to be attached or
   future::future() had to be imported, if %<=% was used 
   internally in another package.  Similarly, it also had
