@@ -45,7 +45,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
       stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", paste(deparse(expr), collapse="; "))
     }
    globals$`<future-call-arguments>` <- globals$`...`
-    globals$`...` <- NULL
+   globals$`...` <- NULL
    ## To please R CMD check
     a <- `<future-call-arguments>` <- NULL
     rm(list=c("a", "<future-call-arguments>"))
@@ -58,11 +58,31 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   if (length(globals) == 0) return(invisible(globals))
 
 
-  ## Drop all globals which are already part of one of
+  ## Drop all globals which are located in one of
   ## the packages in 'pkgs'.  They will be available
   ## since those packages are attached.
-  keep <- rep(TRUE, times=length(globals))
   pkgs <- packagesOf(globals)
+  where <- attr(globals, "where")
+
+  names <- names(globals)
+  keep <- rep(TRUE, times=length(globals))
+  names(keep) <- names
+  for (name in names) {
+    pkg <- environmentName(where[[name]])
+    if (pkg %in% pkgs) keep[name] <- FALSE
+  }
+  if (!all(keep)) globals <- globals[keep]
+  keep <- NULL ## Not needed anymore
+
+  ## Nothing do to?
+  if (length(globals) == 0) return(invisible(globals))
+
+
+  ## ROBUSTNESS: Drop globals that already live in one of
+  ## the loaded packages/namespaces.  Should have been
+  ## taken care of above, but in case there are any mistakes
+  ## we take of it below
+  keep <- rep(TRUE, times=length(globals))
   names <- names(globals)
   for (kk in seq_along(globals)) {
     name <- names[kk]
@@ -70,19 +90,23 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
     mode <- mode(obj)
     envir <- environment(obj)
 
-    ## Not part of a package?
+    ## Not part of a loaded package / namespace?
     if (is.null(envir)) next
+    if (!environmentName(envir) %in% loadedNamespaces()) next
 
-    ## Does an object of such a name exist in the package environment?
+    ## Before deciding to drop, make sure the object with the
+    ## the same name truly exist in the environment that it
+    ## claims to according to environment().  This will prevent
+    ## copies such as FUN <- base::sample from being dropped.
     if (!exists(name, mode=mode, envir=envir, inherits=FALSE)) next
-
     pkgObj <- get(name, mode=mode, envir=envir, inherits=FALSE)
     if (!identical(pkgObj, obj)) next
 
+    ## Drop - should really not happen with globals (> 0.8.1)
     keep[kk] <- FALSE
   }
 
-  globals <- globals[keep]
+  if (!all(keep)) globals <- globals[keep]
   keep <- NULL ## Not needed anymore
 
   ## Now drop globals that are primitive functions or
