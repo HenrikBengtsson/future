@@ -5,7 +5,7 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
-message("*** flapply(x, FUN, ...) ...")
+message("*** Trick use cases related to globals ...")
 
 flapply <- function(x, FUN, ...) {
   res <- listenv()
@@ -23,19 +23,64 @@ flapply <- function(x, FUN, ...) {
   as.list(res)
 }
 
+
+message("- flapply(x, FUN=base::vector, ...) ...")
+
 x <- list(a="integer", b="numeric", c="character", c="list")
 str(list(x=x))
 
-y0 <- lapply(x, FUN=vector, length=2L)
+y0 <- lapply(x, FUN=base::vector, length=2L)
 str(list(y0=y0))
 
 for (strategy in c("eager", "lazy", "multicore")) {
-  y <- flapply(x, FUN=vector, length=2L)
+  y <- flapply(x, FUN=base::vector, length=2L)
   str(list(y=y))
   stopifnot(identical(y, y0))
 }
 
-message("*** flapply(x, FUN, ...) ... DONE")
+
+message("- flapply(x, FUN=future:::hpaste, ...) ...")
+
+x <- list(a=c("hello", b=1:100))
+str(list(x=x))
+
+y0 <- lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
+str(list(y0=y0))
+
+for (strategy in c("eager", "lazy", "multicore")) {
+  y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
+  str(list(y=y))
+  stopifnot(identical(y, y0))
+}
+
+
+message("- flapply(x, FUN=listenv::listenv, ...) ...")
+
+x <- list()
+
+y <- listenv()
+y$A <- 3L
+x$a <- y
+
+y <- listenv()
+y$A <- 3L
+y$B <- c("hello", b=1:100)
+x$b <- y
+
+print(x)
+
+y0 <- lapply(x, FUN=listenv::map)
+str(list(y0=y0))
+
+for (strategy in c("eager", "lazy", "multicore")) {
+  y <- flapply(x, FUN=listenv::map)
+  str(list(y=y))
+  stopifnot(identical(y, y0))
+}
+
+
+message("*** Trick use cases related to globals ... DONE")
+
 
 ## Cleanup
 options(oopts)
