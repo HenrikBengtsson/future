@@ -7,13 +7,17 @@ message("*** Demos ...")
 
 message("*** Mandelbrot demo of the 'future' package ...")
 
-strategies <- c("eager", "lazy")
-if (supportsMulticore()) strategies <- c(strategies, "multicore")
+if (getRversion() >= "3.2.0") {
+  strategies <- c("eager", "lazy")
+  if (supportsMulticore()) strategies <- c(strategies, "multicore")
 
-for (strategy in strategies) {
-  message(sprintf("- plan('%s') ...", strategy))
-  plan(strategy)
-  demo("mandelbrot", package="future", ask=FALSE)
+  for (strategy in strategies) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+    demo("mandelbrot", package="future", ask=FALSE)
+  }
+} else {
+  message(" - This demo requires R (>= 3.2.0). Skipping test.")
 }
 
 message("*** Demos ... DONE")
