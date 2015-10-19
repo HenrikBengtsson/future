@@ -12,7 +12,7 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param ... Additional named elements of the future.
+#' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
 #'
@@ -59,7 +59,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
 #' If \code{"signal"}, the error is signalled, e.g. captured
 #' and re-thrown.  If instead \code{"return"}, they are
 #' \emph{returned} as is.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return An R object of any data type.
 #'
@@ -90,7 +90,7 @@ value <- function(...) UseMethod("value")
 #' Check whether a future is resolved or not
 #'
 #' @param future A \link{Future}.
-#' @param ... Not used
+#' @param \dots Not used
 #'
 #' @return TRUE if future is resolved and FALSE if unresolved.
 #'

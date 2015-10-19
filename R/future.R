@@ -12,7 +12,7 @@
 #' is evaluated.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param ... Additional arguments passed to the "evaluator".
+#' @param \dots Additional arguments passed to the "evaluator".
 #' @param evaluator The actual function that evaluates
 #' \code{expr} and returns a future.  The evaluator function
 #' should accept all the same arguments as this function

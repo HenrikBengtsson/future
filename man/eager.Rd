@@ -25,7 +25,7 @@ located, an informative error is generated.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \value{
 An \link{EagerFuture}.

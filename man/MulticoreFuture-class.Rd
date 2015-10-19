@@ -9,9 +9,9 @@ MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   ...)
 }
 \arguments{
-\item{...}{Not used.}
-
 \item{object}{An R \link[base]{environment}.}
+
+\item{\dots}{Not used.}
 }
 \value{
 An object of class \code{MulticoreFuture}.

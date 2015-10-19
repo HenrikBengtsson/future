@@ -24,7 +24,7 @@ located, an informative error is generated.}
 \item{maxCores}{The maximum number of CPU cores that can
 be active at the same time before blocking.}
 
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \value{
 A \link{MulticoreFuture} (or a \link{EagerFuture}

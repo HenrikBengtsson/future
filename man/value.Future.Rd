@@ -16,7 +16,7 @@ If \code{"signal"}, the error is signalled, e.g. captured
 and re-thrown.  If instead \code{"return"}, they are
 \emph{returned} as is.}
 
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \value{
 An R object of any data type.

@@ -21,7 +21,7 @@ is done (or inherits from if \code{local} is TRUE).}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{...}{Additional named elements of the future.}
+\item{\dots}{Additional named elements of the future.}
 }
 \value{
 An object of class \code{LazyFuture}.

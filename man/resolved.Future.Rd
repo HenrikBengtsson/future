@@ -10,7 +10,7 @@
 \arguments{
 \item{future}{A \link{Future}.}
 
-\item{...}{Not used}
+\item{\dots}{Not used}
 }
 \value{
 TRUE if future is resolved and FALSE if unresolved.

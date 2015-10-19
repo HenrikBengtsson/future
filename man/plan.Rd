@@ -10,13 +10,13 @@ plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE)
 \item{strategy}{The evaluation function to use for resolving a future.
 If NULL, then the current strategy is returned.}
 
-\item{...}{Additional arguments overriding the default arguments
-of the evaluation function.}
-
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
 
 \item{.call}{(internal) Used to record the call to this function.}
+
+\item{\dots}{Additional arguments overriding the default arguments
+of the evaluation function.}
 }
 \value{
 If a new strategy is chosen, then the previous one is returned

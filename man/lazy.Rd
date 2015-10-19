@@ -25,7 +25,7 @@ resolved when the future is resolved.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \value{
 A \link{LazyFuture}.

@@ -16,7 +16,7 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{...}{Additional named elements of the future.}
+\item{\dots}{Additional named elements of the future.}
 }
 \value{
 An object of class \code{Future}.
