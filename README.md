@@ -195,10 +195,12 @@ Sometimes the future is not what you expected.  If an error occurs while evaluat
 ```r
 > plan(lazy)
 > f <- future({
++   message("Resolving...")
 +   stop("Whoops!")
 +   42
 + })
 > value(f)
+Resolving...
 Error in eval(expr, envir, enclos) : Whoops!
 ```
 The error is thrown each time the value is requested, that is, trying to get the value again will generate the same error:
@@ -206,21 +208,26 @@ The error is thrown each time the value is requested, that is, trying to get the
 > value(f)
 Error in eval(expr, envir, enclos) : Whoops!
 ```
+Note how the future expression is only evaluated once although the error itself is re-thrown each time the value is required subsequently.
 
 Exception handling of future assignments via `%<=%` works analogously, e.g.
 ```r
 > plan(lazy)
-> x %<=% ({
-+   stop("Whoops!")
-+   42
-+ })
+ x %<=% ({
+   message("Resolving...")
+   stop("Whoops!")
+   42
+ })
 > y <- 3.14
 > y
 [1] 3.14
 > x
+Resolving...
 Error in eval(expr, envir, enclos) : Whoops!
 > x
 Error in eval(expr, envir, enclos) : Whoops!
+In addition: Warning message:
+restarting interrupted promise evaluation
 ```
 
 

@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.8.2-9000 [2015-10-30]
+o DOCUMENTATION: Minor clarifications in package vignettes.
+
+
 Version: 0.8.2 [2015-10-14]
 o BUG FIX: Globals that were copies of package objects 
   were not exported to the future environments.
