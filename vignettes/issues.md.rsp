@@ -150,10 +150,11 @@ Parentheses will also do.  For details on precedence on operators in R, see Sect
 
 
 
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
-[future]: http://cran.r-project.org/package=future
-[globals]: http://cran.r-project.org/package=globals
-[listenv]: http://cran.r-project.org/package=listenv
+[BatchJobs]: https://cran.r-project.org/package=BatchJobs
+[codetools]: https://cran.r-project.org/package=codetools
+[future]: https://cran.r-project.org/package=future
+[globals]: https://cran.r-project.org/package=globals
+[listenv]: https://cran.r-project.org/package=listenv
 [async]: https://github.com/HenrikBengtsson/async/
 
 ---
