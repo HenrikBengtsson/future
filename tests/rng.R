@@ -1,7 +1,8 @@
 library("future")
 oplan <- plan()
 
-
+## See Section 6 on 'Random-number generation' in
+## vignette("parallel", package="parallel")
 fsample <- function(x, size=10L, seed=NULL) {
   orng <- RNGkind("L'Ecuyer-CMRG")
   on.exit(RNGkind(orng[1L]))
