@@ -3,9 +3,8 @@ oplan <- plan()
 
 
 fsample <- function(x, size=10L, seed=NULL) {
-  orng <- RNGkind()[1L]
-  on.exit(RNGkind(orng))
-  RNGkind("L'Ecuyer-CMRG")
+  orng <- RNGkind("L'Ecuyer-CMRG")
+  on.exit(RNGkind(orng[1L]))
 
   if (!is.null(seed)) set.seed(seed)
   .seed <- .Random.seed
@@ -13,7 +12,7 @@ fsample <- function(x, size=10L, seed=NULL) {
   for (ii in seq_len(size)) {
     .seed <- parallel::nextRNGStream(.seed)
     res[[ii]] %<=% {
-      assign(".Random.seed", .seed, envir=globalenv())
+      .GlobalEnv$.Random.seed <- .seed
       sample(x, size=1L)
     }
   }
@@ -26,6 +25,8 @@ plan("eager")
 y0 <- fsample(0:9, seed=42L)
 
 for (strategy in c("eager", "lazy", "multicore")) {
+  message(sprintf("%s ...", strategy))
+
   plan(strategy)
 
   ## Fixed random seed
@@ -46,6 +47,8 @@ for (strategy in c("eager", "lazy", "multicore")) {
   ## No seed
   y4 <- fsample(0:9)
   print(y4)
+
+  message(sprintf("%s ... done", strategy))
 }
 
 
