@@ -1,15 +1,18 @@
 Package: future
 ===============
 
-Version: 0.8.2-9000 [2015-10-30]
+Version: 0.8.2-9000 [2015-11-15]
 o DOCUMENTATION: Minor clarifications in package vignettes.
+o ROBUSTNESS: Add reproducibility test for random number
+  generation using Pierre L'Ecuyer's Rng stream regardless
+  of how futures are evaluated, e.g. eager, lazy and multicore.
 
 
 Version: 0.8.2 [2015-10-14]
-o BUG FIX: Globals that were copies of package objects 
+o BUG FIX: Globals that were copies of package objects
   were not exported to the future environments.
 o BUG FIX: The future package had to be attached or
-  future::future() had to be imported, if %<=% was used 
+  future::future() had to be imported, if %<=% was used
   internally in another package.  Similarly, it also had
   to be attached if multicore futures where used.
 
