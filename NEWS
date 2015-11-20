@@ -1,8 +1,10 @@
 Package: future
 ===============
 
-Version: 0.8.2-9000 [2015-11-15]
+Version: 0.8.2-9000 [2015-11-19]
 o DOCUMENTATION: Minor clarifications in package vignettes.
+o ROBUSTNESS: Now values of environment variables are trimmed
+  before being parsed.
 o ROBUSTNESS: Add reproducibility test for random number
   generation using Pierre L'Ecuyer's Rng stream regardless
   of how futures are evaluated, e.g. eager, lazy and multicore.

@@ -38,7 +38,8 @@ plan <- local({
     ## Reset plan?
     if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
-      strategy <- getOption("future_plan", Sys.getenv("R_FUTURE_PLAN"))
+      strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
+      strategy <- getOption("future_plan", strategy)
       if (!nzchar(strategy)) strategy <- eager
     }
 
