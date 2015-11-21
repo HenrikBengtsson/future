@@ -5,7 +5,7 @@ ovars <- ls()
 oopts <- options(warn=1)
 
 
-message("*** Trick use cases related to globals ...")
+message("*** Tricky use cases related to globals ...")
 
 flapply <- function(x, FUN, ...) {
   res <- listenv()
@@ -86,7 +86,35 @@ for (strategy in strategies) {
 }
 
 
-message("*** Trick use cases related to globals ... DONE")
+
+if (packageVersion("globals") > "0.5.0") {
+  message("- Local variables with the same name as globals ...")
+  options("future::globalsMethod"="incremental")
+
+  for (strategy in strategies) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+    a <- 3
+    yTruth <- local({
+      b <- a
+      a <- 2
+      a*b
+    })
+
+    y %<=% {
+      b <- a
+      a <- 2
+      a*b
+    }
+
+    rm(list="a")
+
+    message(sprintf("y=%g", y))
+    stopifnot(identical(y, yTruth))
+  }
+}
+
+message("*** Tricky use cases related to globals ... DONE")
 
 
 ## Cleanup
