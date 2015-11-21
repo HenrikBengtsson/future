@@ -86,10 +86,14 @@ for (strategy in strategies) {
 }
 
 
+message("- Local variables with the same name as globals ...")
 
-if (packageVersion("globals") > "0.5.0") {
-  message("- Local variables with the same name as globals ...")
-  options("future::globalsMethod"="incremental")
+methods <- c("conservative")
+if (packageVersion("globals") > "0.5.0")
+  methods <- c(methods, "ordered")
+
+for (method in methods) {
+  options("future::globalsMethod"=method)
 
   for (strategy in strategies) {
     message(sprintf("- plan('%s') ...", strategy))
@@ -109,8 +113,13 @@ if (packageVersion("globals") > "0.5.0") {
 
     rm(list="a")
 
-    message(sprintf("y=%g", y))
-    stopifnot(identical(y, yTruth))
+    res <- try(y, silent=TRUE)
+    if (method == "conservative" && strategy == "lazy") {
+      stopifnot(inherits(res, "try-error"))
+    } else {
+      message(sprintf("y=%g", y))
+      stopifnot(identical(y, yTruth))
+    }
   }
 }
 
