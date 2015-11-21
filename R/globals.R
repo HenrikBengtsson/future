@@ -30,9 +30,15 @@ tweakExpression <- function(expr) {
 #' @importFrom globals globalsOf packagesOf cleanup
 exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   ## Identify and retrieve globals
-  globals <- globalsOf(expr, envir=envir, tweak=tweak,
-                       dotdotdot="return",
-                       primitive=FALSE, base=FALSE, unlist=TRUE)
+  globals <- globalsOf(expr, envir=envir,
+               tweak=tweak,
+               dotdotdot="return",
+               primitive=FALSE, base=FALSE,
+               unlist=TRUE,
+               ## Only for debugging/development; do not rely on this elsewhere!
+               mustExist=getOption("future::globalsMustExist", TRUE),
+               method=getOption("future::globalsMethod", "conservative")
+             )
 
   ## Nothing do to?
   if (length(globals) == 0) return(invisible(globals))
