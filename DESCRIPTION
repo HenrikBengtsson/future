@@ -1,9 +1,9 @@
 Package: future
-Version: 0.8.2-9000
+Version: 0.8.9-9000
 Title: A Future API for R
 Imports:
     listenv,
-    globals (>= 0.5.0)
+    globals (>= 0.5.9-9000)
 Suggests:
     parallel,
     R.rsp

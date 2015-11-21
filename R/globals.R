@@ -1,6 +1,9 @@
 #' @importFrom globals globalsOf packagesOf cleanup
+#' @importFrom utils packageVersion
 exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   ## Identify and retrieve globals
+  defaultMethod <- "ordered"
+  if (packageVersion("globals") <= "0.5.0") defaultMethod <- "conservative"
   globals <- globalsOf(expr, envir=envir,
                tweak=tweak,
                dotdotdot="return",
@@ -8,7 +11,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
                unlist=TRUE,
                ## Only for debugging/development; do not rely on this elsewhere!
                mustExist=getOption("future::globalsMustExist", TRUE),
-               method=getOption("future::globalsMethod", "conservative")
+               method=getOption("future::globalsMethod", defaultMethod)
              )
 
   ## Nothing do to?
