@@ -89,8 +89,7 @@ for (strategy in strategies) {
 message("- Local variables with the same name as globals ...")
 
 methods <- c("conservative")
-if (packageVersion("globals") > "0.5.0")
-  methods <- c(methods, "ordered")
+if (packageVersion("globals") > "0.5.0") methods <- c(methods, "ordered")
 
 for (method in methods) {
   options("future::globalsMethod"=method)
@@ -98,6 +97,7 @@ for (method in methods) {
   for (strategy in strategies) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
+
     a <- 3
     yTruth <- local({
       b <- a
@@ -120,7 +120,27 @@ for (method in methods) {
       message(sprintf("y=%g", y))
       stopifnot(identical(y, yTruth))
     }
-  }
+
+
+    res <- listenv()
+    a <- 1
+    for (ii in 1:3) {
+      res[[ii]] %<=% {
+        b <- a*ii
+        a <- 0
+        b
+      }
+    }
+    rm(list="a")
+
+    res <- try(unlist(res), silent=TRUE)
+    if (method == "conservative" && strategy == "lazy") {
+      stopifnot(inherits(res, "try-error"))
+    } else {
+      print(res)
+      stopifnot(all(res == 1:3))
+    }
+  } ## for (strategy ...)
 }
 
 message("*** Tricky use cases related to globals ... DONE")
