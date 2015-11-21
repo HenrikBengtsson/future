@@ -95,43 +95,6 @@ Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may be
 By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
 
 
-## Missing or incorrect globals
-
-### Global variables has the same name as a local one
-In plain R, it is straightforward to understand what value is assigned to `x`:
-```r
-> a <- 1
-> x <- { y <- 2*a; a <- 2; a*y }
-> rm(a)
-> x
-[1] 4
-```
-
-If we analogously use a future assignment, we instead get:
-```r
-> library(future)
-> plan(lazy)
-> a <- 1
-> x %<=% { y <- 2*a; a <- 2; a*y }
-> rm(a)
-> xError in eval(expr, envir, enclos) : object 'a' not found
-```
-The reason for this problem is that the static code inspection fails to identify that the first occurrence of `a` (in statement `y <- 2*a`) is a global variable whereas the second occurrence creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  The underlying code inspection algorithm does simply not take the order of the statements into account, that is, for it's perspective expressions `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical, and in the latter case there is indeed a local variable `a`.  This is a limitation of the [globals] and [codetools] packages.
-
-For lazy futures it can even be worse because if we instead of removing `a` reassign it a different value, say, `a <- 3`, there will not be an evaluation error but we will instead get an incorrect value `x == 6`.  This is because `y <- 2*a` is now resolved with `a == 3` at the time when the lazy future is resolved.
-
-The solution to this problem to avoid using local variables with the same name as global ones.  For example,
-```r
-> library(future)
-> plan(lazy)
-> a <- 1
-> x %<=% { y <- 2*a; b <- 2; b*y }
-> rm(a)
-> x
-[1] 4
-```
-
-
 ## Error "non-numeric argument to binary operator"
 
 The future assignment operator `%<=%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
