@@ -1,11 +1,12 @@
 Package: future
 ===============
 
-Version: 0.8.9-9000 [2015-11-20]
+Version: 0.8.9-9000 [2015-12-04]
 o GLOBALS: Now globals ("unknown" variables) are identified
-  using the new findGlobals(..., method="ordered") such that
-  a global variable preceeding a local variable with the same
-  name is properly identified and exported/frozen.
+  using the new findGlobals(..., method="ordered") in
+  globals (> 0.5.0) such that a global variable preceeding
+  a local variable with the same name is properly identified
+  and exported/frozen.
 o DOCUMENTATION: Minor clarifications in package vignettes.
 o ROBUSTNESS: Now values of environment variables are trimmed
   before being parsed.
