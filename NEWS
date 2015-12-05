@@ -7,7 +7,9 @@ o GLOBALS: Now globals ("unknown" variables) are identified
   globals (> 0.5.0) such that a global variable preceeding
   a local variable with the same name is properly identified
   and exported/frozen.
-o DOCUMENTATION: Minor clarifications in package vignettes.
+o DOCUMENTATION: Updated vignette on common issues with the
+  case where a global variable is not identified because it
+  is hidden by an element assigment in the future expression.
 o ROBUSTNESS: Now values of environment variables are trimmed
   before being parsed.
 o ROBUSTNESS: Add reproducibility test for random number
