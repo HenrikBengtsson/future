@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1L)
+oopts <- options(warn=1L, mc.cores=2L)
 
 message("*** Global argument '...' in lazy futures ...")
 

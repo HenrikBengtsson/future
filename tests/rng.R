@@ -1,5 +1,9 @@
 library("future")
+
+ovars <- ls()
+oopts <- options(warn=1L, mc.cores=2L)
 oplan <- plan()
+
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
@@ -83,3 +87,5 @@ for (strategy in c("eager", "lazy", "multicore")) {
 
 ## Cleanup
 plan(oplan)
+options(oopts)
+rm(list=setdiff(ls(), ovars))
