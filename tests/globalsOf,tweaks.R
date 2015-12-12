@@ -18,10 +18,10 @@ print(exprT)
 b <- 2
 exprs <- list(
   A = substitute({ a <- b; }, env=list()),
-  B = substitute({ a <- b; b <- 1 }, env=list()),  ## Fails to find 'b'
+  B = substitute({ a <- b; b <- 1 }, env=list()),
   C = substitute({ a <- 1; a <- 2 }, env=list()),
   D = substitute({ a <<- 1; a <- 2 }, env=list()),
-  E = substitute({ a <<- 1 }, env=list())          ## Should not find 'a'
+  E = substitute({ a <<- 1 }, env=list())
 )
 
 truth <- list(
@@ -31,6 +31,8 @@ truth <- list(
   D = character(0L),
   E = character(0L)
 )
+
+if (packageVersion("globals") > "0.5.0") truth$B <- "b"
 
 for (kk in seq_along(exprs)) {
   name <- names(exprs)[kk]

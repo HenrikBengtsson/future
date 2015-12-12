@@ -37,7 +37,9 @@ FutureRegistry <- local({
         if (resolved(future)) {
 	  ## (a) Let future cleanup after itself, iff needed
 	  ##     This may result in a call to FutureRegistry(..., action="remove")
-	  value(future)
+	  tryCatch({
+	    value(future)
+	  }, error = function(ex) {})
 
           ## (b) Make sure future is removed from registry, unless
 	  ##     already done via above value() call

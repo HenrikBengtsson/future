@@ -8,7 +8,7 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param ... Additional named elements of the future.
+#' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{LazyFuture}.
 #'

@@ -1,18 +1,30 @@
 Package: future
-Version: 0.8.2
+Version: 0.9.0
 Title: A Future API for R
 Imports:
-  listenv,
-  globals (>= 0.4.1)
+    listenv,
+    globals (>= 0.5.0)
 Suggests:
-  parallel,
-  R.rsp
-VignetteBuilder:
-  R.rsp
+    parallel,
+    R.rsp
+VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
-Description: A Future API for R is provided.  In programming, a future is an abstraction for a value that may be available at some point in the future.  The state of a future can either be unresolved or resolved.  As soon as it is resolved, the value is available.  Futures are useful constructs in for instance concurrent evaluation, e.g. multicore parallel processing and distributed processing on compute clusters.  The purpose of this package is to provide a lightweight interface for using futures in R.  Functions 'future()' and 'value()' exist for creating futures and requesting their values.  An infix assignment operator '%<=%' exists for creating futures whose values are accessible by the assigned variables (as promises).  This package implements the synchronous "lazy" and "eager" futures, and the asynchronous "multicore" future (not on Windows).  Additional types of futures are provided by other packages enhancing this package.
+Description: A Future API for R is provided. In programming, a future is an
+    abstraction for a value that may be available at some point in the future.
+    The state of a future can either be unresolved or resolved. As soon as it is
+    resolved, the value is available. Futures are useful constructs in for instance
+    concurrent evaluation, e.g. multicore parallel processing and distributed
+    processing on compute clusters. The purpose of this package is to provide a
+    lightweight interface for using futures in R. Functions 'future()' and 'value()'
+    exist for creating futures and requesting their values. An infix assignment
+    operator '%<=%' exists for creating futures whose values are accessible by the
+    assigned variables (as promises). This package implements the synchronous "lazy"
+    and "eager" futures, and the asynchronous "multicore" future (not on Windows).
+    Additional types of futures are provided by other packages enhancing this
+    package.
 License: LGPL (>= 2.1)
 LazyLoad: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
+RoxygenNote: 5.0.1

@@ -1,38 +1,18 @@
-tweakExpression <- function(expr) {
-  if (!is.language(expr)) return(expr)
-
-  for (ii in seq_along(expr)) {
-    # If expr[[ii]] is "missing", ignore the error.  This
-    # happens with for instance expressions like x[,1].
-    # FIXME: Is there a better way?!? /HB 2014-05-08
-    tryCatch({
-      exprI <- expr[[ii]]
-      op <- exprI[[1]]
-      if (!is.symbol(op)) next
-      op <- as.character(op)
-      if (op %in% c("<<-", "%<-%", "%<=%")) {
-        lhs <- exprI[[2]]
-        rhs <- exprI[[3]]
-        ## covr: skip=1
-        expr[[ii]] <- substitute({a <- b; e}, list(a=lhs, b=rhs, e=exprI))
-      } else if (op %in% c("->>", "%->%", "%=>%")) {
-        lhs <- exprI[[3]]
-        rhs <- exprI[[2]]
-        ## covr: skip=1
-        expr[[ii]] <- substitute({a <- b; e}, list(a=lhs, b=rhs, e=exprI))
-      }
-    }, error=function(ex) {})
-  }
-  expr
-} # tweakExpression()
-
-
 #' @importFrom globals globalsOf packagesOf cleanup
+#' @importFrom utils packageVersion
 exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   ## Identify and retrieve globals
-  globals <- globalsOf(expr, envir=envir, tweak=tweak,
-                       dotdotdot="return",
-                       primitive=FALSE, base=FALSE, unlist=TRUE)
+  defaultMethod <- "ordered"
+  if (packageVersion("globals") <= "0.5.0") defaultMethod <- "conservative"
+  globals <- globalsOf(expr, envir=envir,
+               tweak=tweak,
+               dotdotdot="return",
+               primitive=FALSE, base=FALSE,
+               unlist=TRUE,
+               ## Only for debugging/development; do not rely on this elsewhere!
+               mustExist=getOption("future::globalsMustExist", TRUE),
+               method=getOption("future::globalsMethod", defaultMethod)
+             )
 
   ## Nothing do to?
   if (length(globals) == 0) return(invisible(globals))

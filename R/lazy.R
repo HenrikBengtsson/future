@@ -17,7 +17,7 @@
 #' @param globals If TRUE, global objects are resolved ("frozen") at
 #' the point of time when the future is created, otherwise they are
 #' resolved when the future is resolved.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return A \link{LazyFuture}.
 #'

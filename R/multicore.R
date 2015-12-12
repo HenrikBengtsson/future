@@ -15,7 +15,7 @@
 #' located, an informative error is generated.
 #' @param maxCores The maximum number of CPU cores that can
 #' be active at the same time before blocking.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
 #' if multicore futures are not supported).

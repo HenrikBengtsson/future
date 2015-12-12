@@ -1,7 +1,7 @@
 #' An multicore future is a future whose value will be resolved asynchroneously in a parallel process
 #'
 #' @param object An R \link[base]{environment}.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return An object of class \code{MulticoreFuture}.
 #'

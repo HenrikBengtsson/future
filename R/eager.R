@@ -18,7 +18,7 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return An \link{EagerFuture}.
 #'

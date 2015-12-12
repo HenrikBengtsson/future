@@ -2,10 +2,10 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1)
+oopts <- options(warn=1L, mc.cores=2L)
 
 
-message("*** Trick use cases related to globals ...")
+message("*** Tricky use cases related to globals ...")
 
 flapply <- function(x, FUN, ...) {
   res <- listenv()
@@ -16,9 +16,7 @@ flapply <- function(x, FUN, ...) {
 
   ## Make sure 'x', 'FUN' and 'ii' are truly
   ## exported to the future environment
-  if (packageVersion("globals") >= "0.5.0") {
-    rm(list=c("x", "FUN", "ii"))
-  }
+  rm(list=c("x", "FUN", "ii"))
 
   as.list(res)
 }
@@ -88,7 +86,64 @@ for (strategy in strategies) {
 }
 
 
-message("*** Trick use cases related to globals ... DONE")
+message("- Local variables with the same name as globals ...")
+
+methods <- c("conservative")
+if (packageVersion("globals") > "0.5.0") methods <- c(methods, "ordered")
+
+for (method in methods) {
+  options("future::globalsMethod"=method)
+
+  for (strategy in strategies) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+
+    a <- 3
+    yTruth <- local({
+      b <- a
+      a <- 2
+      a*b
+    })
+
+    y %<=% {
+      b <- a
+      a <- 2
+      a*b
+    }
+
+    rm(list="a")
+
+    res <- try(y, silent=TRUE)
+    if (method == "conservative" && strategy == "lazy") {
+      stopifnot(inherits(res, "try-error"))
+    } else {
+      message(sprintf("y=%g", y))
+      stopifnot(identical(y, yTruth))
+    }
+
+
+    res <- listenv()
+    a <- 1
+    for (ii in 1:3) {
+      res[[ii]] %<=% {
+        b <- a*ii
+        a <- 0
+        b
+      }
+    }
+    rm(list="a")
+
+    res <- try(unlist(res), silent=TRUE)
+    if (method == "conservative" && strategy == "lazy") {
+      stopifnot(inherits(res, "try-error"))
+    } else {
+      print(res)
+      stopifnot(all(res == 1:3))
+    }
+  } ## for (strategy ...)
+}
+
+message("*** Tricky use cases related to globals ... DONE")
 
 
 ## Cleanup

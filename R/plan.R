@@ -6,7 +6,7 @@
 #'
 #' @param strategy The evaluation function to use for resolving a future.
 #' If NULL, then the current strategy is returned.
-#' @param ... Additional arguments overriding the default arguments
+#' @param \dots Additional arguments overriding the default arguments
 #' of the evaluation function.
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
@@ -38,7 +38,8 @@ plan <- local({
     ## Reset plan?
     if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
-      strategy <- getOption("future_plan", Sys.getenv("R_FUTURE_PLAN"))
+      strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
+      strategy <- getOption("future_plan", strategy)
       if (!nzchar(strategy)) strategy <- eager
     }
 

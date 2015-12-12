@@ -29,3 +29,8 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 
   x
 } # hpaste()
+
+
+trim <- function(s) {
+  sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
+} # trim()

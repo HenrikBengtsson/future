@@ -1,11 +1,29 @@
 Package: future
 ===============
 
+Version: 0.9.0 [2015-12-11]
+o GLOBALS: Now globals ("unknown" variables) are identified
+  using the new findGlobals(..., method="ordered") in
+  globals (> 0.5.0) such that a global variable preceeding
+  a local variable with the same name is properly identified
+  and exported/frozen.
+o DOCUMENTATION: Updated vignette on common issues with the
+  case where a global variable is not identified because it
+  is hidden by an element assigment in the future expression.
+o ROBUSTNESS: Now values of environment variables are trimmed
+  before being parsed.
+o ROBUSTNESS: Add reproducibility test for random number
+  generation using Pierre L'Ecuyer's Rng stream regardless
+  of how futures are evaluated, e.g. eager, lazy and multicore.
+o BUG FIX: Errors occurring in multicore futures could prevent
+  further multicore futures from being created.
+
+
 Version: 0.8.2 [2015-10-14]
-o BUG FIX: Globals that were copies of package objects 
+o BUG FIX: Globals that were copies of package objects
   were not exported to the future environments.
 o BUG FIX: The future package had to be attached or
-  future::future() had to be imported, if %<=% was used 
+  future::future() had to be imported, if %<=% was used
   internally in another package.  Similarly, it also had
   to be attached if multicore futures where used.
 

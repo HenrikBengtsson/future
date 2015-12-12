@@ -1,7 +1,7 @@
 library(future)
 
 ovars <- ls()
-oopts <- options(warn=1L)
+oopts <- options(warn=1L, mc.cores=2L)
 
 options("R_FUTURE_DEMO_MANDELBROT_PLANES"=4L)
 

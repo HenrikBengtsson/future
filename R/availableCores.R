@@ -32,7 +32,7 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("PBS", "
   for (method in methods) {
     if (method == "PBS") {
       ## Number of cores assigned by Torque/PBS?
-      ncores <- as.integer(Sys.getenv("PBS_NUM_PPN", NA_character_))
+      ncores <- as.integer(trim(Sys.getenv("PBS_NUM_PPN", NA_character_)))
     } else if (method == "mc.cores") {
       ## Number of cores by option defined by 'parallel' package
       ncores <- as.integer(getOption("mc.cores", NA_integer_)) + 1L
@@ -117,7 +117,7 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, maxTries=getOption("future::maxTries", Sys.getenv("R_FUTURE_MAXTRIES", 1000)), delta=getOption("future::interval", 1.0), alpha=1.01) {
+requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future::interval", 1.0), alpha=1.01) {
   stopifnot(is.function(await))
   maxTries <- as.integer(maxTries)
   stopifnot(is.finite(maxTries), maxTries > 0)

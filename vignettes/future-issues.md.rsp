@@ -13,7 +13,7 @@
 
 In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`) and make sure your right-hand side (RHS) expression is within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
-However, there are few cases where you have to take extra precautions.  These are often related to how global variables are false identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
+However, there are few cases where you have to take extra precautions.  These are often related to how global variables are falsely identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
 _If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
@@ -84,7 +84,8 @@ One workaround is to make use of the `*_string()` functions of ggplot2, e.g.
 > p %<=% { ggplot(mtcars, aes_string('wt', 'mpg')) + geom_point() }
 > p
 ```
-Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.  A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
+Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.
+A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
 ```r
 > p %<=% {
 +   wt <- mpg <- NULL
@@ -97,40 +98,49 @@ By the way, since all futures are evaluated in a local environment, the dummy va
 
 ## Missing or incorrect globals
 
-### Global variables has the same name as a local one
-In plain R, it is straightforward to understand what value is assigned to `x`:
-```r
-> a <- 1
-> x <- { y <- 2*a; a <- 2; a*y }
-> rm(a)
-> x
-[1] 4
-```
-
-If we analogously use a future assignment, we instead get:
+## Global variable obscured by subassignment
+When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurance in the future expression is as part of a subsetting assignment.
+For example,
 ```r
 > library(future)
 > plan(lazy)
-> a <- 1
-> x %<=% { y <- 2*a; a <- 2; a*y }
-> rm(a)
-> x
-Error in eval(expr, envir, enclos) : object 'a' not found
+> x <- matrix(1:12, nrow=3, ncol=4)
+> y %<=% {
++   x[1,1] <- 3
++   42
++ }
+> rm(x)
+> y
+Error in x[1, 1] <- 3 : object 'x' not found
 ```
-(For lazy futures it can even be worse because if we don't remove `a` but instead reassign it, say, `a <- 3`, we will get an incorrect value `x == 6`, because `y <- a` is resolved at the time when the lazy future is resolved.)
-
-The reason for this problem is that the static code inspection fails to identify that the first occurrence of `a` is a global variable whereas the second occurrence creates a local variable with the same name.  The latter "hides" the former so it fails to be identified.  This is a limitation of the [globals] and [codetools] packages.  In order to avoid this problem, it useful to understand that from the code inspector's point of view the order of expressions within futures makes no difference, that is, `y <- 2*a; a <- 2` and `a <- 2; y <- 2*a` are identical when it comes to identifying globals.
-
-The solution to this problem to avoid using local variables with the same name as global ones.  For example,
+Another example is
 ```r
 > library(future)
 > plan(lazy)
-> a <- 1
-> x %<=% { y <- 2*a; b <- 2; b*y }
-> rm(a)
-> x
-[1] 4
+> x <- list(a=1, b=2)
+> y %<=% {
++   x$c <- 3
++   42
++ }
+> rm(x)
+> y
+Error in x$c <- 3 : object 'x' not found
 ```
+A workaround is to explicitly tell the future package about the global variable by simply listing it at the beginning of the expression, e.g.
+```r
+> library(future)
+> plan(lazy)
+> x <- list(a=1, b=2)
+> y %<=% {
++   x  ## Force 'x' to be global
++   x$c <- 3
++   42
++ }
+> rm(x)
+> y
+[1] 42
+```
+
 
 
 ## Error "non-numeric argument to binary operator"
