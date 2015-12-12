@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.8.9-9000 [2015-12-04]
+Version: 0.8.9-9000 [2015-12-11]
 o GLOBALS: Now globals ("unknown" variables) are identified
   using the new findGlobals(..., method="ordered") in
   globals (> 0.5.0) such that a global variable preceeding
@@ -15,6 +15,8 @@ o ROBUSTNESS: Now values of environment variables are trimmed
 o ROBUSTNESS: Add reproducibility test for random number
   generation using Pierre L'Ecuyer's Rng stream regardless
   of how futures are evaluated, e.g. eager, lazy and multicore.
+o BUG FIX: Errors occurring in multicore futures could prevent
+  further multicore futures from being created.
 
 
 Version: 0.8.2 [2015-10-14]
