@@ -26,13 +26,12 @@ exprs <- list(
 
 truth <- list(
   A = "b",
-  B = character(0L),
+  B = "b",
   C = character(0L),
   D = character(0L),
   E = character(0L)
 )
 
-if (packageVersion("globals") > "0.5.0") truth$B <- "b"
 
 for (kk in seq_along(exprs)) {
   name <- names(exprs)[kk]
