@@ -26,6 +26,11 @@ print(fs)
 stopifnot(identical(names(fs), c("a")))
 stopifnot(identical(fs$a, f1))
 
+fsD <- futureOf(envir=x, drop=TRUE)
+print(fsD)
+stopifnot(all(sapply(fsD, FUN=inherits, "Future")))
+stopifnot(identical(fsD, fs))
+
 ## Invalid subset
 res <- try(futureOf(x[[0]], mustExist=FALSE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
