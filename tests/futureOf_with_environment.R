@@ -16,12 +16,15 @@ x$a %<=% { 1 }
 f1 <- futureOf("a", envir=x)
 print(f1)
 f2 <- futureOf(a, envir=x)
-f4 <- futureOf(x[["a"]])
-f5 <- futureOf(x$a)
-stopifnot(identical(f2, f1), identical(f4, f1), identical(f5, f1))
+f3 <- futureOf(x[["a"]])
+f4 <- futureOf(x$a)
+stopifnot(identical(f2, f1), identical(f3, f1), identical(f4, f1))
 
+## Identify all futures
 fs <- futureOf(envir=x)
 print(fs)
+stopifnot(identical(names(fs), grep("^.future_", names(x), value=TRUE, invert=TRUE)))
+stopifnot(identical(fs$a, f1))
 
 ## Invalid subset
 res <- try(futureOf(x[[0]], mustExist=FALSE), silent=TRUE)

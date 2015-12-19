@@ -20,8 +20,18 @@ f6 <- futureOf(x[[1]])
 stopifnot(identical(f2, f1), identical(f3, f2), identical(f4, f3),
           identical(f5, f4), identical(f6, f5))
 
+x[[3]] %<=% { 3 }
+x$d %<=% { 4 }
+x[[5]] <- 5
+
+## Identify all futures
 fs <- futureOf(envir=x)
 print(fs)
+stopifnot(identical(names(fs), names(x)))
+stopifnot(identical(fs$a, f1))
+stopifnot(identical(fs[[3]], futureOf(3L, envir=x)))
+stopifnot(identical(fs$d, futureOf("d", envir=x)))
+
 
 ## Out-of-bound subscript, cf. lists
 stopifnot(is.na(futureOf(x[[0]], mustExist=FALSE)))

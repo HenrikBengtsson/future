@@ -66,7 +66,7 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
 
   ## Otherwise, inspect all variables in environment
  if (inherits(envir, "listenv")) {
-    names <- map(envir)
+    map <- map(envir)
     res <- list()
     length(res) <- length(map)
     names(res) <- names(map)
@@ -78,7 +78,6 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
         res[[idx]] <- future
       }
     }
-
   } else {
     vars <- ls(envir=envir, all.names=TRUE)
     vars <- grep("^.future_", vars, invert=TRUE, value=TRUE)
