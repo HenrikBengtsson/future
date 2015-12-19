@@ -23,7 +23,7 @@ stopifnot(identical(f2, f1), identical(f3, f1), identical(f4, f1))
 ## Identify all futures
 fs <- futureOf(envir=x)
 print(fs)
-stopifnot(identical(names(fs), grep("^.future_", names(x), value=TRUE, invert=TRUE)))
+stopifnot(identical(names(fs), c("a")))
 stopifnot(identical(fs$a, f1))
 
 ## Invalid subset
