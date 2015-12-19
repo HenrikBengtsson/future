@@ -37,7 +37,9 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA_
 
     future_name <- sprintf(".future_%s", name)
     if (!exists(future_name, envir=envir, inherits=FALSE)) {
-      msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(future_name), class(envir)[1], sQuote(environmentName(envir)), sQuote(target$code))
+      envirName <- environmentName(envir)
+      if (!nzchar(envirName)) envirName <- "<noname>"
+      msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(future_name), class(envir)[1], sQuote(envirName), sQuote(target$code))
       if (mustExist) stop(msg, call.=FALSE)
       attr(res, "reason") <- msg
       return(res)
