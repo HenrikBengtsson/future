@@ -9,18 +9,21 @@
 #' @param mustExist If TRUE and the variable does not exists, then
 #' an informative error is thrown, otherwise NA is returned.
 #' @param default the default value if future was not found.
+#' @param drop if TRUE and \code{var} is NULL, then returned list
+#' only contains futures, otherwise also \code{default} values.
 #'
-#' @return A \link{Future} (or NA).  If \code{var} is NULL, then a
-#' named list of Future:s are returned.
+#' @return A \link{Future} (or \code{default}).
+#' If \code{var} is NULL, then a named list of Future:s are returned.
 #'
 #' @example incl/futureOf.R
 #'
 #' @export
 #' @importFrom listenv map parse_env_subset
-futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA_character_) {
-  res <- default
+futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA, drop=FALSE) {
+  ## Local functions
+  get_future <- function(target, mustExist=TRUE, default=NA) {
+    res <- default
 
-  get_future <- function(target, mustExist=TRUE) {
     if (!target$exists) {
       msg <- sprintf("No such future variable: %s", target$code)
       if (mustExist) stop(msg, call.=FALSE)
@@ -30,7 +33,8 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA_
 
     envir <- target$envir
     if (inherits(envir, "listenv")) {
-      name <- map(envir)[target$idx]
+      map <- map(envir)
+      name <- map[target$idx]
     } else {
       name <- target$name
     }
@@ -48,22 +52,48 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA_
     get(future_name, envir=envir, inherits=FALSE)
   } # get_future()
 
+  ## Argument 'expr':
   expr <- substitute(var)
 
-  ## Inspect all variables in environment?
-  if (is.null(expr)) {
+
+  ## Inspect by expression?
+  if (!is.null(expr)) {
+    target <- parse_env_subset(expr, envir=envir, substitute=FALSE)
+    future <- get_future(target, mustExist=mustExist)
+    return(future)
+  }
+
+
+  ## Otherwise, inspect all variables in environment
+ if (inherits(envir, "listenv")) {
+    names <- map(envir)
+    res <- list()
+    length(res) <- length(map)
+    names(res) <- names(map)
+
+    for (idx in seq_along(res)) {
+      target <- parse_env_subset(idx, envir=envir, substitute=FALSE)
+      future <- get_future(target, mustExist=FALSE, default=default)
+      if (!is.null(future) || !is.atomic(future) || !is.na(future)) {
+        res[[idx]] <- future
+      }
+    }
+
+  } else {
     vars <- ls(envir=envir, all.names=TRUE)
     vars <- grep("^.future_", vars, invert=TRUE, value=TRUE)
     res <- lapply(vars, FUN=function(var) {
       target <- parse_env_subset(var, envir=envir, substitute=FALSE)
-      get_future(target, mustExist=FALSE)
+      get_future(target, mustExist=FALSE, default=default)
     })
     names(res) <- vars
-    keep <- sapply(res, FUN=inherits, "Future")
-    res <- res[keep]
-    return(res)
   }
 
-  target <- parse_env_subset(expr, envir=envir, substitute=FALSE)
-  get_future(target, mustExist=mustExist)
+  ## Keep only futures?
+  if (drop) {
+    keep <- sapply(res, FUN=inherits, "Future")
+    res <- res[keep]
+  }
+
+  res
 }
