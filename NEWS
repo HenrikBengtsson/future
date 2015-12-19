@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.9.0-9000 [2015-12-19]
+o Now %<=% can also assign to multi-dimensional list environments.
+
+
 Version: 0.9.0 [2015-12-11]
 o GLOBALS: Now globals ("unknown" variables) are identified
   using the new findGlobals(..., method="ordered") in
