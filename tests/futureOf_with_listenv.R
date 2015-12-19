@@ -36,7 +36,7 @@ fsD <- futureOf(envir=x, drop=TRUE)
 print(fsD)
 stopifnot(all(sapply(fsD, FUN=inherits, "Future")))
 stopifnot(!identical(fsD, fs))
-stop()
+
 
 ## Out-of-bound subscript, cf. lists
 stopifnot(is.na(futureOf(x[[0]], mustExist=FALSE)))
