@@ -42,10 +42,10 @@ y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
 ## Exceptions
-res <- try(y <- resolve(x, idxs=0L))
+res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-res <- try(y <- resolve(x, idxs="unknown"))
+res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** resolve() for lists ... DONE")
@@ -78,7 +78,7 @@ y <- resolve(x)
 stopifnot(identical(y, x))
 
 x <- new.env()
-x$a %<=% { 1 }
+x$a <- future({ 1 })
 x$b %<=% { 2 }
 x$c <- 3
 y <- resolve(x, idxs="a")
@@ -91,7 +91,7 @@ y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
 ## Exceptions
-res <- try(y <- resolve(x, idxs="unknown"))
+res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** resolve() for environments ... DONE")
@@ -123,7 +123,7 @@ y <- resolve(x)
 stopifnot(identical(y, x))
 
 x <- listenv()
-x$a %<=% { 1 }
+x$a <- future({ 1 })
 x$b %<=% { 2 }
 x$c <- 3
 y <- resolve(x, idxs="a")
@@ -136,10 +136,10 @@ y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
 ## Exceptions
-res <- try(y <- resolve(x, idxs=0L))
+res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-res <- try(y <- resolve(x, idxs="unknown"))
+res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** resolve() for list environments ... DONE")
