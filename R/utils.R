@@ -38,12 +38,31 @@ trim <- function(s) {
 
 whichIndex <- function(I, dim, dimnames=NULL) {
   ndim <- length(dim)
-  stopifnot(is.matrix(I), ncol(I) == ndim)
+  stopifnot((is.matrix(I) || is.data.frame(I)), ncol(I) == ndim)
   if (!is.null(dimnames)) stopifnot(length(dimnames) == ndim)
   if (ndim == 0L) return(integer(0L))
 
-  ## By dimnames?
-  if (is.character(I)) {
+  if (is.data.frame(I)) {
+    ## Convert each column to indices
+    I2 <- array(NA_integer_, dim=dim(I))
+    for (kk in 1:ndim) {
+      idxs <- I[[kk]]
+      if (is.character(idxs)) {
+        idxs <- match(idxs, dimnames[[kk]])
+        if (anyNA(idxs)) {
+          unknown <- I[is.na(idxs),kk]
+          stop("Unknown indices: ", hpaste(sQuote(unknown)))
+        }
+      } else {
+        if (any(idxs < 1 | idxs > dim[kk])) {
+          stop("Index out of range.")
+        }
+      }
+      I2[,kk] <- idxs
+    }
+    I <- I2
+    I2 <- NULL
+  } else if (is.character(I)) {
     ## Convert dimnames to dimindices
     I2 <- array(NA_integer_, dim=dim(I))
     for (kk in 1:ndim) {

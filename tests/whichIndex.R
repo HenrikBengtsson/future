@@ -21,24 +21,30 @@ for (dim in dims) {
   print(idxs)
   stopifnot(all(X[idxs] == idxs))
 
-  ## By dimindices
+  ## (a) By matrix and dimindices
   I <- arrayInd(idxs, .dim=dim(X))
   print(I)
-
   idxs2 <- whichIndex(I, dim=dim(X))
   print(idxs2)
   stopifnot(all(idxs2 == idxs))
 
-  ## By dimnames
+  ## (b) By matrix and dimnames
   N <- array(NA_character_, dim=dim(I))
   for (kk in seq_len(ncol(N))) {
     N[,kk] <- dimnames[[kk]][I[,kk]]
   }
   print(N)
-
   idxs3 <- whichIndex(N, dim=dim(X), dimnames=dimnames(X))
   print(idxs3)
   stopifnot(all(idxs3 == idxs))
+
+  ## (b) By data.frame
+  D <- as.data.frame(I)
+  for (cc in seq(from=1L, to=ncol(D))) D[[cc]] <- N[,cc]
+  print(D)
+  idxs4 <- whichIndex(D, dim=dim(X), dimnames=dimnames(X))
+  print(idxs4)
+  stopifnot(all(idxs4 == idxs))
 }
 
 
