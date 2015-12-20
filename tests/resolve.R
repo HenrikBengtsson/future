@@ -22,12 +22,11 @@ stopifnot(identical(y, x))
 x <- list()
 x$a <- future(1)
 x$b <- future(2)
-x[[4]] <- 4
-dim(x) <- c(2,2)
+x[[3]] <- 3
 y <- resolve(x)
 stopifnot(identical(y, x))
-stopifnot(resolved(x[[1]]))
-stopifnot(resolved(x[[2]]))
+stopifnot(resolved(x$a))
+stopifnot(resolved(x[["b"]]))
 
 x <- list()
 x$a <- future(1)
@@ -47,7 +46,15 @@ stopifnot(identical(y, x))
 y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
+y <- resolve(x, idxs=matrix(c(1,2), ncol=2L))
+stopifnot(identical(y, x))
+
+
 ## Exceptions
+x <- list()
+x$a <- 1
+x$b <- 2
+
 res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
