@@ -33,6 +33,10 @@ resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
+    ## Multi-dimensional indices?
+    if (is.matrix(idxs)) {
+      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+    }
     idxs <- unique(idxs)
 
     if (is.numeric(idxs)) {
@@ -98,7 +102,12 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
       stop("Named subsetting not possible. Elements are not named.")
     }
 
+    ## Multi-dimensional indices?
+    if (is.matrix(idxs)) {
+      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+    }
     idxs <- unique(idxs)
+
     idxs <- as.character(idxs)
     unknown <- idxs[!is.element(idxs, names)]
     if (length(unknown) > 0) {
@@ -147,10 +156,13 @@ resolve.listenv <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
+    ## Multi-dimensional indices?
+    if (is.matrix(idxs)) {
+      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+    }
     idxs <- unique(idxs)
 
     if (is.numeric(idxs)) {
-      idxs <- as.numeric(idxs)
       if (any(idxs < 1 | idxs > length(x))) {
         stop(sprintf("Indices out of range [1,%d]: %s", length(x), hpaste(idxs)))
       }
