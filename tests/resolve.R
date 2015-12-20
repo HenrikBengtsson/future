@@ -5,6 +5,9 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
+dimOk <- exists("dim.listenv", envir=getNamespace("listenv"))
+
+
 message("*** resolve() ...")
 
 message("*** resolve() for lists ...")
@@ -132,7 +135,7 @@ x <- listenv()
 x$a <- future(1)
 x$b <- future(2)
 x$c <- 3
-dim(x) <- c(1,3)
+if (dimOk) dim(x) <- c(1,3)
 y <- resolve(x)
 stopifnot(identical(y, x))
 
@@ -151,7 +154,7 @@ x$a <- future({ 1 })
 x$b %<=% { 2 }
 x$c %<=% { 3 }
 x$d <- 4
-dim(x) <- c(2,2)
+if (dimOk) dim(x) <- c(2,2)
 y <- resolve(x, idxs="a")
 stopifnot(identical(y, x))
 stopifnot(identical(futureOf(x$a, mustExist=FALSE), x$a))
@@ -161,7 +164,8 @@ y <- resolve(x, idxs="b")
 stopifnot(identical(y, x))
 stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
 
-y <- resolve(x, idxs=matrix(c(1,2), ncol=2L))
+idxs <- if (dimOk) matrix(c(1,2), ncol=2L) else 3L
+y <- resolve(x, idxs=idxs)
 stopifnot(identical(y, x))
 stopifnot(is.na(futureOf(x$c, mustExist=FALSE)))
 

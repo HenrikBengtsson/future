@@ -5,6 +5,8 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
+dimOk <- exists("dim.listenv", envir=getNamespace("listenv"))
+
 message("*** %<=% to listenv ...")
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,7 +63,7 @@ stopifnot(identical(u$a, 1))
 stopifnot(identical(v$a, 2))
 
 
-if (exists("dim.listenv", envir=getNamespace("listenv"))) {
+if (dimOk) {
   message("*** %<=% to listenv: multiple dimensions ...")
 
   x0 <- list()
