@@ -32,7 +32,7 @@ future::plan(oplan)
 print(future::plan())
 
 message("*** plan('unknown strategy')")
-res <- try(plan('unknown strategy'))
+res <- try(plan('unknown strategy'), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
