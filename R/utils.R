@@ -34,3 +34,23 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 trim <- function(s) {
   sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
 } # trim()
+
+
+whichIndex <- function(I, dim) {
+  ndim <- length(dim)
+  stopifnot(is.matrix(I), ncol(I) == ndim)
+  if (ndim == 0L) return(integer(0L))
+  if (ndim == 1L) return(I[,1L])
+
+  for (kk in 1:ndim) {
+    if (any(I[,kk] < 1 | I[,kk] > dim[kk])) {
+      stop("Index out of range.")
+    }
+  }
+
+  base <- cumprod(dim[-ndim])
+  for (kk in 2:ndim) {
+    I[,kk] <- (I[,kk]-1) * base[kk-1L]
+  }
+  rowSums(I)
+}
