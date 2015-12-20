@@ -102,10 +102,6 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
       stop("Named subsetting not possible. Elements are not named.")
     }
 
-    ## Multi-dimensional indices?
-    if (is.matrix(idxs)) {
-      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
-    }
     idxs <- unique(idxs)
 
     idxs <- as.character(idxs)
