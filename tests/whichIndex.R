@@ -13,15 +13,32 @@ dims <- list(
 
 for (dim in dims) {
   printf("Dimensions: (%s)\n", paste(dim, collapse=", "))
-  X <- array(seq_len(prod(dim)), dim=dim)
+  dimnames <- lapply(dim, FUN=function(n) letters[seq_len(n)])
+  X <- array(seq_len(prod(dim)), dim=dim, dimnames=dimnames)
+  print(X)
+
   idxs <- unique(round(seq(from=1L, to=length(X), length.out=5)))
   print(idxs)
   stopifnot(all(X[idxs] == idxs))
+
+  ## By dimindices
   I <- arrayInd(idxs, .dim=dim(X))
   print(I)
+
   idxs2 <- whichIndex(I, dim=dim(X))
-  print(idxs)
+  print(idxs2)
   stopifnot(all(idxs2 == idxs))
+
+  ## By dimnames
+  N <- array(NA_character_, dim=dim(I))
+  for (kk in seq_len(ncol(N))) {
+    N[,kk] <- dimnames[[kk]][I[,kk]]
+  }
+  print(N)
+
+  idxs3 <- whichIndex(N, dim=dim(X), dimnames=dimnames(X))
+  print(idxs3)
+  stopifnot(all(idxs3 == idxs))
 }
 
 message("*** whichIndex() ... DONE")

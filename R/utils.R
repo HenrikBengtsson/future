@@ -36,17 +36,36 @@ trim <- function(s) {
 } # trim()
 
 
-whichIndex <- function(I, dim) {
+whichIndex <- function(I, dim, dimnames=NULL) {
   ndim <- length(dim)
   stopifnot(is.matrix(I), ncol(I) == ndim)
+  if (!is.null(dimnames)) stopifnot(length(dimnames) == ndim)
   if (ndim == 0L) return(integer(0L))
-  if (ndim == 1L) return(I[,1L])
 
-  for (kk in 1:ndim) {
-    if (any(I[,kk] < 1 | I[,kk] > dim[kk])) {
-      stop("Index out of range.")
+  ## By dimnames?
+  if (is.character(I)) {
+    ## Convert dimnames to dimindices
+    I2 <- array(NA_integer_, dim=dim(I))
+    for (kk in 1:ndim) {
+      idxs <- match(I[,kk], dimnames[[kk]])
+      if (anyNA(idxs)) {
+        unknown <- I[is.na(idxs),kk]
+        stop("Unknown indices: ", hpaste(sQuote(unknown)))
+      }
+      I2[,kk] <- idxs
+    }
+    I <- I2
+    I2 <- NULL
+  } else {
+    for (kk in 1:ndim) {
+      if (any(I[,kk] < 1 | I[,kk] > dim[kk])) {
+        stop("Index out of range.")
+      }
     }
   }
+
+  ## Nothing more to do?
+  if (ndim == 1) return(I[,1L])
 
   base <- cumprod(dim[-ndim])
   for (kk in 2:ndim) {
