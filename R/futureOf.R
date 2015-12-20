@@ -31,24 +31,33 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
     }
 
     envir <- target$envir
+    envirName <- environmentName(envir)
+    if (!nzchar(envirName)) envirName <- "<noname>"
+
+    ## (a) Check if element is a future promise
     if (inherits(envir, "listenv")) {
       map <- map(envir)
       name <- map[target$idx]
     } else {
       name <- target$name
     }
-
     future_name <- sprintf(".future_%s", name)
-    if (!exists(future_name, envir=envir, inherits=FALSE)) {
-      envirName <- environmentName(envir)
-      if (!nzchar(envirName)) envirName <- "<noname>"
-      msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(future_name), class(envir)[1], sQuote(envirName), sQuote(target$code))
-      if (mustExist) stop(msg, call.=FALSE)
-      attr(res, "reason") <- msg
-      return(res)
+    if (exists(future_name, envir=envir, inherits=FALSE)) {
+      return(get(future_name, envir=envir, inherits=FALSE))
     }
 
-    get(future_name, envir=envir, inherits=FALSE)
+    ## (b) Check if element itself is a future object
+    if (exists(name, envir=envir, inherits=FALSE)) {
+      future <- get(name, envir=envir, inherits=FALSE)
+      if (inherits(future, "Future")) return(future)
+    }
+
+    ## Not found
+    msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(name), class(envir)[1], sQuote(envirName), sQuote(target$code))
+    if (mustExist) stop(msg, call.=FALSE)
+
+    attr(res, "reason") <- msg
+    res
   } # get_future()
 
   ## Argument 'expr':
