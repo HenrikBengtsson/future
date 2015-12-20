@@ -20,7 +20,6 @@
 #' @export
 #' @importFrom listenv map parse_env_subset
 futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA, drop=FALSE) {
-  ## Local functions
   get_future <- function(target, mustExist=TRUE, default=NA) {
     res <- default
 
@@ -79,6 +78,7 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
       }
     }
   } else {
+    ## names(x) is only supported in R (>= 3.2.0)
     vars <- ls(envir=envir, all.names=TRUE)
     vars <- grep("^.future_", vars, invert=TRUE, value=TRUE)
     res <- lapply(vars, FUN=function(var) {

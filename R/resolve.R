@@ -92,7 +92,8 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
-    names <- names(x)
+    ## names(x) is only supported in R (>= 3.2.0)
+    names <- ls(envir=x, all.names=TRUE)
     if (is.null(names)) {
       stop("Named subsetting not possible. Elements are not named.")
     }
