@@ -89,7 +89,7 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
   }
 
   ## Keep only futures?
-  if (drop) {
+  if (drop && length(res) > 0) {
     keep <- sapply(res, FUN=inherits, "Future")
     res <- res[keep]
   }
