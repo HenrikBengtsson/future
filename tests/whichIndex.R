@@ -41,4 +41,22 @@ for (dim in dims) {
   stopifnot(all(idxs3 == idxs))
 }
 
+
+## Exceptions
+dim <- c(2,3)
+ndim <- length(dim)
+dimnames <- lapply(dim, FUN=function(n) letters[seq_len(n)])
+
+I <- matrix(c(1,1,2,4), ncol=ndim)
+res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+I <- matrix(c(0,0), ncol=ndim)
+res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+I <- matrix(c("a","q"), ncol=ndim)
+res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
 message("*** whichIndex() ... DONE")
