@@ -4,10 +4,12 @@
 \alias{resolve}
 \title{Wait until all existing futures in an environment are resolved}
 \usage{
-resolve(x, value = TRUE, sleep = 1, ...)
+resolve(x, idxs = NULL, value = TRUE, sleep = 1, ...)
 }
 \arguments{
 \item{x}{an environment holding futures.}
+
+\item{idxs}{subset of elements to check.}
 
 \item{value}{If TRUE, the values are retrieved, otherwise not.}
 
@@ -17,7 +19,7 @@ if futures have been resolved since last time.}
 \item{...}{Not used}
 }
 \value{
-Environment \code{x}.
+Environment \code{x} (regardless of subsetting or not).
 }
 \description{
 The environment is first scanned for futures and then the futures
