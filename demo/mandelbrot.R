@@ -104,7 +104,7 @@ for (ii in seq_along(sizes)) {
 }
 
 ## Plot as each plane gets ready
-if (interactive()) plot.new()
+if (interactive()) { dev.new(); plot.new() }
 split.screen(rep(ceiling(sqrt(n)), times=2))
 resolved <- logical(length(counts))
 while (!all(resolved)) {
