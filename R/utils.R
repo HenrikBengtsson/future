@@ -47,17 +47,15 @@ whichIndex <- function(I, dim, dimnames=NULL) {
     I2 <- array(NA_integer_, dim=dim(I))
     for (kk in 1:ndim) {
       idxs <- I[[kk]]
-      if (is.numeric(idxs)) {
-        if (any(idxs < 1 | idxs > dim[kk])) {
-          stop("Index out of range.")
-        }
-      } else {
-        ## Could be, say, factor
-        idxs <- as.character(idxs)
+      if (is.character(idxs)) {
         idxs <- match(idxs, dimnames[[kk]])
         if (anyNA(idxs)) {
           unknown <- I[is.na(idxs),kk]
           stop("Unknown indices: ", hpaste(sQuote(unknown)))
+        }
+      } else {
+        if (any(idxs < 1 | idxs > dim[kk])) {
+          stop("Index out of range.")
         }
       }
       I2[,kk] <- idxs
