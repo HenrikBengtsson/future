@@ -114,7 +114,8 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
   ## Identify all futures
   if (is.null(idxs)) {
     futures <- futureOf(envir=x, drop=TRUE)
-    idxs <- names(x)
+    ## names(x) is only supported in R (>= 3.2.0)
+    idxs <- ls(envir=x, all.names=TRUE)
   } else {
     futures <- lapply(idxs, FUN=function(idx) {
       futureOf(x[[idx]], mustExist=FALSE)
