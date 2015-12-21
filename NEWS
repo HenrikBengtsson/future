@@ -4,6 +4,8 @@ Package: future
 Version: 0.9.0-9000 [2015-12-20]
 o Now %<=% can also assign to multi-dimensional list environments.
 o Add resolve() to resolve futures in lists and environments.
+o Now availableCores() also ackowledge the number of CPUs
+  allotted by Slurm.
 o CLEANUP: Now the internal future variable created by %<=% is
   removed when the future variable is resolved.
 o BUG FIX: futureOf(envir=x) did not work properly when 'x' was
