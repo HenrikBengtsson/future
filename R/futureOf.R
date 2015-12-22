@@ -103,10 +103,10 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
     res <- res[keep]
   } else {
     ## Preserve dimensions
-    dim <- dim(x)
+    dim <- dim(envir)
     if (!is.null(dim)) {
       dim(res) <- dim
-      dimnames(res) <- dimnames(x)
+      dimnames(res) <- dimnames(envir)
     }
   }
 
