@@ -55,7 +55,12 @@ futures.listenv <- function(x, ...) {
     if (inherits(f, "Future")) {
       res[[ii]] <- f
     } else {
-      res[[ii]] <- x[[ii]]
+      value <- x[[ii]]
+      if (is.null(value)) {
+        res[ii] <- list(value)
+      } else {
+        res[[ii]] <- value
+      }
     }
   }
 

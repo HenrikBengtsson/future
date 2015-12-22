@@ -29,7 +29,7 @@ dims <- list(
 
 message("*** futures() ...")
 
-for (type in c("list", "listenv", "environment")) {
+for (type in c("list", "environment", "listenv")) {
   message(sprintf("*** futures() - %s ...", type))
 
   for (strategy in strategies) {
@@ -52,8 +52,10 @@ for (type in c("list", "listenv", "environment")) {
     str(x)
 
     for (dim in dims) {
-      if (type != "environment") {
-        if (length(dim) > 0) {
+      if (!is.null(dim)) {
+        if (type == "environment") {
+          names(x) <- NULL
+        } else {
           dim(x) <- dim
           dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
         }
@@ -61,15 +63,19 @@ for (type in c("list", "listenv", "environment")) {
 
       f <- futures(x)
       str(f)
-      stopifnot(length(f) == length(x))
-      stopifnot(identical(names(f), names(x)))
+      if (type != "environment") {
+        stopifnot(length(f) == length(x))
+        stopifnot(identical(names(f), names(x)))
+      }
       stopifnot(identical(dim(f), dim(x)))
       stopifnot(identical(dimnames(f), dimnames(x)))
 
       r <- resolved(x)
       str(r)
-      stopifnot(length(r) == length(x))
-      stopifnot(identical(names(r), names(x)))
+      if (type != "environment") {
+        stopifnot(length(r) == length(x))
+        stopifnot(identical(names(r), names(x)))
+      }
       stopifnot(identical(dim(r), dim(x)))
       stopifnot(identical(dimnames(r), dimnames(r)))
     }
