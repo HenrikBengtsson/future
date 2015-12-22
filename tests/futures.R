@@ -27,37 +27,39 @@ dims <- list(
   c(2,1,3,1)
 )
 
-message("*** futures() ...")
+message("*** futures() / resolved() / values() ...")
 
 for (type in c("list", "environment", "listenv")) {
-  message(sprintf("*** futures() - %s ...", type))
+  message(sprintf("Type of object: %s", type))
 
   for (strategy in strategies) {
-    message("- Plan: ", strategy)
+    message("Type of future: ", strategy)
     plan(strategy)
 
-    if (type == "list") {
-      x <- list()
-    } else if (type == "listenv") {
-      x <- listenv()
-    } else if (type == "environment") {
-      x <- new.env()
-    }
-
-    x$a <- 1
-    x$b <- future(2)
-    x$c <- 3
-    if (type != "list") x$d %<=% { 4 }
-    if (type != "environment") x[[6]] <- 6
-    str(x)
-
     for (dim in dims) {
+      message("Dimensions: ", deparse(dim))
+
+      if (type == "list") {
+        x <- list()
+      } else if (type == "listenv") {
+        x <- listenv()
+      } else if (type == "environment") {
+        x <- new.env()
+      }
+
+      x$a <- 1
+      x$b <- future(2)
+      x$c <- 3
+      if (type != "list") x$d %<=% { 4 }
+      if (type != "environment") x[[6]] <- 6
+      str(x)
+
       if (!is.null(dim)) {
-        if (type == "environment") {
-          names(x) <- NULL
-        } else {
+        if (type != "environment") {
+          names <- names(x)
           dim(x) <- dim
           dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
+          names(x) <- names
         }
       }
 
@@ -77,14 +79,23 @@ for (type in c("list", "environment", "listenv")) {
         stopifnot(identical(names(r), names(x)))
       }
       stopifnot(identical(dim(r), dim(x)))
-      stopifnot(identical(dimnames(r), dimnames(r)))
-    }
+      stopifnot(identical(dimnames(r), dimnames(x)))
+
+      v <- values(x)
+      str(v)
+      if (type != "environment") {
+        stopifnot(length(v) == length(x))
+        stopifnot(identical(names(v), names(x)))
+      }
+      stopifnot(identical(dim(v), dim(x)))
+      stopifnot(identical(dimnames(v), dimnames(x)))
+    } # for (dim ...)
   } # for (strategy ...)
 
   message(sprintf("*** futures() - %s ... DONE", type))
 } # for (type ...)
 
-message("*** futures() ... DONE")
+message("*** futures() / resolved() / values() ... DONE")
 
 ## Cleanup
 plan(eager)

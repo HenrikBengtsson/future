@@ -49,6 +49,8 @@ resolved.list <- function(x, ...) {
 #' @export
 resolved.environment <- function(x, ...) {
   fs <- futures(x)
+  names <- names(fs)
   fs <- as.list(fs)
+  names(fs) <- names
   resolved(fs)
 }
