@@ -1,3 +1,21 @@
+#' Gets all futures in an object
+#'
+#' Gets all futures in an environment, a list, or a list environment
+#' and returns an object of the same class (and dimensions).
+#' Non-future elements are returned as is.
+#'
+#' @param x An environment, a list, or a list environment.
+#' @param ... Not used.
+#'
+#' @return An object of same type as \code{x} and with the same names
+#' and/or dimensions, if set.
+#'
+#' @details
+#' This function is useful for retrieve futures that were created via
+#' future assignments (\code(%<=%}) and therefore stored as promises.
+#' This function turns such promises into standard \code{Future}
+#' objects.
+#'
 #' @export
 futures <- function(x, ...) UseMethod("futures")
 
