@@ -135,7 +135,11 @@ x <- listenv()
 x$a <- future(1)
 x$b <- future(2)
 x$c <- 3
-if (dimOk) dim(x) <- c(1,3)
+if (dimOk) {
+  names <- names(x)
+  dim(x) <- c(1,3)
+  names(x) <- names
+}
 y <- resolve(x)
 stopifnot(identical(y, x))
 
@@ -154,7 +158,11 @@ x$a <- future({ 1 })
 x$b %<=% { 2 }
 x$c %<=% { 3 }
 x$d <- 4
-if (dimOk) dim(x) <- c(2,2)
+if (dimOk) {
+  names <- names(x)
+  dim(x) <- c(2,2)
+  names(x) <- names
+}
 y <- resolve(x, idxs="a")
 stopifnot(identical(y, x))
 stopifnot(identical(futureOf(x$a, mustExist=FALSE), x$a))

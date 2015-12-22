@@ -67,8 +67,10 @@ futures.listenv <- function(x, ...) {
   dim <- dim(x)
   if (!is.null(dim)) {
     dim(res) <- dim
+    ## Preserve dimnames and names
     dimnames(res) <- dimnames(x)
   }
+  names(res) <- names(x)
 
   res
 }
