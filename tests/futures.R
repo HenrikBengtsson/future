@@ -19,6 +19,7 @@ if (getRversion() < "3.2.0") {
 strategies <- c("eager", "lazy")
 if (supportsMulticore()) strategies <- c(strategies, "multicore")
 
+
 dims <- list(
   NULL,
   c(1,6),
@@ -26,6 +27,9 @@ dims <- list(
   c(2,3,1),
   c(2,1,3,1)
 )
+
+dimOk <- exists("dim.listenv", envir=getNamespace("listenv"))
+if (!dimOk) dims <- list(NULL)
 
 message("*** futures() / resolved() / values() ...")
 
