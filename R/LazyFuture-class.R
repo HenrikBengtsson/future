@@ -33,12 +33,12 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=
 evaluate.LazyFuture <- evaluate.EagerFuture
 
 #' @export
-resolved.LazyFuture <- function(future, ...) {
+resolved.LazyFuture <- function(x, ...) {
   ## resolved() for LazyFuture must force value() such that
   ## the future gets resolved.  The reason for this is so
   ## that polling is always possible, e.g.
   ## while(!resolved(f)) Sys.sleep(5);
-  value(future, onError="return")
+  value(x, onError="return")
   NextMethod("resolved")
 }
 

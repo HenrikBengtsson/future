@@ -58,12 +58,12 @@ run.MulticoreFuture <- function(future, ...) {
 }
 
 #' @export
-resolved.MulticoreFuture <- function(future, timeout=0.2, ...) {
+resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
-  if (future$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
+  if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
   selectChildren <- importMulticore("selectChildren")
-  job <- future$job
+  job <- x$job
   stopifnot(inherits(job, "parallelJob"))
 
   ## NOTE: We cannot use mcollect(job, wait=FALSE, timeout=0.2),
@@ -104,4 +104,3 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
 
   NextMethod("value")
 }
-
