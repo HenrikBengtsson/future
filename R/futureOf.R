@@ -101,6 +101,13 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
   if (drop && length(res) > 0) {
     keep <- sapply(res, FUN=inherits, "Future")
     res <- res[keep]
+  } else {
+    ## Preserve dimensions
+    dim <- dim(x)
+    if (!is.null(dim)) {
+      dim(res) <- dim
+      dimnames(res) <- dimnames(x)
+    }
   }
 
   res
