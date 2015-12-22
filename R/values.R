@@ -18,6 +18,8 @@ values <- function(x, ...) UseMethod("values")
 #' @export
 values.list <- function(x, ...) {
   y <- futures(x)
+  y <- resolve(y)
+
   for (ii in seq_along(y)) {
     tmp <- y[[ii]]
     if (inherits(tmp, "Future")) y[[ii]] <- value(tmp)
@@ -28,6 +30,7 @@ values.list <- function(x, ...) {
 #' @export
 values.environment <- function(x, ...) {
   y <- futures(x)
+  y <- resolve(y)
   names <- ls(envir=y, all.names=TRUE)
   for (key in names) {
     tmp <- y[[key]]
@@ -39,6 +42,7 @@ values.environment <- function(x, ...) {
 #' @export
 values.listenv <- function(x, ...) {
   y <- futures(x)
+  y <- resolve(y)
   for (ii in seq_along(y)) {
     tmp <- y[[ii]]
     if (inherits(tmp, "Future")) y[[ii]] <- value(tmp)
