@@ -4,7 +4,8 @@
 \alias{resolve}
 \title{Wait until all existing futures in an environment are resolved}
 \usage{
-resolve(x, idxs = NULL, value = TRUE, sleep = 1, ...)
+resolve(x, idxs = NULL, value = TRUE, sleep = 1,
+  progress = getOption("future.progress", FALSE), ...)
 }
 \arguments{
 \item{x}{an environment holding futures.}
@@ -15,6 +16,10 @@ resolve(x, idxs = NULL, value = TRUE, sleep = 1, ...)
 
 \item{sleep}{Number of seconds to wait before checking
 if futures have been resolved since last time.}
+
+\item{progress}{If TRUE textual progress summary is outputted.
+If a function, the it is called as \code{progress(done, total)}
+every time a future is resolved.}
 
 \item{...}{Not used}
 }

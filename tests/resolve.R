@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1)
+oopts <- options(warn=1, future.progress=TRUE)
 plan(lazy)
 
 dimOk <- exists("dim.listenv", envir=getNamespace("listenv"))
@@ -120,6 +120,17 @@ stopifnot(inherits(res, "try-error"))
 message("*** resolve() for environments ... DONE")
 
 message("*** resolve() for list environments ...")
+
+options(future.progress=function(done, total) {
+  msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100*done/total, done, total)
+  if (done == total) {
+    message(msg)
+  } else {
+    bs <- paste(rep("\b", times=nchar(msg)), collapse="")
+    message(paste(msg, bs, sep=""), appendLF=FALSE)
+  }
+})
+
 
 x <- listenv()
 y <- resolve(x)

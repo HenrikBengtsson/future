@@ -12,6 +12,9 @@
 #' @param value If TRUE, the values are retrieved, otherwise not.
 #' @param sleep Number of seconds to wait before checking
 #' if futures have been resolved since last time.
+#' @param progress If TRUE textual progress summary is outputted.
+#' If a function, the it is called as \code{progress(done, total)}
+#' every time a future is resolved.
 #' @param ... Not used
 #'
 #' @return Environment \code{x} (regardless of subsetting or not).
@@ -19,10 +22,12 @@
 #' @seealso futureOf
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) UseMethod("resolve")
+resolve <- function(x, idxs=NULL, value=TRUE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
+resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+  hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
+
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -60,12 +65,27 @@ resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
     x <- x[idxs]
   }
 
-
   ## Everything but futures are considered resolved by default
   resolved <- !sapply(x, FUN=inherits, "Future")
 
+  ## Total number of values to resolve
+  total <- length(resolved)
+  remaining <- which(!resolved)
+
+  if (hasProgress) {
+    done <- total - length(remaining)
+    done0 <- done
+    if (is.function(progress)) {
+      progress(done, total)
+    } else {
+      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
+      bs <- paste(rep("\b", times=nchar(msg)), collapse="")
+      message(paste(msg, bs, sep=""), appendLF=FALSE)
+    }
+  }
+
   while (!all(resolved)) {
-    for (ii in which(!resolved)) {
+    for (ii in remaining) {
       future <- x[[ii]]
       if (!resolved(future)) next
 
@@ -76,18 +96,40 @@ resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
       }
 
       resolved[ii] <- TRUE
+      remaining <- which(!resolved)
+
+      if (hasProgress) {
+        done <- total - length(remaining)
+        if (is.function(progress)) {
+          progress(done, total)
+        } else {
+          msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
+          bs <- paste(rep("\b", times=nchar(msg)), collapse="")
+          message(paste(msg, bs, sep=""), appendLF=FALSE)
+        }
+      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    if (!all(resolved)) Sys.sleep(sleep)
+    remaining <- which(!resolved)
+    if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
+
+  if (hasProgress && done != done0) {
+    if (is.function(progress)) {
+      progress(done, total)
+    } else {
+      msg <- sprintf("Progress: 100%% (%d/%d)", done, total)
+      message(msg)
+    }
+  }
 
   x0
 } ## resolve() for list
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
+resolve.environment <- function(x, idxs=NULL, value=TRUE, ...) {
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -128,7 +170,7 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
   if (length(futures) == 0) return(x)
 
   ## Resolve all futures
-  resolve(futures, value=value, sleep=sleep, ...)
+  resolve(futures, ...)
 
   ## Touch every element?
   ## (to trigger removal of internal futures)
@@ -144,7 +186,7 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=TRUE, ...) {
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -193,7 +235,7 @@ resolve.listenv <- function(x, idxs=NULL, value=TRUE, sleep=1.0, ...) {
   if (length(futures) == 0) return(x)
 
   ## Resolve all futures
-  resolve(futures, value=value, sleep=sleep, ...)
+  resolve(futures, ...)
 
   ## Touch every element?
   ## (to trigger removal of internal futures)
