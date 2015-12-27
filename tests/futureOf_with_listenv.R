@@ -84,7 +84,9 @@ message("*** futureOf() with listenv - futures ... DONE")
 message("*** futureOf() with listenv - exceptions ...")
 
 ## Out-of-bound subscript, cf. lists
-stopifnot(is.na(futureOf(x[[0]], mustExist=FALSE)))
+res <- try(futureOf(x[[0]], mustExist=FALSE), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
 res <- try(futureOf(x[[0]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
