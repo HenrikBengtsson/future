@@ -73,7 +73,7 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
 
 
   ## Otherwise, inspect all variables in environment
- if (inherits(envir, "listenv")) {
+  if (inherits(envir, "listenv")) {
     map <- map(envir)
     res <- list()
     length(res) <- length(map)
