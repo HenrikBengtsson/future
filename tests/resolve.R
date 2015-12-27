@@ -96,7 +96,7 @@ x$b %<=% { 2 }
 x$c <- 3
 y <- resolve(x)
 stopifnot(identical(y, x))
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 0L)
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- new.env()
 x$a <- future({ 1 })
@@ -111,7 +111,7 @@ y <- resolve(x, idxs="c")
 stopifnot(identical(y, x))
 y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 1L)
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 ## Exceptions
 res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
@@ -160,9 +160,9 @@ x$b %<=% { 2 }
 x$c <- 3
 y <- resolve(x)
 stopifnot(identical(y, x))
-stopifnot(is.na(futureOf(x$a, mustExist=FALSE)))
-stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 0L)
+#stopifnot(is.na(futureOf(x$a, mustExist=FALSE)))
+#stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- listenv()
 x$a <- future({ 1 })
@@ -181,21 +181,21 @@ stopifnot(resolved(x$a))
 
 y <- resolve(x, idxs="b")
 stopifnot(identical(y, x))
-stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
+#stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
 
 idxs <- if (dimOk) matrix(c(1,2), ncol=2L) else 3L
 y <- resolve(x, idxs=idxs)
 stopifnot(identical(y, x))
-stopifnot(is.na(futureOf(x$c, mustExist=FALSE)))
+#stopifnot(is.na(futureOf(x$c, mustExist=FALSE)))
 
 y <- resolve(x, idxs=4L)
 stopifnot(identical(y, x))
-stopifnot(is.na(futureOf(x[[4L]], mustExist=FALSE)))
+#stopifnot(is.na(futureOf(x[[4L]], mustExist=FALSE)))
 
 y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 1L)
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
 
 
 ## Exceptions

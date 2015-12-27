@@ -22,10 +22,10 @@
 #' @seealso futureOf
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=TRUE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
   hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
 
   ## Nothing to do?
@@ -129,7 +129,7 @@ resolve.list <- function(x, idxs=NULL, value=TRUE, sleep=1.0, progress=getOption
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=TRUE, ...) {
+resolve.environment <- function(x, idxs=NULL, value=FALSE, ...) {
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -170,7 +170,7 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, ...) {
   if (length(futures) == 0) return(x)
 
   ## Resolve all futures
-  resolve(futures, ...)
+  resolve(futures, value=value, ...)
 
   ## Touch every element?
   ## (to trigger removal of internal futures)
@@ -186,7 +186,7 @@ resolve.environment <- function(x, idxs=NULL, value=TRUE, ...) {
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=TRUE, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=FALSE, ...) {
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -235,7 +235,7 @@ resolve.listenv <- function(x, idxs=NULL, value=TRUE, ...) {
   if (length(futures) == 0) return(x)
 
   ## Resolve all futures
-  resolve(futures, ...)
+  resolve(futures, value=value, ...)
 
   ## Touch every element?
   ## (to trigger removal of internal futures)
