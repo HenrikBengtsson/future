@@ -98,7 +98,7 @@ By the way, since all futures are evaluated in a local environment, the dummy va
 
 ## Missing or incorrect globals
 
-## Global variable obscured by subassignment
+### Global variable obscured by subassignment
 When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurance in the future expression is as part of a subsetting assignment.
 For example,
 ```r
@@ -142,9 +142,33 @@ A workaround is to explicitly tell the future package about the global variable 
 ```
 
 
+### do.call() - function not found
+When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
+```r
+do.call(file_ext, list("foo.txt"))
+```
+instead of
+```r
+do.call("file_ext", list("foo.txt"))
+```
+so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem when futures are evaluated in external R sessions, such as on a cluster.  It may also become a problem if there is another function with the same name.  Example illustrating the problem:
+```r
+> library("future")
+> library("listenv")
+> library("tools")
+> plan(lazy)
+> pathnames <- c("foo.txt", "bar.png", "yoo.md")
+> res <- listenv()
+> for (ii in seq_along(pathnames)) {
++   res[[ii]] %<=% do.call("file_ext", list(pathnames[ii]))
++ }
+> file_ext <- function(...) "haha!"
+> unlist(res)
+[1] "haha!" "haha!" "haha!"
+```
+
 
 ## Error "non-numeric argument to binary operator"
-
 The future assignment operator `%<=%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
 > x %<=% 2 * runif(1)
