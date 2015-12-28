@@ -69,9 +69,7 @@ message("*** futureOf() with environment - exceptions ...")
 
 ## Invalid subset
 res <- try(futureOf(x[[0]], mustExist=FALSE), silent=TRUE)
-if (packageVersion("listenv") > "0.5.0") {
-  stopifnot(inherits(res, "try-error"))
-}
+stopifnot(inherits(res, "try-error"))
 
 res <- try(futureOf(x[[0]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))

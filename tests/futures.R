@@ -28,8 +28,6 @@ dims <- list(
   c(2,1,3,1)
 )
 
-dimOk <- exists("dim.listenv", envir=getNamespace("listenv"))
-if (!dimOk) dims <- list(NULL)
 
 message("*** futures() / resolved() / values() ...")
 
