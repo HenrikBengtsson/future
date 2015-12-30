@@ -88,8 +88,7 @@ for (strategy in strategies) {
 
 message("- Local variables with the same name as globals ...")
 
-methods <- c("conservative")
-if (packageVersion("globals") > "0.5.0") methods <- c(methods, "ordered")
+methods <- c("conservative", "ordered")
 
 for (method in methods) {
   options("future::globalsMethod"=method)

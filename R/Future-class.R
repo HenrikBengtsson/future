@@ -87,26 +87,8 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
 value <- function(...) UseMethod("value")
 
 
-#' Check whether a future is resolved or not
-#'
-#' @param future A \link{Future}.
-#' @param \dots Not used
-#'
-#' @return TRUE if future is resolved and FALSE if unresolved.
-#'
-#' @details
-#' This method needs to be implemented by the class that implement
-#' the Future API.  The implementation must never throw an error,
-#' but only return either TRUE or FALSE.
-#' It should also be possible to use the method for polling the
-#' future until it is resolved (without having to wait infinitly long),
-#' e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
-#'
 #' @export
-#' @export resolved
-#' @aliases resolved
-resolved.Future <- function(future, ...) {
-  future$state %in% c('finished', 'failed', 'interrupted')
+resolved.Future <- function(x, ...) {
+  x$state %in% c('finished', 'failed', 'interrupted')
 }
 
-resolved <- function(...) UseMethod("resolved")

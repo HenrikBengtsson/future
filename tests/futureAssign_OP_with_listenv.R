@@ -5,6 +5,7 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
+
 message("*** %<=% to listenv ...")
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,6 +61,29 @@ stopifnot(!identical(fu, fv))
 stopifnot(identical(u$a, 1))
 stopifnot(identical(v$a, 2))
 
+
+message("*** %<=% to listenv: multiple dimensions ...")
+
+x0 <- list()
+length(x0) <- 6
+dim(x0) <- c(3,2)
+
+x <- listenv()
+length(x) <- 6
+dim(x) <- c(3,2)
+
+for (cc in 1:ncol(x)) {
+  for (rr in 1:nrow(x)) {
+    x0[[rr,cc]] <- sprintf("(%s,%s)", rr, cc)
+    x[[rr,cc]] %<=% sprintf("(%s,%s)", rr, cc)
+  }
+}
+
+y <- as.list(x)
+dim(y) <- dim(x)
+stopifnot(identical(y, x0))
+
+message("*** %<=% to listenv: multiple dimensions ... DONE")
 
 message("*** %<=% to listenv ... DONE")
 

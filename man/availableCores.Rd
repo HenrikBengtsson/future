@@ -4,7 +4,7 @@
 \alias{availableCores}
 \title{Get number of available cores on current machine}
 \usage{
-availableCores(methods = getOption("availableCoresMethods", c("PBS",
+availableCores(methods = getOption("availableCoresMethods", c("Slurm", "PBS",
   "mc.cores", "system")))
 }
 \arguments{
@@ -21,6 +21,12 @@ Get number of available cores on current machine
 \details{
 The following methods for inferring the number of cores are supported:
 \itemize{
+ \item \code{"Slurm"} -
+   Query Simple Linux Utility for Resource Management (Slurm)
+   environment variable \code{SLURM_CPUS_PER_TASK}.
+   This may or may not be set.  It can be set when submitting a job,
+   e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
+   `#SBATCH --cpus-per-task=2` to the `hello.sh` script.
  \item \code{"PBS"} -
    Query Torque/PBS environment variable \code{PBS_NUM_PPN}.
    Depending on PBS system configuration, this \emph{resource} parameter

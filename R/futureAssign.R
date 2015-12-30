@@ -74,7 +74,12 @@ futureAssign <- function(name, value, envir=parent.frame(), assign.env=envir, su
   ## retrieved.
   env <- new.env()
   env$job <- future
-  delayedAssign(name, value(future), eval.env=env, assign.env=assign.env)
+  delayedAssign(name, local({
+    value <- value(future)
+    ## Remove internal future variable
+    rm(list=future_name, envir=assign.env)
+    value
+  }), eval.env=env, assign.env=assign.env)
 
   invisible(future)
 }

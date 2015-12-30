@@ -9,6 +9,12 @@
 #' @details
 #' The following methods for inferring the number of cores are supported:
 #' \itemize{
+#'  \item \code{"Slurm"} -
+#'    Query Simple Linux Utility for Resource Management (Slurm)
+#'    environment variable \code{SLURM_CPUS_PER_TASK}.
+#'    This may or may not be set.  It can be set when submitting a job,
+#'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
+#'    `#SBATCH --cpus-per-task=2` to the `hello.sh` script.
 #'  \item \code{"PBS"} -
 #'    Query Torque/PBS environment variable \code{PBS_NUM_PPN}.
 #'    Depending on PBS system configuration, this \emph{resource} parameter
@@ -26,22 +32,36 @@
 #' @export
 #' @importFrom parallel detectCores
 #' @keywords internal
-availableCores <- function(methods=getOption("availableCoresMethods", c("PBS", "mc.cores", "system"))) {
+availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores", "system"))) {
+  ## Local functions
+  getenv <- function(name) {
+    as.integer(trim(Sys.getenv(name, NA_character_)))
+  } # getenv()
+
+  getopt <- function(name) {
+    as.integer(getOption(name, NA_integer_))
+  } # getopt()
+
   if (!supportsMulticore()) return(1L)
 
   for (method in methods) {
-    if (method == "PBS") {
-      ## Number of cores assigned by Torque/PBS?
-      ncores <- as.integer(trim(Sys.getenv("PBS_NUM_PPN", NA_character_)))
+    if (method == "Slurm") {
+      ## Number of cores assigned by Slum
+      ncores <- getenv("SLURM_CPUS_PER_TASK")
+    } else if (method == "PBS") {
+      ## Number of cores assigned by Torque/PBS
+      ncores <- getenv("PBS_NUM_PPN")
     } else if (method == "mc.cores") {
       ## Number of cores by option defined by 'parallel' package
-      ncores <- as.integer(getOption("mc.cores", NA_integer_)) + 1L
+      ncores <- getopt("mc.cores") + 1L
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       ncores <- detectCores()
     } else {
-      ## covr: skip=1
-      ncores <- NA_integer_
+      ## covr: skip=3
+      ## Fall back to querying option and system environment variable
+      ncores <- getopt(method)
+      if (is.na(ncores)) ncores <- getenv(method)
     }
     if (is.finite(ncores) && ncores > 0L) break
   }

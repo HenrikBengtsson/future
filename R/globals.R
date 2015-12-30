@@ -2,16 +2,14 @@
 #' @importFrom utils packageVersion
 exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
   ## Identify and retrieve globals
-  defaultMethod <- "ordered"
-  if (packageVersion("globals") <= "0.5.0") defaultMethod <- "conservative"
-  globals <- globalsOf(expr, envir=envir,
+  globals <- globalsOf(expr, envir=envir, substitute=FALSE,
                tweak=tweak,
                dotdotdot="return",
                primitive=FALSE, base=FALSE,
                unlist=TRUE,
                ## Only for debugging/development; do not rely on this elsewhere!
                mustExist=getOption("future::globalsMustExist", TRUE),
-               method=getOption("future::globalsMethod", defaultMethod)
+               method=getOption("future::globalsMethod", "ordered")
              )
 
   ## Nothing do to?

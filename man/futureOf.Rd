@@ -5,7 +5,7 @@
 \title{Get the future of a future variable}
 \usage{
 futureOf(var = NULL, envir = parent.frame(), mustExist = TRUE,
-  default = NA_character_)
+  default = NA, drop = FALSE)
 }
 \arguments{
 \item{var}{the variable.  If NULL, all futures in the
@@ -17,10 +17,13 @@ environment are returned.}
 an informative error is thrown, otherwise NA is returned.}
 
 \item{default}{the default value if future was not found.}
+
+\item{drop}{if TRUE and \code{var} is NULL, then returned list
+only contains futures, otherwise also \code{default} values.}
 }
 \value{
-A \link{Future} (or NA).  If \code{var} is NULL, then a
-named list of Future:s are returned.
+A \link{Future} (or \code{default}).
+If \code{var} is NULL, then a named list of Future:s are returned.
 }
 \description{
 Get the future of a future variable that has been created directly
