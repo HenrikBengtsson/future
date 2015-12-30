@@ -3,6 +3,7 @@ Package: future
 
 Version: 0.9.0-9000 [2015-12-27]
 o Now %<=% can also assign to multi-dimensional list environments.
+o Add futures(), values() and resolved().
 o Add resolve() to resolve futures in lists and environments.
 o Now availableCores() also ackowledge the number of CPUs
   allotted by Slurm.
