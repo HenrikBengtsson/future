@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.10.9-9000 [2016-01-08]
+o Add support for cluster futures, cf. parallel::makeCluster().
+
+
 Version: 0.10.0 [2015-12-30]
 o Now %<=% can also assign to multi-dimensional list environments.
 o Add futures(), values() and resolved().

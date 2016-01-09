@@ -49,7 +49,7 @@ y0 <- fsample(0:9, seed=42L)
 stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
 
-for (strategy in c("eager", "lazy", "multicore")) {
+for (strategy in future:::supportedStrategies()) {
   message(sprintf("%s ...", strategy))
 
   .GlobalEnv$.Random.seed <- seed0
