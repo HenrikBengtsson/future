@@ -17,6 +17,8 @@ for (method in methods) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 
+    options("future::globalsMethod"=method)
+
     a <- 3
 
     yTruth <- local({
