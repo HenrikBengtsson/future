@@ -6,7 +6,7 @@
 \title{An cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  cluster, ...)
+  cluster = NULL, ...)
 }
 \arguments{
 \item{object}{An R \link[base]{environment}.}

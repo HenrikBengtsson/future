@@ -4,7 +4,8 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE, cluster, ...)
+cluster(expr, envir = parent.frame(), substitute = TRUE, cluster = NULL,
+  ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

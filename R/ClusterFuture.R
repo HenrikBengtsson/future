@@ -13,8 +13,10 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, cluster, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, cluster=NULL, ...) {
+  defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
+  if (is.null(cluster)) cluster <- defaultCluster()
   if (!inherits(cluster, "cluster")) {
     stop("Argument 'cluster' is not of class 'cluster': ", class(cluster)[1])
   }
@@ -219,111 +221,3 @@ requestNode <- function(await, cluster, maxTries=getOption("future::maxTries", t
 
   node
 }
-
-
-attachedPackages <- function() {
-  pkgs <- search()
-  pkgs <- grep("^package:", pkgs, value=TRUE)
-  pkgs <- gsub("^package:", "", pkgs)
-  pkgs
-}
-
-#' @importFrom globals globalsOf packagesOf cleanup
-#' @importFrom utils head object.size
-#' @importFrom parallel clusterCall
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), ...) {
-  ## Local functions
-  asPkgEnvironment <- function(pkg) {
-    name <- sprintf("package:%s", pkg)
-    if (!name %in% search()) return(emptyenv())
-    as.environment(name)
-  } ## asPkgEnvironment()
-
-
-  ## Default maximum export size is 100 MiB for now. /HB 2015-04-25
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", "104857600")
-  maxSizeOfGlobals <- getOption("future::maxSizeOfGlobals", maxSizeOfGlobals)
-  maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
-  stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
-
-
-  ## Identify globals
-  globals <- globalsOf(expr, envir=envir, substitute=FALSE, tweak=tweakExpression, dotdotdot="return", primitive=FALSE, base=FALSE, unlist=TRUE)
-
-  ## Tweak expression to be called with global ... arguments?
-  if (inherits(globals$`...`, "DotDotDotList")) {
-    ## Missing global '...'?
-    if (!is.list(globals$`...`)) {
-      stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", paste(deparse(expr), collapse="; "))
-    }
-
-    globals$`future.call.arguments` <- globals$`...`
-
-    ## To please R CMD check
-    a <- `future.call.arguments` <- NULL
-    rm(list=c("a", "future.call.arguments"))
-    expr <- substitute({
-      do.call(function(...) a, args=`future.call.arguments`)
-    }, list(a=expr))
-  }
-
-  pkgs <- NULL
-  if (length(globals) > 0L) {
-    ## Append packages associated with globals
-    pkgs <- packagesOf(globals)
-
-    ## Drop all globals which are located in one of
-    ## the packages in 'pkgs'.  They will be available
-    ## since those packages are attached.
-    where <- attr(globals, "where")
-
-    names <- names(globals)
-    keep <- rep(TRUE, times=length(globals))
-    names(keep) <- names
-    for (name in names) {
-      pkg <- environmentName(where[[name]])
-      if (pkg %in% pkgs) {
-        ## Only drop exported objects
-        if (exists(name, envir=asPkgEnvironment(pkg)))
-          keep[name] <- FALSE
-      }
-    }
-    if (!all(keep)) globals <- globals[keep]
-
-    ## Now drop globals that are primitive functions or
-    ## that are part of the base packages, which now are
-    ## part of 'pkgs' if needed.
-    globals <- cleanup(globals)
-  }
-
-  ## Protect against user error exporting too large objects?
-  if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
-    sizes <- lapply(globals, FUN=object.size)
-    sizes <- unlist(sizes, use.names=TRUE)
-    totalExportSize <- sum(sizes, na.rm=TRUE)
-    if (totalExportSize > maxSizeOfGlobals) {
-      sizes <- sort(sizes, decreasing=TRUE)
-      sizes <- head(sizes, n=3L)
-      largest <- sprintf("%s (%g Mb)", sQuote(names(sizes)), sizes/1024^2)
-      msg <- sprintf("The total size of all global objects that need to be exported for the asynchronous expression is %g Mb. This exceeds the maximum allowed size of %g Mb (option 'async::maxSizeOfGlobals'). The top largest objects are %s", totalExportSize/1024^2, maxSizeOfGlobals/1024^2, hpaste(largest, lastCollapse=" and "))
-      stop(msg)
-    }
-  }
-
-
-  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## Any packages to export?
-  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## Never attach the 'base' package, because that is always
-  ## available for all R sessions / implementations.
-  pkgs <- setdiff(pkgs, "base")
-  if (length(pkgs) > 0L) {
-    ## Record which packages in 'pkgs' that are loaded and
-    ## which of them are attached (at this point in time).
-    isLoaded <- is.element(pkgs, loadedNamespaces())
-    isAttached <- is.element(pkgs, attachedPackages())
-    pkgs <- pkgs[isAttached]
-  }
-
-  list(globals=globals, packages=pkgs)
-} ## getGlobalsAndPackages()

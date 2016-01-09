@@ -26,8 +26,10 @@
 #' and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, cluster, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, cluster=NULL, ...) {
+  defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
+  if (is.null(cluster)) cluster <- defaultCluster()
   if (!inherits(cluster, "cluster")) {
     stop("Argument 'cluster' is not of class 'cluster': ", class(cluster)[1])
   }
