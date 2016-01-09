@@ -3,24 +3,9 @@ library("listenv")
 
 ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L)
-
+flapply <- future:::flapply
 
 message("*** Tricky use cases related to globals ...")
-
-flapply <- function(x, FUN, ...) {
-  res <- listenv()
-  for (ii in seq_along(x)) {
-    res[[ii]] %<=% FUN(x[[ii]], ...)
-  }
-  names(res) <- names(x)
-
-  ## Make sure 'x', 'FUN' and 'ii' are truly
-  ## exported to the future environment
-  rm(list=c("x", "FUN", "ii"))
-
-  as.list(res)
-}
-
 
 message("- flapply(x, FUN=base::vector, ...) ...")
 
@@ -95,6 +80,7 @@ for (method in methods) {
     plan(strategy)
 
     a <- 3
+
     yTruth <- local({
       b <- a
       a <- 2
@@ -110,7 +96,7 @@ for (method in methods) {
     rm(list="a")
 
     res <- try(y, silent=TRUE)
-    if (method == "conservative" && strategy == "lazy") {
+    if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
       stopifnot(inherits(res, "try-error"))
     } else {
       message(sprintf("y=%g", y))
@@ -130,7 +116,7 @@ for (method in methods) {
     rm(list="a")
 
     res <- try(unlist(res), silent=TRUE)
-    if (method == "conservative" && strategy == "lazy") {
+    if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
       stopifnot(inherits(res, "try-error"))
     } else {
       print(res)

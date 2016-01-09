@@ -86,17 +86,21 @@ run.ClusterFuture <- function(future, ...) {
   cl <- cluster[node]
 
 
-  ## Reset global environment of cluster node
-##  globalReset <- function(envir=.GlobalEnv) {
-##    vars <- ls(envir=envir, all.names=TRUE)
-##    rm(list=vars, envir=envir, inherits=FALSE)
-##  }
-##  clusterCall(cl, fun=globalReset)
+  ## Reset global environment of cluster node such that
+  ## previous futures are not affecting this one, which
+  ## may happen even if the future is evaluated inside a
+  ## local, e.g. local({ a <<- 1 }).
+  grmall <- function(envir=.GlobalEnv) {
+    vars <- ls(envir=envir, all.names=TRUE)
+    rm(list=vars, envir=envir, inherits=FALSE)
+  }
+  clusterCall(cl, fun=grmall)
+  debug("Cleared global environment of cluster node #%d", node)
 
   ## Export globals
   globals <- future$globals
   if (length(globals) > 0) {
-    globalAssign <- function(name, value, envir=.GlobalEnv) {
+    gassign <- function(name, value, envir=.GlobalEnv) {
       assign(name, value=value, envir=envir)
       NULL
     }
@@ -107,7 +111,7 @@ run.ClusterFuture <- function(future, ...) {
       ## package:future' may not be available when loading
       ## Here we'll suppress any such warnings.
       suppressWarnings({
-        clusterCall(cl, fun=globalAssign, name, globals[[name]])
+        clusterCall(cl, fun=gassign, name, globals[[name]])
       })
       debug("Exported %s to cluster node #%d", sQuote(name), node)
     }
@@ -129,7 +133,8 @@ run.ClusterFuture <- function(future, ...) {
   future$state <- 'running'
 
   ## Launch future
-  sendCall(cl[[1]], fun=eval, args=list(expr))
+  geval <- function(expr, envir=.GlobalEnv) eval(expr, envir=envir)
+  sendCall(cl[[1]], fun=geval, args=list(expr))
 
   invisible(future)
 }
