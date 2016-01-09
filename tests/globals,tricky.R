@@ -18,6 +18,7 @@ for (method in methods) {
     plan(strategy)
 
     options("future::globalsMethod"=method)
+    options("future::debug"=TRUE)
 
     a <- 3
 
