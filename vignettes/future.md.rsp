@@ -266,7 +266,7 @@ Finally, if you are on a system where R supports multicore processing(*), try
 plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-Both multicore and multisession evaluation are agile the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
+Both multicore and multisession evaluation are agile to the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
 
 _Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
 
