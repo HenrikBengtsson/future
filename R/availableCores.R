@@ -29,48 +29,33 @@
 #'
 #' @seealso \code{\link[parallel]{detectCores}()}
 #'
+#' @aliases availableSessions
 #' @export
-#' @importFrom parallel detectCores
 #' @keywords internal
 availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores", "system"))) {
-  ## Local functions
-  getenv <- function(name) {
-    as.integer(trim(Sys.getenv(name, NA_character_)))
-  } # getenv()
-
-  getopt <- function(name) {
-    as.integer(getOption(name, NA_integer_))
-  } # getopt()
-
   if (!supportsMulticore()) return(1L)
 
-  for (method in methods) {
-    if (method == "Slurm") {
-      ## Number of cores assigned by Slum
-      ncores <- getenv("SLURM_CPUS_PER_TASK")
-    } else if (method == "PBS") {
-      ## Number of cores assigned by Torque/PBS
-      ncores <- getenv("PBS_NUM_PPN")
-    } else if (method == "mc.cores") {
-      ## Number of cores by option defined by 'parallel' package
-      ncores <- getopt("mc.cores") + 1L
-    } else if (method == "system") {
-      ## Number of cores available according to parallel::detectCores()
-      ncores <- detectCores()
-    } else {
-      ## covr: skip=3
-      ## Fall back to querying option and system environment variable
-      ncores <- getopt(method)
-      if (is.na(ncores)) ncores <- getenv(method)
-    }
-    if (is.finite(ncores) && ncores > 0L) break
-  }
+  ## All known core counts
+  ncores <- .availableCores(methods=methods)
+  ncores["mc.cores"] <- ncores["mc.cores"] + 1L
+
+  ## First non-missing
+  ncores <- ncores[!is.na(ncores)][1L]
 
   ## The default is to use a single core
   if (is.na(ncores)) ncores <- 1L
 
   ncores
 }
+
+
+#' @export
+availableSessions <- function() {
+  n <- min(.availableCores(), na.rm=TRUE)
+  stopifnot(is.finite(n))
+  n
+} # availableSessions()
+
 
 
 #' Get number of cores currently used
@@ -169,3 +154,43 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.g
 
   invisible(finished)
 }
+
+
+#' @importFrom parallel detectCores
+.availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores", "system"))) {
+  ## Local functions
+  getenv <- function(name) {
+    as.integer(trim(Sys.getenv(name, NA_character_)))
+  } # getenv()
+
+  getopt <- function(name) {
+    as.integer(getOption(name, NA_integer_))
+  } # getopt()
+
+  ncores <- rep(NA_integer_, times=length(methods))
+  names(ncores) <- methods
+  for (kk in seq_along(methods)) {
+    method <- methods[kk]
+    if (method == "Slurm") {
+      ## Number of cores assigned by Slum
+      n <- getenv("SLURM_CPUS_PER_TASK")
+    } else if (method == "PBS") {
+      ## Number of cores assigned by Torque/PBS
+      n <- getenv("PBS_NUM_PPN")
+    } else if (method == "mc.cores") {
+      ## Number of cores by option defined by 'parallel' package
+      n <- getopt("mc.cores")
+    } else if (method == "system") {
+      ## Number of cores available according to parallel::detectCores()
+      n <- detectCores()
+    } else {
+      ## covr: skip=3
+      ## Fall back to querying option and system environment variable
+      n <- getopt(method)
+      if (is.na(n)) n <- getenv(method)
+    }
+    ncores[kk] <- n
+  }
+
+  ncores
+} # .availableCores()

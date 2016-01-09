@@ -39,7 +39,7 @@ parallel in another process}.
 This function will block if all CPU cores are occupied and
 will be unblocked as soon as one of the already running
 multicore futures is resolved.  For the total number of
-CPU cores availble to the current R process, see
+CPU cores available to the current R process, see
 \code{\link{availableCores}()}.
 
 Not all systems support multicore futures.  For instance,

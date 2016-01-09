@@ -2,6 +2,7 @@
 % Please edit documentation in R/availableCores.R
 \name{availableCores}
 \alias{availableCores}
+\alias{availableSessions}
 \title{Get number of available cores on current machine}
 \usage{
 availableCores(methods = getOption("availableCoresMethods", c("Slurm", "PBS",

@@ -31,7 +31,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, clu
   }
 
   gp <- getGlobalsAndPackages(expr, envir=envir)
-  f <- Future(expr=expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- Future(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 

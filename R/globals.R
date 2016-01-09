@@ -220,5 +220,5 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     pkgs <- pkgs[isAttached]
   }
 
-  list(globals=globals, packages=pkgs)
+  list(expr=expr, globals=globals, packages=pkgs)
 } ## getGlobalsAndPackages()
