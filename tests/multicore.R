@@ -82,6 +82,22 @@ stopifnot(inherits(res, "try-error"))
 } # for (globals ...)
 
 
+message("*** multicore(..., maxCores=1L) ...")
+
+a <- 2
+b <- 3
+yTruth <- a * b
+
+f <- multicore({ a * b }, maxCores=1L)
+rm(list=c("a", "b"))
+
+v <- value(f)
+print(v)
+stopifnot(v == yTruth)
+
+message("*** multicore(..., maxCores=1L) ... DONE")
+
+
 message("*** multicore() ... DONE")
 
 ## Cleanup

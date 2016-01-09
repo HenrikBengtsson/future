@@ -101,6 +101,22 @@ stopifnot(inherits(res, "try-error"))
 message("*** multisession() - too large globals ... DONE")
 
 
+message("*** multisession(..., maxSessions=1L) ...")
+
+a <- 2
+b <- 3
+yTruth <- a * b
+
+f <- multisession({ a * b }, maxSessions=1L)
+rm(list=c("a", "b"))
+
+v <- value(f)
+print(v)
+stopifnot(v == yTruth)
+
+message("*** multisession(..., maxSessions=1L) ... DONE")
+
+
 message("*** multisession() ... DONE")
 
 
