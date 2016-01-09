@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1)
+oopts <- options(warn=1L, mc.cores=2L)
 
 ## Backward compatibility
 if (getRversion() < "3.2.0") {
