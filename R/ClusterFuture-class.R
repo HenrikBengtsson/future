@@ -67,9 +67,13 @@ run.ClusterFuture <- function(future, ...) {
   cluster <- future$cluster
   expr <- future$expr
 
-  ## Inject plan(eager) to prevent that nested cluster futures
+  ## Inject code to prevent that nested cluster futures
   ## are spawned off recursively by mistake.
-  expr <- substitute({ future::plan(future::eager); e }, list(e=expr))
+  expr <- substitute({
+    options(mc.cores=1L)
+    future::plan(future::eager)
+    e
+  }, list(e=expr))
 
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
