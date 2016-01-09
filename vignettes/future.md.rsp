@@ -78,7 +78,7 @@ To get the future of a future variable, use the `futureOf()` function, e.g. `f <
 
 
 ### Eager, lazy and parallel futures
-You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, the "lazy" and "eager" futures, implemented by functions `lazy()` and `eager()`.  It also provides two _asynchronous_ future, the "multicore" and the "multisession" futures, implemented by functions `multicore()` and  `multisession()`.  The multicore future is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes eager futures.
+You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, the "lazy" and "eager" futures, implemented by functions `lazy()` and `eager()`.  It also provides two _asynchronous_ future, the "multicore" and the "multisession" futures, implemented by functions `multicore()` and  `multisession()`.  The multicore future is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically become eager futures.
 
 Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -141,7 +141,7 @@ Resolving 'b'
 [1] 6
 ```
 
-When using asynchroneous (multicore or multisession) futures, recursive asynchroneous is protected against by forcing eager evaluation on further nested futures.  In addition, option `mc.cores` is also set to one to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchroneous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
+When using asynchronous (multicore or multisession) futures, recursive asynchronous is protected against by forcing eager evaluation on further nested futures.  In addition, option `mc.cores` is also set to one to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
 
 
 ## Assigning futures to environments and list environments
@@ -233,13 +233,28 @@ restarting interrupted promise evaluation
 
 
 ## Globals
-The 'future' package does not provide mechanisms for controlling how global variables and functions ("globals") are resolved.  Instead, this important task is passed on to the mechanism that evaluates the future expressions(*).  For instance, concurrent evaluation on compute clusters requires that globals are properly identified and exported to each compute node.
+Whenever an R expression is to be evaluated asynchronously (in parallel) or via lazy evaluation, global objects need to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because globals may change between then and when the future is resolved.
 
-Having said this, the `lazy()` function, which implements lazy futures, does indeed look for globals and "freezes" them at the time point when the future is created.  This assures that the result of a lazy future will be the same regardless of when it is resolved, e.g. before or after globals change.  Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for the `eager()` function to handle globals specifically.  Similarly, because multicore processing is done via forks, globals are also automatically taken care of when you are using multicore futures.
+The future package tries to automate the identification of globals in future expressions.  It does so with help of the [globals] package.  If a global variable is identified, it is captured and made available to the evaluator of the future, e.g. it is exported to the work environment of an R session running in the background.  If it identifies a symbol that it believes is a global object in the future expression, but it fails to locate it in the work environment, an error is thrown immediately (minimizing the risk for runtime errors occurring much later).  For instance,
+```r
+> plan(lazy)
+> x <- 5.0
+> y %<=% { a * x }
+Error in globalsOf(expr, envir = envir, substitute = FALSE, tweak = tweak,  :
+Identified a global by static code inspection, but failed to locate the
+corresponding object in the relevant environments: 'a'
+> a <- 1.8
+> y %<=% { a * x }
+> y
+[1] 9
+```
 
-Furthermore, in order to provide a more consistent behavior across different types of futures, both eager and multicore futures can be setup to validate global variables at the point in time when the future is created by specifying `globals=TRUE`, i.e. `plan(eager, globals=TRUE)` and `plan(multicore, globals=TRUE)`.  This will give early informative error messages on missing globals (similarly to how it works for lazy futures).  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` deals with globals (which is done with help of the '[globals]' package).
+Having said this, it is a challenging problem to identify globals from static code inspection.  There will always be corner cases of globals that either fails to be identified by static code inspection or that are incorrectly identified as global variables.  Vignette '[Futures in R: Common issues with solutions]' provides examples of common cases and explains how to avoid them.
 
-_Footnote_: (*) The task of identifying globals is a challenging problem and with asynchronous/concurrent/parallel evaluation there will always be corner cases that will not work as intended (and figuring out why can sometimes be tricky, even when troubleshooting using lazy futures).  The purpose of the '[globals]' package is to try to standardize how globals are identified into one or a small number of robust strategies.  Until such a standard has been identified and implemented, the 'future' package will not attempt to provide other packages implementing futures with an automatic service for dealing with globals.  This may change in the future (yes, this pun was also intended).
+If you suspect that a global variable is not properly identified, it is often helpful for troubleshooting to run the code interactively using _lazy_ futures.  If there is an error, it possible to use `traceback()` and other debugging tools.
+
+Since eager futures are resolved upon creation, any globals will also be resolved at this time and therefore there is no need for globals to be identified.  Similarly, because multicore futures fork the main R session when created, globals are automatically "frozen" for each multicore future.  However, it is possible to emulate how globals are identified also for these types of futures.  This can be done by specifying `globals=TRUE`, i.e. `plan(eager, globals=TRUE)` and `plan(multicore, globals=TRUE)`.  This will give immediate errors on missing globals (similarly to how it works for lazy and multisession futures) instead of runtime errors later.  If you wish to implement your own future mechanism, you might find it useful to see how `lazy()` and `multisession()` deal with globals.  It might be in the future (yes, pun intended here too) that `globals=TRUE` becomes the default for all futures for consistency and simplicity.
+
 
 
 ## Demos
@@ -261,12 +276,12 @@ plan(multisession)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 
-Finally, if you are on a system where R supports multicore processing(*), try
+Finally, if you are on a system where R supports multicore processing (*), try
 ```r
 plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-Both multicore and multisession evaluation are agile to the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
+Both multicore and multisession evaluation is agile to the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
 
 _Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
 
@@ -280,6 +295,7 @@ The goal of this package is to provide a standardized and unified API for using 
 [listenv]: http://cran.r-project.org/package=listenv
 [globals]: http://cran.r-project.org/package=globals
 [async]: https://github.com/HenrikBengtsson/async/
+[Futures in R: Common issues with solutions]: future-issues.html
 
 ---
 Copyright Henrik Bengtsson, 2015
