@@ -43,16 +43,26 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm",
   ncores <- ncores[!is.na(ncores)][1L]
 
   ## The default is to use a single core
-  if (is.na(ncores)) ncores <- 1L
+  if (is.na(ncores)) ncores <- c(current=1L)
 
   ncores
 }
 
 
 #' @export
-availableSessions <- function() {
-  n <- min(.availableCores(), na.rm=TRUE)
+availableSessions <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores", "system"))) {
+  ## All known core counts
+  ncores <- .availableCores(methods=methods)
+
+  ## Minimum
+  ncores <- ncores[!is.na(ncores)]
+  if (length(ncores) == 0) {
+    n <- c(current=1L)
+  } else {
+    n <- ncores[which.min(ncores)] ## which.min() to preserve name
+  }
   stopifnot(is.finite(n))
+
   n
 } # availableSessions()
 
