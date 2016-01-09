@@ -52,7 +52,20 @@ message("*** hpaste() ...")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# debub()
+# asIEC()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** asIEC() ...")
+asIEC <- future:::asIEC
+
+for (size in c(0, 10^(0:20))) {
+  cat(sprintf("Size: %.f bytes = %s\n", size, asIEC(size)))
+}
+
+message("*** asIEC() ... DONE")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# debug()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** mdebug() ...")
 mdebug <- future:::mdebug
