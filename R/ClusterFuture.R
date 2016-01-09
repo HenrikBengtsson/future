@@ -1,7 +1,15 @@
 #' An cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param object An R \link[base]{environment}.
-#' @param \dots Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done in the global environment of the cluster node.
+#' @param cluster A \code{\link[parallel:makeCluster]{cluster}}.
+#' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{ClusterFuture}.
 #'
@@ -13,7 +21,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, cluster=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, cluster=NULL, ...) {
   defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
   if (is.null(cluster)) cluster <- defaultCluster()
@@ -31,6 +39,12 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, clu
   }
 
   gp <- getGlobalsAndPackages(expr, envir=envir)
+
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
+  }
+
   f <- Future(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
@@ -45,8 +59,6 @@ importCluster <- function(name=NULL) {
   }
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
-
-
 
 
 #' @importFrom parallel clusterExport
@@ -64,14 +76,22 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node <- requestNode(await=function() {
-##    message("Waiting for free cluster node ...")
+##    debug("Waiting for free cluster node ...")
     FutureRegistry(reg, action="collect-first")
-##    message("Waiting for free cluster node ... DONE")
+##    debug("Waiting for free cluster node ... DONE")
   }, cluster=cluster)
   future$node <- node
 
   ## Cluster node to use
   cl <- cluster[node]
+
+
+  ## Reset global environment of cluster node
+##  globalReset <- function(envir=.GlobalEnv) {
+##    vars <- ls(envir=envir, all.names=TRUE)
+##    rm(list=vars, envir=envir, inherits=FALSE)
+##  }
+##  clusterCall(cl, fun=globalReset)
 
   ## Export globals
   globals <- future$globals
@@ -89,6 +109,7 @@ run.ClusterFuture <- function(future, ...) {
       suppressWarnings({
         clusterCall(cl, fun=globalAssign, name, globals[[name]])
       })
+      debug("Exported %s to cluster node #%d", sQuote(name), node)
     }
   }
   ## Not needed anymore
@@ -98,6 +119,8 @@ run.ClusterFuture <- function(future, ...) {
   packages <- future$packages
   if (length(packages) > 0) {
     clusterCall(cl, fun=lapply, X=packages, FUN=library, character.only=TRUE)
+    debug("Attaching %d packages (%s) on cluster node #%d",
+                    length(packages), hpaste(sQuote(packages)), node)
   }
 
   ## Add to registry

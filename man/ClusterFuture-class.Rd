@@ -6,12 +6,24 @@
 \title{An cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  cluster = NULL, ...)
+  local = TRUE, cluster = NULL, ...)
 }
 \arguments{
-\item{object}{An R \link[base]{environment}.}
+\item{expr}{An R \link[base]{expression}.}
 
-\item{\dots}{Not used.}
+\item{envir}{The \link{environment} in which the evaluation
+is done (or inherits from if \code{local} is TRUE).}
+
+\item{substitute}{If TRUE, argument \code{expr} is
+\code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done in the global environment of the cluster node.}
+
+\item{cluster}{A \code{\link[parallel:makeCluster]{cluster}}.}
+
+\item{\dots}{Additional named elements of the future.}
 }
 \value{
 An object of class \code{ClusterFuture}.
