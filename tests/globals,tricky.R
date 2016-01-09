@@ -35,6 +35,7 @@ for (method in methods) {
 
     res <- try(y, silent=TRUE)
     if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+      if (!inherits(res, "try-error")) message(sprintf("y=%g", res))
       stopifnot(inherits(res, "try-error"))
     } else {
       message(sprintf("y=%g", y))
