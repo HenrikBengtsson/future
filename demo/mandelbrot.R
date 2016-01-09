@@ -84,8 +84,8 @@ library("listenv")
 library("graphics")
 
 n <- getOption("R_FUTURE_DEMO_MANDELBROT_PLANES", 9L)
-sizes <- 2 * 10^-(0:(n-1))
-xs <- rep(0.282989, times=n)
+sizes <- 2 * 6^-(0:(n-1))
+xs <- rep(0.28298899997142857, times=n)
 xs[1] <- xs[1] - 0.8
 ys <- rep(-0.010, times=n)
 
@@ -97,6 +97,8 @@ for (ii in seq_along(sizes)) {
     cat(sprintf("Calculating plane #%d of %d ...\n", ii, length(sizes)))
     xlim <- xs[ii] + size/2 * c(-1,1)
     ylim <- ys[ii] + size/2 * c(-1,1)
+    cat(sprintf("  xlim=c(%.16f,%.16f)\n", xlim[1], xlim[2]))
+    cat(sprintf("  ylim=c(%.16f,%.16f)\n", ylim[1], ylim[2]))
     fit <- mandelbrot(xlim=xlim, ylim=ylim)
     cat(sprintf("Calculating plane #%d of %d ... done\n", ii, length(sizes)))
     fit
