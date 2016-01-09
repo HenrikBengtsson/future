@@ -36,7 +36,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxSession
   maxSessions <- as.integer(maxSessions)
   stopifnot(length(maxSessions) == 1, is.finite(maxSessions), maxSessions >= 1)
   if (maxSessions == 1L) {
-    return(eager(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
+    return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
   sessions("start", n=maxSessions)
   cluster(expr, envir=envir, substitute=FALSE, cluster=sessions(), ...)

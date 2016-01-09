@@ -17,9 +17,6 @@ for (method in methods) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 
-    options("future::globalsMethod"=method)
-    options("future::debug"=TRUE)
-
     a <- 3
 
     yTruth <- local({
@@ -38,7 +35,6 @@ for (method in methods) {
 
     res <- try(y, silent=TRUE)
     if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
-      if (!inherits(res, "try-error")) str(list(res=res))
       stopifnot(inherits(res, "try-error"))
     } else {
       message(sprintf("y=%g", y))
@@ -59,7 +55,6 @@ for (method in methods) {
 
     res <- try(unlist(res), silent=TRUE)
     if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
-      if (!inherits(res, "try-error")) str(list(res=res))
       stopifnot(inherits(res, "try-error"))
     } else {
       print(res)
