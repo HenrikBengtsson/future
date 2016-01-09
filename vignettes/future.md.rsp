@@ -16,7 +16,7 @@ In programming, a _future_ is an abstraction for a _value_ that may be available
 
 ### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and one _asynchronous_ one for "multicore" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
+The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and two _asynchronous_ ones for "multicore" and "multisession" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), provided by this package exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
 
 Here is an example illustrating how the basics of futures work:
 
@@ -78,7 +78,7 @@ To get the future of a future variable, use the `futureOf()` function, e.g. `f <
 
 
 ### Eager, lazy and parallel futures
-You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, the "lazy" and "eager" futures, implemented by functions `lazy()` and `eager()`.  It also provides one _asynchronous_ future, the "multicore" future, implemented by function `multicore()`.  The latter is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes eager futures.
+You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, the "lazy" and "eager" futures, implemented by functions `lazy()` and `eager()`.  It also provides two _asynchronous_ future, the "multicore" and the "multisession" futures, implemented by functions `multicore()` and  `multisession()`.  The multicore future is available on systems where R supports multicore processing, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically becomes eager futures.
 
 Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default is that the future expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
 
@@ -91,19 +91,6 @@ Since an asynchronous strategy is more likely to be used in practice, the built-
 [1] 2.71
 ```
 This shows that `a` in the calling environment is unaffected by the expression evaluated by the future.
-
-If needed (but not recommended), it is possible to evaluate both lazy and eager futures in the calling environment (but then global variables cannot be "frozen").  For instance,
-```r
-> plan(lazy, local=FALSE, globals=FALSE)
-> a <- 2.71
-> x %<=% { a <- 3.14 }
-> a
-[1] 2.71
-> x
-[1] 3.14
-> a
-[1] 3.14
-```
 
 
 ### Different strategies for different futures
@@ -153,6 +140,9 @@ Local variable 'x'
 Resolving 'b'
 [1] 6
 ```
+
+When using asynchroneous (multicore or multisession) futures, recursive asynchroneous is protected against by forcing eager evaluation on further nested futures.  In addition, option `mc.cores` is also set to one to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchroneous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
+
 
 ## Assigning futures to environments and list environments
 The `%<=%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  For instance, it is _not_ possible to assign future values to a _list_;
@@ -265,14 +255,20 @@ plan(lazy)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 and see if you can notice the difference in how and when statements are evaluated.
+You may also try multisession evaluation, which calculates the different Mandelbrot planes via independent R sessions running in the background.  Try,
+```r
+plan(multisession)
+demo("mandelbrot", package="future", ask=FALSE)
+```
 
 Finally, if you are on a system where R supports multicore processing(*), try
 ```r
 plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
+Both multicore and multisession evaluation are agile the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
 
-_Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use eager futures instead of multicore ones.
+_Footnote_: (*) If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
 
 
 
