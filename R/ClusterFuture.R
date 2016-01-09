@@ -74,8 +74,8 @@ run.ClusterFuture <- function(future, ...) {
   ## Export globals
   globals <- future$globals
   if (length(globals) > 0) {
-    globalAssign <- function(name, value) {
-      assign(name, value=value, envir=.GlobalEnv)
+    globalAssign <- function(name, value, envir=.GlobalEnv) {
+      assign(name, value=value, envir=envir)
       NULL
     }
     for (name in names(globals)) {
@@ -87,10 +87,10 @@ run.ClusterFuture <- function(future, ...) {
       suppressWarnings({
         clusterCall(cl, fun=globalAssign, name, globals[[name]])
       })
-      ## Not needed anymore
-      globals[[name]] <- NULL
     }
   }
+  ## Not needed anymore
+  globals <- NULL
 
   ## Attach packages that needs to be attached
   packages <- future$packages
