@@ -18,7 +18,7 @@ message(sprintf("*** multicore(..., globals=%s) without globals", globals))
 f <- multicore({
   42L
 }, globals=globals)
-stopifnot(inherits(f, "MulticoreFuture") || (!supportsMulticore() && inherits(f, "Future")))
+stopifnot(inherits(f, "MulticoreFuture") || (!supportsMulticore() && inherits(f, "EagerFuture")))
 
 print(resolved(f))
 y <- value(f)
