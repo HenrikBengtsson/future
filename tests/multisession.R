@@ -79,24 +79,39 @@ options("future::maxSizeOfGlobals"=1024*4L)
 limit <- getOption("future::maxSizeOfGlobals")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
-## A large object
-a <- 1:1014
-size <- object.size(a)
-cat(sprintf("a: %g bytes\n", size))
-f <- multisession({ sum(a) })
-print(f)
-v <- value(f)
-print(v)
-stopifnot(v == sum(a))
+for (maxSessions in unique(c(1L, availableSessions()))) {
+  message("Max number of sessions: ", maxSessions)
+
+  ## A large object
+  a <- 1:1014
+  yTruth <- sum(a)
+  size <- object.size(a)
+  cat(sprintf("a: %g bytes\n", size))
+  f <- multisession({ sum(a) }, maxSessions=maxSessions)
+  print(f)
+  rm(list="a")
+  v <- value(f)
+  print(v)
+  stopifnot(v == yTruth)
 
 
-## A too large object
-a <- 1:1015
-size <- object.size(a)
-cat(sprintf("a: %g bytes\n", size))
-res <- try(f <- multisession({ sum(a) }), silent=TRUE)
-stopifnot(inherits(res, "try-error"))
-
+  ## A too large object
+  a <- 1:1015
+  yTruth <- sum(a)
+  size <- object.size(a)
+  cat(sprintf("a: %g bytes\n", size))
+  res <- try(f <- multisession({ sum(a) }, maxSessions=maxSessions), silent=TRUE)
+  rm(list="a")
+  if (maxSessions > 1L) {
+    stopifnot(inherits(res, "try-error"))
+  } else {
+    stopifnot(inherits(res, "Future"))
+    stopifnot(inherits(f, "Future"))
+    stopifnot(identical(res, f))
+    v <- value(f)
+    stopifnot(v == yTruth)
+  }
+}
 
 message("*** multisession() - too large globals ... DONE")
 
