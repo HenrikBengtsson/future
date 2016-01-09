@@ -2,6 +2,7 @@ Package: future
 Version: 0.10.0-9000
 Title: A Future API for R
 Imports:
+    digest,
     listenv (>= 0.6.0),
     globals (>= 0.6.0)
 Suggests:
