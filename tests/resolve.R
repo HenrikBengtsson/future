@@ -47,7 +47,7 @@ stopifnot(identical(y, x))
 y <- resolve(x, idxs=names(x))
 stopifnot(identical(y, x))
 
-y <- resolve(x, idxs=matrix(c(1,2), ncol=2L))
+y <- resolve(x, idxs=matrix(c(1,2), ncol=2L), value=TRUE)
 stopifnot(identical(y, x))
 
 
@@ -107,9 +107,9 @@ y <- resolve(x, idxs="b")
 stopifnot(identical(y, x))
 y <- resolve(x, idxs="c")
 stopifnot(identical(y, x))
-y <- resolve(x, idxs=names(x))
+y <- resolve(x, idxs=names(x), value=TRUE)
 stopifnot(identical(y, x))
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 1L)
 
 ## Exceptions
 res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
@@ -186,10 +186,9 @@ y <- resolve(x, idxs=4L)
 stopifnot(identical(y, x))
 #stopifnot(is.na(futureOf(x[[4L]], mustExist=FALSE)))
 
-y <- resolve(x, idxs=names(x))
+y <- resolve(x, idxs=names(x), value=TRUE)
 stopifnot(identical(y, x))
-
-stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
+stopifnot(length(futureOf(envir=x, drop=TRUE)) == 1L)
 
 
 ## Exceptions

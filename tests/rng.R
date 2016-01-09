@@ -4,6 +4,7 @@ ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L)
 oplan <- plan()
 
+message("*** rng ...")
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
@@ -84,6 +85,7 @@ for (strategy in future:::supportedStrategies()) {
   message(sprintf("%s ... done", strategy))
 }
 
+message("*** rng ... DONE")
 
 ## Cleanup
 plan(oplan)

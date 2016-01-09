@@ -76,9 +76,9 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node <- requestNode(await=function() {
-##    debug("Waiting for free cluster node ...")
+    mdebug("Waiting for free cluster node ...")
     FutureRegistry(reg, action="collect-first")
-##    debug("Waiting for free cluster node ... DONE")
+    mdebug("Waiting for free cluster node ... DONE")
   }, cluster=cluster)
   future$node <- node
 
@@ -90,20 +90,12 @@ run.ClusterFuture <- function(future, ...) {
   ## previous futures are not affecting this one, which
   ## may happen even if the future is evaluated inside a
   ## local, e.g. local({ a <<- 1 }).
-  grmall <- function(envir=.GlobalEnv) {
-    vars <- ls(envir=envir, all.names=TRUE)
-    rm(list=vars, envir=envir, inherits=FALSE)
-  }
   clusterCall(cl, fun=grmall)
-  debug("Cleared global environment of cluster node #%d", node)
+  mdebug("Cleared global environment of cluster node #%d", node)
 
   ## Export globals
   globals <- future$globals
   if (length(globals) > 0) {
-    gassign <- function(name, value, envir=.GlobalEnv) {
-      assign(name, value=value, envir=envir)
-      NULL
-    }
     for (name in names(globals)) {
       ## For instance sendData.SOCKnode(...) may generate warnings
       ## on packages not being available after serialization, e.g.
@@ -113,7 +105,7 @@ run.ClusterFuture <- function(future, ...) {
       suppressWarnings({
         clusterCall(cl, fun=gassign, name, globals[[name]])
       })
-      debug("Exported %s to cluster node #%d", sQuote(name), node)
+      mdebug("Exported %s to cluster node #%d", sQuote(name), node)
     }
   }
   ## Not needed anymore
@@ -123,7 +115,7 @@ run.ClusterFuture <- function(future, ...) {
   packages <- future$packages
   if (length(packages) > 0) {
     clusterCall(cl, fun=lapply, X=packages, FUN=library, character.only=TRUE)
-    debug("Attaching %d packages (%s) on cluster node #%d",
+    mdebug("Attaching %d packages (%s) on cluster node #%d",
                     length(packages), hpaste(sQuote(packages)), node)
   }
 
@@ -133,7 +125,6 @@ run.ClusterFuture <- function(future, ...) {
   future$state <- 'running'
 
   ## Launch future
-  geval <- function(expr, envir=.GlobalEnv) eval(expr, envir=envir)
   sendCall(cl[[1]], fun=geval, args=list(expr))
 
   invisible(future)

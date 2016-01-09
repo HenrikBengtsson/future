@@ -36,7 +36,22 @@ trim <- function(s) {
 } # trim()
 
 
-debug <- function(...) {
+mdebug <- function(...) {
   if (!getOption("future::debug", FALSE)) return()
   message(sprintf(...))
-} ## debug()
+} ## mdebug()
+
+
+## Used by run() for ClusterFuture.
+## Here so we can add tests for them.
+grmall <- function(envir=.GlobalEnv) {
+  vars <- ls(envir=envir, all.names=TRUE)
+  rm(list=vars, envir=envir, inherits=FALSE)
+}
+
+gassign <- function(name, value, envir=.GlobalEnv) {
+  assign(name, value=value, envir=envir)
+  NULL
+}
+
+geval <- function(expr, envir=.GlobalEnv) eval(expr, envir=envir)
