@@ -34,3 +34,9 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 trim <- function(s) {
   sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
 } # trim()
+
+
+debug <- function(...) {
+  if (!getOption("future::debug", FALSE)) return()
+  message(sprintf(...))
+} ## debug()
