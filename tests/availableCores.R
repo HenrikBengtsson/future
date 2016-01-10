@@ -6,8 +6,8 @@ n <- availableCores()
 message(sprintf("n=%d", n))
 
 print(availableCores())
-print(availableCores("PBS"))
-print(availableCores("system"))
+print(availableCores(methods="PBS"))
+print(availableCores(methods="system"))
 
 message("*** availableCores() ... DONE")
 

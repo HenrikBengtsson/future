@@ -5,7 +5,7 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  maxSessions = availableSessions(), ...)
+  maxSessions = availableCores(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -33,8 +33,8 @@ parallel in another R session}.
 This function will block if all available R session are occupied
 and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
-R sessions available to the current R process, see
-\code{\link{availableSessions}()}.
+R sessions available including the current/main R process, see
+\code{\link{availableCores}()}.
 
 The preferred way to create an multisession future is not to call
 this function directly, but to register it via

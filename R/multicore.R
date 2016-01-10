@@ -23,10 +23,10 @@
 #' @example incl/multicore.R
 #'
 #' @details
-#' This function will block if all CPU cores are occupied and
+#' This function will block if all cores are occupied and
 #' will be unblocked as soon as one of the already running
 #' multicore futures is resolved.  For the total number of
-#' CPU cores available to the current R process, see
+#' cores available including the current/main R process, see
 #' \code{\link{availableCores}()}.
 #'
 #' Not all systems support multicore futures.  For instance,
@@ -43,17 +43,19 @@
 #' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
-#' \code{\link{availableCores}() > 1L} to check whether multicore
-#' futures are supported or not.
+#' Use \code{\link{availableCores}("multicore") > 1L} to check
+#' whether multicore futures are supported or not.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(constraints="multicore"), ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
   stopifnot(is.finite(maxCores), maxCores >= 1L)
 
-  ## Fall back to lazy futures, iff multicore is not suported
+  ## Fall back to eager futures if only a single additional R process
+  ## can be spawned off,  i.e. the use the current main R process.
+  ## Eager futures best reflect how multicore futures handle globals.
   if (maxCores == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))

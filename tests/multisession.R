@@ -78,7 +78,7 @@ options("future::maxSizeOfGlobals"=1024*4L)
 limit <- getOption("future::maxSizeOfGlobals")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
-for (maxSessions in unique(c(1L, availableSessions()))) {
+for (maxSessions in unique(c(1L, availableCores()))) {
   message("Max number of sessions: ", maxSessions)
 
   ## A large object

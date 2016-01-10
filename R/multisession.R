@@ -21,8 +21,8 @@
 #' This function will block if all available R session are occupied
 #' and will be unblocked as soon as one of the already running
 #' multisession futures is resolved.  For the total number of
-#' R sessions available to the current R process, see
-#' \code{\link{availableSessions}()}.
+#' R sessions available including the current/main R process, see
+#' \code{\link{availableCores}()}.
 #'
 #' The preferred way to create an multisession future is not to call
 #' this function directly, but to register it via
@@ -31,15 +31,22 @@
 #' and \code{\link{\%<=\%}} will create \emph{multisession futures}.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxSessions=availableSessions(), ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxSessions=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
   maxSessions <- as.integer(maxSessions)
   stopifnot(length(maxSessions) == 1, is.finite(maxSessions), maxSessions >= 1)
+
+  ## Fall back to lazy futures if only a single R session can be used,
+  ## i.e. the use the current main R process.  Lazy futures best
+  ## reflect how multisession futures handle globals.
   if (maxSessions == 1L) {
     return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
 
-  cluster <- sessions("start", n=maxSessions)
+  ## IMPORTANT: When we setup a multisession cluster, we need to
+  ## account for the main R process as well, i.e. we should setup
+  ## a cluster with one less process.
+  cluster <- sessions("start", n=maxSessions-1L)
 
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)
@@ -58,7 +65,7 @@ sessions <- local({
     cluster
   }
 
-  function(action=c("get", "start", "stop"), n=2L) {
+  function(action=c("get", "start", "stop"), n=availableCores()-1L) {
     action <- match.arg(action)
     n <- as.integer(n)
     stopifnot(length(n) == 1, is.finite(n), n >= 1)
