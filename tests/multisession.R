@@ -48,7 +48,6 @@ for (ii in 1:4) {
   x[[ii]] <- multisession({ ii })
 }
 message(sprintf(" - Resolving %d multisession futures", length(x)))
-##if ("covr" %in% loadedNamespaces()) v <- 1:4 else ## WORKAROUND
 v <- sapply(x, FUN=value)
 stopifnot(all(v == 1:4))
 
@@ -102,15 +101,7 @@ for (maxSessions in unique(c(1L, availableSessions()))) {
   cat(sprintf("a: %g bytes\n", size))
   res <- try(f <- multisession({ sum(a) }, maxSessions=maxSessions), silent=TRUE)
   rm(list="a")
-  if (maxSessions > 1L) {
-    stopifnot(inherits(res, "try-error"))
-  } else {
-    stopifnot(inherits(res, "Future"))
-    stopifnot(inherits(f, "Future"))
-    stopifnot(identical(res, f))
-    v <- value(f)
-    stopifnot(v == yTruth)
-  }
+  stopifnot(inherits(res, "try-error"))
 }
 
 message("*** multisession() - too large globals ... DONE")

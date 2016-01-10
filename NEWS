@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.10.9-9000 [2016-01-08]
+Version: 0.10.9-9000 [2016-01-09]
 o Add multisession futures, which analogously to multicore ones,
   use multiple cores on the local machine with the difference
   that they are evaluated in seperate R session rather than
