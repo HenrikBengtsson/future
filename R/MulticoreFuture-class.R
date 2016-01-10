@@ -42,13 +42,8 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- future$expr
   envir <- future$envir
 
-  ## Inject code to prevent that nested cluster futures
-  ## are spawned off recursively by mistake.
-  expr <- substitute({
-    options(mc.cores=1L)
-    future::plan(future::eager)
-    e
-  }, list(e=expr))
+  ## Inject code for the next future strategy to use.
+  expr <- injectNextStrategy(future, expr)
 
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 

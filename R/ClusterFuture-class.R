@@ -71,20 +71,14 @@ importCluster <- function(name=NULL) {
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
 
-
 #' @importFrom parallel clusterExport
 run.ClusterFuture <- function(future, ...) {
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
   expr <- future$expr
 
-  ## Inject code to prevent that nested cluster futures
-  ## are spawned off recursively by mistake.
-  expr <- substitute({
-    options(mc.cores=1L)
-    future::plan(future::eager)
-    e
-  }, list(e=expr))
+  ## Inject code for the next future strategy to use.
+  expr <- injectNextStrategy(future, expr)
 
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))

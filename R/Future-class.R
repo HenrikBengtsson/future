@@ -92,3 +92,62 @@ resolved.Future <- function(x, ...) {
   x$state %in% c('finished', 'failed', 'interrupted')
 }
 
+
+#' Inject code for the next type of future to use for nested futures
+#'
+#' @param future Current future.
+#' @param expr Future expression.
+#'
+#' @return A future expression with code injected to set what
+#' type of future to use for nested futures, iff any.
+#'
+#' @details
+#' If no next future strategy is specified, the default is to
+#' use \link{eager} futures.  This conservative approach protects
+#' against spawning off recursive futures by mistake, especially
+#' \link{multicore} and \link{multisession} ones.
+#' The default will also set \code{options(mc.cores=0L)}, which
+#' means that no \emph{additional} R processes may be spawned off
+#' by functions such as \code{\link[parallel:mclapply]{mclapply}()}
+#' and friends (*).
+#'
+#' Currently it is not possible to specify what type of nested
+#' futures to be used, meaning the above default will always be
+#' used.
+#'
+#' (*) Note that using \code{mc.cores=0} will unfortunately cause
+#'     \code{mclapply()} and friends to generate an error saying
+#'     "'mc.cores' must be >= 1".  Ideally those functions should
+#'     fall back to using the non-multicore alternative in this
+#'     case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
+#'
+#' @seealso
+#' \url{https://github.com/HenrikBengtsson/future/issues/37}
+#'
+#' @export
+#' @aliases injectNextStrategy.Future
+#' @keywords internal
+injectNextStrategy <- function(...) UseMethod("injectNextStrategy")
+
+#' @export
+injectNextStrategy.Future <- function(future, expr, ...) {
+  ## For now, the next future strategy is hard coded
+  nextStrategy <- NULL
+
+  ## Default is to fall back to to eager futures and
+  ## forcing 'mc.cores' to zero (sic!)
+  if (is.null(nextStrategy)) {
+    nextStrategy <- substitute({
+      options(mc.cores=0L)
+      future::plan(future::eager)
+    }, env=list())
+  }
+
+  ## Inject
+  expr <- substitute({
+    a
+    b
+  }, env=list(a=nextStrategy, b=expr))
+
+  expr
+} ## nextStrategy()
