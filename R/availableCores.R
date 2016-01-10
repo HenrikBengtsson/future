@@ -42,17 +42,11 @@
 #' @keywords internal
 availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores+1", "system"))) {
   ## All known core counts
-  ncores <- .availableCores(methods=methods)
-  ncores["mc.cores+1"] <- ncores["mc.cores+1"] + 1L
-
-  ## First non-missing
-  ncores <- ncores[!is.na(ncores)][1L]
-
-  ## The default is to use a single core
-  if (is.na(ncores)) ncores <- c(current=1L)
+  ncores <- .availableCores(methods=methods, na.rm=TRUE, which="first")
+  stopifnot(is.finite(ncores), ncores >= 1L)
 
   ## SPECIAL: On Windows, multicore processing is not supported
-  if (!supportsMulticore()) return(1L)
+  if (!supportsMulticore()) return(c(current=1L))
 
   ncores
 }
@@ -61,18 +55,13 @@ availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm",
 #' @export
 availableSessions <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores+1", "system"))) {
   ## All known core counts
-  ncores <- .availableCores(methods=methods)
+  ncores <- .availableCores(methods=methods, na.rm=TRUE, which="min")
+  stopifnot(is.finite(ncores), ncores >= 1L)
 
-  ## Minimum
-  ncores <- ncores[!is.na(ncores)]
-  if (length(ncores) == 0) {
-    n <- c(current=1L)
-  } else {
-    n <- ncores[which.min(ncores)] ## which.min() to preserve name
-  }
-  stopifnot(is.finite(n))
+  ## Return number of _additional_ sessions that can be spawned off
+  ncores <- ncores - 1L
 
-  n
+  ncores
 } # availableSessions()
 
 
@@ -176,7 +165,7 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.g
 
 
 #' @importFrom parallel detectCores
-.availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores+1", "system"))) {
+.availableCores <- function(methods=getOption("availableCoresMethods", c("Slurm", "PBS", "mc.cores+1", "system")), na.rm=FALSE, which=c("first", "min", "all"), default=c(current=1L)) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -185,6 +174,8 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.g
   getopt <- function(name) {
     as.integer(getOption(name, NA_integer_))
   } # getopt()
+
+  which <- match.arg(which)
 
   ncores <- rep(NA_integer_, times=length(methods))
   names(ncores) <- methods
@@ -198,13 +189,16 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.g
       n <- getenv("PBS_NUM_PPN")
     } else if (method == "mc.cores") {
       .Deprecated(msg="Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
-      n <- getopt("mc.cores")
+      n <- getopt("mc.cores") + 1L
     } else if (method == "mc.cores+1") {
       ## Number of cores by option defined by 'parallel' package
-      n <- getopt("mc.cores")
+      n <- getopt("mc.cores") + 1L
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()
+    } else if (method == "current") {
+      ## Reflects the main single-core R process
+      n <- 1L
     } else {
       ## covr: skip=3
       ## Fall back to querying option and system environment variable
@@ -212,6 +206,21 @@ requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.g
       if (is.na(n)) n <- getenv(method)
     }
     ncores[kk] <- n
+  }
+
+  ## Drop missing values?
+  if (na.rm) {
+    ncores <- ncores[!is.na(ncores)]
+  }
+
+  ## Fall back to the default?
+  if (length(ncores) == 0) ncores <- default
+
+  if (which == "min") {
+    ## which.min() to preserve name
+    ncores <- ncores[which.min(ncores)]
+  } else if (which == "first") {
+    ncores <- ncores[1L]
   }
 
   ncores
