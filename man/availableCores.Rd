@@ -68,6 +68,9 @@ are supported:
    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
    \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.
 }
+For any other value of a \code{methods} element, the R option with the
+same name is queried.  If that is not set, the system environment
+variable is queried.  If neither is set, a missing value is returned.
 }
 \keyword{internal}
 

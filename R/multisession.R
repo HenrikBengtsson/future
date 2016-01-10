@@ -9,7 +9,7 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param maxSessions The maximum number of multisession future that
+#' @param maxCores The maximum number of multisession future that
 #' can be active at the same time before blocking.
 #' @param \dots Not used.
 #'
@@ -31,22 +31,22 @@
 #' and \code{\link{\%<=\%}} will create \emph{multisession futures}.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxSessions=availableCores(), ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
-  maxSessions <- as.integer(maxSessions)
-  stopifnot(length(maxSessions) == 1, is.finite(maxSessions), maxSessions >= 1)
+  maxCores <- as.integer(maxCores)
+  stopifnot(length(maxCores) == 1, is.finite(maxCores), maxCores >= 1)
 
   ## Fall back to lazy futures if only a single R session can be used,
   ## i.e. the use the current main R process.  Lazy futures best
   ## reflect how multisession futures handle globals.
-  if (maxSessions == 1L) {
+  if (maxCores == 1L) {
     return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  cluster <- sessions("start", n=maxSessions-1L)
+  cluster <- sessions("start", n=maxCores-1L)
 
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)

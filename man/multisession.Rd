@@ -5,7 +5,7 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  maxSessions = availableCores(), ...)
+  maxCores = availableCores(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -16,7 +16,7 @@ is done and from which globals are obtained.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{maxSessions}{The maximum number of multisession future that
+\item{maxCores}{The maximum number of multisession future that
 can be active at the same time before blocking.}
 
 \item{\dots}{Not used.}
