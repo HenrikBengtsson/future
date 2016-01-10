@@ -35,7 +35,8 @@ If \code{which="all"}, then more than one value may be returned.
 Together with \code{na.rm=FALSE} missing values may also be returned.
 }
 \description{
-Get number of available cores on current machine
+The current/main R session counts as one, meaning the minimum
+number of cores available is always at least one.
 }
 \details{
 The following settings ("methods") for inferring the number of cores

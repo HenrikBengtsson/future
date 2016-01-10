@@ -1,5 +1,8 @@
 #' Get number of available cores on current machine
 #'
+#' The current/main R session counts as one, meaning the minimum
+#' number of cores available is always at least one.
+#'
 #' @param constraints An optional character specifying under what
 #' constraints ("purposes") we are requesting the values.
 #' For instance, on systems where multicore processing is not supported
