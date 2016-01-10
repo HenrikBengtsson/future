@@ -6,7 +6,7 @@
 \title{Get number of available cores on current machine}
 \usage{
 availableCores(methods = getOption("availableCoresMethods", c("Slurm", "PBS",
-  "mc.cores", "system")))
+  "mc.cores+1", "system")))
 }
 \arguments{
 \item{methods}{A character vector specifying how to infer the number
@@ -34,11 +34,18 @@ The following methods for inferring the number of cores are supported:
    may or may not default to one.  It can be specified when submitting
    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
    requests four nodes each with two cores.
- \item \code{"mc.cores"} -
-   Query option \code{\link[base:options]{mc.cores}}, which defaults
-   to environment variable \code{MC_CORES} (when the \pkg{parallel}
-   package is loaded).
-   Used also by for instance \code{\link[parallel]{mclapply}()}.
+ \item \code{"mc.cores+1"} -
+   If available, returns the value of option
+   \code{\link[base:options]{mc.cores}} + 1.
+   Note that \code{mc.cores} is defined as the number of
+   \emph{additional} R processes that can be used in addition to the
+   main R process.  This means that with \code{mc.cores=0} all
+   calculations should be done in the main R process, i.e. we have
+   exactly one core availble for our calculations.
+   The \code{mc.cores} option defaults to environment variable
+   \code{MC_CORES} (and is set accordingly when the \pkg{parallel}
+   package is loaded).  The \code{mc.cores} option is used by for
+   instance \code{\link[parallel]{mclapply}()}.
  \item \code{"system"} -
    Query \code{\link[parallel]{detectCores}()}.
 }
