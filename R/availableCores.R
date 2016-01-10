@@ -13,8 +13,8 @@
 #'    Query Simple Linux Utility for Resource Management (Slurm)
 #'    environment variable \code{SLURM_CPUS_PER_TASK}.
 #'    This may or may not be set.  It can be set when submitting a job,
-#'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
-#'    `#SBATCH --cpus-per-task=2` to the `hello.sh` script.
+#'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
+#'    \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.
 #'  \item \code{"PBS"} -
 #'    Query Torque/PBS environment variable \code{PBS_NUM_PPN}.
 #'    Depending on PBS system configuration, this \emph{resource} parameter
@@ -22,12 +22,13 @@
 #'    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
 #'    requests four nodes each with two cores.
 #'  \item \code{"mc.cores"} -
-#'    Query option \code{mc.cores}, cf. \code{\link[parallel]{mclapply}()}.
+#'    Query option \code{\link[base:options]{mc.cores}}, which defaults
+#'    to environment variable \code{MC_CORES} (when the \pkg{parallel}
+#'    package is loaded).
+#'    Used also by for instance \code{\link[parallel]{mclapply}()}.
 #'  \item \code{"system"} -
 #'    Query \code{\link[parallel]{detectCores}()}.
 #' }
-#'
-#' @seealso \code{\link[parallel]{detectCores}()}
 #'
 #' @aliases availableSessions
 #' @export
