@@ -17,7 +17,9 @@
 #' To evaluate an expression using "cluster future", see function
 #' \code{\link{cluster}()}.
 #'
+#' @aliases MultisessionFuture MultisessionFuture-class
 #' @export
+#' @export MultisessionFuture
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
@@ -48,6 +50,15 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   f <- Future(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
+
+
+
+MultisessionFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, cluster=NULL, ...) {
+  if (substitute) expr <- substitute(expr)
+  f <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, local=local, cluster=cluster, ...)
+  structure(f, class=c("MultisessionFuture", class(f)))
+}
+
 
 
 importCluster <- function(name=NULL) {

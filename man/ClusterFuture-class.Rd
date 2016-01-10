@@ -3,6 +3,8 @@
 \name{ClusterFuture-class}
 \alias{ClusterFuture}
 \alias{ClusterFuture-class}
+\alias{MultisessionFuture}
+\alias{MultisessionFuture-class}
 \title{An cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,

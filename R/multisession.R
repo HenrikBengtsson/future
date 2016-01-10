@@ -38,8 +38,11 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxSession
   if (maxSessions == 1L) {
     return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
-  sessions("start", n=maxSessions)
-  cluster(expr, envir=envir, substitute=FALSE, cluster=sessions(), ...)
+
+  cluster <- sessions("start", n=maxSessions)
+
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
+  run(future)
 }
 
 
