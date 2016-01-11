@@ -2,7 +2,7 @@
 % Please edit documentation in R/multicore.R
 \name{multicore}
 \alias{multicore}
-\title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
+\title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE,
   globals = FALSE, maxCores = availableCores(constraints = "multicore"),

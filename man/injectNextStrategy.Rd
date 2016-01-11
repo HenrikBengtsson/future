@@ -5,7 +5,7 @@
 \alias{injectNextStrategy.Future}
 \title{Inject code for the next type of future to use for nested futures}
 \usage{
-injectNextStrategy(...)
+injectNextStrategy(future, expr, ...)
 }
 \arguments{
 \item{future}{Current future.}
@@ -32,15 +32,16 @@ and friends (*).
 Currently it is not possible to specify what type of nested
 futures to be used, meaning the above default will always be
 used.
+See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
+for plans on adding support for custom nested future types.
 
 (*) Note that using \code{mc.cores=0} will unfortunately cause
     \code{mclapply()} and friends to generate an error saying
     "'mc.cores' must be >= 1".  Ideally those functions should
     fall back to using the non-multicore alternative in this
     case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
-}
-\seealso{
-\url{https://github.com/HenrikBengtsson/future/issues/37}
+    See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
+    for a discussion on this.
 }
 \keyword{internal}
 
