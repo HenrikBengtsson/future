@@ -17,6 +17,7 @@ README[.]md
 ^appveyor[.]yml$
 ^covr-utils.R$
 ^[.]covr[.]R$
+^[.]covr[.]rds$
 
 #----------------------------
 # R related

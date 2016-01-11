@@ -24,3 +24,4 @@ str(excl)
 # Run through tests, record source code coverage, and
 # publish to Coveralls
 covr <- covr_package(exclusions=excl, quiet=FALSE)
+saveRDS(covr, file=".covr.rds")
