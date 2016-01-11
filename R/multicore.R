@@ -80,25 +80,100 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE
 }
 
 
-#' Check whether multicore processing is supported or not
+
+#' Get number of cores currently used
 #'
-#' Multicore futures are only supported on systems supporting
-#' multicore processing.  R supports this on most systems,
-#' except on the Microsoft Windows.
+#' Get number of children plus one (for the current process)
+#' used by the current R session.  The number of children
+#' is the total number of subprocesses launched by this
+#' process that are still running and whose values have yet
+#' not been collected.
 #'
-#' @return TRUE if multicore processing is supported, otherwise FALSE.
+#' @return A positive integer equal or greater than one.
 #'
-#' @seealso
-#' To use multicore futures, use \code{\link{plan}(\link{multicore})}.
-#'
-#' @export
-supportsMulticore <- local({
-  supported <- NA
-  function() {
-    if (is.na(supported)) {
-      ns <- getNamespace("parallel")
-      supported <<- exists("mcparallel", mode="function", envir=ns, inherits=FALSE)
+#' @keywords internal
+usedCores <- function() {
+  ## Number of unresolved multicore futures
+  futures <- FutureRegistry("multicore", action="list")
+  nfutures <- length(futures)
+  ncores <- nfutures
+
+  ## Total number of multicore processes
+  ## To please R CMD check
+  ns <- getNamespace("parallel")
+  children <- get("children", envir=ns, mode="function")
+  nchildren <- length(children())
+
+  ## Any multicore processes that are not futures?
+  if (nchildren > nfutures) {
+    ## The basic assumption is that any additional multicore
+    ## processes have been launched by at least one of the
+    ## multicore futures.  This means that as long as we
+    ## wait for one of these futures to be resolved, then
+    ## a CPU core will always be available at some point in
+    ## the future.
+    ## covr: skip=7
+    ncores <- nchildren
+
+    ## However, ...
+    if (nfutures == 0L) {
+      warning(sprintf("Hmm... %d active multicore processes were detected, but without any active multicore futures (it is not clear by what mechanism they were created). Because of this, the 'future' package do not know how to resolve/collect them and will therefore threat them as they do not exist.", nchildren))
+      ncores <- 0L
     }
-    supported
   }
-})
+
+  return(ncores + 1L)
+}
+
+
+
+#' Request a core for multicore processing
+#'
+#' If no cores are available, the current process
+#' blocks until a core is available.
+#'
+#' @param await A function used to try to "collect"
+#'        finished multicore subprocesses.
+#' @param maxTries Then maximum number of times subprocesses
+#'        should be collected before timeout.
+#' @param delta Then base interval (in seconds) to wait
+#'        between each try.
+#' @param alpha A multiplicative factor used to increase
+#'        the wait interval after each try.
+#'
+#' @return Invisible TRUE. If no cores are available after
+#'         extensive waiting, then a timeout error is thrown.
+#'
+#' @keywords internal
+requestCore <- function(await, maxTries=getOption("future::maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future::interval", 1.0), alpha=1.01) {
+  stopifnot(is.function(await))
+  maxTries <- as.integer(maxTries)
+  stopifnot(is.finite(maxTries), maxTries > 0)
+  stopifnot(is.finite(alpha), alpha > 0)
+
+  ## Maximum number of cores available
+  total <- availableCores()
+
+  tries <- 1L
+  interval <- delta
+  finished <- FALSE
+  while (tries <= maxTries) {
+    finished <- (usedCores() < total)
+    if (finished) break
+
+    ## Wait
+    Sys.sleep(interval)
+
+    ## Finish/close cores, iff possible
+    await()
+
+    interval <- alpha*interval
+    tries <- tries + 1L
+  }
+
+  if (!finished) {
+    stop(sprintf("TIMEOUT: All %d CPU cores are still occupied", total))
+  }
+
+  invisible(finished)
+}
