@@ -3,7 +3,7 @@ futureAssign("A", {
   x <- 3
   x^2
 })
-message("Value 'A': ", A)
+cat("Value 'A': ", A, sep="")
 
 
 ## Equivalent via infix "assign" operator
@@ -11,7 +11,7 @@ A %<=% {
   x <- 3
   x^2
 }
-message("Value 'A': ", A)
+cat("Value 'A': ", A, sep="")
 
 
 ## A global variable
@@ -23,10 +23,10 @@ B %<=% { 0.2 }
 C %<=% { z <- a+0.3 }
 
 ## Sleep until 'C' is available
-message("Value 'C': ", C)
+cat("Value 'C': ", C, sep="")
 
 ## Sleep until 'A' is available
-message("Value 'A': ", A)
+cat("Value 'A': ", A, sep="")
 
 ## Sleep until 'C' is available
-message("Value 'B': ", B)
+cat("Value 'B': ", B, sep="")
