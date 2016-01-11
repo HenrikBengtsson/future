@@ -38,6 +38,7 @@ trim <- function(s) {
 
 ## From R.filesets
 asIEC <- function(size, digits=2L) {
+  if (length(size) > 1L) return(sapply(size, FUN=asIEC, digits=digits))
   units <- c("bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB")
   for (unit in units) {
     if (size < 1000) break;
