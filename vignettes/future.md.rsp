@@ -250,6 +250,7 @@ corresponding object in the relevant environments: 'a'
 > y
 [1] 9
 ```
+Moreover, if a global is defined in a packages, for instance a function, then that global is not exported but instead it is made sure that the corresponding package is attached when the future is evaluated.  This not only reflects the setup of the main R session, but it also minimizes the need for exporting globals, which can save bandwidth and time, especially when using remote compute nodes.
 
 Having said this, it is a challenging problem to identify globals from static code inspection.  There will always be corner cases of globals that either fails to be identified by static code inspection or that are incorrectly identified as global variables.  Vignette '[Futures in R: Common issues with solutions]' provides examples of common cases and explains how to avoid them.
 If you suspect that a global variable is not properly identified, it is often helpful for troubleshooting to run the code interactively using synchroneous futures, i.e. _eager_ or _lazy_.  If there is an error, it is then possible to use `traceback()` and other debugging tools.
