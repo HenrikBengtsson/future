@@ -15,7 +15,7 @@
 #'
 #' @return A \link{ClusterFuture}.
 #'
-## @example incl/multisession.R
+#' @example incl/multisession.R
 #'
 #' @details
 #' This function will block if all available R session are occupied
