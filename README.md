@@ -264,13 +264,20 @@ You may also try multisession evaluation, which calculates the different Mandelb
 plan(multisession)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-
-Finally, if you are on a system where R supports multicore processing, try
+If you are on a system where R supports multicore processing, try
 ```r
 plan(multicore)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
+
+Finally, if you have access to multiple machines you can try to setup a cluster of workers and use them, e.g.
+```r
+cl <- parallel::makeCluster(c("n2", "n5", "n6", "n6", "n9"))
+plan(cluster, cluster=cl)
+demo("mandelbrot", package="future", ask=FALSE)
+```
+Don't forget to call `parallel::stopCluster(cl)` when you're done with this cluster.  If you forget, it will automatically shutdown when you close your R session.
 
 
 
