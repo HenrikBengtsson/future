@@ -17,8 +17,7 @@ is done and from which globals are obtained.}
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{cluster}{A cluster object created by
-\code{\link[parallel]{makeCluster}()}.
-be active at the same time before blocking.}
+\code{\link[parallel]{makeCluster}()}.}
 
 \item{\dots}{Not used.}
 }
@@ -31,10 +30,48 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
+This function will block if all available R cluster nodes are
+occupied and will be unblocked as soon as one of the already
+running cluster futures is resolved.
+
 The preferred way to create an cluster future is not to call
 this function directly, but to register it via
 \code{\link{plan}(cluster)} such that it becomes the default
 mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{cluster futures}.
+}
+\examples{
+## Cluster futures gives error on R CMD check for
+## unknown reasons. Same code works in package tests.
+\donttest{
+
+## Use cluster futures
+cl <- parallel::makeCluster(2L)
+plan(cluster, cluster=cl)
+
+## A global variable
+a <- 0
+
+## Create multicore future (explicitly)
+f <- future({
+  b <- 3
+  c <- 2
+  a * b * c
+})
+
+## A cluster future is evaluated in a separate process.
+## Changing the value of a global variable will not
+## affect the result of the future.
+a <- 7
+print(a)
+
+v <- value(f)
+print(v)
+stopifnot(v == 0)
+
+## CLEANUP
+parallel::stopCluster(cl)
+
+}
 }
 

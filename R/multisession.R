@@ -13,7 +13,7 @@
 #' can be active at the same time before blocking.
 #' @param \dots Not used.
 #'
-#' @return A \link{ClusterFuture}.
+#' @return A \link{MultisessionFuture}.
 #' If \code{maxCores == 1}, then all processing using done in the
 #' current/main R session and we therefore fall back to using
 #' a lazy future.
@@ -29,6 +29,8 @@
 #' multisession futures is resolved.  For the total number of
 #' R sessions available including the current/main R process, see
 #' \code{\link{availableCores}()}.
+#'
+#' A multisession future is a special type of cluster future.
 #'
 #' The preferred way to create an multisession future is not to call
 #' this function directly, but to register it via

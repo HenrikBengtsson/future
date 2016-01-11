@@ -22,7 +22,7 @@ can be active at the same time before blocking.}
 \item{\dots}{Not used.}
 }
 \value{
-A \link{ClusterFuture}.
+A \link{MultisessionFuture}.
 If \code{maxCores == 1}, then all processing using done in the
 current/main R session and we therefore fall back to using
 a lazy future.
@@ -38,6 +38,8 @@ and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
 R sessions available including the current/main R process, see
 \code{\link{availableCores}()}.
+
+A multisession future is a special type of cluster future.
 
 The preferred way to create an multisession future is not to call
 this function directly, but to register it via
@@ -73,9 +75,9 @@ f <- future({
   a * b * c
 })
 
-## A multicore future is evaluated in a separated
-## forked process.  Changing the value of a global
-## variable will not affect the result of the future.
+## A multisession future is evaluated in a separate R session.
+## Changing the value of a global variable will not affect
+## the result of the future.
 a <- 7
 print(a)
 

@@ -11,14 +11,17 @@
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param cluster A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
-#' be active at the same time before blocking.
 #' @param \dots Not used.
 #'
 #' @return A \link{ClusterFuture}.
 #'
-## @example incl/cluster.R
+#' @example incl/cluster.R
 #'
 #' @details
+#' This function will block if all available R cluster nodes are
+#' occupied and will be unblocked as soon as one of the already
+#' running cluster futures is resolved.
+#'
 #' The preferred way to create an cluster future is not to call
 #' this function directly, but to register it via
 #' \code{\link{plan}(cluster)} such that it becomes the default
@@ -27,13 +30,8 @@
 #'
 #' @export
 cluster <- function(expr, envir=parent.frame(), substitute=TRUE, cluster=NULL, ...) {
-  defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
-  if (is.null(cluster)) cluster <- defaultCluster()
-  if (!inherits(cluster, "cluster")) {
-    stop("Argument 'cluster' is not of class 'cluster': ", class(cluster)[1])
-  }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)
 }
