@@ -75,7 +75,7 @@ stopifnot(inherits(res, "try-error"))
 
 
 message("*** cluster() - too large globals ...")
-options("future::maxSizeOfGlobals"=1024*4L)
+ooptsT <- options("future::maxSizeOfGlobals"=1024*4L)
 
 limit <- getOption("future::maxSizeOfGlobals")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
@@ -102,6 +102,8 @@ res <- try(f <- future({ sum(a) }), silent=TRUE)
 rm(list="a")
 stopifnot(inherits(res, "try-error"))
 
+## Undo options changed in this test
+options(ooptsT)
 
 message("*** cluster() - too large globals ... DONE")
 

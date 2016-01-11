@@ -109,7 +109,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       sizes <- sort(sizes, decreasing=TRUE)
       sizes <- head(sizes, n=3L)
       largest <- sprintf("%s (%s)", sQuote(names(sizes)), asIEC(sizes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the asynchronous expression is %s. This exceeds the maximum allowed size of %s (option 'async::maxSizeOfGlobals'). The top largest objects are %s", asIEC(totalExportSize), asIEC(maxSizeOfGlobals), hpaste(largest, lastCollapse=" and "))
+      msg <- sprintf("The total size of all global objects that need to be exported for the asynchronous expression is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals'). The top largest objects are %s", asIEC(totalExportSize), asIEC(maxSizeOfGlobals), hpaste(largest, lastCollapse=" and "))
       stop(msg)
     }
   }
