@@ -35,6 +35,7 @@ When it becomes resolved, at some point in the future,
 its value can be retrieved.
 }
 \examples{
+## Use lazy futures
 plan(lazy)
 
 f <- future({

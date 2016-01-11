@@ -1,3 +1,4 @@
+## Use lazy futures
 plan(lazy)
 
 f <- future({

@@ -57,11 +57,14 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 }
 \examples{
+## Use multicore futures
+plan(multicore)
+
 ## A global variable
 a <- 0
 
 ## Create multicore future (explicitly)
-f <- multicore({
+f <- future({
   b <- 3
   c <- 2
   a * b * c
