@@ -1,7 +1,11 @@
 #' An multicore future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param object An R \link[base]{environment}.
-#' @param \dots Not used.
+#' @param expr An R \link[base]{expression}.
+#' @param envir The \link{environment} in which the evaluation
+#' is done (or inherits from if \code{local} is TRUE).
+#' @param substitute If TRUE, argument \code{expr} is
+#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{MulticoreFuture}.
 #'
@@ -38,9 +42,8 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- future$expr
   envir <- future$envir
 
-  ## Inject plan(eager) to prevent that nested multicore futures
-  ## are spawned off recursively by mistake.
-  expr <- substitute({ future::plan(future::eager); e }, list(e=expr))
+  ## Inject code for the next future strategy to use.
+  expr <- injectNextStrategy(future, expr)
 
   call <- substitute(parallel::mcparallel(e), list(e=expr))
 

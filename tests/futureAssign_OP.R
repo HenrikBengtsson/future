@@ -6,7 +6,7 @@ printf <- function(...) cat(sprintf(...))
 
 message("*** %<=% ...")
 
-for (strategy in c("eager", "lazy", "multicore")) {
+for (strategy in future:::supportedStrategies()) {
   message(sprintf("*** %%<=%% with %s futures ...", sQuote(strategy)))
   plan(strategy)
 

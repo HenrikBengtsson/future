@@ -1,5 +1,9 @@
-## Use multicore futures
-plan(multicore)
+## Multisession futures gives error on R CMD check for
+## unknown reasons. Same code works in package tests.
+\donttest{
+
+## Use multisession futures
+plan(multisession)
 
 ## A global variable
 a <- 0
@@ -20,3 +24,5 @@ print(a)
 v <- value(f)
 print(v)
 stopifnot(v == 0)
+
+}

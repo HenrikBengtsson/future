@@ -8,7 +8,8 @@ FutureRegistry <- local({
     NA_integer_
   }
 
-  function(where, action=c("add", "remove", "list", "collect-first"), future=NULL, ...) {
+  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, ...) {
+    stopifnot(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
     ## Automatically create?
@@ -54,6 +55,8 @@ FutureRegistry <- local({
 	  break
 	}
       }
+    } else if (action == "reset") {
+      db[[where]] <<- list()
     } else if (action == "list") {
       return(futures)
     } else {

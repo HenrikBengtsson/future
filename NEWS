@@ -1,6 +1,14 @@
 Package: future
 ===============
 
+Version: 0.10.9-9000 [2016-01-09]
+o Add multisession futures, which analogously to multicore ones,
+  use multiple cores on the local machine with the difference
+  that they are evaluated in seperate R session rather than
+  separate forked R processes.
+o Add support for cluster futures, cf. parallel::makeCluster().
+
+
 Version: 0.10.0 [2015-12-30]
 o Now %<=% can also assign to multi-dimensional list environments.
 o Add futures(), values() and resolved().

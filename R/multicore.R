@@ -1,4 +1,4 @@
-#' Create a multicore future whose value will be resolved asynchroneously in a parallel process
+#' Create a multicore future whose value will be resolved asynchroneously in a forked parallel process
 #'
 #' A multicore future is a future that uses multicore evaluation,
 #' which means that its \emph{value is computed and resolved in
@@ -17,16 +17,19 @@
 #' be active at the same time before blocking.
 #' @param \dots Not used.
 #'
-#' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
-#' if multicore futures are not supported).
+#' @return A \link{MulticoreFuture}
+#' If \code{maxCores == 1}, then all processing using done in the
+#' current/main R session and we therefore fall back to using
+#' a eager future.  This is also the case whenever multicore
+#' processing is not supported, e.g. on Windows.
 #'
 #' @example incl/multicore.R
 #'
 #' @details
-#' This function will block if all CPU cores are occupied and
+#' This function will block if all cores are occupied and
 #' will be unblocked as soon as one of the already running
 #' multicore futures is resolved.  For the total number of
-#' CPU cores availble to the current R process, see
+#' cores available including the current/main R process, see
 #' \code{\link{availableCores}()}.
 #'
 #' Not all systems support multicore futures.  For instance,
@@ -43,17 +46,22 @@
 #' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
-#' \code{\link{availableCores}() > 1L} to check whether multicore
-#' futures are supported or not.
+#' Use \code{\link{availableCores}()} to see the total number of
+#' cores that are available for the current R session.
+#' Use \code{\link{availableCores}("multicore") > 1L} to check
+#' whether multicore futures are supported or not on the current
+#' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(constraints="multicore"), ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
   stopifnot(is.finite(maxCores), maxCores >= 1L)
 
-  ## Fall back to lazy futures, iff multicore is not suported
+  ## Fall back to eager futures if only a single additional R process
+  ## can be spawned off,  i.e. the use the current main R process.
+  ## Eager futures best reflect how multicore futures handle globals.
   if (maxCores == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
@@ -94,4 +102,3 @@ supportsMulticore <- local({
     supported
   }
 })
-

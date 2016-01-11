@@ -15,11 +15,6 @@ if (getRversion() < "3.2.0") {
   }
 }
 
-## Supported types of futures
-strategies <- c("eager", "lazy")
-if (supportsMulticore()) strategies <- c(strategies, "multicore")
-
-
 dims <- list(
   NULL,
   c(1,6),
@@ -34,7 +29,7 @@ message("*** futures() / resolved() / values() ...")
 for (type in c("list", "environment", "listenv")) {
   message(sprintf("Type of object: %s", type))
 
-  for (strategy in strategies) {
+  for (strategy in future:::supportedStrategies()) {
     message("Type of future: ", strategy)
     plan(strategy)
 
