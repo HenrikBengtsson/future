@@ -43,8 +43,11 @@
 #' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
+#' Use \code{\link{availableCores}()} to see the total number of
+#' cores that are available for the current R session.
 #' Use \code{\link{availableCores}("multicore") > 1L} to check
-#' whether multicore futures are supported or not.
+#' whether multicore futures are supported or not on the current
+#' system.
 #'
 #' @export
 multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(constraints="multicore"), ...) {

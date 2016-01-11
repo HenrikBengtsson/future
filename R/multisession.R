@@ -15,7 +15,10 @@
 #'
 #' @return A \link{ClusterFuture}.
 #'
-#' @example incl/multisession.R
+## FIXME: It seem that multisession futures in examples gives errors
+##        with R CMD check, e.g. "cannot open file 'future-Ex.Rout':
+##        Permission denied".  Because of this we use \donttest{}.
+#'@example incl/multisession.R
 #'
 #' @details
 #' This function will block if all available R session are occupied
@@ -29,6 +32,10 @@
 #' \code{\link{plan}(multisession)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
 #' and \code{\link{\%<=\%}} will create \emph{multisession futures}.
+#'
+#' @seealso
+#' Use \code{\link{availableCores}()} to see the total number of
+#' cores that are available for the current R session.
 #'
 #' @export
 multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {

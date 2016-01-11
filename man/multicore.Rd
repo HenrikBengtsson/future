@@ -81,7 +81,10 @@ print(v)
 stopifnot(v == 0)
 }
 \seealso{
+Use \code{\link{availableCores}()} to see the total number of
+cores that are available for the current R session.
 Use \code{\link{availableCores}("multicore") > 1L} to check
-whether multicore futures are supported or not.
+whether multicore futures are supported or not on the current
+system.
 }
 

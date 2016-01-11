@@ -43,6 +43,10 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{multisession futures}.
 }
 \examples{
+## Multisession futures gives error on R CMD check for
+## unknown reasons. Same code works in package tests.
+\donttest{
+
 ## Use multisession futures
 plan(multisession)
 
@@ -65,5 +69,11 @@ print(a)
 v <- value(f)
 print(v)
 stopifnot(v == 0)
+
+}
+}
+\seealso{
+Use \code{\link{availableCores}()} to see the total number of
+cores that are available for the current R session.
 }
 

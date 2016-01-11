@@ -61,7 +61,7 @@
 #' @export
 #' @keywords internal
 #' @importFrom parallel detectCores
-availableCores <- function(constraints=NULL, methods=getOption("availableCoresMethods", c("system", "mc.cores+1", "Slurm", "PBS")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -90,6 +90,16 @@ availableCores <- function(constraints=NULL, methods=getOption("availableCoresMe
     } else if (method == "mc.cores+1") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores") + 1L
+    } else if (method == "_R_CHECK_LIMIT_CORES_") {
+      ## A flag set by R CMD check for constraining number of
+      ## cores allowed to be use in package tests.  Here we
+      ## acknowledge this and sets number of cores to the
+      ## maximum two allowed.  This way we don't have to explicitly
+      ## use options(mc.cores=2L) in example code, which may be
+      ## misleading to the reader.
+      chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
+      chk <- (nzchar(chk) && (chk != "false"))
+      if (chk) n <- 2L
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()
