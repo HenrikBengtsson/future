@@ -4,9 +4,8 @@
 \alias{multicore}
 \title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
-multicore(expr, envir = parent.frame(), substitute = TRUE,
-  globals = FALSE, maxCores = availableCores(constraints = "multicore"),
-  ...)
+multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  maxCores = availableCores(constraints = "multicore"), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

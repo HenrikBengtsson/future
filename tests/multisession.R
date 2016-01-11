@@ -12,7 +12,7 @@ f <- multisession({
   42L
 })
 print(f)
-stopifnot(inherits(f, "ClusterFuture") || inherits(f, "LazyFuture"))
+stopifnot(inherits(f, "ClusterFuture") || inherits(f, "EagerFuture"))
 
 print(resolved(f))
 y <- value(f)

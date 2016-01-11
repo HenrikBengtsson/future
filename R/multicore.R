@@ -53,7 +53,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, maxCores=availableCores(constraints="multicore"), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
