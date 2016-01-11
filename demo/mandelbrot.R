@@ -83,6 +83,9 @@ library("future")
 library("listenv")
 library("graphics")
 
+## Let's open an empty device already here
+if (interactive()) { dev.new(); plot.new() }
+
 n <- getOption("R_FUTURE_DEMO_MANDELBROT_PLANES", 9L)
 sizes <- 2 * 6^-(0:(n-1))
 xs <- rep(0.28298899997142857, times=n)
@@ -106,7 +109,6 @@ for (ii in seq_along(sizes)) {
 }
 
 ## Plot as each plane gets ready
-if (interactive()) { dev.new(); plot.new() }
 split.screen(rep(ceiling(sqrt(n)), times=2))
 resolved <- logical(length(counts))
 while (!all(resolved)) {
