@@ -23,6 +23,9 @@ can be active at the same time before blocking.}
 }
 \value{
 A \link{ClusterFuture}.
+If \code{maxCores == 1}, then all processing using done in the
+current/main R session and we therefore fall back to using
+a lazy future.
 }
 \description{
 A multisession future is a future that uses multisession evaluation,
@@ -41,6 +44,16 @@ this function directly, but to register it via
 \code{\link{plan}(multisession)} such that it becomes the default
 mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{multisession futures}.
+}
+\section{Known issues}{
+
+In the current implementation, \emph{all} background R sessions
+are allocated and launched in the background \emph{as soon as the
+first multisession future is created}. This means that more R
+sessions may be running than what will ever be used.
+The reason for this is that background sessions are currently
+created using \code{\link[parallel:makeCluster]{makeCluster}()},
+which requires that all R sessions are created at once.
 }
 \examples{
 ## Multisession futures gives error on R CMD check for

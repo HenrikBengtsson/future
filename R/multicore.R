@@ -17,8 +17,11 @@
 #' be active at the same time before blocking.
 #' @param \dots Not used.
 #'
-#' @return A \link{MulticoreFuture} (or a \link{EagerFuture}
-#' if multicore futures are not supported).
+#' @return A \link{MulticoreFuture}
+#' If \code{maxCores == 1}, then all processing using done in the
+#' current/main R session and we therefore fall back to using
+#' a eager future.  This is also the case whenever multicore
+#' processing is not supported, e.g. on Windows.
 #'
 #' @example incl/multicore.R
 #'
@@ -99,4 +102,3 @@ supportsMulticore <- local({
     supported
   }
 })
-
