@@ -139,6 +139,7 @@ injectNextStrategy.Future <- function(future, expr, ...) {
   ## forcing 'mc.cores' to zero (sic!)
   if (is.null(nextStrategy)) {
     nextStrategy <- substitute({
+      ## covr: skip=2
       options(mc.cores=0L)
       future::plan(future::eager)
     }, env=list())
@@ -146,6 +147,7 @@ injectNextStrategy.Future <- function(future, expr, ...) {
 
   ## Inject
   expr <- substitute({
+    ## covr: skip=2
     a
     b
   }, env=list(a=nextStrategy, b=expr))

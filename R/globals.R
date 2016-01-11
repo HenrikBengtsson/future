@@ -67,6 +67,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     a <- `future.call.arguments` <- NULL
     rm(list=c("a", "future.call.arguments"))
     expr <- substitute({
+      ## covr: skip=1
       do.call(function(...) a, args=`future.call.arguments`)
     }, list(a=expr))
   }
