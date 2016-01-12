@@ -36,6 +36,13 @@ trim <- function(s) {
 } # trim()
 
 
+hexpr <- function(expr, trim=TRUE, collapse="; ", maxHead=3L, maxTail=3L, ...) {
+  code <- deparse(expr)
+  if (trim) code <- trim(code)
+  hpaste(code, collapse=collapse, maxHead=maxHead, maxTail=maxTail, ...)
+} # hexpr()
+
+
 ## From R.filesets
 asIEC <- function(size, digits=2L) {
   if (length(size) > 1L) return(sapply(size, FUN=asIEC, digits=digits))

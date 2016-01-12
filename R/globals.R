@@ -35,12 +35,14 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   } ## asPkgEnvironment()
 
 
-  ## Default maximum export size is 100 MiB for now. /HB 2015-04-25
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", "104857600")
+  ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
+  maxSizeOfGlobals <- 500*1024^2
+  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
   maxSizeOfGlobals <- getOption("future::maxSizeOfGlobals", maxSizeOfGlobals)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
+  exprOrg <- expr
 
   ## Identify globals
   globals <- globalsOf(expr, envir=envir, substitute=FALSE,
@@ -57,7 +59,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (inherits(globals$`...`, "DotDotDotList")) {
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
-      stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", paste(deparse(expr), collapse="; "))
+      stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", hexpr(exprOrg))
     }
 
     globals$`future.call.arguments` <- globals$`...`
@@ -112,8 +114,19 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       sizes <- sizes[o]
       classes <- lapply(globals[o], FUN=mode)
       classes <- unlist(classes, use.names=FALSE)
-      largest <- sprintf("%s (%s; %s)", sQuote(names(sizes)), asIEC(sizes), dQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals'). The three largest objects are %s", asIEC(totalExportSize), asIEC(maxSizeOfGlobals), hpaste(largest, lastCollapse=" and "))
+      largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
+      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+      n <- length(largest)
+      if (n == 1) {
+        fmt <- "%s There is one global: %s."
+      } else if (n == 2) {
+        fmt <- "%s There are two globals: %s."
+      } else if (n == 3) {
+        fmt <- "%s There are three globals: %s."
+      } else {
+        fmt <- "%s The three largest globals are %s."
+      }
+      msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
       stop(msg)
     }
   }
