@@ -107,10 +107,13 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     sizes <- unlist(sizes, use.names=TRUE)
     totalExportSize <- sum(sizes, na.rm=TRUE)
     if (totalExportSize > maxSizeOfGlobals) {
-      sizes <- sort(sizes, decreasing=TRUE)
-      sizes <- head(sizes, n=3L)
-      largest <- sprintf("%s (%s)", sQuote(names(sizes)), asIEC(sizes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the asynchronous expression is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals'). The top largest objects are %s", asIEC(totalExportSize), asIEC(maxSizeOfGlobals), hpaste(largest, lastCollapse=" and "))
+      o <- order(sizes, decreasing=TRUE)[1:3]
+      o <- o[is.finite(o)]
+      sizes <- sizes[o]
+      classes <- lapply(globals[o], FUN=mode)
+      classes <- unlist(classes, use.names=FALSE)
+      largest <- sprintf("%s (%s; %s)", sQuote(names(sizes)), asIEC(sizes), dQuote(classes))
+      msg <- sprintf("The total size of all global objects that need to be exported for the future expression is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals'). The three largest objects are %s", asIEC(totalExportSize), asIEC(maxSizeOfGlobals), hpaste(largest, lastCollapse=" and "))
       stop(msg)
     }
   }
