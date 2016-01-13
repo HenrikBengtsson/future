@@ -26,14 +26,8 @@ install:
 
 build_script:
   - echo Current directory=%CD%
-
-
-
   - travis-tool.sh install_r R.rsp
-
   - travis-tool.sh install_r globals listenv
-
-  - travis-tool.sh install_r R.rsp
 
 test_script:
   - travis-tool.sh run_tests
