@@ -12,7 +12,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  cl <- parallel::makeCluster(cores)
+  cl <- try(parallel::makeCluster(cores), silent=FALSE)
   message(cat(capture.output(cl)))
   plan(cluster, cluster=cl)
 
