@@ -29,6 +29,7 @@
 #' The default evaluator function is \code{\link{eager}()},
 #' but this can be changed via \code{\link{plan}()} function.
 #'
+#' @aliases futureCall
 #' @export
 #' @name future
 future <- function(expr, envir=parent.frame(), substitute=TRUE, evaluator=plan(), ...) {

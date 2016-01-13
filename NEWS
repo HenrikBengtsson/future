@@ -11,6 +11,7 @@ o Add multisession futures, which analogously to multicore ones,
   do not require explicit setup of cluster nodes.
 o Add support for cluster futures, which can make use of a cluster
   of nodes created by parallel::makeCluster().
+o Add futureCall(), which is for futures what do.call() is otherwise.
 o Standardized how options are named, i.e. 'future.<option>'.
   If you used any future options previously, make sure to check
   they follow the above format.

@@ -2,6 +2,7 @@
 % Please edit documentation in R/future.R
 \name{future}
 \alias{future}
+\alias{futureCall}
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE,
