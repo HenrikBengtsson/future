@@ -60,7 +60,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=a
   ## Fall back to eager futures if only a single R session can be used,
   ## i.e. the use the current main R process.
   if (maxCores == 1L) {
-    return(eager(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
+    return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to
