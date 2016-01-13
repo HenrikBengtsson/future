@@ -3,7 +3,7 @@ fleapply <- function(x, FUN, ...) {
   stopifnot(is.function(FUN))
   res <- listenv()
   for (ii in seq_along(x)) {
-    res[[ii]] %<=% FUN(x[[ii]], ...)
+    res[[ii]] <- future(FUN(x[[ii]], ...))
   }
   names(res) <- names(x)
 
