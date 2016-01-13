@@ -4,14 +4,17 @@ library("listenv")
 ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L)
 
+message("*** cluster() ...")
+
+message("Cluster type: ", parallel:::getClusterOption("type"))
+
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
   cl <- parallel::makeCluster(cores)
+  message(cat(capture.output(cl)))
   plan(cluster, cluster=cl)
-
-  message("*** cluster() ...")
 
   ## No global variables
   f <- cluster({
