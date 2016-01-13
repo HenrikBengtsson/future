@@ -141,7 +141,7 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Launch future
   mdebug("Launch cluster future ...")
-  mdebug("Expression: ", hexpr(expr))
+  mdebug("Expression: %s", hexpr(expr))
   sendCall(cl[[1L]], fun=geval, args=list(expr))
   mdebug("Launch cluster future ... DONE")
 
@@ -153,11 +153,19 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
-  ## Check if cluster socket connection is available for reading
   cluster <- x$cluster
   node <- x$node
-  con <- cluster[[node]]$con
+  mdebug("Cluster node: #%d", node)
+  cl <- cluster[[node]]
+
+  ## Check if cluster socket connection is available for reading
+  mdebug("Checking if cluster socket is available for reading ...")
+  con <- cl$con
+  mdebug("Connection:")
+  mdebug(paste(capture.output(con), collapse="\n"))
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
+  mdebug("Result: %s", res)
+  mdebug("Checking if cluster socket is available for reading ... DONE")
 
   res
 }
@@ -171,11 +179,17 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
     return(NextMethod("value"))
   }
 
-  ## If not, wait for process to finish, and
-  ## then collect and record the value
   cluster <- future$cluster
   node <- future$node
-  res <- recvResult(cluster[[node]])
+  mdebug("Cluster node: #%d", node)
+  cl <- cluster[[node]]
+
+  ## If not, wait for process to finish, and
+  ## then collect and record the value
+  mdebug("Receiving results ...")
+  res <- recvResult(cl)
+  mdebug("Result size: %.0f bytes", object.size(res))
+  mdebug("Receiving results ... DONE")
 
   ## An error?
   if (inherits(res, "try-error")) {
@@ -198,7 +212,9 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
   ## Remove from registry
+  mdebug("Remove cluster future from registry ...")
   FutureRegistry(reg, action="remove", future=future)
+  mdebug("Remove cluster future from registry ... DONE")
 
   NextMethod("value")
 }
