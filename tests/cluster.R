@@ -22,11 +22,16 @@ for (cores in 1:min(3L, availableCores())) {
   f <- try(cluster({
     42L
   }, cluster=cl), silent=FALSE)
+  message(paste(capture.output(str(f)), collapse="\n"))
   message(paste(capture.output(print(f)), collapse="\n"))
   stopifnot(inherits(f, "ClusterFuture"))
 
+  message("Resolved?")
   print(resolved(f))
+  message("Value:")
   y <- value(f)
+  message("y:")
+  message(paste(capture.output(str(y)), collapse="\n"))
   print(y)
   message("y=", y)
   stopifnot(y == 42L)
