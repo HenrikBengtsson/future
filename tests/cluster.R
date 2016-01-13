@@ -22,23 +22,24 @@ for (cores in 1:min(3L, availableCores())) {
   f <- try(cluster({
     42L
   }, cluster=cl), silent=FALSE)
-  print(f)
+  message(paste(capture.output(print(f)), collapse="\n"))
   stopifnot(inherits(f, "ClusterFuture"))
 
   print(resolved(f))
   y <- value(f)
   print(y)
+  message("y=", y)
   stopifnot(y == 42L)
 
 
   ## A global variable
   a <- 0
-  f <- future({
+  f <- try(future({
     b <- 3
     c <- 2
     a * b * c
-  })
-  print(f)
+  }))
+  message(paste(capture.output(print(f)), collapse="\n"))
 
 
   ## A cluster future is evaluated in a separate
