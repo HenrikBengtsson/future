@@ -78,12 +78,14 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
   mdebug("state: %s", sQuote(future$state))
 
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
-    stop("Internal error: value() called on a non-finished future: ", class(future)[1])
+    msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
+    mdebug(msg)
+    stop(msg)
   }
 
   value <- future$value
   if (future$state == 'failed' && onError == "signal") {
-    mdebug("Error value: %s", sQuote(value))
+    mdebug("Future state: %s", sQuote(value))
     stop(value)
   }
   mdebug("Object size: %.0f bytes", object.size(value))
@@ -144,13 +146,13 @@ injectNextStrategy.Future <- function(future, expr, ...) {
   ## For now, the next future strategy is hard coded
   nextStrategy <- NULL
 
-  ## Default is to fall back to to eager futures and
-  ## forcing 'mc.cores' to zero (sic!)
+  ## Default is to fall back to single-core processing,
+  ## i.e. forcing the number of _additional_ cores
+  ## ('mc.cores') to be zero (sic!)
   if (is.null(nextStrategy)) {
     nextStrategy <- substitute({
-      ## covr: skip=2
+      ## covr: skip=1
       options(mc.cores=0L)
-      future::plan(future::eager)
     }, env=list())
   }
 
