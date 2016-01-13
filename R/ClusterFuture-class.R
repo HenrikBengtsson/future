@@ -77,7 +77,6 @@ run.ClusterFuture <- function(future, ...) {
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
-  mdebug("Obtain free cluster node ...")
 
   ## Next available cluster node
   node <- requestNode(await=function() {
@@ -86,24 +85,16 @@ run.ClusterFuture <- function(future, ...) {
     mdebug("Waiting for free cluster node ... DONE")
   }, cluster=cluster)
   future$node <- node
-  mdebug("Node: #%d", node)
 
   ## Cluster node to use
   cl <- cluster[node]
-  mdebug("Cluster node details:")
-  mdebug(paste(capture.output(cl)), collapse="\n")
-  mdebug(paste(capture.output(str(cl))), collapse="\n")
-
-  mdebug("Obtain free cluster node ... DONE")
 
 
   ## Reset global environment of cluster node such that
   ## previous futures are not affecting this one, which
   ## may happen even if the future is evaluated inside a
   ## local, e.g. local({ a <<- 1 }).
-  mdebug("Clear global environment of cluster node #%d ...", node)
   clusterCall(cl, fun=grmall)
-  mdebug("Clear global environment of cluster node #%d ... DONE", node)
 
   ## Export globals
   globals <- future$globals
@@ -135,17 +126,12 @@ run.ClusterFuture <- function(future, ...) {
   }
 
   ## Add to registry
-  mdebug("Add cluster future to registry ...")
   FutureRegistry(reg, action="add", future=future)
-  mdebug("Add cluster future to registry ... DONE")
 
   future$state <- 'running'
 
   ## Launch future
-  mdebug("Launch cluster future ...")
-  mdebug("Expression: %s", hexpr(expr))
   sendCall(cl[[1L]], fun=geval, args=list(expr))
-  mdebug("Launch cluster future ... DONE")
 
   invisible(future)
 }
@@ -157,17 +143,11 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 
   cluster <- x$cluster
   node <- x$node
-  mdebug("Cluster node: #%d", node)
   cl <- cluster[[node]]
 
   ## Check if cluster socket connection is available for reading
-  mdebug("Checking if cluster socket is available for reading ...")
   con <- cl$con
-  mdebug("Connection:")
-  mdebug(paste(capture.output(con), collapse="\n"))
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
-  mdebug("Result: %s", res)
-  mdebug("Checking if cluster socket is available for reading ... DONE")
 
   res
 }
@@ -183,20 +163,17 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 
   cluster <- future$cluster
   node <- future$node
-  mdebug("Cluster node: #%d", node)
   cl <- cluster[[node]]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
-  mdebug("Receiving results ...")
   res <- recvResult(cl)
-  mdebug("Result size: %.0f bytes", object.size(res))
-  mdebug("Receiving results ... DONE")
 
   ## An error?
   if (inherits(res, "try-error")) {
-    msg <- res
-    attr(res, "condition") <- simpleError(msg)
+    msg <- simpleError(res)
+    mdebug("Received error on future: %s", sQuote(msg))
+    attr(res, "condition") <- msg
   }
 
   ## Update value and state
@@ -214,9 +191,7 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
   ## Remove from registry
-  mdebug("Remove cluster future from registry ...")
   FutureRegistry(reg, action="remove", future=future)
-  mdebug("Remove cluster future from registry ... DONE")
 
   NextMethod("value")
 }

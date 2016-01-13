@@ -12,28 +12,19 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  cl <- try(parallel::makeCluster(cores), silent=FALSE)
-  message("Cluster: ", paste(capture.output(cl), collapse="\n"))
+  cl <- parallel::makeCluster(cores)
   plan(cluster, cluster=cl)
-  message("Future strategy:")
-  message(paste(capture.output(plan()), collapse="\n"))
 
   ## No global variables
   f <- try(cluster({
     42L
   }, cluster=cl), silent=FALSE)
-  message(paste(capture.output(str(f)), collapse="\n"))
-  message(paste(capture.output(print(f)), collapse="\n"))
+  print(f)
   stopifnot(inherits(f, "ClusterFuture"))
 
-  message("Resolved?")
   print(resolved(f))
-  message("Value:")
   y <- value(f)
-  message("y:")
-  message(paste(capture.output(str(y)), collapse="\n"))
   print(y)
-  message("y=", y)
   stopifnot(y == 42L)
 
 
@@ -44,7 +35,7 @@ for (cores in 1:min(3L, availableCores())) {
     c <- 2
     a * b * c
   }))
-  message(paste(capture.output(print(f)), collapse="\n"))
+  print(f)
 
 
   ## A cluster future is evaluated in a separate

@@ -36,7 +36,7 @@ trim <- function(s) {
 } # trim()
 
 
-hexpr <- function(expr, trim=TRUE, collapse="; ", maxHead=3L, maxTail=3L, ...) {
+hexpr <- function(expr, trim=TRUE, collapse="; ", maxHead=6L, maxTail=3L, ...) {
   code <- deparse(expr)
   if (trim) code <- trim(code)
   hpaste(code, collapse=collapse, maxHead=maxHead, maxTail=maxTail, ...)
