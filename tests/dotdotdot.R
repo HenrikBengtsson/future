@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
