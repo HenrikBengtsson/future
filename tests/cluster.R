@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** cluster() ...")
 
@@ -15,6 +15,8 @@ for (cores in 1:min(3L, availableCores())) {
   cl <- try(parallel::makeCluster(cores), silent=FALSE)
   message("Cluster: ", paste(capture.output(cl), collapse="\n"))
   plan(cluster, cluster=cl)
+  message("Future strategy:")
+  message(paste(capture.output(cl), collapse="\n"))
 
   ## No global variables
   f <- cluster({
