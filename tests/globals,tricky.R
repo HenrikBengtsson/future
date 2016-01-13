@@ -6,12 +6,15 @@ oopts <- options(warn=1L, mc.cores=2L)
 
 message("*** Tricky use cases related to globals ...")
 
+message("availableCores(): ", availableCores())
+
 message("- Local variables with the same name as globals ...")
 
 methods <- c("conservative", "ordered")
 
 for (method in methods) {
   options("future.globalsMethod"=method)
+  message(sprintf("Method for identifying globals: '%s' ...", method))
 
   for (strategy in future:::supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
@@ -35,6 +38,7 @@ for (method in methods) {
 
     res <- try(y, silent=TRUE)
     if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+      if (!inherits(res, "try-error")) str(list(res=res))
       stopifnot(inherits(res, "try-error"))
     } else {
       message(sprintf("y=%g", y))
@@ -55,12 +59,15 @@ for (method in methods) {
 
     res <- try(unlist(res), silent=TRUE)
     if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+      if (!inherits(res, "try-error")) str(list(res=res))
       stopifnot(inherits(res, "try-error"))
     } else {
       print(res)
       stopifnot(all(res == 1:3))
     }
   } ## for (strategy ...)
+
+  message(sprintf("Method for identifying globals: '%s' ... DONE", method))
 }
 
 message("*** Tricky use cases related to globals ... DONE")
