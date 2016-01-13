@@ -13,7 +13,7 @@ for (cores in 1:min(3L, availableCores())) {
   options(mc.cores=cores-1L)
 
   cl <- try(parallel::makeCluster(cores), silent=FALSE)
-  message(cat(capture.output(cl)))
+  message("Cluster: ", paste(capture.output(cl), collapse="\n"))
   plan(cluster, cluster=cl)
 
   ## No global variables
