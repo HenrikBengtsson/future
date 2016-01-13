@@ -5,8 +5,8 @@
 \title{Get number of available cores on current machine}
 \usage{
 availableCores(constraints = NULL,
-  methods = getOption("availableCoresMethods", c("system", "mc.cores+1",
-  "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm = TRUE,
+  methods = getOption("future.availableCoresMethods", c("system",
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm = TRUE,
   default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{

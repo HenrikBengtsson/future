@@ -62,7 +62,7 @@ asIEC <- function(size, digits=2L) {
 
 
 mdebug <- function(...) {
-  if (!getOption("future::debug", FALSE)) return()
+  if (!getOption("future.debug", FALSE)) return()
   message(sprintf(...))
 } ## mdebug()
 

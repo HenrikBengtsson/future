@@ -19,7 +19,7 @@
 #'
 #' @details
 #' The default strategy is \code{\link{eager}}, which can be set by
-#' option \code{future_plan} and, if that is not set,
+#' option \code{future.plan} and, if that is not set,
 #' system environment variable \code{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use \code{plan("default")}.
 #'
@@ -39,7 +39,7 @@ plan <- local({
     if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
       strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-      strategy <- getOption("future_plan", strategy)
+      strategy <- getOption("future.plan", strategy)
       if (!nzchar(strategy)) strategy <- eager
     }
 

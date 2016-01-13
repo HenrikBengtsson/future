@@ -38,7 +38,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
   maxSizeOfGlobals <- 500*1024^2
   maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
-  maxSizeOfGlobals <- getOption("future::maxSizeOfGlobals", maxSizeOfGlobals)
+  maxSizeOfGlobals <- getOption("future.maxSizeOfGlobals", maxSizeOfGlobals)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
@@ -51,8 +51,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                primitive=FALSE, base=FALSE,
                unlist=TRUE,
                ## Only for debugging/development; do not rely on this elsewhere!
-               mustExist=getOption("future::globalsMustExist", TRUE),
-               method=getOption("future::globalsMethod", "ordered")
+               mustExist=getOption("future.globalsMustExist", TRUE),
+               method=getOption("future.globalsMethod", "ordered")
              )
 
   ## Tweak expression to be called with global ... arguments?

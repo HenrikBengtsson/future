@@ -61,7 +61,7 @@
 #' @export
 #' @keywords internal
 #' @importFrom parallel detectCores
-availableCores <- function(constraints=NULL, methods=getOption("availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("future.availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
