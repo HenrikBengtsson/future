@@ -19,9 +19,9 @@ for (cores in 1:min(3L, availableCores())) {
   message(paste(capture.output(cl), collapse="\n"))
 
   ## No global variables
-  f <- cluster({
+  f <- try(cluster({
     42L
-  }, cluster=cl)
+  }, cluster=cl), silent=FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
 
