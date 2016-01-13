@@ -74,12 +74,21 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
 value.Future <- function(future, onError=c("signal", "return"), ...) {
   onError <- match.arg(onError)
 
+  mdebug("value() of Future ...")
+  mdebug("state: %s", sQuote(future$state))
+
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     stop("Internal error: value() called on a non-finished future: ", class(future)[1])
   }
 
   value <- future$value
-  if (future$state == 'failed' && onError == "signal") stop(value)
+  if (future$state == 'failed' && onError == "signal") {
+    mdebug("Error value: %s", sQuote(value))
+    stop(value)
+  }
+  mdebug("Object size: %.0f bytes", object.size(value))
+
+  mdebug("value() of Future ... DONE")
 
   value
 }
