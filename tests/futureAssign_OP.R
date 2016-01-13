@@ -1,7 +1,7 @@
 library("future")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 printf <- function(...) cat(sprintf(...))
 
 message("*** %<=% ...")
