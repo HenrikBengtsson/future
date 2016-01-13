@@ -73,9 +73,9 @@ stopifnot(inherits(res, "try-error"))
 
 
 message("*** multisession() - too large globals ...")
-ooptsT <- options("future::maxSizeOfGlobals"=1024*4L)
+ooptsT <- options("future.maxSizeOfGlobals"=1024*4L)
 
-limit <- getOption("future::maxSizeOfGlobals")
+limit <- getOption("future.maxSizeOfGlobals")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
 for (maxCores in unique(c(1L, availableCores()))) {

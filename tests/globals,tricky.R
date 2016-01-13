@@ -11,7 +11,7 @@ message("- Local variables with the same name as globals ...")
 methods <- c("conservative", "ordered")
 
 for (method in methods) {
-  options("future::globalsMethod"=method)
+  options("future.globalsMethod"=method)
 
   for (strategy in future:::supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
