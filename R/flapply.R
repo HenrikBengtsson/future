@@ -1,3 +1,4 @@
+## FIXME: Do we need an envir argument here?
 #' @importFrom listenv listenv
 fleapply <- function(x, FUN, ...) {
   stopifnot(is.function(FUN))
@@ -14,6 +15,8 @@ fleapply <- function(x, FUN, ...) {
   values(res)
 } # fleapply()
 
+
+## FIXME: Do we need an envir argument here?
 flapply <- function(x, FUN, ...) {
   as.list(fleapply(x=x, FUN=FUN, ...))
 }
