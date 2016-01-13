@@ -25,7 +25,10 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
 
     if (!target$exists) {
       msg <- sprintf("No such future variable: %s", target$code)
-      if (mustExist) stop(msg, call.=FALSE)
+      if (mustExist) {
+        mdebug("ERROR: %s", msg)
+        stop(msg, call.=FALSE)
+      }
       attr(res, "reason") <- msg
       return(res)
     }
@@ -54,7 +57,10 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
 
     ## Not found
     msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(name), class(envir)[1], sQuote(envirName), sQuote(target$code))
-    if (mustExist) stop(msg, call.=FALSE)
+    if (mustExist) {
+      mdebug("ERROR: %s", msg)
+      stop(msg, call.=FALSE)
+    }
 
     attr(res, "reason") <- msg
     res

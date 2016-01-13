@@ -21,14 +21,18 @@ FutureRegistry <- local({
     if (action == "add") {
       idx <- indexOf(futures, future=future)
       if (!is.na(idx)) {
-        stop(sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1]))
+        msg <- sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1])
+        mdebug("ERROR: %s", msg)
+        stop(msg)
       }
       futures[[length(futures)+1L]] <- future
       db[[where]] <<- futures
     } else if (action == "remove") {
       idx <- indexOf(futures, future=future)
       if (is.na(idx)) {
-        stop(sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1]))
+        msg <- sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1])
+        mdebug("ERROR: %s", msg)
+        stop(msg)
       }
       futures[[idx]] <- NULL
       db[[where]] <<- futures
@@ -60,7 +64,9 @@ FutureRegistry <- local({
     } else if (action == "list") {
       return(futures)
     } else {
-      stop(sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action))
+      msg <- sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action)
+      mdebug(msg)
+      stop(msg)
     }
   }
 })

@@ -28,8 +28,10 @@ importMulticore <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
     ## covr: skip=2
-    stop("Multicore processing is not supported on this system: ",
-         sQuote(.Platform$OS), call.=FALSE)
+    msg <- sprintf("Multicore processing is not supported on this system: %s",
+         sQuote(.Platform$OS))
+    mdebug(msg)
+    stop(msg, call.=FALSE)
   }
   get(name, mode="function", envir=ns, inherits=FALSE)
 }

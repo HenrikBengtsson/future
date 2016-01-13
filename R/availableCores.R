@@ -117,8 +117,10 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   ncoresT <- ncores[!is.na(ncores)]
   ncoresT <- ncoresT[ncoresT <= 0]
   if (length(ncoresT) > 0) {
-    stop("Detected invalid (zero or less) core settings: ",
+    msg <- sprintf("Detected invalid (zero or less) core settings: %s",
          paste(paste0(sQuote(names(ncoresT)), "=", ncoresT), collapse=", "))
+    mdebug(msg)
+    stop(msg)
   }
 
   ## Drop missing values?

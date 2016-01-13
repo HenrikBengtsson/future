@@ -172,7 +172,9 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
   }
 
   if (!finished) {
-    stop(sprintf("TIMEOUT: All %d CPU cores are still occupied", total))
+    msg <- sprintf("TIMEOUT: All %d CPU cores are still occupied", total)
+    mdebug(msg)
+    stop(msg)
   }
 
   invisible(finished)

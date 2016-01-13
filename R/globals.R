@@ -59,7 +59,9 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (inherits(globals$`...`, "DotDotDotList")) {
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
-      stop("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: ", hexpr(exprOrg))
+      msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
+      mdebug(msg)
+      stop(msg)
     }
 
     globals$`future.call.arguments` <- globals$`...`
@@ -127,6 +129,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
         fmt <- "%s The three largest globals are %s."
       }
       msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
+      mdebug(msg)
       stop(msg)
     }
   }

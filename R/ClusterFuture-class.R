@@ -56,9 +56,11 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 importCluster <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    ## covr: skip=2
-    stop("Cluster processing is not supported on this system: ",
-         sQuote(.Platform$OS), call.=FALSE)
+    ## covr: skip=3
+    msg <- sprintf("Cluster processing is not supported on this system: %s",
+                   sQuote(.Platform$OS))
+    mdebug(msg)
+    stop(msg, call.=FALSE)
   }
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
@@ -99,9 +101,9 @@ run.ClusterFuture <- function(future, ...) {
   ## previous futures are not affecting this one, which
   ## may happen even if the future is evaluated inside a
   ## local, e.g. local({ a <<- 1 }).
-  mdebug("Cleare global environment of cluster node #%d ...", node)
+  mdebug("Clear global environment of cluster node #%d ...", node)
   clusterCall(cl, fun=grmall)
-  mdebug("Cleare global environment of cluster node #%d ... DONE", node)
+  mdebug("Clear global environment of cluster node #%d ... DONE", node)
 
   ## Export globals
   globals <- future$globals
@@ -257,7 +259,9 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
   }
 
   if (!finished) {
-    stop(sprintf("TIMEOUT: All %d cores are still occupied", total))
+    msg <- sprintf("TIMEOUT: All %d cores are still occupied", total)
+    mdebug(msg)
+    stop(msg)
   }
 
   ## Find which node is available
