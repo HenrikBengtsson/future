@@ -94,7 +94,7 @@ stopifnot(v == yTruth)
 
 
 ## A too large object
-a <- 1:1015
+a <- 1:1016 ## also on 32-bit platforms
 yTruth <- sum(a)
 size <- object.size(a)
 cat(sprintf("a: %g bytes\n", size))
