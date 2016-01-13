@@ -4,8 +4,8 @@
 \alias{future}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE, ...,
-  evaluator = plan())
+future(expr, envir = parent.frame(), substitute = TRUE,
+  evaluator = plan(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
