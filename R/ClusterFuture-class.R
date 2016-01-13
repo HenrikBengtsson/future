@@ -75,6 +75,8 @@ run.ClusterFuture <- function(future, ...) {
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
+  mdebug("Obtain free cluster node ...")
+
   ## Next available cluster node
   node <- requestNode(await=function() {
     mdebug("Waiting for free cluster node ...")
@@ -82,17 +84,24 @@ run.ClusterFuture <- function(future, ...) {
     mdebug("Waiting for free cluster node ... DONE")
   }, cluster=cluster)
   future$node <- node
+  mdebug("Node: #%d", node)
 
   ## Cluster node to use
   cl <- cluster[node]
+  mdebug("Cluster node details:")
+  mdebug(paste(capture.output(cl)), collapse="\n")
+  mdebug(paste(capture.output(str(cl))), collapse="\n")
+
+  mdebug("Obtain free cluster node ... DONE")
 
 
   ## Reset global environment of cluster node such that
   ## previous futures are not affecting this one, which
   ## may happen even if the future is evaluated inside a
   ## local, e.g. local({ a <<- 1 }).
+  mdebug("Cleare global environment of cluster node #%d ...", node)
   clusterCall(cl, fun=grmall)
-  mdebug("Cleared global environment of cluster node #%d", node)
+  mdebug("Cleare global environment of cluster node #%d ... DONE", node)
 
   ## Export globals
   globals <- future$globals
@@ -103,10 +112,11 @@ run.ClusterFuture <- function(future, ...) {
       ##  In serialize(data, node$con) :
       ## package:future' may not be available when loading
       ## Here we'll suppress any such warnings.
+      mdebug("Exported %s to cluster node #%d ...", sQuote(name), node)
       suppressWarnings({
         clusterCall(cl, fun=gassign, name, globals[[name]])
       })
-      mdebug("Exported %s to cluster node #%d", sQuote(name), node)
+      mdebug("Exported %s to cluster node #%d ... DONE", sQuote(name), node)
     }
   }
   ## Not needed anymore
@@ -115,18 +125,25 @@ run.ClusterFuture <- function(future, ...) {
   ## Attach packages that needs to be attached
   packages <- future$packages
   if (length(packages) > 0) {
+    mdebug("Attaching %d packages (%s) on cluster node #%d ...",
+                    length(packages), hpaste(sQuote(packages)), node)
     clusterCall(cl, fun=lapply, X=packages, FUN=library, character.only=TRUE)
-    mdebug("Attaching %d packages (%s) on cluster node #%d",
+    mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
                     length(packages), hpaste(sQuote(packages)), node)
   }
 
   ## Add to registry
+  mdebug("Add cluster future to registry ...")
   FutureRegistry(reg, action="add", future=future)
+  mdebug("Add cluster future to registry ... DONE")
 
   future$state <- 'running'
 
   ## Launch future
-  sendCall(cl[[1]], fun=geval, args=list(expr))
+  mdebug("Launch cluster future ...")
+  mdebug("Expression: ", hexpr(expr))
+  sendCall(cl[[1L]], fun=geval, args=list(expr))
+  mdebug("Launch cluster future ... DONE")
 
   invisible(future)
 }

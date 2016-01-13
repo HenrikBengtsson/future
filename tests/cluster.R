@@ -16,7 +16,7 @@ for (cores in 1:min(3L, availableCores())) {
   message("Cluster: ", paste(capture.output(cl), collapse="\n"))
   plan(cluster, cluster=cl)
   message("Future strategy:")
-  message(paste(capture.output(cl), collapse="\n"))
+  message(paste(capture.output(plan()), collapse="\n"))
 
   ## No global variables
   f <- try(cluster({
