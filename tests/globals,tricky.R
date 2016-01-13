@@ -6,69 +6,76 @@ oopts <- options(warn=1L, mc.cores=2L)
 
 message("*** Tricky use cases related to globals ...")
 
-message("availableCores(): ", availableCores())
+for (cores in 1:min(3L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores=cores-1L)
 
-message("- Local variables with the same name as globals ...")
+  message("availableCores(): ", availableCores())
 
-methods <- c("conservative", "ordered")
+  message("- Local variables with the same name as globals ...")
 
-for (method in methods) {
-  options("future.globalsMethod"=method)
-  message(sprintf("Method for identifying globals: '%s' ...", method))
+  methods <- c("conservative", "ordered")
 
-  for (strategy in future:::supportedStrategies()) {
-    message(sprintf("- plan('%s') ...", strategy))
-    plan(strategy)
+  for (method in methods) {
+    options("future.globalsMethod"=method)
+    message(sprintf("Method for identifying globals: '%s' ...", method))
 
-    a <- 3
+    for (strategy in future:::supportedStrategies()) {
+      message(sprintf("- plan('%s') ...", strategy))
+      plan(strategy)
 
-    yTruth <- local({
-      b <- a
-      a <- 2
-      a*b
-    })
+      a <- 3
 
-    y %<=% {
-      b <- a
-      a <- 2
-      a*b
-    }
+      yTruth <- local({
+        b <- a
+        a <- 2
+        a*b
+      })
 
-    rm(list="a")
-
-    res <- try(y, silent=TRUE)
-    if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
-      str(list(res=res))
-      stopifnot(inherits(res, "try-error"))
-    } else {
-      message(sprintf("y=%g", y))
-      stopifnot(identical(y, yTruth))
-    }
-
-
-    res <- listenv()
-    a <- 1
-    for (ii in 1:3) {
-      res[[ii]] %<=% {
-        b <- a*ii
-        a <- 0
-        b
+      y %<=% {
+        b <- a
+        a <- 2
+        a*b
       }
-    }
-    rm(list="a")
 
-    res <- try(unlist(res), silent=TRUE)
-    if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
-      str(list(res=res))
-      stopifnot(inherits(res, "try-error"))
-    } else {
-      print(res)
-      stopifnot(all(res == 1:3))
-    }
-  } ## for (strategy ...)
+      rm(list="a")
 
-  message(sprintf("Method for identifying globals: '%s' ... DONE", method))
-}
+      res <- try(y, silent=TRUE)
+      if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        message(sprintf("y=%g", y))
+        stopifnot(identical(y, yTruth))
+      }
+
+
+      res <- listenv()
+      a <- 1
+      for (ii in 1:3) {
+        res[[ii]] %<=% {
+          b <- a*ii
+          a <- 0
+          b
+        }
+      }
+      rm(list="a")
+
+      res <- try(unlist(res), silent=TRUE)
+      if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        print(res)
+        stopifnot(all(res == 1:3))
+      }
+    } ## for (strategy ...)
+
+    message(sprintf("Method for identifying globals: '%s' ... DONE", method))
+  }
+
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
 
 message("*** Tricky use cases related to globals ... DONE")
 
