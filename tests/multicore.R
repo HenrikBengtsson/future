@@ -22,7 +22,7 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   f <- multicore({
     42L
   }, globals=globals)
-  stopifnot(inherits(f, "MulticoreFuture") || (!supportsMulticore() && inherits(f, "EagerFuture")))
+  stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "EagerFuture")))
 
   print(resolved(f))
   y <- value(f)
