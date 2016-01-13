@@ -88,7 +88,7 @@ sessions <- local({
   function(action=c("get", "start", "stop"), n=availableCores()-1L) {
     action <- match.arg(action)
     n <- as.integer(n)
-    stopifnot(length(n) == 1, is.finite(n), n >= 1)
+    stopifnot(length(n) == 1, is.finite(n))
 
     if (is.null(cluster)) {
       cluster <<- .makeCluster(n)
@@ -97,6 +97,7 @@ sessions <- local({
     if (action == "get") {
       return(cluster)
     } else if (action == "start") {
+      stopifnot(n >= 1)
       if (length(cluster) != n) {
         sessions(action="stop")
         cluster <<- .makeCluster(n)
