@@ -56,6 +56,8 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in future:::supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
+    ## WORKAROUND: https://github.com/jimhester/covr/issues/140
+    if ("covr" %in% loadedNamespaces()) next
     y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
     str(list(y=y))
     stopifnot(identical(y, y0))
@@ -83,6 +85,8 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in future:::supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
+    ## WORKAROUND: https://github.com/jimhester/covr/issues/140
+    if ("covr" %in% loadedNamespaces()) next
     y <- flapply(x, FUN=listenv::map)
     str(list(y=y))
     stopifnot(identical(y, y0))
