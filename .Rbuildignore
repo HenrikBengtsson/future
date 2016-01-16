@@ -22,6 +22,7 @@ README[.]md
 #----------------------------
 # R related
 #----------------------------
+Rplots.pdf$
 ^cran-comments[.].*$
 ^vignettes/.*[.](pdf|PDF)$
 ^vignettes/.*[.](r|R)$
