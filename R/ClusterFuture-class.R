@@ -90,32 +90,14 @@ run.ClusterFuture <- function(future, ...) {
   cl <- cluster[node]
 
 
-  ## Reset global environment of cluster node such that
-  ## previous futures are not affecting this one, which
-  ## may happen even if the future is evaluated inside a
-  ## local, e.g. local({ a <<- 1 }).
+  ## (i) Reset global environment of cluster node such that
+  ##     previous futures are not affecting this one, which
+  ##     may happen even if the future is evaluated inside a
+  ##     local, e.g. local({ a <<- 1 }).
   clusterCall(cl, fun=grmall)
 
-  ## Export globals
-  globals <- future$globals
-  if (length(globals) > 0) {
-    for (name in names(globals)) {
-      ## For instance sendData.SOCKnode(...) may generate warnings
-      ## on packages not being available after serialization, e.g.
-      ##  In serialize(data, node$con) :
-      ## package:future' may not be available when loading
-      ## Here we'll suppress any such warnings.
-      mdebug("Exported %s to cluster node #%d ...", sQuote(name), node)
-      suppressWarnings({
-        clusterCall(cl, fun=gassign, name, globals[[name]])
-      })
-      mdebug("Exported %s to cluster node #%d ... DONE", sQuote(name), node)
-    }
-  }
-  ## Not needed anymore
-  globals <- NULL
 
-  ## Attach packages that needs to be attached
+  ## (ii) Attach packages that needs to be attached
   packages <- future$packages
   if (length(packages) > 0) {
     mdebug("Attaching %d packages (%s) on cluster node #%d ...",
@@ -148,12 +130,33 @@ run.ClusterFuture <- function(future, ...) {
                     length(packages), hpaste(sQuote(packages)), node)
   }
 
+
+  ## (iii) Export globals
+  globals <- future$globals
+  if (length(globals) > 0) {
+    for (name in names(globals)) {
+      ## For instance sendData.SOCKnode(...) may generate warnings
+      ## on packages not being available after serialization, e.g.
+      ##  In serialize(data, node$con) :
+      ## package:future' may not be available when loading
+      ## Here we'll suppress any such warnings.
+      mdebug("Exported %s to cluster node #%d ...", sQuote(name), node)
+      suppressWarnings({
+        clusterCall(cl, fun=gassign, name, globals[[name]])
+      })
+      mdebug("Exported %s to cluster node #%d ... DONE", sQuote(name), node)
+    }
+  }
+  ## Not needed anymore
+  globals <- NULL
+
+
   ## Add to registry
   FutureRegistry(reg, action="add", future=future)
 
   future$state <- 'running'
 
-  ## Launch future
+  ## (iv) Launch future
   sendCall(cl[[1L]], fun=geval, args=list(expr))
 
   invisible(future)
