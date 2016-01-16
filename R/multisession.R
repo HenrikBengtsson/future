@@ -90,7 +90,7 @@ sessions <- local({
     n <- as.integer(n)
     stopifnot(length(n) == 1, is.finite(n))
 
-    if (is.null(cluster)) {
+    if (is.null(cluster) && action != "stop") {
       cluster <<- .makeCluster(n)
     }
 
@@ -103,7 +103,7 @@ sessions <- local({
         cluster <<- .makeCluster(n)
       }
     } else if (action == "stop") {
-      try(stopCluster(cluster), silent=TRUE)
+      if (!is.null(cluster)) try(stopCluster(cluster), silent=TRUE)
       cons <- NULL
       cluster <<- NULL
     }
