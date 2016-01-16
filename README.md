@@ -239,6 +239,7 @@ corresponding object in the relevant environments: 'a'
 > y
 [1] 9
 ```
+Moreover, if a global is defined in a packages, for instance a function, then that global is not exported but instead it is made sure that the corresponding package is attached when the future is evaluated.  This not only reflects the setup of the main R session, but it also minimizes the need for exporting globals, which can save bandwidth and time, especially when using remote compute nodes.
 
 Having said this, it is a challenging problem to identify globals from static code inspection.  There will always be corner cases of globals that either fails to be identified by static code inspection or that are incorrectly identified as global variables.  Vignette '[Futures in R: Common issues with solutions]' provides examples of common cases and explains how to avoid them.
 If you suspect that a global variable is not properly identified, it is often helpful for troubleshooting to run the code interactively using synchroneous futures, i.e. _eager_ or _lazy_.  If there is an error, it is then possible to use `traceback()` and other debugging tools.
@@ -302,7 +303,7 @@ install.packages('future')
 
 To install the pre-release version that is available in branch `develop`, use:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future@develop')
+source('http://callr.org/install#//github.com/HenrikBengtsson/future@develop')
 ```
 This will install the package from source.  
 
@@ -313,5 +314,5 @@ This will install the package from source.
 | Resource:     | CRAN        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
-| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
-| Test coverage |                     | <a href="https://coveralls.io/r/HenrikBengtsson/future"><img src="https://coveralls.io/repos/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |
+| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org///github.com/HenrikBengtsson/future"><img src="https://travis-ci.org///github.com/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project///github.com/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github///github.com/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| Test coverage |                     | <a href="https://coveralls.io/r///github.com/HenrikBengtsson/future"><img src="https://coveralls.io/repos///github.com/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |

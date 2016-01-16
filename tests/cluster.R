@@ -45,7 +45,6 @@ for (cores in 1:min(3L, availableCores())) {
   ## variable should not affect the result of the
   ## future.
   a <- 7  ## Make sure globals are frozen
-  if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
   v <- value(f)
   print(v)
   stopifnot(v == 0)
@@ -129,11 +128,8 @@ for (cores in 1:min(3L, availableCores())) {
   message("*** cluster() - installed packages ... DONE")
 
 
-  message("*** cluster() - covr tweak ...")
-  libPath <- .libPaths()[1]
-  message("Library path: ", libPath)
+  message("*** cluster() - assert covr workaround ...")
   f <- try(cluster({
-    .libPaths(c(libPath, .libPaths()))
     future:::hpaste(1:100)
   }, cluster=cl), silent=FALSE)
   print(f)
@@ -141,7 +137,7 @@ for (cores in 1:min(3L, availableCores())) {
   v <- value(f)
   message(v)
   stopifnot(v == future:::hpaste(1:100))
-  message("*** cluster() - covr tweak ... DONE")
+  message("*** cluster() - assert covr workaround ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

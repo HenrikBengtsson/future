@@ -90,6 +90,18 @@ run.ClusterFuture <- function(future, ...) {
   cl <- cluster[node]
 
 
+  ## WORKAROUND: When running covr::package_coverage(), the
+  ## package being tested may actually not be installed in
+  ## library path used by covr.  We here add that path iff
+  ## covr is being used. /HB 2016-01-15
+  if (is.element("covr", loadedNamespaces())) {
+    mdebug("*** covr workaround ...")
+    libPath <- .libPaths()[1]
+    clusterCall(cl, fun=function() .libPaths(c(libPath, .libPaths())))
+    mdebug("*** covr workaround ... DONE")
+  }
+
+
   ## (i) Reset global environment of cluster node such that
   ##     previous futures are not affecting this one, which
   ##     may happen even if the future is evaluated inside a

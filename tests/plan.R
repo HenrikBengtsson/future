@@ -50,7 +50,7 @@ f <- future({
   a * b * c
 })
 a <- 7  ## Make sure globals are frozen
-if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
+##if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
 v <- value(f)
 print(v)
 stopifnot(v == 0)

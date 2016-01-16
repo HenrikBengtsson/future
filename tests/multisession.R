@@ -39,7 +39,6 @@ for (cores in 1:min(3L, availableCores())) {
   ## variable should not affect the result of the
   ## future.
   a <- 7  ## Make sure globals are frozen
-  if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
   v <- value(f)
   print(v)
   stopifnot(v == 0)
