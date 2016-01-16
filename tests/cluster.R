@@ -115,6 +115,34 @@ for (cores in 1:min(3L, availableCores())) {
 
   message("*** cluster() - too large globals ... DONE")
 
+  message("*** cluster() - installed packages ...")
+  f <- try(cluster({
+    list(
+      libPaths = .libPaths(),
+      pkgs     = installed.packages()
+    )
+  }, cluster=cl), silent=FALSE)
+  print(f)
+  stopifnot(inherits(f, "ClusterFuture"))
+  v <- value(f)
+  message(paste(capture.output(v), collapse="\n"))
+  message("*** cluster() - installed packages ... DONE")
+
+
+  message("*** cluster() - covr tweak ...")
+  libPath <- .libPaths()[1]
+  message("Library path: ", libPath)
+  f <- try(cluster({
+    .libPaths(c(libPath, .libPaths()))
+    future:::hpaste(1:100)
+  }, cluster=cl), silent=FALSE)
+  print(f)
+  stopifnot(inherits(f, "ClusterFuture"))
+  v <- value(f)
+  message(v)
+  stopifnot(v == future:::hpaste(1:100))
+  message("*** cluster() - covr tweak ... DONE")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
