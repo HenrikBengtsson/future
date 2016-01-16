@@ -6,12 +6,17 @@ oopts <- options(warn=1L, mc.cores=2L)
 
 sessions <- future:::sessions
 
+message("*** sessions() ... ")
+
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
+  
+  message("Available cores: ", availableCores())
 
-  message("*** sessions() ...")
-
+  ## In case sessions have been created in previous tests
+  sessions("stop")
+  
   res <- try({
     cluster <- sessions()
     print(cluster)
