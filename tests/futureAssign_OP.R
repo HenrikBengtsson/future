@@ -3,6 +3,15 @@ library("future")
 ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 printf <- function(...) cat(sprintf(...))
+injectLibPath <- function(cores=1L) {
+  libPath <- dirname(find.package("future"))
+  for (kk in seq_len(cores)) {
+    future({
+      .libPaths(c(libPath, .libPaths()))
+      Sys.sleep(2L)
+    })
+  }
+}
 
 message("*** %<=% ...")
 
@@ -13,6 +22,9 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in future:::supportedStrategies()) {
     message(sprintf("*** %%<=%% with %s futures ...", sQuote(strategy)))
     plan(strategy)
+
+    ## WORKAROUND: future is not installed by covr
+    if ("covr" %in% loadedNamespace()) injectLibPath(cores)
 
     rm(list=intersect(c("x", "y"), ls()))
 
