@@ -95,10 +95,10 @@ run.ClusterFuture <- function(future, ...) {
   ## library path used by covr.  We here add that path iff
   ## covr is being used. /HB 2016-01-15
   if (is.element("covr", loadedNamespaces())) {
-    mdebug("*** covr workaround ...")
+    mdebug("covr::package_coverage() workaround ...")
     libPath <- .libPaths()[1]
     clusterCall(cl, fun=function() .libPaths(c(libPath, .libPaths())))
-    mdebug("*** covr workaround ... DONE")
+    mdebug("covr::package_coverage() workaround ... DONE")
   }
 
 
