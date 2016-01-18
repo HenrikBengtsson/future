@@ -24,8 +24,8 @@ Description: A Future API for R is provided. In programming, a future is an
     An infix assignment operator '%<=%' exists for creating futures whose values
     are accessible by the assigned variables (as promises), e.g.
     'v %<=% { mandelbrot(c(0.28,0), side=2) }'.
-    This package implements the synchronous "lazy" and "eager" futures, and the
-    asynchronous "multisession" and "multicore" futures.  Additional types of
+    This package implements synchronous "lazy" and "eager" futures, and asynchronous
+    "multicore", "multisession" and ad hoc "cluster" futures.  Additional types of
     futures are provided by other packages enhancing this package.
 License: LGPL (>= 2.1)
 LazyLoad: TRUE
