@@ -60,7 +60,6 @@ which requires that all R sessions are created at once.
 \examples{
 ## Multisession futures gives error on R CMD check for
 ## unknown reasons. Same code works in package tests.
-##\donttest{
 
 ## Use multisession futures
 plan(multisession)
@@ -85,7 +84,6 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
-##}
 }
 \seealso{
 Use \code{\link{availableCores}()} to see the total number of
