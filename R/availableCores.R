@@ -35,7 +35,7 @@
 #'    \emph{additional} R processes that can be used in addition to the
 #'    main R process.  This means that with \code{mc.cores=0} all
 #'    calculations should be done in the main R process, i.e. we have
-#'    exactly one core availble for our calculations.
+#'    exactly one core available for our calculations.
 #'    The \code{mc.cores} option defaults to environment variable
 #'    \code{MC_CORES} (and is set accordingly when the \pkg{parallel}
 #'    package is loaded).  The \code{mc.cores} option is used by for

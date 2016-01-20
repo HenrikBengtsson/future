@@ -97,7 +97,7 @@ By the way, since all futures are evaluated in a local environment, the dummy va
 ## Missing or incorrect globals
 
 ### Global variable obscured by subassignment
-When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurance in the future expression is as part of a subsetting assignment.
+When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
 For example,
 ```r
 > library(future)
