@@ -144,7 +144,7 @@ Resolving 'b'
 [1] 6
 ```
 
-When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing eager evaluation on further nested futures.  In addition, option `mc.cores` is also set to zero to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
+When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing option `mc.cores` to zero (number of _additional_ cores available for processing in addition to the main process) to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
 
 
 ## Assigning futures to environments and list environments
