@@ -41,8 +41,10 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 }
 \examples{
-## Cluster futures gives error on R CMD check for
-## unknown reasons. Same code works in package tests.
+## Cluster futures gives an error on R CMD check on
+## Windows (but not Linux or OS X) for unknown reasons.
+## The same code works in package tests.
+\donttest{
 
 ## Use cluster futures
 cl <- parallel::makeCluster(2L)
@@ -71,5 +73,6 @@ stopifnot(v == 0)
 ## CLEANUP
 parallel::stopCluster(cl)
 
+}
 }
 
