@@ -2,10 +2,10 @@
 % Please edit documentation in R/multicore.R
 \name{multicore}
 \alias{multicore}
-\title{Create a multicore future whose value will be resolved asynchroneously in a parallel process}
+\title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
-multicore(expr, envir = parent.frame(), substitute = TRUE,
-  globals = FALSE, maxCores = availableCores(), ...)
+multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  maxCores = availableCores(constraints = "multicore"), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -27,8 +27,11 @@ be active at the same time before blocking.}
 \item{\dots}{Not used.}
 }
 \value{
-A \link{MulticoreFuture} (or a \link{EagerFuture}
-if multicore futures are not supported).
+A \link{MulticoreFuture}
+If \code{maxCores == 1}, then all processing using done in the
+current/main R session and we therefore fall back to using
+a eager future.  This is also the case whenever multicore
+processing is not supported, e.g. on Windows.
 }
 \description{
 A multicore future is a future that uses multicore evaluation,
@@ -36,10 +39,10 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
-This function will block if all CPU cores are occupied and
+This function will block if all cores are occupied and
 will be unblocked as soon as one of the already running
 multicore futures is resolved.  For the total number of
-CPU cores availble to the current R process, see
+cores available including the current/main R process, see
 \code{\link{availableCores}()}.
 
 Not all systems support multicore futures.  For instance,
@@ -56,19 +59,22 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 }
 \examples{
+## Use multicore futures
+plan(multicore)
+
 ## A global variable
 a <- 0
 
 ## Create multicore future (explicitly)
-f <- multicore({
+f <- future({
   b <- 3
   c <- 2
   a * b * c
 })
 
-## A multicore future is evaluated in a separated
-## forked process.  Changing the value of a global
-## variable will not affect the result of the future.
+## A multicore future is evaluated in a separate forked
+## process.  Changing the value of a global variable
+## will not affect the result of the future.
 a <- 7
 print(a)
 
@@ -77,7 +83,10 @@ print(v)
 stopifnot(v == 0)
 }
 \seealso{
-\code{\link{availableCores}() > 1L} to check whether multicore
-futures are supported or not.
+Use \code{\link{availableCores}()} to see the total number of
+cores that are available for the current R session.
+Use \code{\link{availableCores}("multicore") > 1L} to check
+whether multicore futures are supported or not on the current
+system.
 }
 

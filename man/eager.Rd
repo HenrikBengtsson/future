@@ -4,7 +4,7 @@
 \alias{eager}
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
-eager(expr, envir = parent.frame(), substitute = TRUE, globals = FALSE,
+eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   local = TRUE, ...)
 }
 \arguments{
@@ -33,9 +33,9 @@ An \link{EagerFuture}.
 \description{
 An eager future is a future that uses eager evaluation, which means
 that its \emph{value is computed and resolved immediately}, which is
-how regular expressions are evaluated in R.  This type of future
-exists mainly for the purpose of troubleshooting code that fails
-with other types of futures.
+how regular expressions are evaluated in R.
+The only difference to R itself is that globals are validated
+by default just as for all other types of futures in this package.
 }
 \details{
 The preferred way to create an eager future is not to call this function
@@ -45,11 +45,14 @@ becomes the default mechanism for all futures.  After this
 \emph{eager futures}.
 }
 \examples{
+## Use eager futures
+plan(eager)
+
 ## A global variable
 a <- 0
 
-## Create eager future (explicitly)
-f <- eager({
+## Create eager future (implicitly)
+f <- future({
   b <- 3
   c <- 2
   a * b * c

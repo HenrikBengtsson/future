@@ -1,8 +1,11 @@
+## Use eager futures
+plan(eager)
+
 ## A global variable
 a <- 0
 
-## Create eager future (explicitly)
-f <- eager({
+## Create eager future (implicitly)
+f <- future({
   b <- 3
   c <- 2
   a * b * c

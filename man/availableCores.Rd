@@ -4,43 +4,74 @@
 \alias{availableCores}
 \title{Get number of available cores on current machine}
 \usage{
-availableCores(methods = getOption("availableCoresMethods", c("Slurm", "PBS",
-  "mc.cores", "system")))
+availableCores(constraints = NULL,
+  methods = getOption("future.availableCoresMethods", c("system",
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm = TRUE,
+  default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{
+\item{constraints}{An optional character specifying under what
+constraints ("purposes") we are requesting the values.
+For instance, on systems where multicore processing is not supported
+(i.e. Windows), using \code{constrains="multicore"} will force a
+single core to be reported.}
+
 \item{methods}{A character vector specifying how to infer the number
-of available cores (and in what order).}
+of available cores.}
+
+\item{na.rm}{If TRUE, only non-missing settings are considered/returned.}
+
+\item{default}{The default number of cores to return if no non-missing
+settings are available.}
+
+\item{which}{A character specifying which settings to return.
+If \code{"min"}, the minimum value is returned.
+If \code{"max"}, the maximum value is returned (be careful!)
+If \code{"all"}, all values are returned.}
 }
 \value{
-Return a positive integer equal or greater to one.
-        If multicore processing is not supported, then one is returned.
+Return a positive (>=1) integer.
+If \code{which="all"}, then more than one value may be returned.
+Together with \code{na.rm=FALSE} missing values may also be returned.
 }
 \description{
-Get number of available cores on current machine
+The current/main R session counts as one, meaning the minimum
+number of cores available is always at least one.
 }
 \details{
-The following methods for inferring the number of cores are supported:
+The following settings ("methods") for inferring the number of cores
+are supported:
 \itemize{
- \item \code{"Slurm"} -
-   Query Simple Linux Utility for Resource Management (Slurm)
-   environment variable \code{SLURM_CPUS_PER_TASK}.
-   This may or may not be set.  It can be set when submitting a job,
-   e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
-   `#SBATCH --cpus-per-task=2` to the `hello.sh` script.
+ \item \code{"system"} -
+   Query \code{\link[parallel]{detectCores}()}.
+ \item \code{"mc.cores+1"} -
+   If available, returns the value of option
+   \code{\link[base:options]{mc.cores}} + 1.
+   Note that \code{mc.cores} is defined as the number of
+   \emph{additional} R processes that can be used in addition to the
+   main R process.  This means that with \code{mc.cores=0} all
+   calculations should be done in the main R process, i.e. we have
+   exactly one core available for our calculations.
+   The \code{mc.cores} option defaults to environment variable
+   \code{MC_CORES} (and is set accordingly when the \pkg{parallel}
+   package is loaded).  The \code{mc.cores} option is used by for
+   instance \code{\link[parallel]{mclapply}()}.
  \item \code{"PBS"} -
    Query Torque/PBS environment variable \code{PBS_NUM_PPN}.
    Depending on PBS system configuration, this \emph{resource} parameter
    may or may not default to one.  It can be specified when submitting
    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
    requests four nodes each with two cores.
- \item \code{"mc.cores"} -
-   Query option \code{mc.cores}, cf. \code{\link[parallel]{mclapply}()}.
- \item \code{"system"} -
-   Query \code{\link[parallel]{detectCores}()}.
+ \item \code{"Slurm"} -
+   Query Simple Linux Utility for Resource Management (Slurm)
+   environment variable \code{SLURM_CPUS_PER_TASK}.
+   This may or may not be set.  It can be set when submitting a job,
+   e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
+   \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.
 }
-}
-\seealso{
-\code{\link[parallel]{detectCores}()}
+For any other value of a \code{methods} element, the R option with the
+same name is queried.  If that is not set, the system environment
+variable is queried.  If neither is set, a missing value is returned.
 }
 \keyword{internal}
 

@@ -38,8 +38,9 @@ FILES_SRC_C := $(wildcard src/*.c)
 FILES_SRC_H := $(wildcard src/*.h)
 FILES_TESTS := $(wildcard tests/*.R)
 FILES_NEWS := $(wildcard NEWS inst/NEWS)
+FILES_MISC := $(wildcard README.md)
 FILES_ROOT := DESCRIPTION NAMESPACE $(wildcard .Rbuildignore .Rinstignore)
-PKG_FILES := $(FILES_ROOT) $(FILES_NEWS) $(FILES_R) $(FILES_DATA) $(FILES_MAN) $(FILES_INST) $(FILES_VIGNETTES) $(FILES_SRC) $(FILES_TESTS)
+PKG_FILES := $(FILES_ROOT) $(FILES_NEWS) $(FILES_R) $(FILES_DATA) $(FILES_MAN) $(FILES_INST) $(FILES_VIGNETTES) $(FILES_SRC) $(FILES_TESTS) $(FILES_MISC)
 FILES_MAKEFILE := $(wildcard ../../Makefile)
 
 # Has vignettes in 'vignettes/' or 'inst/doc/'?
@@ -136,6 +137,7 @@ debug_full: debug
 	@echo FILES_SRC=\'$(FILES_SRC)\'
 	@echo FILES_TESTS=\'$(FILES_TESTS)\'
 	@echo FILES_INCL=\'$(FILES_INCL)\'
+	@echo FILES_MISC=\'$(FILES_MISC)\'
 	@echo
 	@echo DIR_VIGNS=\'$(DIR_VIGNS)\'
 	@echo dirname\(DIR_VIGNS\)=\'$(shell dirname $(DIR_VIGNS))\'

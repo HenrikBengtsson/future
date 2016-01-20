@@ -4,6 +4,12 @@
 .R
 .benchmark
 .check
+.devel
 .test
-.o
-.dll
+*.o
+*.dll
+*.Rout
+.RData
+*.Rproj*
+*.swp
+.covr.rds

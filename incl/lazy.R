@@ -1,8 +1,11 @@
+## Use lazy futures
+plan(lazy)
+
 ## A global variable
 a <- 0
 
-## Create lazy future (explicitly)
-f <- lazy({
+## Create lazy future (implicitly)
+f <- future({
   b <- 3
   c <- 2
   a * b * c
@@ -24,9 +27,8 @@ print(v)
 stopifnot(v == 0)
 
 
-## Lazy futures goes hand-in-hand with
-## lazy evaluation of arguments
-plan(lazy)
+## Another example illustrating that lazy futures go
+## hand-in-hand with lazy evaluation of arguments
 
 ## A function that may or may not touch it's argument
 foo <- function(a, use=FALSE) {

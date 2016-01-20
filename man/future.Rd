@@ -2,10 +2,11 @@
 % Please edit documentation in R/future.R
 \name{future}
 \alias{future}
+\alias{futureCall}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE, ...,
-  evaluator = plan())
+future(expr, envir = parent.frame(), substitute = TRUE,
+  evaluator = plan(), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -35,6 +36,7 @@ When it becomes resolved, at some point in the future,
 its value can be retrieved.
 }
 \examples{
+## Use lazy futures
 plan(lazy)
 
 f <- future({

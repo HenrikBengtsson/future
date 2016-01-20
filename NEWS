@@ -1,11 +1,27 @@
 Package: future
 ===============
 
+Version: 0.11.0 [2016-01-15]
+o All futures now validates globals by default (globals=TRUE).
+o Add multisession futures, which analogously to multicore ones,
+  use multiple cores on the local machine with the difference
+  that they are evaluated in separate R session running in the
+  background rather than separate forked R processes.
+  A multisession future is a special type of cluster futures that
+  do not require explicit setup of cluster nodes.
+o Add support for cluster futures, which can make use of a cluster
+  of nodes created by parallel::makeCluster().
+o Add futureCall(), which is for futures what do.call() is otherwise.
+o Standardized how options are named, i.e. 'future.<option>'.
+  If you used any future options previously, make sure to check
+  they follow the above format.
+
+
 Version: 0.10.0 [2015-12-30]
 o Now %<=% can also assign to multi-dimensional list environments.
 o Add futures(), values() and resolved().
 o Add resolve() to resolve futures in lists and environments.
-o Now availableCores() also ackowledge the number of CPUs
+o Now availableCores() also acknowledges the number of CPUs
   allotted by Slurm.
 o CLEANUP: Now the internal future variable created by %<=% is
   removed when the future variable is resolved.
@@ -16,16 +32,16 @@ o BUG FIX: futureOf(envir=x) did not work properly when 'x' was
 Version: 0.9.0 [2015-12-11]
 o GLOBALS: Now globals ("unknown" variables) are identified
   using the new findGlobals(..., method="ordered") in
-  globals (> 0.5.0) such that a global variable preceeding
+  globals (> 0.5.0) such that a global variable preceding
   a local variable with the same name is properly identified
   and exported/frozen.
 o DOCUMENTATION: Updated vignette on common issues with the
   case where a global variable is not identified because it
-  is hidden by an element assigment in the future expression.
+  is hidden by an element assignment in the future expression.
 o ROBUSTNESS: Now values of environment variables are trimmed
   before being parsed.
 o ROBUSTNESS: Add reproducibility test for random number
-  generation using Pierre L'Ecuyer's Rng stream regardless
+  generation using Pierre L'Ecuyer's RNG stream regardless
   of how futures are evaluated, e.g. eager, lazy and multicore.
 o BUG FIX: Errors occurring in multicore futures could prevent
   further multicore futures from being created.
@@ -56,7 +72,7 @@ o Added vignette 'Futures in R: Common issues with solutions'.
 
 Version: 0.8.0 [2015-09-06]
 o plan("default") resets to the default strategy, which is
-  synchroneous eager evaluation unless option 'future_plan'
+  synchronous eager evaluation unless option 'future_plan'
   or environment variable 'R_FUTURE_PLAN' has been set.
 o availableCores("mc.cores") returns getOption("mc.cores") + 1L,
   because option 'mc.cores' specifies "allowed number of _additional_
@@ -96,7 +112,7 @@ o lazy() "freezes" global variables at the time when
   the future is created.  This way the result of a lazy
   future is more likely to be the same as an eager future.
   This is also how globals are likely to be handled by
-  asynchroneous futures.
+  asynchronous futures.
 
 
 Version: 0.4.2 [2015-06-15]

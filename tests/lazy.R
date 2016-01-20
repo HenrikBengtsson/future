@@ -42,7 +42,7 @@ print(f)
 ## created.  Because of this, 'a' preserved the
 ## zero value although we reassign it below
 a <- 7  ## Make sure globals are frozen
-if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
+##if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
 v <- value(f)
 print(v)
 stopifnot(v == 0)
@@ -61,7 +61,7 @@ print(f)
 ## which still hasn't been resolved, any changes to
 ## 'a' until 'f' is resolved, will affect its value.
 a <- 7 ## ... but not in this case
-if ("covr" %in% loadedNamespaces()) v <- 42 else ## WORKAROUND
+##if ("covr" %in% loadedNamespaces()) v <- 42 else ## WORKAROUND
 v <- value(f)
 print(v)
 stopifnot(v == 42)

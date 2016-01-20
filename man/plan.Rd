@@ -29,14 +29,14 @@ e.g. by eager or by lazy evaluation.
 }
 \details{
 The default strategy is \code{\link{eager}}, which can be set by
-option \code{future_plan} and, if that is not set,
+option \code{future.plan} and, if that is not set,
 system environment variable \code{R_FUTURE_PLAN}.
 To reset the strategy back to the default, use \code{plan("default")}.
 }
 \examples{
 a <- b <- c <- NA_real_
 
-# A lazy future (evaluated in a local environment)
+# A lazy future
 plan(lazy)
 f <- future({
   a <- 7
@@ -49,7 +49,7 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# An eager future (evaluated in a local environment)
+# An eager future
 plan(eager)
 f <- future({
   a <- 7
@@ -62,7 +62,7 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# A multicore future evaluated in a local environment
+# A multicore future
 plan(multicore)
 f <- future({
   a <- 7
@@ -75,8 +75,13 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# An eager future evaluated in the global environment
-plan(eager, local=FALSE)
+## Multisession futures gives an error on R CMD check on
+## Windows (but not Linux or OS X) for unknown reasons.
+## The same code works in package tests.
+\donttest{
+
+# A multisession future
+plan(multisession)
 f <- future({
   a <- 7
   b <- 3
@@ -85,7 +90,9 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## Assigned the new values
+str(list(a=a, b=b, c=c)) ## All NAs
+
+}
 }
 \seealso{
 Evaluation functions provided by this package are \code{\link{eager}()},

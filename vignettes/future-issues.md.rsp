@@ -33,7 +33,6 @@ Consider the following use of `subset()`:
 From a static code inspection point of view, the expression `x < 3` asks for variable `x` to be compared to 3, and there is nothing specifying that `x` is part of `data` and not the global environment.  That `x` is indeed part of the `data` object can only safely be inferred at run time when `subset()` is called.  This is not a problem in the above snipped, but when using futures all global/unknown variables need to be captured when the future is created (it is too late to do it when the future is resolved), e.g.
 ```r
 > library(future)
-> plan(lazy)
 > data <- data.frame(x=1:5, y=1:5)
 > v %<=% subset(data, x < 3)$y
 Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
@@ -70,7 +69,6 @@ Another common use case for non-standard evaluation is when creating ggplot2 fig
 fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
 ```r
 > library(future)
-> plan(lazy)
 > library(ggplot2)
 > p %<=% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
 Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
@@ -99,11 +97,10 @@ By the way, since all futures are evaluated in a local environment, the dummy va
 ## Missing or incorrect globals
 
 ### Global variable obscured by subassignment
-When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurance in the future expression is as part of a subsetting assignment.
+When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
 For example,
 ```r
 > library(future)
-> plan(lazy)
 > x <- matrix(1:12, nrow=3, ncol=4)
 > y %<=% {
 +   x[1,1] <- 3
@@ -116,7 +113,6 @@ Error in x[1, 1] <- 3 : object 'x' not found
 Another example is
 ```r
 > library(future)
-> plan(lazy)
 > x <- list(a=1, b=2)
 > y %<=% {
 +   x$c <- 3
@@ -129,7 +125,6 @@ Error in x$c <- 3 : object 'x' not found
 A workaround is to explicitly tell the future package about the global variable by simply listing it at the beginning of the expression, e.g.
 ```r
 > library(future)
-> plan(lazy)
 > x <- list(a=1, b=2)
 > y %<=% {
 +   x  ## Force 'x' to be global
@@ -151,7 +146,8 @@ instead of
 ```r
 do.call("file_ext", list("foo.txt"))
 ```
-so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem when futures are evaluated in external R sessions, such as on a cluster.  It may also become a problem if there is another function with the same name.  Example illustrating the problem:
+so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem when futures are evaluated in external R sessions, such as on a cluster.
+It may also become a problem with lazy futures an the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
 > library("listenv")
@@ -166,7 +162,6 @@ so that `file_ext()` is properly located and exported.  Although you may not not
 > unlist(res)
 [1] "haha!" "haha!" "haha!"
 ```
-
 
 ## Error "non-numeric argument to binary operator"
 The future assignment operator `%<=%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:

@@ -12,11 +12,11 @@
 #' is evaluated.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param \dots Additional arguments passed to the "evaluator".
 #' @param evaluator The actual function that evaluates
 #' \code{expr} and returns a future.  The evaluator function
 #' should accept all the same arguments as this function
 #' (except \code{evaluator}).
+#' @param \dots Additional arguments passed to the "evaluator".
 #'
 #' @return A \link{Future}.
 #'
@@ -29,9 +29,10 @@
 #' The default evaluator function is \code{\link{eager}()},
 #' but this can be changed via \code{\link{plan}()} function.
 #'
+#' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, ..., evaluator=plan()) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, evaluator=plan(), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {

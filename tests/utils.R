@@ -1,3 +1,9 @@
+ovars <- ls()
+
+message("*** utils ...")
+
+message("*** hpaste() ...")
+
 printf <- function(...) cat(sprintf(...))
 hpaste <- future:::hpaste
 
@@ -41,3 +47,78 @@ printf("y = %s.\n", paste(y, collapse=", "))
 # Change last separator
 printf("x = %s.\n", hpaste(x, lastCollapse=" and "))
 ## x = 1, 2, 3, 4, 5 and 6.
+
+message("*** hpaste() ...")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# asIEC()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** asIEC() ...")
+asIEC <- future:::asIEC
+
+for (size in c(0, 10^(0:20))) {
+  cat(sprintf("Size: %.f bytes = %s\n", size, asIEC(size)))
+}
+
+message("*** asIEC() ... DONE")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# debug()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** mdebug() ...")
+mdebug <- future:::mdebug
+
+mdebug("Hello #1")
+options("future.debug"=TRUE)
+mdebug("Hello #2")
+options("future.debug"=FALSE)
+mdebug("Hello #3")
+
+message("*** mdebug() ... DONE")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# geval() et al.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** geval() et al. ...")
+
+gls <- function(..., envir=.GlobalEnv) ls(..., envir=envir)
+grmall <- future:::grmall
+geval <- future:::geval
+gassign <- future:::gassign
+
+message("- gls() ...")
+genv <- new.env(parent=globalenv())
+vars <- gls(envir=genv)
+print(vars)
+stopifnot(length(vars) == 0)
+
+message("- gassign() ...")
+gassign("a", 1, envir=genv)
+vars <- gls(envir=genv)
+print(vars)
+stopifnot(length(vars) == 1)
+
+message("- grmall() ...")
+grmall(envir=genv)
+vars <- gls(envir=genv)
+print(vars)
+stopifnot(length(vars) == 0)
+
+message("- geval() ...")
+gassign("a", 1, envir=genv)
+res <- geval(substitute(a), envir=genv)
+print(res)
+vars <- gls(envir=genv)
+print(vars)
+stopifnot(length(vars) == 1)
+
+
+message("*** geval() et al. ... DONE")
+
+message("*** utils ... DONE")
+
+## Cleanup
+rm(list=setdiff(ls(), ovars))

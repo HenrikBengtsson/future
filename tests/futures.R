@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1)
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 ## Backward compatibility
 if (getRversion() < "3.2.0") {
@@ -15,11 +15,6 @@ if (getRversion() < "3.2.0") {
   }
 }
 
-## Supported types of futures
-strategies <- c("eager", "lazy")
-if (supportsMulticore()) strategies <- c(strategies, "multicore")
-
-
 dims <- list(
   NULL,
   c(1,6),
@@ -31,71 +26,78 @@ dims <- list(
 
 message("*** futures() / resolved() / values() ...")
 
-for (type in c("list", "environment", "listenv")) {
-  message(sprintf("Type of object: %s", type))
+for (cores in 1:min(3L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores=cores-1L)
 
-  for (strategy in strategies) {
-    message("Type of future: ", strategy)
-    plan(strategy)
+  for (type in c("list", "environment", "listenv")) {
+    message(sprintf("Type of object: %s", type))
 
-    for (dim in dims) {
-      message("Dimensions: ", deparse(dim))
+    for (strategy in future:::supportedStrategies()) {
+      message("Type of future: ", strategy)
+      plan(strategy)
 
-      if (type == "list") {
-        x <- list()
-      } else if (type == "listenv") {
-        x <- listenv()
-      } else if (type == "environment") {
-        x <- new.env()
-      }
+      for (dim in dims) {
+        message("Dimensions: ", deparse(dim))
 
-      x$a <- 1
-      x$b <- future(2)
-      x$c <- 3
-      if (type != "list") x$d %<=% { 4 }
-      if (type != "environment") x[[6]] <- 6
-      str(x)
-
-      if (!is.null(dim)) {
-        if (type != "environment") {
-          names <- names(x)
-          dim(x) <- dim
-          dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
-          names(x) <- names
+        if (type == "list") {
+          x <- list()
+        } else if (type == "listenv") {
+          x <- listenv()
+        } else if (type == "environment") {
+          x <- new.env()
         }
-      }
 
-      f <- futures(x)
-      str(f)
-      if (type != "environment") {
-        stopifnot(length(f) == length(x))
-        stopifnot(identical(names(f), names(x)))
-      }
-      stopifnot(identical(dim(f), dim(x)))
-      stopifnot(identical(dimnames(f), dimnames(x)))
+        x$a <- 1
+        x$b <- future(2)
+        x$c <- 3
+        if (type != "list") x$d %<=% { 4 }
+        if (type != "environment") x[[6]] <- 6
+        str(x)
 
-      r <- resolved(x)
-      str(r)
-      if (type != "environment") {
-        stopifnot(length(r) == length(x))
-        stopifnot(identical(names(r), names(x)))
-      }
-      stopifnot(identical(dim(r), dim(x)))
-      stopifnot(identical(dimnames(r), dimnames(x)))
+        if (!is.null(dim)) {
+          if (type != "environment") {
+            names <- names(x)
+            dim(x) <- dim
+            dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
+            names(x) <- names
+          }
+        }
 
-      v <- values(x)
-      str(v)
-      if (type != "environment") {
-        stopifnot(length(v) == length(x))
-        stopifnot(identical(names(v), names(x)))
-      }
-      stopifnot(identical(dim(v), dim(x)))
-      stopifnot(identical(dimnames(v), dimnames(x)))
-    } # for (dim ...)
-  } # for (strategy ...)
+        f <- futures(x)
+        str(f)
+        if (type != "environment") {
+          stopifnot(length(f) == length(x))
+          stopifnot(identical(names(f), names(x)))
+        }
+        stopifnot(identical(dim(f), dim(x)))
+        stopifnot(identical(dimnames(f), dimnames(x)))
 
-  message(sprintf("*** futures() - %s ... DONE", type))
-} # for (type ...)
+        r <- resolved(x)
+        str(r)
+        if (type != "environment") {
+          stopifnot(length(r) == length(x))
+          stopifnot(identical(names(r), names(x)))
+        }
+        stopifnot(identical(dim(r), dim(x)))
+        stopifnot(identical(dimnames(r), dimnames(x)))
+
+        v <- values(x)
+        str(v)
+        if (type != "environment") {
+          stopifnot(length(v) == length(x))
+          stopifnot(identical(names(v), names(x)))
+        }
+        stopifnot(identical(dim(v), dim(x)))
+        stopifnot(identical(dimnames(v), dimnames(x)))
+      } # for (dim ...)
+    } # for (strategy ...)
+
+    message(sprintf("*** futures() - %s ... DONE", type))
+  } # for (type ...)
+
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
 
 message("*** futures() / resolved() / values() ... DONE")
 

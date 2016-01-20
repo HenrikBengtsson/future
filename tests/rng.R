@@ -1,9 +1,10 @@
 library("future")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 oplan <- plan()
 
+message("*** rng ...")
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
@@ -49,41 +50,49 @@ y0 <- fsample(0:9, seed=42L)
 stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
 
-for (strategy in c("eager", "lazy", "multicore")) {
-  message(sprintf("%s ...", strategy))
+for (cores in 1:min(3L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores=cores-1L)
 
-  .GlobalEnv$.Random.seed <- seed0
+  for (strategy in future:::supportedStrategies()) {
+    message(sprintf("%s ...", strategy))
 
-  plan(strategy)
+    .GlobalEnv$.Random.seed <- seed0
 
-  ## Fixed random seed
-  y1 <- fsample(0:9, seed=42L)
-  print(y1)
-  stopifnot(identical(y1, y0))
+    plan(strategy)
 
-  ## Assert that random seed is reset
-  stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+    ## Fixed random seed
+    y1 <- fsample(0:9, seed=42L)
+    print(y1)
+    stopifnot(identical(y1, y0))
 
-  ## Fixed random seed
-  y2 <- fsample(0:9, seed=42L)
-  print(y2)
-  stopifnot(identical(y2, y1))
-  stopifnot(identical(y2, y0))
+    ## Assert that random seed is reset
+    stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
-  ## Assert that random seed is reset
-  stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+    ## Fixed random seed
+    y2 <- fsample(0:9, seed=42L)
+    print(y2)
+    stopifnot(identical(y2, y1))
+    stopifnot(identical(y2, y0))
 
-  ## No seed
-  y3 <- fsample(0:9)
-  print(y3)
+    ## Assert that random seed is reset
+    stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
-  ## No seed
-  y4 <- fsample(0:9)
-  print(y4)
+    ## No seed
+    y3 <- fsample(0:9)
+    print(y3)
 
-  message(sprintf("%s ... done", strategy))
-}
+    ## No seed
+    y4 <- fsample(0:9)
+    print(y4)
 
+    message(sprintf("%s ... done", strategy))
+  }
+
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
+
+message("*** rng ... DONE")
 
 ## Cleanup
 plan(oplan)

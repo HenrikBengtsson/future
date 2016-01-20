@@ -3,24 +3,29 @@ library(future)
 ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L)
 
-options("R_FUTURE_DEMO_MANDELBROT_PLANES"=4L)
+for (cores in 1:min(3L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores=cores-1L)
 
-message("*** Demos ...")
+  options("R_FUTURE_DEMO_MANDELBROT_PLANES"=4L)
 
-message("*** Mandelbrot demo of the 'future' package ...")
+  message("*** Demos ...")
 
-if (getRversion() >= "3.2.0") {
-  strategies <- c("eager", "lazy")
-  if (supportsMulticore()) strategies <- c(strategies, "multicore")
+  message("*** Mandelbrot demo of the 'future' package ...")
 
-  for (strategy in strategies) {
-    message(sprintf("- plan('%s') ...", strategy))
-    plan(strategy)
-    demo("mandelbrot", package="future", ask=FALSE)
+  if (getRversion() >= "3.2.0") {
+    for (strategy in future:::supportedStrategies()) {
+      message(sprintf("- plan('%s') ...", strategy))
+      plan(strategy)
+      demo("mandelbrot", package="future", ask=FALSE)
+      message(sprintf("- plan('%s') ... DONE", strategy))
+    }
+  } else {
+    message(" - This demo requires R (>= 3.2.0). Skipping test.")
   }
-} else {
-  message(" - This demo requires R (>= 3.2.0). Skipping test.")
-}
+
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
 
 message("*** Demos ... DONE")
 

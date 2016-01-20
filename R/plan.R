@@ -19,7 +19,7 @@
 #'
 #' @details
 #' The default strategy is \code{\link{eager}}, which can be set by
-#' option \code{future_plan} and, if that is not set,
+#' option \code{future.plan} and, if that is not set,
 #' system environment variable \code{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use \code{plan("default")}.
 #'
@@ -30,23 +30,22 @@
 #'
 #' @export
 plan <- local({
-  .strategy <- structure(eager, call=substitute(plan(eager)))
+  ## Stack of type of futures to use
+  stack <- list(
+    structure(eager, call=substitute(plan(eager)))
+  )
 
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
-    if (substitute) strategy <- substitute(strategy)
 
-    ## Reset plan?
+  ## Local functions
+  asStrategy <- function(strategy, ..., penv) {
+    args <- list(...)
+
     if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
       strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-      strategy <- getOption("future_plan", strategy)
+      strategy <- getOption("future.plan", strategy)
       if (!nzchar(strategy)) strategy <- eager
     }
-
-    args <- list(...)
-
-    ## Return current plan
-    if (is.null(strategy)) return(.strategy)
 
     if (is.symbol(strategy)) {
     } else if (is.language(strategy)) {
@@ -57,16 +56,11 @@ plan <- local({
         strategy <- strategyT[[1L]]
       }
     }
-    strategy <- eval(strategy, envir=parent.frame())
-
-    if (isTRUE(.call)) {
-      .call <- attr(strategy, "call")
-      if (is.null(.call)) .call <- sys.call()
-    }
+    strategy <- eval(strategy, envir=penv)
 
     if (is.character(strategy)) {
       ## Search attached packages and the 'future' package
-      envirs <- list(parent.frame(), future=getNamespace("future"), NULL)
+      envirs <- list(penv, future=getNamespace("future"), NULL)
       for (envir in envirs) {
         if (is.null(envir)) {
           stop("No such strategy for futures: ", sQuote(strategy))
@@ -102,15 +96,39 @@ plan <- local({
       }
     }
 
-    ## Record call
+    strategy
+  } ## asStrategy()
+
+
+  ## Main function
+  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
+    if (substitute) strategy <- substitute(strategy)
+
+    ## Current strategy
+    old <- stack[[1L]]
+
+    ## Return current plan?
+    if (is.null(strategy)) return(old)
+
+    ## Parse strategy and ...
+    penv <- parent.frame()
+    strategy <- asStrategy(strategy, ..., penv=penv)
+
+    if (isTRUE(.call)) {
+      .call <- attr(strategy, "call")
+      if (is.null(.call)) .call <- sys.call()
+    }
     attr(strategy, "call") <- .call
 
-    ## Return old strategy
-    old <- .strategy
-
     ## Set new strategy for futures
-    .strategy <<- strategy
+    stack <<- list(strategy)
 
     invisible(old)
   } # function()
 }) # plan()
+
+
+supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession")) {
+  if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
+  strategies
+}

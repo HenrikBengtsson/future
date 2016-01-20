@@ -50,7 +50,7 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   sC <- C ## The Mandelbrot sequence of the "remaining" set
   Cr <- C ## The original complex number of the "remaining" set
 
-  for(ii in seq_len(maxIter-1L)) {
+  for (ii in seq_len(maxIter-1L)) {
     sC <- sC*sC + Cr
 
     ## Did any of the "remaining" points diverge?
@@ -78,39 +78,61 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   counts
 } # mandelbrot()
 
+tiles <- function() {
+  n <- getOption("R_FUTURE_DEMO_MANDELBROT_TILES", availableCores())
+  if (n > 16) {
+    tiles <- c(5, 5)
+  } else if (n >= 16) {
+    tiles <- c(4, 4)
+  } else if (n >= 12) {
+    tiles <- c(3, 4)
+  } else if (n >= 9) {
+    tiles <- c(3, 3)
+  } else if (n >= 6) {
+    tiles <- c(2, 3)
+  } else {
+    tiles <- c(2, 2)
+  }
+  tiles
+} # tiles()
+
 
 library("future")
 library("listenv")
 library("graphics")
 
-n <- getOption("R_FUTURE_DEMO_MANDELBROT_PLANES", 9L)
-sizes <- 2 * 10^-(0:(n-1))
-xs <- rep(0.282989, times=n)
+## Let's open an empty device already here
+if (interactive()) { dev.new(); plot.new() }
+
+n <- prod(tiles())
+sizes <- 2 * 6^-seq(from=0,to=15,length.out=n)
+xs <- rep(0.28298899997142857, times=n)
 xs[1] <- xs[1] - 0.8
 ys <- rep(-0.010, times=n)
 
 counts <- listenv()
 for (ii in seq_along(sizes)) {
-  cat(sprintf("Mandelbrot plane #%d of %d ...\n", ii, length(sizes)))
+  cat(sprintf("Mandelbrot tile #%d of %d ...\n", ii, length(sizes)))
   size <- sizes[ii]
   counts[[ii]] %<=% {
-    cat(sprintf("Calculating plane #%d of %d ...\n", ii, length(sizes)))
+    cat(sprintf("Calculating tile #%d of %d ...\n", ii, length(sizes)))
     xlim <- xs[ii] + size/2 * c(-1,1)
     ylim <- ys[ii] + size/2 * c(-1,1)
+    cat(sprintf("  xlim=c(%.16f,%.16f)\n", xlim[1], xlim[2]))
+    cat(sprintf("  ylim=c(%.16f,%.16f)\n", ylim[1], ylim[2]))
     fit <- mandelbrot(xlim=xlim, ylim=ylim)
-    cat(sprintf("Calculating plane #%d of %d ... done\n", ii, length(sizes)))
+    cat(sprintf("Calculating tile #%d of %d ... done\n", ii, length(sizes)))
     fit
   }
 }
 
-## Plot as each plane gets ready
-if (interactive()) { dev.new(); plot.new() }
-split.screen(rep(ceiling(sqrt(n)), times=2))
+## Plot as each tile gets ready
+split.screen(rep(max(tiles()), times=2)) ## Square aspect ratio
 resolved <- logical(length(counts))
 while (!all(resolved)) {
   for (ii in which(!resolved)) {
     if (!resolved(futureOf(counts[[ii]]))) next
-    cat(sprintf("Plotting plane #%d of %d ...\n", ii, length(sizes)))
+    cat(sprintf("Plotting tile #%d of %d ...\n", ii, length(sizes)))
     screen(ii)
     opar <- par(mar=c(0,0,0,0))
     img <- structure({
