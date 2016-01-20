@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.10.9-9000 [2016-01-15]
+Version: 0.11.0 [2016-01-15]
 o All futures now validates globals by default (globals=TRUE).
 o Add multisession futures, which analogously to multicore ones,
   use multiple cores on the local machine with the difference
