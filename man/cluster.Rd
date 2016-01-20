@@ -43,7 +43,7 @@ and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 \examples{
 ## Cluster futures gives error on R CMD check for
 ## unknown reasons. Same code works in package tests.
-\donttest{
+##\donttest{
 
 ## Use cluster futures
 cl <- parallel::makeCluster(2L)
@@ -72,6 +72,6 @@ stopifnot(v == 0)
 ## CLEANUP
 parallel::stopCluster(cl)
 
-}
+##}
 }
 
