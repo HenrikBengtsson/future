@@ -11,7 +11,7 @@
 --------------------------------------------------------------------"%>
 # <%@meta name="title"%>
 
-In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`) and make sure your right-hand side (RHS) expression is within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
+In the ideal case all it takes to start using futures in R is to replace select standard assignments (`<-`) in your R code with future assignments (`%<=%`) and make sure the right-hand side (RHS) expressions are within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
 However, there are few cases where you have to take extra precautions.  These are often related to how global variables are falsely identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
