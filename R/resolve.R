@@ -127,6 +127,18 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
   x0
 } ## resolve() for list
 
+#' @export
+resolve.data.frame <- function(x, idxs=NULL, value=FALSE, ...) {
+  x0 <- x
+
+  for (cc in seq_along(x)) {
+    xcc <- as.list(x[[cc]])
+    resolve(xcc, value=value, ...)
+  }
+
+  x0
+}
+
 
 #' @export
 resolve.environment <- function(x, idxs=NULL, value=FALSE, ...) {

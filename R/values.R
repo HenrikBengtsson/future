@@ -19,10 +19,20 @@ values <- function(x, ...) UseMethod("values")
 values.list <- function(x, ...) {
   y <- futures(x)
   y <- resolve(y)
-
   for (ii in seq_along(y)) {
     tmp <- y[[ii]]
     if (inherits(tmp, "Future")) y[[ii]] <- value(tmp)
+  }
+  y
+}
+
+#' @export
+values.data.frame <- function(x, ...) {
+  y <- futures(x)
+  y <- resolve(y)
+  for (ii in seq_along(y)) {
+    tmp <- y[[ii]]
+    if (is.list(tmp)) y[[ii]] <- values(tmp)
   }
   y
 }

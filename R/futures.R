@@ -25,6 +25,11 @@ futures.list <- function(x, ...) {
 }
 
 #' @export
+futures.data.frame <- function(x, ...) {
+  x
+}
+
+#' @export
 futures.environment <- function(x, ...) {
   fs <- futureOf(envir=x, mustExist=FALSE, drop=FALSE)
 

@@ -47,6 +47,25 @@ resolved.list <- function(x, ...) {
 }
 
 #' @export
+resolved.data.frame <- function(x, ...) {
+  fs <- futures(x)
+
+  ## Allocate results. Assume everything
+  ## is resolved unless not.
+  dim <- dim(fs)
+  res <- array(TRUE, dim=dim, dimnames=dimnames(fs))
+  for (cc in seq_len(dim[2])) {
+    for (rr in seq_len(dim[1])) {
+      fs_cc <- fs[[cc]]
+      f <- fs_cc[[rr]]
+      if (inherits(f, "Future")) res[rr,cc] <- resolved(f)
+    }
+  }
+
+  res
+}
+
+#' @export
 resolved.environment <- function(x, ...) {
   fs <- futures(x)
   names <- names(fs)
