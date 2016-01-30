@@ -8,6 +8,9 @@ futurize(FUN, vectorize = FALSE)
 }
 \arguments{
 \item{FUN}{A function.}
+
+\item{vectorize}{If TRUE, the function \code{FUN} is vectorized
+using \code{\link[base]{Vectorize}()} before applied.}
 }
 \value{
 A function of class Futuristic

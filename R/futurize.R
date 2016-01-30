@@ -5,6 +5,8 @@
 #' the value of the function call with be returned.
 #'
 #' @param FUN A function.
+#' @param vectorize If TRUE, the function \code{FUN} is vectorized
+#'        using \code{\link[base]{Vectorize}()} before applied.
 #'
 #' @return A function of class Futuristic
 #'
