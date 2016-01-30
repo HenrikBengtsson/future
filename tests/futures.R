@@ -30,7 +30,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  for (type in c("list", "environment", "listenv")) {
+  for (type in c("list", "data.frame", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))
 
     for (strategy in future:::supportedStrategies()) {
@@ -42,6 +42,8 @@ for (cores in 1:min(3L, availableCores())) {
 
         if (type == "list") {
           x <- list()
+        } else if (type == "data.frame") {
+          x <- data.frame(a=NA_real_, b=NA, c=NA_real_)
         } else if (type == "listenv") {
           x <- listenv()
         } else if (type == "environment") {
@@ -49,14 +51,15 @@ for (cores in 1:min(3L, availableCores())) {
         }
 
         x$a <- 1
-        x$b <- future(2)
+        if (type == "data.frame") x$b <- list(future(2))
+        if (type != "data.frame") x$b <- future(2)
         x$c <- 3
-        if (type != "list") x$d %<=% { 4 }
+        if (!type %in% c("list", "data.frame")) x$d %<=% { 4 }
         if (type != "environment") x[[6]] <- 6
         str(x)
 
         if (!is.null(dim)) {
-          if (type != "environment") {
+          if (!type %in% c("environment", "data.frame")) {
             names <- names(x)
             dim(x) <- dim
             dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
@@ -66,7 +69,7 @@ for (cores in 1:min(3L, availableCores())) {
 
         f <- futures(x)
         str(f)
-        if (type != "environment") {
+        if (!type %in% c("environment", "data.frame")) {
           stopifnot(length(f) == length(x))
           stopifnot(identical(names(f), names(x)))
         }
@@ -75,7 +78,7 @@ for (cores in 1:min(3L, availableCores())) {
 
         r <- resolved(x)
         str(r)
-        if (type != "environment") {
+        if (!type %in% c("environment", "data.frame")) {
           stopifnot(length(r) == length(x))
           stopifnot(identical(names(r), names(x)))
         }
@@ -84,7 +87,7 @@ for (cores in 1:min(3L, availableCores())) {
 
         v <- values(x)
         str(v)
-        if (type != "environment") {
+        if (!type %in% c("environment", "data.frame")) {
           stopifnot(length(v) == length(x))
           stopifnot(identical(names(v), names(x)))
         }
