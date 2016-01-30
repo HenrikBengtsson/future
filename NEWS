@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.11.0-9000 [2016-01-30]
+o Add support for using data frames as containers for futures.
+
+
 Version: 0.11.0 [2016-01-15]
 o All futures now validates globals by default (globals=TRUE).
 o Add multisession futures, which analogously to multicore ones,
