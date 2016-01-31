@@ -11,7 +11,10 @@
 #' @return A function of class Futuristic
 #'
 #' @seealso \code{\link{futureCall}()}
+#'
 #' @export
+#'
+#' @keywords internal
 futurize <- function(FUN, vectorize=FALSE) {
   if (is.character(FUN)) FUN <- get(FUN, mode="function", envir=parent.frame())
   stopifnot(is.function(FUN))

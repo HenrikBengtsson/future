@@ -23,4 +23,5 @@ the value of the function call with be returned.
 \seealso{
 \code{\link{futureCall}()}
 }
+\keyword{internal}
 

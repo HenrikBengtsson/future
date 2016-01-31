@@ -6,6 +6,8 @@
 #' @return Returns a simplified object.
 #'
 #' @export
+#'
+#' @keywords internal
 simplify <- function(x, ...) UseMethod("simplify")
 
 #' @export

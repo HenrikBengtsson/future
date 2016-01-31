@@ -17,4 +17,5 @@ Returns a simplified object.
 \description{
 Simplifies a list like object
 }
+\keyword{internal}
 
