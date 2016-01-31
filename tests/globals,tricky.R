@@ -3,7 +3,7 @@ library("listenv")
 
 ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-setTimeLimit(cpu=180, elapsed=180, transient=TRUE)
+##setTimeLimit(cpu=180, elapsed=180, transient=TRUE)
 
 message("*** Tricky use cases related to globals ...")
 
@@ -72,15 +72,13 @@ for (cores in 1:min(3L, availableCores())) {
       }
 
 
+      ## Assert that `a` is resolved and turned into a constant future
+      ## at the moment when future `b` is created.
       a <- future(1)
       b <- future(value(a)+1)
       rm(list="a")
-
-      res <- try(value(b), silent=TRUE)
-      if (!inherits(res, "try-error")) {
-        message(sprintf("value(b)=%g", value(b)))
-        stopifnot(value(b) == 2)
-      }
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
     } ## for (strategy ...)
 
     message(sprintf("Method for identifying globals: '%s' ... DONE", method))
@@ -93,7 +91,7 @@ message("*** Tricky use cases related to globals ... DONE")
 
 
 ## Cleanup
-setTimeLimit()
+##setTimeLimit()
 plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))

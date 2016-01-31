@@ -3,7 +3,9 @@ Package: future
 
 Version: 0.11.0-9000 [2016-01-31]
 o Now any global variable that is a future is resolved and turned
-  into a "constant" future before being frozen/exported.
+  into a "constant" future before being frozen/exported.  If
+  multiple such "global" futures are detected, they are resolved
+  such that the waiting time for resolving the values is minimized.
 
 
 Version: 0.11.0 [2016-01-15]

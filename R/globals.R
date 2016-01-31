@@ -78,14 +78,16 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
   ## Resolve futures and turn into already-resolved "constant" futures
   if (resolve && length(globals) > 0L) {
+    mdebug("Resolving global futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
-    for (idx in idxs) {
-      f <- globals[[idx]]
-      v <- value(f)
-      f <- constant(v)
-      globals[[idx]] <- f
+    if (length(idxs) > 0) {
+      mdebug("Global futures: ", hpaste(sQuote(names(globals[idxs]))))
+      valuesF <- values(globals[idxs])
+      globals[idxs] <- lapply(valuesF, FUN=constant)
+      valuesF <- NULL  ## Not needed anymore
     }
-    idxs <- f <- v <- NULL ## Not needed anymore
+    idxs <- NULL ## Not needed anymore
+    mdebug("Resolving global futures ... DONE")
   }
 
   pkgs <- NULL
