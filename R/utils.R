@@ -12,8 +12,8 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 
   # Abbreviate?
   if (n > maxHead + maxTail + 1) {
-    head <- x[seq(length=maxHead)]
-    tail <- rev(rev(x)[seq(length=maxTail)])
+    head <- x[seq_len(maxHead)]
+    tail <- rev(rev(x)[seq_len(maxTail)])
     x <- c(head, abbreviate, tail)
     n <- length(x)
   }
