@@ -12,7 +12,7 @@ simplify <- function(x, ...) UseMethod("simplify")
 simplify.list <- function(x, ...) {
   ns <- sapply(x, FUN=length)
   if (any(ns != 1)) return(x)
-  y <- unlist(x)
+  y <- unlist(x, ...)
   dim <- dim(x)
   if (!is.null(dim)) {
     dim(y) <- dim
@@ -25,7 +25,7 @@ simplify.list <- function(x, ...) {
 simplify.listenv <- function(x, ...) {
   ns <- sapply(x, FUN=length)
   if (any(ns != 1)) return(x)
-  y <- unlist(x)
+  y <- unlist(x, ...)
   dim <- dim(x)
   if (!is.null(dim)) {
     dim(y) <- dim
