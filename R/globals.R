@@ -1,7 +1,7 @@
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak)
+exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=TRUE) {
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve)
   globals <- gp$globals
 
   ## Inject global objects?
@@ -19,7 +19,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils head object.size
 #' @importFrom parallel clusterCall
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, ...) {
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=TRUE, ...) {
   ## Local functions
   attachedPackages <- function() {
     pkgs <- search()
@@ -74,6 +74,18 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       ## covr: skip=1
       do.call(function(...) a, args=`future.call.arguments`)
     }, list(a=expr))
+  }
+
+  ## Resolve futures and turn into already-resolved "constant" futures
+  if (resolve && length(globals) > 0L) {
+    idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
+    for (idx in idxs) {
+      f <- globals[[idx]]
+      v <- value(f)
+      f <- constant(v)
+      globals[[idx]] <- f
+    }
+    idxs <- f <- v <- NULL ## Not needed anymore
   }
 
   pkgs <- NULL

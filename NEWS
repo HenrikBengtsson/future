@@ -1,6 +1,11 @@
 Package: future
 ===============
 
+Version: 0.11.0-9000 [2016-01-31]
+o Now any global variable that is a future is resolved and turned
+  into a "constant" future before being frozen/exported.
+
+
 Version: 0.11.0 [2016-01-15]
 o All futures now validates globals by default (globals=TRUE).
 o Add multisession futures, which analogously to multicore ones,

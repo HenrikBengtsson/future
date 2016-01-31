@@ -69,7 +69,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
 
   ## Validate globals at this point in time?
   if (globals) {
-    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression)
+    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
   oopts <- options(mc.cores=maxCores)
