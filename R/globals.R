@@ -80,6 +80,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (resolve && length(globals) > 0L) {
     mdebug("Resolving global futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
+    mdebug("Number of global futures: ", length(idxs))
     if (length(idxs) > 0) {
       mdebug("Global futures: ", hpaste(sQuote(names(globals[idxs]))))
       valuesF <- values(globals[idxs])
