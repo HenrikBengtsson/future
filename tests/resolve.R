@@ -31,7 +31,7 @@ stopifnot(resolved(x[["b"]]))
 
 x <- list()
 x$a <- future(1)
-x$b <- future(2)
+x$b <- future({Sys.sleep(1); 2})
 x[[4]] <- 4
 dim(x) <- c(2,2)
 y <- resolve(x, idxs=1)
@@ -121,11 +121,11 @@ message("*** resolve() for list environments ...")
 
 options(future.progress=function(done, total) {
   msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100*done/total, done, total)
-  if (done == total) {
-    message(msg)
-  } else {
+  if (done < total) {
     bs <- paste(rep("\b", times=nchar(msg)), collapse="")
     message(paste(msg, bs, sep=""), appendLF=FALSE)
+  } else {
+    message(msg)
   }
 })
 
@@ -162,7 +162,7 @@ stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- listenv()
 x$a <- future({ 1 })
-x$b %<=% { 2 }
+x$b %<=% { Sys.sleep(1); 2 }
 x$c %<=% { 3 }
 x$d <- 4
 names <- names(x)
