@@ -28,3 +28,25 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
   f <- Future(expr=expr, envir=envir, substitute=FALSE, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
+
+
+evaluate <- function(...) UseMethod("evaluate")
+
+evaluate.UniprocessFuture <- function(future, ...) {
+ if (future$state %in% c('finished', 'failed', 'interrupted')) {
+   return(invisible(future))
+ }
+
+ ## Run future
+ future$state <- 'running'
+
+ tryCatch({
+   future$value <- eval(future$expr, envir=future$envir)
+   future$state <- 'finished'
+ }, simpleError = function(ex) {
+   future$state <- 'failed'
+   future$value <- ex
+ })
+
+ invisible(future)
+}

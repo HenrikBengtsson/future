@@ -25,9 +25,6 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=
   structure(f, class=c("LazyFuture", class(f)))
 }
 
-
-evaluate.LazyFuture <- evaluate.EagerFuture
-
 #' @export
 resolved.LazyFuture <- function(x, ...) {
   ## resolved() for LazyFuture must force value() such that
