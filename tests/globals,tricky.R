@@ -7,6 +7,9 @@ oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** Tricky use cases related to globals ...")
 
+strategies <- future:::supportedStrategies()
+strategies <- setdiff(strategies, "multiprocess")
+
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
@@ -21,7 +24,7 @@ for (cores in 1:min(3L, availableCores())) {
     options("future.globalsMethod"=method)
     message(sprintf("Method for identifying globals: '%s' ...", method))
 
-    for (strategy in future:::supportedStrategies()) {
+    for (strategy in strategies) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
 
