@@ -272,17 +272,12 @@ plan(lazy)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 and see if you can notice the difference in how and when statements are evaluated.
-You may also try multisession evaluation, which calculates the different Mandelbrot planes via independent R sessions running in the background.  Try,
+You may also try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
 ```r
-plan(multisession)
+plan(multiprocess)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-If you are on a system where R supports multicore processing, try
-```r
-plan(multicore)
-demo("mandelbrot", package="future", ask=FALSE)
-```
-If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
+This will use multicore processing if you are on a system where R supports process forking, otherwise (such as on Windows) it will use multisession processing.
 
 Finally, if you have access to multiple machines you can try to setup a cluster of workers and use them, e.g.
 ```r
