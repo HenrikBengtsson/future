@@ -1,7 +1,10 @@
 Package: future
 ===============
 
-Version: 0.11.0-9000 [2016-01-31]
+Version: 0.11.0-9000 [2016-02-01]
+o Add multiprocess futures, which are multicore futures if supported,
+  otherwise multisession futures.  This makes it possible to use
+  plan(multiprocess) everywhere regardless of operating system.
 o Now any global variable that is a future is resolved and turned
   into a "constant" future before being frozen/exported.  If
   multiple such "global" futures are detected, they are resolved
