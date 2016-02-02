@@ -6,7 +6,7 @@
 \title{An uniprocess future is a future whose value will be resolved synchroneously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  ...)
+  local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -16,6 +16,10 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done in the calling environment.}
 
 \item{\dots}{Additional named elements of the future.}
 }
