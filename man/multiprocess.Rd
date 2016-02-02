@@ -24,7 +24,8 @@ located, an informative error is generated.}
 \item{\dots}{Not used.}
 }
 \value{
-A \link{MulticoreFuture} or a \link{MultisessionFuture}.
+A \link{MultiprocessFuture} implemented as either a
+\link{MulticoreFuture} or a \link{MultisessionFuture}.
 }
 \description{
 A multiprocess future is a future that uses \link{multicore} evaluation

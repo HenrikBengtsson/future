@@ -16,7 +16,8 @@
 #' located, an informative error is generated.
 #' @param \dots Not used.
 #'
-#' @return A \link{MulticoreFuture} or a \link{MultisessionFuture}.
+#' @return A \link{MultiprocessFuture} implemented as either a
+#' \link{MulticoreFuture} or a \link{MultisessionFuture}.
 #'
 #' @example incl/multiprocess.R
 #'
