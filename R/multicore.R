@@ -13,7 +13,7 @@
 #' in time when the future is created (always before it is resolved),
 #' that is, they identified and located.  If some globals fail to be
 #' located, an informative error is generated.
-#' @param maxCores The maximum number of CPU cores that can
+#' @param maxCores The maximum number of multicore futures that can
 #' be active at the same time before blocking.
 #' @param \dots Not used.
 #'

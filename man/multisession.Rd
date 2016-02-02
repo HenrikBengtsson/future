@@ -16,7 +16,7 @@ is done and from which globals are obtained.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{maxCores}{The maximum number of multisession future that
+\item{maxCores}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
 \item{\dots}{Not used.}

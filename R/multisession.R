@@ -9,7 +9,7 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param maxCores The maximum number of multisession future that
+#' @param maxCores The maximum number of multisession futures that
 #' can be active at the same time before blocking.
 #' @param \dots Not used.
 #'
