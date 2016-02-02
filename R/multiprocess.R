@@ -14,6 +14,8 @@
 #' in time when the future is created (always before it is resolved),
 #' that is, they identified and located.  If some globals fail to be
 #' located, an informative error is generated.
+#' @param maxCores The maximum number of multiprocess futures that
+#' can be active at the same time before blocking.
 #' @param \dots Not used.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a
@@ -26,8 +28,8 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, ...) {
+multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(), ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, ...)
+  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, maxCores=maxCores, ...)
 }
