@@ -55,8 +55,8 @@ resolved.data.frame <- function(x, ...) {
   dim <- dim(fs)
   res <- array(TRUE, dim=dim, dimnames=dimnames(fs))
   for (cc in seq_len(dim[2])) {
+    fs_cc <- fs[[cc]]
     for (rr in seq_len(dim[1])) {
-      fs_cc <- fs[[cc]]
       f <- fs_cc[[rr]]
       if (inherits(f, "Future")) res[rr,cc] <- resolved(f)
     }
