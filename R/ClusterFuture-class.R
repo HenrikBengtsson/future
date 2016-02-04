@@ -47,7 +47,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     expr <- substitute(local(a), list(a=expr))
   }
 
-  f <- Future(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 

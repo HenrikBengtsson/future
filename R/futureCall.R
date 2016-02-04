@@ -1,3 +1,8 @@
+#' @param FUN A function object.
+#' @param args A list of arguments passed to function \code{FUN}.
+#'
+#' @rdname future
+#'
 #' @export
 futureCall <- function(FUN, args=NULL, envir=parent.frame(), evaluator=plan(), ...) {
   stopifnot(is.function(FUN))

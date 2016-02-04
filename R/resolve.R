@@ -26,12 +26,25 @@ resolve <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("fu
 
 #' @export
 resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
-  hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
-
   ## Nothing to do?
   if (length(x) == 0) return(x)
-
   x0 <- x
+
+  hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
+
+  ## Setup default progress function?
+  if (hasProgress && !is.function(progress)) {
+    progress <- function(done, total) {
+      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
+      if (done < total) {
+        bs <- paste(rep("\b", times=nchar(msg)), collapse="")
+        message(paste(msg, bs, sep=""), appendLF=FALSE)
+      } else {
+        message(msg)
+      }
+    } ## progress()
+  }
+
 
   ## Subset?
   if (!is.null(idxs)) {
@@ -75,13 +88,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
   if (hasProgress) {
     done <- total - length(remaining)
     done0 <- done
-    if (is.function(progress)) {
-      progress(done, total)
-    } else {
-      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
-      bs <- paste(rep("\b", times=nchar(msg)), collapse="")
-      message(paste(msg, bs, sep=""), appendLF=FALSE)
-    }
+    progress(done, total)
   }
 
   while (!all(resolved)) {
@@ -100,13 +107,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
 
       if (hasProgress) {
         done <- total - length(remaining)
-        if (is.function(progress)) {
-          progress(done, total)
-        } else {
-          msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
-          bs <- paste(rep("\b", times=nchar(msg)), collapse="")
-          message(paste(msg, bs, sep=""), appendLF=FALSE)
-        }
+        progress(done, total)
       }
     } # for (ii ...)
 
@@ -115,14 +116,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  if (hasProgress && done != done0) {
-    if (is.function(progress)) {
-      progress(done, total)
-    } else {
-      msg <- sprintf("Progress: 100%% (%d/%d)", done, total)
-      message(msg)
-    }
-  }
+  if (hasProgress && done != done0) progress(done, total)
 
   x0
 } ## resolve() for list

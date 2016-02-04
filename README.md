@@ -70,6 +70,7 @@ To get the future of a future variable, use the `futureOf()` function, e.g. `f <
 You are responsible for your own futures and how you choose to resolve them may differ depending on your needs and your resources.  The 'future' package provides two _synchronous_ futures, the "lazy" and "eager" futures, implemented by functions `lazy()` and `eager()`.
 It also provides different types of _asynchronous_ futures, e.g. the "multicore" and the "multisession" futures, implemented by functions `multicore()` and  `multisession()`.  The multicore future is available on systems where R supports process forking, that is, on Unix-like operating systems, but not on Windows.  On non-supported systems, multicore futures automatically become eager futures.
 The multisession future is available on all systems, including Windows, and instead of forking the current R process, it launches a set of R sessions in the background on which the multisession futures are evaluated.  Both multicore and multisession evaluation is agile to the number of cores available to the R session running, which includes acknowledging the `mc.cores` options among other settings.  For details, see `help("availableCores", package="future")`.
+To use multicore futures where supported and otherwise multisession ones, one can use the more general _multiprocess_ futures, i.e. `plan(multiprocess)`.
 There is also a more generic "cluster" future as implemented by `cluster()`, which makes it possible to use any type of cluster created by `parallel::makeCluster()`.
 
 Since an asynchronous strategy is more likely to be used in practice, the built-in eager and lazy mechanisms try to emulate those as far as possible while at the same time evaluating them in a synchronous way.  For example, the default for all types of futures is that the expression is evaluated in _a local environment_ (cf. `help("local")`), which means that any assignments are done to local variables only - such that the environment of the main/calling process is unaffected.  Here is an example:
@@ -133,7 +134,7 @@ Resolving 'b'
 [1] 6
 ```
 
-When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing eager evaluation on further nested futures.  In addition, option `mc.cores` is also set to zero to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
+When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing option `mc.cores` to zero (number of _additional_ cores available for processing in addition to the main process) to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
 
 
 ## Assigning futures to environments and list environments
@@ -260,17 +261,12 @@ plan(lazy)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 and see if you can notice the difference in how and when statements are evaluated.
-You may also try multisession evaluation, which calculates the different Mandelbrot planes via independent R sessions running in the background.  Try,
+You may also try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
 ```r
-plan(multisession)
+plan(multiprocess)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
-If you are on a system where R supports multicore processing, try
-```r
-plan(multicore)
-demo("mandelbrot", package="future", ask=FALSE)
-```
-If your system does not support multicore processing, such as Windows, then it will automatically fall back to use _eager_ futures instead of multicore ones.
+This will use multicore processing if you are on a system where R supports process forking, otherwise (such as on Windows) it will use multisession processing.
 
 Finally, if you have access to multiple machines you can try to setup a cluster of workers and use them, e.g.
 ```r
@@ -299,6 +295,13 @@ R package future is available on [CRAN](http://cran.r-project.org/package=future
 install.packages('future')
 ```
 
+### Pre-release version
+
+To install the pre-release version that is available in branch `develop`, use:
+```r
+source('http://callr.org/install#HenrikBengtsson/future@develop')
+```
+This will install the package from source.  
 
 
 
