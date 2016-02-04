@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.11.0-9000 [2016-02-01]
+Version: 0.11.0-9000 [2016-02-04]
 o Add multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.
@@ -9,6 +9,8 @@ o Now any global variable that is a future is resolved and turned
   into a "constant" future before being frozen/exported.  If
   multiple such "global" futures are detected, they are resolved
   such that the waiting time for resolving the values is minimized.
+o Adjusted the parameters for the schema used to wait for next
+  available cluster node such that nodes are polled more frequently.
 
 
 Version: 0.11.0 [2016-01-15]

@@ -235,7 +235,7 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 }
 
 
-requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=1.01) {
+requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 600L))), delta=getOption("future.interval", 0.001), alpha=getOption("future.alpha", 1.01)) {
   stopifnot(is.function(await))
   stopifnot(inherits(cluster, "cluster"))
   maxTries <- as.integer(maxTries)

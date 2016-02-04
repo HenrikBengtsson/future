@@ -25,13 +25,13 @@ Description: A Future API for R is provided. In programming, a future is an
     are accessible by the assigned variables (as promises), e.g.
     'v %<=% { mandelbrot(c(0.28,0), side=2) }'.
     This package implements synchronous "lazy" and "eager" futures, and asynchronous
-    "multicore", "multisession" and ad hoc "cluster" futures.  
+    "multicore", "multisession" and ad hoc "cluster" futures.
     Globals variables and functions are automatically identified and exported.
     Required packages are attached in external R sessions whenever needed.
     All types of futures are designed to behave the same such that the exact
     same code work regardless of futures used or number of cores, background
     sessions or cluster nodes available.
-    Additional types of futures are provided by other packages enhancing 
+    Additional types of futures are provided by other packages enhancing
     this package.
 License: LGPL (>= 2.1)
 LazyLoad: TRUE
