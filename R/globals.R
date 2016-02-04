@@ -78,7 +78,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
   ## Resolve futures and turn into already-resolved "constant" futures
   if (resolve && length(globals) > 0L) {
-    mdebug("Resolving global futures ...")
+    mdebug("Resolving globals that are futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
     mdebug("Number of global futures: %d", length(idxs))
     if (length(idxs) > 0) {
@@ -88,7 +88,33 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
-    mdebug("Resolving global futures ... DONE")
+    mdebug("Resolving global that are futures ... DONE")
+
+
+    mdebug("Resolving globals that may contain futures ...")
+
+    mdebug("Checking environments ...")
+    idxs <- which(unlist(lapply(globals, FUN=is.environment)))
+    mdebug("Number of environments: %d", length(idxs))
+    if (length(idxs) > 0) {
+      mdebug("Global environments: %s", hpaste(sQuote(names(globals[idxs]))))
+      globals[idxs] <- values(globals[idxs])
+    }
+    idxs <- NULL ## Not needed anymore
+    mdebug("Checking environments ... DONE")
+
+
+    mdebug("Checking lists ...")
+    idxs <- which(unlist(lapply(globals, FUN=is.environment)))
+    mdebug("Number of lists: %d", length(idxs))
+    if (length(idxs) > 0) {
+      mdebug("Global lists: %s", hpaste(sQuote(names(globals[idxs]))))
+      globals[idxs] <- values(globals[idxs])
+    }
+    idxs <- NULL ## Not needed anymore
+    mdebug("Checking lists ... DONE")
+
+    mdebug("Resolving globals that may contain futures ... DONE")
   }
 
   pkgs <- NULL
