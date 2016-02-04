@@ -123,7 +123,38 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
 
 #' @export
 resolve.data.frame <- function(x, idxs=NULL, value=FALSE, ...) {
+  ## Nothing to do?
+  if (length(x) == 0) return(x)
   x0 <- x
+
+  if (!is.null(idxs)) {
+    ## Nothing to do?
+    if (length(idxs) == 0) return(x)
+
+    ## Multi-dimensional indices?
+    if (is.matrix(idxs)) {
+      ## Not yet implemented.
+      stop("Multi-dimensional indices 'idxs' are not supported for data frames")
+    }
+    idxs <- unique(idxs)
+
+    ## For now, indices refers to the columns of a data frame
+    if (is.numeric(idxs)) {
+      idxs <- as.numeric(idxs)
+      if (any(idxs < 1 | idxs > ncol(x))) {
+        stop(sprintf("Indices out of (column) range [1,%d]: %s", ncol(x), hpaste(idxs)))
+      }
+    } else {
+      names <- colnames(x)
+      idxs <- as.character(idxs)
+      unknown <- idxs[!is.element(idxs, names)]
+      if (length(unknown) > 0) {
+        stop("Unknown elements: ", hpaste(sQuote(unknown)))
+      }
+    }
+
+    x <- x[idxs]
+  }
 
   for (cc in seq_along(x)) {
     xcc <- as.list(x[[cc]])
