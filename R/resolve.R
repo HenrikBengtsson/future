@@ -51,12 +51,22 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0
   if (value) {
     ## Allow for errors
     msg <- tryCatch({
-      v <- value(x)
+      v <- x$value
+      if (is.null(v)) {
+        v <- value(x)
 
-      ## Recursively resolve the value
-      v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
+        msg <- sprintf("%s and its value was collected", msg)
 
-      sprintf("%s and its value was collected (and resolved itself)", msg)
+        ## Recursively resolve the value
+	if (!is.atomic(v)) {
+          v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
+	  msg <- sprintf("%s (and resolved itself)", msg)
+	}
+
+        msg
+      } else {
+        sprintf("%s and its value was already collected", msg)
+      }
     }, error = function(ex) {
       sprintf("%s but failed to collect its value", msg)
     })
@@ -134,6 +144,9 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
     x <- x[idxs]
   }
 
+  mdebug("resolve() on list ...")
+  mdebug(" recursive: %s", recursive)
+
   ## Everything is considered non-resolved by default
   nx <- length(x)
   resolved <- logical(nx)
@@ -147,17 +160,22 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
     progress(done, total)
   }
 
+  mdebug(" length: %d", nx)
+  mdebug(" elements: %s", hpaste(sQuote(names(x))))
+
   ## Resolve all elements
   while (!all(resolved)) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      ## If an unresolved future, move on to the next object
-      ## so that future can be resolved in the asynchroneously
-      if (inherits(obj, "Future") && !resolved(obj)) next
-
-      ## In all other cases, try to resolve
-      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      if (!is.atomic(obj)) {
+        ## If an unresolved future, move on to the next object
+        ## so that future can be resolved in the asynchroneously
+        if (inherits(obj, "Future") && !resolved(obj)) next
+  
+        ## In all other cases, try to resolve
+        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      }
 
       ## Assume resolved at this point
       resolved[ii] <- TRUE
@@ -175,6 +193,8 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
   } # while (...)
 
   if (hasProgress && done != done0) progress(done, total)
+
+  mdebug("resolve() on list ... DONE")
 
   x0
 } ## resolve() for list
@@ -217,9 +237,13 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
     }
   }
 
+
   ## Nothing to do?
   nx <- length(idxs)
   if (nx == 0) return(x)
+
+  mdebug("resolve() on environment ...")
+  mdebug(" recursive: %s", recursive)
 
   ## Coerce future promises into Future objects
   x0 <- x
@@ -233,17 +257,21 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
   names(resolved) <- idxs
   remaining <- idxs
 
+  mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
+
   ## Resolve all elements
   while (!all(resolved)) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      ## If an unresolved future, move on to the next object
-      ## so that future can be resolved in the asynchroneously
-      if (inherits(obj, "Future") && !resolved(obj)) next
-
-      ## In all other cases, try to resolve
-      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      if (!is.atomic(obj)) {
+        ## If an unresolved future, move on to the next object
+        ## so that future can be resolved in the asynchroneously
+        if (inherits(obj, "Future") && !resolved(obj)) next
+  
+        ## In all other cases, try to resolve
+        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      }
 
       ## Assume resolved at this point
       resolved[ii] <- TRUE
@@ -254,6 +282,8 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
     remaining <- remaining[!resolved]
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
+
+  mdebug("resolve() on environment ... DONE")
 
   x0
 } ## resolve() for environment
@@ -308,6 +338,10 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
   nx <- length(idxs)
   if (nx == 0) return(x)
 
+
+  mdebug("resolve() on list environment ...")
+  mdebug(" recursive: %s", recursive)
+
   ## Coerce future promises into Future objects
   x0 <- x
   x <- futures(x)
@@ -316,26 +350,32 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
   ## Everything is considered non-resolved by default
   remaining <- seq_len(nx)
 
+  mdebug(" length: %d", nx)
+  mdebug(" elements: %s", hpaste(sQuote(names(x))))
+
   ## Resolve all elements
   while (length(remaining) > 0) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      ## If an unresolved future, move on to the next object
-      ## so that future can be resolved in the asynchroneously
-      if (inherits(obj, "Future") && !resolved(obj)) next
-
-      ## In all other cases, try to resolve
-      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      if (!is.atomic(obj)) {
+        ## If an unresolved future, move on to the next object
+        ## so that future can be resolved in the asynchroneously
+        if (inherits(obj, "Future") && !resolved(obj)) next
+  
+        ## In all other cases, try to resolve
+        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    stopifnot(is.numeric(remaining), all(is.finite(remaining)), all(remaining >= 1))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
+
+  mdebug("resolve() on list environment ... DONE")
 
   x0
 }
