@@ -314,11 +314,10 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
   nx <- length(x)
 
   ## Everything is considered non-resolved by default
-  resolved <- logical(nx)
   remaining <- seq_len(nx)
 
   ## Resolve all elements
-  while (!all(resolved)) {
+  while (length(remaining) > 0) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
@@ -330,12 +329,11 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
       resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
 
       ## Assume resolved at this point
-      resolved[ii] <- TRUE
-      remaining <- remaining[!resolved]
+      remaining <- setdiff(remaining, ii)
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    remaining <- remaining[!resolved]
+    stopifnot(is.numeric(remaining), all(is.finite(remaining)), all(remaining >= 1))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
