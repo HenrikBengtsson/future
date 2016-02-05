@@ -46,17 +46,25 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0
     Sys.sleep(sleep)
   }
 
-  mdebug("A %s was resolved", class(x)[1])
+  msg <- sprintf("A %s was resolved", class(x)[1])
 
   if (value) {
     ## Allow for errors
-    tryCatch({
+    msg <- tryCatch({
       v <- value(future)
 
       ## Recursively resolve the value
       v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
-    }, error = function(ex) {})
+
+      sprintf("%s and its value was collected", msg)
+    }, error = function(ex) {
+      sprintf("%s but failed to collect its value", msg)
+    })
+  } else {
+    msg <- sprintf("%s (value was not collected)", msg)
   }
+
+  mdebug(msg)
 
   x
 } ## resolve() for Future
