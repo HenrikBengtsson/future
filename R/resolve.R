@@ -31,10 +31,10 @@ resolve <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progr
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
-    if (recursive) recursive <- Inf
+    if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   } else {
     recursive <- as.numeric(recursive)
   }
@@ -81,10 +81,10 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0
 
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
-    if (recursive) recursive <- Inf
+    if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   } else {
     recursive <- as.numeric(recursive)
   }
@@ -172,7 +172,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchroneously
         if (inherits(obj, "Future") && !resolved(obj)) next
-  
+
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
       }
@@ -201,10 +201,10 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=FALSE, ...) {
+resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=FALSE, ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
-    if (recursive) recursive <- Inf
+    if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   } else {
     recursive <- as.numeric(recursive)
   }
@@ -268,7 +268,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchroneously
         if (inherits(obj, "Future") && !resolved(obj)) next
-  
+
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
       }
@@ -290,10 +290,10 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=FALSE, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=FALSE, ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
-    if (recursive) recursive <- Inf
+    if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   } else {
     recursive <- as.numeric(recursive)
   }
@@ -362,7 +362,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchroneously
         if (inherits(obj, "Future") && !resolved(obj)) next
-  
+
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
       }

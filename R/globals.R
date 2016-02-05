@@ -133,9 +133,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## set.  /HB 2016-02-04
   if (resolve && length(globals) > 0L) {
     mdebug("Resolving futures part of globals (recursively) ...")
-    recursive <- getOption("future.globals.recursive", 99)
-    mdebug("Recursion depth: %s", recursive)
-    globals <- resolve(globals, value=TRUE, recursive=recursive)
+    globals <- resolve(globals, value=TRUE, recursive=TRUE)
     mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
 
