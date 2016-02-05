@@ -10,6 +10,9 @@
 #' @param x an environment holding futures.
 #' @param idxs subset of elements to check.
 #' @param value If TRUE, the values are retrieved, otherwise not.
+#' @param recursive A non-negative number specifying how deep of
+#' a recursion should be done.  If TRUE, an infintive recursion
+#' is used.  If FALSE or zero, no recursion is performed.
 #' @param sleep Number of seconds to wait before checking
 #' if futures have been resolved since last time.
 #' @param progress If TRUE textual progress summary is outputted.
@@ -28,7 +31,7 @@ resolve <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progr
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
     if (recursive) recursive <- Inf
@@ -38,31 +41,20 @@ resolve.Future <- function(x, value=FALSE, recursive=FALSE, sleep=1.0, progress=
   ## Nothing to do?
   if (recursive < 0) return(x)
 
-  if (value) {
-    ## Allow for errors
-    tryCatch({
-      v <- value(future)
-
-      ## Recursively resolve the value
-      resolve(v, value=TRUE, recursive=recursive-1L)
-    }, error = function(ex) {})
-
-    ## Done
-    return(x)
-  }
-
   ## Pool for Future to finish
   while (!resolved(x)) {
     Sys.sleep(sleep)
   }
 
+  mdebug("A %s was resolved", class(x)[1])
+
   if (value) {
     ## Allow for errors
     tryCatch({
       v <- value(future)
 
       ## Recursively resolve the value
-      v <- resolve(v, value=TRUE, recursive=recursive-1L)
+      v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
     }, error = function(ex) {})
   }
 
@@ -134,32 +126,34 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
     x <- x[idxs]
   }
 
-  ## Everything but futures are considered resolved by default
-  resolved <- !sapply(x, FUN=inherits, "Future")
+  ## Everything is considered non-resolved by default
+  nx <- length(x)
+  resolved <- logical(nx)
 
   ## Total number of values to resolve
-  total <- length(resolved)
-  remaining <- which(!resolved)
+  total <- nx
+  remaining <- seq_len(nx)
 
   if (hasProgress) {
-    done <- total - length(remaining)
-    done0 <- done
+    done0 <- done <- 0
     progress(done, total)
   }
 
+  ## Resolve all elements
   while (!all(resolved)) {
     for (ii in remaining) {
-      future <- x[[ii]]
-      if (!resolved(future)) next
+      obj <- x[[ii]]
 
-      ## Retrieve value?
-      if (value) {
-        ## Allow for errors
-        tryCatch({ value(future) }, error = function(ex) {})
-      }
+      ## If an unresolved future, move on to the next object
+      ## so that future can be resolved in the asynchroneously
+      if (inherits(obj, "Future") && !resolved(obj)) next
 
+      ## In all other cases, try to resolve
+      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+
+      ## Assume resolved at this point
       resolved[ii] <- TRUE
-      remaining <- which(!resolved)
+      remaining <- remaining[!resolved]
 
       if (hasProgress) {
         done <- total - length(remaining)
@@ -168,7 +162,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    remaining <- which(!resolved)
+    remaining <- remaining[!resolved]
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
@@ -179,7 +173,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, 
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
+resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=FALSE, ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
     if (recursive) recursive <- Inf
@@ -193,7 +187,10 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...)
   if (length(x) == 0) return(x)
 
   ## Subset?
-  if (!is.null(idxs)) {
+  if (is.null(idxs)) {
+    ## names(x) is only supported in R (>= 3.2.0)
+    idxs <- ls(envir=x, all.names=TRUE)
+  } else {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
@@ -212,40 +209,46 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...)
     }
   }
 
-  ## Identify all futures
-  if (is.null(idxs)) {
-    futures <- futureOf(envir=x, drop=TRUE)
-    ## names(x) is only supported in R (>= 3.2.0)
-    idxs <- ls(envir=x, all.names=TRUE)
-  } else {
-    futures <- lapply(idxs, FUN=function(idx) {
-      futureOf(x[[idx]], mustExist=FALSE)
-    })
-    keep <- sapply(futures, FUN=inherits, "Future")
-    futures <- futures[keep]
-  }
-
   ## Nothing to do?
-  if (length(futures) == 0) return(x)
+  nx <- length(idxs)
+  if (nx == 0) return(x)
 
-  ## Resolve all futures
-  resolve(futures, value=value, ...)
+  ## Everything is considered non-resolved by default
+  resolved <- logical(nx)
+  names(resolved) <- idxs
 
-  ## Touch every element?
-  ## (to trigger removal of internal futures)
-  if (value) {
-    for (key in idxs) {
-      ## Allow for errors
-      tryCatch({ force(x[[key]]) }, error = function(ex) {})
-    }
-  }
+  ## Total number of values to resolve
+  total <- nx
+  remaining <- idxs
+
+  ## Resolve all elements
+  while (!all(resolved)) {
+    for (ii in remaining) {
+      obj <- x[[ii]]
+
+      ## If an unresolved future, move on to the next object
+      ## so that future can be resolved in the asynchroneously
+      if (inherits(obj, "Future") && !resolved(obj)) next
+
+      ## In all other cases, try to resolve
+      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+
+      ## Assume resolved at this point
+      resolved[ii] <- TRUE
+      remaining <- remaining[!resolved]
+    } # for (ii ...)
+
+    ## Wait a bit before checking again
+    remaining <- remaining[!resolved]
+    if (length(remaining) > 0) Sys.sleep(sleep)
+  } # while (...)
 
   x
-}
+} ## resolve() for environment
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=FALSE, ...) {
   if (is.logical(recursive)) {
     recursive <- as.numeric(recursive)
     if (recursive) recursive <- Inf
@@ -259,7 +262,9 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
   if (length(x) == 0) return(x)
 
   ## Subset?
-  if (!is.null(idxs)) {
+  if (is.null(idxs)) {
+    idxs <- seq_along(x)
+  } else {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
@@ -287,32 +292,39 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
     }
   }
 
-  ## Identify all futures
-  if (is.null(idxs)) {
-    futures <- futureOf(envir=x, drop=TRUE)
-    idxs <- seq_along(x)
-  } else {
-    futures <- lapply(idxs, FUN=function(idx) {
-      futureOf(x[[idx]], mustExist=FALSE)
-    })
-    keep <- sapply(futures, FUN=inherits, "Future")
-    futures <- futures[keep]
-  }
-
   ## Nothing to do?
-  if (length(futures) == 0) return(x)
+  nx <- length(idxs)
+  if (nx == 0) return(x)
 
-  ## Resolve all futures
-  resolve(futures, value=value, ...)
 
-  ## Touch every element?
-  ## (to trigger removal of internal futures)
-  if (value) {
-    for (idx in idxs) {
-      ## Allow for errors
-      tryCatch({ force(x[[idx]]) }, error = function(ex) {})
-    }
-  }
+  ## Everything is considered non-resolved by default
+  resolved <- logical(nx)
+
+  ## Total number of values to resolve
+  total <- nx
+  remaining <- idxs
+
+  ## Resolve all elements
+  while (!all(resolved)) {
+    for (ii in remaining) {
+      obj <- x[[ii]]
+
+      ## If an unresolved future, move on to the next object
+      ## so that future can be resolved in the asynchroneously
+      if (inherits(obj, "Future") && !resolved(obj)) next
+
+      ## In all other cases, try to resolve
+      resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+
+      ## Assume resolved at this point
+      resolved[ii] <- TRUE
+      remaining <- remaining[!resolved]
+    } # for (ii ...)
+
+    ## Wait a bit before checking again
+    remaining <- remaining[!resolved]
+    if (length(remaining) > 0) Sys.sleep(sleep)
+  } # while (...)
 
   x
 }
