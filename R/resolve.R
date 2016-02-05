@@ -51,12 +51,12 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0
   if (value) {
     ## Allow for errors
     msg <- tryCatch({
-      v <- value(future)
+      v <- value(x)
 
       ## Recursively resolve the value
       v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
 
-      sprintf("%s and its value was collected", msg)
+      sprintf("%s and its value was collected (and resolved itself)", msg)
     }, error = function(ex) {
       sprintf("%s but failed to collect its value", msg)
     })
