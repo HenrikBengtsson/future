@@ -20,7 +20,7 @@
 #' every time a future is resolved.
 #' @param ... Not used
 #'
-#' @return Environment \code{x} (regardless of subsetting or not).
+#' @return Returns \code{x} (regardless of subsetting or not).
 #'
 #' @seealso futureOf
 #'
@@ -213,12 +213,16 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
   nx <- length(idxs)
   if (nx == 0) return(x)
 
+  ## Coerce future promises into Future objects
+  x0 <- x
+  x <- futures(x)
+  nx <- length(x)
+  idxs <- ls(envir=x, all.names=TRUE)
+  stopifnot(length(idxs) == nx)
+
   ## Everything is considered non-resolved by default
   resolved <- logical(nx)
   names(resolved) <- idxs
-
-  ## Total number of values to resolve
-  total <- nx
   remaining <- idxs
 
   ## Resolve all elements
@@ -243,7 +247,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  x
+  x0
 } ## resolve() for environment
 
 
@@ -296,13 +300,14 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
   nx <- length(idxs)
   if (nx == 0) return(x)
 
+  ## Coerce future promises into Future objects
+  x0 <- x
+  x <- futures(x)
+  nx <- length(x)
 
   ## Everything is considered non-resolved by default
   resolved <- logical(nx)
-
-  ## Total number of values to resolve
-  total <- nx
-  remaining <- idxs
+  remaining <- seq_len(nx)
 
   ## Resolve all elements
   while (!all(resolved)) {
@@ -326,5 +331,5 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  x
+  x0
 }
