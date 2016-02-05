@@ -22,12 +22,68 @@
 #' @seealso futureOf
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+resolve.default <- function(x, ...) x
+
+#' @export
+resolve.Future <- function(x, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+  if (is.logical(recursive)) {
+    recursive <- as.numeric(recursive)
+    if (recursive) recursive <- Inf
+  } else {
+    recursive <- as.numeric(recursive)
+  }
+  ## Nothing to do?
+  if (recursive < 0) return(x)
+
+  if (value) {
+    ## Allow for errors
+    tryCatch({
+      v <- value(future)
+
+      ## Recursively resolve the value
+      resolve(v, value=TRUE, recursive=recursive-1L)
+    }, error = function(ex) {})
+
+    ## Done
+    return(x)
+  }
+
+  ## Pool for Future to finish
+  while (!resolved(x)) {
+    Sys.sleep(sleep)
+  }
+
+  if (value) {
+    ## Allow for errors
+    tryCatch({
+      v <- value(future)
+
+      ## Recursively resolve the value
+      v <- resolve(v, value=TRUE, recursive=recursive-1L)
+    }, error = function(ex) {})
+  }
+
+  x
+} ## resolve() for Future
+
+
+#' @export
+resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) {
+  if (is.logical(recursive)) {
+    recursive <- as.numeric(recursive)
+    if (recursive) recursive <- Inf
+  } else {
+    recursive <- as.numeric(recursive)
+  }
+  ## Nothing to do?
+  if (recursive < 0) return(x)
+
   ## Nothing to do?
   if (length(x) == 0) return(x)
+
   x0 <- x
 
   hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
@@ -123,7 +179,16 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, sleep=1.0, progress=getOptio
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, ...) {
+resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
+  if (is.logical(recursive)) {
+    recursive <- as.numeric(recursive)
+    if (recursive) recursive <- Inf
+  } else {
+    recursive <- as.numeric(recursive)
+  }
+  ## Nothing to do?
+  if (recursive < 0) return(x)
+
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
@@ -180,7 +245,16 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, ...) {
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, ...) {
+  if (is.logical(recursive)) {
+    recursive <- as.numeric(recursive)
+    if (recursive) recursive <- Inf
+  } else {
+    recursive <- as.numeric(recursive)
+  }
+  ## Nothing to do?
+  if (recursive < 0) return(x)
+
   ## Nothing to do?
   if (length(x) == 0) return(x)
 
