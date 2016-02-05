@@ -5,10 +5,15 @@ Version: 0.11.0-9000 [2016-02-04]
 o Add multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.
-o Now any global variable that is a future is resolved and turned
-  into a "constant" future before being frozen/exported.  If
-  multiple such "global" futures are detected, they are resolved
-  such that the waiting time for resolving the values is minimized.
+o Now all global variables are resolved for futures, i.e. if they
+  themselves are futures they are resolved but also if they are
+  containers (lists or environments) their elements are recursively
+  resolved.  This is done because not all types of futures can be
+  resolved from within other types of futures.  In order for futures
+  to work the same regardless of how they are resolved, we choose
+  the conservative strategy and require all global futures to be
+  resolved.
+o resolve() gained argument 'recursive'.
 o Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
 

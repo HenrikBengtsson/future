@@ -7,8 +7,6 @@ setTimeLimit(cpu=10, elapsed=10, transient=TRUE)
 
 message("*** Tricky use cases related to globals (part 2) ...")
 
-library("future")
-
 ## Allow for two (sic!) background processes
 plan(multisession, maxCores=3L)
 
@@ -21,24 +19,18 @@ env$a %<=% { 5 }
 b %<=% { "a" }
 
 ## Resolve future #2 (frees up background process #2)
-message(sprintf("b=%s\n", b))
-
-#resolve(env, value=TRUE)
+message(sprintf("b=%s\n", sQuote(b)))
 
 ## Create future #3 (consumes background process #2)
 ## THIS IS THE TRICKY PART:
 ## Two globals are identified `env` and `b` and both are resolved.
 ## However, object `env[[b]]` (here element `a` of environment `env`)
 ## is not touched and therefore not resolved (since it is a future)
-## unless environment `env` is recursively resolved. (Issue #49)
+## unless environment `env` is resolved recursively. (Issue #49)
 y %<=% { env[[b]] }
-res <- try({
+
 ## Resolve future #3
 message(sprintf("y=%s\n", y))
-})
-
-## Until Issue #49 is fixed, we'll get a timeout error
-stopifnot(inherits(res, "try-error"))
 
 ## Resolve future #1 if not already done
 str(as.list(env))

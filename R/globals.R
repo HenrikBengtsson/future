@@ -77,6 +77,9 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   }
 
   ## Resolve futures and turn into already-resolved "constant" futures
+  ## We restrict ourselves to this here in order to avoid having to
+  ## recursively try to resolve everything in every global which may
+  ## or may not point to packages (include base R package)
   if (resolve && length(globals) > 0L) {
     mdebug("Resolving globals that are futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
@@ -89,33 +92,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     }
     idxs <- NULL ## Not needed anymore
     mdebug("Resolving global that are futures ... DONE")
-
-
-    mdebug("Resolving globals that may contain futures ...")
-
-    mdebug("Checking environments ...")
-    idxs <- which(unlist(lapply(globals, FUN=is.environment)))
-    mdebug("Number of environments: %d", length(idxs))
-    if (length(idxs) > 0) {
-      mdebug("Global environments: %s", hpaste(sQuote(names(globals[idxs]))))
-      globals[idxs] <- values(globals[idxs])
-    }
-    idxs <- NULL ## Not needed anymore
-    mdebug("Checking environments ... DONE")
-
-
-    mdebug("Checking lists ...")
-    idxs <- which(unlist(lapply(globals, FUN=is.environment)))
-    mdebug("Number of lists: %d", length(idxs))
-    if (length(idxs) > 0) {
-      mdebug("Global lists: %s", hpaste(sQuote(names(globals[idxs]))))
-      globals[idxs] <- values(globals[idxs])
-    }
-    idxs <- NULL ## Not needed anymore
-    mdebug("Checking lists ... DONE")
-
-    mdebug("Resolving globals that may contain futures ... DONE")
   }
+
 
   pkgs <- NULL
   if (length(globals) > 0L) {
@@ -145,6 +123,22 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## part of 'pkgs' if needed.
     globals <- cleanup(globals)
   }
+
+
+  ## Resolve all remaing globals
+  ## FIXME: Should we resolve package names spaces too? Should
+  ## We assume they can contain futures?  We do it for now, but
+  ## if this turns out to be too expensive, maybe we should
+  ## only dive into such environments if they have a certain flag
+  ## set.  /HB 2016-02-04
+  if (resolve && length(globals) > 0L) {
+    mdebug("Resolving futures part of globals (recursively) ...")
+    recursive <- getOption("future.globals.recursive", 99)
+    mdebug("Recursion depth: %s", recursive)
+    globals <- resolve(globals, value=TRUE, recursive=recursive)
+    mdebug("Resolving futures part of globals (recursively) ... DONE")
+  }
+
 
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
