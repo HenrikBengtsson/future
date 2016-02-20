@@ -3,7 +3,7 @@ Version: 0.11.0-9000
 Title: A Future API for R
 Imports:
     digest,
-    globals (>= 0.6.0),
+    globals (>= 0.6.1),
     listenv (>= 0.6.0),
     parallel
 Suggests:
