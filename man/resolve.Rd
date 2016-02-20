@@ -28,7 +28,7 @@ every time a future is resolved.}
 \item{...}{Not used}
 }
 \value{
-Environment \code{x} (regardless of subsetting or not).
+Returns \code{x} (regardless of subsetting or not).
 }
 \description{
 The environment is first scanned for futures and then the futures
