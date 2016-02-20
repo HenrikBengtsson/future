@@ -1,6 +1,6 @@
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=TRUE) {
+exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", TRUE)) {
   gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve)
   globals <- gp$globals
 
@@ -19,7 +19,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=TRUE) {
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils head object.size
 #' @importFrom parallel clusterCall
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=TRUE, ...) {
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", TRUE), ...) {
   ## Local functions
   attachedPackages <- function() {
     pkgs <- search()
