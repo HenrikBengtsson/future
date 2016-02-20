@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=TRUE, future.debug=TRUE)
 setTimeLimit(cpu=10, elapsed=10, transient=TRUE)
 
 message("*** Tricky use cases related to globals (part 2) ...")

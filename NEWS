@@ -8,17 +8,17 @@ o It is only the R process that created a future that can resolve it.
 o Add multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.
-o Now all global variables are resolved for futures, i.e. if they
-  themselves are futures they are resolved but also if they are
-  containers (lists or environments) their elements are recursively
-  resolved.  This is done because not all types of futures can be
-  resolved from within other types of futures.  In order for futures
-  to work the same regardless of how they are resolved, we choose
-  the conservative strategy and require all global futures to be
-  resolved.
 o resolve() gained argument 'recursive'.
 o Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
+o Added option 'future.globals.resolve' for controling whether global
+  variables should be resolved for futures or not.  If TRUE, then
+  globals are searched recursively for any futures and if found such
+  "global" futures are resolved.  If FALSE, global futures are not
+  located, but if they are later trying to be resolved by the parent
+  future, then an informative error message is generated clarifying
+  that only the R process that created the future can resolve it.
+  The default is currently FALSE.
 o FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
   if _R_CHECK_LIMIT_CORES_ is set.
 
