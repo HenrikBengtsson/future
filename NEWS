@@ -19,6 +19,8 @@ o Now all global variables are resolved for futures, i.e. if they
 o resolve() gained argument 'recursive'.
 o Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
+o FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
+  if _R_CHECK_LIMIT_CORES_ is set.
 
 
 Version: 0.11.0 [2016-01-15]
