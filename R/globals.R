@@ -110,6 +110,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     names(keep) <- names
     for (name in names) {
       pkg <- environmentName(where[[name]])
+      pkg <- gsub("^package:", "", pkg)
       if (pkg %in% pkgs) {
         ## Only drop exported objects
         if (exists(name, envir=asPkgEnvironment(pkg)))

@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.11.0-9000 [2016-02-19]
+Version: 0.11.0-9000 [2016-02-20]
 o It is only the R process that created a future that can resolve it.
   If a non-resolved future is queried by another R process, then an
   informative error is generated explaining that this is not possible.
@@ -19,6 +19,8 @@ o Added option 'future.globals.resolve' for controling whether global
   future, then an informative error message is generated clarifying
   that only the R process that created the future can resolve it.
   The default is currently FALSE.
+o FIX: Exports of objects available in packages already attached
+  by the future were still exported.
 o FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
   if _R_CHECK_LIMIT_CORES_ is set.
 
