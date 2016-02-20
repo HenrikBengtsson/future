@@ -36,6 +36,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
+  core$owner <- uuid()
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
