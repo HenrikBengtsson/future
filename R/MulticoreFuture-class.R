@@ -40,6 +40,10 @@ importMulticore <- function(name=NULL) {
 run <- function(...) UseMethod("run")
 
 run.MulticoreFuture <- function(future, ...) {
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
   mcparallel <- importMulticore("mcparallel")
   expr <- future$expr
   envir <- future$envir
@@ -67,6 +71,10 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(x)
+
   selectChildren <- importMulticore("selectChildren")
   job <- x$job
   stopifnot(inherits(job, "parallelJob"))
@@ -85,6 +93,10 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
   }
+
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
 
   ## If not, wait for process to finish, and
   ## then collect and record the value

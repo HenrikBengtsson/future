@@ -67,6 +67,10 @@ importCluster <- function(name=NULL) {
 
 #' @importFrom parallel clusterExport
 run.ClusterFuture <- function(future, ...) {
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
   expr <- future$expr
@@ -179,6 +183,10 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(x)
+
   cluster <- x$cluster
   node <- x$node
   cl <- cluster[[node]]
@@ -192,12 +200,16 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 
 #' @export
 value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
-  recvResult <- importCluster("recvResult")
-
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
   }
+
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
+  recvResult <- importCluster("recvResult")
 
   cluster <- future$cluster
   node <- future$node

@@ -1,7 +1,10 @@
 Package: future
 ===============
 
-Version: 0.11.0-9000 [2016-02-04]
+Version: 0.11.0-9000 [2016-02-19]
+o It is only the R process that created a future that can resolve it.
+  If a non-resolved future is queried by another R process, then an
+  informative error is generated explaining that this is not possible.
 o Add multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.

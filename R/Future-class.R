@@ -49,6 +49,21 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
 }
 
 
+#' Checks whether Future is owned by the current process or not
+assertOwner <- function(future, ...) {
+  hpid <- function(uuid) {
+    info <- attr(uuid, "info")
+    sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+  }
+
+  if (!all.equal(future$owner, uuid(), check.attributes=FALSE)) {
+    msg <- sprintf("Invalid usage of futures: A future can only be queried by the R process (%s) that created it, not by another R process (%s)", hpid(future$owner), hpid(uuid()))
+    stop(msg)
+  }
+  invisible(future)
+}
+
+
 #' The value of a future
 #'
 #' Gets the value of a future.  If the future is unresolved, then
