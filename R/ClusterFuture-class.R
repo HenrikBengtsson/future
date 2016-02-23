@@ -217,7 +217,14 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
-  res <- recvResult(cl)
+  ack <- tryCatch({
+    res <- recvResult(cl)
+    TRUE
+  }, simpleError = function(ex) ex)
+  if (inherits(ack, "simpleError")) {
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster node #%d on %s.  The reason reported was %s", class(future)[1], hexpr(future$expr), node, cl$host, sQuote(ack$message))
+    stop(msg)
+  }
 
   ## An error?
   if (inherits(res, "try-error")) {
