@@ -9,7 +9,7 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param maxCores The maximum number of multisession future that
+#' @param maxCores The maximum number of multisession futures that
 #' can be active at the same time before blocking.
 #' @param \dots Not used.
 #'
@@ -48,6 +48,11 @@
 #' which requires that all R sessions are created at once.
 #'
 #' @seealso
+#' For processing in multiple forked R sessions, see
+#' \link{multicore} futures.
+#' For multicore processing with fallback to multisession where
+#' the former is not supported, see \link{multiprocess} futures.
+#'
 #' Use \code{\link{availableCores}()} to see the total number of
 #' cores that are available for the current R session.
 #'
@@ -71,6 +76,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=a
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)
 }
+class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
 
 
 #' @importFrom parallel makeCluster stopCluster

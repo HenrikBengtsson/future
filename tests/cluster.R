@@ -10,7 +10,7 @@ message("Cluster type: ", parallel:::getClusterOption("type"))
 message("Library paths: ", paste(sQuote(.libPaths()), collapse=", "))
 message("Package path: ", sQuote(system.file(package="future")))
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:2) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 

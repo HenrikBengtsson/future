@@ -35,3 +35,4 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, cluster=NULL, .
   future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)
 }
+class(cluster) <- c("cluster", "multiprocess", "future", "function")

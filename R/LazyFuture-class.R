@@ -21,16 +21,9 @@
 #' @keywords internal
 LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
-  }
-  f <- Future(expr=expr, envir=envir, local=local, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }
-
-
-evaluate.LazyFuture <- evaluate.EagerFuture
 
 #' @export
 resolved.LazyFuture <- function(x, ...) {

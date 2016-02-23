@@ -47,12 +47,16 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     expr <- substitute(local(a), list(a=expr))
   }
 
-  f <- Future(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
 
 
+## We are currently importing the following non-exported functions:
+## * parallel:::defaultCluster()
+## * parallel:::recvResult()
+## * parallel:::sendCall()
 importCluster <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
@@ -67,6 +71,10 @@ importCluster <- function(name=NULL) {
 
 #' @importFrom parallel clusterExport
 run.ClusterFuture <- function(future, ...) {
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
   expr <- future$expr
@@ -179,6 +187,10 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(x)
+
   cluster <- x$cluster
   node <- x$node
   cl <- cluster[[node]]
@@ -192,12 +204,16 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 
 #' @export
 value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
-  recvResult <- importCluster("recvResult")
-
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
   }
+
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
+  recvResult <- importCluster("recvResult")
 
   cluster <- future$cluster
   node <- future$node
@@ -205,7 +221,16 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
-  res <- recvResult(cl)
+  ack <- tryCatch({
+    res <- recvResult(cl)
+    TRUE
+  }, simpleError = function(ex) ex)
+
+  if (inherits(ack, "simpleError")) {
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster node #%d on %s.  The reason reported was %s", class(future)[1], hexpr(future$expr), node, cl$host, sQuote(ack$message))
+    stop(msg)
+  }
+  stopifnot(isTRUE(ack))
 
   ## An error?
   if (inherits(res, "try-error")) {
@@ -235,7 +260,7 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 }
 
 
-requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=1.01) {
+requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 600L))), delta=getOption("future.interval", 0.001), alpha=getOption("future.alpha", 1.01)) {
   stopifnot(is.function(await))
   stopifnot(inherits(cluster, "cluster"))
   maxTries <- as.integer(maxTries)

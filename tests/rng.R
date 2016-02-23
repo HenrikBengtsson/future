@@ -8,7 +8,7 @@ message("*** rng ...")
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
-fsample <- function(x, size=10L, seed=NULL) {
+fsample <- function(x, size=4L, seed=NULL) {
   oseed <- .GlobalEnv$.Random.seed
   orng <- RNGkind("L'Ecuyer-CMRG")[1L]
   on.exit(RNGkind(orng))

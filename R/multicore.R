@@ -13,7 +13,7 @@
 #' in time when the future is created (always before it is resolved),
 #' that is, they identified and located.  If some globals fail to be
 #' located, an informative error is generated.
-#' @param maxCores The maximum number of CPU cores that can
+#' @param maxCores The maximum number of multicore futures that can
 #' be active at the same time before blocking.
 #' @param \dots Not used.
 #'
@@ -46,6 +46,11 @@
 #' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
+#' For processing in multiple background R sessions, see
+#' \link{multisession} futures.
+#' For multicore processing with fallback to multisession where
+#' the former is not supported, see \link{multiprocess} futures.
+#'
 #' Use \code{\link{availableCores}()} to see the total number of
 #' cores that are available for the current R session.
 #' Use \code{\link{availableCores}("multicore") > 1L} to check
@@ -69,7 +74,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
 
   ## Validate globals at this point in time?
   if (globals) {
-    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression)
+    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
   oopts <- options(mc.cores=maxCores)
@@ -78,6 +83,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
   run(future)
 }
+class(multicore) <- c("multicore", "multiprocess", "future", "function")
 
 
 
