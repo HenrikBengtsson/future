@@ -24,6 +24,10 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, .
 }
 
 
+## We are currently importing the following non-exported functions:
+## * parallel:::mccollect()
+## * parallel:::mcparallel()
+## * parallel:::selectChildren()
 importMulticore <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {

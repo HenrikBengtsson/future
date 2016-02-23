@@ -53,6 +53,10 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
 
 
+## We are currently importing the following non-exported functions:
+## * parallel:::defaultCluster()
+## * parallel:::recvResult()
+## * parallel:::sendCall()
 importCluster <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
