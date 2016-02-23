@@ -83,6 +83,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
   run(future)
 }
+class(multicore) <- c("multicore", "multiprocess", "future", "function")
 
 
 

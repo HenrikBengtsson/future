@@ -33,20 +33,24 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
 evaluate <- function(...) UseMethod("evaluate")
 
 evaluate.UniprocessFuture <- function(future, ...) {
- if (future$state %in% c('finished', 'failed', 'interrupted')) {
-   return(invisible(future))
- }
+  if (future$state %in% c('finished', 'failed', 'interrupted')) {
+    return(invisible(future))
+  }
 
- ## Run future
- future$state <- 'running'
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
 
- tryCatch({
-   future$value <- eval(future$expr, envir=future$envir)
-   future$state <- 'finished'
- }, simpleError = function(ex) {
-   future$state <- 'failed'
-   future$value <- ex
- })
+  ## Run future
+  future$state <- 'running'
 
- invisible(future)
+  tryCatch({
+    future$value <- eval(future$expr, envir=future$envir)
+    future$state <- 'finished'
+  }, simpleError = function(ex) {
+    future$state <- 'failed'
+    future$value <- ex
+  })
+
+  invisible(future)
 }

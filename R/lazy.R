@@ -53,3 +53,4 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
 
   LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
 }
+class(lazy) <- c("lazy", "uniprocess", "future", "function")

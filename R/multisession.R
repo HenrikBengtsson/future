@@ -76,6 +76,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=a
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
   run(future)
 }
+class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
 
 
 #' @importFrom parallel makeCluster stopCluster

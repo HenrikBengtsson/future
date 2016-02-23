@@ -36,6 +36,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
+  core$owner <- uuid()
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -45,6 +46,21 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   for (key in names(args)) core[[key]] <- args[[key]]
 
   structure(core, class=c("Future", class(core)))
+}
+
+
+## Checks whether Future is owned by the current process or not
+assertOwner <- function(future, ...) {
+  hpid <- function(uuid) {
+    info <- attr(uuid, "info")
+    sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+  }
+
+  if (!isTRUE(all.equal(future$owner, uuid(), check.attributes=FALSE))) {
+    stop(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)))
+  }
+
+  invisible(future)
 }
 
 

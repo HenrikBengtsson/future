@@ -33,3 +33,4 @@ multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TR
   fun <- if (supportsMulticore()) multicore else multisession
   fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, maxCores=maxCores, ...)
 }
+class(multiprocess) <- c("multiprocess", "future", "function")

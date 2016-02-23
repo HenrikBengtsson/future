@@ -18,10 +18,14 @@
 #'
 #' @export
 #' @export resolved
+#' @aliases resolved.default
 #' @aliases resolved.Future
 #' @aliases resolved.list
 #' @aliases resolved.environment
 resolved <- function(x, ...) UseMethod("resolved")
+
+#' @export
+resolved.default <- function(x, ...) TRUE
 
 #' @export
 resolved.list <- function(x, ...) {

@@ -2,7 +2,7 @@ library("future")
 library("listenv")
 
 ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=TRUE, future.debug=TRUE)
 ##setTimeLimit(cpu=180, elapsed=180, transient=TRUE)
 
 message("*** Tricky use cases related to globals ...")
@@ -77,6 +77,7 @@ for (cores in 1:min(3L, availableCores())) {
 
       ## Assert that `a` is resolved and turned into a constant future
       ## at the moment when future `b` is created.
+      ## Requires options(future.globals.resolve=TRUE).
       a <- future(1)
       b <- future(value(a)+1)
       rm(list="a")
