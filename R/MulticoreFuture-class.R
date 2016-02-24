@@ -109,6 +109,14 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
   stopifnot(inherits(job, "parallelJob"))
   res <- mccollect(job, wait=TRUE)[[1L]]
 
+  ## SPECIAL: Check for fallback 'fatal error in wrapper code'
+  ## try-error from parallel:::mcparallel().  If detected, then
+  ## turn into an error with a more informative error message, cf.
+  ## https://github.com/HenrikBengtsson/future/issues/35
+  if (identical(res, structure("fatal error in wrapper code", class="try-error"))) {
+    stop(sprintf("Detected an error ('%s') by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evalutes the future was terminated before it was completed.", res, class(future)[1], sQuote(hexpr(future$expr))))
+  }
+
   ## Update value and state
   condition <- attr(res, "condition")
   if (inherits(condition, "simpleError")) {

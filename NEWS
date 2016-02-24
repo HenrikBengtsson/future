@@ -12,6 +12,9 @@ o ROBUSTNESS: It is only the R process that created a future that can
   resolve it. If a non-resolved future is queried by another R process,
   then an informative error is generated explaining that this is not
   possible.
+o ROBUSTNESS: Now value() for multicore futures detects if the underlying 
+  forked R process was terminated before completing and if so generates
+  an informative error messages.
 o SPEED: Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
 o GLOBALS: resolve() gained argument 'recursive'.
