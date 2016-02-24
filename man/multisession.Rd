@@ -16,7 +16,7 @@ is done and from which globals are obtained.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{maxCores}{The maximum number of multisession future that
+\item{maxCores}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
 \item{\dots}{Not used.}
@@ -89,6 +89,11 @@ stopifnot(v == 0)
 }
 }
 \seealso{
+For processing in multiple forked R sessions, see
+\link{multicore} futures.
+For multicore processing with fallback to multisession where
+the former is not supported, see \link{multiprocess} futures.
+
 Use \code{\link{availableCores}()} to see the total number of
 cores that are available for the current R session.
 }

@@ -1,8 +1,39 @@
 Package: future
 ===============
 
+Version: 0.12.0 [2016-02-23]
+o Added multiprocess futures, which are multicore futures if supported,
+  otherwise multisession futures.  This makes it possible to use
+  plan(multiprocess) everywhere regardless of operating system.
+o Future strategy functions gained class attributes such that it is 
+  possible to test what type of future is currently used, e.g.
+  inherits(plan(), "multicore").
+o ROBUSTNESS: It is only the R process that created a future that can 
+  resolve it. If a non-resolved future is queried by another R process,
+  then an informative error is generated explaining that this is not
+  possible.
+o ROBUSTNESS: Now value() for multicore futures detects if the underlying 
+  forked R process was terminated before completing and if so generates
+  an informative error messages.
+o SPEED: Adjusted the parameters for the schema used to wait for next
+  available cluster node such that nodes are polled more frequently.
+o GLOBALS: resolve() gained argument 'recursive'.
+o GLOBALS: Added option 'future.globals.resolve' for controling whether 
+  global variables should be resolved for futures or not.  If TRUE, then
+  globals are searched recursively for any futures and if found such
+  "global" futures are resolved.  If FALSE, global futures are not
+  located, but if they are later trying to be resolved by the parent
+  future, then an informative error message is generated clarifying
+  that only the R process that created the future can resolve it.
+  The default is currently FALSE.
+o FIX: Exports of objects available in packages already attached
+  by the future were still exported.
+o FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
+  if _R_CHECK_LIMIT_CORES_ is set.
+
+
 Version: 0.11.0 [2016-01-15]
-o All futures now validates globals by default (globals=TRUE).
+o GLOBALS: All futures now validates globals by default (globals=TRUE).
 o Add multisession futures, which analogously to multicore ones,
   use multiple cores on the local machine with the difference
   that they are evaluated in separate R session running in the

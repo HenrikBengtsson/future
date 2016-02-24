@@ -21,31 +21,6 @@
 #' @keywords internal
 EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
-  }
-  f <- Future(expr=expr, envir=envir, local=local, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("EagerFuture", class(f)))
-}
-
-evaluate <- function(...) UseMethod("evaluate")
-
-evaluate.EagerFuture <- function(future, ...) {
- if (future$state %in% c('finished', 'failed', 'interrupted')) {
-   return(invisible(future))
- }
-
- ## Run future
- future$state <- 'running'
-
- tryCatch({
-   future$value <- eval(future$expr, envir=future$envir)
-   future$state <- 'finished'
- }, simpleError = function(ex) {
-   future$state <- 'failed'
-   future$value <- ex
- })
-
- invisible(future)
 }

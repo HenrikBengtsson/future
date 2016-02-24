@@ -39,9 +39,17 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
 
   ## Validate globals at this point in time?
   if (globals) {
-    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression)
+    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
   future <- EagerFuture(expr=expr, envir=envir, local=local)
   evaluate(future)
 }
+class(eager) <- c("eager", "uniprocess", "future", "function")
+
+
+constant <- function(value, ...) {
+  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE)
+}
+class(constant) <- c("constant", "eager", "uniprocess", "future", "function")
+

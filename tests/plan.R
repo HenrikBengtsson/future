@@ -130,6 +130,13 @@ stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** %plan% eager")
 plan(lazy)
+
+## %plan% can operate on any expression, so it
+## works just as an withPlan({ ... }, plan=...)
+fun <- { plan() } %plan% eager
+f <- fun(1)
+stopifnot(inherits(f, "EagerFuture"))
+
 x %<=% { a <- 1 } %plan% eager
 stopifnot(identical(body(plan()), body(lazy)))
 

@@ -12,8 +12,8 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 
   # Abbreviate?
   if (n > maxHead + maxTail + 1) {
-    head <- x[seq(length=maxHead)]
-    tail <- rev(rev(x)[seq(length=maxTail)])
+    head <- x[seq_len(maxHead)]
+    tail <- rev(rev(x)[seq_len(maxTail)])
     x <- c(head, abbreviate, tail)
     n <- length(x)
   }
@@ -80,3 +80,31 @@ gassign <- function(name, value, envir=.GlobalEnv) {
 }
 
 geval <- function(expr, envir=.GlobalEnv) eval(expr, envir=envir)
+
+
+## A universally unique identifier (UUID) for the current
+## R process.  Generated only once.
+#' @importFrom digest digest
+uuid <- local({
+  value <- NULL
+  function() {
+    uuid <- value
+    if (!is.null(uuid)) return(uuid)
+    info <- Sys.info()
+    host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
+    host <- host[nzchar(host)][1]
+    info <- list(
+      host=host,
+      info=info,
+      pid=Sys.getpid(),
+      time=Sys.time(),
+      random=sample.int(.Machine$integer.max, size=1L)
+    )
+    uuid <- digest(info)
+    uuid <- strsplit(uuid, split="")[[1]]
+    uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
+    attr(uuid, "info") <- info
+    value <<- uuid
+    uuid
+  }
+})

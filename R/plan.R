@@ -128,7 +128,7 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession")) {
+supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession", "multiprocess")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }

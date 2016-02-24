@@ -78,20 +78,19 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   counts
 } # mandelbrot()
 
-tiles <- function() {
-  n <- getOption("R_FUTURE_DEMO_MANDELBROT_TILES", availableCores())
-  if (n > 16) {
-    tiles <- c(5, 5)
-  } else if (n >= 16) {
-    tiles <- c(4, 4)
-  } else if (n >= 12) {
-    tiles <- c(3, 4)
-  } else if (n >= 9) {
-    tiles <- c(3, 3)
-  } else if (n >= 6) {
-    tiles <- c(2, 3)
-  } else {
+tiles <- function(n=getOption("R_FUTURE_DEMO_MANDELBROT_TILES", availableCores())) {
+  if (n <= 4) {
     tiles <- c(2, 2)
+  } else if (n <= 6) {
+    tiles <- c(2, 3)
+  } else if (n <= 9) {
+    tiles <- c(3, 3)
+  } else if (n <= 12) {
+    tiles <- c(3, 4)
+  } else if (n <= 16) {
+    tiles <- c(4, 4)
+  } else {
+    tiles <- c(5, 5)
   }
   tiles
 } # tiles()

@@ -1,5 +1,5 @@
 <%@meta language="R-vignette" content="--------------------------------
-%\VignetteIndexEntry{Futures in R: Common issues with solutions}
+%\VignetteIndexEntry{A Future for R: Common Issues with Solutions}
 %\VignetteAuthor{Henrik Bengtsson}
 %\VignetteKeyword{R}
 %\VignetteKeyword{package}
@@ -11,17 +11,18 @@
 --------------------------------------------------------------------"%>
 # <%@meta name="title"%>
 
-In the ideal case all it takes to start using futures in R is to replace any standard assignment (`<-`) in your R code with a future assignment (`%<=%`) and make sure your right-hand side (RHS) expression is within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
+In the ideal case all it takes to start using futures in R is to replace select standard assignments (`<-`) in your R code with future assignments (`%<=%`) and make sure the right-hand side (RHS) expressions are within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
 However, there are few cases where you have to take extra precautions.  These are often related to how global variables are falsely identified in non-standard evaluation, e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
 
 _If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
 
+## Issues with globals
 
-## False globals due to non-standard evaluation
+### False globals due to non-standard evaluation
 
-### subset(data, x < 3)
+#### subset(data, x < 3)
 
 Consider the following use of `subset()`:
 ```r
@@ -40,7 +41,6 @@ Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "re
   object in the relevant environments: 'x'
 ```
 Above, code inspection of the future expression `subset(data, x < 3)$y` incorrectly identifies `x` as a global variables that needs to be captured ("frozen") for the (lazy) future.  Since no such variable `x` exists, we get an error.
-The same error would be reported when using `plan(eager, globals=TRUE)` or `plan(multicore, globals=TRUE)`, which validates globals _before_ the future is created.
 
 The most clear and backward-compatible solution to this problem is to explicitly specify the context of `x`, i.e.
 ```r
@@ -59,7 +59,7 @@ An alternative is to use a dummy variable.  In contrast to the code-inspection a
 [1] 1 2
 ```
 
-### ggplot2
+#### ggplot2
 Another common use case for non-standard evaluation is when creating ggplot2 figures.  For instance, in
 ```r
 > library(ggplot2)
@@ -94,9 +94,9 @@ A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
 By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
 
 
-## Missing or incorrect globals
+### Missing or incorrect globals
 
-### Global variable obscured by subassignment
+#### Global variable obscured by subassignment
 When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
 For example,
 ```r
@@ -146,7 +146,7 @@ instead of
 ```r
 do.call("file_ext", list("foo.txt"))
 ```
-so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem when futures are evaluated in external R sessions, such as on a cluster.
+so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
 It may also become a problem with lazy futures an the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
@@ -163,7 +163,70 @@ It may also become a problem with lazy futures an the intended function is redef
 [1] "haha!" "haha!" "haha!"
 ```
 
-## Error "non-numeric argument to binary operator"
+
+### Trying to pass an unresolve future to another future
+It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
+```r
+> library("future")
+> plan(multisession, maxCores=3L)
+> f1 <- future({ Sys.getpid() })
+> f2 <- future({ value(f1) })
+> v1 <- value(f1)
+[1] 7464
+> v2 <- value(f2)
+Error: Invalid usage of futures: A future whose value has not yet been collected
+ can only be queried by the R process (cdd013cb-e045-f4a5-3977-9f064c31f188; pid
+ 1276 on MyMachine) that created it, not by any other R processes (5579f789-e7b6
+ -bace-c50d-6c7a23ddb5a3; pid 2352 on MyMachine): {; Sys.getpid(); }
+```
+This is because the main R process creates two futures, but then the second future tries to retrieve the value of the first one.  This is an invalid request because the second future has no channel to communicate with the first future; it is only the process that created a future who can communicate with it(*).
+
+Note that it is only _unresolved_ futures that cannot be queried this way.  Thus, the solution to the above problem is to make sure all futures are resolved before they are passed to other futures, e.g.
+```r
+> f1 <- future({ Sys.getpid() })
+> v1 <- value(f1)
+> v1
+[1] 7464
+> f2 <- future({ value(f1) })
+> v2 <- value(f2)
+> v2
+[1] 7464
+```
+This works because the value has already been collected and stored inside future `f1` before future `f2` is created.  Since the value is already stored internally, `value(f1)` is readily available everywhere.  Of course, instead of using `value(f1)` for the second future, it would be more readable and cleaner to simply use `v1`.
+
+The above is typically not a problem when future assignments are used.  For example:
+```r
+> v1 %<=% { Sys.getpid() })
+> v2 %<=% { v1 }
+> v1
+[1] 2352
+> v2
+[1] 2352
+```
+The reason that this approach works out of the box is because in the second future assignment `v1` is identified as a global variable, which is retrieved.  Up to this point, `v1` is a promise ("delayed assignment" in R), but when it is retrieved as a global variable its value is resolved and `v1` becomes a regular variable.
+
+However, there are cases where future assignments can be passed via global variables without being resolved.  This can happen if the future assignment is done to an element of an environment (including list environments).  For instance,
+```r
+> library("listenv")
+> x <- listenv()
+> x$a %<=% { Sys.getpid() }
+> x$b %<=% { x$a }
+> x$a
+[1] 2352
+> x$b
+Error: Invalid usage of futures: A future whose value has not yet been collected
+ can only be queried by the R process (cdd013cb-e045-f4a5-3977-9f064c31f188; pid
+ 1276 on localhost) that created it, not by any other R processes (2ce86ccd-5854
+ -7a05-1373-e1b20022e4d8; pid 7464 on localhost): {; Sys.getpid(); }
+```
+As previously, this can be avoided by making sure `x$a` is resolved first, which can be one in various ways, e.g. `dummy <- x$a`, `resolve(x$a)` and `force(x$a)`.
+
+_Footnote_: (*) Although certain types of futures, such as eager and lazy ones, could be passed on to other futures and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of type of futures.
+
+
+## Miscellanous
+
+### Error "non-numeric argument to binary operator"
 The future assignment operator `%<=%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
 > x %<=% 2 * runif(1)
@@ -187,4 +250,4 @@ Parentheses will also do.  For details on precedence on operators in R, see Sect
 [async]: https://github.com/HenrikBengtsson/async/
 
 ---
-Copyright Henrik Bengtsson, 2015
+Copyright Henrik Bengtsson, 2015-2016

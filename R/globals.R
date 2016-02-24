@@ -1,7 +1,7 @@
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak)
+exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", FALSE)) {
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve)
   globals <- gp$globals
 
   ## Inject global objects?
@@ -19,7 +19,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL) {
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils head object.size
 #' @importFrom parallel clusterCall
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, ...) {
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), ...) {
   ## Local functions
   attachedPackages <- function() {
     pkgs <- search()
@@ -76,6 +76,25 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     }, list(a=expr))
   }
 
+  ## Resolve futures and turn into already-resolved "constant" futures
+  ## We restrict ourselves to this here in order to avoid having to
+  ## recursively try to resolve everything in every global which may
+  ## or may not point to packages (include base R package)
+  if (resolve && length(globals) > 0L) {
+    mdebug("Resolving globals that are futures ...")
+    idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
+    mdebug("Number of global futures: %d", length(idxs))
+    if (length(idxs) > 0) {
+      mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
+      valuesF <- values(globals[idxs])
+      globals[idxs] <- lapply(valuesF, FUN=constant)
+      valuesF <- NULL  ## Not needed anymore
+    }
+    idxs <- NULL ## Not needed anymore
+    mdebug("Resolving global that are futures ... DONE")
+  }
+
+
   pkgs <- NULL
   if (length(globals) > 0L) {
     ## Append packages associated with globals
@@ -91,6 +110,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     names(keep) <- names
     for (name in names) {
       pkg <- environmentName(where[[name]])
+      pkg <- gsub("^package:", "", pkg)
       if (pkg %in% pkgs) {
         ## Only drop exported objects
         if (exists(name, envir=asPkgEnvironment(pkg)))
@@ -105,6 +125,20 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     globals <- cleanup(globals)
   }
 
+
+  ## Resolve all remaing globals
+  ## FIXME: Should we resolve package names spaces too? Should
+  ## We assume they can contain futures?  We do it for now, but
+  ## if this turns out to be too expensive, maybe we should
+  ## only dive into such environments if they have a certain flag
+  ## set.  /HB 2016-02-04
+  if (resolve && length(globals) > 0L) {
+    mdebug("Resolving futures part of globals (recursively) ...")
+    globals <- resolve(globals, value=TRUE, recursive=TRUE)
+    mdebug("Resolving futures part of globals (recursively) ... DONE")
+  }
+
+
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
     sizes <- lapply(globals, FUN=object.size)
@@ -117,7 +151,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       classes <- lapply(globals[o], FUN=mode)
       classes <- unlist(classes, use.names=FALSE)
       largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future::maxSizeOfGlobals').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.maxSizeOfGlobals').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
       n <- length(largest)
       if (n == 1) {
         fmt <- "%s There is one global: %s."

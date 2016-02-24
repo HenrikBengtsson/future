@@ -49,3 +49,8 @@ values.listenv <- function(x, ...) {
   }
   y
 }
+
+#' @export
+values.Future <- function(x, ...) {
+  value(x, ...)
+}

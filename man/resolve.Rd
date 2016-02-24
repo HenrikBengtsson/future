@@ -4,7 +4,7 @@
 \alias{resolve}
 \title{Wait until all existing futures in an environment are resolved}
 \usage{
-resolve(x, idxs = NULL, value = FALSE, sleep = 1,
+resolve(x, idxs = NULL, value = FALSE, recursive = FALSE, sleep = 1,
   progress = getOption("future.progress", FALSE), ...)
 }
 \arguments{
@@ -13,6 +13,10 @@ resolve(x, idxs = NULL, value = FALSE, sleep = 1,
 \item{idxs}{subset of elements to check.}
 
 \item{value}{If TRUE, the values are retrieved, otherwise not.}
+
+\item{recursive}{A non-negative number specifying how deep of
+a recursion should be done.  If TRUE, an infintive recursion
+is used.  If FALSE or zero, no recursion is performed.}
 
 \item{sleep}{Number of seconds to wait before checking
 if futures have been resolved since last time.}
@@ -24,7 +28,7 @@ every time a future is resolved.}
 \item{...}{Not used}
 }
 \value{
-Environment \code{x} (regardless of subsetting or not).
+Returns \code{x} (regardless of subsetting or not).
 }
 \description{
 The environment is first scanned for futures and then the futures

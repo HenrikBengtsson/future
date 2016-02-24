@@ -99,7 +99,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## misleading to the reader.
       chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
       chk <- (nzchar(chk) && (chk != "false"))
-      if (chk) n <- 2L
+      if (chk) n <- 3L ## = 2+1
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()

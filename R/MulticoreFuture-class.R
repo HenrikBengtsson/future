@@ -19,11 +19,15 @@
 MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  f <- Future(expr=expr, envir=envir, job=NULL, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, job=NULL, ...)
   structure(f, class=c("MulticoreFuture", class(f)))
 }
 
 
+## We are currently importing the following non-exported functions:
+## * parallel:::mccollect()
+## * parallel:::mcparallel()
+## * parallel:::selectChildren()
 importMulticore <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
@@ -40,6 +44,10 @@ importMulticore <- function(name=NULL) {
 run <- function(...) UseMethod("run")
 
 run.MulticoreFuture <- function(future, ...) {
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
   mcparallel <- importMulticore("mcparallel")
   expr <- future$expr
   envir <- future$envir
@@ -67,6 +75,10 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(x)
+
   selectChildren <- importMulticore("selectChildren")
   job <- x$job
   stopifnot(inherits(job, "parallelJob"))
@@ -86,12 +98,24 @@ value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
     return(NextMethod("value"))
   }
 
+  ## Assert that the process that created the future is
+  ## also the one that evaluates/resolves/queries it.
+  assertOwner(future)
+
   ## If not, wait for process to finish, and
   ## then collect and record the value
   mccollect <- importMulticore("mccollect")
   job <- future$job
   stopifnot(inherits(job, "parallelJob"))
   res <- mccollect(job, wait=TRUE)[[1L]]
+
+  ## SPECIAL: Check for fallback 'fatal error in wrapper code'
+  ## try-error from parallel:::mcparallel().  If detected, then
+  ## turn into an error with a more informative error message, cf.
+  ## https://github.com/HenrikBengtsson/future/issues/35
+  if (identical(res, structure("fatal error in wrapper code", class="try-error"))) {
+    stop(sprintf("Detected an error ('%s') by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evalutes the future was terminated before it was completed.", res, class(future)[1], sQuote(hexpr(future$expr))))
+  }
 
   ## Update value and state
   condition <- attr(res, "condition")

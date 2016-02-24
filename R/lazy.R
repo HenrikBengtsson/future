@@ -48,8 +48,15 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
 
   ## Resolve globals at this point in time?
   if (globals) {
-    exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression)
+    exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression, resolve=TRUE)
   }
 
   LazyFuture(expr=expr, envir=envir, local=local, globals=globals)
 }
+class(lazy) <- c("lazy", "uniprocess", "future", "function")
+
+## WORKAROUND:
+## Avoid lazyeval::print.lazy() being called with print(lazy())
+## https://github.com/HenrikBengtsson/future/issues/52
+class(lazy) <- c("function", class(lazy))
+
