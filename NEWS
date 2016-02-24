@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.11.0-9000 [2016-02-22]
+Version: 0.11.0-9000 [2016-02-23]
 o Added multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.
