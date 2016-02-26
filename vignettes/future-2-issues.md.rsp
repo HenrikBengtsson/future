@@ -168,7 +168,7 @@ It may also become a problem with lazy futures an the intended function is redef
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")
-> plan(multisession, maxCores=3L)
+> plan(multiprocess)
 > f1 <- future({ Sys.getpid() })
 > f2 <- future({ value(f1) })
 > v1 <- value(f1)
