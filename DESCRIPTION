@@ -20,7 +20,7 @@ Description: A Future API for R is provided. In programming, a future is an
     interface for using futures in R. Functions 'future()' and 'value()' exist for
     creating futures and requesting their values, e.g.
     'f <- future({ mandelbrot(c(0.28,0), side=2) })' and 'v <- value(f)'.
-    The 'resolve()' function can be used to check if a future is resolved or not.
+    The 'resolved()' function can be used to check if a future is resolved or not.
     An infix assignment operator '%<=%' exists for creating futures whose values
     are accessible by the assigned variables (as promises), e.g.
     'v %<=% { mandelbrot(c(0.28,0), side=2) }'.
