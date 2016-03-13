@@ -37,9 +37,7 @@ plan <- local({
 
 
   ## Local functions
-  asStrategy <- function(strategy, ..., penv) {
-    args <- list(...)
-
+  asStrategy <- function(strategy, ..., penvir=parent.frame()) {
     if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
       strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
@@ -47,56 +45,31 @@ plan <- local({
       if (!nzchar(strategy)) strategy <- eager
     }
 
+
+    ## Tweaked arguments
+    targs <- list(...)
+
     if (is.symbol(strategy)) {
+      strategy <- eval(strategy, envir=penvir)
     } else if (is.language(strategy)) {
       strategyT <- as.list(strategy)
-      isSymbol <- sapply(strategyT, FUN=is.symbol)
-      if (!all(isSymbol)) {
-        args <- c(args, strategyT[-1L])
-        strategy <- strategyT[[1L]]
-      }
-    }
-    strategy <- eval(strategy, envir=penv)
 
-    if (is.character(strategy)) {
-      ## Search attached packages and the 'future' package
-      envirs <- list(penv, future=getNamespace("future"), NULL)
-      for (envir in envirs) {
-        if (is.null(envir)) {
-          stop("No such strategy for futures: ", sQuote(strategy))
+      ## tweak(...)?
+      if (strategyT[[1]] == as.name("tweak")) {
+        strategy <- eval(strategy, envir=penvir)
+      } else {
+        isSymbol <- sapply(strategyT, FUN=is.symbol)
+        if (!all(isSymbol)) {
+          targs <- c(targs, strategyT[-1L])
+          strategy <- strategyT[[1L]]
         }
-        if (exists(strategy, mode="function", envir=envir, inherits=TRUE)) {
-          strategy <- get(strategy, mode="function", envir=envir, inherits=TRUE)
-          break
-        }
-      }
-    }
-    if (!is.function(strategy)) {
-      stop("Argument 'strategy' must be a string or a function: ", mode(strategy))
-    }
-
-    ## Override defaults?
-    if (length(args) > 0L) {
-      names <- names(args)
-      if (is.null(names)) {
-        stop("Additional arguments to plan() must be named.")
-      }
-      formals <- names(formals(strategy))
-      unknown <- NULL
-      for (kk in seq_along(args)) {
-        name <- names[kk]
-        if (is.element(name, formals)) {
-          formals(strategy)[[name]] <- args[[name]]
-        } else {
-          unknown <- c(unknown, name)
-        }
-      }
-      if (length(unknown) > 0L) {
-        warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse=", ")))
+        strategy <- eval(strategy, envir=penvir)
       }
     }
 
-    strategy
+    ## Tweak future strategy accordingly
+    args <- c(list(strategy), targs, penvir=penvir)
+    do.call(tweak, args=args)
   } ## asStrategy()
 
 
@@ -111,8 +84,8 @@ plan <- local({
     if (is.null(strategy)) return(old)
 
     ## Parse strategy and ...
-    penv <- parent.frame()
-    strategy <- asStrategy(strategy, ..., penv=penv)
+    penvir <- parent.frame()
+    strategy <- asStrategy(strategy, ..., penvir=penvir)
 
     if (isTRUE(.call)) {
       .call <- attr(strategy, "call")

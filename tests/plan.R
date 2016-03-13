@@ -110,6 +110,14 @@ fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
+message("*** plan(tweak(eager, local=FALSE))")
+plan(lazy)
+plan(tweak(eager, local=FALSE))
+fcn <- plan()
+print(fcn)
+stopifnot(formals(fcn)$local == FALSE)
+
+
 message("*** old <- plan(new)")
 truth <- plan()
 old <- plan(lazy, local=FALSE)
