@@ -16,9 +16,9 @@
   strategy <- substitute(strategy)
   envir <- parent.frame(1)
 
-  ## Temporary use a different plan
-  oplan <- plan()
-  on.exit(plan(oplan, substitute=FALSE, .call=attr(oplan, "call")))
+  ## Temporarily use a different plan
+  oplan <- plan("list")
+  on.exit(plan(oplan, substitute=FALSE, .call=NULL))
   plan(strategy, substitute=FALSE, .call=NULL)
 
   eval(fassignment, envir=envir)

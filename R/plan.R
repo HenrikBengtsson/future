@@ -68,19 +68,31 @@ plan <- local({
     oldStack <- stack
     newStack <- NULL
 
+    ## Set new stack?
+    if (is.list(strategy)) {
+      stopifnot(is.list(strategy), length(strategy) >= 1L)
+      for (ii in seq_along(strategy)) {
+        stopifnot(is.function(strategy[[ii]]))
+      }
+      stack <<- strategy
+      return(invisible(oldStack[[1L]]))
+    }
+
     ## (a) Is a (plain) list of future strategies specified?
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
         first <- eval(first, envir=parent.frame())
+        ## A list object, e.g. plan(oplan)?
+        if (is.list(first)) {
+          strategies <- first
+          res <- plan(strategies, substitute=FALSE)
+          return(invisible(res))
+        }
+
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir=parent.frame())
-          stopifnot(is.list(strategies), length(strategies) >= 1L)
-          newStack <- strategies
-        } else if (is.list(first)) {
-          ## A list object, e.g. plan(oplan)?
-          strategies <- first
           stopifnot(is.list(strategies), length(strategies) >= 1L)
           newStack <- strategies
         }
