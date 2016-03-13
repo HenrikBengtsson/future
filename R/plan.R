@@ -30,10 +30,10 @@
 #'
 #' @export
 plan <- local({
+  defaultStrategy <- structure(eager, call=substitute(plan(eager)))
+
   ## Stack of type of futures to use
-  stack <- list(
-    structure(eager, call=substitute(plan(eager)))
-  )
+  stack <- list(defaultStrategy)
 
   ## Main function
   function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
@@ -54,10 +54,14 @@ plan <- local({
       return(stack)
     } else if (identical(strategy, "reset")) {
       ## Rest stack of future strategies?
-      stack <<- list(
-        structure(eager, call=substitute(plan(eager)))
-      )
+      stack <<- list(defaultStrategy)
       return(stack)
+    } else if (identical(strategy, "pop")) {
+      ## Pop strategy stack and return old stack (so it can be pushed back later)
+      oldStack <- stack
+      stack <<- stack[-1L]
+      if (length(stack) == 0L) stack <<- list(defaultStrategy)
+      return(oldStack)
     }
 
     ## Current and new stack of future strategies
@@ -67,10 +71,19 @@ plan <- local({
     ## (a) Is a (plain) list of future strategies specified?
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
-      if (is.symbol(first) && first == as.symbol("list")) {
-        strategies <- eval(strategy, envir=parent.frame())
-        stopifnot(is.list(strategies), length(strategies) >= 1L)
-        newStack <- strategies
+      if (is.symbol(first)) {
+        first <- eval(first, envir=parent.frame())
+        if (is.function(first) && identical(first, list)) {
+          ## Specified explicitly using plan(list(...))?
+          strategies <- eval(strategy, envir=parent.frame())
+          stopifnot(is.list(strategies), length(strategies) >= 1L)
+          newStack <- strategies
+        } else if (is.list(first)) {
+          ## A list object, e.g. plan(oplan)?
+          strategies <- first
+          stopifnot(is.list(strategies), length(strategies) >= 1L)
+          newStack <- strategies
+        }
       }
     }
 
