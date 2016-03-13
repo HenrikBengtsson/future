@@ -35,68 +35,97 @@ plan <- local({
     structure(eager, call=substitute(plan(eager)))
   )
 
+  ## Main function
+  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
+    if (substitute) strategy <- substitute(strategy)
+    if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
 
-  ## Local functions
-  asStrategy <- function(strategy, ..., penvir=parent.frame()) {
-    if (identical(strategy, "default")) {
+    ## Predefined "actions":
+    if (is.null(strategy) || identical(strategy, "next")) {
+      ## Next future strategy?
+      return(stack[[1L]])
+    } else if (identical(strategy, "default")) {
       ## Set default plan according to option/sysenv variable?
       strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
       strategy <- getOption("future.plan", strategy)
       if (!nzchar(strategy)) strategy <- eager
+    } else if (identical(strategy, "list")) {
+      ## List stack of future strategies?
+      return(stack)
+    } else if (identical(strategy, "reset")) {
+      ## Rest stack of future strategies?
+      stack <<- list(
+        structure(eager, call=substitute(plan(eager)))
+      )
+      return(stack)
     }
 
+    ## Current and new stack of future strategies
+    oldStack <- stack
+    newStack <- NULL
 
-    ## Tweaked arguments
-    targs <- list(...)
-
-    if (is.symbol(strategy)) {
-      strategy <- eval(strategy, envir=penvir)
-    } else if (is.language(strategy)) {
-      strategyT <- as.list(strategy)
-
-      ## tweak(...)?
-      if (strategyT[[1]] == as.name("tweak")) {
-        strategy <- eval(strategy, envir=penvir)
-      } else {
-        isSymbol <- sapply(strategyT, FUN=is.symbol)
-        if (!all(isSymbol)) {
-          targs <- c(targs, strategyT[-1L])
-          strategy <- strategyT[[1L]]
-        }
-        strategy <- eval(strategy, envir=penvir)
+    ## (a) Is a (plain) list of future strategies specified?
+    if (is.language(strategy)) {
+      first <- as.list(strategy)[[1]]
+      if (is.symbol(first) && first == as.symbol("list")) {
+        strategies <- eval(strategy, envir=parent.frame())
+        stopifnot(is.list(strategies), length(strategies) >= 1L)
+        newStack <- strategies
       }
     }
 
-    ## Tweak future strategy accordingly
-    args <- c(list(strategy), targs, penvir=penvir)
-    do.call(tweak, args=args)
-  } ## asStrategy()
+    ## (b) Otherwise, assume a single future strategy
+    if (is.null(newStack)) {
+      ## Arguments to be tweaked
+      targs <- list(...)
 
+      if (is.symbol(strategy)) {
+        strategy <- eval(strategy, envir=parent.frame())
+      } else if (is.language(strategy)) {
+        strategyT <- as.list(strategy)
 
-  ## Main function
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
-    if (substitute) strategy <- substitute(strategy)
+        ## tweak(...)?
+        if (strategyT[[1]] == as.symbol("tweak")) {
+          strategy <- eval(strategy, envir=parent.frame())
+        } else {
+          isSymbol <- sapply(strategyT, FUN=is.symbol)
+          if (!all(isSymbol)) {
+            targs <- c(targs, strategyT[-1L])
+            strategy <- strategyT[[1L]]
+          }
+          strategy <- eval(strategy, envir=parent.frame())
+        }
+      }
 
-    ## Current strategy
-    old <- stack[[1L]]
+      ## Tweak future strategy accordingly
+      args <- c(list(strategy), targs, penvir=parent.frame())
+      tstrategy <- do.call(tweak, args=args)
 
-    ## Return current plan?
-    if (is.null(strategy)) return(old)
-
-    ## Parse strategy and ...
-    penvir <- parent.frame()
-    strategy <- asStrategy(strategy, ..., penvir=penvir)
-
-    if (isTRUE(.call)) {
-      .call <- attr(strategy, "call")
-      if (is.null(.call)) .call <- sys.call()
+      ## Setup a new stack of future strategies (with a single one)
+      newStack <- list(tstrategy)
     }
-    attr(strategy, "call") <- .call
+
+
+    ## Attach call attribute to each strategy in the stack?
+    if (!is.null(.call)) {
+      ## The call to assign
+      call <- if (isTRUE(.call)) sys.call() else .call
+
+      for (kk in seq_along(newStack)) {
+        strategy <- newStack[[kk]]
+        ## Skip if already has a call attibute
+        if (!is.null(attr(strategy, "call"))) next
+        ## Attach call
+        attr(strategy, "call") <- call
+        newStack[[kk]] <- strategy
+      }
+    }
 
     ## Set new strategy for futures
-    stack <<- list(strategy)
+    stack <<- newStack
+    stopifnot(is.list(stack), length(stack) >= 1L)
 
-    invisible(old)
+    invisible(oldStack[[1L]])
   } # function()
 }) # plan()
 
