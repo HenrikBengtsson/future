@@ -117,7 +117,7 @@ resolved.Future <- function(x, ...) {
 #' Inject code for the next type of future to use for nested futures
 #'
 #' @param future Current future.
-#' @param expr Future expression.
+#' @param ... Not used.
 #'
 #' @return A future expression with code injected to set what
 #' type of future to use for nested futures, iff any.
@@ -147,12 +147,12 @@ resolved.Future <- function(x, ...) {
 #'     for a discussion on this.
 #'
 #' @export
-#' @aliases injectNextStrategy.Future
+#' @aliases getExpression.Future
 #' @keywords internal
-injectNextStrategy <- function(future, expr, ...) UseMethod("injectNextStrategy")
+getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-injectNextStrategy.Future <- function(future, expr, ...) {
+getExpression.Future <- function(future, ...) {
   strategies <- plan("list")
   if (length(strategies) > 1L) {
     ## Identify package
@@ -211,6 +211,7 @@ injectNextStrategy.Future <- function(future, expr, ...) {
     }, finally = {
       exit
     })
-  }, env=list(enter=enter, body=expr, exit=exit))
+  }, env=list(enter=enter, body=future$expr, exit=exit))
+
   expr
-} ## injectNextStrategy()
+} ## getExpression()

@@ -47,9 +47,3 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
-
-constant <- function(value, ...) {
-  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE)
-}
-class(constant) <- c("constant", "eager", "uniprocess", "future", "function")
-

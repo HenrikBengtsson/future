@@ -41,11 +41,14 @@ evaluate.UniprocessFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
+  expr <- getExpression(future)
+  envir <- future$envir
+
   ## Run future
   future$state <- 'running'
 
   tryCatch({
-    future$value <- eval(future$expr, envir=future$envir)
+    future$value <- eval(expr, envir=envir)
     future$state <- 'finished'
   }, simpleError = function(ex) {
     future$state <- 'failed'

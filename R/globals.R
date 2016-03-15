@@ -87,7 +87,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     if (length(idxs) > 0) {
       mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
       valuesF <- values(globals[idxs])
-      globals[idxs] <- lapply(valuesF, FUN=constant)
+      globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore

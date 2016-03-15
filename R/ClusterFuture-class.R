@@ -77,10 +77,7 @@ run.ClusterFuture <- function(future, ...) {
 
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
-  expr <- future$expr
-
-  ## Inject code for the next future strategy to use.
-  expr <- injectNextStrategy(future, expr)
+  expr <- getExpression(future)
 
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
