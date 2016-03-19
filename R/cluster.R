@@ -9,6 +9,8 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param persistent If FALSE, the evaluation environment is cleared
+#' from objects prior to the evaluation of the future.
 #' @param cluster A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
 #' @param \dots Not used.
@@ -29,10 +31,10 @@
 #' and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, cluster=NULL, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, cluster=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

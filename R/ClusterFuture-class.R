@@ -42,7 +42,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     attr(cluster, "name") <- name
   }
 
-  gp <- getGlobalsAndPackages(expr, envir=envir)
+  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
 
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
