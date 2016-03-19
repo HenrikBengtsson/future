@@ -8,6 +8,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
+#' @param persistent If FALSE, the evaluation environment is cleared
+#' from objects prior to the evaluation of the future.
 #' @param cluster A \code{\link[parallel:makeCluster]{cluster}}.
 #' @param \dots Additional named elements of the future.
 #'
@@ -23,7 +25,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, cluster=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, cluster=NULL, ...) {
   defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
   if (is.null(cluster)) cluster <- defaultCluster()
@@ -47,7 +49,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     expr <- substitute(local(a), list(a=expr))
   }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -78,6 +80,7 @@ run.ClusterFuture <- function(future, ...) {
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
   expr <- future$expr
+  persistent <- future$persistent
 
   ## Inject code for the next future strategy to use.
   expr <- injectNextStrategy(future, expr)
@@ -114,7 +117,9 @@ run.ClusterFuture <- function(future, ...) {
   ##     previous futures are not affecting this one, which
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
-  clusterCall(cl, fun=grmall)
+  if (!persistent) {
+    clusterCall(cl, fun=grmall)
+  }
 
 
   ## (ii) Attach packages that needs to be attached
