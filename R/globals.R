@@ -1,7 +1,7 @@
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", FALSE)) {
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve)
+exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE) {
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve, persistent=persistent)
   globals <- gp$globals
 
   ## Inject global objects?
@@ -19,7 +19,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOpti
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils head object.size
 #' @importFrom parallel clusterCall
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), ...) {
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
   ## Local functions
   attachedPackages <- function() {
     pkgs <- search()
@@ -42,6 +42,12 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
+  mustExist <- getOption("future.globalsMustExist", TRUE)
+
+  ## If future relies on persistent storage, then the globals may
+  ## already exist in the environment that the future is evaluated in.
+  mustExist <- mustExist && !persistent
+
   exprOrg <- expr
 
   ## Identify globals
@@ -51,7 +57,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                primitive=FALSE, base=FALSE,
                unlist=TRUE,
                ## Only for debugging/development; do not rely on this elsewhere!
-               mustExist=getOption("future.globalsMustExist", TRUE),
+               mustExist=mustExist,
                method=getOption("future.globalsMethod", "ordered")
              )
 

@@ -8,7 +8,7 @@
 \title{An cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, cluster = NULL, ...)
+  local = !persistent, persistent = FALSE, cluster = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -22,6 +22,9 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the global environment of the cluster node.}
+
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
 
 \item{cluster}{A \code{\link[parallel:makeCluster]{cluster}}.}
 
