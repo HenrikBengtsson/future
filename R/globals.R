@@ -17,8 +17,7 @@ exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOpti
 
 
 #' @importFrom globals globalsOf packagesOf cleanup
-#' @importFrom utils head object.size
-#' @importFrom parallel clusterCall
+#' @importFrom utils object.size
 getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
   ## Local functions
   attachedPackages <- function() {
