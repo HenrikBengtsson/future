@@ -71,7 +71,7 @@ importCluster <- function(name=NULL) {
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
 
-#' @importFrom parallel clusterExport
+#' @importFrom parallel clusterCall clusterExport
 run.ClusterFuture <- function(future, ...) {
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
