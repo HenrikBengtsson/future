@@ -1,4 +1,4 @@
-#' An cluster future is a future whose value will be resolved asynchroneously in a parallel process
+#' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
