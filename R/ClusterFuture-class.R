@@ -46,7 +46,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
+    gp$expr <- substitute(local(a), list(a=gp$expr))
   }
 
   f <- MultiprocessFuture(expr=gp$expr, envir=envir, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
