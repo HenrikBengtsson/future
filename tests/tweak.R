@@ -54,6 +54,34 @@ stopifnot(inherits(lazy2, "tweaked"))
 stopifnot(identical(formals(lazy2)$local, FALSE))
 
 
+message("*** y %<=% { expr } %tweak% tweaks ...")
+
+plan(eager)
+a <- 0
+
+x %<=% { a <- 1; a }
+print(x)
+stopifnot(a == 0, x == 1)
+
+x %<=% { a <- 2; a } %tweak% list(local=FALSE)
+print(x)
+stopifnot(a == 2, x == 2)
+
+
+plan(eager, local=FALSE)
+a <- 0
+
+x %<=% { a <- 1; a }
+print(x)
+stopifnot(a == 1, x == 1)
+
+x %<=% { a <- 2; a } %tweak% list(local=TRUE)
+print(x)
+stopifnot(a == 1, x == 2)
+
+message("*** y %<=% { expr } %tweak% tweaks ... DONE")
+
+
 message("*** Tweaking future strategies ... DONE")
 options(oopts)
 rm(list="oopts")
