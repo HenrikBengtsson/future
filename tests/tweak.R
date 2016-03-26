@@ -79,6 +79,28 @@ x %<=% { a <- 2; a } %tweak% list(local=TRUE)
 print(x)
 stopifnot(a == 1, x == 2)
 
+
+# Preserve nested futures
+plan(list(A=eager, B=tweak(eager, local=FALSE)))
+a <- 0
+
+x %<=% {
+  stopifnot(identical(names(plan("list")), "B"))
+  a <- 1
+  a
+}
+print(x)
+stopifnot(a == 0, x == 1)
+
+x %<=% {
+  stopifnot(identical(names(plan("list")), "B"))
+  a <- 2
+  a
+} %tweak% list(local=FALSE)
+print(x)
+stopifnot(a == 2, x == 2)
+
+
 message("*** y %<=% { expr } %tweak% tweaks ... DONE")
 
 

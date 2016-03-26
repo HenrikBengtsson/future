@@ -20,9 +20,10 @@
   on.exit(plan(oplan, substitute=FALSE, .call=NULL))
 
   ## Tweak current strategy and apply
-  args <- c(list(plan(), penvir=envir), tweaks)
-  strategy <- do.call(tweak, args=args)
-  plan(strategy, substitute=FALSE, .call=NULL)
+  plans <- oplan
+  args <- c(list(plans[[1]], penvir=envir), tweaks)
+  plans[[1]] <- do.call(tweak, args=args)
+  plan(plans, substitute=FALSE, .call=NULL)
 
   eval(fassignment, envir=envir)
 }
