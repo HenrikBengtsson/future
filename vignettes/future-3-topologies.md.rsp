@@ -11,7 +11,65 @@
 --------------------------------------------------------------------"%>
 # <%@meta name="title"%>
 
-Futures can be nested in R such that one future creates another set of futures and so on.  For instance, we may have ...
+Futures can be nested in R such that one future creates another set of futures and so on and it might be that we wish to evaluate the different levels of futures using different resources.
+
+
+## Example: High-Throughput Sequencing
+Consider a high-throughput sequencing (HT-Seq) project with 50 human DNA samples where we have one FASTQ file per sample containing the raw sequence reads as they come out of the sequencing machine.  With this data we wish to align each FASTQ to a reference genome such that we generate 24 individual BAM files per sample - one per chromosome.
+
+Here is the layout of what such an analysis could look like in R using futures.
+```r
+library("future")
+library("listenv")
+htseq_align <- function(fq, chr) { chr }
+
+fqs <- dir(pattern="[.]fastq$")
+
+bams <- listenv()
+for (ss in seq_along(fqs)) {
+  fq <- fqs[ss]
+  bams[[ss]] %<=% {
+    bams_ss <- listenv()
+    for (cc in 1:24) {
+      bams_ss[[cc]] %<=% htseq_align(fq, chr=cc)
+	}
+	as.list(bams_ss)
+  }
+}
+bams <- as.list(bams)
+```
+
+The default is to use eager futures, so without further specifications, the above will process each sample and each chromosome sequentially.  Next, we will consider what can be done with the following two computer setups:
+
+* A single machine with 8 cores
+* A compute cluster with 3 machines each with 16 cores
+
+### One multi-core machine
+With a single machine of 8 cores we could choose to process multiple samples at the same while processing chromosomes sequentially.  In other words, we would like to evaluate the outer layer of futures using multiprocess futures and the inner ones as regular (uniprocess) eager futures.  This can be specified as:
+```r
+plan(list(multiprocess, eager))
+```
+The internals for processing multiprocess future queries `availableCores()` to infer how many cores can be used simultaneously, so there is no need to explicitly specify that there are 8 cores available.
+
+_Comment_: Since eager is the default future, we could skip trailing eager futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(multiprocess)`.  However, it does hurt to be explicit.
+
+If we instead would like to process the sample sequentially and the chromosomes in parallel, we can use:
+```r
+plan(list(eager, multiprocess))
+```
+
+We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
+```r
+plan(list(tweak(multiprocess, maxCores=2), tweak(multiprocess, maxCores=4)))
+```
+
+
+### An ad-hoc compute cluster
+With a compute cluster of 3 machines each with 16 cores we can run up to 48 alignment processes in parallel.  A natural setup is to have one machine process one sample in parallel.  We could specify this as:
+```r
+nodes <- parallel::makeCluster(c("n1", "n2", "n3"))
+plan(list(tweak(cluster, cluster=nodes), multiprocess))
+```
 
 
 ## Example: A remote compute cluster
