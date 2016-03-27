@@ -1,0 +1,91 @@
+<%@meta language="R-vignette" content="--------------------------------
+%\VignetteIndexEntry{A Future for R: Future Topologies}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{R}
+%\VignetteKeyword{package}
+%\VignetteKeyword{vignette}
+%\VignetteKeyword{future}
+%\VignetteKeyword{promise}
+%\VignetteEngine{R.rsp::rsp}
+%\VignetteTangle{FALSE}
+--------------------------------------------------------------------"%>
+# <%@meta name="title"%>
+
+Futures can be nested in R such that one future creates another set of futures and so on.  For instance, we may have:
+
+
+## Example: A remote compute cluster
+Imagine we have access to a remote compute cluster, with login node `login.my-cluster.org`, and that the cluster has three nodes `n1`, `n2` and `n3`.  Also, lets assume we have already set up the cluster such that we can login via public key authentication via SSH, i.e. when we do `ssh login.my-cluster.org` authentication is done automatically.
+
+With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes.  Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.
+
+```r
+library("future")
+library("listenv")
+
+## Set up access cluster login node
+remote <- function(host, homogeneous=FALSE, ...) {
+  myip <- jsonlite::fromJSON("http://myexternalip.com/json")$ip
+  cl <- parallel::makeCluster(host, master=myip, homogeneous=homogeneous, ...)
+  tweak(cluster, cluster=cl, persistent=TRUE)
+}
+login <- remote("login.my-cluster.org")
+
+## Setup cluster nodes on remote
+nodes %<=% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% login
+
+## Specify future topology
+## login node -> { cluster nodes } -> { multiple cores }
+plan(list(
+  login=login,
+  cluster=tweak(cluster, cluster=nodes),
+  node=multiprocess
+))
+
+
+## (a) This will be evaluated on the cluster login computer
+x %<=% {
+  thost <- Sys.info()[["nodename"]]
+  tpid <- Sys.getpid()
+  y <- listenv()
+  for (task in 1:4) {
+    ## (b) This will be evaluated on a compute node on the cluster
+    y[[task]] %<=% {
+      nhost <- Sys.info()[["nodename"]]
+      npid <- Sys.getpid()
+      z <- listenv()
+      for (jj in 1:2) {
+        ## (c) These will be evaluated in separate processes on the same compute node
+        z[[jj]] %<=% data.frame(task=task, top.host=thost, top.pid=tpid,
+		                        node.host=nhost, node.pid=npid,
+		                        host=Sys.info()[["nodename"]], pid=Sys.getpid())
+      }
+      Reduce(rbind, z)
+    }
+  }
+  Reduce(rbind, y)
+}
+
+print(x)
+##   task top.host top.pid node.host node.pid host    pid
+## 1    1    login  391547        n1   391878   n1 393943
+## 2    1    login  391547        n1   391878   n1 393951
+## 3    2    login  391547        n2   392204   n2 393971
+## 4    2    login  391547        n2   392204   n2 393978
+## 5    3    login  391547        n3   392527   n3 394040
+## 6    3    login  391547        n3   392527   n3 394048
+## 7    4    login  391547        n1   391878   n1 393959
+## 8    4    login  391547        n1   391878   n1 393966
+```
+
+Try to the above `x %<=% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
+
+
+[BatchJobs]: http://cran.r-project.org/package=BatchJobs
+[listenv]: http://cran.r-project.org/package=listenv
+[globals]: http://cran.r-project.org/package=globals
+[async]: https://github.com/HenrikBengtsson/async/
+[Futures in R: Common issues with solutions]: future-issues.html
+
+---
+Copyright Henrik Bengtsson, 2015-2016
