@@ -25,7 +25,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
     a <- NULL; rm(list="a")  ## To please R CMD check
     expr <- substitute(local(a), list(a=expr))
   }
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -53,19 +53,18 @@ evaluate.UniprocessFuture <- function(future, ...) {
   ## Because of this with we use withCallingHandlers() to
   ## capture errors and if they occur we record the call trace.
   current <- sys.nframe()
-  tryCatchFluff <- 7L
-  withCallingHandlersFluff <- 2L
   tryCatch({
     withCallingHandlers({
       future$value <- eval(expr, envir=envir)
       future$state <- 'finished'
     }, error = function(ex) {
       calls <- sys.calls()
-      ex$calls0 <- calls
       ## Drop fluff added by withCallingHandlers()
-      calls <- calls[seq_len(length(calls)-withCallingHandlersFluff)]
+      calls <- calls[seq_len(length(calls)-2L)]
       ## Drop fluff added by outer tryCatch()
-      calls <- calls[-seq_len(current+tryCatchFluff)]
+      calls <- calls[-seq_len(current+7L)]
+      ## Drop fluff added by outer local=TRUE
+      if (future$local) calls <- calls[-seq_len(6L)]
       ex$traceback <- calls
       future$value <- ex
       future$state <- 'failed'
