@@ -1,7 +1,9 @@
 Package: future
 ===============
 
-Version: 0.12.0-9000 [2016-03-19]
+Version: 0.12.0-9000 [2016-03-29]
+o Now UniprocessFuture:s captures the call stack for errors occurring
+  while resolving futures.
 o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
   any objects in the cluster R session that was created during the
   evaluation of a previous future is available for succeeding futures

@@ -41,16 +41,36 @@ evaluate.UniprocessFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
+  expr <- future$expr
+  envir <- future$envir
+
   ## Run future
   future$state <- 'running'
 
+
+  ## WORKAROUND: tryCatch() does not record the traceback and
+  ## it is too late to infer it when the error has been caught.
+  ## Because of this with we use withCallingHandlers() to
+  ## capture errors and if they occur we record the call trace.
+  current <- sys.nframe()
+  tryCatchFluff <- 7L
+  withCallingHandlersFluff <- 2L
   tryCatch({
-    future$value <- eval(future$expr, envir=future$envir)
-    future$state <- 'finished'
-  }, simpleError = function(ex) {
-    future$state <- 'failed'
-    future$value <- ex
-  })
+    withCallingHandlers({
+      future$value <- eval(expr, envir=envir)
+      future$state <- 'finished'
+    }, error = function(ex) {
+      calls <- sys.calls()
+      ex$calls0 <- calls
+      ## Drop fluff added by withCallingHandlers()
+      calls <- calls[seq_len(length(calls)-withCallingHandlersFluff)]
+      ## Drop fluff added by outer tryCatch()
+      calls <- calls[-seq_len(current+tryCatchFluff)]
+      ex$traceback <- calls
+      future$value <- ex
+      future$state <- 'failed'
+    })
+  }, error = function(ex) {})
 
   invisible(future)
 }
