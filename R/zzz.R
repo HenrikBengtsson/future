@@ -15,8 +15,13 @@ parseCmdArgs <- function() {
     if (length(key) > 1) key <- key[length(key)]
     value0 <- args[key+1L]
     value <- as.integer(value0)
+    max <- availableCores(methods="system")
+
     if (is.na(value) || value <= 0L) {
       msg <- sprintf("future: Invalid number of processes specified in command-line option: -p %s", value0)
+      warning(msg, call.=FALSE, immediate.=TRUE)
+    } else if (value > max) {
+      msg <- sprintf("future: Trying to request more processes than number of cores available (=%d) on the system: -p %s", max, value0)
       warning(msg, call.=FALSE, immediate.=TRUE)
     } else {
       ## Apply
