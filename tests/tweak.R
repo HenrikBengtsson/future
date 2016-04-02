@@ -54,16 +54,16 @@ stopifnot(inherits(lazy2, "tweaked"))
 stopifnot(identical(formals(lazy2)$local, FALSE))
 
 
-message("*** y %<=% { expr } %tweak% tweaks ...")
+message("*** y %<-% { expr } %tweak% tweaks ...")
 
 plan(eager)
 a <- 0
 
-x %<=% { a <- 1; a }
+x %<-% { a <- 1; a }
 print(x)
 stopifnot(a == 0, x == 1)
 
-x %<=% { a <- 2; a } %tweak% list(local=FALSE)
+x %<-% { a <- 2; a } %tweak% list(local=FALSE)
 print(x)
 stopifnot(a == 2, x == 2)
 
@@ -71,11 +71,11 @@ stopifnot(a == 2, x == 2)
 plan(eager, local=FALSE)
 a <- 0
 
-x %<=% { a <- 1; a }
+x %<-% { a <- 1; a }
 print(x)
 stopifnot(a == 1, x == 1)
 
-x %<=% { a <- 2; a } %tweak% list(local=TRUE)
+x %<-% { a <- 2; a } %tweak% list(local=TRUE)
 print(x)
 stopifnot(a == 1, x == 2)
 
@@ -84,7 +84,7 @@ stopifnot(a == 1, x == 2)
 plan(list(A=eager, B=tweak(eager, local=FALSE)))
 a <- 0
 
-x %<=% {
+x %<-% {
   stopifnot(identical(names(plan("list")), "B"))
   a <- 1
   a
@@ -92,7 +92,7 @@ x %<=% {
 print(x)
 stopifnot(a == 0, x == 1)
 
-x %<=% {
+x %<-% {
   stopifnot(identical(names(plan("list")), "B"))
   a <- 2
   a
@@ -101,7 +101,7 @@ print(x)
 stopifnot(a == 2, x == 2)
 
 
-message("*** y %<=% { expr } %tweak% tweaks ... DONE")
+message("*** y %<-% { expr } %tweak% tweaks ... DONE")
 
 
 message("*** Tweaking future strategies ... DONE")
