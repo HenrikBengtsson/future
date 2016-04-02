@@ -55,8 +55,6 @@ run.MulticoreFuture <- function(future, ...) {
   ## Inject code for the next future strategy to use.
   expr <- injectNextStrategy(future, expr)
 
-  call <- substitute(parallel::mcparallel(e), list(e=expr))
-
   requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
 
   future$state <- 'running'
@@ -64,7 +62,9 @@ run.MulticoreFuture <- function(future, ...) {
   ## Add to registry
   FutureRegistry("multicore", action="add", future=future)
 
-  job <- eval(call, envir=envir)
+  future.args <- list(expr)
+  job <- do.call(parallel::mcparallel, args=future.args, envir=envir)
+  
   future$job <- job
 
   invisible(future)
