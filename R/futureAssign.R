@@ -35,9 +35,9 @@
 #' The \code{\link{futureOf}()} function can be used to get the
 #' Future object of a future variable.
 #'
-#' @aliases %<=% %=>%
+#' @aliases %<-% %->% %<=% %=>%
 #' @export
-#' @export %<=% %=>%
+#' @export %<-% %->% %<=% %=>%
 futureAssign <- function(name, value, envir=parent.frame(), assign.env=envir, substitute=TRUE) {
   stopifnot(is.character(name), !is.na(name), nzchar(name))
   if (substitute) value <- substitute(value)
