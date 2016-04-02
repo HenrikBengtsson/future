@@ -72,7 +72,7 @@ evaluate.UniprocessFuture <- function(future, ...) {
   }, error = function(ex) {})
 
   ## Should errors be propagated as soon as possible?
-  if (future$onError != "value") propagateErrors(future)
+  if (future$onError != "value") propagateErrors(future, collect=FALSE)
 
   invisible(future)
 }

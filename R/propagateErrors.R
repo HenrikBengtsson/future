@@ -1,11 +1,17 @@
-propagateErrors <- function(future) {
+propagateErrors <- function(future, collect=TRUE) {
   onError <- future$onError
 
   ## Don't propagate errors?
   if (onError == "value") return(future)
 
+  ## Collect value?
+  if (collect) {
+    value <- value(future, onError="return")
+  } else {
+    value <- future$value
+  }
+
   ## Was there an error?
-  value <- future$value
   if (!inherits(value, "error")) return(future)
 
   ## How should errors be propagated?

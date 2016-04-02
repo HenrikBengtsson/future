@@ -105,9 +105,6 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
     stop(value)
   }
 
-  ## Should errors be propagated as soon as possible?
-  if (future$onError != "value") propagateErrors(future)
-
   value
 }
 

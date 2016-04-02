@@ -52,6 +52,27 @@ for (onError in c("stop", "warning", "message")) {
 message("*** Error propagation with lazy futures ... DONE")
 
 
+message("*** Error propagation with multisession futures ...")
+
+plan(multisession)
+f <- future({ stop("bang!") })
+r <- resolved(f)
+stopifnot(r)
+v <- try(value(f), silent=TRUE)
+stopifnot(inherits(v, "try-error"))
+
+for (onError in c("stop", "warning", "message")) {
+  plan(multisession, onError=onError)
+  f <- future({ stop("bang!") })
+  r <- try(resolved(f), silent=TRUE)
+  stopifnot(inherits(r, "try-error"))
+  v <- try(value(f), silent=TRUE)
+  stopifnot(inherits(v, "try-error"))
+}
+
+message("*** Error propagation with multisession futures ... DONE")
+
+
 message("*** Error propagation ... DONE")
 
 plan(eager)

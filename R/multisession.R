@@ -13,6 +13,7 @@
 #' from objects prior to the evaluation of the future.
 #' @param maxCores The maximum number of multisession futures that
 #' can be active at the same time before blocking.
+#' @param onError Controls how and when errors are detected and propagated.
 #' @param \dots Not used.
 #'
 #' @return A \link{MultisessionFuture}.
@@ -59,7 +60,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, maxCores=availableCores(), ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, maxCores=availableCores(), onError=c("value", "stop", "warning", "message"), ...) {
   if (substitute) expr <- substitute(expr)
   maxCores <- as.integer(maxCores)
   stopifnot(length(maxCores) == 1, is.finite(maxCores), maxCores >= 1)
@@ -76,7 +77,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## a cluster with one less process.
   cluster <- sessions("start", n=maxCores-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, onError=onError, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")

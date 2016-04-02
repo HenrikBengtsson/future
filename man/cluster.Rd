@@ -5,7 +5,8 @@
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, cluster = NULL, ...)
+  persistent = FALSE, cluster = NULL, onError = c("value", "stop",
+  "warning", "message"), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -21,6 +22,8 @@ from objects prior to the evaluation of the future.}
 
 \item{cluster}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
+
+\item{onError}{Controls how and when errors are detected and propagated.}
 
 \item{\dots}{Not used.}
 }
