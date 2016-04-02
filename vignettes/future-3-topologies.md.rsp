@@ -28,10 +28,10 @@ fqs <- dir(pattern="[.]fastq$")
 bams <- listenv()
 for (ss in seq_along(fqs)) {
   fq <- fqs[ss]
-  bams[[ss]] %<=% {
+  bams[[ss]] %<-% {
     bams_ss <- listenv()
     for (cc in 1:24) {
-      bams_ss[[cc]] %<=% htseq_align(fq, chr=cc)
+      bams_ss[[cc]] %<-% htseq_align(fq, chr=cc)
 	}
 	as.list(bams_ss)
   }
@@ -100,7 +100,7 @@ remote <- function(host, homogeneous=FALSE, ...) {
 login <- remote("login.my-cluster.org")
 
 ## Setup cluster nodes on remote
-nodes %<=% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% login
+nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% login
 
 ## Specify future topology
 ## login node -> { cluster nodes } -> { multiple cores }
@@ -112,19 +112,19 @@ plan(list(
 
 
 ## (a) This will be evaluated on the cluster login computer
-x %<=% {
+x %<-% {
   thost <- Sys.info()[["nodename"]]
   tpid <- Sys.getpid()
   y <- listenv()
   for (task in 1:4) {
     ## (b) This will be evaluated on a compute node on the cluster
-    y[[task]] %<=% {
+    y[[task]] %<-% {
       mhost <- Sys.info()[["nodename"]]
       mpid <- Sys.getpid()
       z <- listenv()
       for (jj in 1:2) {
         ## (c) These will be evaluated in separate processes on the same compute node
-        z[[jj]] %<=% data.frame(task=task, top.host=thost, top.pid=tpid,
+        z[[jj]] %<-% data.frame(task=task, top.host=thost, top.pid=tpid,
 		                        mid.host=mhost, mid.pid=mpid,
 		                        host=Sys.info()[["nodename"]], pid=Sys.getpid())
       }
@@ -146,7 +146,7 @@ print(x)
 ## 8    4    login  391547       n1  391878   n1 393966
 ```
 
-Try the above `x %<=% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
+Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
