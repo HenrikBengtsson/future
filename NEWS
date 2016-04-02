@@ -1,7 +1,12 @@
 Package: future
 ===============
 
-Version: 0.12.0-9000 [2016-03-29]
+Version: 0.12.0-9000 [2016-04-02]
+o Add support for controlling when errors are propagated.  The default
+  is (as before) when the value is requested.  In addition to this, it
+  is now also possible to propagate an error as soon as the package
+  (i.e. the "owner" process) becomes aware of the error, e.g. when
+  checking whether a future has been resolved or not.
 o Now UniprocessFuture:s captures the call stack for errors occurring
   while resolving futures.
 o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,

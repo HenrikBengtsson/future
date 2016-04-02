@@ -12,6 +12,7 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param onError Controls how and when errors are detected and propagated.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -29,14 +30,16 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, onError=c("value", "stop", "warning", "message"), ...) {
   if (substitute) expr <- substitute(expr)
+  onError <- match.arg(onError)
   args <- list(...)
 
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
+  core$onError <- onError
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -102,6 +105,9 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
     stop(value)
   }
 
+  ## Should errors be propagated as soon as possible?
+  if (future$onError != "value") propagateErrors(future)
+
   value
 }
 
@@ -110,6 +116,9 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
+  ## Should errors be propagated as soon as possible?
+  if (x$onError != "value") propagateErrors(x)
+
   x$state %in% c('finished', 'failed', 'interrupted')
 }
 

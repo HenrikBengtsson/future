@@ -18,6 +18,7 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#' @param onError Controls how and when errors are detected and propagated.
 #' @param \dots Not used.
 #'
 #' @return An \link{EagerFuture}.
@@ -32,7 +33,7 @@
 #' \emph{eager futures}.
 #'
 #' @export
-eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, ...) {
+eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, onError=c("value", "stop", "warning", "message"), ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   local <- as.logical(local)
@@ -42,14 +43,13 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
     exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
-  future <- EagerFuture(expr=expr, envir=envir, local=local)
+  future <- EagerFuture(expr=expr, envir=envir, local=local, onError=onError)
   evaluate(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
 
 constant <- function(value, ...) {
-  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE)
+  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE, onError="stop")
 }
 class(constant) <- c("constant", "eager", "uniprocess", "future", "function")
-
