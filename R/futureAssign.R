@@ -56,9 +56,8 @@ futureAssign <- function(name, value, envir=parent.frame(), assign.env=envir, su
   ## a variable as a "promise".
   ## NOTE: We make sure to pass 'envir' in order for globals to
   ## be located properly.
-  a <- b <- NULL; rm(list=c("a", "b")) ## To please R CMD check
-  call <- substitute(future::future(a, envir=b), list(a=value, b=envir))
-  future <- eval(call, envir=assign.env)
+  future.args <- list(value, envir=envir)
+  future <- do.call(future::future, args=future.args, envir=assign.env)
 
   ## Assign future to assignment environment
   future_without_gc <- future
