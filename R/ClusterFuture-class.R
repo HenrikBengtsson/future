@@ -208,7 +208,7 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 }
 
 #' @export
-value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
+value.ClusterFuture <- function(future, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
