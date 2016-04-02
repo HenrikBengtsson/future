@@ -49,11 +49,11 @@ In this case the future is unresolved until the point in time when we first ask 
 
 
 ### Promises of successful futures
-An important part of a future is the fact that, although we do not necessarily control _when_ a future is resolved, we do have a "promise" that it _will_ be resolved (at least if its value is requested).  In other words, if we ask for the value of a future, we are guaranteed that the expression of the future will be evaluated and its value will be returned to us (or an error will be generated if the evaluation caused an error).  An alternative to a future-value pair of function calls is to use the `%<=%` infix assignment operator (also provided by the 'future' package).  For example,
+An important part of a future is the fact that, although we do not necessarily control _when_ a future is resolved, we do have a "promise" that it _will_ be resolved (at least if its value is requested).  In other words, if we ask for the value of a future, we are guaranteed that the expression of the future will be evaluated and its value will be returned to us (or an error will be generated if the evaluation caused an error).  An alternative to a future-value pair of function calls is to use the `%<-%` infix assignment operator (also provided by the 'future' package).  For example,
 
 ```r
 > plan(lazy)
-> v %<=% {
+> v %<-% {
 +   message("Resolving...")
 +   3.14
 + }
@@ -77,7 +77,7 @@ Since an asynchronous strategy is more likely to be used in practice, the built-
 
 ```r
 > a <- 2.71
-> x %<=% { a <- 3.14 }
+> x %<-% { a <- 3.14 }
 > x
 [1] 3.14
 > a
@@ -91,8 +91,8 @@ Sometimes one may want to use an alternative evaluation strategy for a specific 
 ```r
 > plan(eager)
 > a <- 0
-> x %<=% { 3.14 }
-> y %<=% { a <- 2.71 } %plan% lazy(local=FALSE, globals=FALSE)
+> x %<-% { 3.14 }
+> y %<-% { a <- 2.71 } %plan% lazy(local=FALSE, globals=FALSE)
 > x
 [1] 3.14
 > a
@@ -109,13 +109,13 @@ Above, the expression for `x` is evaluated eagerly (in a local environment), whe
 It is possible to nest futures in multiple levels and each of the nested futures may be resolved using a different strategy, e.g.
 ```r
 > plan(lazy)
-> c %<=% {
+> c %<-% {
 +   message("Resolving 'c'")
-+   a %<=% {
++   a %<-% {
 +     message("Resolving 'a'")
 +     3
 +   } %plan% eager
-+   b %<=% {
++   b %<-% {
 +     message("Resolving 'b'")
 +     -9 * a
 +   }
@@ -138,11 +138,11 @@ When using asynchronous (multicore, multisession and cluster) futures, recursive
 
 
 ## Assigning futures to environments and list environments
-The `%<=%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  For instance, it is _not_ possible to assign future values to a _list_;
+The `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  For instance, it is _not_ possible to assign future values to a _list_;
 
 ```r
 > x <- list()
-> x$a %<=% { 2.71 }
+> x$a %<-% { 2.71 }
 Error: Subsetting can not be done on a 'list'; only to an environment: 'x$a'
 ```
 
@@ -150,10 +150,10 @@ This is because _promises_ themselves cannot be assigned to lists.  More precise
 
 ```r
 > env <- new.env()
-> env$a %<=% { 1 }
-> env[["b"]] %<=% { 2 }
+> env$a %<-% { 1 }
+> env[["b"]] %<-% { 2 }
 > name <- "c"
-> env[[name]] %<=% { 3 }
+> env[[name]] %<-% { 3 }
 > as.list(env)
 $a
 [1] 1
@@ -170,7 +170,7 @@ If _indexed subsetting_ is needed for assignments, the '[listenv]' package provi
 > library(listenv)
 > x <- listenv()
 > for (ii in 1:3) {
-+   x[[ii]] %<=% { rnorm(ii) }
++   x[[ii]] %<-% { rnorm(ii) }
 + }
 > names(x) <- c("a", "b", "c")
 ```
@@ -204,10 +204,10 @@ Error in eval(expr, envir, enclos) : Whoops!
 ```
 Note how the future expression is only evaluated once although the error itself is re-thrown each time the value is required subsequently.
 
-Exception handling of future assignments via `%<=%` works analogously, e.g.
+Exception handling of future assignments via `%<-%` works analogously, e.g.
 ```r
 > plan(lazy)
- x %<=% ({
+ x %<-% ({
    message("Resolving...")
    stop("Whoops!")
    42
@@ -231,12 +231,12 @@ Whenever an R expression is to be evaluated asynchronously (in parallel) or via 
 The future package tries to automate the identification of globals in future expressions.  It does so with help of the [globals] package.  If a global variable is identified, it is captured and made available to the evaluator of the future, e.g. it is exported to the work environment of an R session running in the background.  If it identifies a symbol that it believes is a global object in the future expression, but it fails to locate it in the work environment, an error is thrown immediately (minimizing the risk for runtime errors occurring much later).  For instance,
 ```r
 > x <- 5.0
-> y %<=% { a * x }
+> y %<-% { a * x }
 Error in globalsOf(expr, envir = envir, substitute = FALSE, tweak = tweak,  :
 Identified a global by static code inspection, but failed to locate the
 corresponding object in the relevant environments: 'a'
 > a <- 1.8
-> y %<=% { a * x }
+> y %<-% { a * x }
 > y
 [1] 9
 ```
@@ -290,18 +290,25 @@ The goal of this package is to provide a standardized and unified API for using 
 
 
 ## Installation
-R package future is available on [CRAN](http://cran.r-project.org/package=future) and can be installed in R as:
+R package future is only available via [GitHub](https://github.com/HenrikBengtsson/future) and can be installed in R as:
 ```r
-install.packages('future')
+source('http://callr.org/install#HenrikBengtsson/future')
 ```
 
+### Pre-release version
+
+To install the pre-release version that is available in branch `develop`, use:
+```r
+source('http://callr.org/install#HenrikBengtsson/future@develop')
+```
+This will install the package from source.  
 
 
 
 ## Software status
 
-| Resource:     | CRAN        | Travis CI     | Appveyor         |
+| Resource:     | GitHub        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
-| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| R CMD check   |  | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
 | Test coverage |                     | <a href="https://coveralls.io/r/HenrikBengtsson/future"><img src="https://coveralls.io/repos/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |
