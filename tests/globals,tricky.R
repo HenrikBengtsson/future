@@ -36,7 +36,7 @@ for (cores in 1:min(3L, availableCores())) {
         a*b
       })
 
-      y %<=% {
+      y %<-% {
         b <- a
         a <- 2
         a*b
@@ -57,7 +57,7 @@ for (cores in 1:min(3L, availableCores())) {
       res <- listenv()
       a <- 1
       for (ii in 1:3) {
-        res[[ii]] %<=% {
+        res[[ii]] %<-% {
           b <- a*ii
           a <- 0
           b

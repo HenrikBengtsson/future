@@ -90,8 +90,8 @@ stopifnot(resolved(x$b))
 stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- new.env()
-x$a %<=% { 1 }
-x$b %<=% { 2 }
+x$a %<-% { 1 }
+x$b %<-% { 2 }
 x$c <- 3
 stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 y <- resolve(x)  ## FIXME: Should not do value()!
@@ -100,7 +100,7 @@ stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- new.env()
 x$a <- future({ 1 })
-x$b %<=% { 2 }
+x$b %<-% { 2 }
 x$c <- 3
 stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 y <- resolve(x, idxs="a")
@@ -160,8 +160,8 @@ stopifnot(identical(y, x))
 stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- listenv()
-x$a %<=% { 1 }
-x$b %<=% { 2 }
+x$a %<-% { 1 }
+x$b %<-% { 2 }
 x$c <- 3
 stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 y <- resolve(x)  ## FIXME: Should not do value()!
@@ -172,8 +172,8 @@ stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
 
 x <- listenv()
 x$a <- future({ 1 })
-x$b %<=% { Sys.sleep(1); 2 }
-x$c %<=% { 3 }
+x$b %<-% { Sys.sleep(1); 2 }
+x$c %<-% { 3 }
 x$d <- 4
 names <- names(x)
 dim(x) <- c(2,2)

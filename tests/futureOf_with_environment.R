@@ -13,7 +13,7 @@ message("*** futureOf() with environment ...")
 message("*** futureOf() with environment - future assignments ...")
 
 x <- new.env()
-x$a %<=% { 1 }
+x$a %<-% { 1 }
 
 f1 <- futureOf("a", envir=x)
 print(f1)

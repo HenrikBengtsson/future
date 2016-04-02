@@ -9,7 +9,7 @@ if (getRversion() < "3.2.0") {
   names <- function(x) if (is.environment(x)) ls(envir=x) else base::names(x)
 }
 
-message("*** %<=% to environment ...")
+message("*** %<-% to environment ...")
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Async delayed assignment (infix operator)
@@ -17,12 +17,12 @@ message("*** %<=% to environment ...")
 z <- new.env()
 stopifnot(length(names(z)) == 0L)
 
-message("*** %<=% to environment: Assign by index (not allowed)")
-res <- try(z[[1]] %<=% { 2 }, silent=TRUE)
+message("*** %<-% to environment: Assign by index (not allowed)")
+res <- try(z[[1]] %<-% { 2 }, silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-message("*** %<=% to environment: Assign by name (new)")
-z$B %<=% TRUE
+message("*** %<-% to environment: Assign by name (new)")
+z$B %<-% TRUE
 stopifnot(length(z) == 2) # sic!
 stopifnot("B" %in% ls(z))
 
@@ -32,15 +32,15 @@ stopifnot(length(y) == 1)
 stopifnot(identical(names(y), "B"))
 
 
-message("*** %<=% to environment: Potential task name clashes")
+message("*** %<-% to environment: Potential task name clashes")
 u <- new.env()
-u$a %<=% 1
+u$a %<-% 1
 stopifnot(length(u) == 2)
 stopifnot("a" %in% names(u))
 fu <- futureOf(u$a)
 
 v <- new.env()
-v$a %<=% 2
+v$a %<-% 2
 stopifnot(length(v) == 2)
 stopifnot("a" %in% names(v))
 fv <- futureOf(v$a)
@@ -52,7 +52,7 @@ stopifnot(!identical(fu, fv))
 stopifnot(identical(u$a, 1))
 stopifnot(identical(v$a, 2))
 
-message("*** %<=% to environment ... DONE")
+message("*** %<-% to environment ... DONE")
 
 ## Cleanup
 plan(eager)
