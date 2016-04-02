@@ -5,7 +5,8 @@
 \title{Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation}
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, maxCores = availableCores(), ...)
+  globals = TRUE, maxCores = availableCores(), onError = c("value",
+  "stop", "warning", "message"), ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -23,6 +24,8 @@ located, an informative error is generated.}
 
 \item{maxCores}{The maximum number of multiprocess futures that
 can be active at the same time before blocking.}
+
+\item{onError}{Controls how and when errors are detected and propagated.}
 
 \item{\dots}{Not used.}
 }
