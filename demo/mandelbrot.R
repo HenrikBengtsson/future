@@ -113,7 +113,7 @@ counts <- listenv()
 for (ii in seq_along(sizes)) {
   cat(sprintf("Mandelbrot tile #%d of %d ...\n", ii, length(sizes)))
   size <- sizes[ii]
-  counts[[ii]] %<=% {
+  counts[[ii]] %<-% {
     cat(sprintf("Calculating tile #%d of %d ...\n", ii, length(sizes)))
     xlim <- xs[ii] + size/2 * c(-1,1)
     ylim <- ys[ii] + size/2 * c(-1,1)
