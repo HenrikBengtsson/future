@@ -30,7 +30,7 @@ fsample <- function(x, size=4L, seed=NULL) {
   res <- listenv::listenv()
   for (ii in seq_len(size)) {
     .seed <- parallel::nextRNGStream(.seed)
-    res[[ii]] %<=% {
+    res[[ii]] %<-% {
       .GlobalEnv$.Random.seed <- .seed
       sample(x, size=1L)
     }

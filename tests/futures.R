@@ -51,7 +51,7 @@ for (cores in 1:min(3L, availableCores())) {
         x$a <- 1
         x$b <- future(2)
         x$c <- 3
-        if (type != "list") x$d %<=% { 4 }
+        if (type != "list") x$d %<-% { 4 }
         if (type != "environment") x[[6]] <- 6
         str(x)
 

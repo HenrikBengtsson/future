@@ -37,7 +37,7 @@ foo <- function(a, use=FALSE) {
 }
 
 ## Create a future
-x %<=% { cat("Pow!\n"); 1 }
+x %<-% { cat("Pow!\n"); 1 }
 
 ## Lazy evaluation where argument is not used
 foo(x, use=FALSE)

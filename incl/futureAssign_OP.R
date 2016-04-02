@@ -7,7 +7,7 @@ cat("Value 'A': ", A, sep="")
 
 
 ## Equivalent via infix "assign" operator
-A %<=% {
+A %<-% {
   x <- 3
   x^2
 }
@@ -18,9 +18,9 @@ cat("Value 'A': ", A, sep="")
 a <- 1
 
 ## Three future evaluations
-A %<=% { 0.1 }
-B %<=% { 0.2 }
-C %<=% { z <- a+0.3 }
+A %<-% { 0.1 }
+B %<-% { 0.2 }
+C %<-% { z <- a+0.3 }
 
 ## Sleep until 'C' is available
 cat("Value 'C': ", C, sep="")
