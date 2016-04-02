@@ -11,7 +11,7 @@ x <- listenv()
 x[[1]] <- 0
 x[[2]] <- 1
 for (i in 3:100) {
-  x[[i]] %<=% { x[[i-2]] + x[[i-1]] }
+  x[[i]] %<-% { x[[i-2]] + x[[i-1]] }
 }
 
 ## At this point nothing has been calculated,
