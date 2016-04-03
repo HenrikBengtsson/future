@@ -32,6 +32,16 @@
 #' \code{\link{future}()} and \code{\link{\%<=\%}} will create
 #' \emph{eager futures}.
 #'
+#' @section transparent futures:
+#' Transparent futures are eager futures configured to emulate how R
+#' evaluates expressions as far as possible.  For instance, errors and
+#' warnings are signaled immediately and assignments are done to the
+#' calling environment (without \code{local()} as default for all other
+#' types of futures).  This makes transparent futures ideal for
+#' troubleshooting, especially when there are errors.
+#'
+#' @aliases transparent
+#' @export transparent
 #' @export
 eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
@@ -49,6 +59,15 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
 
+transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, ...) {
+  if (substitute) expr <- substitute(expr)
+  future <- eager(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal)
+  invisible(future)
+}
+class(transparent) <- c("transparent", "eager", "uniprocess", "future", "function")
+
+
+## Used only internally
 constant <- function(value, ...) {
   eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE, earlySignal=TRUE)
 }

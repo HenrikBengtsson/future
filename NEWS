@@ -2,6 +2,11 @@ Package: future
 ===============
 
 Version: 0.12.0-9000 [2016-04-03]
+o Add transparent futures, which are eager futures with early signaling
+  of conditioned enabled and whose expression is evaluated in the calling
+  environment.  This makes the evaluation of such futures as similar
+  as possible to how R evaluates expressions, which in turn simplifies
+  troubleshooting errors etc.
 o Add support for early signaling of conditions.  The default is
   (as before) to signal conditions when the value is queried.
   In addition, they may be signals as soon as possible, e.g. when
