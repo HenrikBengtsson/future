@@ -8,6 +8,32 @@ FutureRegistry <- local({
     NA_integer_
   }
 
+  collectValues <- function(where, futures, firstOnly=TRUE) {
+    for (ii in seq_along(futures)) {
+      future <- futures[[ii]]
+      if (resolved(future)) {
+        ## (a) Let future cleanup after itself, iff needed
+        ##     This may result in a call to FutureRegistry(..., action="remove")
+        tryCatch({
+          value(future)
+        }, error = function(ex) {})
+
+        ## (b) Make sure future is removed from registry, unless
+        ##     already done via above value() call
+        futures <- db[[where]]
+        idx <- indexOf(futures, future)
+        if (!is.na(idx)) {
+          futures[[idx]] <- NULL
+          db[[where]] <<- futures
+        }
+
+        ## (c) Collect only the first resolved future?
+        if (firstOnly) break
+      }
+    } ## for (ii ...)
+  } ## collectValues()
+
+
   function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, ...) {
     stopifnot(length(where) == 1, nzchar(where))
     futures <- db[[where]]
@@ -37,28 +63,7 @@ FutureRegistry <- local({
       futures[[idx]] <- NULL
       db[[where]] <<- futures
     } else if (action == "collect-first") {
-      for (ii in seq_along(futures)) {
-        future <- futures[[ii]]
-        if (resolved(future)) {
-	  ## (a) Let future cleanup after itself, iff needed
-	  ##     This may result in a call to FutureRegistry(..., action="remove")
-	  tryCatch({
-	    value(future)
-	  }, error = function(ex) {})
-
-          ## (b) Make sure future is removed from registry, unless
-	  ##     already done via above value() call
-          futures <- db[[where]]
-          idx <- indexOf(futures, future)
-	  if (!is.na(idx)) {
-	    futures[[idx]] <- NULL
-            db[[where]] <<- futures
-	  }
-
-          ## (c) Collect only the first resolved future
-	  break
-	}
-      }
+      collectValues(where, futures=futures, firstOnly=TRUE)
     } else if (action == "reset") {
       db[[where]] <<- list()
     } else if (action == "list") {
