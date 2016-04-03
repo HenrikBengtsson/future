@@ -12,14 +12,13 @@ FutureRegistry <- local({
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
       if (resolved(future)) {
-        ## (a) Let future cleanup after itself, iff needed
-        ##     This may result in a call to FutureRegistry(..., action="remove")
-        tryCatch({
-          value(future)
-        }, error = function(ex) {})
+        ## (a) Let future cleanup after itself, iff needed.
+        ##     This, this may result in a call to
+        ##     FutureRegistry(..., action="remove").
+        value(future, signal=FALSE)
 
         ## (b) Make sure future is removed from registry, unless
-        ##     already done via above value() call
+        ##     already done via above value() call.
         futures <- db[[where]]
         idx <- indexOf(futures, future)
         if (!is.na(idx)) {
