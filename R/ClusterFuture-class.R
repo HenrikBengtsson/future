@@ -177,7 +177,7 @@ run.ClusterFuture <- function(future, ...) {
 
 
   ## Add to registry
-  FutureRegistry(reg, action="add", future=future)
+  FutureRegistry(reg, action="add", future=future, earlySignal=FALSE)
 
   future$state <- 'running'
 
@@ -189,6 +189,9 @@ run.ClusterFuture <- function(future, ...) {
 
 #' @export
 resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
+  ## Is future even launched?
+  if (x$state == 'created') return(FALSE)
+
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
@@ -262,7 +265,7 @@ value.ClusterFuture <- function(future, ...) {
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
   ## Remove from registry
-  FutureRegistry(reg, action="remove", future=future)
+  FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
 
   NextMethod("value")
 }
@@ -283,7 +286,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
 
   usedNodes <- function() {
     ## Number of unresolved cluster futures
-    length(FutureRegistry(reg, action="list"))
+    length(FutureRegistry(reg, action="list", earlySignal=FALSE))
   }
 
 
@@ -312,7 +315,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
 
   ## Find which node is available
   avail <- rep(TRUE, times=length(cluster))
-  futures <- FutureRegistry(reg, action="list")
+  futures <- FutureRegistry(reg, action="list", earlySignal=FALSE)
   nodes <- unlist(lapply(futures, FUN=function(f) f$node))
   avail[nodes] <- FALSE
 

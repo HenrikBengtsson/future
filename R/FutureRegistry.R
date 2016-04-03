@@ -12,6 +12,9 @@ FutureRegistry <- local({
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
 
+      ## Is future even launched?
+      if (future$state == "created") next
+
       ## NOTE: It is when calling resolved() on a future with
       ##       early signaling is enabled that conditioned
       ##       may be signaled.
@@ -39,7 +42,7 @@ FutureRegistry <- local({
   } ## collectValues()
 
 
-  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, ...) {
+  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, earlySignal=TRUE, ...) {
     stopifnot(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
@@ -79,7 +82,7 @@ FutureRegistry <- local({
     }
 
     ## Early signaling of conditions?
-    if (length(futures) > 0L) {
+    if (earlySignal && length(futures) > 0L) {
       ## Which futures have early signaling enabled?
       idxs <- lapply(futures, FUN=function(f) f$earlySignal)
       idxs <- which(unlist(idxs, use.names=FALSE))

@@ -72,6 +72,9 @@ run.MulticoreFuture <- function(future, ...) {
 
 #' @export
 resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
+  ## Is future even launched?
+  if (x$state == 'created') return(FALSE)
+
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
