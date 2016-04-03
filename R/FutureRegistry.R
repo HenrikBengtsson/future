@@ -12,6 +12,9 @@ FutureRegistry <- local({
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
 
+      ## NOTE: It is when calling resolved() on a future with
+      ##       early signalling is enabled that conditioned
+      ##       may be signalled.
       if (resolved(future)) {
         ## (a) Let future cleanup after itself, iff needed.
         ##     This, this may result in a call to
@@ -75,12 +78,18 @@ FutureRegistry <- local({
       stop(msg)
     }
 
-    ## Early propagation of errors?
+    ## Early signalling of conditions?
     if (length(futures) > 0L) {
+      ## Which futures have early signalling enabled?
       idxs <- lapply(futures, FUN=function(f) (f$onError != "value"))
       idxs <- which(unlist(idxs, use.names=FALSE))
-#      print(list(futures=futures, idxs=idxs))
-#      collectValues(where, futures=futures[idxs], firstOnly=FALSE)
+
+      ## Any futures to be scanned for early signalling?
+      if (length(idxs) > 0) {
+        ## Collect values, which will trigger signalling during
+        ## calls to resolved().
+        collectValues(where, futures=futures[idxs], firstOnly=FALSE)
+      }
     }
 
     futures
