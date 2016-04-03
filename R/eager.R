@@ -43,7 +43,7 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
     exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
-  future <- EagerFuture(expr=expr, envir=envir, local=local, onError=onError)
+  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, local=local, onError=onError)
   evaluate(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")

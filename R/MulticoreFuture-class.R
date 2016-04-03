@@ -19,7 +19,7 @@
 MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  f <- MultiprocessFuture(expr=expr, envir=envir, job=NULL, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, job=NULL, ...)
   structure(f, class=c("MulticoreFuture", class(f)))
 }
 
