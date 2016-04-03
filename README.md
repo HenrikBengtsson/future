@@ -209,11 +209,11 @@ Note how the future expression is only evaluated once although the error itself 
 Exception handling of future assignments via `%<-%` works analogously, e.g.
 ```r
 > plan(lazy)
- x %<-% ({
-   message("Resolving...")
-   stop("Whoops!")
-   42
- })
+> x %<-% {
++   message("Resolving...")
++   stop("Whoops!")
++   42
++ }
 > y <- 3.14
 > y
 [1] 3.14

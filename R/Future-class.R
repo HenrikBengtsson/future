@@ -107,6 +107,9 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
+  ## Is future even launched?
+  if (x$state == 'created') return(FALSE)
+
   ## Signal conditions early, iff specified for the given future
   signalEarly(x)
 
