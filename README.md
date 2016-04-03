@@ -5,7 +5,7 @@ In programming, a _future_ is an abstraction for a _value_ that may be available
 
 ### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and a three _asynchronous_ ones for "multicore", "multisession" and "cluster" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue/scheduler.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), exist mainly for the purpose of illustrating how futures work and for troubleshooting code that uses other types of futures but for some reason fail when being resolved.
+The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and a three _asynchronous_ ones for "multicore", "multisession" and "cluster" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue/scheduler.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), are useful as a last test before using asynchronous futures.
 
 Here is an example illustrating how the basics of futures work:
 
@@ -46,6 +46,8 @@ Resolving...
 ```
 
 In this case the future is unresolved until the point in time when we first ask for its value (which also means that a lazy future may never be resolved).
+
+For troubleshooting, there is also a _transparent_ future, which can be specified as `plan(transparent)`.  A transparent future is technically an eager future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors.
 
 
 ### Promises of successful futures
@@ -290,9 +292,9 @@ The goal of this package is to provide a standardized and unified API for using 
 
 
 ## Installation
-R package future is only available via [GitHub](https://github.com/HenrikBengtsson/future) and can be installed in R as:
+R package future is available on [CRAN](http://cran.r-project.org/package=future) and can be installed in R as:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future')
+install.packages('future')
 ```
 
 ### Pre-release version
@@ -307,8 +309,8 @@ This will install the package from source.
 
 ## Software status
 
-| Resource:     | GitHub        | Travis CI     | Appveyor         |
+| Resource:     | CRAN        | Travis CI     | Appveyor         |
 | ------------- | ------------------- | ------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux_       | _Windows_        |
-| R CMD check   |  | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
 | Test coverage |                     | <a href="https://coveralls.io/r/HenrikBengtsson/future"><img src="https://coveralls.io/repos/HenrikBengtsson/future/badge.svg?branch=develop" alt="Coverage Status"/></a>   |                  |
