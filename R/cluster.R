@@ -13,6 +13,7 @@
 #' from objects prior to the evaluation of the future.
 #' @param cluster A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{ClusterFuture}.
@@ -31,10 +32,10 @@
 #' and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, cluster=NULL, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, cluster=NULL, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, earlySignal=earlySignal, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

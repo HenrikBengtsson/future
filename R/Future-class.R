@@ -12,6 +12,7 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -29,7 +30,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -37,6 +38,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
+  core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -70,11 +72,8 @@ assertOwner <- function(future, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
-#' @param onError A character string specifying how errors
-#' (\link[base]{conditions}) should be handled in case they occur.
-#' If \code{"signal"}, the error is signalled, e.g. captured
-#' and re-thrown.  If instead \code{"return"}, they are
-#' \emph{returned} as is.
+#' @param signal A logical specifying whether (\link[base]{conditions})
+#' should signaled or be returned as values.
 #' @param \dots Not used.
 #'
 #' @return An R object of any data type.
@@ -87,9 +86,7 @@ assertOwner <- function(future, ...) {
 #' @export value
 #' @aliases value
 #' @export
-value.Future <- function(future, onError=c("signal", "return"), ...) {
-  onError <- match.arg(onError)
-
+value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
@@ -97,7 +94,7 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
   }
 
   value <- future$value
-  if (future$state == 'failed' && onError == "signal") {
+  if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
     stop(value)
   }
@@ -110,6 +107,9 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
+  ## Signal conditions early, iff specified for the given future
+  signalEarly(x)
+
   x$state %in% c('finished', 'failed', 'interrupted')
 }
 

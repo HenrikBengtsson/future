@@ -49,7 +49,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     gp$expr <- substitute(local(a), list(a=gp$expr))
   }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -201,11 +201,14 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   con <- cl$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
 
+  ## Signal conditions early? (happens only iff requested)
+  if (res) signalEarly(x)
+
   res
 }
 
 #' @export
-value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
+value.ClusterFuture <- function(future, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))

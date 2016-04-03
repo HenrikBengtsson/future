@@ -19,7 +19,7 @@
 MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  f <- MultiprocessFuture(expr=expr, envir=envir, job=NULL, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, job=NULL, ...)
   structure(f, class=c("MulticoreFuture", class(f)))
 }
 
@@ -62,7 +62,7 @@ run.MulticoreFuture <- function(future, ...) {
 
   future.args <- list(expr)
   job <- do.call(parallel::mcparallel, args=future.args, envir=envir)
-  
+
   future$job <- job
 
   invisible(future)
@@ -86,11 +86,16 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
   pid <- selectChildren(job, timeout=timeout)
-  (is.integer(pid) || is.null(pid))
+  res <- (is.integer(pid) || is.null(pid))
+
+  ## Signal conditions early? (happens only iff requested)
+  if (res) signalEarly(x)
+
+  res
 }
 
 #' @export
-value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
+value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))

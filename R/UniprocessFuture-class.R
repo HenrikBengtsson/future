@@ -71,5 +71,8 @@ evaluate.UniprocessFuture <- function(future, ...) {
     })
   }, error = function(ex) {})
 
+  ## Signal conditions early, iff specified for the given future
+  signalEarly(future, collect=FALSE)
+
   invisible(future)
 }

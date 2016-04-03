@@ -5,7 +5,7 @@
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, cluster = NULL, ...)
+  persistent = FALSE, cluster = NULL, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -21,6 +21,8 @@ from objects prior to the evaluation of the future.}
 
 \item{cluster}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
+
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
 \item{\dots}{Not used.}
 }
