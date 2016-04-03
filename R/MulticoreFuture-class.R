@@ -57,8 +57,6 @@ run.MulticoreFuture <- function(future, ...) {
 
   requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
 
-  future$state <- 'running'
-
   ## Add to registry
   FutureRegistry("multicore", action="add", future=future)
 
@@ -66,6 +64,7 @@ run.MulticoreFuture <- function(future, ...) {
   job <- do.call(parallel::mcparallel, args=future.args, envir=envir)
 
   future$job <- job
+  future$state <- 'running'
 
   invisible(future)
 }
