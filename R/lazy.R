@@ -17,7 +17,7 @@
 #' @param globals If TRUE, global objects are resolved ("frozen") at
 #' the point of time when the future is created, otherwise they are
 #' resolved when the future is resolved.
-#' @param onError Controls how and when errors are detected and propagated.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{LazyFuture}.
@@ -32,7 +32,7 @@
 #' \emph{lazy futures}.
 #'
 #' @export
-lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, onError=c("value", "stop", "warning", "message"), ...) {
+lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   local <- as.logical(local)
@@ -52,7 +52,7 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
     exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression, resolve=TRUE)
   }
 
-  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, onError=onError)
+  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal)
 }
 class(lazy) <- c("lazy", "uniprocess", "future", "function")
 

@@ -11,10 +11,7 @@
 \item{future}{A \link{Future}.}
 
 \item{signal}{A logical specifying whether (\link[base]{conditions})
-should signaled or be returned as values.
-If \code{"signal"}, the error is signalled, e.g. captured
-and re-thrown.  If instead \code{"return"}, they are
-\emph{returned} as is.}
+should signaled or be returned as values.}
 
 \item{\dots}{Not used.}
 }

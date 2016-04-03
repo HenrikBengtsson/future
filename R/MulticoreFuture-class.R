@@ -90,8 +90,8 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   pid <- selectChildren(job, timeout=timeout)
   res <- (is.integer(pid) || is.null(pid))
 
-  ## Should errors be propagated as soon as possible?
-  if (x$onError != "value") propagateErrors(x)
+  ## Signal conditions early? (happens only iff requested)
+  if (res) signalEarly(x)
 
   res
 }

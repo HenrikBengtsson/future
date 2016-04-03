@@ -204,8 +204,8 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   con <- cl$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
 
-  ## Should errors be propagated as soon as possible?
-  if (x$onError != "value") propagateErrors(x)
+  ## Signal conditions early? (happens only iff requested)
+  if (res) signalEarly(x)
 
   res
 }

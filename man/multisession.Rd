@@ -5,8 +5,8 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, maxCores = availableCores(), onError = c("value",
-  "stop", "warning", "message"), ...)
+  persistent = FALSE, maxCores = availableCores(), earlySignal = FALSE,
+  ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -23,7 +23,7 @@ from objects prior to the evaluation of the future.}
 \item{maxCores}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
-\item{onError}{Controls how and when errors are detected and propagated.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
 \item{\dots}{Not used.}
 }

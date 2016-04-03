@@ -15,7 +15,7 @@
 #' located, an informative error is generated.
 #' @param maxCores The maximum number of multicore futures that can
 #' be active at the same time before blocking.
-#' @param onError Controls how and when errors are detected and propagated.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MulticoreFuture}
@@ -59,7 +59,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), onError=c("value", "stop", "warning", "message"), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
@@ -81,7 +81,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   oopts <- options(mc.cores=maxCores)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, onError=onError)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")

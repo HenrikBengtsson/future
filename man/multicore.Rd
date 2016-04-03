@@ -5,8 +5,8 @@
 \title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  maxCores = availableCores(constraints = "multicore"), onError = c("value",
-  "stop", "warning", "message"), ...)
+  maxCores = availableCores(constraints = "multicore"), earlySignal = FALSE,
+  ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -25,7 +25,7 @@ located, an informative error is generated.}
 \item{maxCores}{The maximum number of multicore futures that can
 be active at the same time before blocking.}
 
-\item{onError}{Controls how and when errors are detected and propagated.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
 \item{\dots}{Not used.}
 }

@@ -12,7 +12,7 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param onError Controls how and when errors are detected and propagated.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -30,16 +30,15 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, onError=c("value", "stop", "warning", "message"), ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  onError <- match.arg(onError)
   args <- list(...)
 
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
-  core$onError <- onError
+  core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -75,9 +74,6 @@ assertOwner <- function(future, ...) {
 #' @param future A \link{Future}.
 #' @param signal A logical specifying whether (\link[base]{conditions})
 #' should signaled or be returned as values.
-#' If \code{"signal"}, the error is signalled, e.g. captured
-#' and re-thrown.  If instead \code{"return"}, they are
-#' \emph{returned} as is.
 #' @param \dots Not used.
 #'
 #' @return An R object of any data type.
@@ -111,8 +107,8 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
-  ## Should errors be propagated as soon as possible?
-  if (x$onError != "value") propagateErrors(x)
+  ## Signal conditions early, iff specified for the given future
+  signalEarly(x)
 
   x$state %in% c('finished', 'failed', 'interrupted')
 }

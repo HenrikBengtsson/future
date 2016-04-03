@@ -1,12 +1,13 @@
 Package: future
 ===============
 
-Version: 0.12.0-9000 [2016-04-02]
-o Add support for controlling when errors are propagated.  The default
-  is (as before) when the value is requested.  In addition to this, it
-  is now also possible to propagate an error as soon as the package
-  (i.e. the "owner" process) becomes aware of the error, e.g. when
-  checking whether a future has been resolved or not.
+Version: 0.12.0-9000 [2016-04-03]
+o Add support for early signaling of conditions.  The default is
+  (as before) to signal conditions when the value is queried.
+  In addition, they may be signals as soon as possible, e.g. when
+  checking whether a future is resolved or not.
+o Signaling of conditions when calling value() is now controlled by
+  argument 'signal' (previously 'onError').
 o Now UniprocessFuture:s captures the call stack for errors occurring
   while resolving futures.
 o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,

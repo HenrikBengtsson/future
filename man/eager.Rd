@@ -5,7 +5,7 @@
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, onError = c("value", "stop", "warning", "message"), ...)
+  local = TRUE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -25,7 +25,7 @@ located, an informative error is generated.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{onError}{Controls how and when errors are detected and propagated.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
 \item{\dots}{Not used.}
 }
