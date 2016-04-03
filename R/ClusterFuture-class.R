@@ -179,10 +179,10 @@ run.ClusterFuture <- function(future, ...) {
   ## Add to registry
   FutureRegistry(reg, action="add", future=future, earlySignal=FALSE)
 
-  future$state <- 'running'
-
   ## (iv) Launch future
   sendCall(cl[[1L]], fun=geval, args=list(expr))
+
+  future$state <- 'running'
 
   invisible(future)
 }
