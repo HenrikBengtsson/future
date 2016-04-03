@@ -198,10 +198,10 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 
   cluster <- x$cluster
   node <- x$node
-  cl <- cluster[[node]]
+  cl <- cluster[node]
 
   ## Check if cluster socket connection is available for reading
-  con <- cl$con
+  con <- cl[[1]]$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
 
   ## Signal conditions early? (happens only iff requested)
@@ -225,12 +225,12 @@ value.ClusterFuture <- function(future, ...) {
 
   cluster <- future$cluster
   node <- future$node
-  cl <- cluster[[node]]
+  cl <- cluster[node]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
-    res <- recvResult(cl)
+    res <- recvResult(cl[[1]])
     TRUE
   }, simpleError = function(ex) ex)
 
