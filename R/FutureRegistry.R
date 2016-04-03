@@ -11,6 +11,7 @@ FutureRegistry <- local({
   collectValues <- function(where, futures, firstOnly=TRUE) {
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
+
       if (resolved(future)) {
         ## (a) Let future cleanup after itself, iff needed.
         ##     This, this may result in a call to
@@ -19,11 +20,11 @@ FutureRegistry <- local({
 
         ## (b) Make sure future is removed from registry, unless
         ##     already done via above value() call.
-        futures <- db[[where]]
-        idx <- indexOf(futures, future)
+        futuresDB <- db[[where]]
+        idx <- indexOf(futuresDB, future=future)
         if (!is.na(idx)) {
-          futures[[idx]] <- NULL
-          db[[where]] <<- futures
+          futuresDB[[idx]] <- NULL
+          db[[where]] <<- futuresDB
         }
 
         ## (c) Collect only the first resolved future?
@@ -31,7 +32,7 @@ FutureRegistry <- local({
       }
     } ## for (ii ...)
 
-    futures
+    invisible(futures)
   } ## collectValues()
 
 
