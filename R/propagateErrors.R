@@ -6,7 +6,7 @@ propagateErrors <- function(future, collect=TRUE) {
 
   ## Collect value?
   if (collect) {
-    value <- value(future, onError="return")
+    value <- value(future, signal=FALSE)
   } else {
     value <- future$value
   }

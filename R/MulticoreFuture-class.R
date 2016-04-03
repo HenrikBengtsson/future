@@ -97,7 +97,7 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
 }
 
 #' @export
-value.MulticoreFuture <- function(future, onError=c("signal", "return"), ...) {
+value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))

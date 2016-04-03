@@ -9,6 +9,8 @@ FutureRegistry <- local({
   }
 
   collectValues <- function(where, futures, firstOnly=TRUE) {
+    excl <- NULL
+
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
       if (resolved(future)) {
@@ -20,17 +22,21 @@ FutureRegistry <- local({
 
         ## (b) Make sure future is removed from registry, unless
         ##     already done via above value() call
-        futures <- db[[where]]
         idx <- indexOf(futures, future)
-        if (!is.na(idx)) {
-          futures[[idx]] <- NULL
-          db[[where]] <<- futures
-        }
+        if (!is.na(idx)) excl <- c(excl, idx)
 
         ## (c) Collect only the first resolved future?
         if (firstOnly) break
       }
     } ## for (ii ...)
+
+    if (length(excl) > 0L) {
+      futures <- db[[where]]
+      futures[excl] <- NULL
+      db[[where]] <<- futures
+    }
+
+    futures
   } ## collectValues()
 
 
@@ -67,11 +73,20 @@ FutureRegistry <- local({
     } else if (action == "reset") {
       db[[where]] <<- list()
     } else if (action == "list") {
-      return(futures)
     } else {
       msg <- sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action)
       mdebug(msg)
       stop(msg)
     }
+
+    ## Early propagation of errors?
+    if (length(futures) > 0L) {
+      idxs <- lapply(futures, FUN=function(f) (f$onError != "value"))
+      idxs <- which(unlist(idxs, use.names=FALSE))
+#      print(list(futures=futures, idxs=idxs))
+#      collectValues(where, futures=futures[idxs], firstOnly=FALSE)
+    }
+
+    futures
   }
 })

@@ -31,18 +31,16 @@ resolved.LazyFuture <- function(x, ...) {
   ## the future gets resolved.  The reason for this is so
   ## that polling is always possible, e.g.
   ## while(!resolved(f)) Sys.sleep(5);
-  value(x, onError="return")
+  value(x, signal=FALSE)
   NextMethod("resolved")
 }
 
 #' @export
-value.LazyFuture <- function(future, onError=c("signal", "return"), ...) {
-  onError <- match.arg(onError)
-
+value.LazyFuture <- function(future, signal=TRUE, ...) {
   future <- evaluate(future)
 
   value <- future$value
-  if (future$state == 'failed' && onError == "signal") {
+  if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
     stop(value)
   }

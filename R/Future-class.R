@@ -73,8 +73,8 @@ assertOwner <- function(future, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
-#' @param onError A character string specifying how errors
-#' (\link[base]{conditions}) should be handled in case they occur.
+#' @param signal A logical specifying whether (\link[base]{conditions})
+#' should signaled or be returned as values.
 #' If \code{"signal"}, the error is signalled, e.g. captured
 #' and re-thrown.  If instead \code{"return"}, they are
 #' \emph{returned} as is.
@@ -90,9 +90,7 @@ assertOwner <- function(future, ...) {
 #' @export value
 #' @aliases value
 #' @export
-value.Future <- function(future, onError=c("signal", "return"), ...) {
-  onError <- match.arg(onError)
-
+value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
@@ -100,7 +98,7 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
   }
 
   value <- future$value
-  if (future$state == 'failed' && onError == "signal") {
+  if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
     stop(value)
   }
