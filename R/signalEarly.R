@@ -24,7 +24,16 @@ signalEarly <- function(future, collect=TRUE) {
   mdebug("signalEarly(): signalCondition(v)")
 
   ## Signal detected condition
-  signalCondition(value)
+  if (inherits(value, "error")) {
+    stop(value)
+  } else if (inherits(value, "warning")) {
+    warning(value)
+  } else if (inherits(value, "message")) {
+    message(value)
+    message("\n")
+  } else {
+    signalCondition(value)
+  }
 
   mdebug("signalEarly() ... DONE")
 
