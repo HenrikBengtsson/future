@@ -52,6 +52,7 @@ before_install:
     fi
 
 install:
+ - $RENV install_deps
  - $RENV install_r R.rsp
  - $RENV install_r globals listenv
 
