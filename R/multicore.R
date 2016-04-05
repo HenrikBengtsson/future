@@ -66,9 +66,9 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   stopifnot(is.finite(maxCores), maxCores >= 1L)
 
   ## Fall back to eager futures if only a single additional R process
-  ## can be spawned off,  i.e. the use the current main R process.
+  ## can be spawned off, i.e. then use the current main R process.
   ## Eager futures best reflect how multicore futures handle globals.
-  if (maxCores == 1L) {
+  if (maxCores == 1L || availableCores(constraints="multicore") == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
@@ -160,6 +160,11 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
 
   ## Maximum number of cores available
   total <- availableCores()
+
+  ## No additional cores available?
+  if (total == 1L) {
+    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
+  }
 
   tries <- 1L
   interval <- delta

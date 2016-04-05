@@ -22,6 +22,8 @@ o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
   still indentified and exported but "missing" globals will not give
   an error - instead it is assumed such globals are available in the
   environment where the future is evaluated.
+o BUG FIX: f <- multicore(NA, maxCores=2) would end up in an endless
+  waiting loop for a free core if availableCores() returned one.
 o BUG FIX: ClusterFuture would ignore local=TRUE.
 
 
