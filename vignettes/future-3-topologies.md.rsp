@@ -9,9 +9,33 @@
 %\VignetteEngine{R.rsp::rsp}
 %\VignetteTangle{FALSE}
 --------------------------------------------------------------------"%>
+<%
+library("R.utils")
+`%<-%` <- future::`%<-%`
+options("withCapture/newline"=FALSE)
+%>
+
 # <%@meta name="title"%>
 
-Futures can be nested in R such that one future creates another set of futures and so on and it might be that we wish to evaluate the different levels of futures using different resources.
+Futures can be nested in R such that one future creates another set of futures and so on.  This may for instance occur within nested for loops, e.g.
+```r
+<%=withCapture({
+library("future")
+library("listenv")
+x <- listenv()
+for (ii in 1:3) {
+  x[[ii]] %<-% {
+    y <- listenv()
+    for (jj in 1:3) {
+      y[[jj]] %<-% { ii + jj/10 }
+    }
+	y
+  }
+}
+unlist(x)
+})%>
+```
+The default is to use eager futures unless otherwise specified, which is also true for nested futures.  If we for instance specify, `plan(multiprocess)`, the first layer of futures (`x[[ii]] %<-% { expr }`) will be processed asynchronously in background R processes, and the futures in the second layer of futures (`y[[jj]] %<-% { expr }`) will be processed synchronously in the current R processes (one of the background processes).  If we wish to use a different strategy for the second layer, say, lazy futures, we can specify it as a list of (nested) strategies as `plan(list(multiprocess, lazy))`.
 
 
 ## Example: High-Throughput Sequencing
