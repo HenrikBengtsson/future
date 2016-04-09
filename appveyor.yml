@@ -32,6 +32,7 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 install:
   ps: Bootstrap
+  ps: InstallRtools
 
 # Adapt as necessary starting from here
 
