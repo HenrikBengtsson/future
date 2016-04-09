@@ -32,8 +32,8 @@ for (ss in seq_along(fqs)) {
     bams_ss <- listenv()
     for (cc in 1:24) {
       bams_ss[[cc]] %<-% htseq_align(fq, chr=cc)
-	}
-	as.list(bams_ss)
+    }
+    as.list(bams_ss)
   }
 }
 bams <- as.list(bams)
@@ -125,8 +125,8 @@ x %<-% {
       for (jj in 1:2) {
         ## (c) These will be evaluated in separate processes on the same compute node
         z[[jj]] %<-% data.frame(task=task, top.host=thost, top.pid=tpid,
-		                        mid.host=mhost, mid.pid=mpid,
-		                        host=Sys.info()[["nodename"]], pid=Sys.getpid())
+                                mid.host=mhost, mid.pid=mpid,
+                                host=Sys.info()[["nodename"]], pid=Sys.getpid())
       }
       Reduce(rbind, z)
     }
