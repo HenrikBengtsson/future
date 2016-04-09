@@ -77,7 +77,7 @@ One possible downside to the above setup is that we might not utilize all availa
 ```r
 nodes <- c("n1", "n2", "n3")
 cl <- parallel::makeCluster(rep(nodes, each=8))
-plan(list(tweak(cluster,cluster=cl), multiprocess))
+plan(list(tweak(cluster, cluster=cl), multiprocess))
 ```
 This will cause up to 24 (=3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
