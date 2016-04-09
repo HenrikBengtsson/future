@@ -49,14 +49,16 @@ f <- future({ stop("bang!") })
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
-stopifnot(inherits(v, "try-error") || availableCores() == 1L)
+stopifnot(inherits(v, "try-error"))
 
 plan(multisession, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+print(f)
 r <- try(resolved(f), silent=TRUE)
-stopifnot(inherits(r, "try-error") || availableCores() == 1L)
+stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
 v <- try(value(f), silent=TRUE)
-stopifnot(inherits(v, "try-error") || availableCores() == 1L)
+stopifnot(inherits(v, "try-error"))
+
 
 message("*** Early signaling of conditions with multisession futures ... DONE")
 
@@ -68,14 +70,15 @@ f <- future({ stop("bang!") })
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
-stopifnot(inherits(v, "try-error") || availableCores() == 1L)
+stopifnot(inherits(v, "try-error"))
 
 plan(multiprocess, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+print(f)
 r <- try(resolved(f), silent=TRUE)
-stopifnot(inherits(r, "try-error") || availableCores() == 1L)
+stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
 v <- try(value(f), silent=TRUE)
-stopifnot(inherits(v, "try-error") || availableCores() == 1L)
+stopifnot(inherits(v, "try-error"))
 
 message("*** Early signaling of conditions with multiprocess futures ... DONE")
 
