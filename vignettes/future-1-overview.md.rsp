@@ -147,7 +147,8 @@ Resolving 'b'
 [1] 6
 ```
 
-When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing option `mc.cores` to zero (number of _additional_ cores available for processing in addition to the main process) to lower the risk for other multicore mechanisms to spawn off additional cores.  If nested asynchronous futures are truly wanted, it is possible to override this by setting `mc.cores` and/or use another type of future in nested calls by explicitly doing so as part of the future expression.
+When using asynchronous (multicore, multisession and cluster) futures, recursive asynchronous evaluation done by mistake is protected against by forcing eager futures and option `mc.cores` to zero (number of _additional_ cores available for processing in addition to the main process) to lower the risk for other multicore mechanisms to spawn off additional cores.
+In order to use other types of future strategies for the nested layers of futures, one may give a list of strategies to `plan()`.  For more details, see Vignette '[Futures in R: Future Topologies]'.
 
 
 ## Assigning futures to environments and list environments
@@ -255,7 +256,7 @@ corresponding object in the relevant environments: 'a'
 ```
 Moreover, if a global is defined in a packages, for instance a function, then that global is not exported but instead it is made sure that the corresponding package is attached when the future is evaluated.  This not only reflects the setup of the main R session, but it also minimizes the need for exporting globals, which can save bandwidth and time, especially when using remote compute nodes.
 
-Having said this, it is a challenging problem to identify globals from static code inspection.  There will always be corner cases of globals that either fails to be identified by static code inspection or that are incorrectly identified as global variables.  Vignette '[Futures in R: Common issues with solutions]' provides examples of common cases and explains how to avoid them.
+Having said this, it is a challenging problem to identify globals from static code inspection.  There will always be corner cases of globals that either fails to be identified by static code inspection or that are incorrectly identified as global variables.  Vignette '[Futures in R: Common Issues with Solutions]' provides examples of common cases and explains how to avoid them.
 If you suspect that a global variable is not properly identified, it is often helpful for troubleshooting to run the code interactively using synchronous futures, i.e. _eager_ or _lazy_.  If there is an error, it is then possible to use `traceback()` and other debugging tools.
 
 For consistency, all types of futures validates globals upon creation (`globals=TRUE` is the default).  Now, since eager futures are resolved immediately upon creation, any globals will also be resolved at this time and therefore there is actually no need for globals to be identified and validated.  Similarly, because multicore futures fork the main R session when created, globals are automatically "frozen" for each multicore future.  If you prefer not to use the strict validation of globals that the future package does when using these two types of futures, you can disable the check by specifying `plan(eager, globals=FALSE)` and `plan(multicore, globals=FALSE)`, respectively.
@@ -299,7 +300,7 @@ The goal of this package is to provide a standardized and unified API for using 
 [listenv]: http://cran.r-project.org/package=listenv
 [globals]: http://cran.r-project.org/package=globals
 [async]: https://github.com/HenrikBengtsson/async/
-[Futures in R: Common issues with solutions]: future-issues.html
-
+[Futures in R: Common Issues with Solutions]: future-2-issues.html
+[Futures in R: Future Topologies]: future-3-topologies.html
 ---
 Copyright Henrik Bengtsson, 2015-2016
