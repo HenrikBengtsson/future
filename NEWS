@@ -2,6 +2,8 @@ Package: future
 ===============
 
 Version: 0.12.5-9000 [2016-04-10]
+o Add support to plan() for specifying different future strategies for
+  the different levels of nested futures.
 o Add transparent futures, which are eager futures with early signaling
   of conditioned enabled and whose expression is evaluated in the calling
   environment.  This makes the evaluation of such futures as similar
