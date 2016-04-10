@@ -12,26 +12,13 @@
 # <%@meta name="title"%>
 
 ## Introduction
+The purpose of the 'future' package is to provide a very simple and uniform way of evaluting R expressions asynchroneously using various resources available to the user.
+
 In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested.  Another approach is an "eager" strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may be to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
 
-### Futures in R
 
-The purpose of the 'future' package is to define and provide a minimalistic Future API for R.  The package itself provides two _synchronous_ mechanisms for "lazy" and "eager" futures, and a three _asynchronous_ ones for "multicore", "multisession" and "cluster" futures.  Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'async' package resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue/scheduler.  The lazy and the eager futures, which are both synchronous (blocks the main process while being resolved), are useful as a last test before using asynchronous futures.
-
-Here is an example illustrating how the basics of futures work:
-
-```r
-> library(future)
-> f <- future({
-+   message("Resolving...")
-+   3.14
-+ })
-Resolving...
-> v <- value(f)
-> v
-[1] 3.14
-```
-Note how the future is resolved as soon as we create it using `future()`.  This is because the default strategy for resolving futures is to evaluate them in an "eager" and synchronous manner, which emulates how R itself typically evaluates expressions, cf.
+### A first example
+Here is an example illustrating how the basics of futures work.  First, consider the following two R expressions using plain R code:
 ```r
 > v <- {
 +   message("Resolving...")
@@ -41,10 +28,51 @@ Resolving...
 > v
 [1] 3.14
 ```
+It works by assigning the value of an expression to variable `v` and we then print the value of `v`.  Moreover, when the expression for `v` is evaluated we also print a message.  Here is the analog construct using futures
+```r
+> library(future)
+> v %<-% {
++   message("Resolving...")
++   3.14
++ }
+Resolving...
+> v
+[1] 3.14
+```
+Note how the future is resolved as soon as we create it using `%<-%`.  This is because the default strategy for resolving futures is to evaluate them in an "eager" and synchronous manner closely immitating how R itself does it (using either the implicit or the explicit evaluation strategy).
 
 We can switch to  a "lazy" evaluation strategy using the `plan()` function, e.g.
 
 ```r
+> plan(lazy)
+> v %<-% {
++   message("Resolving...")
++   3.14
++ }
+> v
+Resolving...
+[1] 3.14
+> v
+[1] 3.14
+```
+In this case the future is unresolved until the point in time when we first ask for its value.  Below we will show how other types of evaluation strategies, including asynchronous ones, can be used.  Note also how the future is only resolved once; the second time we query its value it is instantaneously available.  The analogue to lazy futures in core R for this would be delayed assignments, e.g.
+```r
+> delayedAssign("v", {
++   message("Resolving...")
++   3.14
++ })
+> v
+Resolving...
+[1] 3.14
+> v
+[1] 3.14
+```
+
+
+## Implicit and Explicit Futures
+Futures can be created either _implicitly_ or _explicitly_.  In the above introductory example we used implicit futures created via the `x %<-% { expr }` construct.  We could have also created explicit futures using the `f <- future({ expr })` and `x <- value(f)` constructs.  More precisely, we could achieve the same results using:
+```r
+> library(future)
 > plan(lazy)
 > f <- future({
 +   message("Resolving...")
@@ -54,9 +82,40 @@ We can switch to  a "lazy" evaluation strategy using the `plan()` function, e.g.
 Resolving...
 > v
 [1] 3.14
+> value(f)
+[1] 3.14
 ```
+The closest analogue to this using core R functions would be:
+```r
+> f <- expression({
++   message("Resolving...")
++   3.14
++ })
+> v <- eval(f)
+Resolving...
+[1] 3.14
+> eval(f)
+Resolving...
+[1] 3.14
+```
+but that is how far the analogy goes.  Contrary to `expression()` + `eval()`, with futures the expression is only resolved once such that, if we query their values subsequently, the value is returned instantaneous.  This is true for all types of futures, regardless how they are resolved.
 
-In this case the future is unresolved until the point in time when we first ask for its value (which also means that a lazy future may never be resolved).
+
+### The Future API
+For explicit futures, there are in principal only three methods:
+
+* `f <- future({ expr })` - creates a future
+* `v <- value(f)` - gets the value of the future (blocks if not yet resolved)
+* `resolved(f)` - checks whether the future is resolved or not
+
+For implicit futures, there are three methods:
+* `v %<-% { expr }` - creates promise to a future value
+* `f <- futureOf(v)` - gets the future itself
+* `resolved(f)` - checks whether the future is resolved or not
+
+The above is true for all types of futures.  The future package itself implements two _synchronous_ mechanisms for "lazy" and "eager" futures, and a three _asynchronous_ ones for "multicore", "multisession" and "cluster" futures.  The synchronous futures, blocks the main process while being resolved, whereas the asynchronous futures do not block the main process.
+
+Further strategies will be implemented by other packages extending the 'future' package.  For instance, the 'future.BatchJobs' package (to be published) resolves futures _asynchronously_ via any of the many backends that the '[BatchJobs]' framework provides, e.g. distributed on a compute cluster via a job queue/scheduler.  
 
 For troubleshooting, there is also a _transparent_ future, which can be specified as `plan(transparent)`.  A transparent future is technically an eager future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors.
 
@@ -299,7 +358,6 @@ The goal of this package is to provide a standardized and unified API for using 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
 [globals]: http://cran.r-project.org/package=globals
-[async]: https://github.com/HenrikBengtsson/async/
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---

@@ -172,10 +172,8 @@ print(x)
 Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
 
 
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [listenv]: http://cran.r-project.org/package=listenv
 [globals]: http://cran.r-project.org/package=globals
-[async]: https://github.com/HenrikBengtsson/async/
 [Futures in R: Common issues with solutions]: future-issues.html
 
 ---
