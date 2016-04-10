@@ -120,7 +120,7 @@ resolved.Future <- function(x, ...) {
 #' Inject code for the next type of future to use for nested futures
 #'
 #' @param future Current future.
-#' @param expr Future expression.
+#' @param ... Not used.
 #'
 #' @return A future expression with code injected to set what
 #' type of future to use for nested futures, iff any.
@@ -150,31 +150,71 @@ resolved.Future <- function(x, ...) {
 #'     for a discussion on this.
 #'
 #' @export
-#' @aliases injectNextStrategy.Future
+#' @aliases getExpression.Future
 #' @keywords internal
-injectNextStrategy <- function(future, expr, ...) UseMethod("injectNextStrategy")
+getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-injectNextStrategy.Future <- function(future, expr, ...) {
-  ## For now, the next future strategy is hard coded
-  nextStrategy <- NULL
+getExpression.Future <- function(future, ...) {
+  strategies <- plan("list")
+  if (length(strategies) > 1L) {
+    ## Identify package
+    pkgs <- lapply(strategies, FUN=environment)
+    pkgs <- lapply(pkgs, FUN=environmentName)
+    pkgs <- unique(unlist(pkgs))
 
-  ## Default is to fall back to single-core processing,
-  ## i.e. forcing the number of _additional_ cores
-  ## ('mc.cores') to be zero (sic!)
-  if (is.null(nextStrategy)) {
-    nextStrategy <- substitute({
+    ## Sanity check by verifying packages can be loaded already here
+    ## If there is somethings wrong in 'pkgs', we get the error
+    ## already before launching the future
+    for (pkg in pkgs) loadNamespace(pkg)
+
+    enter <- bquote({
+      ## covr: skip=4
+      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
+      oplans <- future::plan("list")
+      future::plan(.(strategies[-1]))
+    })
+
+    exit <- bquote({
       ## covr: skip=1
+      future::plan(.(strategies))
+    })
+  } else {
+    ## If end of future stack, fall to using single-core
+    ## processing.  In this case we don't have to rely
+    ## on the future package.  Instead, we can use the
+    ## light-weight approach where we force the number of
+    ## cores available to be one.  This we achieve by
+    ## setting the number of _additional_ cores to be
+    ## zero (sic!).
+
+    ## FIXME: How can we guarantee that '.future.mc.cores.old'
+    ## is not overwritten?  /HB 2016-03-14
+    enter <- quote({
+      ## covr: skip=3
+      .future.mc.cores.old <- getOption("mc.cores")
       options(mc.cores=0L)
-    }, env=list())
+    })
+
+    exit <- bquote({
+      ## covr: skip=1
+      options(mc.cores=.future.mc.cores.old)
+    })
   }
 
-  ## Inject
+  ## NOTE: We don't want to use local(body) because
+  ## evaluating in a local is optional, cf. argument 'local'.
+  ## If this was mandatory, we could.  Instead we use
+  ## a tryCatch() statement. /HB 2016-03-14
   expr <- substitute({
-    ## covr: skip=2
-    a
-    b
-  }, env=list(a=nextStrategy, b=expr))
+    ## covr: skip=4
+    enter
+    tryCatch({
+      body
+    }, finally = {
+      exit
+    })
+  }, env=list(enter=enter, body=future$expr, exit=exit))
 
   expr
-} ## nextStrategy()
+} ## getExpression()

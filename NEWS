@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.12.0-9000 [2016-04-03]
+Version: 0.12.5-9000 [2016-04-10]
 o Add transparent futures, which are eager futures with early signaling
   of conditioned enabled and whose expression is evaluated in the calling
   environment.  This makes the evaluation of such futures as similar
@@ -22,6 +22,8 @@ o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
   still indentified and exported but "missing" globals will not give
   an error - instead it is assumed such globals are available in the
   environment where the future is evaluated.
+o OVERHEAD: Utility functions exported by ClusterFuture are now much
+  smaller; previously they would export all of the package environment.
 o BUG FIX: f <- multicore(NA, maxCores=2) would end up in an endless
   waiting loop for a free core if availableCores() returned one.
 o BUG FIX: ClusterFuture would ignore local=TRUE.

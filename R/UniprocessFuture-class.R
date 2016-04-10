@@ -41,7 +41,7 @@ evaluate.UniprocessFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  expr <- future$expr
+  expr <- getExpression(future)
   envir <- future$envir
 
   ## Run future

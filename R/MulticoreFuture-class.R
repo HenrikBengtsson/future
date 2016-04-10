@@ -49,11 +49,9 @@ run.MulticoreFuture <- function(future, ...) {
   assertOwner(future)
 
   mcparallel <- importMulticore("mcparallel")
-  expr <- future$expr
-  envir <- future$envir
 
-  ## Inject code for the next future strategy to use.
-  expr <- injectNextStrategy(future, expr)
+  expr <- getExpression(future)
+  envir <- future$envir
 
   requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
 

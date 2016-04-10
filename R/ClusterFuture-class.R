@@ -79,11 +79,8 @@ run.ClusterFuture <- function(future, ...) {
 
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
-  expr <- future$expr
+  expr <- getExpression(future)
   persistent <- future$persistent
-
-  ## Inject code for the next future strategy to use.
-  expr <- injectNextStrategy(future, expr)
 
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
@@ -128,28 +125,7 @@ run.ClusterFuture <- function(future, ...) {
     mdebug("Attaching %d packages (%s) on cluster node #%d ...",
                     length(packages), hpaste(sQuote(packages)), node)
 
-    requirePackage <- function(pkg) {
-      if (require(pkg, character.only=TRUE)) return()
-
-      ## Failed to attach package
-      msg <- sprintf("Failed to attach package %s in %s", sQuote(pkg), R.version$version.string)
-      data <- utils::installed.packages()
-
-      ## Installed, but fails to load/attach?
-      if (is.element(pkg, data[,"Package"])) {
-        keep <- (data[,"Package"] == pkg)
-        data <- data[keep,,drop=FALSE]
-        pkgs <- sprintf("%s %s (in %s)", data[,"Package"], data[, "Version"], sQuote(data[,"LibPath"]))
-        msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse=", "))
-      } else {
-        paths <- .libPaths()
-        msg <- sprintf("%s, because the package is not installed in any of the libraries (%s), which contain %d installed packages.", msg, paste(sQuote(paths), collapse=", "), nrow(data))
-      }
-
-      stop(msg)
-    } ## requirePackage()
-
-    clusterCall(cl, fun=lapply, X=packages, FUN=requirePackage)
+    clusterCall(cl, fun=requirePackages, packages)
 
     mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
                     length(packages), hpaste(sQuote(packages)), node)

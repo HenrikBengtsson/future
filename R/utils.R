@@ -67,21 +67,6 @@ mdebug <- function(...) {
 } ## mdebug()
 
 
-## Used by run() for ClusterFuture.
-## Here so we can add tests for them.
-grmall <- function(envir=.GlobalEnv) {
-  vars <- ls(envir=envir, all.names=TRUE)
-  rm(list=vars, envir=envir, inherits=FALSE)
-}
-
-gassign <- function(name, value, envir=.GlobalEnv) {
-  assign(name, value=value, envir=envir)
-  NULL
-}
-
-geval <- function(expr, envir=.GlobalEnv) eval(expr, envir=envir)
-
-
 ## A universally unique identifier (UUID) for the current
 ## R process.  Generated only once.
 #' @importFrom digest digest
@@ -108,3 +93,58 @@ uuid <- local({
     uuid
   }
 })
+
+
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Used by run() for ClusterFuture.
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Because these functions are exported, we want to keep their
+## environment() as small as possible, which is why we use local().
+## Without, the environment would be that of the package itself
+## and all of the package content would be exported.
+
+## Removes all variables in the global environment.
+grmall <- local(function(envir=.GlobalEnv) {
+  vars <- ls(envir=envir, all.names=TRUE)
+  rm(list=vars, envir=envir, inherits=FALSE)
+})
+
+## Assigns a value to the global environment.
+gassign <- local(function(name, value, envir=.GlobalEnv) {
+  assign(name, value=value, envir=envir)
+  NULL
+})
+
+## Evaluates an expression in global environment.
+geval <- local(function(expr, substitute=FALSE, envir=.GlobalEnv, ...) {
+  if (substitute) expr <- substitute(expr)
+  eval(expr, envir=envir)
+})
+
+## Vectorized version of require() with bells and whistles
+requirePackages <- local(function(pkgs) {
+  requirePackage <- function(pkg) {
+    if (require(pkg, character.only=TRUE)) return()
+
+    ## Failed to attach package
+    msg <- sprintf("Failed to attach package %s in %s", sQuote(pkg), R.version$version.string)
+    data <- utils::installed.packages()
+
+    ## Installed, but fails to load/attach?
+    if (is.element(pkg, data[,"Package"])) {
+      keep <- (data[,"Package"] == pkg)
+      data <- data[keep,,drop=FALSE]
+      pkgs <- sprintf("%s %s (in %s)", data[,"Package"], data[, "Version"], sQuote(data[,"LibPath"]))
+      msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse=", "))
+    } else {
+      paths <- .libPaths()
+      msg <- sprintf("%s, because the package is not installed in any of the libraries (%s), which contain %d installed packages.", msg, paste(sQuote(paths), collapse=", "), nrow(data))
+    }
+
+    stop(msg)
+  } ## requirePackage()
+
+  ## require() all packages
+  pkgs <- unique(pkgs)
+  lapply(pkgs, FUN=requirePackage)
+}) ## requirePackages()

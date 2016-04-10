@@ -40,6 +40,7 @@ stopifnot(inherits(v, "try-error"))
 
 message("*** Early signaling of conditions with lazy futures ... DONE")
 
+message("Number of available cores: ", availableCores())
 
 message("*** Early signaling of conditions with multisession futures ...")
 
@@ -52,10 +53,12 @@ stopifnot(inherits(v, "try-error"))
 
 plan(multisession, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+print(f)
 r <- try(resolved(f), silent=TRUE)
-stopifnot(inherits(r, "try-error"))
+stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
 v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
+
 
 message("*** Early signaling of conditions with multisession futures ... DONE")
 
@@ -71,8 +74,9 @@ stopifnot(inherits(v, "try-error"))
 
 plan(multiprocess, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+print(f)
 r <- try(resolved(f), silent=TRUE)
-stopifnot(inherits(r, "try-error"))
+stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
 v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
 
@@ -84,4 +88,3 @@ message("*** Early signaling of conditions ... DONE")
 plan(eager)
 options(oopts)
 rm(list=setdiff(ls(), ovars))
-
