@@ -95,11 +95,13 @@ uuid <- local({
 })
 
 
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Used by run() for ClusterFuture.
-## Because grmall(), gassign() and geval() are exported, we want
-## to keep their environment() as small as possible, which is why
-## we use local().  Without, the environment would be that of the
-## package itself and all of the package content would be exported.
+## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+## Because these functions are exported, we want to keep their
+## environment() as small as possible, which is why we use local().
+## Without, the environment would be that of the package itself
+## and all of the package content would be exported.
 
 ## Removes all variables in the global environment.
 grmall <- local(function(envir=.GlobalEnv) {
@@ -120,7 +122,7 @@ geval <- local(function(expr, substitute=FALSE, envir=.GlobalEnv, ...) {
 })
 
 ## Vectorized version of require() with bells and whistles
-requirePackages <- function(pkgs) {
+requirePackages <- local(function(pkgs) {
   requirePackage <- function(pkg) {
     if (require(pkg, character.only=TRUE)) return()
 
@@ -145,4 +147,4 @@ requirePackages <- function(pkgs) {
   ## require() all packages
   pkgs <- unique(pkgs)
   lapply(pkgs, FUN=requirePackage)
-} ## requirePackages()
+}) ## requirePackages()
