@@ -165,7 +165,7 @@ getExpression.Future <- function(future, ...) {
 
     ## Sanity check by verifying packages can be loaded already here
     ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future
+    ## already before launching the future.
     for (pkg in pkgs) loadNamespace(pkg)
 
     enter <- bquote({
