@@ -50,7 +50,7 @@ The most clear and backward-compatible solution to this problem is to explicitly
 [1] 1 2
 ```
 
-An alternative is to use a dummy variable.  In contrast to the code-inspection algorithm used to identify globals, _we know from reading the documentation_ that `subset()` will look for `x` in the `data` object, not in the parent environments.  Armed with this knowledge, we can trick the [future] package (more precisely the [globals] package) to pickup a dummy variable `x` instead, e.g.
+An alternative is to use a dummy variable.  In contrast to the code-inspection algorithm used to identify globals, _we know from reading the documentation_ that `subset()` will look for `x` in the `data` object, not in the parent environments.  Armed with this knowledge, we can trick the [future] package (more precisely the [globals] package) to pick up a dummy variable `x` instead, e.g.
 ```r
 > data <- data.frame(x=1:5, y=1:5)
 > x <- NULL ## To please future et al.
@@ -66,7 +66,7 @@ Another common use case for non-standard evaluation is when creating ggplot2 fig
 > p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
 > p
 ```
-fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are actually fields of `mtcars` can not be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
+fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are fields of `mtcars` cannot be inferred from code inspection alone, but you need know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
 ```r
 > library(future)
 > library(ggplot2)
@@ -147,7 +147,7 @@ instead of
 do.call("file_ext", list("foo.txt"))
 ```
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
-It may also become a problem with lazy futures an the intended function is redefined after the future is resolved.  For example,
+It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
 > library("listenv")
@@ -164,7 +164,7 @@ It may also become a problem with lazy futures an the intended function is redef
 ```
 
 
-### Trying to pass an unresolve future to another future
+### Trying to pass an unresolved future to another future
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")
@@ -224,7 +224,7 @@ As previously, this can be avoided by making sure `x$a` is resolved first, which
 _Footnote_: (*) Although certain types of futures, such as eager and lazy ones, could be passed on to other futures and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of type of futures.
 
 
-## Miscellanous
+## Miscellaneous
 
 ### Error "non-numeric argument to binary operator"
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
@@ -232,7 +232,7 @@ The future assignment operator `%<-%` is a _binary infix operator_, which means 
 > x %<-% 2 * runif(1)
 Error in x %<-% 2 * runif(1) : non-numeric argument to binary operator
 ```
-What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply it (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need need to put the future expression within curly brackets;
+What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply it (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
 ```r
 > x %<-% { 2 * runif(1) }
 > x

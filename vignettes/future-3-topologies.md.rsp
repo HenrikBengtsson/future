@@ -106,7 +106,7 @@ This will cause up to 24 (=3*8) samples to be processed in parallel each process
 
 
 ## Example: A remote compute cluster
-Imagine we have access to a remote compute cluster, with login node `login.my-cluster.org`, and that the cluster has three nodes `n1`, `n2` and `n3`.  Also, lets assume we have already set up the cluster such that we can login via public key authentication via SSH, i.e. when we do `ssh login.my-cluster.org` authentication is done automatically.
+Imagine we have access to a remote compute cluster, with login node `login.my-cluster.org`, and that the cluster has three nodes `n1`, `n2` and `n3`.  Also, let us assume we have already set up the cluster such that we can login via public key authentication via SSH, i.e. when we do `ssh login.my-cluster.org` authentication is done automatically.
 
 With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes.  Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.
 
