@@ -115,7 +115,7 @@ Resolving...
 
 Either style of future construct works equally(*) well.  The implicitly style is most similar to how regular R code is written.  In principal all you have to do is to replace `<-` with a `%<-%` to turn the assigment into a future assignment.  On the other hand, this simplicity can also be decieving, particularly when asynchronous futures are being used.  In contrast, the explicit style makes it much more clear that futures are being used, which lowers the risk for mistakes and better communicates the design to others reading your code.
 
-(*) There are cases where `%<-%` cannot be used without some modifications.  We will return to this in a below section.
+(*) There are cases where `%<-%` cannot be used without some modifications.  We will return to this in Section 'Constraints using Implicit Futures' near the end of this document.
 
 
 
@@ -155,7 +155,7 @@ By default, future expression are evaluated synchronously (in the current R sess
 ### Coherent Behavior Across Futures
 Before going through each of the different future strategies, it could helpful if we talk about some of the design objectives of the future package and the Future API it defines.  When programming with futures, it should not really matter what future strategy will be used when running the code.  This is because we cannot really know what resources the user have access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on type of futures, e.g. synchronous or asynchronous.
 
-One of the designs of the Future API of the future package was designed to encapsulate any differences such that all types of futures will appear to work the same.  This despite the expression may be evaluate locally in the current R process or across the world in a remote R session.  Another obvious advantage of having a consist API and behavior among different types of futures is that it helps prototyping.  Typically one would set up a script using eager evaluation and when fully tested one may turn on asynchronous processing.
+One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite the expression may be evaluate locally in the current R process or across the world in a remote R session.  Another obvious advantage of having a consist API and behavior among different types of futures is that it helps prototyping.  Typically one would set up a script using eager evaluation and when fully tested one may turn on asynchronous processing.
 
 Because of this, the defaults of of the different strategies are such that the results and side effects of evaluating a future expression are as similar as possible.  More specifically, the following is true for all futures:
 
@@ -179,7 +179,7 @@ a
 })%>
 ```
 
-And here is an example illustrating that globals are validated already when the future is createed:
+And here is an example illustrating that globals are validated already when the future is created:
 ```r
 > rm(b)
 > x %<-% { 2 * b }
@@ -187,7 +187,7 @@ Error in globalsOf(expr, envir = envir, substitute = FALSE, tweak = tweak,  :
   Identified a global object via static code inspection ({; 2 * b; }), but
 failed to locate the corresponding object in the relevant environments: 'b'
 ```
-We will return to global variables and functions at the end of this document.
+We will return to global variables and functions in Section 'Globals' near the end of this document.
 
 Now we are ready to explore the different future strategies.
 
@@ -451,6 +451,7 @@ a %<-% {
 }
 cat("Everything is still ok although we have created a future that will fail.\n")
 })%>
+<% try(resolve(a), silent=TRUE) %>
 > a
 Resolving 'a' ...
 Error in eval(expr, envir, enclos) : Whoops!
@@ -462,6 +463,13 @@ Error in eval(expr, envir, enclos) : Whoops!
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
+To see the list of calls (evaluated expressions) that lead up to the error, we can use the `backtrace()` function(*) on the future, i.e.
+```r
+<%=withCapture({
+backtrace(a)
+})%>
+```
+(*) The regular `traceback()` available in R does not give useful information.
 
 
 ## Globals
