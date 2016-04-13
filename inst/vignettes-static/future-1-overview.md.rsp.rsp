@@ -1,3 +1,30 @@
+<%---------------------------------------------------------------------
+  This *.md.rsp.rsp file is used to generate the *.md.rsp that
+  is the copied to vignettes/.  The latter contains no dynamic
+  code.   The reason for this is that this RSP file uses
+  multisession futures and for some unknown reason those gives
+  errors during R CMD build on Windows.  Everywhere else they
+  work including when building this RSP manually.  /HB 2016-04-12
+ ---------------------------------------------------------------------%>
+<%%@meta language="R-vignette" content="--------------------------------
+%\VignetteIndexEntry{A Future for R: An Overview}
+%\VignetteAuthor{Henrik Bengtsson}
+%\VignetteKeyword{R}
+%\VignetteKeyword{package}
+%\VignetteKeyword{vignette}
+%\VignetteKeyword{future}
+%\VignetteKeyword{promise}
+%\VignetteKeyword{lazy evaluation}
+%\VignetteKeyword{synchronous}
+%\VignetteKeyword{asynchronous}
+%\VignetteKeyword{parallel}
+%\VignetteKeyword{cluster}
+%\VignetteEngine{R.rsp::rsp}
+%\VignetteTangle{FALSE}
+
+Do not edit the *.md.rsp file.  Instead edit the *.md.rsp.rsp (sic!)
+file found under inst/vignettes-static/ of the source package.
+--------------------------------------------------------------------"%%>
 <%@meta language="R-vignette" content="--------------------------------
 %\VignetteIndexEntry{A Future for R: An Overview}
 %\VignetteAuthor{Henrik Bengtsson}
@@ -14,7 +41,14 @@
 %\VignetteEngine{R.rsp::rsp}
 %\VignetteTangle{FALSE}
 --------------------------------------------------------------------"%>
-# A Future for R: An Overview
+<%
+R.utils::use("R.utils")
+use("future")
+`%<-%` <- future::`%<-%`
+options("withCapture/newline"=FALSE)
+options(mc.cores=2L)
+%>
+# <%@meta name="title"%>
 
 ## Introduction
 The purpose of the [future] package is to provide a very simple and uniform way of evaluting R expressions asynchroneously using various resources available to the user.
@@ -133,16 +167,16 @@ Because of this, the defaults of of the different strategies are such that the r
 
 Here is an example illustrating that all assignments are done to a local environment:
 ```r
-> plan(eager)
-> a <- 1
-> x %<-% {
-+     a <- 2
-+     2 * a
-+ }
-> x
-[1] 4
-> a
-[1] 1
+<%=withCapture({
+plan(eager)
+a <- 1
+x %<-% {
+  a <- 2
+  2 * a
+}
+x
+a
+})%>
 ```
 
 And here is an example illustrating that globals are validated already when the future is createed:
@@ -163,35 +197,10 @@ Now we are ready to explore the different future strategies.
 #### Eager Futures
 Eager futures are the default unless otherwise specified.  The are designed to behave as similar to regular R evaluation as possible while still fullfilling the Future API and behaviors.  Here is an example illustrating their properties:
 ```r
-> plan(eager)
-> pid <- Sys.getpid()
-> pid
-[1] 7872
-> a %<-% {
-+     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
-+     3.14
-+ }
-Resolving 'a' ...
-> b %<-% {
-+     rm(pid)
-+     cat("Resolving 'b' ...\n")
-+     Sys.getpid()
-+ }
-Resolving 'b' ...
-> c %<-% {
-+     cat("Resolving 'c' ...\n")
-+     2 * a
-+ }
-Resolving 'c' ...
-> b
-[1] 7872
-> c
-[1] 6.28
-> a
-[1] 3.14
-> pid
-[1] 7872
+<%=withCapture({
+plan(eager)
+<%@include file="incl/future-1-overview-example2.R"%>
+})%>
 ```
 Since eager evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid`, which is the process ID of the current process, is neither overwritten nor removed.  Since synchronous processing is used, future `b` is evaluated in the current (the calling) process, which is why the value of `b` and `pid` are the same.
 
@@ -199,41 +208,22 @@ Since eager evaluation is taking place, each of the three futures is resolved in
 #### Lazy Futures
 A lazy future evaluates its expression only if its value is queried.  It will occur if the future is checked for being resolved or not.  Here is the above example when using lazy evaluation:
 ```r
-> plan(lazy)
-> pid <- Sys.getpid()
-> pid
-[1] 7872
-> a %<-% {
-+     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
-+     3.14
-+ }
-> b %<-% {
-+     rm(pid)
-+     cat("Resolving 'b' ...\n")
-+     Sys.getpid()
-+ }
-> c %<-% {
-+     cat("Resolving 'c' ...\n")
-+     2 * a
-+ }
-Resolving 'a' ...
-> b
-Resolving 'b' ...
-[1] 7872
-> c
-Resolving 'c' ...
-[1] 6.28
-> a
-[1] 3.14
-> pid
-[1] 7872
+<%=withCapture({
+plan(lazy)
+<%@include file="incl/future-1-overview-example2.R"%>
+})%>
 ```
 As previously, variable `pid` is unaffected because all evaluation is done in a local environment.  More interestingly, future `a` is no longer evaluated in the moment it is created, but instead when it is needed the first time, which happens when future `c` is created.  This is because `a` is identified as a global variable that needs to be captured ("frozen" to `a == 3.14`) in order to set up future `c`.  Later when `c` (the value of future `c`) is queried, `a` has already been resolved and only the expression for future `c` is evaluated and `6.14` is obtained.  Moreover, future `b` is just like `a` evaluated only when it is needed the first time, i.e. when `b` is printed.  As for eager evaluation, lazy evaluation is also synchronous which is why `b` and `pid` have the same value.  Finally, notice also how `a` is not re-evaluated when we query the value again.  Actually, with implicit futures, variables `a`, `b` and `c` are all regular values as soon as their futures have been resolved.
 
 _Comment_: Lazy evaluation is already supported by R itself.  Arguments are passed to functions using lazy evaluation.  It is also possible to assign variables  using lazy evaluation using `delayedAssign()`, but contrary to lazy futures this function does not freeze globals.  For more information, see `help("delayedAssign", package="base")`.
 
 
+<%---
+#### Transparent Futures
+
+For troubleshooting, there is also a _transparent_ future, which can be specified as `plan(transparent)`.  A transparent future is technically an eager future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors.
+
+---%>
 
 
 
@@ -243,42 +233,20 @@ _Comment_: Lazy evaluation is already supported by R itself.  Arguments are pass
 #### Multisession Futures
 Next we will turn to asynchronous futures.  We start with multisession futures because they supported by all operating systems.  A multisession future is evaluated in a background R session running on the same machine as the calling R process.  Here is our example with multisession evaluation:
 ```r
-> plan(multisession)
-> pid <- Sys.getpid()
-> pid
-[1] 7872
-> a %<-% {
-+     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
-+     3.14
-+ }
-> b %<-% {
-+     rm(pid)
-+     cat("Resolving 'b' ...\n")
-+     Sys.getpid()
-+ }
-> c %<-% {
-+     cat("Resolving 'c' ...\n")
-+     2 * a
-+ }
-> b
-[1] 5156
-> c
-[1] 6.28
-> a
-[1] 3.14
-> pid
-[1] 7872
+<%=bfr <- withCapture({
+plan(multisession)
+<%@include file="incl/future-1-overview-example2.R"%>
+})%>
 ```
 The first thing we observe is that the values of `a`, `c` and `pid` are the same are previously.  However, we noticed that `b` is different from before.  This is because the future `b` is evaluated in a different R process and therefore it returns a different process ID.  Another difference is that the messages, generated by `cat()`, are no longer displayed.  This is because they are outputted to the background sessions and not the calling session.
 
 When multisession evaluation is used, the package launches a set of R sessions in the background that will serve multisession futures by evaluating their expressions as they are created.  If all background sessions are busy evaluating other future expressions, the creation of the next multisession future is _blocked_ until a background session becomes available again.  The total number of background processes launched is decided by the value of `availableCores()`, e.g.
 ```r
-> availableCores()
-mc.cores+1 
-         3 
+<%=withCapture({
+availableCores()
+})%>
 ```
-This particular result tells us that option `mc.cores` was set such that we are allowed to use in total 3 processes including the main process.  In other words, with these settings there will be 2 background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was alloted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
+This particular result tells us that option `mc.cores` was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was alloted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
 
 
 #### Multicore Futures
@@ -289,6 +257,25 @@ plan(multicore)
 ```
 Except for different process IDs, the output of our example using multicore evaluation will be the same as that for multisession evaluation.   In both cases the evaluation is done on the local machine.  Just like for multisession futures, the maximum number of parallel processes running will be decided by `availableCores()`.
 
+<%---
+Here is the output from running our example with multicore evaluation:
+```r
+<%=if (supportsMulticore()) {
+withCapture({
+plan(multicore)
+<%@include file="incl/future-1-overview-example2.R"%>
+})
+} else {
+## If this vignette is compiled on a system not supporting
+## multicore processing, let's fake the future based on
+## the output of the multisession example
+bfr <- gsub("multisession", "multicore", bfr)
+bfr <- gsub(b, b+5L, bfr)
+bfr
+}%>
+```
+The output and behavior is the same as that for multisession futures, except that a different process ID was used.
+---%>
 
 
 #### Multiprocess Futures
@@ -302,34 +289,19 @@ A multiprocess future is not a formal class of futures by itself, but rather a c
 #### Cluster Futures
 Cluster futures evaulates expression on an ad-hoc cluster that was set up via `parallel::makeCluster()`.  For instance, assume you have access to three nodes `n1`, `n2` and `n3`, you can use these for asynchronous evaluation as:
 ```r
-> hosts <- c("n1", "n2", "n3")
-> cl <- parallel::makeCluster(hosts)
-> plan(cluster, cluster = cl)
-> pid <- Sys.getpid()
-> pid
-[1] 7872
-> a %<-% {
-+     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
-+     3.14
-+ }
-> b %<-% {
-+     rm(pid)
-+     cat("Resolving 'b' ...\n")
-+     Sys.getpid()
-+ }
-> c %<-% {
-+     cat("Resolving 'c' ...\n")
-+     2 * a
-+ }
-> b
-[1] 7416
-> c
-[1] 6.28
-> a
-[1] 3.14
-> pid
-[1] 7872
+<%=
+## For the vignette we cannot assume nodes n1, n2 and n3 exist.
+## The second best we can do is to use the local machine.
+bfr <- withCapture({
+hosts <- c("localhost", "localhost", "localhost")
+cl <- parallel::makeCluster(hosts)
+plan(cluster, cluster=cl)
+<%@include file="incl/future-1-overview-example2.R"%>
+})
+parallel::stopCluster(cl)
+bfr <- gsub('"localhost", "localhost", "localhost"', '"n1", "n2", "n3"', bfr)
+bfr
+%>
 ```
 Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.  By the way, it is considered good style to shutdown the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself done if the main process is terminated.  For more information on how to setup and manage such clusters, see `help("makeCluster", package="parallel")`.
 
@@ -340,25 +312,17 @@ Note that with proper configuration and automatic authentication setup (e.g. SSH
 ### Different Strategies for Different Futures
 Sometimes one may want to use an alternative evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and afterward `plan(old)` to temporarily switch strategies, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
-> plan(eager)
-> pid <- Sys.getpid()
-> pid
-[1] 7872
-> a %<-% {
-+     Sys.getpid()
-+ }
-> b %<-% {
-+     Sys.getpid()
-+ } %plan% multiprocess
-> c %<-% {
-+     Sys.getpid()
-+ } %plan% multiprocess
-> a
-[1] 7872
-> b
-[1] 8072
-> c
-[1] 5156
+<%=withCapture({
+plan(eager)
+pid <- Sys.getpid()
+pid
+a %<-% { Sys.getpid() }
+b %<-% { Sys.getpid() } %plan% multiprocess
+c %<-% { Sys.getpid() } %plan% multiprocess
+a
+b
+c
+})%>
 ```
 As seen by the different process IDs, future `a` is evaluated eagerly using the same process as the calling environment whereas the other two are evaluated using multiprocess futures.
 
@@ -370,33 +334,15 @@ This far we have discussed what can be referred to as "flat topology" of futures
 
 For instance, here is an example of two "top" futures (`a` and `b`) that uses multiprocess evaluation and where the second future (`b`) in turn uses two internal futures:
 ```r
-> plan(multiprocess)
-> pid <- Sys.getpid()
-> a %<-% {
-+     cat("Resolving 'a' ...\n")
-+     Sys.getpid()
-+ }
-> b %<-% {
-+     cat("Resolving 'b' ...\n")
-+     b.1 %<-% {
-+         cat("Resolving 'b.1' ...\n")
-+         Sys.getpid()
-+     }
-+     b.2 %<-% {
-+         cat("Resolving 'b.2' ...\n")
-+         Sys.getpid()
-+     }
-+     c(b.pid = Sys.getpid(), b.1.pid = b.1, b.2.pid = b.2)
-+ }
-> pid
-[1] 7872
-> a
-[1] 8072
-> b
-  b.pid b.1.pid b.2.pid 
-   5156    5156    5156 
+<%=withCapture({
+plan(multiprocess)
+<%@include file="incl/future-1-overview-example3.R"%>
+pid
+a
+b
+})%>
 ```
-By inspection the process IDs, we see that there are in total three different processes involved.  There is the main R process (pid=7872), and there are the two processes used by `a` (pid=8072) and `b` (pid=5156).  However, the two futures (`b.1` and `b.2`) that is nested by `b` are evaluated by the same R process as `b`.  The is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it prevents spawning of a large number of background processes by mistake, e.g. via recursive calls.
+By inspection the process IDs, we see that there are in total three different processes involved.  There is the main R process (pid=<%= pid %>), and there are the two processes used by `a` (pid=<%= a %>) and `b` (pid=<%= b[1] %>).  However, the two futures (`b.1` and `b.2`) that is nested by `b` are evaluated by the same R process as `b`.  The is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it prevents spawning of a large number of background processes by mistake, e.g. via recursive calls.
 
 To specify a different type of _evaluation topology_ than the first level of futures being resolved by multiprocess evaluation and the second level by eager evaluation, we can provide a list of evaluation strategies to `plan()`.  First, the same evaluation strategies as above can be explicitly specified as:
 ```r
@@ -404,48 +350,57 @@ plan(list(multiprocess, eager))
 ```
 We would actually get the same behavior if we try with multiple levels of multiprocess evaluations;
 ```r
-> plan(list(multiprocess, multiprocess))
+<%=withCapture({
+plan(list(multiprocess, multiprocess))
+})%>
 [...]
-> pid
-[1] 7872
-> a
-[1] 8072
-> b
-  b.pid b.1.pid b.2.pid 
-   5156    6972    7548 
+<%
+<%@include file="incl/future-1-overview-example3.R"%>
+%>
+<%=withCapture({
+pid
+a
+b
+})%>
 ```
 The reason for this also here to protect against launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores` to zero ([sic!](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7)) such that no _additional_ parallel processes can be launched.  This is the case for both multisession and multicore evaluation.
 
 Continuing, if we start off by eager evaluation and then use multiprocess evaluation for any nested futures, we get:
 ```r
-> plan(list(eager, multiprocess))
+<%=withCapture({
+plan(list(eager, multiprocess))
+})%>
 [...]
-Resolving 'a' ...
-Resolving 'b' ...
-> pid
-[1] 7872
-> a
-[1] 7872
-> b
-  b.pid b.1.pid b.2.pid 
-   7872    8072    5156 
+<%
+<%@include file="incl/future-1-overview-example3.R"%>
+%>
+<%=withCapture({
+pid
+a
+b
+})%>
 ```
-which clearly show that `a` and `b` are resolved in the calling process (pid 7872) whereas the two nested futures (`b.1` and `b.2`) are resolved in two separate R processes (pids 8072 and 5156).
+which clearly show that `a` and `b` are resolved in the calling process (pid <%= pid %>) whereas the two nested futures (`b.1` and `b.2`) are resolved in two separate R processes (pids <%= b[2] %> and <%= b[3] %>).
 
 Having said this, it is indeed possible to use nested multiprocess evaluation strategies, if we explicitly specify (read _force_) the number of cores available at each level.  In order to do this we need to "tweak" the default settings, which can be done as follows:
 ```r
-> plan(list(tweak(multiprocess, maxCores = 3L), tweak(multiprocess, 
-+     maxCores = 3L)))
+<%=withCapture({
+plan(list(
+  tweak(multiprocess, maxCores=3L),
+  tweak(multiprocess, maxCores=3L)
+))
+})%>
 [...]
-> pid
-[1] 7872
-> a
-[1] 8072
-> b
-  b.pid b.1.pid b.2.pid 
-   5156    3160    6132 
+<%
+<%@include file="incl/future-1-overview-example3.R"%>
+%>
+<%=withCapture({
+pid
+a
+b
+})%>
 ```
-First, we see that both `a` and `b` are resolved in different processes (pids 8072 and 5156) than the calling process (pid 7872).  Second, the two nested futures (`b.1` and `b.2`) are resolved in yet two other R processes (pids 3160 and 6132).
+First, we see that both `a` and `b` are resolved in different processes (pids <%= a %> and <%= b[1] %>) than the calling process (pid <%= pid %>).  Second, the two nested futures (`b.1` and `b.2`) are resolved in yet two other R processes (pids <%= b[2] %> and <%= b[3] %>).
 
 To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes and not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved in processes.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This bring us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in ot the futures now and then to see if they are resolved.
 
@@ -455,29 +410,27 @@ For more details on working with nested futures and different evaluation strateg
 ### Checking A Future without Blocking
 It is possible to check whether a future has been resolved or not without blocking.  This can be done using the `resolved(f)` function, which takes an explicit future `f` as input.  If we work with implit futures (as in all the examples above), we can use the `f <- futureOf(a)` function to retrieve the implicit future from an explicit one.  For example,
 ```r
-> plan(multiprocess)
-> a %<-% {
-+     cat("Resolving 'a' ...")
-+     Sys.sleep(2)
-+     cat("done\n")
-+     Sys.getpid()
-+ }
-> cat("Waiting for 'a' to be resolved ...\n")
-Waiting for 'a' to be resolved ...
-> fa <- futureOf(a)
-> count <- 1
-> while (!resolved(fa)) {
-+     cat(count, "\n")
-+     Sys.sleep(0.2)
-+     count <- count + 1
-+ }
-1 
-2 
-3 
-> cat("Waiting for 'a' to be resolved ... DONE\n")
-Waiting for 'a' to be resolved ... DONE
-> a
-[1] 8072
+<%=withCapture({
+plan(multiprocess)
+a %<-% {
+  cat("Resolving 'a' ...")
+  Sys.sleep(2)
+  cat("done\n")
+  Sys.getpid()
+}
+
+cat("Waiting for 'a' to be resolved ...\n")
+fa <- futureOf(a)
+count <- 1
+while(!resolved(fa)) {
+  cat(count, "\n")
+  Sys.sleep(0.2)
+  count <- count + 1
+}
+cat("Waiting for 'a' to be resolved ... DONE\n")
+
+a
+})%>
 ```
 
 It is possible to nest futures in multiple levels and each of the nested futures may be resolved using a different strategy
@@ -489,14 +442,15 @@ In order to use other types of future strategies for the nested layers of future
 ## Failed Futures
 Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example,
 ```r
-> plan(lazy)
-> a %<-% {
-+     cat("Resolving 'a' ...")
-+     stop("Whoops!")
-+     42
-+ }
-> cat("Everything is still ok although we have created a future that will fail.\n")
-Everything is still ok although we have created a future that will fail.
+<%=withCapture({
+plan(lazy)
+a %<-% {
+  cat("Resolving 'a' ...")
+  stop("Whoops!")
+  42
+}
+cat("Everything is still ok although we have created a future that will fail.\n")
+})%>
 > a
 Resolving 'a' ...
 Error in eval(expr, envir, enclos) : Whoops!
@@ -541,54 +495,42 @@ Finally, it is a challenging problem to identify globals from static code inspec
 
 There is one limitation with implicit futures that does not exist for explicit ones.  Because an explicit future is just like any other object in R it can be assigned anywhere/to anything.  For instance, we can create several of them in a loop and assign them to a list, e.g.
 ```r
-> plan(multiprocess)
-> f <- list()
-> for (ii in 1:3) {
-+     f[[ii]] <- future({
-+         Sys.getpid()
-+     })
-+ }
-> v <- lapply(f, FUN = value)
-> str(v)
-List of 3
- $ : int 8072
- $ : int 5156
- $ : int 8072
+<%=withCapture({
+plan(multiprocess)
+f <- list()
+for (ii in 1:3) {
+  f[[ii]] <- future({ Sys.getpid() })
+}
+v <- lapply(f, FUN=value)
+str(v)
+})%>
 ```
 This is _not_ possible to do when using implicit futures.  This is because the `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  It can only be used to assign future values to _environments_ (including the calling environment) much like how `assign(name, value, envir)` works.  However, we can assign implicit futures to environments using _named indices_, e.g.
 ```r
-> plan(multiprocess)
-> v <- new.env()
-> for (name in c("a", "b", "c")) {
-+     v[[name]] %<-% {
-+         Sys.getpid()
-+     }
-+ }
-> v <- as.list(v)
-> str(v)
-List of 3
- $ a: int 8072
- $ b: int 5156
- $ c: int 8072
+<%=withCapture({
+plan(multiprocess)
+v <- new.env()
+for (name in c("a", "b", "c")) {
+  v[[name]] %<-% { Sys.getpid() }
+}
+v <- as.list(v)
+str(v)
+})%>
 ```
 Here `as.list(v)` blocks until all futures in the environment `v` have been resolved.  Then their values are collected and returned as a regular list.
 
 If _numeric indices_ are required, then _list environments_ can be used.  List environments, which are implemented by the [listenv] package, are regular environments with customized subsetting operators making it possible to index them much like how lists can be indexed.  By using list environments where we otherwise would use lists, we can also assign implicit futures to a list-like objects using numeric indices.  For example,
 ```r
-> library("listenv")
-> plan(multiprocess)
-> v <- listenv()
-> for (ii in 1:3) {
-+     v[[ii]] %<-% {
-+         Sys.getpid()
-+     }
-+ }
-> v <- as.list(v)
-> str(v)
-List of 3
- $ : int 8072
- $ : int 5156
- $ : int 8072
+<%=withCapture({
+library("listenv")
+plan(multiprocess)
+v <- listenv()
+for (ii in 1:3) {
+  v[[ii]] %<-% { Sys.getpid() }
+}
+v <- as.list(v)
+str(v)
+})%>
 ```
 As previously, `as.list(v)` blocks until all futures.
 
