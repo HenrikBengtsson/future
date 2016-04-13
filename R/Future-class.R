@@ -154,6 +154,25 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
+makeExpression <- function(expr, enter=NULL, exit=NULL) {
+  ## NOTE: We don't want to use local(body) w/ on.exit() because
+  ## evaluation in a local is optional, cf. argument 'local'.
+  ## If this was mandatory, we could.  Instead we use
+  ## a tryCatch() statement. /HB 2016-03-14
+  expr <- substitute({
+    ## covr: skip=6
+    enter
+    tryCatch({
+      body
+    }, finally = {
+      exit
+    })
+  }, env=list(enter=enter, body=expr, exit=exit))
+
+  expr
+} ## makeExpression()
+
+
 #' @export
 getExpression.Future <- function(future, ...) {
   strategies <- plan("list")
@@ -202,19 +221,5 @@ getExpression.Future <- function(future, ...) {
     })
   }
 
-  ## NOTE: We don't want to use local(body) because
-  ## evaluating in a local is optional, cf. argument 'local'.
-  ## If this was mandatory, we could.  Instead we use
-  ## a tryCatch() statement. /HB 2016-03-14
-  expr <- substitute({
-    ## covr: skip=4
-    enter
-    tryCatch({
-      body
-    }, finally = {
-      exit
-    })
-  }, env=list(enter=enter, body=future$expr, exit=exit))
-
-  expr
+  makeExpression(expr=future$expr, enter=enter, exit=exit)
 } ## getExpression()
