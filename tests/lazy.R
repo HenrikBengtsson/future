@@ -85,7 +85,7 @@ f <- lazy({
   1
 })
 print(f)
-v <- value(f, onError="return")
+v <- value(f, signal=FALSE)
 print(v)
 stopifnot(inherits(v, "simpleError"))
 

@@ -25,7 +25,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
     a <- NULL; rm(list="a")  ## To please R CMD check
     expr <- substitute(local(a), list(a=expr))
   }
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -41,16 +41,38 @@ evaluate.UniprocessFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
+  expr <- getExpression(future)
+  envir <- future$envir
+
   ## Run future
   future$state <- 'running'
 
+
+  ## WORKAROUND: tryCatch() does not record the traceback and
+  ## it is too late to infer it when the error has been caught.
+  ## Because of this with we use withCallingHandlers() to
+  ## capture errors and if they occur we record the call trace.
+  current <- sys.nframe()
   tryCatch({
-    future$value <- eval(future$expr, envir=future$envir)
-    future$state <- 'finished'
-  }, simpleError = function(ex) {
-    future$state <- 'failed'
-    future$value <- ex
-  })
+    withCallingHandlers({
+      future$value <- eval(expr, envir=envir)
+      future$state <- 'finished'
+    }, error = function(ex) {
+      calls <- sys.calls()
+      ## Drop fluff added by withCallingHandlers()
+      calls <- calls[seq_len(length(calls)-2L)]
+      ## Drop fluff added by outer tryCatch()
+      calls <- calls[-seq_len(current+7L)]
+      ## Drop fluff added by outer local=TRUE
+      if (future$local) calls <- calls[-seq_len(6L)]
+      ex$traceback <- calls
+      future$value <- ex
+      future$state <- 'failed'
+    })
+  }, error = function(ex) {})
+
+  ## Signal conditions early, iff specified for the given future
+  signalEarly(future, collect=FALSE)
 
   invisible(future)
 }

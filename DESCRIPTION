@@ -1,5 +1,5 @@
 Package: future
-Version: 0.12.0
+Version: 0.13.0
 Title: A Future API for R
 Imports:
     digest,
@@ -21,9 +21,9 @@ Description: A Future API for R is provided. In programming, a future is an
     creating futures and requesting their values, e.g.
     'f <- future({ mandelbrot(c(0.28,0), side=2) })' and 'v <- value(f)'.
     The 'resolve()' function can be used to check if a future is resolved or not.
-    An infix assignment operator '%<=%' exists for creating futures whose values
+    An infix assignment operator '%<-%' exists for creating futures whose values
     are accessible by the assigned variables (as promises), e.g.
-    'v %<=% { mandelbrot(c(0.28,0), side=2) }'.
+    'v %<-% { mandelbrot(c(0.28,0), side=2) }'.
     This package implements synchronous "lazy" and "eager" futures, and asynchronous
     "multicore", "multisession" and ad hoc "cluster" futures.
     Globals variables and functions are automatically identified and exported.

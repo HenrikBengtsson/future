@@ -1,24 +1,56 @@
 Package: future
 ===============
 
+Version: 0.13.0 [2016-04-13]
+o Add support to plan() for specifying different future strategies for
+  the different levels of nested futures.
+o Add backtrace() for listing the trace the expressions evaluated (the
+  calls made) before a condition was caught.
+o Add transparent futures, which are eager futures with early signaling
+  of conditioned enabled and whose expression is evaluated in the calling
+  environment.  This makes the evaluation of such futures as similar
+  as possible to how R evaluates expressions, which in turn simplifies
+  troubleshooting errors etc.
+o Add support for early signaling of conditions.  The default is
+  (as before) to signal conditions when the value is queried.
+  In addition, they may be signals as soon as possible, e.g. when
+  checking whether a future is resolved or not.
+o Signaling of conditions when calling value() is now controlled by
+  argument 'signal' (previously 'onError').
+o Now UniprocessFuture:s captures the call stack for errors occurring
+  while resolving futures.
+o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
+  any objects in the cluster R session that was created during the
+  evaluation of a previous future is available for succeeding futures
+  that are evaluated in the same session.  Moreover, globals are
+  still indentified and exported but "missing" globals will not give
+  an error - instead it is assumed such globals are available in the
+  environment where the future is evaluated.
+o OVERHEAD: Utility functions exported by ClusterFuture are now much
+  smaller; previously they would export all of the package environment.
+o BUG FIX: f <- multicore(NA, maxCores=2) would end up in an endless
+  waiting loop for a free core if availableCores() returned one.
+o BUG FIX: ClusterFuture would ignore local=TRUE.
+
+
 Version: 0.12.0 [2016-02-23]
 o Added multiprocess futures, which are multicore futures if supported,
   otherwise multisession futures.  This makes it possible to use
   plan(multiprocess) everywhere regardless of operating system.
-o Future strategy functions gained class attributes such that it is 
+o Future strategy functions gained class attributes such that it is
   possible to test what type of future is currently used, e.g.
   inherits(plan(), "multicore").
-o ROBUSTNESS: It is only the R process that created a future that can 
+o ROBUSTNESS: It is only the R process that created a future that can
   resolve it. If a non-resolved future is queried by another R process,
   then an informative error is generated explaining that this is not
   possible.
-o ROBUSTNESS: Now value() for multicore futures detects if the underlying 
+o ROBUSTNESS: Now value() for multicore futures detects if the underlying
   forked R process was terminated before completing and if so generates
   an informative error messages.
 o SPEED: Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
 o GLOBALS: resolve() gained argument 'recursive'.
-o GLOBALS: Added option 'future.globals.resolve' for controling whether 
+o GLOBALS: Added option 'future.globals.resolve' for controling whether
   global variables should be resolved for futures or not.  If TRUE, then
   globals are searched recursively for any futures and if found such
   "global" futures are resolved.  If FALSE, global futures are not

@@ -61,7 +61,7 @@ for (cores in 1:min(3L, availableCores())) {
     1
   })
   print(f)
-  v <- value(f, onError="return")
+  v <- value(f, signal=FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 

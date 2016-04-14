@@ -13,10 +13,10 @@ plan(multisession, maxCores=3L)
 env <- new.env()
 
 ## Create future #1 (consumes background process #1)
-env$a %<=% { 5 }
+env$a %<-% { 5 }
 
 ## Create future #2 (consumes background process #2)
-b %<=% { "a" }
+b %<-% { "a" }
 
 ## Resolve future #2 (frees up background process #2)
 message(sprintf("b=%s\n", sQuote(b)))
@@ -27,7 +27,7 @@ message(sprintf("b=%s\n", sQuote(b)))
 ## However, object `env[[b]]` (here element `a` of environment `env`)
 ## is not touched and therefore not resolved (since it is a future)
 ## unless environment `env` is resolved recursively. (Issue #49)
-y %<=% { env[[b]] }
+y %<-% { env[[b]] }
 
 ## Resolve future #3
 message(sprintf("y=%s\n", y))
@@ -37,7 +37,7 @@ str(as.list(env))
 
 ## Create future #4
 ## Since future #1 is resolved it will work at this point
-y %<=% { env[[b]] }
+y %<-% { env[[b]] }
 ## Resolve future #4
 message(sprintf("y=%s\n", y))
 

@@ -30,12 +30,12 @@ Get the future of a future variable that has been created directly
 or indirectly via \code{\link{future}()}.
 }
 \examples{
-a \%<=\% { 1 }
+a \%<-\% { 1 }
 
 f <- futureOf(a)
 print(f)
 
-b \%<=\% { 2 }
+b \%<-\% { 2 }
 
 f <- futureOf(b)
 print(f)
@@ -47,7 +47,7 @@ print(fs)
 
 ## Futures part of environment
 env <- new.env()
-env$c \%<=\% { 3 }
+env$c \%<-\% { 3 }
 
 f <- futureOf(env$c)
 print(f)

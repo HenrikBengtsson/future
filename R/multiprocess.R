@@ -16,6 +16,7 @@
 #' located, an informative error is generated.
 #' @param maxCores The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a
@@ -28,9 +29,9 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(), ...) {
+multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(), earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, maxCores=maxCores, ...)
+  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, maxCores=maxCores, earlySignal=earlySignal, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")

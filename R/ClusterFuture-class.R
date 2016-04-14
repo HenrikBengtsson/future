@@ -1,4 +1,4 @@
-#' An cluster future is a future whose value will be resolved asynchroneously in a parallel process
+#' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
@@ -8,6 +8,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
+#' @param persistent If FALSE, the evaluation environment is cleared
+#' from objects prior to the evaluation of the future.
 #' @param cluster A \code{\link[parallel:makeCluster]{cluster}}.
 #' @param \dots Additional named elements of the future.
 #'
@@ -23,7 +25,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, cluster=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, cluster=NULL, ...) {
   defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
   if (is.null(cluster)) cluster <- defaultCluster()
@@ -40,14 +42,14 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     attr(cluster, "name") <- name
   }
 
-  gp <- getGlobalsAndPackages(expr, envir=envir)
+  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
 
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
+    gp$expr <- substitute(local(a), list(a=gp$expr))
   }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -69,7 +71,7 @@ importCluster <- function(name=NULL) {
   get(name, mode="function", envir=ns, inherits=FALSE)
 }
 
-#' @importFrom parallel clusterExport
+#' @importFrom parallel clusterCall clusterExport
 run.ClusterFuture <- function(future, ...) {
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -77,10 +79,8 @@ run.ClusterFuture <- function(future, ...) {
 
   sendCall <- importCluster("sendCall")
   cluster <- future$cluster
-  expr <- future$expr
-
-  ## Inject code for the next future strategy to use.
-  expr <- injectNextStrategy(future, expr)
+  expr <- getExpression(future)
+  persistent <- future$persistent
 
   ## FutureRegistry to use
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
@@ -114,7 +114,9 @@ run.ClusterFuture <- function(future, ...) {
   ##     previous futures are not affecting this one, which
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
-  clusterCall(cl, fun=grmall)
+  if (!persistent) {
+    clusterCall(cl, fun=grmall)
+  }
 
 
   ## (ii) Attach packages that needs to be attached
@@ -123,28 +125,7 @@ run.ClusterFuture <- function(future, ...) {
     mdebug("Attaching %d packages (%s) on cluster node #%d ...",
                     length(packages), hpaste(sQuote(packages)), node)
 
-    requirePackage <- function(pkg) {
-      if (require(pkg, character.only=TRUE)) return()
-
-      ## Failed to attach package
-      msg <- sprintf("Failed to attach package %s in %s", sQuote(pkg), R.version$version.string)
-      data <- utils::installed.packages()
-
-      ## Installed, but fails to load/attach?
-      if (is.element(pkg, data[,"Package"])) {
-        keep <- (data[,"Package"] == pkg)
-        data <- data[keep,,drop=FALSE]
-        pkgs <- sprintf("%s %s (in %s)", data[,"Package"], data[, "Version"], sQuote(data[,"LibPath"]))
-        msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse=", "))
-      } else {
-        paths <- .libPaths()
-        msg <- sprintf("%s, because the package is not installed in any of the libraries (%s), which contain %d installed packages.", msg, paste(sQuote(paths), collapse=", "), nrow(data))
-      }
-
-      stop(msg)
-    } ## requirePackage()
-
-    clusterCall(cl, fun=lapply, X=packages, FUN=requirePackage)
+    clusterCall(cl, fun=requirePackages, packages)
 
     mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
                     length(packages), hpaste(sQuote(packages)), node)
@@ -172,18 +153,21 @@ run.ClusterFuture <- function(future, ...) {
 
 
   ## Add to registry
-  FutureRegistry(reg, action="add", future=future)
-
-  future$state <- 'running'
+  FutureRegistry(reg, action="add", future=future, earlySignal=FALSE)
 
   ## (iv) Launch future
   sendCall(cl[[1L]], fun=geval, args=list(expr))
+
+  future$state <- 'running'
 
   invisible(future)
 }
 
 #' @export
 resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
+  ## Is future even launched?
+  if (x$state == 'created') return(FALSE)
+
   ## Is value already collected?
   if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
 
@@ -193,17 +177,20 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
 
   cluster <- x$cluster
   node <- x$node
-  cl <- cluster[[node]]
+  cl <- cluster[node]
 
   ## Check if cluster socket connection is available for reading
-  con <- cl$con
+  con <- cl[[1]]$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
+
+  ## Signal conditions early? (happens only iff requested)
+  if (res) signalEarly(x)
 
   res
 }
 
 #' @export
-value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
+value.ClusterFuture <- function(future, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
@@ -217,12 +204,12 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
 
   cluster <- future$cluster
   node <- future$node
-  cl <- cluster[[node]]
+  cl <- cluster[node]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
-    res <- recvResult(cl)
+    res <- recvResult(cl[[1]])
     TRUE
   }, simpleError = function(ex) ex)
 
@@ -254,7 +241,7 @@ value.ClusterFuture <- function(future, onError=c("signal", "return"), ...) {
   reg <- sprintf("cluster-%s", attr(cluster, "name"))
 
   ## Remove from registry
-  FutureRegistry(reg, action="remove", future=future)
+  FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
 
   NextMethod("value")
 }
@@ -275,7 +262,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
 
   usedNodes <- function() {
     ## Number of unresolved cluster futures
-    length(FutureRegistry(reg, action="list"))
+    length(FutureRegistry(reg, action="list", earlySignal=FALSE))
   }
 
 
@@ -304,7 +291,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
 
   ## Find which node is available
   avail <- rep(TRUE, times=length(cluster))
-  futures <- FutureRegistry(reg, action="list")
+  futures <- FutureRegistry(reg, action="list", earlySignal=FALSE)
   nodes <- unlist(lapply(futures, FUN=function(f) f$node))
   avail[nodes] <- FALSE
 

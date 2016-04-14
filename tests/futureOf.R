@@ -7,7 +7,7 @@ ovars <- ls()
 oopts <- options(warn=1)
 plan(lazy)
 
-a %<=% { 1 }
+a %<-% { 1 }
 
 f1 <- futureOf("a")
 print(f1)

@@ -110,6 +110,14 @@ fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
+message("*** plan(tweak(eager, local=FALSE))")
+plan(lazy)
+plan(tweak(eager, local=FALSE))
+fcn <- plan()
+print(fcn)
+stopifnot(formals(fcn)$local == FALSE)
+
+
 message("*** old <- plan(new)")
 truth <- plan()
 old <- plan(lazy, local=FALSE)
@@ -125,7 +133,7 @@ stopifnot(identical(curr, truth))
 
 message("*** %plan% 'eager'")
 plan(lazy)
-x %<=% { a <- 1 } %plan% "eager"
+x %<-% { a <- 1 } %plan% "eager"
 stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** %plan% eager")
@@ -137,13 +145,13 @@ fun <- { plan() } %plan% eager
 f <- fun(1)
 stopifnot(inherits(f, "EagerFuture"))
 
-x %<=% { a <- 1 } %plan% eager
+x %<-% { a <- 1 } %plan% eager
 stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** %plan% eager(local=FALSE) ")
 plan(lazy)
 a <- 0
-x %<=% { a } %plan% eager(local=FALSE)
+x %<-% { a } %plan% eager(local=FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
@@ -151,13 +159,13 @@ stopifnot(identical(body(plan()), body(lazy)))
 
 message("*** Nested futures with different plans ")
 plan(lazy)
-c %<=% {
+c %<-% {
   message("Resolving 'c'")
-  a %<=% {
+  a %<-% {
     message("Resolving 'a'")
     2
   } %plan% eager
-  b %<=% {
+  b %<-% {
     message("Resolving 'b'")
     -9 * a
   }

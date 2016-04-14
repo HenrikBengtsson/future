@@ -5,16 +5,13 @@
 \alias{value.Future}
 \title{The value of a future}
 \usage{
-\method{value}{Future}(future, onError = c("signal", "return"), ...)
+\method{value}{Future}(future, signal = TRUE, ...)
 }
 \arguments{
 \item{future}{A \link{Future}.}
 
-\item{onError}{A character string specifying how errors
-(\link[base]{conditions}) should be handled in case they occur.
-If \code{"signal"}, the error is signalled, e.g. captured
-and re-thrown.  If instead \code{"return"}, they are
-\emph{returned} as is.}
+\item{signal}{A logical specifying whether (\link[base]{conditions})
+should signaled or be returned as values.}
 
 \item{\dots}{Not used.}
 }

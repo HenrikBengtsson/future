@@ -4,8 +4,8 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE, cluster = NULL,
-  ...)
+cluster(expr, envir = parent.frame(), substitute = TRUE,
+  persistent = FALSE, cluster = NULL, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -16,8 +16,13 @@ is done and from which globals are obtained.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
+
 \item{cluster}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
+
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
 \item{\dots}{Not used.}
 }

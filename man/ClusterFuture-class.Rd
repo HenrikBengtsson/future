@@ -5,10 +5,10 @@
 \alias{ClusterFuture-class}
 \alias{MultisessionFuture}
 \alias{MultisessionFuture-class}
-\title{An cluster future is a future whose value will be resolved asynchroneously in a parallel process}
+\title{A cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, cluster = NULL, ...)
+  local = !persistent, persistent = FALSE, cluster = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -23,6 +23,9 @@ is done (or inherits from if \code{local} is TRUE).}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the global environment of the cluster node.}
 
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
+
 \item{cluster}{A \code{\link[parallel:makeCluster]{cluster}}.}
 
 \item{\dots}{Additional named elements of the future.}
@@ -31,7 +34,7 @@ the assignments are done in the global environment of the cluster node.}
 An object of class \code{ClusterFuture}.
 }
 \description{
-An cluster future is a future whose value will be resolved asynchroneously in a parallel process
+A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 }
 \seealso{
 To evaluate an expression using "cluster future", see function

@@ -2,10 +2,11 @@
 % Please edit documentation in R/eager.R
 \name{eager}
 \alias{eager}
+\alias{transparent}
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, ...)
+  local = TRUE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -25,6 +26,8 @@ located, an informative error is generated.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
+\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+
 \item{\dots}{Not used.}
 }
 \value{
@@ -43,6 +46,15 @@ directly, but to register it via \code{\link{plan}(eager)} such that it
 becomes the default mechanism for all futures.  After this
 \code{\link{future}()} and \code{\link{\%<=\%}} will create
 \emph{eager futures}.
+}
+\section{transparent futures}{
+
+Transparent futures are eager futures configured to emulate how R
+evaluates expressions as far as possible.  For instance, errors and
+warnings are signaled immediately and assignments are done to the
+calling environment (without \code{local()} as default for all other
+types of futures).  This makes transparent futures ideal for
+troubleshooting, especially when there are errors.
 }
 \examples{
 ## Use eager futures

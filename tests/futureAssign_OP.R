@@ -4,29 +4,29 @@ ovars <- ls()
 oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 printf <- function(...) cat(sprintf(...))
 
-message("*** %<=% ...")
+message("*** %<-% ...")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
   for (strategy in future:::supportedStrategies()) {
-    message(sprintf("*** %%<=%% with %s futures ...", sQuote(strategy)))
+    message(sprintf("*** %%<-%% with %s futures ...", sQuote(strategy)))
     plan(strategy)
 
     rm(list=intersect(c("x", "y"), ls()))
 
     message("** Future evaluation without globals")
-    v1 %<=% { x <- 1 }
+    v1 %<-% { x <- 1 }
     stopifnot(!exists("x", inherits=FALSE), identical(v1, 1))
 
     message("** Future evaluation with globals")
     a <- 2
-    v2 %<=% { x <- a }
+    v2 %<-% { x <- a }
     stopifnot(!exists("x", inherits=FALSE), identical(v2, a))
 
     message("** Future evaluation with errors")
-    v3 %<=% {
+    v3 %<-% {
       x <- 3
       stop("Woops!")
       x
@@ -38,7 +38,7 @@ for (cores in 1:min(3L, availableCores())) {
 
     y <- listenv::listenv()
     for (ii in 1:5) {
-      y[[ii]] %<=% {
+      y[[ii]] %<-% {
         if (ii %% 2 == 0) stop("Woops!")
         ii
       }
@@ -59,7 +59,7 @@ for (cores in 1:min(3L, availableCores())) {
 
 
     message("** Future evaluation with progress bar")
-    v4 %<=% {
+    v4 %<-% {
       cat("Processing: ")
       for (ii in 1:10) { cat("."); Sys.sleep(0.1) }
       cat(" [100%]\n")
@@ -86,7 +86,7 @@ for (cores in 1:min(3L, availableCores())) {
 
 
     message("** Left-to-right and right-to-left future assignments")
-    c %<=% 1
+    c %<-% 1
     printf("c=%s\n", c)
     1 %=>% d
     printf("d=%s\n", d)
@@ -95,9 +95,9 @@ for (cores in 1:min(3L, availableCores())) {
 
 
     message("** Nested future assignments")
-    a %<=% {
+    a %<-% {
       b <- 1
-      c %<=% 2
+      c %<-% 2
       3 -> d
       4 %=>% e
       b + c + d + e
@@ -109,13 +109,13 @@ for (cores in 1:min(3L, availableCores())) {
     printf("b=%s\n", b)
     stopifnot(b == a + 1)
 
-    message(sprintf("*** %%<=%% with %s futures ... DONE", sQuote(strategy)))
+    message(sprintf("*** %%<-%% with %s futures ... DONE", sQuote(strategy)))
   } # for (strategy in ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
-message("*** %<=% ... DONE")
+message("*** %<-% ... DONE")
 
 ## Cleanup
 plan(eager)

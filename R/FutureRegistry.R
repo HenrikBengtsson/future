@@ -8,7 +8,41 @@ FutureRegistry <- local({
     NA_integer_
   }
 
-  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, ...) {
+  collectValues <- function(where, futures, firstOnly=TRUE) {
+    for (ii in seq_along(futures)) {
+      future <- futures[[ii]]
+
+      ## Is future even launched?
+      if (future$state == "created") next
+
+      ## NOTE: It is when calling resolved() on a future with
+      ##       early signaling is enabled that conditioned
+      ##       may be signaled.
+      if (resolved(future)) {
+        ## (a) Let future cleanup after itself, iff needed.
+        ##     This, this may result in a call to
+        ##     FutureRegistry(..., action="remove").
+        value(future, signal=FALSE)
+
+        ## (b) Make sure future is removed from registry, unless
+        ##     already done via above value() call.
+        futuresDB <- db[[where]]
+        idx <- indexOf(futuresDB, future=future)
+        if (!is.na(idx)) {
+          futuresDB[[idx]] <- NULL
+          db[[where]] <<- futuresDB
+        }
+
+        ## (c) Collect only the first resolved future?
+        if (firstOnly) break
+      }
+    } ## for (ii ...)
+
+    invisible(futures)
+  } ## collectValues()
+
+
+  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, earlySignal=TRUE, ...) {
     stopifnot(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
@@ -37,36 +71,30 @@ FutureRegistry <- local({
       futures[[idx]] <- NULL
       db[[where]] <<- futures
     } else if (action == "collect-first") {
-      for (ii in seq_along(futures)) {
-        future <- futures[[ii]]
-        if (resolved(future)) {
-	  ## (a) Let future cleanup after itself, iff needed
-	  ##     This may result in a call to FutureRegistry(..., action="remove")
-	  tryCatch({
-	    value(future)
-	  }, error = function(ex) {})
-
-          ## (b) Make sure future is removed from registry, unless
-	  ##     already done via above value() call
-          futures <- db[[where]]
-          idx <- indexOf(futures, future)
-	  if (!is.na(idx)) {
-	    futures[[idx]] <- NULL
-            db[[where]] <<- futures
-	  }
-
-          ## (c) Collect only the first resolved future
-	  break
-	}
-      }
+      collectValues(where, futures=futures, firstOnly=TRUE)
     } else if (action == "reset") {
       db[[where]] <<- list()
     } else if (action == "list") {
-      return(futures)
     } else {
       msg <- sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action)
       mdebug(msg)
       stop(msg)
     }
+
+    ## Early signaling of conditions?
+    if (earlySignal && length(futures) > 0L) {
+      ## Which futures have early signaling enabled?
+      idxs <- lapply(futures, FUN=function(f) f$earlySignal)
+      idxs <- which(unlist(idxs, use.names=FALSE))
+
+      ## Any futures to be scanned for early signaling?
+      if (length(idxs) > 0) {
+        ## Collect values, which will trigger signaling during
+        ## calls to resolved().
+        collectValues(where, futures=futures[idxs], firstOnly=FALSE)
+      }
+    }
+
+    futures
   }
 })

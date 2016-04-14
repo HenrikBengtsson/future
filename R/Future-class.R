@@ -12,6 +12,7 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -29,7 +30,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -37,6 +38,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
+  core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -70,11 +72,8 @@ assertOwner <- function(future, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
-#' @param onError A character string specifying how errors
-#' (\link[base]{conditions}) should be handled in case they occur.
-#' If \code{"signal"}, the error is signalled, e.g. captured
-#' and re-thrown.  If instead \code{"return"}, they are
-#' \emph{returned} as is.
+#' @param signal A logical specifying whether (\link[base]{conditions})
+#' should signaled or be returned as values.
 #' @param \dots Not used.
 #'
 #' @return An R object of any data type.
@@ -87,9 +86,7 @@ assertOwner <- function(future, ...) {
 #' @export value
 #' @aliases value
 #' @export
-value.Future <- function(future, onError=c("signal", "return"), ...) {
-  onError <- match.arg(onError)
-
+value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
@@ -97,7 +94,7 @@ value.Future <- function(future, onError=c("signal", "return"), ...) {
   }
 
   value <- future$value
-  if (future$state == 'failed' && onError == "signal") {
+  if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
     stop(value)
   }
@@ -110,6 +107,12 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
+  ## Is future even launched?
+  if (x$state == 'created') return(FALSE)
+
+  ## Signal conditions early, iff specified for the given future
+  signalEarly(x)
+
   x$state %in% c('finished', 'failed', 'interrupted')
 }
 
@@ -117,7 +120,7 @@ resolved.Future <- function(x, ...) {
 #' Inject code for the next type of future to use for nested futures
 #'
 #' @param future Current future.
-#' @param expr Future expression.
+#' @param ... Not used.
 #'
 #' @return A future expression with code injected to set what
 #' type of future to use for nested futures, iff any.
@@ -147,31 +150,76 @@ resolved.Future <- function(x, ...) {
 #'     for a discussion on this.
 #'
 #' @export
-#' @aliases injectNextStrategy.Future
+#' @aliases getExpression.Future
 #' @keywords internal
-injectNextStrategy <- function(future, expr, ...) UseMethod("injectNextStrategy")
+getExpression <- function(future, ...) UseMethod("getExpression")
 
-#' @export
-injectNextStrategy.Future <- function(future, expr, ...) {
-  ## For now, the next future strategy is hard coded
-  nextStrategy <- NULL
-
-  ## Default is to fall back to single-core processing,
-  ## i.e. forcing the number of _additional_ cores
-  ## ('mc.cores') to be zero (sic!)
-  if (is.null(nextStrategy)) {
-    nextStrategy <- substitute({
-      ## covr: skip=1
-      options(mc.cores=0L)
-    }, env=list())
-  }
-
-  ## Inject
+makeExpression <- function(expr, enter=NULL, exit=NULL) {
+  ## NOTE: We don't want to use local(body) w/ on.exit() because
+  ## evaluation in a local is optional, cf. argument 'local'.
+  ## If this was mandatory, we could.  Instead we use
+  ## a tryCatch() statement. /HB 2016-03-14
   expr <- substitute({
-    ## covr: skip=2
-    a
-    b
-  }, env=list(a=nextStrategy, b=expr))
+    ## covr: skip=6
+    enter
+    tryCatch({
+      body
+    }, finally = {
+      exit
+    })
+  }, env=list(enter=enter, body=expr, exit=exit))
 
   expr
-} ## nextStrategy()
+} ## makeExpression()
+
+
+#' @export
+getExpression.Future <- function(future, ...) {
+  strategies <- plan("list")
+  if (length(strategies) > 1L) {
+    ## Identify package
+    pkgs <- lapply(strategies, FUN=environment)
+    pkgs <- lapply(pkgs, FUN=environmentName)
+    pkgs <- unique(unlist(pkgs))
+
+    ## Sanity check by verifying packages can be loaded already here
+    ## If there is somethings wrong in 'pkgs', we get the error
+    ## already before launching the future.
+    for (pkg in pkgs) loadNamespace(pkg)
+
+    enter <- bquote({
+      ## covr: skip=4
+      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
+      oplans <- future::plan("list")
+      future::plan(.(strategies[-1]))
+    })
+
+    exit <- bquote({
+      ## covr: skip=1
+      future::plan(.(strategies))
+    })
+  } else {
+    ## If end of future stack, fall to using single-core
+    ## processing.  In this case we don't have to rely
+    ## on the future package.  Instead, we can use the
+    ## light-weight approach where we force the number of
+    ## cores available to be one.  This we achieve by
+    ## setting the number of _additional_ cores to be
+    ## zero (sic!).
+
+    ## FIXME: How can we guarantee that '.future.mc.cores.old'
+    ## is not overwritten?  /HB 2016-03-14
+    enter <- quote({
+      ## covr: skip=3
+      .future.mc.cores.old <- getOption("mc.cores")
+      options(mc.cores=0L)
+    })
+
+    exit <- bquote({
+      ## covr: skip=1
+      options(mc.cores=.future.mc.cores.old)
+    })
+  }
+
+  makeExpression(expr=future$expr, enter=enter, exit=exit)
+} ## getExpression()

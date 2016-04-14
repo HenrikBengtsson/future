@@ -18,6 +18,7 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return An \link{EagerFuture}.
@@ -31,8 +32,18 @@
 #' \code{\link{future}()} and \code{\link{\%<=\%}} will create
 #' \emph{eager futures}.
 #'
+#' @section transparent futures:
+#' Transparent futures are eager futures configured to emulate how R
+#' evaluates expressions as far as possible.  For instance, errors and
+#' warnings are signaled immediately and assignments are done to the
+#' calling environment (without \code{local()} as default for all other
+#' types of futures).  This makes transparent futures ideal for
+#' troubleshooting, especially when there are errors.
+#'
+#' @aliases transparent
+#' @export transparent
 #' @export
-eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, ...) {
+eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   local <- as.logical(local)
@@ -42,14 +53,22 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
     exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
-  future <- EagerFuture(expr=expr, envir=envir, local=local)
+  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, local=local, earlySignal=earlySignal)
   evaluate(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
 
+transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, ...) {
+  if (substitute) expr <- substitute(expr)
+  future <- eager(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal)
+  invisible(future)
+}
+class(transparent) <- c("transparent", "eager", "uniprocess", "future", "function")
+
+
+## Used only internally
 constant <- function(value, ...) {
-  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE)
+  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE, earlySignal=TRUE)
 }
 class(constant) <- c("constant", "eager", "uniprocess", "future", "function")
-

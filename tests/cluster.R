@@ -67,7 +67,7 @@ for (cores in 1:2) {
     1
   })
   print(f)
-  v <- value(f, onError="return")
+  v <- value(f, signal=FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 
@@ -124,7 +124,7 @@ for (cores in 1:2) {
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)
-  message(paste(capture.output(v), collapse="\n"))
+  message(paste(capture.output(str(v)), collapse="\n"))
   message("*** cluster() - installed packages ... DONE")
 
 

@@ -70,7 +70,7 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
     1
   }, globals=globals)
   print(f)
-  v <- value(f, onError="return")
+  v <- value(f, signal=FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 

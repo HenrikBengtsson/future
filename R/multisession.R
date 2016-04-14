@@ -9,8 +9,11 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param persistent If FALSE, the evaluation environment is cleared
+#' from objects prior to the evaluation of the future.
 #' @param maxCores The maximum number of multisession futures that
 #' can be active at the same time before blocking.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MultisessionFuture}.
@@ -57,7 +60,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=availableCores(), ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, maxCores=availableCores(), earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   maxCores <- as.integer(maxCores)
   stopifnot(length(maxCores) == 1, is.finite(maxCores), maxCores >= 1)
@@ -65,6 +68,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=a
   ## Fall back to eager futures if only a single R session can be used,
   ## i.e. the use the current main R process.
   if (maxCores == 1L) {
+    ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
     return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
 
@@ -73,7 +77,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, maxCores=a
   ## a cluster with one less process.
   cluster <- sessions("start", n=maxCores-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, cluster=cluster, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")

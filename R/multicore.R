@@ -15,6 +15,7 @@
 #' located, an informative error is generated.
 #' @param maxCores The maximum number of multicore futures that can
 #' be active at the same time before blocking.
+#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MulticoreFuture}
@@ -58,16 +59,16 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   maxCores <- as.integer(maxCores)
   stopifnot(is.finite(maxCores), maxCores >= 1L)
 
   ## Fall back to eager futures if only a single additional R process
-  ## can be spawned off,  i.e. the use the current main R process.
+  ## can be spawned off, i.e. then use the current main R process.
   ## Eager futures best reflect how multicore futures handle globals.
-  if (maxCores == 1L) {
+  if (maxCores == 1L || availableCores(constraints="multicore") == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
@@ -80,7 +81,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   oopts <- options(mc.cores=maxCores)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")
@@ -159,6 +160,11 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
 
   ## Maximum number of cores available
   total <- availableCores()
+
+  ## No additional cores available?
+  if (total == 1L) {
+    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
+  }
 
   tries <- 1L
   interval <- delta
