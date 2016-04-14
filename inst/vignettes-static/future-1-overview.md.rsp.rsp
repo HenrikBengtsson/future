@@ -442,13 +442,13 @@ Sometimes the future is not what you expected.  If an error occurs while evaluat
 <%=withCapture({
 plan(lazy)
 a %<-% {
-  cat("Resolving 'a' ...")
+  cat("Resolving 'a' ...\n")
   stop("Whoops!")
   42
 }
 cat("Everything is still ok although we have created a future that will fail.\n")
 })%>
-<% try(resolve(a), silent=TRUE) %>
+<% captureOutput(try(resolve(a), silent=TRUE)) %>
 > a
 Resolving 'a' ...
 Error in eval(expr, envir, enclos) : Whoops!
