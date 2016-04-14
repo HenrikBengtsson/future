@@ -480,7 +480,7 @@ Sometimes the future is not what you expected.  If an error occurs while evaluat
 + }
 > cat("Everything is still ok although we have created a future that will fail.\n")
 Everything is still ok although we have created a future that will fail.
-Resolving 'a' ...> a
+> a
 Resolving 'a' ...
 Error in eval(expr, envir, enclos) : Whoops!
 ```
