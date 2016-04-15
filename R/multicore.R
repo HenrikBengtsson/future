@@ -152,7 +152,7 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=1.01) {
+requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=getOption("future.alpha", 1.01)) {
   stopifnot(is.function(await))
   maxTries <- as.integer(maxTries)
   stopifnot(is.finite(maxTries), maxTries > 0)
