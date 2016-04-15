@@ -548,18 +548,18 @@ To see a live illustration how different types of futures are evaluated, run the
 ```r
 library("future")
 plan(eager)
-demo("mandelbrot", package="future")
+demo("mandelbrot", package="future", ask=FALSE)
 ```
 which closely imitates how the script would run if futures were not used.  Then try the same using lazy evaluation,
 ```r
 plan(lazy)
-demo("mandelbrot", package="future")
+demo("mandelbrot", package="future", ask=FALSE)
 ```
 and see if you can notice the difference in how and when statements are evaluated.
 You may also try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
 ```r
 plan(multiprocess)
-demo("mandelbrot", package="future")
+demo("mandelbrot", package="future", ask=FALSE)
 ```
 This will use multicore processing if you are on a system where R supports process forking, otherwise (such as on Windows) it will use multisession processing.
 
@@ -567,7 +567,7 @@ Finally, if you have access to multiple machines you can try to setup a cluster 
 ```r
 cl <- parallel::makeCluster(c("n2", "n5", "n6", "n6", "n9"))
 plan(cluster, cluster=cl)
-demo("mandelbrot", package="future")
+demo("mandelbrot", package="future", ask=FALSE)
 ```
 It's always good to call `parallel::stopCluster(cl)` when you're done with this cluster, but if you forget it will be done automatically when you quit R.
 
