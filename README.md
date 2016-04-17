@@ -41,7 +41,7 @@ So why are futures useful?  Because we can choose to evaluate the future express
 > v
 [1] 3.14
 ```
-With asynchronous futures the current/main R process does _not_ block, which mens it is available for further processing while the futures are being resolved
+With asynchronous futures the current/main R process does _not_ block, which means it is available for further processing while the futures are being resolved
 n separates processes running in the background.  In other words, futures provi
 e a simply but yet powerful construct for parallel processing in R.
 
