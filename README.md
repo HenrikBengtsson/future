@@ -98,7 +98,7 @@ The future package implements the following types of futures:
 | multicore       | not Windows | forked R processes (on current machine)
 | cluster         | all         | external R sessions on current and/or remote machines
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the future.BatchJobs package (to be published) provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF), will soon be available.
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF), will soon be available.
 
 By default, future expressions are evaluated instantaneously and synchronously (in the current R session).  This evaluation strategy is referred to as "eager" and we refer to futures using this strategy as "eager futures".  In this section we will go through each of these strategies and discuss what they have in common and how they differ.
 
@@ -629,6 +629,7 @@ The goal of this package is to provide a standardized and unified API for using 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [future]: http://cran.r-project.org/package=future
+[future.BatchJobs]: https://github.com/HenrikBengtsson/future.BatchJobs
 [globals]: http://cran.r-project.org/package=globals
 [listenv]: http://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
