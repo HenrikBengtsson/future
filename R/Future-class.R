@@ -243,6 +243,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("%s:\n", class[1]))
   cat("Expression:\n")
   print(x$expr)
+  cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
   g <- x$globals
   ng <- length(g)
