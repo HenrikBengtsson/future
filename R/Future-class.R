@@ -159,7 +159,13 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
+  ## Evaluate expression in a local() environment?
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
+  }
+
   ## NOTE: We don't want to use local(body) w/ on.exit() because
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
@@ -226,7 +232,7 @@ getExpression.Future <- function(future, ...) {
     })
   }
 
-  makeExpression(expr=future$expr, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
 } ## getExpression()
 
 

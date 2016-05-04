@@ -57,5 +57,5 @@ getExpression.MultiprocessFuture <- function(future, ...) {
     future::plan(.(strategies))
   })
 
-  makeExpression(expr=future$expr, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
 } ## getExpression()
