@@ -119,7 +119,7 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   ## turn into an error with a more informative error message, cf.
   ## https://github.com/HenrikBengtsson/future/issues/35
   if (identical(res, structure("fatal error in wrapper code", class="try-error"))) {
-    stop(sprintf("Detected an error ('%s') by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evalutes the future was terminated before it was completed.", res, class(future)[1], sQuote(hexpr(future$expr))))
+    stop(FutureError(sprintf("Detected an error ('%s') by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evalutes the future was terminated before it was completed.", res, class(future)[1], sQuote(hexpr(future$expr))), future=future))
   }
 
   ## Update value and state

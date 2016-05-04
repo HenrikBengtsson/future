@@ -23,6 +23,7 @@ FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
 }
 
 
+#' @export
 print.FutureError <- function(x, ...) {
   NextMethod("print")
 
@@ -34,6 +35,13 @@ print.FutureError <- function(x, ...) {
     if (!is.null(future)) {
       cat("Future involved:\n")
       print(future)
+      cat("\n")
+    }
+
+    fcalls <- backtrace(future)
+    if (!is.null(fcalls)) {
+      cat("Future call stack:\n")
+      print(fcalls)
       cat("\n")
     }
 
@@ -75,6 +83,6 @@ getOutput.FutureError <- function(x, collapse=NULL, head=NULL, tail=NULL, ...) {
   output
 } ## getOutput()
 
+
 #' @export
-#' @keywords internal
 getOutput <- function(...) UseMethod("getOutput")

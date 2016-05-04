@@ -64,7 +64,7 @@ assertOwner <- function(future, ...) {
   }
 
   if (!isTRUE(all.equal(future$owner, uuid(), check.attributes=FALSE))) {
-    stop(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)))
+    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
   }
 
   invisible(future)
@@ -95,13 +95,13 @@ value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
-    stop(msg)
+    stop(FutureError(msg, future=future))
   }
 
   value <- future$value
   if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
-    stop(value)
+    stop(FutureError(value, future=future))
   }
 
   value

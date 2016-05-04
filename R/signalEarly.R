@@ -28,7 +28,7 @@ signalEarly <- function(future, collect=TRUE, ...) {
 
   ## Signal detected condition
   if (inherits(value, "error")) {
-    stop(value)
+    stop(FutureError(value, future=future))
   } else if (inherits(value, "warning")) {
     warning(value)
   } else if (inherits(value, "message")) {
