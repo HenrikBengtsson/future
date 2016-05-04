@@ -91,7 +91,7 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
-  if (res) signalEarly(x)
+  if (res) signalEarly(x, ...)
 
   res
 }

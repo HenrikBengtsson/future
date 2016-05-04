@@ -111,7 +111,7 @@ resolved.Future <- function(x, ...) {
   if (x$state == 'created') return(FALSE)
 
   ## Signal conditions early, iff specified for the given future
-  signalEarly(x)
+  signalEarly(x, ...)
 
   x$state %in% c('finished', 'failed', 'interrupted')
 }
@@ -223,3 +223,55 @@ getExpression.Future <- function(future, ...) {
 
   makeExpression(expr=future$expr, enter=enter, exit=exit)
 } ## getExpression()
+
+
+#' @importFrom utils head
+#' @export
+print.Future <- function(x, ...) {
+  class <- class(x)
+  cat(sprintf("%s:\n", class[1]))
+  cat("Expression:\n")
+  print(x$expr)
+  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  g <- x$globals
+  ng <- length(g)
+  if (ng > 0) {
+    gSizes <- sapply(g, FUN=object.size)
+    gTotalSize <- sum(gSizes)
+    g <- head(g, n=5L)
+    gSizes <- head(gSizes, n=5L)
+    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
+    if (ng > 5L) g <- sprintf("%s ...", g)
+    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
+  } else {
+    cat("Globals: <none>\n")
+  }
+
+  hasValue <- exists("value", envir=x, inherits=FALSE)
+
+  if (exists("value", envir=x, inherits=FALSE)) {
+    cat("Resolved: TRUE\n")
+  } else if (inherits(x, "LazyFuture")) {
+    ## FIXME: Special case; will there every be other cases
+    ## for which we need to support this? /HB 2016-05-03
+    cat("Resolved: FALSE\n")
+  } else {
+    ## resolved() without early signalling
+    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
+    local({
+      earlySignal <- x$earlySignal
+      x$earlySignal <- FALSE
+      on.exit(x$earlySignal <- earlySignal)
+      cat(sprintf("Resolved: %s\n", resolved(x)))
+    })
+  }
+
+  if (hasValue) {
+    cat(sprintf("Value: %s of class %s", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+  } else {
+    cat("Value: <not collected>\n")
+  }
+  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Owner process: %s\n", x$owner))
+  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
+} ## print()

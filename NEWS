@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 0.13.0-9000 [2016-05-03]
+o Add informative print() method for the Future class.
+
+
 Version: 0.13.0 [2016-04-13]
 o Add support to plan() for specifying different future strategies for
   the different levels of nested futures.

@@ -184,7 +184,7 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
 
   ## Signal conditions early? (happens only iff requested)
-  if (res) signalEarly(x)
+  if (res) signalEarly(x, ...)
 
   res
 }
