@@ -278,7 +278,7 @@ print.Future <- function(x, ...) {
   }
 
   if (hasValue) {
-    cat(sprintf("Value: %s of class %s", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
   } else {
     cat("Value: <not collected>\n")
   }
