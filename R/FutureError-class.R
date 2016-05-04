@@ -38,7 +38,7 @@ print.FutureError <- function(x, ...) {
       cat("\n")
     }
 
-    fcalls <- backtrace(future)
+    fcalls <- future$value$traceback
     if (!is.null(fcalls)) {
       cat("Future call stack:\n")
       print(fcalls)
