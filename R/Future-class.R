@@ -12,7 +12,11 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done in the calling environment.
+#' @param earlySignal Specified whether conditions should be signaled
+#' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -30,7 +34,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySignal=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -38,6 +42,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySigna
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
+  core$local <- local
   core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
