@@ -28,7 +28,7 @@ Resolving...
 > v
 [1] 3.14
 ```
-The difference is how `v` is constructed; with plain R we use `<-` whereas with futures we use `%<-%`.
+The difference is in how `v` is constructed; with plain R we use `<-` whereas with futures we use `%<-%`.
 
 So why are futures useful?  Because we can choose to evaluate the future expression in a separate R process asynchronously by simply switching settings as:
 ```r
@@ -89,16 +89,16 @@ The future package implements the following types of futures:
 | Name            | OSes        | Description
 |:----------------|:------------|:-----------------------------------------------------
 | _synchronous:_  |             | _non-parallel:_
-| eager           | all         |
-| lazy            | all         | lazy evaluation - only happens iff value is requested
-| transparent     | all         | for debugging (eager w/ early signaling and w/out local)
+| `eager`         | all         |
+| `lazy`          | all         | lazy evaluation - only happens iff value is requested
+| `transparent`   | all         | for debugging (eager w/ early signaling and w/out local)
 | _asynchronous:_ |             | _parallel_:
-| multiprocess    | all         | multicore iff supported, otherwise multisession
-| multisession    | all         | background R sessions (on current machine)
-| multicore       | not Windows | forked R processes (on current machine)
-| cluster         | all         | external R sessions on current and/or remote machines
+| `multiprocess`  | all         | multicore iff supported, otherwise multisession
+| `multisession`  | all         | background R sessions (on current machine)
+| `multicore`     | not Windows | forked R processes (on current machine)
+| `cluster`       | all         | external R sessions on current and/or remote machines
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF), will soon be available.
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 
 By default, future expressions are evaluated instantaneously and synchronously (in the current R session).  This evaluation strategy is referred to as "eager" and we refer to futures using this strategy as "eager futures".  In this section we will go through each of these strategies and discuss what they have in common and how they differ.
 
