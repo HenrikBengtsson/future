@@ -4,10 +4,12 @@
 \alias{values}
 \title{Gets all values in an object}
 \usage{
-values(x, ...)
+values(x, signal = TRUE, ...)
 }
 \arguments{
 \item{x}{An environment, a list, or a list environment.}
+
+\item{signal}{Passed to \code{\link{value}()} of each future.}
 
 \item{...}{Not used.}
 }
