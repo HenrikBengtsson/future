@@ -7,51 +7,50 @@
 #' object is kept.
 #'
 #' @param x An environment, a list, or a list environment.
-#' @param signal Passed to \code{\link{value}()} of each future.
-#' @param ... Not used.
+#' @param ... Additional arguments passed to \code{value()} of each future.
 #'
 #' @return An object of same type as \code{x} and with the same names
 #' and/or dimensions, if set.
 #'
 #' @export
-values <- function(x, signal=TRUE, ...) UseMethod("values")
+values <- function(x, ...) UseMethod("values")
 
 #' @export
-values.list <- function(x, signal=TRUE, ...) {
+values.list <- function(x, ...) {
   y <- futures(x)
   y <- resolve(y)
 
   for (ii in seq_along(y)) {
     tmp <- y[[ii]]
-    if (inherits(tmp, "Future")) y[[ii]] <- value(tmp, signal=signal)
+    if (inherits(tmp, "Future")) y[[ii]] <- value(tmp, ...)
   }
   y
 }
 
 #' @export
-values.environment <- function(x, signal=TRUE, ...) {
+values.environment <- function(x, ...) {
   y <- futures(x)
   y <- resolve(y)
   names <- ls(envir=y, all.names=TRUE)
   for (key in names) {
     tmp <- y[[key]]
-    if (inherits(tmp, "Future")) y[[key]] <- value(tmp, signal=signal)
+    if (inherits(tmp, "Future")) y[[key]] <- value(tmp, ...)
   }
   y
 }
 
 #' @export
-values.listenv <- function(x, signal=TRUE, ...) {
+values.listenv <- function(x, ...) {
   y <- futures(x)
   y <- resolve(y)
   for (ii in seq_along(y)) {
     tmp <- y[[ii]]
-    if (inherits(tmp, "Future")) y[[ii]] <- value(tmp, signal=signal)
+    if (inherits(tmp, "Future")) y[[ii]] <- value(tmp, ...)
   }
   y
 }
 
 #' @export
-values.Future <- function(x, signal=TRUE, ...) {
-  value(x, signal=signal, ...)
+values.Future <- function(x, ...) {
+  value(x, ...)
 }

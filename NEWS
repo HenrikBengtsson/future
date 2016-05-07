@@ -1,8 +1,8 @@
 Package: future
 ===============
 
-Version: 0.13.0-9000 [2016-05-05]
-o values() gained argument 'signal'.
+Version: 0.13.0-9000 [2016-05-07]
+o values() passes arguments '...' to value() of each Future.
 o Added FutureError class.
 o Added informative print() method for the Future class.
 

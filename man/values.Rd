@@ -4,14 +4,12 @@
 \alias{values}
 \title{Gets all values in an object}
 \usage{
-values(x, signal = TRUE, ...)
+values(x, ...)
 }
 \arguments{
 \item{x}{An environment, a list, or a list environment.}
 
-\item{signal}{Passed to \code{\link{value}()} of each future.}
-
-\item{...}{Not used.}
+\item{...}{Additional arguments passed to \code{value()} of each future.}
 }
 \value{
 An object of same type as \code{x} and with the same names
