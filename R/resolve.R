@@ -149,7 +149,6 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
 
   ## Everything is considered non-resolved by default
   nx <- length(x)
-  resolved <- logical(nx)
 
   ## Total number of values to resolve
   total <- nx
@@ -164,7 +163,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
   mdebug(" elements: %s", hpaste(sQuote(names(x))))
 
   ## Resolve all elements
-  while (!all(resolved)) {
+  while (length(remaining) > 0) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
@@ -178,9 +177,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
       }
 
       ## Assume resolved at this point
-      resolved[ii] <- TRUE
-      remaining <- remaining[!resolved]
-      ##remaining <- which(!resolved)
+      remaining <- setdiff(remaining, ii)
       mdebug(" length: %d (resolved future %s)", length(remaining), ii)
       stopifnot(!anyNA(remaining))
 
@@ -191,9 +188,6 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    remaining <- remaining[!resolved]
-    ##remaining <- which(!resolved)
-    stopifnot(!anyNA(remaining))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
@@ -258,14 +252,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
   stopifnot(length(idxs) == nx)
 
   ## Everything is considered non-resolved by default
-  resolved <- logical(nx)
-  names(resolved) <- idxs
   remaining <- idxs
 
   mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
   ## Resolve all elements
-  while (!all(resolved)) {
+  while (length(remaining) > 0) {
     for (ii in remaining) {
       obj <- x[[ii]]
 
@@ -279,15 +271,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
       }
 
       ## Assume resolved at this point
-      resolved[ii] <- TRUE
-      remaining <- remaining[!resolved]
+      remaining <- setdiff(remaining, ii)
       mdebug(" length: %d (resolved future %s)", length(remaining), ii)
       stopifnot(!anyNA(remaining))
     } # for (ii ...)
 
     ## Wait a bit before checking again
-    remaining <- remaining[!resolved]
-    stopifnot(!anyNA(remaining))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
@@ -388,4 +377,4 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.
   mdebug("resolve() on list environment ... DONE")
 
   x0
-}
+} ## resolve() for list environment

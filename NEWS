@@ -5,6 +5,9 @@ Version: 0.13.0-9000 [2016-05-07]
 o values() passes arguments '...' to value() of each Future.
 o Added FutureError class.
 o Added informative print() method for the Future class.
+o BUG FIX: resolve() for lists and environments did not work
+  properly when the set of futures was not resolved in order,
+  which could happen with asynchronous futures.
 
 
 Version: 0.13.0 [2016-04-13]
