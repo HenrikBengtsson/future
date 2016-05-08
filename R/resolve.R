@@ -180,7 +180,9 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
       ## Assume resolved at this point
       resolved[ii] <- TRUE
       remaining <- remaining[!resolved]
+      ##remaining <- which(!resolved)
       mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      stopifnot(!anyNA(remaining))
 
       if (hasProgress) {
         done <- total - length(remaining)
@@ -190,6 +192,8 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
 
     ## Wait a bit before checking again
     remaining <- remaining[!resolved]
+    ##remaining <- which(!resolved)
+    stopifnot(!anyNA(remaining))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
@@ -278,10 +282,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
       resolved[ii] <- TRUE
       remaining <- remaining[!resolved]
       mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      stopifnot(!anyNA(remaining))
     } # for (ii ...)
 
     ## Wait a bit before checking again
     remaining <- remaining[!resolved]
+    stopifnot(!anyNA(remaining))
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
@@ -372,6 +378,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      stopifnot(!anyNA(remaining))
     } # for (ii ...)
 
     ## Wait a bit before checking again
