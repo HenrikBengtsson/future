@@ -180,6 +180,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
       ## Assume resolved at this point
       resolved[ii] <- TRUE
       remaining <- remaining[!resolved]
+      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
 
       if (hasProgress) {
         done <- total - length(remaining)
@@ -276,6 +277,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
       ## Assume resolved at this point
       resolved[ii] <- TRUE
       remaining <- remaining[!resolved]
+      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
     } # for (ii ...)
 
     ## Wait a bit before checking again
@@ -369,6 +371,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
+      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
     } # for (ii ...)
 
     ## Wait a bit before checking again
