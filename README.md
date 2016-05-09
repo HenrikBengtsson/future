@@ -42,7 +42,7 @@ So why are futures useful?  Because we can choose to evaluate the future express
 [1] 3.14
 ```
 With asynchronous futures the current/main R process does _not_ block, which means it is available for further processing while the futures are being resolved
-n separates processes running in the background.  In other words, futures provide a simply but yet powerful construct for parallel and / or distributed processing in R.
+in separates processes running in the background.  In other words, futures provide a simply but yet powerful construct for parallel and / or distributed processing in R.
 
 
 Now, if you cannot be bothered to read all the nitty-gritty details about futures, but just want to try them out, then skip to the end to play with the Mandelbrot demo using both parallel and non-parallel evaluation.
@@ -103,7 +103,7 @@ The future package is designed such that support for additional strategies can b
 By default, future expressions are evaluated instantaneously and synchronously (in the current R session).  This evaluation strategy is referred to as "eager" and we refer to futures using this strategy as "eager futures".  In this section we will go through each of these strategies and discuss what they have in common and how they differ.
 
 
-### Coherent Behavior Across Futures
+### Consistent Behavior Across Futures
 Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on type of futures, e.g. synchronous or asynchronous.
 
 One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R process or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps prototyping.  Typically one would use eager evaluation while building up a script and later, when the script is fully, one may turn on asynchronous processing.
