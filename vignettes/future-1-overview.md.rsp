@@ -164,6 +164,9 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
+Synchronous futures are resolved one after another and most commonly in the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two main types of synchronous futures in the future package, _eager_ and _lazy_ futures, which are described next.
+
+
 #### Eager Futures
 Eager futures are the default unless otherwise specified.  They were designed to behave as similar as possible to regular R evaluation while still fulfilling the Future API and behaviors.  Here is an example illustrating their properties:
 ```r
@@ -197,7 +200,7 @@ Resolving 'c' ...
 > pid
 [1] 8748
 ```
-Since eager evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid`, which was assigned the process ID of the current process, is neither overwritten nor removed.  Since synchronous (uni-)processing is used, future `b` is evaluated in the current (the calling) process, which is why the value of `b` and `pid` are the same.
+Since eager evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid` in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed, which is because futures are evaluated in a local environment.  Since synchronous (uni-)processing is used, future `b` is resolved by the main R process (still in a local environment), which is why the value of `b` and `pid` are the same.
 
 
 #### Lazy Futures
