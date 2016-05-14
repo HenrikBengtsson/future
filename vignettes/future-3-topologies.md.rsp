@@ -116,7 +116,7 @@ library("listenv")
 
 ## Set up access cluster login node
 remote <- function(host, homogeneous=FALSE, ...) {
-  myip <- jsonlite::fromJSON("http://myexternalip.com/json")$ip
+  myip <- readLines("http://myexternalip.com/raw")
   cl <- parallel::makeCluster(host, master=myip, homogeneous=homogeneous, ...)
   tweak(cluster, cluster=cl, persistent=TRUE)
 }
