@@ -7,7 +7,8 @@ Imports:
     listenv (>= 0.6.0),
     parallel
 Suggests:
-    R.rsp
+    R.rsp,
+    markdown
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
