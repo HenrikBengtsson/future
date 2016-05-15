@@ -271,7 +271,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
     ## Wait
     Sys.sleep(interval)
 
-    ## Finish/close cores, iff possible
+    ## Finish/close workers, iff possible
     await()
 
     interval <- alpha*interval
@@ -279,7 +279,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
   }
 
   if (!finished) {
-    msg <- sprintf("TIMEOUT: All %d cores are still occupied", total)
+    msg <- sprintf("TIMEOUT: All %d workers are still occupied", total)
     mdebug(msg)
     stop(msg)
   }

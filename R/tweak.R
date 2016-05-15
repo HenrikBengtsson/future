@@ -59,6 +59,16 @@ tweak.future <- function(strategy, ..., penvir=parent.frame()) {
 
   ## Tweak arguments
   formals <- names(formals(strategy))
+
+  ## BACKWARD COMPATIBILITY
+  if ("maxCores" %in% names) {
+    if ("workers" %in% formals) {
+      names <- gsub("maxCores", "workers", names)
+      names(args) <- names
+      .Deprecated(msg="Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+    }
+  }
+
   unknown <- NULL
   for (kk in seq_along(args)) {
     name <- names[kk]

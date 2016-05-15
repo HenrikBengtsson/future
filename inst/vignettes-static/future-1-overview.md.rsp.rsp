@@ -392,8 +392,8 @@ Having said this, it is indeed possible to use nested multiprocess evaluation st
 ```r
 <%=withCapture({
 plan(list(
-  tweak(multiprocess, maxCores=3L),
-  tweak(multiprocess, maxCores=3L)
+  tweak(multiprocess, workers=3L),
+  tweak(multiprocess, workers=3L)
 ))
 })%>
 [...]

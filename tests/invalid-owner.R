@@ -12,7 +12,7 @@ usedNodes <- function(future) {
 }
 
 ## This test requires at least two background processes
-plan(multisession, maxCores=3L)
+plan(multisession, workers=3L)
 
 message("*** future() - invalid ownership ...")
 

@@ -83,7 +83,7 @@ plan(list(eager, multiprocess))
 
 We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
 ```r
-plan(list(tweak(multiprocess, maxCores=2), tweak(multiprocess, maxCores=4)))
+plan(list(tweak(multiprocess, workers=2), tweak(multiprocess, workers=4)))
 ```
 
 

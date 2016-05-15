@@ -86,20 +86,20 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   } # for (globals ...)
 
 
-  message("*** multicore(..., maxCores=1L) ...")
+  message("*** multicore(..., workers=1L) ...")
 
   a <- 2
   b <- 3
   yTruth <- a * b
 
-  f <- multicore({ a * b }, maxCores=1L)
+  f <- multicore({ a * b }, workers=1L)
   rm(list=c("a", "b"))
 
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
 
-  message("*** multicore(..., maxCores=1L) ... DONE")
+  message("*** multicore(..., workers=1L) ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
