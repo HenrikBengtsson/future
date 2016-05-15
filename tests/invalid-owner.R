@@ -6,9 +6,9 @@ oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=FALSE, future.debu
 ## Local functions
 usedNodes <- function(future) {
   ## Number of unresolved cluster futures
-  cluster <- future$cluster
-  reg <- sprintf("cluster-%s", attr(cluster, "name"))
-  c(used=length(future:::FutureRegistry(reg, action="list")), total=length(cluster))
+  workers <- future$workers
+  reg <- sprintf("workers-%s", attr(workers, "name"))
+  c(used=length(future:::FutureRegistry(reg, action="list")), total=length(workers))
 }
 
 ## This test requires at least two background processes
