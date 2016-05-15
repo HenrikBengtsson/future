@@ -541,7 +541,7 @@ v <- as.list(v)
 str(v)
 })%>
 ```
-As previously, `as.list(v)` blocks until all futures.
+As previously, `as.list(v)` blocks until all futures are resolved.
 
 
 
