@@ -1,10 +1,10 @@
 Package: future
 ===============
 
-Version: 0.13.0-9000 [2016-05-15]
-o Renamed argument 'maxCores' to 'workers'.  If using the old argument
-  name a deprecation warning will be generated, but it will still work
-  until made defunct in a future release.
+Version: 0.13.9-9000 [2016-05-15]
+o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
+  the old argument names a deprecation warning will be generated, but
+  it will still work until made defunct in a future release.
 o values() passes arguments '...' to value() of each Future.
 o Added FutureError class.
 o Added informative print() method for the Future class.

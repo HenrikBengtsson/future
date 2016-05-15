@@ -15,12 +15,12 @@ for (cores in 1:2) {
   options(mc.cores=cores-1L)
 
   cl <- parallel::makeCluster(cores)
-  plan(cluster, cluster=cl)
+  plan(cluster, workers=cl)
 
   ## No global variables
   f <- try(cluster({
     42L
-  }, cluster=cl), silent=FALSE)
+  }, workers=cl), silent=FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
 
@@ -120,7 +120,7 @@ for (cores in 1:2) {
       libPaths = .libPaths(),
       pkgs     = installed.packages()
     )
-  }, cluster=cl), silent=FALSE)
+  }, workers=cl), silent=FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)
@@ -131,7 +131,7 @@ for (cores in 1:2) {
   message("*** cluster() - assert covr workaround ...")
   f <- try(cluster({
     future:::hpaste(1:100)
-  }, cluster=cl), silent=FALSE)
+  }, workers=cl), silent=FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)

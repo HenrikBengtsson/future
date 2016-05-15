@@ -82,9 +82,9 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  cluster <- sessions("start", n=workers-1L)
+  workers <- sessions("start", n=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, earlySignal=earlySignal, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
@@ -93,13 +93,13 @@ class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "f
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom utils capture.output
 sessions <- local({
-  cluster <- NULL
+  workers <- NULL
 
   .makeCluster <- function(n) {
     capture.output({
-      cluster <- makeCluster(n)
+      workers <- makeCluster(n)
     })
-    cluster
+    workers
   }
 
   function(action=c("get", "start", "stop"), n=availableCores()-1L) {
@@ -107,24 +107,24 @@ sessions <- local({
     n <- as.integer(n)
     stopifnot(length(n) == 1, is.finite(n))
 
-    if (is.null(cluster) && action != "stop") {
-      cluster <<- .makeCluster(n)
+    if (is.null(workers) && action != "stop") {
+      workers <<- .makeCluster(n)
     }
 
     if (action == "get") {
-      return(cluster)
+      return(workers)
     } else if (action == "start") {
       stopifnot(n >= 1)
-      if (length(cluster) != n) {
+      if (length(workers) != n) {
         sessions(action="stop")
-        cluster <<- .makeCluster(n)
+        workers <<- .makeCluster(n)
       }
     } else if (action == "stop") {
-      if (!is.null(cluster)) try(stopCluster(cluster), silent=TRUE)
+      if (!is.null(workers)) try(stopCluster(workers), silent=TRUE)
       cons <- NULL
-      cluster <<- NULL
+      workers <<- NULL
     }
 
-    invisible(cluster)
+    invisible(workers)
   }
 })

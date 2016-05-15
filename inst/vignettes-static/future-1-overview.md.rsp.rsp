@@ -301,7 +301,7 @@ Cluster futures evaluate expressions on an ad-hoc cluster that was set up via `p
 bfr <- withCapture({
 hosts <- c("localhost", "localhost", "localhost")
 cl <- parallel::makeCluster(hosts)
-plan(cluster, cluster=cl)
+plan(cluster, workers=cl)
 <%@include file="incl/future-1-overview-example2.R"%>
 })
 parallel::stopCluster(cl)
@@ -568,7 +568,7 @@ This will use multicore processing if you are on a system where R supports proce
 Finally, if you have access to multiple machines you can try to setup a cluster of workers and use them, e.g.
 ```r
 cl <- parallel::makeCluster(c("n2", "n5", "n6", "n6", "n9"))
-plan(cluster, cluster=cl)
+plan(cluster, workers=cl)
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 It's always good to call `parallel::stopCluster(cl)` when you're done with this cluster, but if you forget it will be done automatically when you quit R.

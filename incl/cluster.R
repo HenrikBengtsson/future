@@ -5,7 +5,7 @@
 
 ## Use cluster futures
 cl <- parallel::makeCluster(2L)
-plan(cluster, cluster=cl)
+plan(cluster, workers=cl)
 
 ## A global variable
 a <- 0

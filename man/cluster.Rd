@@ -5,7 +5,7 @@
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, cluster = NULL, earlySignal = FALSE, ...)
+  persistent = FALSE, workers = NULL, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -19,7 +19,7 @@ is done and from which globals are obtained.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{cluster}{A cluster object created by
+\item{workers}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
@@ -53,7 +53,7 @@ and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 
 ## Use cluster futures
 cl <- parallel::makeCluster(2L)
-plan(cluster, cluster=cl)
+plan(cluster, workers=cl)
 
 ## A global variable
 a <- 0
