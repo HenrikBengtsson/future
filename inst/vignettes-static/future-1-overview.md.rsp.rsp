@@ -140,7 +140,7 @@ The future package implements the following types of futures:
 |:----------------|:------------|:-----------------------------------------------------
 | _synchronous:_  |             | _non-parallel:_
 | `eager`         | all         |
-| `lazy`          | all         | lazy evaluation - only happens iff value is requested
+| `lazy`          | all         | lazy evaluation - happens only if value is requested
 | `transparent`   | all         | for debugging (eager w/ early signaling and w/out local)
 | _asynchronous:_ |             | _parallel_:
 | `multiprocess`  | all         | multicore iff supported, otherwise multisession
@@ -252,7 +252,7 @@ When multisession evaluation is used, the package launches a set of R sessions i
 availableCores()
 })%>
 ```
-This particular result tells us that option `mc.cores` was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was alloted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
+This particular result tells us that option `mc.cores` was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
 
 
 #### Multicore Futures
@@ -348,7 +348,7 @@ a
 b
 })%>
 ```
-By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process (pid=<%= pid %>), and there are the two processes used by `a` (pid=<%= a %>) and `b` (pid=<%= b[1] %>).  However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  The is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
+By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process (pid=<%= pid %>), and there are the two processes used by `a` (pid=<%= a %>) and `b` (pid=<%= b[1] %>).  However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 
 To specify a different type of _evaluation topology_, other than the first level of futures being resolved by multiprocess evaluation and the second level by eager evaluation, we can provide a list of evaluation strategies to `plan()`.  First, the same evaluation strategies as above can be explicitly specified as:
 ```r
@@ -408,7 +408,7 @@ b
 ```
 First, we see that both `a` and `b` are resolved in different processes (pids <%= a %> and <%= b[1] %>) than the calling process (pid <%= pid %>).  Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes (pids <%= b[2] %> and <%= b[3] %>).
 
-To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes and not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This bring us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
+To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
 
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette '[Futures in R: Future Topologies]'.
 
