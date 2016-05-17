@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.13.9-9000 [2016-05-15]
+Version: 0.14.0 [2016-05-16]
 o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
   the old argument names a deprecation warning will be generated, but
   it will still work until made defunct in a future release.
