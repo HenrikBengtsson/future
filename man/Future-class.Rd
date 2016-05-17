@@ -6,7 +6,7 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  earlySignal = FALSE, ...)
+  local = TRUE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -17,7 +17,12 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done in the calling environment.}
+
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
 \item{\dots}{Additional named elements of the future.}
 }

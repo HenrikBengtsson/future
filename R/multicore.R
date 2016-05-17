@@ -13,13 +13,13 @@
 #' in time when the future is created (always before it is resolved),
 #' that is, they identified and located.  If some globals fail to be
 #' located, an informative error is generated.
-#' @param maxCores The maximum number of multicore futures that can
+#' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MulticoreFuture}
-#' If \code{maxCores == 1}, then all processing using done in the
+#' If \code{workers == 1}, then all processing using done in the
 #' current/main R session and we therefore fall back to using
 #' a eager future.  This is also the case whenever multicore
 #' processing is not supported, e.g. on Windows.
@@ -59,16 +59,23 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, maxCores=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
+  ## BACKWARD COMPATIBILITY
+  args <- list(...)
+  if ("maxCores" %in% names(args)) {
+    workers <- args$maxCores
+    .Deprecated(msg="Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+  }
+
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
-  maxCores <- as.integer(maxCores)
-  stopifnot(is.finite(maxCores), maxCores >= 1L)
+  workers <- as.integer(workers)
+  stopifnot(is.finite(workers), workers >= 1L)
 
   ## Fall back to eager futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
   ## Eager futures best reflect how multicore futures handle globals.
-  if (maxCores == 1L || availableCores(constraints="multicore") == 1L) {
+  if (workers == 1L || availableCores(constraints="multicore") == 1L) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
@@ -78,7 +85,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
     exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
   }
 
-  oopts <- options(mc.cores=maxCores)
+  oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
   future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, earlySignal=earlySignal)
@@ -152,7 +159,7 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=1.01) {
+requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=getOption("future.alpha", 1.01)) {
   stopifnot(is.function(await))
   maxTries <- as.integer(maxTries)
   stopifnot(is.finite(maxTries), maxTries > 0)

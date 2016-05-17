@@ -1,7 +1,7 @@
-signalEarly <- function(future, collect=TRUE) {
+signalEarly <- function(future, collect=TRUE, ...) {
   ## Future is not yet launched
   if (future$state == "created") return(future)
-  
+
   earlySignal <- future$earlySignal
 
   ## Don't signal early?
@@ -28,7 +28,7 @@ signalEarly <- function(future, collect=TRUE) {
 
   ## Signal detected condition
   if (inherits(value, "error")) {
-    stop(value)
+    stop(FutureError(value, future=future))
   } else if (inherits(value, "warning")) {
     warning(value)
   } else if (inherits(value, "message")) {

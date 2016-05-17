@@ -11,13 +11,13 @@
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
-#' @param maxCores The maximum number of multisession futures that
+#' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
 #' @return A \link{MultisessionFuture}.
-#' If \code{maxCores == 1}, then all processing using done in the
+#' If \code{workers == 1}, then all processing using done in the
 #' current/main R session and we therefore fall back to using
 #' a lazy future.
 #'
@@ -60,14 +60,21 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, maxCores=availableCores(), earlySignal=FALSE, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=availableCores(), earlySignal=FALSE, ...) {
+  ## BACKWARD COMPATIBILITY
+  args <- list(...)
+  if ("maxCores" %in% names(args)) {
+    workers <- args$maxCores
+    .Deprecated(msg="Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+  }
+
   if (substitute) expr <- substitute(expr)
-  maxCores <- as.integer(maxCores)
-  stopifnot(length(maxCores) == 1, is.finite(maxCores), maxCores >= 1)
+  workers <- as.integer(workers)
+  stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
 
   ## Fall back to eager futures if only a single R session can be used,
   ## i.e. the use the current main R process.
-  if (maxCores == 1L) {
+  if (workers == 1L) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
     return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
   }
@@ -75,9 +82,9 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  cluster <- sessions("start", n=maxCores-1L)
+  workers <- sessions("start", n=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, cluster=cluster, earlySignal=earlySignal, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
@@ -86,13 +93,13 @@ class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "f
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom utils capture.output
 sessions <- local({
-  cluster <- NULL
+  workers <- NULL
 
   .makeCluster <- function(n) {
     capture.output({
-      cluster <- makeCluster(n)
+      workers <- makeCluster(n)
     })
-    cluster
+    workers
   }
 
   function(action=c("get", "start", "stop"), n=availableCores()-1L) {
@@ -100,24 +107,24 @@ sessions <- local({
     n <- as.integer(n)
     stopifnot(length(n) == 1, is.finite(n))
 
-    if (is.null(cluster) && action != "stop") {
-      cluster <<- .makeCluster(n)
+    if (is.null(workers) && action != "stop") {
+      workers <<- .makeCluster(n)
     }
 
     if (action == "get") {
-      return(cluster)
+      return(workers)
     } else if (action == "start") {
       stopifnot(n >= 1)
-      if (length(cluster) != n) {
+      if (length(workers) != n) {
         sessions(action="stop")
-        cluster <<- .makeCluster(n)
+        workers <<- .makeCluster(n)
       }
     } else if (action == "stop") {
-      if (!is.null(cluster)) try(stopCluster(cluster), silent=TRUE)
+      if (!is.null(workers)) try(stopCluster(workers), silent=TRUE)
       cons <- NULL
-      cluster <<- NULL
+      workers <<- NULL
     }
 
-    invisible(cluster)
+    invisible(workers)
   }
 })

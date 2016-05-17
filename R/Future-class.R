@@ -12,7 +12,11 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done in the calling environment.
+#' @param earlySignal Specified whether conditions should be signaled
+#' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -30,7 +34,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySignal=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -38,6 +42,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, earlySigna
   core$expr <- expr
   core$envir <- envir
   core$owner <- uuid()
+  core$local <- local
   core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
@@ -59,7 +64,7 @@ assertOwner <- function(future, ...) {
   }
 
   if (!isTRUE(all.equal(future$owner, uuid(), check.attributes=FALSE))) {
-    stop(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)))
+    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
   }
 
   invisible(future)
@@ -90,13 +95,13 @@ value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
-    stop(msg)
+    stop(FutureError(msg, future=future))
   }
 
   value <- future$value
   if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
-    stop(value)
+    stop(FutureError(value, future=future))
   }
 
   value
@@ -111,7 +116,7 @@ resolved.Future <- function(x, ...) {
   if (x$state == 'created') return(FALSE)
 
   ## Signal conditions early, iff specified for the given future
-  signalEarly(x)
+  signalEarly(x, ...)
 
   x$state %in% c('finished', 'failed', 'interrupted')
 }
@@ -154,7 +159,13 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
+  ## Evaluate expression in a local() environment?
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
+  }
+
   ## NOTE: We don't want to use local(body) w/ on.exit() because
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
@@ -221,5 +232,58 @@ getExpression.Future <- function(future, ...) {
     })
   }
 
-  makeExpression(expr=future$expr, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
 } ## getExpression()
+
+
+#' @importFrom utils head
+#' @export
+print.Future <- function(x, ...) {
+  class <- class(x)
+  cat(sprintf("%s:\n", class[1]))
+  cat("Expression:\n")
+  print(x$expr)
+  cat(sprintf("Local evaluation: %s\n", x$local))
+  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  g <- x$globals
+  ng <- length(g)
+  if (ng > 0) {
+    gSizes <- sapply(g, FUN=object.size)
+    gTotalSize <- sum(gSizes)
+    g <- head(g, n=5L)
+    gSizes <- head(gSizes, n=5L)
+    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
+    if (ng > 5L) g <- sprintf("%s ...", g)
+    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
+  } else {
+    cat("Globals: <none>\n")
+  }
+
+  hasValue <- exists("value", envir=x, inherits=FALSE)
+
+  if (exists("value", envir=x, inherits=FALSE)) {
+    cat("Resolved: TRUE\n")
+  } else if (inherits(x, "LazyFuture")) {
+    ## FIXME: Special case; will there every be other cases
+    ## for which we need to support this? /HB 2016-05-03
+    cat("Resolved: FALSE\n")
+  } else {
+    ## resolved() without early signalling
+    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
+    local({
+      earlySignal <- x$earlySignal
+      x$earlySignal <- FALSE
+      on.exit(x$earlySignal <- earlySignal)
+      cat(sprintf("Resolved: %s\n", resolved(x)))
+    })
+  }
+
+  if (hasValue) {
+    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+  } else {
+    cat("Value: <not collected>\n")
+  }
+  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Owner process: %s\n", x$owner))
+  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
+} ## print()

@@ -1,6 +1,19 @@
 Package: future
 ===============
 
+Version: 0.14.0 [2016-05-16]
+o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
+  the old argument names a deprecation warning will be generated, but
+  it will still work until made defunct in a future release.
+o Added nbrOfWorkers().
+o values() passes arguments '...' to value() of each Future.
+o Added FutureError class.
+o Added informative print() method for the Future class.
+o BUG FIX: resolve() for lists and environments did not work
+  properly when the set of futures was not resolved in order,
+  which could happen with asynchronous futures.
+
+
 Version: 0.13.0 [2016-04-13]
 o Add support to plan() for specifying different future strategies for
   the different levels of nested futures.

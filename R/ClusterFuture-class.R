@@ -10,7 +10,7 @@
 #' the assignments are done in the global environment of the cluster node.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
-#' @param cluster A \code{\link[parallel:makeCluster]{cluster}}.
+#' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{ClusterFuture}.
@@ -25,31 +25,33 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, cluster=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, workers=NULL, ...) {
+  ## BACKWARD COMPATIBILITY
+  args <- list(...)
+  if ("cluster" %in% names(args)) {
+    workers <- args$cluster
+    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+  }
+
   defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
-  if (is.null(cluster)) cluster <- defaultCluster()
-  if (!inherits(cluster, "cluster")) {
-    stop("Argument 'cluster' is not of class 'cluster': ", class(cluster)[1])
+  if (is.null(workers)) workers <- defaultCluster()
+  if (!inherits(workers, "cluster")) {
+    stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
-  stopifnot(length(cluster) > 0)
+  stopifnot(length(workers) > 0)
 
   ## Attach name to cluster?
-  name <- attr(cluster, "name")
+  name <- attr(workers, "name")
   if (is.null(name)) {
-    name <- digest(cluster)
+    name <- digest(workers)
     stopifnot(length(name) > 0, nzchar(name))
-    attr(cluster, "name") <- name
+    attr(workers, "name") <- name
   }
 
   gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
 
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    gp$expr <- substitute(local(a), list(a=gp$expr))
-  }
-
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, persistent=persistent, globals=gp$globals, packages=gp$packages, cluster=cluster, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=gp$globals, packages=gp$packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -78,12 +80,12 @@ run.ClusterFuture <- function(future, ...) {
   assertOwner(future)
 
   sendCall <- importCluster("sendCall")
-  cluster <- future$cluster
+  workers <- future$workers
   expr <- getExpression(future)
   persistent <- future$persistent
 
   ## FutureRegistry to use
-  reg <- sprintf("cluster-%s", attr(cluster, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name"))
 
 
   ## Next available cluster node
@@ -91,11 +93,11 @@ run.ClusterFuture <- function(future, ...) {
     mdebug("Waiting for free cluster node ...")
     FutureRegistry(reg, action="collect-first")
     mdebug("Waiting for free cluster node ... DONE")
-  }, cluster=cluster)
+  }, workers=workers)
   future$node <- node
 
   ## Cluster node to use
-  cl <- cluster[node]
+  cl <- workers[node]
 
 
   ## WORKAROUND: When running covr::package_coverage(), the
@@ -175,16 +177,16 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(x)
 
-  cluster <- x$cluster
+  workers <- x$workers
   node <- x$node
-  cl <- cluster[node]
+  cl <- workers[node]
 
-  ## Check if cluster socket connection is available for reading
+  ## Check if workers socket connection is available for reading
   con <- cl[[1]]$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
 
   ## Signal conditions early? (happens only iff requested)
-  if (res) signalEarly(x)
+  if (res) signalEarly(x, ...)
 
   res
 }
@@ -202,9 +204,9 @@ value.ClusterFuture <- function(future, ...) {
 
   recvResult <- importCluster("recvResult")
 
-  cluster <- future$cluster
+  workers <- future$workers
   node <- future$node
-  cl <- cluster[node]
+  cl <- workers[node]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
@@ -214,8 +216,8 @@ value.ClusterFuture <- function(future, ...) {
   }, simpleError = function(ex) ex)
 
   if (inherits(ack, "simpleError")) {
-    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster node #%d on %s.  The reason reported was %s", class(future)[1], hexpr(future$expr), node, cl$host, sQuote(ack$message))
-    stop(msg)
+    ex <- FutureError(sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason reported was %s", class(future)[1], node, cl$host, sQuote(ack$message)), call=ack$call, future=future)
+    stop(ex)
   }
   stopifnot(isTRUE(ack))
 
@@ -238,7 +240,7 @@ value.ClusterFuture <- function(future, ...) {
   res <- NULL ## Not needed anymore
 
   ## FutureRegistry to use
-  reg <- sprintf("cluster-%s", attr(cluster, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name"))
 
   ## Remove from registry
   FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
@@ -247,18 +249,18 @@ value.ClusterFuture <- function(future, ...) {
 }
 
 
-requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 600L))), delta=getOption("future.interval", 0.001), alpha=getOption("future.alpha", 1.01)) {
+requestNode <- function(await, workers, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 600L))), delta=getOption("future.interval", 0.001), alpha=getOption("future.alpha", 1.01)) {
   stopifnot(is.function(await))
-  stopifnot(inherits(cluster, "cluster"))
+  stopifnot(inherits(workers, "cluster"))
   maxTries <- as.integer(maxTries)
   stopifnot(is.finite(maxTries), maxTries > 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
   ## Maximum number of nodes available
-  total <- length(cluster)
+  total <- length(workers)
 
   ## FutureRegistry to use
-  reg <- sprintf("cluster-%s", attr(cluster, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name"))
 
   usedNodes <- function() {
     ## Number of unresolved cluster futures
@@ -276,7 +278,7 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
     ## Wait
     Sys.sleep(interval)
 
-    ## Finish/close cores, iff possible
+    ## Finish/close workers, iff possible
     await()
 
     interval <- alpha*interval
@@ -284,13 +286,13 @@ requestNode <- function(await, cluster, maxTries=getOption("future.maxTries", tr
   }
 
   if (!finished) {
-    msg <- sprintf("TIMEOUT: All %d cores are still occupied", total)
+    msg <- sprintf("TIMEOUT: All %d workers are still occupied", total)
     mdebug(msg)
     stop(msg)
   }
 
   ## Find which node is available
-  avail <- rep(TRUE, times=length(cluster))
+  avail <- rep(TRUE, times=length(workers))
   futures <- FutureRegistry(reg, action="list", earlySignal=FALSE)
   nodes <- unlist(lapply(futures, FUN=function(f) f$node))
   avail[nodes] <- FALSE

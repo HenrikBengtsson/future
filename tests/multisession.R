@@ -81,15 +81,15 @@ for (cores in 1:min(3L, availableCores())) {
   limit <- getOption("future.maxSizeOfGlobals")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
-  for (maxCores in unique(c(1L, availableCores()))) {
-    message("Max number of sessions: ", maxCores)
+  for (workers in unique(c(1L, availableCores()))) {
+    message("Max number of sessions: ", workers)
 
     ## A large object
     a <- 1:1014
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    f <- multisession({ sum(a) }, maxCores=maxCores)
+    f <- multisession({ sum(a) }, workers=workers)
     print(f)
     rm(list="a")
     v <- value(f)
@@ -102,7 +102,7 @@ for (cores in 1:min(3L, availableCores())) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    res <- try(f <- multisession({ sum(a) }, maxCores=maxCores), silent=TRUE)
+    res <- try(f <- multisession({ sum(a) }, workers=workers), silent=TRUE)
     rm(list="a")
     stopifnot(inherits(res, "try-error"))
   }
@@ -113,20 +113,20 @@ for (cores in 1:min(3L, availableCores())) {
   message("*** multisession() - too large globals ... DONE")
 
 
-  message("*** multisession(..., maxCores=1L) ...")
+  message("*** multisession(..., workers=1L) ...")
 
   a <- 2
   b <- 3
   yTruth <- a * b
 
-  f <- multisession({ a * b }, maxCores=1L)
+  f <- multisession({ a * b }, workers=1L)
   rm(list=c("a", "b"))
 
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
 
-  message("*** multisession(..., maxCores=1L) ... DONE")
+  message("*** multisession(..., workers=1L) ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

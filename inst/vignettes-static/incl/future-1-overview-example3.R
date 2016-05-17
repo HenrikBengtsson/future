@@ -7,13 +7,13 @@ a %<-% {
 
 b %<-% {
   cat("Resolving 'b' ...\n")
-  b.1 %<-% {
-    cat("Resolving 'b.1' ...\n")
+  b1 %<-% {
+    cat("Resolving 'b1' ...\n")
     Sys.getpid()
   }
-  b.2 %<-% {
-    cat("Resolving 'b.2' ...\n")
+  b2 %<-% {
+    cat("Resolving 'b2' ...\n")
     Sys.getpid()
   }
-  c(b.pid=Sys.getpid(), b.1.pid=b.1, b.2.pid=b.2)
+  c(b.pid=Sys.getpid(), b1.pid=b1, b2.pid=b2)
 }

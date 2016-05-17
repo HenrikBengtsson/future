@@ -5,7 +5,7 @@
 \title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  maxCores = availableCores(constraints = "multicore"), earlySignal = FALSE,
+  workers = availableCores(constraints = "multicore"), earlySignal = FALSE,
   ...)
 }
 \arguments{
@@ -22,7 +22,7 @@ in time when the future is created (always before it is resolved),
 that is, they identified and located.  If some globals fail to be
 located, an informative error is generated.}
 
-\item{maxCores}{The maximum number of multicore futures that can
+\item{workers}{The maximum number of multicore futures that can
 be active at the same time before blocking.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
@@ -31,7 +31,7 @@ be active at the same time before blocking.}
 }
 \value{
 A \link{MulticoreFuture}
-If \code{maxCores == 1}, then all processing using done in the
+If \code{workers == 1}, then all processing using done in the
 current/main R session and we therefore fall back to using
 a eager future.  This is also the case whenever multicore
 processing is not supported, e.g. on Windows.

@@ -83,7 +83,7 @@ plan(list(eager, multiprocess))
 
 We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
 ```r
-plan(list(tweak(multiprocess, maxCores=2), tweak(multiprocess, maxCores=4)))
+plan(list(tweak(multiprocess, workers=2), tweak(multiprocess, workers=4)))
 ```
 
 
@@ -92,7 +92,7 @@ With a compute cluster of 3 machines each with 16 cores we can run up to 48 alig
 ```r
 nodes <- c("n1", "n2", "n3")
 cl <- parallel::makeCluster(nodes)
-plan(list(tweak(cluster, cluster=cl), multiprocess))
+plan(list(tweak(cluster, workers=cl), multiprocess))
 ```
 _Comment:_ Multiprocess futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.
 
@@ -100,7 +100,7 @@ One possible downside to the above setup is that we might not utilize all availa
 ```r
 nodes <- c("n1", "n2", "n3")
 cl <- parallel::makeCluster(rep(nodes, each=8))
-plan(list(tweak(cluster, cluster=cl), multiprocess))
+plan(list(tweak(cluster, workers=cl), multiprocess))
 ```
 This will cause up to 24 (=3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
@@ -116,9 +116,9 @@ library("listenv")
 
 ## Set up access cluster login node
 remote <- function(host, homogeneous=FALSE, ...) {
-  myip <- jsonlite::fromJSON("http://myexternalip.com/json")$ip
+  myip <- readLines("http://myexternalip.com/raw")
   cl <- parallel::makeCluster(host, master=myip, homogeneous=homogeneous, ...)
-  tweak(cluster, cluster=cl, persistent=TRUE)
+  tweak(cluster, workers=cl, persistent=TRUE)
 }
 login <- remote("login.my-cluster.org")
 
@@ -129,7 +129,7 @@ nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% logi
 ## login node -> { cluster nodes } -> { multiple cores }
 plan(list(
   login,
-  tweak(cluster, cluster=nodes),
+  tweak(cluster, workers=nodes),
   multiprocess
 ))
 

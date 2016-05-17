@@ -21,10 +21,6 @@
 #' @keywords internal
 UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
-  }
   f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }

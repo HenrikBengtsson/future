@@ -5,7 +5,7 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, maxCores = availableCores(), earlySignal = FALSE,
+  persistent = FALSE, workers = availableCores(), earlySignal = FALSE,
   ...)
 }
 \arguments{
@@ -20,7 +20,7 @@ is done and from which globals are obtained.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{maxCores}{The maximum number of multisession futures that
+\item{workers}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
@@ -29,7 +29,7 @@ can be active at the same time before blocking.}
 }
 \value{
 A \link{MultisessionFuture}.
-If \code{maxCores == 1}, then all processing using done in the
+If \code{workers == 1}, then all processing using done in the
 current/main R session and we therefore fall back to using
 a lazy future.
 }

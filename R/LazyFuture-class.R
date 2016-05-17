@@ -42,7 +42,7 @@ value.LazyFuture <- function(future, signal=TRUE, ...) {
   value <- future$value
   if (signal && future$state == 'failed') {
     mdebug("Future state: %s", sQuote(value))
-    stop(value)
+    stop(FutureError(value, future=future))
   }
 
   value
