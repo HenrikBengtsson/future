@@ -11,6 +11,8 @@
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
+#' Alternatively, a character vector of host names or a numeric scalar,
+#' for creating a cluster as \code{\link[parallel]{makePSOCKcluster}(workers)}.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{ClusterFuture}.
@@ -23,6 +25,7 @@
 #' @export
 #' @export MultisessionFuture
 #' @importFrom digest digest
+#' @importFrom parallel makePSOCKcluster
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, workers=NULL, ...) {
@@ -36,6 +39,9 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   defaultCluster <- importParallel("defaultCluster")
   if (substitute) expr <- substitute(expr)
   if (is.null(workers)) workers <- defaultCluster()
+  if (is.character(workers) || is.numeric(workers)) {
+    workers <- makePSOCKcluster(workers)
+  }
   if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

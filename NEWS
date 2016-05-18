@@ -1,6 +1,15 @@
 Package: future
 ===============
 
+Version: 0.14.0-9000 [2016-05-18]
+o Add support for plan(cluster, workers=c("n1", "n2", "n2", "n4")).
+  Argument 'workers' for ClusterFuture() can now also be a numeric
+  for specifying the number of hosts or a character vector for
+  specifying an explicit set of host names.  In both cases
+  parallel::makePSOCKcluster(workers) is used internally to create
+  the cluster.
+
+
 Version: 0.14.0 [2016-05-16]
 o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
   the old argument names a deprecation warning will be generated, but

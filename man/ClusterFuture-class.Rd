@@ -26,7 +26,9 @@ the assignments are done in the global environment of the cluster node.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.}
+\item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
+Alternatively, a character vector of host names or a numeric scalar,
+for creating a cluster as \code{\link[parallel]{makePSOCKcluster}(workers)}.}
 
 \item{\dots}{Additional named elements of the future.}
 }
