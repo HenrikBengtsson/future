@@ -58,8 +58,8 @@ Futures can be created either _implicitly_ or _explicitly_.  In the introductory
 +   cat("Resolving...\n")
 +   3.14
 + })
-> v <- value(f)
 Resolving...
+> v <- value(f)
 > v
 [1] 3.14
 ```
@@ -106,7 +106,7 @@ By default, future expressions are evaluated instantaneously and synchronously (
 ### Consistent Behavior Across Futures
 Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on type of futures, e.g. synchronous or asynchronous.
 
-One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R process or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps prototyping.  Typically one would use eager evaluation while building up a script and later, when the script is fully, one may turn on asynchronous processing.
+One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R process or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps prototyping.  Typically one would use eager evaluation while building up a script and later, when the script is fully developed, one may turn on asynchronous processing.
 
 Because of this, the defaults of of the different strategies are such that the results and side effects of evaluating a future expression are as similar as possible.  More specifically, the following is true for all futures:
 
@@ -154,7 +154,7 @@ Eager futures are the default unless otherwise specified.  They were designed to
 > plan(eager)
 > pid <- Sys.getpid()
 > pid
-[1] 5504
+[1] 10436
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Resolving 'a' ...\n")
@@ -173,13 +173,13 @@ Resolving 'b' ...
 + }
 Resolving 'c' ...
 > b
-[1] 5504
+[1] 10436
 > c
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 5504
+[1] 10436
 ```
 Since eager evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid` in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed.  This is because futures are evaluated in a local environment.  Since synchronous (uni-)processing is used, future `b` is resolved by the main R process (still in a local environment), which is why the value of `b` and `pid` are the same.
 
@@ -190,7 +190,7 @@ A lazy future evaluates its expression only if its value is queried.  Evaluation
 > plan(lazy)
 > pid <- Sys.getpid()
 > pid
-[1] 5504
+[1] 10436
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Resolving 'a' ...\n")
@@ -208,14 +208,14 @@ A lazy future evaluates its expression only if its value is queried.  Evaluation
 Resolving 'a' ...
 > b
 Resolving 'b' ...
-[1] 5504
+[1] 10436
 > c
 Resolving 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 5504
+[1] 10436
 ```
 As previously, variable `pid` is unaffected because all evaluation is done in a local environment.  More interestingly, future `a` is no longer evaluated in the moment it is created, but instead when it is needed the first time, which happens when future `c` is created.  This is because `a` is identified as a global variable that needs to be captured ("frozen" to `a == 3.14`) in order to set up future `c`.  Later when `c` (the value of future `c`) is queried, `a` has already been resolved and only the expression for future `c` is evaluated and `6.14` is obtained.  Moreover, future `b` is, just like future `a`, evaluated only when it is needed the first time, which happens here when `b` is printed.  As for eager evaluation, lazy evaluation is also synchronous, which is why `b` and `pid` have the same value.  Finally, notice also how `a` is not re-evaluated when we query the value again.  Actually, with implicit futures, variables `a`, `b` and `c` are all regular values as soon as their futures have been resolved.
 
@@ -236,7 +236,7 @@ We start with multisession futures because they are supported by all operating s
 > plan(multisession)
 > pid <- Sys.getpid()
 > pid
-[1] 5504
+[1] 10436
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Resolving 'a' ...\n")
@@ -252,13 +252,13 @@ We start with multisession futures because they are supported by all operating s
 +     2 * a
 + }
 > b
-[1] 7640
+[1] 10116
 > c
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 5504
+[1] 10436
 ```
 The first thing we observe is that the values of `a`, `c` and `pid` are the same as previously.  However, we notice that `b` is different from before.  This is because future `b` is evaluated in a different R process and therefore it returns a different process ID.  Another difference is that the messages, generated by `cat()`, are no longer displayed.  This is because they are outputted to the background sessions and not the calling session.
 
@@ -299,7 +299,7 @@ Cluster futures evaluate expressions on an ad-hoc cluster that was set up via `p
 > plan(cluster, workers = cl)
 > pid <- Sys.getpid()
 > pid
-[1] 5504
+[1] 10436
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Resolving 'a' ...\n")
@@ -315,13 +315,13 @@ Cluster futures evaluate expressions on an ad-hoc cluster that was set up via `p
 +     2 * a
 + }
 > b
-[1] 1588
+[1] 9820
 > c
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 5504
+[1] 10436
 ```
 Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.  By the way, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated.  For more information on how to setup and manage such clusters, see `help("makeCluster", package="parallel")`.
 
@@ -335,7 +335,7 @@ Sometimes one may want to use an alternative evaluation strategy for a specific 
 > plan(eager)
 > pid <- Sys.getpid()
 > pid
-[1] 5504
+[1] 10436
 > a %<-% {
 +     Sys.getpid()
 + }
@@ -346,11 +346,11 @@ Sometimes one may want to use an alternative evaluation strategy for a specific 
 +     Sys.getpid()
 + } %plan% multiprocess
 > a
-[1] 5504
+[1] 10436
 > b
-[1] 7884
+[1] 5488
 > c
-[1] 7640
+[1] 10116
 ```
 As seen by the different process IDs, future `a` is evaluated eagerly using the same process as the calling environment whereas the other two are evaluated using multiprocess futures.
 
@@ -381,14 +381,14 @@ For instance, here is an example of two "top" futures (`a` and `b`) that uses mu
 +     c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
 + }
 > pid
-[1] 5504
+[1] 10436
 > a
-[1] 7884
+[1] 5488
 > b
  b.pid b1.pid b2.pid 
-  7640   7640   7640 
+ 10116  10116  10116 
 ```
-By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process (pid=5504), and there are the two processes used by `a` (pid=7884) and `b` (pid=7640).  However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
+By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process (pid=10436), and there are the two processes used by `a` (pid=5488) and `b` (pid=10116).  However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use eager evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 
 To specify a different type of _evaluation topology_, other than the first level of futures being resolved by multiprocess evaluation and the second level by eager evaluation, we can provide a list of evaluation strategies to `plan()`.  First, the same evaluation strategies as above can be explicitly specified as:
 ```r
@@ -399,12 +399,12 @@ We would actually get the same behavior if we try with multiple levels of multip
 > plan(list(multiprocess, multiprocess))
 [...]
 > pid
-[1] 5504
+[1] 10436
 > a
-[1] 7884
+[1] 5488
 > b
  b.pid b1.pid b2.pid 
-  7640   7640   7640 
+ 10116  10116  10116 
 ```
 The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores` to zero ([sic!](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7)) such that no _additional_ parallel processes can be launched.  This is the case for both multisession and multicore evaluation.
 
@@ -415,14 +415,14 @@ Continuing, if we start off by eager evaluation and then use multiprocess evalua
 Resolving 'a' ...
 Resolving 'b' ...
 > pid
-[1] 5504
+[1] 10436
 > a
-[1] 5504
+[1] 10436
 > b
  b.pid b1.pid b2.pid 
-  5504   7884   7640 
+ 10436   5488  10116 
 ```
-which clearly show that `a` and `b` are resolved in the calling process (pid 5504) whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes (pids 7884 and 7640).
+which clearly show that `a` and `b` are resolved in the calling process (pid 10436) whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes (pids 5488 and 10116).
 
 Having said this, it is indeed possible to use nested multiprocess evaluation strategies, if we explicitly specify (read _force_) the number of cores available at each level.  In order to do this we need to "tweak" the default settings, which can be done as follows:
 ```r
@@ -430,14 +430,14 @@ Having said this, it is indeed possible to use nested multiprocess evaluation st
 +     workers = 3)))
 [...]
 > pid
-[1] 5504
+[1] 10436
 > a
-[1] 7884
+[1] 5488
 > b
  b.pid b1.pid b2.pid 
-  7640   8188   8020 
+ 10116   2796  10224 
 ```
-First, we see that both `a` and `b` are resolved in different processes (pids 7884 and 7640) than the calling process (pid 5504).  Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes (pids 8188 and 8020).
+First, we see that both `a` and `b` are resolved in different processes (pids 5488 and 10116) than the calling process (pid 10436).  Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes (pids 2796 and 10224).
 
 To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
 
@@ -469,7 +469,7 @@ Waiting for 'a' to be resolved ...
 > cat("Waiting for 'a' to be resolved ... DONE\n")
 Waiting for 'a' to be resolved ... DONE
 > a
-[1] 7884
+[1] 5488
 ```
 
 
@@ -553,9 +553,9 @@ There is one limitation with implicit futures that does not exist for explicit o
 > v <- lapply(f, FUN = value)
 > str(v)
 List of 3
- $ : int 7884
- $ : int 7640
- $ : int 7884
+ $ : int 5488
+ $ : int 10116
+ $ : int 5488
 ```
 This is _not_ possible to do when using implicit futures.  This is because the `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  It can only be used to assign future values to _environments_ (including the calling environment) much like how `assign(name, value, envir)` works.  However, we can assign implicit futures to environments using _named indices_, e.g.
 ```r
@@ -569,9 +569,9 @@ This is _not_ possible to do when using implicit futures.  This is because the `
 > v <- as.list(v)
 > str(v)
 List of 3
- $ a: int 7884
- $ b: int 7640
- $ c: int 7884
+ $ a: int 5488
+ $ b: int 10116
+ $ c: int 5488
 ```
 Here `as.list(v)` blocks until all futures in the environment `v` have been resolved.  Then their values are collected and returned as a regular list.
 
@@ -588,9 +588,9 @@ If _numeric indices_ are required, then _list environments_ can be used.  List e
 > v <- as.list(v)
 > str(v)
 List of 3
- $ : int 7884
- $ : int 7640
- $ : int 7884
+ $ : int 5488
+ $ : int 10116
+ $ : int 5488
 ```
 As previously, `as.list(v)` blocks until all futures are resolved.
 
