@@ -2,6 +2,10 @@ Package: future
 ===============
 
 Version: 0.14.0-9000 [2016-05-18]
+o Now command line option -p <p> also set the default future strategy
+  to multiprocessing (if p >= 2 and eager otherwise), unless another
+  strategy is already specified via option 'future.plan' or system
+  environment variable R_FUTURE_PLAN.
 o Add support for plan(cluster, workers=c("n1", "n2", "n2", "n4")).
   Argument 'workers' for ClusterFuture() can now also be a numeric
   for specifying the number of hosts or a character vector for
