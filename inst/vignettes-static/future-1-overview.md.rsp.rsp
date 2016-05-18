@@ -293,23 +293,28 @@ A multiprocess future is not a formal class of futures by itself, but rather a c
 
 
 #### Cluster Futures
-Cluster futures evaluate expressions on an ad-hoc cluster that was set up via `parallel::makeCluster()`.  For instance, assume you have access to three nodes `n1`, `n2` and `n3`, you can then use these for asynchronous evaluation as:
+Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the parallel package).  For instance, assume you have access to three nodes `n1`, `n2` and `n3`, you can then use these for asynchronous evaluation as:
 ```r
 <%=
 ## For the vignette we cannot assume nodes n1, n2 and n3 exist.
 ## The second best we can do is to use the local machine.
-bfr <- withCapture({
 hosts <- c("localhost", "localhost", "localhost")
-cl <- parallel::makeCluster(hosts)
-plan(cluster, workers=cl)
+bfr <- withCapture({
+plan(cluster, workers=hosts)
 <%@include file="incl/future-1-overview-example2.R"%>
 })
-parallel::stopCluster(cl)
-bfr <- gsub('"localhost", "localhost", "localhost"', '"n1", "n2", "n3"', bfr)
+bfr <- gsub('hosts', 'c("n1", "n2", "n3")', bfr)
 bfr
 %>
 ```
-Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.  By the way, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated.  For more information on how to setup and manage such clusters, see `help("makeCluster", package="parallel")`.
+Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
+
+Any types of clusters that `parallel::makeCluster()` creates can be used for cluster futures.  For instance, the above cluster can be explicitly set up as:
+```r
+cl <- parallel::makeCluster(c("n1", "n2", "n3"))
+plan(cluster, workers=cl)
+```
+Also, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated, which will happen in the first example where the cluster in created internally.  For more information on how to setup and manage such clusters, see `help("makeCluster", package="parallel")`.
 
 Note that with proper configuration and automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 
@@ -567,8 +572,7 @@ This will use multicore processing if you are on a system where R supports proce
 
 Finally, if you have access to multiple machines you can try to setup a cluster of workers and use them, e.g.
 ```r
-cl <- parallel::makeCluster(c("n2", "n5", "n6", "n6", "n9"))
-plan(cluster, workers=cl)
+plan(cluster, workers=c("n2", "n5", "n6", "n6", "n9"))
 demo("mandelbrot", package="future", ask=FALSE)
 ```
 It's always good to call `parallel::stopCluster(cl)` when you're done with this cluster, but if you forget it will be done automatically when you quit R.
