@@ -33,7 +33,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update you script/code that uses the future package.")
   }
 
-  defaultCluster <- importCluster("defaultCluster")
+  defaultCluster <- importParallel("defaultCluster")
   if (substitute) expr <- substitute(expr)
   if (is.null(workers)) workers <- defaultCluster()
   if (!inherits(workers, "cluster")) {
@@ -61,7 +61,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 ## * parallel:::defaultCluster()
 ## * parallel:::recvResult()
 ## * parallel:::sendCall()
-importCluster <- function(name=NULL) {
+importParallel <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
     ## covr: skip=3
@@ -79,7 +79,7 @@ run.ClusterFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  sendCall <- importCluster("sendCall")
+  sendCall <- importParallel("sendCall")
   workers <- future$workers
   expr <- getExpression(future)
   persistent <- future$persistent
@@ -202,7 +202,7 @@ value.ClusterFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  recvResult <- importCluster("recvResult")
+  recvResult <- importParallel("recvResult")
 
   workers <- future$workers
   node <- future$node
