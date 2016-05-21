@@ -33,11 +33,11 @@ parseCmdArgs <- function() {
   args <- list()
 
   ## Option -p <ncores>
-  key <- which(cmdargs == "-p")
-  if (length(key) > 0) {
+  idx <- which(cmdargs == "-p")
+  if (length(idx) > 0) {
     ## Use only last, iff multiple are given
-    if (length(key) > 1) key <- key[length(key)]
-    value0 <- cmdargs[key+1L]
+    if (length(idx) > 1) idx <- idx[length(idx)]
+    value0 <- cmdargs[idx+1L]
     value <- as.integer(value0)
     max <- availableCores(methods="system")
 
