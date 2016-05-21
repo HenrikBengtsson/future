@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.14.0-9000 [2016-05-18]
+Version: 0.14.0-9000 [2016-05-21]
 o Now command line option -p <p> also set the default future strategy
   to multiprocessing (if p >= 2 and eager otherwise), unless another
   strategy is already specified via option 'future.plan' or system

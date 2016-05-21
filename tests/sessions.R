@@ -11,19 +11,19 @@ message("*** sessions() ... ")
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
-  
+
   message("Available cores: ", availableCores())
 
   ## In case sessions have been created in previous tests
   sessions("stop")
-  
+
   res <- try({
-    cluster <- sessions()
+    cluster <- sessions("set", workers=availableCores()-1L)
     print(cluster)
   }, silent=TRUE)
   if (cores == 1) stopifnot(inherits(res, "try-error"))
 
-  cluster <- sessions(action="start", n=1L)
+  cluster <- sessions(action="start", workers=1L)
   print(cluster)
   stopifnot(length(cluster) == 1L)
 

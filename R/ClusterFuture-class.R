@@ -25,10 +25,11 @@
 #' @export
 #' @export MultisessionFuture
 #' @importFrom digest digest
-#' @importFrom parallel makePSOCKcluster
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, workers=NULL, ...) {
+  defaultCluster <- importParallel("defaultCluster")
+
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -36,13 +37,13 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
-  defaultCluster <- importParallel("defaultCluster")
   if (substitute) expr <- substitute(expr)
-  if (is.null(workers)) workers <- defaultCluster()
-  if (is.character(workers) || is.numeric(workers)) {
-    workers <- makePSOCKcluster(workers)
-  }
-  if (!inherits(workers, "cluster")) {
+
+  if (is.null(workers)) {
+    workers <- defaultCluster()
+  } else if (is.character(workers) || is.numeric(workers)) {
+    workers <- sessions("start", workers=workers)
+  } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
   stopifnot(length(workers) > 0)
@@ -311,3 +312,4 @@ requestNode <- function(await, workers, maxTries=getOption("future.maxTries", tr
 
   node
 }
+
