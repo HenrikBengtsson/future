@@ -37,7 +37,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALS
   args <- list(...)
   if ("cluster" %in% names(args)) {
     workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)

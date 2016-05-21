@@ -33,7 +33,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   args <- list(...)
   if ("cluster" %in% names(args)) {
     workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   defaultCluster <- importParallel("defaultCluster")
