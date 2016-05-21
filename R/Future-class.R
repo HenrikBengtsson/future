@@ -5,7 +5,7 @@
 #' \code{unresolved} or \code{resolved}, a state which can be checked
 #' with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 #' value is not available.  As soon as it is \emph{resolved}, the value
-#' is available via \code{\link{value}()}.
+#' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
@@ -87,10 +87,10 @@ assertOwner <- function(future, ...) {
 #' This method needs to be implemented by the class that implement
 #' the Future API.
 #'
+#' @aliases value
+#' @rdname value
 #' @export
 #' @export value
-#' @aliases value
-#' @export
 value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])

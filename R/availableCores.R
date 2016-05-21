@@ -61,7 +61,7 @@
 #' @export
 #' @keywords internal
 #' @importFrom parallel detectCores
-availableCores <- function(constraints=NULL, methods=getOption("future.availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("future.availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -79,11 +79,14 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   for (kk in seq_along(methods)) {
     method <- methods[kk]
     if (method == "Slurm") {
-      ## Number of cores assigned by Slum
+      ## Number of cores assigned by Slurm
       n <- getenv("SLURM_CPUS_PER_TASK")
     } else if (method == "PBS") {
       ## Number of cores assigned by Torque/PBS
       n <- getenv("PBS_NUM_PPN")
+    } else if (method == "SGE") {
+      ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
+      n <- getenv("NSLOTS")
     } else if (method == "mc.cores") {
       .Deprecated(msg="Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
       n <- getopt("mc.cores") + 1L

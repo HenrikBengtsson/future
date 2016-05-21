@@ -6,8 +6,8 @@
 \usage{
 availableCores(constraints = NULL,
   methods = getOption("future.availableCoresMethods", c("system",
-  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm = TRUE,
-  default = c(current = 1L), which = c("min", "max", "all"))
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")),
+  na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{
 \item{constraints}{An optional character specifying under what

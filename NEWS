@@ -13,6 +13,8 @@ o Add support for plan(cluster, workers=c("n1", "n2", "n2", "n4")).
   specifying an explicit set of host names.  In both cases
   parallel::makePSOCKcluster(workers) is used internally to create
   the cluster.
+o Now availableCores() also acknowledges environment variable NTASKS
+  set by Sun/Oracle Grid Engine (SGE).
 
 
 Version: 0.14.0 [2016-05-16]

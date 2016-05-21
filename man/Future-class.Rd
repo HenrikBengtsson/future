@@ -35,7 +35,7 @@ available at some point in the future.  A future can either be
 \code{unresolved} or \code{resolved}, a state which can be checked
 with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 value is not available.  As soon as it is \emph{resolved}, the value
-is available via \code{\link{value}()}.
+is available via \code{\link[future]{value}()}.
 }
 \details{
 A Future object is itself an \link{environment}.
