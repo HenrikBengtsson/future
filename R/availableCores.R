@@ -46,6 +46,11 @@
 #'    may or may not default to one.  It can be specified when submitting
 #'    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
 #'    requests four nodes each with two cores.
+#'  \item \code{"SGE"} -
+#'    Query Sun/Oracle Grid Engine (SGE) environment variable
+#'    \code{NSLOTS}.
+#'    It can be specified when submitting a job as in, for instance,
+#'    \code{qsub -pe by_node 2}, which two cores on a single machine.
 #'  \item \code{"Slurm"} -
 #'    Query Simple Linux Utility for Resource Management (Slurm)
 #'    environment variable \code{SLURM_CPUS_PER_TASK}.
