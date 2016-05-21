@@ -42,7 +42,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- sessions("start", workers=workers)
+    workers <- ClusterRegistry("start", workers=workers)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

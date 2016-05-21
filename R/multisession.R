@@ -82,62 +82,9 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  workers <- sessions("start", workers=workers-1L)
+  workers <- ClusterRegistry("start", workers=workers-1L)
 
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
-
-
-#' @importFrom parallel makeCluster makePSOCKcluster stopCluster
-#' @importFrom utils capture.output
-sessions <- local({
-  last <- NULL
-  cluster <- NULL
-
-  .makeCluster <- function(workers) {
-    if (is.null(workers)) return(NULL)
-    capture.output({
-      cluster <- makeCluster(workers)
-    })
-    cluster
-  }
-
-  function(action=c("get", "start", "stop"), workers=NULL) {
-    action <- match.arg(action)
-
-    if (is.null(workers)) {
-    } else if (is.numeric(workers)) {
-      workers <- as.integer(workers)
-      stopifnot(length(workers) == 1, is.finite(workers))
-    } else if (is.character(workers)) {
-      stopifnot(length(workers) >= 1, all(is.finite(workers)))
-      workers <- sort(workers)
-    } else {
-      stop("Unknown value of argument 'workers'.")
-    }
-
-    if (is.null(cluster) && action != "stop") {
-      cluster <<- .makeCluster(workers)
-      last <<- workers
-    }
-
-    if (action == "get") {
-      return(cluster)
-    } else if (action == "start") {
-      ## Already setup?
-      if (!identical(workers, last)) {
-        sessions(action="stop")
-        cluster <<- .makeCluster(workers)
-        last <<- workers
-      }
-    } else if (action == "stop") {
-      if (!is.null(cluster)) try(stopCluster(cluster), silent=TRUE)
-      cluster <<- NULL
-      last <<- NULL
-    }
-
-    invisible(cluster)
-  }
-}) ## sessions()
