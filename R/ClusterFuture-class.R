@@ -64,22 +64,6 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
 
 
-## We are currently importing the following non-exported functions:
-## * parallel:::defaultCluster()
-## * parallel:::recvResult()
-## * parallel:::sendCall()
-importParallel <- function(name=NULL) {
-  ns <- getNamespace("parallel")
-  if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    ## covr: skip=3
-    msg <- sprintf("Cluster processing is not supported on this system: %s",
-                   sQuote(.Platform$OS))
-    mdebug(msg)
-    stop(msg, call.=FALSE)
-  }
-  get(name, mode="function", envir=ns, inherits=FALSE)
-}
-
 #' @importFrom parallel clusterCall clusterExport
 run.ClusterFuture <- function(future, ...) {
   ## Assert that the process that created the future is
