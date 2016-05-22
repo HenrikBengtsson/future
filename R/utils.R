@@ -148,3 +148,15 @@ requirePackages <- local(function(pkgs) {
   pkgs <- unique(pkgs)
   lapply(pkgs, FUN=requirePackage)
 }) ## requirePackages()
+
+
+## When 'default' is specified, this is 30x faster than
+## base::getOption().  The difference is that here we use
+## use names(.Options) whereas in 'base' names(options())
+## is used.
+getOption <- local({
+  go <- base::getOption
+  function(x, default=NULL) {
+    if (missing(default) || match(x, table=names(.Options), nomatch=0L) > 0L) go(x) else default
+  }
+}) ## getOption()
