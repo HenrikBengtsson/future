@@ -1,4 +1,4 @@
-#' @importFrom parallel makeCluster makePSOCKcluster stopCluster
+#' @importFrom parallel makeCluster stopCluster
 #' @importFrom utils capture.output
 ClusterRegistry <- local({
   last <- NULL

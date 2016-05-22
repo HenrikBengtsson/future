@@ -28,7 +28,7 @@ from objects prior to the evaluation of the future.}
 
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
 Alternatively, a character vector of host names or a numeric scalar,
-for creating a cluster as \code{\link[parallel]{makePSOCKcluster}(workers)}.}
+for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
 
 \item{\dots}{Additional named elements of the future.}
 }

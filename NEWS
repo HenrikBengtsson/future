@@ -1,18 +1,16 @@
 Package: future
 ===============
 
-Version: 0.14.0-9000 [2016-05-21]
+Version: 0.14.0-9000 [2016-05-22]
 o Added command line option --parallel=<p>, which is long for -p <p>.
 o Now command line option -p <p> also set the default future strategy
   to multiprocessing (if p >= 2 and eager otherwise), unless another
   strategy is already specified via option 'future.plan' or system
   environment variable R_FUTURE_PLAN.
-o Add support for plan(cluster, workers=c("n1", "n2", "n2", "n4")).
-  Argument 'workers' for ClusterFuture() can now also be a numeric
-  for specifying the number of hosts or a character vector for
-  specifying an explicit set of host names.  In both cases
-  parallel::makePSOCKcluster(workers) is used internally to create
-  the cluster.
+o Added support for plan(cluster, workers=c("n1", "n2", "n2", "n4")),
+  where 'workers' (also for ClusterFuture()) is a set of host names
+  passed to parallel::makeCluster(workers).  It can also be the number
+  of localhost workers.
 o Now availableCores() also acknowledges environment variable NSLOTS
   set by Sun/Oracle Grid Engine (SGE).
 o SPEEDUP: Significantly decreased the overhead of creating a future,
