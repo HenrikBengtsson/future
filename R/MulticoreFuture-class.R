@@ -121,3 +121,9 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
 
   NextMethod("value")
 }
+
+
+#' @export
+getExpression.MulticoreFuture <- function(future, mc.cores=0L, ...) {
+   NextMethod("getExpression")
+}

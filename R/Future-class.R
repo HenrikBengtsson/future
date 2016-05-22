@@ -202,31 +202,11 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
 
 
 #' @export
-getExpression.Future <- function(future, ...) {
+getExpression.Future <- function(future, mc.cores=0L, ...) {
   strategies <- plan("list")
-  if (length(strategies) > 1L) {
-    ## Identify package
-    pkgs <- lapply(strategies, FUN=environment)
-    pkgs <- lapply(pkgs, FUN=environmentName)
-    pkgs <- unique(unlist(pkgs))
 
-    ## Sanity check by verifying packages can be loaded already here
-    ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future.
-    for (pkg in pkgs) loadNamespace(pkg)
-
-    enter <- bquote({
-      ## covr: skip=4
-      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
-      oplans <- future::plan("list")
-      future::plan(.(strategies[-1]))
-    })
-
-    exit <- bquote({
-      ## covr: skip=1
-      future::plan(.(strategies))
-    })
-  } else {
+  ## Should 'mc.cores' be set?
+  if (!is.null(mc.cores)) {
     ## If end of future stack, fall to using single-core
     ## processing.  In this case we don't have to rely
     ## on the future package.  Instead, we can use the
@@ -235,17 +215,60 @@ getExpression.Future <- function(future, ...) {
     ## setting the number of _additional_ cores to be
     ## zero (sic!).
 
-    ## FIXME: How can we guarantee that '.future.mc.cores.old'
+    ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
-    enter <- quote({
-      ## covr: skip=3
-      .future.mc.cores.old <- getOption("mc.cores")
-      options(mc.cores=0L)
+    enter <- bquote({
+      ## covr: skip=2
+      ...future.mc.cores.old <- getOption("mc.cores")
+      options(mc.cores=.(mc.cores))
     })
 
     exit <- bquote({
       ## covr: skip=1
-      options(mc.cores=.future.mc.cores.old)
+      options(mc.cores=...future.mc.cores.old)
+    })
+  } else {
+    enter <- exit <- NULL
+  }
+
+  if (length(strategies) > 0) {
+    exit <- bquote({
+      ## covr: skip=2
+      .(exit)
+      future::plan(.(strategies))
+    })
+  }
+
+  ## Identify package
+  pkgs <- lapply(strategies, FUN=environment)
+  pkgs <- lapply(pkgs, FUN=environmentName)
+  pkgs <- unique(unlist(pkgs))
+
+  if (length(pkgs) > 0L) {
+    ## Sanity check by verifying packages can be loaded already here
+    ## If there is somethings wrong in 'pkgs', we get the error
+    ## already before launching the future.
+    for (pkg in pkgs) loadNamespace(pkg)
+
+    enter <- bquote({
+      ## covr: skip=3
+      .(enter)
+      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
+      oplans <- future::plan("list")
+    })
+  } else {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      oplans <- future::plan("list")
+    })
+  }
+
+  if (length(strategies) >= 2L) {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      future::plan(.(strategies[-1]))
     })
   }
 
