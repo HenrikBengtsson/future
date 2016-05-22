@@ -13,6 +13,8 @@
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
@@ -26,7 +28,7 @@
 #' Note that remote futures use \code{persistent=TRUE} by default.
 #'
 #' @export
-remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE, workers=NULL, earlySignal=FALSE, myip=NULL, ...) {
+remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE, workers=NULL, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
@@ -41,7 +43,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

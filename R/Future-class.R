@@ -162,7 +162,7 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, local=TRUE, gc=TRUE, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check

@@ -6,7 +6,7 @@
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, earlySignal = FALSE, ...)
+  local = TRUE, gc = FALSE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -25,6 +25,9 @@ located, an informative error is generated.}
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
+
+\item{gc}{If TRUE, the garbage collector run after the future
+is resolved (in the process that evaluated the future).}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 

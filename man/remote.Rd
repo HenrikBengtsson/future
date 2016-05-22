@@ -5,7 +5,7 @@
 \title{Create a remote future whose value will be resolved asynchroneously in a remote process}
 \usage{
 remote(expr, envir = parent.frame(), substitute = TRUE, persistent = TRUE,
-  workers = NULL, earlySignal = FALSE, myip = NULL, ...)
+  workers = NULL, gc = FALSE, earlySignal = FALSE, myip = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -21,6 +21,9 @@ from objects prior to the evaluation of the future.}
 
 \item{workers}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
+
+\item{gc}{If TRUE, the garbage collector run after the future
+is resolved (in the process that evaluated the future).}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
