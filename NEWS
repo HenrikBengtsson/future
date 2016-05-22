@@ -20,7 +20,9 @@ o MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
   garbage collector will run at the very end in the process that
   evalutated the future (just before returning the value).  This may
   help lowering the overall memory footprint when running multiple
-  parallel R processes, e.g. plan(multiprocess, gc=TRUE).
+  parallel R processes.  The user can enable this by specifying
+  plan(multiprocess, gc=TRUE).  The developer can control this using
+  future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
 o SPEEDUP: Significantly decreased the overhead of creating a future,
   particularly multicore futures.
 
