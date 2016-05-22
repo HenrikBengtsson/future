@@ -13,7 +13,7 @@
 #' @keywords internal
 ConstantFuture <- function(value=NULL, ...) {
   value <- force(value)
-  f <- Future(expr=value, envir=emptyenv(), substitute=FALSE, local=FALSE, ...)
+  f <- Future(expr=value, envir=emptyenv(), substitute=FALSE, local=FALSE, gc=FALSE, ...)
   f$value <- value
   f$state <- "finished"
   f

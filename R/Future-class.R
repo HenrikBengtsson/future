@@ -15,6 +15,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
@@ -34,7 +36,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, earlySignal=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -43,6 +45,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core$envir <- envir
   core$owner <- uuid()
   core$local <- local
+  core$gc <- gc
   core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
@@ -159,7 +162,7 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=TRUE, enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
@@ -170,15 +173,29 @@ makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
   ## a tryCatch() statement. /HB 2016-03-14
-  expr <- substitute({
-    ## covr: skip=6
-    enter
-    tryCatch({
-      body
-    }, finally = {
-      exit
-    })
-  }, env=list(enter=enter, body=expr, exit=exit))
+  if (gc) {
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      ...future.value <- tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+      gc(verbose=FALSE, reset=FALSE)
+      ...future.value
+    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
+  } else {
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+    }, env=list(enter=enter, body=expr, exit=exit))
+  }
 
   expr
 } ## makeExpression()
@@ -232,7 +249,7 @@ getExpression.Future <- function(future, ...) {
     })
   }
 
-  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, gc=future$gc, enter=enter, exit=exit)
 } ## getExpression()
 
 
