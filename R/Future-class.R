@@ -216,19 +216,22 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, mc.cores=0L, ...) {
+getExpression.Future <- function(future, mc.cores=NULL, ...) {
   strategies <- plan("list")
+
+  ## If end of future stack, fall to using single-core
+  ## processing.  In this case we don't have to rely
+  ## on the future package.  Instead, we can use the
+  ## light-weight approach where we force the number of
+  ## cores available to be one.  This we achieve by
+  ## setting the number of _additional_ cores to be
+  ## zero (sic!).
+  if (length(strategies) == 0) {
+    mc.cores <- 0L
+  }
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
-    ## If end of future stack, fall to using single-core
-    ## processing.  In this case we don't have to rely
-    ## on the future package.  Instead, we can use the
-    ## light-weight approach where we force the number of
-    ## cores available to be one.  This we achieve by
-    ## setting the number of _additional_ cores to be
-    ## zero (sic!).
-
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
     enter <- bquote({
