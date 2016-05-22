@@ -59,6 +59,59 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
 }
 
 
+#' @importFrom utils head
+#' @export
+print.Future <- function(x, ...) {
+  class <- class(x)
+  cat(sprintf("%s:\n", class[1]))
+  cat("Expression:\n")
+  print(x$expr)
+  cat(sprintf("Local evaluation: %s\n", x$local))
+  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  g <- x$globals
+  ng <- length(g)
+  if (ng > 0) {
+    gSizes <- sapply(g, FUN=object.size)
+    gTotalSize <- sum(gSizes)
+    g <- head(g, n=5L)
+    gSizes <- head(gSizes, n=5L)
+    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
+    if (ng > 5L) g <- sprintf("%s ...", g)
+    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
+  } else {
+    cat("Globals: <none>\n")
+  }
+
+  hasValue <- exists("value", envir=x, inherits=FALSE)
+
+  if (exists("value", envir=x, inherits=FALSE)) {
+    cat("Resolved: TRUE\n")
+  } else if (inherits(x, "LazyFuture")) {
+    ## FIXME: Special case; will there every be other cases
+    ## for which we need to support this? /HB 2016-05-03
+    cat("Resolved: FALSE\n")
+  } else {
+    ## resolved() without early signalling
+    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
+    local({
+      earlySignal <- x$earlySignal
+      x$earlySignal <- FALSE
+      on.exit(x$earlySignal <- earlySignal)
+      cat(sprintf("Resolved: %s\n", resolved(x)))
+    })
+  }
+
+  if (hasValue) {
+    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+  } else {
+    cat("Value: <not collected>\n")
+  }
+  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Owner process: %s\n", x$owner))
+  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
+} ## print()
+
+
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
@@ -162,45 +215,6 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
-  ## Evaluate expression in a local() environment?
-  if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
-  }
-
-  ## NOTE: We don't want to use local(body) w/ on.exit() because
-  ## evaluation in a local is optional, cf. argument 'local'.
-  ## If this was mandatory, we could.  Instead we use
-  ## a tryCatch() statement. /HB 2016-03-14
-  if (gc) {
-    expr <- substitute({
-      ## covr: skip=6
-      enter
-      ...future.value <- tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-      gc(verbose=FALSE, reset=FALSE)
-      ...future.value
-    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
-  } else {
-    expr <- substitute({
-      ## covr: skip=6
-      enter
-      tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-    }, env=list(enter=enter, body=expr, exit=exit))
-  }
-
-  expr
-} ## makeExpression()
-
-
 #' @export
 getExpression.Future <- function(future, mc.cores=0L, ...) {
   strategies <- plan("list")
@@ -276,54 +290,40 @@ getExpression.Future <- function(future, mc.cores=0L, ...) {
 } ## getExpression()
 
 
-#' @importFrom utils head
-#' @export
-print.Future <- function(x, ...) {
-  class <- class(x)
-  cat(sprintf("%s:\n", class[1]))
-  cat("Expression:\n")
-  print(x$expr)
-  cat(sprintf("Local evaluation: %s\n", x$local))
-  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
-  g <- x$globals
-  ng <- length(g)
-  if (ng > 0) {
-    gSizes <- sapply(g, FUN=object.size)
-    gTotalSize <- sum(gSizes)
-    g <- head(g, n=5L)
-    gSizes <- head(gSizes, n=5L)
-    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
-    if (ng > 5L) g <- sprintf("%s ...", g)
-    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
-  } else {
-    cat("Globals: <none>\n")
+makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
+  ## Evaluate expression in a local() environment?
+  if (local) {
+    a <- NULL; rm(list="a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a=expr))
   }
 
-  hasValue <- exists("value", envir=x, inherits=FALSE)
-
-  if (exists("value", envir=x, inherits=FALSE)) {
-    cat("Resolved: TRUE\n")
-  } else if (inherits(x, "LazyFuture")) {
-    ## FIXME: Special case; will there every be other cases
-    ## for which we need to support this? /HB 2016-05-03
-    cat("Resolved: FALSE\n")
+  ## NOTE: We don't want to use local(body) w/ on.exit() because
+  ## evaluation in a local is optional, cf. argument 'local'.
+  ## If this was mandatory, we could.  Instead we use
+  ## a tryCatch() statement. /HB 2016-03-14
+  if (gc) {
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      ...future.value <- tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+      gc(verbose=FALSE, reset=FALSE)
+      ...future.value
+    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
   } else {
-    ## resolved() without early signalling
-    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
-    local({
-      earlySignal <- x$earlySignal
-      x$earlySignal <- FALSE
-      on.exit(x$earlySignal <- earlySignal)
-      cat(sprintf("Resolved: %s\n", resolved(x)))
-    })
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+    }, env=list(enter=enter, body=expr, exit=exit))
   }
 
-  if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
-  } else {
-    cat("Value: <not collected>\n")
-  }
-  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
-  cat(sprintf("Owner process: %s\n", x$owner))
-  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
-} ## print()
+  expr
+} ## makeExpression()
