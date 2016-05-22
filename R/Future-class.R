@@ -63,7 +63,7 @@ assertOwner <- function(future, ...) {
     sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
   }
 
-  if (!isTRUE(all.equal(future$owner, uuid(), check.attributes=FALSE))) {
+  if (!identical(future$owner, uuid())) {
     stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
   }
 
