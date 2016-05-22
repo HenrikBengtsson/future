@@ -160,3 +160,12 @@ getOption <- local({
     if (missing(default) || match(x, table=names(.Options), nomatch=0L) > 0L) go(x) else default
   }
 }) ## getOption()
+
+
+detectCores <- local({
+  res <- NULL
+  function() {
+    if (is.null(res)) res <<- parallel::detectCores()
+    res
+  }
+})

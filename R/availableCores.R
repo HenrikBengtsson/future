@@ -65,7 +65,6 @@
 #'
 #' @export
 #' @keywords internal
-#' @importFrom parallel detectCores
 availableCores <- function(constraints=NULL, methods=getOption("future.availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
@@ -185,3 +184,4 @@ supportsMulticore <- local({
     supported
   }
 })
+
