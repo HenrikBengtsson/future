@@ -4,15 +4,15 @@ ClusterRegistry <- local({
   last <- NULL
   cluster <- NULL
 
-  .makeCluster <- function(workers) {
+  .makeCluster <- function(workers, ...) {
     if (is.null(workers)) return(NULL)
     capture.output({
-      cluster <- makeCluster(workers)
+      cluster <- makeCluster(workers, ...)
     })
     cluster
   }
 
-  function(action=c("get", "start", "stop"), workers=NULL) {
+  function(action=c("get", "start", "stop"), workers=NULL, ...) {
     action <- match.arg(action)
 
     if (is.null(workers)) {
@@ -20,14 +20,14 @@ ClusterRegistry <- local({
       workers <- as.integer(workers)
       stopifnot(length(workers) == 1, is.finite(workers))
     } else if (is.character(workers)) {
-      stopifnot(length(workers) >= 1, all(is.finite(workers)))
+      stopifnot(length(workers) >= 1, !anyNA(workers))
       workers <- sort(workers)
     } else {
       stop("Unknown value of argument 'workers'.")
     }
 
     if (is.null(cluster) && action != "stop") {
-      cluster <<- .makeCluster(workers)
+      cluster <<- .makeCluster(workers, ...)
       last <<- workers
     }
 
@@ -37,7 +37,7 @@ ClusterRegistry <- local({
       ## Already setup?
       if (!identical(workers, last)) {
         ClusterRegistry(action="stop")
-        cluster <<- .makeCluster(workers)
+        cluster <<- .makeCluster(workers, ...)
         last <<- workers
       }
     } else if (action == "stop") {

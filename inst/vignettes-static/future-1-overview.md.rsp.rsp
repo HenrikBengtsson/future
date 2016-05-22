@@ -146,7 +146,7 @@ The future package implements the following types of futures:
 | `multiprocess`  | all         | multicore iff supported, otherwise multisession
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows | forked R processes (on current machine)
-| `cluster`       | all         | external R sessions on current and/or remote machines
+| `cluster`       | all         | external R sessions on current and/or remote m| `remote`        | all         | Simple access to remote R sessions
 
 The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 

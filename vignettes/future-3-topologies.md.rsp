@@ -113,12 +113,7 @@ library("future")
 library("listenv")
 
 ## Set up access cluster login node
-remote <- function(host, homogeneous=FALSE, ...) {
-  myip <- readLines("http://myexternalip.com/raw")
-  cl <- parallel::makeCluster(host, master=myip, homogeneous=homogeneous, ...)
-  tweak(cluster, workers=cl, persistent=TRUE)
-}
-login <- remote("login.my-cluster.org")
+plan(remote, workers=login.my-cluster.org")
 
 ## Setup cluster nodes on remote
 nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% login
