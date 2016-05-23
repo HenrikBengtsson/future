@@ -366,7 +366,7 @@ As seen by the different process IDs, future `a` is evaluated eagerly using the 
 stopifnot(a == pid)
 if (availableCores() == 1L) {
   stopifnot(b == pid, c == pid, c == b)
-} else if (availableCores() == 2L) {
+} else if (availableCores() == 2L && !supportsMulticore()) {
   stopifnot(b != pid, c != pid, c == b)
 } else {
   stopifnot(b != pid, c != pid, c != b)
