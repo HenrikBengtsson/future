@@ -397,10 +397,10 @@ By inspection the process IDs, we see that there are in total three different pr
 ## Sanity checks
 if (availableCores() == 1L) {
   stopifnot(a == pid, all(b == pid))
-} else if (availableCores() == 2L) {
+} else if (availableCores() == 2L !supportsMulticore()) {
   stopifnot(a != pid, all(b != pid), !all(b != a), all(b == b[1]))
 } else {
-  stopifnot(a != pid, all(b != pid), all(b != a), all(b == b[1]))
+  stopifnot(a != pid, all(b != pid),  all(b != a), all(b == b[1]))
 }
 %>
 
@@ -430,10 +430,10 @@ The reason for this is, also here, to protect us from launching more processes t
 ## Sanity checks
 if (availableCores() == 1L) {
   stopifnot(a == pid, all(b == pid))
-} else if (availableCores() == 2L) {
+} else if (availableCores() == 2L && !supportsMulticore()) {
   stopifnot(a != pid, all(b != pid), !all(b != a), all(b == b[1]))
 } else {
-  stopifnot(a != pid, all(b != pid), all(b != a), all(b == b[1]))
+  stopifnot(a != pid, all(b != pid),  all(b != a), all(b == b[1]))
 }
 %>
 
@@ -459,7 +459,7 @@ which clearly show that `a` and `b` are resolved in the calling process (pid <%=
 stopifnot(a == pid, b[1] == pid)
 if (availableCores() == 1L) {
   stopifnot(all(b == b[1]))
-} else if (availableCores() == 2L) {
+} else if (availableCores() == 2L && !supportsMulticore()) {
   stopifnot(all(b[-1] != b[1]), b[2] == b[3])
 } else {
   stopifnot(all(b[-1] != b[1]), b[2] != b[3])
