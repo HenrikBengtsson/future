@@ -397,7 +397,7 @@ By inspection the process IDs, we see that there are in total three different pr
 ## Sanity checks
 if (availableCores() == 1L) {
   stopifnot(a == pid, all(b == pid))
-} else if (availableCores() == 2L !supportsMulticore()) {
+} else if (availableCores() == 2L && !supportsMulticore()) {
   stopifnot(a != pid, all(b != pid), !all(b != a), all(b == b[1]))
 } else {
   stopifnot(a != pid, all(b != pid),  all(b != a), all(b == b[1]))
