@@ -77,7 +77,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   ## Fall back to eager futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
   ## Eager futures best reflect how multicore futures handle globals.
-  if (workers == 1L || availableCores(constraints="multicore") == 1L) {
+  if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, gc=gc))
   }

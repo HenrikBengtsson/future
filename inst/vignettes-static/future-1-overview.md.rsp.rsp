@@ -489,7 +489,11 @@ First, we see that both `a` and `b` are resolved in different processes (pids <%
 
 <%
 ## Sanity checks
-stopifnot(a != pid, b[1] != pid, b[2] != b[1], b[3] != b[1])
+stopifnot(a != pid, b[1] != pid)
+if (supportsMulticore()) {
+} else {
+  stopifnot(b[2] != b[1], b[3] != b[1])
+}
 %>
 
 To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
