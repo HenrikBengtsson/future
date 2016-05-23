@@ -258,7 +258,11 @@ The first thing we observe is that the values of `a`, `c` and `pid` are the same
 
 <%
 ## Sanity checks
-stopifnot(b != pid || availableCores() == 1L)
+if (availableCores() == 1L) {
+  stopifnot(b == pid)
+} else {
+  stopifnot(b != pid)
+}
 %>
 
 When multisession evaluation is used, the package launches a set of R sessions in the background that will serve multisession futures by evaluating their expressions as they are created.  If all background sessions are busy serving other futures, the creation of the next multisession future is _blocked_ until a background session becomes available again.  The total number of background processes launched is decided by the value of `availableCores()`, e.g.
@@ -360,9 +364,13 @@ As seen by the different process IDs, future `a` is evaluated eagerly using the 
 <%
 ## Sanity checks
 stopifnot(a == pid)
-stopifnot(b != pid || availableCores() == 1L)
-stopifnot(c != pid || availableCores() == 1L)
-stopifnot(c != b || availableCores() <= 2L)
+if (availableCores() == 1L) {
+  stopifnot(b == pid, c == pid, c == b)
+} else if (availableCores() == 2L) {
+  stopifnot(b != pid, c != pid, c == b)
+} else {
+  stopifnot(b != pid, c != pid, c != b)
+}
 %>
 
 
@@ -387,10 +395,13 @@ By inspection the process IDs, we see that there are in total three different pr
 
 <%
 ## Sanity checks
-stopifnot(a != pid || availableCores() == 1L)
-stopifnot(all(b != pid) || availableCores() == 1L)
-stopifnot(all(b != a) || availableCores() == 1L)
-stopifnot(all(b == b[1]))
+if (availableCores() == 1L) {
+  stopifnot(a == pid, all(b == pid))
+} else if (availableCores() == 2L) {
+  stopifnot(a != pid, all(b != pid), !all(b != a), all(b == b[1]))
+} else {
+  stopifnot(a != pid, all(b != pid), all(b != a), all(b == b[1]))
+}
 %>
 
 
@@ -417,10 +428,13 @@ The reason for this is, also here, to protect us from launching more processes t
 
 <%
 ## Sanity checks
-stopifnot(a != pid || availableCores() == 1L)
-stopifnot(all(b != pid) || availableCores() == 1L)
-stopifnot(all(b != a) || availableCores() == 1L)
-stopifnot(all(b == b[1]))
+if (availableCores() == 1L) {
+  stopifnot(a == pid, all(b == pid))
+} else if (availableCores() == 2L) {
+  stopifnot(a != pid, all(b != pid), !all(b != a), all(b == b[1]))
+} else {
+  stopifnot(a != pid, all(b != pid), all(b != a), all(b == b[1]))
+}
 %>
 
 Continuing, if we start off by eager evaluation and then use multiprocess evaluation for any nested futures, we get:
@@ -442,10 +456,14 @@ which clearly show that `a` and `b` are resolved in the calling process (pid <%=
 
 <%
 ## Sanity checks
-stopifnot(a == pid)
-stopifnot(b[1] == pid)
-stopifnot(all(b[-1] != b[1]) || availableCores() == 1L)
-stopifnot(b[1] != b[2] || availableCores() <= 1L)
+stopifnot(a == pid, b[1] == pid)
+if (availableCores() == 1L) {
+  stopifnot(all(b == b[1]))
+} else if (availableCores() == 2L) {
+  stopifnot(all(b[-1] != b[1]), b[2] == b[3])
+} else {
+  stopifnot(all(b[-1] != b[1]), b[2] != b[3])
+}
 %>
 
 
@@ -468,6 +486,11 @@ b
 })%>
 ```
 First, we see that both `a` and `b` are resolved in different processes (pids <%= a %> and <%= b[1] %>) than the calling process (pid <%= pid %>).  Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes (pids <%= b[2] %> and <%= b[3] %>).
+
+<%
+## Sanity checks
+stopifnot(a != pid, b[1] != pid, b[2] != b[1], b[3] != b[1])
+%>
 
 To clarify, when we setup the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
 
