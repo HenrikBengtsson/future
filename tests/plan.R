@@ -178,6 +178,42 @@ print(d)
 print(c)
 stopifnot(c == 6)
 
+message("*** plan() by functions and character names ... ")
+
+plan(eager)
+a %<-% 42
+stopifnot(a == 42)
+
+plan("eager")
+a %<-% 42
+stopifnot(a == 42)
+
+plan(list(eager))
+a %<-% 42
+stopifnot(a == 42)
+
+plan(list("eager"))
+a %<-% 42
+stopifnot(a == 42)
+
+plan(list(eager, lazy))
+a %<-% { b %<-% 42; b }
+stopifnot(a == 42)
+
+plan(list("eager", lazy))
+a %<-% { b %<-% 42; b }
+stopifnot(a == 42)
+
+plan(list(eager, "lazy"))
+a %<-% { b %<-% 42; b }
+stopifnot(a == 42)
+
+plan(list("eager", "lazy"))
+a %<-% { b %<-% 42; b }
+stopifnot(a == 42)
+
+message("*** plan() by functions and character names ... DONE")
+
 message("*** plan() ... DONE")
 
 plan(eager)

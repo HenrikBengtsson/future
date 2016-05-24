@@ -90,10 +90,19 @@ plan <- local({
           return(invisible(res))
         }
 
+        ## Example: plan(list(eager, lazy))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir=parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
+          ## Coerce strings to functions, e.g. plan(list("eager", lazy))
+          for (kk in seq_along(strategies)) {
+            strategy_kk <- strategies[[kk]]
+            if (is.character(strategy_kk)) {
+              strategy_kk <- tweak(strategy_kk, penvir=parent.frame())
+              strategies[[kk]] <- strategy_kk
+            }
+          }
           newStack <- strategies
         }
       }
