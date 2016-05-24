@@ -35,6 +35,9 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
 
   if (is.character(workers)) {
     if (is.null(myip)) {
+      ## FIXME: The identification of the external IP number relies on
+      ## a single third-party server.  This could be improved by falling
+      ## back to other servers, cf. https://github.com/phoemur/ipgetter
       myip <- readLines("http://myexternalip.com/raw")
     }
     workers <- ClusterRegistry("start", workers=workers,
