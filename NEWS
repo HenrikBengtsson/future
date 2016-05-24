@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.14.0-9000 [2016-05-22]
+Version: 0.14.0-9000 [2016-05-24]
 o Added remote futures, which are cluster futures with convenient
   default arguments for simple remote access to R, e.g.
   plan(remote, workers="login.my-server.org").
@@ -16,6 +16,8 @@ o Now command line option -p <p> also set the default future strategy
   environment variable R_FUTURE_PLAN.
 o Now availableCores() also acknowledges environment variable NSLOTS
   set by Sun/Oracle Grid Engine (SGE).
+o BUG FIX: Future would give an error with plan(list("eager")),
+  whereas it did work with plan("eager") and plan(list(eager)).
 o MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
   garbage collector will run at the very end in the process that
   evalutated the future (just before returning the value).  This may
