@@ -170,6 +170,8 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
   ## Maximum number of cores available
   total <- availableCores()
 
+  mdebug(sprintf("requestCore(): availableCores() = %d", total))
+
   ## No additional cores available?
   if (total == 1L) {
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
@@ -179,8 +181,11 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
   interval <- delta
   finished <- FALSE
   while (tries <= maxTries) {
-    finished <- (usedCores() < total)
+    used <- usedCores()
+    finished <- (used < total)
     if (finished) break
+
+    mdebug(sprintf("usedCores() = %d, availableCores() = %d", used, total))
 
     ## Wait
     Sys.sleep(interval)
