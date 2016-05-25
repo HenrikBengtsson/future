@@ -150,6 +150,7 @@ usedCores <- function() {
 #'
 #' @param await A function used to try to "collect"
 #'        finished multicore subprocesses.
+#' @param workers Total number of workers available.
 #' @param maxTries Then maximum number of times subprocesses
 #'        should be collected before timeout.
 #' @param delta Then base interval (in seconds) to wait

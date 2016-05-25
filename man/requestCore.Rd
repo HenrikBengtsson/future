@@ -4,14 +4,16 @@
 \alias{requestCore}
 \title{Request a core for multicore processing}
 \usage{
-requestCore(await, maxTries = getOption("future.maxTries",
-  trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))),
-  delta = getOption("future.interval", 1), alpha = getOption("future.alpha",
-  1.01))
+requestCore(await, workers = availableCores(),
+  maxTries = getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES",
+  1000))), delta = getOption("future.interval", 1),
+  alpha = getOption("future.alpha", 1.01))
 }
 \arguments{
 \item{await}{A function used to try to "collect"
 finished multicore subprocesses.}
+
+\item{workers}{Total number of workers available.}
 
 \item{maxTries}{Then maximum number of times subprocesses
 should be collected before timeout.}
