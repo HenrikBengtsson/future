@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.14.0-9000 [2016-05-22]
+Version: 0.14.0-9000 [2016-05-25]
 o Added remote futures, which are cluster futures with convenient
   default arguments for simple remote access to R, e.g.
   plan(remote, workers="login.my-server.org").

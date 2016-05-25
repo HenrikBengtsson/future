@@ -90,7 +90,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, gc=gc, earlySignal=earlySignal)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, workers=workers, gc=gc, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")
@@ -161,19 +161,17 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=getOption("future.alpha", 1.01)) {
+requestCore <- function(await, workers=availableCores(), maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=getOption("future.alpha", 1.01)) {
+  stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
   maxTries <- as.integer(maxTries)
   stopifnot(is.finite(maxTries), maxTries > 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
-  ## Maximum number of cores available
-  total <- availableCores()
-
-  mdebug(sprintf("requestCore(): availableCores() = %d", total))
+  mdebug(sprintf("requestCore(): workers = %d", workers))
 
   ## No additional cores available?
-  if (total == 1L) {
+  if (workers == 1L) {
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
   }
 
@@ -182,10 +180,10 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
   finished <- FALSE
   while (tries <= maxTries) {
     used <- usedCores()
-    finished <- (used < total)
+    finished <- (used < workers)
     if (finished) break
 
-    mdebug(sprintf("usedCores() = %d, availableCores() = %d", used, total))
+    mdebug(sprintf("usedCores() = %d, workers = %d", used, workers))
 
     ## Wait
     Sys.sleep(interval)
@@ -198,7 +196,7 @@ requestCore <- function(await, maxTries=getOption("future.maxTries", trim(Sys.ge
   }
 
   if (!finished) {
-    msg <- sprintf("TIMEOUT: All %d CPU cores are still occupied", total)
+    msg <- sprintf("TIMEOUT: All %d CPU cores are still occupied", workers)
     mdebug(msg)
     stop(msg)
   }

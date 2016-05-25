@@ -36,7 +36,10 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
-  requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
+  requestCore(
+    await=function() FutureRegistry("multicore", action="collect-first"),
+    workers=future$workers
+  )
 
   ## Add to registry
   FutureRegistry("multicore", action="add", future=future)
