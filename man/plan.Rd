@@ -29,8 +29,8 @@ e.g. by eager or by lazy evaluation.
 }
 \details{
 The default strategy is \code{\link{eager}}, which can be set by
-option \code{future.plan} and, if that is not set,
-system environment variable \code{R_FUTURE_PLAN}.
+option \option{future.plan} and, if that is not set,
+system environment variable \env{R_FUTURE_PLAN}.
 To reset the strategy back to the default, use \code{plan("default")}.
 }
 \examples{
