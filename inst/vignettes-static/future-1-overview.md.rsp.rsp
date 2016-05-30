@@ -375,7 +375,7 @@ if (availableCores() == 1L) {
 
 
 
-However, using assigning different plans to individual futures this way has the drawback of hard coding the evaluation strategy.  Doing so may prevent some users from using your script or package, because they do not have the sufficient resources.  It may also prevent users with large amount of resources from utilizing those, because you assumed a less-powerful set of hardware.  Because of this, we recommend against the use of `%plan%` other than for interactive prototyping.
+However, using different plans to individual futures this way has the drawback of hard coding the evaluation strategy.  Doing so may prevent some users from using your script or package, because they do not have the sufficient resources.  It may also prevent users with large amount of resources from utilizing those, because you assumed a less-powerful set of hardware.  Because of this, we recommend against the use of `%plan%` other than for interactive prototyping.
 
 
 ### Nested Futures and Evaluation Topologies
