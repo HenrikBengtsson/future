@@ -1,4 +1,5 @@
 ## covr: skip=all
+#' @importFrom utils file_test
 .onLoad <- function(libname, pkgname) {
   args <- parseCmdArgs()
 
@@ -25,7 +26,24 @@
 
   ## Create UUID for this process
   uuid()
-}
+
+  ## Load .future.R script?
+  loadDotFuture <- getOption("future.load_startup_script", TRUE)
+  if (loadDotFuture) {
+    pathnames <- c(".future.R", "~/.future.R")
+    pathnames <- pathnames[file_test("-f", pathnames)]
+  
+    if (length(pathnames) == 0) {
+      mdebug("Future scripts identified: <none>")
+      return()
+    }
+    mdebug("Future scripts identified: %s", paste(sQuote(pathnames), collapse=", "))
+    pathname <- pathnames[1]
+    mdebug("Future script to load: %s", sQuote(pathname))
+    source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
+  }
+} ## .onLoad()
+
 
 parseCmdArgs <- function() {
   cmdargs <- commandArgs()

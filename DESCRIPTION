@@ -5,7 +5,8 @@ Imports:
     digest,
     globals (>= 0.6.1),
     listenv (>= 0.6.0),
-    parallel
+    parallel,
+    utils
 Suggests:
     R.rsp,
     markdown
