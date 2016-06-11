@@ -1,5 +1,4 @@
 ## covr: skip=all
-#' @importFrom utils file_test
 .onLoad <- function(libname, pkgname) {
   args <- parseCmdArgs()
 
@@ -26,7 +25,12 @@
 
   ## Create UUID for this process
   uuid()
+} ## .onLoad()
 
+
+## covr: skip=all
+#' @importFrom utils file_test
+.onAttach <- function(libname, pkgname) {
   ## Load .future.R script?
   loadDotFuture <- getOption("future.load_startup_script", TRUE)
   if (loadDotFuture) {
@@ -42,7 +46,7 @@
     mdebug("Future script to load: %s", sQuote(pathname))
     source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
   }
-} ## .onLoad()
+} ## .onAttach()
 
 
 parseCmdArgs <- function() {
