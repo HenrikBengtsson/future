@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 0.14.0-9000 [2016-06-11]
+Version: 0.14.0-9000 [2016-06-13]
 o Now .future.R (if found in the current directory or otherwise in
   the user's home directory) is sourced when the future package is
   attach (but not loaded).  This helps separating scripts from
