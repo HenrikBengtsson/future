@@ -47,39 +47,3 @@
     source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
   }
 } ## .onAttach()
-
-
-parseCmdArgs <- function() {
-  cmdargs <- commandArgs()
-
-  args <- list()
-
-  ## Option --parallel=<n> or -p <n>
-  idx <- grep("^(-p|--parallel=.*)$", cmdargs)
-  if (length(idx) > 0) {
-    ## Use only last, iff multiple are given
-    if (length(idx) > 1) idx <- idx[length(idx)]
-
-    cmdarg <- cmdargs[idx]
-    if (cmdarg == "-p") {
-      cmdarg <- cmdargs[idx+1L]
-      value <- as.integer(cmdarg)
-      cmdarg <- sprintf("-p %s", cmdarg)
-    } else {
-      value <- as.integer(gsub("--parallel=", "", cmdarg))
-    }
-
-    max <- availableCores(methods="system")
-    if (is.na(value) || value <= 0L) {
-      msg <- sprintf("future: Ignoring invalid number of processes specified in command-line option: %s", cmdarg)
-      warning(msg, call.=FALSE, immediate.=TRUE)
-    } else if (value > max) {
-      msg <- sprintf("future: Ignoring requested number of processes, because it is greater than the number of cores/child processes available (=%d) to this R process: %s", max, cmdarg)
-      warning(msg, call.=FALSE, immediate.=TRUE)
-    } else {
-      args$p <- value
-    }
-  }
-
-  args
-} # parseCmdArgs()
