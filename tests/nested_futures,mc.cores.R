@@ -19,7 +19,8 @@ print(cores)
 for (mc in 0:3) {
   message(sprintf("- mc.cores=%d ...", mc))
   options(mc.cores=mc)
-
+  mc2 <- min(mc, cores)
+  
   for (strategy in strategies) {
     message(sprintf("plan(list('eager', '%s')):", strategy))
     plan(list('eager', strategy))
@@ -30,9 +31,9 @@ for (mc in 0:3) {
     }
     print(a)
     stopifnot(a$pid == pid)
-    stopifnot((mc <= 1 && a$pid1 == pid) || (a$pid1 != pid))
-    stopifnot((mc <= 1 && a$pid2 == pid) || (a$pid2 != pid))
-    stopifnot(((mc <= 1 || a$cores <= 2) && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
+    stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
+    stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
+    stopifnot(((mc2 <= 1 || a$cores <= 2) && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
     message(sprintf("plan(list('eager', '%s':3)):", strategy))
     plan(list('eager', tweak(strategy, workers=3)))
@@ -43,9 +44,9 @@ for (mc in 0:3) {
     }
     print(a)
     stopifnot(a$pid == pid)
-    stopifnot((mc <= 1 && a$pid1 == pid) || (a$pid1 != pid))
-    stopifnot((mc <= 1 && a$pid2 == pid) || (a$pid2 != pid))
-    stopifnot((mc <= 1 && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
+    stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
+    stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
+    stopifnot((mc2 <= 1 && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
     message(sprintf("plan(list('%s', 'eager')):", strategy))
     plan(list(strategy, 'eager'))
@@ -55,9 +56,9 @@ for (mc in 0:3) {
       list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
     }
     print(a)
-    stopifnot((mc <= 1 && a$pid  == pid) || (a$pid  != pid))
-    stopifnot((mc <= 1 && a$pid1 == pid) || (a$pid1 != pid))
-    stopifnot((mc <= 1 && a$pid2 == pid) || (a$pid2 != pid))
+    stopifnot((mc2 <= 1 && a$pid  == pid) || (a$pid  != pid))
+    stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
+    stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(a$pid2 == a$pid1)
 
     message(sprintf("plan(list('%s', '%s')):", strategy, strategy))
@@ -68,9 +69,9 @@ for (mc in 0:3) {
       list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
     }
     print(a)
-    stopifnot((mc <= 1 && a$pid  == pid) || (a$pid  != pid))
-    stopifnot((mc <= 1 && a$pid1 == pid) || (a$pid1 != pid))
-    stopifnot((mc <= 1 && a$pid2 == pid) || (a$pid2 != pid))
+    stopifnot((mc2 <= 1 && a$pid  == pid) || (a$pid  != pid))
+    stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
+    stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(a$pid2 == a$pid1)
 
     message(sprintf("plan(list('%s':3, '%s':3)):", strategy, strategy))
