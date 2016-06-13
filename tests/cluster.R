@@ -159,6 +159,34 @@ for (cores in 1:2) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
+
+message("*** cluster() - setDefaultCluster() ...")
+
+library("parallel")
+setDefaultCluster(makeCluster(2))
+plan(cluster)
+
+pid <- Sys.getpid()
+message(pid)
+
+a %<-% Sys.getpid()
+b %<-% Sys.getpid()
+message(a)
+message(b)
+
+setDefaultCluster(NULL)
+
+message("*** cluster() - setDefaultCluster() ... DONE")
+
+
+message("*** cluster() - exceptions ...")
+
+res <- try(cluster(42L, workers=NA), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** cluster() - exceptions ... DONE")
+
+
 message("*** cluster() ... DONE")
 
 
