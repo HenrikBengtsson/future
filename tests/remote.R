@@ -23,7 +23,7 @@ plan(remote, workers="localhost")
 ## No global variables
 f <- try(future({
   42L
-}, workers="localhost"), silent=FALSE)
+}), silent=FALSE)
 print(f)
 stopifnot(inherits(f, "ClusterFuture"))
 
