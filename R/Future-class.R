@@ -219,7 +219,7 @@ getExpression <- function(future, ...) UseMethod("getExpression")
 getExpression.Future <- function(future, mc.cores=NULL, ...) {
   strategies <- plan("list")
 
-  ## If end of future stack, fall to using single-core
+  ## If end of future stack, fall back to using single-core
   ## processing.  In this case we don't have to rely
   ## on the future package.  Instead, we can use the
   ## light-weight approach where we force the number of
