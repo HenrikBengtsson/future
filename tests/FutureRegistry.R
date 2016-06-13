@@ -72,6 +72,42 @@ for (where in c("multicore", "rscript")) {
   stopifnot(length(futures) == 0L)
 }
 
+
+message("*** FutureRegistry() - exceptions ...")
+
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 0)
+
+f <- future(1)
+FutureRegistry(where="test", action="add", future=f)
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 1)
+
+res <- try(FutureRegistry(where="test", action="add", future=f), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 1)
+
+
+FutureRegistry(where="test", action="remove", future=f)
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 0)
+
+res <- try(FutureRegistry(where="test", action="remove", future=f), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 0)
+
+FutureRegistry(where="test", action="reset")
+futures <- FutureRegistry(where="test", action="list")
+stopifnot(length(futures) == 0)
+
+res <- try(FutureRegistry(where="test", action="<unknown>"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** FutureRegistry() - exceptions ... DONE")
+
+
 message("*** FutureRegistry() ... DONE")
 
 ## Cleanup
