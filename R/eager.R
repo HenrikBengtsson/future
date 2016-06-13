@@ -67,10 +67,3 @@ transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FAL
   invisible(future)
 }
 class(transparent) <- c("transparent", "eager", "uniprocess", "future", "function")
-
-
-## Used only internally
-constant <- function(value, ...) {
-  eager(value, envir=emptyenv(), substitute=FALSE, globals=FALSE, local=FALSE, gc=FALSE, earlySignal=TRUE)
-}
-class(constant) <- c("constant", "eager", "uniprocess", "future", "function")
