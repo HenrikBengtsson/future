@@ -41,6 +41,20 @@ for (strategy in strategies) {
 } ## for (strategy ...)
 
 
+message("Type of future: constant")
+constant <- future:::constant
+n <- nbrOfWorkers(constant)
+message(sprintf("nbrOfWorkers: %d", n))
+stopifnot(n == 1)
+
+
+message("Type of future: <future>")
+foo <- structure(function(...) NULL, class=c("future"))
+n <- nbrOfWorkers(foo)
+message(sprintf("nbrOfWorkers: %g", n))
+stopifnot(n >= 0, is.infinite(n))
+
+
 message("*** nbrOfWorkers() ... DONE")
 
 ## Cleanup

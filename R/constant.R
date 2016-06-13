@@ -3,4 +3,4 @@ constant <- function(value, ...) {
   future <- ConstantFuture(value=value, ...)
   evaluate(future)
 }
-class(constant) <- c("constant", "future", "function")
+class(constant) <- c("constant", "uniprocess", "future", "function")
