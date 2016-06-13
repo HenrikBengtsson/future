@@ -27,6 +27,10 @@ res <- getOutput(ex, tail=1L)
 print(res)
 stopifnot(res == "it")
 
+res <- getOutput(ex, head=1L, tail=1L)
+print(res)
+stopifnot(res == c("Darn", "it"))
+
 res <- getOutput(ex, collapse="\n")
 print(res)
 stopifnot(res == "Darn\nit")
