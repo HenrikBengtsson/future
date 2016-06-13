@@ -35,10 +35,16 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
 
   if (is.character(workers)) {
     if (is.null(myip)) {
-      ## FIXME: The identification of the external IP number relies on
-      ## a single third-party server.  This could be improved by falling
-      ## back to other servers, cf. https://github.com/phoemur/ipgetter
-      myip <- readLines("http://myexternalip.com/raw")
+      if (all(workers %in% c("localhost", "127.0.0.1"))) {
+        ## Just for conveniency, if all workers are on the localhost,
+	## then we can use localhost as the response IP too.
+        myip <- workers[1]
+      } else {
+        ## FIXME: The identification of the external IP number relies on
+        ## a single third-party server.  This could be improved by falling
+        ## back to other servers, cf. https://github.com/phoemur/ipgetter
+        myip <- readLines("http://myexternalip.com/raw")
+      }
     }
     workers <- ClusterRegistry("start", workers=workers,
                                master=myip, homogeneous=FALSE)
