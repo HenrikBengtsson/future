@@ -17,9 +17,15 @@ print(availableCores(which="max"))
 ## All known settings
 print(availableCores(na.rm=FALSE, which="all"))
 
+## System settings
+n <- availableCores(methods="system")
+print(n)
+stopifnot(length(n) == 1, is.numeric(n), is.finite(n), n >= 1)
+
 ## Predefined ones for known cluster schedulers
 print(availableCores(methods="PBS"))
-print(availableCores(methods="system"))
+print(availableCores(methods="SGE"))
+print(availableCores(methods="Slurm"))
 
 ## Any R options and system environment variable
 print(availableCores(methods=c("width", "FOO_BAR_ENV"),
