@@ -22,7 +22,7 @@ o Now availableCores() also acknowledges environment variable NSLOTS
   set by Sun/Oracle Grid Engine (SGE).
 o MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
   garbage collector will run at the very end in the process that
-  evalutated the future (just before returning the value).  This may
+  evaluated the future (just before returning the value).  This may
   help lowering the overall memory footprint when running multiple
   parallel R processes.  The user can enable this by specifying
   plan(multiprocess, gc=TRUE).  The developer can control this using
@@ -68,7 +68,7 @@ o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
   any objects in the cluster R session that was created during the
   evaluation of a previous future is available for succeeding futures
   that are evaluated in the same session.  Moreover, globals are
-  still indentified and exported but "missing" globals will not give
+  still identified and exported but "missing" globals will not give
   an error - instead it is assumed such globals are available in the
   environment where the future is evaluated.
 o OVERHEAD: Utility functions exported by ClusterFuture are now much
@@ -95,7 +95,7 @@ o ROBUSTNESS: Now value() for multicore futures detects if the underlying
 o SPEED: Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
 o GLOBALS: resolve() gained argument 'recursive'.
-o GLOBALS: Added option 'future.globals.resolve' for controling whether
+o GLOBALS: Added option 'future.globals.resolve' for controlling whether
   global variables should be resolved for futures or not.  If TRUE, then
   globals are searched recursively for any futures and if found such
   "global" futures are resolved.  If FALSE, global futures are not
