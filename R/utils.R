@@ -165,7 +165,19 @@ getOption <- local({
 detectCores <- local({
   res <- NULL
   function() {
-    if (is.null(res)) res <<- parallel::detectCores()
+    if (is.null(res)) {
+      value <- parallel::detectCores()
+      
+      ## If unknown, set default to 1L
+      if (is.na(value)) value <- 1L
+      value <- as.integer(value)
+      
+      ## Assert positive integer
+      stopifnot(length(value) == 1L, is.numeric(value),
+                is.finite(value), value >= 1L)
+		
+      res <<- value
+    }
     res
   }
 })
