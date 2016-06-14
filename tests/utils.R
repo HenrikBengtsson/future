@@ -1,4 +1,5 @@
 ovars <- ls()
+oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** utils ...")
 
@@ -7,6 +8,7 @@ message("*** hpaste() ...")
 printf <- function(...) cat(sprintf(...))
 hpaste <- future:::hpaste
 requirePackages <- future:::requirePackages
+importParallel <- future:::importParallel
 
 # Some vectors
 x <- 1:6
@@ -134,7 +136,31 @@ stopifnot(inherits(res, "try-error"))
 message("*** requirePackages() ... DONE")
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# importParallel()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** importParallel() ...")
+
+mclapply <- importParallel("mclapply")
+stopifnot(identical(mclapply, parallel::mclapply))
+
+ns <- getNamespace("parallel")
+if (exists("sendCall", envir=ns, mode="function")) {
+  sendCall <- importParallel("sendCall")
+  stopifnot(identical(sendCall, parallel:::sendCall))
+} else {
+  res <- try(importParallel("sendCall"), silent=TRUE)
+  stopifnot(inherits(res, "try-error"))
+}
+
+res <- try(importParallel("<unknown function>"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** importParallel() ... DONE")
+
+
 message("*** utils ... DONE")
 
 ## Cleanup
+options(oopts)
 rm(list=setdiff(ls(), ovars))
