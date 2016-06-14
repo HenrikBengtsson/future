@@ -2,79 +2,37 @@
 # Travis-CI configuration for R packages
 #
 # REFERENCES:
-# * Travis CI: https://travis-ci.org/
-# * r-builder: https://github.com/metacran/r-builder
+# * Travis CI: https://docs.travis-ci.com/user/languages/r
 # * covr: https://github.com/jimhester/covr
 #
 # Validate your .travis.yml file at http://lint.travis-ci.org/
 #----------------------------------------------------------------
-language: c
+language: r
+sudo: false
+cache: packages
 
-env:
-  global:
-    - RENV="./pkg-build.sh"    # r-builder
-    - R_BUILD_ARGS="--no-manual"
-    - R_CHECK_ARGS="--no-manual --as-cran"
-    - _R_CHECK_CRAN_INCOMING_=TRUE
-    - _R_CHECK_FORCE_SUGGESTS_=false
-    # Need LaTeX? (very time consuming!)
-    - BOOTSTRAP_LATEX=""
-    # Skip building vignettes, which iff LaTeX-based are very
-    # time consuming because LaTeX needs to be installed
-#    - R_BUILD_ARGS="--no-build-vignettes ${R_BUILD_ARGS}"
-#    - R_CHECK_ARGS="--no-build-vignettes ${R_CHECK_ARGS}"
+os:
+  - linux
+  - osx
 
-  # R versions r-builder should test on (ignored by r-travis)
-  matrix:
-    - RVERSION=oldrel
-    - RVERSION=release
-    - RVERSION=devel _R_COVR_=TRUE _R_CHECK_FULL_=TRUE
+r:
+  - oldrel
+  - release
+  - devel
 
+matrix:
+  exclude:
+    - os: osx
+      r: devel
 
-before_install:
-  - echo RENV=$RENV
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh;
-  - chmod 755 $RENV
-  - $RENV bootstrap
-  - if [ "BOOTSTRAP_LATEX" == "true" ]; then
-      (cd /tmp && curl -OL http://mirrors.ctan.org/macros/latex/contrib/xcolor.zip && cd /usr/share/texmf/tex/latex && sudo unzip /tmp/xcolor.zip && cd xcolor && sudo latex xcolor.ins && sudo texhash);
-    else
-      export R_RSP_COMPILELATEX_FALLBACK="copy-force";
-    fi
-  - if [[ "$_R_CHECK_USE_VALGRIND_" == "TRUE" ]]; then
-      export R_BUILD_ARGS="--no-manual --no-build-vignettes";
-      export R_CHECK_ARGS="--no-manual --no-build-vignettes --no-codoc --no-examples --use-valgrind";
-      export _R_CHECK_TIMINGS_=10;
-      sudo apt-get install valgrind;
-      valgrind --version;
-    fi
-
-install:
- - $RENV install_deps
-
-script:
-  - $RENV run_build
-  - $RENV run_check
+r_github_packages:
+  - jimhester/covr
 
 after_success:
-  - $RENV dump_logs_by_extension out
-  - if [[ "$_R_COVR_" == "TRUE" && -f ".covr.R" ]]; then
-      $RENV install_devtools;
-      $RENV install_github jimhester/covr;
-      curl -OL https://raw.githubusercontent.com/HenrikBengtsson/covr-utils/master/covr-utils.R;
-    fi
-  - if [[ "$_R_COVR_" == "TRUE" && -f ".covr.R" ]]; then
-      $RENV run_script .covr.R;
-    fi
-
-after_failure:
-  - $RENV dump_logs
+  - Rscript -e 'covr::codecov(quiet=FALSE)'
 
 notifications:
   email:
     on_success: change
     on_failure: change
 
-branches:
-  except:
-   - /-expt$/

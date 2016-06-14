@@ -43,7 +43,7 @@ mandelbrot <- function(xlim=c(-2, 0.5), ylim=c(-1,1), resolution=400L, maxIter=2
   idxOfNonDiverged <- seq_along(nonDiverged)
 
   ## Set of complex numbers to be investigated
-  C <- outer(y, x, FUN=function(y,x) complex(real=x, imag=y))
+  C <- outer(y, x, FUN=function(y,x) complex(real=x, imaginary=y))
 
   ## SPEEDUP: The Mandelbrot sequence will only be calculated on the
   ## "remaining set" of complex numbers that yet hasn't diverged.

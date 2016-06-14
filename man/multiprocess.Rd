@@ -5,7 +5,8 @@
 \title{Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation}
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, workers = availableCores(), earlySignal = FALSE, ...)
+  globals = TRUE, workers = availableCores(), gc = FALSE,
+  earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -23,6 +24,9 @@ located, an informative error is generated.}
 
 \item{workers}{The maximum number of multiprocess futures that
 can be active at the same time before blocking.}
+
+\item{gc}{If TRUE, the garbage collector run after the future
+is resolved (in the process that evaluated the future).}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 

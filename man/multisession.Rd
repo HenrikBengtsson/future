@@ -5,8 +5,8 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, workers = availableCores(), earlySignal = FALSE,
-  ...)
+  persistent = FALSE, workers = availableCores(), gc = FALSE,
+  earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -22,6 +22,9 @@ from objects prior to the evaluation of the future.}
 
 \item{workers}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
+
+\item{gc}{If TRUE, the garbage collector run after the future
+is resolved (in the process that evaluated the future).}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 

@@ -38,11 +38,14 @@ print.FutureError <- function(x, ...) {
       cat("\n")
     }
 
-    fcalls <- future$value$traceback
-    if (!is.null(fcalls)) {
-      cat("Future call stack:\n")
-      print(fcalls)
-      cat("\n")
+    cond <- future$value
+    if (inherits(cond, "condition")) {
+      fcalls <- cond$traceback
+      if (!is.null(fcalls)) {
+        cat("Future call stack:\n")
+        print(fcalls)
+        cat("\n")
+      }
     }
 
     if (!is.null(output)) {

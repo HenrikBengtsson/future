@@ -13,6 +13,8 @@
 #' from objects prior to the evaluation of the future.
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
@@ -60,7 +62,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=availableCores(), earlySignal=FALSE, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -82,49 +84,9 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  workers <- sessions("start", n=workers-1L)
+  workers <- ClusterRegistry("start", workers=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, earlySignal=earlySignal, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
-
-
-#' @importFrom parallel makeCluster stopCluster
-#' @importFrom utils capture.output
-sessions <- local({
-  workers <- NULL
-
-  .makeCluster <- function(n) {
-    capture.output({
-      workers <- makeCluster(n)
-    })
-    workers
-  }
-
-  function(action=c("get", "start", "stop"), n=availableCores()-1L) {
-    action <- match.arg(action)
-    n <- as.integer(n)
-    stopifnot(length(n) == 1, is.finite(n))
-
-    if (is.null(workers) && action != "stop") {
-      workers <<- .makeCluster(n)
-    }
-
-    if (action == "get") {
-      return(workers)
-    } else if (action == "start") {
-      stopifnot(n >= 1)
-      if (length(workers) != n) {
-        sessions(action="stop")
-        workers <<- .makeCluster(n)
-      }
-    } else if (action == "stop") {
-      if (!is.null(workers)) try(stopCluster(workers), silent=TRUE)
-      cons <- NULL
-      workers <<- NULL
-    }
-
-    invisible(workers)
-  }
-})

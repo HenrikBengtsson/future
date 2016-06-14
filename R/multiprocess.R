@@ -16,6 +16,8 @@
 #' located, an informative error is generated.
 #' @param workers The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
@@ -29,9 +31,9 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(), earlySignal=FALSE, ...) {
+multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal, ...)
+  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")

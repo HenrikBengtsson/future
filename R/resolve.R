@@ -41,7 +41,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1
   ## Nothing to do?
   if (recursive < 0) return(x)
 
-  ## Pool for Future to finish
+  ## Poll for Future to finish
   while (!resolved(x)) {
     Sys.sleep(sleep)
   }

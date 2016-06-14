@@ -1,6 +1,38 @@
 Package: future
 ===============
 
+Version: 0.15.0 [2016-06-13]
+o Now .future.R (if found in the current directory or otherwise in
+  the user's home directory) is sourced when the future package is
+  attach (but not loaded).  This helps separating scripts from
+  configuration of futures.
+o Added remote futures, which are cluster futures with convenient
+  default arguments for simple remote access to R, e.g.
+  plan(remote, workers="login.my-server.org").
+o Added support for plan(cluster, workers=c("n1", "n2", "n2", "n4")),
+  where 'workers' (also for ClusterFuture()) is a set of host names
+  passed to parallel::makeCluster(workers).  It can also be the number
+  of localhost workers.
+o Added command line option --parallel=<p>, which is long for -p <p>.
+o Now command line option -p <p> also set the default future strategy
+  to multiprocessing (if p >= 2 and eager otherwise), unless another
+  strategy is already specified via option 'future.plan' or system
+  environment variable R_FUTURE_PLAN.
+o Now availableCores() also acknowledges environment variable NSLOTS
+  set by Sun/Oracle Grid Engine (SGE).
+o MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
+  garbage collector will run at the very end in the process that
+  evaluated the future (just before returning the value).  This may
+  help lowering the overall memory footprint when running multiple
+  parallel R processes.  The user can enable this by specifying
+  plan(multiprocess, gc=TRUE).  The developer can control this using
+  future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
+o SPEEDUP: Significantly decreased the overhead of creating a future,
+  particularly multicore futures.
+o BUG FIX: Future would give an error with plan(list("eager")),
+  whereas it did work with plan("eager") and plan(list(eager)).
+
+
 Version: 0.14.0 [2016-05-16]
 o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
   the old argument names a deprecation warning will be generated, but
@@ -36,7 +68,7 @@ o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
   any objects in the cluster R session that was created during the
   evaluation of a previous future is available for succeeding futures
   that are evaluated in the same session.  Moreover, globals are
-  still indentified and exported but "missing" globals will not give
+  still identified and exported but "missing" globals will not give
   an error - instead it is assumed such globals are available in the
   environment where the future is evaluated.
 o OVERHEAD: Utility functions exported by ClusterFuture are now much
@@ -63,7 +95,7 @@ o ROBUSTNESS: Now value() for multicore futures detects if the underlying
 o SPEED: Adjusted the parameters for the schema used to wait for next
   available cluster node such that nodes are polled more frequently.
 o GLOBALS: resolve() gained argument 'recursive'.
-o GLOBALS: Added option 'future.globals.resolve' for controling whether
+o GLOBALS: Added option 'future.globals.resolve' for controlling whether
   global variables should be resolved for futures or not.  If TRUE, then
   globals are searched recursively for any futures and if found such
   "global" futures are resolved.  If FALSE, global futures are not

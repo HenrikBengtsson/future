@@ -17,6 +17,8 @@
 #' @param globals If TRUE, global objects are resolved ("frozen") at
 #' the point of time when the future is created, otherwise they are
 #' resolved when the future is resolved.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
@@ -32,7 +34,7 @@
 #' \emph{lazy futures}.
 #'
 #' @export
-lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
+lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   globals <- as.logical(globals)
   local <- as.logical(local)
@@ -52,7 +54,7 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
     exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression, resolve=TRUE)
   }
 
-  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal)
+  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, gc=gc, earlySignal=earlySignal)
 }
 class(lazy) <- c("lazy", "uniprocess", "future", "function")
 

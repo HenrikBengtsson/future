@@ -14,8 +14,25 @@ for (cores in 1:2) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
+  ## Set up a cluster with 4 nodes (explicitly)
   cl <- parallel::makeCluster(cores)
   plan(cluster, workers=cl)
+
+  ## No global variables
+  f <- try(cluster({
+    42L
+  }, workers=cl), silent=FALSE)
+  print(f)
+  stopifnot(inherits(f, "ClusterFuture"))
+
+  print(resolved(f))
+  y <- value(f)
+  print(y)
+  stopifnot(y == 42L)
+
+
+  ## Set up a cluster with 4 nodes (implicitly)
+  plan(cluster, workers=cores)
 
   ## No global variables
   f <- try(cluster({
@@ -141,6 +158,34 @@ for (cores in 1:2) {
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
+
+
+message("*** cluster() - setDefaultCluster() ...")
+
+library("parallel")
+setDefaultCluster(makeCluster(2))
+plan(cluster)
+
+pid <- Sys.getpid()
+message(pid)
+
+a %<-% Sys.getpid()
+b %<-% Sys.getpid()
+message(a)
+message(b)
+
+setDefaultCluster(NULL)
+
+message("*** cluster() - setDefaultCluster() ... DONE")
+
+
+message("*** cluster() - exceptions ...")
+
+res <- try(cluster(42L, workers=NA), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** cluster() - exceptions ... DONE")
+
 
 message("*** cluster() ... DONE")
 

@@ -1,32 +1,49 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
-  parseCmdArgs()
-  uuid()
-  plan("default")
-}
+  args <- parseCmdArgs()
 
-parseCmdArgs <- function() {
-  args <- commandArgs()
+  p <- args$p
+  if (is.null(p)) {
+    plan("default")
+  } else {
+    ## Apply
+    options(mc.cores=p-1L)
+    ## options(Ncpus=p-1L) ## FIXME: Does it make sense? /HB 2016-04-02
 
-  ## Option -p <ncores>
-  key <- which(args == "-p")
-  if (length(key) > 0) {
-    ## Use only last, iff multiple are given
-    if (length(key) > 1) key <- key[length(key)]
-    value0 <- args[key+1L]
-    value <- as.integer(value0)
-    max <- availableCores(methods="system")
-
-    if (is.na(value) || value <= 0L) {
-      msg <- sprintf("future: Invalid number of processes specified in command-line option: -p %s", value0)
-      warning(msg, call.=FALSE, immediate.=TRUE)
-    } else if (value > max) {
-      msg <- sprintf("future: Trying to request more processes than number of cores available (=%d) on the system: -p %s", max, value0)
-      warning(msg, call.=FALSE, immediate.=TRUE)
+    ## Set eager/multiprocess futures, unless
+    ## another plan is explicitly specified.
+    strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
+    strategy <- getOption("future.plan", strategy)
+    if (nzchar(strategy)) {
+      plan("default")
+    } else if (p == 1L) {
+      plan(eager)
     } else {
-      ## Apply
-      options(mc.cores=value-1L)
-      ## options(Ncpus=value-1L) ## FIXME: Does it make sense? /HB 2016-04-02
+      plan(multiprocess, workers=p)
     }
   }
-} # parseCmdArgs()
+
+  ## Create UUID for this process
+  uuid()
+} ## .onLoad()
+
+
+## covr: skip=all
+#' @importFrom utils file_test
+.onAttach <- function(libname, pkgname) {
+  ## Load .future.R script?
+  loadDotFuture <- getOption("future.load_startup_script", TRUE)
+  if (loadDotFuture) {
+    pathnames <- c(".future.R", "~/.future.R")
+    pathnames <- pathnames[file_test("-f", pathnames)]
+  
+    if (length(pathnames) == 0) {
+      mdebug("Future scripts identified: <none>")
+      return()
+    }
+    mdebug("Future scripts identified: %s", paste(sQuote(pathnames), collapse=", "))
+    pathname <- pathnames[1]
+    mdebug("Future script to load: %s", sQuote(pathname))
+    source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
+  }
+} ## .onAttach()

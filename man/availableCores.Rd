@@ -6,8 +6,8 @@
 \usage{
 availableCores(constraints = NULL,
   methods = getOption("future.availableCoresMethods", c("system",
-  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS")), na.rm = TRUE,
-  default = c(current = 1L), which = c("min", "max", "all"))
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")),
+  na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{
 \item{constraints}{An optional character specifying under what
@@ -47,24 +47,29 @@ are supported:
  \item \code{"mc.cores+1"} -
    If available, returns the value of option
    \code{\link[base:options]{mc.cores}} + 1.
-   Note that \code{mc.cores} is defined as the number of
+   Note that \option{mc.cores} is defined as the number of
    \emph{additional} R processes that can be used in addition to the
    main R process.  This means that with \code{mc.cores=0} all
    calculations should be done in the main R process, i.e. we have
    exactly one core available for our calculations.
-   The \code{mc.cores} option defaults to environment variable
-   \code{MC_CORES} (and is set accordingly when the \pkg{parallel}
-   package is loaded).  The \code{mc.cores} option is used by for
+   The \option{mc.cores} option defaults to environment variable
+   \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
+   package is loaded).  The \option{mc.cores} option is used by for
    instance \code{\link[parallel]{mclapply}()}.
  \item \code{"PBS"} -
-   Query Torque/PBS environment variable \code{PBS_NUM_PPN}.
+   Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
    Depending on PBS system configuration, this \emph{resource} parameter
    may or may not default to one.  It can be specified when submitting
    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
    requests four nodes each with two cores.
+ \item \code{"SGE"} -
+   Query Sun/Oracle Grid Engine (SGE) environment variable
+   \env{NSLOTS}.
+   It can be specified when submitting a job as in, for instance,
+   \code{qsub -pe by_node 2}, which two cores on a single machine.
  \item \code{"Slurm"} -
    Query Simple Linux Utility for Resource Management (Slurm)
-   environment variable \code{SLURM_CPUS_PER_TASK}.
+   environment variable \env{SLURM_CPUS_PER_TASK}.
    This may or may not be set.  It can be set when submitting a job,
    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
    \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.

@@ -24,23 +24,6 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, .
 }
 
 
-## We are currently importing the following non-exported functions:
-## * parallel:::mccollect()
-## * parallel:::mcparallel()
-## * parallel:::selectChildren()
-importMulticore <- function(name=NULL) {
-  ns <- getNamespace("parallel")
-  if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    ## covr: skip=2
-    msg <- sprintf("Multicore processing is not supported on this system: %s",
-         sQuote(.Platform$OS))
-    mdebug(msg)
-    stop(msg, call.=FALSE)
-  }
-  get(name, mode="function", envir=ns, inherits=FALSE)
-}
-
-
 run <- function(...) UseMethod("run")
 
 run.MulticoreFuture <- function(future, ...) {
@@ -48,12 +31,15 @@ run.MulticoreFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  mcparallel <- importMulticore("mcparallel")
+  mcparallel <- importParallel("mcparallel")
 
   expr <- getExpression(future)
   envir <- future$envir
 
-  requestCore(await=function() FutureRegistry("multicore", action="collect-first"))
+  requestCore(
+    await=function() FutureRegistry("multicore", action="collect-first"),
+    workers=future$workers
+  )
 
   ## Add to registry
   FutureRegistry("multicore", action="add", future=future)
@@ -79,7 +65,7 @@ resolved.MulticoreFuture <- function(x, timeout=0.2, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(x)
 
-  selectChildren <- importMulticore("selectChildren")
+  selectChildren <- importParallel("selectChildren")
   job <- x$job
   stopifnot(inherits(job, "parallelJob"))
 
@@ -109,7 +95,7 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
-  mccollect <- importMulticore("mccollect")
+  mccollect <- importParallel("mccollect")
   job <- future$job
   stopifnot(inherits(job, "parallelJob"))
   res <- mccollect(job, wait=TRUE)[[1L]]
@@ -137,4 +123,10 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   FutureRegistry("multicore", action="remove", future=future)
 
   NextMethod("value")
+}
+
+
+#' @export
+getExpression.MulticoreFuture <- function(future, mc.cores=0L, ...) {
+  NextMethod("getExpression", mc.cores=mc.cores)
 }

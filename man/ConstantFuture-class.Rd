@@ -5,10 +5,11 @@
 \alias{ConstantFuture-class}
 \title{A future with a constant value}
 \usage{
-ConstantFuture(value = NULL, ...)
+ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
+  local = FALSE, gc = FALSE, ...)
 }
 \arguments{
-\item{value}{An R value.}
+\item{expr}{An R value.}
 
 \item{\dots}{Not used.}
 }

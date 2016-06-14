@@ -32,11 +32,34 @@ v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
 
 plan(lazy, earlySignal=TRUE)
+
+## Errors
 f <- future({ stop("bang!") })
 r <- try(resolved(f), silent=TRUE)
 stopifnot(inherits(r, "try-error"))
 v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
+
+## Warnings
+f <- future({ warning("careful!") })
+res <- tryCatch({
+  r <- resolved(f)
+}, condition = function(w) w)
+stopifnot(inherits(res, "warning"))
+
+## Messages
+f <- future({ message("hey!") })
+res <- tryCatch({
+  r <- resolved(f)
+}, condition = function(w) w)
+stopifnot(inherits(res, "message"))
+
+## Condition
+f <- future({ signalCondition(simpleCondition("hmm")) })
+res <- tryCatch({
+  r <- resolved(f)
+}, condition = function(w) w)
+stopifnot(inherits(res, "condition"))
 
 message("*** Early signaling of conditions with lazy futures ... DONE")
 

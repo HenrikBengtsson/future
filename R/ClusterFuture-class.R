@@ -8,9 +8,13 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
+#' Alternatively, a character vector of host names or a numeric scalar,
+#' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{ClusterFuture}.
@@ -25,18 +29,23 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
+  defaultCluster <- importParallel("defaultCluster")
+
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
     workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
-  defaultCluster <- importCluster("defaultCluster")
   if (substitute) expr <- substitute(expr)
-  if (is.null(workers)) workers <- defaultCluster()
-  if (!inherits(workers, "cluster")) {
+
+  if (is.null(workers)) {
+    workers <- defaultCluster()
+  } else if (is.character(workers) || is.numeric(workers)) {
+    workers <- ClusterRegistry("start", workers=workers)
+  } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
   stopifnot(length(workers) > 0)
@@ -57,29 +66,13 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
 
 
-## We are currently importing the following non-exported functions:
-## * parallel:::defaultCluster()
-## * parallel:::recvResult()
-## * parallel:::sendCall()
-importCluster <- function(name=NULL) {
-  ns <- getNamespace("parallel")
-  if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    ## covr: skip=3
-    msg <- sprintf("Cluster processing is not supported on this system: %s",
-                   sQuote(.Platform$OS))
-    mdebug(msg)
-    stop(msg, call.=FALSE)
-  }
-  get(name, mode="function", envir=ns, inherits=FALSE)
-}
-
 #' @importFrom parallel clusterCall clusterExport
 run.ClusterFuture <- function(future, ...) {
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  sendCall <- importCluster("sendCall")
+  sendCall <- importParallel("sendCall")
   workers <- future$workers
   expr <- getExpression(future)
   persistent <- future$persistent
@@ -202,7 +195,7 @@ value.ClusterFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  recvResult <- importCluster("recvResult")
+  recvResult <- importParallel("recvResult")
 
   workers <- future$workers
   node <- future$node
@@ -305,3 +298,4 @@ requestNode <- function(await, workers, maxTries=getOption("future.maxTries", tr
 
   node
 }
+

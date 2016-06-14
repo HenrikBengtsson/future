@@ -5,7 +5,7 @@
 #' \code{unresolved} or \code{resolved}, a state which can be checked
 #' with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
 #' value is not available.  As soon as it is \emph{resolved}, the value
-#' is available via \code{\link{value}()}.
+#' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} in which the evaluation
@@ -15,6 +15,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
@@ -34,7 +36,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, earlySignal=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -43,6 +45,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core$envir <- envir
   core$owner <- uuid()
   core$local <- local
+  core$gc <- gc
   core$earlySignal <- earlySignal
 
   ## The current state of the future, e.g.
@@ -56,6 +59,59 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
 }
 
 
+#' @importFrom utils head
+#' @export
+print.Future <- function(x, ...) {
+  class <- class(x)
+  cat(sprintf("%s:\n", class[1]))
+  cat("Expression:\n")
+  print(x$expr)
+  cat(sprintf("Local evaluation: %s\n", x$local))
+  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  g <- x$globals
+  ng <- length(g)
+  if (ng > 0) {
+    gSizes <- sapply(g, FUN=object.size)
+    gTotalSize <- sum(gSizes)
+    g <- head(g, n=5L)
+    gSizes <- head(gSizes, n=5L)
+    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
+    if (ng > 5L) g <- sprintf("%s ...", g)
+    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
+  } else {
+    cat("Globals: <none>\n")
+  }
+
+  hasValue <- exists("value", envir=x, inherits=FALSE)
+
+  if (exists("value", envir=x, inherits=FALSE)) {
+    cat("Resolved: TRUE\n")
+  } else if (inherits(x, "LazyFuture")) {
+    ## FIXME: Special case; will there every be other cases
+    ## for which we need to support this? /HB 2016-05-03
+    cat("Resolved: FALSE\n")
+  } else {
+    ## resolved() without early signalling
+    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
+    local({
+      earlySignal <- x$earlySignal
+      x$earlySignal <- FALSE
+      on.exit(x$earlySignal <- earlySignal)
+      cat(sprintf("Resolved: %s\n", resolved(x)))
+    })
+  }
+
+  if (hasValue) {
+    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+  } else {
+    cat("Value: <not collected>\n")
+  }
+  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Owner process: %s\n", x$owner))
+  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
+} ## print()
+
+
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
@@ -63,7 +119,7 @@ assertOwner <- function(future, ...) {
     sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
   }
 
-  if (!isTRUE(all.equal(future$owner, uuid(), check.attributes=FALSE))) {
+  if (!identical(future$owner, uuid())) {
     stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
   }
 
@@ -87,10 +143,10 @@ assertOwner <- function(future, ...) {
 #' This method needs to be implemented by the class that implement
 #' the Future API.
 #'
+#' @aliases value
+#' @rdname value
 #' @export
 #' @export value
-#' @aliases value
-#' @export
 value.Future <- function(future, signal=TRUE, ...) {
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
@@ -159,7 +215,85 @@ resolved.Future <- function(x, ...) {
 #' @keywords internal
 getExpression <- function(future, ...) UseMethod("getExpression")
 
-makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
+#' @export
+getExpression.Future <- function(future, mc.cores=NULL, ...) {
+  strategies <- plan("list")
+
+  ## If end of future stack, fall back to using single-core
+  ## processing.  In this case we don't have to rely
+  ## on the future package.  Instead, we can use the
+  ## light-weight approach where we force the number of
+  ## cores available to be one.  This we achieve by
+  ## setting the number of _additional_ cores to be
+  ## zero (sic!).
+  if (length(strategies) == 0) {
+    mc.cores <- 0L
+  }
+
+  ## Should 'mc.cores' be set?
+  if (!is.null(mc.cores)) {
+    ## FIXME: How can we guarantee that '...future.mc.cores.old'
+    ## is not overwritten?  /HB 2016-03-14
+    enter <- bquote({
+      ## covr: skip=2
+      ...future.mc.cores.old <- getOption("mc.cores")
+      options(mc.cores=.(mc.cores))
+    })
+
+    exit <- bquote({
+      ## covr: skip=1
+      options(mc.cores=...future.mc.cores.old)
+    })
+  } else {
+    enter <- exit <- NULL
+  }
+
+  if (length(strategies) > 0) {
+    exit <- bquote({
+      ## covr: skip=2
+      .(exit)
+      future::plan(.(strategies))
+    })
+  }
+
+  ## Identify package
+  pkgs <- lapply(strategies, FUN=environment)
+  pkgs <- lapply(pkgs, FUN=environmentName)
+  pkgs <- unique(unlist(pkgs))
+
+  if (length(pkgs) > 0L) {
+    ## Sanity check by verifying packages can be loaded already here
+    ## If there is somethings wrong in 'pkgs', we get the error
+    ## already before launching the future.
+    for (pkg in pkgs) loadNamespace(pkg)
+
+    enter <- bquote({
+      ## covr: skip=3
+      .(enter)
+      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
+      oplans <- future::plan("list")
+    })
+  } else {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      oplans <- future::plan("list")
+    })
+  }
+
+  if (length(strategies) >= 2L) {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      future::plan(.(strategies[-1]))
+    })
+  }
+
+  makeExpression(expr=future$expr, local=future$local, gc=future$gc, enter=enter, exit=exit)
+} ## getExpression()
+
+
+makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
@@ -170,120 +304,29 @@ makeExpression <- function(expr, local=TRUE, enter=NULL, exit=NULL) {
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
   ## a tryCatch() statement. /HB 2016-03-14
-  expr <- substitute({
-    ## covr: skip=6
-    enter
-    tryCatch({
-      body
-    }, finally = {
-      exit
-    })
-  }, env=list(enter=enter, body=expr, exit=exit))
+  if (gc) {
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      ...future.value <- tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+      gc(verbose=FALSE, reset=FALSE)
+      ...future.value
+    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
+  } else {
+    expr <- substitute({
+      ## covr: skip=6
+      enter
+      tryCatch({
+        body
+      }, finally = {
+        exit
+      })
+    }, env=list(enter=enter, body=expr, exit=exit))
+  }
 
   expr
 } ## makeExpression()
-
-
-#' @export
-getExpression.Future <- function(future, ...) {
-  strategies <- plan("list")
-  if (length(strategies) > 1L) {
-    ## Identify package
-    pkgs <- lapply(strategies, FUN=environment)
-    pkgs <- lapply(pkgs, FUN=environmentName)
-    pkgs <- unique(unlist(pkgs))
-
-    ## Sanity check by verifying packages can be loaded already here
-    ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future.
-    for (pkg in pkgs) loadNamespace(pkg)
-
-    enter <- bquote({
-      ## covr: skip=4
-      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
-      oplans <- future::plan("list")
-      future::plan(.(strategies[-1]))
-    })
-
-    exit <- bquote({
-      ## covr: skip=1
-      future::plan(.(strategies))
-    })
-  } else {
-    ## If end of future stack, fall to using single-core
-    ## processing.  In this case we don't have to rely
-    ## on the future package.  Instead, we can use the
-    ## light-weight approach where we force the number of
-    ## cores available to be one.  This we achieve by
-    ## setting the number of _additional_ cores to be
-    ## zero (sic!).
-
-    ## FIXME: How can we guarantee that '.future.mc.cores.old'
-    ## is not overwritten?  /HB 2016-03-14
-    enter <- quote({
-      ## covr: skip=3
-      .future.mc.cores.old <- getOption("mc.cores")
-      options(mc.cores=0L)
-    })
-
-    exit <- bquote({
-      ## covr: skip=1
-      options(mc.cores=.future.mc.cores.old)
-    })
-  }
-
-  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
-} ## getExpression()
-
-
-#' @importFrom utils head
-#' @export
-print.Future <- function(x, ...) {
-  class <- class(x)
-  cat(sprintf("%s:\n", class[1]))
-  cat("Expression:\n")
-  print(x$expr)
-  cat(sprintf("Local evaluation: %s\n", x$local))
-  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
-  g <- x$globals
-  ng <- length(g)
-  if (ng > 0) {
-    gSizes <- sapply(g, FUN=object.size)
-    gTotalSize <- sum(gSizes)
-    g <- head(g, n=5L)
-    gSizes <- head(gSizes, n=5L)
-    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
-    if (ng > 5L) g <- sprintf("%s ...", g)
-    cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
-  } else {
-    cat("Globals: <none>\n")
-  }
-
-  hasValue <- exists("value", envir=x, inherits=FALSE)
-
-  if (exists("value", envir=x, inherits=FALSE)) {
-    cat("Resolved: TRUE\n")
-  } else if (inherits(x, "LazyFuture")) {
-    ## FIXME: Special case; will there every be other cases
-    ## for which we need to support this? /HB 2016-05-03
-    cat("Resolved: FALSE\n")
-  } else {
-    ## resolved() without early signalling
-    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
-    local({
-      earlySignal <- x$earlySignal
-      x$earlySignal <- FALSE
-      on.exit(x$earlySignal <- earlySignal)
-      cat(sprintf("Resolved: %s\n", resolved(x)))
-    })
-  }
-
-  if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
-  } else {
-    cat("Value: <not collected>\n")
-  }
-  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
-  cat(sprintf("Owner process: %s\n", x$owner))
-  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
-} ## print()

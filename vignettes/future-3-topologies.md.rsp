@@ -17,7 +17,7 @@ options("withCapture/newline"=FALSE)
 
 # <%@meta name="title"%>
 
-Futures can be nested in R such that one future creates another set of futures and so on.  This may for instance occur within nested for loops, e.g.
+Futures can be nested in R such that one future creates another set of futures and so on.  This may, for instance, occur within nested for loops, e.g.
 ```r
 library("future")
 library("listenv")
@@ -38,7 +38,7 @@ The default is to use eager futures unless otherwise specified, which is also tr
 
 
 ## Example: High-Throughput Sequencing
-Consider a high-throughput sequencing (HT-Seq) project with 50 human DNA samples where we have one FASTQ file per sample containing the raw sequence reads as they come out of the sequencing machine.  With this data we wish to align each FASTQ to a reference genome such that we generate 24 individual BAM files per sample - one per chromosome.
+Consider a high-throughput sequencing (HT-Seq) project with 50 human DNA samples where we have one FASTQ file per sample containing the raw sequence reads as they come out of the sequencing machine.  With this data, we wish to align each FASTQ to a reference genome such that we generate 24 individual BAM files per sample - one per chromosome.
 
 Here is the layout of what such an analysis could look like in R using futures.
 ```r
@@ -68,7 +68,7 @@ The default is to use eager futures, so without further specifications, the abov
 * A compute cluster with 3 machines each with 16 cores
 
 ### One multi-core machine
-With a single machine of 8 cores we could choose to process multiple samples at the same while processing chromosomes sequentially.  In other words, we would like to evaluate the outer layer of futures using multiprocess futures and the inner ones as regular (uniprocess) eager futures.  This can be specified as:
+With a single machine of 8 cores, we could choose to process multiple samples at the same while processing chromosomes sequentially.  In other words, we would like to evaluate the outer layer of futures using multiprocess futures and the inner ones as regular (uniprocess) eager futures.  This can be specified as:
 ```r
 plan(list(multiprocess, eager))
 ```
@@ -88,25 +88,23 @@ plan(list(tweak(multiprocess, workers=2), tweak(multiprocess, workers=4)))
 
 
 ### An ad-hoc compute cluster
-With a compute cluster of 3 machines each with 16 cores we can run up to 48 alignment processes in parallel.  A natural setup is to have one machine process one sample in parallel.  We could specify this as:
+With a compute cluster of 3 machines each with 16 cores, we can run up to 48 alignment processes in parallel.  A natural setup is to have one machine process one sample in parallel.  We could specify this as:
 ```r
 nodes <- c("n1", "n2", "n3")
-cl <- parallel::makeCluster(nodes)
-plan(list(tweak(cluster, workers=cl), multiprocess))
+plan(list(tweak(cluster, workers=nodes), multiprocess))
 ```
 _Comment:_ Multiprocess futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.
 
 One possible downside to the above setup is that we might not utilize all available cores all the time.  This is because the alignment of the shorter chromosomes will finish sooner than the longer ones, which means that we might at the end of each sample have only a few alignment processes running on each machine leaving the remaining cores idle/unused.  An alternative set up is then to use the following setup:
 ```r
-nodes <- c("n1", "n2", "n3")
-cl <- parallel::makeCluster(rep(nodes, each=8))
-plan(list(tweak(cluster, workers=cl), multiprocess))
+nodes <- rep(c("n1", "n2", "n3"), each=8)
+plan(list(tweak(cluster, workers=nodes), multiprocess))
 ```
 This will cause up to 24 (=3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
 
 ## Example: A remote compute cluster
-Imagine we have access to a remote compute cluster, with login node `login.my-cluster.org`, and that the cluster has three nodes `n1`, `n2` and `n3`.  Also, let us assume we have already set up the cluster such that we can login via public key authentication via SSH, i.e. when we do `ssh login.my-cluster.org` authentication is done automatically.
+Imagine we have access to a remote compute cluster, with login node `remote.server.org`, and that the cluster has three nodes `n1`, `n2`, and `n3`.  Also, let us assume we have already set up the cluster such that we can log in via public key authentication via SSH, i.e. when we do `ssh remote.server.org` authentication is done automatically.
 
 With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes.  Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.
 
@@ -114,16 +112,12 @@ With the above setup, we can use nested futures in our local R session to evalua
 library("future")
 library("listenv")
 
-## Set up access cluster login node
-remote <- function(host, homogeneous=FALSE, ...) {
-  myip <- readLines("http://myexternalip.com/raw")
-  cl <- parallel::makeCluster(host, master=myip, homogeneous=homogeneous, ...)
-  tweak(cluster, workers=cl, persistent=TRUE)
-}
-login <- remote("login.my-cluster.org")
+## Set up access to remote login node
+login <- tweak(remote, workers="remote.server.org")
+plan(login)
 
-## Setup cluster nodes on remote
-nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) } %plan% login
+## Set up cluster nodes on login node
+nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) }
 
 ## Specify future topology
 ## login node -> { cluster nodes } -> { multiple cores }

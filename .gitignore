@@ -13,3 +13,4 @@
 *.Rproj*
 *.swp
 .covr.rds
+.future

@@ -5,3 +5,9 @@ MultisessionFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE
   f <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, workers=workers, ...)
   structure(f, class=c("MultisessionFuture", class(f)))
 }
+
+
+#' @export
+getExpression.MultisessionFuture <- function(future, mc.cores=0L, ...) {
+  NextMethod("getExpression", mc.cores=mc.cores)
+}

@@ -42,5 +42,6 @@ Rplots.pdf$
 # Package specific
 #----------------------------
 ^[.]BatchJobs[.]R$
-[.]async
+[.]future
+
 

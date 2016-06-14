@@ -104,6 +104,17 @@ stopifnot(a == 2, x == 2)
 message("*** y %<-% { expr } %tweak% tweaks ... DONE")
 
 
+message("*** tweak() - exceptions ...")
+
+res <- try(tweak("<unknown-future-strategy>"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+res <- try(tweak(eager, "unnamed-argument"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** tweak() - exceptions ... DONE")
+
+
 message("*** Tweaking future strategies ... DONE")
 options(oopts)
 rm(list="oopts")

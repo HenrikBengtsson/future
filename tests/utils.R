@@ -6,6 +6,7 @@ message("*** hpaste() ...")
 
 printf <- function(...) cat(sprintf(...))
 hpaste <- future:::hpaste
+requirePackages <- future:::requirePackages
 
 # Some vectors
 x <- 1:6
@@ -117,6 +118,21 @@ stopifnot(length(vars) == 1)
 
 
 message("*** geval() et al. ... DONE")
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# requirePackages()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** requirePackages() ...")
+
+res <- requirePackages("future")
+res <- requirePackages(c("future", "listenv"))
+
+res <- try(requirePackages("<unknown package>"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** requirePackages() ... DONE")
+
 
 message("*** utils ... DONE")
 

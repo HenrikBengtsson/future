@@ -1,11 +1,12 @@
 Package: future
-Version: 0.14.0
+Version: 0.15.0
 Title: A Future API for R
 Imports:
     digest,
     globals (>= 0.6.1),
     listenv (>= 0.6.0),
-    parallel
+    parallel,
+    utils
 Suggests:
     R.rsp,
     markdown

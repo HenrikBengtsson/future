@@ -6,7 +6,7 @@
 \title{An eager future is a future whose value will be resolved immediately}
 \usage{
 EagerFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, ...)
+  local = TRUE, gc = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -20,6 +20,8 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
+
+\item{gc}{If TRUE, the garbage collector run after the future is resolved.}
 
 \item{\dots}{Additional named elements of the future.}
 }

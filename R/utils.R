@@ -148,3 +148,78 @@ requirePackages <- local(function(pkgs) {
   pkgs <- unique(pkgs)
   lapply(pkgs, FUN=requirePackage)
 }) ## requirePackages()
+
+
+## When 'default' is specified, this is 30x faster than
+## base::getOption().  The difference is that here we use
+## use names(.Options) whereas in 'base' names(options())
+## is used.
+getOption <- local({
+  go <- base::getOption
+  function(x, default=NULL) {
+    if (missing(default) || match(x, table=names(.Options), nomatch=0L) > 0L) go(x) else default
+  }
+}) ## getOption()
+
+
+detectCores <- local({
+  res <- NULL
+  function() {
+    if (is.null(res)) res <<- parallel::detectCores()
+    res
+  }
+})
+
+
+## We are currently importing the following non-exported functions:
+## * parallel:::defaultCluster()
+## * parallel:::recvResult()
+## * parallel:::selectChildren()
+## * parallel:::sendCall()
+## As well as the following ones (because they are not exported on Windows):
+## * parallel:::mccollect()
+## * parallel:::mcparallel()
+importParallel <- function(name=NULL) {
+  ns <- getNamespace("parallel")
+  if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
+    ## covr: skip=3
+    msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS), name)
+    mdebug(msg)
+    stop(msg, call.=FALSE)
+  }
+  get(name, mode="function", envir=ns, inherits=FALSE)
+}
+
+
+parseCmdArgs <- function(cmdargs=commandArgs()) {
+  args <- list()
+
+  ## Option --parallel=<n> or -p <n>
+  idx <- grep("^(-p|--parallel=.*)$", cmdargs)
+  if (length(idx) > 0) {
+    ## Use only last, iff multiple are given
+    if (length(idx) > 1) idx <- idx[length(idx)]
+
+    cmdarg <- cmdargs[idx]
+    if (cmdarg == "-p") {
+      cmdarg <- cmdargs[idx+1L]
+      value <- as.integer(cmdarg)
+      cmdarg <- sprintf("-p %s", cmdarg)
+    } else {
+      value <- as.integer(gsub("--parallel=", "", cmdarg))
+    }
+
+    max <- availableCores(methods="system")
+    if (is.na(value) || value <= 0L) {
+      msg <- sprintf("future: Ignoring invalid number of processes specified in command-line option: %s", cmdarg)
+      warning(msg, call.=FALSE, immediate.=TRUE)
+    } else if (value > max) {
+      msg <- sprintf("future: Ignoring requested number of processes, because it is greater than the number of cores/child processes available (=%d) to this R process: %s", max, cmdarg)
+      warning(msg, call.=FALSE, immediate.=TRUE)
+    } else {
+      args$p <- value
+    }
+  }
+
+  args
+} # parseCmdArgs()
