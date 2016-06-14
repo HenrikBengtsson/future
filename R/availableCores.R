@@ -166,7 +166,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
 #'
 #' Multicore futures are only supported on systems supporting
 #' multicore processing.  R supports this on most systems,
-#' except on the Microsoft Windows.
+#' except on Microsoft Windows.
 #'
 #' @return TRUE if multicore processing is supported, otherwise FALSE.
 #'
