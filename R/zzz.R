@@ -6,6 +6,7 @@
   if (is.null(p)) {
     plan("default")
   } else {
+    mdebug("R command-line argument: -p %s", p)
     ## Apply
     options(mc.cores=p-1L)
     ## options(Ncpus=p-1L) ## FIXME: Does it make sense? /HB 2016-04-02
@@ -13,18 +14,24 @@
     ## Set eager/multiprocess futures, unless
     ## another plan is explicitly specified.
     strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
+    mdebug("R_FUTURE_PLAN=%s", sQuote(strategy))
     strategy <- getOption("future.plan", strategy)
+    mdebug("Option 'future.plan'=%s", sQuote(strategy))
     if (nzchar(strategy)) {
+      mdebug("=> plan('default')")
       plan("default")
     } else if (p == 1L) {
+      mdebug("=> plan(eager)")
       plan(eager)
     } else {
+      mdebug("=> plan(multiprocess, workers=%s)", p)
       plan(multiprocess, workers=p)
     }
   }
 
   ## Create UUID for this process
-  uuid()
+  id <- uuid()
+  mdebug("R process uuid: %s", id)
 } ## .onLoad()
 
 

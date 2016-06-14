@@ -11,35 +11,34 @@ message("*** parseCmdArgs() ...")
 args <- parseCmdArgs()
 str(args)
 
-cmdargs <- c("-p", 1L)
-args <- parseCmdArgs(cmdargs)
+options(future.cmdargs=c("-p", 1L))
+args <- parseCmdArgs()
 str(args)
 stopifnot(args$p == 1L)
 
-cmdargs <- c(sprintf("--parallel=%d", maxCores))
-args <- parseCmdArgs(cmdargs)
+options(future.cmdargs=c(sprintf("--parallel=%d", maxCores)))
+args <- parseCmdArgs()
 str(args)
 stopifnot(args$p == maxCores)
 
-cmdargs <- c("-p", 1L, sprintf("--parallel=%d", maxCores))
-args <- parseCmdArgs(cmdargs)
+options(future.cmdargs=c("-p", 1L, sprintf("--parallel=%d", maxCores)))
+args <- parseCmdArgs()
 str(args)
 stopifnot(args$p == maxCores)
 
-cmdargs <- c("-p", 0L)
-args <- parseCmdArgs(cmdargs)
+options(future.cmdargs=c("-p", 0L))
+args <- parseCmdArgs()
 stopifnot(is.null(args$p))
-res <- tryCatch(parseCmdArgs(cmdargs), warning=function(w) w)
+res <- tryCatch(parseCmdArgs(), warning=function(w) w)
 stopifnot(inherits(res, "warning"))
 
-cmdargs <- c("-p", .Machine$integer.max)
-args <- parseCmdArgs(cmdargs)
+options(future.cmdargs=c("-p", .Machine$integer.max))
+args <- parseCmdArgs()
 stopifnot(is.null(args$p))
-res <- tryCatch(parseCmdArgs(cmdargs), warning=function(w) w)
+res <- tryCatch(parseCmdArgs(), warning=function(w) w)
 stopifnot(inherits(res, "warning"))
 
-
-
+options(future.cmdargs=NULL)
 
 message("*** parseCmdArgs() ... DONE")
 

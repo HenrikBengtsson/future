@@ -191,7 +191,8 @@ importParallel <- function(name=NULL) {
 }
 
 
-parseCmdArgs <- function(cmdargs=commandArgs()) {
+parseCmdArgs <- function() {
+  cmdargs <- getOption("future.cmdargs", commandArgs())
   args <- list()
 
   ## Option --parallel=<n> or -p <n>
