@@ -10,6 +10,33 @@ strategies <- setdiff(strategies, "multiprocess")
 
 message("*** resolve() ...")
 
+
+message("*** resolve() for Future objects ...")
+
+plan(multisession, workers=2L)
+
+for (value in c(FALSE, TRUE)) {
+  for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
+    message(sprintf("- value=%s, recursive=%s ...", value, recursive))
+  
+    f <- future(list(a=1, b=42L))
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
+    message("- w/ exception ...")
+    f <- future(list(a=1, b=42L, c=stop("Nah!")))
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
+    message(sprintf("- value=%s, recursive=%s ... DONE", value, recursive))
+  } ## for (resolve ...)
+} ## for (value ...)
+
+message("- exception ... DONE")
+
+message("*** resolve() for Future objects ... DONE")
+
+
 message("*** resolve() for lists ...")
 
 for (strategy in strategies) {

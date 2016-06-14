@@ -57,7 +57,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1
 
         msg <- sprintf("%s and its value was collected", msg)
 
-        ## Recursively resolve the value
+        ## Recursively resolve the value?
 	if (!is.atomic(v)) {
           v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
 	  msg <- sprintf("%s (and resolved itself)", msg)
