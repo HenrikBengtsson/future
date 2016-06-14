@@ -2,11 +2,17 @@ library("future")
 
 message("*** availableCores() ...")
 
-n <- availableCores()
-message(sprintf("n=%d", n))
+## detectCores() may return NA_integer_
+n <- parallel::detectCores()
+message(sprintf("detectCores()=%d", n))
+stopifnot(length(n) == 1, is.numeric(n))
 
 ## Default
 print(availableCores())
+
+n <- availableCores()
+message(sprintf("availableCores()=%d", n))
+stopifnot(length(n) == 1, is.numeric(n), n >= 1)
 
 ## Minimium of all known settings (default)
 print(availableCores(which="min"))
