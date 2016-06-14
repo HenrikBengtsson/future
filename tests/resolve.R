@@ -240,6 +240,16 @@ for (strategy in strategies) {
 
 message("*** resolve() for list environments ... DONE")
 
+
+
+message("*** resolved() - default ...")
+
+res <- resolved(42L)
+stopifnot(isTRUE(res))
+
+message("*** resolved() - default ... DONE")
+
+
 message("*** resolve() ... DONE")
 
 
