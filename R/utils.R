@@ -167,13 +167,15 @@ detectCores <- local({
   function() {
     if (is.null(res)) {
       ## Get number of system cores from option, system environment,
-      ## and finally detectCores()
+      ## and finally detectCores().  This also designed such that
+      ## it is indeed possible to return NA_integer_.
       value <- getOption("future.cores", Sys.getenv("R_FUTURE_CORES"))
       if (nzchar(value)) {
         value <- as.integer(value)
-      } else {
-        value <- parallel::detectCores()
+	return(value)
       }
+      
+      value <- parallel::detectCores()
       
       ## If unknown, set default to 1L
       if (is.na(value)) value <- 1L
