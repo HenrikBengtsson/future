@@ -19,7 +19,10 @@ for (value in c(FALSE, TRUE)) {
   for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
     message(sprintf("- value=%s, recursive=%s ...", value, recursive))
   
-    f <- future(list(a=1, b=42L))
+    f <- future({
+      Sys.sleep(0.5)
+      list(a=1, b=42L)
+    })
     res <- resolve(f, value=value, recursive=recursive)
     stopifnot(identical(res, f))
 

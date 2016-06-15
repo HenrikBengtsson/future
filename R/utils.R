@@ -166,7 +166,14 @@ detectCores <- local({
   res <- NULL
   function() {
     if (is.null(res)) {
-      value <- parallel::detectCores()
+      ## Get number of system cores from option, system environment,
+      ## and finally detectCores()
+      value <- getOption("future.cores", Sys.getenv("R_FUTURE_CORES"))
+      if (nzchar(value)) {
+        value <- as.integer(value)
+      } else {
+        value <- parallel::detectCores()
+      }
       
       ## If unknown, set default to 1L
       if (is.na(value)) value <- 1L
