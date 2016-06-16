@@ -249,7 +249,7 @@ parseCmdArgs <- function() {
 
 myExternalIP <- local({
   ip <- NULL
-  function(force=FALSE) {
+  function(force=FALSE, mustWork=TRUE) {
     if (!force && !is.null(ip)) return(ip)
     
     ## FIXME: The identification of the external IP number relies on a
@@ -268,14 +268,22 @@ myExternalIP <- local({
       value <- tryCatch(readLines(url), error = function(ex) NULL)
       if (!is.null(value)) break
     }
+    
+    ## Nothing found?
     if (is.null(value)) {
-      stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse=", ")))
+      if (mustWork) {
+        stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse=", ")))
+      }
+      return(NA_character_)
     }
 
     ## Trim and drop empty results (just in case)
     value <- trim(value)
     value <- value[nzchar(value)]
-   
+
+    ## Nothing found?
+    if (length(value) == 0 && !mustWork) return(NA_character_)
+    
     ## Sanity check
     stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
 
@@ -312,7 +320,7 @@ myInternalIP <- local({
     res
   } ## isPrivateIP()
 
-  function(force=FALSE, which=c("first", "last", "all")) {
+  function(force=FALSE, which=c("first", "last", "all"), mustWork=TRUE) {
     if (!force && !is.null(ip)) return(ip)
     which <- match.arg(which)
 
@@ -334,22 +342,29 @@ myInternalIP <- local({
       ## Keep private network IPs only (just in case)
       value <- res[isPrivateIP(res)]
     } else {
-      stop(sprintf("remote(..., myip='<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+      if (mustWork) {
+        stop(sprintf("remote(..., myip='<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+      }
+      return(NA_character_)
     }
 
     ## Trim and drop empty results (just in case)
     value <- trim(value)
     value <- value[nzchar(value)]
-    
+
+    ## Nothing found?
+    if (length(value) == 0 && !mustWork) return(NA_character_)
+
     if (length(value) > 1) {
       value <- switch(which,
-        "first": value[1],
-        "last" : value[length(value)],
-        "all"  : value
+        first = value[1],
+        last  = value[length(value)],
+        all   = value,
+        value
       )
     }
-
     ## Sanity check
+
     stopifnot(is.character(value), length(value) >= 1, !any(is.na(value)))
 
     ## Cache result
