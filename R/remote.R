@@ -34,20 +34,30 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
 
   if (is.character(workers)) {
+    ## Guess what type of IP to use
     if (is.null(myip)) {
       if (all(workers %in% c("localhost", "127.0.0.1"))) {
         ## Just for conveniency, if all workers are on the localhost,
 	## then we can use localhost as the response IP too.
         myip <- workers[1]
       } else {
-        ## FIXME: The identification of the external IP number relies on
-        ## a single third-party server.  This could be improved by falling
-        ## back to other servers, cf. https://github.com/phoemur/ipgetter
-        myip <- readLines("http://myexternalip.com/raw")
+        myip <- "<external>"
       }
     }
-    workers <- ClusterRegistry("start", workers=workers,
-                               master=myip, homogeneous=FALSE)
+    stopifnot(length(myip) == 1, is.character(myip), !is.na(myip))
+    
+    if (myip == "<external>") {
+      ## FIXME: The identification of the external IP number relies on
+      ## a single third-party server.  This could be improved by falling
+      ## back to other servers, cf. https://github.com/phoemur/ipgetter
+      myip <- readLines("http://myexternalip.com/raw")
+    } else if (myip == "<internal>") {
+      ## FIXME: Implement myLocalIP() function
+      stop("remote(..., myip='<internal>') is not supported yet. Please specify 'myip' manually.")
+    }
+    
+    stopifnot(length(myip) == 1, is.character(myip), !is.na(myip))
+    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=FALSE)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
