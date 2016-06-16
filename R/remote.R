@@ -47,16 +47,11 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
     stopifnot(length(myip) == 1, is.character(myip), !is.na(myip))
     
     if (myip == "<external>") {
-      ## FIXME: The identification of the external IP number relies on
-      ## a single third-party server.  This could be improved by falling
-      ## back to other servers, cf. https://github.com/phoemur/ipgetter
-      myip <- readLines("http://myexternalip.com/raw")
+      myip <- myExternalIP()
     } else if (myip == "<internal>") {
-      ## FIXME: Implement myLocalIP() function
-      stop("remote(..., myip='<internal>') is not supported yet. Please specify 'myip' manually.")
+      myip <- myInternalIP()
     }
     
-    stopifnot(length(myip) == 1, is.character(myip), !is.na(myip))
     workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=FALSE)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])

@@ -245,3 +245,109 @@ parseCmdArgs <- function() {
 
   args
 } # parseCmdArgs()
+
+
+myExternalIP <- local({
+  ip <- NULL
+  function(force=FALSE) {
+    if (!force && !is.null(ip)) return(ip)
+    
+    ## FIXME: The identification of the external IP number relies on a
+    ## single third-party server.  This could be improved by falling back
+    ## to additional servers, cf. https://github.com/phoemur/ipgetter
+    urls <- c(
+      "https://myexternalip.com/raw",
+      "https://diagnostic.opendns.com/myip",
+      "https://api.ipify.org/",
+      "http://myexternalip.com/raw",
+      "http://diagnostic.opendns.com/myip",
+      "http://api.ipify.org/"
+    )
+    value <- NULL
+    for (url in urls) {
+      value <- tryCatch(readLines(url), error = function(ex) NULL)
+      if (!is.null(value)) break
+    }
+    if (is.null(value)) {
+      stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse=", ")))
+    }
+
+    ## Trim and drop empty results (just in case)
+    value <- trim(value)
+    value <- value[nzchar(value)]
+   
+    ## Sanity check
+    stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
+
+    ## Cache result
+    ip <<- value
+    
+    ip
+  }
+}) ## myExternalIP()
+
+
+myInternalIP <- local({
+  ip <- NULL
+
+  ## Known private network IPv4 ranges:
+  ##   (1)    10.0.0.0 -  10.255.255.255
+  ##   (2)  172.16.0.0 -  172.31.255.255
+  ##   (3) 192.168.0.0 - 192.168.255.255
+  ## https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+  isPrivateIP <- function(ips) {
+    ips <- strsplit(ips, split=".", fixed=TRUE)
+    ips <- lapply(ips, FUN=as.integer)
+    res <- logical(length=length(ips))
+    for (kk in seq_along(ips)) {
+      ip <- ips[[kk]]
+      if (ip[1] == 10) {
+        res[kk] <- TRUE
+      } else if (ip[1] == 172) {
+        if (ip[2] >= 16 && ip[2] <= 31) res[kk] <- TRUE
+      } else if (ip[1] == 192) {
+        if (ip[2] == 168) res[kk] <- TRUE
+      }
+    }
+    res
+  } ## isPrivateIP()
+
+  function(force=FALSE, which=c("first", "last", "all")) {
+    if (!force && !is.null(ip)) return(ip)
+    which <- match.arg(which)
+
+    value <- NULL
+    os <- R.version$os
+    if (grepl("^linux", os)) {
+      res <- system2("hostname", args="-I", stdout=TRUE)
+      pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
+      res <- grep(pattern, res, value=TRUE)
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- unique(trim(res))
+      ## Keep private network IPs only (just in case)
+      value <- res[isPrivateIP(res)]
+    } else {
+      stop(sprintf("remote(..., myip='<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+    }
+
+    ## Trim and drop empty results (just in case)
+    value <- trim(value)
+    value <- value[nzchar(value)]
+    
+    if (length(value) > 1) {
+      value <- switch(which,
+        "first": value[1],
+        "last" : value[length(value)],
+        "all"  : value
+      )
+    }
+
+    ## Sanity check
+    stopifnot(is.character(value), length(value) >= 1, !any(is.na(value)))
+
+    ## Cache result
+    ip <<- value
+
+    ip
+  }
+}) ## myInternalIP()
