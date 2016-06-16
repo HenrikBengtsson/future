@@ -340,7 +340,7 @@ plan(cluster, workers=cl)
 ```
 Also, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated, which will happen in the first example where the cluster in created internally.  For more information on how to set up and manage such clusters, see `help("makeCluster", package="parallel")`.
 
-Note that with proper configuration and automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
+Note that with proper firewall and router configurations (e.g. port forwarding) and with automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 
 
 
