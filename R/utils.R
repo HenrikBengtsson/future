@@ -320,8 +320,15 @@ myInternalIP <- local({
     os <- R.version$os
     if (grepl("^linux", os)) {
       res <- system2("hostname", args="-I", stdout=TRUE)
-      pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
-      res <- grep(pattern, res, value=TRUE)
+      res <- grep("[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+", res, value=TRUE)
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- unique(trim(res))
+      ## Keep private network IPs only (just in case)
+      value <- res[isPrivateIP(res)]
+    } else if (grepl("^windows", os)) {
+      res <- system2("ipconfig", stdout=TRUE)
+      res <- grep("IPv4", res, value=TRUE)
+      res <- grep("[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+", res, value=TRUE)
       res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
