@@ -37,9 +37,9 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
     ## Guess what type of IP to use
     if (is.null(myip)) {
       if (all(workers %in% c("localhost", "127.0.0.1"))) {
-        ## Just for conveniency, if all workers are on the localhost,
-	## then we can use localhost as the response IP too.
-        myip <- workers[1]
+        ## For conveniency, if all workers are on the localhost,
+	## then we know that localhost should be used
+        myip <- "127.0.0.1"
       } else {
         myip <- "<external>"
       }
