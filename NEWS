@@ -14,6 +14,8 @@ o TROUBLESHOOTING: If the future requires attachment of packages,
   message in case there is a problem while loading the namespace.
   With require()/library() this error message is otherwise suppressed
   and replaced with a generic one.
+o BUG FIX: A startup .future.R script is no longer sourced if the
+  future package is attached by a future expression.
 
 
 Version: 0.15.0 [2016-06-13]

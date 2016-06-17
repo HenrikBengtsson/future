@@ -269,7 +269,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 
     enter <- bquote({
       ## covr: skip=3
-      .(enter)
+      .(enter)      
       ## TROUBLESHOOTING: If the package fails to load, then library()
       ## suppress that error and generates a generic much less
       ## informative error message.  Because of this, we load the
@@ -314,11 +314,14 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
   ## a tryCatch() statement. /HB 2016-03-14
   if (gc) {
     expr <- substitute({
-      ## covr: skip=6
+      ## covr: skip=8
+      ## Prevent .future.R from being source():d when future is attached
+      ...future.load.startup.script <- options(future.load.startup.script=FALSE)
       enter
       ...future.value <- tryCatch({
         body
       }, finally = {
+        options(...future.load.startup.script)
         exit
       })
       gc(verbose=FALSE, reset=FALSE)
@@ -326,11 +329,14 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
     }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
   } else {
     expr <- substitute({
-      ## covr: skip=6
+      ## covr: skip=8
+      ## Prevent .future.R from being source():d when future is attached
+      ...future.load.startup.script <- options(future.load.startup.script=FALSE)
       enter
       tryCatch({
         body
       }, finally = {
+        options(...future.load.startup.script)
         exit
       })
     }, env=list(enter=enter, body=expr, exit=exit))
