@@ -326,18 +326,21 @@ myInternalIP <- local({
 
     value <- NULL
     os <- R.version$os
+    pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
     if (grepl("^linux", os)) {
       res <- system2("hostname", args="-I", stdout=TRUE)
-      res <- grep("[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+", res, value=TRUE)
+      res <- grep(pattern, res, value=TRUE)
       res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
       value <- res[isPrivateIP(res)]
-    } else if (grepl("^windows", os)) {
+    } else if (grepl("^mingw", os)) {
       res <- system2("ipconfig", stdout=TRUE)
       res <- grep("IPv4", res, value=TRUE)
-      res <- grep("[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+", res, value=TRUE)
+      res <- grep(pattern, res, value=TRUE)
       res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
       value <- res[isPrivateIP(res)]
