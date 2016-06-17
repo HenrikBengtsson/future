@@ -40,7 +40,7 @@
 .onAttach <- function(libname, pkgname) {
   ## Load .future.R script?
   loadDotFuture <- getOption("future.load_startup_script", TRUE)
-  if (loadDotFuture) {
+  if (isTRUE(loadDotFuture)) {
     pathnames <- c(".future.R", "~/.future.R")
     pathnames <- pathnames[file_test("-f", pathnames)]
   
@@ -51,6 +51,11 @@
     mdebug("Future scripts identified: %s", paste(sQuote(pathnames), collapse=", "))
     pathname <- pathnames[1]
     mdebug("Future script to load: %s", sQuote(pathname))
-    source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
+    tryCatch({
+      source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
+    }, error=function(ex) {
+      msg <- sprintf("Failed to source %s file while attaching the future package. Will ignore this error, but please investigate. The error message was: %s", sQuote(pathname), sQuote(ex$message))
+      warning(msg)
+    })
   }
 } ## .onAttach()

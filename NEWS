@@ -1,15 +1,19 @@
 Package: future
 ===============
 
-Version: 0.15.0-9000 [2016-06-16]
+Version: 0.15.0-9000 [2016-06-17]
 o Add support for remote(..., myip="<external>"), which now
   queries a set of external lookup services in case one of them
   fails.
-o If the future requires attachment of packages, then each namespace
-  is loaded separately and before attaching the package.  This is done
-  in order to see the actual error message in case there is a problem
-  while loading the namespace.  With require()/library() this error
-  message is otherwise suppressed and replaced with a generic one.
+o ROBUSTNESS: If .future.R script, which is sourced when the future
+  package is attached, gives an error, then the error is ignored
+  with a warning.
+o TROUBLESHOOTING: If the future requires attachment of packages,
+  then each namespace is loaded separately and before attaching
+  the package.  This is done in order to see the actual error
+  message in case there is a problem while loading the namespace.
+  With require()/library() this error message is otherwise suppressed
+  and replaced with a generic one.
 
 
 Version: 0.15.0 [2016-06-13]
