@@ -14,6 +14,7 @@ o TROUBLESHOOTING: If the future requires attachment of packages,
   message in case there is a problem while loading the namespace.
   With require()/library() this error message is otherwise suppressed
   and replaced with a generic one.
+o BUG FIX: Various future options were not passed on to futures.
 o BUG FIX: A startup .future.R script is no longer sourced if the
   future package is attached by a future expression.
 
