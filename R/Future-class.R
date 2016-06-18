@@ -301,12 +301,30 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=FALSE, globalsMustExist=getOption("globalsMustExist", TRUE), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
     expr <- substitute(local(a), list(a=expr))
   }
+
+  ## Set and reset certain future.* options
+  enter <- substitute({
+    ## covr: skip=7
+    ...future.oldOptions <- options(
+      ## Prevent .future.R from being source():d when future is attached
+      future.startup.loadScript=FALSE,
+      ## Assert globals when future is created (or at run time)?
+      future.globalsMustExist=globalsMustExist
+    )
+    enter
+  }, env=list(globalsMustExist=globalsMustExist, enter=enter))
+
+  exit <- substitute({
+    exit
+    options(...future.oldOptions)
+  }, env=list(exit=exit))
+
 
   ## NOTE: We don't want to use local(body) w/ on.exit() because
   ## evaluation in a local is optional, cf. argument 'local'.
@@ -315,28 +333,22 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
   if (gc) {
     expr <- substitute({
       ## covr: skip=8
-      ## Prevent .future.R from being source():d when future is attached
-      ...future.load.startup.script <- options(future.load.startup.script=FALSE)
       enter
       ...future.value <- tryCatch({
         body
       }, finally = {
-        options(...future.load.startup.script)
         exit
       })
       gc(verbose=FALSE, reset=FALSE)
       ...future.value
-    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
+    }, env=list(globalsMustExist=globalsMustExist, enter=enter, body=expr, exit=exit, cleanup=cleanup))
   } else {
     expr <- substitute({
-      ## covr: skip=8
-      ## Prevent .future.R from being source():d when future is attached
-      ...future.load.startup.script <- options(future.load.startup.script=FALSE)
+      ## covr: skip=6
       enter
       tryCatch({
         body
       }, finally = {
-        options(...future.load.startup.script)
         exit
       })
     }, env=list(enter=enter, body=expr, exit=exit))

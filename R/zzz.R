@@ -39,7 +39,7 @@
 #' @importFrom utils file_test
 .onAttach <- function(libname, pkgname) {
   ## Load .future.R script?
-  loadDotFuture <- getOption("future.load.startup.script", TRUE)
+  loadDotFuture <- getOption("future.startup.loadScript", TRUE)
   if (isTRUE(loadDotFuture)) {
     pathnames <- c(".future.R", "~/.future.R")
     pathnames <- pathnames[file_test("-f", pathnames)]
