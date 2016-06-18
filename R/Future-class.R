@@ -301,7 +301,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.mustExist=getOption("globals.mustExist", TRUE), enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.mustExist=getOption("future.globals.mustExist", TRUE), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
