@@ -1,10 +1,11 @@
 Package: future
 ===============
 
-Version: 0.15.0-9000 [2016-06-17]
+Version: 0.15.0-9000 [2016-06-18]
 o Add support for remote(..., myip="<external>"), which now
   queries a set of external lookup services in case one of them
   fails.
+o Add mandelbrot() function used in demo to the API for convenience.
 o ROBUSTNESS: If .future.R script, which is sourced when the future
   package is attached, gives an error, then the error is ignored
   with a warning.

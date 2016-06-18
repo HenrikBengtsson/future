@@ -1,0 +1,2 @@
+counts <- mandelbrot()
+plot(counts)
