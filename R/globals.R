@@ -36,14 +36,17 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
   ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
   maxSizeOfGlobals <- 500*1024^2
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_GLOBALS_MAXSIZE", maxSizeOfGlobals)
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals) ## Backward compatibility
+  ## Backward compatibility
+  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
   maxSizeOfGlobals <- getOption("future.maxSizeOfGlobals", maxSizeOfGlobals)
-  maxSizeOfGlobals <- getOption("future.globals.maxSize", maxSizeOfGlobals) ## Backward compatibility
+  maxSizeOfGlobals <- Sys.getenv("FUTURE_GLOBALS_MAXSIZE", maxSizeOfGlobals)
+  maxSizeOfGlobals <- getOption("future.globals.maxSize", maxSizeOfGlobals)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
-  mustExist <- getOption("future.globals.mustExist", TRUE)
+  globals.onMissing <- getOption("future.globals.onMissing", "error")
+  globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
+  mustExist <- is.element(globals.onMissing, "error")
 
   ## If future relies on persistent storage, then the globals may
   ## already exist in the environment that the future is evaluated in.

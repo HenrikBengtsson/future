@@ -16,25 +16,25 @@ for (strategy in strategies) {
   plan(strategy)
 
   ## Assert option is passed on to future
-  options(future.globals.mustExist=TRUE)
-  opt1 %<-% getOption("future.globals.mustExist")
-  stopifnot(identical(opt1, TRUE))
+  options(future.globals.onMissing="error")
+  opt1 %<-% getOption("future.globals.onMissing")
+  stopifnot(identical(opt1, "error"))
 
-  options(future.globals.mustExist=FALSE)
-  opt2 %<-% getOption("future.globals.mustExist")
-  stopifnot(identical(opt2, FALSE))
+  options(future.globals.onMissing="ignore")
+  opt2 %<-% getOption("future.globals.onMissing")
+  stopifnot(identical(opt2, "ignore"))
 
-  options(future.globals.mustExist=TRUE)
+  options(future.globals.onMissing="error")
   res <- try({ v1 %<-% subset(data, x < 3)$y }, silent=TRUE)
   stopifnot(inherits(res, "try-error"))
 
-  options(future.globals.mustExist=FALSE)
+  options(future.globals.onMissing="ignore")
   v2 %<-% subset(data, x < 3)$y
   stopifnot(identical(v2, v0))
 
   ## Nested futures (requires option is passed on to future)
   plan(list(lazy, strategy))
-  options(future.globals.mustExist=FALSE)
+  options(future.globals.onMissing="ignore")
   v3 %<-% {
     a %<-% subset(data, x < 3)$y
     a

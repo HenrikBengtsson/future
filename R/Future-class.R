@@ -301,7 +301,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.mustExist=getOption("future.globals.mustExist", TRUE), enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
@@ -315,10 +315,10 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.mustExist=getOpti
       ## Prevent .future.R from being source():d when future is attached
       future.startup.loadScript=FALSE,
       ## Assert globals when future is created (or at run time)?
-      future.globals.mustExist=globals.mustExist
+      future.globals.onMissing=globals.onMissing
     )
     enter
-  }, env=list(globals.mustExist=globals.mustExist, enter=enter))
+  }, env=list(globals.onMissing=globals.onMissing, enter=enter))
 
   exit <- substitute({
     exit
