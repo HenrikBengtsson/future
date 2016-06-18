@@ -6,7 +6,7 @@
 \alias{plot.Mandelbrot}
 \title{Mandelbrot convergence counts}
 \usage{
-mandelbrot(x = -0.75, y = 0, side = 2.5, resolution = 400L,
+mandelbrot(x = -0.75, y = 0, side = 3, resolution = 400L,
   maxIter = 200L, tau = 2)
 }
 \arguments{
@@ -28,8 +28,13 @@ Returns an integer matrix (of class Mandelbrot) with
 Mandelbrot convergence counts
 }
 \examples{
-counts <- mandelbrot()
+counts <- mandelbrot(x=-0.75, y=0, side=3)
 plot(counts)
+
+\dontrun{
+demo("mandelbrot", package="future", ask=FALSE)
+}
+
 }
 \author{
 This \code{mandelbrot()} function was inspired by and

@@ -11,7 +11,13 @@
 #' @return Returns an integer matrix (of class Mandelbrot) with
 #  non-negative counts.
 #'
-#' @example incl/mandelbrot.R
+#' @examples
+#' counts <- mandelbrot(x=-0.75, y=0, side=3)
+#' plot(counts)
+#' 
+#' \dontrun{
+#' demo("mandelbrot", package="future", ask=FALSE)
+#' }
 #'
 #' @author This \code{mandelbrot()} function was inspired by and
 #' adopted from similar GPL code of Martin Maechler (available
@@ -21,7 +27,7 @@
 #' @export
 #'
 #' @keywords internal
-mandelbrot <- function(x=-0.75, y=0, side=2.5, resolution=400L, maxIter=200L, tau=2) {
+mandelbrot <- function(x=-0.75, y=0, side=3, resolution=400L, maxIter=200L, tau=2) {
   ## Validate arguments
   stopifnot(side > 0) 
   resolution <- as.integer(resolution)
