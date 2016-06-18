@@ -67,7 +67,7 @@ A workaround is to explicitly tell the future package about the global variable 
 ```
 
 
-### do.call() - function not found
+#### do.call() - function not found
 When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
 ```r
 do.call(file_ext, list("foo.txt"))
@@ -237,7 +237,7 @@ The future assignment operator `%<-%` is a _binary infix operator_, which means 
 > x %<-% 2 * runif(1)
 Error in x %<-% 2 * runif(1) : non-numeric argument to binary operator
 ```
-What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply it (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
+What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply the future (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
 ```r
 > x %<-% { 2 * runif(1) }
 > x
