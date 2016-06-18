@@ -44,13 +44,16 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
-  globals.onMissing <- getOption("future.globals.onMissing", "error")
-  globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
-  mustExist <- is.element(globals.onMissing, "error")
-
-  ## If future relies on persistent storage, then the globals may
-  ## already exist in the environment that the future is evaluated in.
-  mustExist <- mustExist && !persistent
+  ## Assert that all identified globals exists when future is created?
+  if (persistent) {
+    ## If future relies on persistent storage, then the globals may
+    ## already exist in the environment that the future is evaluated in.
+    mustExist <- FALSE
+  } else {
+    globals.onMissing <- getOption("future.globals.onMissing", "error")
+    globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
+    mustExist <- is.element(globals.onMissing, "error")
+  }
 
   exprOrg <- expr
 
