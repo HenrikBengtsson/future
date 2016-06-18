@@ -76,9 +76,9 @@ for (cores in 1:min(3L, availableCores())) {
 
 
   message("*** multiprocess() - too large globals ...")
-  ooptsT <- options("future.maxSizeOfGlobals"=1024*4L)
+  ooptsT <- options(future.globals.maxSize=1024*4L)
 
-  limit <- getOption("future.maxSizeOfGlobals")
+  limit <- getOption("future.globals.maxSize")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
   for (workers in unique(c(1L, availableCores()))) {

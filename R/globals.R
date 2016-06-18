@@ -36,8 +36,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
   ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
   maxSizeOfGlobals <- 500*1024^2
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
+  maxSizeOfGlobals <- Sys.getenv("FUTURE_GLOBALS_MAXSIZE", maxSizeOfGlobals)
+  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals) ## Backward compatibility
   maxSizeOfGlobals <- getOption("future.maxSizeOfGlobals", maxSizeOfGlobals)
+  maxSizeOfGlobals <- getOption("future.globals.maxSize", maxSizeOfGlobals) ## Backward compatibility
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
@@ -156,7 +158,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       classes <- lapply(globals[o], FUN=mode)
       classes <- unlist(classes, use.names=FALSE)
       largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.maxSizeOfGlobals').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
       n <- length(largest)
       if (n == 1) {
         fmt <- "%s There is one global: %s."
