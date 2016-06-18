@@ -164,7 +164,7 @@ It may also become a problem with lazy futures if the intended function is redef
 ```
 
 
-### Trying to pass an unresolved future to another future
+## Trying to pass an unresolved future to another future
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")
