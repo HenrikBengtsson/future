@@ -34,12 +34,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   } ## asPkgEnvironment()
 
 
-  ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
-  maxSizeOfGlobals <- 500*1024^2
-  ## Backward compatibility
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
-  maxSizeOfGlobals <- getOption("future.maxSizeOfGlobals", maxSizeOfGlobals)
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_GLOBALS_MAXSIZE", maxSizeOfGlobals)
+  ## Maximum size of globals (to prevent too large exports) = 500 MiB
+  maxSizeOfGlobals <- Sys.getenv("R_FUTURE_GLOBALS_MAXSIZE", 500*1024^2)
   maxSizeOfGlobals <- getOption("future.globals.maxSize", maxSizeOfGlobals)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
@@ -58,18 +54,20 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     mustExist <- is.element(globals.onMissing, "error")
   }
 
-  exprOrg <- expr
 
   ## Identify globals
+  ## Algorithm for identifying globals
+  globals.method <- getOption("future.globals.method", "ordered")
   globals <- globalsOf(expr, envir=envir, substitute=FALSE,
                tweak=tweak,
                dotdotdot="return",
                primitive=FALSE, base=FALSE,
                unlist=TRUE,
-               ## Only for debugging/development; do not rely on this elsewhere!
                mustExist=mustExist,
-               method=getOption("future.globals.method", "ordered")
+               method=globals.method
              )
+
+  exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
   if (inherits(globals$`...`, "DotDotDotList")) {

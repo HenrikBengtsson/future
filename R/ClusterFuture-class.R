@@ -242,11 +242,11 @@ value.ClusterFuture <- function(future, ...) {
 }
 
 
-requestNode <- function(await, workers, maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 600L))), delta=getOption("future.interval", 0.001), alpha=getOption("future.alpha", 1.01)) {
+requestNode <- function(await, workers, times=getOption("future.wait.times", 600L), delta=getOption("future.wait.interval", 0.001), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(is.function(await))
   stopifnot(inherits(workers, "cluster"))
-  maxTries <- as.integer(maxTries)
-  stopifnot(is.finite(maxTries), maxTries > 0)
+  times <- as.integer(times)
+  stopifnot(is.finite(times), times > 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
   ## Maximum number of nodes available
@@ -261,10 +261,10 @@ requestNode <- function(await, workers, maxTries=getOption("future.maxTries", tr
   }
 
 
-  tries <- 1L
+  iter <- 1L
   interval <- delta
   finished <- FALSE
-  while (tries <= maxTries) {
+  while (iter <= times) {
     finished <- (usedNodes() < total)
     if (finished) break
 
@@ -275,7 +275,7 @@ requestNode <- function(await, workers, maxTries=getOption("future.maxTries", tr
     await()
 
     interval <- alpha*interval
-    tries <- tries + 1L
+    iter <- iter + 1L
   }
 
   if (!finished) {

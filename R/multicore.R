@@ -151,7 +151,7 @@ usedCores <- function() {
 #' @param await A function used to try to "collect"
 #'        finished multicore subprocesses.
 #' @param workers Total number of workers available.
-#' @param maxTries Then maximum number of times subprocesses
+#' @param times Then maximum number of times subprocesses
 #'        should be collected before timeout.
 #' @param delta Then base interval (in seconds) to wait
 #'        between each try.
@@ -162,11 +162,11 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers=availableCores(), maxTries=getOption("future.maxTries", trim(Sys.getenv("R_FUTURE_MAXTRIES", 1000))), delta=getOption("future.interval", 1.0), alpha=getOption("future.alpha", 1.01)) {
+requestCore <- function(await, workers=availableCores(), times=getOption("future.wait.times", 1000), delta=getOption("future.wait.interval", 1.0), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
-  maxTries <- as.integer(maxTries)
-  stopifnot(is.finite(maxTries), maxTries > 0)
+  times <- as.integer(times)
+  stopifnot(is.finite(times), times > 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
   mdebug(sprintf("requestCore(): workers = %d", workers))
@@ -176,10 +176,10 @@ requestCore <- function(await, workers=availableCores(), maxTries=getOption("fut
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
   }
 
-  tries <- 1L
+  iter <- 1L
   interval <- delta
   finished <- FALSE
-  while (tries <= maxTries) {
+  while (iter <= times) {
     used <- usedCores()
     finished <- (used < workers)
     if (finished) break
@@ -193,7 +193,7 @@ requestCore <- function(await, workers=availableCores(), maxTries=getOption("fut
     await()
 
     interval <- alpha*interval
-    tries <- tries + 1L
+    iter <- iter + 1L
   }
 
   if (!finished) {
