@@ -57,7 +57,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                unlist=TRUE,
                ## Only for debugging/development; do not rely on this elsewhere!
                mustExist=mustExist,
-               method=getOption("future.globalsMethod", "ordered")
+               method=getOption("future.globals.method", "ordered")
              )
 
   ## Tweak expression to be called with global ... arguments?

@@ -21,7 +21,7 @@ for (cores in 1:min(3L, availableCores())) {
   methods <- c("conservative", "ordered")
 
   for (method in methods) {
-    options("future.globalsMethod"=method)
+    options(future.globals.method=method)
     message(sprintf("Method for identifying globals: '%s' ...", method))
 
     for (strategy in strategies) {
