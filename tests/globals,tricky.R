@@ -1,6 +1,9 @@
 source("incl/start.R")
 library("listenv")
-oopts <- c(oopts, options(future.globals.resolve=TRUE))
+oopts <- c(oopts, options(
+  future.globals.resolve=TRUE,
+  future.globals.onMissing="error"
+))
 
 message("*** Tricky use cases related to globals ...")
 

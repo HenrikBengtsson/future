@@ -50,6 +50,9 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## already exist in the environment that the future is evaluated in.
     mustExist <- FALSE
   } else {
+    ## Default for 'future.globals.onMissing':
+    ## Note: It's possible to switch this to 'ignore' (from 'error')
+    ##       at any time. Tests handles both cases. /HB 2016-06-18
     globals.onMissing <- getOption("future.globals.onMissing", "error")
     globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
     mustExist <- is.element(globals.onMissing, "error")
