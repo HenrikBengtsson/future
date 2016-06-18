@@ -41,7 +41,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
-  mustExist <- getOption("future.globalsMustExist", TRUE)
+  mustExist <- getOption("future.globals.mustExist", TRUE)
 
   ## If future relies on persistent storage, then the globals may
   ## already exist in the environment that the future is evaluated in.
