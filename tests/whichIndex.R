@@ -1,5 +1,4 @@
-printf <- function(...) cat(sprintf(...))
-whichIndex <- future:::whichIndex
+source("incl/start,load-only.R")
 
 message("*** whichIndex() ...")
 
@@ -74,3 +73,5 @@ res <- try(idxs <- whichIndex(D, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** whichIndex() ... DONE")
+
+source("incl/end.R")

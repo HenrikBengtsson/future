@@ -1,10 +1,4 @@
-library("future")
-library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
-
-ClusterRegistry <- future:::ClusterRegistry
+source("incl/start.R")
 
 message("*** ClusterRegistry() ... ")
 
@@ -40,7 +34,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** ClusterRegistry() ... DONE")
 
-
-## Cleanup
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

@@ -1,11 +1,5 @@
-library("future")
+source("incl/start.R")
 
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-
-.onLoad <- future:::.onLoad
-.onAttach <- future:::.onAttach
-parseCmdArgs <- future:::parseCmdArgs
 maxCores <- min(2L, availableCores(methods="system"))
 
 plan("default")
@@ -165,9 +159,4 @@ options(future.cmdargs=NULL)
 
 message("*** .onLoad() ... DONE")
 
-
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

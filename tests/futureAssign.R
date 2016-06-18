@@ -1,10 +1,7 @@
-library("future")
-
-ovars <- ls(envir=globalenv())
-oopts <- options(warn=1)
-plan(lazy)
+source("incl/start.R")
 
 message("*** futureAssign() ...")
+plan(lazy)
 
 delayedAssign("a", {
   cat("Delayed assignment evaluated\n")
@@ -43,7 +40,4 @@ stopifnot(identical(v$a, 4))
 
 message("*** futureAssign() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

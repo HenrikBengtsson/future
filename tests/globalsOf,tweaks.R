@@ -1,10 +1,5 @@
-library("future")
+source("incl/start.R")
 library("globals")
-
-ovars <- ls()
-oopts <- options(warn=1)
-
-tweakExpression <- future:::tweakExpression
 
 
 message("*** tweakExpression() ...")
@@ -46,7 +41,4 @@ for (kk in seq_along(exprs)) {
 
 message("*** tweakExpression() ... DONE")
 
-
-## Cleanup
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

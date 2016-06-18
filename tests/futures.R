@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 ## Backward compatibility
 if (getRversion() < "3.2.0") {
@@ -33,7 +30,7 @@ for (cores in 1:min(3L, availableCores())) {
   for (type in c("list", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))
 
-    for (strategy in future:::supportedStrategies()) {
+    for (strategy in supportedStrategies()) {
       message("Type of future: ", strategy)
       plan(strategy)
 
@@ -101,7 +98,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** futures() / resolved() / values() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** Nested futures - mc.cores ...")
 
@@ -93,7 +90,4 @@ for (mc in 0:3) {
 
 message("*** Nested futures - mc.cores ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

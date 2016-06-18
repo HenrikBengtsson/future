@@ -1,8 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1)
-plan(eager)
+source("incl/start.R")
 
 message("*** eager() ...")
 
@@ -63,7 +59,4 @@ stopifnot(inherits(res, "try-error"))
 
 message("*** eager() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

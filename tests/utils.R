@@ -1,16 +1,8 @@
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+source("incl/start,load-only.R")
 
 message("*** utils ...")
 
 message("*** hpaste() ...")
-
-printf <- function(...) cat(sprintf(...))
-hpaste <- future:::hpaste
-requirePackages <- future:::requirePackages
-importParallel <- future:::importParallel
-myInternalIP <- future:::myInternalIP
-myExternalIP <- future:::myExternalIP
 
 # Some vectors
 x <- 1:6
@@ -60,7 +52,6 @@ message("*** hpaste() ...")
 # asIEC()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** asIEC() ...")
-asIEC <- future:::asIEC
 
 for (size in c(0, 10^(0:20))) {
   cat(sprintf("Size: %.f bytes = %s\n", size, asIEC(size)))
@@ -73,7 +64,6 @@ message("*** asIEC() ... DONE")
 # debug()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** mdebug() ...")
-mdebug <- future:::mdebug
 
 mdebug("Hello #1")
 options(future.debug=TRUE)
@@ -90,9 +80,6 @@ message("*** mdebug() ... DONE")
 message("*** geval() et al. ...")
 
 gls <- function(..., envir=.GlobalEnv) ls(..., envir=envir)
-grmall <- future:::grmall
-geval <- future:::geval
-gassign <- future:::gassign
 
 message("- gls() ...")
 genv <- new.env(parent=globalenv())
@@ -188,6 +175,4 @@ message("*** myExternalIP() ... DONE")
 
 message("*** utils ... DONE")
 
-## Cleanup
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

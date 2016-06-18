@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
 plan(multicore)
 
 message("*** multicore() ...")
@@ -106,7 +103,4 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
 
 message("*** multicore() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

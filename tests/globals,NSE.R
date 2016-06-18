@@ -1,16 +1,12 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-strategies <- future:::supportedStrategies()
 
 message("*** Globals w/ non-standard evaluation (NSE) ...")
 
 data <- data.frame(x=1:5, y=1:5)
 v0 <- subset(data, x < 3)$y
 
-for (strategy in strategies) {
+for (strategy in supportedStrategies()) {
   message(sprintf("- Strategy: %s ...", strategy))
   
   plan(strategy)
@@ -47,7 +43,5 @@ for (strategy in strategies) {
 
 message("*** Globals w/ non-standard evaluation (NSE) ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")
+

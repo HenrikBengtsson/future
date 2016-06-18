@@ -1,9 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-flapply <- future:::flapply
 
 message("*** flapply() ...")
 
@@ -19,7 +15,7 @@ for (cores in 1:min(3L, availableCores())) {
   y0 <- lapply(x, FUN=vector, length=2L)
   str(list(y0=y0))
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
     y <- flapply(x, FUN=vector, length=2L)
@@ -36,7 +32,7 @@ for (cores in 1:min(3L, availableCores())) {
   y0 <- lapply(x, FUN=base::vector, length=2L)
   str(list(y0=y0))
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
     y <- flapply(x, FUN=base::vector, length=2L)
@@ -53,7 +49,7 @@ for (cores in 1:min(3L, availableCores())) {
   y0 <- lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
   str(list(y0=y0))
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
     y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
@@ -80,7 +76,7 @@ for (cores in 1:min(3L, availableCores())) {
   y0 <- lapply(x, FUN=listenv::map)
   str(list(y0=y0))
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
     y <- flapply(x, FUN=listenv::map)
@@ -93,7 +89,5 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** flapply() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")
+

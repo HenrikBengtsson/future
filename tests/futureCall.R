@@ -1,10 +1,7 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1)
-plan(lazy)
+source("incl/start.R")
 
 message("*** futureCall() ...")
+plan(lazy)
 
 f1 <- future(do.call(rnorm, args=list(n=100)))
 f2 <- futureCall(rnorm, args=list(n=100))
@@ -28,7 +25,4 @@ stopifnot(all.equal(v1, v2))
 
 message("*** futureCall() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

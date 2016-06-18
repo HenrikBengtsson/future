@@ -1,4 +1,4 @@
-library("future")
+source("incl/start.R")
 
 message("*** availableCores() ...")
 
@@ -50,4 +50,6 @@ stopifnot(inherits(res, "warning"))
 
 
 message("*** availableCores() ... DONE")
+
+source("incl/end.R")
 

@@ -1,13 +1,10 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=TRUE, future.debug=TRUE)
-##setTimeLimit(cpu=180, elapsed=180, transient=TRUE)
+oopts <- c(oopts, options(future.globals.resolve=TRUE))
 
 message("*** Tricky use cases related to globals ...")
 
-strategies <- future:::supportedStrategies()
+strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
 
 for (cores in 1:min(3L, availableCores())) {
@@ -93,9 +90,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** Tricky use cases related to globals ... DONE")
 
-
-## Cleanup
-##setTimeLimit()
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

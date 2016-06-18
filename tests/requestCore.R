@@ -1,9 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-
-requestCore <- future:::requestCore
+source("incl/start.R")
 
 message("*** requestCore() ...")
 
@@ -16,8 +11,4 @@ message("*** requestCore() - exceptions ... DONE")
 
 message("*** requestCore() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

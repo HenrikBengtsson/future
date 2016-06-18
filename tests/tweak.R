@@ -1,5 +1,6 @@
+source("incl/start,load-only.R")
+
 message("*** Tweaking future strategies ...")
-oopts <- options(warn=1)
 
 message("*** y <- tweak(future::lazy) ...")
 lazy2 <- future::tweak(future::lazy)
@@ -116,5 +117,5 @@ message("*** tweak() - exceptions ... DONE")
 
 
 message("*** Tweaking future strategies ... DONE")
-options(oopts)
-rm(list="oopts")
+
+source("incl/end.R")

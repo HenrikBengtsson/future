@@ -1,7 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+source("incl/start.R")
 
 message("*** FutureError class ...")
 
@@ -37,8 +34,4 @@ stopifnot(res == "Darn\nit")
 
 message("*** FutureError class ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

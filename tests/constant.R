@@ -1,12 +1,7 @@
-library("future")
+source("incl/start.R")
 library("listenv")
 
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-
 message("*** constant() ...")
-
-constant <- future:::constant
 
 ## No global variables
 f <- try(constant(42L), silent=FALSE)
@@ -32,8 +27,4 @@ stopifnot(y == 42L)
 
 message("*** constant() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

@@ -1,11 +1,10 @@
-library("future")
+source("incl/start.R")
 library("listenv")
 
-ovars <- ls()
-oopts <- options(warn=1, mc.cores=2L, future.progress=TRUE, future.debug=TRUE)
+oopts <- c(oopts, options(future.progress=TRUE))
 plan(lazy)
 
-strategies <- future:::supportedStrategies()
+strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
 
 message("*** resolve() ...")
@@ -282,8 +281,4 @@ message("*** resolved() - default ... DONE")
 
 message("*** resolve() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")
