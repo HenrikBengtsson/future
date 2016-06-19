@@ -48,7 +48,7 @@ plan <- local({
       ## Set default plan according to option/sysenv variable?
       strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
       strategy <- getOption("future.plan", strategy)
-      if (!nzchar(strategy)) strategy <- eager
+      if (!is.function(strategy) && !nzchar(strategy)) strategy <- eager
     } else if (identical(strategy, "list")) {
       ## List stack of future strategies?
       return(stack)

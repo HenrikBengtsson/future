@@ -11,27 +11,28 @@
     options(mc.cores=p-1L)
     ## options(Ncpus=p-1L) ## FIXME: Does it make sense? /HB 2016-04-02
 
-    ## Set eager/multiprocess futures, unless
-    ## another plan is explicitly specified.
+    ## Set option future.plan accordingly, unless already set
     strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
     mdebug("R_FUTURE_PLAN=%s", sQuote(strategy))
     strategy <- getOption("future.plan", strategy)
     mdebug("Option 'future.plan'=%s", sQuote(strategy))
     if (nzchar(strategy)) {
-      mdebug("=> plan('default')")
-      plan("default")
+      mdebug("=> 'future.plan' already set.")
     } else if (p == 1L) {
-      mdebug("=> plan(eager)")
-      plan(eager)
+      mdebug("=> options(future.plan=eager)")
+      options(future.plan=eager)
     } else {
-      mdebug("=> plan(multiprocess, workers=%s)", p)
-      plan(multiprocess, workers=p)
+      mdebug("=> options(future.plan=tweak(multiprocess, workers=%s))", p)
+      options(future.plan=tweak(multiprocess, workers=p))
     }
   }
 
   ## Create UUID for this process
   id <- uuid()
   mdebug("R process uuid: %s", id)
+
+  mdebug("Setting plan('default')")
+  plan("default")
 } ## .onLoad()
 
 
