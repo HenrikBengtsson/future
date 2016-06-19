@@ -28,8 +28,8 @@ Below are all \R options that are currently used by the \pkg{future} package and
 \section{Options for controlling futures}{
 
 \describe{
- \item{\option{future.plan}:}{Default future strategy/strategies used unless otherwise specified via \code{\link{plan}()}. This is the future set when calling \code{plan("default")}. (Default: \code{eager}, but can be overridden by system environment variable \env{R_FUTURE_PLAN})}
- \item{\option{future.globals.onMissing}:}{Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated as soon as possible.  If \code{"ignore"}, no action is taken and an attemp to evaluate the future expression will be made.  The latter is useful when future expression contains non-standard evaluation (NSE).  (Default: \code{"error"}; likely to soon change to \code{"ignore"})}
+ \item{\option{future.plan}:}{Default future strategy plan used unless otherwise specified via \code{\link{plan}()}. This will also be the future plan set when calling \code{plan("default")}.  If not specified, this option may be set when the \pkg{future} package is \emph{loaded} if command-line option \code{--parallel=ncores} (short \code{-p ncores}) is specified; if \code{ncores > 1}, then option \option{future.plan} is set to \code{multiprocess} otherwise \code{eager} (in addition to option \option{mc.cores} being set to \code{ncores-1}, if \code{ncores >= 1}).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: \code{eager})}
+ \item{\option{future.globals.onMissing}:}{Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"error"}; likely to change to \code{"ignore"} in a future release)}
  \item{\option{future.globals.method}:}{Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: \code{"ordered"})}
  \item{\option{future.globals.maxSize}:}{Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. (Default: \code{500*1024^2} = 500 MiB)}
  \item{\option{future.globals.resolve}:}{If \code{TRUE}, globals that are \code{\link{Future}} objects (typically created as \emph{explicit} futures) will be resolved and have their values (using \code{value()}) collected. (Default: \code{FALSE})}
@@ -52,6 +52,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
  \item{\option{future.startup.script}:}{If \code{FALSE}, any \file{.future.R} startup scripts, which may exist in the current directory and / or the user's home directory, are ignored. Such startup scripts are otherwise sourced when the \pkg{future} package is \emph{attached}. (Default: \code{TRUE})}
+ \item{\option{future.cmdargs}:}{Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is \emph{loaded}.}
 }
 }
 
@@ -59,9 +60,11 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")})}
- \item{\option{future.cores}:}{Number of "system" cores used instead of what is reported by \code{\link[parallel]{detectCores}()}. Can also be set by system environment variable \env{R_FUTURE_PLAN}.}
- \item{\option{future.cmdargs}:}{Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is loaded.}
+ \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which="system")}. Can also be set by system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM}.}
 }
+}
+\seealso{
+To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.
 }
 \keyword{internal}
 

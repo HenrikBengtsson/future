@@ -2,21 +2,37 @@
 .onLoad <- function(libname, pkgname) {
   args <- parseCmdArgs()
 
+  ## Unless already set, set option 'future.plan' according to
+  ## system environment variable 'R_FUTURE_PLAN'.
+  strategy <- getOption("future.plan")
+  if (is.null(strategy)) {
+    strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
+    if (nzchar(strategy)) {
+      mdebug("R_FUTURE_PLAN=%s", sQuote(strategy))
+      mdebug("=> options(future.plan='%s')", strategy)
+      options(future.plan=strategy)
+    }
+  }
+  
+  strategy <- getOption("future.plan")
+  if (!is.null(strategy)) {
+    if (is.function(strategy)) {
+      mdebug("Option 'future.plan'=%s", sQuote(attr(strategy, "call")))
+    } else {
+      mdebug("Option 'future.plan'=%s", sQuote(strategy))
+    }
+  }
+
   p <- args$p
-  if (is.null(p)) {
-    plan("default")
-  } else {
+  if (!is.null(p)) {
     mdebug("R command-line argument: -p %s", p)
+    
     ## Apply
     options(mc.cores=p-1L)
     ## options(Ncpus=p-1L) ## FIXME: Does it make sense? /HB 2016-04-02
 
-    ## Set option future.plan accordingly, unless already set
-    strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-    mdebug("R_FUTURE_PLAN=%s", sQuote(strategy))
-    strategy <- getOption("future.plan", strategy)
-    mdebug("Option 'future.plan'=%s", sQuote(strategy))
-    if (nzchar(strategy)) {
+    ## Set 'future.plan' option?
+    if (!is.null(strategy)) {
       mdebug("=> 'future.plan' already set.")
     } else if (p == 1L) {
       mdebug("=> options(future.plan=eager)")
