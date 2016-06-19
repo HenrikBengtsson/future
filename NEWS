@@ -10,12 +10,14 @@ o DOCUMENTATION: Documented R options used by the future package.
 o ROBUSTNESS: If .future.R script, which is sourced when the future
   package is attached, gives an error, then the error is ignored
   with a warning.
+o CLEANUP: Dropped support for system environment variable
+  'R_FUTURE_GLOBALS_MAXSIZE'.
 o TROUBLESHOOTING: If the future requires attachment of packages,
   then each namespace is loaded separately and before attaching
   the package.  This is done in order to see the actual error
   message in case there is a problem while loading the namespace.
   With require()/library() this error message is otherwise suppressed
-  and replaced with a generic one.
+  and replaced with a generic one.  
 o BUG FIX: Various future options were not passed on to futures.
 o BUG FIX: A startup .future.R script is no longer sourced if the
   future package is attached by a future expression.

@@ -35,8 +35,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
 
   ## Maximum size of globals (to prevent too large exports) = 500 MiB
-  maxSizeOfGlobals <- Sys.getenv("R_FUTURE_GLOBALS_MAXSIZE", 500*1024^2)
-  maxSizeOfGlobals <- getOption("future.globals.maxSize", maxSizeOfGlobals)
+  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
