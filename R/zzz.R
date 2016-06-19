@@ -1,6 +1,25 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
-  args <- parseCmdArgs()
+  ## Unless already set, set option 'future.availableCores.system' according
+  ## to system environment variable 'R_FUTURE_AVAILABLECORES_SYSTEM'.
+  ncores <- getOption("future.availableCores.system")
+  if (is.null(ncores)) {
+    ncores <- trim(Sys.getenv("R_FUTURE_AVAILABLECORES_SYSTEM"))
+    if (nzchar(ncores)) {
+      mdebug("R_FUTURE_AVAILABLECORES_SYSTEM=%s", sQuote(ncores))
+      if (is.element(ncores, c("NA_integer_", "NA"))) {
+        ncores <- NA_integer_
+      } else {
+        ncores <- as.integer(ncores)
+      }
+      mdebug("=> options(future.availableCores.system=%d)", ncores)
+      options(future.availableCores.system=ncores)
+    }
+    ncores <- getOption("future.availableCores.system")
+  }
+  if (!is.null(ncores)) {
+    mdebug("Option 'future.availableCores.system=%d", ncores)
+  }
 
   ## Unless already set, set option 'future.plan' according to
   ## system environment variable 'R_FUTURE_PLAN'.
@@ -12,9 +31,8 @@
       mdebug("=> options(future.plan='%s')", strategy)
       options(future.plan=strategy)
     }
+    strategy <- getOption("future.plan")
   }
-  
-  strategy <- getOption("future.plan")
   if (!is.null(strategy)) {
     if (is.function(strategy)) {
       mdebug("Option 'future.plan'=%s", sQuote(attr(strategy, "call")))
@@ -23,6 +41,7 @@
     }
   }
 
+  args <- parseCmdArgs()
   p <- args$p
   if (!is.null(p)) {
     mdebug("R command-line argument: -p %s", p)

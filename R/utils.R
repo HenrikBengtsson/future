@@ -169,8 +169,8 @@ detectCores <- local({
       ## Get number of system cores from option, system environment,
       ## and finally detectCores().  This also designed such that
       ## it is indeed possible to return NA_integer_.
-      value <- getOption("future.availableCores.system", Sys.getenv("R_FUTURE_AVAILABLECORES_SYSTEM"))
-      if (nzchar(value)) {
+      value <- getOption("future.availableCores.system")
+      if (!is.null(value)) {
         value <- as.integer(value)
 	return(value)
       }
