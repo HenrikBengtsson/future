@@ -25,19 +25,18 @@
 #' @seealso futureOf
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
-    recursive <- as.numeric(recursive)
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
-  } else {
-    recursive <- as.numeric(recursive)
   }
+  recursive <- as.numeric(recursive)
+  
   ## Nothing to do?
   if (recursive < 0) return(x)
 
@@ -59,7 +58,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1
 
         ## Recursively resolve the value?
 	if (!is.atomic(v)) {
-          v <- resolve(v, value=TRUE, recursive=recursive-1L, sleep=sleep, progress=FALSE, ...)
+          v <- resolve(v, value=TRUE, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
 	  msg <- sprintf("%s (and resolved itself)", msg)
 	}
 
@@ -81,13 +80,12 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1
 
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
-    recursive <- as.numeric(recursive)
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
-  } else {
-    recursive <- as.numeric(recursive)
   }
+  recursive <- as.numeric(recursive)
+  
   ## Nothing to do?
   if (recursive < 0) return(x)
 
@@ -200,13 +198,12 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, 
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=FALSE, ...) {
+resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
   if (is.logical(recursive)) {
-    recursive <- as.numeric(recursive)
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
-  } else {
-    recursive <- as.numeric(recursive)
   }
+  recursive <- as.numeric(recursive)
+  
   ## Nothing to do?
   if (recursive < 0) return(x)
 
@@ -287,13 +284,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, slee
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=FALSE, sleep=0.1, progress=FALSE, ...) {
+resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
   if (is.logical(recursive)) {
-    recursive <- as.numeric(recursive)
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
-  } else {
-    recursive <- as.numeric(recursive)
   }
+  recursive <- as.numeric(recursive)
+  
   ## Nothing to do?
   if (recursive < 0) return(x)
 

@@ -4,7 +4,7 @@
 \alias{resolve}
 \title{Wait until all existing futures in an environment are resolved}
 \usage{
-resolve(x, idxs = NULL, value = FALSE, recursive = FALSE, sleep = 1,
+resolve(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1,
   progress = getOption("future.progress", FALSE), ...)
 }
 \arguments{

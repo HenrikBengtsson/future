@@ -6,6 +6,7 @@ o Add support for remote(..., myip="<external>"), which now
   queries a set of external lookup services in case one of them
   fails.
 o Add mandelbrot() function used in demo to the API for convenience.
+o DOCUMENTATION: Documented R options used by the future package.
 o ROBUSTNESS: If .future.R script, which is sourced when the future
   package is attached, gives an error, then the error is ignored
   with a warning.
