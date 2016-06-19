@@ -155,6 +155,15 @@ stopifnot(inherits(strategy, "lazy"))
 plan("default")
 message("- .onLoad() w/ future.plan='lazy' & -p 1 ... DONE")
 
+message("- .onLoad() w/ future.plan='lazy' & -p 1 ...")
+options(future.plan=NULL, future.plan=lazy, future.cmdargs=c("-p", "1"))
+.onLoad(pkgname, pkgname)
+strategy <- plan()
+print(strategy)
+stopifnot(inherits(strategy, "lazy"))
+plan("default")
+message("- .onLoad() w/ future.plan='lazy' & -p 1 ... DONE")
+
 options(future.plan=NULL, future.cmdargs=NULL)
 
 message("*** .onLoad() ... DONE")

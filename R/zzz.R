@@ -34,10 +34,10 @@
     strategy <- getOption("future.plan")
   }
   if (!is.null(strategy)) {
-    if (is.function(strategy)) {
-      mdebug("Option 'future.plan'=%s", sQuote(attr(strategy, "call")))
-    } else {
+    if (is.character(strategy)) {
       mdebug("Option 'future.plan'=%s", sQuote(strategy))
+    } else {
+      mdebug("Option 'future.plan' of type %s", sQuote(mode(strategy)))
     }
   }
 
