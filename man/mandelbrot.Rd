@@ -3,6 +3,7 @@
 \name{mandelbrot}
 \alias{as.raster.Mandelbrot}
 \alias{mandelbrot}
+\alias{mandelbrotTiles}
 \alias{plot.Mandelbrot}
 \title{Mandelbrot convergence counts}
 \usage{

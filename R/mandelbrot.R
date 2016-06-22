@@ -28,7 +28,7 @@
 #' adopted from similar GPL code of Martin Maechler (available
 #' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 #'
-#' @aliases as.raster.Mandelbrot plot.Mandelbrot
+#' @aliases as.raster.Mandelbrot plot.Mandelbrot mandelbrotTiles
 #' @export
 #'
 #' @keywords internal
@@ -132,3 +132,54 @@ plot.Mandelbrot <- function(x, y, ..., mar=c(0,0,0,0)) {
   }
   plot(as.raster(x), ...)
 }
+
+
+#' @export
+mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, resolution=400L, truncate=TRUE) {
+  ## Validate arguments
+  stopifnot(side > 0) 
+  resolution <- as.integer(resolution)
+  stopifnot(resolution > 0)
+
+  ## The nx-by-ny bins
+  nx <- ny <- resolution
+
+  ## Bins per tile
+  dx <- ceiling(nx / ncol)
+  dy <- ceiling(ny / nrow)
+  stopifnot(dx > 0, dy > 0)
+
+  ## Truncate so all tiles have identical dimensions?
+  if (truncate) {
+    nx <- ncol * dx
+    ny <- nrow * dy 
+  }
+  
+  ## Setup (x,y) bins
+  xrange <- xmid + c(-1,1)*side/2
+  yrange <- ymid + c(-1,1)*side/2
+  x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
+  y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
+
+
+  ## Generate tiles row by row
+  res <- list()
+  for (rr in seq_len(nrow)) {
+    yrr <- if (rr < nrow) y[1:dy] else y
+    y <- y[-(1:dy)]
+      
+    xrr <- x
+    for (cc in seq_len(ncol)) {
+      xcc <- if (cc < ncol) xrr[1:dx] else xrr
+      xrr <- xrr[-(1:dx)]
+    
+      Ccc <- outer(yrr, xcc, FUN=function(y,x) complex(real=x, imaginary=y))
+      attr(Ccc, "region") <- list(xrange=range(xcc), yrange=range(yrr))
+      attr(Ccc, "tile") <- c(rr, cc)
+      res <- c(res, list(Ccc))
+    }
+  }
+  dim(res) <- c(nrow, ncol)
+  
+  res
+} ## mandelbrotTiles()
