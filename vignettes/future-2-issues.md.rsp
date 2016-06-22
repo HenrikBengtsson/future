@@ -231,6 +231,70 @@ _Footnote_: (*) Although certain types of futures, such as eager and lazy ones, 
 
 ## Miscellaneous
 
+### Clashes with other packages
+
+Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
+```r
+> library("future")
+> library("igraph")
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:future':
+
+    %<-%, %->%
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+> y %<-% { 42 }
+Error in get(".igraph.from", parent.frame()) : 
+  object '.igraph.from' not found
+```
+Here we get an error because `%<-%` is from igraph and not the future assignment operator as we wanted.  This can be confirmed as:
+```r
+> environment(`%<-%`)
+<environment: namespace:igraph>
+```
+
+To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.
+```r
+> library("igraph")
+> library("future")
+
+Attaching package: 'future'
+
+The following objects are masked from 'package:igraph':
+
+%<-%, %->%
+
+> y %<-% { 42 }
+> y
+[1] 42
+```
+
+An alternative is to detach the future package and re-attach it, which will achieve the same thing:
+```r
+detach("package:future")
+library("future")
+```
+
+Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.
+```r
+> `%<-%` <- future::`%<-%`
+> y %<-% { 42 }
+> y
+[1] 42
+```
+In this case it does not matter in what order the packages are attached because we will always use the copy of `` future::`%<-%` ``.
+
+
+
 ### Error "non-numeric argument to binary operator"
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
