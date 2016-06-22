@@ -1,10 +1,12 @@
 Package: future
 ===============
 
-Version: 0.15.0-9000 [2016-06-19]
+Version: 0.15.0-9000 [2016-06-23]
 o Add support for remote(..., myip="<external>"), which now
   queries a set of external lookup services in case one of them
   fails.
+o DEMO: Now the Mandelbrot demo tiles a single Mandelbrot region
+  with one future per tile. This better illustrates parallelism.
 o Add mandelbrot() function used in demo to the API for convenience.
 o DOCUMENTATION: Documented R options used by the future package.
 o ROBUSTNESS: If .future.R script, which is sourced when the future

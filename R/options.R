@@ -35,10 +35,16 @@
 #'  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which="system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}.}
 #' }
 #'
+#' @section Options for demos:
+#' \describe{
+#'  \item{\option{future.demo.mandelbrot.region}:}{Either a named list of \code{\link{mandelbrot}()} arguments or an integer in [1,3] specifying a predefined Mandelbrot region. (Default: \code{1L})}
+#'  \item{\option{future.demo.mandelbrot.nrow}:}{Number of rows and columns of tiles. (Default: \code{3L})}
+#' }
+#'
 #' @seealso
 #' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.
 #'
-#' @aliases future.availableCores.methods future.cmdargs future.cores future.debug future.globals.maxSize future.globals.method future.globals.onMissing future.globals.resolve future.plan future.progress future.resolve.recursive future.startup.script future.wait.alpha future.wait.interval future.wait.times R_FUTURE_PLAN R_FUTURE_CORES
+#' @aliases future.availableCores.methods future.cmdargs future.cores future.debug future.globals.maxSize future.globals.method future.globals.onMissing future.globals.resolve future.plan future.progress future.resolve.recursive future.startup.script future.wait.alpha future.wait.interval future.wait.times R_FUTURE_PLAN R_FUTURE_CORES future.demo.mandelbrot.region future.demo.mandelbrot.nrow
 #' @keywords internal
 #' @name future.options
 NULL

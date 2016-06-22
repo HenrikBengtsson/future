@@ -7,6 +7,8 @@
 \alias{future.cmdargs}
 \alias{future.cores}
 \alias{future.debug}
+\alias{future.demo.mandelbrot.nrow}
+\alias{future.demo.mandelbrot.region}
 \alias{future.globals.maxSize}
 \alias{future.globals.method}
 \alias{future.globals.onMissing}
@@ -61,6 +63,14 @@ Below are all \R options that are currently used by the \pkg{future} package and
 \describe{
  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")})}
  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which="system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}.}
+}
+}
+
+\section{Options for demos}{
+
+\describe{
+ \item{\option{future.demo.mandelbrot.region}:}{Either a named list of \code{\link{mandelbrot}()} arguments or an integer in [1,3] specifying a predefined Mandelbrot region. (Default: \code{1L})}
+ \item{\option{future.demo.mandelbrot.nrow}:}{Number of rows and columns of tiles. (Default: \code{3L})}
 }
 }
 \seealso{

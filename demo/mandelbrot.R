@@ -1,79 +1,94 @@
 library("future")
-library("listenv")
 library("graphics")
 
-tiles <- function(n=getOption("R_FUTURE_DEMO_MANDELBROT_TILES", availableCores())) {
-  if (n <= 4) {
-    tiles <- c(2, 2)
-  } else if (n <= 6) {
-    tiles <- c(2, 3)
-  } else if (n <= 9) {
-    tiles <- c(3, 3)
-  } else if (n <= 12) {
-    tiles <- c(3, 4)
-  } else if (n <= 16) {
-    tiles <- c(4, 4)
-  } else {
-    tiles <- c(5, 5)
+plotWhatIsDone <- function(counts) {
+  for (kk in seq_along(counts)) {
+    f <- counts[[kk]]
+
+    ## Already plotted?
+    if (!inherits(f, "Future")) next
+
+    ## Not resolved?
+    if (!resolved(f)) next
+    
+    cat(sprintf("Plotting tile #%d of %d ...\n", kk, n))
+    counts[[kk]] <- value(counts[[kk]])
+    screen(kk)
+    plot(counts[[kk]])
+  } # for (kk ...)
+
+  counts
+} # plotWhatIsDone()
+
+
+## Options
+region <- getOption("future.demo.mandelbrot.region", 1L)
+if (!is.list(region)) {
+  if (region == 1L) {
+    region <- list(xmid=-0.75, ymid=0.0, side=3.0)
+  } else if (region == 2L) {
+    region <- list(xmid=0.283, ymid=-0.0095, side=0.00026)
+  } else if (region == 3L) {
+    region <- list(xmid=0.282989, ymid=-0.01, side=3e-8)
   }
-  tiles
-} # tiles()
+}
+nrow <- getOption("future.demo.mandelbrot.nrow", 3L)
+delay <- getOption("future.demo.mandelbrot.delay", interactive())
+if (isTRUE(delay)) {
+  delay <- function(counts) Sys.sleep(rexp(1, rate=2))
+} else if (!is.function(delay)) {
+  delay <- function(counts) {}
+}
 
+## Generate Mandelbrot tiles to be computed
+Cs <- mandelbrotTiles(xmid=region$xmid, ymid=region$ymid,
+                      side=region$side, nrow=nrow)
 
-## Let's open an empty device already here
 if (interactive()) {
   dev.new()
   plot.new()
-  opar <- par(mar=c(0,0,0,0))
-  split.screen(rep(max(tiles()), times=2))
-  for (ii in seq_len(prod(tiles()))) {
+  split.screen(dim(Cs))
+  for (ii in seq_along(Cs)) {
     screen(ii)
+    par(mar=c(0,0,0,0))
     text(x=1/2, y=1/2, sprintf("Future #%d\nunresolved", ii), cex=2)
-    box(lwd=3)
   }
 } else {
-  split.screen(rep(max(tiles()), times=2))
+  split.screen(dim(Cs))
 }
 
-n <- prod(tiles())
-sides <- 2 * 6^-seq(from=0, to=15, length.out=n)
-xs <- rep(0.28298899997142857, times=n)
-xs[1] <- xs[1] - 0.8
-ys <- rep(-0.010, times=n)
 
-counts <- listenv()
+counts <- list()
+n <- length(Cs)
 for (ii in seq_len(n)) {
   cat(sprintf("Mandelbrot tile #%d of %d ...\n", ii, n))
-  counts[[ii]] %<-% {
+  C <- Cs[[ii]]
+  
+  counts[[ii]] <- future({
     cat(sprintf("Calculating tile #%d of %d ...\n", ii, n))
-    cat(sprintf("  (x,y)=c(%.16f,%.16f)\n", xs[ii], ys[ii]))
-    cat(sprintf("  side=%.16f\n", sides[ii]))
-    fit <- mandelbrot(x=xs[ii], y=ys[ii], side=sides[ii])
+    fit <- mandelbrot(C)
+    
+    ## Emulate slowness
+    delay(fit)
+    
     cat(sprintf("Calculating tile #%d of %d ... done\n", ii, n))
     fit
-  }
+  })
+
+  ## Plot tiles that are already resolved
+  counts <- plotWhatIsDone(counts)
 }
 
 
-## Plot as each tile gets ready
-resolved <- logical(length(counts))
-while (!all(resolved)) {
-  for (ii in which(!resolved)) {
-    if (!resolved(futureOf(counts[[ii]]))) next
-    cat(sprintf("Plotting tile #%d of %d ...\n", ii, n))
-    screen(ii)
-    opar <- par(mar=c(0,0,0,0))
-    plot(counts[[ii]])
-    box(lwd=3)
-    par(opar)
-    resolved[ii] <- TRUE
-  } # for (ii ...)
+## Plot remaining tiles
+repeat {
+  counts <- plotWhatIsDone(counts)
+  if (!any(sapply(counts, FUN=inherits, "Future"))) break
+}
+  
 
-  ## Wait a bit before checking again
-  if (!all(resolved)) Sys.sleep(0.1)
-} # while (...)
 
 close.screen()
 
 
-message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(lazy).\n")
+message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(multiprocess).\n")
