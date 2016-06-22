@@ -6,15 +6,19 @@
 \alias{plot.Mandelbrot}
 \title{Mandelbrot convergence counts}
 \usage{
-mandelbrot(x = -0.75, y = 0, side = 3, resolution = 400L,
-  maxIter = 200L, tau = 2)
+mandelbrot(...)
 }
 \arguments{
-\item{x, y, side}{Center location and the length of sides of the
-complex plane for which convergence counts
-should be calculated.}
+\item{Z}{A complex matrix for which convergence
+counts should be calculated.}
 
-\item{resolution}{Number of bins along each axis.}
+\item{xmid, ymid, side, resolution}{Alternative specification of
+the complex plane \code{Z}, where
+\code{mean(Re(Z)) == xmid},
+\code{mean(Im(Z)) == ymid},
+\code{diff(range(Re(Z))) == side},
+\code{diff(range(Im(Z))) == side}, and
+\code{dim(Z) == c(resolution, resolution)}.}
 
 \item{maxIter}{Maximum number of iterations per bin.}
 
@@ -23,12 +27,13 @@ divergence (Mod(z) > tau).}
 }
 \value{
 Returns an integer matrix (of class Mandelbrot) with
+non-negative counts.
 }
 \description{
 Mandelbrot convergence counts
 }
 \examples{
-counts <- mandelbrot(x=-0.75, y=0, side=3)
+counts <- mandelbrot(xmid=-0.75, ymid=0, side=3)
 plot(counts)
 
 \dontrun{
@@ -37,7 +42,7 @@ demo("mandelbrot", package="future", ask=FALSE)
 
 }
 \author{
-This \code{mandelbrot()} function was inspired by and
+The internal Mandelbrot algorithm was inspired by and
 adopted from similar GPL code of Martin Maechler (available
 from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 }

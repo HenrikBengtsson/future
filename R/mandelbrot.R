@@ -1,25 +1,30 @@
 #' Mandelbrot convergence counts
 #'
-#' @param x,y,side   Center location and the length of sides of the
-#'                   complex plane for which convergence counts
-#'                   should be calculated.
-#' @param resolution Number of bins along each axis.
-#' @param maxIter    Maximum number of iterations per bin.
-#' @param tau        A threshold; the radius when calling
-#'                   divergence (Mod(z) > tau).
+#' @param Z               A complex matrix for which convergence
+#'                        counts should be calculated.
+#' @param xmid,ymid,side,resolution Alternative specification of
+#'                        the complex plane \code{Z}, where
+#'                        \code{mean(Re(Z)) == xmid},
+#'                        \code{mean(Im(Z)) == ymid},
+#'                        \code{diff(range(Re(Z))) == side},
+#'                        \code{diff(range(Im(Z))) == side}, and
+#'                        \code{dim(Z) == c(resolution, resolution)}.
+#' @param maxIter         Maximum number of iterations per bin.
+#' @param tau             A threshold; the radius when calling
+#'                        divergence (Mod(z) > tau).
 #'
 #' @return Returns an integer matrix (of class Mandelbrot) with
-#  non-negative counts.
+#' non-negative counts.
 #'
 #' @examples
-#' counts <- mandelbrot(x=-0.75, y=0, side=3)
+#' counts <- mandelbrot(xmid=-0.75, ymid=0, side=3)
 #' plot(counts)
 #' 
 #' \dontrun{
 #' demo("mandelbrot", package="future", ask=FALSE)
 #' }
 #'
-#' @author This \code{mandelbrot()} function was inspired by and
+#' @author The internal Mandelbrot algorithm was inspired by and
 #' adopted from similar GPL code of Martin Maechler (available
 #' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 #'
@@ -27,45 +32,29 @@
 #' @export
 #'
 #' @keywords internal
-mandelbrot <- function(x=-0.75, y=0, side=3, resolution=400L, maxIter=200L, tau=2) {
-  ## Validate arguments
-  stopifnot(side > 0) 
-  resolution <- as.integer(resolution)
-  stopifnot(resolution > 0)
+mandelbrot <- function(...) UseMethod("mandelbrot")
 
-  maxIter <- as.integer(maxIter)
-  stopifnot(maxIter > 0)
-
-  ## The nx-by-ny bins
-  nx <- ny <- resolution
-
-  ## Setup (x,y) bins
-  xrange <- x + c(-1,1)*side/2
-  yrange <- y + c(-1,1)*side/2
-  x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
-  y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
-
+#' @export
+mandelbrot.matrix <- function(Z, maxIter=200L, tau=2.0, ...) {
+  stopifnot(is.matrix(Z), mode(Z) == "complex")
+  
   ## By default, assume none of the elements will converge
-  counts <- matrix(maxIter, nrow=ny, ncol=nx)
-  dim <- dim(counts)
+  counts <- matrix(maxIter, nrow=nrow(Z), ncol=ncol(Z))
 
   ## But as a start, flag the to all be non-diverged
-  nonDiverged <- rep(TRUE, times=nx*ny)
+  nonDiverged <- rep(TRUE, times=length(Z))
   idxOfNonDiverged <- seq_along(nonDiverged)
-
-  ## Set of complex numbers to be investigated
-  C <- outer(y, x, FUN=function(y,x) complex(real=x, imaginary=y))
 
   ## SPEEDUP: The Mandelbrot sequence will only be calculated on the
   ## "remaining set" of complex numbers that yet hasn't diverged.
-  sC <- C ## The Mandelbrot sequence of the "remaining" set
-  Cr <- C ## The original complex number of the "remaining" set
+  sZ <- Z ## The Mandelbrot sequence of the "remaining" set
+  Zr <- Z ## The original complex number of the "remaining" set
 
   for (ii in seq_len(maxIter-1L)) {
-    sC <- sC*sC + Cr
+    sZ <- sZ*sZ + Zr
 
     ## Did any of the "remaining" points diverge?
-    diverged <- (Mod(sC) > tau)
+    diverged <- (Mod(sZ) > tau)
     if (any(diverged)) {
       ## Record at what iteration divergence occurred
       counts[idxOfNonDiverged[diverged]] <- ii
@@ -79,17 +68,43 @@ mandelbrot <- function(x=-0.75, y=0, side=3, resolution=400L, maxIter=200L, tau=
       nonDiverged[nonDiverged] <- !diverged
 
       ## Update the "remaining" set of complex numbers
-      sC <- sC[keep]
-      Cr <- Cr[keep]
+      sZ <- sZ[keep]
+      Zr <- Zr[keep]
     }
   }
 
-  attr(counts, "params") <- list(x=x, y=y, side=side, xrange=xrange, yrange=yrange, nx=nx, ny=ny, maxIter=maxIter, resolution=resolution)
+  attr(counts, "params") <- list(Z=Z, maxIter=maxIter, tau=tau)
 
   class(counts) <- c("Mandelbrot", class(counts))
   
   counts
-} ## mandelbrot()
+} ## mandelbrot() for matrix
+
+
+#' @export
+mandelbrot.numeric <- function(xmid=-0.75, ymid=0, side=3, resolution=400L, maxIter=200L, tau=2, ...) {
+  ## Validate arguments
+  stopifnot(side > 0) 
+  resolution <- as.integer(resolution)
+  stopifnot(resolution > 0)
+
+  maxIter <- as.integer(maxIter)
+  stopifnot(maxIter > 0)
+
+  ## The nx-by-ny bins
+  nx <- ny <- resolution
+
+  ## Setup (x,y) bins
+  xrange <- xmid + c(-1,1)*side/2
+  yrange <- ymid + c(-1,1)*side/2
+  x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
+  y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
+
+  ## Set of complex numbers to be investigated
+  Z <- outer(y, x, FUN=function(y,x) complex(real=x, imaginary=y))
+
+  mandelbrot(Z, maxIter=maxIter, tau=tau)
+} ## mandelbrot() for numeric
 
 
 #' @export
@@ -108,8 +123,12 @@ as.raster.Mandelbrot <- function(x, ...) {
 
 #' @export
 #' @importFrom grDevices as.raster
-#' @importFrom graphics plot
+#' @importFrom graphics par plot
 #' @keywords internal
-plot.Mandelbrot <- function(x, y, ...) {
+plot.Mandelbrot <- function(x, y, ..., mar=c(0,0,0,0)) {
+  if (!is.null(mar)) {
+    opar <- par(mar=c(0,0,0,0))
+    on.exit(par(opar))
+  }
   plot(as.raster(x), ...)
 }
