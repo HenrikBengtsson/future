@@ -21,7 +21,19 @@ tiles <- function(n=getOption("R_FUTURE_DEMO_MANDELBROT_TILES", availableCores()
 
 
 ## Let's open an empty device already here
-if (interactive()) { dev.new(); plot.new() }
+if (interactive()) {
+  dev.new()
+  plot.new()
+  opar <- par(mar=c(0,0,0,0))
+  split.screen(rep(max(tiles()), times=2))
+  for (ii in seq_len(prod(tiles()))) {
+    screen(ii)
+    text(x=1/2, y=1/2, sprintf("Future #%d\nunresolved", ii), cex=2)
+    box(lwd=3)
+  }
+} else {
+  split.screen(rep(max(tiles()), times=2))
+}
 
 n <- prod(tiles())
 sides <- 2 * 6^-seq(from=0, to=15, length.out=n)
@@ -42,8 +54,8 @@ for (ii in seq_len(n)) {
   }
 }
 
+
 ## Plot as each tile gets ready
-split.screen(rep(max(tiles()), times=2)) ## Square aspect ratio
 resolved <- logical(length(counts))
 while (!all(resolved)) {
   for (ii in which(!resolved)) {
@@ -58,7 +70,7 @@ while (!all(resolved)) {
   } # for (ii ...)
 
   ## Wait a bit before checking again
-  if (!all(resolved)) Sys.sleep(1.0)
+  if (!all(resolved)) Sys.sleep(0.1)
 } # while (...)
 
 close.screen()
