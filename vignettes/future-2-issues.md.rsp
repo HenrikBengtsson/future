@@ -13,9 +13,9 @@
 
 In the ideal case, all it takes to start using futures in R is to replace select standard assignments (`<-`) in your R code with future assignments (`%<-%`) and make sure the right-hand side (RHS) expressions are within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
-However, there are few cases where you have to take extra precautions.  These are often related to how global variables are falsely identified in non-standard evaluation (NSE), e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
+However, as show below, there are few cases where you might run into some hurdles, but, as also shown, they are often easy to overcome.  These are often related to global variables.  
 
-_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
+_If you identify other cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
 
 ## Issues with globals
@@ -66,6 +66,9 @@ A workaround is to explicitly tell the future package about the global variable 
 [1] 42
 ```
 
+_Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
+
+
 
 #### do.call() - function not found
 When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
@@ -93,7 +96,7 @@ It may also become a problem with lazy futures if the intended function is redef
 [1] "haha!" "haha!" "haha!"
 ```
 
-
+<%---
 ### False globals due to non-standard evaluation (false positives)
 
 #### subset(data, x < 3)
@@ -166,7 +169,7 @@ A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
 > p
 ```
 By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
-
+---%>
 
 
 ## Trying to pass an unresolved future to another future
