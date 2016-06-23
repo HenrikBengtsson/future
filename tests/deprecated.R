@@ -34,6 +34,11 @@ res <- tryCatch({
 }, warning = function(w) w)
 stopifnot(inherits(res, "warning"))
 
+res <- tryCatch({
+  s <- tweak(cluster, cluster="localhost")
+}, warning = function(w) w)
+stopifnot(inherits(res, "warning"))
+
 message("*** Deprecated arguments ... DONE")
 
 
