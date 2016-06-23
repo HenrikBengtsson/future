@@ -158,6 +158,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     sizes <- unlist(sizes, use.names=TRUE)
     totalExportSize <- sum(sizes, na.rm=TRUE)
     if (totalExportSize > maxSizeOfGlobals) {
+      n <- length(sizes)
       o <- order(sizes, decreasing=TRUE)[1:3]
       o <- o[is.finite(o)]
       sizes <- sizes[o]
@@ -165,7 +166,6 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       classes <- unlist(classes, use.names=FALSE)
       largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
       msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
-      n <- length(largest)
       if (n == 1) {
         fmt <- "%s There is one global: %s."
       } else if (n == 2) {
