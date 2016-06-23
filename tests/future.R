@@ -51,6 +51,18 @@ stopifnot(y == 42L)
 
 message("*** future() w/ gc=TRUE ... DONE")
 
+
+message("*** future() - exceptions ...")
+
+res <- try(future(42L, evaluator=TRUE))
+stopifnot(inherits(res, "try-error"))
+
+res <- try(future(42L, evaluator=function(...) TRUE))
+stopifnot(inherits(res, "try-error"))
+
+message("*** future() - exceptions ... DONE")
+
+
 message("*** future() ... DONE")
 
 source("incl/end.R")
