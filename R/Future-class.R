@@ -256,11 +256,13 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     })
   }
 
-  ## Identify package
+  ## Identify package namespaces for strategies
   pkgs <- lapply(strategies, FUN=environment)
   pkgs <- lapply(pkgs, FUN=environmentName)
   pkgs <- unique(unlist(pkgs))
-
+  pkgs <- intersect(pkgs, loadedNamespaces())
+  mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+  
   if (length(pkgs) > 0L) {
     ## Sanity check by verifying packages can be loaded already here
     ## If there is somethings wrong in 'pkgs', we get the error

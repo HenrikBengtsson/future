@@ -27,6 +27,8 @@ o TROUBLESHOOTING: If the future requires attachment of packages,
   message in case there is a problem while loading the namespace.
   With require()/library() this error message is otherwise suppressed
   and replaced with a generic one.
+o BUG FIX: Custom futures based on a constructor function that
+  is defined outside a package gave an error.
 o BUG FIX: plan("default") assumed that the 'future.plan' option
   was a string; gave an error if it was a function.
 o BUG FIX: Various future options were not passed on to futures.

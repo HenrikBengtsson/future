@@ -14,6 +14,14 @@ stopifnot(inherits(res, "try-error"))
 res <- try(values(f), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
+## When no packages are exported
+foo <- structure(function(...) { Future(1) }, class="future")
+plan(foo)
+f <- Future()
+expr <- getExpression(f)
+print(expr)
+stopifnot(is.call(expr))
+
 message("*** Future class - exception ... DONE")
 
 message("*** Future class ... DONE")
