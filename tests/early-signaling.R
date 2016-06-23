@@ -1,5 +1,7 @@
 source("incl/start.R")
 
+options(future.debug=FALSE)
+
 message("*** Early signaling of conditions ...")
 
 message("*** Early signaling of conditions with eager futures ...")
@@ -100,37 +102,6 @@ v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
 
 message("*** Early signaling of conditions with multiprocess futures ... DONE")
-
-options(future.debug=FALSE)
-
-f <- lazy({ stop("x"); 42L }, earlySignal=TRUE)
-res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
-print(res)
-stopifnot(inherits(res, "condition"), inherits(res, "error"))
-
-f <- lazy({ warning("x"); 42L }, earlySignal=TRUE)
-res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
-print(res)
-stopifnot(inherits(res, "condition"), inherits(res, "warning"))
-v <- value(f)
-stopifnot(v == 42L)
-
-f <- lazy({ message("x"); 42L }, earlySignal=TRUE)
-res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
-print(res)
-stopifnot(inherits(res, "condition"), inherits(res, "message"))
-v <- value(f)
-stopifnot(v == 42L)
-
-f <- lazy({ signalCondition(simpleCondition("x")); 42L }, earlySignal=TRUE)
-res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
-print(res)
-stopifnot(inherits(res, "condition"))
-v <- value(f)
-stopifnot(v == 42L)
-
-options(future.debug=TRUE)
-
 
 message("*** Early signaling of conditions ... DONE")
 
