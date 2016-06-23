@@ -101,6 +101,29 @@ stopifnot(inherits(v, "try-error"))
 
 message("*** Early signaling of conditions with multiprocess futures ... DONE")
 
+options(future.debug=FALSE)
+
+f <- lazy({ stop("x"); 42L }, earlySignal=TRUE)
+res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
+print(res)
+stopifnot(inherits(res, "condition"), inherits(res, "error"))
+
+f <- lazy({ warning("x"); 42L }, earlySignal=TRUE)
+res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
+print(res)
+stopifnot(inherits(res, "condition"), inherits(res, "warning"))
+v <- value(f)
+stopifnot(v == 42L)
+
+f <- lazy({ message("x"); 42L }, earlySignal=TRUE)
+res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
+print(res)
+stopifnot(inherits(res, "condition"), inherits(res, "message"))
+v <- value(f)
+stopifnot(v == 42L)
+
+options(future.debug=TRUE)
+
 
 message("*** Early signaling of conditions ... DONE")
 
