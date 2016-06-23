@@ -30,6 +30,7 @@ myExternalIP <- future:::myExternalIP
 myInternalIP <- future:::myInternalIP
 parseCmdArgs <- future:::parseCmdArgs
 requestCore <- future:::requestCore
+requestNode <- future:::requestNode
 requirePackages <- future:::requirePackages
 supportedStrategies <- future:::supportedStrategies
 tweakExpression <- future:::tweakExpression

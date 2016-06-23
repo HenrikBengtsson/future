@@ -17,11 +17,11 @@ message("*** requestCore() - timeout ...")
 
 plan(multicore, workers=2L)
 a %<-% { Sys.sleep(3); 1 }
-res <- try(requestCore(function() {}, workers=2L, times=1L, delta=0.1), silent=TRUE)
+res <- try(requestCore(function() {}, workers=2L, times=1L, delta=0.1))
 stopifnot(inherits(res, "try-error"))
 stopifnot(a == 1)
 
-message("*** requestCore() - exceptions ... DONE")
+message("*** requestCore() - timeout ... DONE")
 
 message("*** requestCore() ... DONE")
 
