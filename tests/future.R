@@ -60,6 +60,10 @@ stopifnot(inherits(res, "try-error"))
 res <- try(future(42L, evaluator=function(...) TRUE))
 stopifnot(inherits(res, "try-error"))
 
+target <- list(name="<unknown>", envir=new.env(), code="Yo!", exists=TRUE)
+res <- try(get_future(target, mustExist=TRUE))
+stopifnot(inherits(res, "try-error"))
+
 message("*** future() - exceptions ... DONE")
 
 

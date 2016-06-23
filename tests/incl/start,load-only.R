@@ -21,6 +21,7 @@ constant <- future:::constant
 flapply <- future:::flapply
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign
+get_future <- future:::get_future
 geval <- future:::geval
 grmall <- future:::grmall
 hpaste <- future:::hpaste
