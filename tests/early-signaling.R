@@ -122,6 +122,13 @@ stopifnot(inherits(res, "condition"), inherits(res, "message"))
 v <- value(f)
 stopifnot(v == 42L)
 
+f <- lazy({ signalCondition(simpleCondition("x")); 42L }, earlySignal=TRUE)
+res <- tryCatch({ resolved(f) }, condition = function(cond) cond)
+print(res)
+stopifnot(inherits(res, "condition"))
+v <- value(f)
+stopifnot(v == 42L)
+
 options(future.debug=TRUE)
 
 
