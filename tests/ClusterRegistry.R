@@ -36,7 +36,7 @@ for (cores in 1:min(3L, availableCores())) {
 message("*** ClusterRegistry() - exceptions ...")
 
 res <- try(ClusterRegistry(action="start", workers=TRUE))
-stopifnot(inherits(res, "try-error")
+stopifnot(inherits(res, "try-error"))
 
 message("*** ClusterRegistry() - exceptions ... DONE")
 
