@@ -7,7 +7,7 @@
   work including when building this RSP manually.  /HB 2016-04-12
  ---------------------------------------------------------------------%>
 <%%@meta language="R-vignette" content="--------------------------------
-%\VignetteIndexEntry{A Future for R: An Overview}
+%\VignetteIndexEntry{A Future for R: A Comprehensive Overview}
 %\VignetteAuthor{Henrik Bengtsson}
 %\VignetteKeyword{R}
 %\VignetteKeyword{package}
@@ -26,7 +26,7 @@ Do not edit the *.md.rsp file.  Instead edit the *.md.rsp.rsp (sic!)
 file found under inst/vignettes-static/ of the source package.
 --------------------------------------------------------------------"%%>
 <%@meta language="R-vignette" content="--------------------------------
-%\VignetteIndexEntry{A Future for R: An Overview}
+%\VignetteIndexEntry{A Future for R: A Comprehensive Overview}
 %\VignetteAuthor{Henrik Bengtsson}
 %\VignetteKeyword{R}
 %\VignetteKeyword{package}
@@ -157,7 +157,7 @@ By default, future expressions are evaluated instantaneously and synchronously (
 ### Consistent Behavior Across Futures
 Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
 
-One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R process or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use eager evaluation while building up a script and later, when the script is fully developed, one may turn on asynchronous processing.
+One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R session or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use eager evaluation while building up a script and, later, when the script is fully developed, one may turn on asynchronous processing.
 
 Because of this, the defaults of the different strategies are such that the results and side effects of evaluating a future expression are as similar as possible.  More specifically, the following is true for all futures:
 
@@ -273,7 +273,7 @@ When multisession evaluation is used, the package launches a set of R sessions i
 availableCores()
 })%>
 ```
-This particular result tells us that option `mc.cores` was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
+This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
 
 
 #### Multicore Futures

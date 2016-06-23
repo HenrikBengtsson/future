@@ -33,6 +33,11 @@
 #'    R process, but only if their values are requested.  Futures for
 #'    which the values are never requested will not be evaluated.
 #'  }
+#'  \item{\code{\link{transparent}}:}{
+#'    Resolves futures synchronously (sequentially) in the current
+#'    R process and assignments will be done to the calling environment.
+#'    Early stopping is enabled by default.
+#'  }
 #'  \item{\code{\link{multisession}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    R sessions running in the background on the same machine.

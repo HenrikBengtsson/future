@@ -283,8 +283,8 @@ The following objects are masked from 'package:igraph':
 
 An alternative is to detach the future package and re-attach it, which will achieve the same thing:
 ```r
-detach("package:future")
-library("future")
+> detach("package:future")
+> library("future")
 ```
 
 Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.
@@ -294,7 +294,7 @@ Yet another alternative is to explicitly override the object by importing it to 
 > y
 [1] 42
 ```
-In this case it does not matter in what order the packages are attached because we will always use the copy of `` future::`%<-%` ``.
+In this case, it does not matter in what order the packages are attached because we will always use the copy of `` future::`%<-%` ``.
 
 
 
