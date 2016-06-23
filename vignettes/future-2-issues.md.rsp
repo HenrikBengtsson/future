@@ -298,7 +298,7 @@ In this case it does not matter in what order the packages are attached because 
 
 
 
-### Error "non-numeric argument to binary operator"
+### Syntax error: "non-numeric argument to binary operator"
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
 > x %<-% 2 * runif(1)

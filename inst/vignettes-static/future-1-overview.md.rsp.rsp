@@ -163,7 +163,7 @@ Because of this, the defaults of the different strategies are such that the resu
 
 * All _evaluation is done in a local environment_ (i.e. `local({ expr })`) such assignments do not affect the calling environment.  This is natural when evaluating in an external R process, but is also enforced when evaluating in the current R session.
 
-* When a future is constructed, _global variables are identified_.  If there are futures among the globals, these are all resolved before continue.  For asynchronous evaluation, globals are also exported to the R process/session that will be evaluating the future expression.  For lazy futures, the globals are also "frozen" (cloned to a local environment of the future).  Also, in order to protect against exporting too large objects by mistake, there is a built-in assertion that the total size of all globals is less than a given threshold (controllable via an option, cf. `help("future.options")`).  If the threshold is exceeded, an informative error is thrown.
+* When a future is constructed, _global variables are identified_.  For asynchronous evaluation, globals are exported to the R process/session that will be evaluating the future expression.  For lazy futures, globals are "frozen" (cloned to a local environment of the future).  Also, in order to protect against exporting too large objects by mistake, there is a built-in assertion that the total size of all globals is less than a given threshold (controllable via an option, cf. `help("future.options")`).  If the threshold is exceeded, an informative error is thrown.
 
 * Future _expressions are only evaluated once_.  As soon as the value (or an error) has been collected it will be available for all succeeding requests.
 
@@ -564,7 +564,7 @@ backtrace(a)
 
 
 ## Globals
-Whenever an R expression is to be evaluated asynchronously (in parallel) or via lazy evaluation, global objects have to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because, for a lazy future, globals may otherwise change between when it is created and when it is resolved.  For asynchronous processing, the reason globals need to be identified is so that they can be exported to the process that evaluates the future.  Furthermore, if there are futures among the globals, they have to be resolved before the future (that depends on them) is created.
+Whenever an R expression is to be evaluated asynchronously (in parallel) or via lazy evaluation, global objects have to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because, for a lazy future, globals may otherwise change between when it is created and when it is resolved.  For asynchronous processing, the reason globals need to be identified is so that they can be exported to the process that evaluates the future.
 
 The future package tries to automate these tasks as far as possible.  It does this with help of the [globals] package.  If a global variable is identified, it is captured and made available to the evaluating process.
 <%---
