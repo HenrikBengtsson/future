@@ -20,7 +20,6 @@ f <- future({ Sys.sleep(3); 1 })
 
 res <- try(requestNode(function() {}, workers=f$workers, times=1L, delta=0.1))
 stopifnot(inherits(res, "try-error"))
-stopifnot(a == 1)
 
 message("*** requestNode() - timeout ... DONE")
 
