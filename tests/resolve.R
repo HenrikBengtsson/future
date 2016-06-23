@@ -101,8 +101,13 @@ for (strategy in strategies) {
   res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
   stopifnot(inherits(res, "try-error"))
 
+  x <- list(1, 2)
+  res <- try(x <- resolve(x, idxs="a"))
+  stopifnot(inherits(res, "try-error"))
+
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)
+
 
 message("*** resolve() for lists ... DONE")
 
@@ -162,6 +167,8 @@ for (strategy in strategies) {
   y <- resolve(x, idxs=names(x), value=TRUE)
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  y <- resolve(x, recursive=TRUE, value=TRUE)
+  stopifnot(identical(y, x))
 
   ## Exceptions
   res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
@@ -256,6 +263,8 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
 
+  y <- resolve(x, recursive=TRUE, value=TRUE)
+  stopifnot(identical(y, x))
 
   ## Exceptions
   res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
