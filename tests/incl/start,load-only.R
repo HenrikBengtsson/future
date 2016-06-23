@@ -18,6 +18,7 @@ future::plan("eager")
 asIEC <- future:::asIEC
 ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
+detectCores <- future:::detectCores
 flapply <- future:::flapply
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign

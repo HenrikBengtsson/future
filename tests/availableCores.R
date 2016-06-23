@@ -49,6 +49,28 @@ print(res)
 stopifnot(inherits(res, "warning"))
 
 
+message("*** Internal detectCores() ...")
+
+## Option 'future.availableCores.system'
+env <- environment(future:::detectCores)
+env$res <- NULL
+options(future.availableCores.system=2L)
+n <- detectCores()
+print(n)
+stopifnot(is.integer(n), is.finite(n), n >= 1, n == 2L)
+options(future.availableCores.system=NULL)
+
+## Reset
+env <- environment(future:::detectCores)
+env$res <- NULL
+n <- detectCores()
+print(n)
+stopifnot(is.integer(n), is.finite(n), n >= 1)
+
+
+message("*** Internal detectCores() ... DONE")
+
+
 message("*** availableCores() ... DONE")
 
 source("incl/end.R")
