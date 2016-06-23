@@ -32,6 +32,15 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
+
+message("*** ClusterRegistry() - exceptions ...")
+
+res <- try(ClusterRegistry(action="start", workers=TRUE))
+stopifnot(inherits(res, "try-error")
+
+message("*** ClusterRegistry() - exceptions ... DONE")
+
+
 message("*** ClusterRegistry() ... DONE")
 
 source("incl/end.R")
