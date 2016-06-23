@@ -76,7 +76,7 @@ v <- sapply(x, FUN=value)
 stopifnot(all(v == 5L))  ## Make sure globals are not frozen
 
 
-message("*** lazy() and errors")
+message("*** lazy() and errors ...")
 f <- lazy({
   stop("Whoops!")
   1
@@ -94,6 +94,18 @@ stopifnot(inherits(res, "try-error"))
 res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
+
+message("*** lazy() and errors ... DONE")
+
+
+message("*** lazy() - exceptions ...")
+
+res <- try(lazy(42L, local=FALSE, globals=TRUE), silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+message("*** lazy() - exceptions ... DONE")
+
 
 message("*** lazy() ... DONE")
 
