@@ -220,9 +220,9 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
 
     ## names(x) is only supported in R (>= 3.2.0)
     names <- ls(envir=x, all.names=TRUE)
-    if (is.null(names)) {
-      stop("Named subsetting not possible. Elements are not named.")
-    }
+
+    ## Sanity check (because length(x) == 0 returns early above)
+    stopifnot(length(names) > 0)
 
     idxs <- unique(idxs)
 
@@ -315,9 +315,9 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
       }
     } else {
       names <- names(x)
-      if (is.null(names)) {
-        stop("Named subsetting not possible. Elements are not named.")
-      }
+      
+      ## Sanity check (because length(x) == 0 returns early above)
+      stopifnot(length(names) > 0)
 
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]

@@ -32,10 +32,8 @@ tweak.character <- function(strategy, ..., penvir=parent.frame()) {
     }
   }
 
-  ## Nothing found?
-  if (!is.function(strategy)) {
-    stop("Failed to locate such a future function: ", sQuote(strategy))
-  }
+  ## Sanity check
+  stopifnot(is.function(strategy))
 
   tweak(strategy, ..., penvir=penvir)
 }
