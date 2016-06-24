@@ -1,5 +1,5 @@
 Package: future
-Version: 0.15.0-9000
+Version: 1.0.0
 Title: A Future API for R
 Imports:
     digest,
