@@ -23,7 +23,7 @@ ClusterRegistry <- local({
       stopifnot(length(workers) >= 1, !anyNA(workers))
       workers <- sort(workers)
     } else {
-      stop("Unknown value of argument 'workers'.")
+      stop("Unknown mode of argument 'workers': ", mode(workers))
     }
 
     if (is.null(cluster) && action != "stop") {

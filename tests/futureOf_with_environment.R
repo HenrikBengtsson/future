@@ -1,12 +1,6 @@
-library("future")
-
-mstr <- function(...) message(paste(capture.output(str(...)), collapse="\n"))
+source("incl/start.R")
 
 suppressWarnings(rm(list=c("x", "z")))
-
-ovars <- ls()
-oopts <- options(warn=1)
-plan(lazy)
 
 message("*** futureOf() with environment ...")
 
@@ -84,8 +78,4 @@ message("*** futureOf() with environment - exceptions ... DONE")
 
 message("*** futureOf() with environment ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

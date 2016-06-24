@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** remote() ...")
 
@@ -42,10 +39,16 @@ f <- try(future({
 }))
 print(f)
 
+
+message("*** remote() - exceptions ...")
+
+res <- try(remote(42L, workers=TRUE), silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+message("*** remote() - exceptions ... DONE")
+
+
 message("*** remote() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

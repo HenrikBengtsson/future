@@ -1,11 +1,8 @@
-library("future")
+source("incl/start.R")
 library("listenv")
+plan(lazy)
 
 message("*** futureOf() ...")
-
-ovars <- ls()
-oopts <- options(warn=1)
-plan(lazy)
 
 a %<-% { 1 }
 
@@ -24,8 +21,5 @@ stopifnot(inherits(res, "try-error"))
 
 message("*** futureOf() ... DONE")
 
+source("incl/end.R")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))

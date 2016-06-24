@@ -1,7 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+source("incl/start.R")
 
 message("*** nbrOfWorkers() ...")
 
@@ -22,7 +19,7 @@ for (strategy in strategies) {
 
 
 strategies <- c("multiprocess", "multisession", "multicore")
-strategies <- intersect(strategies, future:::supportedStrategies())
+strategies <- intersect(strategies, supportedStrategies())
 cores <- availableCores()
 message("Number of available cores: ", cores)
 
@@ -42,7 +39,6 @@ for (strategy in strategies) {
 
 
 message("Type of future: constant")
-constant <- future:::constant
 n <- nbrOfWorkers(constant)
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == 1)
@@ -57,7 +53,4 @@ stopifnot(n >= 0, is.infinite(n))
 
 message("*** nbrOfWorkers() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

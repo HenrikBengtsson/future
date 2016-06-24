@@ -13,14 +13,91 @@
 
 In the ideal case, all it takes to start using futures in R is to replace select standard assignments (`<-`) in your R code with future assignments (`%<-%`) and make sure the right-hand side (RHS) expressions are within curly brackets (`{ ... }`).  Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (`listenv`) instead of a plain list.
 
-However, there are few cases where you have to take extra precautions.  These are often related to how global variables are falsely identified in non-standard evaluation (NSE), e.g. `subset(data, x < 3)`.  Global variables need to be identified when futures are created, but this is a particularly hard task when non-standard evaluation is involved.
+However, as show below, there are few cases where you might run into some hurdles, but, as also shown, they are often easy to overcome.  These are often related to global variables.  
 
-_If you identify other use cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
+_If you identify other cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
 
 ## Issues with globals
 
-### False globals due to non-standard evaluation
+
+### Missing or incorrect globals (false negatives)
+
+#### Global variable obscured by subassignment
+When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
+For example,
+```r
+> library("future")
+> plan(lazy)
+> x <- matrix(1:12, nrow=3, ncol=4)
+> y %<-% {
++   x[1,1] <- 3
++   42
++ }
+> rm(x)
+> y
+Error in x[1, 1] <- 3 : object 'x' not found
+```
+Another example is
+```r
+> library("future")
+> plan(lazy)
+> x <- list(a=1, b=2)
+> y %<-% {
++   x$c <- 3
++   42
++ }
+> rm(x)
+> y
+Error in x$c <- 3 : object 'x' not found
+```
+A workaround is to explicitly tell the future package about the global variable by simply listing it at the beginning of the expression, e.g.
+```r
+> library("future")
+> plan(lazy)
+> x <- list(a=1, b=2)
+> y %<-% {
++   x  ## Force 'x' to be global
++   x$c <- 3
++   42
++ }
+> rm(x)
+> y
+[1] 42
+```
+
+_Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
+
+
+
+#### do.call() - function not found
+When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
+```r
+do.call(file_ext, list("foo.txt"))
+```
+instead of
+```r
+do.call("file_ext", list("foo.txt"))
+```
+so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
+It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
+```r
+> library("future")
+> library("listenv")
+> library("tools")
+> plan(lazy)
+> pathnames <- c("foo.txt", "bar.png", "yoo.md")
+> res <- listenv()
+> for (ii in seq_along(pathnames)) {
++   res[[ii]] %<-% do.call("file_ext", list(pathnames[ii]))
++ }
+> file_ext <- function(...) "haha!"
+> unlist(res)
+[1] "haha!" "haha!" "haha!"
+```
+
+<%---
+### False globals due to non-standard evaluation (false positives)
 
 #### subset(data, x < 3)
 
@@ -33,7 +110,7 @@ Consider the following use of `subset()`:
 ```
 From a static code inspection point of view, the expression `x < 3` asks for variable `x` to be compared to 3, and there is nothing specifying that `x` is part of `data` and not the global environment.  That `x` is indeed part of the `data` object can only safely be inferred at runtime when `subset()` is called.  This is not a problem in the above snippet, but when using futures all global/unknown variables need to be captured when the future is created (it is too late to do it when the future is resolved), e.g.
 ```r
-> library(future)
+> library("future")
 > data <- data.frame(x=1:5, y=1:5)
 > v %<-% subset(data, x < 3)$y
 Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
@@ -62,14 +139,14 @@ An alternative is to use a dummy variable.  In contrast to the code-inspection a
 #### ggplot2
 Another common use case for non-standard evaluation is when creating ggplot2 figures.  For instance, in
 ```r
-> library(ggplot2)
+> library("ggplot2")
 > p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
 > p
 ```
 fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are fields of `mtcars` cannot be inferred from code inspection alone, but you need to know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
 ```r
-> library(future)
-> library(ggplot2)
+> library("future")
+> library("ggplot2")
 > p %<-% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
 Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
   Identified a global by static code inspection, but failed to locate the corresponding
@@ -92,79 +169,10 @@ A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
 > p
 ```
 By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
+---%>
 
 
-### Missing or incorrect globals
-
-#### Global variable obscured by subassignment
-When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
-For example,
-```r
-> library(future)
-> x <- matrix(1:12, nrow=3, ncol=4)
-> y %<-% {
-+   x[1,1] <- 3
-+   42
-+ }
-> rm(x)
-> y
-Error in x[1, 1] <- 3 : object 'x' not found
-```
-Another example is
-```r
-> library(future)
-> x <- list(a=1, b=2)
-> y %<-% {
-+   x$c <- 3
-+   42
-+ }
-> rm(x)
-> y
-Error in x$c <- 3 : object 'x' not found
-```
-A workaround is to explicitly tell the future package about the global variable by simply listing it at the beginning of the expression, e.g.
-```r
-> library(future)
-> x <- list(a=1, b=2)
-> y %<-% {
-+   x  ## Force 'x' to be global
-+   x$c <- 3
-+   42
-+ }
-> rm(x)
-> y
-[1] 42
-```
-
-
-### do.call() - function not found
-When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
-```r
-do.call(file_ext, list("foo.txt"))
-```
-instead of
-```r
-do.call("file_ext", list("foo.txt"))
-```
-so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
-It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
-```r
-> library("future")
-> library("listenv")
-> library("tools")
-> plan(lazy)
-> pathnames <- c("foo.txt", "bar.png", "yoo.md")
-> res <- listenv()
-> for (ii in seq_along(pathnames)) {
-+   res[[ii]] %<-% do.call("file_ext", list(pathnames[ii]))
-+ }
-> file_ext <- function(...) "haha!"
-> unlist(res)
-[1] "haha!" "haha!" "haha!"
-```
-
-
-### Trying to pass an unresolved future to another future
+## Trying to pass an unresolved future to another future
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")
@@ -226,13 +234,77 @@ _Footnote_: (*) Although certain types of futures, such as eager and lazy ones, 
 
 ## Miscellaneous
 
-### Error "non-numeric argument to binary operator"
+### Clashes with other packages
+
+Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
+```r
+> library("future")
+> library("igraph")
+
+Attaching package: 'igraph'
+
+The following objects are masked from 'package:future':
+
+    %<-%, %->%
+
+The following objects are masked from 'package:stats':
+
+    decompose, spectrum
+
+The following object is masked from 'package:base':
+
+    union
+
+> y %<-% { 42 }
+Error in get(".igraph.from", parent.frame()) : 
+  object '.igraph.from' not found
+```
+Here we get an error because `%<-%` is from igraph and not the future assignment operator as we wanted.  This can be confirmed as:
+```r
+> environment(`%<-%`)
+<environment: namespace:igraph>
+```
+
+To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.
+```r
+> library("igraph")
+> library("future")
+
+Attaching package: 'future'
+
+The following objects are masked from 'package:igraph':
+
+%<-%, %->%
+
+> y %<-% { 42 }
+> y
+[1] 42
+```
+
+An alternative is to detach the future package and re-attach it, which will achieve the same thing:
+```r
+> detach("package:future")
+> library("future")
+```
+
+Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.
+```r
+> `%<-%` <- future::`%<-%`
+> y %<-% { 42 }
+> y
+[1] 42
+```
+In this case, it does not matter in what order the packages are attached because we will always use the copy of `` future::`%<-%` ``.
+
+
+
+### Syntax error: "non-numeric argument to binary operator"
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
 > x %<-% 2 * runif(1)
 Error in x %<-% 2 * runif(1) : non-numeric argument to binary operator
 ```
-What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply it (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
+What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply the future (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
 ```r
 > x %<-% { 2 * runif(1) }
 > x

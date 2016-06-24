@@ -2,15 +2,15 @@
 #'
 #' This function allows you to plan the future, more specifically,
 #' it specifies how \code{\link{future}()}:s are resolved,
-#' e.g. by eager or by lazy evaluation.
+#' e.g. sequentially or in parallel.
 #'
-#' @param strategy The evaluation function to use for resolving a future.
-#' If NULL, then the current strategy is returned.
+#' @param strategy The evaluation function (or name of it) to use
+#' for resolving a future.  If NULL, then the current strategy is returned.
 #' @param \dots Additional arguments overriding the default arguments
 #' of the evaluation function.
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
-#' @param .call (internal) Used to record the call to this function.
+#' @param .call (internal) Used for recording the call to this function.
 #'
 #' @return If a new strategy is chosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
@@ -18,15 +18,56 @@
 #' @example incl/plan.R
 #'
 #' @details
-#' The default strategy is \code{\link{eager}}, which can be set by
-#' option \option{future.plan} and, if that is not set,
+#' The default strategy is \code{\link{eager}}, but the default can be
+#' configured by option \option{future.plan} and, if that is not set,
 #' system environment variable \env{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use \code{plan("default")}.
 #'
-#' @seealso
-#' Evaluation functions provided by this package are \code{\link{eager}()},
-#' \code{\link{lazy}()} and \code{\link{multicore}()}.
-#' Other package may provide additional evaluation strategies/functions.
+#' @section Implemented evaluation strategies:
+#' \itemize{
+#'  \item{\code{\link{eager}}:}{
+#'    Resolves futures sequentially in the current R process.
+#'  }
+#'  \item{\code{\link{lazy}}:}{
+#'    Resolves futures synchronously (sequentially) in the current
+#'    R process, but only if their values are requested.  Futures for
+#'    which the values are never requested will not be evaluated.
+#'  }
+#'  \item{\code{\link{transparent}}:}{
+#'    Resolves futures synchronously (sequentially) in the current
+#'    R process and assignments will be done to the calling environment.
+#'    Early stopping is enabled by default.
+#'  }
+#'  \item{\code{\link{multisession}}:}{
+#'    Resolves futures asynchronously (in parallel) in separate
+#'    R sessions running in the background on the same machine.
+#'  }
+#'  \item{\code{\link{multicore}}:}{
+#'    Resolves futures asynchronously (in parallel) in separate
+#'    \emph{forked} R processes running in the background on
+#'    the same machine.  Not supported on Windows.
+#'  }
+#'  \item{\code{\link{multiprocess}}:}{
+#'    If multicore evaluation is supported, that will be used,
+#     otherwise multisession evaluation will be used.
+#'  }
+#'  \item{\code{\link{cluster}}:}{
+#'    Resolves futures asynchronously (in parallel) in separate
+#'    R sessions running typically on one or more machines.
+#'  }
+#'  \item{\code{\link{remote}}:}{
+#'    Resolves futures asynchronously in a separate R session
+#'    running on a separate machine, typically on a different
+#'    network.
+#'  }
+#' }
+#'
+#' Other package may provide additional evaluation strategies.
+#' Notably, the \pkg{future.BatchJobs} package implements a
+#' type of futures that will be resolved via job schedulers
+#' that are typically available on high-performance compute
+#' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
+#' and OpenLava.
 #'
 #' @export
 plan <- local({
@@ -45,10 +86,7 @@ plan <- local({
       ## Next future strategy?
       return(stack[[1L]])
     } else if (identical(strategy, "default")) {
-      ## Set default plan according to option/sysenv variable?
-      strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-      strategy <- getOption("future.plan", strategy)
-      if (!nzchar(strategy)) strategy <- eager
+      strategy <- getOption("future.plan", eager)
     } else if (identical(strategy, "list")) {
       ## List stack of future strategies?
       return(stack)

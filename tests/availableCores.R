@@ -1,12 +1,18 @@
-library("future")
+source("incl/start.R")
 
 message("*** availableCores() ...")
 
-n <- availableCores()
-message(sprintf("n=%d", n))
+## detectCores() may return NA_integer_
+n <- parallel::detectCores()
+message(sprintf("detectCores()=%d", n))
+stopifnot(length(n) == 1, is.numeric(n))
 
 ## Default
 print(availableCores())
+
+n <- availableCores()
+message(sprintf("availableCores()=%d", n))
+stopifnot(length(n) == 1, is.numeric(n), n >= 1)
 
 ## Minimium of all known settings (default)
 print(availableCores(which="min"))
@@ -17,9 +23,15 @@ print(availableCores(which="max"))
 ## All known settings
 print(availableCores(na.rm=FALSE, which="all"))
 
+## System settings
+n <- availableCores(methods="system")
+print(n)
+stopifnot(length(n) == 1, is.numeric(n), is.finite(n), n >= 1)
+
 ## Predefined ones for known cluster schedulers
 print(availableCores(methods="PBS"))
-print(availableCores(methods="system"))
+print(availableCores(methods="SGE"))
+print(availableCores(methods="Slurm"))
 
 ## Any R options and system environment variable
 print(availableCores(methods=c("width", "FOO_BAR_ENV"),
@@ -37,5 +49,29 @@ print(res)
 stopifnot(inherits(res, "warning"))
 
 
+message("*** Internal detectCores() ...")
+
+## Option 'future.availableCores.system'
+env <- environment(future:::detectCores)
+env$res <- NULL
+options(future.availableCores.system=2L)
+n <- detectCores()
+print(n)
+stopifnot(is.integer(n), is.finite(n), n >= 1, n == 2L)
+options(future.availableCores.system=NULL)
+
+## Reset
+env <- environment(future:::detectCores)
+env$res <- NULL
+n <- detectCores()
+print(n)
+stopifnot(is.integer(n), is.finite(n), n >= 1)
+
+
+message("*** Internal detectCores() ... DONE")
+
+
 message("*** availableCores() ... DONE")
+
+source("incl/end.R")
 

@@ -65,7 +65,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints=NULL, methods=getOption("future.availableCoresMethods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -92,8 +92,8 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
     } else if (method == "mc.cores") {
-      .Deprecated(msg="Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
       n <- getopt("mc.cores") + 1L
+      .Deprecated(msg="Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
     } else if (method == "mc.cores+1") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores") + 1L

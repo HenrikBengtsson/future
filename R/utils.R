@@ -165,7 +165,28 @@ getOption <- local({
 detectCores <- local({
   res <- NULL
   function() {
-    if (is.null(res)) res <<- parallel::detectCores()
+    if (is.null(res)) {
+      ## Get number of system cores from option, system environment,
+      ## and finally detectCores().  This also designed such that
+      ## it is indeed possible to return NA_integer_.
+      value <- getOption("future.availableCores.system")
+      if (!is.null(value)) {
+        value <- as.integer(value)
+	return(value)
+      }
+      
+      value <- parallel::detectCores()
+      
+      ## If unknown, set default to 1L
+      if (is.na(value)) value <- 1L
+      value <- as.integer(value)
+      
+      ## Assert positive integer
+      stopifnot(length(value) == 1L, is.numeric(value),
+                is.finite(value), value >= 1L)
+		
+      res <<- value
+    }
     res
   }
 })
@@ -183,7 +204,7 @@ importParallel <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
     ## covr: skip=3
-    msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS), name)
+    msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
     mdebug(msg)
     stop(msg, call.=FALSE)
   }
@@ -191,7 +212,8 @@ importParallel <- function(name=NULL) {
 }
 
 
-parseCmdArgs <- function(cmdargs=commandArgs()) {
+parseCmdArgs <- function() {
+  cmdargs <- getOption("future.cmdargs", commandArgs())
   args <- list()
 
   ## Option --parallel=<n> or -p <n>
@@ -223,3 +245,134 @@ parseCmdArgs <- function(cmdargs=commandArgs()) {
 
   args
 } # parseCmdArgs()
+
+
+myExternalIP <- local({
+  ip <- NULL
+  function(force=FALSE, mustWork=TRUE) {
+    if (!force && !is.null(ip)) return(ip)
+    
+    ## FIXME: The identification of the external IP number relies on a
+    ## single third-party server.  This could be improved by falling back
+    ## to additional servers, cf. https://github.com/phoemur/ipgetter
+    urls <- c(
+      "https://myexternalip.com/raw",
+      "https://diagnostic.opendns.com/myip",
+      "https://api.ipify.org/",
+      "http://myexternalip.com/raw",
+      "http://diagnostic.opendns.com/myip",
+      "http://api.ipify.org/"
+    )
+    value <- NULL
+    for (url in urls) {
+      value <- tryCatch(readLines(url), error = function(ex) NULL)
+      if (!is.null(value)) break
+    }
+    
+    ## Nothing found?
+    if (is.null(value)) {
+      if (mustWork) {
+        stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse=", ")))
+      }
+      return(NA_character_)
+    }
+
+    ## Trim and drop empty results (just in case)
+    value <- trim(value)
+    value <- value[nzchar(value)]
+
+    ## Nothing found?
+    if (length(value) == 0 && !mustWork) return(NA_character_)
+    
+    ## Sanity check
+    stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
+
+    ## Cache result
+    ip <<- value
+    
+    ip
+  }
+}) ## myExternalIP()
+
+
+myInternalIP <- local({
+  ip <- NULL
+
+  ## Known private network IPv4 ranges:
+  ##   (1)    10.0.0.0 -  10.255.255.255
+  ##   (2)  172.16.0.0 -  172.31.255.255
+  ##   (3) 192.168.0.0 - 192.168.255.255
+  ## https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
+  isPrivateIP <- function(ips) {
+    ips <- strsplit(ips, split=".", fixed=TRUE)
+    ips <- lapply(ips, FUN=as.integer)
+    res <- logical(length=length(ips))
+    for (kk in seq_along(ips)) {
+      ip <- ips[[kk]]
+      if (ip[1] == 10) {
+        res[kk] <- TRUE
+      } else if (ip[1] == 172) {
+        if (ip[2] >= 16 && ip[2] <= 31) res[kk] <- TRUE
+      } else if (ip[1] == 192) {
+        if (ip[2] == 168) res[kk] <- TRUE
+      }
+    }
+    res
+  } ## isPrivateIP()
+
+  function(force=FALSE, which=c("first", "last", "all"), mustWork=TRUE) {
+    if (!force && !is.null(ip)) return(ip)
+    which <- match.arg(which)
+
+    value <- NULL
+    os <- R.version$os
+    pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
+    if (grepl("^linux", os)) {
+      res <- system2("hostname", args="-I", stdout=TRUE)
+      res <- grep(pattern, res, value=TRUE)
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- grep(pattern, res, value=TRUE)
+      res <- unique(trim(res))
+      ## Keep private network IPs only (just in case)
+      value <- res[isPrivateIP(res)]
+    } else if (grepl("^mingw", os)) {
+      res <- system2("ipconfig", stdout=TRUE)
+      res <- grep("IPv4", res, value=TRUE)
+      res <- grep(pattern, res, value=TRUE)
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- grep(pattern, res, value=TRUE)
+      res <- unique(trim(res))
+      ## Keep private network IPs only (just in case)
+      value <- res[isPrivateIP(res)]
+    } else {
+      if (mustWork) {
+        stop(sprintf("remote(..., myip='<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+      }
+      return(NA_character_)
+    }
+
+    ## Trim and drop empty results (just in case)
+    value <- trim(value)
+    value <- value[nzchar(value)]
+
+    ## Nothing found?
+    if (length(value) == 0 && !mustWork) return(NA_character_)
+
+    if (length(value) > 1) {
+      value <- switch(which,
+        first = value[1],
+        last  = value[length(value)],
+        all   = value,
+        value
+      )
+    }
+    ## Sanity check
+
+    stopifnot(is.character(value), length(value) >= 1, !any(is.na(value)))
+
+    ## Cache result
+    ip <<- value
+
+    ip
+  }
+}) ## myInternalIP()

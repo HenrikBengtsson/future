@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
@@ -41,7 +38,7 @@ for (cores in 1:min(3L, availableCores())) {
   }
 
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy, substitute=FALSE)
 
@@ -64,6 +61,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** Global argument '...' in lazy futures ... DONE")
 
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

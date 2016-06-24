@@ -1,10 +1,4 @@
-library("future")
-library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
-
-ClusterRegistry <- future:::ClusterRegistry
+source("incl/start.R")
 
 message("*** ClusterRegistry() ... ")
 
@@ -38,9 +32,15 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
+
+message("*** ClusterRegistry() - exceptions ...")
+
+res <- try(ClusterRegistry(action="start", workers=TRUE))
+stopifnot(inherits(res, "try-error"))
+
+message("*** ClusterRegistry() - exceptions ... DONE")
+
+
 message("*** ClusterRegistry() ... DONE")
 
-
-## Cleanup
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

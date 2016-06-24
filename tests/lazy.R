@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1)
 plan(lazy)
 
 message("*** lazy() ...")
@@ -79,7 +76,7 @@ v <- sapply(x, FUN=value)
 stopifnot(all(v == 5L))  ## Make sure globals are not frozen
 
 
-message("*** lazy() and errors")
+message("*** lazy() and errors ...")
 f <- lazy({
   stop("Whoops!")
   1
@@ -98,9 +95,18 @@ res <- try(value(f), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
+message("*** lazy() and errors ... DONE")
+
+
+message("*** lazy() - exceptions ...")
+
+res <- try(lazy(42L, local=FALSE, globals=TRUE), silent=TRUE)
+print(res)
+stopifnot(inherits(res, "try-error"))
+
+message("*** lazy() - exceptions ... DONE")
+
+
 message("*** lazy() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

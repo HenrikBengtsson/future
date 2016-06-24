@@ -1,6 +1,41 @@
 Package: future
 ===============
 
+Version: 1.0.0 [2016-06-24]
+o GLOBALS: Falsely identified global variables no longer generate
+  an error when the future is created.  Instead, we leave it to R
+  and the evaluation of the individual futures to throw an error
+  if the a global variable is truly missing.  This was done in order
+  to automatically handle future expressions that use non-standard
+  evaluation (NSE), e.g. subset(df, x < 3) where 'x' is falsely
+  identified as a global variable.
+o Add support for remote(..., myip="<external>"), which now
+  queries a set of external lookup services in case one of them
+  fails.
+o DEMO: Now the Mandelbrot demo tiles a single Mandelbrot region
+  with one future per tile. This better illustrates parallelism.
+o Add mandelbrot() function used in demo to the API for convenience.
+o DOCUMENTATION: Documented R options used by the future package.
+o ROBUSTNESS: If .future.R script, which is sourced when the future
+  package is attached, gives an error, then the error is ignored
+  with a warning.
+o CLEANUP: Dropped support for system environment variable
+  'R_FUTURE_GLOBALS_MAXSIZE'.
+o TROUBLESHOOTING: If the future requires attachment of packages,
+  then each namespace is loaded separately and before attaching
+  the package.  This is done in order to see the actual error
+  message in case there is a problem while loading the namespace.
+  With require()/library() this error message is otherwise suppressed
+  and replaced with a generic one.
+o BUG FIX: Custom futures based on a constructor function that
+  is defined outside a package gave an error.
+o BUG FIX: plan("default") assumed that the 'future.plan' option
+  was a string; gave an error if it was a function.
+o BUG FIX: Various future options were not passed on to futures.
+o BUG FIX: A startup .future.R script is no longer sourced if the
+  future package is attached by a future expression.
+
+
 Version: 0.15.0 [2016-06-13]
 o Now .future.R (if found in the current directory or otherwise in
   the user's home directory) is sourced when the future package is

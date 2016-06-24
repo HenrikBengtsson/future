@@ -1,8 +1,5 @@
+source("incl/start.R")
 library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-oplan <- plan()
 
 message("*** rng ...")
 
@@ -54,7 +51,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("%s ...", strategy))
 
     .GlobalEnv$.Random.seed <- seed0
@@ -94,7 +91,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** rng ... DONE")
 
-## Cleanup
-plan(oplan)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

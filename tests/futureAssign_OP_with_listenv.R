@@ -1,10 +1,6 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1)
 plan(lazy)
-
 
 message("*** %<-% to listenv ...")
 
@@ -87,8 +83,4 @@ message("*** %<-% to listenv: multiple dimensions ... DONE")
 
 message("*** %<-% to listenv ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

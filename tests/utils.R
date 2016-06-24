@@ -1,12 +1,8 @@
-ovars <- ls()
+source("incl/start,load-only.R")
 
 message("*** utils ...")
 
 message("*** hpaste() ...")
-
-printf <- function(...) cat(sprintf(...))
-hpaste <- future:::hpaste
-requirePackages <- future:::requirePackages
 
 # Some vectors
 x <- 1:6
@@ -56,7 +52,6 @@ message("*** hpaste() ...")
 # asIEC()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** asIEC() ...")
-asIEC <- future:::asIEC
 
 for (size in c(0, 10^(0:20))) {
   cat(sprintf("Size: %.f bytes = %s\n", size, asIEC(size)))
@@ -69,12 +64,11 @@ message("*** asIEC() ... DONE")
 # debug()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** mdebug() ...")
-mdebug <- future:::mdebug
 
 mdebug("Hello #1")
-options("future.debug"=TRUE)
+options(future.debug=TRUE)
 mdebug("Hello #2")
-options("future.debug"=FALSE)
+options(future.debug=FALSE)
 mdebug("Hello #3")
 
 message("*** mdebug() ... DONE")
@@ -86,9 +80,6 @@ message("*** mdebug() ... DONE")
 message("*** geval() et al. ...")
 
 gls <- function(..., envir=.GlobalEnv) ls(..., envir=envir)
-grmall <- future:::grmall
-geval <- future:::geval
-gassign <- future:::gassign
 
 message("- gls() ...")
 genv <- new.env(parent=globalenv())
@@ -134,7 +125,54 @@ stopifnot(inherits(res, "try-error"))
 message("*** requirePackages() ... DONE")
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# importParallel()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** importParallel() ...")
+
+mclapply <- importParallel("mclapply")
+stopifnot(identical(mclapply, parallel::mclapply))
+
+ns <- getNamespace("parallel")
+if (exists("sendCall", envir=ns, mode="function")) {
+  sendCall <- importParallel("sendCall")
+  stopifnot(identical(sendCall, parallel:::sendCall))
+} else {
+  res <- try(importParallel("sendCall"), silent=TRUE)
+  stopifnot(inherits(res, "try-error"))
+}
+
+res <- try(importParallel("<unknown function>"), silent=TRUE)
+stopifnot(inherits(res, "try-error"))
+
+message("*** importParallel() ... DONE")
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# myInternalIP() and myExternalIP()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** myInternalIP() ...")
+ips <- myInternalIP(mustWork=FALSE)
+message("myInternalIP(): ", paste(ips, collapse=", "))
+message("*** myInternalIP() ... DONE")
+
+ips <- myInternalIP(force=TRUE, which="first", mustWork=FALSE)
+message("myInternalIP(which='first'): ", paste(ips, collapse=", "))
+message("*** myInternalIP() ... DONE")
+
+ips <- myInternalIP(force=TRUE, which="last", mustWork=FALSE)
+message("myInternalIP(which='last'): ", paste(ips, collapse=", "))
+message("*** myInternalIP() ... DONE")
+
+ips <- myInternalIP(force=TRUE, which="all", mustWork=FALSE)
+message("myInternalIP(which='all'): ", paste(ips, collapse=", "))
+message("*** myInternalIP() ... DONE")
+
+message("*** myExternalIP() ...")
+ip <- myExternalIP(mustWork=FALSE)
+message("myExternalIP(): ", ip)
+message("*** myExternalIP() ... DONE")
+
+
 message("*** utils ... DONE")
 
-## Cleanup
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

@@ -1,7 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1)
+source("incl/start.R")
 plan(lazy)
 
 ## BACKWARD COMPATIBILITY
@@ -54,7 +51,4 @@ stopifnot(identical(v$a, 2))
 
 message("*** %<-% to environment ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

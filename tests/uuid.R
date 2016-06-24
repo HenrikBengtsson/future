@@ -1,11 +1,7 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
+source("incl/start.R")
+uuid <- future:::uuid
 
 message("*** uuid() ...")
-
-uuid <- future:::uuid
 
 id0 <- uuid()
 print(id0)
@@ -19,8 +15,4 @@ stopifnot(id != id0)
 
 message("*** uuid() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

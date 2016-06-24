@@ -1,8 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-printf <- function(...) cat(sprintf(...))
+source("incl/start.R")
 
 message("*** %<-% ...")
 
@@ -10,7 +6,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  for (strategy in future:::supportedStrategies()) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("*** %%<-%% with %s futures ...", sQuote(strategy)))
     plan(strategy)
 
@@ -117,7 +113,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** %<-% ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

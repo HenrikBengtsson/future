@@ -256,11 +256,13 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     })
   }
 
-  ## Identify package
+  ## Identify package namespaces for strategies
   pkgs <- lapply(strategies, FUN=environment)
   pkgs <- lapply(pkgs, FUN=environmentName)
   pkgs <- unique(unlist(pkgs))
-
+  pkgs <- intersect(pkgs, loadedNamespaces())
+  mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+  
   if (length(pkgs) > 0L) {
     ## Sanity check by verifying packages can be loaded already here
     ## If there is somethings wrong in 'pkgs', we get the error
@@ -269,8 +271,16 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 
     enter <- bquote({
       ## covr: skip=3
-      .(enter)
-      for (pkg in .(pkgs)) library(pkg, character.only=TRUE)
+      .(enter)      
+      ## TROUBLESHOOTING: If the package fails to load, then library()
+      ## suppress that error and generates a generic much less
+      ## informative error message.  Because of this, we load the
+      ## namespace first (to get a better error message) and then
+      ## calls library(), which attaches the package. /HB 2016-06-16
+      for (pkg in .(pkgs)) {
+        loadNamespace(pkg)
+        library(pkg, character.only=TRUE)
+      }
       oplans <- future::plan("list")
     })
   } else {
@@ -293,12 +303,30 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
     expr <- substitute(local(a), list(a=expr))
   }
+
+  ## Set and reset certain future.* options
+  enter <- substitute({
+    ## covr: skip=7
+    ...future.oldOptions <- options(
+      ## Prevent .future.R from being source():d when future is attached
+      future.startup.loadScript=FALSE,
+      ## Assert globals when future is created (or at run time)?
+      future.globals.onMissing=globals.onMissing
+    )
+    enter
+  }, env=list(globals.onMissing=globals.onMissing, enter=enter))
+
+  exit <- substitute({
+    exit
+    options(...future.oldOptions)
+  }, env=list(exit=exit))
+
 
   ## NOTE: We don't want to use local(body) w/ on.exit() because
   ## evaluation in a local is optional, cf. argument 'local'.
@@ -306,7 +334,7 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, enter=NULL, exit=NULL) {
   ## a tryCatch() statement. /HB 2016-03-14
   if (gc) {
     expr <- substitute({
-      ## covr: skip=6
+      ## covr: skip=8
       enter
       ...future.value <- tryCatch({
         body

@@ -1,7 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=FALSE, future.debug=TRUE)
+source("incl/start.R")
 
 ## Local functions
 usedNodes <- function(future) {
@@ -92,7 +89,4 @@ message("- Trying with invalid ownership ... DONE")
 
 message("*** future() - invalid ownership ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

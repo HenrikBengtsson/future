@@ -1,5 +1,6 @@
+source("incl/start,load-only.R")
+
 message("*** plan() ...")
-oopts <- options(warn=1)
 
 message("*** Set strategy via future::plan(future::lazy)")
 oplan <- future::plan(future::lazy)
@@ -31,13 +32,13 @@ print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
+
+library("future")
+
 message("*** plan('unknown strategy')")
 res <- try(plan('unknown strategy'), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
-
-
-library("future")
 
 message("*** plan() by (lazy) function")
 
@@ -235,6 +236,4 @@ message("*** plan() w/ commands ... DONE")
 
 message("*** plan() ... DONE")
 
-plan(eager)
-options(oopts)
-rm(list="oopts")
+source("incl/end.R")

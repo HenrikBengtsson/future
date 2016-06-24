@@ -1,7 +1,4 @@
-library(future)
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L)
+source("incl/start.R")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
@@ -14,7 +11,7 @@ for (cores in 1:min(3L, availableCores())) {
   message("*** Mandelbrot demo of the 'future' package ...")
 
   if (getRversion() >= "3.2.0") {
-    for (strategy in future:::supportedStrategies()) {
+    for (strategy in supportedStrategies()) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
       demo("mandelbrot", package="future", ask=FALSE)
@@ -29,6 +26,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** Demos ... DONE")
 
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

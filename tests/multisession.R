@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 plan(multisession)
 
 message("*** multisession() ...")
@@ -76,9 +73,9 @@ for (cores in 1:min(3L, availableCores())) {
 
 
   message("*** multisession() - too large globals ...")
-  ooptsT <- options("future.maxSizeOfGlobals"=1024*4L)
+  ooptsT <- options(future.globals.maxSize=1024*4L)
 
-  limit <- getOption("future.maxSizeOfGlobals")
+  limit <- getOption("future.globals.maxSize")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
   for (workers in unique(c(1L, availableCores()))) {
@@ -133,8 +130,4 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** multisession() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

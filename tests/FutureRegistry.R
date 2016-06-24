@@ -1,10 +1,4 @@
-library("future")
-
-ovars <- ls()
-oopts <- options(warn=1)
-plan(eager)
-
-FutureRegistry <- future:::FutureRegistry
+source("incl/start.R")
 
 message("*** FutureRegistry() ...")
 
@@ -110,7 +104,4 @@ message("*** FutureRegistry() - exceptions ... DONE")
 
 message("*** FutureRegistry() ... DONE")
 
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

@@ -1,8 +1,5 @@
-library("future")
+source("incl/start.R")
 library("listenv")
-
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
 
 message("*** cluster() ...")
 
@@ -99,9 +96,9 @@ for (cores in 1:2) {
 
 
   message("*** cluster() - too large globals ...")
-  ooptsT <- options("future.maxSizeOfGlobals"=1024*4L)
+  ooptsT <- options(future.globals.maxSize=1024*4L)
 
-  limit <- getOption("future.maxSizeOfGlobals")
+  limit <- getOption("future.globals.maxSize")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
   ## A large object
@@ -153,7 +150,7 @@ for (cores in 1:2) {
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)
   message(v)
-  stopifnot(v == future:::hpaste(1:100))
+  stopifnot(v == hpaste(1:100))
   message("*** cluster() - assert covr workaround ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
@@ -189,9 +186,6 @@ message("*** cluster() - exceptions ... DONE")
 
 message("*** cluster() ... DONE")
 
-
 ## Cleanup
 parallel::stopCluster(cl)
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

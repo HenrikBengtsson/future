@@ -1,8 +1,6 @@
-library("future")
+source("incl/start.R")
 
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.debug=TRUE)
-
+options(future.debug=FALSE)
 
 message("*** Early signaling of conditions ...")
 
@@ -105,9 +103,6 @@ stopifnot(inherits(v, "try-error"))
 
 message("*** Early signaling of conditions with multiprocess futures ... DONE")
 
-
 message("*** Early signaling of conditions ... DONE")
 
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

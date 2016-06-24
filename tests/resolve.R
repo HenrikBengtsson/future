@@ -1,14 +1,43 @@
-library("future")
+source("incl/start.R")
 library("listenv")
 
-ovars <- ls()
-oopts <- options(warn=1, mc.cores=2L, future.progress=TRUE, future.debug=TRUE)
+oopts <- c(oopts, options(future.progress=TRUE))
 plan(lazy)
 
-strategies <- future:::supportedStrategies()
+strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
 
 message("*** resolve() ...")
+
+
+message("*** resolve() for Future objects ...")
+
+plan(multisession, workers=2L)
+
+for (value in c(FALSE, TRUE)) {
+  for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
+    message(sprintf("- value=%s, recursive=%s ...", value, recursive))
+  
+    f <- future({
+      Sys.sleep(0.5)
+      list(a=1, b=42L)
+    })
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
+    message("- w/ exception ...")
+    f <- future(list(a=1, b=42L, c=stop("Nah!")))
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
+    message(sprintf("- value=%s, recursive=%s ... DONE", value, recursive))
+  } ## for (resolve ...)
+} ## for (value ...)
+
+message("- exception ... DONE")
+
+message("*** resolve() for Future objects ... DONE")
+
 
 message("*** resolve() for lists ...")
 
@@ -72,8 +101,13 @@ for (strategy in strategies) {
   res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
   stopifnot(inherits(res, "try-error"))
 
+  x <- list(1, 2)
+  res <- try(x <- resolve(x, idxs="a"))
+  stopifnot(inherits(res, "try-error"))
+
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)
+
 
 message("*** resolve() for lists ... DONE")
 
@@ -133,6 +167,8 @@ for (strategy in strategies) {
   y <- resolve(x, idxs=names(x), value=TRUE)
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  y <- resolve(x, recursive=TRUE, value=TRUE)
+  stopifnot(identical(y, x))
 
   ## Exceptions
   res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
@@ -227,6 +263,8 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
 
+  y <- resolve(x, recursive=TRUE, value=TRUE)
+  stopifnot(identical(y, x))
 
   ## Exceptions
   res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
@@ -240,10 +278,16 @@ for (strategy in strategies) {
 
 message("*** resolve() for list environments ... DONE")
 
+
+
+message("*** resolved() - default ...")
+
+res <- resolved(42L)
+stopifnot(isTRUE(res))
+
+message("*** resolved() - default ... DONE")
+
+
 message("*** resolve() ... DONE")
 
-
-## Cleanup
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")

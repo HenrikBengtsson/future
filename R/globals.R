@@ -34,31 +34,39 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   } ## asPkgEnvironment()
 
 
-  ## Default maximum export size is 500 MiB for now. /HB 2016-01-11
-  maxSizeOfGlobals <- 500*1024^2
-  maxSizeOfGlobals <- Sys.getenv("FUTURE_MAXSIZE_GLOBALS", maxSizeOfGlobals)
-  maxSizeOfGlobals <- getOption("future.maxSizeOfGlobals", maxSizeOfGlobals)
+  ## Maximum size of globals (to prevent too large exports) = 500 MiB
+  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
-  mustExist <- getOption("future.globalsMustExist", TRUE)
+  ## Assert that all identified globals exists when future is created?
+  if (persistent) {
+    ## If future relies on persistent storage, then the globals may
+    ## already exist in the environment that the future is evaluated in.
+    mustExist <- FALSE
+  } else {
+    ## Default for 'future.globals.onMissing':
+    ## Note: It's possible to switch between 'ignore' and 'error'
+    ##       at any time. Tests handles both cases. /HB 2016-06-18
+    globals.onMissing <- getOption("future.globals.onMissing", "ignore")
+    globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
+    mustExist <- is.element(globals.onMissing, "error")
+  }
 
-  ## If future relies on persistent storage, then the globals may
-  ## already exist in the environment that the future is evaluated in.
-  mustExist <- mustExist && !persistent
-
-  exprOrg <- expr
 
   ## Identify globals
+  ## Algorithm for identifying globals
+  globals.method <- getOption("future.globals.method", "ordered")
   globals <- globalsOf(expr, envir=envir, substitute=FALSE,
                tweak=tweak,
                dotdotdot="return",
                primitive=FALSE, base=FALSE,
                unlist=TRUE,
-               ## Only for debugging/development; do not rely on this elsewhere!
                mustExist=mustExist,
-               method=getOption("future.globalsMethod", "ordered")
+               method=globals.method
              )
+
+  exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
   if (inherits(globals$`...`, "DotDotDotList")) {
@@ -150,14 +158,14 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     sizes <- unlist(sizes, use.names=TRUE)
     totalExportSize <- sum(sizes, na.rm=TRUE)
     if (totalExportSize > maxSizeOfGlobals) {
+      n <- length(sizes)
       o <- order(sizes, decreasing=TRUE)[1:3]
       o <- o[is.finite(o)]
       sizes <- sizes[o]
       classes <- lapply(globals[o], FUN=mode)
       classes <- unlist(classes, use.names=FALSE)
       largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.maxSizeOfGlobals').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
-      n <- length(largest)
+      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
       if (n == 1) {
         fmt <- "%s There is one global: %s."
       } else if (n == 2) {

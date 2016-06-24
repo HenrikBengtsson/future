@@ -1,8 +1,7 @@
-library("future")
+source("incl/start.R")
 library("listenv")
 
-ovars <- ls()
-oopts <- options(warn=1L, mc.cores=2L, future.globals.resolve=TRUE, future.debug=TRUE)
+oopts <- c(oopts, options(future.globals.resolve=TRUE))
 setTimeLimit(cpu=10, elapsed=10, transient=TRUE)
 
 message("*** Tricky use cases related to globals (part 2) ...")
@@ -43,9 +42,6 @@ message(sprintf("y=%s\n", y))
 
 message("*** Tricky use cases related to globals (part 2) ... DONE")
 
-
 ## Cleanup
 setTimeLimit()
-plan(eager)
-options(oopts)
-rm(list=setdiff(ls(), ovars))
+source("incl/end.R")
