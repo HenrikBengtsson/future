@@ -148,7 +148,7 @@ Sys.setenv("R_FUTURE_PLAN"="")
 message("- .onLoad() w/ R_FUTURE_PLAN='lazy' & -p 1 ... DONE")
 
 message("- .onLoad() w/ future.plan='lazy' & -p 1 ...")
-options(future.plan=NULL, future.plan='lazy', future.cmdargs=c("-p", "1"))
+options(future.plan='lazy', future.cmdargs=c("-p", "1"))
 .onLoad(pkgname, pkgname)
 strategy <- plan()
 print(strategy)
@@ -157,7 +157,7 @@ plan("default")
 message("- .onLoad() w/ future.plan='lazy' & -p 1 ... DONE")
 
 message("- .onLoad() w/ future.plan='lazy' & -p 1 ...")
-options(future.plan=NULL, future.plan=lazy, future.cmdargs=c("-p", "1"))
+options(future.plan=lazy, future.cmdargs=c("-p", "1"))
 .onLoad(pkgname, pkgname)
 strategy <- plan()
 print(strategy)
@@ -165,7 +165,44 @@ stopifnot(inherits(strategy, "lazy"))
 plan("default")
 message("- .onLoad() w/ future.plan='lazy' & -p 1 ... DONE")
 
-options(future.plan=NULL, future.cmdargs=NULL)
+
+message("- .onLoad() w/ future.availableCores.system=1L ...")
+options(future.availableCores.system=1L)
+.onLoad(pkgname, pkgname)
+options(future.availableCores.system=NULL)
+message("- .onLoad() w/ future.availableCores.system=1L ... DONE")
+
+message("- .onLoad() w/ R_FUTURE_AVAILABLECORES_SYSTEM ...")
+Sys.setenv("R_FUTURE_AVAILABLECORES_SYSTEM"="1")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.system")
+print(ncores)
+stopifnot(is.integer(ncores), ncores == 1L)
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_SYSTEM")
+options(future.availableCores.system=NULL)
+
+Sys.setenv("R_FUTURE_AVAILABLECORES_SYSTEM"="NA")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.system")
+print(ncores)
+stopifnot(is.integer(ncores), is.na(ncores))
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_SYSTEM")
+options(future.availableCores.system=NULL)
+
+Sys.setenv("R_FUTURE_AVAILABLECORES_SYSTEM"="NA_real_")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.system")
+print(ncores)
+stopifnot(is.integer(ncores), is.na(ncores))
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_SYSTEM")
+options(future.availableCores.system=NULL)
+
+message("- .onLoad() w/ R_FUTURE_AVAILABLECORES_SYSTEM ... DONE")
+
+
+options(future.plan=NULL, future.cmdargs=NULL, future.availableCores.system=1L)
+
+options(future.plan=NULL, future.cmdargs=NULL, future.availableCores.system=NULL)
 
 message("*** .onLoad() ... DONE")
 
