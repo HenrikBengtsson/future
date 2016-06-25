@@ -55,7 +55,7 @@ plan(lazy)
 ## A global variable
 a <- 0
 
-## Create lazy future (implicitly)
+## Create lazy future (explicitly)
 f <- future({
   b <- 3
   c <- 2
