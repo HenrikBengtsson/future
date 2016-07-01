@@ -1,6 +1,13 @@
 Package: future
 ===============
 
+Version: 1.0.0-9000 [2016-07-01]
+o ROBUSTNESS: For the special case where 'remote' futures use
+  workers = "localhost" they now uses the exact same R executable
+  as the main / calling R session (in all other cases it uses
+  whather 'Rscript' is found pn the PATH).
+  
+
 Version: 1.0.0 [2016-06-24]
 o GLOBALS: Falsely identified global variables no longer generate
   an error when the future is created.  Instead, we leave it to R

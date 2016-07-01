@@ -11,7 +11,7 @@ for (cores in 1:2) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  ## Set up a cluster with 4 nodes (explicitly)
+  ## Set up a cluster with <cores> nodes (explicitly)
   cl <- parallel::makeCluster(cores)
   plan(cluster, workers=cl)
 
@@ -28,7 +28,7 @@ for (cores in 1:2) {
   stopifnot(y == 42L)
 
 
-  ## Set up a cluster with 4 nodes (implicitly)
+  ## Set up a cluster with <cores> nodes (implicitly)
   plan(cluster, workers=cores)
 
   ## No global variables

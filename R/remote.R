@@ -34,12 +34,23 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
 
   if (is.character(workers)) {
+    homogeneous <- FALSE ## Calls plain 'Rscript'
+
     ## Guess what type of IP to use
     if (is.null(myip)) {
       if (all(workers %in% c("localhost", "127.0.0.1"))) {
         ## For conveniency, if all workers are on the localhost,
-	## then we know that localhost should be used
+        ## then we know that only the local machine will be used.
+	
+	## (a) We use 127.0.0.1 because it's slightly more generic 
+	##     than localhost.
         myip <- "127.0.0.1"
+	
+	## (b) We can also use the pathname of the currently running
+	##     R session, file.path(R.home("bin"), "Rscript"), rather
+	##     than 'Rscript' which is the best guess we can make for
+	##     a remote machine.  This is controlled by 'homogeneous'.
+        homogeneous <- TRUE
       } else {
         myip <- "<external>"
       }
@@ -52,7 +63,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
       myip <- myInternalIP()
     }
     
-    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=FALSE)
+    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
