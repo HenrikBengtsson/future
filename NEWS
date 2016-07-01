@@ -2,12 +2,15 @@ Package: future
 ===============
 
 Version: 1.0.0-9000 [2016-07-01]
-o BUG FIX: FutureError now extends simpleError and no longer the
-  error class of captured errors.
+o DOCUMENTATION: Adding section to vignette on globals in formulas
+  describing how they are currently not automatically detected
+  and how to explicitly export them.
 o ROBUSTNESS: For the special case where 'remote' futures use
   workers = "localhost" they now uses the exact same R executable
   as the main / calling R session (in all other cases it uses
-  whather 'Rscript' is found pn the PATH).
+  whather 'Rscript' is found in the PATH).
+o FutureError now extends simpleError and no longer the error
+  class of captured errors.
 o BUG FIX: Futures that generated R.oo::Exception errors, they
   triggered another internal error.
   
