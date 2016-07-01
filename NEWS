@@ -2,12 +2,14 @@ Package: future
 ===============
 
 Version: 1.0.0-9000 [2016-07-01]
+o BUG FIX: FutureError now extends simpleError and no longer the
+  error class of captured errors.
 o ROBUSTNESS: For the special case where 'remote' futures use
   workers = "localhost" they now uses the exact same R executable
   as the main / calling R session (in all other cases it uses
   whather 'Rscript' is found pn the PATH).
 o BUG FIX: Futures that generated R.oo::Exception errors, they
-  triggered another error when print():ed.
+  triggered another internal error.
   
 
 Version: 1.0.0 [2016-06-24]

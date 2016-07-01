@@ -11,15 +11,29 @@
 #' @export
 #' @keywords internal
 FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
-  if (inherits(message, "error")) {
-    ex <- message
-  } else {
-    ex <- simpleError(message, call=call)
+  ## Support different types of input
+  ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
+  if (inherits(message, "Future")) {
+    future <- message
+    value <- future$value
+    stopifnot(inherits(value, "condition"), inherits(value, "error"))
+    cond <- value
+    message <- conditionMessage(cond)
+  } else if (inherits(message, "condition")) {
+    cond <- message
+    message <- conditionMessage(cond)
   }
-  attr(ex, "future") <- future
-  attr(ex, "output") <- output
-  class(ex) <- unique(c("FutureError", class(ex)))
-  ex
+
+  ## Create a basic error object
+  cond <- simpleError(message, call=call)
+
+  ## Record Future object and optional output messages
+  attr(cond, "future") <- future
+  attr(cond, "output") <- output
+  
+  class(cond) <- unique(c("FutureError", class(cond)))
+  
+  cond
 }
 
 
