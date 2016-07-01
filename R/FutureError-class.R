@@ -16,8 +16,8 @@ FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
   } else {
     ex <- simpleError(message, call=call)
   }
-  ex$future <- future
-  ex$output <- output
+  attr(ex, "future") <- future
+  attr(ex, "output") <- output
   class(ex) <- unique(c("FutureError", class(ex)))
   ex
 }
@@ -27,8 +27,8 @@ FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
 print.FutureError <- function(x, ...) {
   NextMethod("print")
 
-  future <- x$future
-  output <- x$output
+  future <- attr(x, "future")
+  output <- attr(x, "output")
   if (!is.null(future) || !is.null(output)) {
     cat("\n\nDEBUG: BEGIN TROUBLESHOOING HELP\n")
 
@@ -63,7 +63,7 @@ print.FutureError <- function(x, ...) {
 
 #' @export
 getOutput.FutureError <- function(x, collapse=NULL, head=NULL, tail=NULL, ...) {
-  output <- x$output
+  output <- attr(x, "output")
 
   ## Return "as is"?
   if (is.null(collapse) && is.null(head) && is.null(tail)) return(output)
