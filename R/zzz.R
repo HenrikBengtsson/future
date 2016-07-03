@@ -81,12 +81,12 @@
     pathnames <- pathnames[file_test("-f", pathnames)]
   
     if (length(pathnames) == 0) {
-      mdebug("Future scripts identified: <none>")
+      mdebug("Future startup scripts identified: <none>")
       return()
     }
-    mdebug("Future scripts identified: %s", paste(sQuote(pathnames), collapse=", "))
+    mdebug("Future startup scripts identified: %s", paste(sQuote(pathnames), collapse=", "))
     pathname <- pathnames[1]
-    mdebug("Future script to load: %s", sQuote(pathname))
+    mdebug("Future startup script to load: %s", sQuote(pathname))
     tryCatch({
       source(pathname, chdir=FALSE, echo=FALSE, local=FALSE)
     }, error = function(ex) {
