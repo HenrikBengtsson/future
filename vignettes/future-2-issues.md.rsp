@@ -69,6 +69,42 @@ A workaround is to explicitly tell the future package about the global variable 
 _Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
 
 
+#### Global variable specified as part of formula
+Global variables that are part of formulas are currently not identified automatically.  For example,
+```r
+> library("future")
+> plan(multisession)
+>
+> x <- 1:10
+> y <- rnorm(10)
+> fit %<-% lm(y ~ x)
+> fit
+Received error on future: 'Error: object 'y' not found
+'
+Future state: 'failed'
+Future value: 'Error: object 'y' not found
+'
+Error: object 'y' not found
+```
+
+The workaround is to guide R by specifying such variables explicitly, e.g.
+```r
+> fit %<-% {
++   x; y  ## Force 'x' and 'y' to be global
++   lm(y ~ x)
++ }
+> fit
+
+Call:
+lm(formula = y ~ x)
+
+Coefficients:
+(Intercept)            x  
+   -0.40506      0.01751  
+```
+
+_Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
+
 
 #### do.call() - function not found
 When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use

@@ -156,8 +156,9 @@ value.Future <- function(future, signal=TRUE, ...) {
 
   value <- future$value
   if (signal && future$state == 'failed') {
-    mdebug("Future state: %s", sQuote(value))
-    stop(FutureError(value, future=future))
+    mdebug("Future state: %s", sQuote(future$state))
+    mdebug("Future value: %s", sQuote(value))
+    stop(FutureError(future))
   }
 
   value
@@ -277,17 +278,19 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
       ## informative error message.  Because of this, we load the
       ## namespace first (to get a better error message) and then
       ## calls library(), which attaches the package. /HB 2016-06-16
-      for (pkg in .(pkgs)) {
-        loadNamespace(pkg)
-        library(pkg, character.only=TRUE)
-      }
-      oplans <- future::plan("list")
+      ## NOTE: We use local() here such that 'pkg' is not assigned
+      ##       to the future environment. /HB 2016-07-03
+      local({
+        for (pkg in .(pkgs)) {
+          loadNamespace(pkg)
+          library(pkg, character.only=TRUE)
+        }
+      })
     })
   } else {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      oplans <- future::plan("list")
     })
   }
 

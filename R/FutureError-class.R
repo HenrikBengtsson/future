@@ -11,15 +11,29 @@
 #' @export
 #' @keywords internal
 FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
-  if (inherits(message, "error")) {
-    ex <- message
-  } else {
-    ex <- simpleError(message, call=call)
+  ## Support different types of input
+  ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
+  if (inherits(message, "Future")) {
+    future <- message
+    value <- future$value
+    stopifnot(inherits(value, "condition"), inherits(value, "error"))
+    cond <- value
+    message <- conditionMessage(cond)
+  } else if (inherits(message, "condition")) {
+    cond <- message
+    message <- conditionMessage(cond)
   }
-  ex$future <- future
-  ex$output <- output
-  class(ex) <- unique(c("FutureError", class(ex)))
-  ex
+
+  ## Create a basic error object
+  cond <- simpleError(message, call=call)
+
+  ## Record Future object and optional output messages
+  attr(cond, "future") <- future
+  attr(cond, "output") <- output
+  
+  class(cond) <- unique(c("FutureError", class(cond)))
+  
+  cond
 }
 
 
@@ -27,8 +41,8 @@ FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
 print.FutureError <- function(x, ...) {
   NextMethod("print")
 
-  future <- x$future
-  output <- x$output
+  future <- attr(x, "future")
+  output <- attr(x, "output")
   if (!is.null(future) || !is.null(output)) {
     cat("\n\nDEBUG: BEGIN TROUBLESHOOING HELP\n")
 
@@ -63,7 +77,7 @@ print.FutureError <- function(x, ...) {
 
 #' @export
 getOutput.FutureError <- function(x, collapse=NULL, head=NULL, tail=NULL, ...) {
-  output <- x$output
+  output <- attr(x, "output")
 
   ## Return "as is"?
   if (is.null(collapse) && is.null(head) && is.null(tail)) return(output)

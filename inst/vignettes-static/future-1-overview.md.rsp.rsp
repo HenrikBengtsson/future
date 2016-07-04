@@ -674,7 +674,7 @@ The goal of this package is to provide a standardized and unified API for using 
 
 [BatchJobs]: http://cran.r-project.org/package=BatchJobs
 [future]: http://cran.r-project.org/package=future
-[future.BatchJobs]: https://github.com/HenrikBengtsson/future.BatchJobs
+[future.BatchJobs]: http://cran.r-project.org/package=future.BatchJobs
 [globals]: http://cran.r-project.org/package=globals
 [listenv]: http://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-2-issues.html

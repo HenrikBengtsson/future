@@ -1,6 +1,22 @@
 Package: future
 ===============
 
+Version: 1.0.1 [2016-07-04]
+o DOCUMENTATION: Adding section to vignette on globals in formulas
+  describing how they are currently not automatically detected
+  and how to explicitly export them.
+o ROBUSTNESS: For the special case where 'remote' futures use
+  workers = "localhost" they now uses the exact same R executable
+  as the main / calling R session (in all other cases it uses
+  whatever 'Rscript' is found in the PATH).
+o FutureError now extends simpleError and no longer the error
+  class of captured errors.
+o BUG FIX: Since future 0.13.0, a global 'pkg' would be
+  overwritten by the name of the last package attached in future.
+o BUG FIX: Futures that generated R.oo::Exception errors, they
+  triggered another internal error.
+  
+
 Version: 1.0.0 [2016-06-24]
 o GLOBALS: Falsely identified global variables no longer generate
   an error when the future is created.  Instead, we leave it to R

@@ -4,7 +4,7 @@ plan(eager)
 ## A global variable
 a <- 0
 
-## Create eager future (implicitly)
+## Create eager future (explicitly)
 f <- future({
   b <- 3
   c <- 2

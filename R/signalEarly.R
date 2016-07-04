@@ -18,7 +18,7 @@ signalEarly <- function(future, collect=TRUE, ...) {
     value <- future$value
   }
 
-  mdebug("signalEarly(): class(v) = c(%s)", paste(class(value), collapse=", "))
+  mdebug("signalEarly(): class(v) = c(%s)", paste(sQuote(class(value)), collapse=", "))
   mdebug("signalEarly(): Retrieving value ... DONE")
 
   ## Was a condition caught?
@@ -28,7 +28,7 @@ signalEarly <- function(future, collect=TRUE, ...) {
 
   ## Signal detected condition
   if (inherits(value, "error")) {
-    stop(FutureError(value, future=future))
+    stop(FutureError(future))
   } else if (inherits(value, "warning")) {
     warning(value)
   } else if (inherits(value, "message")) {
