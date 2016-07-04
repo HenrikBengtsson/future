@@ -8,7 +8,7 @@ o DOCUMENTATION: Adding section to vignette on globals in formulas
 o ROBUSTNESS: For the special case where 'remote' futures use
   workers = "localhost" they now uses the exact same R executable
   as the main / calling R session (in all other cases it uses
-  whather 'Rscript' is found in the PATH).
+  whatever 'Rscript' is found in the PATH).
 o FutureError now extends simpleError and no longer the error
   class of captured errors.
 o BUG FIX: Futures that generated R.oo::Exception errors, they
