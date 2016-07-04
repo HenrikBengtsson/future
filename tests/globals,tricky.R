@@ -83,6 +83,15 @@ for (cores in 1:min(3L, availableCores())) {
       rm(list="a")
       message(sprintf("value(b)=%g", value(b)))
       stopifnot(value(b) == 2)
+
+      ## BUG FIX: In future (<= 1.0.0) a global 'pkg' would be
+      ## overwritten by the name of the last package attached
+      ## by the future.
+      pkg <- "foo"
+      f <- eager({ pkg })
+      v <- value(f)
+      message(sprintf("value(f)=%s", sQuote(v)))
+      stopifnot(pkg == "foo", v == "foo")
     } ## for (strategy ...)
 
     message(sprintf("Method for identifying globals: '%s' ... DONE", method))
