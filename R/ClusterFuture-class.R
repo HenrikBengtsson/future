@@ -29,7 +29,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -58,9 +58,27 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     attr(workers, "name") <- name
   }
 
-  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
+  ## Global objects?
+  globalsList <- list()
+  packages <- NULL
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    
+    ## Identify globals automatically?
+    if (globals) {
+      gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
+      globalsList <- gp$globals
+      packages <- gp$packages
+    }
+  } else if (is.list(globals)) {
+    if (length(globals) > 0) {
+      names <- names(globals)
+      stopifnot(!is.null(names), all(nchar(names) > 0))
+    }
+    globalsList <- globals
+  }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=gp$globals, packages=gp$packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 

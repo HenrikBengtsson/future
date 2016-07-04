@@ -4,7 +4,7 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE,
+cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   persistent = FALSE, workers = NULL, gc = FALSE, earlySignal = FALSE,
   ...)
 }
@@ -16,6 +16,11 @@ is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{If TRUE, global objects are validated at the point
+in time when the future is created (always before it is resolved),
+that is, they identified and located.  If some globals fail to be
+located, an informative error is generated.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

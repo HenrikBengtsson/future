@@ -8,8 +8,8 @@
 \title{A cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = !persistent, gc = !persistent, persistent = FALSE,
-  workers = NULL, ...)
+  local = !persistent, globals = TRUE, gc = !persistent,
+  persistent = FALSE, workers = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

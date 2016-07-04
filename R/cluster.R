@@ -9,12 +9,16 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param globals If TRUE, global objects are validated at the point
+#' in time when the future is created (always before it is resolved),
+#' that is, they identified and located.  If some globals fail to be
+#' located, an informative error is generated.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
+#' @param gc If TRUE, the garbage collector run after the future
+#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
@@ -34,7 +38,7 @@
 #' and \code{\link{\%<=\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=NULL, gc=FALSE, earlySignal=FALSE, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, gc=FALSE, earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -44,7 +48,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALS
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

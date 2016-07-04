@@ -9,6 +9,10 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param globals If TRUE, global objects are validated at the point
+#' in time when the future is created (always before it is resolved),
+#' that is, they identified and located.  If some globals fail to be
+#' located, an informative error is generated.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers The maximum number of multisession futures that
@@ -62,7 +66,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -78,7 +82,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## i.e. the use the current main R process.
   if (workers == 1L) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
-    return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
+    return(lazy(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to
@@ -86,7 +90,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## a cluster with one less process.
   workers <- ClusterRegistry("start", workers=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")

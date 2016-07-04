@@ -4,8 +4,9 @@
 \alias{remote}
 \title{Create a remote future whose value will be resolved asynchroneously in a remote process}
 \usage{
-remote(expr, envir = parent.frame(), substitute = TRUE, persistent = TRUE,
-  workers = NULL, gc = FALSE, earlySignal = FALSE, myip = NULL, ...)
+remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  persistent = TRUE, workers = NULL, gc = FALSE, earlySignal = FALSE,
+  myip = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -15,6 +16,11 @@ is done and from which globals are obtained.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{If TRUE, global objects are validated at the point
+in time when the future is created (always before it is resolved),
+that is, they identified and located.  If some globals fail to be
+located, an informative error is generated.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

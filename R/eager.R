@@ -47,12 +47,16 @@
 #' @export
 eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  globals <- as.logical(globals)
   local <- as.logical(local)
 
   ## Validate globals at this point in time?
-  if (globals) {
-    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    if (globals) {
+      exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
+    }
+  } else {
+    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
   }
 
   future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, earlySignal=earlySignal)
