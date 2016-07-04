@@ -166,8 +166,8 @@ print(x)
 Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
 
 
-[listenv]: http://cran.r-project.org/package=listenv
-[globals]: http://cran.r-project.org/package=globals
+[listenv]: https://cran.r-project.org/package=listenv
+[globals]: https://cran.r-project.org/package=globals
 [Futures in R: Common issues with solutions]: future-issues.html
 
 ---

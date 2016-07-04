@@ -672,11 +672,11 @@ demo("mandelbrot", package="future", ask=FALSE)
 The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas on how to improve the 'future' package, I would love to hear about them.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
 
 
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
-[future]: http://cran.r-project.org/package=future
-[future.BatchJobs]: http://cran.r-project.org/package=future.BatchJobs
-[globals]: http://cran.r-project.org/package=globals
-[listenv]: http://cran.r-project.org/package=listenv
+[BatchJobs]: https://cran.r-project.org/package=BatchJobs
+[future]: https://cran.r-project.org/package=future
+[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
+[globals]: https://cran.r-project.org/package=globals
+[listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
