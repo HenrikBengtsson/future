@@ -14,3 +14,4 @@
 *.swp
 .covr.rds
 .future
+revdep
