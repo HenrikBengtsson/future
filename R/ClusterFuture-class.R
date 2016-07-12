@@ -245,6 +245,11 @@ value.ClusterFuture <- function(future, ...) {
     } else {
       clusterCall(cl[1], fun=grmall)
     }
+    
+    ## WORKAROUND: Need to clear cluster worker before garbage collection,
+    ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+    clusterCall(cl[1], function() NULL)
+    
     clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)
   }
 
