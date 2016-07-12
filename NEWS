@@ -1,6 +1,12 @@
 Package: future
 ===============
 
+Version: 1.0.1-9000 [2016-07-12]
+o MEMORY: Now plan(multisession, gc=TRUE) will cause the background
+  R session to be garbage collected immediately after the value
+  is collected.
+
+
 Version: 1.0.1 [2016-07-04]
 o DOCUMENTATION: Adding section to vignette on globals in formulas
   describing how they are currently not automatically detected

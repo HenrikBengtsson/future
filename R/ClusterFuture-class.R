@@ -60,7 +60,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
   gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=gp$globals, packages=gp$packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=gp$globals, packages=gp$packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -237,6 +237,16 @@ value.ClusterFuture <- function(future, ...) {
 
   ## Remove from registry
   FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
+
+  ## Garbage collect cluster worker?
+  if (future$gc) {
+    if (future$persistent) {
+      parallel::clusterEvalQ(cl[1], { rm(list="...future.value", envir=.GlobalEnv) })
+    } else {
+      clusterCall(cl[1], fun=grmall)
+    }
+    clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)
+  }
 
   NextMethod("value")
 }
