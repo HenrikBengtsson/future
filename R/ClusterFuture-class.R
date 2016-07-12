@@ -8,8 +8,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
@@ -29,7 +29,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, gc=FALSE, persistent=FALSE, workers=NULL, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -240,11 +240,8 @@ value.ClusterFuture <- function(future, ...) {
 
   ## Garbage collect cluster worker?
   if (future$gc) {
-    if (future$persistent) {
-      parallel::clusterEvalQ(cl[1], { rm(list="...future.value", envir=.GlobalEnv) })
-    } else {
-      clusterCall(cl[1], fun=grmall)
-    }
+    ## Cleanup global environment while at it
+    if (!future$persistent) clusterCall(cl[1], fun=grmall)
     
     ## WORKAROUND: Need to clear cluster worker before garbage collection,
     ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27

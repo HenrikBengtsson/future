@@ -21,8 +21,8 @@ is done (or inherits from if \code{local} is TRUE).}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}

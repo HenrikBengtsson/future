@@ -23,8 +23,8 @@ from objects prior to the evaluation of the future.}
 \item{workers}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
