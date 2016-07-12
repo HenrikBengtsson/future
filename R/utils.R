@@ -121,11 +121,6 @@ geval <- local(function(expr, substitute=FALSE, envir=.GlobalEnv, ...) {
   eval(expr, envir=envir)
 })
 
-## Garbage collect
-ggc <- local(function(verbose=FALSE, reset=FALSE) {
-  gc(verbose=verbose, reset=reset)
-})
-
 ## Vectorized version of require() with bells and whistles
 requirePackages <- local(function(pkgs) {
   requirePackage <- function(pkg) {
