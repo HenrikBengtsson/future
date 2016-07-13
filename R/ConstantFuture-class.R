@@ -20,4 +20,4 @@ ConstantFuture <- function(expr=NULL, envir=emptyenv(), substitute=FALSE, local=
   f
 }
 
-evaluate.ConstantFuture <- function(future, ...) future
+run.ConstantFuture <- function(future, ...) future
