@@ -26,8 +26,6 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
 }
 
 
-run <- function(...) UseMethod("run")
-
 run.UniprocessFuture <- function(future, ...) {
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(invisible(future))

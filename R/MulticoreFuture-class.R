@@ -24,8 +24,6 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, .
 }
 
 
-run <- function(...) UseMethod("run")
-
 run.MulticoreFuture <- function(future, ...) {
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.

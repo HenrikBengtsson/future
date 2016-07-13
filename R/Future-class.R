@@ -127,6 +127,9 @@ assertOwner <- function(future, ...) {
 }
 
 
+run <- function(...) UseMethod("run")
+
+
 #' The value of a future
 #'
 #' Gets the value of a future.  If the future is unresolved, then
