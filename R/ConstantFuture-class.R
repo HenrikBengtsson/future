@@ -19,5 +19,3 @@ ConstantFuture <- function(expr=NULL, envir=emptyenv(), substitute=FALSE, local=
   structure(f, class=c("ConstantFuture", class(f)))
   f
 }
-
-run.ConstantFuture <- function(future, ...) future

@@ -129,6 +129,9 @@ assertOwner <- function(future, ...) {
 
 run <- function(...) UseMethod("run")
 
+## By default, run() does nothing
+run.Future <- function(future, ...) future
+
 
 #' The value of a future
 #'
