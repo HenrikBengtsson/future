@@ -27,8 +27,8 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
 
 
 run.UniprocessFuture <- function(future, ...) {
-  if (future$state %in% c('finished', 'failed', 'interrupted')) {
-    return(invisible(future))
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
   }
 
   ## Assert that the process that created the future is

@@ -130,7 +130,13 @@ assertOwner <- function(future, ...) {
 run <- function(...) UseMethod("run")
 
 ## By default, run() does nothing
-run.Future <- function(future, ...) future
+run.Future <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
+  future
+}
 
 
 #' The value of a future

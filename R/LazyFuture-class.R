@@ -38,7 +38,9 @@ resolved.LazyFuture <- function(x, ...) {
 
 #' @export
 value.LazyFuture <- function(future, signal=TRUE, ...) {
-  future <- run(future)
+  if (future$state == 'created') {
+    future <- run(future)
+  }
 
   value <- future$value
   if (signal && future$state == 'failed') {

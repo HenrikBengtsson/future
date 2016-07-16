@@ -25,6 +25,10 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, .
 
 
 run.MulticoreFuture <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
