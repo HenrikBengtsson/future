@@ -195,6 +195,10 @@ value.ClusterFuture <- function(future, ...) {
     return(NextMethod("value"))
   }
 
+  if (future$state == 'created') {
+    future <- run(future)
+  }
+
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)

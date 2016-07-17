@@ -160,6 +160,10 @@ run.Future <- function(future, ...) {
 #' @export
 #' @export value
 value.Future <- function(future, signal=TRUE, ...) {
+  if (future$state == 'created') {
+    future <- run(future)
+  }
+
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
