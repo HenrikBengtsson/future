@@ -129,7 +129,21 @@ assertOwner <- function(future, ...) {
 
 run <- function(...) UseMethod("run")
 
-## By default, run() does nothing
+
+#' Run a future
+#'
+#' @param future A \link{Future}.
+#' @param \dots Not used.
+#'
+#' @return The \link{Future} object.
+#'
+#' @details
+#' This function can only be called once per future.
+#' Further calls will result in an informative error.
+#' If a future is not run when its value is queried,
+#' then it is run at that point.
+#'
+#' @export
 run.Future <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")
