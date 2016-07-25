@@ -255,52 +255,52 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
       .(exit)
       future::plan(.(strategies))
     })
-  }
 
-  ## Identify package namespaces for strategies
-  pkgs <- lapply(strategies, FUN=environment)
-  pkgs <- lapply(pkgs, FUN=environmentName)
-  pkgs <- unique(unlist(pkgs))
-  pkgs <- intersect(pkgs, loadedNamespaces())
-  mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+    ## Identify package namespaces for strategies
+    pkgs <- lapply(strategies, FUN=environment)
+    pkgs <- lapply(pkgs, FUN=environmentName)
+    pkgs <- unique(unlist(pkgs, use.names=FALSE))
+    pkgs <- intersect(pkgs, loadedNamespaces())
+    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+    
+    if (length(pkgs) > 0L) {
+      ## Sanity check by verifying packages can be loaded already here
+      ## If there is somethings wrong in 'pkgs', we get the error
+      ## already before launching the future.
+      for (pkg in pkgs) loadNamespace(pkg)
   
-  if (length(pkgs) > 0L) {
-    ## Sanity check by verifying packages can be loaded already here
-    ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future.
-    for (pkg in pkgs) loadNamespace(pkg)
-
-    enter <- bquote({
-      ## covr: skip=3
-      .(enter)      
-      ## TROUBLESHOOTING: If the package fails to load, then library()
-      ## suppress that error and generates a generic much less
-      ## informative error message.  Because of this, we load the
-      ## namespace first (to get a better error message) and then
-      ## calls library(), which attaches the package. /HB 2016-06-16
-      ## NOTE: We use local() here such that 'pkg' is not assigned
-      ##       to the future environment. /HB 2016-07-03
-      local({
-        for (pkg in .(pkgs)) {
-          loadNamespace(pkg)
-          library(pkg, character.only=TRUE)
-        }
+      enter <- bquote({
+        ## covr: skip=3
+        .(enter)      
+        ## TROUBLESHOOTING: If the package fails to load, then library()
+        ## suppress that error and generates a generic much less
+        ## informative error message.  Because of this, we load the
+        ## namespace first (to get a better error message) and then
+        ## calls library(), which attaches the package. /HB 2016-06-16
+        ## NOTE: We use local() here such that 'pkg' is not assigned
+        ##       to the future environment. /HB 2016-07-03
+        local({
+          for (pkg in .(pkgs)) {
+            loadNamespace(pkg)
+            library(pkg, character.only=TRUE)
+          }
+        })
       })
-    })
-  } else {
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-    })
-  }
+    } else {
+      enter <- bquote({
+        ## covr: skip=2
+        .(enter)
+      })
+    }
 
-  if (length(strategies) >= 2L) {
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-      future::plan(.(strategies[-1]))
-    })
-  }
+    if (length(strategies) >= 2L) {
+      enter <- bquote({
+        ## covr: skip=2
+        .(enter)
+        future::plan(.(strategies[-1]))
+      })
+    }
+  } ## if (length(strategies) > 0)
 
   makeExpression(expr=future$expr, local=future$local, gc=future$gc, enter=enter, exit=exit)
 } ## getExpression()
