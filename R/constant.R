@@ -1,6 +1,5 @@
 ## Used only internally
 constant <- function(value, ...) {
-  future <- ConstantFuture(value=value, ...)
-  evaluate(future)
+  ConstantFuture(value=value, ...)
 }
 class(constant) <- c("constant", "uniprocess", "future", "function")

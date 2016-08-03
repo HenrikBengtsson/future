@@ -24,9 +24,11 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, .
 }
 
 
-run <- function(...) UseMethod("run")
-
 run.MulticoreFuture <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -87,6 +89,10 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
+  }
+
+  if (future$state == 'created') {
+    future <- run(future)
   }
 
   ## Assert that the process that created the future is

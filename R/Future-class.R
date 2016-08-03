@@ -127,6 +127,32 @@ assertOwner <- function(future, ...) {
 }
 
 
+run <- function(...) UseMethod("run")
+
+
+#' Run a future
+#'
+#' @param future A \link{Future}.
+#' @param \dots Not used.
+#'
+#' @return The \link{Future} object.
+#'
+#' @details
+#' This function can only be called once per future.
+#' Further calls will result in an informative error.
+#' If a future is not run when its value is queried,
+#' then it is run at that point.
+#'
+#' @export
+run.Future <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
+  future
+}
+
+
 #' The value of a future
 #'
 #' Gets the value of a future.  If the future is unresolved, then
@@ -148,6 +174,10 @@ assertOwner <- function(future, ...) {
 #' @export
 #' @export value
 value.Future <- function(future, signal=TRUE, ...) {
+  if (future$state == 'created') {
+    future <- run(future)
+  }
+
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
