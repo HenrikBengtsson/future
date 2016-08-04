@@ -15,8 +15,9 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
+#' \emph{Some types of futures ignore this argument.}
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
@@ -332,11 +333,11 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     }
   } ## if (length(strategies) > 0)
 
-  makeExpression(expr=future$expr, local=future$local, gc=future$gc, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
@@ -365,29 +366,15 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOpti
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
   ## a tryCatch() statement. /HB 2016-03-14
-  if (gc) {
-    expr <- substitute({
-      ## covr: skip=8
-      enter
-      ...future.value <- tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-      gc(verbose=FALSE, reset=FALSE)
-      ...future.value
-    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
-  } else {
-    expr <- substitute({
-      ## covr: skip=6
-      enter
-      tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-    }, env=list(enter=enter, body=expr, exit=exit))
-  }
+  expr <- substitute({
+    ## covr: skip=6
+    enter
+    tryCatch({
+      body
+    }, finally = {
+      exit
+    })
+  }, env=list(enter=enter, body=expr, exit=exit))
 
   expr
 } ## makeExpression()

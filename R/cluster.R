@@ -9,8 +9,8 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by

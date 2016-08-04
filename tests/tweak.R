@@ -105,6 +105,22 @@ stopifnot(a == 2, x == 2)
 message("*** y %<-% { expr } %tweak% tweaks ... DONE")
 
 
+message("*** tweak() - gc=TRUE ...")
+
+res <- tryCatch(tweak(multisession, gc=TRUE), condition=identity)
+stopifnot(inherits(res, "tweaked"))
+
+## Argument 'gc' is unknown
+res <- tryCatch(tweak(eager, gc=TRUE), condition=identity)
+stopifnot(inherits(res, "warning"))
+
+res <- tryCatch(tweak(multicore, gc=TRUE), condition=identity)
+stopifnot(inherits(res, "warning"))
+
+message("*** tweak() - gc=TRUE ... DONE")
+
+
+
 message("*** tweak() - exceptions ...")
 
 res <- try(tweak("<unknown-future-strategy>"), silent=TRUE)

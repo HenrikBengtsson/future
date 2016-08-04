@@ -6,7 +6,7 @@
 \title{A future with a constant value}
 \usage{
 ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
-  local = FALSE, gc = FALSE, ...)
+  local = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R value.}
