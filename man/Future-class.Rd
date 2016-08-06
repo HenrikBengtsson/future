@@ -22,7 +22,8 @@ all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.}
+evaluated the future) after the value of the future is collected.
+\emph{Some types of futures ignore this argument.}}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
