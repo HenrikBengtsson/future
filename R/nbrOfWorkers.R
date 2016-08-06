@@ -1,10 +1,12 @@
-#' Gets the number of workers
+#' Gets the number of workers available
 #'
 #' @param evaluator A future evaluator function.
 #' If NULL (default), the current evaluator as returned
 #' by \code{\link{plan}()} is used.
 #'
 #' @return A number in [1,Inf].
+#'
+#' @example incl/nbrOfWorkers.R
 #'
 #' @export
 nbrOfWorkers <- function(evaluator=NULL) {

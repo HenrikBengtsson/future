@@ -15,8 +15,6 @@
 #' located, an informative error is generated.
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
@@ -61,7 +59,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(constraints="multicore"), gc=FALSE, earlySignal=FALSE, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -78,7 +76,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   ## Eager futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, gc=gc))
+    return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
 
   ## Validate globals at this point in time?
@@ -94,7 +92,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, workers=workers, gc=gc, earlySignal=earlySignal)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, workers=workers, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")

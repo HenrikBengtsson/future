@@ -11,13 +11,11 @@
 #' @export
 #' @name ConstantFuture-class
 #' @keywords internal
-ConstantFuture <- function(expr=NULL, envir=emptyenv(), substitute=FALSE, local=FALSE, gc=FALSE, ...) {
+ConstantFuture <- function(expr=NULL, envir=emptyenv(), substitute=FALSE, local=FALSE, ...) {
   expr <- force(expr)
-  f <- Future(expr=expr, envir=emptyenv(), substitute=FALSE, local=FALSE, gc=FALSE, ...)
+  f <- Future(expr=expr, envir=emptyenv(), substitute=FALSE, local=FALSE, ...)
   f$value <- expr
   f$state <- "finished"
   structure(f, class=c("ConstantFuture", class(f)))
   f
 }
-
-evaluate.ConstantFuture <- function(future, ...) future

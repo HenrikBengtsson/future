@@ -1,6 +1,16 @@
 Package: future
 ===============
 
+Version: 1.0.1-9000 [2016-08-02]
+o Now all Future classes supports run() for launching the future and
+  value() calls run() if the future has not been launched.
+o DOCUMENTATION: Added vignette on command-line options and other
+  methods for controlling the default type of futures to use.
+o MEMORY: Now plan(multisession, gc=TRUE) causes the background
+  R session to be garbage collected immediately after the value
+  is collected.
+
+
 Version: 1.0.1 [2016-07-04]
 o DOCUMENTATION: Adding section to vignette on globals in formulas
   describing how they are currently not automatically detected

@@ -15,8 +15,9 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
+#' \emph{Some types of futures ignore this argument.}
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
 #' @param \dots Additional named elements of the future.
@@ -127,6 +128,32 @@ assertOwner <- function(future, ...) {
 }
 
 
+run <- function(...) UseMethod("run")
+
+
+#' Run a future
+#'
+#' @param future A \link{Future}.
+#' @param \dots Not used.
+#'
+#' @return The \link{Future} object.
+#'
+#' @details
+#' This function can only be called once per future.
+#' Further calls will result in an informative error.
+#' If a future is not run when its value is queried,
+#' then it is run at that point.
+#'
+#' @export
+run.Future <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
+  future
+}
+
+
 #' The value of a future
 #'
 #' Gets the value of a future.  If the future is unresolved, then
@@ -148,6 +175,10 @@ assertOwner <- function(future, ...) {
 #' @export
 #' @export value
 value.Future <- function(future, signal=TRUE, ...) {
+  if (future$state == 'created') {
+    future <- run(future)
+  }
+
   if (!future$state %in% c('finished', 'failed', 'interrupted')) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
@@ -255,58 +286,58 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
       .(exit)
       future::plan(.(strategies))
     })
-  }
 
-  ## Identify package namespaces for strategies
-  pkgs <- lapply(strategies, FUN=environment)
-  pkgs <- lapply(pkgs, FUN=environmentName)
-  pkgs <- unique(unlist(pkgs))
-  pkgs <- intersect(pkgs, loadedNamespaces())
-  mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+    ## Identify package namespaces for strategies
+    pkgs <- lapply(strategies, FUN=environment)
+    pkgs <- lapply(pkgs, FUN=environmentName)
+    pkgs <- unique(unlist(pkgs, use.names=FALSE))
+    pkgs <- intersect(pkgs, loadedNamespaces())
+    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+    
+    if (length(pkgs) > 0L) {
+      ## Sanity check by verifying packages can be loaded already here
+      ## If there is somethings wrong in 'pkgs', we get the error
+      ## already before launching the future.
+      for (pkg in pkgs) loadNamespace(pkg)
   
-  if (length(pkgs) > 0L) {
-    ## Sanity check by verifying packages can be loaded already here
-    ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future.
-    for (pkg in pkgs) loadNamespace(pkg)
-
-    enter <- bquote({
-      ## covr: skip=3
-      .(enter)      
-      ## TROUBLESHOOTING: If the package fails to load, then library()
-      ## suppress that error and generates a generic much less
-      ## informative error message.  Because of this, we load the
-      ## namespace first (to get a better error message) and then
-      ## calls library(), which attaches the package. /HB 2016-06-16
-      ## NOTE: We use local() here such that 'pkg' is not assigned
-      ##       to the future environment. /HB 2016-07-03
-      local({
-        for (pkg in .(pkgs)) {
-          loadNamespace(pkg)
-          library(pkg, character.only=TRUE)
-        }
+      enter <- bquote({
+        ## covr: skip=3
+        .(enter)      
+        ## TROUBLESHOOTING: If the package fails to load, then library()
+        ## suppress that error and generates a generic much less
+        ## informative error message.  Because of this, we load the
+        ## namespace first (to get a better error message) and then
+        ## calls library(), which attaches the package. /HB 2016-06-16
+        ## NOTE: We use local() here such that 'pkg' is not assigned
+        ##       to the future environment. /HB 2016-07-03
+        local({
+          for (pkg in .(pkgs)) {
+            loadNamespace(pkg)
+            library(pkg, character.only=TRUE)
+          }
+        })
       })
-    })
-  } else {
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-    })
-  }
+    } else {
+      enter <- bquote({
+        ## covr: skip=2
+        .(enter)
+      })
+    }
 
-  if (length(strategies) >= 2L) {
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-      future::plan(.(strategies[-1]))
-    })
-  }
+    if (length(strategies) >= 2L) {
+      enter <- bquote({
+        ## covr: skip=2
+        .(enter)
+        future::plan(.(strategies[-1]))
+      })
+    }
+  } ## if (length(strategies) > 0)
 
-  makeExpression(expr=future$expr, local=future$local, gc=future$gc, enter=enter, exit=exit)
+  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local=TRUE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
     a <- NULL; rm(list="a")  ## To please R CMD check
@@ -335,29 +366,15 @@ makeExpression <- function(expr, local=TRUE, gc=FALSE, globals.onMissing=getOpti
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
   ## a tryCatch() statement. /HB 2016-03-14
-  if (gc) {
-    expr <- substitute({
-      ## covr: skip=8
-      enter
-      ...future.value <- tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-      gc(verbose=FALSE, reset=FALSE)
-      ...future.value
-    }, env=list(enter=enter, body=expr, exit=exit, cleanup=cleanup))
-  } else {
-    expr <- substitute({
-      ## covr: skip=6
-      enter
-      tryCatch({
-        body
-      }, finally = {
-        exit
-      })
-    }, env=list(enter=enter, body=expr, exit=exit))
-  }
+  expr <- substitute({
+    ## covr: skip=6
+    enter
+    tryCatch({
+      body
+    }, finally = {
+      exit
+    })
+  }, env=list(enter=enter, body=expr, exit=exit))
 
   expr
 } ## makeExpression()

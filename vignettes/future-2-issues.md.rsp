@@ -349,6 +349,32 @@ What effectively is happening here is that because of the higher priority of `%<
 Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
 
 
+### R CMD check NOTEs
+The code inspection run by `R CMD check` will not recognize the future assignment operator `%<-%` as an assignment operator, which is not surprising because `%<-%` is technically an infix operator.  This means that if you for instance use the following code in your package:
+```r
+foo <- function() {
+  b <- 3.14
+  a %<-% { b + 1 }
+  a
+}
+```
+then `R CMD check` will produce a NOTE saying:
+```sh
+* checking R code for possible problems ... NOTE
+foo: no visible binding for global variable 'a'
+Undefined global functions or variables:
+  a
+```
+In order to avoid this, we can add a dummy assignment of the missing global at the top of the function, i.e.
+```r
+foo <- function() {
+  a <- NULL ## To please R CMD check
+  b <- 3.14
+  a %<-% { b + 1 }
+  a
+}
+```
+
 
 [future]: https://cran.r-project.org/package=future
 [globals]: https://cran.r-project.org/package=globals

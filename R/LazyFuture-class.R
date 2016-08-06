@@ -8,7 +8,6 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param gc If TRUE, the garbage collector run after the future is resolved.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{LazyFuture}.
@@ -20,9 +19,9 @@
 #' @export
 #' @name LazyFuture-class
 #' @keywords internal
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }
 
@@ -38,7 +37,9 @@ resolved.LazyFuture <- function(x, ...) {
 
 #' @export
 value.LazyFuture <- function(future, signal=TRUE, ...) {
-  future <- evaluate(future)
+  if (future$state == 'created') {
+    future <- run(future)
+  }
 
   value <- future$value
   if (signal && future$state == 'failed') {

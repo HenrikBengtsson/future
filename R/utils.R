@@ -330,7 +330,7 @@ myInternalIP <- local({
     if (grepl("^linux", os)) {
       res <- system2("hostname", args="-I", stdout=TRUE)
       res <- grep(pattern, res, value=TRUE)
-      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
       res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
@@ -339,7 +339,7 @@ myInternalIP <- local({
       res <- system2("ipconfig", stdout=TRUE)
       res <- grep("IPv4", res, value=TRUE)
       res <- grep(pattern, res, value=TRUE)
-      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE))
+      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
       res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)

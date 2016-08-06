@@ -2,7 +2,7 @@
 % Please edit documentation in R/nbrOfWorkers.R
 \name{nbrOfWorkers}
 \alias{nbrOfWorkers}
-\title{Gets the number of workers}
+\title{Gets the number of workers available}
 \usage{
 nbrOfWorkers(evaluator = NULL)
 }
@@ -15,6 +15,16 @@ by \code{\link{plan}()} is used.}
 A number in [1,Inf].
 }
 \description{
-Gets the number of workers
+Gets the number of workers available
+}
+\examples{
+plan(multiprocess)
+nbrOfWorkers()  ## == availableCores()
+
+plan(multiprocess, workers=2)
+nbrOfWorkers()  ## == 2
+
+plan(lazy)
+nbrOfWorkers()  ## == 1
 }
 

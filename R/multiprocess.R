@@ -16,8 +16,8 @@
 #' located, an informative error is generated.
 #' @param workers The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'

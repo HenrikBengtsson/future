@@ -8,8 +8,8 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
@@ -29,7 +29,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -78,7 +78,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     globalsList <- globals
   }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -86,6 +86,10 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
 #' @importFrom parallel clusterCall clusterExport
 run.ClusterFuture <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -209,6 +213,10 @@ value.ClusterFuture <- function(future, ...) {
     return(NextMethod("value"))
   }
 
+  if (future$state == 'created') {
+    future <- run(future)
+  }
+
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -255,6 +263,18 @@ value.ClusterFuture <- function(future, ...) {
 
   ## Remove from registry
   FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
+
+  ## Garbage collect cluster worker?
+  if (future$gc) {
+    ## Cleanup global environment while at it
+    if (!future$persistent) clusterCall(cl[1], fun=grmall)
+    
+    ## WORKAROUND: Need to clear cluster worker before garbage collection,
+    ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+    clusterCall(cl[1], function() NULL)
+    
+    clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)
+  }
 
   NextMethod("value")
 }
@@ -305,7 +325,7 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
   ## Find which node is available
   avail <- rep(TRUE, times=length(workers))
   futures <- FutureRegistry(reg, action="list", earlySignal=FALSE)
-  nodes <- unlist(lapply(futures, FUN=function(f) f$node))
+  nodes <- unlist(lapply(futures, FUN=function(f) f$node), use.names=FALSE)
   avail[nodes] <- FALSE
 
   ## Sanity check
