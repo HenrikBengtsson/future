@@ -6,7 +6,7 @@
 \title{An multicore future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  ...)
+  globals = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

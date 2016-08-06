@@ -79,20 +79,10 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
 
-  ## Validate globals at this point in time?
-  if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
-    if (globals) {
-      exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
-    }
-  } else {
-    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
-  }
-
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, workers=workers, earlySignal=earlySignal)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")
