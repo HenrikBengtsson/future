@@ -69,6 +69,8 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
       gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
       globalsList <- gp$globals
       packages <- gp$packages
+      expr <- gp$expr
+      gp <- NULL ## Not needed anymore
     }
   } else if (is.list(globals)) {
     if (length(globals) > 0) {
@@ -78,7 +80,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     globalsList <- globals
   }
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
