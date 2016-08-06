@@ -17,8 +17,8 @@
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @param gc If TRUE, the garbage collector run (in the process that
+#' evaluated the future) after the value of the future is collected.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #' @param \dots Not used.
 #'
