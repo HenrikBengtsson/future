@@ -19,8 +19,44 @@
 #' @export
 #' @name LazyFuture-class
 #' @keywords internal
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
+
+  ## Evaluate in a local environment?
+  if (local) {
+    envir <- new.env(parent=envir)
+  } else {
+    if (!is.logical(globals) || globals) {
+      stop("Non-supported use of lazy futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time.")
+    }
+  }
+
+  ## Resolve globals at this point in time?
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    if (globals) {
+      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
+      globals <- gp$globals
+
+      ## Inject global objects?
+      target <- envir
+      for (name in names(globals)) {
+        target[[name]] <- globals[[name]]
+      }
+    }
+  } else if (is.list(globals)) {
+    if (length(globals) > 0) {
+      names <- names(globals)
+      stopifnot(!is.null(names), all(nchar(names) > 0))
+      target <- envir
+      for (name in names) {
+        target[[name]] <- globals[[name]]
+      }
+    }
+  } else {
+    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
+  }
+
   f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }

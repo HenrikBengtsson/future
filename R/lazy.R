@@ -36,34 +36,6 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  ## Resolve globals at this point in time?
-  if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
-    if (globals) {
-      if (!local) {
-        stop("Non-supported call to lazy(): Argument 'globals' must be FALSE whenever 'local' is FALSE. Lazy future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time (globals=FALSE).")
-      }
-      
-      ## Evaluate in "local" environment
-      envir <- new.env(parent=envir)
-      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
-      globals <- gp$globals
-
-      ## Inject global objects?
-      target <- envir
-      for (name in names(globals)) {
-        target[[name]] <- globals[[name]]
-      }
-    } else {
-      ## Evaluate in "local" environment?
-      if (local) {
-        envir <- new.env(parent=envir)
-      }
-    }
-  } else {
-    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
-  }
-
   LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal)
 }
 class(lazy) <- c("lazy", "uniprocess", "future", "function")

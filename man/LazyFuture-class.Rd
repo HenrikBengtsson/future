@@ -6,7 +6,7 @@
 \title{A lazy future is a future whose value will be resolved at the time when it is requested}
 \usage{
 LazyFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, ...)
+  globals = TRUE, local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

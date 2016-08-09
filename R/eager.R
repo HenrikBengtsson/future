@@ -47,17 +47,7 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  ## Validate globals at this point in time?
-  if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
-    if (globals) {
-      getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
-    }
-  } else {
-    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
-  }
-
-  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, local=local, earlySignal=earlySignal)
+  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal)
   run(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
