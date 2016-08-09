@@ -9,22 +9,22 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |NA                           |
-|date     |2016-07-06                   |
+|tz       |Europe/Stockholm             |
+|date     |2016-08-09                   |
 
 ## Packages
 
-|package  |*  |version    |date       |source                         |
-|:--------|:--|:----------|:----------|:------------------------------|
-|digest   |   |0.6.9      |2016-01-08 |CRAN (R 3.3.1)                 |
-|future   |   |1.0.1-9000 |2016-07-07 |local (HenrikBengtsson/future) |
-|globals  |   |0.6.1      |2016-02-03 |CRAN (R 3.3.1)                 |
-|listenv  |   |0.6.0      |2015-12-28 |CRAN (R 3.3.1)                 |
-|markdown |   |0.7.7      |2015-04-22 |CRAN (R 3.3.1)                 |
-|R.rsp    |   |0.30.0     |2016-05-15 |CRAN (R 3.3.1)                 |
+|package  |*  |version    |date       |source                            |
+|:--------|:--|:----------|:----------|:---------------------------------|
+|digest   |   |0.6.10     |2016-08-02 |cran (@0.6.10)                    |
+|future   |   |1.0.1-9000 |2016-08-09 |local (HenrikBengtsson/future@NA) |
+|globals  |   |0.6.1      |2016-02-03 |CRAN (R 3.3.1)                    |
+|listenv  |   |0.6.0      |2015-12-28 |CRAN (R 3.3.1)                    |
+|markdown |   |0.7.7      |2015-04-22 |CRAN (R 3.3.1)                    |
+|R.rsp    |   |0.30.0     |2016-05-15 |CRAN (R 3.3.1)                    |
 
 # Check results
-7 packages
+8 packages
 
 ## aroma.affymetrix (3.0.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -35,7 +35,7 @@ Bug reports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 ```
 checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  ‘oligo’ ‘oligoClasses’ ‘pdInfoBuilder’ ‘AffymetrixDataTestFiles’
+  ‘oligo’ ‘oligoClasses’ ‘pdInfoBuilder’
 
 checking Rd cross-references ... NOTE
 Packages unavailable to check Rd xrefs: ‘oligo’, ‘oligoClasses’
@@ -50,7 +50,7 @@ Bug reports: https://github.com/HenrikBengtsson/aroma.core/issues
 ```
 checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  ‘Cairo’ ‘EBImage’ ‘GLAD’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
+  ‘EBImage’ ‘GLAD’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
 
 checking Rd cross-references ... NOTE
 Package unavailable to check Rd xrefs: ‘GLAD’
@@ -68,9 +68,15 @@ Bug reports: https://github.com/thomasp85/fiery/issues
 
 0 errors | 0 warnings | 0 notes
 
-## future.BatchJobs (0.12.1)
+## future.BatchJobs (0.13.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
+
+0 errors | 0 warnings | 0 notes
+
+## pbmcapply (1.1.0)
+Maintainer: Kevin kuang <kvn.kuang@mail.utoronto.ca>  
+Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 
 0 errors | 0 warnings | 0 notes
 

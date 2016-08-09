@@ -16,8 +16,31 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
+
+  ## Global objects?
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    
+    ## Identify globals automatically?
+    if (globals) {
+      getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
+    }
+  } else if (is.list(globals)) {
+    if (length(globals) > 0) {
+      names <- names(globals)
+      stopifnot(!is.null(names), all(nchar(names) > 0))
+      target <- new.env(parent=envir)
+      for (name in names) {
+        target[[name]] <- globals[[name]]
+      }
+      envir <- target
+    }
+  } else {
+    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
+  }
+
 
   f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, job=NULL, ...)
   structure(f, class=c("MulticoreFuture", class(f)))

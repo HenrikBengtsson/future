@@ -34,23 +34,7 @@
 #' @export
 lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  globals <- as.logical(globals)
   local <- as.logical(local)
-  if (!local && globals) {
-    stop("Non-supported call to lazy(): Argument 'globals' must be FALSE whenever 'local' is FALSE. Lazy future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time (globals=FALSE).")
-  }
-
-
-  ## Evaluate in "local" environment?
-  if (local || globals) {
-    envir <- new.env(parent=envir)
-  }
-
-
-  ## Resolve globals at this point in time?
-  if (globals) {
-    exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression, resolve=TRUE)
-  }
 
   LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal)
 }

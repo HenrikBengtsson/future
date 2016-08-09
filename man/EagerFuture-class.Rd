@@ -6,7 +6,7 @@
 \title{An eager future is a future whose value will be resolved immediately}
 \usage{
 EagerFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, ...)
+  globals = TRUE, local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

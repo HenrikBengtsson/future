@@ -9,6 +9,10 @@
 #' is done and from which globals are obtained.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param globals If TRUE, global objects are validated at the point
+#' in time when the future is created (always before it is resolved),
+#' that is, they identified and located.  If some globals fail to be
+#' located, an informative error is generated.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
@@ -28,7 +32,7 @@
 #' Note that remote futures use \code{persistent=TRUE} by default.
 #'
 #' @export
-remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE, workers=NULL, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
+remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=TRUE, workers=NULL, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
@@ -68,7 +72,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

@@ -68,7 +68,6 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   }
 
   if (substitute) expr <- substitute(expr)
-  globals <- as.logical(globals)
   workers <- as.integer(workers)
   stopifnot(is.finite(workers), workers >= 1L)
 
@@ -80,15 +79,10 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
     return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
   }
 
-  ## Validate globals at this point in time?
-  if (globals) {
-    exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
-  }
-
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, workers=workers, earlySignal=earlySignal)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")
