@@ -25,7 +25,7 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, g
     
     ## Identify globals automatically?
     if (globals) {
-      exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
+      getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
     }
   } else if (is.list(globals)) {
     if (length(globals) > 0) {

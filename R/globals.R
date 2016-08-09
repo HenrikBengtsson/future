@@ -1,22 +1,4 @@
 #' @importFrom globals globalsOf packagesOf cleanup
-#' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE) {
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve, persistent=persistent)
-  globals <- gp$globals
-
-  ## Inject global objects?
-  if (!is.null(target)) {
-    for (name in names(globals)) {
-      target[[name]] <- globals[[name]]
-    }
-  }
-
-  invisible(globals)
-} # exportGlobals()
-
-
-
-#' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils object.size
 getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
   ## Local functions

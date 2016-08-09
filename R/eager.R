@@ -51,7 +51,7 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
   if (is.logical(globals)) {
     stopifnot(length(globals) == 1, !is.na(globals))
     if (globals) {
-      exportGlobals(expr, envir=envir, target=NULL, tweak=tweakExpression, resolve=TRUE)
+      getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
     }
   } else {
     stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))

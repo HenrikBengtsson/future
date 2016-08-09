@@ -46,7 +46,14 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
       
       ## Evaluate in "local" environment
       envir <- new.env(parent=envir)
-      exportGlobals(expr, envir=envir, target=envir, tweak=tweakExpression, resolve=TRUE)
+      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
+      globals <- gp$globals
+
+      ## Inject global objects?
+      target <- envir
+      for (name in names(globals)) {
+        target[[name]] <- globals[[name]]
+      }
     } else {
       ## Evaluate in "local" environment?
       if (local) {
