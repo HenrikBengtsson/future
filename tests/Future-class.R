@@ -22,7 +22,6 @@ expr <- getExpression(f)
 print(expr)
 stopifnot(is.call(expr))
 
-## Calling run() more than once
 clazzes <- list(
   eager = EagerFuture,
   lazy = LazyFuture,
@@ -31,12 +30,18 @@ clazzes <- list(
 if (supportsMulticore()) clazzes$multicore = function(...) MulticoreFuture(..., workers=2L)
 
 for (clazz in clazzes) {
+  ## Calling run() more than once
   f <- clazz({ 42L })
   print(f)
   run(f)
   res <- tryCatch(run(f), error=identity)
   stopifnot(inherits(res, "error"))
+  v <- value(f)
+  print(v)
+  stopifnot(v == 42L)
 
+  ## Call value() without run()
+  f <- clazz({ 42L })
   v <- value(f)
   print(v)
   stopifnot(v == 42L)
