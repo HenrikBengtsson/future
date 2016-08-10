@@ -1,7 +1,11 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-08-02]
+Version: 1.0.1-9000 [2016-08-10]
+o As an alternative to the default automatic identification of globals,
+  it is possible to explicitly specify them via argument 'globals' to
+  future(), e.g. f <- future({ 2 * a }, globals=list(a=42)).  For future
+  assignments, one can use y %<-% { 2 * a } %globals% list(a=42).
 o Now all Future classes supports run() for launching the future and
   value() calls run() if the future has not been launched.
 o DOCUMENTATION: Added vignette on command-line options and other

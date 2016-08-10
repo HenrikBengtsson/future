@@ -39,7 +39,14 @@ for (strategy in supportedStrategies()) {
   v <- value(f)
   print(v)
   stopifnot(all.equal(v, v0))
-  
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b*x)
+  } %globals% TRUE
+  print(y)
+  stopifnot(all.equal(y, v0))
+
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }
 
@@ -64,7 +71,14 @@ for (strategy in supportedStrategies()) {
   v <- value(f)
   print(v)
   stopifnot(all.equal(v, v0))
-  
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b*x)
+  } %globals% globals
+  print(y)
+  stopifnot(all.equal(y, v0))
+
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }
 
