@@ -26,6 +26,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
 }
 
 
+#' @export
 run.UniprocessFuture <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")

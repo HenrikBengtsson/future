@@ -47,6 +47,7 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, g
 }
 
 
+#' @export
 run.MulticoreFuture <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")

@@ -128,9 +128,6 @@ assertOwner <- function(future, ...) {
 }
 
 
-run <- function(...) UseMethod("run")
-
-
 #' Run a future
 #'
 #' @param future A \link{Future}.
@@ -144,7 +141,10 @@ run <- function(...) UseMethod("run")
 #' If a future is not run when its value is queried,
 #' then it is run at that point.
 #'
+#' @aliases run
+#' @rdname run
 #' @export
+#' @export run
 run.Future <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")
@@ -152,6 +152,9 @@ run.Future <- function(future, ...) {
   
   future
 }
+
+run <- function(...) UseMethod("run")
+
 
 
 #' The value of a future

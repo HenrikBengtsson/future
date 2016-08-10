@@ -87,6 +87,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 
 
 #' @importFrom parallel clusterCall clusterExport
+#' @export
 run.ClusterFuture <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")

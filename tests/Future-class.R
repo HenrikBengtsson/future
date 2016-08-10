@@ -22,6 +22,22 @@ expr <- getExpression(f)
 print(expr)
 stopifnot(is.call(expr))
 
+## Calling run() more than once
+clazzes <- list(
+  eager = EagerFuture,
+  lazy = LazyFuture,
+  multisession = function(...) MultisessionFuture(..., workers=2L)
+)
+if (supportsMulticore()) clazzes$multicore = function(...) MulticoreFuture(..., workers=2L)
+
+for (clazz in clazzes) {
+  f <- clazz({ 42L })
+  print(f)
+  run(f)
+  res <- tryCatch(run(f), error=identity)
+  stopifnot(inherits(res, "error"))
+}
+
 message("*** Future class - exception ... DONE")
 
 message("*** Future class ... DONE")
