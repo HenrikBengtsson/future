@@ -36,6 +36,10 @@ for (clazz in clazzes) {
   run(f)
   res <- tryCatch(run(f), error=identity)
   stopifnot(inherits(res, "error"))
+
+  v <- value(f)
+  print(v)
+  stopifnot(v == 42L)
 }
 
 message("*** Future class - exception ... DONE")
