@@ -1,5 +1,20 @@
+#' Retrieves global variables of an expression and their associated packages 
+#'
+#' @param expr An R expression whose globals should be found.
+#' @param envir The environment from which globals should be searched.
+#' @param tweak (optional) A function that takes an expression and returned a modified one.
+#' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
+#' persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.
+#' @param ... Not used.
+#'
+#' @return A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list) and \code{packages} (a character string).
+#'
+#' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
+#'
 #' @importFrom globals globalsOf packagesOf cleanup
 #' @importFrom utils object.size
+#'
+#' @keywords internal
 getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
   ## Local functions
   attachedPackages <- function() {
