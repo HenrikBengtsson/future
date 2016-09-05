@@ -37,13 +37,15 @@ printf("y = %s.\n", hpaste(y, maxHead=Inf))
 printf("y = %s.\n", paste(y, collapse=", "))
 ## y = 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Adding a special separator before the last element
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Change last separator
 printf("x = %s.\n", hpaste(x, lastCollapse=" and "))
 ## x = 1, 2, 3, 4, 5 and 6.
+
+# No collapse
+stopifnot(all(hpaste(x, collapse=NULL) == x))
+
+# Empty input
+stopifnot(identical(hpaste(character(0)), character(0)))
 
 message("*** hpaste() ...")
 

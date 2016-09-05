@@ -17,7 +17,7 @@ options("withCapture/newline"=FALSE)
 
 # <%@meta name="title"%>
 
-The default is to use eager futures, but this _default_ can be overridden via R options, system environment variables and command-line options as explained below as well as in `help("future.options", package="future")`.
+The default is to use synchronous futures, but this _default_ can be overridden via R options, system environment variables and command-line options as explained below as well as in `help("future.options", package="future")`.
 
 
 ## R options
@@ -25,7 +25,7 @@ The default strategy for resolving futures can be controlled via R option `futur
 ```r
 options(future.plan="multiprocess")
 ```
-to our `~/.Rprofile` startup script, the future package will resolve futures in parallel (using all available cores), i.e.
+to our `~/.Rprofile` startup script, the future package will resolve futures in parallel (asynchronously using all available cores), i.e.
 ```sh
 $ Rscript -e "class(future::plan())"
 [1] "multiprocess" "future"       "function"
@@ -65,7 +65,7 @@ $ Rscript analysis.R --parallel=4
 ```
 This does, of course, require that the script uses futures and the future package.
 
-If `--parallel=1` is specified, or equivalently `-p 1`, then futures are resolved using a single core.
+If `--parallel=1` is specified, or equivalently `-p 1`, then futures are resolved using a single process.
 
 Specifying these command-line options override any other startup settings.
 
