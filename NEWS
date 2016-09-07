@@ -1,7 +1,9 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-08-10]
+Version: 1.0.1-9000 [2016-09-06]
+o Now global variables part of formulae in future expressions are
+  recognized and exported (iff found).
 o As an alternative to the default automatic identification of globals,
   it is possible to explicitly specify them via argument 'globals' to
   future(), e.g. f <- future({ 2 * a }, globals=list(a=42)).  For future

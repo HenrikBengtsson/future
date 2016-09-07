@@ -74,8 +74,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       stop(msg)
     }
 
-    globals$`future.call.arguments` <- globals$`...`
-    globals$`...` <- NULL
+    names <- names(globals)
+    names[names == "..."] <- "future.call.arguments"
+    names(globals) <- names
+    names <- NULL
 
     ## To please R CMD check
     a <- `future.call.arguments` <- NULL
