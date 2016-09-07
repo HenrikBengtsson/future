@@ -31,7 +31,9 @@ matrix:
       r: oldrel
     - os: osx
       r: release
-    
+
+r_github_packages: HenrikBengtsson/globals@develop
+
 notifications:
   email:
     on_success: change
