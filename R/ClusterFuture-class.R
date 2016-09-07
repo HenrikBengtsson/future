@@ -58,29 +58,14 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     attr(workers, "name") <- name
   }
 
-  ## Global objects?
-  globalsList <- list()
-  packages <- NULL
-  if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
-    
-    ## Identify globals automatically?
-    if (globals) {
-      gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
-      globalsList <- gp$globals
-      packages <- gp$packages
-      expr <- gp$expr
-      gp <- NULL ## Not needed anymore
-    }
-  } else if (is.list(globals)) {
-    if (length(globals) > 0) {
-      names <- names(globals)
-      stopifnot(!is.null(names), all(nchar(names) > 0))
-    }
-    globalsList <- globals
-  }
+  ## Global objects
+  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent, globals=globals)
+  globals <- gp$globals
+  packages <- gp$packages
+  expr <- gp$expr
+  gp <- NULL
 
-  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globalsList, packages=packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globals, packages=packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 

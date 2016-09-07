@@ -31,31 +31,20 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, global
     }
   }
 
-  ## Resolve globals at this point in time?
-  if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
-    if (globals) {
-      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, resolve=TRUE, persistent=FALSE)
-      globals <- gp$globals
+  ## Global objects
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, persistent=FALSE, globals=globals, resolve=TRUE)
 
-      ## Inject global objects?
-      target <- envir
-      for (name in names(globals)) {
-        target[[name]] <- globals[[name]]
-      }
+  ## Assign?
+  if (length(gp) > 0) {
+    target <- new.env(parent=envir)
+    globalsT <- gp$globals
+    for (name in names(globalsT)) {
+      target[[name]] <- globalsT[[name]]
     }
-  } else if (is.list(globals)) {
-    if (length(globals) > 0) {
-      names <- names(globals)
-      stopifnot(!is.null(names), all(nchar(names) > 0))
-      target <- envir
-      for (name in names) {
-        target[[name]] <- globals[[name]]
-      }
-    }
-  } else {
-    stop("Unknown data type of argument 'globals': ", sQuote(mode(globals)))
+    globalsT <- NULL
+    envir <- target
   }
+  gp <- NULL
 
   f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))

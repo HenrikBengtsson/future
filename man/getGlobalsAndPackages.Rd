@@ -15,7 +15,7 @@ getGlobalsAndPackages(expr, envir = parent.frame(), tweak = tweakExpression,
 
 \item{tweak}{(optional) A function that takes an expression and returned a modified one.}
 
-\item{globals}{(optional) If TRUE, globals are identified by code inspection based on \code{expr}, \code{envir} and \code{tweak}.  If a character vector, then globals are identified by lookup based on \code{envir}.}
+\item{globals}{(optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on \code{expr} and \code{tweak} searching from environment \code{envir}.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names \code{globals} searching from environment \code{envir}.  If a named list or a Globals object, the globals are used as is.}
 
 \item{resolve}{If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.}
