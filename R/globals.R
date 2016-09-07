@@ -3,6 +3,7 @@
 #' @param expr An R expression whose globals should be found.
 #' @param envir The environment from which globals should be searched.
 #' @param tweak (optional) A function that takes an expression and returned a modified one.
+#' @param globals (optional) If TRUE, globals are identified by code inspection based on \code{expr}, \code{envir} and \code{tweak}.  If a character vector, then globals are identified by lookup based on \code{envir}.
 #' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 #' persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.
 #' @param ... Not used.
@@ -11,11 +12,11 @@
 #'
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
-#' @importFrom globals globalsOf packagesOf cleanup
+#' @importFrom globals globalsOf globalsByName packagesOf cleanup
 #' @importFrom utils object.size
 #'
 #' @keywords internal
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, globals=TRUE, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
   ## Local functions
   attachedPackages <- function() {
     pkgs <- search()
@@ -51,18 +52,35 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   }
 
 
-  ## Identify globals
-  ## Algorithm for identifying globals
-  globals.method <- getOption("future.globals.method", "ordered")
-  globals <- globalsOf(expr, envir=envir, substitute=FALSE,
-               tweak=tweak,
-               dotdotdot="return",
-               primitive=FALSE, base=FALSE,
-               unlist=TRUE,
-               mustExist=mustExist,
-               method=globals.method
-             )
-
+  ## Alt 1. Identify globals based on expr, envir and tweak
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    if (globals) {
+      ## Algorithm for identifying globals
+      globals.method <- getOption("future.globals.method", "ordered")
+      globals <- globalsOf(
+		   ## Passed to globals::findGlobals()
+                   expr, envir=envir, substitute=FALSE, tweak=tweak,
+		   ## Passed to globals::findGlobals() via '...'
+                   dotdotdot="return",
+                   method=globals.method,
+                   unlist=TRUE,
+		   ## Passed to globals::globalsByName()
+                   mustExist=mustExist,
+		   ## ???
+                   primitive=FALSE, base=FALSE
+                 )
+    } else {
+      stop("If logical, argument 'globals' must be TRUE: ", globals)
+    }
+  } else if (is.character(globals)) {
+      globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
+  } else {
+    stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
+  }
+  
+  stopifnot(inherits(globals, "Globals"))
+  
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
