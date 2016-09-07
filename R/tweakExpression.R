@@ -29,6 +29,41 @@ tweakFormulaCall <- function(expr) {
 } ## tweakFormulaCall()
 
 
+## Dollar assignment #1:
+##   expression: x$a <- value
+##   AST: (<- ($ x a) value)
+##   tweaked expression: x; x$a <- value
+##
+##   expression: value -> x$a
+##   AST: (<- ($ x a) value)
+##   tweaked expression: x; value -> x$a
+tweakDollarAssignmentCall <- function(expr) {
+  if (!is.call(expr)) return(expr)
+  op <- expr[[1]]
+  if (!is.symbol(op)) return(expr)
+  op <- as.character(op)
+  if (op != "<-") return(expr)
+  n <- length(expr)
+  if (n != 3) return(expr)
+
+  ## expression #2: x$a
+  ## AST #2: ($ x a)
+  expr2 <- expr[[2]]
+  if (!is.call(expr2)) return(expr)
+  op2 <- expr2[[1]]
+  if (!is.symbol(op2)) return(expr)
+  op2 <- as.character(op2)
+  if (op2 != "$") return(expr)
+  n2 <- length(expr2)
+  if (n2 != 3) return(expr)
+
+  target <- expr2[[2]]
+  
+  ## covr: skip=1
+  substitute({ target; e }, list(target=target, e=expr))
+} ## tweakDollarAssignmentCall()
+
+
 
 ## Future assignment #1:
 ##   expression: lhs %<-% rhs
@@ -98,6 +133,7 @@ tweakExpression <- function(expr) {
     walkAST <- get("walkAST", mode="function", envir=ns)
     expr <- walkAST(expr, call=tweakFutureAssignmentCall)
     expr <- walkAST(expr, call=tweakFormulaCall)
+    expr <- walkAST(expr, call=tweakDollarAssignmentCall)
     mdebug("tweakExpression() w/ walkAST() ... DONE")
   } else {
     mdebug("tweakExpression() - legacy ...")

@@ -7,18 +7,19 @@ oopts <- c(oopts, options(
 
 supportsWalkAST <- exists("walkAST", mode="function", envir=getNamespace("globals"))
 
-message("*** Globals - formulas ...")
+message("*** Globals - subassignments ...")
 if (supportsWalkAST) {
 
-## From example("lm", package="stats")
-ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
-trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
-group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
-weight <- c(ctl, trt)
+message("*** Globals - subassignments w/ x$a <- value ...")
 
 ## Truth:
-fit0 <- lm(weight ~ group - 1)
-print(fit0)
+x <- list()
+y0 <- local({
+  x$a <- 1
+  x
+})
+print(y0)
+stopifnot(identical(x, list()))
 
 strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
@@ -34,21 +35,29 @@ for (cores in 1:min(3L, availableCores())) {
     plan(strategy)
 
     ## Explicit future
-    f <- future({ lm(weight ~ group - 1) })
-    fit <- value(f)
-    print(fit)
-    stopifnot(all.equal(fit, fit0))
+    f <- future({
+      x$a <- 1
+      x
+    })
+    y <- value(f)
+    print(y)
+    stopifnot(identical(y, y0))
 
     ## Future assignment
-    fit %<-% { lm(weight ~ group - 1) }
-    print(fit)
-    stopifnot(all.equal(fit, fit0))
+    y %<-% {
+      x$a <- 1
+      x
+    }
+    print(y)
+    stopifnot(identical(y, y0))
   } ## for (strategy ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
+message("*** Globals - subassignments w/ x$a <- value ... DONE")
+
 } ## if (supportsWalkAST)
-message("*** Globals - formulas ... DONE")
+message("*** Globals - subassignments ... DONE")
 
 source("incl/end.R")
