@@ -46,6 +46,15 @@ tweakFormulaCall <- function(expr) {
 ##   expression: value -> x[["a"]]
 ##   AST: (<- ([[ x a) value)
 ##   tweaked expression: x; value -> x[["a"]]
+##
+## Subassignment #3:
+##   expression: x["a"] <- value
+##   AST: (<- ([ x a) value)
+##   tweaked expression: x; x["a"] <- value
+##
+##   expression: x[1,2,3] <- value
+##   AST: (<- ([ x 1 2 3) value)
+##   tweaked expression: x; x[1,2,3] <- value
 tweakSubassignmentCall <- function(expr) {
   if (!is.call(expr)) return(expr)
   op <- expr[[1]]
@@ -55,16 +64,16 @@ tweakSubassignmentCall <- function(expr) {
   n <- length(expr)
   if (n != 3) return(expr)
 
-  ## expression #2: x$a or x[["a"]]
-  ## AST #2: ($ x a) or ([[ x a)
+  ## expression #2: x$a, x[["a"]], or x[...]
+  ## AST #2: ($ x a), ([[ x a), or ([ x ...)
   expr2 <- expr[[2]]
   if (!is.call(expr2)) return(expr)
   op2 <- expr2[[1]]
   if (!is.symbol(op2)) return(expr)
   op2 <- as.character(op2)
-  if (!op2 %in% c("$", "[[")) return(expr)
+  if (!op2 %in% c("$", "[[", "[")) return(expr)
   n2 <- length(expr2)
-  if (n2 != 3) return(expr)
+  if (n2 < 3) return(expr)
 
   target <- expr2[[2]]
   
