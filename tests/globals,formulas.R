@@ -1,5 +1,5 @@
 source("incl/start.R")
-library("listenv")
+
 library("datasets") ## cars data set
 library("stats")    ## lm(), poly(), xtabs()
 

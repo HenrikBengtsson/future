@@ -1,5 +1,5 @@
 source("incl/start.R")
-library("listenv")
+
 oopts <- c(oopts, options(
   future.globals.resolve=TRUE,
   future.globals.onMissing="error"
