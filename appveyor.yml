@@ -10,7 +10,8 @@
 #----------------------------------------------------------------
 environment:
   _R_CHECK_FORCE_SUGGESTS_: false
-
+  USE_RTOOLS: true
+  
   matrix:
   - R_VERSION: devel
     R_ARCH: x64
@@ -39,8 +40,8 @@ install:
 
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh install_r digest globals listenv markdown
-  - travis-tool.sh install_r R.rsp
+  - travis-tool.sh install_github HenrikBengtsson/globals@develop
+  - travis-tool.sh install_r digest globals listenv markdown R.rsp
 
 test_script:
   - travis-tool.sh run_tests
