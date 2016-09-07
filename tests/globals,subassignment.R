@@ -14,11 +14,19 @@ message("*** Globals - subassignments w/ x$a <- value ...")
 
 ## Truth:
 x <- list()
-y0 <- local({
+y0 <- list(a = 1)
+str(list(x=x, y0=y0))
+
+y <- local({
   x$a <- 1
   x
 })
-print(y0)
+stopifnot(identical(y, y0))
+y <- local({
+  x[["a"]] <- 1
+  x
+})
+stopifnot(identical(y, y0))
 stopifnot(identical(x, list()))
 
 strategies <- supportedStrategies()
@@ -46,6 +54,23 @@ for (cores in 1:min(3L, availableCores())) {
     ## Future assignment
     y %<-% {
       x$a <- 1
+      x
+    }
+    print(y)
+    stopifnot(identical(y, y0))
+
+    ## Explicit future
+    f <- future({
+      x[["a"]] <- 1
+      x
+    })
+    y <- value(f)
+    print(y)
+    stopifnot(identical(y, y0))
+
+    ## Future assignment
+    y %<-% {
+      x[["a"]] <- 1
       x
     }
     print(y)

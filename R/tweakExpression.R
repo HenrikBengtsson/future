@@ -29,7 +29,7 @@ tweakFormulaCall <- function(expr) {
 } ## tweakFormulaCall()
 
 
-## Dollar assignment #1:
+## Subassignment #1:
 ##   expression: x$a <- value
 ##   AST: (<- ($ x a) value)
 ##   tweaked expression: x; x$a <- value
@@ -37,7 +37,16 @@ tweakFormulaCall <- function(expr) {
 ##   expression: value -> x$a
 ##   AST: (<- ($ x a) value)
 ##   tweaked expression: x; value -> x$a
-tweakDollarAssignmentCall <- function(expr) {
+##
+## Subassignment #2:
+##   expression: x[["a"]] <- value
+##   AST: (<- ($ [[ a) value)
+##   tweaked expression: x; x[["a"]] <- value
+##
+##   expression: value -> x[["a"]]
+##   AST: (<- ([[ x a) value)
+##   tweaked expression: x; value -> x[["a"]]
+tweakSubassignmentCall <- function(expr) {
   if (!is.call(expr)) return(expr)
   op <- expr[[1]]
   if (!is.symbol(op)) return(expr)
@@ -46,14 +55,14 @@ tweakDollarAssignmentCall <- function(expr) {
   n <- length(expr)
   if (n != 3) return(expr)
 
-  ## expression #2: x$a
-  ## AST #2: ($ x a)
+  ## expression #2: x$a or x[["a"]]
+  ## AST #2: ($ x a) or ([[ x a)
   expr2 <- expr[[2]]
   if (!is.call(expr2)) return(expr)
   op2 <- expr2[[1]]
   if (!is.symbol(op2)) return(expr)
   op2 <- as.character(op2)
-  if (op2 != "$") return(expr)
+  if (!op2 %in% c("$", "[[")) return(expr)
   n2 <- length(expr2)
   if (n2 != 3) return(expr)
 
@@ -61,7 +70,7 @@ tweakDollarAssignmentCall <- function(expr) {
   
   ## covr: skip=1
   substitute({ target; e }, list(target=target, e=expr))
-} ## tweakDollarAssignmentCall()
+} ## tweakSubassignmentCall()
 
 
 
@@ -133,7 +142,7 @@ tweakExpression <- function(expr) {
     walkAST <- get("walkAST", mode="function", envir=ns)
     expr <- walkAST(expr, call=tweakFutureAssignmentCall)
     expr <- walkAST(expr, call=tweakFormulaCall)
-    expr <- walkAST(expr, call=tweakDollarAssignmentCall)
+    expr <- walkAST(expr, call=tweakSubassignmentCall)
     mdebug("tweakExpression() w/ walkAST() ... DONE")
   } else {
     mdebug("tweakExpression() - legacy ...")

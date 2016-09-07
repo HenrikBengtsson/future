@@ -3,7 +3,7 @@ Package: future
 
 Version: 1.0.1-9000 [2016-09-06]
 o Now global variables part of subassignments in future expressions are
-  recognized and exported (iff found), e.g. x$a <- value.
+  recognized and exported (iff found), e.g. x$a <- b and x[["a"]] <- b.
 o Now global variables part of formulae in future expressions are
   recognized and exported (iff found), e.g. y ~ x | z.
 o As an alternative to the default automatic identification of globals,
