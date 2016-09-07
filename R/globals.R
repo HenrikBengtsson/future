@@ -69,10 +69,19 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                    mustExist=mustExist
                  )
     } else {
-      stop("If logical, argument 'globals' must be TRUE: ", globals)
+      ## Use an empty set of globals
+      globals <- globalsByName(character(0L))
     }
   } else if (is.character(globals)) {
       globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
+  } else if (inherits(globals, "Globals")) {
+    ## Keep as is
+  } else if (is.list(globals)) {
+    if (length(globals) > 0) {
+      names <- names(globals)
+      stopifnot(!is.null(names), all(nchar(names) > 0))
+    }
+    stop("Argument 'globals' as a named list is still not supported.")
   } else {
     stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
   }
