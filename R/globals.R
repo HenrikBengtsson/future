@@ -87,7 +87,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
-  if (inherits(globals$`...`, "DotDotDotList")) {
+  if (length(globals) > 0 && inherits(globals$`...`, "DotDotDotList")) {
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
