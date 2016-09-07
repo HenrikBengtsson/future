@@ -5,10 +5,10 @@ oopts <- c(oopts, options(
   future.globals.onMissing="error"
 ))
 
-supportsWalkAST <- exists("walkAST", mode="function", envir=getNamespace("globals"))
+strategies <- supportedStrategies()
+strategies <- setdiff(strategies, "multiprocess")
 
 message("*** Globals - subassignments ...")
-if (supportsWalkAST) {
 
 message("*** Globals - subassignments w/ x$a <- value ...")
 
@@ -36,9 +36,6 @@ y <- local({
 stopifnot(identical(y, y0))
 
 stopifnot(identical(x, list()))
-
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
@@ -141,7 +138,6 @@ for (cores in 1:min(3L, availableCores())) {
 
 message("*** Globals - subassignments w/ x$a <- value ... DONE")
 
-} ## if (supportsWalkAST)
 message("*** Globals - subassignments ... DONE")
 
 source("incl/end.R")
