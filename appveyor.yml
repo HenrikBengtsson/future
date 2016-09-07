@@ -40,8 +40,8 @@ install:
 
 build_script:
   - echo Current directory=%CD%
-  - travis-tool.sh install_github HenrikBengtsson/globals@develop
   - travis-tool.sh install_r digest globals listenv markdown R.rsp
+  - travis-tool.sh install_github HenrikBengtsson/globals@develop
 
 test_script:
   - travis-tool.sh run_tests
