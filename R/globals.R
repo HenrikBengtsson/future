@@ -66,9 +66,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                    method=globals.method,
                    unlist=TRUE,
 		   ## Passed to globals::globalsByName()
-                   mustExist=mustExist,
-		   ## ???
-                   primitive=FALSE, base=FALSE
+                   mustExist=mustExist
                  )
     } else {
       stop("If logical, argument 'globals' must be TRUE: ", globals)
