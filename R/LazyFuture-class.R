@@ -32,7 +32,7 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, global
   }
 
   ## Global objects
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, persistent=FALSE, globals=globals, resolve=TRUE)
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
 
   ## Assign?
   if (length(gp) > 0) {

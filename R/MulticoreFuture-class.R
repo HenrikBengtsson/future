@@ -21,7 +21,7 @@ MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, g
 
   ## Global objects
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, persistent=FALSE, globals=globals, resolve=TRUE)
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
 
   ## Assign?
   if (assignToTarget && length(gp) > 0) {
