@@ -15,6 +15,6 @@ availableCores <- function() {
   1L
 }
 
-revdep_check(threads = availableCores())
+revdep_check(recursive = TRUE, threads = availableCores())
 revdep_check_save_summary()
 revdep_check_print_problems()
