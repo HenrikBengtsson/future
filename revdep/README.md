@@ -10,7 +10,7 @@
 |language |en                           |
 |collate  |C                            |
 |tz       |NA                           |
-|date     |2016-09-07                   |
+|date     |2016-09-08                   |
 
 ## Packages
 
@@ -19,7 +19,7 @@
 |R.rsp    |   |0.30.0     |2016-05-15 |cran (@0.30.0)                           |
 |digest   |   |0.6.10     |2016-08-02 |cran (@0.6.10)                           |
 |future   |   |1.0.1-9000 |2016-09-08 |local (HenrikBengtsson/future@NA)        |
-|globals  |   |0.6.1-9000 |2016-09-08 |Github (HenrikBengtsson/globals@fd05217) |
+|globals  |   |0.6.1-9000 |2016-09-08 |Github (HenrikBengtsson/globals@e3ec0b6) |
 |listenv  |   |0.6.0      |2015-12-28 |cran (@0.6.0)                            |
 |markdown |   |0.7.7      |2015-04-22 |cran (@0.7.7)                            |
 
@@ -376,16 +376,7 @@ File 'TIN/R/correlationPlot.R':
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 
-0 errors | 0 warnings | 1 note 
-
-```
-checking installed package size ... NOTE
-  installed size is 1028.1Mb
-  sub-directories of 1Mb or more:
-    R            1024.9Mb
-    help            1.1Mb
-    testScripts     1.2Mb
-```
+0 errors | 0 warnings | 0 notes
 
 ## aroma.cn (1.6.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -415,30 +406,11 @@ Bug reports: https://github.com/HenrikBengtsson/calmate/issues
 
 0 errors | 0 warnings | 0 notes
 
-## doFuture (0.2.0)
+## doFuture (0.2.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in 'tests/doRNG,dopar.R' failed.
-Last 13 lines of output:
-  [1] stats     graphics  grDevices utils     datasets  methods   base     
-  
-  other attached packages:
-  [1] doRNG_1.6         rngtools_1.2.4    pkgmaker_0.22     registry_0.3     
-  [5] doFuture_0.2.0    iterators_1.0.8   foreach_1.4.3     future_1.0.1-9000
-  
-  loaded via a namespace (and not attached):
-   [1] codetools_0.2-14   listenv_0.6.0      digest_0.6.10      xtable_1.8-2      
-   [5] magrittr_1.5       stringi_1.1.1      tools_3.3.1        stringr_1.1.0     
-   [9] parallel_3.3.1     globals_0.6.1-9000
-  - plan('multicore') ...
-  Error: Cannot walk expression. Unknown object type 'expression'
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## fiery (0.2.1)
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
@@ -454,14 +426,14 @@ Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
 
 ```
 checking tests ... ERROR
-Running the tests in 'tests/BatchJobsFuture.R' failed.
+Running the tests in 'tests/batchjobs_multicore.R' failed.
 Last 13 lines of output:
     ..$ submitJob        :function (conf, reg, job.name, rscript, log.file, job.dir, resources, arrayjobs)  
     ..$ killJob          :function (conf, reg, batch.job.id)  
     ..$ listJobs         :function (conf, reg)  
     ..$ getArrayEnvirName:function ()  
     ..- attr(*, "class")= chr "ClusterFunctions"
-  Saving conf: /cbc/henrik/repositories/future/revdep/checks/future.BatchJobs.Rcheck/tests/.future/20160907_192438-YjtrYR/BatchJobs_2110675336-files/conf.RData
+  Saving conf: /cbc/henrik/repositories/future/revdep/checks/future.BatchJobs.Rcheck/tests/.future/20160908_101259-v6M5mN/BatchJobs_1024245508-files/conf.RData
   Submitting 1 chunks / 1 jobs.
   Cluster functions: Multicore.
   Auto-mailer settings: start=none, done=none, error=none.
