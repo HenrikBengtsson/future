@@ -1,16 +1,18 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-09-06]
+Version: 1.0.1-9000 [2016-09-08]
+o GLOBALS: As an alternative to the default automatic identification of
+  globals, it is now also possible to explicitly specify them either
+  by their names (as a character vector) or by their names and values
+  (as a named list), e.g. f <- future({ 2*a }, globals=c("a")) or
+  f <- future({ 2*a }, globals=list(a=42)).  For future assignments one
+  can use the %globals% operator, e.g. y %<-% { 2*a } %globals% c("a").
 o GLOBALS: Global variables part of subassignments in future expressions
   are recognized and exported (iff found), e.g. x$a <- value,
   x[["a"]] <- value, and x[1,2,3] <- value.
 o GLOBALS: Global variables part of formulae in future expressions are
   recognized and exported (iff found), e.g. y ~ x | z.
-o GLOBALS: As an alternative to the default automatic identification of
-  globals, it is possible to explicitly specify them via argument 'globals'
-  to future(), e.g. f <- future({ 2 * a }, globals=list(a=42)).  For
-  future assignments, one can use y %<-% { 2 * a } %globals% list(a=42).
 o Now all Future classes supports run() for launching the future and
   value() calls run() if the future has not been launched.
 o DOCUMENTATION: Added vignette on command-line options and other
