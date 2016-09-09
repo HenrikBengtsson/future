@@ -15,7 +15,6 @@ availableCores <- function() {
   1L
 }
 
-install_github("HenrikBengtsson/globals@develop", lib=getOption("devtools.revdep.libpath"))
 revdep_check(bioconductor = TRUE, recursive = TRUE, threads = availableCores())
 revdep_check_save_summary()
 revdep_check_print_problems()
