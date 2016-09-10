@@ -4,25 +4,11 @@
 #' which means that its \emph{value is computed and resolved
 #' remotely in another process}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param globals If TRUE, global objects are validated at the point
-#' in time when the future is created (always before it is resolved),
-#' that is, they identified and located.  If some globals fail to be
-#' located, an informative error is generated.
-#' @param persistent If FALSE, the evaluation environment is cleared
-#' from objects prior to the evaluation of the future.
-#' @param workers A cluster object created by
-#' \code{\link[parallel]{makeCluster}()}.
-#' @param gc If TRUE, the garbage collector run (in the process that
-#' evaluated the future) after the value of the future is collected.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
+#' @inheritParams future
+#' @inheritParams multiprocess
+#' @inheritParams cluster
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
-#' @param \dots Not used.
 #'
 #' @return A \link{ClusterFuture}.
 #'

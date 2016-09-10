@@ -3,7 +3,7 @@
 #' @usage fassignment \%plan\% strategy
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<=\% \{ expr \}}.
+#'        \code{x \%<-\% \{ expr \}}.
 #' @param strategy The mechanism for how the future should be
 #'        resolved. See \code{\link{plan}()} for further details.
 #'

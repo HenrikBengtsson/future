@@ -4,19 +4,11 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param globals If TRUE, global objects are validated at the point
-#' in time when the future is created (always before it is resolved),
-#' that is, they identified and located.  If some globals fail to be
-#' located, an informative error is generated.
+#' @inheritParams future
+#' @inheritParams multiprocess
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
 #'
 #' @return A \link{MulticoreFuture}
 #' If \code{workers == 1}, then all processing using done in the
@@ -44,7 +36,7 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(multicore)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<=\%}} will create \emph{multicore futures}.
+#' and \code{\link{\%<-\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
 #' For processing in multiple background R sessions, see

@@ -6,20 +6,12 @@
 #' The only difference to R itself is that globals are validated
 #' by default just as for all other types of futures in this package.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param globals If TRUE, global objects are validated at the point
-#' in time when the future is created (always before it is resolved),
-#' that is, they identified and located.  If some globals fail to be
-#' located, an informative error is generated.
+#' @inheritParams future
+#' @inheritParams multiprocess
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
 #'
 #' @return An \link{EagerFuture}.
 #'
@@ -29,7 +21,7 @@
 #' The preferred way to create an eager future is not to call this function
 #' directly, but to register it via \code{\link{plan}(eager)} such that it
 #' becomes the default mechanism for all futures.  After this
-#' \code{\link{future}()} and \code{\link{\%<=\%}} will create
+#' \code{\link{future}()} and \code{\link{\%<-\%}} will create
 #' \emph{eager futures}.
 #'
 #' @section transparent futures:

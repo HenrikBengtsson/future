@@ -4,23 +4,11 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another R session}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param globals If TRUE, global objects are validated at the point
-#' in time when the future is created (always before it is resolved),
-#' that is, they identified and located.  If some globals fail to be
-#' located, an informative error is generated.
-#' @param persistent If FALSE, the evaluation environment is cleared
-#' from objects prior to the evaluation of the future.
+#' @inheritParams future
+#' @inheritParams multiprocess
+#' @inheritParams cluster
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run (in the process that
-#' evaluated the future) after the value of the future is collected.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
 #'
 #' @return A \link{MultisessionFuture}.
 #' If \code{workers == 1}, then all processing using done in the
@@ -45,7 +33,7 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(multisession)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<=\%}} will create \emph{multisession futures}.
+#' and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 #'
 #' @section Known issues:
 #' In the current implementation, \emph{all} background R sessions

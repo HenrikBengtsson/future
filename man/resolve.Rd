@@ -25,7 +25,7 @@ if futures have been resolved since last time.}
 If a function, the it is called as \code{progress(done, total)}
 every time a future is resolved.}
 
-\item{...}{Not used}
+\item{\dots}{Not used}
 }
 \value{
 Returns \code{x} (regardless of subsetting or not).

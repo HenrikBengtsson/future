@@ -10,9 +10,10 @@ lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE)
-and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
@@ -27,7 +28,7 @@ the assignments are done in the calling environment.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
 
-\item{\dots}{Not used.}
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{LazyFuture}.
@@ -42,7 +43,7 @@ if the value is never requested.
 The preferred way to create a lazy future is not to call this function
 directly, but to register it via \code{\link{plan}(lazy)} such that it
 becomes the default mechanism for all futures.  After this
-\code{\link{future}()} and \code{\link{\%<=\%}} will create
+\code{\link{future}()} and \code{\link{\%<-\%}} will create
 \emph{lazy futures}.
 }
 \examples{

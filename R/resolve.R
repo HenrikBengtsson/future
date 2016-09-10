@@ -18,7 +18,7 @@
 #' @param progress If TRUE textual progress summary is outputted.
 #' If a function, the it is called as \code{progress(done, total)}
 #' every time a future is resolved.
-#' @param ... Not used
+#' @param \dots Not used
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
 #'

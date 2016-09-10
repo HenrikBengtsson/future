@@ -5,12 +5,8 @@
 #' value is requested}.  This means that the future will not be resolved
 #' if the value is never requested.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE)
-#' and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @inheritParams future
+#' @inheritParams multiprocess
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
@@ -18,7 +14,6 @@
 #' the point of time when the future is created, otherwise they are
 #' resolved when the future is resolved.
 #' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
 #'
 #' @return A \link{LazyFuture}.
 #'
@@ -28,7 +23,7 @@
 #' The preferred way to create a lazy future is not to call this function
 #' directly, but to register it via \code{\link{plan}(lazy)} such that it
 #' becomes the default mechanism for all futures.  After this
-#' \code{\link{future}()} and \code{\link{\%<=\%}} will create
+#' \code{\link{future}()} and \code{\link{\%<-\%}} will create
 #' \emph{lazy futures}.
 #'
 #' @export

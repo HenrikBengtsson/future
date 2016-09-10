@@ -20,7 +20,7 @@ getGlobalsAndPackages(expr, envir = parent.frame(), tweak = tweakExpression,
 \item{resolve}{If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.}
 
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \value{
 A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list) and \code{packages} (a character string).

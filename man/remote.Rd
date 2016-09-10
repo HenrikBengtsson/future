@@ -11,32 +11,36 @@ remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{If TRUE, global objects are validated at the point
-in time when the future is created (always before it is resolved),
-that is, they identified and located.  If some globals fail to be
-located, an informative error is generated.}
+\item{globals}{(optional) a logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.
+This argument can be specified also for \code{future()}
+in which case it is passed via the \dots arguments.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A cluster object created by
-\code{\link[parallel]{makeCluster}()}.}
+\item{workers}{The maximum number of multiprocess futures that
+can be active at the same time before blocking.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
 \item{myip}{The external IP address of this machine.
 If NULL, then it is inferred using an online service (default).}
 
-\item{\dots}{Not used.}
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{ClusterFuture}.

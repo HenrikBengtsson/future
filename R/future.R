@@ -1,9 +1,10 @@
 #' Create a future
 #'
-#' Creates a future from an expression and returns it.
-#' The state of the future is either unresolved or resolved.
+#' Creates a future from an expression.
+#' The state of the future is either unresolved or resolved,
+#' which can be checked using \code{\link{resolved}()}.
 #' When it becomes resolved, at some point in the future,
-#' its value can be retrieved.
+#' its value can be retrieved using \code{\link{value}()}.
 #'
 #' @param expr An R \link[base]{expression}.
 #' @param envir The \link{environment} from where global
@@ -16,11 +17,14 @@
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
 #' This argument can be specified also for \code{future()}
-#' in which case it is passed via \code{...}.
+#' in which case it is passed via the \dots arguments.
 #' @param evaluator The actual function that evaluates
-#' \code{expr} and returns a future.  The evaluator function
-#' should accept all of the same arguments as this function
-#' (except \code{evaluator}).
+#' the future expression and returns a \link{Future}.
+#' The evaluator function should accept all of the same
+#' arguments as the ones listed here
+#' (except \code{evaluator}, \code{FUN} and \code{args}).
+#' The default evaluator function is the one that the user
+#' has specified via \code{\link{plan}()}.
 #' @param ... Additional arguments passed to the "evaluator".
 #'
 #' @return A \link{Future}.
@@ -49,7 +53,7 @@
 #' environment \code{envir} as the starting point (basically via
 #' \code{get(global, envir=envir, inherits=TRUE)}).
 #' In most cases automatic collection of globals is sufficient and
-#' much less tedious and error prone than manually specify them.
+#' less tedious and error prone than to manually specifying them.
 #'
 #' However, for full control, it is also possible to explicitly specify
 #' exactly which the globals are by providing their names as a character
@@ -60,11 +64,15 @@
 #'   y <- future({ b <- 2; a * b }, globals = "a")
 #' }
 #'
-#' Yet another alternative is to explicitly specify also the values of
-#' globals using a named list as in
+#' Yet another alternative is to explicitly specify also their values
+#' using a named list as in
 #' \preformatted{
 #'   a <- 42
 #'   y <- future({ b <- 2; a * b }, globals = list(a = a))
+#' }
+#' or
+#' \preformatted{
+#'   y <- future({ b <- 2; a * b }, globals = list(a = 42))
 #' }
 #'
 #' Specifying globals explicitly avoids the overhead added from
@@ -81,7 +89,7 @@
 #' package will make sure that those packages are attached when the future
 #' is resolved.  Because there is no need for such globals to be frozen
 #' or exported, the future package will not export them, which reduces
-#' the amount of transfer objects.
+#' the amount of transferred objects.
 #' For example, in
 #' \preformatted{
 #'   x <- rnorm(1000)
@@ -90,7 +98,7 @@
 #' variable \code{x} and \code{median()} are globals, but only \code{x}
 #' is exported whereas \code{median()}, which is part of the \pkg{stats}
 #' package, is not exported.  Instead the \pkg{stats} package is made
-#' sure to be attached when the future expression is evaluated.
+#' sure to be on the search path when the future expression is evaluated.
 #'  Effectively, the above becomes
 #' \preformatted{
 #'   x <- rnorm(1000)

@@ -30,7 +30,7 @@
 #' @seealso
 #' One function that creates a Future is \code{\link{future}()}.
 #' It returns a Future that evaluates an R expression in the future.
-#' An alternative approach is to use the \code{\link{\%<=\%}} infix
+#' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the
 #' right-hand-side (RHS) R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
@@ -216,7 +216,7 @@ resolved.Future <- function(x, ...) {
 #' Inject code for the next type of future to use for nested futures
 #'
 #' @param future Current future.
-#' @param ... Not used.
+#' @param \dots Not used.
 #'
 #' @return A future expression with code injected to set what
 #' type of future to use for nested futures, iff any.

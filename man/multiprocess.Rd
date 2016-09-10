@@ -11,16 +11,18 @@ multiprocess(expr, envir = parent.frame(), substitute = TRUE,
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{If TRUE, global objects are validated at the point
-in time when the future is created (always before it is resolved),
-that is, they identified and located.  If some globals fail to be
-located, an informative error is generated.}
+\item{globals}{(optional) a logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{workers}{The maximum number of multiprocess futures that
 can be active at the same time before blocking.}
@@ -28,9 +30,10 @@ can be active at the same time before blocking.}
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
-\item{\dots}{Not used.}
+\item{...}{Not used.}
 }
 \value{
 A \link{MultiprocessFuture} implemented as either a

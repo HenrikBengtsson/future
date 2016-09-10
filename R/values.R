@@ -7,7 +7,7 @@
 #' object is kept.
 #'
 #' @param x An environment, a list, or a list environment.
-#' @param ... Additional arguments passed to \code{value()} of each future.
+#' @param \dots Additional arguments passed to \code{value()} of each future.
 #'
 #' @return An object of same type as \code{x} and with the same names
 #' and/or dimensions, if set.

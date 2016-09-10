@@ -3,7 +3,7 @@
 #' @usage fassignment \%globals\% globals
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<=\% \{ expr \}}.
+#'        \code{x \%<-\% \{ expr \}}.
 #' @param globals A named list specifying globals to be used.
 #'
 #' @details

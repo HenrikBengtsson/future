@@ -8,7 +8,7 @@ fassignment \%globals\% globals
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<=\% \{ expr \}}.}
+\code{x \%<-\% \{ expr \}}.}
 
 \item{globals}{A named list specifying globals to be used.}
 }
