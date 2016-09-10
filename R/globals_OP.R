@@ -4,10 +4,10 @@
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
-#' @param globals A named list specifying globals to be used.
+#' @inheritParams multiprocess
 #'
 #' @details
-#' `a %globals% b` is short for `a %tweak% list(globals = b)`.
+#' \code{a \%globals\% b} is short for \code{a \%tweak\% list(globals = b)}.
 #'
 #' @export
 `%globals%` <- function(fassignment, globals) {

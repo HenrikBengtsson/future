@@ -36,7 +36,7 @@ has specified via \code{\link{plan}()}.}
 
 \item{args}{A list of arguments passed to function \code{FUN}.}
 
-\item{globals}{(optional) a logical, a character vector,
+\item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
 For details, see below section.
 This argument can be specified also for \code{future()}
@@ -60,9 +60,9 @@ evaluated while not being local objects that are defined by the future
 expression. For example, in
 \preformatted{
   a <- 42
-  y <- future({ b <- 2; a * b })
+  f <- future({ b <- 2; a * b })
 }
-variable \code{a} is a global of future assignment \code{y} whereas
+variable \code{a} is a global of future assignment \code{f} whereas
 \code{b} is a local variable.
 In order for the future to be resolved successfully (and correctly),
 all globals need to gathered when the future is created such that
@@ -83,18 +83,18 @@ vector.
 In the above example, we could use
 \preformatted{
   a <- 42
-  y <- future({ b <- 2; a * b }, globals = "a")
+  f <- future({ b <- 2; a * b }, globals = "a")
 }
 
 Yet another alternative is to explicitly specify also their values
 using a named list as in
 \preformatted{
   a <- 42
-  y <- future({ b <- 2; a * b }, globals = list(a = a))
+  f <- future({ b <- 2; a * b }, globals = list(a = a))
 }
 or
 \preformatted{
-  y <- future({ b <- 2; a * b }, globals = list(a = 42))
+  f <- future({ b <- 2; a * b }, globals = list(a = 42))
 }
 
 Specifying globals explicitly avoids the overhead added from
@@ -103,7 +103,7 @@ Futhermore, if we know that the future expression does not make use
 of any global variables, we can disable the automatic search for
 globals by using
 \preformatted{
-  y <- future({ a <- 42; b <- 2; a * b }, globals = FALSE)
+  f <- future({ a <- 42; b <- 2; a * b }, globals = FALSE)
 }
 
 Future expressions often make use of functions from one or more packages.
@@ -115,19 +115,43 @@ the amount of transferred objects.
 For example, in
 \preformatted{
   x <- rnorm(1000)
-  y <- future(median(x))
+  f <- future({ median(x) })
 }
 variable \code{x} and \code{median()} are globals, but only \code{x}
 is exported whereas \code{median()}, which is part of the \pkg{stats}
 package, is not exported.  Instead the \pkg{stats} package is made
 sure to be on the search path when the future expression is evaluated.
- Effectively, the above becomes
+Effectively, the above becomes
 \preformatted{
   x <- rnorm(1000)
-  y <- future({
+  f <- future({
     library("stats")
     median(x)
   })
+}
+To manually specify this, one can either do
+\preformatted{
+  x <- rnorm(1000)
+  f <- future({
+    median(x)
+  }, globals = list(x = x, median = stats::median)
+}
+or
+\preformatted{
+  x <- rnorm(1000)
+  f <- future({
+    library("stats")
+    median(x)
+  }, globals = list(x = x))
+}
+Both are effectively the same.
+
+When using future assignments (via \code{\link{\%<-\%}}) globals
+can be specified analogously using the \code{\link{\%globals\%}}
+operator, e.g.
+\preformatted{
+  x <- rnorm(1000)
+  y %<-% { median(x) } %globals% list(x = x, median = stats::median)
 }
 }
 \examples{

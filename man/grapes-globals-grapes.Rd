@@ -10,12 +10,15 @@ fassignment \%globals\% globals
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
 
-\item{globals}{A named list specifying globals to be used.}
+\item{globals}{(optional) a logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 }
 \description{
 Specify globals for a future assignment
 }
 \details{
-`a %globals% b` is short for `a %tweak% list(globals = b)`.
+\code{a \%globals\% b} is short for \code{a \%tweak\% list(globals = b)}.
 }
 
