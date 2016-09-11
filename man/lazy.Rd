@@ -8,7 +8,7 @@ lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   local = TRUE, earlySignal = FALSE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} from where global
 objects should be identified.  Depending on "evaluator",

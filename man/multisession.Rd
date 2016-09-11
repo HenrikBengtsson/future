@@ -9,7 +9,7 @@ multisession(expr, envir = parent.frame(), substitute = TRUE,
   gc = FALSE, earlySignal = FALSE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} from where global
 objects should be identified.  Depending on "evaluator",
@@ -22,8 +22,8 @@ is evaluated.}
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
 For details, see below section.
-This argument can be specified also for \code{future()}
-in which case it is passed via the \dots arguments.}
+This argument can be specified via the \dots arguments
+for \code{future()} and \code{futureCall()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

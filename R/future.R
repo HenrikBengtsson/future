@@ -1,12 +1,9 @@
 #' Create a future
 #'
-#' Creates a future from an expression.
-#' The state of the future is either unresolved or resolved,
-#' which can be checked using \code{\link{resolved}()}.
-#' When it becomes resolved, at some point in the future,
-#' its value can be retrieved using \code{\link{value}()}.
+#' Creates a future that evaluates an \R expression or calls
+#' an \R function with a set of arguments.
 #'
-#' @param expr An R \link[base]{expression}.
+#' @param expr An \R \link[base]{expression}.
 #' @param envir The \link{environment} from where global
 #' objects should be identified.  Depending on "evaluator",
 #' it may also be the environment in which the expression
@@ -16,8 +13,8 @@
 #' @param globals A logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
-#' This argument can be specified also for \code{future()}
-#' in which case it is passed via the \dots arguments.
+#' This argument can be specified via the \dots arguments
+#' for \code{future()} and \code{futureCall()}.
 #' @param evaluator The actual function that evaluates
 #' the future expression and returns a \link{Future}.
 #' The evaluator function should accept all of the same
@@ -28,12 +25,44 @@
 #' @param ... Additional arguments passed to the "evaluator".
 #'
 #' @return
-#' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}.
+#' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.
 #'
-#' \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}.
+#' \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{v <- value(f)}.
+#'
+#' \code{futureAssign("v", expr)} and \code{v \%<-\% expr} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{v}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
+#' The future itself is returned invisibly, e.g.
+#' \code{f <- futureAssign("v", expr)} and \code{f <- (v \%<-\% expr)}.
+#' Alternatively, the future of a future variable \code{v} can be retrived
+#' without blocking using \code{f <- \link{futureOf}(v)}.
+#' Both the future and the variable (promise) are assigned to environment
+#' \code{assign.env} where the name of the future is \code{.future_<name>}.
 #'
 #'
-#' @example incl/future.R
+#' @details
+#' The state of a future is either unresolved or resolved.
+#' The value of a future can be retrieved using \code{v <- \link{value}(f)}.
+#' Quering the value of a non-resolved future will \emph{block} the call
+#' until the future is resolved.
+#' It is possible to check whether a future is resolved or not
+#' without blocking by using \code{\link{resolved}(f)}.
+#'
+#' For a future created via a future assignments, the value is bound to
+#' a promise, which when queried will internally call \code{\link{value}()}
+#' on the future and which will then be resolved into a regular variable
+#' bound to that value.  For example, with future assignment
+#' \code{v \%<-\% expr}, the first time variable \code{v} is queried
+#' the call blocks if (and only if) the future is not yet resolved. As soon
+#' as it is resolved, and any succeeding queries of \code{v}, will
+#' immediately give the value.
+#'
+#' The future assignment construct \code{v \%<-\% expr} is not a formal
+#' assignment per se, but a binary infix operators on objects \code{v}
+#' and \code{expr}.  However, by using non-standard evaluation, this
+#' constructs can emulate an assignment operator similar to
+#' \code{v <- expr}. Due to \R's precedence rules of operators,
+#' future expressions that contain multiple statements need to be
+#' explicitly bracketed, e.g. \code{v \%<-\% { a <- 2; a^2 }}.
+#'
 #'
 #' @section Globals used by future expressions:
 #' Global objects (short \emph{globals}) are objects (e.g. variables and
@@ -133,8 +162,11 @@
 #' operator, e.g.
 #' \preformatted{
 #'   x <- rnorm(1000)
-#'   y %<-% { median(x) } %globals% list(x = x, median = stats::median)
+#'   y \%<-\% { median(x) } \%globals\% list(x = x, median = stats::median)
 #' }
+#'
+#' @example incl/future.R
+#'
 #'
 #' @seealso
 #' It is highly recommended that the evaluator is \emph{non-blocking}
