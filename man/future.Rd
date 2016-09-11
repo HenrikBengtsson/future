@@ -43,7 +43,9 @@ This argument can be specified also for \code{future()}
 in which case it is passed via the \dots arguments.}
 }
 \value{
-A \link{Future}.
+\code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}.
+
+\code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}.
 }
 \description{
 Creates a future from an expression.

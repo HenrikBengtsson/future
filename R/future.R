@@ -27,7 +27,11 @@
 #' has specified via \code{\link{plan}()}.
 #' @param ... Additional arguments passed to the "evaluator".
 #'
-#' @return A \link{Future}.
+#' @return
+#' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}.
+#'
+#' \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}.
+#'
 #'
 #' @example incl/future.R
 #'
