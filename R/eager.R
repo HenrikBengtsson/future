@@ -11,7 +11,6 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #'
 #' @return An \link{EagerFuture}.
 #'

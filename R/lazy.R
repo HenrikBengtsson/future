@@ -13,7 +13,6 @@
 #' @param globals If TRUE, global objects are resolved ("frozen") at
 #' the point of time when the future is created, otherwise they are
 #' resolved when the future is resolved.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #'
 #' @return A \link{LazyFuture}.
 #'

@@ -8,7 +8,6 @@
 #' @inheritParams multiprocess
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
 #'
 #' @return A \link{MulticoreFuture}
 #' If \code{workers == 1}, then all processing using done in the

@@ -28,7 +28,8 @@ for \code{future()} and \code{futureCall()}.}
 \item{workers}{The maximum number of multicore futures that can
 be active at the same time before blocking.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }

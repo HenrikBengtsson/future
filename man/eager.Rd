@@ -29,7 +29,8 @@ for \code{future()} and \code{futureCall()}.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }
