@@ -1,10 +1,6 @@
 #' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @inheritParams MultiprocessFuture-class
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the global environment of the cluster node.
@@ -19,7 +15,6 @@
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
-#' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{ClusterFuture}.
 #'

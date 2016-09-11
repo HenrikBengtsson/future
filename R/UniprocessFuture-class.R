@@ -1,14 +1,10 @@
 #' An uniprocess future is a future whose value will be resolved synchroneously in the current process
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @inheritParams Future-class
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param \dots Additional named elements of the future.
+#' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.
 #'

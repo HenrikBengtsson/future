@@ -1,11 +1,7 @@
 #' An multiprocess future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param \dots Additional named elements of the future.
+#' @inheritParams Future-class
+#' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{MultiprocessFuture}.
 #'

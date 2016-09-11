@@ -9,15 +9,7 @@ MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   globals = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
-
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
-
-\item{\dots}{Additional named elements of the future.}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 An object of class \code{MulticoreFuture}.

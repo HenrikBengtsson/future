@@ -12,14 +12,6 @@ ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   workers = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
-
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
-
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the global environment of the cluster node.}
@@ -39,7 +31,7 @@ from objects prior to the evaluation of the future.}
 Alternatively, a character vector of host names or a numeric scalar,
 for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
 
-\item{\dots}{Additional named elements of the future.}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 An object of class \code{ClusterFuture}.

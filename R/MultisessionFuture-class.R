@@ -1,3 +1,5 @@
+#' @inheritParams ClusterFuture-class
+#'
 ## Currently aliased in ClusterFuture
 #' @export
 MultisessionFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, persistent=FALSE, workers=NULL, ...) {

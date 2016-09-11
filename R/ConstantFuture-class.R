@@ -1,9 +1,9 @@
 #' A future with a constant value
 #'
 #' A constant future is a future whose expression is a constant
-#' and therefore already resolved upon creation
+#' and therefore by definition already resolved upon creation.
 #'
-#' @param expr An R value.
+#' @inheritParams Future-class
 #' @param \dots Not used.
 #'
 #' @return An object of class \code{ConstantFuture}.
