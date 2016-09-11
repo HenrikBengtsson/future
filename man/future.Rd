@@ -68,34 +68,40 @@ for \code{future()} and \code{futureCall()}.}
 \code{futureAssign("v", expr)} and \code{v \%<-\% expr} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{v}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
 The future itself is returned invisibly, e.g.
 \code{f <- futureAssign("v", expr)} and \code{f <- (v \%<-\% expr)}.
-Alternatively, the future of a future variable \code{v} can be retrived
+Alternatively, the future of a future variable \code{v} can be retrieved
 without blocking using \code{f <- \link{futureOf}(v)}.
 Both the future and the variable (promise) are assigned to environment
 \code{assign.env} where the name of the future is \code{.future_<name>}.
 }
 \description{
-Creates a future that evaluates an \R expression or calls
-an \R function with a set of arguments.
+Creates a future that evaluates an \R expression or
+a future that calls an \R function with a set of arguments.
+How, when, and where these futures are evaluated can be configured
+using \code{\link{plan}()} such that it is evaluated in parallel on,
+for instance, the current machine, on a remote machine, or via a
+job queue on a compute cluster.
+Importantly, \R code using futures remains the same regardless
+on these settings.
 }
 \details{
 The state of a future is either unresolved or resolved.
 The value of a future can be retrieved using \code{v <- \link{value}(f)}.
-Quering the value of a non-resolved future will \emph{block} the call
+Querying the value of a non-resolved future will \emph{block} the call
 until the future is resolved.
 It is possible to check whether a future is resolved or not
 without blocking by using \code{\link{resolved}(f)}.
 
-For a future created via a future assignments, the value is bound to
+For a future created via a future assignment, the value is bound to
 a promise, which when queried will internally call \code{\link{value}()}
 on the future and which will then be resolved into a regular variable
 bound to that value.  For example, with future assignment
 \code{v \%<-\% expr}, the first time variable \code{v} is queried
 the call blocks if (and only if) the future is not yet resolved. As soon
-as it is resolved, and any succeeding queries of \code{v}, will
+as it is resolved, and any succeeding queries, querying \code{v} will
 immediately give the value.
 
 The future assignment construct \code{v \%<-\% expr} is not a formal
-assignment per se, but a binary infix operators on objects \code{v}
+assignment per se, but a binary infix operator on objects \code{v}
 and \code{expr}.  However, by using non-standard evaluation, this
 constructs can emulate an assignment operator similar to
 \code{v <- expr}. Due to \R's precedence rules of operators,
@@ -115,7 +121,7 @@ expression. For example, in
 variable \code{a} is a global of future assignment \code{f} whereas
 \code{b} is a local variable.
 In order for the future to be resolved successfully (and correctly),
-all globals need to gathered when the future is created such that
+all globals need to be gathered when the future is created such that
 they are available whenever and wherever the future is resolved.
 
 The default behavior (\code{globals = TRUE}) of all evaluator functions,
@@ -124,8 +130,8 @@ More precisely, globals are identified via code inspection of the
 future expression \code{expr} and their values are retrieved with
 environment \code{envir} as the starting point (basically via
 \code{get(global, envir=envir, inherits=TRUE)}).
-In most cases automatic collection of globals is sufficient and
-less tedious and error prone than to manually specifying them.
+\emph{In most cases, such automatic collection of globals is sufficient
+and less tedious and error prone than if they are manually specified}.
 
 However, for full control, it is also possible to explicitly specify
 exactly which the globals are by providing their names as a character
@@ -196,65 +202,76 @@ or
 }
 Both are effectively the same.
 
-When using future assignments (via \code{\link{\%<-\%}}) globals
-can be specified analogously using the \code{\link{\%globals\%}}
-operator, e.g.
+When using future assignments, globals can be specified analogously
+using the \code{\link{\%globals\%}} operator, e.g.
 \preformatted{
   x <- rnorm(1000)
   y \%<-\% { median(x) } \%globals\% list(x = x, median = stats::median)
 }
 }
 \examples{
-## Use lazy futures
-plan(lazy)
+## Evaluate futures in parallel
+plan(multiprocess)
 
-f <- future({
-  a <- 7
-  b <- 3
-  c <- 2
-  a * b * c
-})
-
-print(resolved(f))
-y <- value(f)
-print(y)
-## Future assignment via "assign" function
-futureAssign("A", {
-  x <- 3
-  x^2
-})
-cat("Value 'A': ", A, sep="")
+## Data
+x <- rnorm(100)
+y <- 2*x + 0.2 + rnorm(100)
+w <- 1 + x^2
 
 
-## Equivalent via infix "assign" operator
-A \%<-\% {
-  x <- 3
-  x^2
+## (1) Regular assignments (evaluated sequentially)
+fitA <- lm(y ~ x, weights = w)      ## with offset
+fitB <- lm(y ~ x - 1, weights = w)  ## without offset
+fitC <- {
+  w <- 1 + abs(x)  ## Different weights
+  lm(y ~ x, weights = w)
 }
-cat("Value 'A': ", A, sep="")
+print(fitA)
+print(fitB)
+print(fitC)
 
 
-## A global variable
-a <- 1
+## (2) Future assignments (evaluated in parallel)
+fitA \%<-\% lm(y ~ x, weights = w)      ## with offset
+fitB \%<-\% lm(y ~ x - 1, weights = w)  ## without offset
+fitC \%<-\% {
+  w <- 1 + abs(x)
+  lm(y ~ x, weights = w)
+}
+print(fitA)
+print(fitB)
+print(fitC)
 
-## Three future evaluations
-A \%<-\% { 0.1 }
-B \%<-\% { 0.2 }
-C \%<-\% { z <- a+0.3 }
 
-## Sleep until 'C' is available
-cat("Value 'C': ", C, sep="")
+## (3) Explicitly create futures (evaluated in parallel)
+## and retrieve their values
+fA <- future( lm(y ~ x, weights = w) )
+fB <- future( lm(y ~ x - 1, weights = w) )
+fC <- future({
+  w <- 1 + abs(x)
+  lm(y ~ x, weights = w)
+})
+fitA <- value(fA)
+fitB <- value(fB)
+fitC <- value(fC)
+print(fitA)
+print(fitB)
+print(fitC)
 
-## Sleep until 'A' is available
-cat("Value 'A': ", A, sep="")
 
-## Sleep until 'C' is available
-cat("Value 'B': ", B, sep="")
+## (4) Explit future assignments (evaluated in parallel)
+futureAssign("fitA", lm(y ~ x, weights = w))
+futureAssign("fitB", lm(y ~ x - 1, weights = w))
+futureAssign("fitC", {
+  w <- 1 + abs(x)
+  lm(y ~ x, weights = w)
+})
+print(fitA)
+print(fitB)
+print(fitC)
 }
 \seealso{
-It is highly recommended that the evaluator is \emph{non-blocking}
-(returns immediately), but it is currently not required.
-The default evaluator function is \code{\link{eager}()},
-but this can be changed via \code{\link{plan}()} function.
+How, when and where futures are resolved is given by the future strategy,
+which can be set by the \code{\link{plan}()} function.
 }
 

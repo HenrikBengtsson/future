@@ -4,8 +4,6 @@
 #' @param assign.env The \link[base]{environment} to which the variable
 #' should be assigned.
 #'
-#' @example incl/futureAssign_OP.R
-#'
 #' @rdname future
 #'
 #' @aliases %<-% %->% %<=% %=>%
