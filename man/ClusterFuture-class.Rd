@@ -14,15 +14,13 @@ ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
-the assignments are done in the global environment of the cluster node.}
+the assignments are done to the global environment of the \R process
+evaluating the future.}
 
 \item{globals}{(optional) a logical, a character vector,
 or a named list for controlling how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for \code{\link{future}()}.}
-
-\item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

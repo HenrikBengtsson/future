@@ -1,15 +1,10 @@
 #' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
-#' @param local If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the global environment of the cluster node.
 #' @param globals (optional) a logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see section 'Globals used by future expressions'
 #' in the help for \code{\link{future}()}.
-#' @param gc If TRUE, the garbage collector run (in the process that
-#' evaluated the future) after the value of the future is collected.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.

@@ -9,10 +9,6 @@ EagerFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   globals = TRUE, local = TRUE, ...)
 }
 \arguments{
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done in the calling environment.}
-
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{

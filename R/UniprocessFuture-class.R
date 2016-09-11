@@ -1,9 +1,6 @@
 #' An uniprocess future is a future whose value will be resolved synchroneously in the current process
 #'
 #' @inheritParams Future-class
-#' @param local If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the calling environment.
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.

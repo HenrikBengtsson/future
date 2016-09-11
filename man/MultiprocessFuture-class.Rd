@@ -19,6 +19,11 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{...}{Additional named elements of the future.}
 
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done to the global environment of the \R process
+evaluating the future.}
+
 \item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{

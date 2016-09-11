@@ -1,6 +1,10 @@
 #' An multiprocess future is a future whose value will be resolved asynchroneously in a parallel process
 #'
 #' @inheritParams Future-class
+#' @param local If TRUE, the expression is evaluated such that
+#' all assignments are done to local temporary environment, otherwise
+#' the assignments are done to the global environment of the \R process
+#' evaluating the future.
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{MultiprocessFuture}.
