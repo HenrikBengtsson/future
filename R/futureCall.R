@@ -1,5 +1,5 @@
-#' @param FUN A function object.
-#' @param args A list of arguments passed to function \code{FUN}.
+#' @param FUN A \link[base]{function} object.
+#' @param args A \link[base]{list} of arguments passed to function \code{FUN}.
 #'
 #' @rdname future
 #'

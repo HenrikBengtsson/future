@@ -136,8 +136,8 @@
 #' }
 #' variable \code{x} and \code{median()} are globals, but only \code{x}
 #' is exported whereas \code{median()}, which is part of the \pkg{stats}
-#' package, is not exported.  Instead the \pkg{stats} package is made
-#' sure to be on the search path when the future expression is evaluated.
+#' package, is not exported.  Instead it is made sure that the \pkg{stats}
+#' package is on the search path when the future expression is evaluated.
 #' Effectively, the above becomes
 #' \preformatted{
 #'   x <- rnorm(1000)
