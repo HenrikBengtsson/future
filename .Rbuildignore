@@ -50,4 +50,9 @@ Rplots.pdf$
 ^[.]BatchJobs[.]R$
 [.]future
 
+#----------------------------
+# Miscellaneous
+#----------------------------
+^.ghi
+^.issues
 
