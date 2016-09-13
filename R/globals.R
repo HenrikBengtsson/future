@@ -149,7 +149,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
     ## Nothing more to do?
     if (length(globals) == 0) {
-      return(list(expr=expr, globals=list(), packages=character(0)))
+      return(list(expr=expr, globals=list(), packages=pkgs))
     }
   }
 
