@@ -18,7 +18,7 @@
 #' Note that remote futures use \code{persistent=TRUE} by default.
 #'
 #' @export
-remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=TRUE, workers=NULL, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
+remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=TRUE, workers=NULL, reverseTunnel=TRUE, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
@@ -26,8 +26,11 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'
 
-    ## Guess what type of IP to use
-    if (is.null(myip)) {
+    if (reverseTunnel) {
+      myip <- "127.0.0.1"
+    } else if (is.null(myip)) {
+      ## Guess what type of IP to use
+    
       if (all(workers %in% c("localhost", "127.0.0.1"))) {
         ## For conveniency, if all workers are on the localhost,
         ## then we know that only the local machine will be used.
@@ -53,12 +56,12 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
       myip <- myInternalIP()
     }
     
-    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=homogeneous)
+    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=homogeneous, reverseTunnel=reverseTunnel)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, reverseTunnel=reverseTunnel, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

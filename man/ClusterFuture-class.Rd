@@ -9,7 +9,7 @@
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, ...)
+  workers = NULL, reverseTunnel = TRUE, ...)
 }
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
@@ -28,6 +28,11 @@ from objects prior to the evaluation of the future.}
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
 Alternatively, a character vector of host names or a numeric scalar,
 for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
+
+\item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
