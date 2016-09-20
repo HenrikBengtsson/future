@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-09-08]
+Version: 1.0.1-9000 [2016-09-19]
 o GLOBALS: As an alternative to the default automatic identification of
   globals, it is now also possible to explicitly specify them either
   by their names (as a character vector) or by their names and values
@@ -15,6 +15,7 @@ o GLOBALS: Global variables part of formulae in future expressions are
   recognized and exported (iff found), e.g. y ~ x | z.
 o Now all Future classes supports run() for launching the future and
   value() calls run() if the future has not been launched.
+o Added argument 'user' to cluster() and remote().
 o DOCUMENTATION: Added vignette on command-line options and other
   methods for controlling the default type of futures to use.
 o MEMORY: Now plan(cluster, gc=TRUE) causes the background

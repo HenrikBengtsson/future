@@ -10,6 +10,7 @@
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' @param user (optional) The user name to be used when communicating with another host.
 #'
 #' @return An object of class \code{ClusterFuture}.
 #'
@@ -23,7 +24,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -38,7 +39,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers=workers)
+    workers <- ClusterRegistry("start", workers=workers, user=user)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

@@ -6,8 +6,14 @@ ClusterRegistry <- local({
 
   .makeCluster <- function(workers, ...) {
     if (is.null(workers)) return(NULL)
+
+    ## Arguments to be passed to parallel::makeCluster()
+    args <- list(workers, ...)
+    ## Drop 'user' if NULL
+    if (is.null(args$user)) args$user <- NULL
+    
     capture.output({
-      cluster <- makeCluster(workers, ...)
+      cluster <- do.call(makeCluster, args=args)
     })
     cluster
   }

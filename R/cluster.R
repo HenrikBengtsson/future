@@ -10,6 +10,7 @@
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
+#' @param user (optional) The user name to be used when communicating with another host.
 #'
 #' @return A \link{ClusterFuture}.
 #'
@@ -27,7 +28,7 @@
 #' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, gc=FALSE, earlySignal=FALSE, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, gc=FALSE, earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -37,7 +38,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, p
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

@@ -9,7 +9,7 @@
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, ...)
+  workers = NULL, user = NULL, ...)
 }
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
@@ -28,6 +28,8 @@ from objects prior to the evaluation of the future.}
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
 Alternatively, a character vector of host names or a numeric scalar,
 for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
+
+\item{user}{(optional) The user name to be used when communicating with another host.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
