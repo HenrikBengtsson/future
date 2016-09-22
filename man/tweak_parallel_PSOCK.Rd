@@ -4,12 +4,15 @@
 \alias{tweak_parallel_PSOCK}
 \title{Tweak PSOCK backend of the parallel package}
 \usage{
-tweak_parallel_PSOCK(user = TRUE, reverse_tunnel = TRUE, reset = FALSE)
+tweak_parallel_PSOCK(user = TRUE, revtunnel = TRUE, rshopts = TRUE,
+  reset = FALSE)
 }
 \arguments{
 \item{user}{If TRUE, parallel is tweaked to only pass username to ssh if it is specified via argument \code{user}.}
 
-\item{reverse_tunnel}{If TRUE, parallel is tweaked to make use of reverse SSH tunneling.}
+\item{revtunnel}{If TRUE, parallel is tweaked to make use of reverse SSH tunneling.}
+
+\item{rshopts}{A character vector of additional command-line options passed to the \code{rshcmd} executable.}
 
 \item{reset}{If TRUE, all tweaks are undone.}
 }
@@ -20,7 +23,7 @@ Nothing.
 Tweak PSOCK backend of the parallel package
 }
 \references{
-\url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/31}\cr
+\url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32}\cr
 }
 \keyword{internal}
 

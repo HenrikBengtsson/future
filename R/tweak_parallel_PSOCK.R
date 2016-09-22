@@ -1,13 +1,14 @@
 #' Tweak PSOCK backend of the parallel package
 #'
 #' @param user If TRUE, parallel is tweaked to only pass username to ssh if it is specified via argument \code{user}.
-#' @param reverse_tunnel If TRUE, parallel is tweaked to make use of reverse SSH tunneling.
+#' @param revtunnel If TRUE, parallel is tweaked to make use of reverse SSH tunneling.
+#' @param rshopts A character vector of additional command-line options passed to the \code{rshcmd} executable.
 #' @param reset If TRUE, all tweaks are undone.
 #'
 #' @return Nothing.
 #'
 #' @references
-#' \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/31}\cr
+#' \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32}\cr
 #'
 #' @importFrom utils assignInNamespace
 #' @keywords internal
@@ -28,39 +29,53 @@ tweak_parallel_PSOCK <- local({
     fun
   } ## gsub_body()
 
-  ## HACK
+  ## HACK: Trick assignInNamespace() to not complain
   .assignInNamespace <- gsub_body("nf <- sys.nframe()", "nf <- 1L", assignInNamespace, fixed=TRUE)
 
-  function(user=TRUE, reverse_tunnel=TRUE, reset=FALSE) {
+
+  ## tweak_parallel_PSOCK()
+  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, reset=FALSE) {
     ## Original parallel setup
     newPSOCKnode <- newPSOCKnode_org
     defaultClusterOptions <- defaultClusterOptions_org
-    
+
     if (!reset) {
-      pattern <- 'cmd <- paste(rshcmd, "-l", user, machine, cmd)'
+      defaultClusterOptions <- as.environment(as.list(defaultClusterOptions))
       
-      replacement <- NULL
-      replacement <- c(replacement, 'cmdopts <- NULL')
+      pattern <- 'cmd <- paste(rshcmd, "-l", user, machine, cmd)'
+      replacement <- 'opts <- NULL'
     
       ## Only pass '-l <user>' if explicitly specified
       ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/31
       if (user) {
-        replacement <- c(replacement, 'if (!is.null(user)) cmdopts <- paste("-l", user)')
-
         ## Drop default 'user' (clone to avoid overwriting the original environment)
-        defaultClusterOptions <- as.environment(as.list(defaultClusterOptions))
         defaultClusterOptions$user <- NULL
+
+        ## newPSOCKnode() tweaks
+        replacement <- c(replacement, 'if (!is.null(user)) opts <- c(opts, paste("-l", user))')
       }
     
       ## Reverse SSH tunneling (avoids all NAT / firewall issues)
-      ## Useful answers / explainations in
-      ## http://unix.stackexchange.com/questions/46235/how-does-reverse-ssh-tunneling-work
-      if (reverse_tunnel) {
-        replacement <- c(replacement, 'cmdopts <- sprintf("-R %d:127.0.0.1:%d", port, port)')
-        replacement <- c(replacement, 'cmd <- gsub("MASTER=[^ ]*", "MASTER=127.0.0.1", cmd)')
+      ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32
+      if (revtunnel) {
+        defaultClusterOptions$revtunnel <- FALSE
+	
+        ## newPSOCKnode() tweaks
+	replacement <- c(replacement, 'revtunnel <- getClusterOption("revtunnel", options)')
+        replacement <- c(replacement, 'if (revtunnel) opts <- c(opts, sprintf("-R %d:%s:%d", port, master, port))')
       }
-      
-      replacement <- c(replacement, 'cmd <- paste(rshcmd, cmdopts, machine, cmd)')
+
+      ## Support for any type of command-line options (advanced usage)
+      ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32
+      if (rshopts) {
+        defaultClusterOptions$rshopts <- NULL
+	
+        ## newPSOCKnode() tweaks
+        replacement <- c(replacement, 'opts <- c(opts, getClusterOption("rshopts", options))')
+      }
+
+      replacement <- c(replacement, 'opts <- paste(opts, collapse = " ")')
+      replacement <- c(replacement, 'cmd <- paste(rshcmd, opts, machine, cmd)')
       replacement <- paste(replacement, collapse="\n")
   
       newPSOCKnode <- gsub_body(pattern, replacement, fun=newPSOCKnode, fixed=TRUE)

@@ -27,7 +27,8 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
     homogeneous <- FALSE ## Calls plain 'Rscript'
 
     if (reverseTunnel) {
-      myip <- "127.0.0.1"
+      ## Default is that reverse tunnel uses 127.0.0.1 / localhost.
+      if (is.null(myip)) myip <- "127.0.0.1"
     } else if (is.null(myip)) {
       ## Guess what type of IP to use
     
