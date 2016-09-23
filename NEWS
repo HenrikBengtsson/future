@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-09-19]
+Version: 1.0.1-9000 [2016-09-23]
 o GLOBALS: As an alternative to the default automatic identification of
   globals, it is now also possible to explicitly specify them either
   by their names (as a character vector) or by their names and values
@@ -16,6 +16,10 @@ o GLOBALS: Global variables part of formulae in future expressions are
 o Now all Future classes supports run() for launching the future and
   value() calls run() if the future has not been launched.
 o Added argument 'user' to cluster() and remote().
+o ROBUSTNESS: Now the default future strategy is explicitly set when
+  no strategies are set, e.g. when used nested futures.  Previously,
+  only mc.cores was set so that only a single core was used, but now
+  also plan("default") set.
 o DOCUMENTATION: Added vignette on command-line options and other
   methods for controlling the default type of futures to use.
 o MEMORY: Now plan(cluster, gc=TRUE) causes the background
