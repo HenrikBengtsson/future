@@ -9,7 +9,7 @@
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, reverseTunnel = TRUE, ...)
+  workers = NULL, reverseTunnel = TRUE, user = NULL, ...)
 }
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
@@ -33,6 +33,8 @@ for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
 PSOCK cluster nodes to connect back to the master R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master R session.}
+
+\item{user}{(optional) The user name to be used when communicating with another host.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }

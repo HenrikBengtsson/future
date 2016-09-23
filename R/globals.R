@@ -108,7 +108,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
-    mdebug("Resolving global that are futures ... DONE")
+    mdebug("Resolving globals that are futures ... DONE")
   }
 
 

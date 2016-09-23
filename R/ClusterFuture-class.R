@@ -14,6 +14,7 @@
 #' PSOCK cluster nodes to connect back to the master R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
 #' the internal / public IP address of the master R session.
+#' @param user (optional) The user name to be used when communicating with another host.
 #'
 #' @return An object of class \code{ClusterFuture}.
 #'
@@ -27,7 +28,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, reverseTunnel=TRUE, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, reverseTunnel=TRUE, user=NULL, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -42,7 +43,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers=workers, reverseTunnel=reverseTunnel)
+    workers <- ClusterRegistry("start", workers=workers, reverseTunnel=reverseTunnel, user=user)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

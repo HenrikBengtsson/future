@@ -252,21 +252,11 @@ getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
 getExpression.Future <- function(future, mc.cores=NULL, ...) {
-  strategies <- plan("list")
-
-  ## If end of future stack, fall back to using single-core
-  ## processing.  In this case we don't have to rely
-  ## on the future package.  Instead, we can use the
-  ## light-weight approach where we force the number of
-  ## cores available to be one.  This we achieve by
-  ## setting the number of _additional_ cores to be
-  ## zero (sic!).
-  if (length(strategies) == 0) {
-    mc.cores <- 0L
-  }
+##  mdebug("getExpression() ...")
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
+##    mdebug("getExpression(): setting mc.cores=%d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
     enter <- bquote({
@@ -283,20 +273,35 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- exit <- NULL
   }
 
-  if (length(strategies) > 0) {
-    exit <- bquote({
-      ## covr: skip=2
-      .(exit)
-      future::plan(.(strategies))
-    })
+  ## Reset future strategies upon exit of future
+  strategies <- plan("list")
+  stopifnot(length(strategies) >= 1L)
+  exit <- bquote({
+    ## covr: skip=2
+    .(exit)
+    future::plan(.(strategies))
+  })
 
+  ## Pass down the default or the remain set of future strategies?
+  strategiesR <- strategies[-1]
+##  mdebug("Number of remaining strategies: %d\n", length(strategiesR))
+  if (length(strategiesR) == 0L) {
+##    mdebug("Set plan('default') inside future")
+    ## Use default future strategy
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      future::plan("default")
+    })
+  } else {
+##    mdebug("Set plan(<remaining strategies>) inside future")
     ## Identify package namespaces for strategies
-    pkgs <- lapply(strategies, FUN=environment)
+    pkgs <- lapply(strategiesR, FUN=environment)
     pkgs <- lapply(pkgs, FUN=environmentName)
     pkgs <- unique(unlist(pkgs, use.names=FALSE))
     pkgs <- intersect(pkgs, loadedNamespaces())
-    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
-    
+##    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+      
     if (length(pkgs) > 0L) {
       ## Sanity check by verifying packages can be loaded already here
       ## If there is somethings wrong in 'pkgs', we get the error
@@ -320,23 +325,24 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
           }
         })
       })
-    } else {
-      enter <- bquote({
-        ## covr: skip=2
-        .(enter)
-      })
     }
+  
+    ## Pass down future strategies
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      future::plan(.(strategiesR))
+    })
+  } ## if (length(strategiesR) > 0L)
 
-    if (length(strategies) >= 2L) {
-      enter <- bquote({
-        ## covr: skip=2
-        .(enter)
-        future::plan(.(strategies[-1]))
-      })
-    }
-  } ## if (length(strategies) > 0)
+  expr <- makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
+  if (getOption("future.debug", FALSE)) {
+    print(expr)
+  }
 
-  makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
+##  mdebug("getExpression() ... DONE")
+  
+  expr
 } ## getExpression()
 
 

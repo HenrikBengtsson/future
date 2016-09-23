@@ -14,6 +14,7 @@
 #' PSOCK cluster nodes to connect back to the master R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
 #' the internal / public IP address of the master R session.
+#' @param user (optional) The user name to be used when communicating with another host.
 #'
 #' @return A \link{ClusterFuture}.
 #'
@@ -31,7 +32,7 @@
 #' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, reverseTunnel=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, reverseTunnel=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -41,7 +42,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, p
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, reverseTunnel=reverseTunnel, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, reverseTunnel=reverseTunnel, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
