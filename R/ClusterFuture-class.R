@@ -16,6 +16,8 @@
 #' the internal / public IP address of the master R session.
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
+#' @param master (optional) The hostname or IP address of the master
+#' machine running this node.
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
 #' same path to \file{Rscript} as the main R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
@@ -32,7 +34,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, revtunnel=TRUE, user=NULL, homogeneous=TRUE, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -47,7 +49,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers=workers, revtunnel=revtunnel, user=user, homogeneous=homogeneous)
+    workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

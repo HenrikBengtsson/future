@@ -9,8 +9,8 @@
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, revtunnel = TRUE, user = NULL, homogeneous = TRUE,
-  ...)
+  workers = NULL, user = NULL, master = NULL, revtunnel = TRUE,
+  homogeneous = TRUE, ...)
 }
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
@@ -30,13 +30,16 @@ from objects prior to the evaluation of the future.}
 Alternatively, a character vector of host names or a numeric scalar,
 for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
 
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
+
+\item{master}{(optional) The hostname or IP address of the master
+machine running this node.}
+
 \item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
 PSOCK cluster nodes to connect back to the master R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master R session.}
-
-\item{user}{(optional) The user name to be used when communicating
-with another host.}
 
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
 same path to \file{Rscript} as the main R session.  If FALSE, the

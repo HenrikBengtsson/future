@@ -56,13 +56,11 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
     } else if (myip == "<internal>") {
       myip <- myInternalIP()
     }
-    
-    workers <- ClusterRegistry("start", workers=workers, user=user, master=myip, homogeneous=homogeneous, revtunnel=revtunnel)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, master=myip, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")
