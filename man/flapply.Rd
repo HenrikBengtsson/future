@@ -2,7 +2,6 @@
 % Please edit documentation in R/flapply.R
 \name{flapply}
 \alias{flapply}
-\alias{fleapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
 flapply(x, FUN, ...)
