@@ -91,7 +91,8 @@ tweak_parallel_PSOCK <- local({
 ## EXAMPLE:
 ## > future:::tweak_parallel_PSOCK()
 ## > trace(system, tracer=quote(stop("Command: ", command)))
-## > cl <- parallel::makeCluster("remote.myserver.org", homogeneous=FALSE)
+## > cl <- parallel::makeCluster("remote.myserver.org", revtunnel=TRUE, master="localhost", homogeneous=FALSE)
 ## Tracing system(cmd, wait = FALSE) on entry 
 ## Error in eval(expr, envir, enclos) : 
-##   Command: ssh -R 11974:127.0.0.1:11974 remote.myserver.org "Rscript --default-packages=datasets,utils,grDevices,graphics,stats,methods -e 'parallel:::.slaveRSOCK()' MASTER=127.0.0.1 PORT=11974 OUT=/dev/null TIMEOUT=2592000 XDR=TRUE"
+##   Command: ssh -R 11061:localhost:11061 remote.myserver.org "Rscript --default-packages=datasets,utils,grDevices,graphics,stats,methods -e 'parallel:::.slaveRSOCK()' MASTER=localhost PORT=11061 OUT=/dev/null TIMEOUT=2592000 XDR=TRUE"
+  
