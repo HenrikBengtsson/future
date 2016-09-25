@@ -10,7 +10,7 @@
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
-#' @param reverseTunnel If TRUE, reverse SSH tunneling is used for the
+#' @param revtunnel If TRUE, reverse SSH tunneling is used for the
 #' PSOCK cluster nodes to connect back to the master R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
 #' the internal / public IP address of the master R session.
@@ -32,7 +32,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, reverseTunnel=TRUE, user=NULL, homogeneous=TRUE, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, revtunnel=TRUE, user=NULL, homogeneous=TRUE, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -47,7 +47,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers=workers, reverseTunnel=reverseTunnel, user=user, homogeneous=homogeneous)
+    workers <- ClusterRegistry("start", workers=workers, revtunnel=revtunnel, user=user, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }

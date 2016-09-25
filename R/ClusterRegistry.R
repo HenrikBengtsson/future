@@ -4,17 +4,17 @@ ClusterRegistry <- local({
   last <- NULL
   cluster <- NULL
 
-  .makeCluster <- function(workers, user=NULL, reverseTunnel=FALSE, ...) {
+  .makeCluster <- function(workers, user=NULL, revtunnel=FALSE, ...) {
     if (is.null(workers)) return(NULL)
 
     ## HACKS:
     ## 1. Don't pass ssh option `-l <user>` unless `user` is specified
     ## 2. Connect via reverse SSH tunneling.
-    tweak_parallel_PSOCK(user=is.null(user), revtunnel=reverseTunnel, rshopts=TRUE)
+    tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=TRUE)
     on.exit(tweak_parallel_PSOCK(reset=TRUE))
     
     capture.output({
-      cluster <- makeCluster(workers, revtunnel=reverseTunnel, ...)
+      cluster <- makeCluster(workers, revtunnel=revtunnel, ...)
     })
     
     cluster

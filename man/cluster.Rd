@@ -5,7 +5,7 @@
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = FALSE, workers = NULL, user = NULL, reverseTunnel = TRUE,
+  persistent = FALSE, workers = NULL, user = NULL, revtunnel = TRUE,
   homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, ...)
 }
 \arguments{
@@ -34,7 +34,7 @@ from objects prior to the evaluation of the future.}
 \item{user}{(optional) The user name to be used when communicating
 with another host.}
 
-\item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
+\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
 PSOCK cluster nodes to connect back to the master R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master R session.}
