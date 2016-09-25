@@ -8,7 +8,7 @@ tweak_parallel_PSOCK(user = TRUE, revtunnel = TRUE, rshopts = TRUE,
   reset = FALSE)
 }
 \arguments{
-\item{user}{If TRUE, parallel is tweaked to only pass username to ssh if it is specified via argument \code{user}.}
+\item{user}{If TRUE, parallel is tweaked to only pass username to SSH if it is specified via argument \code{user}.}
 
 \item{revtunnel}{If TRUE, parallel is tweaked to make use of reverse SSH tunneling.}
 
@@ -21,6 +21,24 @@ Nothing.
 }
 \description{
 Tweak PSOCK backend of the parallel package
+}
+\examples{
+\donttest{\dontrun{
+## Tweak the 'parallel' package
+future:::tweak_parallel_PSOCK()
+
+## An illustration that it works
+trace(system, tracer=quote(stop("Command: ", command)))
+try(cl <- parallel::makeCluster("remote.myserver.org", revtunnel=TRUE, master="localhost", homogeneous=FALSE))
+## Tracing system(cmd, wait = FALSE) on entry
+## Error in eval(expr, envir, enclos) : 
+##   Command: ssh -R 11061:localhost:11061 remote.myserver.org "Rscript --default-packages=datasets,utils,grDevices,graphics,stats,methods -e 'parallel:::.slaveRSOCK()' MASTER=localhost PORT=11061 OUT=/dev/null TIMEOUT=2592000 XDR=TRUE"
+
+## Undo tweaks
+untrace(system)
+future:::tweak_parallel_PSOCK(reset=TRUE)
+}}
+
 }
 \references{
 \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32}\cr
