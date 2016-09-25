@@ -9,7 +9,8 @@
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, reverseTunnel = TRUE, user = NULL, ...)
+  workers = NULL, reverseTunnel = TRUE, user = NULL, homogeneous = TRUE,
+  ...)
 }
 \arguments{
 \item{local}{If TRUE, the expression is evaluated such that
@@ -34,7 +35,12 @@ PSOCK cluster nodes to connect back to the master R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master R session.}
 
-\item{user}{(optional) The user name to be used when communicating with another host.}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
+
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main R session.  If FALSE, the
+it is assumed to be on the PATH for each node.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }

@@ -62,7 +62,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, reverseTunnel=reverseTunnel, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, reverseTunnel=reverseTunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

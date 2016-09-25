@@ -6,7 +6,7 @@
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   persistent = FALSE, workers = NULL, user = NULL, reverseTunnel = TRUE,
-  gc = FALSE, earlySignal = FALSE, ...)
+  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -31,12 +31,17 @@ from objects prior to the evaluation of the future.}
 \item{workers}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
 
-\item{user}{(optional) The user name to be used when communicating with another host.}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
 
 \item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
 PSOCK cluster nodes to connect back to the master R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master R session.}
+
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main R session.  If FALSE, the
+it is assumed to be on the PATH for each node.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}

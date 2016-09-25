@@ -31,7 +31,8 @@ from objects prior to the evaluation of the future.}
 \item{workers}{The maximum number of multiprocess futures that
 can be active at the same time before blocking.}
 
-\item{user}{(optional) The user name to be used when communicating with another host.}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
 
 \item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
 PSOCK cluster nodes to connect back to the master R process.  This
