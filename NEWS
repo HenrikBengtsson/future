@@ -2,6 +2,12 @@ Package: future
 ===============
 
 Version: 1.0.1-9000 [2016-09-23]
+o REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
+  to connect to remote clusters / machines.  As long as you can connect
+  via ssh to those machines, it works also with these future.  The new
+  code completely avoids incoming firewall and incoming port forwarding
+  issues previously needed.  This is done by using reverse SSH tunneling.
+  There is also no need to worry about internal or external IP numbers.
 o GLOBALS: As an alternative to the default automatic identification of
   globals, it is now also possible to explicitly specify them either
   by their names (as a character vector) or by their names and values

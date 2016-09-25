@@ -5,8 +5,8 @@
 \title{Create a remote future whose value will be resolved asynchroneously in a remote process}
 \usage{
 remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = TRUE, workers = NULL, user = NULL, gc = FALSE,
-  earlySignal = FALSE, myip = NULL, ...)
+  persistent = TRUE, workers = NULL, user = NULL, reverseTunnel = TRUE,
+  gc = FALSE, earlySignal = FALSE, myip = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -32,6 +32,11 @@ from objects prior to the evaluation of the future.}
 can be active at the same time before blocking.}
 
 \item{user}{(optional) The user name to be used when communicating with another host.}
+
+\item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}

@@ -5,8 +5,8 @@
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = FALSE, workers = NULL, user = NULL, gc = FALSE,
-  earlySignal = FALSE, ...)
+  persistent = FALSE, workers = NULL, user = NULL, reverseTunnel = TRUE,
+  gc = FALSE, earlySignal = FALSE, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -32,6 +32,11 @@ from objects prior to the evaluation of the future.}
 \code{\link[parallel]{makeCluster}()}.}
 
 \item{user}{(optional) The user name to be used when communicating with another host.}
+
+\item{reverseTunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}
