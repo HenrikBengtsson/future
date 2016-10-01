@@ -26,6 +26,10 @@ o ROBUSTNESS: Now the default future strategy is explicitly set when
   no strategies are set, e.g. when used nested futures.  Previously,
   only mc.cores was set so that only a single core was used, but now
   also plan("default") set.
+o WORKAROUND: resolved() on cluster futures would block on Linux until
+  future was resolved.  This is due to a bug in R.  The workaround is
+  to use round the timeout (in seconds) to an integer, which seems to
+  always work / be respected.
 o DOCUMENTATION: Added vignette on command-line options and other
   methods for controlling the default type of futures to use.
 o MEMORY: Now plan(cluster, gc=TRUE) causes the background

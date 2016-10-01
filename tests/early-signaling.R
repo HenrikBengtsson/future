@@ -8,6 +8,7 @@ message("*** Early signaling of conditions with eager futures ...")
 
 plan(eager)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
@@ -24,6 +25,7 @@ message("*** Early signaling of conditions with lazy futures ...")
 
 plan(lazy)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
@@ -33,6 +35,7 @@ plan(lazy, earlySignal=TRUE)
 
 ## Errors
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 r <- try(resolved(f), silent=TRUE)
 stopifnot(inherits(r, "try-error"))
 v <- try(value(f), silent=TRUE)
@@ -40,6 +43,7 @@ stopifnot(inherits(v, "try-error"))
 
 ## Warnings
 f <- future({ warning("careful!") })
+Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
@@ -47,6 +51,7 @@ stopifnot(inherits(res, "warning"))
 
 ## Messages
 f <- future({ message("hey!") })
+Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
@@ -54,6 +59,7 @@ stopifnot(inherits(res, "message"))
 
 ## Condition
 f <- future({ signalCondition(simpleCondition("hmm")) })
+Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
@@ -67,6 +73,7 @@ message("*** Early signaling of conditions with multisession futures ...")
 
 plan(multisession)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
@@ -74,6 +81,7 @@ stopifnot(inherits(v, "try-error"))
 
 plan(multisession, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 print(f)
 r <- try(resolved(f), silent=TRUE)
 stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
@@ -88,6 +96,7 @@ message("*** Early signaling of conditions with multiprocess futures ...")
 
 plan(multiprocess)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
 v <- try(value(f), silent=TRUE)
@@ -95,6 +104,7 @@ stopifnot(inherits(v, "try-error"))
 
 plan(multiprocess, earlySignal=TRUE)
 f <- future({ stop("bang!") })
+Sys.sleep(1.0)
 print(f)
 r <- try(resolved(f), silent=TRUE)
 stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))

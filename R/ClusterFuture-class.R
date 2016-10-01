@@ -189,6 +189,13 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   node <- x$node
   cl <- workers[node]
 
+  ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may
+  ## result in infinite waiting, cf. 
+  ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073218.html
+  if (.Platform$OS.type != "windows") {
+    timeout <- round(timeout, digits = 0L)
+  }
+  
   ## Check if workers socket connection is available for reading
   con <- cl[[1]]$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
