@@ -6,7 +6,7 @@
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
   globals = TRUE, workers = availableCores(), gc = FALSE,
-  earlySignal = FALSE, ...)
+  earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -32,6 +32,8 @@ evaluated the future) after the value of the future is collected.}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{...}{Not used.}
 }

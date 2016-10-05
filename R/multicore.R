@@ -50,7 +50,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -67,13 +67,13 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   ## Eager futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE))
+    return(eager(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, label=label))
   }
 
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal, label=label)
   run(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")

@@ -20,6 +20,8 @@
 #' \emph{Some types of futures ignore this argument.}
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
+#' @param label An optional character string label attached to the
+#' future.
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -37,7 +39,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -48,6 +50,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
+  core$label <- label
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -65,6 +68,9 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
 print.Future <- function(x, ...) {
   class <- class(x)
   cat(sprintf("%s:\n", class[1]))
+  label <- x$label
+  if (is.null(label)) label <- "<none>"
+  cat("Label: ", sQuote(label), "\n", sep="")
   cat("Expression:\n")
   print(x$expr)
   cat(sprintf("Local evaluation: %s\n", x$local))

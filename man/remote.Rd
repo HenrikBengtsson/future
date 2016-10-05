@@ -6,7 +6,7 @@
 \usage{
 remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE,
-  gc = FALSE, earlySignal = FALSE, myip = NULL, ...)
+  gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -47,6 +47,8 @@ as soon as possible or not.}
 
 \item{myip}{The external IP address of this machine.
 If NULL, then it is inferred using an online service (default).}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }

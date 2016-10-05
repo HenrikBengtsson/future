@@ -36,7 +36,7 @@
 #' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -46,7 +46,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, p
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

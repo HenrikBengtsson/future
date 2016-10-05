@@ -34,19 +34,19 @@
 #' @aliases transparent
 #' @export transparent
 #' @export
-eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
+eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal)
+  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label)
   run(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
 
-transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, ...) {
+transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  future <- eager(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal)
+  future <- eager(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label)
   invisible(future)
 }
 class(transparent) <- c("transparent", "eager", "uniprocess", "future", "function")

@@ -26,11 +26,11 @@
 #' \emph{lazy futures}.
 #'
 #' @export
-lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, ...) {
+lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal)
+  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal, label=label)
 }
 class(lazy) <- c("lazy", "uniprocess", "future", "function")
 

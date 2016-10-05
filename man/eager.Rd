@@ -6,7 +6,7 @@
 \title{Create an eager future whose value will be resolved immediately}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, earlySignal = FALSE, ...)
+  local = TRUE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -31,6 +31,8 @@ the assignments are done in the calling environment.}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }

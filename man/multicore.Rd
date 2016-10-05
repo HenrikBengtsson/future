@@ -6,7 +6,7 @@
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   workers = availableCores(constraints = "multicore"), earlySignal = FALSE,
-  ...)
+  label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -30,6 +30,8 @@ be active at the same time before blocking.}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }

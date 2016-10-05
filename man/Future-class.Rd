@@ -6,7 +6,7 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, gc = FALSE, earlySignal = FALSE, ...)
+  local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -27,6 +27,8 @@ evaluated the future) after the value of the future is collected.
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{\dots}{Additional named elements of the future.}
 }

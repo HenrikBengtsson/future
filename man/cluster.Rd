@@ -6,7 +6,8 @@
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   persistent = FALSE, workers = NULL, user = NULL, revtunnel = TRUE,
-  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, ...)
+  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
+  ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -48,6 +49,8 @@ evaluated the future) after the value of the future is collected.}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }

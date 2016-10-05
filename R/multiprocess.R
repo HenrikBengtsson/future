@@ -16,6 +16,7 @@
 #' evaluated the future) after the value of the future is collected.
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
+#' @param label An optional character string label attached to the future.
 #' @param ... Not used.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a
@@ -28,9 +29,9 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
+multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")
