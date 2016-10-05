@@ -28,7 +28,8 @@ evaluated the future) after the value of the future is collected.
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
 
-\item{label}{An optional character string label attached to the future.}
+\item{label}{An optional character string label attached to the
+future.}
 
 \item{\dots}{Additional named elements of the future.}
 }

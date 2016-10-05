@@ -21,7 +21,8 @@ o GLOBALS: Global variables part of formulae in future expressions are
   recognized and exported (iff found), e.g. y ~ x | z.
 o Now all Future classes supports run() for launching the future and
   value() calls run() if the future has not been launched.
-o Added optional argument 'label' to all futures.
+o Added optional argument 'label' to all futures, e.g.
+  f <- future(42, label="answer") and v %<-% { 42 } %label% "answer".
 o Added argument 'user' to cluster() and remote().
 o ROBUSTNESS: Now the default future strategy is explicitly set when
   no strategies are set, e.g. when used nested futures.  Previously,
