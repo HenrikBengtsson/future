@@ -98,7 +98,7 @@ tweak_parallel_PSOCK <- local({
 	
         ## newPSOCKnode() tweaks
 	replacement <- c(replacement, 'revtunnel <- getClusterOption("revtunnel", options)')
-        replacement <- c(replacement, 'if (revtunnel) opts <- c(opts, sprintf("-R %d:%s:%d", port, master, port))')
+        replacement <- c(replacement, 'if (revtunnel) opts <- c(opts, sprintf("-R %d:%s:%d", port + (rank - 1L), master, port))')
       }
 
       ## Support for any type of command-line options (advanced usage)
