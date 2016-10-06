@@ -3,7 +3,7 @@
 #' @param user If TRUE, parallel is tweaked to only pass username to SSH if it is specified via argument \code{user}.
 #' @param revtunnel If TRUE, parallel is tweaked to make use of reverse SSH tunneling.
 #' @param rshopts If TRUE, parallel is tweaked so it is possible to specify additional command-line options to the \code{rshcmd} executable.
-#' @param localhost If FALSE, \code{127.0.0.1} is used instead of \code{localhost}.
+#' @param use127.0.0.1 If TRUE, \code{127.0.0.1} is used instead of \code{localhost}.
 #' @param reset If TRUE, all tweaks are undone.
 #'
 #' @return Nothing.
@@ -71,7 +71,7 @@ tweak_parallel_PSOCK <- local({
 
 
   ## tweak_parallel_PSOCK()
-  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, localhost=TRUE, reset=FALSE) {
+  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=TRUE, reset=FALSE) {
     ## Original parallel setup
     newPSOCKnode <- newPSOCKnode_org
     defaultClusterOptions <- defaultClusterOptions_org
@@ -118,7 +118,7 @@ tweak_parallel_PSOCK <- local({
       newPSOCKnode <- gsub_body(pattern, replacement, fun=newPSOCKnode, fixed=TRUE)
 
       ## Use '127.0.0.1' instead of 'localhost'
-      if (!localhost) {
+      if (use127.0.0.1) {
         newPSOCKnode <- gsub_body('socketConnection("localhost"', 'socketConnection("127.0.0.1"', fun=newPSOCKnode, fixed=TRUE)
       }
     }
