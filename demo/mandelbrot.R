@@ -33,6 +33,7 @@ if (!is.list(region)) {
   }
 }
 nrow <- getOption("future.demo.mandelbrot.nrow", 3L)
+resolution <- getOption("future.demo.mandelbrot.resolution", 400L)
 delay <- getOption("future.demo.mandelbrot.delay", interactive())
 if (isTRUE(delay)) {
   delay <- function(counts) Sys.sleep(rexp(1, rate=2))
@@ -42,7 +43,7 @@ if (isTRUE(delay)) {
 
 ## Generate Mandelbrot tiles to be computed
 Cs <- mandelbrotTiles(xmid=region$xmid, ymid=region$ymid,
-                      side=region$side, nrow=nrow)
+                      side=region$side, nrow=nrow, resolution=resolution)
 
 if (interactive()) {
   dev.new()
