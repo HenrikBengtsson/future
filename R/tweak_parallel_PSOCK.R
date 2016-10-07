@@ -50,12 +50,27 @@
 #' @importFrom utils assignInNamespace
 #' @keywords internal
 tweak_parallel_PSOCK <- local({
-  parallel <- getNamespace("parallel")
+  parallel <- NULL
 
   ## The original newPSOCKnode() and defaultClusterOptions of parallel
-  newPSOCKnode_org <- get("newPSOCKnode", mode="function", envir=parallel)
-  defaultClusterOptions_org <- get("defaultClusterOptions", envir=parallel)
+  newPSOCKnode_org <- defaultClusterOptions_org <- NULL
 
+  .assignInNamespace <- NULL
+
+  init <- function() {
+    ## Already initiated?
+    if (!is.null(parallel)) return()
+    
+    parallel <<- getNamespace("parallel")
+    
+    ## The original newPSOCKnode() and defaultClusterOptions of parallel
+    newPSOCKnode_org <<- get("newPSOCKnode", mode="function", envir=parallel)
+    defaultClusterOptions_org <<- get("defaultClusterOptions", envir=parallel)
+
+    ## HACK: Trick assignInNamespace() to not complain
+    .assignInNamespace <<- gsub_body("nf <- sys.nframe()", "nf <- 1L", assignInNamespace, fixed=TRUE)
+  } ## init()
+  
   gsub_body <- function(pattern, replacement, fun, ...) {
     stopifnot(is.function(fun))
     expr <- body(fun)
@@ -66,12 +81,16 @@ tweak_parallel_PSOCK <- local({
     fun
   } ## gsub_body()
 
-  ## HACK: Trick assignInNamespace() to not complain
-  .assignInNamespace <- gsub_body("nf <- sys.nframe()", "nf <- 1L", assignInNamespace, fixed=TRUE)
 
 
   ## tweak_parallel_PSOCK()
   function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=FALSE, reset=FALSE) {
+    ## To please R CMD check
+    .assignInNamespace <- NULL; rm(list=".assignInNamespace")
+    
+    ## Make sure to initiate
+    init()
+    
     ## Original parallel setup
     newPSOCKnode <- newPSOCKnode_org
     defaultClusterOptions <- defaultClusterOptions_org
