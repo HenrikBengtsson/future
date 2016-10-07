@@ -5,7 +5,7 @@
 \title{Tweak PSOCK backend of the parallel package}
 \usage{
 tweak_parallel_PSOCK(user = TRUE, revtunnel = TRUE, rshopts = TRUE,
-  use127.0.0.1 = TRUE, reset = FALSE)
+  use127.0.0.1 = FALSE, reset = FALSE)
 }
 \arguments{
 \item{user}{If TRUE, parallel is tweaked to only pass username to SSH if it is specified via argument \code{user}.}

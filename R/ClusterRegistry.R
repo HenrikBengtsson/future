@@ -17,14 +17,18 @@ ClusterRegistry <- local({
       mdebug("tweak_parallel_PSOCK(user=%s, revtunnel=%s, rshopts=TRUE)",
              is.null(user), revtunnel)
     }
-    tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=TRUE)
     on.exit(tweak_parallel_PSOCK(reset=TRUE), add=TRUE)
+    tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=TRUE)
 
     if (debug) {
+      on.exit(suppressMessages(untrace(system)), add=TRUE)
       suppressMessages(
         trace(system, print=FALSE, tracer=quote(message(command)))
       )
-      on.exit(suppressMessages(untrace(system)), add=TRUE)
+    }
+
+    if (debug) {
+      on.exit(mdebug("ClusterRegister:::.makeCluster() ... DONE"), add=TRUE)
     }
 
     ## This will _not_ pass `master` iff master=NULL
@@ -34,10 +38,6 @@ ClusterRegistry <- local({
     capture.output({
       cluster <- do.call(makeCluster, args=args)
     })
-
-    if (debug) {
-      on.exit(mdebug("ClusterRegister:::.makeCluster() ... DONE"), add=TRUE)
-    }
 
     cluster
   }
