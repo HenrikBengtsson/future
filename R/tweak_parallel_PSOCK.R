@@ -71,7 +71,7 @@ tweak_parallel_PSOCK <- local({
 
 
   ## tweak_parallel_PSOCK()
-  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=TRUE, reset=FALSE) {
+  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=FALSE, reset=FALSE) {
     ## Original parallel setup
     newPSOCKnode <- newPSOCKnode_org
     defaultClusterOptions <- defaultClusterOptions_org
