@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.0.1-9000 [2016-09-25]
+Version: 1.1.0 [2016-10-09]
 o REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
   to connect to remote clusters / machines.  As long as you can connect
   via ssh to those machines, it works also with these future.  The new
