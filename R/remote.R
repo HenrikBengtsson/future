@@ -26,8 +26,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'
 
-    allLocalhost <- all(workers %in% c("localhost", "127.0.0.1"))
-    if (allLocalhost) {
+    if (all(workers %in% c("localhost", "127.0.0.1"))) {
       ## For conveniency, if all workers are on the localhost,
       ## then we know that only the local machine will be used.
 
@@ -50,7 +49,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
         if (is.null(myip)) myip <- "127.0.0.1"
       } else if (is.null(myip)) {
         ## The best guess we can make here is that the workers need
-	## to connect back using our exernal IP address.
+        ## to connect back using our exernal IP address.
         myip <- "<external>"
       }
     }
