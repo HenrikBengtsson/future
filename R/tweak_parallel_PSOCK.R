@@ -106,11 +106,11 @@ tweak_parallel_PSOCK <- local({
       if (user) {
         ## Drop default 'user' (clone to avoid overwriting the original environment)
         defaultClusterOptions$user <- NULL
-
-        ## newPSOCKnode() tweaks
-        replacement <- c(replacement, 'if (!is.null(user)) opts <- c(opts, paste("-l", user))')
       }
-    
+
+      ## Only pass -l <user> is 'user' is specified
+      replacement <- c(replacement, 'if (!is.null(user)) opts <- c(opts, paste("-l", user))')
+
       ## Reverse SSH tunneling (avoids all NAT / firewall issues)
       ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/32
       if (revtunnel) {

@@ -32,7 +32,7 @@ ClusterRegistry <- local({
     }
 
     ## This will _not_ pass `master` iff master=NULL
-    args <- list(workers, revtunnel=revtunnel, ...)
+    args <- list(workers, user=user, revtunnel=revtunnel, ...)
     args$master <- master
     
     capture.output({

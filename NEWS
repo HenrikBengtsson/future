@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 1.1.1-9000 [2016-10-12]
+o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
+
+
 Version: 1.1.1 [2016-10-10]
 o FIX: For the special case where 'remote' futures use
   workers = "localhost" they (again) use the exact same R executable
