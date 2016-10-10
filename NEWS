@@ -1,6 +1,15 @@
 Package: future
 ===============
 
+Version: 1.1.1 [2016-10-10]
+o FIX: For the special case where 'remote' futures use
+  workers = "localhost" they (again) use the exact same R executable
+  as the main / calling R session (in all other cases it uses
+  whatever 'Rscript' is found in the PATH).  This was already indeed
+  implemented in 1.0.1, but with the added support for reverse SSH
+  tunnels in 1.1.0 this default behavior was lost.
+
+
 Version: 1.1.0 [2016-10-09]
 o REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
   to connect to remote clusters / machines.  As long as you can connect
@@ -45,7 +54,7 @@ o DOCUMENTATION: Adding section to vignette on globals in formulas
   describing how they are currently not automatically detected
   and how to explicitly export them.
 o ROBUSTNESS: For the special case where 'remote' futures use
-  workers = "localhost" they now uses the exact same R executable
+  workers = "localhost" they now use the exact same R executable
   as the main / calling R session (in all other cases it uses
   whatever 'Rscript' is found in the PATH).
 o FutureError now extends simpleError and no longer the error
