@@ -6,6 +6,9 @@ message("*** rng ...")
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
 fsample <- function(x, size=4L, seed=NULL) {
+  ## Must use session-specific '.GlobalEnv' here
+  .GlobalEnv <- globalenv()
+  
   oseed <- .GlobalEnv$.Random.seed
   orng <- RNGkind("L'Ecuyer-CMRG")[1L]
   on.exit(RNGkind(orng))
@@ -28,6 +31,8 @@ fsample <- function(x, size=4L, seed=NULL) {
   for (ii in seq_len(size)) {
     .seed <- parallel::nextRNGStream(.seed)
     res[[ii]] %<-% {
+      ## Must use session-specific '.GlobalEnv' here
+      .GlobalEnv <- globalenv()
       .GlobalEnv$.Random.seed <- .seed
       sample(x, size=1L)
     }

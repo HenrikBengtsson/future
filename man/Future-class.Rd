@@ -6,7 +6,7 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, gc = FALSE, earlySignal = FALSE, ...)
+  local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -21,11 +21,15 @@ is done (or inherits from if \code{local} is TRUE).}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.
+\emph{Some types of futures ignore this argument.}}
 
 \item{earlySignal}{Specified whether conditions should be signaled
 as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the
+future.}
 
 \item{\dots}{Additional named elements of the future.}
 }
@@ -46,7 +50,7 @@ A Future object is itself an \link{environment}.
 \seealso{
 One function that creates a Future is \code{\link{future}()}.
 It returns a Future that evaluates an R expression in the future.
-An alternative approach is to use the \code{\link{\%<=\%}} infix
+An alternative approach is to use the \code{\link{\%<-\%}} infix
 assignment operator, which creates a future from the
 right-hand-side (RHS) R expression and assigns its future value
 to a variable as a \emph{\link[base]{promise}}.

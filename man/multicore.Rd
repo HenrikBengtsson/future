@@ -5,32 +5,35 @@
 \title{Create a multicore future whose value will be resolved asynchroneously in a forked parallel process}
 \usage{
 multicore(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  workers = availableCores(constraints = "multicore"), gc = FALSE,
-  earlySignal = FALSE, ...)
+  workers = availableCores(constraints = "multicore"), earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{If TRUE, global objects are validated at the point
-in time when the future is created (always before it is resolved),
-that is, they identified and located.  If some globals fail to be
-located, an informative error is generated.}
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.
+This argument can be specified via the \dots arguments
+for \code{future()} and \code{futureCall()}.}
 
 \item{workers}{The maximum number of multicore futures that can
 be active at the same time before blocking.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{label}{An optional character string label attached to the future.}
 
-\item{\dots}{Not used.}
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{MulticoreFuture}
@@ -62,7 +65,7 @@ The preferred way to create an multicore future is not to call
 this function directly, but to register it via
 \code{\link{plan}(multicore)} such that it becomes the default
 mechanism for all futures.  After this \code{\link{future}()}
-and \code{\link{\%<=\%}} will create \emph{multicore futures}.
+and \code{\link{\%<-\%}} will create \emph{multicore futures}.
 }
 \examples{
 ## Use multicore futures

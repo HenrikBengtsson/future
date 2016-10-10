@@ -17,7 +17,14 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{\dots}{Additional named elements of the future.}
+\item{...}{Additional named elements of the future.}
+
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done to the global environment of the \R process
+evaluating the future.}
+
+\item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 An object of class \code{MultiprocessFuture}.

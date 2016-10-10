@@ -9,7 +9,7 @@ values(x, ...)
 \arguments{
 \item{x}{An environment, a list, or a list environment.}
 
-\item{...}{Additional arguments passed to \code{value()} of each future.}
+\item{\dots}{Additional arguments passed to \code{value()} of each future.}
 }
 \value{
 An object of same type as \code{x} and with the same names

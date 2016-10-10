@@ -62,10 +62,21 @@
 #' same name is queried.  If that is not set, the system environment
 #' variable is queried.  If neither is set, a missing value is returned.
 #'
+#' @section Advanced usage:
+#' It is possible to override the maximum number of cores on the machine
+#' as reported by \code{availableCores(methods="system")}.  This can be
+#' done by first specifying
+#' \code{options(future.availableCores.methods="mc.cores+1")} and
+#' then the number of cores to use (in addition to the main R process),
+#' e.g. \code{options(mc.cores=8)} will cause the value of
+#' \code{availableCores()} to be 9 (=8+1).
+#' Having said this, it is almost always better to do this by explicitly
+#' setting the number of workers when specifying the future strategy,
+#' e.g. \code{plan(multiprocess, workers=9)}.
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))

@@ -4,19 +4,21 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @inheritParams future
+#' @inheritParams multiprocess
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
+#' @param revtunnel If TRUE, reverse SSH tunneling is used for the
+#' PSOCK cluster nodes to connect back to the master R process.  This
+#' avoids the hassle of firewalls, port forwarding and having to know
+#' the internal / public IP address of the master R session.
+#' @param user (optional) The user name to be used when communicating
+#' with another host.
+#' @param homogeneous If TRUE, all cluster nodes is assumed to use the
+#' same path to \file{Rscript} as the main R session.  If FALSE, the
+#' it is assumed to be on the PATH for each node.
 #'
 #' @return A \link{ClusterFuture}.
 #'
@@ -31,10 +33,10 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(cluster)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<=\%}} will create \emph{cluster futures}.
+#' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=NULL, gc=FALSE, earlySignal=FALSE, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {
@@ -44,7 +46,7 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALS
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
   run(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")

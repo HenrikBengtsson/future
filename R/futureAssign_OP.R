@@ -1,3 +1,24 @@
+#' @usage x \%<-\% value
+#'
+#' @rdname future
+#'
+#' @aliases %<-% %->% %<=% %=>%
+#' @export %<-% %->% %<=% %=>%
+`%<-%` <- `%<=%` <- function(x, value) {
+  target <- substitute(x)
+  expr <- substitute(value)
+  envir <- parent.frame(1)
+  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
+}
+
+`%->%` <- `%=>%` <- function(value, x) {
+  target <- substitute(x)
+  expr <- substitute(value)
+  envir <- parent.frame(1)
+  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
+}
+
+
 #' @importFrom listenv get_variable parse_env_subset
 futureAssignInternal <- function(target, expr, envir=parent.frame(), substitute=FALSE) {
   target <- parse_env_subset(target, envir=envir, substitute=substitute)
@@ -22,18 +43,3 @@ futureAssignInternal <- function(target, expr, envir=parent.frame(), substitute=
 
   futureAssign(name, expr, envir=envir, assign.env=assign.env, substitute=FALSE)
 } # futureAssignInternal()
-
-
-`%<-%` <- `%<=%` <- function(x, value) {
-  target <- substitute(x)
-  expr <- substitute(value)
-  envir <- parent.frame(1)
-  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
-}
-
-`%->%` <- `%=>%` <- function(value, x) {
-  target <- substitute(x)
-  expr <- substitute(value)
-  envir <- parent.frame(1)
-  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
-}

@@ -4,19 +4,11 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another R session}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param persistent If FALSE, the evaluation environment is cleared
-#' from objects prior to the evaluation of the future.
+#' @inheritParams future
+#' @inheritParams multiprocess
+#' @inheritParams cluster
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
-#' @param \dots Not used.
 #'
 #' @return A \link{MultisessionFuture}.
 #' If \code{workers == 1}, then all processing using done in the
@@ -41,7 +33,7 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(multisession)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<=\%}} will create \emph{multisession futures}.
+#' and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 #'
 #' @section Known issues:
 #' In the current implementation, \emph{all} background R sessions
@@ -62,7 +54,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -78,7 +70,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## i.e. the use the current main R process.
   if (workers == 1L) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
-    return(lazy(expr, envir=envir, substitute=FALSE, globals=TRUE, local=TRUE))
+    return(lazy(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, label=label))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to
@@ -86,7 +78,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, persistent
   ## a cluster with one less process.
   workers <- ClusterRegistry("start", workers=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
   run(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")

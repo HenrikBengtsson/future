@@ -8,24 +8,20 @@
 \title{A cluster future is a future whose value will be resolved asynchroneously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = !persistent, gc = !persistent, persistent = FALSE,
-  workers = NULL, ...)
+  local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
+  workers = NULL, user = NULL, master = NULL, revtunnel = TRUE,
+  homogeneous = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
-
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
-
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
-the assignments are done in the global environment of the cluster node.}
+the assignments are done to the global environment of the \R process
+evaluating the future.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{globals}{(optional) a logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -34,7 +30,22 @@ from objects prior to the evaluation of the future.}
 Alternatively, a character vector of host names or a numeric scalar,
 for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
 
-\item{\dots}{Additional named elements of the future.}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
+
+\item{master}{(optional) The hostname or IP address of the master
+machine running this node.}
+
+\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
+
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main R session.  If FALSE, the
+it is assumed to be on the PATH for each node.}
+
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 An object of class \code{ClusterFuture}.

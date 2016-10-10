@@ -8,7 +8,7 @@ fassignment \%plan\% strategy
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<=\% \{ expr \}}.}
+\code{x \%<-\% \{ expr \}}.}
 
 \item{strategy}{The mechanism for how the future should be
 resolved. See \code{\link{plan}()} for further details.}

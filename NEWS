@@ -1,6 +1,45 @@
 Package: future
 ===============
 
+Version: 1.1.0 [2016-10-09]
+o REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
+  to connect to remote clusters / machines.  As long as you can connect
+  via ssh to those machines, it works also with these future.  The new
+  code completely avoids incoming firewall and incoming port forwarding
+  issues previously needed.  This is done by using reverse SSH tunneling.
+  There is also no need to worry about internal or external IP numbers.
+o GLOBALS: Global variables part of subassignments in future expressions
+  are recognized and exported (iff found), e.g. x$a <- value,
+  x[["a"]] <- value, and x[1,2,3] <- value.
+o GLOBALS: Global variables part of formulae in future expressions are
+  recognized and exported (iff found), e.g. y ~ x | z.
+o GLOBALS: As an alternative to the default automatic identification of
+  globals, it is now also possible to explicitly specify them either
+  by their names (as a character vector) or by their names and values
+  (as a named list), e.g. f <- future({ 2*a }, globals=c("a")) or
+  f <- future({ 2*a }, globals=list(a=42)).  For future assignments one
+  can use the %globals% operator, e.g. y %<-% { 2*a } %globals% c("a").
+o Now all Future classes supports run() for launching the future and
+  value() calls run() if the future has not been launched.
+o Added optional argument 'label' to all futures, e.g.
+  f <- future(42, label="answer") and v %<-% { 42 } %label% "answer".
+o Added argument 'user' to cluster() and remote().
+o ROBUSTNESS: Now the default future strategy is explicitly set when
+  no strategies are set, e.g. when used nested futures.  Previously,
+  only mc.cores was set so that only a single core was used, but now
+  also plan("default") set.
+o WORKAROUND: resolved() on cluster futures would block on Linux until
+  future was resolved.  This is due to a bug in R.  The workaround is
+  to use round the timeout (in seconds) to an integer, which seems to
+  always work / be respected.
+o DOCUMENTATION: Added vignette on command-line options and other
+  methods for controlling the default type of futures to use.
+o MEMORY: Now plan(cluster, gc=TRUE) causes the background
+  R session to be garbage collected immediately after the value
+  is collected.  Since multisession and remote futures are special
+  cases of cluster futures, the same is true for these as well.
+
+
 Version: 1.0.1 [2016-07-04]
 o DOCUMENTATION: Adding section to vignette on globals in formulas
   describing how they are currently not automatically detected

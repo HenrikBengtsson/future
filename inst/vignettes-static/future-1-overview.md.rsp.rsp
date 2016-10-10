@@ -161,7 +161,7 @@ One of the designs of the Future API was to encapsulate any differences such tha
 
 Because of this, the defaults of the different strategies are such that the results and side effects of evaluating a future expression are as similar as possible.  More specifically, the following is true for all futures:
 
-* All _evaluation is done in a local environment_ (i.e. `local({ expr })`) such assignments do not affect the calling environment.  This is natural when evaluating in an external R process, but is also enforced when evaluating in the current R session.
+* All _evaluation is done in a local environment_ (i.e. `local({ expr })`) so that assignments do not affect the calling environment.  This is natural when evaluating in an external R process, but is also enforced when evaluating in the current R session.
 
 * When a future is constructed, _global variables are identified_.  For asynchronous evaluation, globals are exported to the R process/session that will be evaluating the future expression.  For lazy futures, globals are "frozen" (cloned to a local environment of the future).  Also, in order to protect against exporting too large objects by mistake, there is a built-in assertion that the total size of all globals is less than a given threshold (controllable via an option, cf. `help("future.options")`).  If the threshold is exceeded, an informative error is thrown.
 
@@ -672,11 +672,11 @@ demo("mandelbrot", package="future", ask=FALSE)
 The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas on how to improve the 'future' package, I would love to hear about them.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
 
 
-[BatchJobs]: http://cran.r-project.org/package=BatchJobs
-[future]: http://cran.r-project.org/package=future
-[future.BatchJobs]: http://cran.r-project.org/package=future.BatchJobs
-[globals]: http://cran.r-project.org/package=globals
-[listenv]: http://cran.r-project.org/package=listenv
+[BatchJobs]: https://cran.r-project.org/package=BatchJobs
+[future]: https://cran.r-project.org/package=future
+[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
+[globals]: https://cran.r-project.org/package=globals
+[listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---

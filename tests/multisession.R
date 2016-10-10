@@ -125,6 +125,31 @@ for (cores in 1:min(3L, availableCores())) {
 
   message("*** multisession(..., workers=1L) ... DONE")
 
+  message("*** multisession(..., gc=TRUE) ...")
+  plan(multisession, workers=2L)
+  
+  f <- future({ gc() })
+  v <- value(f)
+  print(v)
+
+  f <- future({ integer(10e6) })
+  v <- value(f)
+  str(v)
+
+  f <- future({ gc() })
+  v <- value(f)
+  print(v)
+
+  f <- future({ integer(10e6) }, gc=TRUE)
+  v <- value(f)
+  str(v)
+
+  f <- future({ gc() })
+  v <- value(f)
+  print(v)
+
+  message("*** multisession(..., gc=TRUE) ... TRUE")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 

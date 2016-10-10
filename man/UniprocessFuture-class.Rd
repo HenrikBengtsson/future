@@ -21,7 +21,9 @@ is done (or inherits from if \code{local} is TRUE).}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{\dots}{Additional named elements of the future.}
+\item{...}{Additional named elements of the future.}
+
+\item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 An object of class \code{UniprocessFuture}.

@@ -5,14 +5,15 @@
 \title{Create a lazy future whose value will be resolved at the time when requested}
 \usage{
 lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, gc = FALSE, earlySignal = FALSE, ...)
+  local = TRUE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE)
-and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
@@ -25,12 +26,12 @@ resolved when the future is resolved.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{label}{An optional character string label attached to the future.}
 
-\item{\dots}{Not used.}
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{LazyFuture}.
@@ -45,7 +46,7 @@ if the value is never requested.
 The preferred way to create a lazy future is not to call this function
 directly, but to register it via \code{\link{plan}(lazy)} such that it
 becomes the default mechanism for all futures.  After this
-\code{\link{future}()} and \code{\link{\%<=\%}} will create
+\code{\link{future}()} and \code{\link{\%<-\%}} will create
 \emph{lazy futures}.
 }
 \examples{

@@ -6,10 +6,22 @@
 \title{A future with a constant value}
 \usage{
 ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
-  local = FALSE, gc = FALSE, ...)
+  local = FALSE, ...)
 }
 \arguments{
-\item{expr}{An R value.}
+\item{expr}{An R \link[base]{expression}.}
+
+\item{envir}{The \link{environment} in which the evaluation
+is done (or inherits from if \code{local} is TRUE).}
+
+\item{substitute}{If TRUE, argument \code{expr} is
+\code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{local}{If TRUE, the expression is evaluated such that
+all assignments are done to local temporary environment, otherwise
+the assignments are done in the calling environment.}
+
+\item{...}{Additional named elements of the future.}
 
 \item{\dots}{Not used.}
 }
@@ -18,7 +30,7 @@ An object of class \code{ConstantFuture}.
 }
 \description{
 A constant future is a future whose expression is a constant
-and therefore already resolved upon creation
+and therefore by definition already resolved upon creation.
 }
 \keyword{internal}
 

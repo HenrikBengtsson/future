@@ -7,6 +7,12 @@
 INSTALL[.]md
 OVERVIEW[.]md
 README[.]md
+CONDUCT[.]md
+
+#----------------------------
+# devtools
+#----------------------------
+^revdep
 
 #----------------------------
 # Travis-CI et al.
@@ -44,4 +50,9 @@ Rplots.pdf$
 ^[.]BatchJobs[.]R$
 [.]future
 
+#----------------------------
+# Miscellaneous
+#----------------------------
+^.ghi
+^.issues
 

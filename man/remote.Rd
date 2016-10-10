@@ -4,33 +4,53 @@
 \alias{remote}
 \title{Create a remote future whose value will be resolved asynchroneously in a remote process}
 \usage{
-remote(expr, envir = parent.frame(), substitute = TRUE, persistent = TRUE,
-  workers = NULL, gc = FALSE, earlySignal = FALSE, myip = NULL, ...)
+remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE,
+  gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.
+This argument can be specified via the \dots arguments
+for \code{future()} and \code{futureCall()}.}
+
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A cluster object created by
-\code{\link[parallel]{makeCluster}()}.}
+\item{workers}{The maximum number of multiprocess futures that
+can be active at the same time before blocking.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
+
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.}
+
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
 \item{myip}{The external IP address of this machine.
 If NULL, then it is inferred using an online service (default).}
 
-\item{\dots}{Not used.}
+\item{label}{An optional character string label attached to the future.}
+
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{ClusterFuture}.

@@ -5,17 +5,25 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, workers = availableCores(), gc = FALSE,
-  earlySignal = FALSE, ...)
+  globals = TRUE, persistent = FALSE, workers = availableCores(),
+  gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.
+This argument can be specified via the \dots arguments
+for \code{future()} and \code{futureCall()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -23,12 +31,15 @@ from objects prior to the evaluation of the future.}
 \item{workers}{The maximum number of multisession futures that
 can be active at the same time before blocking.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
 
-\item{\dots}{Not used.}
+\item{label}{An optional character string label attached to the future.}
+
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{MultisessionFuture}.
@@ -54,7 +65,7 @@ The preferred way to create an multisession future is not to call
 this function directly, but to register it via
 \code{\link{plan}(multisession)} such that it becomes the default
 mechanism for all futures.  After this \code{\link{future}()}
-and \code{\link{\%<=\%}} will create \emph{multisession futures}.
+and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 }
 \section{Known issues}{
 

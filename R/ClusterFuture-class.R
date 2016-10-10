@@ -1,21 +1,26 @@
 #' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param local If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the global environment of the cluster node.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
+#' @inheritParams MultiprocessFuture-class
+#' @param globals (optional) a logical, a character vector,
+#' or a named list for controlling how globals are handled.
+#' For details, see section 'Globals used by future expressions'
+#' in the help for \code{\link{future}()}.
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
-#' @param \dots Additional named elements of the future.
+#' @param revtunnel If TRUE, reverse SSH tunneling is used for the
+#' PSOCK cluster nodes to connect back to the master R process.  This
+#' avoids the hassle of firewalls, port forwarding and having to know
+#' the internal / public IP address of the master R session.
+#' @param user (optional) The user name to be used when communicating
+#' with another host.
+#' @param master (optional) The hostname or IP address of the master
+#' machine running this node.
+#' @param homogeneous If TRUE, all cluster nodes is assumed to use the
+#' same path to \file{Rscript} as the main R session.  If FALSE, the
+#' it is assumed to be on the PATH for each node.
 #'
 #' @return An object of class \code{ClusterFuture}.
 #'
@@ -29,7 +34,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, gc=!persistent, persistent=FALSE, workers=NULL, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
   defaultCluster <- importParallel("defaultCluster")
 
   ## BACKWARD COMPATIBILITY
@@ -44,7 +49,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   if (is.null(workers)) {
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers=workers)
+    workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
@@ -58,16 +63,26 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     attr(workers, "name") <- name
   }
 
-  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent)
+  ## Global objects
+  gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent, globals=globals)
+  globals <- gp$globals
+  packages <- gp$packages
+  expr <- gp$expr
+  gp <- NULL
 
-  f <- MultiprocessFuture(expr=gp$expr, envir=envir, substitute=FALSE, local=local, persistent=persistent, globals=gp$globals, packages=gp$packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globals, packages=packages, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
 
 
 #' @importFrom parallel clusterCall clusterExport
+#' @export
 run.ClusterFuture <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -174,6 +189,13 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   node <- x$node
   cl <- workers[node]
 
+  ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may
+  ## result in infinite waiting, cf. 
+  ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073218.html
+  if (.Platform$OS.type != "windows") {
+    timeout <- round(timeout, digits = 0L)
+  }
+  
   ## Check if workers socket connection is available for reading
   con <- cl[[1]]$con
   res <- socketSelect(list(con), write=FALSE, timeout=timeout)
@@ -189,6 +211,10 @@ value.ClusterFuture <- function(future, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
+  }
+
+  if (future$state == 'created') {
+    future <- run(future)
   }
 
   ## Assert that the process that created the future is
@@ -237,6 +263,18 @@ value.ClusterFuture <- function(future, ...) {
 
   ## Remove from registry
   FutureRegistry(reg, action="remove", future=future, earlySignal=FALSE)
+
+  ## Garbage collect cluster worker?
+  if (future$gc) {
+    ## Cleanup global environment while at it
+    if (!future$persistent) clusterCall(cl[1], fun=grmall)
+    
+    ## WORKAROUND: Need to clear cluster worker before garbage collection,
+    ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+    clusterCall(cl[1], function() NULL)
+    
+    clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)
+  }
 
   NextMethod("value")
 }
@@ -287,7 +325,7 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
   ## Find which node is available
   avail <- rep(TRUE, times=length(workers))
   futures <- FutureRegistry(reg, action="list", earlySignal=FALSE)
-  nodes <- unlist(lapply(futures, FUN=function(f) f$node))
+  nodes <- unlist(lapply(futures, FUN=function(f) f$node), use.names=FALSE)
   avail[nodes] <- FALSE
 
   ## Sanity check

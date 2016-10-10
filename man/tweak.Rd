@@ -9,11 +9,11 @@ tweak(strategy, ..., penvir = parent.frame())
 \arguments{
 \item{strategy}{An existing future function or the name of one.}
 
-\item{...}{Named arguments to replace the defaults of existing
-arguments.}
-
 \item{penvir}{The environment used when searching for a future
 function by its name.}
+
+\item{\dots}{Named arguments to replace the defaults of existing
+arguments.}
 }
 \value{
 a future function.

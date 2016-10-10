@@ -21,6 +21,9 @@ added <- setdiff(names(cenvs), names(oenvs))
 for (name in added) Sys.unsetenv(name)
 ## (b) Modified?
 for (name in intersect(names(cenvs), names(oenvs))) {
+  ## WORKAROUND: On Linux Wine, base::Sys.getenv() may
+  ## return elements with empty names. /HB 2016-10-06
+  if (nchar(name) == 0) next
   if (!identical(cenvs[[name]], oenvs[[name]])) {
     Sys.setenv(name, oenvs[[name]])
   }

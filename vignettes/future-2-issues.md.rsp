@@ -20,90 +20,34 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 
 ## Issues with globals
 
-
 ### Missing or incorrect globals (false negatives)
 
-#### Global variable obscured by subassignment
-When a global variable is a vector, a matrix, a list, a data frame, an environment, or any other type of object that can be assigned via subsetting, the global package fails to identify it as a global variable if its first occurrence in the future expression is as part of a subsetting assignment.
-For example,
+#### Missing globals due to self assignment
+
+If a global variable is (only) part of a "self" assignment, such as `x <- x + 1`, then the global is not identified and therefore neither exported / frozen.  This explains the error in the following example:
 ```r
 > library("future")
-> plan(lazy)
-> x <- matrix(1:12, nrow=3, ncol=4)
-> y %<-% {
-+   x[1,1] <- 3
-+   42
-+ }
+> plan("lazy")
+> x <- 0
+> y %<-% { x <- x + 1 }
 > rm(x)
 > y
-Error in x[1, 1] <- 3 : object 'x' not found
+Error: object 'x' not found
 ```
-Another example is
+
+The workaround is to guide R to find the missing global by explicitly listing it, e.g.
 ```r
 > library("future")
-> plan(lazy)
-> x <- list(a=1, b=2)
-> y %<-% {
-+   x$c <- 3
-+   42
-+ }
+> plan("lazy")
+> x <- 0
+> y %<-% { x; x <- x + 1 }
 > rm(x)
 > y
-Error in x$c <- 3 : object 'x' not found
-```
-A workaround is to explicitly tell the future package about the global variable by simply listing it at the beginning of the expression, e.g.
-```r
-> library("future")
-> plan(lazy)
-> x <- list(a=1, b=2)
-> y %<-% {
-+   x  ## Force 'x' to be global
-+   x$c <- 3
-+   42
-+ }
-> rm(x)
-> y
-[1] 42
+[1] 1
 ```
 
-_Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
+_Comment:_ The goal is to in a future version of the package detect globals also in such self-assignment constructs.
 
-
-#### Global variable specified as part of formula
-Global variables that are part of formulas are currently not identified automatically.  For example,
-```r
-> library("future")
-> plan(multisession)
->
-> x <- 1:10
-> y <- rnorm(10)
-> fit %<-% lm(y ~ x)
-> fit
-Received error on future: 'Error: object 'y' not found
-'
-Future state: 'failed'
-Future value: 'Error: object 'y' not found
-'
-Error: object 'y' not found
-```
-
-The workaround is to guide R by specifying such variables explicitly, e.g.
-```r
-> fit %<-% {
-+   x; y  ## Force 'x' and 'y' to be global
-+   lm(y ~ x)
-+ }
-> fit
-
-Call:
-lm(formula = y ~ x)
-
-Coefficients:
-(Intercept)            x  
-   -0.40506      0.01751  
-```
-
-_Comment_: The goal is that the [globals] package will also handle the above case in a future version.  
 
 
 #### do.call() - function not found
@@ -116,7 +60,7 @@ instead of
 do.call("file_ext", list("foo.txt"))
 ```
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
-It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
+It may also become a problem with lazy uniprocess futures if the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
 > library("listenv")
@@ -131,82 +75,6 @@ It may also become a problem with lazy futures if the intended function is redef
 > unlist(res)
 [1] "haha!" "haha!" "haha!"
 ```
-
-<%---
-### False globals due to non-standard evaluation (false positives)
-
-#### subset(data, x < 3)
-
-Consider the following use of `subset()`:
-```r
-> data <- data.frame(x=1:5, y=1:5)
-> v <- subset(data, x < 3)$y
-> v
-[1] 1 2
-```
-From a static code inspection point of view, the expression `x < 3` asks for variable `x` to be compared to 3, and there is nothing specifying that `x` is part of `data` and not the global environment.  That `x` is indeed part of the `data` object can only safely be inferred at runtime when `subset()` is called.  This is not a problem in the above snippet, but when using futures all global/unknown variables need to be captured when the future is created (it is too late to do it when the future is resolved), e.g.
-```r
-> library("future")
-> data <- data.frame(x=1:5, y=1:5)
-> v %<-% subset(data, x < 3)$y
-Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
-  Identified a global by static code inspection, but failed to locate the corresponding
-  object in the relevant environments: 'x'
-```
-Above, code inspection of the future expression `subset(data, x < 3)$y` incorrectly identifies `x` as a global variables that needs to be captured ("frozen") for the (lazy) future.  Since no such variable `x` exists, we get an error.
-
-A clearer and backward-compatible solution to this problem is to explicitly specify the context of `x`, i.e.
-```r
-> data <- data.frame(x=1:5, y=1:5)
-> v %<-% subset(data, data$x < 3)$y
-> v
-[1] 1 2
-```
-
-An alternative is to use a dummy variable.  In contrast to the code-inspection algorithm used to identify globals, _we know from reading the documentation_ that `subset()` will look for `x` in the `data` object, not in the parent environments.  Armed with this knowledge, we can trick the [future] package (more precisely the [globals] package) to pick up a dummy variable `x` instead, e.g.
-```r
-> data <- data.frame(x=1:5, y=1:5)
-> x <- NULL ## To please future et al.
-> v %<-% subset(data, x < 3)$y
-> v
-[1] 1 2
-```
-
-#### ggplot2
-Another common use case for non-standard evaluation is when creating ggplot2 figures.  For instance, in
-```r
-> library("ggplot2")
-> p <- ggplot(mtcars, aes(wt, mpg)) + geom_point()
-> p
-```
-fields `mpg` and `wt` of the `mtcars` data object are plotted against each other.  That `mpg` and `wt` are fields of `mtcars` cannot be inferred from code inspection alone, but you need to know that that is how ggplot2 works.  Analogously to the above `subset()` example, this explains why we get the following error:
-```r
-> library("future")
-> library("ggplot2")
-> p %<-% { ggplot(mtcars, aes(wt, mpg)) + geom_point() }
-Error in globalsOf(expr, envir = envir, tweak = tweakExpression, dotdotdot = "return",  :
-  Identified a global by static code inspection, but failed to locate the corresponding
-  object in the relevant environments: 'wt'
-```
-A few comments are needed here.  First of all, because `%<-%` has higher precedence than `+`, we need to place all of the ggplot2 expression within curly brackets, otherwise, we get an error.  Second, the reason for only `wt` being listed as a missing global variable and not `mpg` is because the latter is (incorrectly) located to be `ggplot2::mpg`.
-
-One workaround is to make use of the `*_string()` functions of ggplot2, e.g.
-```r
-> p %<-% { ggplot(mtcars, aes_string('wt', 'mpg')) + geom_point() }
-> p
-```
-Another one, is to explicitly specify `mtcars$wt` and `mtcars$mpg`, which may become a bit tedious.
-A third alternative is to make use of dummy variables `wt` and `mpg`, i.e.
-```r
-> p %<-% {
-+   wt <- mpg <- NULL
-+   ggplot(mtcars, aes(wt, mpg)) + geom_point()
-+ }
-> p
-```
-By the way, since all futures are evaluated in a local environment, the dummy variables are _not_ assigned to the calling environment.
----%>
-
 
 ## Trying to pass an unresolved future to another future
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
@@ -265,7 +133,7 @@ Error: Invalid usage of futures: A future whose value has not yet been collected
 ```
 As previously, this can be avoided by making sure `x$a` is resolved first, which can be one in various ways, e.g. `dummy <- x$a`, `resolve(x$a)` and `force(x$a)`.
 
-_Footnote_: (*) Although certain types of futures, such as eager and lazy ones, could be passed on to other futures and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
+_Footnote_: (*) Although uniprocess futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
 
 
 ## Miscellaneous
@@ -348,6 +216,32 @@ What effectively is happening here is that because of the higher priority of `%<
 ```
 Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
 
+
+### R CMD check NOTEs
+The code inspection run by `R CMD check` will not recognize the future assignment operator `%<-%` as an assignment operator, which is not surprising because `%<-%` is technically an infix operator.  This means that if you for instance use the following code in your package:
+```r
+foo <- function() {
+  b <- 3.14
+  a %<-% { b + 1 }
+  a
+}
+```
+then `R CMD check` will produce a NOTE saying:
+```sh
+* checking R code for possible problems ... NOTE
+foo: no visible binding for global variable 'a'
+Undefined global functions or variables:
+  a
+```
+In order to avoid this, we can add a dummy assignment of the missing global at the top of the function, i.e.
+```r
+foo <- function() {
+  a <- NULL ## To please R CMD check
+  b <- 3.14
+  a %<-% { b + 1 }
+  a
+}
+```
 
 
 [future]: https://cran.r-project.org/package=future

@@ -1,11 +1,6 @@
 #' An multicore future is a future whose value will be resolved asynchroneously in a parallel process
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param \dots Additional named elements of the future.
+#' @inheritParams MultiprocessFuture-class
 #'
 #' @return An object of class \code{MulticoreFuture}.
 #'
@@ -16,17 +11,36 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, ...) {
+MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
+
+  ## Global objects
+  assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
+
+  ## Assign?
+  if (assignToTarget && length(gp) > 0) {
+    target <- new.env(parent=envir)
+    globalsT <- gp$globals
+    for (name in names(globalsT)) {
+      target[[name]] <- globalsT[[name]]
+    }
+    globalsT <- NULL
+    envir <- target
+  }
+  gp <- NULL
 
   f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, job=NULL, ...)
   structure(f, class=c("MulticoreFuture", class(f)))
 }
 
 
-run <- function(...) UseMethod("run")
-
+#' @export
 run.MulticoreFuture <- function(future, ...) {
+  if (future$state != 'created') {
+    stop("A future can only be launched once.")
+  }
+  
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -87,6 +101,10 @@ value.MulticoreFuture <- function(future, signal=TRUE, ...) {
   ## Has the value already been collected?
   if (future$state %in% c('finished', 'failed', 'interrupted')) {
     return(NextMethod("value"))
+  }
+
+  if (future$state == 'created') {
+    future <- run(future)
   }
 
   ## Assert that the process that created the future is

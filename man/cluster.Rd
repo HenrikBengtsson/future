@@ -4,18 +4,27 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE,
-  persistent = FALSE, workers = NULL, gc = FALSE, earlySignal = FALSE,
+cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  persistent = FALSE, workers = NULL, user = NULL, revtunnel = TRUE,
+  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
   ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done and from which globals are obtained.}
+\item{envir}{The \link{environment} from where global
+objects should be identified.  Depending on "evaluator",
+it may also be the environment in which the expression
+is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.
+This argument can be specified via the \dots arguments
+for \code{future()} and \code{futureCall()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -23,12 +32,27 @@ from objects prior to the evaluation of the future.}
 \item{workers}{A cluster object created by
 \code{\link[parallel]{makeCluster}()}.}
 
-\item{gc}{If TRUE, the garbage collector run after the future
-is resolved (in the process that evaluated the future).}
+\item{user}{(optional) The user name to be used when communicating
+with another host.}
 
-\item{earlySignal}{Specified whether conditions should be signaled as soon as possible or not.}
+\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
+PSOCK cluster nodes to connect back to the master R process.  This
+avoids the hassle of firewalls, port forwarding and having to know
+the internal / public IP address of the master R session.}
 
-\item{\dots}{Not used.}
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main R session.  If FALSE, the
+it is assumed to be on the PATH for each node.}
+
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) after the value of the future is collected.}
+
+\item{earlySignal}{Specified whether conditions should be signaled
+as soon as possible or not.}
+
+\item{label}{An optional character string label attached to the future.}
+
+\item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
 A \link{ClusterFuture}.
@@ -47,7 +71,7 @@ The preferred way to create an cluster future is not to call
 this function directly, but to register it via
 \code{\link{plan}(cluster)} such that it becomes the default
 mechanism for all futures.  After this \code{\link{future}()}
-and \code{\link{\%<=\%}} will create \emph{cluster futures}.
+and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 }
 \examples{
 ## Cluster futures gives an error on R CMD check on

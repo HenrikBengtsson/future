@@ -4,21 +4,11 @@
 #' which means that its \emph{value is computed and resolved
 #' remotely in another process}.
 #'
-#' @param expr An R \link[base]{expression}.
-#' @param envir The \link{environment} in which the evaluation
-#' is done and from which globals are obtained.
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param persistent If FALSE, the evaluation environment is cleared
-#' from objects prior to the evaluation of the future.
-#' @param workers A cluster object created by
-#' \code{\link[parallel]{makeCluster}()}.
-#' @param gc If TRUE, the garbage collector run after the future
-#' is resolved (in the process that evaluated the future).
-#' @param earlySignal Specified whether conditions should be signaled as soon as possible or not.
+#' @inheritParams future
+#' @inheritParams multiprocess
+#' @inheritParams cluster
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
-#' @param \dots Not used.
 #'
 #' @return A \link{ClusterFuture}.
 #'
@@ -28,7 +18,7 @@
 #' Note that remote futures use \code{persistent=TRUE} by default.
 #'
 #' @export
-remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE, workers=NULL, gc=FALSE, earlySignal=FALSE, myip=NULL, ...) {
+remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=TRUE, workers=NULL, user=NULL, revtunnel=TRUE, gc=FALSE, earlySignal=FALSE, myip=NULL, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
@@ -36,8 +26,12 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'
 
-    ## Guess what type of IP to use
-    if (is.null(myip)) {
+    if (revtunnel) {
+      ## Default is that reverse tunnel uses 127.0.0.1 / localhost.
+      if (is.null(myip)) myip <- "127.0.0.1"
+    } else if (is.null(myip)) {
+      ## Guess what type of IP to use
+    
       if (all(workers %in% c("localhost", "127.0.0.1"))) {
         ## For conveniency, if all workers are on the localhost,
         ## then we know that only the local machine will be used.
@@ -62,13 +56,11 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, persistent=TRUE,
     } else if (myip == "<internal>") {
       myip <- myInternalIP()
     }
-    
-    workers <- ClusterRegistry("start", workers=workers, master=myip, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, master=myip, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
   run(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

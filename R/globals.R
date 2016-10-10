@@ -1,43 +1,26 @@
-#' @importFrom globals globalsOf packagesOf cleanup
-#' @importFrom utils packageVersion
-exportGlobals <- function(expr, envir, target=envir, tweak=NULL, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE) {
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweak, resolve=resolve, persistent=persistent)
-  globals <- gp$globals
-
-  ## Inject global objects?
-  if (!is.null(target)) {
-    for (name in names(globals)) {
-      target[[name]] <- globals[[name]]
-    }
-  }
-
-  invisible(globals)
-} # exportGlobals()
-
-
-
-#' @importFrom globals globalsOf packagesOf cleanup
+#' Retrieves global variables of an expression and their associated packages 
+#'
+#' @param expr An R expression whose globals should be found.
+#' @param envir The environment from which globals should be searched.
+#' @param tweak (optional) A function that takes an expression and returned a modified one.
+#' @param globals (optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on \code{expr} and \code{tweak} searching from environment \code{envir}.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names \code{globals} searching from environment \code{envir}.  If a named list or a Globals object, the globals are used as is.
+#' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
+#' persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.
+#' @param \dots Not used.
+#'
+#' @return A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list) and \code{packages} (a character string).
+#'
+#' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
+#'
+#' @importFrom globals globalsOf globalsByName as.Globals packagesOf cleanup
 #' @importFrom utils object.size
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
-  ## Local functions
-  attachedPackages <- function() {
-    pkgs <- search()
-    pkgs <- grep("^package:", pkgs, value=TRUE)
-    pkgs <- gsub("^package:", "", pkgs)
-    pkgs
+#'
+#' @keywords internal
+getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, globals=TRUE, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
+  ## Nothing to do?
+  if (is.logical(globals) && !globals) {
+    return(list(expr=expr, globals=list(), packages=character(0)))
   }
-
-  asPkgEnvironment <- function(pkg) {
-    name <- sprintf("package:%s", pkg)
-    if (!name %in% search()) return(emptyenv())
-    as.environment(name)
-  } ## asPkgEnvironment()
-
-
-  ## Maximum size of globals (to prevent too large exports) = 500 MiB
-  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
-  maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
-  stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
 
   ## Assert that all identified globals exists when future is created?
   if (persistent) {
@@ -54,22 +37,41 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   }
 
 
-  ## Identify globals
-  ## Algorithm for identifying globals
-  globals.method <- getOption("future.globals.method", "ordered")
-  globals <- globalsOf(expr, envir=envir, substitute=FALSE,
-               tweak=tweak,
-               dotdotdot="return",
-               primitive=FALSE, base=FALSE,
-               unlist=TRUE,
-               mustExist=mustExist,
-               method=globals.method
-             )
+  ## Alt 1. Identify globals based on expr, envir and tweak
+  if (is.logical(globals)) {
+    stopifnot(length(globals) == 1, !is.na(globals))
+    ## Algorithm for identifying globals
+    globals.method <- getOption("future.globals.method", "ordered")
+    globals <- globalsOf(
+                 ## Passed to globals::findGlobals()
+                 expr, envir=envir, substitute=FALSE, tweak=tweak,
+                 ## Passed to globals::findGlobals() via '...'
+                 dotdotdot="return",
+                 method=globals.method,
+                 unlist=TRUE,
+                 ## Passed to globals::globalsByName()
+                 mustExist=mustExist
+               )
+  } else if (is.character(globals)) {
+    globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
+  } else if (inherits(globals, "Globals")) {
+    ## Keep as is
+  } else if (is.list(globals)) {
+    globals <- as.Globals(globals)
+  } else {
+    stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
+  }
+  stopifnot(inherits(globals, "Globals"))
 
+  ## Nothing more to do?
+  if (length(globals) == 0) {
+    return(list(expr=expr, globals=list(), packages=character(0)))
+  }
+  
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
-  if (inherits(globals$`...`, "DotDotDotList")) {
+  if (length(globals) > 0 && inherits(globals$`...`, "DotDotDotList")) {
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
@@ -77,8 +79,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       stop(msg)
     }
 
-    globals$`future.call.arguments` <- globals$`...`
-    globals$`...` <- NULL
+    names <- names(globals)
+    names[names == "..."] <- "future.call.arguments"
+    names(globals) <- names
+    names <- NULL
 
     ## To please R CMD check
     a <- `future.call.arguments` <- NULL
@@ -95,7 +99,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## or may not point to packages (include base R package)
   if (resolve && length(globals) > 0L) {
     mdebug("Resolving globals that are futures ...")
-    idxs <- which(unlist(lapply(globals, FUN=inherits, "Future")))
+    idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
     mdebug("Number of global futures: %d", length(idxs))
     if (length(idxs) > 0) {
       mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
@@ -104,12 +108,18 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
-    mdebug("Resolving global that are futures ... DONE")
+    mdebug("Resolving globals that are futures ... DONE")
   }
 
 
   pkgs <- NULL
   if (length(globals) > 0L) {
+    asPkgEnvironment <- function(pkg) {
+      name <- sprintf("package:%s", pkg)
+      if (!name %in% search()) return(emptyenv())
+      as.environment(name)
+    } ## asPkgEnvironment()
+
     ## Append packages associated with globals
     pkgs <- packagesOf(globals)
 
@@ -136,6 +146,11 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## that are part of the base packages, which now are
     ## part of 'pkgs' if needed.
     globals <- cleanup(globals)
+
+    ## Nothing more to do?
+    if (length(globals) == 0) {
+      return(list(expr=expr, globals=list(), packages=pkgs))
+    }
   }
 
 
@@ -153,6 +168,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
 
   ## Protect against user error exporting too large objects?
+  ## Maximum size of globals (to prevent too large exports) = 500 MiB
+  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
+  maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
+  stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
   if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
     sizes <- lapply(globals, FUN=object.size)
     sizes <- unlist(sizes, use.names=TRUE)
@@ -189,9 +208,17 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## available for all R sessions / implementations.
   pkgs <- setdiff(pkgs, "base")
   if (length(pkgs) > 0L) {
+    ## Local functions
+    attachedPackages <- function() {
+      pkgs <- search()
+      pkgs <- grep("^package:", pkgs, value=TRUE)
+      pkgs <- gsub("^package:", "", pkgs)
+      pkgs
+    }
+    
     ## Record which packages in 'pkgs' that are loaded and
     ## which of them are attached (at this point in time).
-    isLoaded <- is.element(pkgs, loadedNamespaces())
+    ## isLoaded <- is.element(pkgs, loadedNamespaces())
     isAttached <- is.element(pkgs, attachedPackages())
     pkgs <- pkgs[isAttached]
   }
