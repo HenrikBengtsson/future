@@ -1,3 +1,11 @@
+# CRAN submission future 1.1.1
+on 2015-10-10
+
+Fixing R CMD check test error on CRAN r-devel-macos-x86_64-clang server that was (re-)introduced in future 1.1.0, which was submitted yesterday.
+
+Sorry about that and thanks in advance
+
+
 # CRAN submission future 1.1.0
 on 2015-10-09
 
