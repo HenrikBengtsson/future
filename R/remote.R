@@ -26,26 +26,30 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'
 
-    if (revtunnel) {
-      ## Default is that reverse tunnel uses 127.0.0.1 / localhost.
-      if (is.null(myip)) myip <- "127.0.0.1"
-    } else if (is.null(myip)) {
-      ## Guess what type of IP to use
-    
-      if (all(workers %in% c("localhost", "127.0.0.1"))) {
-        ## For conveniency, if all workers are on the localhost,
-        ## then we know that only the local machine will be used.
-	
-	## (a) We use 127.0.0.1 because it's slightly more generic 
-	##     than localhost.
-        myip <- "127.0.0.1"
-	
-	## (b) We can also use the pathname of the currently running
-	##     R session, file.path(R.home("bin"), "Rscript"), rather
-	##     than 'Rscript' which is the best guess we can make for
-	##     a remote machine.  This is controlled by 'homogeneous'.
-        homogeneous <- TRUE
-      } else {
+    if (all(workers %in% c("localhost", "127.0.0.1"))) {
+      ## For conveniency, if all workers are on the localhost,
+      ## then we know that only the local machine will be used.
+
+      ## (a) We can use the pathname of the currently running R
+      ##     session, file.path(R.home("bin"), "Rscript"), rather
+      ##     than 'Rscript' which is the best guess we can make for
+      ##     a remote machine.  This is controlled by 'homogeneous'.
+      homogeneous <- TRUE
+
+      ## (b) No need to request reverse SSH tunnel (won't happen
+      ##     for 'localhost' anyways, but just in case)
+      revtunnel <- FALSE
+
+      ## (c) We use myip='127.0.0.1' because it's slightly more
+      ##     generic than 'localhost'.
+      myip <- "127.0.0.1"
+    } else {
+      if (revtunnel) {
+        ## Default is that reverse tunnel uses 127.0.0.1 / localhost.
+        if (is.null(myip)) myip <- "127.0.0.1"
+      } else if (is.null(myip)) {
+        ## The best guess we can make here is that the workers need
+        ## to connect back using our exernal IP address.
         myip <- "<external>"
       }
     }
