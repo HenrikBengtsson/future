@@ -2,6 +2,7 @@ Package: future
 ===============
 
 Version: 1.1.1-9000 [2016-10-12]
+o Add makeCluster2() - a more flexible parallel::makeCluster().
 o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
 
 
