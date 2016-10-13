@@ -1,74 +1,5 @@
 #' Create a Parallel Socket Cluster
 #'
-#' Creates a set of copies of \R running in parallel and communicating over sockets.
-#'
-#' @param spec Specification of the workers, e.g. number of background sessions or a vector of host names.
-#' @param user The SSH user name.  If NULL, then it is not specified.
-#' @param rshopts A character vector of optional SSH options.
-#' @param revtunnel If TRUE, reverse SSH tunneling is used.
-#' @param master The host name or the IP number of the master, as known to the workers.  If NULL, then it defaults to \code{Sys.info()[["nodename"]]} unless \code{revtunnel = TRUE} in case it defaults to \code{"localhost"}.
-#' @param ... Additional parameters passed to \code{\link[parallel:makeCluster]{makeCluster}()}.
-#' @param verbose If TRUE, informative messages are outputted.
-#'
-#' @return An object of class \code{c("SOCKcluster", "cluster")}.
-#'
-#' @example incl/makeCluster2.R
-#'
-#' @importFrom parallel makeCluster
-#' @importFrom utils capture.output
-#'
-#' @export
-makeCluster2 <- function(spec, user=NULL, rshopts=NULL, master=NULL, revtunnel=FALSE, ..., verbose=FALSE) {
-  if (is.null(spec)) return(NULL)
-
-  if (verbose) message("makeCluster2() ...")
-
-  ## HACKS:
-  ## 1. Don't pass ssh option `-l <user>` unless `user` is specified
-  ## 2. Connect via reverse SSH tunneling.
-  if (verbose) {
-    message(sprintf("tweak_parallel_PSOCK(user=%s, revtunnel=%s, rshopts=%s)",
-           is.null(user), revtunnel, is.null(rshopts)))
-  }
-  on.exit(tweak_parallel_PSOCK(reset=TRUE), add=TRUE)
-  tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=is.null(rshopts), use127.0.0.1=FALSE, multirscript=TRUE)
-
-  if (verbose) {
-    on.exit(suppressMessages(untrace(system)), add=TRUE)
-    suppressMessages(
-      trace(system, print=FALSE, tracer=quote(message(command)))
-    )
-  }
-
-  if (verbose) {
-    on.exit(message("makeCluster2() ... DONE"), add=TRUE)
-  }
-
-  if (is.null(master)) {
-    if (revtunnel) {
-      master <- "localhost"
-    } else {
-      master <- Sys.info()[["nodename"]]
-    }
-  }
-  
-  args <- list(spec=spec, user=user, rshopts=rshopts, revtunnel=revtunnel, master=master, ...)
-  
-  if (isTRUE(args$manual)) {
-    cluster <- do.call(makeCluster, args=args)
-  } else {
-    capture.output({
-      cluster <- do.call(makeCluster, args=args)
-    })
-  }
-
-  cluster
-} ## makeCluster2()
-
-
-
-#' Create a Parallel Socket Cluster
-#'
 #' @param workers The host names of workers (as a character vector) or
 #'              the number of localhost workers (as a positive integer).
 #' @param makeNode A function that creates a \code{"SOCKnode"}
@@ -93,7 +24,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- as.integer(workers)
     if (is.na(workers) || workers < 1L) {
-      stop("When numeric, argument 'workers' must be equal or greater than one: ", workers)
+      stop("Number of 'workers' must be one or greater: ", workers)
     }
     workers <- rep("localhost", times = workers)
   }
@@ -128,8 +59,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 } ## makeClusterPSOCK()
 
 
-#' @param worker The host name of the machine where the worker should run.
-#' @param master The host name of the master / calling machine, as known to the workers.
+#' @param worker The host name or IP number of the machine where the worker should run.
+#' @param master The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' @param port The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.
 #' @param timeout The timeout (in seconds) used for each sockect connection between the master and each worker (defaults to 30 days).
 #' @param rscript,homogeneous The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).
@@ -184,7 +115,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
   stopifnot(length(revtunnel) == 1L, !is.na(revtunnel))
   
   if (is.null(master)) {
-    if (localMachine || revtunnel) master <- "localhost"
+    if (localMachine || revtunnel) {
+      master <- "localhost"
+    } else {
+      master <- Sys.info()[["nodename"]]
+    }
   }
   stopifnot(!is.null(master))
 

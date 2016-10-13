@@ -51,7 +51,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)
   } else if (!inherits(workers, "cluster")) {
-    stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
+    stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
   stopifnot(length(workers) > 0)
 

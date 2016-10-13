@@ -17,8 +17,8 @@ ClusterRegistry <- local({
       stop("Unknown mode of argument 'workers': ", mode(workers))
     }
 
-    if (is.null(cluster) && action != "stop") {
-      cluster <<- makeCluster2(workers, ...)
+    if (length(cluster) == 0L && action != "stop") {
+      cluster <<- .makeCluster(workers, ...)
       last <<- workers
     }
 
@@ -28,11 +28,11 @@ ClusterRegistry <- local({
       ## Already setup?
       if (!identical(workers, last)) {
         ClusterRegistry(action="stop")
-        cluster <<- makeCluster2(workers, ...)
+        cluster <<- .makeCluster(workers, ...)
         last <<- workers
       }
     } else if (action == "stop") {
-      if (!is.null(cluster)) try(stopCluster(cluster), silent=TRUE)
+      if (length(cluster) > 0L) try(stopCluster(cluster), silent=TRUE)
       cluster <<- NULL
       last <<- NULL
     }
@@ -40,3 +40,9 @@ ClusterRegistry <- local({
     invisible(cluster)
   }
 }) ## ClusterRegistry()
+
+
+.makeCluster <- function(workers, ...) {
+  if (length(workers) == 0L) return(NULL)
+  makeClusterPSOCK(workers, ...)
+} ## .makeCluster()

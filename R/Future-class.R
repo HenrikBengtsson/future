@@ -63,7 +63,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
 }
 
 
-#' @importFrom utils head
+#' @importFrom utils head capture.output
 #' @export
 print.Future <- function(x, ...) {
   class <- class(x)
