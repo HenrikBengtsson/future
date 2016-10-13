@@ -11,8 +11,8 @@ cl <- makeClusterPSOCK(workers, revtunnel = FALSE, homogeneous = TRUE,
 ## on authentication and reverse SSH tunnelling
 cl <- makeClusterPSOCK("remote.server.org", user = "johnny",
                        revtunnel = FALSE,
-		       rshopts = c("-v", "-R 11000:gateway:11942"),
+                       rshopts = c("-v", "-R 11000:gateway:11942"),
                        master = "gateway", port = 11942,
-		       rscript = c("nice", "/path/to/Rscript"),
-		       rscript_args = c("--vanilla"),
+                       rscript = c("nice", "/path/to/Rscript"),
+                       rscript_args = c("--vanilla"),
                        dryrun = TRUE)
