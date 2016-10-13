@@ -14,7 +14,7 @@
 #' @details
 #' The \code{makeClusterPSOCK()} function is similar to \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the \pkg{parallel} package, but provides more flexibility in controlling the setup of the system calls that launch the background R workers and how to connect to external machines.
 #'
-#' @example incl/makeCluster2.R
+#' @example incl/makeClusterPSOCK.R
 #'
 #' @export
 makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., verbose = FALSE) {
@@ -77,7 +77,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param manual If TRUE the workers will need to be run manually.
 #' @param dryrun If TRUE, nothing is set up, but a message suggesting how to launch the worker from the terminal is outputted.  This is useful for troubleshooting.
 #'
-#' @return A \code{"SOCKnode"} or \code{"SOCK0node"} object
+#' @return \code{makeNodePSOCK()} returns a
+#'         \code{"SOCKnode"} or \code{"SOCK0node"} object
 #'         representing an established connection to a worker.
 #'
 #' @details
@@ -162,7 +163,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
   verbose <- as.logical(verbose)
   stopifnot(length(verbose) == 1L, !is.na(verbose))
 
-  rscript_args <- c("-e", shQuote("parallel:::.slaveRSOCK()"))
+  rscript_args <- c("-e", shQuote("parallel:::.slaveRSOCK()"), rscript_args)
   if (methods) {
     rscript_args <- c("--default-packages=datasets,utils,grDevices,graphics,stats,methods", rscript_args)
   }
@@ -192,11 +193,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
     }
+    rshopts <- paste(rshopts, collapse = " ")
     local_cmd <- paste(rshcmd, rshopts, worker, shQuote(cmd))
   } else {
     local_cmd <- cmd
   }
-
+  stopifnot(length(local_cmd) == 1L)
+  
   if (manual || dryrun) {
     msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
     if (!localMachine) {
