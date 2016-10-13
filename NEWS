@@ -1,8 +1,11 @@
 Package: future
 ===============
 
-Version: 1.1.1-9000 [2016-10-12]
-o Add makeCluster2() - a more flexible parallel::makeCluster().
+Version: 1.1.1-9000 [2016-10-13]
+o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
+  that allows for more flexible control of how PSOCK cluster workers
+  are set up and how they are launched and communicated with if running
+  on external machines.
 o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
 
 
