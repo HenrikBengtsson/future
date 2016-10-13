@@ -35,9 +35,13 @@ ClusterRegistry <- local({
     args <- list(workers, user=user, revtunnel=revtunnel, ...)
     args$master <- master
     
-    capture.output({
+    if (isTRUE(args$manual)) {
       cluster <- do.call(makeCluster, args=args)
-    })
+    } else {
+      capture.output({
+        cluster <- do.call(makeCluster, args=args)
+      })
+    }
 
     cluster
   }
