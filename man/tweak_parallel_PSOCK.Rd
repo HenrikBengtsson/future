@@ -5,7 +5,7 @@
 \title{Tweak PSOCK backend of the parallel package}
 \usage{
 tweak_parallel_PSOCK(user = TRUE, revtunnel = TRUE, rshopts = TRUE,
-  use127.0.0.1 = FALSE, reset = FALSE)
+  use127.0.0.1 = FALSE, multirscript = TRUE, reset = FALSE)
 }
 \arguments{
 \item{user}{If TRUE, parallel is tweaked to only pass username to SSH if it is specified via argument \code{user}.}
@@ -15,6 +15,8 @@ tweak_parallel_PSOCK(user = TRUE, revtunnel = TRUE, rshopts = TRUE,
 \item{rshopts}{If TRUE, parallel is tweaked so it is possible to specify additional command-line options to the \code{rshcmd} executable.}
 
 \item{use127.0.0.1}{If TRUE, \code{127.0.0.1} is used instead of \code{localhost}.}
+
+\item{multirscript}{If TRUE, cluster option \code{rscript} may be a vector of commands, which each are quoted and then concatenated with spaces.  Only relevant if \code{homogeneous = TRUE}.}
 
 \item{reset}{If TRUE, all tweaks are undone.}
 }

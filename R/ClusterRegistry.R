@@ -18,7 +18,7 @@ ClusterRegistry <- local({
              is.null(user), revtunnel)
     }
     on.exit(tweak_parallel_PSOCK(reset=TRUE), add=TRUE)
-    tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=TRUE)
+    tweak_parallel_PSOCK(user=is.null(user), revtunnel=revtunnel, rshopts=TRUE, use127.0.0.1=FALSE, multirscript=TRUE)
 
     if (debug) {
       on.exit(suppressMessages(untrace(system)), add=TRUE)

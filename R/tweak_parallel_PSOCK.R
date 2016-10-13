@@ -4,6 +4,7 @@
 #' @param revtunnel If TRUE, parallel is tweaked to make use of reverse SSH tunneling.
 #' @param rshopts If TRUE, parallel is tweaked so it is possible to specify additional command-line options to the \code{rshcmd} executable.
 #' @param use127.0.0.1 If TRUE, \code{127.0.0.1} is used instead of \code{localhost}.
+#' @param multirscript If TRUE, cluster option \code{rscript} may be a vector of commands, which each are quoted and then concatenated with spaces.  Only relevant if \code{homogeneous = TRUE}.
 #' @param reset If TRUE, all tweaks are undone.
 #'
 #' @return Nothing.
@@ -84,7 +85,7 @@ tweak_parallel_PSOCK <- local({
 
 
   ## tweak_parallel_PSOCK()
-  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=FALSE, reset=FALSE) {
+  function(user=TRUE, revtunnel=TRUE, rshopts=TRUE, use127.0.0.1=FALSE, multirscript=TRUE, reset=FALSE) {
     ## To please R CMD check
     .assignInNamespace <- NULL; rm(list=".assignInNamespace")
     
@@ -139,6 +140,10 @@ tweak_parallel_PSOCK <- local({
       ## Use '127.0.0.1' instead of 'localhost'
       if (use127.0.0.1) {
         newPSOCKnode <- gsub_body('socketConnection("localhost"', 'socketConnection("127.0.0.1"', fun=newPSOCKnode, fixed=TRUE)
+      }
+
+      if (multirscript) {
+        newPSOCKnode <- gsub_body('shQuote(getClusterOption("rscript", options))', 'paste(shQuote(getClusterOption("rscript", options)), collapse = " ")', fun=newPSOCKnode, fixed=TRUE)
       }
     }
 
