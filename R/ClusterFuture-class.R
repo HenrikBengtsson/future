@@ -271,6 +271,7 @@ value.ClusterFuture <- function(future, ...) {
     
     ## WORKAROUND: Need to clear cluster worker before garbage collection,
     ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+    ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
     clusterCall(cl[1], function() NULL)
     
     clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)

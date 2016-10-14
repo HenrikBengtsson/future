@@ -163,7 +163,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
   verbose <- as.logical(verbose)
   stopifnot(length(verbose) == 1L, !is.na(verbose))
 
-  rscript_args <- c("-e", shQuote("parallel:::.slaveRSOCK()"), rscript_args)
+  rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
   if (methods) {
     rscript_args <- c("--default-packages=datasets,utils,grDevices,graphics,stats,methods", rscript_args)
   }
