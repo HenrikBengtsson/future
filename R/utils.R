@@ -72,9 +72,12 @@ mdebug <- function(...) {
 #' @importFrom digest digest
 uuid <- local({
   value <- NULL
-  function() {
+  function(attributes=FALSE) {
     uuid <- value
-    if (!is.null(uuid)) return(uuid)
+    if (!is.null(uuid)) {
+      if (!attributes) attr(uuid, "info") <- NULL
+      return(uuid)
+    }
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
     host <- host[nzchar(host)][1]
@@ -90,6 +93,7 @@ uuid <- local({
     uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
     attr(uuid, "info") <- info
     value <<- uuid
+    if (!attributes) attr(uuid, "info") <- NULL
     uuid
   }
 })

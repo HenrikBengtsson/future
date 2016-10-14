@@ -46,7 +46,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
-  core$owner <- uuid()
+  core$owner <- uuid(attributes = TRUE)
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
@@ -126,7 +126,7 @@ assertOwner <- function(future, ...) {
     sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
   }
 
-  if (!identical(future$owner, uuid())) {
+  if (!identical(future$owner, uuid(attributes = TRUE))) {
     stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
   }
 

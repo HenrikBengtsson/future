@@ -63,7 +63,7 @@
   }
 
   ## Create UUID for this process
-  id <- uuid()
+  id <- uuid(attributes = TRUE)
   mdebug("R process uuid: %s", id)
 
   mdebug("Setting plan('default')")
