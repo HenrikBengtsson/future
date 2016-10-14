@@ -72,7 +72,7 @@ mdebug <- function(...) {
 #' @importFrom digest digest
 uuid <- local({
   value <- NULL
-  function(attributes=FALSE) {
+  function(attributes = FALSE) {
     uuid <- value
     if (!is.null(uuid)) {
       if (!attributes) attr(uuid, "info") <- NULL

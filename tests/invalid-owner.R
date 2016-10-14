@@ -14,13 +14,13 @@ plan(multisession, workers=3L)
 message("*** future() - invalid ownership ...")
 
 ## This R process
-uuid <- future:::uuid()
+uuid <- future:::uuid(attributes = TRUE)
 cat(sprintf("Main R process: %s\n", uuid))
 
 message("- Asserting ownership ...")
 
 message("Creating future #1:")
-f1 <- future({ future:::uuid() })
+f1 <- future({ future:::uuid(attributes = TRUE) })
 stopifnot(inherits(f1, "MultisessionFuture"))
 cat(sprintf("Future #1 session: %d\n", f1$node))
 v1 <- value(f1)
@@ -28,7 +28,7 @@ cat(sprintf("Future #1 R process: %s\n", v1))
 stopifnot(v1 != uuid)
 
 message("Creating future #2:")
-f2 <- future({ future:::uuid() })
+f2 <- future({ future:::uuid(attributes = TRUE) })
 stopifnot(inherits(f2, "MultisessionFuture"))
 cat(sprintf("Future #2 session: %d\n", f2$node))
 v2 <- value(f2)
@@ -52,7 +52,7 @@ cat(sprintf("Future #4 owner: %s\n", v4))
 stopifnot(v4 == uuid)
 
 message("Creating future #5:")
-f5 <- future({ stopifnot(f1$owner != future:::uuid()); "not-owner" })
+f5 <- future({ stopifnot(f1$owner != future:::uuid(attributes = TRUE)); "not-owner" })
 stopifnot(inherits(f5, "MultisessionFuture"))
 v5 <- value(f5)
 stopifnot(v5 == "not-owner")
