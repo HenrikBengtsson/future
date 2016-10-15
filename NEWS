@@ -1,11 +1,13 @@
 Package: future
 ===============
 
-Version: 1.1.1-9000 [2016-10-13]
+Version: 1.1.1-9000 [2016-10-15]
 o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
   that allows for more flexible control of how PSOCK cluster workers
   are set up and how they are launched and communicated with if running
   on external machines.
+o Added generic as.cluster() for coercing objects to cluster objects
+  to be used as in plan(cluster, workers = as.cluster(x)).
 o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
 
 
