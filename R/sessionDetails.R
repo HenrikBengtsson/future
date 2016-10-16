@@ -49,7 +49,6 @@ print.sessionDetails <- function(x, output = c("output", "message"), headers = T
     width <- width - 1L * newline
     if (nzchar(s)) {
       padding <- width - nchar(s) - 3L
-      R.utils::cstr(padding)
       x <- c("= ", s, " ", rep("=", times = padding))
     } else {
       x <- rep("=", times = width)
