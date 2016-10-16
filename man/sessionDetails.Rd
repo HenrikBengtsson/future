@@ -4,10 +4,10 @@
 \alias{sessionDetails}
 \title{Outputs details on the current R session}
 \usage{
-sessionDetails()
+sessionDetails(env = FALSE)
 }
 \arguments{
-\item{output}{...}
+\item{env}{If TRUE, \code{Sys.getenv()} information is returned.}
 }
 \value{
 Invisibly a list of all details.

@@ -1,6 +1,6 @@
 #' Outputs details on the current R session
 #'
-#' @param output ...
+#' @param env If TRUE, \code{Sys.getenv()} information is returned.
 #'
 #' @return Invisibly a list of all details.
 #'
