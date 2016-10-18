@@ -9,6 +9,7 @@
 #'
 #' @importFrom utils sessionInfo
 #' @export
+#' @keywords internal
 sessionDetails <- function(env = FALSE) {
   ## Gather all details
   details <- list(
