@@ -25,7 +25,8 @@ sessionDetails <- function(env = FALSE) {
     ".Machine" = .Machine,
     "getwd()" = getwd(),
     "tempdir()" = tempdir(),
-    "options()" = options()
+    "options()" = options(),
+    "warnings()" = warnings()
   )
 
   ## May contain secret keys and tokens. Exclude by default.
