@@ -223,7 +223,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
 
   con <- socketConnection("localhost", port = port, server = TRUE, 
                  blocking = TRUE, open = "a+b", timeout = timeout)
-		 
+
   structure(list(con = con, host = worker, rank = rank),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
 } ## makeNodePSOCK()

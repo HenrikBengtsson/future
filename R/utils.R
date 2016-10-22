@@ -176,7 +176,7 @@ detectCores <- local({
       value <- getOption("future.availableCores.system")
       if (!is.null(value)) {
         value <- as.integer(value)
-	return(value)
+        return(value)
       }
       
       value <- parallel::detectCores()
@@ -188,7 +188,7 @@ detectCores <- local({
       ## Assert positive integer
       stopifnot(length(value) == 1L, is.numeric(value),
                 is.finite(value), value >= 1L)
-		
+
       res <<- value
     }
     res
