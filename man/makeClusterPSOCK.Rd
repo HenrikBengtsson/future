@@ -161,7 +161,7 @@ cl <- makeClusterPSOCK(
   ## User name (always 'ubuntu')
   user = "ubuntu",
   ## Use private SSH key registered with AWS
-  rshopts=c(
+  rshopts = c(
     "-o", "StrictHostKeyChecking=no",
     "-o", "IdentitiesOnly=yes",
     "-i", ssh_private_key_file
@@ -191,7 +191,7 @@ cl <- makeClusterPSOCK(
   ## User name (== SSH key label (sic!))
   user = user,
   ## Use private SSH key registered with GCE
-  rshopts=c(
+  rshopts = c(
     "-o", "StrictHostKeyChecking=no",
     "-o", "IdentitiesOnly=yes",
     "-i", ssh_private_key_file
