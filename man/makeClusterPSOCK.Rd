@@ -85,7 +85,9 @@ and / or the public IP address / host name of the master.
 
 If there is no communication between the master and a
 worker within the \code{timeout} limit, then the corresponding
-socket connection will be closed automatically.
+socket connection will be closed automatically.  This will
+eventually result in an error in code trying to access the
+connection.
 }
 \examples{
 ## Setup of three R workers on two remote machines are set up
