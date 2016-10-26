@@ -8,12 +8,12 @@
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = FALSE)
 
-makeNodePSOCK(worker = "localhost", master = NULL, port, timeout = 30 * 24
-  * 60 * 60, rscript = NULL, homogeneous = NULL, rscript_args = NULL,
-  methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE,
-  rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE,
-  verbose = FALSE)
+makeNodePSOCK(worker = "localhost", master = NULL, port,
+  connectTimeout = 2 * 60, timeout = 30 * 24 * 60 * 60, rscript = NULL,
+  homogeneous = NULL, rscript_args = NULL, methods = TRUE,
+  useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
+  rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL,
+  rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{workers}{The host names of workers (as a character vector) or
@@ -33,7 +33,9 @@ to a worker.}
 
 \item{master}{The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.}
 
-\item{timeout}{The timeout (in seconds) used for each sockect connection between the master and each worker (defaults to 30 days).}
+\item{connectTimeout}{The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes).}
+
+\item{timeout}{The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).}
 
 \item{rscript, homogeneous}{The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).}
 

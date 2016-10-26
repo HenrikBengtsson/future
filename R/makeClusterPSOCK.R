@@ -62,7 +62,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param worker The host name or IP number of the machine where the worker should run.
 #' @param master The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' @param port The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.
-#' @param timeout The timeout (in seconds) used for each sockect connection between the master and each worker (defaults to 30 days).
+#' @param connectTimeout The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes).
+#' @param timeout The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).
 #' @param rscript,homogeneous The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).
 #' @param rscript_args Additional arguments to \code{Rscript} (as a character vector).
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
@@ -98,7 +99,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = 2*60, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   rshcmd <- as.character(rshcmd)
@@ -223,8 +224,19 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, timeout = 3
     system(local_cmd, wait = FALSE, input = input)
   }
 
-  con <- socketConnection("localhost", port = port, server = TRUE, 
-                 blocking = TRUE, open = "a+b", timeout = timeout)
+  if (verbose) {
+    message(sprintf("Waiting for worker #%s on %s to connect back", rank, sQuote(worker)))
+  }
+  
+  con <- local({
+     setTimeLimit(elapsed = connectTimeout, transient = FALSE)
+     socketConnection("localhost", port = port, server = TRUE, 
+                      blocking = TRUE, open = "a+b", timeout = timeout)
+  })
+
+  if (verbose) {
+    message(sprintf("Connection with worker #%s on %s established", rank, sQuote(worker)))
+  }
 
   structure(list(con = con, host = worker, rank = rank),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
