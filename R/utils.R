@@ -332,9 +332,32 @@ myInternalIP <- local({
     os <- R.version$os
     pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
     if (grepl("^linux", os)) {
-      res <- system2("hostname", args="-I", stdout=TRUE)
+      ## (i) Try command 'hostname -I'
+      res <- tryCatch({
+        system2("hostname", args="-I", stdout=TRUE)
+      }, error = identity)
+
+      ## (ii) Try commands 'ifconfig'
+      if (inherits(res, "simpleError")) {
+        res <- tryCatch({
+          system2("ifconfig", stdout=TRUE)
+        }, error = identity)
+      }
+
+      ## (ii) Try command '/sbin/ifconfig'
+      if (inherits(res, "simpleError")) {
+        res <- tryCatch({
+          system2("/sbin/ifconfig", stdout=TRUE)
+        }, error = identity)
+      }
+      
+      ## Failed?
+      if (inherits(res, "simpleError")) res <- NA_character_
+      
       res <- grep(pattern, res, value=TRUE)
       res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
+      res <- grep(pattern, res, value=TRUE)
+      res <- unlist(strsplit(res, split=":", fixed=FALSE), use.names=FALSE)
       res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
