@@ -238,7 +238,7 @@ value.ClusterFuture <- function(future, ...) {
   }, simpleError = function(ex) ex)
 
   if (inherits(ack, "simpleError")) {
-    ex <- FutureError(sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason reported was %s", class(future)[1], node, cl$host, sQuote(ack$message)), call=ack$call, future=future)
+    ex <- FutureError(sprintf("Failed to retrieve the value of %s from cluster node #%d on %s. The reason reported was %s", class(future)[1], node, sQuote(cl[[1]]$host), sQuote(ack$message)), call=ack$call, future=future)
     stop(ex)
   }
   stopifnot(isTRUE(ack))

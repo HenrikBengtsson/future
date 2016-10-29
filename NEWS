@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.1.1-9000 [2016-10-16]
+Version: 1.1.1-9000 [2016-10-29]
 o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
   that allows for more flexible control of how PSOCK cluster workers
   are set up and how they are launched and communicated with if running
@@ -11,6 +11,13 @@ o Added generic as.cluster() for coercing objects to cluster objects
   a c() implementation for cluster objects such that multiple cluster
   objects can be combined into a single one.
 o Added sessionDetails() for gathering details of the current R session.
+o BUG FIX: value() for ClusterFuture would give cryptic error message
+  "Error in stop(ex) : bad error message" if the cluster worker had
+  crashed / terminated.  Now it will instead give an error message like
+  "Failed to retrieve the value of ClusterFuture from cluster node #1 on
+  'localhost'. The reason reported was ‘error reading from connection".
+  Thanks to Liang LÜ at Institute of Zoology, CAS, China for reporting
+  on this problem.
 o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
 
 
