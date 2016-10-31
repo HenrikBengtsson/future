@@ -122,7 +122,7 @@ print.Future <- function(x, ...) {
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
-    info <- attr(uuid, "info")
+    info <- attr(uuid, "source")
     sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
   }
 

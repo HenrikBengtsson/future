@@ -67,6 +67,17 @@ mdebug <- function(...) {
 } ## mdebug()
 
 
+## Create a universally unique identifier (UUID) for an R object
+#' @importFrom digest digest
+uuid_of <- function(source, keep_source = FALSE) {
+  uuid <- digest(source)
+  uuid <- strsplit(uuid, split="")[[1]]
+  uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
+  if (keep_source) attr(uuid, "source") <- source
+  uuid
+} ## uuid_of()
+
+
 ## A universally unique identifier (UUID) for the current
 ## R process.  Generated only once.
 #' @importFrom digest digest
@@ -75,7 +86,7 @@ uuid <- local({
   function(attributes = FALSE) {
     uuid <- value
     if (!is.null(uuid)) {
-      if (!attributes) attr(uuid, "info") <- NULL
+      if (!attributes) attr(uuid, "source") <- NULL
       return(uuid)
     }
     info <- Sys.info()
@@ -88,12 +99,9 @@ uuid <- local({
       time=Sys.time(),
       random=sample.int(.Machine$integer.max, size=1L)
     )
-    uuid <- digest(info)
-    uuid <- strsplit(uuid, split="")[[1]]
-    uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
-    attr(uuid, "info") <- info
+    uuid <- uuid_of(info, keep_source = TRUE)
     value <<- uuid
-    if (!attributes) attr(uuid, "info") <- NULL
+    if (!attributes) attr(uuid, "source") <- NULL
     uuid
   }
 })
