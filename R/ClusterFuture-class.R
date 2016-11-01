@@ -266,7 +266,7 @@ value.ClusterFuture <- function(future, ...) {
       return(sprintf("EXCEPTIONAL ERROR: %s", msg))
     }
     
-    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d on %s. ", class(future)[1], node, sQuote(cl[[1]]$host), uuid)
+    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d on %s. ", class(future)[1], node, sQuote(cl[[1]]$host))
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
     ex <- FutureError(msg, call=ack$call, future=future)
     stop(ex)
