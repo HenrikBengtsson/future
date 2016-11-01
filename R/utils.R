@@ -77,6 +77,23 @@ uuid_of <- function(source, keep_source = FALSE) {
   uuid
 } ## uuid_of()
 
+uuid_of_connection <- function(con, ..., must_work = TRUE) {
+  stopifnot(inherits(con, "connection"))
+  if (must_work) {
+    info <- summary(con)
+    info$opened <- NULL
+    uuid <- uuid_of(info, ...)
+  } else {
+    uuid <- tryCatch({
+      info <- summary(con)
+      info$opened <- NULL
+      uuid_of(info, ...)
+    }, error = function(ex) {
+      attr(con, "uuid")
+    })
+  }
+  uuid
+} ## uuid_of_connection()
 
 ## A universally unique identifier (UUID) for the current
 ## R process.  Generated only once.
