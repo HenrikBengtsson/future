@@ -4,7 +4,7 @@
 #' @rdname future
 #'
 #' @export
-futureCall <- function(FUN, args=NULL, envir=parent.frame(), globals=TRUE, evaluator=plan(), ...) {
+futureCall <- function(FUN, args=NULL, envir=parent.frame(), globals=TRUE, evaluator=plan("next"), ...) {
   stopifnot(is.function(FUN))
   stopifnot(is.list(args))
 

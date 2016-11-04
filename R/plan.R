@@ -72,9 +72,10 @@
 #' @export
 plan <- local({
   defaultStrategy <- structure(eager, call=substitute(plan(eager)))
-
+  defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
+  
   ## Stack of type of futures to use
-  stack <- list(defaultStrategy)
+  stack <- defaultStack
 
   ## Main function
   function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
@@ -84,7 +85,9 @@ plan <- local({
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
-      return(stack[[1L]])
+      strategy <- stack[[1L]]
+      class(strategy) <- c("FutureStrategy", class(strategy))
+      return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", eager)
     } else if (identical(strategy, "list")) {
@@ -92,13 +95,13 @@ plan <- local({
       return(stack)
     } else if (identical(strategy, "reset")) {
       ## Rest stack of future strategies?
-      stack <<- list(defaultStrategy)
+      stack <<- defaultStack
       return(stack)
     } else if (identical(strategy, "pop")) {
       ## Pop strategy stack and return old stack (so it can be pushed back later)
       oldStack <- stack
       stack <<- stack[-1L]
-      if (length(stack) == 0L) stack <<- list(defaultStrategy)
+      if (length(stack) == 0L) stack <<- defaultStack
       return(oldStack)
     }
 
@@ -112,6 +115,7 @@ plan <- local({
       for (ii in seq_along(strategy)) {
         stopifnot(is.function(strategy[[ii]]))
       }
+      class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
       return(invisible(oldStack[[1L]]))
     }
@@ -194,6 +198,7 @@ plan <- local({
     }
 
     ## Set new strategy for futures
+    class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
     stopifnot(is.list(stack), length(stack) >= 1L)
 
@@ -205,4 +210,53 @@ plan <- local({
 supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession", "multiprocess")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
+}
+
+
+#' @export
+print.future <- function(x, ...) {
+  class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))
+  s <- sprintf("%s:", class[1])
+  specs <- list()
+  args <- deparse(args(x))
+  args <- args[-length(args)]
+  args <- gsub("(^[ ]+|[ ]+$)", "", args)
+  args <- paste(args, collapse = " ")
+  specs$args <- args
+  specs$tweaked <- inherits(x, "tweaked")
+  specs$call <- deparse(attr(x, "call"))
+  specs <- sprintf("- %s: %s", names(specs), unlist(specs))
+  s <- c(s, specs)
+  s <- paste(s, collapse = "\n")
+  cat(s, "\n", sep="")
+  invisible(x)
+}
+
+#' @export
+print.FutureStrategy <- print.future
+
+
+#' @export
+print.FutureStrategyList <- function(x, ...) {
+  s <- "List of future strategies:"
+  
+  for (kk in seq_along(x)) {
+    x_kk <- x[[kk]]
+    class <- setdiff(class(x_kk), c("tweaked", "function"))
+    s_kk <- sprintf("%d. %s:", kk, class[1])
+    specs <- list()
+    args <- deparse(args(x_kk))
+    args <- args[-length(args)]
+    args <- gsub("(^[ ]+|[ ]+$)", "", args)
+    args <- paste(args, collapse = " ")
+    specs$args <- args
+    specs$tweaked <- inherits(x_kk, "tweaked")
+    specs$call <- deparse(attr(x_kk, "call"))
+    specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
+    s <- c(s, s_kk, specs)
+  }
+
+  s <- paste(s, collapse = "\n")
+  cat(s, "\n", sep="")
+  invisible(x)
 }
