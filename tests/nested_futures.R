@@ -22,7 +22,7 @@ for (strategy1 in strategies) {
 
       ## IMPORTANT: Use future::plan() - not just plan() - otherwise
       ## we're exporting the plan() function including its local stack!
-      plan_a <- future::plan("list")
+      plan_a <- unclass(future::plan("list"))
       nested_a <- nested[-1]
 
       stopifnot(
