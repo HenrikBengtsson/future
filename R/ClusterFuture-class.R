@@ -58,21 +58,8 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   }
   stopifnot(length(workers) > 0)
 
-  ## Attaching UUID for each cluster connection.
-  ## This is needed in order to be able to assert that we later
-  ## actually work with the same connection.  See R-devel thread
-  ## 'closeAllConnections() can really mess things up' on 2016-10-30
-  ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-  for (ii in seq_along(workers)) {
-    worker <- workers[[ii]]
-    con <- worker$con
-    uuid <- attr(con, "uuid")
-    if (is.null(uuid)) {
-      attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
-      worker$con <- con
-      workers[[ii]] <- worker
-    }
-  }
+  ## Attaching UUID for each cluster connection, unless already done.
+  workers <- addClusterUUIDs(workers)
   
   ## Attach name to cluster?
   name <- attr(workers, "name")

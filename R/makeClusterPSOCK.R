@@ -54,7 +54,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
      cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii, verbose = verbose)
   }     
   class(cl) <- c("SOCKcluster", "cluster")
-  
+
+  ## Attaching UUID for each cluster connection.  This is done because
+  ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
+  cl <- addClusterUUIDs(cl)
+
   cl
 } ## makeClusterPSOCK()
 
@@ -241,3 +245,28 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   structure(list(con = con, host = worker, rank = rank),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
 } ## makeNodePSOCK()
+
+
+
+## Attaching UUID for each cluster connection.
+## This is needed in order to be able to assert that we later
+## actually work with the same connection.  See R-devel thread
+## 'closeAllConnections() can really mess things up' on 2016-10-30
+## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
+addClusterUUIDs <- function(cl) {
+  stopifnot(inherits(cl, "cluster"))
+  
+  for (ii in seq_along(cl)) {
+    node <- cl[[ii]]
+    if (is.null(node)) next  ## Happens with dryrun = TRUE
+    con <- node$con
+    uuid <- attr(con, "uuid")
+    if (is.null(uuid)) {
+      attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
+      node$con <- con
+      cl[[ii]] <- node
+    }
+  }
+  
+  cl
+} ## addClusterUUIDs()
