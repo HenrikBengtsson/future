@@ -66,7 +66,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param worker The host name or IP number of the machine where the worker should run.
 #' @param master The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' @param port The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.
-#' @param connectTimeout The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes).
+#' @param connectTimeout The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}
 #' @param timeout The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).
 #' @param rscript,homogeneous The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).
 #' @param rscript_args Additional arguments to \code{Rscript} (as a character vector).
@@ -100,6 +100,15 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' socket connection will be closed automatically.  This will
 #' eventually result in an error in code trying to access the
 #' connection.
+#'
+#' @section Connection time out:
+#' Argument \code{connectTimeout} does \emph{not} work properly
+#' on Unix and macOS due to limitation in \R itself.  For more details
+#' on this, please R devel thread 'BUG?: On Linux setTimeLimit() fails
+#' to propagate timeout error when it occurs (works on Windows)' on
+#' 2016-10-26 (\url{https://stat.ethz.ch/pipermail/r-devel/2016-October/073309.html}).  When used, the timeout will eventually trigger an error, but
+#' it won't happen until the socket connection timeout \code{timeout}
+#' itself happens.
 #'
 #' @rdname makeClusterPSOCK
 #' @export

@@ -33,7 +33,7 @@ to a worker.}
 
 \item{master}{The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.}
 
-\item{connectTimeout}{The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes).}
+\item{connectTimeout}{The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}}
 
 \item{timeout}{The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).}
 
@@ -90,6 +90,16 @@ worker within the \code{timeout} limit, then the corresponding
 socket connection will be closed automatically.  This will
 eventually result in an error in code trying to access the
 connection.
+}
+\section{Connection time out}{
+
+Argument \code{connectTimeout} does \emph{not} work properly
+on Unix and macOS due to limitation in \R itself.  For more details
+on this, please R devel thread 'BUG?: On Linux setTimeLimit() fails
+to propagate timeout error when it occurs (works on Windows)' on
+2016-10-26 (\url{https://stat.ethz.ch/pipermail/r-devel/2016-October/073309.html}).  When used, the timeout will eventually trigger an error, but
+it won't happen until the socket connection timeout \code{timeout}
+itself happens.
 }
 \examples{
 ## Setup of three R workers on two remote machines are set up
