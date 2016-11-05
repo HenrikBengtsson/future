@@ -122,15 +122,15 @@ stopifnot(formals(fcn)$local == FALSE)
 message("*** old <- plan(new)")
 truth <- plan()
 old <- plan(lazy, local=FALSE)
-stopifnot(identical(old, truth))
+stopifnot(identical(unclass(old), unclass(truth)))
 
 curr <- plan()    ## curr == lazy(local=FALSE)
 prev <- plan(old) ## prev == lazy(local=FALSE)
-stopifnot(identical(curr, prev))
+stopifnot(identical(unclass(curr), unclass(prev)))
 
 curr <- plan()    ## curr == old
-stopifnot(identical(curr, old))
-stopifnot(identical(curr, truth))
+stopifnot(identical(unclass(curr), unclass(old)))
+stopifnot(identical(unclass(curr), unclass(truth)))
 
 message("*** %plan% 'eager'")
 plan(lazy)
