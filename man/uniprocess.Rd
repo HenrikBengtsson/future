@@ -15,7 +15,8 @@ eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   local = TRUE, earlySignal = FALSE, label = NULL, lazy = FALSE, ...)
 
 transparent(expr, envir = parent.frame(), substitute = TRUE,
-  globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL, ...)
+  globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL,
+  lazy = FALSE, ...)
 
 lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
   local = TRUE, earlySignal = FALSE, label = NULL, lazy = TRUE, ...)

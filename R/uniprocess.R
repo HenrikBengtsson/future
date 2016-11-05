@@ -58,12 +58,11 @@ class(eager) <- c("eager", "uniprocess", "future", "function")
 
 #' @rdname uniprocess
 #' @export
-transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, label=NULL, ...) {
+transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, label=NULL, lazy=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  future <- eager(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label)
-  invisible(future)
+  uniprocess(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
 }
-class(transparent) <- c("transparent", "eager", "uniprocess", "future", "function")
+class(transparent) <- c("transparent", "uniprocess", "future", "function")
 
 #' @rdname uniprocess
 #' @export
