@@ -26,18 +26,3 @@ resolved.LazyFuture <- function(x, ...) {
   value(x, signal=FALSE)
   NextMethod("resolved")
 }
-
-#' @export
-value.LazyFuture <- function(future, signal=TRUE, ...) {
-  if (future$state == 'created') {
-    future <- run(future)
-  }
-
-  value <- future$value
-  if (signal && future$state == 'failed') {
-    mdebug("Future state: %s", sQuote(value))
-    stop(FutureError(value, future=future))
-  }
-
-  value
-}
