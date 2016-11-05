@@ -52,10 +52,10 @@ as soon as possible or not.}
 \item{...}{Additional arguments passed to the "evaluator".}
 }
 \value{
-An \link{UniprocessFuture}.
+A \link{UniprocessFuture}.
 }
 \description{
-An uniprocess future is a future that is evaluated sequentially in the
+A uniprocess future is a future that is evaluated sequentially in the
 current R session.  The default is to resolve it eagerly, which means
 that its \emph{value is computed and resolved immediately}, which is
 how regular expressions are evaluated in R.

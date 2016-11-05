@@ -1,6 +1,6 @@
 #' Create a uniprocess future whose value will be in the current R session
 #'
-#' An uniprocess future is a future that is evaluated sequentially in the
+#' A uniprocess future is a future that is evaluated sequentially in the
 #' current R session.  The default is to resolve it eagerly, which means
 #' that its \emph{value is computed and resolved immediately}, which is
 #' how regular expressions are evaluated in R.
@@ -15,7 +15,7 @@
 #' @param lazy If \code{FALSE} (default), the future is resolved eagerly
 #' (immediately), otherwise not.
 #'
-#' @return An \link{UniprocessFuture}.
+#' @return A \link{UniprocessFuture}.
 #'
 #' @example incl/uniprocess.R
 #'
