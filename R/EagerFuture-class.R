@@ -11,7 +11,7 @@
 #' @export
 #' @name EagerFuture-class
 #' @keywords internal
-EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, ...) {
+EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=FALSE, ...)
   structure(f, class=c("EagerFuture", class(f)))

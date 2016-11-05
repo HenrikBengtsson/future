@@ -11,7 +11,7 @@
 #' @export
 #' @name LazyFuture-class
 #' @keywords internal
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
   f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
   structure(f, class=c("LazyFuture", class(f)))

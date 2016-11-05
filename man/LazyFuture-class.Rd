@@ -6,9 +6,12 @@
 \title{A lazy future is a future whose value will be resolved at the time when it is requested}
 \usage{
 LazyFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  globals = TRUE, local = TRUE, ...)
+  globals = TRUE, local = TRUE, lazy = FALSE, ...)
 }
 \arguments{
+\item{lazy}{If \code{FALSE} (default), then the setup and validation of
+global variables are done for eager evaluation, otherwise not.}
+
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
