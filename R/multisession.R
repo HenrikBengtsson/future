@@ -66,11 +66,11 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TR
   workers <- as.integer(workers)
   stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
 
-  ## Fall back to eager futures if only a single R session can be used,
+  ## Fall back to lazy uniprocess futures if only a single R session can be used,
   ## i.e. the use the current main R process.
   if (workers == 1L) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
-    return(lazy(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, label=label))
+    return(uniprocess(expr, envir=envir, substitute=FALSE, globals=globals, local=TRUE, label=label, lazy=TRUE))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to

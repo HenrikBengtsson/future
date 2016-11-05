@@ -60,7 +60,7 @@ instead of
 do.call("file_ext", list("foo.txt"))
 ```
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
-It may also become a problem with lazy uniprocess futures if the intended function is redefined after the future is resolved.  For example,
+It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
 > library("listenv")
@@ -133,7 +133,7 @@ Error: Invalid usage of futures: A future whose value has not yet been collected
 ```
 As previously, this can be avoided by making sure `x$a` is resolved first, which can be one in various ways, e.g. `dummy <- x$a`, `resolve(x$a)` and `force(x$a)`.
 
-_Footnote_: (*) Although uniprocess futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
+_Footnote_: (*) Although eager futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
 
 
 ## Miscellaneous

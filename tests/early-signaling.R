@@ -4,9 +4,9 @@ options(future.debug=FALSE)
 
 message("*** Early signaling of conditions ...")
 
-message("*** Early signaling of conditions with eager futures ...")
+message("*** Early signaling of conditions with uniprocess futures ...")
 
-plan(eager)
+plan(uniprocess)
 f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 r <- resolved(f)
@@ -14,11 +14,11 @@ stopifnot(r)
 v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
 
-plan(eager, earlySignal=TRUE)
+plan(uniprocess, earlySignal=TRUE)
 f <- try(future({ stop("bang!") }), silent=TRUE)
 stopifnot(inherits(f, "try-error"))
 
-message("*** Early signaling of conditions with eager futures ... DONE")
+message("*** Early signaling of conditions with uniprocess futures ... DONE")
 
 
 message("*** Early signaling of conditions with lazy futures ...")

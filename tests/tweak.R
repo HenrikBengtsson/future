@@ -57,7 +57,7 @@ stopifnot(identical(formals(lazy2)$local, FALSE))
 
 message("*** y %<-% { expr } %tweak% tweaks ...")
 
-plan(eager)
+plan(uniprocess)
 a <- 0
 
 x %<-% { a <- 1; a }
@@ -69,7 +69,7 @@ print(x)
 stopifnot(a == 2, x == 2)
 
 
-plan(eager, local=FALSE)
+plan(uniprocess, local=FALSE)
 a <- 0
 
 x %<-% { a <- 1; a }
@@ -82,7 +82,7 @@ stopifnot(a == 1, x == 2)
 
 
 # Preserve nested futures
-plan(list(A=eager, B=tweak(eager, local=FALSE)))
+plan(list(A=uniprocess, B=tweak(uniprocess, local=FALSE)))
 a <- 0
 
 x %<-% {
@@ -111,7 +111,7 @@ res <- tryCatch(tweak(multisession, gc=TRUE), condition=identity)
 stopifnot(inherits(res, "tweaked"))
 
 ## Argument 'gc' is unknown
-res <- tryCatch(tweak(eager, gc=TRUE), condition=identity)
+res <- tryCatch(tweak(uniprocess, gc=TRUE), condition=identity)
 stopifnot(inherits(res, "warning"))
 
 res <- tryCatch(tweak(multicore, gc=TRUE), condition=identity)
@@ -126,7 +126,7 @@ message("*** tweak() - exceptions ...")
 res <- try(tweak("<unknown-future-strategy>"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-res <- try(tweak(eager, "unnamed-argument"), silent=TRUE)
+res <- try(tweak(uniprocess, "unnamed-argument"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** tweak() - exceptions ... DONE")

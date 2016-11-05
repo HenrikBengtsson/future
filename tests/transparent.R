@@ -8,7 +8,7 @@ f <- try(transparent({
   42L
 }), silent=FALSE)
 print(f)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
 
 print(resolved(f))
 y <- value(f)
@@ -22,7 +22,7 @@ f <- try(future({
   42L
 }), silent=FALSE)
 print(f)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
 
 print(resolved(f))
 y <- value(f)

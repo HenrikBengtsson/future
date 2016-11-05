@@ -1,20 +1,50 @@
 #' An uniprocess future is a future whose value will be resolved synchroneously in the current process
 #'
 #' @inheritParams Future-class
+#' @param lazy If \code{FALSE} (default), then the setup and validation of
+#' global variables are done for eager evaluation, otherwise not.
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.
 #'
 #' @seealso
 #' To evaluate an expression using "uniprocess future", see functions
-#' \code{\link{eager}()} and \code{\link{lazy}()}.
+#' \code{\link{uniprocess}()}.
 #'
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, ...) {
+UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
+
+  if (lazy) {
+    ## Evaluate in a local environment?
+    if (local) {
+      envir <- new.env(parent=envir)
+    } else {
+      if (!is.logical(globals) || globals) {
+        stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time.")
+      }
+    }
+  }
+
+  ## Global objects
+  assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
+  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
+
+  ## Assign?
+  if (length(gp) > 0 && (lazy || assignToTarget)) {
+    target <- new.env(parent=envir)
+    globalsT <- gp$globals
+    for (name in names(globalsT)) {
+      target[[name]] <- globalsT[[name]]
+    }
+    globalsT <- NULL
+    envir <- target
+  }
+  gp <- NULL
+
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -63,4 +93,36 @@ run.UniprocessFuture <- function(future, ...) {
   signalEarly(future, collect=FALSE)
 
   invisible(future)
+}
+
+
+
+#' @export
+resolved.UniprocessFuture <- function(x, ...) {
+  if (x$lazy) {
+    ## resolved() for lazy uniprocess futures must force value()
+    ## such that the future gets resolved.  The reason for this
+    ## is so that polling is always possible, e.g.
+    ## while(!resolved(f)) Sys.sleep(5);
+    value(x, signal=FALSE)
+  }
+  NextMethod("resolved")
+}
+
+
+#' @rdname UniprocessFuture-class
+#' @export
+EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+  if (substitute) expr <- substitute(expr)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=FALSE, ...)
+  structure(f, class=c("EagerFuture", class(f)))
+}
+
+
+#' @rdname UniprocessFuture-class
+#' @export
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+  if (substitute) expr <- substitute(expr)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
+  structure(f, class=c("LazyFuture", class(f)))
 }

@@ -74,11 +74,11 @@ plan(list(multiprocess, eager))
 ```
 The internals for processing multiprocess future queries `availableCores()` to infer how many cores can be used simultaneously, so there is no need to explicitly specify that there are 8 cores available.
 
-_Comment_: Since synchronous is the default future, we could skip trailing synchronous eager futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(uniprocess)`.  However, it does not hurt to be explicit.
+_Comment_: Since synchronous is the default future, we could skip trailing synchronous eager futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(eager)`.  However, it does not hurt to be explicit.
 
 If we instead would like to process the sample sequentially and the chromosomes in parallel, we can use:
 ```r
-plan(list(uniprocess, multiprocess))
+plan(list(eager, multiprocess))
 ```
 
 We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:

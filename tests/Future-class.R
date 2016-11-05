@@ -23,9 +23,10 @@ print(expr)
 stopifnot(is.call(expr))
 
 clazzes <- list(
+  uniprocess = UniprocessFuture,
+  multisession = function(...) MultisessionFuture(..., workers=2L),
   eager = EagerFuture,
-  lazy = LazyFuture,
-  multisession = function(...) MultisessionFuture(..., workers=2L)
+  lazy = LazyFuture
 )
 if (supportsMulticore()) clazzes$multicore = function(...) MulticoreFuture(..., workers=2L)
 
