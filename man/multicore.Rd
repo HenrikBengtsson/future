@@ -39,7 +39,7 @@ as soon as possible or not.}
 A \link{MulticoreFuture}
 If \code{workers == 1}, then all processing using done in the
 current/main R session and we therefore fall back to using
-a uniprocess future.  This is also the case whenever multicore
+an eager future.  This is also the case whenever multicore
 processing is not supported, e.g. on Windows.
 }
 \description{
@@ -57,7 +57,7 @@ cores available including the current/main R process, see
 Not all systems support multicore futures.  For instance,
 it is not supported on Microsoft Windows.  Trying to create
 multicore futures on non-supported systems will silently
-fall back to using \link{uniprocess} futures, which effectively
+fall back to using \link{eager} futures, which effectively
 corresponds to a multicore future that can handle one parallel
 process (the current one) before blocking.
 

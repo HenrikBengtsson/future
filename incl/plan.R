@@ -13,8 +13,8 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# A uniprocess future
-plan(uniprocess)
+# An eager uniprocess future
+plan(eager)
 f <- future({
   a <- 7
   b <- 3

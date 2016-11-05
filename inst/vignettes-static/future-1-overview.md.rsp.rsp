@@ -53,7 +53,7 @@ options(mc.cores=2L)
 ## Introduction
 The purpose of the [future] package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
 
-In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  It is possible to check whether a future is resolved or not without blocking.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested.  Another approach is an "eager" strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may be to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
+In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  It is possible to check whether a future is resolved or not without blocking.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a "lazy" strategy, which means it is resolved only when the value is requested.  Another approach is an "eager" future strategy, which means that it starts to resolve the future as soon as it is created.  Yet other strategies may be to resolve futures asynchronously, for instance, by evaluating expressions concurrently on a compute cluster.
 
 Here is an example illustrating how the basics of futures work.  First, consider the following code snippet that uses plain R code:
 ```r
@@ -141,7 +141,7 @@ The future package implements the following types of futures:
 | _synchronous:_  |             | _non-parallel:_
 | `eager`         | all         |
 | `lazy`          | all         | lazy evaluation - happens only if the value is requested
-| `transparent`   | all         | for debugging (eager w/ early signaling and w/out local)
+| `transparent`   | all         | as eager w/ early signaling and w/out local (for debugging)
 | _asynchronous:_ |             | _parallel_:
 | `multiprocess`  | all         | multicore iff supported, otherwise multisession
 | `multisession`  | all         | background R sessions (on current machine)
@@ -151,7 +151,7 @@ The future package implements the following types of futures:
 
 The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 
-By default, future expressions are evaluated instantaneously and synchronously (in the current R session).  This evaluation strategy is referred to as "eager" and we refer to futures using this strategy as "eager futures".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
+By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session).  This evaluation strategy is referred to as "eager" and we refer to futures using this strategy as "eager futures".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
 
 
 ### Consistent Behavior Across Futures
@@ -237,7 +237,7 @@ stopifnot(b == pid)
 <%---
 #### Transparent Futures
 
-For troubleshooting, there is also a _transparent_ future, which can be specified as `plan(transparent)`.  A transparent future is technically an eager future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors.
+For troubleshooting, there is also a _transparent_ future, which can be specified as `plan(transparent)`.  A transparent future is technically a eager future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors.
 
 ---%>
 

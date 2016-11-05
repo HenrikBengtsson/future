@@ -54,8 +54,8 @@
     if (!is.null(strategy)) {
       mdebug("=> 'future.plan' already set.")
     } else if (p == 1L) {
-      mdebug("=> options(future.plan=uniprocess)")
-      options(future.plan=uniprocess)
+      mdebug("=> options(future.plan=eager)")
+      options(future.plan=eager)
     } else {
       mdebug("=> options(future.plan=tweak(multiprocess, workers=%s))", p)
       options(future.plan=tweak(multiprocess, workers=p))
