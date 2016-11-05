@@ -44,7 +44,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
   }
   gp <- NULL
 
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -93,4 +93,18 @@ run.UniprocessFuture <- function(future, ...) {
   signalEarly(future, collect=FALSE)
 
   invisible(future)
+}
+
+
+
+#' @export
+resolved.UniprocessFuture <- function(x, ...) {
+  if (x$lazy) {
+    ## resolved() for lazy uniprocess futures must force value()
+    ## such that the future gets resolved.  The reason for this
+    ## is so that polling is always possible, e.g.
+    ## while(!resolved(f)) Sys.sleep(5);
+    value(x, signal=FALSE)
+  }
+  NextMethod("resolved")
 }

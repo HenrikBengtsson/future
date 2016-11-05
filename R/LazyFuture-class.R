@@ -16,13 +16,3 @@ LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, global
   f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }
-
-#' @export
-resolved.LazyFuture <- function(x, ...) {
-  ## resolved() for LazyFuture must force value() such that
-  ## the future gets resolved.  The reason for this is so
-  ## that polling is always possible, e.g.
-  ## while(!resolved(f)) Sys.sleep(5);
-  value(x, signal=FALSE)
-  NextMethod("resolved")
-}
