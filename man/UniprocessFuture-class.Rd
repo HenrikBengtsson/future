@@ -6,7 +6,7 @@
 \title{An uniprocess future is a future whose value will be resolved synchroneously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, ...)
+  globals = TRUE, local = TRUE, lazy = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -20,6 +20,9 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
+
+\item{lazy}{If \code{FALSE} (default), then the setup and validation of
+global variables are done for eager evaluation, otherwise not.}
 
 \item{...}{Additional named elements of the future.}
 

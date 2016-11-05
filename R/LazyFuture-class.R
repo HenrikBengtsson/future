@@ -13,32 +13,7 @@
 #' @keywords internal
 LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-
-  ## Evaluate in a local environment?
-  if (local) {
-    envir <- new.env(parent=envir)
-  } else {
-    if (!is.logical(globals) || globals) {
-      stop("Non-supported use of lazy futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy future evaluation in the calling environment (local=FALSE) can only be done if global objects are resolved at the same time.")
-    }
-  }
-
-  ## Global objects
-  gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
-
-  ## Assign?
-  if (length(gp) > 0) {
-    target <- new.env(parent=envir)
-    globalsT <- gp$globals
-    for (name in names(globalsT)) {
-      target[[name]] <- globalsT[[name]]
-    }
-    globalsT <- NULL
-    envir <- target
-  }
-  gp <- NULL
-
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }
 
