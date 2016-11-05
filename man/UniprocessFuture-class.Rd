@@ -44,7 +44,7 @@ An uniprocess future is a future whose value will be resolved synchroneously in 
 }
 \seealso{
 To evaluate an expression using "uniprocess future", see functions
-\code{\link{eager}()} and \code{\link{lazy}()}.
+\code{\link{uniprocess}()}.
 }
 \keyword{internal}
 

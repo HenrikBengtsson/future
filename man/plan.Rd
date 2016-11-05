@@ -28,7 +28,7 @@ it specifies how \code{\link{future}()}:s are resolved,
 e.g. sequentially or in parallel.
 }
 \details{
-The default strategy is \code{\link{eager}}, but the default can be
+The default strategy is \code{\link{uniprocess}}, but the default can be
 configured by option \option{future.plan} and, if that is not set,
 system environment variable \env{R_FUTURE_PLAN}.
 To reset the strategy back to the default, use \code{plan("default")}.
@@ -36,8 +36,11 @@ To reset the strategy back to the default, use \code{plan("default")}.
 \section{Implemented evaluation strategies}{
 
 \itemize{
- \item{\code{\link{eager}}:}{
+ \item{\code{\link{uniprocess}}:}{
    Resolves futures sequentially in the current R process.
+ }
+ \item{\code{\link{eager}}:}{
+   \emph{DEPRECATED:} Same as \code{uniprocess}.
  }
  \item{\code{\link{lazy}}:}{
    Resolves futures synchronously (sequentially) in the current

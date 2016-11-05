@@ -9,7 +9,7 @@
 #'
 #' @seealso
 #' To evaluate an expression using "uniprocess future", see functions
-#' \code{\link{eager}()} and \code{\link{lazy}()}.
+#' \code{\link{uniprocess}()}.
 #'
 #' @export
 #' @name UniprocessFuture-class

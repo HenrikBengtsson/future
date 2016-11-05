@@ -9,7 +9,7 @@ message(sprintf("*** eager(..., globals=%s) without globals", globals))
 f <- eager({
   42L
 }, globals=globals)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "EagerFuture"))
 
 print(resolved(f))
 stopifnot(resolved(f))
@@ -44,7 +44,7 @@ f <- eager({
   1
 }, globals=globals)
 print(f)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "EagerFuture"))
 
 res <- try(value(f), silent=TRUE)
 print(res)

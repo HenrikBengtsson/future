@@ -144,7 +144,7 @@ plan(lazy)
 ## works just as an withPlan({ ... }, plan=...)
 fun <- { plan() } %plan% eager
 f <- fun(1)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "EagerFuture"))
 
 x %<-% { a <- 1 } %plan% eager
 stopifnot(identical(body(plan()), body(lazy)))

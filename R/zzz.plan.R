@@ -18,15 +18,18 @@
 #' @example incl/plan.R
 #'
 #' @details
-#' The default strategy is \code{\link{eager}}, but the default can be
+#' The default strategy is \code{\link{uniprocess}}, but the default can be
 #' configured by option \option{future.plan} and, if that is not set,
 #' system environment variable \env{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use \code{plan("default")}.
 #'
 #' @section Implemented evaluation strategies:
 #' \itemize{
-#'  \item{\code{\link{eager}}:}{
+#'  \item{\code{\link{uniprocess}}:}{
 #'    Resolves futures sequentially in the current R process.
+#'  }
+#'  \item{\code{\link{eager}}:}{
+#'    \emph{DEPRECATED:} Same as \code{uniprocess}.
 #'  }
 #'  \item{\code{\link{lazy}}:}{
 #'    Resolves futures synchronously (sequentially) in the current
@@ -71,7 +74,7 @@
 #'
 #' @export
 plan <- local({
-  defaultStrategy <- structure(eager, call=substitute(plan(eager)))
+  defaultStrategy <- structure(uniprocess, call=substitute(plan(uniprocess)))
   defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
   
   ## Stack of type of futures to use
@@ -89,7 +92,7 @@ plan <- local({
       class(strategy) <- c("FutureStrategy", class(strategy))
       return(strategy)
     } else if (identical(strategy, "default")) {
-      strategy <- getOption("future.plan", eager)
+      strategy <- getOption("future.plan", uniprocess)
     } else if (identical(strategy, "list")) {
       ## List stack of future strategies?
       return(stack)
@@ -132,12 +135,12 @@ plan <- local({
           return(invisible(res))
         }
 
-        ## Example: plan(list(eager, lazy))
+        ## Example: plan(list(uniprocess, lazy))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir=parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
-          ## Coerce strings to functions, e.g. plan(list("eager", lazy))
+          ## Coerce strings to functions, e.g. plan(list("uniprocess", lazy))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
