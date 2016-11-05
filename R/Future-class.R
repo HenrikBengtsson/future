@@ -93,7 +93,7 @@ print.Future <- function(x, ...) {
 
   if (exists("value", envir=x, inherits=FALSE)) {
     cat("Resolved: TRUE\n")
-  } else if (inherits(x, "LazyFuture")) {
+  } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
     ## for which we need to support this? /HB 2016-05-03
     cat("Resolved: FALSE\n")
