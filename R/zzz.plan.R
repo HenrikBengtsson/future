@@ -29,9 +29,11 @@
 #'    Resolves futures sequentially in the current R process.
 #'  }
 #'  \item{\code{\link{eager}}:}{
-#'    \emph{DEPRECATED:} Same as \code{uniprocess}.
+#'    \emph{DEPRECATED:}
+#'    Same as \code{uniprocess}.
 #'  }
 #'  \item{\code{\link{lazy}}:}{
+#'    \emph{TO BE DEPRECATED:}
 #'    Resolves futures synchronously (sequentially) in the current
 #'    R process, but only if their values are requested.  Futures for
 #'    which the values are never requested will not be evaluated.
@@ -210,7 +212,7 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession", "multiprocess")) {
+supportedStrategies <- function(strategies=c("lazy", "eager", "uniprocess", "multicore", "multisession", "multiprocess")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }

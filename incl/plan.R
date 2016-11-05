@@ -1,6 +1,6 @@
 a <- b <- c <- NA_real_
 
-# A lazy future
+# A lazy uniprocess future
 plan(lazy)
 f <- future({
   a <- 7
@@ -13,8 +13,8 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# An eager future
-plan(eager)
+# A uniprocess future
+plan(uniprocess)
 f <- future({
   a <- 7
   b <- 3

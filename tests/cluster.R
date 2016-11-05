@@ -205,7 +205,7 @@ stopifnot(
 future:::ClusterRegistry("stop")
 
 ## An alternative is to do:
-## plan(eager); x %<-% NULL; print(x)
+## plan(uniprocess); x %<-% NULL; print(x)
 
 ## Verify that the reset worked
 cl <- parallel::makeCluster("localhost")
