@@ -44,6 +44,21 @@ local({
 
 message("*** cluster operations - c(...) ... DONE")
 
+
+message("*** cluster operations - makeClusterPSOCK(remotes) ...")
+
+remotes <- Sys.getenv("R_FUTURE_TESTS_REMOTES", "localhost,localhost")
+remotes <- gsub(" ", "", unlist(strsplit(remotes, split=",")))
+remotes <- remotes[nzchar(remotes)]
+if (length(remotes) > 0) {
+  message("Remotes: ", paste(sQuote(remotes), collapse = ", "))
+  cl <- makeClusterPSOCK(remotes, verbose = TRUE)
+  print(cl)
+  stopCluster(cl)
+}
+
+message("*** cluster operations - makeClusterPSOCK(remotes) ... DONE")
+
 message("*** cluster operations ... DONE")
 
 source("incl/end.R")
