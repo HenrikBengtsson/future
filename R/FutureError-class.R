@@ -44,7 +44,7 @@ print.FutureError <- function(x, ...) {
   future <- attr(x, "future")
   output <- attr(x, "output")
   if (!is.null(future) || !is.null(output)) {
-    cat("\n\nDEBUG: BEGIN TROUBLESHOOING HELP\n")
+    cat("\n\nDEBUG: BEGIN TROUBLESHOOTING HELP\n")
 
     if (!is.null(future)) {
       cat("Future involved:\n")
@@ -68,7 +68,7 @@ print.FutureError <- function(x, ...) {
       cat("\n\n")
     }
 
-    cat("DEBUG: END TROUBLESHOOING HELP\n")
+    cat("DEBUG: END TROUBLESHOOTING HELP\n")
   }
 
   invisible(x)
