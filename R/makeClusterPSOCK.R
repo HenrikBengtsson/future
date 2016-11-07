@@ -242,7 +242,12 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
   
   con <- local({
-     setTimeLimit(elapsed = connectTimeout, transient = FALSE)
+     ## Apply connection time limit "only to the rest of the current computation".
+     ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
+     ##       undo it manually :/  /HB 2016-11-05
+     setTimeLimit(elapsed = connectTimeout)
+     on.exit(setTimeLimit(elapsed = Inf))
+     
      socketConnection("localhost", port = port, server = TRUE, 
                       blocking = TRUE, open = "a+b", timeout = timeout)
   })
