@@ -638,9 +638,9 @@ install.packages('future')
 
 ### Pre-release version
 
-To install the pre-release version that is available in branch `feature/uniprocess`, use:
+To install the pre-release version that is available in branch `develop`, use:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future@feature/uniprocess')
+source('http://callr.org/install#HenrikBengtsson/future@develop')
 ```
 This will install the package from source.  
 
