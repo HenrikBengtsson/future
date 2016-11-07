@@ -1,20 +1,36 @@
 #' @usage x \%<-\% value
 #'
 #' @rdname future
-#'
 #' @aliases %<-% %->% %<=% %=>%
 #' @export %<-% %->% %<=% %=>%
-`%<-%` <- `%<=%` <- function(x, value) {
+`%<-%` <- function(x, value) {
   target <- substitute(x)
   expr <- substitute(value)
   envir <- parent.frame(1)
   futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
 }
 
-`%->%` <- `%=>%` <- function(value, x) {
+`%->%` <- function(value, x) {
   target <- substitute(x)
   expr <- substitute(value)
   envir <- parent.frame(1)
+  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
+}
+
+## Deprecated
+`%<=%` <- function(x, value) {
+  target <- substitute(x)
+  expr <- substitute(value)
+  envir <- parent.frame(1)
+  .Deprecated("%<-%")
+  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
+}
+
+`%=>%` <- function(value, x) {
+  target <- substitute(x)
+  expr <- substitute(value)
+  envir <- parent.frame(1)
+  .Deprecated("%->%")
   futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
 }
 

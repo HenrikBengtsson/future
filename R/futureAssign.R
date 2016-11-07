@@ -5,9 +5,6 @@
 #' should be assigned.
 #'
 #' @rdname future
-#'
-#' @aliases %<-% %->% %<=% %=>%
-#' @export %<-% %->% %<=% %=>%
 #' @export
 futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
