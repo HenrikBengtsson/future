@@ -6,7 +6,7 @@
 \title{Create a Parallel Socket Cluster}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
-  "random"), ..., verbose = FALSE)
+  "random"), ..., verbose = getOption("future.debug", FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
   connectTimeout = 2 * 60, timeout = 30 * 24 * 60 * 60, rscript = NULL,
