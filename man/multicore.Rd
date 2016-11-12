@@ -39,7 +39,7 @@ as soon as possible or not.}
 A \link{MulticoreFuture}
 If \code{workers == 1}, then all processing using done in the
 current/main R session and we therefore fall back to using
-a eager future.  This is also the case whenever multicore
+an eager future.  This is also the case whenever multicore
 processing is not supported, e.g. on Windows.
 }
 \description{

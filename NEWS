@@ -1,6 +1,30 @@
 Package: future
 ===============
 
+Version: 1.2.0 [2016-11-12]
+o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
+  that allows for more flexible control of how PSOCK cluster workers
+  are set up and how they are launched and communicated with if running
+  on external machines.
+o Added generic as.cluster() for coercing objects to cluster objects
+  to be used as in plan(cluster, workers = as.cluster(x)).  Also added
+  a c() implementation for cluster objects such that multiple cluster
+  objects can be combined into a single one.
+o plan() and plan("list") now prints more user-friendly output.
+o Added sessionDetails() for gathering details of the current R session.
+o ROBUSTNESS: On Unix, internal myInternalIP() tries more alternatives
+  for finding the local IP number.
+o DEPRECATED: %<=% is deprecated. Use %<-% instead. Same for %=>%.
+o BUG FIX: values() for lists and list environments of futures where
+  one or more of the futures resolved to NULL would give an error.
+o BUG FIX: value() for ClusterFuture would give cryptic error message
+  "Error in stop(ex) : bad error message" if the cluster worker had
+  crashed / terminated.  Now it will instead give an error message like
+  "Failed to retrieve the value of ClusterFuture from cluster node #1 on
+  'localhost'. The reason reported was ‘error reading from connection".
+o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
+
+
 Version: 1.1.1 [2016-10-10]
 o FIX: For the special case where 'remote' futures use
   workers = "localhost" they (again) use the exact same R executable

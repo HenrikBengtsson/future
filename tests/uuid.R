@@ -1,18 +1,18 @@
 source("incl/start.R")
-uuid <- future:::uuid
+session_uuid <- future:::session_uuid
 
-message("*** uuid() ...")
+message("*** session_uuid() ...")
 
-id0 <- uuid()
+id0 <- session_uuid()
 print(id0)
 
-## Reset UUID (hack)
-environment(uuid)$value <- NULL
+## Reset session UUID (hack)
+environment(session_uuid)$value <- NULL
 
-id <- uuid()
+id <- session_uuid()
 print(id)
 stopifnot(id != id0)
 
-message("*** uuid() ... DONE")
+message("*** session_uuid() ... DONE")
 
 source("incl/end.R")

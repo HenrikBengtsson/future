@@ -35,5 +35,5 @@ nbrOfWorkers.future <- function(evaluator) {
 
 #' @export
 nbrOfWorkers.NULL <- function(evaluator) {
-  nbrOfWorkers(plan())
+  nbrOfWorkers(plan("next"))
 }

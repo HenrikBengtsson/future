@@ -180,7 +180,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, evaluator=plan(), ...) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, evaluator=plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {

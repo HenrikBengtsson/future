@@ -57,8 +57,8 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** plan(eager)")
-plan(eager)
+message("*** plan(uniprocess)")
+plan(uniprocess)
 a <- 0
 f <- future({
   b <- 3
@@ -71,15 +71,15 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** plan('eager')")
+message("*** plan('uniprocess')")
 ## Setting strategy by name
 plan("lazy")
 print(plan())
 
 
 message("*** plan() and overriding defaults")
-message("*** plan(eager)")
-plan(eager)
+message("*** plan(uniprocess)")
+plan(uniprocess)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == TRUE)
@@ -88,8 +88,8 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 0)
 
-message("*** plan(eager, local=FALSE)")
-plan(eager, local=FALSE)
+message("*** plan(uniprocess, local=FALSE)")
+plan(uniprocess, local=FALSE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -98,22 +98,22 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 1)
 
-message("*** plan(eager, local=FALSE, abc=1, def=TRUE)")
-plan(eager, local=FALSE, abc=1, def=TRUE)
+message("*** plan(uniprocess, local=FALSE, abc=1, def=TRUE)")
+plan(uniprocess, local=FALSE, abc=1, def=TRUE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(eager(local=FALSE))")
+message("*** plan(uniprocess(local=FALSE))")
 plan(lazy)
-plan(eager(local=FALSE))
+plan(uniprocess(local=FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(tweak(eager, local=FALSE))")
+message("*** plan(tweak(uniprocess, local=FALSE))")
 plan(lazy)
-plan(tweak(eager, local=FALSE))
+plan(tweak(uniprocess, local=FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -122,37 +122,37 @@ stopifnot(formals(fcn)$local == FALSE)
 message("*** old <- plan(new)")
 truth <- plan()
 old <- plan(lazy, local=FALSE)
-stopifnot(identical(old, truth))
+stopifnot(identical(unclass(old), unclass(truth)))
 
 curr <- plan()    ## curr == lazy(local=FALSE)
 prev <- plan(old) ## prev == lazy(local=FALSE)
-stopifnot(identical(curr, prev))
+stopifnot(identical(unclass(curr), unclass(prev)))
 
 curr <- plan()    ## curr == old
-stopifnot(identical(curr, old))
-stopifnot(identical(curr, truth))
+stopifnot(identical(unclass(curr), unclass(old)))
+stopifnot(identical(unclass(curr), unclass(truth)))
 
-message("*** %plan% 'eager'")
+message("*** %plan% 'uniprocess'")
 plan(lazy)
-x %<-% { a <- 1 } %plan% "eager"
+x %<-% { a <- 1 } %plan% "uniprocess"
 stopifnot(identical(body(plan()), body(lazy)))
 
-message("*** %plan% eager")
+message("*** %plan% uniprocess")
 plan(lazy)
 
 ## %plan% can operate on any expression, so it
 ## works just as an withPlan({ ... }, plan=...)
-fun <- { plan() } %plan% eager
+fun <- { plan() } %plan% uniprocess
 f <- fun(1)
-stopifnot(inherits(f, "EagerFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "UniprocessFuture"))
 
-x %<-% { a <- 1 } %plan% eager
+x %<-% { a <- 1 } %plan% uniprocess
 stopifnot(identical(body(plan()), body(lazy)))
 
-message("*** %plan% eager(local=FALSE) ")
+message("*** %plan% uniprocess(local=FALSE) ")
 plan(lazy)
 a <- 0
-x %<-% { a } %plan% eager(local=FALSE)
+x %<-% { a } %plan% uniprocess(local=FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
@@ -165,7 +165,7 @@ c %<-% {
   a %<-% {
     message("Resolving 'a'")
     2
-  } %plan% eager
+  } %plan% uniprocess
   b %<-% {
     message("Resolving 'b'")
     -9 * a
@@ -181,35 +181,35 @@ stopifnot(c == 6)
 
 message("*** plan() by functions and character names ... ")
 
-plan(eager)
+plan(uniprocess)
 a %<-% 42
 stopifnot(a == 42)
 
-plan("eager")
+plan("uniprocess")
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list(eager))
+plan(list(uniprocess))
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list("eager"))
+plan(list("uniprocess"))
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list(eager, lazy))
+plan(list(uniprocess, lazy))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("eager", lazy))
+plan(list("uniprocess", lazy))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list(eager, "lazy"))
+plan(list(uniprocess, "lazy"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("eager", "lazy"))
+plan(list("uniprocess", "lazy"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
@@ -218,7 +218,7 @@ message("*** plan() by functions and character names ... DONE")
 
 message("*** plan() w/ commands ...")
 
-plan(list(eager, eager))
+plan(list(uniprocess, uniprocess))
 res <- plan("list")
 print(res)
 stopifnot(length(res) == 2)

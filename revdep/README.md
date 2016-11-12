@@ -4,24 +4,24 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.1 (2016-06-21) |
+|version  |R version 3.3.2 (2016-10-31) |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |SystemV/PST8PDT              |
-|date     |2016-10-09                   |
+|tz       |Europe/Copenhagen            |
+|date     |2016-11-12                   |
 
 ## Packages
 
-|package  |*  |version |date       |source         |
-|:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.10  |2016-08-02 |cran (@0.6.10) |
-|future   |   |1.0.1   |2016-07-04 |cran (@1.0.1)  |
-|globals  |   |0.7.0   |2016-09-09 |cran (@0.7.0)  |
-|listenv  |   |0.6.0   |2015-12-28 |CRAN (R 3.3.1) |
-|markdown |   |0.7.7   |2015-04-22 |CRAN (R 3.3.1) |
-|R.rsp    |   |0.30.0  |2016-05-15 |CRAN (R 3.3.1) |
+|package  |*  |version    |date       |source                            |
+|:--------|:--|:----------|:----------|:---------------------------------|
+|digest   |   |0.6.10     |2016-08-02 |CRAN (R 3.3.1)                    |
+|future   |   |1.1.1-9000 |2016-11-12 |local (HenrikBengtsson/future@NA) |
+|globals  |   |0.7.1      |2016-10-14 |local                             |
+|listenv  |   |0.6.0      |2015-12-28 |CRAN (R 3.3.1)                    |
+|markdown |   |0.7.7      |2015-04-22 |cran (@0.7.7)                     |
+|R.rsp    |   |0.30.0     |2016-05-15 |cran (@0.30.0)                    |
 
 # Check results
 
@@ -34,20 +34,20 @@
 |aroma.cn         |1.6.1   |      0|        0|     0|
 |aroma.core       |3.0.0   |      0|        0|     1|
 |calmate          |0.12.1  |      0|        0|     0|
-|doFuture         |0.2.1   |      0|        0|     0|
+|doFuture         |0.3.0   |      0|        0|     0|
 |fiery            |0.2.1   |      0|        0|     0|
-|future.BatchJobs |0.13.0  |      0|        0|     0|
-|GeneBreak        |1.3.0   |      0|        0|     1|
+|future.BatchJobs |0.13.1  |      0|        0|     0|
+|GeneBreak        |1.4.0   |      0|        0|     1|
 |MPAgenomics      |1.1.2   |      0|        0|     2|
 |NSA              |0.0.32  |      0|        0|     6|
 |pbmcapply        |1.1.1   |      0|        0|     0|
-|PECA             |1.9.0   |      0|        0|     1|
-|PSCBS            |0.61.0  |      0|        0|     0|
-|PureCN           |1.1.54  |      0|        0|     1|
-|QDNAseq          |1.9.2   |      0|        0|     0|
-|Repitools        |1.19.3  |      0|        0|     2|
+|PECA             |1.10.0  |      0|        0|     1|
+|PSCBS            |0.62.0  |      0|        0|     0|
+|PureCN           |1.2.3   |      0|        1|     1|
+|QDNAseq          |1.10.0  |      0|        0|     0|
+|Repitools        |1.20.0  |      0|        0|     2|
 |R.filesets       |2.10.0  |      0|        0|     0|
-|TIN              |1.5.2   |      0|        0|     2|
+|TIN              |1.6.0   |      0|        0|     2|
 
 ## ACNE (0.8.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -85,7 +85,7 @@ Bug reports: https://github.com/HenrikBengtsson/calmate/issues
 
 0 errors | 0 warnings | 0 notes
 
-## doFuture (0.2.1)
+## doFuture (0.3.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
@@ -97,13 +97,13 @@ Bug reports: https://github.com/thomasp85/fiery/issues
 
 0 errors | 0 warnings | 0 notes
 
-## future.BatchJobs (0.13.0)
+## future.BatchJobs (0.13.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
 
 0 errors | 0 warnings | 0 notes
 
-## GeneBreak (1.3.0)
+## GeneBreak (1.4.0)
 Maintainer: Evert van den Broek <vandenbroek.evert@gmail.com>
 
 0 errors | 0 warnings | 1 note 
@@ -249,7 +249,7 @@ Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PECA (1.9.0)
+## PECA (1.10.0)
 Maintainer: Tomi Suomi <tomi.suomi@utu.fi>
 
 0 errors | 0 warnings | 1 note 
@@ -263,18 +263,23 @@ Rd file 'PECA.Rd':
 These lines will be truncated in the PDF manual.
 ```
 
-## PSCBS (0.61.0)
+## PSCBS (0.62.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PureCN (1.1.54)
+## PureCN (1.2.3)
 Maintainer: Markus Riester <markus.riester@novartis.com>
 
-0 errors | 0 warnings | 1 note 
+0 errors | 1 warning  | 1 note 
 
 ```
+checking whether package ‘PureCN’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: namespace ‘Matrix’ is not available and has been replaced
+See ‘/home/hb/repositories/future/revdep/checks/PureCN.Rcheck/00install.out’ for details.
+
 checking R code for possible problems ... NOTE
 Found the following calls to data() loading into the global environment:
 File ‘PureCN/R/bootstrapResults.R’:
@@ -298,13 +303,13 @@ File ‘PureCN/R/readCurationFile.R’:
 See section ‘Good practice’ in ‘?data’.
 ```
 
-## QDNAseq (1.9.2)
+## QDNAseq (1.10.0)
 Maintainer: Daoud Sie <d.sie@vumc.nl>  
 Bug reports: https://github.com/ccagc/QDNAseq/issues
 
 0 errors | 0 warnings | 0 notes
 
-## Repitools (1.19.3)
+## Repitools (1.20.0)
 Maintainer: Mark Robinson <mark.robinson@imls.uzh.ch>
 
 0 errors | 0 warnings | 2 notes
@@ -363,7 +368,7 @@ Bug reports: https://github.com/HenrikBengtsson/R.filesets/issues
 
 0 errors | 0 warnings | 0 notes
 
-## TIN (1.5.2)
+## TIN (1.6.0)
 Maintainer: Bjarne Johannessen <bjajoh@rr-research.no>
 
 0 errors | 0 warnings | 2 notes

@@ -46,7 +46,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
-  core$owner <- uuid()
+  core$owner <- session_uuid(attributes = TRUE)
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
@@ -63,7 +63,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
 }
 
 
-#' @importFrom utils head
+#' @importFrom utils head capture.output
 #' @export
 print.Future <- function(x, ...) {
   class <- class(x)
@@ -93,7 +93,7 @@ print.Future <- function(x, ...) {
 
   if (exists("value", envir=x, inherits=FALSE)) {
     cat("Resolved: TRUE\n")
-  } else if (inherits(x, "LazyFuture")) {
+  } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
     ## for which we need to support this? /HB 2016-05-03
     cat("Resolved: FALSE\n")
@@ -122,12 +122,12 @@ print.Future <- function(x, ...) {
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
-    info <- attr(uuid, "info")
+    info <- attr(uuid, "source")
     sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
   }
 
-  if (!identical(future$owner, uuid())) {
-    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(uuid()), hexpr(future$expr)), future=future))
+  if (!identical(future$owner, session_uuid(attributes = TRUE))) {
+    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future=future))
   }
 
   invisible(future)

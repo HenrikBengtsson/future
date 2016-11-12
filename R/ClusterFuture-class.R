@@ -50,11 +50,17 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)
-  } else if (!inherits(workers, "cluster")) {
-    stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
+  } else {
+    workers <- as.cluster(workers)
+  }
+  if (!inherits(workers, "cluster")) {
+    stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
   stopifnot(length(workers) > 0)
 
+  ## Attaching UUID for each cluster connection, unless already done.
+  workers <- addClusterUUIDs(workers)
+  
   ## Attach name to cluster?
   name <- attr(workers, "name")
   if (is.null(name)) {
@@ -235,7 +241,21 @@ value.ClusterFuture <- function(future, ...) {
   }, simpleError = function(ex) ex)
 
   if (inherits(ack, "simpleError")) {
-    ex <- FutureError(sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason reported was %s", class(future)[1], node, cl$host, sQuote(ack$message)), call=ack$call, future=future)
+  
+    ## If the connection has changed, report on that!
+    msg <- check_connection_uuid(cl[[1]], future = future)
+    if (!is.null(msg)) {
+      on_failure <- getOption("future.cluster.invalidConnection", "error")
+      if (on_failure == "error") {
+        stop(FutureError(msg, future=future))
+      }
+      warning(msg)
+      return(sprintf("EXCEPTIONAL ERROR: %s", msg))
+    }
+    
+    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d on %s. ", class(future)[1], node, sQuote(cl[[1]]$host))
+    msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
+    ex <- FutureError(msg, call=ack$call, future=future)
     stop(ex)
   }
   stopifnot(isTRUE(ack))
@@ -271,6 +291,7 @@ value.ClusterFuture <- function(future, ...) {
     
     ## WORKAROUND: Need to clear cluster worker before garbage collection,
     ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+    ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
     clusterCall(cl[1], function() NULL)
     
     clusterCall(cl[1], gc, verbose=FALSE, reset=FALSE)
@@ -337,3 +358,15 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
   node
 }
 
+
+## This is needed in order to be able to assert that we later
+## actually work with the same connection.  See R-devel thread
+## 'closeAllConnections() can really mess things up' on 2016-10-30
+## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
+check_connection_uuid <- function(worker, future, on_failure = "error") {
+  con <- worker$con
+  uuid <- attr(con, "uuid")
+  uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
+  if (uuid_now == uuid) return(NULL) 
+  sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason is that the socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", class(future)[1], future$node, sQuote(worker$host), uuid, sQuote(attr(uuid, "source")$class), sQuote(attr(uuid, "source")$description), uuid_now, sQuote(attr(uuid_now, "source")$class), sQuote(attr(uuid_now, "source")$description), Sys.getpid())
+} ## check_connection_uuid()

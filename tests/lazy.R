@@ -9,7 +9,7 @@ message("*** lazy() without globals")
 f <- lazy({
   42L
 })
-stopifnot(inherits(f, "LazyFuture"))
+stopifnot(inherits(f, "UniprocessFuture"), f$lazy)
 
 ## Check whether a lazy future is resolved
 ## or not will force evaluation

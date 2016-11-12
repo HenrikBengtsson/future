@@ -67,14 +67,45 @@ mdebug <- function(...) {
 } ## mdebug()
 
 
+## Create a universally unique identifier (UUID) for an R object
+#' @importFrom digest digest
+uuid <- function(source, keep_source = FALSE) {
+  uuid <- digest(source)
+  uuid <- strsplit(uuid, split="")[[1]]
+  uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
+  if (keep_source) attr(uuid, "source") <- source
+  uuid
+} ## uuid()
+
+uuid_of_connection <- function(con, ..., must_work = TRUE) {
+  stopifnot(inherits(con, "connection"))
+  if (must_work) {
+    info <- summary(con)
+    info$opened <- NULL
+    uuid <- uuid(info, ...)
+  } else {
+    uuid <- tryCatch({
+      info <- summary(con)
+      info$opened <- NULL
+      uuid(info, ...)
+    }, error = function(ex) {
+      attr(con, "uuid")
+    })
+  }
+  uuid
+} ## uuid_of_connection()
+
 ## A universally unique identifier (UUID) for the current
 ## R process.  Generated only once.
 #' @importFrom digest digest
-uuid <- local({
+session_uuid <- local({
   value <- NULL
-  function() {
+  function(attributes = FALSE) {
     uuid <- value
-    if (!is.null(uuid)) return(uuid)
+    if (!is.null(uuid)) {
+      if (!attributes) attr(uuid, "source") <- NULL
+      return(uuid)
+    }
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
     host <- host[nzchar(host)][1]
@@ -85,11 +116,9 @@ uuid <- local({
       time=Sys.time(),
       random=sample.int(.Machine$integer.max, size=1L)
     )
-    uuid <- digest(info)
-    uuid <- strsplit(uuid, split="")[[1]]
-    uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
-    attr(uuid, "info") <- info
+    uuid <- uuid(info, keep_source = TRUE)
     value <<- uuid
+    if (!attributes) attr(uuid, "source") <- NULL
     uuid
   }
 })
@@ -172,7 +201,7 @@ detectCores <- local({
       value <- getOption("future.availableCores.system")
       if (!is.null(value)) {
         value <- as.integer(value)
-	return(value)
+        return(value)
       }
       
       value <- parallel::detectCores()
@@ -184,7 +213,7 @@ detectCores <- local({
       ## Assert positive integer
       stopifnot(length(value) == 1L, is.numeric(value),
                 is.finite(value), value >= 1L)
-		
+
       res <<- value
     }
     res
@@ -328,9 +357,32 @@ myInternalIP <- local({
     os <- R.version$os
     pattern <- "[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+"
     if (grepl("^linux", os)) {
-      res <- system2("hostname", args="-I", stdout=TRUE)
+      ## (i) Try command 'hostname -I'
+      res <- tryCatch({
+        system2("hostname", args="-I", stdout=TRUE)
+      }, error = identity)
+
+      ## (ii) Try commands 'ifconfig'
+      if (inherits(res, "simpleError")) {
+        res <- tryCatch({
+          system2("ifconfig", stdout=TRUE)
+        }, error = identity)
+      }
+
+      ## (ii) Try command '/sbin/ifconfig'
+      if (inherits(res, "simpleError")) {
+        res <- tryCatch({
+          system2("/sbin/ifconfig", stdout=TRUE)
+        }, error = identity)
+      }
+      
+      ## Failed?
+      if (inherits(res, "simpleError")) res <- NA_character_
+      
       res <- grep(pattern, res, value=TRUE)
       res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
+      res <- grep(pattern, res, value=TRUE)
+      res <- unlist(strsplit(res, split=":", fixed=FALSE), use.names=FALSE)
       res <- grep(pattern, res, value=TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)

@@ -11,7 +11,7 @@
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE,
-  evaluator = plan(), ...)
+  evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), assign.env = envir,
   substitute = TRUE)
@@ -19,7 +19,7 @@ futureAssign(x, value, envir = parent.frame(), assign.env = envir,
 x \%<-\% value
 
 futureCall(FUN, args = NULL, envir = parent.frame(), globals = TRUE,
-  evaluator = plan(), ...)
+  evaluator = plan("next"), ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

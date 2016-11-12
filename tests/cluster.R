@@ -179,9 +179,41 @@ message("*** cluster() - setDefaultCluster() ... DONE")
 message("*** cluster() - exceptions ...")
 
 res <- try(cluster(42L, workers=NA), silent=TRUE)
+print(res)
 stopifnot(inherits(res, "try-error"))
 
 message("*** cluster() - exceptions ... DONE")
+
+
+message("*** cluster() - crashed worker ...")
+
+cl <- parallel::makeCluster("localhost")
+plan(cluster, workers = cl)
+x %<-% 42L
+stopifnot(x == 42L)
+
+## Force R worker to quit
+x %<-% quit(save = "no")
+res <- tryCatch(y <- x, error = identity)
+print(res)
+stopifnot(
+  inherits(res, "simpleError"),
+  inherits(res, "FutureError")
+)
+
+## This is needed in order to reset the ClusterRegistry
+future:::ClusterRegistry("stop")
+
+## An alternative is to do:
+## plan(uniprocess); x %<-% NULL; print(x)
+
+## Verify that the reset worked
+cl <- parallel::makeCluster("localhost")
+plan(cluster, workers = cl)
+x %<-% 42L
+stopifnot(x == 42L)
+
+message("*** cluster() - crashed worker ... DONE")
 
 
 message("*** cluster() ... DONE")

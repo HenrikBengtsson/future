@@ -50,7 +50,11 @@ tweak.future <- function(strategy, ..., penvir=parent.frame()) {
     stop("Additional arguments to tweak() must be named.")
   }
 
-
+  ## Arguments that must not be tweaked
+  if (is.element("lazy", names)) {
+    stop("Future argument 'lazy' must not be tweaked / set via plan()")
+  }
+  
   ## formals()<- drops any attributes including class
   attrs <- attributes(strategy)
   class <- class(strategy)
