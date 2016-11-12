@@ -9,19 +9,19 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |US/Pacific                   |
-|date     |2016-11-10                   |
+|tz       |Europe/Copenhagen            |
+|date     |2016-11-12                   |
 
 ## Packages
 
-|package  |*  |version |date       |source         |
-|:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.10  |2016-08-02 |cran (@0.6.10) |
-|future   |   |1.1.1   |2016-10-11 |cran (@1.1.1)  |
-|globals  |   |0.7.1   |2016-10-14 |cran (@0.7.1)  |
-|listenv  |   |0.6.0   |2015-12-28 |CRAN (R 3.3.1) |
-|markdown |   |0.7.7   |2015-04-22 |CRAN (R 3.3.1) |
-|R.rsp    |   |0.30.0  |2016-05-15 |CRAN (R 3.3.1) |
+|package  |*  |version    |date       |source                            |
+|:--------|:--|:----------|:----------|:---------------------------------|
+|digest   |   |0.6.10     |2016-08-02 |CRAN (R 3.3.1)                    |
+|future   |   |1.1.1-9000 |2016-11-12 |local (HenrikBengtsson/future@NA) |
+|globals  |   |0.7.1      |2016-10-14 |local                             |
+|listenv  |   |0.6.0      |2015-12-28 |CRAN (R 3.3.1)                    |
+|markdown |   |0.7.7      |2015-04-22 |cran (@0.7.7)                     |
+|R.rsp    |   |0.30.0     |2016-05-15 |cran (@0.30.0)                    |
 
 # Check results
 
@@ -42,7 +42,7 @@
 |NSA              |0.0.32  |      0|        0|     6|
 |pbmcapply        |1.1.1   |      0|        0|     0|
 |PECA             |1.10.0  |      0|        0|     1|
-|PSCBS            |0.61.0  |      0|        1|     0|
+|PSCBS            |0.62.0  |      0|        0|     0|
 |PureCN           |1.2.3   |      0|        1|     1|
 |QDNAseq          |1.10.0  |      0|        0|     0|
 |Repitools        |1.20.0  |      0|        0|     2|
@@ -263,22 +263,11 @@ Rd file 'PECA.Rd':
 These lines will be truncated in the PDF manual.
 ```
 
-## PSCBS (0.61.0)
+## PSCBS (0.62.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
-0 errors | 1 warning  | 0 notes
-
-```
-checking examples ... WARNING
-Found the following significant warnings:
-
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-Deprecated functions may be defunct as soon as of the next release of
-R.
-See ?Deprecated.
-```
+0 errors | 0 warnings | 0 notes
 
 ## PureCN (1.2.3)
 Maintainer: Markus Riester <markus.riester@novartis.com>
@@ -286,28 +275,10 @@ Maintainer: Markus Riester <markus.riester@novartis.com>
 0 errors | 1 warning  | 1 note 
 
 ```
-checking examples ... WARNING
+checking whether package ‘PureCN’ can be installed ... WARNING
 Found the following significant warnings:
-
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-  Warning: '%<=%' is deprecated.
-... 15 lines ...
-  Warning: '%<=%' is deprecated.
-Deprecated functions may be defunct as soon as of the next release of
-R.
-See ?Deprecated.
-Examples with CPU or elapsed time > 5s
-                    user system elapsed
-segmentationPSCBS 62.064  0.136  64.053
-runAbsoluteCN     28.764  0.076  32.010
-filterTargets     19.044  0.028  22.583
-findFocal         17.376  0.040  19.459
-segmentationCBS   14.284  0.012  15.595
+  Warning: namespace ‘Matrix’ is not available and has been replaced
+See ‘/home/hb/repositories/future/revdep/checks/PureCN.Rcheck/00install.out’ for details.
 
 checking R code for possible problems ... NOTE
 Found the following calls to data() loading into the global environment:
