@@ -631,7 +631,7 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Future Topologies]: future-3-topologies.html
 
 ## Installation
-R package future is available on [CRAN](http://cran.r-project.org/package=future) and can be installed in R as:
+R package future is available on [CRAN](https://cran.r-project.org/package=future) and can be installed in R as:
 ```r
 install.packages('future')
 ```
@@ -651,5 +651,5 @@ This will install the package from source.
 | Resource:     | CRAN        | Travis CI       | Appveyor         |
 | ------------- | ------------------- | --------------- | ---------------- |
 | _Platforms:_  | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <a href="http://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
 | Test coverage |                     | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
