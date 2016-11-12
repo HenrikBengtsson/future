@@ -1,6 +1,10 @@
 Package: future
 ===============
 
+Version: 1.2.0-9000 [2016-11-12]
+o ...
+
+
 Version: 1.2.0 [2016-11-12]
 o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
   that allows for more flexible control of how PSOCK cluster workers
