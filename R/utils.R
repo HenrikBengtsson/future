@@ -430,54 +430,54 @@ myInternalIP <- local({
 }) ## myInternalIP()
 
 
+
+
 ## A *rough* estimate of size of an object + its environment.
-#' @importFrom utils object.size
-objectSize.nested <- function(x, .scannedEnvs = list()) {
-  # Nothing to do?
-  is_list <- is.list(x)
-  if (!is_list && !is.environment(x)) return(0)
-  if (length(x) == 0L) return(0)
-
-  scanned <- function(e) {
-    for (env in .scannedEnvs) if (identical(e, env)) return(TRUE)
-    FALSE
-  }
-
-  size <- 0
-
-  if (is_list) {
-    elements <- seq_along(x)
-  } else {
-    ## Get all objects in the environment
-    args <- list(envir = x, all.names = TRUE)
-    args$.scannedEnvs <- NULL
-    elements <- do.call(ls, args = args)
-    
-    ## Avoid scanning the current environment again
-    .scannedEnvs <- c(.scannedEnvs, x)
-  }
-
-  for (kk in seq_along(x)) {
-    element <- elements[kk]
-    obj <- x[[element]]
-    if (is.list(obj)) {
-      size <- size + Recall(obj, .scannedEnvs = .scannedEnvs)
-    } else if (is.environment(obj)) {
-      if (!scanned(obj)) {
-        size <- size + Recall(obj, .scannedEnvs = .scannedEnvs)
-      }
-    } else {
-      size <- size + object.size(obj)
-    }
-  }
-
-  size
-} ## objectSize.nested()
-
-
 #' @importFrom utils object.size
 objectSize <- function(x) {
   size <- 0
+  
+  .scannedEnvs <- new.env()
+  scanned <- function(e) {
+    for (name in names(.scannedEnvs)) if (identical(e, .scannedEnvs[[name]])) return(TRUE)
+    FALSE
+  }
+
+  objectSize.nested <- function(x) {
+    # Nothing to do?
+    is_list <- is.list(x)
+    if (!is_list && !is.environment(x)) return(0)
+    if (length(x) == 0L) return(0)
+  
+    size <- 0
+  
+    if (is_list) {
+      elements <- seq_along(x)
+    } else {
+      ## Get all objects in the environment
+      elements <- ls(envir = x, all.names = TRUE)
+      ## Avoid scanning the current environment again
+      name <- sprintf("env_%d", length(.scannedEnvs))
+      .scannedEnvs[[name]] <- x
+    }
+  
+    for (kk in seq_along(x)) {
+      element <- elements[kk]
+      ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
+      ## e.g. x <- packageVersion("future") gives x[[1]] == x.
+      obj <- .subset2(x, element)
+      if (is.list(obj)) {
+        size <- size + objectSize.nested(obj)
+      } else if (is.environment(obj)) {
+        if (!scanned(obj)) size <- size + objectSize.nested(obj)
+      } else {
+        size <- size + object.size(obj)
+      }
+    }
+  
+    size
+  } ## objectSize.nested()
+
   if (!is.list(x) && !is.environment(x)) {
     size <- object.size(x)
     x <- environment(x)
