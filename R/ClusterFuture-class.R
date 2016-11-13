@@ -85,6 +85,8 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
 #' @importFrom parallel clusterCall clusterExport
 #' @export
 run.ClusterFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  
   if (future$state != 'created') {
     stop("A future can only be launched once.")
   }
@@ -104,9 +106,9 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node <- requestNode(await=function() {
-    mdebug("Waiting for free cluster node ...")
+    if (debug) mdebug("Waiting for free cluster node ...")
     FutureRegistry(reg, action="collect-first")
-    mdebug("Waiting for free cluster node ... DONE")
+    if (debug) mdebug("Waiting for free cluster node ... DONE")
   }, workers=workers)
   future$node <- node
 
@@ -119,10 +121,10 @@ run.ClusterFuture <- function(future, ...) {
   ## library path used by covr.  We here add that path iff
   ## covr is being used. /HB 2016-01-15
   if (is.element("covr", loadedNamespaces())) {
-    mdebug("covr::package_coverage() workaround ...")
+    if (debug) mdebug("covr::package_coverage() workaround ...")
     libPath <- .libPaths()[1]
     clusterCall(cl, fun=function() .libPaths(c(libPath, .libPaths())))
-    mdebug("covr::package_coverage() workaround ... DONE")
+    if (debug) mdebug("covr::package_coverage() workaround ... DONE")
   }
 
 
@@ -138,31 +140,41 @@ run.ClusterFuture <- function(future, ...) {
   ## (ii) Attach packages that needs to be attached
   packages <- future$packages
   if (length(packages) > 0) {
-    mdebug("Attaching %d packages (%s) on cluster node #%d ...",
-                    length(packages), hpaste(sQuote(packages)), node)
+    if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ...",
+                      length(packages), hpaste(sQuote(packages)), node)
 
     clusterCall(cl, fun=requirePackages, packages)
 
-    mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
-                    length(packages), hpaste(sQuote(packages)), node)
+    if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
+                      length(packages), hpaste(sQuote(packages)), node)
   }
 
 
   ## (iii) Export globals
   globals <- future$globals
   if (length(globals) > 0) {
+    if (debug) {
+      total_size <- asIEC(object.size(globals))
+      mdebug("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node)
+    }
     for (name in names(globals)) {
       ## For instance sendData.SOCKnode(...) may generate warnings
       ## on packages not being available after serialization, e.g.
       ##  In serialize(data, node$con) :
       ## package:future' may not be available when loading
       ## Here we'll suppress any such warnings.
-      mdebug("Exported %s to cluster node #%d ...", sQuote(name), node)
+      value <- globals[[name]]
+      if (debug) {
+        size <- asIEC(objectSize(value))
+        mdebug("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node)
+      }
       suppressWarnings({
-        clusterCall(cl, fun=gassign, name, globals[[name]])
+        clusterCall(cl, fun=gassign, name, value)
       })
-      mdebug("Exported %s to cluster node #%d ... DONE", sQuote(name), node)
+      if (debug) mdebug("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node)
+      value <- NULL
     }
+    if (debug) mdebug("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node)
   }
   ## Not needed anymore
   globals <- NULL

@@ -22,6 +22,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
 
+  debug <- getOption("future.debug", FALSE)
+  
   ## Assert that all identified globals exists when future is created?
   if (persistent) {
     ## If future relies on persistent storage, then the globals may
@@ -75,7 +77,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
-      mdebug(msg)
+      if (debug) mdebug(msg)
       stop(msg)
     }
 
@@ -98,17 +100,17 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## recursively try to resolve everything in every global which may
   ## or may not point to packages (include base R package)
   if (resolve && length(globals) > 0L) {
-    mdebug("Resolving globals that are futures ...")
+    if (debug) mdebug("Resolving globals that are futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
-    mdebug("Number of global futures: %d", length(idxs))
+    if (debug) mdebug("Number of global futures: %d", length(idxs))
     if (length(idxs) > 0) {
-      mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
+      if (debug) mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
       valuesF <- values(globals[idxs])
       globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
-    mdebug("Resolving globals that are futures ... DONE")
+    if (debug) mdebug("Resolving globals that are futures ... DONE")
   }
 
 
@@ -161,9 +163,9 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## only dive into such environments if they have a certain flag
   ## set.  /HB 2016-02-04
   if (resolve && length(globals) > 0L) {
-    mdebug("Resolving futures part of globals (recursively) ...")
+    if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value=TRUE, recursive=TRUE)
-    mdebug("Resolving futures part of globals (recursively) ... DONE")
+    if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
 
 
@@ -172,10 +174,15 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
   maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
   stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
-  if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
-    sizes <- lapply(globals, FUN=object.size)
+  if (length(globals) > 0L) {
+    sizes <- lapply(globals, FUN=objectSize)
     sizes <- unlist(sizes, use.names=TRUE)
     totalExportSize <- sum(sizes, na.rm=TRUE)
+
+    if (debug) {
+      mdebug("%d global objects identified with a total size of %s (%s bytes)", length(globals), asIEC(totalExportSize), totalExportSize)
+    }
+  
     if (totalExportSize > maxSizeOfGlobals) {
       n <- length(sizes)
       o <- order(sizes, decreasing=TRUE)[1:3]
@@ -195,7 +202,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
         fmt <- "%s The three largest globals are %s."
       }
       msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
-      mdebug(msg)
+      if (debug) mdebug(msg)
       stop(msg)
     }
   }
