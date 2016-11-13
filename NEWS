@@ -25,7 +25,7 @@ o BUG FIX: value() for ClusterFuture would give cryptic error message
   "Error in stop(ex) : bad error message" if the cluster worker had
   crashed / terminated.  Now it will instead give an error message like
   "Failed to retrieve the value of ClusterFuture from cluster node #1 on
-  'localhost'. The reason reported was ‘error reading from connection".
+  'localhost'. The reason reported was "error reading from connection".
 o BUG FIX: Argument 'user' to remote() was ignored (since 1.1.0).
 
 
