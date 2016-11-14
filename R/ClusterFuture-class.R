@@ -154,7 +154,7 @@ run.ClusterFuture <- function(future, ...) {
   globals <- future$globals
   if (length(globals) > 0) {
     if (debug) {
-      total_size <- asIEC(object.size(globals))
+      total_size <- asIEC(objectSize(globals))
       mdebug("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node)
     }
     for (name in names(globals)) {

@@ -13,7 +13,6 @@
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
 #' @importFrom globals globalsOf globalsByName as.Globals packagesOf cleanup
-#' @importFrom utils object.size
 #'
 #' @keywords internal
 getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, globals=TRUE, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
@@ -170,42 +169,42 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
 
   ## Protect against user error exporting too large objects?
-  ## Maximum size of globals (to prevent too large exports) = 500 MiB
-  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
-  maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
-  stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
   if (length(globals) > 0L) {
-    sizes <- lapply(globals, FUN=objectSize)
-    sizes <- unlist(sizes, use.names=TRUE)
-    totalExportSize <- sum(sizes, na.rm=TRUE)
-
-    if (debug) {
-      mdebug("%d global objects identified with a total size of %s (%s bytes)", length(globals), asIEC(totalExportSize), totalExportSize)
-    }
+    ## Maximum size of globals (to prevent too large exports) = 500 MiB
+    maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
+    maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
+    stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
+    
+    if (is.finite(maxSizeOfGlobals) || debug) {
+      sizes <- lapply(globals, FUN=objectSize)
+      sizes <- unlist(sizes, use.names=TRUE)
+      totalExportSize <- sum(sizes, na.rm=TRUE)
+      if (debug) mdebug("%d global objects identified with a total size of %s (%s bytes)", length(globals), asIEC(totalExportSize), totalExportSize)
   
-    if (totalExportSize > maxSizeOfGlobals) {
-      n <- length(sizes)
-      o <- order(sizes, decreasing=TRUE)[1:3]
-      o <- o[is.finite(o)]
-      sizes <- sizes[o]
-      classes <- lapply(globals[o], FUN=mode)
-      classes <- unlist(classes, use.names=FALSE)
-      largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
-      if (n == 1) {
-        fmt <- "%s There is one global: %s."
-      } else if (n == 2) {
-        fmt <- "%s There are two globals: %s."
-      } else if (n == 3) {
-        fmt <- "%s There are three globals: %s."
-      } else {
-        fmt <- "%s The three largest globals are %s."
-      }
-      msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
-      if (debug) mdebug(msg)
-      stop(msg)
+      if (totalExportSize > maxSizeOfGlobals) {
+        n <- length(sizes)
+        o <- order(sizes, decreasing=TRUE)[1:3]
+        o <- o[is.finite(o)]
+        sizes <- sizes[o]
+        classes <- lapply(globals[o], FUN=mode)
+        classes <- unlist(classes, use.names=FALSE)
+        largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
+        msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+        if (n == 1) {
+          fmt <- "%s There is one global: %s."
+        } else if (n == 2) {
+          fmt <- "%s There are two globals: %s."
+        } else if (n == 3) {
+          fmt <- "%s There are three globals: %s."
+        } else {
+          fmt <- "%s The three largest globals are %s."
+        }
+        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
+        if (debug) mdebug(msg)
+        stop(msg)
+      } ## if (totalExportSize > ...)
     }
-  }
+  } ## if (length(globals) > 0)
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

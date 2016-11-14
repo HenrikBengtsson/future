@@ -78,7 +78,7 @@ print.Future <- function(x, ...) {
   g <- x$globals
   ng <- length(g)
   if (ng > 0) {
-    gSizes <- sapply(g, FUN=object.size)
+    gSizes <- sapply(g, FUN=objectSize)
     gTotalSize <- sum(gSizes)
     g <- head(g, n=5L)
     gSizes <- head(gSizes, n=5L)
@@ -109,7 +109,7 @@ print.Future <- function(x, ...) {
   }
 
   if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(x$value)), sQuote(class(x$value)[1])))
   } else {
     cat("Value: <not collected>\n")
   }
