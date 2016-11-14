@@ -465,13 +465,13 @@ objectSize <- function(x) {
       element <- elements[kk]
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
-      obj <- .subset2(x, element)
-      if (is.list(obj)) {
-        size <- size + objectSize.nested(obj)
-      } else if (is.environment(obj)) {
-        if (!scanned(obj)) size <- size + objectSize.nested(obj)
+      x_kk <- .subset2(x, element)
+      if (is.list(x_kk)) {
+        size <- size + objectSize.nested(x_kk)
+      } else if (is.environment(x_kk)) {
+        if (!scanned(x_kk)) size <- size + objectSize.nested(x_kk)
       } else {
-        size <- size + object.size(obj)
+        size <- size + object.size(x_kk)
       }
     }
   
