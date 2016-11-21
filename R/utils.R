@@ -222,13 +222,16 @@ detectCores <- local({
 
 
 ## We are currently importing the following non-exported functions:
-## * parallel:::defaultCluster()
-## * parallel:::recvResult()
-## * parallel:::selectChildren()
-## * parallel:::sendCall()
+## * cluster futures:
+##   - parallel:::defaultCluster()  ## non-critical / not really needed
+##   - parallel:::sendCall()        ## run()
+##   - parallel:::recvResult()      ## value()
+## * multicore futures:
+##   - parallel:::selectChildren()  ## resolved()
 ## As well as the following ones (because they are not exported on Windows):
-## * parallel:::mccollect()
-## * parallel:::mcparallel()
+## * multicore futures:
+##   - parallel::mcparallel()       ## run()
+##   - parallel::mccollect()        ## value()
 importParallel <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
