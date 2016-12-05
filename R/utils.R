@@ -437,7 +437,11 @@ myInternalIP <- local({
 
 ## A *rough* estimate of size of an object + its environment.
 #' @importFrom utils object.size
-objectSize <- function(x) {
+objectSize <- function(x, depth = Inf) {
+  # Nothing to do?
+  if (isNamespace(x)) return(0)
+  if (depth <= 0) return(0)
+  
   size <- 0
   
   .scannedEnvs <- new.env()
@@ -446,8 +450,12 @@ objectSize <- function(x) {
     FALSE
   }
 
-  objectSize.nested <- function(x) {
+  objectSize.nested <- function(x, depth) {
     # Nothing to do?
+    if (depth <= 0) return(0)
+    depth <- depth - 1L
+    
+    if (isNamespace(x)) return(0)
     is_list <- is.list(x)
     if (!is_list && !is.environment(x)) return(0)
     if (length(x) == 0L) return(0)
@@ -470,9 +478,9 @@ objectSize <- function(x) {
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, element)
       if (is.list(x_kk)) {
-        size <- size + objectSize.nested(x_kk)
+        size <- size + objectSize.nested(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
-        if (!scanned(x_kk)) size <- size + objectSize.nested(x_kk)
+        if (!scanned(x_kk)) size <- size + objectSize.nested(x_kk, depth = depth)
       } else {
         size <- size + object.size(x_kk)
       }
@@ -485,6 +493,6 @@ objectSize <- function(x) {
     size <- object.size(x)
     x <- environment(x)
   }
-  size <- size + objectSize.nested(x)
+  size <- size + objectSize.nested(x, depth = depth - 1L)
   size
 }

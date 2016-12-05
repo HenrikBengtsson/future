@@ -11,6 +11,11 @@ env$b <- 1:100
 env2 <- new.env()
 env2$env <- env
 
+## Namespaces will be skipped
+env3 <- getNamespace("utils")
+
+fcn <- function(...) TRUE
+
 objs <- list(
   NULL,
   TRUE,
@@ -23,7 +28,9 @@ objs <- list(
   list(a = 3.14, b = 1:100),
   list(a = 3.14, b = 1:100, c = list(a = 3.14, b = 1:100)),
   env,
-  env2
+  env2,
+  env3,
+  fcn
 )
 
 for (kk in seq_along(objs)) {
