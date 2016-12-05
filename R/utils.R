@@ -477,6 +477,8 @@ objectSize <- function(x, depth = Inf) {
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, element)
+      ## Nothing to do?
+      if (missing(x_kk)) next
       if (is.list(x_kk)) {
         size <- size + objectSize.nested(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
