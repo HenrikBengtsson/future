@@ -458,48 +458,63 @@ objectSize <- function(x, depth = 3L) {
     FALSE
   }
 
-  objectSize.nested <- function(x, depth) {
+  objectSize.list <- function(x, depth) {
     # Nothing to do?
     if (depth <= 0) return(0)
     depth <- depth - 1L
-    
-    if (isNamespace(x)) return(0)
-    is_list <- is.list(x)
-    if (!is_list && !is.environment(x)) return(0)
-    if (length(x) == 0L) return(0)
-  
     size <- 0
-  
-    if (is_list) {
-      elements <- seq_along(x)
-    } else {
-      ## Get all objects in the environment
-      elements <- ls(envir = x, all.names = TRUE)
-      ## Avoid scanning the current environment again
-      name <- sprintf("env_%d", length(.scannedEnvs))
-      .scannedEnvs[[name]] <- x
-    }
-  
     for (kk in seq_along(x)) {
-      element <- elements[kk]
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
+      x_kk <- .subset2(x, kk)
+      if (is.list(x_kk)) {
+        size <- size + objectSize.list(x_kk, depth = depth)
+      } else if (is.environment(x_kk)) {
+        if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
+      } else {
+        size <- size + object.size(x_kk)
+      }
+    }
+    size
+  } ## objectSize.list()
+  
+  objectSize.env <- function(x, depth) {
+    # Nothing to do?
+    if (depth <= 0) return(0)
+    depth <- depth - 1L
+    if (isNamespace(x)) return(0)
+
+    size <- 0
+
+    ## Get all objects in the environment
+    elements <- ls(envir = x, all.names = TRUE)
+    if (length(elements) == 0) return(0)
+    
+    ## Avoid scanning the current environment again
+    name <- sprintf("env_%d", length(.scannedEnvs))
+    .scannedEnvs[[name]] <- x
+    
+    for (element in elements) {
       x_kk <- .subset2(x, element)
       ## Nothing to do?
       if (missing(x_kk)) next
       if (is.list(x_kk)) {
-        size <- size + objectSize.nested(x_kk, depth = depth)
+        size <- size + objectSize.list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
-        if (!scanned(x_kk)) size <- size + objectSize.nested(x_kk, depth = depth)
+        if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
       } else {
         size <- size + object.size(x_kk)
       }
     }
   
     size
-  } ## objectSize.nested()
+  } ## objectSize.env()
 
-  size <- size + objectSize.nested(x, depth = depth - 1L)
-  
+  if (is.list(x)) {
+    size <- size + objectSize.list(x, depth = depth - 1L)
+  } else if (is.environment(x)) {
+    size <- size + objectSize.env(x, depth = depth - 1L)
+  }
+
   size
 }
