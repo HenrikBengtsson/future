@@ -437,7 +437,7 @@ myInternalIP <- local({
 
 ## A *rough* estimate of size of an object + its environment.
 #' @importFrom utils object.size
-objectSize <- function(x, depth = Inf) {
+objectSize <- function(x, depth = 3L) {
   # Nothing to do?
   if (isNamespace(x)) return(0)
   if (depth <= 0) return(0)
