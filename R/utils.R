@@ -442,7 +442,15 @@ objectSize <- function(x, depth = 3L) {
   if (isNamespace(x)) return(0)
   if (depth <= 0) return(0)
   
-  size <- 0
+  if (!is.list(x) && !is.environment(x)) {
+    size <- object.size(x)
+    x <- environment(x)
+  } else {
+    size <- 0
+  }
+
+  ## Nothing more to do?
+  if (depth == 1) return(size)
   
   .scannedEnvs <- new.env()
   scanned <- function(e) {
@@ -491,10 +499,7 @@ objectSize <- function(x, depth = 3L) {
     size
   } ## objectSize.nested()
 
-  if (!is.list(x) && !is.environment(x)) {
-    size <- object.size(x)
-    x <- environment(x)
-  }
   size <- size + objectSize.nested(x, depth = depth - 1L)
+  
   size
 }
