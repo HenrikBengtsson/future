@@ -18,8 +18,8 @@
 
   ## Temporarily use a different plan
   oplan <- plan("list")
-  on.exit(plan(oplan, substitute=FALSE, .call=NULL))
-  plan(strategy, substitute=FALSE, .call=NULL)
+  on.exit(plan(oplan, substitute=FALSE, .call=NULL, .cleanup=FALSE))
+  plan(strategy, substitute=FALSE, .call=NULL, .cleanup=FALSE)
 
   eval(fassignment, envir=envir)
 }

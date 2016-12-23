@@ -11,6 +11,7 @@
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
 #' @param .call (internal) Used for recording the call to this function.
+#' @param .cleanup (internal) Used for stopping implicitly started clusters.
 #'
 #' @return If a new strategy is chosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
@@ -78,10 +79,10 @@ plan <- local({
   stack <- defaultStack
 
   ## Main function
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE) {
+  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE, .cleanup=TRUE) {
     if (substitute) strategy <- substitute(strategy)
     if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
-
+    
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
@@ -94,8 +95,10 @@ plan <- local({
       ## List stack of future strategies?
       return(stack)
     } else if (identical(strategy, "reset")) {
-      ## Rest stack of future strategies?
+      ## Reset stack of future strategies?
       stack <<- defaultStack
+      ## Stop any (implicitly started) clusters?
+      if (.cleanup) ClusterRegistry(action = "stop")
       return(stack)
     } else if (identical(strategy, "pop")) {
       ## Pop strategy stack and return old stack (so it can be pushed back later)
@@ -117,6 +120,8 @@ plan <- local({
       }
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
+      ## Stop any (implicitly started) clusters?
+      if (.cleanup) ClusterRegistry(action = "stop")
       return(invisible(oldStack[[1L]]))
     }
 
@@ -128,7 +133,7 @@ plan <- local({
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
-          res <- plan(strategies, substitute=FALSE)
+          res <- plan(strategies, substitute=FALSE, .cleanup=.cleanup)
           return(invisible(res))
         }
 
@@ -201,7 +206,8 @@ plan <- local({
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
     stopifnot(is.list(stack), length(stack) >= 1L)
-
+    ## Stop any (implicitly started) clusters?
+    if (.cleanup) ClusterRegistry(action = "stop")
     invisible(oldStack[[1L]])
   } # function()
 }) # plan()

@@ -285,7 +285,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
   exit <- bquote({
     ## covr: skip=2
     .(exit)
-    future::plan(.(strategies))
+    future::plan(.(strategies), .cleanup=FALSE)
   })
 
   ## Pass down the default or the remain set of future strategies?
@@ -297,7 +297,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan("default")
+      future::plan("default", .cleanup=FALSE)
     })
   } else {
 ##    mdebug("Set plan(<remaining strategies>) inside future")
@@ -337,7 +337,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan(.(strategiesR))
+      future::plan(.(strategiesR), .cleanup=FALSE)
     })
   } ## if (length(strategiesR) > 0L)
 

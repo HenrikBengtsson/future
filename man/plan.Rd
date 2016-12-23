@@ -4,7 +4,8 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE)
+plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
+  .cleanup = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function (or name of it) to use
@@ -14,6 +15,8 @@ for resolving a future.  If NULL, then the current strategy is returned.}
 \code{substitute()}:d, otherwise not.}
 
 \item{.call}{(internal) Used for recording the call to this function.}
+
+\item{.cleanup}{(internal) Used for stopping implicitly started clusters.}
 
 \item{\dots}{Additional arguments overriding the default arguments
 of the evaluation function.}
