@@ -288,9 +288,11 @@ myExternalIP <- local({
     ## single third-party server.  This could be improved by falling back
     ## to additional servers, cf. https://github.com/phoemur/ipgetter
     urls <- c(
+      "https://httpbin.org/ip",
       "https://myexternalip.com/raw",
       "https://diagnostic.opendns.com/myip",
       "https://api.ipify.org/",
+      "http://httpbin.org/ip",
       "http://myexternalip.com/raw",
       "http://diagnostic.opendns.com/myip",
       "http://api.ipify.org/"
@@ -298,8 +300,27 @@ myExternalIP <- local({
     value <- NULL
     for (url in urls) {
       value <- tryCatch(readLines(url), error = function(ex) NULL)
-      if (!is.null(value)) break
-    }
+      
+      ## Nothing found?
+      if (is.null(value)) next
+
+      ## Keep only lines that look like they contain IP v4 numbers
+      ip4_pattern <- ".*[^[:digit:]]+([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
+      value <- grep(ip4_pattern, value, value = TRUE)
+  
+      ## Extract the IP numbers
+      value <- gsub(ip4_pattern, "\\1", value)
+  
+      ## Trim and drop empty results (just in case)
+      value <- trim(value)
+      value <- value[nzchar(value)]
+  
+      ## Nothing found?
+      if (length(value) == 0) next
+
+      ## Match?
+      if (length(value) == 1 && nzchar(value)) break
+    } ## for (url ...)
     
     ## Nothing found?
     if (is.null(value)) {
@@ -309,13 +330,6 @@ myExternalIP <- local({
       return(NA_character_)
     }
 
-    ## Trim and drop empty results (just in case)
-    value <- trim(value)
-    value <- value[nzchar(value)]
-
-    ## Nothing found?
-    if (length(value) == 0 && !mustWork) return(NA_character_)
-    
     ## Sanity check
     stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
 

@@ -1,13 +1,18 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2016-12-22]
+Version: 1.2.0-9000 [2016-12-29]
 o Now plan() stops any clusters that were implicitly created. For
   instance, a multisession cluster created by plan(multisession) will
   be stopped when plan(eager) is called.
 o Now options(future.debug = TRUE) also reports on total size of
   globals identified and for cluster futures also the size of the
   individual global variables exported.
+o PRIVACY: Lookup of public / external IP number is now querying
+  the https://httpbin.org/ip service first because it is most
+  likely doesn't log usage.  Note that the external IP number is
+  only queried when using plan(remote, workers) and explicitly
+  using revtunnel = FALSE (the default is revtunnel = TRUE).
 
 
 Version: 1.2.0 [2016-11-12]
