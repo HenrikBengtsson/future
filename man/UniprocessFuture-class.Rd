@@ -14,7 +14,7 @@ EagerFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
 
 LazyFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  lazy = FALSE, globals = TRUE, local = TRUE, ...)
+  lazy = TRUE, globals = TRUE, local = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}

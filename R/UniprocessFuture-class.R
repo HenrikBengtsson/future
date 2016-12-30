@@ -114,15 +114,15 @@ resolved.UniprocessFuture <- function(x, ...) {
 #' @export
 EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=FALSE, globals=globals, local=local, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, ...)
   structure(f, class=c("EagerFuture", class(f)))
 }
 
 
 #' @rdname UniprocessFuture-class
 #' @export
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=TRUE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=TRUE, globals=globals, local=local, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }

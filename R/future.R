@@ -182,14 +182,20 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, evaluator=plan("next"), ...) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, evaluator=plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
     stop("Argument 'evaluator' must be a function: ", typeof(evaluator))
   }
 
-  future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, ...)
+  ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
+  ## TODO: Remove when lazy() is removed.
+  if (is.na(lazy)) {
+    future <- evaluator(expr, envir=envir, substitute=FALSE, ...)
+  } else {
+    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, ...)
+  }
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {

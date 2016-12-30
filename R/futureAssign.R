@@ -6,9 +6,16 @@
 #'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=FALSE) {
+futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=NA) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
+
+  ## 'lazy' argument set via disposible option?
+  args <- getOption("future.disposable", NULL)
+  if (!is.null(args)) {
+    if (!is.null(args$lazy)) lazy <- args$lazy
+    on.exit(options(future.disposable = NULL))
+  }
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## (1) Create future
@@ -24,7 +31,15 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## a variable as a "promise".
   ## NOTE: We make sure to pass 'envir' in order for globals to
   ## be located properly.
-  future.args <- list(value, envir=envir, lazy=lazy)
+
+  ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
+  ## TODO: Remove when lazy() is removed.
+  if (is.na(lazy)) {
+    future.args <- list(value, envir=envir)
+  } else {
+    future.args <- list(value, envir=envir, lazy=lazy)
+  }
+  
   future <- do.call(future::future, args=future.args, envir=assign.env)
 
   ## Assign future to assignment environment
