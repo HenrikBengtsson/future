@@ -47,6 +47,8 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core$expr <- expr
   core$envir <- envir
   core$owner <- session_uuid(attributes = TRUE)
+  core$lazy <- FALSE         ## Reserved for future version (Issue #109)
+  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
@@ -73,6 +75,8 @@ print.Future <- function(x, ...) {
   cat("Label: ", sQuote(label), "\n", sep="")
   cat("Expression:\n")
   print(x$expr)
+  cat(sprintf("Lazy evaluation: %s\n", x$lazy))
+  cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
   g <- x$globals

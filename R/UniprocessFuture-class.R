@@ -44,7 +44,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
   }
   gp <- NULL
 
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, asynchronous=FALSE, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 

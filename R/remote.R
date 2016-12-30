@@ -65,6 +65,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
   }
 
   future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, master=myip, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
-  run(future)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")

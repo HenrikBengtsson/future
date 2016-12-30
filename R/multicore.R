@@ -73,8 +73,9 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE,
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal, label=label)
-  run(future)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(multicore) <- c("multicore", "multiprocess", "future", "function")
 

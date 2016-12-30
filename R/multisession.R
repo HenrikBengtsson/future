@@ -79,6 +79,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TR
   workers <- ClusterRegistry("start", workers=workers-1L)
 
   future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
-  run(future)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")

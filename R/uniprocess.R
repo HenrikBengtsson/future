@@ -42,7 +42,8 @@ eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loc
   local <- as.logical(local)
 
   future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
-  run(future)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(eager) <- c("eager", "uniprocess", "future", "function")
 
@@ -60,7 +61,9 @@ lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, loca
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  future <- LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(lazy) <- c("lazy", "uniprocess", "future", "function")
 
@@ -72,10 +75,10 @@ class(lazy) <- c("function", class(lazy))
 
 ## Keep private for now until name has been decided, cf.
 ## https://github.com/HenrikBengtsson/future/issues/109
-uniprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, lazy=FALSE, ...) {
+uniprocess <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   future <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
-  if (!lazy) future <- run(future)
+  if (!future$lazy) future <- run(future)
   invisible(future)
 }
 class(uniprocess) <- c("uniprocess", "future", "function")
