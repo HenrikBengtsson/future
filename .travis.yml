@@ -33,8 +33,7 @@ matrix:
       r: release
 
 before_install:
-  - Rscript -e 'parallel::detectCores()'
-  - Rscript -e 'parallel::detectCores(logical = FALSE)'
+  - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
 
 notifications:
   email:
