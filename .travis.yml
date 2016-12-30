@@ -32,6 +32,9 @@ matrix:
     - os: osx
       r: release
 
+before_install:
+  - Rscript -e 'parallel::detectCores()'
+  - Rscript -e 'parallel::detectCores(logical = FALSE)'
 
 notifications:
   email:
