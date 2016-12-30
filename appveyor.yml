@@ -39,8 +39,8 @@ install:
 # Adapt as necessary starting from here
 
 build_script:
-  - Rscript -e 'parallel::detectCores()'
-  - Rscript -e 'parallel::detectCores(logical = FALSE)'
+  - Rscript -e "parallel::detectCores()"
+  - Rscript -e "parallel::detectCores(logical = FALSE)"
   - echo Current directory=%CD%
   - travis-tool.sh install_r digest globals listenv markdown R.rsp
 
