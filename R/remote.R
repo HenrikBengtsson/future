@@ -18,7 +18,7 @@
 #' Note that remote futures use \code{persistent=TRUE} by default.
 #'
 #' @export
-remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, persistent=TRUE, workers=NULL, user=NULL, revtunnel=TRUE, gc=FALSE, earlySignal=FALSE, myip=NULL, label=NULL, ...) {
+remote <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, persistent=TRUE, workers=NULL, user=NULL, revtunnel=TRUE, gc=FALSE, earlySignal=FALSE, myip=NULL, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
@@ -64,7 +64,7 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pe
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, persistent=persistent, workers=workers, user=user, master=myip, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
+  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, persistent=persistent, workers=workers, user=user, master=myip, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

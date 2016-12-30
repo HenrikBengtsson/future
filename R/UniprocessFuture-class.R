@@ -14,7 +14,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy) {
@@ -44,7 +44,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
   }
   gp <- NULL
 
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, asynchronous=FALSE, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, asynchronous=FALSE, local=local, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -112,17 +112,17 @@ resolved.UniprocessFuture <- function(x, ...) {
 
 #' @rdname UniprocessFuture-class
 #' @export
-EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=FALSE, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=FALSE, globals=globals, local=local, ...)
   structure(f, class=c("EagerFuture", class(f)))
 }
 
 
 #' @rdname UniprocessFuture-class
 #' @export
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=TRUE, globals=globals, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }

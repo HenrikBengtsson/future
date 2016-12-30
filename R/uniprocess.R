@@ -37,11 +37,11 @@
 #'
 #' @aliases uniprocess
 #' @export
-eager <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, lazy=FALSE, ...) {
+eager <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  future <- EagerFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -49,19 +49,19 @@ class(eager) <- c("eager", "uniprocess", "future", "function")
 
 #' @rdname eager
 #' @export
-transparent <- function(expr, envir=parent.frame(), substitute=TRUE, globals=FALSE, local=FALSE, earlySignal=TRUE, label=NULL, lazy=FALSE, ...) {
+transparent <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=FALSE, local=FALSE, earlySignal=TRUE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  uniprocess(expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, earlySignal=earlySignal, label=label, ...)
 }
 class(transparent) <- c("transparent", "uniprocess", "future", "function")
 
 #' @rdname eager
 #' @export
-lazy <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, lazy=TRUE, ...) {
+lazy <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=TRUE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
-  future <- LazyFuture(expr=expr, envir=envir, local=local, globals=globals, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  future <- LazyFuture(expr=expr, envir=envir, local=local, lazy=lazy, globals=globals, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -77,7 +77,7 @@ class(lazy) <- c("function", class(lazy))
 ## https://github.com/HenrikBengtsson/future/issues/109
 uniprocess <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  future <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, earlySignal=earlySignal, label=label, lazy=lazy, ...)
+  future <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

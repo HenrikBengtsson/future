@@ -4,10 +4,10 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = FALSE, workers = NULL, user = NULL, revtunnel = TRUE,
-  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
-  ...)
+cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
+  globals = TRUE, persistent = FALSE, workers = NULL, user = NULL,
+  revtunnel = TRUE, homogeneous = TRUE, gc = FALSE, earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -19,6 +19,9 @@ is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+(immediately), otherwise not.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.

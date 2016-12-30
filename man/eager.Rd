@@ -7,15 +7,14 @@
 \alias{uniprocess}
 \title{Create a uniprocess future whose value will be in the current R session}
 \usage{
-eager(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, earlySignal = FALSE, label = NULL, lazy = FALSE, ...)
+eager(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
+  globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...)
 
-transparent(expr, envir = parent.frame(), substitute = TRUE,
-  globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL,
-  lazy = FALSE, ...)
+transparent(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
+  globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL, ...)
 
-lazy(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  local = TRUE, earlySignal = FALSE, label = NULL, lazy = TRUE, ...)
+lazy(expr, envir = parent.frame(), substitute = TRUE, lazy = TRUE,
+  globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -27,6 +26,9 @@ is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+(immediately), otherwise not.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
@@ -42,9 +44,6 @@ the assignments are done in the calling environment.}
 as soon as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
-
-\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
-(immediately), otherwise not.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 }
