@@ -2,6 +2,8 @@ Package: future
 ===============
 
 Version: 1.2.0-9000 [2016-12-29]
+o Added support for controlling whether a future is resolved eagerly
+  or lazily when creating the future, e.g. future(..., lazy=TRUE).
 o Now plan() stops any clusters that were implicitly created. For
   instance, a multisession cluster created by plan(multisession) will
   be stopped when plan(eager) is called.

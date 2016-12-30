@@ -84,6 +84,25 @@ for (cores in 1:min(3L, availableCores())) {
       message(sprintf("value(b)=%g", value(b)))
       stopifnot(value(b) == 2)
 
+      a <- future(1)
+      b <- future(value(a)+1, lazy=TRUE)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
+      a <- future(1, lazy=TRUE)
+      b <- future(value(a)+1)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
+      a <- future(1, lazy=TRUE)
+      b <- future(value(a)+1, lazy=TRUE)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
+
       ## BUG FIX: In future (<= 1.0.0) a global 'pkg' would be
       ## overwritten by the name of the last package attached
       ## by the future.

@@ -36,6 +36,12 @@ for (cores in 1:min(3L, availableCores())) {
     print(fit)
     stopifnot(all.equal(fit, fit0))
 
+    ## Explicit future (lazy)
+    f <- future({ lm(weight ~ group - 1) }, lazy = TRUE)
+    fit <- value(f)
+    print(fit)
+    stopifnot(all.equal(fit, fit0))
+
     ## Future assignment
     fit %<-% { lm(weight ~ group - 1) }
     print(fit)
