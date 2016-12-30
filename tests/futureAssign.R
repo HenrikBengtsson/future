@@ -38,6 +38,21 @@ cat(sprintf("v$a=%s\n", v$a))
 stopifnot(identical(u$a, 2))
 stopifnot(identical(v$a, 4))
 
+
+## Global variables
+a <- 1
+futureAssign("b", { 2 * a })
+a <- 2
+stopifnot(b == 2)
+
+
+## Global variables
+a <- 1
+#futureAssign("b", { 2 * a }, lazy = TRUE)
+a <- 2
+stopifnot(b == 2)
+
+
 message("*** futureAssign() ... DONE")
 
 source("incl/end.R")

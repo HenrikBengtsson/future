@@ -6,7 +6,7 @@
 #'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE) {
+futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=FALSE) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
@@ -24,7 +24,7 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## a variable as a "promise".
   ## NOTE: We make sure to pass 'envir' in order for globals to
   ## be located properly.
-  future.args <- list(value, envir=envir)
+  future.args <- list(value, envir=envir, lazy=lazy)
   future <- do.call(future::future, args=future.args, envir=assign.env)
 
   ## Assign future to assignment environment

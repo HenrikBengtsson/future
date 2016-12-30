@@ -6,7 +6,8 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
+  lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -16,6 +17,9 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

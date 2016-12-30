@@ -13,8 +13,6 @@
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
-#' @param lazy If \code{FALSE} (default), the future is resolved eagerly
-#' (immediately), otherwise not.
 #'
 #' @return A \link{UniprocessFuture}.
 #'

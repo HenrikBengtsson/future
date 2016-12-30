@@ -19,8 +19,8 @@ is evaluated.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
-(immediately), otherwise not.}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.

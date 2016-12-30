@@ -16,6 +16,8 @@
 #' is evaluated.
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param lazy If \code{FALSE} (default), the future is resolved
+#' eagerly (starting immediately), otherwise not.
 #' @param globals A logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
@@ -180,14 +182,14 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, evaluator=plan("next"), ...) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, evaluator=plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
     stop("Argument 'evaluator' must be a function: ", typeof(evaluator))
   }
 
-  future <- evaluator(expr, envir=envir, substitute=FALSE, ...)
+  future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, ...)
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {

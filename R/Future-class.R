@@ -12,6 +12,8 @@
 #' is done (or inherits from if \code{local} is TRUE).
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#' @param lazy If \code{FALSE} (default), the future is resolved
+#' eagerly (starting immediately), otherwise not.
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
@@ -39,7 +41,7 @@
 #'
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   args <- list(...)
 
@@ -47,7 +49,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE
   core$expr <- expr
   core$envir <- envir
   core$owner <- session_uuid(attributes = TRUE)
-  core$lazy <- FALSE         ## Reserved for future version (Issue #109)
+  core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
   core$local <- local
   core$gc <- gc

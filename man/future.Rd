@@ -10,11 +10,11 @@
 \alias{futureCall}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE,
+future(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), assign.env = envir,
-  substitute = TRUE)
+  substitute = TRUE, lazy = FALSE)
 
 x \%<-\% value
 
@@ -31,6 +31,9 @@ is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{evaluator}{The actual function that evaluates
 the future expression and returns a \link{Future}.
