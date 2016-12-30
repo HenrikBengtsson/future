@@ -62,8 +62,6 @@ or a named list for controlling how globals are handled.
 For details, see below section.
 This argument can be specified via the \dots arguments
 for \code{future()} and \code{futureCall()}.}
-
-\item{...}{Additional arguments passed to \code{\link{future}()}.}
 }
 \value{
 \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.

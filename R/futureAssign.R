@@ -3,7 +3,6 @@
 #' the future and whose value will be assigned to the variable.
 #' @param assign.env The \link[base]{environment} to which the variable
 #' should be assigned.
-#' @param ... Additional arguments passed to \code{\link{future}()}.
 #'
 #' @rdname future
 #' @export
