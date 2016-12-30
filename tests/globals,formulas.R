@@ -46,7 +46,17 @@ for (cores in 1:min(3L, availableCores())) {
     fit %<-% { lm(weight ~ group - 1) }
     print(fit)
     stopifnot(all.equal(fit, fit0))
-  } ## for (strategy ...)
+
+    ## Future assignment (non-lazy)
+    fit %<-% { lm(weight ~ group - 1) } %lazy% FALSE
+    print(fit)
+    stopifnot(all.equal(fit, fit0))
+
+    ## Future assignment (lazy)
+    fit %<-% { lm(weight ~ group - 1) } %lazy% TRUE
+    print(fit)
+    stopifnot(all.equal(fit, fit0))
+} ## for (strategy ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

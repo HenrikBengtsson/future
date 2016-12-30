@@ -79,6 +79,16 @@ for (cores in 1:min(3L, availableCores())) {
     print(y)
     stopifnot(identical(y, y0))
 
+    ## Same with forced lazy evaluation
+    x <- list()
+    y %<-% {
+      x$a <- 1
+      x
+    } %lazy% TRUE
+    rm(list="x")
+    print(y)
+    stopifnot(identical(y, y0))
+
     ## 'x' is _not_ a global variable here
     x <- list()
     y %<-% {

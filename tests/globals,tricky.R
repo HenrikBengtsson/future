@@ -54,6 +54,27 @@ for (cores in 1:min(3L, availableCores())) {
       }
 
 
+      ## Same with forced lazy evaluation
+      a <- 3
+
+      y %<-% {
+        b <- a
+        a <- 2
+        a*b
+      } %lazy% TRUE
+
+      rm(list="a")
+
+      res <- try(y, silent=TRUE)
+      if (method == "conservative") {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        message(sprintf("y=%g", y))
+        stopifnot(identical(y, yTruth))
+      }
+
+
       res <- listenv()
       a <- 1
       for (ii in 1:3) {
@@ -67,6 +88,28 @@ for (cores in 1:min(3L, availableCores())) {
 
       res <- try(unlist(res), silent=TRUE)
       if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        print(res)
+        stopifnot(all(res == 1:3))
+      }
+
+
+      ## Same with forced lazy evaluation
+      res <- listenv()
+      a <- 1
+      for (ii in 1:3) {
+        res[[ii]] %<-% {
+          b <- a*ii
+          a <- 0
+          b
+        } %lazy% TRUE
+      }
+      rm(list="a")
+
+      res <- try(unlist(res), silent=TRUE)
+      if (method == "conservative") {
         str(list(res=res))
         stopifnot(inherits(res, "try-error"))
       } else {

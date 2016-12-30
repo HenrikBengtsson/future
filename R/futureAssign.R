@@ -3,10 +3,11 @@
 #' the future and whose value will be assigned to the variable.
 #' @param assign.env The \link[base]{environment} to which the variable
 #' should be assigned.
+#' @param ... Additional arguments passed to \code{\link{future}()}.
 #'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=NA) {
+futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=NA, ...) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
@@ -35,9 +36,9 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
   ## TODO: Remove when lazy() is removed.
   if (is.na(lazy)) {
-    future.args <- list(value, envir=envir)
+    future.args <- list(value, envir=envir,  ...)
   } else {
-    future.args <- list(value, envir=envir, lazy=lazy)
+    future.args <- list(value, envir=envir, lazy=lazy, ...)
   }
   
   future <- do.call(future::future, args=future.args, envir=assign.env)
