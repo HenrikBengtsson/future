@@ -9,7 +9,7 @@ multiprocess(expr, envir = parent.frame(), substitute = TRUE,
   earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
 objects should be identified.  Depending on "evaluator",

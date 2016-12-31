@@ -11,18 +11,18 @@
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, lazy = NA,
-  evaluator = plan("next"), ...)
+  globals = TRUE, evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), assign.env = envir,
-  substitute = TRUE, lazy = NA, ...)
+  substitute = TRUE, lazy = NA, globals = TRUE, ...)
 
 x \%<-\% value
 
-futureCall(FUN, args = NULL, envir = parent.frame(), globals = TRUE,
-  evaluator = plan("next"), ...)
+futureCall(FUN, args = NULL, envir = parent.frame(), lazy = NA,
+  globals = TRUE, evaluator = plan("next"), ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr, value}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
 objects should be identified.  Depending on "evaluator",
@@ -33,9 +33,12 @@ is evaluated.}
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-eagerly (\code{lazy = FALSE}) or lazily (\code{lazy = TRUE}).
-The default is eagerly (starting immediately),
+lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
+
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.}
 
 \item{evaluator}{The actual function that evaluates
 the future expression and returns a \link{Future}.
@@ -47,36 +50,28 @@ has specified via \code{\link{plan}()}.}
 
 \item{...}{Additional arguments passed to the "evaluator".}
 
-\item{x}{the name of a future variable.}
-
-\item{value}{the \R \link[base]{expression} to be evaluated in
-the future and whose value will be assigned to the variable.}
+\item{x}{the name of a future variable, which will hold the value
+of the future expression (as a promise).}
 
 \item{assign.env}{The \link[base]{environment} to which the variable
 should be assigned.}
 
-\item{FUN}{A \link[base]{function} object.}
+\item{FUN}{A \link[base]{function} to be evaluated.}
 
 \item{args}{A \link[base]{list} of arguments passed to function \code{FUN}.}
-
-\item{globals}{A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.
-This argument can be specified via the \dots arguments
-for \code{future()} and \code{futureCall()}.}
 }
 \value{
 \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.
 
-\code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{v <- value(f)}.
-
-\code{futureAssign("v", expr)} and \code{v \%<-\% expr} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{v}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
+\code{futureAssign("x", value)} and \code{x \%<-\% value} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{x}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
 The future itself is returned invisibly, e.g.
-\code{f <- futureAssign("v", expr)} and \code{f <- (v \%<-\% expr)}.
-Alternatively, the future of a future variable \code{v} can be retrieved
-without blocking using \code{f <- \link{futureOf}(v)}.
+\code{f <- futureAssign("x", expr)} and \code{f <- (x \%<-\% expr)}.
+Alternatively, the future of a future variable \code{x} can be retrieved
+without blocking using \code{f <- \link{futureOf}(x)}.
 Both the future and the variable (promise) are assigned to environment
 \code{assign.env} where the name of the future is \code{.future_<name>}.
+
+\code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 }
 \description{
 Creates a future that evaluates an \R expression or
@@ -96,23 +91,44 @@ until the future is resolved.
 It is possible to check whether a future is resolved or not
 without blocking by using \code{\link{resolved}(f)}.
 
-For a future created via a future assignment, the value is bound to
-a promise, which when queried will internally call \code{\link{value}()}
-on the future and which will then be resolved into a regular variable
-bound to that value.  For example, with future assignment
-\code{v \%<-\% expr}, the first time variable \code{v} is queried
-the call blocks if (and only if) the future is not yet resolved. As soon
-as it is resolved, and any succeeding queries, querying \code{v} will
-immediately give the value.
+For a future created via a future assignment
+(\code{futureAssign("x", value)} or \code{x \%<-\% value}), the value
+is bound to a promise, which when queried will internally call
+\code{\link{value}()}  on the future and which will then be resolved
+into a regular variable bound to that value.  For example, with future
+assignment \code{x \%<-\% value}, the first time variable \code{x} is
+queried the call blocks if (and only if) the future is not yet resolved.
+As soon as it is resolved, and any succeeding queries, querying \code{x}
+will immediately give the value.
 
-The future assignment construct \code{v \%<-\% expr} is not a formal
-assignment per se, but a binary infix operator on objects \code{v}
-and \code{expr}.  However, by using non-standard evaluation, this
-constructs can emulate an assignment operator similar to
-\code{v <- expr}. Due to \R's precedence rules of operators,
+The future assignment construct \code{x \%<-\% value} is not a formal
+assignment per se, but a binary infix operator on objects \code{x}
+and expression \code{value}.  However, by using non-standard evaluation,
+this constructs can emulate an assignment operator similar to
+\code{x <- value}. Due to \R's precedence rules of operators,
 future expressions that contain multiple statements need to be
-explicitly bracketed, e.g. \code{v \%<-\% { a <- 2; a^2 }}.
+explicitly bracketed, e.g. \code{x \%<-\% { a <- 2; a^2 }}.
 }
+\section{Eager or lazy evaluation}{
+
+By default, a future is resolved using \emph{eager} evaluation
+(\code{lazy = FALSE}).  This means that the expression starts to
+be evaluated as soon as the future is created.
+
+As an alternative, the future can be resolved using \emph{lazy}
+evaluation (\code{lazy = TRUE}).  This means that the expression
+will only be evaluated when the value of the future is requested.
+\emph{Note that this means that the expression of a lazy future will
+not be evaluated unless the value is requested}.
+
+For future assignments, lazy evaluation can be controlled vid a the
+\code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
+
+Until deprecated \code{plan(lazy)} is defunct, the default
+(\code{lazy = NA}) is eager evaluation \emph{unless} \code{plan(lazy)}
+is set.
+}
+
 \section{Globals used by future expressions}{
 
 Global objects (short \emph{globals}) are objects (e.g. variables and
@@ -281,7 +297,9 @@ print(fitB)
 print(fitC)
 }
 \seealso{
-How, when and where futures are resolved is given by the future strategy,
-which can be set by the \code{\link{plan}()} function.
+How, when and where futures are resolved is given by the
+\emph{future strategy}, which can be set by the end user using the
+\code{\link{plan}()} function.  The future strategy must not be
+set by the developer, e.g. it must not be called within a package.
 }
 

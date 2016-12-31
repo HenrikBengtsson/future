@@ -1,12 +1,21 @@
-#' @param x the name of a future variable.
-#' @param value the \R \link[base]{expression} to be evaluated in
-#' the future and whose value will be assigned to the variable.
+#' @param x the name of a future variable, which will hold the value
+#'        of the future expression (as a promise).
+#'
 #' @param assign.env The \link[base]{environment} to which the variable
 #' should be assigned.
 #'
+#' @return
+#' \code{futureAssign("x", value)} and \code{x \%<-\% value} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{x}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
+#' The future itself is returned invisibly, e.g.
+#' \code{f <- futureAssign("x", expr)} and \code{f <- (x \%<-\% expr)}.
+#' Alternatively, the future of a future variable \code{x} can be retrieved
+#' without blocking using \code{f <- \link{futureOf}(x)}.
+#' Both the future and the variable (promise) are assigned to environment
+#' \code{assign.env} where the name of the future is \code{.future_<name>}.
+#'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=NA, ...) {
+futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE, lazy=NA, globals=TRUE, ...) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
@@ -14,7 +23,7 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## (1) Arguments passed to future()
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  future.args <- list(value, envir=envir, lazy = lazy, ...)
+  future.args <- list(value, envir=envir, lazy = lazy, globals = globals, ...)
 
   ## Any arguments set via disposible option?
   args <- getOption("future.disposable", NULL)

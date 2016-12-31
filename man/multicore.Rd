@@ -9,7 +9,7 @@ multicore(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
 objects should be identified.  Depending on "evaluator",
@@ -20,15 +20,12 @@ is evaluated.}
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-eagerly (\code{lazy = FALSE}) or lazily (\code{lazy = TRUE}).
-The default is eagerly (starting immediately),
+lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
-For details, see below section.
-This argument can be specified via the \dots arguments
-for \code{future()} and \code{futureCall()}.}
+For details, see below section.}
 
 \item{workers}{The maximum number of multicore futures that can
 be active at the same time before blocking.}
