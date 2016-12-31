@@ -1,6 +1,6 @@
 #' Control lazy / eager evaluation for a future assignment
 #'
-#' @usage fassignment \%lazy\% value
+#' @usage fassignment \%lazy\% lazy
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.

@@ -15,7 +15,4 @@ fassignment \%label\% label
 \description{
 Specify label for a future assignment
 }
-\details{
-\code{a \%label\% b} is short for \code{a \%tweak\% list(label = b)}.
-}
 

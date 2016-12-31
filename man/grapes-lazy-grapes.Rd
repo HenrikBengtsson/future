@@ -4,7 +4,7 @@
 \alias{\%lazy\%}
 \title{Control lazy / eager evaluation for a future assignment}
 \usage{
-fassignment \%lazy\% value
+fassignment \%lazy\% lazy
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.

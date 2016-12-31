@@ -20,7 +20,4 @@
   options(future.disposable = args)
 
   eval(fassignment, envir=envir)
-#
-#  args <- list(fassignment, list(globals=globals))
-#  do.call(`%tweak%`, args=args, envir=envir)
 }

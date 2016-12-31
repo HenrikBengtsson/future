@@ -14,7 +14,7 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## (1) Arguments passed to future()
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  future.args <- list(value, envir=envir, ...)
+  future.args <- list(value, envir=envir, lazy = lazy, ...)
 
   ## Any arguments set via disposible option?
   args <- getOption("future.disposable", NULL)
