@@ -32,8 +32,10 @@ is evaluated.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
+\item{lazy}{Specifies whether a future should be resolved
+eagerly (\code{lazy = FALSE}) or lazily (\code{lazy = TRUE}).
+The default is eagerly (starting immediately),
+except when the \emph{deprecated} \code{plan(lazy)} is set.}
 
 \item{evaluator}{The actual function that evaluates
 the future expression and returns a \link{Future}.

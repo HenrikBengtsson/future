@@ -10,19 +10,26 @@
 #' on these settings.
 #'
 #' @param expr An \R \link[base]{expression}.
+#'
 #' @param envir The \link{environment} from where global
 #' objects should be identified.  Depending on "evaluator",
 #' it may also be the environment in which the expression
 #' is evaluated.
+#'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
-#' @param lazy If \code{FALSE} (default), the future is resolved
-#' eagerly (starting immediately), otherwise not.
+#'
+#' @param lazy Specifies whether a future should be resolved
+#' eagerly (\code{lazy = FALSE}) or lazily (\code{lazy = TRUE}).
+#' The default is eagerly (starting immediately),
+#' except when the \emph{deprecated} \code{plan(lazy)} is set.
+#'
 #' @param globals A logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
 #' This argument can be specified via the \dots arguments
 #' for \code{future()} and \code{futureCall()}.
+#'
 #' @param evaluator The actual function that evaluates
 #' the future expression and returns a \link{Future}.
 #' The evaluator function should accept all of the same
@@ -30,6 +37,7 @@
 #' (except \code{evaluator}, \code{FUN} and \code{args}).
 #' The default evaluator function is the one that the user
 #' has specified via \code{\link{plan}()}.
+#'
 #' @param ... Additional arguments passed to the "evaluator".
 #'
 #' @return
