@@ -497,12 +497,23 @@ objectSize <- function(x, depth = 3L) {
     if (depth <= 0) return(0)
     depth <- depth - 1L
     if (isNamespace(x)) return(0)
+##    if (inherits(x, "Future")) return(0)
 
     size <- 0
 
     ## Get all objects in the environment
     elements <- ls(envir = x, all.names = TRUE)
     if (length(elements) == 0) return(0)
+
+    ## Skip variables that are future promises in order
+    ## to avoid inspecting promises that are already
+    ## under investigation.
+    skip <- grep("^.future_", elements, value = TRUE)
+    if (length(skip) > 0) {
+      skip <- gsub("^.future_", "", elements)
+      elements <- setdiff(elements, skip)
+      if (length(elements) == 0) return(0)
+    }
     
     ## Avoid scanning the current environment again
     name <- sprintf("env_%d", length(.scannedEnvs))
@@ -510,12 +521,16 @@ objectSize <- function(x, depth = 3L) {
     
     for (element in elements) {
       x_kk <- .subset2(x, element)
+
       ## Nothing to do?
       if (missing(x_kk)) next
       if (is.list(x_kk)) {
         size <- size + objectSize.list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
-        if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
+##        if (!inherits(x_kk, "Future") && !scanned(x_kk)) {
+        if (!scanned(x_kk)) {
+	  size <- size + objectSize.env(x_kk, depth = depth)
+	}
       } else {
         size <- size + object.size(x_kk)
       }
