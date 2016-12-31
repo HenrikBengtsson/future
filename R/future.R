@@ -63,8 +63,8 @@
 #' and expression \code{value}.  However, by using non-standard evaluation,
 #' this constructs can emulate an assignment operator similar to
 #' \code{x <- value}. Due to \R's precedence rules of operators,
-#' future expressions that contain multiple statements need to be
-#' explicitly bracketed, e.g. \code{x \%<-\% { a <- 2; a^2 }}.
+#' future expressions often needs to be explicitly bracketed, e.g.
+#' \code{x \%<-\% { a + b }}.
 #'
 #'
 #' @section Eager or lazy evaluation:
