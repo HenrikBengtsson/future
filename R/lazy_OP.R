@@ -4,16 +4,16 @@
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
-#' @param value If \code{TRUE}, the future is resolved using lazy evaluation, otherwise eager evaluation.
+#' @inheritParams multiprocess
 #'
 #' @export
-`%lazy%` <- function(fassignment, value) {
+`%lazy%` <- function(fassignment, lazy) {
   fassignment <- substitute(fassignment)
   envir <- parent.frame(1)
 
   ## Temporarily set 'lazy' argument
   args <- getOption("future.disposable", list())
-  args$lazy <- value
+  args$lazy <- lazy
   options(future.disposable = args)
 
   eval(fassignment, envir=envir)

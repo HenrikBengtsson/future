@@ -13,6 +13,14 @@
 `%globals%` <- function(fassignment, globals) {
   fassignment <- substitute(fassignment)
   envir <- parent.frame(1)
-  args <- list(fassignment, list(globals=globals))
-  do.call(`%tweak%`, args=args, envir=envir)
+
+  ## Temporarily set 'globals' argument
+  args <- getOption("future.disposable", list())
+  args$globals <- globals
+  options(future.disposable = args)
+
+  eval(fassignment, envir=envir)
+#
+#  args <- list(fassignment, list(globals=globals))
+#  do.call(`%tweak%`, args=args, envir=envir)
 }

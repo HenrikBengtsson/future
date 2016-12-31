@@ -10,7 +10,8 @@ fassignment \%lazy\% value
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
 
-\item{value}{If \code{TRUE}, the future is resolved using lazy evaluation, otherwise eager evaluation.}
+\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+(immediately), otherwise not.}
 }
 \description{
 Control lazy / eager evaluation for a future assignment
