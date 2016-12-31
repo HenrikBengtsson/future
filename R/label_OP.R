@@ -13,7 +13,7 @@
 
   ## Temporarily set 'label' argument
   args <- getOption("future.disposable", list())
-  args$label <- label
+  args["label"] <- list(label)
   options(future.disposable = args)
   
   eval(fassignment, envir=envir)

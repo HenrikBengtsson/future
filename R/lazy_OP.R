@@ -13,7 +13,7 @@
 
   ## Temporarily set 'lazy' argument
   args <- getOption("future.disposable", list())
-  args$lazy <- lazy
+  args["lazy"] <- list(lazy)
   options(future.disposable = args)
 
   eval(fassignment, envir=envir)

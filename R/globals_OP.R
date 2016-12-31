@@ -16,7 +16,7 @@
 
   ## Temporarily set 'globals' argument
   args <- getOption("future.disposable", list())
-  args$globals <- globals
+  args["globals"] <- list(globals)
   options(future.disposable = args)
 
   eval(fassignment, envir=envir)

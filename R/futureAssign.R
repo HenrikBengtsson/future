@@ -28,7 +28,7 @@ futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=N
   ## Any arguments set via disposible option?
   args <- getOption("future.disposable", NULL)
   if (!is.null(args)) {
-    for (name in names(args)) future.args[[name]] <- args[[name]]
+    for (name in names(args)) future.args[name] <- args[name]
     on.exit(options(future.disposable = NULL))
   }
 
