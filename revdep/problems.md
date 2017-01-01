@@ -25,37 +25,11 @@
 
 # Check results
 
-2 packages with problems
+1 packages with problems
 
-|package          |version | errors| warnings| notes|
-|:----------------|:-------|------:|--------:|-----:|
-|future.BatchJobs |0.13.1  |      1|        0|     0|
-|PureCN           |1.2.3   |      0|        1|     1|
-
-## future.BatchJobs (0.13.1)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
-
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-Running the tests in ‘tests/DEPRECATED.backend.R’ failed.
-Last 13 lines of output:
-  List of 1
-   $ cluster.functions:List of 5
-    ..$ name             : chr "Local"
-    ..$ submitJob        :function (conf, reg, job.name, rscript, log.file, job.dir, resources, arrayjobs)  
-    ..$ killJob          :function (conf, reg, batch.job.id)  
-    ..$ listJobs         :function (conf, reg)  
-    ..$ getArrayEnvirName:function ()  
-    ..- attr(*, "class")= chr "ClusterFunctions"
-  Saving conf: /home/hb/repositories/future/revdep/checks/future.BatchJobs.Rcheck/tests/.future/20161231_165100-UyVeKV/BatchJobs_2132372677-files/conf.RData
-  Submitting 1 chunks / 1 jobs.
-  Cluster functions: Local.
-  Auto-mailer settings: start=none, done=none, error=none.
-  Aborted (core dumped)
-```
+|package |version | errors| warnings| notes|
+|:-------|:-------|------:|--------:|-----:|
+|PureCN  |1.2.3   |      0|        1|     1|
 
 ## PureCN (1.2.3)
 Maintainer: Markus Riester <markus.riester@novartis.com>
