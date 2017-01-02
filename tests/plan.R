@@ -2,26 +2,26 @@ source("incl/start,load-only.R")
 
 message("*** plan() ...")
 
-message("*** Set strategy via future::plan(future::lazy)")
-oplan <- future::plan(future::lazy)
+message("*** Set strategy via future::plan(future::multisession)")
+oplan <- future::plan(future::multisession)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::lazy, local=FALSE)")
-oplan <- future::plan(future::lazy, local=FALSE)
+message("*** Set strategy via future::plan(future::multisession, globals=FALSE)")
+oplan <- future::plan(future::multisession, globals=FALSE)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::lazy(local=FALSE)")
-oplan <- future::plan(future::lazy(local=FALSE))
+message("*** Set strategy via future::plan(future::multisession(globals=FALSE)")
+oplan <- future::plan(future::multisession(globals=FALSE))
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan('lazy')")
-oplan <- future::plan("lazy")
+message("*** Set strategy via future::plan('multisession')")
+oplan <- future::plan("multisession")
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
@@ -73,7 +73,7 @@ stopifnot(v == 0)
 
 message("*** plan('uniprocess')")
 ## Setting strategy by name
-plan("lazy")
+plan("multisession")
 print(plan())
 
 
@@ -105,14 +105,14 @@ print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(uniprocess(local=FALSE))")
-plan(lazy)
+plan(multisession)
 plan(uniprocess(local=FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(tweak(uniprocess, local=FALSE))")
-plan(lazy)
+plan(multisession)
 plan(tweak(uniprocess, local=FALSE))
 fcn <- plan()
 print(fcn)
@@ -121,10 +121,10 @@ stopifnot(formals(fcn)$local == FALSE)
 
 message("*** old <- plan(new)")
 truth <- plan()
-old <- plan(lazy, local=FALSE)
+old <- plan(multisession, globals=FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
-curr <- plan()    ## curr == lazy(local=FALSE)
+curr <- plan()    ## curr == multisession(globals=FALSE)
 prev <- plan(old) ## prev == lazy(local=FALSE)
 stopifnot(identical(unclass(curr), unclass(prev)))
 
@@ -133,12 +133,12 @@ stopifnot(identical(unclass(curr), unclass(old)))
 stopifnot(identical(unclass(curr), unclass(truth)))
 
 message("*** %plan% 'uniprocess'")
-plan(lazy)
+plan(multisession)
 x %<-% { a <- 1 } %plan% "uniprocess"
-stopifnot(identical(body(plan()), body(lazy)))
+stopifnot(identical(body(plan()), body(multisession)))
 
 message("*** %plan% uniprocess")
-plan(lazy)
+plan(multisession)
 
 ## %plan% can operate on any expression, so it
 ## works just as an withPlan({ ... }, plan=...)
@@ -147,16 +147,16 @@ f <- fun(1)
 stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "UniprocessFuture"))
 
 x %<-% { a <- 1 } %plan% uniprocess
-stopifnot(identical(body(plan()), body(lazy)))
+stopifnot(identical(body(plan()), body(multisession)))
 
 message("*** %plan% uniprocess(local=FALSE) ")
-plan(lazy)
+plan(multisession)
 a <- 0
 x %<-% { a } %plan% uniprocess(local=FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
-stopifnot(identical(body(plan()), body(lazy)))
+stopifnot(identical(body(plan()), body(multisession)))
 
 message("*** Nested futures with different plans ")
 plan(lazy)
