@@ -3,7 +3,7 @@
 \name{MultiprocessFuture-class}
 \alias{MultiprocessFuture}
 \alias{MultiprocessFuture-class}
-\title{An multiprocess future is a future whose value will be resolved asynchroneously in a parallel process}
+\title{An multiprocess future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
 MultiprocessFuture(expr = NULL, envir = parent.frame(),
   substitute = FALSE, ...)
@@ -30,7 +30,7 @@ evaluating the future.}
 An object of class \code{MultiprocessFuture}.
 }
 \description{
-An multiprocess future is a future whose value will be resolved asynchroneously in a parallel process
+An multiprocess future is a future whose value will be resolved asynchronously in a parallel process
 }
 \seealso{
 To evaluate an expression using "multiprocess future", see function

@@ -2,7 +2,7 @@
 % Please edit documentation in R/multisession.R
 \name{multisession}
 \alias{multisession}
-\title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
+\title{Create a multisession future whose value will be resolved asynchronously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
   lazy = FALSE, globals = TRUE, persistent = FALSE,

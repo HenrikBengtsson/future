@@ -5,7 +5,7 @@
 \alias{LazyFuture}
 \alias{UniprocessFuture}
 \alias{UniprocessFuture-class}
-\title{An uniprocess future is a future whose value will be resolved synchroneously in the current process}
+\title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
@@ -40,7 +40,7 @@ the assignments are done in the calling environment.}
 An object of class \code{UniprocessFuture}.
 }
 \description{
-An uniprocess future is a future whose value will be resolved synchroneously in the current process
+An uniprocess future is a future whose value will be resolved synchronously in the current process
 }
 \seealso{
 To evaluate an expression using "uniprocess future", see functions

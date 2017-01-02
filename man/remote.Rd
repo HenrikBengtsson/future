@@ -2,7 +2,7 @@
 % Please edit documentation in R/remote.R
 \name{remote}
 \alias{remote}
-\title{Create a remote future whose value will be resolved asynchroneously in a remote process}
+\title{Create a remote future whose value will be resolved asynchronously in a remote process}
 \usage{
 remote(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   globals = TRUE, persistent = TRUE, workers = NULL, user = NULL,

@@ -78,7 +78,7 @@
 #' \emph{Note that this means that the expression of a lazy future will
 #' not be evaluated unless the value is requested}.
 #'
-#' For future assignments, lazy evaluation can be controlled vid a the
+#' For future assignments, lazy evaluation can be controlled via the
 #' \code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
 #'
 #' Until deprecated \code{plan(lazy)} is defunct, the default
@@ -132,7 +132,7 @@
 #'
 #' Specifying globals explicitly avoids the overhead added from
 #' automatically identifying the globals and gathering their values.
-#' Futhermore, if we know that the future expression does not make use
+#' Furthermore, if we know that the future expression does not make use
 #' of any global variables, we can disable the automatic search for
 #' globals by using
 #' \preformatted{

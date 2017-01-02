@@ -1,4 +1,4 @@
-#' Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation
+#' Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation
 #'
 #' A multiprocess future is a future that uses \link{multicore} evaluation
 #' if supported, otherwise it uses \link{multisession} evaluation.

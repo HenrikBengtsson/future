@@ -2,7 +2,7 @@
 % Please edit documentation in R/cluster.R
 \name{cluster}
 \alias{cluster}
-\title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
+\title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   globals = TRUE, persistent = FALSE, workers = NULL, user = NULL,

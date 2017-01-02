@@ -1,4 +1,4 @@
-#' A cluster future is a future whose value will be resolved asynchroneously in a parallel process
+#' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
 #' @param globals (optional) a logical, a character vector,

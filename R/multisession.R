@@ -1,4 +1,4 @@
-#' Create a multisession future whose value will be resolved asynchroneously in a parallel R session
+#' Create a multisession future whose value will be resolved asynchronously in a parallel R session
 #'
 #' A multisession future is a future that uses multisession evaluation,
 #' which means that its \emph{value is computed and resolved in

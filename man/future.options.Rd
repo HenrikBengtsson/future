@@ -58,7 +58,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 }
 }
 
-\section{Options for configurating low-level system behaviors}{
+\section{Options for configuring low-level system behaviors}{
 
 \describe{
  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")})}

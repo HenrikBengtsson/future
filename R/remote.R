@@ -1,4 +1,4 @@
-#' Create a remote future whose value will be resolved asynchroneously in a remote process
+#' Create a remote future whose value will be resolved asynchronously in a remote process
 #'
 #' A remote future is a future that uses remote cluster evaluation,
 #' which means that its \emph{value is computed and resolved

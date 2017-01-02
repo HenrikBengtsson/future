@@ -5,7 +5,7 @@
 \alias{ClusterFuture-class}
 \alias{MultisessionFuture}
 \alias{MultisessionFuture-class}
-\title{A cluster future is a future whose value will be resolved asynchroneously in a parallel process}
+\title{A cluster future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
@@ -51,7 +51,7 @@ it is assumed to be on the PATH for each node.}
 An object of class \code{ClusterFuture}.
 }
 \description{
-A cluster future is a future whose value will be resolved asynchroneously in a parallel process
+A cluster future is a future whose value will be resolved asynchronously in a parallel process
 }
 \seealso{
 To evaluate an expression using "cluster future", see function

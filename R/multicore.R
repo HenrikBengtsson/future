@@ -1,4 +1,4 @@
-#' Create a multicore future whose value will be resolved asynchroneously in a forked parallel process
+#' Create a multicore future whose value will be resolved asynchronously in a forked parallel process
 #'
 #' A multicore future is a future that uses multicore evaluation,
 #' which means that its \emph{value is computed and resolved in

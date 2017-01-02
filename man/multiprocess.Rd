@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiprocess.R
 \name{multiprocess}
 \alias{multiprocess}
-\title{Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation}
+\title{Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation}
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
   lazy = FALSE, globals = TRUE, workers = availableCores(), gc = FALSE,

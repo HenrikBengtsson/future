@@ -1,4 +1,4 @@
-#' An multiprocess future is a future whose value will be resolved asynchroneously in a parallel process
+#' An multiprocess future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams Future-class
 #' @param local If TRUE, the expression is evaluated such that

@@ -3,7 +3,7 @@
 \name{MulticoreFuture-class}
 \alias{MulticoreFuture}
 \alias{MulticoreFuture-class}
-\title{An multicore future is a future whose value will be resolved asynchroneously in a parallel process}
+\title{An multicore future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
 MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   globals = TRUE, ...)
@@ -15,7 +15,7 @@ MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
 An object of class \code{MulticoreFuture}.
 }
 \description{
-An multicore future is a future whose value will be resolved asynchroneously in a parallel process
+An multicore future is a future whose value will be resolved asynchronously in a parallel process
 }
 \seealso{
 To evaluate an expression using "multicore future", see function
