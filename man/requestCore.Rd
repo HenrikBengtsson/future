@@ -4,7 +4,7 @@
 \alias{requestCore}
 \title{Request a core for multicore processing}
 \usage{
-requestCore(await, workers = availableCores(),
+requestCore(await, workers = availableCores(), asynchronous = FALSE,
   times = getOption("future.wait.times", 1000),
   delta = getOption("future.wait.interval", 1),
   alpha = getOption("future.wait.alpha", 1.01))
@@ -14,6 +14,8 @@ requestCore(await, workers = availableCores(),
 finished multicore subprocesses.}
 
 \item{workers}{Total number of workers available.}
+
+\item{asynchronous}{(internal use only)}
 
 \item{times}{Then maximum number of times subprocesses
 should be collected before timeout.}

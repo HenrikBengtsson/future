@@ -9,6 +9,8 @@
 #' @inheritParams cluster
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
+#' @param asynchronous If FALSE and \code{workers == 1}, then the future
+#' will be resolved in the calling R process, otherwise not.
 #'
 #' @return A \link{MultisessionFuture}.
 #' If \code{workers == 1}, then all processing using done in the
@@ -54,7 +56,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, asynchronous=FALSE, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -68,7 +70,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE
 
   ## Fall back to lazy uniprocess futures if only a single R session can be used,
   ## i.e. the use the current main R process.
-  if (workers == 1L) {
+  if (workers == 1L && !asynchronous) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
     return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=TRUE, globals=globals, local=TRUE, label=label))
   }
@@ -76,9 +78,13 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE
   ## IMPORTANT: When we setup a multisession cluster, we need to
   ## account for the main R process as well, i.e. we should setup
   ## a cluster with one less process.
-  workers <- ClusterRegistry("start", workers=workers-1L)
+  if (asynchronous) {
+    workers <- ClusterRegistry("start", workers=workers)
+  } else {
+    workers <- ClusterRegistry("start", workers=workers-1L)
+  }
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, asynchronous=asynchronous, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

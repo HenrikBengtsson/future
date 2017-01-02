@@ -10,7 +10,7 @@ fassignment \%lazy\% lazy
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+\item{lazy}{If FALSE (default), the future is resolved eagerly
 (immediately), otherwise not.}
 }
 \description{

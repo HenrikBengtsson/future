@@ -4,7 +4,7 @@
 \alias{usedCores}
 \title{Get number of cores currently used}
 \usage{
-usedCores()
+usedCores(asynchronous = FALSE)
 }
 \value{
 A positive integer equal or greater than one.

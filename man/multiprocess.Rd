@@ -19,7 +19,7 @@ is evaluated.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+\item{lazy}{If FALSE (default), the future is resolved eagerly
 (immediately), otherwise not.}
 
 \item{globals}{(optional) a logical, a character vector,

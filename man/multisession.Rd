@@ -5,9 +5,9 @@
 \title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, globals = TRUE, persistent = FALSE,
-  workers = availableCores(), gc = FALSE, earlySignal = FALSE,
-  label = NULL, ...)
+  lazy = FALSE, asynchronous = FALSE, globals = TRUE,
+  persistent = FALSE, workers = availableCores(), gc = FALSE,
+  earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
@@ -23,6 +23,9 @@ is evaluated.}
 \item{lazy}{Specifies whether a future should be resolved
 lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
+
+\item{asynchronous}{If FALSE and \code{workers == 1}, then the future
+will be resolved in the calling R process, otherwise not.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.

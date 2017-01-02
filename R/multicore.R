@@ -8,6 +8,8 @@
 #' @inheritParams multiprocess
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
+#' @param asynchronous If FALSE and \code{workers == 1}, then the future
+#' will be resolved in the calling R process, otherwise not.
 #'
 #' @return A \link{MulticoreFuture}
 #' If \code{workers == 1}, then all processing using done in the
@@ -50,7 +52,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, asynchronous=FALSE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -65,7 +67,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, g
   ## Fall back to eager uniprocess futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
   ## Uniprocess futures best reflect how multicore futures handle globals.
-  if (workers == 1L || !supportsMulticore()) {
+  if ((workers == 1L && !asynchronous) || !supportsMulticore()) {
     ## covr: skip=1
     return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=TRUE, label=label))
   }
@@ -73,7 +75,7 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, g
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, asynchronous=asynchronous, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -92,7 +94,7 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #' @return A positive integer equal or greater than one.
 #'
 #' @keywords internal
-usedCores <- function() {
+usedCores <- function(asynchronous = FALSE) {
   ## Number of unresolved multicore futures
   futures <- FutureRegistry("multicore", action="list")
   nfutures <- length(futures)
@@ -122,7 +124,7 @@ usedCores <- function() {
     }
   }
 
-  return(ncores + 1L)
+  if (asynchronous) ncores else ncores + 1L
 }
 
 
@@ -135,6 +137,7 @@ usedCores <- function() {
 #' @param await A function used to try to "collect"
 #'        finished multicore subprocesses.
 #' @param workers Total number of workers available.
+#' @param asynchronous (internal use only)
 #' @param times Then maximum number of times subprocesses
 #'        should be collected before timeout.
 #' @param delta Then base interval (in seconds) to wait
@@ -146,17 +149,17 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers=availableCores(), times=getOption("future.wait.times", 1000), delta=getOption("future.wait.interval", 1.0), alpha=getOption("future.wait.alpha", 1.01)) {
+requestCore <- function(await, workers=availableCores(), asynchronous=FALSE, times=getOption("future.wait.times", 1000), delta=getOption("future.wait.interval", 1.0), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
   times <- as.integer(times)
   stopifnot(is.finite(times), times > 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
-  mdebug(sprintf("requestCore(): workers = %d", workers))
+  mdebug(sprintf("requestCore(): workers = %d, asynchronous = %s", workers, asynchronous))
 
   ## No additional cores available?
-  if (workers == 1L) {
+  if (workers == 1L && !asynchronous) {
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
   }
 
@@ -164,11 +167,11 @@ requestCore <- function(await, workers=availableCores(), times=getOption("future
   interval <- delta
   finished <- FALSE
   while (iter <= times) {
-    used <- usedCores()
+    used <- usedCores(asynchronous = asynchronous)
     finished <- (used < workers)
     if (finished) break
 
-    mdebug(sprintf("usedCores() = %d, workers = %d", used, workers))
+    mdebug(sprintf("usedCores(asynchronous = %s) = %d, workers = %d", asynchronous, used, workers))
 
     ## Wait
     Sys.sleep(interval)

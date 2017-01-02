@@ -56,7 +56,8 @@ run.MulticoreFuture <- function(future, ...) {
 
   requestCore(
     await=function() FutureRegistry("multicore", action="collect-first"),
-    workers=future$workers
+    workers=future$workers,
+    asynchronous=future$asynchronous
   )
 
   ## Add to registry

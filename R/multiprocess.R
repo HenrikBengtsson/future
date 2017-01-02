@@ -6,7 +6,7 @@
 #' parallel in another process}.
 #'
 #' @inheritParams future
-#' @param lazy If \code{FALSE} (default), the future is resolved eagerly
+#' @param lazy If FALSE (default), the future is resolved eagerly
 #' (immediately), otherwise not.
 #' @param globals (optional) a logical, a character vector,
 #' or a named list for controlling how globals are handled.
