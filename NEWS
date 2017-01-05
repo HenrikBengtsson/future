@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2016-12-30]
+Version: 1.2.0-9000 [2017-01-05]
 o Added support for controlling whether a future is resolved eagerly
   or lazily when creating the future, e.g. future(..., lazy = TRUE)
   futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
@@ -17,7 +17,9 @@ o PRIVACY: Lookup of public / external IP number is now querying
   doesn't log usage.  Note that the external IP number is only
   queried when using plan(remote, workers) and explicitly using
   revtunnel = FALSE (the default is revtunnel = TRUE).
-
+o BUG FIX: availableCores(methods = "_R_CHECK_LIMIT_CORES_") would
+  give an error if not running R CMD check.
+  
 
 Version: 1.2.0 [2016-11-12]
 o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()

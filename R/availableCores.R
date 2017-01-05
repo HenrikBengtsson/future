@@ -8,15 +8,19 @@
 #' For instance, on systems where multicore processing is not supported
 #' (i.e. Windows), using \code{constrains="multicore"} will force a
 #' single core to be reported.
+#'
 #' @param methods A character vector specifying how to infer the number
 #' of available cores.
+#'
 #' @param na.rm If TRUE, only non-missing settings are considered/returned.
+#'
 #' @param default The default number of cores to return if no non-missing
 #' settings are available.
+#'
 #' @param which A character specifying which settings to return.
 #' If \code{"min"}, the minimum value is returned.
 #' If \code{"max"}, the maximum value is returned (be careful!)
-#' If \code{"all"}, all values are returned.
+#' If \code{"all"}, all values are returned.#'
 #'
 #' @return Return a positive (>=1) integer.
 #' If \code{which="all"}, then more than one value may be returned.
@@ -117,7 +121,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## misleading to the reader.
       chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
       chk <- (nzchar(chk) && (chk != "false"))
-      if (chk) n <- 3L ## = 2+1
+      n <- if (chk) 3L else NA_integer_ ## = 2+1
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()
