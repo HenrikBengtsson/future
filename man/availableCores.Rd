@@ -27,7 +27,7 @@ settings are available.}
 \item{which}{A character specifying which settings to return.
 If \code{"min"}, the minimum value is returned.
 If \code{"max"}, the maximum value is returned (be careful!)
-If \code{"all"}, all values are returned.}
+If \code{"all"}, all values are returned.#'}
 }
 \value{
 Return a positive (>=1) integer.
@@ -90,6 +90,10 @@ e.g. \code{options(mc.cores=8)} will cause the value of
 Having said this, it is almost always better to do this by explicitly
 setting the number of workers when specifying the future strategy,
 e.g. \code{plan(multiprocess, workers=9)}.
+}
+\seealso{
+To get the number of available workers regardless of machine,
+see \code{\link{availableWorkers}()}.
 }
 \keyword{internal}
 
