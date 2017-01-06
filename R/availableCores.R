@@ -46,15 +46,16 @@
 #'    instance \code{\link[parallel]{mclapply}()}.
 #'  \item \code{"PBS"} -
 #'    Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
-#'    Depending on PBS system configuration, this \emph{resource} parameter
-#'    may or may not default to one.  It can be specified when submitting
-#'    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
-#'    requests four nodes each with two cores.
+#'    Depending on PBS system configuration, this \emph{resource}
+#'    parameter may or may not default to one.
+#'    An example of a job submission that results in this is
+#'    \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
 #'  \item \code{"SGE"} -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
 #'    \env{NSLOTS}.
-#'    It can be specified when submitting a job as in, for instance,
-#'    \code{qsub -pe by_node 2}, which two cores on a single machine.
+#'    An example of a job submission that results in this is
+#'    \code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
+#'    requests two cores on a single machine.
 #'  \item \code{"Slurm"} -
 #'    Query Simple Linux Utility for Resource Management (Slurm)
 #'    environment variable \env{SLURM_CPUS_PER_TASK}.

@@ -43,6 +43,9 @@ In addition, the following settings ("methods") are also acknowledged:
    If this is set and specifies an existing file, then the set
    of workers is read from that file, where one worker (node)
    is given per line.
+   An example of a job submission that results in this is
+   \code{qsub -l nodes=4:ppn=2}, which requests four nodes each
+   with two cores.
 }
 }
 \seealso{
