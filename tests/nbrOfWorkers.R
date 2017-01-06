@@ -38,6 +38,13 @@ for (strategy in strategies) {
 } ## for (strategy ...)
 
 
+message("Type of future: cluster")
+workers <- rep("localhost", times = 2L)
+plan(cluster, workers = workers)
+n <- nbrOfWorkers()
+message(sprintf("nbrOfWorkers: %d", n))
+stopifnot(n == length(workers))
+
 message("Type of future: constant")
 n <- nbrOfWorkers(constant)
 message(sprintf("nbrOfWorkers: %d", n))

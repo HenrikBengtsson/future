@@ -20,7 +20,7 @@
 #' @param which A character specifying which settings to return.
 #' If \code{"min"}, the minimum value is returned.
 #' If \code{"max"}, the maximum value is returned (be careful!)
-#' If \code{"all"}, all values are returned.#'
+#' If \code{"all"}, all values are returned.
 #'
 #' @return Return a positive (>=1) integer.
 #' If \code{which="all"}, then more than one value may be returned.
