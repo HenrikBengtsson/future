@@ -66,8 +66,9 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
     rep("localhost", times = n)
   })
 
-  ## Acknowledge known HPC settings
-  for (method in methods) {
+  ## Acknowledge known HPC settings (skip others)
+  methodsT <- setdiff(methods, c("_R_CHECK_LIMIT_CORES_", "mc.cores", "mc.cores+1", "system"))
+  for (method in methodsT) {
     if (method == "PBS") {
       pathname <- getenv("PBS_NODEFILE")
       if (is.na(pathname)) next
