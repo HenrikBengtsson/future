@@ -8,7 +8,7 @@
 #' @param default The default set of workers.
 #'
 #' @param which A character specifying which set / sets to return.
-#' If \code{"first"}, the first non-empty set found.
+#' If \code{"auto"}, the first non-empty set found.
 #' If \code{"min"}, the minimum value is returned.
 #' If \code{"max"}, the maximum value is returned (be careful!)
 #' If \code{"all"}, all values are returned.#'
@@ -38,7 +38,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods=getOption("future.availableCores.methods", c("PBS", "SGE", "Slurm", "_R_CHECK_LIMIT_CORES_", "mc.cores+1", "system")), na.rm=TRUE, default="localhost", which=c("first", "min", "max", "all")) {
+availableWorkers <- function(methods=getOption("future.availableCores.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")), na.rm=TRUE, default="localhost", which=c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))
@@ -61,13 +61,15 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
 
   ## Default is to use the current machine
   ncores <- availableCores(methods = methods, na.rm = FALSE, which = "all")
+
   workers <- lapply(ncores, FUN = function(n) {
     if (length(n) == 0 || is.na(n)) n <- 0L
     rep("localhost", times = n)
   })
 
   ## Acknowledge known HPC settings (skip others)
-  methodsT <- setdiff(methods, c("_R_CHECK_LIMIT_CORES_", "mc.cores", "mc.cores+1", "system"))
+  methods_localhost <- c("_R_CHECK_LIMIT_CORES_", "mc.cores", "mc.cores+1", "system")
+  methodsT <- setdiff(methods, methods_localhost)
   for (method in methodsT) {
     if (method == "PBS") {
       pathname <- getenv("PBS_NODEFILE")
@@ -93,8 +95,18 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
     workers[[method]] <- w
   }
 
-  nnodes <- unlist(lapply(workers, FUN = length), use.names = FALSE)
-  if (which == "first") {
+  nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
+  if (which == "auto") {
+    ## For default localhost sets, use the minimum allowed number of
+    ## workers **according to availableCores()**.
+    methodsT <- intersect(names(workers), methods_localhost)
+    min <- min(ncores[methodsT], na.rm = TRUE)
+    if (is.finite(min)) {
+      nnodes[methodsT] <- min
+      workers[methodsT] <- list(rep("localhost", times = min))
+    }
+    
+    ## Now, pick the first positive and finite value
     idx <- which(is.finite(nnodes) & nnodes > 0L, useNames = FALSE)[1]
     workers <- if (is.na(idx)) character(0L) else workers[[idx]]
   } else if (which == "min") {

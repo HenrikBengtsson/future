@@ -4,9 +4,9 @@
 \alias{availableWorkers}
 \title{Get set of available workers}
 \usage{
-availableWorkers(methods = getOption("future.availableCores.methods", c("PBS",
-  "SGE", "Slurm", "_R_CHECK_LIMIT_CORES_", "mc.cores+1", "system")),
-  na.rm = TRUE, default = "localhost", which = c("first", "min", "max",
+availableWorkers(methods = getOption("future.availableCores.methods",
+  c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")),
+  na.rm = TRUE, default = "localhost", which = c("auto", "min", "max",
   "all"))
 }
 \arguments{
@@ -18,7 +18,7 @@ of available cores.}
 \item{default}{The default set of workers.}
 
 \item{which}{A character specifying which set / sets to return.
-If \code{"first"}, the first non-empty set found.
+If \code{"auto"}, the first non-empty set found.
 If \code{"min"}, the minimum value is returned.
 If \code{"max"}, the maximum value is returned (be careful!)
 If \code{"all"}, all values are returned.#'}
