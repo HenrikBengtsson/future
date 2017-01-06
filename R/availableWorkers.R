@@ -100,10 +100,13 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
     ## For default localhost sets, use the minimum allowed number of
     ## workers **according to availableCores()**.
     methodsT <- intersect(names(workers), methods_localhost)
-    min <- min(ncores[methodsT], na.rm = TRUE)
-    if (is.finite(min)) {
-      nnodes[methodsT] <- min
-      workers[methodsT] <- list(rep("localhost", times = min))
+    methodsT <- methodsT[is.finite(ncores[methodsT]) & ncores[methodsT] > 0]
+    if (length(methodsT) > 1L) {
+      min <- min(ncores[methodsT], na.rm = TRUE)
+      if (is.finite(min)) {
+        nnodes[methodsT] <- min
+        workers[methodsT] <- list(rep("localhost", times = min))
+      }
     }
     
     ## Now, pick the first positive and finite value
