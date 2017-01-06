@@ -36,7 +36,7 @@
 #' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, persistent=FALSE, workers=NULL, user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+cluster <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, persistent=FALSE, workers=availableWorkers(), user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("cluster" %in% names(args)) {

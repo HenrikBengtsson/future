@@ -78,6 +78,10 @@
 #' setting the number of workers when specifying the future strategy,
 #' e.g. \code{plan(multiprocess, workers=9)}.
 #'
+#' @seealso
+#' To get the number of available workers regardless of machine,
+#' see \code{\link{availableWorkers}()}.
+#'
 #' @export
 #' @keywords internal
 availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {

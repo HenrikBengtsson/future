@@ -2,6 +2,8 @@ Package: future
 ===============
 
 Version: 1.2.0-9000 [2017-01-05]
+o The default for plan(cluster) is now workers = availableWorkers().
+o Added availableWorkers(), cf. availableCores().
 o Added support for controlling whether a future is resolved eagerly
   or lazily when creating the future, e.g. future(..., lazy = TRUE)
   futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.

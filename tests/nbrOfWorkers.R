@@ -18,10 +18,13 @@ for (strategy in strategies) {
 } ## for (strategy ...)
 
 
-strategies <- c("multiprocess", "multisession", "multicore")
+strategies <- c("cluster", "multiprocess", "multisession", "multicore")
 strategies <- intersect(strategies, supportedStrategies())
 cores <- availableCores()
 message("Number of available cores: ", cores)
+workers <- availableWorkers()
+nworkers <- length(workers)
+message(sprintf("Available workers: [n=%d] %s", nworkers, hpaste(sQuote(workers))))
 
 for (strategy in strategies) {
   message("Type of future: ", strategy)
@@ -29,12 +32,12 @@ for (strategy in strategies) {
   evaluator <- get(strategy, mode="function")
   n <- nbrOfWorkers(evaluator)
   message(sprintf("nbrOfWorkers: %d", n))
-  stopifnot(n == cores)
+  stopifnot(n == nworkers)
 
   plan(strategy)
   n <- nbrOfWorkers()
   message(sprintf("nbrOfWorkers: %d", n))
-  stopifnot(n == cores)
+  stopifnot(n == nworkers)
 } ## for (strategy ...)
 
 
