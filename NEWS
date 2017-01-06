@@ -17,6 +17,8 @@ o PRIVACY: Lookup of public / external IP number is now querying
   doesn't log usage.  Note that the external IP number is only
   queried when using plan(remote, workers) and explicitly using
   revtunnel = FALSE (the default is revtunnel = TRUE).
+o BUG FIX: nbrOfWorkers() would give an error for plan(cluster,
+  workers) where workers was a character vector.
 o BUG FIX: availableCores(methods = "_R_CHECK_LIMIT_CORES_") would
   give an error if not running R CMD check.
   
