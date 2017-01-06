@@ -96,9 +96,16 @@ workers <- expand_nodes(data)
 stopifnot(length(workers) == length(workers0), all(workers == sort(workers0)))
 
 Sys.setenv(PE_HOSTFILE = pathname)
+Sys.setenv(NSLOTS = length(workers0))  ## Use to validate results
 workers <- availableWorkers(methods = "SGE")
 print(workers)
 stopifnot(length(workers) == length(workers0), all(workers == sort(workers0)))
+
+## Test validation
+Sys.setenv(NSLOTS = length(workers0) + 1L)
+workers <- tryCatch(availableWorkers(methods = "SGE"), warning = identity)
+print(workers)
+stopifnot(inherits(workers, "warning"))
 
 message("*** read_pe_hostfile() ... DONE")
 

@@ -98,6 +98,10 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
       }
       data <- read_pe_hostfile(pathname)
       w <- expand_nodes(data)
+      nslots <- as.integer(getenv("NSLOTS"))
+      if (!identical(nslots, length(w))) {
+        warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variable %s = %d", length(w), sQuote("PE_HOSTFILE"), sQuote(pathname), sQuote("NSLOTS"), nslots))
+      }
     } else {
       ## Fall back to querying option and system environment variable
       ## with the given name
