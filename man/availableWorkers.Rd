@@ -46,6 +46,12 @@ In addition, the following settings ("methods") are also acknowledged:
    An example of a job submission that results in this is
    \code{qsub -l nodes=4:ppn=2}, which requests four nodes each
    with two cores.
+ \item \code{"SGE"} -
+   Query Sun/Oracle Grid Engine (SGE) environment variable
+   \env{PE_HOSTFILE}.
+   An example of a job submission that results in this is
+   \code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
+   requests eight cores on a any number of machines.
 }
 }
 \seealso{
