@@ -34,7 +34,7 @@ expand_nodes <- future:::expand_nodes
 read_pbs_nodefile <- future:::read_pbs_nodefile
 read_pe_hostfile <- future:::read_pe_hostfile
 
-workers0 <- c("n1", "n2", "n3", "n1", "n6", "n3", "n3")
+workers0 <- c("n1", "n2", "n3", "n1", "n6", "n3", "n3", "n5")
 data0 <- as.data.frame(table(workers0), stringsAsFactors = FALSE)
 colnames(data0) <- c("node", "count")
 data0 <- data0[order(data0$node, data0$count), ]
@@ -56,6 +56,9 @@ stopifnot(
 )
 
 Sys.setenv(PBS_NODEFILE = pathname)
+Sys.setenv(PBS_NP = length(workers),
+           PBS_NUM_NODES = length(workers) / 2,
+           PBS_NUM_PPN = 2)
 workers <- availableWorkers(methods = "PBS")
 print(workers)
 stopifnot(length(workers) == length(workers0), all(workers == sort(workers0)))

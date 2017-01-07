@@ -89,6 +89,22 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
       }
       data <- read_pbs_nodefile(pathname)
       w <- data$node
+
+      ## Sanity checks
+      pbs_np <- as.integer(getenv("PBS_NP"))
+      if (!identical(pbs_np, length(w))) {
+        warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variable %s = %d", length(w), sQuote("PBS_NODEFILE"), sQuote(pathname), sQuote("PBS_NP"), pbs_np))
+      }
+
+      pbs_nodes <- as.integer(getenv("PBS_NUM_NODES"))
+      pbs_ppn <- as.integer(getenv("PBS_NUM_PPN"))
+      pbs_np <- pbs_nodes * pbs_ppn
+      if (!identical(pbs_np, length(w))) {
+        warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variables %s * %s = %d * %d = %d", length(w), sQuote("PBS_NODEFILE"), sQuote(pathname), sQuote("PBS_NUM_NODES"), sQuote("PBS_NUM_PPN"), pbs_nodes, pbs_ppn, pbs_np))
+      }
+
+      ## TO DO: Add validation of 'w' (from PBS_HOSTFILE) toward
+      ## counts in PBS_NP and / or PBS_NUM_NODES * PBS_NUM_PPN.
     } else if (method == "SGE") {
       pathname <- getenv("PE_HOSTFILE")
       if (is.na(pathname)) next
@@ -98,6 +114,8 @@ availableWorkers <- function(methods=getOption("future.availableCores.methods", 
       }
       data <- read_pe_hostfile(pathname)
       w <- expand_nodes(data)
+
+      ## Sanity checks
       nslots <- as.integer(getenv("NSLOTS"))
       if (!identical(nslots, length(w))) {
         warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variable %s = %d", length(w), sQuote("PE_HOSTFILE"), sQuote(pathname), sQuote("NSLOTS"), nslots))
