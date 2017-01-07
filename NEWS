@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2017-01-06]
+Version: 1.2.0-9000 [2017-01-07]
 o The default for plan(cluster) is now workers = availableWorkers().
 o Added availableWorkers().  By default it returns localhost workers
   according to availableCores().  In addition, it detects common
@@ -17,6 +17,9 @@ o Now plan() stops any clusters that were implicitly created. For
 o Now options(future.debug = TRUE) also reports on total size of
   globals identified and for cluster futures also the size of the
   individual global variables exported.
+o ROBUSTNESS: makeClusterPSOCK() treats workers that refer to the
+  the local machine by its name as "localhost".  This avoids having
+  to launch such workers of SSH.
 o PRIVACY: Lookup of public / external IP number is now querying
   the https://httpbin.org/ip service first because it most likely
   doesn't log usage.  Note that the external IP number is only
