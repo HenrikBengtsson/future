@@ -113,6 +113,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @export
 makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = 2*60, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+  ## Make sure to use 'localhost' for workers that are the current machine
+  worker[worker == Sys.info()[["nodename"]]] <- "localhost"
+  
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   rshcmd <- as.character(rshcmd)
