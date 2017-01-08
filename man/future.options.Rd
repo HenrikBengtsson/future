@@ -36,9 +36,9 @@ Below are all \R options that are currently used by the \pkg{future} package and
  \item{\option{future.globals.maxSize}:}{Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. (Default: \code{500*1024^2} = 500 MiB)}
  \item{\option{future.globals.resolve}:}{If \code{TRUE}, globals that are \code{\link{Future}} objects (typically created as \emph{explicit} futures) will be resolved and have their values (using \code{value()}) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: \code{FALSE})}
  \item{\option{future.resolve.recursive}:}{An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
- \item{\option{future.wait.times}:}{Maximum number of times a future is polled waiting for it to be resolved.}
- \item{\option{future.wait.interval}:}{Initial interval (in seconds) between polls.}
- \item{\option{future.wait.alpha}:}{Positive scale factor used to increase the interval after each poll. (Default: \code{0.01})}
+ \item{\option{future.wait.timeout}:}{Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30*24*60*60} (= 30 days))}
+ \item{\option{future.wait.interval}:}{Initial interval (in seconds) between polls. (Default: \code{0.2} (0.2 seconds))}
+ \item{\option{future.wait.alpha}:}{Positive scale factor used to increase the interval after each poll. (Default: \code{1.01})}
 }
 }
 

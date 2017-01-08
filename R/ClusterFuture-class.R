@@ -106,9 +106,7 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node <- requestNode(await=function() {
-    if (debug) mdebug("Waiting for free cluster node ...")
     FutureRegistry(reg, action="collect-first")
-    if (debug) mdebug("Waiting for free cluster node ... DONE")
   }, workers=workers)
   future$node <- node
 
@@ -313,21 +311,20 @@ value.ClusterFuture <- function(future, ...) {
 }
 
 
-## FIXME: With the current parameter settings, requestNode()
-## will timeout afoter 39.44992 seconds.  /HB 2017-01-07
-requestNode <- function(await, workers, times=getOption("future.wait.times", 600L), delta=getOption("future.wait.interval", 0.001), alpha=getOption("future.wait.alpha", 1.01)) {
-  stopifnot(is.function(await))
+requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30*24*60*60), delta=getOption("future.wait.interval", 0.2), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(inherits(workers, "cluster"))
-  times <- as.integer(times)
-  stopifnot(is.finite(times), times > 0)
+  stopifnot(is.function(await))
+  stopifnot(is.finite(timeout), timeout >= 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
   ## Maximum number of nodes available
   total <- length(workers)
 
   ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name"))
-
+  name <- attr(workers, "name")
+  stopifnot(is.character(name), length(name) == 1L)
+  reg <- sprintf("workers-%s", name)
+  
   usedNodes <- function() {
     ## Number of unresolved cluster futures
     length(FutureRegistry(reg, action="list", earlySignal=FALSE))
@@ -335,26 +332,31 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
 
 
   t0 <- Sys.time()
+  dt <- 0
   iter <- 1L
   interval <- delta
   finished <- FALSE
-  while (iter <= times) {
-    finished <- (usedNodes() < total)
+  while (dt <= timeout) {
+    ## Check for available nodes
+    used <- usedNodes()
+    finished <- (used < total)
     if (finished) break
+
+    mdebug(sprintf("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total))
 
     ## Wait
     Sys.sleep(interval)
-
+    interval <- alpha*interval
+    
     ## Finish/close workers, iff possible
     await()
 
-    interval <- alpha*interval
     iter <- iter + 1L
+    dt <- difftime(Sys.time(), t0)
   }
 
   if (!finished) {
-    dt <- difftime(Sys.time(), t0, units = "secs")
-    msg <- sprintf("TIMEOUT: All %d workers are still occupied after %s", total, format(dt))
+    msg <- sprintf("TIMEOUT: All %d cluster nodes are still occupied after %s (polled %d times)", total, format(round(dt, digits = 2L)), iter)
     mdebug(msg)
     stop(msg)
   }

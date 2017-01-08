@@ -134,11 +134,15 @@ usedCores <- function() {
 #'
 #' @param await A function used to try to "collect"
 #'        finished multicore subprocesses.
+#'
 #' @param workers Total number of workers available.
-#' @param times Then maximum number of times subprocesses
-#'        should be collected before timeout.
+#'
+#' @param timeout Maximum waiting time (in seconds) allowed
+#'        before a timeout error is generated.
+#'
 #' @param delta Then base interval (in seconds) to wait
 #'        between each try.
+#'
 #' @param alpha A multiplicative factor used to increase
 #'        the wait interval after each try.
 #'
@@ -146,11 +150,10 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers=availableCores(), times=getOption("future.wait.times", 1000), delta=getOption("future.wait.interval", 1.0), alpha=getOption("future.wait.alpha", 1.01)) {
+requestCore <- function(await, workers=availableCores(), timeout = getOption("future.wait.timeout", 30*24*60*60), delta=getOption("future.wait.interval", 0.2), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
-  times <- as.integer(times)
-  stopifnot(is.finite(times), times > 0)
+  stopifnot(is.finite(timeout), timeout >= 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
   mdebug(sprintf("requestCore(): workers = %d", workers))
@@ -160,34 +163,36 @@ requestCore <- function(await, workers=availableCores(), times=getOption("future
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
   }
 
-  t0 <- Sys.time()
   
+  t0 <- Sys.time()
+  dt <- 0
   iter <- 1L
   interval <- delta
   finished <- FALSE
-  while (iter <= times) {
+  while (dt <= timeout) {
+    ## Check for available cores
     used <- usedCores()
     finished <- (used < workers)
     if (finished) break
 
-    mdebug(sprintf("usedCores() = %d, workers = %d", used, workers))
+    mdebug(sprintf("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers))
 
     ## Wait
     Sys.sleep(interval)
+    interval <- alpha*interval
 
     ## Finish/close cores, iff possible
     await()
 
-    interval <- alpha*interval
     iter <- iter + 1L
+    dt <- difftime(Sys.time(), t0)
   }
 
   if (!finished) {
-    dt <- difftime(Sys.time(), t0, units = "secs")
-    msg <- sprintf("TIMEOUT: All %d workers are still occupied after %s", total, format(dt))
+    msg <- sprintf("TIMEOUT: All %d cores are still occupied after %s (polled %d times)", workers, format(round(dt, digits = 2L)), iter)
     mdebug(msg)
     stop(msg)
   }
 
-  invisible(finished)
+  invisible(unname(finished))
 }

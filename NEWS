@@ -17,6 +17,9 @@ o Now plan() stops any clusters that were implicitly created. For
 o Now options(future.debug = TRUE) also reports on total size of
   globals identified and for cluster futures also the size of the
   individual global variables exported.
+o Option 'future.wait.timeout' (replaces 'future.wait.times') specifies
+  the maximum waiting time for a free workers (e.g. a core or a
+  compute node) before generating a timeout error.  
 o ROBUSTNESS: makeClusterPSOCK() treats workers that refer to the
   the local machine by its name as "localhost".  This avoids having
   to launch such workers of SSH.
