@@ -313,6 +313,8 @@ value.ClusterFuture <- function(future, ...) {
 }
 
 
+## FIXME: With the current parameter settings, requestNode()
+## will timeout afoter 39.44992 seconds.  /HB 2017-01-07
 requestNode <- function(await, workers, times=getOption("future.wait.times", 600L), delta=getOption("future.wait.interval", 0.001), alpha=getOption("future.wait.alpha", 1.01)) {
   stopifnot(is.function(await))
   stopifnot(inherits(workers, "cluster"))
@@ -332,6 +334,7 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
   }
 
 
+  t0 <- Sys.time()
   iter <- 1L
   interval <- delta
   finished <- FALSE
@@ -350,7 +353,8 @@ requestNode <- function(await, workers, times=getOption("future.wait.times", 600
   }
 
   if (!finished) {
-    msg <- sprintf("TIMEOUT: All %d workers are still occupied", total)
+    dt <- difftime(Sys.time(), t0, units = "secs")
+    msg <- sprintf("TIMEOUT: All %d workers are still occupied after %s", total, format(dt))
     mdebug(msg)
     stop(msg)
   }

@@ -160,6 +160,8 @@ requestCore <- function(await, workers=availableCores(), times=getOption("future
     stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
   }
 
+  t0 <- Sys.time()
+  
   iter <- 1L
   interval <- delta
   finished <- FALSE
@@ -181,7 +183,8 @@ requestCore <- function(await, workers=availableCores(), times=getOption("future
   }
 
   if (!finished) {
-    msg <- sprintf("TIMEOUT: All %d CPU cores are still occupied", workers)
+    dt <- difftime(Sys.time(), t0, units = "secs")
+    msg <- sprintf("TIMEOUT: All %d workers are still occupied after %s", total, format(dt))
     mdebug(msg)
     stop(msg)
   }
