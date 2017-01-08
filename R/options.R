@@ -31,8 +31,11 @@
 #'
 #' @section Options for configuring low-level system behaviors:
 #' \describe{
-#'  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "Slurm", "PBS", "SGE")})}
+#'  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")})}
+#'
 #'  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which="system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}.}
+#'
+#'  \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")})}
 #' }
 #'
 #' @section Options for demos:

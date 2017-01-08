@@ -4,7 +4,7 @@
 \alias{availableWorkers}
 \title{Get set of available workers}
 \usage{
-availableWorkers(methods = getOption("future.availableCores.methods",
+availableWorkers(methods = getOption("future.availableWorkers.methods",
   c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")),
   na.rm = TRUE, default = "localhost", which = c("auto", "min", "max",
   "all"))
