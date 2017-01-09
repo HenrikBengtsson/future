@@ -22,7 +22,7 @@ NEW FEATURES:
 
  o makeClusterPSOCK() treats workers that refer to the
    the local machine by its name as "localhost".  This avoids having
-   to launch such workers of SSH.
+   to launch such workers over SSH.
 
  o futureAssign() now passes all additional arguments to future().
 
