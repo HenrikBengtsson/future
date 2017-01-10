@@ -1,13 +1,13 @@
 source("incl/start.R")
 library("listenv")
 
-message("*** flapply() ...")
+message("*** future_lapply() ...")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
 
-  message("- flapply(x, FUN=vector, ...) ...")
+  message("- future_lapply(x, FUN=vector, ...) ...")
 
   x <- list(a="integer", b="numeric", c="character", c="list")
   str(list(x=x))
@@ -18,13 +18,13 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    y <- flapply(x, FUN=vector, length=2L)
+    y <- future_lapply(x, FUN=vector, length=2L)
     str(list(y=y))
     stopifnot(identical(y, y0))
   }
 
 
-  message("- flapply(x, FUN=base::vector, ...) ...")
+  message("- future_lapply(x, FUN=base::vector, ...) ...")
 
   x <- list(a="integer", b="numeric", c="character", c="list")
   str(list(x=x))
@@ -35,13 +35,13 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    y <- flapply(x, FUN=base::vector, length=2L)
+    y <- future_lapply(x, FUN=base::vector, length=2L)
     str(list(y=y))
     stopifnot(identical(y, y0))
   }
 
 
-  message("- flapply(x, FUN=future:::hpaste, ...) ...")
+  message("- future_lapply(x, FUN=future:::hpaste, ...) ...")
 
   x <- list(a=c("hello", b=1:100))
   str(list(x=x))
@@ -52,13 +52,13 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    y <- flapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
+    y <- future_lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L)
     str(list(y=y))
     stopifnot(identical(y, y0))
   }
 
 
-  message("- flapply(x, FUN=listenv::listenv, ...) ...")
+  message("- future_lapply(x, FUN=listenv::listenv, ...) ...")
 
   x <- list()
 
@@ -79,7 +79,7 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    y <- flapply(x, FUN=listenv::map)
+    y <- future_lapply(x, FUN=listenv::map)
     str(list(y=y))
     stopifnot(identical(y, y0))
   }
@@ -87,7 +87,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
-message("*** flapply() ... DONE")
+message("*** future_lapply() ... DONE")
 
 source("incl/end.R")
 

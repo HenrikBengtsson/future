@@ -20,7 +20,7 @@ ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
 uniprocess <- future:::uniprocess ## To become public
 detectCores <- future:::detectCores
-flapply <- future:::flapply
+future_lapply <- future:::future_lapply
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign
 get_future <- future:::get_future
