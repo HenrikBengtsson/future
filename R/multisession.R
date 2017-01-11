@@ -54,7 +54,7 @@
 #' cores that are available for the current R session.
 #'
 #' @export
-multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -70,7 +70,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE
   ## i.e. the use the current main R process.
   if (workers == 1L) {
     ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
-    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=TRUE, globals=globals, local=TRUE, label=label))
+    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=TRUE, seed=seed, globals=globals, local=TRUE, label=label))
   }
 
   ## IMPORTANT: When we setup a multisession cluster, we need to
@@ -78,7 +78,7 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE
   ## a cluster with one less process.
   workers <- ClusterRegistry("start", workers=workers-1L)
 
-  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
+  future <- MultisessionFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, persistent=persistent, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

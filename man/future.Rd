@@ -11,15 +11,15 @@
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, lazy = NA,
-  globals = TRUE, evaluator = plan("next"), ...)
+  seed = NULL, globals = TRUE, evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
-  lazy = NA, globals = TRUE, ..., assign.env = envir)
+  lazy = NA, seed = NULL, globals = TRUE, ..., assign.env = envir)
 
 x \%<-\% value
 
 futureCall(FUN, args = NULL, envir = parent.frame(), lazy = NA,
-  globals = TRUE, evaluator = plan("next"), ...)
+  seed = NULL, globals = TRUE, evaluator = plan("next"), ...)
 }
 \arguments{
 \item{expr, value}{An \R \link[base]{expression} to be evaluated.}
@@ -35,6 +35,8 @@ is evaluated.}
 \item{lazy}{Specifies whether a future should be resolved
 lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.

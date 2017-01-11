@@ -5,9 +5,10 @@
 \title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
 cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
-  globals = TRUE, persistent = FALSE, workers = availableWorkers(),
-  user = NULL, revtunnel = TRUE, homogeneous = TRUE, gc = FALSE,
-  earlySignal = FALSE, label = NULL, ...)
+  seed = NULL, globals = TRUE, persistent = FALSE,
+  workers = availableWorkers(), user = NULL, revtunnel = TRUE,
+  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
+  ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
@@ -23,6 +24,8 @@ is evaluated.}
 \item{lazy}{Specifies whether a future should be resolved
 lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
