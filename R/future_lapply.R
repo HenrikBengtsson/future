@@ -9,6 +9,7 @@
 #'
 #' @return A list.
 #'
+#' @importFrom parallel nextRNGStream nextRNGSubStream
 #' @aliases flapply
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.args = NULL) {
@@ -34,32 +35,47 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   seeds <- vector("list", length = length(x))
   seed <- future.args$seed
   if (!is.null(seed)) {
-    ## Current RNG state (may not exist)
-    .GlobalEnv <- globalenv()
-    oseed <- .GlobalEnv$.Random.seed
+    stopifnot(is.integer(seed), all(is.finite(seed)))
 
     orng <- RNGkind("L'Ecuyer-CMRG")[1L]
     on.exit(RNGkind(orng))
+
+    ## Passed a L'Ecuyer-CMRG seed?
+    if (length(seed) == 7) {
+      .seed <- seed
+    } else {
+      ## Current RNG state (may not exist)
+      .GlobalEnv <- globalenv()
+      oseed <- .GlobalEnv$.Random.seed
   
-    ## Reset RNG state afterwards?
-    on.exit({
-      if (is.null(oseed)) {
-        rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-      } else {
-        .GlobalEnv$.Random.seed <- oseed
-      }
-    }, add = TRUE)
-  
-    ## Generate sequence of all RNG seeds
-    set.seed(seed)
-    .seed <- .GlobalEnv$.Random.seed
-    for (ii in seq_along(x)) {
-      .seed <- parallel::nextRNGStream(.seed)
-      seeds[[ii]] <- .seed
+      ## Reset RNG state afterwards?
+      on.exit({
+        if (is.null(oseed)) {
+          rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+        } else {
+          .GlobalEnv$.Random.seed <- oseed
+        }
+      }, add = TRUE)
+    
+      ## Generate initial L'Ecuyer-CMRG seed.
+      set.seed(seed)
+      .seed <- .GlobalEnv$.Random.seed
     }
-      
-    rm(list = ".seed")    
-  } ## if (use_seed)
+    
+    ## Generate sequence of _all_ RNG seeds needed
+    for (ii in seq_along(x)) {
+      ## Main RNG stream seeds
+      .seed <- nextRNGStream(.seed)
+
+      ## RNG substream seed for each future
+      ##
+      ## This way each future can in turn generate further  seeds, also
+      ## recursively, with minimal risk of generating the same seeds as
+      ## another future.  This should make it safe to recursively call
+      ## future_lapply(). /HB 2017-01-11
+      seeds[[ii]] <- nextRNGSubStream(.seed)
+    }
+  } ## if (!is.null(seed))
 
   ## 2. Apply function with fixed set of globals
   fs <- vector("list", length = length(x))
@@ -69,7 +85,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     ## Subsetting outside future is more efficient
     globals$x_ii <- x[[ii]]
 
-    ## Random seed
+    ## Random L'Ecuyer-CMRG seed.
     seed <- seeds[[ii]]
     
     fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, seed = seed, globals = globals)
