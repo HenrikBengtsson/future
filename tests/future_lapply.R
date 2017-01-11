@@ -84,6 +84,24 @@ for (cores in 1:min(3L, availableCores())) {
     stopifnot(identical(y, y0))
   }
 
+
+  message("- future_lapply(x, FUN=rnorm, ...) - random seed ...")
+
+  y0 <- NULL
+  for (strategy in supportedStrategies()) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+    y <- future_lapply(1:10, FUN = function(i) {
+      rnorm(1L)
+    }, future.args = list(seed = 42L))
+    y <- unlist(y)
+    if (is.null(y0)) y0 <- y
+    str(list(y=y))
+    stopifnot(identical(y, y0))
+  }
+
+  message("- future_lapply(x, FUN=rnorm, ...) - random seed ... DONE")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 

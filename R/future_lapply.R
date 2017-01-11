@@ -69,10 +69,10 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     ## Subsetting outside future is more efficient
     globals$x_ii <- x[[ii]]
 
-    ## Pass RNG seed?
+    ## Random seed
     seed <- seeds[[ii]]
     
-    fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, globals = globals)
+    fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, seed = seed, globals = globals)
   }
 
   ## Not needed anymore
