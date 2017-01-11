@@ -16,7 +16,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   if (!is.null(future.args)) {
     stopifnot(is.list(future.args), !is.null(names(future.args)))
   }
-  
+
   lazy <- future.args$lazy
   if (is.null(lazy)) lazy <- FALSE
   
@@ -30,6 +30,37 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
   }
 
+  ## Use random seed?
+  seeds <- vector("list", length = length(x))
+  seed <- future.args$seed
+  if (!is.null(seed)) {
+    ## Current RNG state (may not exist)
+    .GlobalEnv <- globalenv()
+    oseed <- .GlobalEnv$.Random.seed
+
+    orng <- RNGkind("L'Ecuyer-CMRG")[1L]
+    on.exit(RNGkind(orng))
+  
+    ## Reset RNG state afterwards?
+    on.exit({
+      if (is.null(oseed)) {
+        rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+      } else {
+        .GlobalEnv$.Random.seed <- oseed
+      }
+    }, add = TRUE)
+  
+    ## Generate sequence of all RNG seeds
+    set.seed(seed)
+    .seed <- .GlobalEnv$.Random.seed
+    for (ii in seq_along(x)) {
+      .seed <- parallel::nextRNGStream(.seed)
+      seeds[[ii]] <- .seed
+    }
+      
+    rm(list = ".seed")    
+  } ## if (use_seed)
+
   ## 2. Apply function with fixed set of globals
   fs <- vector("list", length = length(x))
   names(fs) <- names(x)
@@ -37,6 +68,9 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   for (ii in seq_along(x)) {
     ## Subsetting outside future is more efficient
     globals$x_ii <- x[[ii]]
+
+    ## Pass RNG seed?
+    seed <- seeds[[ii]]
     
     fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, globals = globals)
   }
