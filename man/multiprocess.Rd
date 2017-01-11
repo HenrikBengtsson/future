@@ -5,8 +5,8 @@
 \title{Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation}
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, globals = TRUE, workers = availableCores(), gc = FALSE,
-  earlySignal = FALSE, label = NULL, ...)
+  lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(),
+  gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
@@ -21,6 +21,8 @@ is evaluated.}
 
 \item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
 (immediately), otherwise not.}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
 \item{globals}{(optional) a logical, a character vector,
 or a named list for controlling how globals are handled.
