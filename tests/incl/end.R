@@ -35,3 +35,8 @@ stopifnot(identical(Sys.getenv(), oenvs))
 ## Undo variables
 rm(list=c(setdiff(ls(), ovars)))
 
+
+## Travis CI specific: Explicit garbage collection because it
+## looks like Travis CI might run out of memory during 'covr'
+## testing and we now have so many tests. /HB 2017-01-11
+if ("covr" %in% loadedNamespaces()) gc()
