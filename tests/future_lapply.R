@@ -87,19 +87,48 @@ for (cores in 1:min(3L, availableCores())) {
 
   message("- future_lapply(x, FUN=rnorm, ...) - random seed ...")
 
-  y0 <- NULL
+  y0 <- y0_nested <- NULL
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    y <- future_lapply(1:10, FUN = function(i) {
+    
+    y <- future_lapply(1:5, FUN = function(i) {
       rnorm(1L)
     }, future.args = list(seed = 42L))
     y <- unlist(y)
     if (is.null(y0)) y0 <- y
     str(list(y=y))
     stopifnot(identical(y, y0))
-  }
 
+    ## Nested future_lapply():s
+    y <- future_lapply(1:5, FUN = function(i) {
+      ## Until future_lapply() is exported
+      future_lapply <- future:::future_lapply
+
+      .seed <- globalenv()$.Random.seed
+      
+      z <- future_lapply(1:3, FUN = function(j) {
+        list(j = j, seed = globalenv()$.Random.seed)
+      }, future.args = list(seed = .seed))
+
+      ## Assert that all future seeds are unique
+      seeds <- lapply(z, FUN = function(x) x$seed)
+      for (kk in 2:length(seeds)) stopifnot(!all(seeds[[kk]] == seeds[[1]]))
+      
+      list(i = i, seed = .seed, sample = rnorm(1L), z = z)
+    }, future.args = list(seed = 42L))
+
+    if (is.null(y0_nested)) y0_nested <- y
+    str(list(y=y))
+
+    ## Assert that all future seeds (also nested ones) are unique
+    seeds <- Reduce(c, lapply(y, FUN = function(x) {
+      c(list(seed = x$seed), lapply(x$z, FUN = function(x) x$seed))
+    }))
+    for (kk in 2:length(seeds)) stopifnot(!all(seeds[[kk]] == seeds[[1]]))
+    
+    stopifnot(identical(y, y0_nested))
+  }
   message("- future_lapply(x, FUN=rnorm, ...) - random seed ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
