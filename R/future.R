@@ -23,6 +23,8 @@
 #' lazily or eagerly.  The default is eager,
 #' except when the \emph{deprecated} \code{plan(lazy)} is set.
 #'
+#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#'
 #' @param globals A logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
@@ -198,7 +200,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, globals=TRUE, evaluator=plan("next"), ...) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, seed=NULL, globals=TRUE, evaluator=plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
@@ -208,9 +210,9 @@ future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, globals
   ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
   ## TODO: Remove when lazy() is removed.
   if (is.na(lazy)) {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, globals=globals, ...)
+    future <- evaluator(expr, envir=envir, substitute=FALSE, seed=seed, globals=globals, ...)
   } else {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, ...)
+    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, ...)
   }
 
   ## Assert that a future was returned

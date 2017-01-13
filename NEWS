@@ -5,6 +5,10 @@ Version: 1.2.0-9000 [2017-01-07]
 
 NEW FEATURES:
 
+ o future(), futureAssign() and futureCall() gained argument 'seed',
+   which specifies a L'Ecuyer-CMRG random seed to be used by the future.
+   The seed for future assignment can be specified via %seed%.
+   
  o The default for plan(cluster) is now workers = availableWorkers().
  
  o Added availableWorkers().  By default it returns localhost workers

@@ -8,22 +8,32 @@
 #' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An R \link[base]{expression}.
+#'
 #' @param envir The \link{environment} in which the evaluation
 #' is done (or inherits from if \code{local} is TRUE).
+#'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#'
 #' @param lazy If \code{FALSE} (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
+#'
+#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#'
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) after the value of the future is collected.
 #' \emph{Some types of futures ignore this argument.}
+#'
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
+#'
 #' @param label An optional character string label attached to the
 #' future.
+#'
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -39,18 +49,33 @@
 #' right-hand-side (RHS) R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
+#' @importFrom utils capture.output
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, seed=NULL, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
+  
+  if (!is.null(seed)) {
+    ## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
+    ##    .Random.seed <- c(rng.kind, n)
+    ## where rng.kind == 407L and length(n) == 6L
+    if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
+      msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream()"
+      mdebug(msg)
+      mdebug(capture.output(print(seed)))
+      stop(msg)
+    }
+  }
+  
   args <- list(...)
-
+  
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
   core$owner <- session_uuid(attributes = TRUE)
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+  core$seed <- seed
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
@@ -93,6 +118,11 @@ print.Future <- function(x, ...) {
     cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
   } else {
     cat("Globals: <none>\n")
+  }
+  if (is.null(x$seed)) {
+    cat("L'Ecuyer-CMRG RNG seed: <none>\n")
+  } else {
+    cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   }
 
   hasValue <- exists("value", envir=x, inherits=FALSE)
@@ -283,6 +313,18 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     })
   } else {
     enter <- exit <- NULL
+  }
+
+  ## Seed RNG seed?
+  if (!is.null(future$seed)) {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      ## NOTE: It is not needed to call eRNGkind("L'Ecuyer-CMRG") here
+      ## because the type of RNG is defined by .Random.seed, especially
+      ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
+      assign(".Random.seed", .(future$seed), envir = globalenv(), inherits = FALSE)
+    })
   }
 
   ## Reset future strategies upon exit of future

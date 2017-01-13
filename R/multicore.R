@@ -50,7 +50,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
+multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
   ## BACKWARD COMPATIBILITY
   args <- list(...)
   if ("maxCores" %in% names(args)) {
@@ -67,13 +67,13 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, g
   ## Uniprocess futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=TRUE, label=label))
+    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, local=TRUE, label=label))
   }
 
   oopts <- options(mc.cores=workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
+  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

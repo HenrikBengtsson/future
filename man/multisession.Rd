@@ -5,7 +5,7 @@
 \title{Create a multisession future whose value will be resolved asynchronously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, globals = TRUE, persistent = FALSE,
+  lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE,
   workers = availableCores(), gc = FALSE, earlySignal = FALSE,
   label = NULL, ...)
 }
@@ -23,6 +23,8 @@ is evaluated.}
 \item{lazy}{Specifies whether a future should be resolved
 lazily or eagerly.  The default is eager,
 except when the \emph{deprecated} \code{plan(lazy)} is set.}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
