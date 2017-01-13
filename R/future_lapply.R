@@ -42,6 +42,12 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
 
     ## Passed a L'Ecuyer-CMRG seed?
     if (length(seed) == 7) {
+      if (!is.integer(seed) || !all(is.finite(seed)) || seed[1] != 407L) {
+        msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer."
+        mdebug(msg)
+        mdebug(capture.output(print(seed)))
+        stop(msg)
+      }
       .seed <- seed
     } else {
       ## Current RNG state (may not exist)
@@ -51,7 +57,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
       ## Reset RNG state afterwards?
       on.exit({
         if (is.null(oseed)) {
-          rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+           rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
         } else {
           .GlobalEnv$.Random.seed <- oseed
         }
