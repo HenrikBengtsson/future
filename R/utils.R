@@ -529,8 +529,8 @@ objectSize <- function(x, depth = 3L) {
       } else if (is.environment(x_kk)) {
 ##        if (!inherits(x_kk, "Future") && !scanned(x_kk)) {
         if (!scanned(x_kk)) {
-	  size <- size + objectSize.env(x_kk, depth = depth)
-	}
+          size <- size + objectSize.env(x_kk, depth = depth)
+        }
       } else {
         size <- size + object.size(x_kk)
       }

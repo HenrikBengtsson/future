@@ -140,11 +140,11 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
       lapply(seq_along(x_ii), FUN = function(jj) {
          x_jj <- x_ii[[jj]]
          seed_jj <- seeds_ii[[jj]]
-	   if (!is.null(seed_jj)) {
-	     assign(".Random.seed", seed_jj, envir = globalenv(), inherits = FALSE)
-	   }
-	   .FUN(x_jj, ...)
-	})
+         if (!is.null(seed_jj)) {
+           assign(".Random.seed", seed_jj, envir = globalenv(), inherits = FALSE)
+         }
+         .FUN(x_jj, ...)
+      })
     }, envir = envir, lazy = lazy, globals = globals_ii)
 
     ## Not needed anymore

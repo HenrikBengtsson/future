@@ -85,7 +85,7 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
       if (is.na(pathname)) next
       if (!file_test("-f", pathname)) {
         warning(sprintf("Environent variable %s was set but no such file %s exists", sQuote("PBS_NODEFILE"), sQuote(pathname)))
-	next
+        next
       }
       data <- read_pbs_nodefile(pathname)
       w <- data$node
@@ -110,7 +110,7 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
       if (is.na(pathname)) next
       if (!file_test("-f", pathname)) {
         warning(sprintf("Environent variable %s was set but no such file %s exists", sQuote("PE_HOSTFILE"), sQuote(pathname)))
-	next
+        next
       }
       data <- read_pe_hostfile(pathname)
       w <- expand_nodes(data)
