@@ -9,6 +9,8 @@
 #'
 #' @return A list.
 #'
+#' @example incl/future_lapply.R
+#'
 #' @aliases flapply
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
 #' @export
@@ -36,7 +38,8 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   seeds <- vector("list", length = length(x))
   seed <- future.args$seed
   if (!is.null(seed)) {
-    stopifnot(is.integer(seed), all(is.finite(seed)))
+    stopifnot(is.numeric(seed), all(is.finite(seed)))
+    seed <- as.integer(seed)
 
     orng <- RNGkind("L'Ecuyer-CMRG")[1L]
     on.exit(RNGkind(orng))
@@ -87,7 +90,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
 
   ## 2. Chunking?
   chunk <- future.args$chunk
-  if (is.null(chunk)) chunk <- Inf
+  if (is.null(chunk)) chunk <- 1.0
   stopifnot(length(chunk) == 1)
   
   ## Treat as a adjustment factor number of chunks:
