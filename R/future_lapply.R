@@ -7,7 +7,7 @@
 #' @param future.args (optional) Additional arguments passed to
 #'        \code{\link{future}()}.
 #'
-#' @return A list.
+#' @return A list with same length and names as \code{x}.
 #'
 #' @example incl/future_lapply.R
 #'
@@ -21,6 +21,10 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     stopifnot(is.list(future.args), !is.null(names(future.args)))
   }
 
+  ## Nothing to do?
+  nx <- length(x)
+  if (nx == 0) return(list())
+  
   globals <- future.args$globals
 
   ## Collect all globals (once)?
@@ -35,7 +39,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   if (is.null(lazy)) lazy <- FALSE
 
   ## Use random seed?
-  seeds <- vector("list", length = length(x))
+  seeds <- vector("list", length = nx)
   seed <- future.args$seed
   if (!is.null(seed)) {
     stopifnot(is.numeric(seed), all(is.finite(seed)))
@@ -88,101 +92,78 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   } ## if (!is.null(seed))
 
 
-  ## 2. Chunking?
+  ## 2. Chunking
   chunk <- future.args$chunk
-  if (is.null(chunk)) chunk <- 1.0
-  stopifnot(length(chunk) == 1)
+  if (is.null(chunk)) {
+    nbr_of_futures <- nbrOfWorkers()
+  } else {
+    stopifnot(length(chunk) == 1)
   
-  ## Treat as a adjustment factor number of chunks:
-  ## * if == 1, then there will be a maximum number of tasks per
-  ##   worker such that each worker processes exactly one future.
-  ## * if > 1, then there will be fewer tasks per worker such that
-  ##   there will be workers that processes more than one future.
-  ##   For example,  chunk == 2.0 => two futures per worker.
-  ## * if < 1, then there will be some workers who do not process
-  ##   any futures.  For example,  chunk == 0.5 => 0.5 futures per
-  ##   worker, i.e. 
-  nbr_of_futures_per_worker <- as.numeric(chunk)
-  stopifnot(!is.na(chunk), nbr_of_futures_per_worker >= 0)
-  if (nbr_of_futures_per_worker >= 0.0) {
+    ## Treat 'chunk' as the number of futures per chunks.
+    nbr_of_futures_per_worker <- as.numeric(chunk)
+    stopifnot(!is.na(nbr_of_futures_per_worker), nbr_of_futures_per_worker >= 0)
+  
     nbr_of_futures <- nbr_of_futures_per_worker * nbrOfWorkers()
     if (nbr_of_futures < 1) {
       nbr_of_futures <- 1L
-    } else if (nbr_of_futures > length(x)) {
-      nbr_of_futures <- length(x)
+    } else if (nbr_of_futures > nx) {
+      nbr_of_futures <- nx
     }
+  }
 
-    chunks <- splitIndices(length(x), ncl = nbr_of_futures)
-    fs <- vector("list", length = length(chunks))
+  chunks <- splitIndices(nx, ncl = nbr_of_futures)
+  fs <- vector("list", length = length(chunks))
 
-    ## Avoid FUN() clash with lapply(..., FUN) below.
-    names <- names(globals)
-    names[names == "FUN"] <- ".FUN"
-    names(globals) <- names
-    
-    ## Add 'seeds_ii' placeholder
-    globals <- c(globals, list(seeds_ii = NULL))
+  ## Avoid FUN() clash with lapply(..., FUN) below.
+  names <- names(globals)
+  names[names == "FUN"] <- ".FUN"
+  names(globals) <- names
+  
+  ## Add 'seeds_ii' placeholder
+  globals <- c(globals, list(seeds_ii = NULL))
 
-    ## To please R CMD check
-    .FUN <- seeds_ii <- NULL
+  ## To please R CMD check
+  .FUN <- seeds_ii <- NULL
 
-    for (ii in seq_along(chunks)) {
-      chunk <- chunks[[ii]]
-      mdebug(sprintf("Chunk #%d of %d ...", ii, length(chunks)))
 
-      ## Subsetting outside future is more efficient
-      globals_ii <- globals
-      globals_ii[["x_ii"]] <- x[chunk]
-      globals_ii["seeds_ii"] <- list(seeds[chunk])
+  ## 3. Creating futures
+  for (ii in seq_along(chunks)) {
+    chunk <- chunks[[ii]]
+    mdebug(sprintf("Chunk #%d of %d ...", ii, length(chunks)))
 
-      fs[[ii]] <- future({
-        lapply(seq_along(x_ii), FUN = function(jj) {
-           x_jj <- x_ii[[jj]]
-           seed_jj <- seeds_ii[[jj]]
+    ## Subsetting outside future is more efficient
+    globals_ii <- globals
+    globals_ii[["x_ii"]] <- x[chunk]
+    globals_ii["seeds_ii"] <- list(seeds[chunk])
+
+    fs[[ii]] <- future({
+      lapply(seq_along(x_ii), FUN = function(jj) {
+         x_jj <- x_ii[[jj]]
+         seed_jj <- seeds_ii[[jj]]
 	   if (!is.null(seed_jj)) {
 	     assign(".Random.seed", seed_jj, envir = globalenv(), inherits = FALSE)
 	   }
 	   .FUN(x_jj, ...)
 	})
-      }, envir = envir, lazy = lazy, globals = globals_ii)
-
-      ## Not needed anymore
-      rm(list=c("chunk", "globals_ii"))
-
-      mdebug(sprintf("Chunk #%d of %d ... DONE", ii, length(chunks)))
-    } ## for (ii ...)
+    }, envir = envir, lazy = lazy, globals = globals_ii)
 
     ## Not needed anymore
-    rm(list=c("chunks", "globals", "envir"))
+    rm(list = c("chunk", "globals_ii"))
 
-    values <- values(fs)
-    
-    ## Not needed anymore
-    rm(list="fs")
-    
-    values <- Reduce(c, values)
-    names(values) <- names(x)
-  } else {
-    ## 3. Apply function with fixed set of globals
-    fs <- vector("list", length = length(x))
-    names(fs) <- names(x)
-    
-    for (ii in seq_along(x)) {
-      ## Subsetting outside future is more efficient
-      globals$x_ii <- x[[ii]]
+    mdebug(sprintf("Chunk #%d of %d ... DONE", ii, length(chunks)))
+  } ## for (ii ...)
+
+  ## Not needed anymore
+  rm(list = c("chunks", "globals", "envir"))
+
+  ## 4. Resolving futures
+  values <- values(fs)
   
-      ## Random L'Ecuyer-CMRG seed.
-      seed <- seeds[[ii]]
-      
-      fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, seed = seed, globals = globals)
-    }
+  ## Not needed anymore
+  rm(list = "fs")
   
-    ## Not needed anymore
-    rm(list=c("x_ii", "globals", "ii", "envir"))
-  
-    ## Resolve and return as values
-    values <- values(fs)
-  }
+  values <- Reduce(c, values)
+  names(values) <- names(x)
 
   values
 }

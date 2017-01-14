@@ -18,7 +18,7 @@ future_lapply(x, FUN, ..., future.args = NULL)
 \code{\link{future}()}.}
 }
 \value{
-A list.
+A list with same length and names as \code{x}.
 }
 \description{
 Apply a Function over a List or Vector via Futures
