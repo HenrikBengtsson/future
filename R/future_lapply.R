@@ -87,10 +87,29 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
 
   ## 2. Chunking?
   chunk <- future.args$chunk
-  if (is.null(chunk)) chunk <- FALSE
-  if (chunk) {
-    nbr_of_workers <- min(nbrOfWorkers(), length(x))
-    chunks <- splitIndices(length(x), ncl = nbr_of_workers)
+  if (is.null(chunk)) chunk <- Inf
+  stopifnot(length(chunk) == 1)
+  
+  ## Treat as a adjustment factor number of chunks:
+  ## * if == 1, then there will be a maximum number of tasks per
+  ##   worker such that each worker processes exactly one future.
+  ## * if > 1, then there will be fewer tasks per worker such that
+  ##   there will be workers that processes more than one future.
+  ##   For example,  chunk == 2.0 => two futures per worker.
+  ## * if < 1, then there will be some workers who do not process
+  ##   any futures.  For example,  chunk == 0.5 => 0.5 futures per
+  ##   worker, i.e. 
+  nbr_of_futures_per_worker <- as.numeric(chunk)
+  stopifnot(!is.na(chunk), nbr_of_futures_per_worker >= 0)
+  if (nbr_of_futures_per_worker >= 0.0) {
+    nbr_of_futures <- nbr_of_futures_per_worker * nbrOfWorkers()
+    if (nbr_of_futures < 1) {
+      nbr_of_futures <- 1L
+    } else if (nbr_of_futures > length(x)) {
+      nbr_of_futures <- length(x)
+    }
+
+    chunks <- splitIndices(length(x), ncl = nbr_of_futures)
     fs <- vector("list", length = length(chunks))
 
     ## Avoid FUN() clash with lapply(..., FUN) below.
