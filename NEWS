@@ -1,27 +1,29 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2017-01-13]
+Version: 1.2.0-9000 [2017-01-14]
 
 NEW FEATURES:
 
- o Added future_lapply() which supports chunking.
- 
+ o Added support for controlling whether a future is resolved eagerly
+   or lazily when creating the future, e.g. future(..., lazy = TRUE)
+   futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
+
  o future(), futureAssign() and futureCall() gained argument 'seed',
    which specifies a L'Ecuyer-CMRG random seed to be used by the future.
    The seed for future assignment can be specified via %seed%.
    
- o The default for plan(cluster) is now workers = availableWorkers().
+ o futureAssign() now passes all additional arguments to future().
+
+ o Added future_lapply() which supports chunking ("load balancing").
  
  o Added availableWorkers().  By default it returns localhost workers
    according to availableCores().  In addition, it detects common
    HPC allocations given in environment variables set by the HPC
    scheduler.
    
- o Added support for controlling whether a future is resolved eagerly
-   or lazily when creating the future, e.g. future(..., lazy = TRUE)
-   futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
-
+ o The default for plan(cluster) is now workers = availableWorkers().
+ 
  o Now plan() stops any clusters that were implicitly created. For
    instance, a multisession cluster created by plan(multisession) will
    be stopped when plan(eager) is called.
@@ -29,8 +31,6 @@ NEW FEATURES:
  o makeClusterPSOCK() treats workers that refer to the
    the local machine by its name as "localhost".  This avoids having
    to launch such workers over SSH.
-
- o futureAssign() now passes all additional arguments to future().
 
  o Option 'future.debug' = TRUE also reports on total size of
    globals identified and for cluster futures also the size of the
