@@ -1,10 +1,12 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2017-01-07]
+Version: 1.2.0-9000 [2017-01-13]
 
 NEW FEATURES:
 
+ o Added future_lapply() which supports chunking.
+ 
  o future(), futureAssign() and futureCall() gained argument 'seed',
    which specifies a L'Ecuyer-CMRG random seed to be used by the future.
    The seed for future assignment can be specified via %seed%.

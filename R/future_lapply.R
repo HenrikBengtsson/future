@@ -7,10 +7,13 @@
 #' @param future.args (optional) Additional arguments passed to
 #'        \code{\link{future}()}.
 #'
-#' @return A list.
+#' @return A list with same length and names as \code{x}.
 #'
-#' @importFrom parallel nextRNGStream nextRNGSubStream
+#' @example incl/future_lapply.R
+#'
 #' @aliases flapply
+#' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
+#' @export
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.args = NULL) {
   stopifnot(is.function(FUN))
@@ -18,24 +21,29 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     stopifnot(is.list(future.args), !is.null(names(future.args)))
   }
 
-  lazy <- future.args$lazy
-  if (is.null(lazy)) lazy <- FALSE
+  ## Nothing to do?
+  nx <- length(x)
+  if (nx == 0) return(list())
   
   globals <- future.args$globals
-  x_ii <- NULL
 
   ## Collect all globals (once)?
+  envir <- environment()
   if (is.null(globals)) {
-    envir <- environment()
+    x_ii <- NULL
     globals <- c("FUN", "x_ii", names(list(...)), "...")
     globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
   }
 
+  lazy <- future.args$lazy
+  if (is.null(lazy)) lazy <- FALSE
+
   ## Use random seed?
-  seeds <- vector("list", length = length(x))
+  seeds <- vector("list", length = nx)
   seed <- future.args$seed
   if (!is.null(seed)) {
-    stopifnot(is.integer(seed), all(is.finite(seed)))
+    stopifnot(is.numeric(seed), all(is.finite(seed)))
+    seed <- as.integer(seed)
 
     orng <- RNGkind("L'Ecuyer-CMRG")[1L]
     on.exit(RNGkind(orng))
@@ -83,25 +91,81 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     }
   } ## if (!is.null(seed))
 
-  ## 2. Apply function with fixed set of globals
-  fs <- vector("list", length = length(x))
-  names(fs) <- names(x)
-  
-  for (ii in seq_along(x)) {
-    ## Subsetting outside future is more efficient
-    globals$x_ii <- x[[ii]]
 
-    ## Random L'Ecuyer-CMRG seed.
-    seed <- seeds[[ii]]
-    
-    fs[[ii]] <- future(FUN(x_ii, ...), envir=envir, lazy = lazy, seed = seed, globals = globals)
+  ## 2. Chunking
+  chunk <- future.args$chunk
+  if (is.null(chunk)) {
+    nbr_of_futures <- nbrOfWorkers()
+  } else {
+    stopifnot(length(chunk) == 1)
+  
+    ## Treat 'chunk' as the number of futures per chunks.
+    nbr_of_futures_per_worker <- as.numeric(chunk)
+    stopifnot(!is.na(nbr_of_futures_per_worker), nbr_of_futures_per_worker >= 0)
+  
+    nbr_of_futures <- nbr_of_futures_per_worker * nbrOfWorkers()
+    if (nbr_of_futures < 1) {
+      nbr_of_futures <- 1L
+    } else if (nbr_of_futures > nx) {
+      nbr_of_futures <- nx
+    }
   }
 
-  ## Not needed anymore
-  rm(list=c("x_ii", "globals", "ii", "envir"))
+  chunks <- splitIndices(nx, ncl = nbr_of_futures)
+  fs <- vector("list", length = length(chunks))
 
-  ## Resolve and return as values
-  values(fs)
+  ## Avoid FUN() clash with lapply(..., FUN) below.
+  names <- names(globals)
+  names[names == "FUN"] <- ".FUN"
+  names(globals) <- names
+  
+  ## Add 'seeds_ii' placeholder
+  globals <- c(globals, list(seeds_ii = NULL))
+
+  ## To please R CMD check
+  .FUN <- seeds_ii <- NULL
+
+
+  ## 3. Creating futures
+  for (ii in seq_along(chunks)) {
+    chunk <- chunks[[ii]]
+    mdebug(sprintf("Chunk #%d of %d ...", ii, length(chunks)))
+
+    ## Subsetting outside future is more efficient
+    globals_ii <- globals
+    globals_ii[["x_ii"]] <- x[chunk]
+    globals_ii["seeds_ii"] <- list(seeds[chunk])
+
+    fs[[ii]] <- future({
+      lapply(seq_along(x_ii), FUN = function(jj) {
+         x_jj <- x_ii[[jj]]
+         seed_jj <- seeds_ii[[jj]]
+	   if (!is.null(seed_jj)) {
+	     assign(".Random.seed", seed_jj, envir = globalenv(), inherits = FALSE)
+	   }
+	   .FUN(x_jj, ...)
+	})
+    }, envir = envir, lazy = lazy, globals = globals_ii)
+
+    ## Not needed anymore
+    rm(list = c("chunk", "globals_ii"))
+
+    mdebug(sprintf("Chunk #%d of %d ... DONE", ii, length(chunks)))
+  } ## for (ii ...)
+
+  ## Not needed anymore
+  rm(list = c("chunks", "globals", "envir"))
+
+  ## 4. Resolving futures
+  values <- values(fs)
+  
+  ## Not needed anymore
+  rm(list = "fs")
+  
+  values <- Reduce(c, values)
+  names(values) <- names(x)
+
+  values
 }
 
 
