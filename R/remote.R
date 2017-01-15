@@ -69,3 +69,4 @@ remote <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed
   invisible(future)
 }
 class(remote) <- c("remote", "multiprocess", "future", "function")
+attr(remote, "init") <- TRUE

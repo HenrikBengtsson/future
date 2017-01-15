@@ -6,12 +6,18 @@
 #'
 #' @param strategy The evaluation function (or name of it) to use
 #' for resolving a future.  If NULL, then the current strategy is returned.
+#'
 #' @param \dots Additional arguments overriding the default arguments
 #' of the evaluation function.
+#"
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
+#'
 #' @param .call (internal) Used for recording the call to this function.
-#' @param .cleanup (internal) Used for stopping implicitly started clusters.
+#'
+#' @param .cleanup (internal) Used to stop implicitly started clusters.
+#'
+#' @param .init (internal) Used to initiate workers.
 #'
 #' @return If a new strategy is chosen, then the previous one is returned
 #' (invisible), otherwise the current one is returned (visibly).
@@ -73,13 +79,42 @@
 #' @export
 plan <- local({
   defaultStrategy <- structure(eager, call=substitute(plan(eager)))
-  defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
   
+  defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
+
   ## Stack of type of futures to use
   stack <- defaultStack
 
+  plan_cleanup <- function() {
+    ClusterRegistry(action = "stop")
+  }
+  
+  plan_init <- function() {
+    evaluator <- stack[[1L]]
+    init <- attr(evaluator, "init")
+    if (identical(init, TRUE)) {
+      mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
+      mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+
+      ## IMPORANT: Initiate only once.  This avoids an infinite 
+      ## recursive loop caused by other plan() calls.
+      attr(evaluator, "init") <- "done"
+      stack[[1L]] <<- evaluator
+
+      ## Create dummy future to trigger setup (minimum overhead)
+      f <- evaluator(NA, globals = FALSE, lazy = FALSE)
+
+      ## Cleanup, but resolving it
+      ## (otherwise the garbage collector would have to do it)
+      v <- value(f)
+
+      mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
+    }
+  }
+
+
   ## Main function
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE, .cleanup=TRUE) {
+  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE, .cleanup=TRUE, .init=TRUE) {
     if (substitute) strategy <- substitute(strategy)
     if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
     
@@ -98,7 +133,7 @@ plan <- local({
       ## Reset stack of future strategies?
       stack <<- defaultStack
       ## Stop any (implicitly started) clusters?
-      if (.cleanup) ClusterRegistry(action = "stop")
+      if (.cleanup) plan_cleanup()
       return(stack)
     } else if (identical(strategy, "pop")) {
       ## Pop strategy stack and return old stack (so it can be pushed back later)
@@ -121,7 +156,9 @@ plan <- local({
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
       ## Stop any (implicitly started) clusters?
-      if (.cleanup) ClusterRegistry(action = "stop")
+      if (.cleanup) plan_cleanup()
+      ## Initiate future workers?
+      if (.init) plan_init()
       return(invisible(oldStack[[1L]]))
     }
 
@@ -133,7 +170,8 @@ plan <- local({
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
-          res <- plan(strategies, substitute=FALSE, .cleanup=.cleanup)
+          res <- plan(strategies, substitute=FALSE,
+	              .cleanup=.cleanup, .init=.init)
           return(invisible(res))
         }
 
@@ -206,8 +244,13 @@ plan <- local({
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
     stopifnot(is.list(stack), length(stack) >= 1L)
+    
     ## Stop any (implicitly started) clusters?
-    if (.cleanup) ClusterRegistry(action = "stop")
+    if (.cleanup) plan_cleanup()
+
+    ## Initiate future workers?
+    if (.init) plan_init()
+
     invisible(oldStack[[1L]])
   } # function()
 }) # plan()

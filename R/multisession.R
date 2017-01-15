@@ -83,3 +83,4 @@ multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE
   invisible(future)
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
+attr(multisession, "init") <- TRUE
