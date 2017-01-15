@@ -15,7 +15,7 @@ NEW FEATURES:
    
  o futureAssign() now passes all additional arguments to future().
 
- o Added future_lapply() which supports chunking ("load balancing").
+ o Added future_lapply() which supports load balancing ("chunking").
  
  o Added availableWorkers().  By default it returns localhost workers
    according to availableCores().  In addition, it detects common
