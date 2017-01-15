@@ -249,4 +249,4 @@ foo <- function() {
 [listenv]: https://cran.r-project.org/package=listenv
 
 ---
-Copyright Henrik Bengtsson, 2015-2016
+Copyright Henrik Bengtsson, 2015-2017

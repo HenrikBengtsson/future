@@ -680,4 +680,4 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2016
+Copyright Henrik Bengtsson, 2015-2017
