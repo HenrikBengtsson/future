@@ -10,15 +10,15 @@
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2016-12-31                   |
+|date     |2017-01-14                   |
 
 ## Packages
 
 |package  |*  |version |date       |source         |
 |:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.10  |2016-08-02 |CRAN (R 3.3.1) |
+|digest   |   |0.6.11  |2017-01-03 |cran (@0.6.11) |
 |future   |   |1.2.0   |2016-11-12 |cran (@1.2.0)  |
-|globals  |   |0.7.1   |2016-10-14 |local          |
+|globals  |   |0.7.2   |2017-01-09 |cran (@0.7.2)  |
 |listenv  |   |0.6.0   |2015-12-28 |CRAN (R 3.3.1) |
 |markdown |   |0.7.7   |2015-04-22 |cran (@0.7.7)  |
 |R.rsp    |   |0.40.0  |2016-12-06 |cran (@0.40.0) |
@@ -35,7 +35,7 @@
 |aroma.core           |3.0.0   |      0|        0|     1|
 |calmate              |0.12.1  |      0|        0|     0|
 |doFuture             |0.3.0   |      0|        0|     0|
-|fiery                |0.2.1   |      0|        0|     0|
+|fiery                |0.2.2   |      0|        0|     0|
 |future.BatchJobs     |0.13.1  |      0|        0|     0|
 |GeneBreak            |1.4.0   |      0|        0|     1|
 |googleComputeEngineR |0.1.0   |      0|        0|     0|
@@ -92,7 +92,7 @@ Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
 0 errors | 0 warnings | 0 notes
 
-## fiery (0.2.1)
+## fiery (0.2.2)
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
 Bug reports: https://github.com/thomasp85/fiery/issues
 
