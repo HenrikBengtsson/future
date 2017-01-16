@@ -4,7 +4,7 @@ plan(eager)
 y1 <- future_lapply(1:10, FUN = rnorm, future.args = list(seed = 0xBEEF))
 str(y1)
 
-plan(multisession)
+plan(multiprocess)
 y2 <- future_lapply(1:10, FUN = rnorm, future.args = list(seed = 0xBEEF))
 str(y2)
 
