@@ -18,12 +18,10 @@ for (cores in 1:min(3L, availableCores())) {
   str(list(y0=y0))
 
   for (chunk in c(FALSE, TRUE)) {
-    future.args <- list(chunk = chunk)
-    
     for (strategy in strategies) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
-      y <- future_lapply(x, FUN=vector, length=2L, future.args = future.args)
+      y <- future_lapply(x, FUN=vector, length=2L, future.scheduling = chunk)
       str(list(y=y))
       stopifnot(identical(y, y0))
     }
@@ -39,12 +37,10 @@ for (cores in 1:min(3L, availableCores())) {
   str(list(y0=y0))
 
   for (chunk in c(FALSE, TRUE)) {
-    future.args <- list(chunk = chunk)
-    
     for (strategy in strategies) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
-      y <- future_lapply(x, FUN=base::vector, length=2L, future.args = future.args)
+      y <- future_lapply(x, FUN=base::vector, length=2L, future.scheduling = chunk)
       str(list(y=y))
       stopifnot(identical(y, y0))
     }
@@ -59,12 +55,10 @@ for (cores in 1:min(3L, availableCores())) {
   str(list(y0=y0))
 
   for (chunk in c(FALSE, TRUE)) {
-    future.args <- list(chunk = chunk)
-    
     for (strategy in strategies) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
-      y <- future_lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L, future.args = future.args)
+      y <- future_lapply(x, FUN=future:::hpaste, collapse="; ", maxHead=3L, future.scheduling = chunk)
       str(list(y=y))
       stopifnot(identical(y, y0))
     }
@@ -90,12 +84,10 @@ for (cores in 1:min(3L, availableCores())) {
   str(list(y0=y0))
 
   for (chunk in c(FALSE, TRUE)) {
-    future.args <- list(chunk = chunk)
-    
     for (strategy in strategies) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
-      y <- future_lapply(x, FUN=listenv::map, future.args = future.args)
+      y <- future_lapply(x, FUN=listenv::map, future.scheduling = chunk)
       str(list(y=y))
       stopifnot(identical(y, y0))
     }
@@ -110,11 +102,9 @@ for (cores in 1:min(3L, availableCores())) {
     plan(strategy)
     
     for (chunk in c(FALSE, TRUE)) {
-      future.args <- list(chunk = chunk)
-      
       y <- future_lapply(1:5, FUN = function(i) {
         rnorm(1L)
-      }, future.args = future.args, future.seed = 42L)
+      }, future.seed = 42L, future.scheduling = chunk)
       
       y <- unlist(y)
       if (is.null(y0)) y0 <- y
@@ -125,8 +115,6 @@ for (cores in 1:min(3L, availableCores())) {
 
     ## Nested future_lapply():s
     for (chunk in c(FALSE, TRUE)) {
-      future.args <- list(chunk = chunk)
-      
       y <- future_lapply(1:5, FUN = function(i) {
         ## Until future_lapply() is exported
         future_lapply <- future:::future_lapply
@@ -142,7 +130,7 @@ for (cores in 1:min(3L, availableCores())) {
         for (kk in 2:length(seeds)) stopifnot(!all(seeds[[kk]] == seeds[[1]]))
         
         list(i = i, seed = .seed, sample = rnorm(1L), z = z)
-      }, future.args = future.args, future.seed = 42L)
+      }, future.seed = 42L, future.scheduling = chunk)
 
       if (is.null(y0_nested)) y0_nested <- y
       str(list(y=y))

@@ -9,6 +9,10 @@
 #' @param future.seed L'Ecuyer-CMRG RNG seed used to generate the stream
 #'        of seeds for all elements in \code{x}.  If \code{TRUE}, a
 #'        random initial seed is used.
+#' @param future.scheduling Average number of futures per worker.
+#'        If \code{Inf} or \code{TRUE}, then one future per worker is used.
+#'        If \code{0.0} or \code{FALSE}, then one future per element of
+#'        \code{x} is used.
 #'
 #' @return A list with same length and names as \code{x}.
 #'
@@ -20,11 +24,15 @@
 #' @importFrom utils packageVersion
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE) {
+future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
+  
   if (!is.null(future.args)) {
     stopifnot(is.list(future.args), !is.null(names(future.args)))
   }
+  
+  stopifnot(length(future.scheduling) == 1, !is.na(future.scheduling),
+            is.numeric(future.scheduling) || is.logical(future.scheduling))
 
   ## Nothing to do?
   nx <- length(x)
@@ -135,18 +143,17 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE) {
   } ## if (!is.null(seed))
 
 
-  ## 2. Chunking
-  chunk <- future.args$chunk
-  if (is.null(chunk)) {
-    nbr_of_futures <- nbrOfWorkers()
+  ## 2. Load balancing ("chunking")
+  if (is.logical(future.scheduling)) {
+    if (future.scheduling) {
+      nbr_of_futures <- nbrOfWorkers()
+    } else {
+      nbr_of_futures <- nx
+    }
   } else {
-    stopifnot(length(chunk) == 1)
-  
-    ## Treat 'chunk' as the number of futures per chunks.
-    nbr_of_futures_per_worker <- as.numeric(chunk)
-    stopifnot(!is.na(nbr_of_futures_per_worker), nbr_of_futures_per_worker >= 0)
-  
-    nbr_of_futures <- nbr_of_futures_per_worker * nbrOfWorkers()
+    ## Treat 'future.scheduling' as the number of futures per worker.
+    stopifnot(future.scheduling >= 0)
+    nbr_of_futures <- future.scheduling * nbrOfWorkers()
     if (nbr_of_futures < 1) {
       nbr_of_futures <- 1L
     } else if (nbr_of_futures > nx) {

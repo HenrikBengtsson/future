@@ -5,7 +5,8 @@
 \alias{future_lapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
-future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE)
+future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE,
+  future.scheduling = 1)
 }
 \arguments{
 \item{x}{A vector-like object to iterate over.}
@@ -20,6 +21,11 @@ future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE)
 \item{future.seed}{L'Ecuyer-CMRG RNG seed used to generate the stream
 of seeds for all elements in \code{x}.  If \code{TRUE}, a
 random initial seed is used.}
+
+\item{future.scheduling}{Average number of futures per worker.
+If \code{Inf} or \code{TRUE}, then one future per worker is used.
+If \code{0.0} or \code{FALSE}, then one future per element of
+\code{x} is used.}
 }
 \value{
 A list with same length and names as \code{x}.
