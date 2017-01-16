@@ -21,7 +21,6 @@
 #' @aliases flapply
 #' @importFrom globals globalsByName globalsOf cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
-#' @importFrom utils packageVersion
 #' @export
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, future.scheduling = 1.0) {
@@ -55,14 +54,12 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
     globalsR <- globals[!ns %in% loadedNamespaces()]
     globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
     if (length(globalsR) > 0) {
-      if (packageVersion("globals") >= "0.7.9-9000") {
-        for (kk in seq_along(globalsR)) {
-	  obj <- globalsR[[kk]]
-          globalsT <- globalsOf(obj, envir = envir, mustExist = FALSE)
-          globalsT <- cleanup(globalsT)
-          mdebug(" - globals of %s: %s", sQuote(names(globalsR)[kk]), paste(sQuote(names(globalsT)), collapse = ", "))
-          globals <- c(globals, globalsT)
-	}
+      for (kk in seq_along(globalsR)) {
+        obj <- globalsR[[kk]]
+        globalsT <- globalsOf(obj, envir = envir, mustExist = FALSE)
+        globalsT <- cleanup(globalsT)
+        mdebug(" - globals of %s: %s", sQuote(names(globalsR)[kk]), paste(sQuote(names(globalsT)), collapse = ", "))
+        globals <- c(globals, globalsT)
       }
     }
     mdebug(" - globals: %s", paste(sQuote(names(globals)), collapse = ", "))

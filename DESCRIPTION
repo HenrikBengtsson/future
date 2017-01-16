@@ -3,7 +3,7 @@ Version: 1.2.0-9000
 Title: A Future API for R
 Imports:
     digest,
-    globals (>= 0.7.2),
+    globals (>= 0.7.9-9000),
     listenv (>= 0.6.0),
     parallel,
     utils
@@ -11,6 +11,8 @@ Suggests:
     R.rsp,
     markdown
 VignetteBuilder: R.rsp
+Remotes:
+    HenrikBengtsson/globals@develop
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
 Description: A Future API for R is provided. In programming, a future is an
