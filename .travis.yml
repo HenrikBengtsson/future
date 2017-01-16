@@ -29,8 +29,11 @@ matrix:
     - os: linux
       r: release
       r_github_packages: jimhester/covr
-      script: Rscript -e 'covr::codecov(quiet=FALSE)'
-      env: NB='w/ covr' ## Just a label
+      script:
+        - Rscript -e 'c <- covr::package_coverage(quiet = FALSE); message("Saving ..."); saveRDS(c, "covr.rds")'
+        - Rscript -e 'c <- readRDS("covr.rds"); message("Printing ..."); print(c)'
+        - Rscript -e 'c <- readRDS("covr.rds"); message("Uploading ..."); covr::codecov(coverage = c)'
+      env: NB='Code coverage' ## Just a label
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
