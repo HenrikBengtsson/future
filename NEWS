@@ -1,7 +1,14 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2017-01-14]
+Version: 1.2.0-9000 [2017-01-15]
+
+SIGNIFICANT CHANGES:
+
+ o Where applicable, workers are now initiated when calling plan(), e.g.
+   plan(cluster) will set up workers on all cluster nodes.  Previously,
+   this only happened when the first future was created.
+
 
 NEW FEATURES:
 

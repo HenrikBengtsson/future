@@ -38,6 +38,7 @@ requirePackages <- future:::requirePackages
 supportedStrategies <- future:::supportedStrategies
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
+    
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))

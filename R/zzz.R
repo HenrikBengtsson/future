@@ -67,7 +67,9 @@
   mdebug("R process uuid: %s", id)
 
   mdebug("Setting plan('default')")
-  plan("default")
+  
+  ## NOTE: Don't initiate during startup - it might hang / give an error
+  plan("default", .init=FALSE)
 } ## .onLoad()
 
 
