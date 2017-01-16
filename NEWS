@@ -3,6 +3,12 @@ Package: future
 
 Version: 1.2.0-9000 [2017-01-16]
 
+INSTRUCTIONS:
+ o To install this develop(ers) version of the future package, do:
+ 
+      source('http://callr.org/install#HenrikBengtsson/future@develop')
+
+
 SIGNIFICANT CHANGES:
 
  o Where applicable, workers are now initiated when calling plan(), e.g.
