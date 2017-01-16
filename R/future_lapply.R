@@ -6,6 +6,9 @@
 #' @param ...  (optional) Additional arguments pass to \code{FUN()}.
 #' @param future.args (optional) Additional arguments passed to
 #'        \code{\link{future}()}.
+#' @param future.seed L'Ecuyer-CMRG RNG seed used to generate the stream
+#'        of seeds for all elements in \code{x}.  If \code{TRUE}, a
+#'        random initial seed is used.
 #'
 #' @return A list with same length and names as \code{x}.
 #'
@@ -17,7 +20,7 @@
 #' @importFrom utils packageVersion
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.args = NULL) {
+future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE) {
   stopifnot(is.function(FUN))
   if (!is.null(future.args)) {
     stopifnot(is.list(future.args), !is.null(names(future.args)))
@@ -62,14 +65,27 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   if (is.null(lazy)) lazy <- FALSE
 
   ## Use random seed?
+  seed <- future.seed  
+  if (!is.null(seed) || is.logical(seed)) {
+    ## This will generate a new .Random.seed (also iff missing)
+    orng <- RNGkind("L'Ecuyer-CMRG")[1L]
+    on.exit(RNGkind(orng))
+
+    ## Use the global seed?
+    if (is.logical(seed)) {
+      if (seed) {
+        seed <- get(".Random.seed", envir = globalenv())
+      } else {
+        ## Don't use a random seed (unusual, but supported)
+        seed <- NULL
+      }
+    }
+  }
+  
   seeds <- vector("list", length = nx)
-  seed <- future.args$seed
   if (!is.null(seed)) {
     stopifnot(is.numeric(seed), all(is.finite(seed)))
     seed <- as.integer(seed)
-
-    orng <- RNGkind("L'Ecuyer-CMRG")[1L]
-    on.exit(RNGkind(orng))
 
     ## Passed a L'Ecuyer-CMRG seed?
     if (length(seed) == 7) {

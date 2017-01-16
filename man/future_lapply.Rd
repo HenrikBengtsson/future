@@ -5,7 +5,7 @@
 \alias{future_lapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
-future_lapply(x, FUN, ..., future.args = NULL)
+future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE)
 }
 \arguments{
 \item{x}{A vector-like object to iterate over.}
@@ -16,6 +16,10 @@ future_lapply(x, FUN, ..., future.args = NULL)
 
 \item{future.args}{(optional) Additional arguments passed to
 \code{\link{future}()}.}
+
+\item{future.seed}{L'Ecuyer-CMRG RNG seed used to generate the stream
+of seeds for all elements in \code{x}.  If \code{TRUE}, a
+random initial seed is used.}
 }
 \value{
 A list with same length and names as \code{x}.
@@ -27,11 +31,11 @@ Apply a Function over a List or Vector via Futures
 ## Regardless of the future plan, the number of workers,
 ## and where they are, the random numbers will be identical
 plan(eager)
-y1 <- future_lapply(1:5, FUN = rnorm, future.args = list(seed = 0xBEEF))
+y1 <- future_lapply(1:5, FUN = rnorm, future.seed = 0xBEEF)
 str(y1)
 
 plan(multiprocess)
-y2 <- future_lapply(1:5, FUN = rnorm, future.args = list(seed = 0xBEEF))
+y2 <- future_lapply(1:5, FUN = rnorm, future.seed = 0xBEEF)
 str(y2)
 
 stopifnot(all.equal(y1, y2))
