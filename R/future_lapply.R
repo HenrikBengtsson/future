@@ -12,7 +12,9 @@
 #' @example incl/future_lapply.R
 #'
 #' @aliases flapply
+#' @importFrom globals globalsByName globalsOf cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
+#' @importFrom utils packageVersion
 #' @export
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.args = NULL) {
@@ -30,9 +32,30 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
   ## Collect all globals (once)?
   envir <- environment()
   if (is.null(globals)) {
+    mdebug("Finding globals ...")
     x_ii <- NULL
+
     globals <- c("FUN", "x_ii", names(list(...)), "...")
     globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
+
+    ## Do we need to scan the globals for for further global variables?
+    ns <- lapply(globals, FUN = function(g) environmentName(environment(g)))
+    ns <- unlist(ns, use.names = FALSE)
+    globalsR <- globals[!ns %in% loadedNamespaces()]
+    globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
+    if (length(globalsR) > 0) {
+      if (packageVersion("globals") >= "0.7.9-9000") {
+        for (kk in seq_along(globalsR)) {
+	  obj <- globalsR[[kk]]
+          globalsT <- globalsOf(obj, envir = envir, mustExist = FALSE)
+          globalsT <- cleanup(globalsT)
+          mdebug(" - globals of %s: %s", sQuote(names(globalsR)[kk]), paste(sQuote(names(globalsT)), collapse = ", "))
+          globals <- c(globals, globalsT)
+	}
+      }
+    }
+    mdebug(" - globals: %s", paste(sQuote(names(globals)), collapse = ", "))
+    mdebug("Finding globals ... DONE")
   }
 
   lazy <- future.args$lazy
@@ -78,6 +101,8 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
     
     ## Generate sequence of _all_ RNG seeds needed
     for (ii in seq_along(x)) {
+      mdebug("Generating random seeds ...")
+      
       ## Main RNG stream seeds
       .seed <- nextRNGStream(.seed)
 
@@ -89,6 +114,8 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
       ## future_lapply(). /HB 2017-01-11
       seeds[[ii]] <- nextRNGSubStream(.seed)
     }
+    
+    mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
 
 
@@ -113,6 +140,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL) {
 
   chunks <- splitIndices(nx, ncl = nbr_of_futures)
   fs <- vector("list", length = length(chunks))
+  mdebug("Number of futures / chunks: %d", length(fs))
 
   ## Avoid FUN() clash with lapply(..., FUN) below.
   names <- names(globals)
