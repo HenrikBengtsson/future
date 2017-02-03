@@ -57,7 +57,7 @@ are supported:
    package is loaded).  The \option{mc.cores} option is used by for
    instance \code{\link[parallel]{mclapply}()}.
  \item \code{"PBS"} -
-   Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
+   Query TORQUE/PBS environment variable \env{PBS_NUM_PPN}.
    Depending on PBS system configuration, this \emph{resource}
    parameter may or may not default to one.
    An example of a job submission that results in this is

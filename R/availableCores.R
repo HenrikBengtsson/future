@@ -45,7 +45,7 @@
 #'    package is loaded).  The \option{mc.cores} option is used by for
 #'    instance \code{\link[parallel]{mclapply}()}.
 #'  \item \code{"PBS"} -
-#'    Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
+#'    Query TORQUE/PBS environment variable \env{PBS_NUM_PPN}.
 #'    Depending on PBS system configuration, this \emph{resource}
 #'    parameter may or may not default to one.
 #'    An example of a job submission that results in this is
@@ -106,7 +106,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## Number of cores assigned by Slurm
       n <- getenv("SLURM_CPUS_PER_TASK")
     } else if (method == "PBS") {
-      ## Number of cores assigned by Torque/PBS
+      ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)

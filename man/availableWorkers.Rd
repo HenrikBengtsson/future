@@ -39,7 +39,7 @@ machine that \code{\link{availableCores}()} allows for that method.
 In addition, the following settings ("methods") are also acknowledged:
 \itemize{
  \item \code{"PBS"} -
-   Query Torque/PBS environment variable \env{PBS_NODEFILE}.
+   Query TORQUE/PBS environment variable \env{PBS_NODEFILE}.
    If this is set and specifies an existing file, then the set
    of workers is read from that file, where one worker (node)
    is given per line.
