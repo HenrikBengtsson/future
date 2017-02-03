@@ -101,6 +101,7 @@ to propagate timeout error when it occurs (works on Windows)' on
 it won't happen until the socket connection timeout \code{timeout}
 itself happens.
 }
+
 \examples{
 ## Setup of three R workers on two remote machines are set up
 workers <- c("n1.remote.org", "n2.remote.org", "n1.remote.org")
@@ -222,4 +223,3 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 }
-

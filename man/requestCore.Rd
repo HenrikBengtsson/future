@@ -33,4 +33,3 @@ If no cores are available, the current process
 blocks until a core is available.
 }
 \keyword{internal}
-

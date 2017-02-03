@@ -82,6 +82,7 @@ The reason for this is that background sessions are currently
 created using \code{\link[parallel:makeCluster]{makeCluster}()},
 which requires that all R sessions are created at once.
 }
+
 \examples{
 ## Multisession futures gives an error on R CMD check on
 ## Windows (but not Linux or OS X) for unknown reasons.
@@ -122,4 +123,3 @@ the former is not supported, see \link{multiprocess} futures.
 Use \code{\link{availableCores}()} to see the total number of
 cores that are available for the current R session.
 }
-

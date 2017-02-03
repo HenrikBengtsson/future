@@ -92,9 +92,9 @@ Having said this, it is almost always better to do this by explicitly
 setting the number of workers when specifying the future strategy,
 e.g. \code{plan(multiprocess, workers=9)}.
 }
+
 \seealso{
 To get the number of available workers regardless of machine,
 see \code{\link{availableWorkers}()}.
 }
 \keyword{internal}
-

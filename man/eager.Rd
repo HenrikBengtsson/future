@@ -2,9 +2,9 @@
 % Please edit documentation in R/uniprocess.R
 \name{eager}
 \alias{eager}
-\alias{lazy}
-\alias{transparent}
 \alias{uniprocess}
+\alias{transparent}
+\alias{lazy}
 \title{Create a uniprocess future whose value will be in the current R session}
 \usage{
 eager(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
@@ -78,6 +78,7 @@ calling environment (without \code{local()} as default for all other
 types of futures).  This makes transparent futures ideal for
 troubleshooting, especially when there are errors.
 }
+
 \examples{
 ## Use an eager uniprocess futures
 plan(eager)
@@ -103,4 +104,3 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 }
-

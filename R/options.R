@@ -45,7 +45,7 @@
 #' }
 #'
 #' @seealso
-#' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.
+#' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
 #'
 #' @aliases future.availableCores.methods future.cmdargs future.cores future.debug future.globals.maxSize future.globals.method future.globals.onMissing future.globals.resolve future.plan future.progress future.resolve.recursive future.startup.script future.wait.alpha future.wait.interval future.wait.times R_FUTURE_PLAN R_FUTURE_CORES future.demo.mandelbrot.region future.demo.mandelbrot.nrow
 #' @keywords internal

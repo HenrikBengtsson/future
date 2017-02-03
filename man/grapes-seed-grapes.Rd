@@ -15,4 +15,3 @@ fassignment \%seed\% seed
 \description{
 Set random seed for future assignment
 }
-

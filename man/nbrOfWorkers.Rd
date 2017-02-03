@@ -27,4 +27,3 @@ nbrOfWorkers()  ## == 2
 plan(lazy)
 nbrOfWorkers()  ## == 1
 }
-

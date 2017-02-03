@@ -19,4 +19,3 @@ Use a specific plan for a future assignment
 \seealso{
 The \code{\link{plan}()} function sets the default plan for all futures.
 }
-

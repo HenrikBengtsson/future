@@ -26,4 +26,3 @@ future assignments (\code{\%<-\%}) and therefore stored as promises.
 This function turns such promises into standard \code{Future}
 objects.
 }
-

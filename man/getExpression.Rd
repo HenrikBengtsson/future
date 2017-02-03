@@ -44,4 +44,3 @@ for plans on adding support for custom nested future types.
     for a discussion on this.
 }
 \keyword{internal}
-

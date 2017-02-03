@@ -87,4 +87,3 @@ stopifnot(v == 0)
 Internally \code{\link{multicore}()} and \code{\link{multisession}()}
 are used.
 }
-

@@ -11,6 +11,9 @@ plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
 \item{strategy}{The evaluation function (or name of it) to use
 for resolving a future.  If NULL, then the current strategy is returned.}
 
+\item{\dots}{Additional arguments overriding the default arguments
+of the evaluation function.}
+
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
 
@@ -19,9 +22,6 @@ for resolving a future.  If NULL, then the current strategy is returned.}
 \item{.cleanup}{(internal) Used to stop implicitly started clusters.}
 
 \item{.init}{(internal) Used to initiate workers.}
-
-\item{\dots}{Additional arguments overriding the default arguments
-of the evaluation function.}
 }
 \value{
 If a new strategy is chosen, then the previous one is returned
@@ -84,6 +84,7 @@ that are typically available on high-performance compute
 (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 and OpenLava.
 }
+
 \examples{
 a <- b <- c <- NA_real_
 
@@ -145,4 +146,3 @@ str(list(a=a, b=b, c=c)) ## All NAs
 
 }
 }
-

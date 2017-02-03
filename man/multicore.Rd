@@ -107,4 +107,3 @@ Use \code{\link{availableCores}("multicore") > 1L} to check
 whether multicore futures are supported or not on the current
 system.
 }
-

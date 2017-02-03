@@ -29,4 +29,3 @@ It should also be possible to use the method for polling the
 future until it is resolved (without having to wait infinitely long),
 e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
 }
-

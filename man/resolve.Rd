@@ -41,4 +41,3 @@ of already resolved futures.
 \seealso{
 futureOf
 }
-

@@ -59,4 +59,3 @@ To get the number of available workers on the current machine,
 see \code{\link{availableCores}()}.
 }
 \keyword{internal}
-

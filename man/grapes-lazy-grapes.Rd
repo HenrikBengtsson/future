@@ -16,4 +16,3 @@ fassignment \%lazy\% lazy
 \description{
 Control lazy / eager evaluation for a future assignment
 }
-

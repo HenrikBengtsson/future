@@ -15,4 +15,3 @@ fassignment \%label\% label
 \description{
 Specify label for a future assignment
 }
-
