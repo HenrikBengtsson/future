@@ -1,6 +1,6 @@
 Package: future
 Version: 1.2.0-9000
-Title: A Future API for R - Parallel and Distributed Processing in R for Everyone
+Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
     globals (>= 0.8.0),
