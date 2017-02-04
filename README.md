@@ -1,4 +1,4 @@
-# future: A Future API for R
+# future: A Future API for R - Parallel and Distributed Processing in R for Everyone
 
 ## Introduction
 The purpose of the [future] package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
