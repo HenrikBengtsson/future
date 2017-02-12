@@ -60,6 +60,10 @@ GLOBALS:
  o Globals part of locally defined functions are now also identified
    thanks to globals (>= 0.8.0) updates.
    
+DEPRECATED AND DEFUNCT:
+
+ o Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager)
+   and then f <- future(..., lazy = TRUE) or x %<-% { ... } %lazy% TRUE.
  
 BUG FIXES:
 

@@ -53,12 +53,15 @@ transparent <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE,
 }
 class(transparent) <- c("transparent", "uniprocess", "future", "function")
 
+
 #' @rdname eager
 #' @export
 lazy <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=TRUE, seed=NULL, globals=TRUE, local=TRUE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   local <- as.logical(local)
 
+  .Deprecated(msg = "Future strategy 'lazy' is deprecated. Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+  
   future <- LazyFuture(expr=expr, envir=envir, local=local, lazy=lazy, seed=seed, globals=globals, earlySignal=earlySignal, label=label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)

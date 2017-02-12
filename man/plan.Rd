@@ -44,11 +44,6 @@ To reset the strategy back to the default, use \code{plan("default")}.
  \item{\code{\link{eager}}:}{
    Resolves futures sequentially in the current R process.
  }
- \item{\code{\link{lazy}}:}{
-   Resolves futures synchronously (sequentially) in the current
-   R process, but only if their values are requested.  Futures for
-   which the values are never requested will not be evaluated.
- }
  \item{\code{\link{transparent}}:}{
    Resolves futures synchronously (sequentially) in the current
    R process and assignments will be done to the calling environment.
