@@ -64,6 +64,11 @@ DEPRECATED AND DEFUNCT:
 
  o Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager)
    and then f <- future(..., lazy = TRUE) or x %<-% { ... } %lazy% TRUE.
+   The reason behind this is that in some cases code that uses futures
+   only works under eager evaluation (lazy = FALSE; the default), or vice
+   verse. By removing the "lazy" future strategy, the user can no longer
+   override the lazy = TRUE / FALSE that the developer is using.
+   
  
 BUG FIXES:
 

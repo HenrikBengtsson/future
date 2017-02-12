@@ -148,7 +148,7 @@ The future package implements the following types of futures:
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
 | `remote`        | all         | Simple access to remote R sessions
 
-_Note_: Prior to future 1.2.0, `lazy` was also an option, but has now been deprecated.
+_Note_: Prior to future 1.2.0, `lazy` was also an option, but has since been deprecated.  The reason for this is that whether a future should be resolved by lazy evaluation or not has to be in the control of the developer (in some cases) and if the end user would be able change that the code may not function as intended.
 
 The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 
