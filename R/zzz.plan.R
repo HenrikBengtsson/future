@@ -35,11 +35,6 @@
 #'  \item{\code{\link{eager}}:}{
 #'    Resolves futures sequentially in the current R process.
 #'  }
-#'  \item{\code{\link{lazy}}:}{
-#'    Resolves futures synchronously (sequentially) in the current
-#'    R process, but only if their values are requested.  Futures for
-#'    which the values are never requested will not be evaluated.
-#'  }
 #'  \item{\code{\link{transparent}}:}{
 #'    Resolves futures synchronously (sequentially) in the current
 #'    R process and assignments will be done to the calling environment.
@@ -147,12 +142,29 @@ plan <- local({
     oldStack <- stack
     newStack <- NULL
 
+    ## Arguments to be tweaked
+    targs <- list(...)
+
+    ## Check for deprecated usage of 'lazy'?
+    check_lazy <- !identical(targs$.check_lazy, FALSE)
+    targs$.check_lazy <- NULL
+    
     ## Set new stack?
     if (is.list(strategy)) {
       stopifnot(is.list(strategy), length(strategy) >= 1L)
-      for (ii in seq_along(strategy)) {
-        stopifnot(is.function(strategy[[ii]]))
+
+      if (check_lazy) {
+        using_lazy <- FALSE
+        for (ii in seq_along(strategy)) {
+          stopifnot(is.function(strategy[[ii]]))
+          using_lazy <- using_lazy || inherits(strategy[[ii]], "lazy")
+        }
+        
+        if (using_lazy) {
+          .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+        }
       }
+      
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
       ## Stop any (implicitly started) clusters?
@@ -171,16 +183,17 @@ plan <- local({
         if (is.list(first)) {
           strategies <- first
           res <- plan(strategies, substitute=FALSE,
-	              .cleanup=.cleanup, .init=.init)
+	              .cleanup=.cleanup, .init=.init,
+                      .check_lazy=check_lazy)
           return(invisible(res))
         }
 
-        ## Example: plan(list(eager, lazy))
+        ## Example: plan(list(eager, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir=parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
-          ## Coerce strings to functions, e.g. plan(list("eager", lazy))
+          ## Coerce strings to functions, e.g. plan(list("eager", multicore))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
@@ -195,9 +208,6 @@ plan <- local({
 
     ## (b) Otherwise, assume a single future strategy
     if (is.null(newStack)) {
-      ## Arguments to be tweaked
-      targs <- list(...)
-
       if (is.symbol(strategy)) {
         strategy <- eval(strategy, envir=parent.frame())
       } else if (is.language(strategy)) {
@@ -240,11 +250,19 @@ plan <- local({
       }
     }
 
+    if (check_lazy) {
+      using_lazy <- lapply(newStack, FUN = inherits, "lazy")
+      using_lazy <- any(unlist(using_lazy, use.names = FALSE))
+      if (using_lazy) {
+        .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+      }
+    }
+    
     ## Set new strategy for futures
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
     stopifnot(is.list(stack), length(stack) >= 1L)
-    
+
     ## Stop any (implicitly started) clusters?
     if (.cleanup) plan_cleanup()
 

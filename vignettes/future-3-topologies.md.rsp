@@ -34,7 +34,7 @@ for (ii in 1:3) {
 unlist(x)
 ## [1] 1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3
 ```
-The default is to use synchronous futures unless otherwise specified, which is also true for nested futures.  If we for instance specify, `plan(multiprocess)`, the first layer of futures (`x[[ii]] %<-% { expr }`) will be processed asynchronously in background R processes, and the futures in the second layer of futures (`y[[jj]] %<-% { expr }`) will be processed synchronously in the current R processes (one of the background processes).  If we wish to use a different strategy for the second layer, say, lazy synchronous futures, we can specify it as a list of (nested) strategies as `plan(list(multiprocess, lazy))`.
+The default is to use synchronous futures unless otherwise specified, which is also true for nested futures.  If we for instance specify, `plan(multiprocess)`, the first layer of futures (`x[[ii]] %<-% { expr }`) will be processed asynchronously in background R processes, and the futures in the second layer of futures (`y[[jj]] %<-% { expr }`) will be processed synchronously in the separate background R processes.  If we wish to be explicit about this, we can specify `plan(list(multiprocess, eager))`.
 
 
 ## Example: High-Throughput Sequencing
@@ -163,7 +163,7 @@ print(x)
 ## 8    4    login  391547       n1  391878   n1 393966
 ```
 
-Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
+Try the above `x %<-% { ... }` future with, say, `plan(list(eager, multiprocess))` and see what the output will be.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
