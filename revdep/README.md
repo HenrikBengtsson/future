@@ -10,15 +10,15 @@
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2017-01-14                   |
+|date     |2017-02-12                   |
 
 ## Packages
 
 |package  |*  |version |date       |source         |
 |:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.11  |2017-01-03 |cran (@0.6.11) |
+|digest   |   |0.6.12  |2017-01-27 |cran (@0.6.12) |
 |future   |   |1.2.0   |2016-11-12 |cran (@1.2.0)  |
-|globals  |   |0.7.2   |2017-01-09 |cran (@0.7.2)  |
+|globals  |   |0.8.0   |2017-01-17 |cran (@0.8.0)  |
 |listenv  |   |0.6.0   |2015-12-28 |CRAN (R 3.3.1) |
 |markdown |   |0.7.7   |2015-04-22 |cran (@0.7.7)  |
 |R.rsp    |   |0.40.0  |2016-12-06 |cran (@0.40.0) |
@@ -41,7 +41,7 @@
 |googleComputeEngineR |0.1.0   |      0|        0|     0|
 |MPAgenomics          |1.1.2   |      0|        0|     2|
 |NSA                  |0.0.32  |      0|        0|     6|
-|pbmcapply            |1.1.3   |      0|        0|     0|
+|pbmcapply            |1.2.1   |      0|        0|     0|
 |PECA                 |1.10.0  |      0|        0|     1|
 |PSCBS                |0.62.0  |      0|        0|     0|
 |PureCN               |1.2.3   |      0|        1|     1|
@@ -250,7 +250,7 @@ Rd file 'NSANormalization.Rd':
 These lines will be truncated in the PDF manual.
 ```
 
-## pbmcapply (1.1.3)
+## pbmcapply (1.2.1)
 Maintainer: Kevin kuang <kvn.kuang@mail.utoronto.ca>  
 Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 
