@@ -2,8 +2,7 @@ source("incl/start.R")
 
 message("*** futureAssign() ...")
 
-message("*** futureAssign() - lazy ...")
-plan(lazy)
+message("*** futureAssign() - eager w/ lazy evaluation ...")
 
 delayedAssign("a", {
   cat("Delayed assignment evaluated\n")
@@ -13,7 +12,7 @@ delayedAssign("a", {
 futureAssign("b", {
   cat("Future assignment evaluated\n")
   2
-})
+}, lazy = TRUE)
 
 ## Because "lazy future" is used, the expression/value
 ## for 'b' will be resolved at the point.  For other
@@ -27,7 +26,7 @@ cat(sprintf("a=%s\n", a))
 stopifnot(identical(a, 1))
 stopifnot(identical(b, 2))
 
-message("*** futureAssign() - lazy ... DONE")
+message("*** futureAssign() - eager w/ lazy evaluation ... DONE")
 
 
 message("*** futureAssign() - lazy = TRUE / FALSE ...")

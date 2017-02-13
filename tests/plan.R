@@ -40,7 +40,7 @@ res <- try(plan('unknown strategy'), silent=TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
-message("*** plan() by (lazy) function")
+message("*** plan() by (lazy) function [DEPRECATED]")
 
 ## Setting strategy by function
 plan(lazy)
@@ -49,7 +49,7 @@ f <- future({
   b <- 3
   c <- 2
   a * b * c
-})
+}, lazy = TRUE)
 a <- 7  ## Make sure globals are frozen
 ##if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
 v <- value(f)
@@ -158,7 +158,7 @@ print(x)
 stopifnot(x == 0)
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** Nested futures with different plans ")
+message("*** Nested futures with different plans [DEPRECATED]")
 plan(lazy)
 c %<-% {
   message("Resolving 'c'")
@@ -173,7 +173,7 @@ c %<-% {
   message("Local variable 'x'")
   x <- b / 3
   abs(x)
-}
+} %lazy% TRUE
 d <- 42
 print(d)
 print(c)
@@ -197,19 +197,19 @@ plan(list("uniprocess"))
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list(uniprocess, lazy))
+plan(list(uniprocess, eager))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("uniprocess", lazy))
+plan(list("uniprocess", eager))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list(uniprocess, "lazy"))
+plan(list(uniprocess, "eager"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("uniprocess", "lazy"))
+plan(list("uniprocess", "eager"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 

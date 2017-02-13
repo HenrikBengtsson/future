@@ -1,11 +1,10 @@
 source("incl/start.R")
-plan(lazy)
 
 message("*** future() ...")
 
 f <- future({
   42L
-})
+}, lazy = TRUE)
 
 print(resolved(f))
 y <- value(f)
@@ -15,25 +14,20 @@ stopifnot(y == 42L)
 
 message("*** future() w/ gc=TRUE ...")
 
-f <- future(42L, gc=TRUE)
+f <- future(42L, gc = TRUE, lazy = TRUE)
 print(f)
 y <- value(f)
 print(y)
 stopifnot(y == 42L)
 
 message("*** future() w/ gc=TRUE ... DONE")
-
 message("*** future() ... DONE")
-
-
-
-plan(lazy)
 
 message("*** future() ...")
 
 f <- future({
   42L
-})
+}, lazy = TRUE)
 
 print(resolved(f))
 y <- value(f)
@@ -43,7 +37,7 @@ stopifnot(y == 42L)
 
 message("*** future() w/ gc=TRUE ...")
 
-f <- future(42L, gc=TRUE)
+f <- future(42L, gc = TRUE, lazy = TRUE)
 print(f)
 y <- value(f)
 print(y)
@@ -54,10 +48,10 @@ message("*** future() w/ gc=TRUE ... DONE")
 
 message("*** future() - exceptions ...")
 
-res <- try(future(42L, evaluator=TRUE))
+res <- try(future(42L, evaluator=TRUE, lazy = TRUE))
 stopifnot(inherits(res, "try-error"))
 
-res <- try(future(42L, evaluator=function(...) TRUE))
+res <- try(future(42L, evaluator=function(...) TRUE, lazy = TRUE))
 stopifnot(inherits(res, "try-error"))
 
 target <- list(name="<unknown>", envir=new.env(), code="Yo!", exists=TRUE)

@@ -2,7 +2,6 @@ source("incl/start.R")
 library("listenv")
 
 oopts <- c(oopts, options(future.progress=TRUE))
-plan(lazy)
 
 strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
