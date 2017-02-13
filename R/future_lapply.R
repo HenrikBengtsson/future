@@ -10,9 +10,11 @@
 #'        of seeds for all elements in \code{x}.  If \code{TRUE}, a
 #'        random initial seed is used.
 #' @param future.scheduling Average number of futures per worker.
-#'        If \code{Inf} or \code{TRUE}, then one future per worker is used.
-#'        If \code{0.0} or \code{FALSE}, then one future per element of
+#'        If \code{1.0} or \code{TRUE}, then one future per worker is used.
+#'        If \code{Inf} or \code{FALSE}, then one future per element of
 #'        \code{x} is used.
+#'        If \code{0.0}, then a single future is used to process all elements
+#'        of \code{x}.
 #'
 #' @return A list with same length and names as \code{x}.
 #'

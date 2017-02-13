@@ -594,9 +594,9 @@ install.packages('future')
 
 ### Pre-release version
 
-To install the pre-release version that is available in Git branch `feature/dep-lazy` on GitHub, use:
+To install the pre-release version that is available in Git branch `develop` on GitHub, use:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future@feature/dep-lazy')
+source('http://callr.org/install#HenrikBengtsson/future@develop')
 ```
 This will install the package from source.  
 
