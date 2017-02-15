@@ -181,7 +181,7 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
 #' @importFrom utils read.table
 read_pbs_nodefile <- function(pathname, sort = TRUE) {
   ## One (node) per line
-  lines <- readLines(pathname)
+  lines <- readLines(pathname, warn = FALSE)
   lines <- trim(lines)
 
   ## Sanity checks
