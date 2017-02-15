@@ -303,25 +303,53 @@ addClusterUUIDs <- function(cl) {
 ## This should cover cases such as:
 ## * Calling is_localhost("n3") from machine n3
 ## * Calling is_localhost("n3.myserver.org") from machine n3[.myserver.org]
-is_localhost <- function(worker, hostname = Sys.info()[["nodename"]], pathnames = "/etc/hosts") {
-  stopifnot(length(worker) == 1, length(hostname) == 1)
-
-  if (worker %in% c("localhost", "127.0.0.1")) return(TRUE)
+##
+## References:
+## * https://en.wikipedia.org/wiki/Hostname
+is_localhost <- local({
+  localhosts <- c("localhost", "127.0.0.1")
+  non_localhosts <- character(0L)
+  
+  function(worker, hostname = Sys.info()[["nodename"]], pathnames = "/etc/hosts") {
+    ## INTERNAL: Clear list of known local hosts?
+    if (is.null(worker) && is.null(hostname)) {
+      localhosts <<- c("localhost", "127.0.0.1")
+      non_localhosts <<- character(0L)
+      return(NA)
+    }
     
-  if (worker == hostname) return(TRUE)
-
-  ## Scan known "hosts" files
-  pathnames <- pathnames[file_test("-f", pathnames)]
-  if (length(pathnames) == 0L) return(FALSE)
-
-  ## Search for (hostname, worker) and (worker, hostname)
-  pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|))$", hostname, worker, worker, hostname)
+    stopifnot(length(worker) == 1, length(hostname) == 1)
   
-  full <- hostname
-  for (pathname in pathnames) {
-    bfr <- readLines(pathname, warn = FALSE)
-    if (any(grepl(pattern, bfr, ignore.case = TRUE))) return(TRUE)
+    ## Already known to a localhost or not to one?
+    if (worker %in% localhosts) return(TRUE)
+    if (worker %in% non_localhosts) return(FALSE)
+    
+    if (worker == hostname) {
+      ## Add worker to the list of known local hosts.
+      localhosts <<- unique(c(localhosts, worker))
+      return(TRUE)
+    }
+  
+    ## Scan known "hosts" files
+    pathnames <- pathnames[file_test("-f", pathnames)]
+    if (length(pathnames) == 0L) return(FALSE)
+  
+    ## Search for (hostname, worker) and (worker, hostname)
+    pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|))$", hostname, worker, worker, hostname)
+    
+    full <- hostname
+    for (pathname in pathnames) {
+      bfr <- readLines(pathname, warn = FALSE)
+      if (any(grepl(pattern, bfr, ignore.case = TRUE))) {
+        ## Add worker to the list of known local hosts.
+        localhosts <<- unique(c(localhosts, worker))
+        return(TRUE)
+      }
+    }
+    
+    ## Add worker to the list of known non-local hosts.
+    non_localhosts <<- unique(c(non_localhosts, worker))
+    
+    FALSE
   }
-  
-  FALSE
-} ## is_localhost()
+}) ## is_localhost()
