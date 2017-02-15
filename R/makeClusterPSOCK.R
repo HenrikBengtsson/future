@@ -335,7 +335,7 @@ is_localhost <- local({
     if (length(pathnames) == 0L) return(FALSE)
   
     ## Search for (hostname, worker) and (worker, hostname)
-    pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|))$", hostname, worker, worker, hostname)
+    pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|))$", hostname, worker, worker, hostname)
     
     full <- hostname
     for (pathname in pathnames) {
