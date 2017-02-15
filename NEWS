@@ -43,9 +43,10 @@ NEW FEATURES:
    instance, a multisession cluster created by plan(multisession) will
    be stopped when plan(eager) is called.
 
- o makeClusterPSOCK() treats workers that refer to the
-   the local machine by its name as "localhost".  This avoids having
-   to launch such workers over SSH.
+ o makeClusterPSOCK() treats workers that refer to a local machine by
+   its local or canonical hostname as "localhost".  This avoids having
+   to launch such workers over SSH, which may not be supported on all
+   systems / compute cluster.
 
  o Option 'future.debug' = TRUE also reports on total size of
    globals identified and for cluster futures also the size of the

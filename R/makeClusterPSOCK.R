@@ -113,10 +113,14 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @export
 makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = 2*60, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
-  ## Make sure to use 'localhost' for workers that are the current machine
-  worker[worker == Sys.info()[["nodename"]]] <- "localhost"
-  
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
+
+  ## Could it be that the worker specifies the name of the localhost?
+  ## Note, this approach preserves worker == "127.0.0.1" if that is given.
+  if (!localMachine) {
+    localMachine <- is_localhost(worker)
+    if (localMachine) worker <- "localhost"
+  }
 
   rshcmd <- as.character(rshcmd)
   stopifnot(length(rshcmd) >= 1L)
@@ -287,3 +291,37 @@ addClusterUUIDs <- function(cl) {
   
   cl
 } ## addClusterUUIDs()
+
+
+## Checks if a given worker is the same as the localhost.  It is, iff:
+##
+## * worker == "localhost"
+## * worker == "127.0.0.1"
+## * worker == hostname
+## * worker and hostname appears on the same line in /etc/hosts
+##
+## This should cover cases such as:
+## * Calling is_localhost("n3") from machine n3
+## * Calling is_localhost("n3.myserver.org") from machine n3[.myserver.org]
+is_localhost <- function(worker, hostname = Sys.info()[["nodename"]], pathnames = "/etc/hosts") {
+  stopifnot(length(worker) == 1, length(hostname) == 1)
+
+  if (worker %in% c("localhost", "127.0.0.1")) return(TRUE)
+    
+  if (worker == hostname) return(TRUE)
+
+  ## Scan known "hosts" files
+  pathnames <- pathnames[file_test("-f", pathnames)]
+  if (length(pathnames) == 0L) return(FALSE)
+
+  ## Search for (hostname, worker) and (worker, hostname)
+  pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]%s([[:space:]]+|))$", hostname, worker, worker, hostname)
+  
+  full <- hostname
+  for (pathname in pathnames) {
+    bfr <- readLines(pathname, warn = FALSE)
+    if (any(grepl(pattern, bfr, ignore.case = TRUE))) return(TRUE)
+  }
+  
+  FALSE
+} ## is_localhost()
