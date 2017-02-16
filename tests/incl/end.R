@@ -25,7 +25,7 @@ for (name in intersect(names(cenvs), names(oenvs))) {
   ## return elements with empty names. /HB 2016-10-06
   if (nchar(name) == 0) next
   if (!identical(cenvs[[name]], oenvs[[name]])) {
-    Sys.setenv(name, oenvs[[name]])
+    do.call(Sys.setenv, as.list(oenvs[name]))
   }
 }
 ## (c) Assert that everything was undone
