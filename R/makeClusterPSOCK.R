@@ -335,9 +335,10 @@ is_localhost <- local({
     if (length(pathnames) == 0L) return(FALSE)
   
     ## Search for (hostname, worker) and (worker, hostname)
+    ## occuring on the same line and are separates by one or
+    ## more whitespace symbols (but nothing else).
     pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|))$", hostname, worker, worker, hostname)
     
-    full <- hostname
     for (pathname in pathnames) {
       bfr <- readLines(pathname, warn = FALSE)
       if (any(grepl(pattern, bfr, ignore.case = TRUE))) {

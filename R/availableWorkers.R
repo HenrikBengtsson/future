@@ -47,7 +47,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods=getOption("future.availableWorkers.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")), na.rm=TRUE, default="localhost", which=c("auto", "min", "max", "all")) {
+availableWorkers <- function(methods=getOption("future.availableWorkers.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm=TRUE, default="localhost", which=c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))
@@ -70,12 +70,12 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
 
   ## Default is to use the current machine
   ncores <- availableCores(methods = methods, na.rm = FALSE, which = "all")
-
+  
   workers <- lapply(ncores, FUN = function(n) {
     if (length(n) == 0 || is.na(n)) n <- 0L
     rep("localhost", times = n)
   })
-
+  
   ## Acknowledge known HPC settings (skip others)
   methods_localhost <- c("_R_CHECK_LIMIT_CORES_", "mc.cores", "mc.cores+1", "system")
   methodsT <- setdiff(methods, methods_localhost)
@@ -135,7 +135,9 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
     workers[[method]] <- w
   }
 
+  
   nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
+
   if (which == "auto") {
     ## For default localhost sets, use the minimum allowed number of
     ## workers **according to availableCores()**.
@@ -148,14 +150,21 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
         workers[methodsT] <- list(rep("localhost", times = min))
       }
     }
+
+    workers <- apply_fallback(workers)
+    nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
     
     ## Now, pick the first positive and finite value
-    idx <- which(is.finite(nnodes) & nnodes > 0L, useNames = FALSE)[1]
+    idx <- which(nnodes > 0L, useNames = FALSE)[1]
     workers <- if (is.na(idx)) character(0L) else workers[[idx]]
   } else if (which == "min") {
+    workers <- apply_fallback(workers)
+    nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
     idx <- which.min(nnodes)
     workers <- workers[[idx]]
   } else if (which == "max") {
+    workers <- apply_fallback(workers)
+    nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
     idx <- which.max(nnodes)
     workers <- workers[[idx]]
   }
@@ -233,10 +242,46 @@ read_pe_hostfile <- function(pathname, sort = TRUE) {
   data
 }
 
-
+## Used after read_pe_hostfile()
 expand_nodes <- function(data) {
   nodes <- mapply(data$node, data$count, FUN = function(node, count) {
     rep(node, times = count)
   }, SIMPLIFY = FALSE, USE.NAMES = FALSE)
   unlist(nodes, recursive = FALSE, use.names = FALSE)
 }
+
+## Used by availableWorkers()
+apply_fallback <- function(workers) {
+  ## No 'fallback'?
+  idx_fallback <- which(names(workers) == "fallback")
+  if (length(idx_fallback) == 0) return(workers)
+
+  ## Number of workers per set
+  nnodes <- unlist(lapply(workers, FUN = length), use.names = TRUE)
+
+  ## No 'fallback' workers?
+  if (nnodes[idx_fallback] == 0) return(workers)
+  
+  ## Only consider non-empty sets
+  nonempty <- which(nnodes > 0)
+  workers_nonempty <- workers[nonempty]
+
+  ## Nothing to do?
+  n_nonempty <- length(workers_nonempty)
+  if (n_nonempty <= 1) return(workers)
+  
+  ## Drop 'fallback'?
+  if (n_nonempty > 2) {
+    workers <- workers[-idx_fallback]
+    return(workers)
+  }
+  
+  ## No 'system' to override?
+  idx_system <- which(names(workers) == "system")
+  if (length(idx_system) == 0) return(workers)
+
+  ## Drop 'system' in favor or 'fallback'
+  workers <- workers[-idx_system]
+
+  workers
+} ## apply_fallback()

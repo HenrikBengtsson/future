@@ -5,9 +5,9 @@
 \title{Get set of available workers}
 \usage{
 availableWorkers(methods = getOption("future.availableWorkers.methods",
-  c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system")),
-  na.rm = TRUE, default = "localhost", which = c("auto", "min", "max",
-  "all"))
+  c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
+  "fallback")), na.rm = TRUE, default = "localhost", which = c("auto",
+  "min", "max", "all"))
 }
 \arguments{
 \item{methods}{A character vector specifying how to infer the number

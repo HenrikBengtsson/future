@@ -200,9 +200,41 @@ options(future.availableCores.system=NULL)
 message("- .onLoad() w/ R_FUTURE_AVAILABLECORES_SYSTEM ... DONE")
 
 
-options(future.plan=NULL, future.cmdargs=NULL, future.availableCores.system=1L)
+message("- .onLoad() w/ future.availableCores.fallback=1L ...")
+options(future.availableCores.fallback=1L)
+.onLoad(pkgname, pkgname)
+options(future.availableCores.fallback=NULL)
+message("- .onLoad() w/ future.availableCores.fallback=1L ... DONE")
 
-options(future.plan=NULL, future.cmdargs=NULL, future.availableCores.system=NULL)
+message("- .onLoad() w/ R_FUTURE_AVAILABLECORES_FALLBACK ...")
+Sys.setenv(R_FUTURE_AVAILABLECORES_FALLBACK="1")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.fallback")
+print(ncores)
+stopifnot(is.integer(ncores), ncores == 1L)
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_FALLBACK")
+options(future.availableCores.fallback=NULL)
+
+Sys.setenv(R_FUTURE_AVAILABLECORES_FALLBACK="NA")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.fallback")
+print(ncores)
+stopifnot(is.integer(ncores), is.na(ncores))
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_FALLBACK")
+options(future.availableCores.fallback=NULL)
+
+Sys.setenv(R_FUTURE_AVAILABLECORES_FALLBACK="NA_real_")
+.onLoad(pkgname, pkgname)
+ncores <- getOption("future.availableCores.fallback")
+print(ncores)
+stopifnot(is.integer(ncores), is.na(ncores))
+Sys.unsetenv("R_FUTURE_AVAILABLECORES_FALLBACK")
+options(future.availableCores.fallback=NULL)
+
+message("- .onLoad() w/ R_FUTURE_AVAILABLECORES_FALLBACK ... DONE")
+
+
+options(future.plan=NULL, future.cmdargs=NULL, future.availableCores.system=NULL, future.availableCores.fallback=NULL)
 
 message("*** .onLoad() ... DONE")
 

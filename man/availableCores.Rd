@@ -6,7 +6,7 @@
 \usage{
 availableCores(constraints = NULL,
   methods = getOption("future.availableCores.methods", c("system",
-  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")),
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")),
   na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{

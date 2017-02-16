@@ -56,6 +56,17 @@ NEW FEATURES:
    the maximum waiting time for a free workers (e.g. a core or a
    compute node) before generating a timeout error.  
 
+ o Option 'future.availableCores.fallback', which defaults to environment
+   variable 'R_FUTURE_AVAILABLECORES_FALLBACK' can now be used to specify
+   the default number of cores / workers returned by availableCores()
+   and availableWorkers() when no other settings are available.  For
+   instance, if R_FUTURE_AVAILABLECORES_FALLBACK=1 is set system wide
+   in an HPC environment, then all R processes that uses availableCores()
+   to detect how many cores can be used will run as single-core processes.
+   Without this fallback setting, and without other core-specifying settings,
+   the default will be to use all cores on the machine, which does not play
+   well on multi-user systems.
+
 GLOBALS:
 
  o Globals part of locally defined functions are now also identified
