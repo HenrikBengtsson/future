@@ -145,14 +145,14 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
   ## 2. Load balancing ("chunking")
   if (is.logical(future.scheduling)) {
     if (future.scheduling) {
-      nbr_of_futures <- nbrOfWorkers()
+      nbr_of_futures <- max(nx, nbrOfWorkers())
     } else {
       nbr_of_futures <- nx
     }
   } else {
     ## Treat 'future.scheduling' as the number of futures per worker.
     stopifnot(future.scheduling >= 0)
-    nbr_of_futures <- future.scheduling * nbrOfWorkers()
+    nbr_of_futures <- future.scheduling * max(nx, nbrOfWorkers())
     if (nbr_of_futures < 1) {
       nbr_of_futures <- 1L
     } else if (nbr_of_futures > nx) {
