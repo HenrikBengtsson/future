@@ -41,7 +41,9 @@ sequential <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, 
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
-class(sequential) <- c("sequential", "uniprocess", "future", "function")
+## FIXME: Remove 'eager' when eager is formally deprecated and
+## doFuture package tests no longer assume eager. /HB 2017-02-16
+class(sequential) <- c("sequential", "eager", "uniprocess", "future", "function")
 
 #' @rdname sequential
 #' @export

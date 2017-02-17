@@ -21,12 +21,14 @@ future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE,
 of seeds for all elements in \code{x}.  If \code{TRUE}, a
 random initial seed is used.}
 
-\item{future.scheduling}{Average number of futures per worker.
-If \code{1.0} or \code{TRUE}, then one future per worker is used.
-If \code{Inf} or \code{FALSE}, then one future per element of
-\code{x} is used.
+\item{future.scheduling}{Average number of futures ("chunks") per worker.
 If \code{0.0}, then a single future is used to process all elements
-of \code{x}.}
+of \code{x}.
+If \code{1.0} or \code{TRUE}, then one future per worker is used.
+If \code{2.0}, then each worker will process two futures
+(if there are enough elements in \code{x})
+If \code{Inf} or \code{FALSE}, then one future per element of
+\code{x} is used.}
 }
 \value{
 A list with same length and names as \code{x}.
