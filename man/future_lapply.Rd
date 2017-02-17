@@ -18,16 +18,25 @@ future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE,
 \item{future.args}{(optional) Additional arguments passed to
 \code{\link{future}()}.}
 
-\item{future.seed}{L'Ecuyer-CMRG RNG seed used to generate the stream
-of seeds for all elements in \code{x}.  If \code{TRUE}, a
-random initial seed is used.}
+\item{future.seed}{If \code{TRUE} (default), a L'Ecuyer-CMRG RNG seed
+is randomly created and used.  This L'Ecuyer-CMRG RNG seed will
+then generate the stream of seeds for all elements in \code{x}.
+For RNG reproducibility, a fixed seed (integer) may be given,
+either as a full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers)
+or as a seed for \code{set.seed(future.seed)} generating the full
+L'Ecuyer-CMRG seed.
+If none of the function calls \code{FUN(x[[i]], ...)} uses random
+number generation, then \code{future.seed = FALSE} may be used.
+In such cases, the RNG state is also guaranteed not to change.}
 
-\item{future.scheduling}{Average number of futures per worker.
+\item{future.scheduling}{Average number of futures ("chunks") per worker.
+If \code{0.0}, then a single future is used to process all elements
+of \code{x}.
 If \code{1.0} or \code{TRUE}, then one future per worker is used.
+If \code{2.0}, then each worker will process two futures
+(if there are enough elements in \code{x}).
 If \code{Inf} or \code{FALSE}, then one future per element of
-\code{x} is used.
-If \code{0.0}, then a single future, and therefore a single worker,
-is used to process all elements of \code{x}.}
+\code{x} is used.}
 }
 \value{
 A list with same length and names as \code{x}.
@@ -35,6 +44,22 @@ A list with same length and names as \code{x}.
 \description{
 Apply a Function over a List or Vector via Futures
 }
+\section{Global variables}{
+
+Argument \code{future.args$globals} may be used to control how globals
+should be handled similarly how the \code{globals} argument is used with
+\code{\link{future}()}.
+Since all function calls use the same set of globals, this function can do
+any gathering of globals upfront (once), which is more efficient than if
+it would be done for each future independently.
+If \code{TRUE}, \code{NULL} or not is specified (default), then globals
+are automatically identified and gathered.
+If a character vector of names is specified, then those globals are gathered.
+If a named list, then those globals are used as is.
+In all cases, \code{FUN} and any \code{...} arguments are automatically
+passed as globals to each future created.
+}
+
 \examples{
 ## Regardless of the future plan, the number of workers,
 ## and where they are, the random numbers will be identical
