@@ -6,8 +6,8 @@
 #' 
 #' @param ...  (optional) Additional arguments pass to \code{FUN()}.
 #' 
-#' @param future.args (optional) Additional arguments passed to
-#'        \code{\link{future}()}.
+#' @param future.lazy Specifies whether the futures should be resolved
+#'        lazily or eagerly.  The default is eager.
 #' 
 #' @param future.seed If \code{TRUE} (default), a L'Ecuyer-CMRG RNG seed
 #'        is randomly created and used.  This L'Ecuyer-CMRG RNG seed will
@@ -19,6 +19,9 @@
 #'        If none of the function calls \code{FUN(x[[i]], ...)} uses random
 #'        number generation, then \code{future.seed = FALSE} may be used.
 #'        In such cases, the RNG state is also guaranteed not to change.
+#' 
+#' @param future.globals A logical, a character vector, or a named list for
+#'        controlling how globals are handled. For details, see below section.
 #' 
 #' @param future.scheduling Average number of futures ("chunks") per worker.
 #'        If \code{0.0}, then a single future is used to process all elements
@@ -32,7 +35,7 @@
 #' @return A list with same length and names as \code{x}.
 #'
 #' @section Global variables:
-#' Argument \code{future.args$globals} may be used to control how globals
+#' Argument \code{future.globals} may be used to control how globals
 #' should be handled similarly how the \code{globals} argument is used with
 #' \code{\link{future}()}.
 #' Since all function calls use the same set of globals, this function can do
@@ -45,7 +48,6 @@
 #' In all cases, \code{FUN} and any \code{...} arguments are automatically
 #' passed as globals to each future created as they are always needed.
 #'
-#' 
 #' @example incl/future_lapply.R
 #'
 #' @aliases flapply
@@ -54,12 +56,10 @@
 #' @importFrom utils str
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, future.scheduling = 1.0) {
+future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE, future.seed = TRUE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
   
-  if (!is.null(future.args)) {
-    stopifnot(is.list(future.args), !is.null(names(future.args)))
-  }
+  stopifnot(is.logical(future.lazy))
 
   stopifnot(!is.null(future.seed))
   
@@ -77,11 +77,10 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 1. Global variables
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  globals <- future.args$globals
-
   ## The default is to gather globals
-  if (is.null(globals)) globals <- TRUE
-  
+  if (is.null(future.globals)) future.globals <- TRUE
+
+  globals <- future.globals
   if (is.logical(globals)) {
     ## Gather all globals?
     if (globals) {
@@ -116,10 +115,10 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
   } else if (is.list(globals)) {
     names <- names(globals)
     if (length(globals) > 0 && is.null(names)) {
-      stop("Invalid argument 'future.args$globals'. All globals must be named.")
+      stop("Invalid argument 'future.globals'. All globals must be named.")
     }
   } else {
-    stop("Invalid argument 'future.args$globals': ", mode(globals))
+    stop("Invalid argument 'future.globals': ", mode(globals))
   }
   stopifnot(is.list(globals))
   
@@ -262,10 +261,6 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
   ## Add argument placeholders
   globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
 
-  ## Lazy evaluation?
-  lazy <- future.args$lazy
-  if (is.null(lazy)) lazy <- FALSE
-  
   ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
   
@@ -287,7 +282,7 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
          }
          ...future.FUN(...future.x_jj, ...)
       })
-    }, envir = envir, lazy = lazy, globals = globals_ii)
+    }, envir = envir, lazy = future.lazy, globals = globals_ii)
 
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))

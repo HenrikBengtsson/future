@@ -5,8 +5,8 @@
 \alias{flapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
-future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE,
-  future.scheduling = 1)
+future_lapply(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE,
+  future.seed = TRUE, future.scheduling = 1)
 }
 \arguments{
 \item{x}{A vector-like object to iterate over.}
@@ -15,8 +15,11 @@ future_lapply(x, FUN, ..., future.args = NULL, future.seed = TRUE,
 
 \item{...}{(optional) Additional arguments pass to \code{FUN()}.}
 
-\item{future.args}{(optional) Additional arguments passed to
-\code{\link{future}()}.}
+\item{future.lazy}{Specifies whether the futures should be resolved
+lazily or eagerly.  The default is eager.}
+
+\item{future.globals}{A logical, a character vector, or a named list for
+controlling how globals are handled. For details, see below section.}
 
 \item{future.seed}{If \code{TRUE} (default), a L'Ecuyer-CMRG RNG seed
 is randomly created and used.  This L'Ecuyer-CMRG RNG seed will
@@ -46,7 +49,7 @@ Apply a Function over a List or Vector via Futures
 }
 \section{Global variables}{
 
-Argument \code{future.args$globals} may be used to control how globals
+Argument \code{future.globals} may be used to control how globals
 should be handled similarly how the \code{globals} argument is used with
 \code{\link{future}()}.
 Since all function calls use the same set of globals, this function can do
@@ -57,7 +60,7 @@ are automatically identified and gathered.
 If a character vector of names is specified, then those globals are gathered.
 If a named list, then those globals are used as is.
 In all cases, \code{FUN} and any \code{...} arguments are automatically
-passed as globals to each future created.
+passed as globals to each future created as they are always needed.
 }
 
 \examples{
