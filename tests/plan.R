@@ -57,8 +57,8 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** plan(uniprocess)")
-plan(uniprocess)
+message("*** plan(sequential)")
+plan(sequential)
 a <- 0
 f <- future({
   b <- 3
@@ -71,15 +71,15 @@ print(v)
 stopifnot(v == 0)
 
 
-message("*** plan('uniprocess')")
+message("*** plan('sequential')")
 ## Setting strategy by name
 plan("multisession")
 print(plan())
 
 
 message("*** plan() and overriding defaults")
-message("*** plan(uniprocess)")
-plan(uniprocess)
+message("*** plan(sequential)")
+plan(sequential)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == TRUE)
@@ -88,8 +88,8 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 0)
 
-message("*** plan(uniprocess, local=FALSE)")
-plan(uniprocess, local=FALSE)
+message("*** plan(sequential, local=FALSE)")
+plan(sequential, local=FALSE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -98,22 +98,22 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 1)
 
-message("*** plan(uniprocess, local=FALSE, abc=1, def=TRUE)")
-plan(uniprocess, local=FALSE, abc=1, def=TRUE)
+message("*** plan(sequential, local=FALSE, abc=1, def=TRUE)")
+plan(sequential, local=FALSE, abc=1, def=TRUE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(uniprocess(local=FALSE))")
+message("*** plan(sequential(local=FALSE))")
 plan(multisession)
-plan(uniprocess(local=FALSE))
+plan(sequential(local=FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(tweak(uniprocess, local=FALSE))")
+message("*** plan(tweak(sequential, local=FALSE))")
 plan(multisession)
-plan(tweak(uniprocess, local=FALSE))
+plan(tweak(sequential, local=FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -132,27 +132,27 @@ curr <- plan()    ## curr == old
 stopifnot(identical(unclass(curr), unclass(old)))
 stopifnot(identical(unclass(curr), unclass(truth)))
 
-message("*** %plan% 'uniprocess'")
+message("*** %plan% 'sequential'")
 plan(multisession)
-x %<-% { a <- 1 } %plan% "uniprocess"
+x %<-% { a <- 1 } %plan% "sequential"
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** %plan% uniprocess")
+message("*** %plan% sequential")
 plan(multisession)
 
 ## %plan% can operate on any expression, so it
 ## works just as an withPlan({ ... }, plan=...)
-fun <- { plan() } %plan% uniprocess
+fun <- { plan() } %plan% sequential
 f <- fun(1)
-stopifnot(inherits(f, "UniprocessFuture"), !f$lazy, inherits(f, "UniprocessFuture"))
+stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFuture"))
 
-x %<-% { a <- 1 } %plan% uniprocess
+x %<-% { a <- 1 } %plan% sequential
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** %plan% uniprocess(local=FALSE) ")
+message("*** %plan% sequential(local=FALSE) ")
 plan(multisession)
 a <- 0
-x %<-% { a } %plan% uniprocess(local=FALSE)
+x %<-% { a } %plan% sequential(local=FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
@@ -165,7 +165,7 @@ c %<-% {
   a %<-% {
     message("Resolving 'a'")
     2
-  } %plan% uniprocess
+  } %plan% sequential
   b %<-% {
     message("Resolving 'b'")
     -9 * a
@@ -181,35 +181,35 @@ stopifnot(c == 6)
 
 message("*** plan() by functions and character names ... ")
 
-plan(uniprocess)
+plan(sequential)
 a %<-% 42
 stopifnot(a == 42)
 
-plan("uniprocess")
+plan("sequential")
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list(uniprocess))
+plan(list(sequential))
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list("uniprocess"))
+plan(list("sequential"))
 a %<-% 42
 stopifnot(a == 42)
 
-plan(list(uniprocess, eager))
+plan(list(sequential, sequential))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("uniprocess", eager))
+plan(list("sequential", sequential))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list(uniprocess, "eager"))
+plan(list(sequential, "sequential"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
-plan(list("uniprocess", "eager"))
+plan(list("sequential", "sequential"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
@@ -218,7 +218,7 @@ message("*** plan() by functions and character names ... DONE")
 
 message("*** plan() w/ commands ...")
 
-plan(list(uniprocess, uniprocess))
+plan(list(sequential, sequential))
 res <- plan("list")
 print(res)
 stopifnot(length(res) == 2)

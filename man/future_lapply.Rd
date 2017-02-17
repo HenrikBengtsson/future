@@ -2,7 +2,6 @@
 % Please edit documentation in R/future_lapply.R
 \name{future_lapply}
 \alias{future_lapply}
-\alias{flapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
 future_lapply(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE,
@@ -66,7 +65,7 @@ passed as globals to each future created as they are always needed.
 \examples{
 ## Regardless of the future plan, the number of workers,
 ## and where they are, the random numbers will be identical
-plan(eager)
+plan(sequential)
 y1 <- future_lapply(1:5, FUN = rnorm, future.seed = 0xBEEF)
 str(y1)
 

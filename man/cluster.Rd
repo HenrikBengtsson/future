@@ -14,16 +14,16 @@ cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly.  The default is eager,
-except when the \emph{deprecated} \code{plan(lazy)} is set.}
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
@@ -79,9 +79,6 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 }
 \examples{
-## Cluster futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 
 ## Use cluster futures

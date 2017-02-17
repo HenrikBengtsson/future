@@ -27,16 +27,16 @@ futureCall(FUN, args = NULL, envir = parent.frame(), lazy = NA,
 \item{expr, value}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly.  The default is eager,
-except when the \emph{deprecated} \code{plan(lazy)} is set.}
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
@@ -67,7 +67,11 @@ should be assigned.}
 \value{
 \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.
 
-\code{futureAssign("x", value)} and \code{x \%<-\% value} (a future assignment) create a \link{Future} that evaluates expression \code{expr} and binds its value (as a \link[base]{promise}) to a variable \code{x}.  The value of the future is automatically retrieved when the assigned variable (promise) is queried.
+\code{x \%<-\% value} (a future assignment) and
+\code{futureAssign("x", value)} create a \link{Future} that evaluates
+expression \code{expr} and binds its value (as a \link[base]{promise}) to
+a variable \code{x}.  The value of the future is automatically retrieved
+when the assigned variable (promise) is queried.
 The future itself is returned invisibly, e.g.
 \code{f <- futureAssign("x", expr)} and \code{f <- (x \%<-\% expr)}.
 Alternatively, the future of a future variable \code{x} can be retrieved
@@ -84,8 +88,9 @@ How, when, and where these futures are evaluated can be configured
 using \code{\link{plan}()} such that it is evaluated in parallel on,
 for instance, the current machine, on a remote machine, or via a
 job queue on a compute cluster.
-Importantly, \R code using futures remains the same regardless
-on these settings.
+Importantly, any \R code using futures remains the same regardless
+on these settings and there is no need to modify the code when
+switching from, say, sequential to parallel processing.
 }
 \details{
 The state of a future is either unresolved or resolved.
@@ -96,7 +101,7 @@ It is possible to check whether a future is resolved or not
 without blocking by using \code{\link{resolved}(f)}.
 
 For a future created via a future assignment
-(\code{futureAssign("x", value)} or \code{x \%<-\% value}), the value
+(\code{x \%<-\% value} or \code{futureAssign("x", value)}), the value
 is bound to a promise, which when queried will internally call
 \code{\link{value}()}  on the future and which will then be resolved
 into a regular variable bound to that value.  For example, with future
@@ -122,8 +127,8 @@ be evaluated as soon as the future is created.
 As an alternative, the future can be resolved using \emph{lazy}
 evaluation (\code{lazy = TRUE}).  This means that the expression
 will only be evaluated when the value of the future is requested.
-\emph{Note that this means that the expression of a lazy future will
-not be evaluated unless the value is requested}.
+\emph{Note that this means that the expression may not be evaluated
+at all - it is guaranteed to be evaluated if the value is requested}.
 
 For future assignments, lazy evaluation can be controlled via the
 \code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
@@ -236,9 +241,6 @@ using the \code{\link{\%globals\%}} operator, e.g.
 }
 
 \examples{
-## Cluster futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 ## Evaluate futures in parallel
 plan(multiprocess)

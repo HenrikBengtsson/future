@@ -50,7 +50,6 @@
 #'
 #' @example incl/future_lapply.R
 #'
-#' @aliases flapply
 #' @importFrom globals globalsByName globalsOf cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
 #' @importFrom utils str
@@ -235,14 +234,17 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.logical(future.scheduling)) {
     if (future.scheduling) {
-      nbr_of_futures <- max(nx, nbrOfWorkers())
+      nbr_of_futures <- nbrOfWorkers()
+      if (nbr_of_futures > nx) nbr_of_futures <- nx
     } else {
       nbr_of_futures <- nx
     }
   } else {
     ## Treat 'future.scheduling' as the number of futures per worker.
     stopifnot(future.scheduling >= 0)
-    nbr_of_futures <- future.scheduling * max(nx, nbrOfWorkers())
+    nbr_of_workers <- nbrOfWorkers()
+    if (nbr_of_workers > nx) nbr_of_workers <- nx
+    nbr_of_futures <- future.scheduling * nbr_of_workers
     if (nbr_of_futures < 1) {
       nbr_of_futures <- 1L
     } else if (nbr_of_futures > nx) {
@@ -304,7 +306,3 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   values
 }
-
-
-## BACKWARD COMPATIBILITY (although never exported)
-flapply <- future_lapply

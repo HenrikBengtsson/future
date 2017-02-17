@@ -12,9 +12,9 @@ multiprocess(expr, envir = parent.frame(), substitute = TRUE,
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
@@ -53,9 +53,6 @@ Regardless, its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \examples{
-## Multiprocess futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 
 ## Use multiprocess futures

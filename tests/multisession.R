@@ -157,7 +157,7 @@ for (cores in 1:min(3L, availableCores())) {
   cl <- ClusterRegistry("get")
   stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
 
-  plan(eager)
+  plan(sequential)
   cl <- ClusterRegistry("get")
   stopifnot(is.null(cl), length(cl) == 0L)
   

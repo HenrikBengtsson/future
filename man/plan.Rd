@@ -33,7 +33,7 @@ it specifies how \code{\link{future}()}:s are resolved,
 e.g. sequentially or in parallel.
 }
 \details{
-The default strategy is \code{\link{eager}}, but the default can be
+The default strategy is \code{\link{sequential}}, but the default can be
 configured by option \option{future.plan} and, if that is not set,
 system environment variable \env{R_FUTURE_PLAN}.
 To reset the strategy back to the default, use \code{plan("default")}.
@@ -41,12 +41,12 @@ To reset the strategy back to the default, use \code{plan("default")}.
 \section{Implemented evaluation strategies}{
 
 \itemize{
- \item{\code{\link{eager}}:}{
+ \item{\code{\link{sequential}}:}{
    Resolves futures sequentially in the current R process.
  }
  \item{\code{\link{transparent}}:}{
-   Resolves futures synchronously (sequentially) in the current
-   R process and assignments will be done to the calling environment.
+   Resolves futures sequentially in the current R process and
+   assignments will be done to the calling environment.
    Early stopping is enabled by default.
  }
  \item{\code{\link{multisession}}:}{
@@ -60,6 +60,7 @@ To reset the strategy back to the default, use \code{plan("default")}.
  }
  \item{\code{\link{multiprocess}}:}{
    If multicore evaluation is supported, that will be used,
+   otherwise multisession evaluation will be used.
  }
  \item{\code{\link{cluster}}:}{
    Resolves futures asynchronously (in parallel) in separate
@@ -83,8 +84,8 @@ and OpenLava.
 \examples{
 a <- b <- c <- NA_real_
 
-# An eager uniprocess future
-plan(eager)
+# An sequential future
+plan(sequential)
 f <- future({
   a <- 7
   b <- 3
@@ -96,8 +97,8 @@ print(y)
 str(list(a=a, b=b, c=c)) ## All NAs
 
 
-# A uniprocess future with lazy evaluation
-plan(eager)
+# A sequential future with lazy evaluation
+plan(sequential)
 f <- future({
   a <- 7
   b <- 3

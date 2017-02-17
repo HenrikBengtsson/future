@@ -13,16 +13,16 @@ remote(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
 \item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly.  The default is eager,
-except when the \emph{deprecated} \code{plan(lazy)} is set.}
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 

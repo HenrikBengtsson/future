@@ -225,7 +225,7 @@ clR <- ClusterRegistry("get")
 stopifnot(is.null(clR))
 
 ## ... and therefore changing plans shouldn't change anything
-plan(eager)
+plan(sequential)
 clR <- ClusterRegistry("get")
 stopifnot(is.null(clR))
 

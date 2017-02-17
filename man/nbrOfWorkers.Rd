@@ -24,6 +24,6 @@ nbrOfWorkers()  ## == availableCores()
 plan(multiprocess, workers=2)
 nbrOfWorkers()  ## == 2
 
-plan(eager)
+plan(sequential)
 nbrOfWorkers()  ## == 1
 }
