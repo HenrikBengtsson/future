@@ -5,6 +5,7 @@ message("*** future_lapply() ...")
 
 strategies <- supportedStrategies()
 
+
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
@@ -100,7 +101,8 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in strategies) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
-    
+
+#    for (seed in list(fixed = 42L, random = TRUE, current = FALSE, current = NULL)) 
     for (scheduling in list(FALSE, TRUE, 0, 0.5, 2.0, Inf)) {
       y <- future_lapply(1:5, FUN = function(i) {
         rnorm(1L)
@@ -146,9 +148,31 @@ for (cores in 1:min(3L, availableCores())) {
   }
 
   message("- future_lapply(x, FUN=rnorm, ...) - random seed ... DONE")
-
+  
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
+
+
+message("- future_lapply(x, ..., future.seed = FALSE) ...")
+for (cores in 1:min(3L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+
+  for (strategy in strategies) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+    
+    set.seed(0xBEEF)
+    seed0 <- .GlobalEnv$.Random.seed
+    
+    ## Assert that RNG state is unchanged with future.seed = FALSE
+    for (kk in 1:3) {
+      y <- future_lapply(1:3, FUN = identity, future.seed = FALSE)
+      stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+    }
+  }
+  message(sprintf("Testing with %d cores ... DONE", cores))
+}
+message("- future_lapply(x, ..., future.seed = FALSE) ... DONE")
 
 message("*** future_lapply() ... DONE")
 
