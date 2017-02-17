@@ -25,19 +25,19 @@
 #' @example incl/plan.R
 #'
 #' @details
-#' The default strategy is \code{\link{eager}}, but the default can be
+#' The default strategy is \code{\link{sequential}}, but the default can be
 #' configured by option \option{future.plan} and, if that is not set,
 #' system environment variable \env{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use \code{plan("default")}.
 #'
 #' @section Implemented evaluation strategies:
 #' \itemize{
-#'  \item{\code{\link{eager}}:}{
+#'  \item{\code{\link{sequential}}:}{
 #'    Resolves futures sequentially in the current R process.
 #'  }
 #'  \item{\code{\link{transparent}}:}{
-#'    Resolves futures synchronously (sequentially) in the current
-#'    R process and assignments will be done to the calling environment.
+#'    Resolves futures sequentially in the current R process and
+#'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
 #'  \item{\code{\link{multisession}}:}{
@@ -51,7 +51,7 @@
 #'  }
 #'  \item{\code{\link{multiprocess}}:}{
 #'    If multicore evaluation is supported, that will be used,
-#     otherwise multisession evaluation will be used.
+#'    otherwise multisession evaluation will be used.
 #'  }
 #'  \item{\code{\link{cluster}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
@@ -73,7 +73,7 @@
 #'
 #' @export
 plan <- local({
-  defaultStrategy <- structure(eager, call=substitute(plan(eager)))
+  defaultStrategy <- structure(sequential, call=substitute(plan(sequential)))
   
   defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
 
@@ -120,7 +120,7 @@ plan <- local({
       class(strategy) <- c("FutureStrategy", class(strategy))
       return(strategy)
     } else if (identical(strategy, "default")) {
-      strategy <- getOption("future.plan", eager)
+      strategy <- getOption("future.plan", sequential)
     } else if (identical(strategy, "list")) {
       ## List stack of future strategies?
       return(stack)
@@ -188,12 +188,12 @@ plan <- local({
           return(invisible(res))
         }
 
-        ## Example: plan(list(eager, multicore))
+        ## Example: plan(list(sequential, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir=parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
-          ## Coerce strings to functions, e.g. plan(list("eager", multicore))
+          ## Coerce strings to functions, e.g. plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
@@ -256,6 +256,12 @@ plan <- local({
       if (using_lazy) {
         .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
       }
+
+##      using_eager <- lapply(newStack, FUN = inherits, "eager")
+##      using_eager <- any(unlist(using_eager, use.names = FALSE))
+##      if (using_eager) {
+##        .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
+##      }
     }
     
     ## Set new strategy for futures
@@ -274,7 +280,7 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies=c("lazy", "eager", "multicore", "multisession", "multiprocess", "cluster")) {
+supportedStrategies <- function(strategies=c("sequential", "multicore", "multisession", "multiprocess", "cluster", "lazy", "eager")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }

@@ -2,7 +2,7 @@ source("incl/start.R")
 
 message("*** nbrOfWorkers() ...")
 
-strategies <- c("uniprocess", "transparent", "eager", "lazy")
+strategies <- c("sequential", "transparent", "eager", "lazy")
 for (strategy in strategies) {
   message("Type of future: ", strategy)
 

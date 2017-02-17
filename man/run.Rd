@@ -24,3 +24,4 @@ Further calls will result in an informative error.
 If a future is not run when its value is queried,
 then it is run at that point.
 }
+\keyword{internal}

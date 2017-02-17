@@ -6,22 +6,23 @@
 #' using \code{\link{plan}()} such that it is evaluated in parallel on,
 #' for instance, the current machine, on a remote machine, or via a
 #' job queue on a compute cluster.
-#' Importantly, \R code using futures remains the same regardless
-#' on these settings.
+#' Importantly, any \R code using futures remains the same regardless
+#' on these settings and there is no need to modify the code when
+#' switching from, say, sequential to parallel processing.
 #'
 #' @param expr,value An \R \link[base]{expression} to be evaluated.
 #'
 #' @param envir The \link{environment} from where global
-#' objects should be identified.  Depending on "evaluator",
-#' it may also be the environment in which the expression
-#' is evaluated.
+#' objects should be identified.  Depending on the future
+#' strategy (the \code{evaluator}), it may also be the environment
+#' in which the expression is evaluated.
 #'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
 #' @param lazy Specifies whether a future should be resolved
-#' lazily or eagerly.  The default is eager,
-#' except when the \emph{deprecated} \code{plan(lazy)} is set.
+#' lazily or eagerly.  The default is eager evaluation
+#' (except when the \emph{deprecated} \code{plan(lazy)} is used).
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
@@ -51,7 +52,7 @@
 #' without blocking by using \code{\link{resolved}(f)}.
 #'
 #' For a future created via a future assignment
-#' (\code{futureAssign("x", value)} or \code{x \%<-\% value}), the value
+#' (\code{x \%<-\% value} or \code{futureAssign("x", value)}), the value
 #' is bound to a promise, which when queried will internally call
 #' \code{\link{value}()}  on the future and which will then be resolved
 #' into a regular variable bound to that value.  For example, with future
@@ -77,8 +78,8 @@
 #' As an alternative, the future can be resolved using \emph{lazy}
 #' evaluation (\code{lazy = TRUE}).  This means that the expression
 #' will only be evaluated when the value of the future is requested.
-#' \emph{Note that this means that the expression of a lazy future will
-#' not be evaluated unless the value is requested}.
+#' \emph{Note that this means that the expression may not be evaluated
+#' at all - it is guaranteed to be evaluated if the value is requested}.
 #'
 #' For future assignments, lazy evaluation can be controlled via the
 #' \code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.

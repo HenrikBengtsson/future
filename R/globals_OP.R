@@ -6,9 +6,6 @@
 #'        \code{x \%<-\% \{ expr \}}.
 #' @inheritParams multiprocess
 #'
-#' @details
-#' \code{a \%globals\% b} is short for \code{a \%tweak\% list(globals = b)}.
-#'
 #' @export
 `%globals%` <- function(fassignment, globals) {
   fassignment <- substitute(fassignment)

@@ -3,11 +3,15 @@
 \name{UniprocessFuture-class}
 \alias{UniprocessFuture-class}
 \alias{UniprocessFuture}
+\alias{SequentialFuture}
 \alias{EagerFuture}
 \alias{LazyFuture}
 \title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
+  lazy = FALSE, globals = TRUE, local = TRUE, ...)
+
+SequentialFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
 
 EagerFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,

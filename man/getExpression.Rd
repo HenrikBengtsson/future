@@ -21,7 +21,7 @@ Inject code for the next type of future to use for nested futures
 }
 \details{
 If no next future strategy is specified, the default is to
-use \link{eager} futures.  This conservative approach protects
+use \link{sequential} futures.  This conservative approach protects
 against spawning off recursive futures by mistake, especially
 \link{multicore} and \link{multisession} ones.
 The default will also set \code{options(mc.cores=0L)}, which

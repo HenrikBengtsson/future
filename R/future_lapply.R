@@ -20,11 +20,9 @@
 #'
 #' @example incl/future_lapply.R
 #'
-#' @aliases flapply
 #' @importFrom globals globalsByName globalsOf cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
 #' @export
-#' @keywords internal
 future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
   
@@ -217,7 +215,3 @@ future_lapply <- function(x, FUN, ..., future.args = NULL, future.seed = TRUE, f
 
   values
 }
-
-
-## BACKWARD COMPATIBILITY (although never exported)
-flapply <- future_lapply

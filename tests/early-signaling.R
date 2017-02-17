@@ -70,7 +70,7 @@ message("*** Early signaling of conditions with multiprocess futures ... DONE")
 
 message("*** Early signaling of conditions with lazy evaluation ...")
 
-plan(eager)
+plan(sequential)
 f <- future({ stop("bang!") }, lazy = TRUE)
 Sys.sleep(1.0)
 r <- resolved(f)
@@ -78,7 +78,7 @@ stopifnot(r)
 v <- try(value(f), silent=TRUE)
 stopifnot(inherits(v, "try-error"))
 
-plan(eager, earlySignal=TRUE)
+plan(sequential, earlySignal=TRUE)
 
 ## Errors
 f <- future({ stop("bang!") }, lazy = TRUE)

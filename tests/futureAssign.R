@@ -2,7 +2,7 @@ source("incl/start.R")
 
 message("*** futureAssign() ...")
 
-message("*** futureAssign() - eager w/ lazy evaluation ...")
+message("*** futureAssign() - sequential w/ lazy evaluation ...")
 
 delayedAssign("a", {
   cat("Delayed assignment evaluated\n")
@@ -26,7 +26,7 @@ cat(sprintf("a=%s\n", a))
 stopifnot(identical(a, 1))
 stopifnot(identical(b, 2))
 
-message("*** futureAssign() - eager w/ lazy evaluation ... DONE")
+message("*** futureAssign() - sequential w/ lazy evaluation ... DONE")
 
 
 message("*** futureAssign() - lazy = TRUE / FALSE ...")
