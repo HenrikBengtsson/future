@@ -1,14 +1,7 @@
 Package: future
 ===============
 
-Version: 1.2.0-9000 [2017-01-17]
-
-INSTRUCTIONS:
-
- o To install this develop(ers) version of the future package, do:
- 
-      source('http://callr.org/install#HenrikBengtsson/future@develop')
-
+Version: 1.3.0 [2017-01-18]
 
 SIGNIFICANT CHANGES:
 
@@ -79,8 +72,7 @@ DEPRECATED AND DEFUNCT:
    The reason behind this is that in some cases code that uses futures
    only works under eager evaluation (lazy = FALSE; the default), or vice
    verse. By removing the "lazy" future strategy, the user can no longer
-   override the lazy = TRUE / FALSE that the developer is using.
-   
+   override the lazy = TRUE / FALSE that the developer is using.  
  
 BUG FIXES:
 
