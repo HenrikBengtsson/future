@@ -52,8 +52,7 @@
 #' \code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
 #' If \code{future.seed = TRUE}, a L'Ecuyer-CMRG RNG seed is randomly created.
 #' If none of the function calls \code{FUN(x[[i]], ...)} uses random number
-#' generation, then \code{future.seed = FALSE} may be used. In such cases,
-#' the RNG state of the calling \R process should not changed.
+#' generation, then \code{future.seed = FALSE} may be used.
 #'
 #' @example incl/future_lapply.R
 #'
