@@ -151,11 +151,12 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 2. Reproducible RNG (for sequential and parallel processing)
-  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   seed <- future.seed
 
-  ## Placeholder for all seeds (== '.Random.seed':s) needed for all elements.
-  ## Will be all NULLs if RNGs are not used
+  ## Placeholder for all RNG stream seeds. We pregenerate a seed for each
+  ## elements of 'x' here such that it does not matter what the chunk size
+  ## is or what backend is used. (They'll be NULLs if RNGs are not used).
   seeds <- vector("list", length = nx)
   
   ## Don't use RNGs?
@@ -163,6 +164,8 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   # Use RNGs?
   if (!is.null(seed)) {
+    mdebug("Generating random seeds ...")
+    
     ## Use L'Ecuyer-CMRG RNGkind in this function call. Undo afterward.
     ## NOTE: This will generate a new .Random.seed (also iff missing)
     orng <- RNGkind("L'Ecuyer-CMRG")[1L]
@@ -210,25 +213,25 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     }
     
     ## Generate sequence of _all_ RNG seeds needed
-    for (ii in seq_along(x)) {
-      mdebug("Generating random seeds ...")
-      
-      ## Main RNG stream seeds
+    mdebug(sprintf("Generating random seed streams for %d elements ...", nx))
+    for (ii in seq_len(nx)) {
+      ## Main random seed for iteration ii
       .seed <- nextRNGStream(.seed)
 
-      ## RNG substream seed for each future
-      ##
+      ## RNG substream seed used in call FUN(x[[ii]], ...):
       ## This way each future can in turn generate further  seeds, also
       ## recursively, with minimal risk of generating the same seeds as
       ## another future.  This should make it safe to recursively call
       ## future_lapply(). /HB 2017-01-11
       seeds[[ii]] <- nextRNGSubStream(.seed)
     }
+
+    mdebug(sprintf("Generating random seed streams for %d elements ... DONE", nx))
     
     mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
 
-
+  
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 3. Load balancing ("chunking")
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -253,8 +256,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   }
 
   chunks <- splitIndices(nx, ncl = nbr_of_futures)
-  fs <- vector("list", length = length(chunks))
-  mdebug("Number of futures / chunks: %d", length(fs))
+  mdebug("Number of chunks: %d", length(chunks))   
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -265,6 +267,9 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
+
+  fs <- vector("list", length = length(chunks))
+  mdebug("Number of futures (= number of chunks): %d", length(fs))
   
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
