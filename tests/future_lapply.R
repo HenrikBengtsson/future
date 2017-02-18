@@ -5,7 +5,6 @@ message("*** future_lapply() ...")
 
 strategies <- supportedStrategies()
 
-
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores=cores-1L)
@@ -164,7 +163,7 @@ for (strategy in strategies) {
     message(sprintf("- Iteration #%d", kk))
     set.seed(0xBEEF)
     seed0 <- .GlobalEnv$.Random.seed
-    y <- future_lapply(1:3, FUN = identity, future.seed = TRUE)
+    y <- future_lapply(1:3, FUN = identity, future.globals = FALSE, future.seed = TRUE)
     stopifnot(!identical(.GlobalEnv$.Random.seed, seed0))
   }
 }
@@ -184,7 +183,7 @@ for (strategy in strategies) {
   ## Assert that RNG state is unchanged with future.seed = FALSE
   for (kk in 1:3) {
     message(sprintf("- Iteration #%d", kk))
-    y <- future_lapply(1:3, FUN = identity, future.seed = FALSE)
+    y <- future_lapply(1:3, FUN = identity, future.globals = FALSE, future.seed = FALSE)
     str(list(strategy=strategy, kk=kk, seed0=seed0, seed=.GlobalEnv$.Random.seed))
     stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
   }

@@ -113,7 +113,8 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
       mdebug(" - globals: %s", paste(sQuote(names(globals)), collapse = ", "))
       mdebug("Finding globals ... DONE")
     } else {
-      globals <- list(FUN = FUN)
+      globals <- c("FUN", names(list(...)), "...")
+      globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
     }
   } else if (is.character(globals)) {
     globals <- unique(c(globals, "FUN", names(list(...)), "..."))
