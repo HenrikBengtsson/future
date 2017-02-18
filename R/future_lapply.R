@@ -7,22 +7,14 @@
 #' @param ...  (optional) Additional arguments pass to \code{FUN()}.
 #' 
 #' @param future.lazy Specifies whether the futures should be resolved
-#'        lazily or eagerly.  The default is eager.
+#'        lazily or eagerly (default).
 #' 
-#' @param future.seed If \code{TRUE} (default), a L'Ecuyer-CMRG RNG seed
-#'        is randomly created and used.  This L'Ecuyer-CMRG RNG seed will
-#'        then generate the stream of seeds for all elements in \code{x}.
-#'        For RNG reproducibility, a fixed seed (integer) may be given,
-#'        either as a full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers)
-#'        or as a seed for \code{set.seed(future.seed)} generating the full
-#'        L'Ecuyer-CMRG seed.
-#'        If none of the function calls \code{FUN(x[[i]], ...)} uses random
-#'        number generation, then \code{future.seed = FALSE} may be used.
-#'        In such cases, the RNG state is also guaranteed not to change.
-#' 
+#' @param future.seed A logical or an integer (of length one or seven).
+#'        For details, see below section.
+#'  
 #' @param future.globals A logical, a character vector, or a named list for
 #'        controlling how globals are handled. For details, see below section.
-#' 
+#'
 #' @param future.scheduling Average number of futures ("chunks") per worker.
 #'        If \code{0.0}, then a single future is used to process all elements
 #'        of \code{x}.
@@ -47,6 +39,21 @@
 #' If a named list, then those globals are used as is.
 #' In all cases, \code{FUN} and any \code{...} arguments are automatically
 #' passed as globals to each future created as they are always needed.
+#'
+#' @section Reproducible random number generation (RNG):
+#' Regardless of type of futures and scheduling ("chunking") strategy, this
+#' function guarantees to generate the exact same sequence of random
+#' numbers \emph{given the same initial seed / RNG state}.  This is achieved
+#' by pregenerating the random seeds for all iterations (over \code{x}) by
+#' using L'Ecuyer-CMRG RNG streams.  In each iteration, these seeds are set
+#' before calling \code{FUN(x[[ii]], ...)}.
+#' For RNG reproducibility, a fixed seed (integer) may be given, either as a
+#' full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed for
+#' \code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
+#' If \code{future.seed = TRUE}, a L'Ecuyer-CMRG RNG seed is randomly created.
+#' If none of the function calls \code{FUN(x[[i]], ...)} uses random number
+#' generation, then \code{future.seed = FALSE} may be used. In such cases,
+#' the RNG state of the calling \R process should not changed.
 #'
 #' @example incl/future_lapply.R
 #'
