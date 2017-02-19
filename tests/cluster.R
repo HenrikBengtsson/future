@@ -202,7 +202,7 @@ stopifnot(
 )
 
 ## This is needed in order to reset the ClusterRegistry
-future:::ClusterRegistry("stop")
+## future:::ClusterRegistry("stop")
 
 ## An alternative is to do:
 ## plan(uniprocess); x %<-% NULL; print(x)
@@ -214,6 +214,22 @@ x %<-% 42L
 stopifnot(x == 42L)
 
 message("*** cluster() - crashed worker ... DONE")
+
+
+message("*** cluster() - registry ...")
+
+## Explicitly created clusters are *not* added to the registry
+cl <- parallel::makeCluster(cores)
+plan(cluster, workers=cl)
+clR <- ClusterRegistry("get")
+stopifnot(is.null(clR))
+
+## ... and therefore changing plans shouldn't change anything
+plan(sequential)
+clR <- ClusterRegistry("get")
+stopifnot(is.null(clR))
+
+message("*** cluster() - registry ... DONE")
 
 
 message("*** cluster() ... DONE")

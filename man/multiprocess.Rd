@@ -2,22 +2,27 @@
 % Please edit documentation in R/multiprocess.R
 \name{multiprocess}
 \alias{multiprocess}
-\title{Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation}
+\title{Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation}
 \usage{
 multiprocess(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, workers = availableCores(), gc = FALSE,
-  earlySignal = FALSE, label = NULL, ...)
+  lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(),
+  gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{lazy}{If \code{FALSE} (default), the future is resolved eagerly
+(immediately), otherwise not.}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
 \item{globals}{(optional) a logical, a character vector,
 or a named list for controlling how globals are handled.
@@ -48,9 +53,6 @@ Regardless, its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \examples{
-## Multiprocess futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 
 ## Use multiprocess futures
@@ -82,4 +84,3 @@ stopifnot(v == 0)
 Internally \code{\link{multicore}()} and \code{\link{multisession}()}
 are used.
 }
-

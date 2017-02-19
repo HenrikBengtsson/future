@@ -5,7 +5,9 @@ message("*** rng ...")
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package="parallel")
-fsample <- function(x, size=4L, seed=NULL) {
+fsample <- function(x, size=4L, seed=NULL, what = c("future", "%<-%")) {
+  what <- match.arg(what)
+  
   ## Must use session-specific '.GlobalEnv' here
   .GlobalEnv <- globalenv()
   
@@ -27,17 +29,24 @@ fsample <- function(x, size=4L, seed=NULL) {
   }
 
   .seed <- .Random.seed
-  res <- listenv::listenv()
-  for (ii in seq_len(size)) {
-    .seed <- parallel::nextRNGStream(.seed)
-    res[[ii]] %<-% {
-      ## Must use session-specific '.GlobalEnv' here
-      .GlobalEnv <- globalenv()
-      .GlobalEnv$.Random.seed <- .seed
-      sample(x, size=1L)
+
+  if (what == "future") {
+    fs <- list()
+    for (ii in seq_len(size)) {
+      .seed <- parallel::nextRNGStream(.seed)
+      fs[[ii]] <- future({ sample(x, size=1L) }, seed = .seed)
     }
+    res <- values(fs)
+  } else {
+    res <- listenv::listenv()
+    for (ii in seq_len(size)) {
+      .seed <- parallel::nextRNGStream(.seed)
+      res[[ii]] %<-% { sample(x, size=1L) } %seed% .seed
+    }
+    res <- as.list(res)
   }
-  unlist(res)
+  
+  res
 } # fsample()
 
 
@@ -59,34 +68,36 @@ for (cores in 1:min(3L, availableCores())) {
   for (strategy in supportedStrategies()) {
     message(sprintf("%s ...", strategy))
 
-    .GlobalEnv$.Random.seed <- seed0
-
     plan(strategy)
 
-    ## Fixed random seed
-    y1 <- fsample(0:9, seed=42L)
-    print(y1)
-    stopifnot(identical(y1, y0))
+    for (what in c("future", "%<-%")) {
+      .GlobalEnv$.Random.seed <- seed0
 
-    ## Assert that random seed is reset
-    stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
-
-    ## Fixed random seed
-    y2 <- fsample(0:9, seed=42L)
-    print(y2)
-    stopifnot(identical(y2, y1))
-    stopifnot(identical(y2, y0))
-
-    ## Assert that random seed is reset
-    stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
-
-    ## No seed
-    y3 <- fsample(0:9)
-    print(y3)
-
-    ## No seed
-    y4 <- fsample(0:9)
-    print(y4)
+      ## Fixed random seed
+      y1 <- fsample(0:9, seed=42L, what = what)
+      print(y1)
+      stopifnot(identical(y1, y0))
+  
+      ## Assert that random seed is reset
+      stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+  
+      ## Fixed random seed
+      y2 <- fsample(0:9, seed=42L, what = what)
+      print(y2)
+      stopifnot(identical(y2, y1))
+      stopifnot(identical(y2, y0))
+  
+      ## Assert that random seed is reset
+      stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+  
+      ## No seed
+      y3 <- fsample(0:9, what = what)
+      print(y3)
+  
+      ## No seed
+      y4 <- fsample(0:9, what = what)
+      print(y4)
+    }
 
     message(sprintf("%s ... done", strategy))
   }

@@ -27,9 +27,9 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 If a global variable is (only) part of a "self" assignment, such as `x <- x + 1`, then the global is not identified and therefore neither exported / frozen.  This explains the error in the following example:
 ```r
 > library("future")
-> plan("lazy")
+> plan(sequential)
 > x <- 0
-> y %<-% { x <- x + 1 }
+> y %<-% { x <- x + 1 } %lazy% TRUE
 > rm(x)
 > y
 Error: object 'x' not found
@@ -38,9 +38,9 @@ Error: object 'x' not found
 The workaround is to guide R to find the missing global by explicitly listing it, e.g.
 ```r
 > library("future")
-> plan("lazy")
+> plan(sequential)
 > x <- 0
-> y %<-% { x; x <- x + 1 }
+> y %<-% { x; x <- x + 1 } %lazy% TRUE
 > rm(x)
 > y
 [1] 1
@@ -60,16 +60,16 @@ instead of
 do.call("file_ext", list("foo.txt"))
 ```
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
-It may also become a problem with lazy futures if the intended function is redefined after the future is resolved.  For example,
+It may also become a problem with futures evaluated with lazy evaluation if the intended function is redefined after the future is resolved.  For example,
 ```r
 > library("future")
 > library("listenv")
 > library("tools")
-> plan(lazy)
+> plan(sequential)
 > pathnames <- c("foo.txt", "bar.png", "yoo.md")
 > res <- listenv()
 > for (ii in seq_along(pathnames)) {
-+   res[[ii]] %<-% do.call("file_ext", list(pathnames[ii]))
++   res[[ii]] %<-% do.call("file_ext", list(pathnames[ii])) %lazy% TRUE
 + }
 > file_ext <- function(...) "haha!"
 > unlist(res)
@@ -133,7 +133,7 @@ Error: Invalid usage of futures: A future whose value has not yet been collected
 ```
 As previously, this can be avoided by making sure `x$a` is resolved first, which can be one in various ways, e.g. `dummy <- x$a`, `resolve(x$a)` and `force(x$a)`.
 
-_Footnote_: (*) Although eager futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
+_Footnote_: (*) Although sequential futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
 
 
 ## Miscellaneous
@@ -249,4 +249,4 @@ foo <- function() {
 [listenv]: https://cran.r-project.org/package=listenv
 
 ---
-Copyright Henrik Bengtsson, 2015-2016
+Copyright Henrik Bengtsson, 2015-2017

@@ -2,7 +2,6 @@ source("incl/start.R")
 library("listenv")
 
 oopts <- c(oopts, options(future.progress=TRUE))
-plan(lazy)
 
 strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
@@ -25,8 +24,19 @@ for (value in c(FALSE, TRUE)) {
     res <- resolve(f, value=value, recursive=recursive)
     stopifnot(identical(res, f))
 
+    f <- future({
+      Sys.sleep(0.5)
+      list(a=1, b=42L)
+    }, lazy=TRUE)
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
     message("- w/ exception ...")
     f <- future(list(a=1, b=42L, c=stop("Nah!")))
+    res <- resolve(f, value=value, recursive=recursive)
+    stopifnot(identical(res, f))
+
+    f <- future(list(a=1, b=42L, c=stop("Nah!")), lazy=TRUE)
     res <- resolve(f, value=value, recursive=recursive)
     stopifnot(identical(res, f))
 
@@ -65,6 +75,24 @@ for (strategy in strategies) {
   stopifnot(resolved(x[["b"]]))
 
   x <- list()
+  x$a <- future(1, lazy=TRUE)
+  x$b <- future(2)
+  x[[3]] <- 3
+  y <- resolve(x)
+  stopifnot(identical(y, x))
+  stopifnot(resolved(x$a))
+  stopifnot(resolved(x[["b"]]))
+
+  x <- list()
+  x$a <- future(1, lazy=TRUE)
+  x$b <- future(2, lazy=TRUE)
+  x[[3]] <- 3
+  y <- resolve(x)
+  stopifnot(identical(y, x))
+  stopifnot(resolved(x$a))
+  stopifnot(resolved(x[["b"]]))
+
+  x <- list()
   x$a <- future(1)
   x$b <- future({Sys.sleep(1); 2})
   x[[4]] <- 4
@@ -87,6 +115,11 @@ for (strategy in strategies) {
 
   x <- list()
   for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk })
+  y <- resolve(x)
+  stopifnot(identical(y, x))
+
+  x <- list()
+  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk }, lazy=TRUE)
   y <- resolve(x)
   stopifnot(identical(y, x))
 

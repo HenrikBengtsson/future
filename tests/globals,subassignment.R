@@ -58,12 +58,33 @@ for (cores in 1:min(3L, availableCores())) {
     print(y)
     stopifnot(identical(y, y0))
 
+    ## Explicit future (lazy)
+    x <- list()
+    f <- future({
+      x$a <- 1
+      x
+    }, lazy=TRUE)
+    rm(list="x")
+    y <- value(f)
+    print(y)
+    stopifnot(identical(y, y0))
+
     ## Future assignment
     x <- list()
     y %<-% {
       x$a <- 1
       x
     }
+    rm(list="x")
+    print(y)
+    stopifnot(identical(y, y0))
+
+    ## Same with forced lazy evaluation
+    x <- list()
+    y %<-% {
+      x$a <- 1
+      x
+    } %lazy% TRUE
     rm(list="x")
     print(y)
     stopifnot(identical(y, y0))
@@ -90,6 +111,17 @@ for (cores in 1:min(3L, availableCores())) {
     print(y)
     stopifnot(identical(y, y0))
 
+    ## Explicit future (lazy)
+    x <- list()
+    f <- future({
+      x[["a"]] <- 1
+      x
+    }, lazy=TRUE)
+    rm(list="x")
+    y <- value(f)
+    print(y)
+    stopifnot(identical(y, y0))
+
     ## Future assignment
     x <- list()
     y %<-% {
@@ -106,6 +138,17 @@ for (cores in 1:min(3L, availableCores())) {
       x["a"] <- list(1)
       x
     })
+    rm(list="x")
+    y <- value(f)
+    print(y)
+    stopifnot(identical(y, y0))
+
+    ## Explicit future (lazy)
+    x <- list()
+    f <- future({
+      x["a"] <- list(1)
+      x
+    }, lazy=TRUE)
     rm(list="x")
     y <- value(f)
     print(y)

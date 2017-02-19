@@ -11,7 +11,7 @@
 #' @param idxs subset of elements to check.
 #' @param value If TRUE, the values are retrieved, otherwise not.
 #' @param recursive A non-negative number specifying how deep of
-#' a recursion should be done.  If TRUE, an infintive recursion
+#' a recursion should be done.  If TRUE, an infinite recursion
 #' is used.  If FALSE or zero, no recursion is performed.
 #' @param sleep Number of seconds to wait before checking
 #' if futures have been resolved since last time.
@@ -39,6 +39,9 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
   
   ## Nothing to do?
   if (recursive < 0) return(x)
+
+  ## Lazy future that is not yet launched?
+  if (x$state == 'created') x <- run(x)
 
   ## Poll for Future to finish
   while (!resolved(x)) {
@@ -167,8 +170,12 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
       if (!is.atomic(obj)) {
         ## If an unresolved future, move on to the next object
-        ## so that future can be resolved in the asynchroneously
-        if (inherits(obj, "Future") && !resolved(obj)) next
+        ## so that future can be resolved in the asynchronously
+        if (inherits(obj, "Future")) {
+          ## Lazy future that is not yet launched?
+          if (obj$state == 'created') obj <- run(obj)
+          if (!resolved(obj)) next
+        }
 
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
@@ -260,8 +267,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
 
       if (!is.atomic(obj)) {
         ## If an unresolved future, move on to the next object
-        ## so that future can be resolved in the asynchroneously
-        if (inherits(obj, "Future") && !resolved(obj)) next
+        ## so that future can be resolved in the asynchronously
+        if (inherits(obj, "Future")) {
+          ## Lazy future that is not yet launched?
+          if (obj$state == 'created') obj <- run(obj)
+          if (!resolved(obj)) next
+        }
 
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
@@ -353,8 +364,12 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
 
       if (!is.atomic(obj)) {
         ## If an unresolved future, move on to the next object
-        ## so that future can be resolved in the asynchroneously
-        if (inherits(obj, "Future") && !resolved(obj)) next
+        ## so that future can be resolved in the asynchronously
+        if (inherits(obj, "Future")) {
+          ## Lazy future that is not yet launched?
+          if (obj$state == 'created') obj <- run(obj)
+          if (!resolved(obj)) next
+        }
 
         ## In all other cases, try to resolve
         resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)

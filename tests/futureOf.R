@@ -1,10 +1,9 @@
 source("incl/start.R")
 library("listenv")
-plan(lazy)
 
 message("*** futureOf() ...")
 
-a %<-% { 1 }
+a %<-% { 1 } %lazy% TRUE
 
 f1 <- futureOf("a")
 print(f1)

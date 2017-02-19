@@ -29,9 +29,13 @@ for (strategy1 in strategies) {
         length(nested_a) == 1L,
         length(plan_a) == 1L,
         inherits(plan_a[[1]], "future"),
-        all.equal(plan_a, nested_a),
         inherits(future::plan(), strategy2)
       )
+
+      ## Attribute 'init' is modified at run time
+      for (kk in seq_along(plan_a)) attr(plan_a[[kk]], "init") <- NULL
+      for (kk in seq_along(nested_a)) attr(nested_a[[kk]], "init") <- NULL
+      stopifnot(all.equal(plan_a, nested_a))
 
       y %<-% {
         b <- 2L
@@ -40,6 +44,7 @@ for (strategy1 in strategies) {
         ## we're exporting the plan() function including its local stack!
         plan_b <- future::plan("list")
         nested_b <- nested_a[-1]
+
         stopifnot(
           length(nested_b) == 0L,
           length(plan_b) == 1L,
@@ -48,7 +53,7 @@ for (strategy1 in strategies) {
         )
 
         list(a = a, nested_a = nested_a, plan_a = plan_a,
-               b = b, nested_b = nested_b, plan_b = plan_b)
+             b = b, nested_b = nested_b, plan_b = plan_b)
       }
       y
     }
@@ -65,7 +70,6 @@ for (strategy1 in strategies) {
       is.list(x$plan_a),
       length(x$plan_a) == 1L,
       inherits(x$plan_a[[1]], "future"),
-      all.equal(x$plan_a, nested[-1L]),
 
       x$b == 2L,
       length(x$nested_b) == 0L,
@@ -74,6 +78,11 @@ for (strategy1 in strategies) {
       inherits(x$plan_b[[1]], "future"),
       inherits(x$plan_b[[1]], getOption("future.default", "uniprocess"))
     )
+
+    ## Attribute 'init' is modified at run time
+    for (kk in seq_along(x$plan_a)) attr(x$plan_a[[kk]], "init") <- NULL
+    for (kk in seq_along(nested)) attr(nested[[kk]], "init") <- NULL
+    stopifnot(all.equal(x$plan_a, nested[-1L]))
 
     rm(list=c("nested", "x"))
 

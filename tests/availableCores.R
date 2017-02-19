@@ -67,7 +67,6 @@ n <- detectCores()
 print(n)
 stopifnot(is.integer(n), is.finite(n), n >= 1)
 
-
 message("*** Internal detectCores() ... DONE")
 
 

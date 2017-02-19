@@ -9,45 +9,46 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |Europe/Copenhagen            |
-|date     |2016-11-12                   |
+|tz       |America/Los_Angeles          |
+|date     |2017-02-18                   |
 
 ## Packages
 
-|package  |*  |version    |date       |source                            |
-|:--------|:--|:----------|:----------|:---------------------------------|
-|digest   |   |0.6.10     |2016-08-02 |CRAN (R 3.3.1)                    |
-|future   |   |1.1.1-9000 |2016-11-12 |local (HenrikBengtsson/future@NA) |
-|globals  |   |0.7.1      |2016-10-14 |local                             |
-|listenv  |   |0.6.0      |2015-12-28 |CRAN (R 3.3.1)                    |
-|markdown |   |0.7.7      |2015-04-22 |cran (@0.7.7)                     |
-|R.rsp    |   |0.30.0     |2016-05-15 |cran (@0.30.0)                    |
+|package  |*  |version |date       |source         |
+|:--------|:--|:-------|:----------|:--------------|
+|digest   |   |0.6.12  |2017-01-27 |cran (@0.6.12) |
+|future   |   |1.2.0   |2016-11-12 |cran (@1.2.0)  |
+|globals  |   |0.8.0   |2017-01-17 |cran (@0.8.0)  |
+|listenv  |   |0.6.0   |2015-12-28 |CRAN (R 3.3.1) |
+|markdown |   |0.7.7   |2015-04-22 |cran (@0.7.7)  |
+|R.rsp    |   |0.40.0  |2016-12-06 |cran (@0.40.0) |
 
 # Check results
 
-19 packages
+20 packages
 
-|package          |version | errors| warnings| notes|
-|:----------------|:-------|------:|--------:|-----:|
-|ACNE             |0.8.1   |      0|        0|     0|
-|aroma.affymetrix |3.0.0   |      0|        0|     0|
-|aroma.cn         |1.6.1   |      0|        0|     0|
-|aroma.core       |3.0.0   |      0|        0|     1|
-|calmate          |0.12.1  |      0|        0|     0|
-|doFuture         |0.3.0   |      0|        0|     0|
-|fiery            |0.2.1   |      0|        0|     0|
-|future.BatchJobs |0.13.1  |      0|        0|     0|
-|GeneBreak        |1.4.0   |      0|        0|     1|
-|MPAgenomics      |1.1.2   |      0|        0|     2|
-|NSA              |0.0.32  |      0|        0|     6|
-|pbmcapply        |1.1.1   |      0|        0|     0|
-|PECA             |1.10.0  |      0|        0|     1|
-|PSCBS            |0.62.0  |      0|        0|     0|
-|PureCN           |1.2.3   |      0|        1|     1|
-|QDNAseq          |1.10.0  |      0|        0|     0|
-|Repitools        |1.20.0  |      0|        0|     2|
-|R.filesets       |2.10.0  |      0|        0|     0|
-|TIN              |1.6.0   |      0|        0|     2|
+|package              |version | errors| warnings| notes|
+|:--------------------|:-------|------:|--------:|-----:|
+|ACNE                 |0.8.1   |      0|        0|     0|
+|aroma.affymetrix     |3.0.0   |      0|        0|     0|
+|aroma.cn             |1.6.1   |      0|        0|     0|
+|aroma.core           |3.0.0   |      0|        0|     1|
+|calmate              |0.12.1  |      0|        0|     0|
+|doFuture             |0.3.0   |      0|        0|     0|
+|fiery                |0.2.2   |      0|        0|     0|
+|future.BatchJobs     |0.13.1  |      0|        0|     0|
+|GeneBreak            |1.4.0   |      0|        0|     1|
+|googleComputeEngineR |0.1.0   |      0|        0|     0|
+|MPAgenomics          |1.1.2   |      0|        0|     2|
+|NSA                  |0.0.32  |      0|        0|     6|
+|pbmcapply            |1.2.1   |      0|        0|     0|
+|PECA                 |1.10.0  |      0|        0|     1|
+|PSCBS                |0.62.0  |      0|        0|     0|
+|PureCN               |1.2.3   |      0|        1|     1|
+|QDNAseq              |1.10.0  |      0|        0|     0|
+|Repitools            |1.20.0  |      0|        0|     2|
+|R.filesets           |2.10.0  |      0|        0|     0|
+|TIN                  |1.6.0   |      0|        0|     2|
 
 ## ACNE (0.8.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -76,7 +77,7 @@ Bug reports: https://github.com/HenrikBengtsson/aroma.core/issues
 ```
 checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  ‘expectile’ ‘HaarSeg’ ‘mpcbs’
+  ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
 ```
 
 ## calmate (0.12.1)
@@ -91,7 +92,7 @@ Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
 0 errors | 0 warnings | 0 notes
 
-## fiery (0.2.1)
+## fiery (0.2.2)
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
 Bug reports: https://github.com/thomasp85/fiery/issues
 
@@ -125,6 +126,12 @@ Consider adding
   importFrom("utils", "head")
 to your NAMESPACE file.
 ```
+
+## googleComputeEngineR (0.1.0)
+Maintainer: Mark Edmondson <r@sunholo.com>  
+Bug reports: https://github.com/cloudyr/googleComputeEngineR/issues
+
+0 errors | 0 warnings | 0 notes
 
 ## MPAgenomics (1.1.2)
 Maintainer: Samuel Blanck <samuel.blanck@inria.fr>
@@ -243,7 +250,7 @@ Rd file 'NSANormalization.Rd':
 These lines will be truncated in the PDF manual.
 ```
 
-## pbmcapply (1.1.1)
+## pbmcapply (1.2.1)
 Maintainer: Kevin kuang <kvn.kuang@mail.utoronto.ca>  
 Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 

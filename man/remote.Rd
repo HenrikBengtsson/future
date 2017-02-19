@@ -2,28 +2,33 @@
 % Please edit documentation in R/remote.R
 \name{remote}
 \alias{remote}
-\title{Create a remote future whose value will be resolved asynchroneously in a remote process}
+\title{Create a remote future whose value will be resolved asynchronously in a remote process}
 \usage{
-remote(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE,
-  gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...)
+remote(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
+  seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL,
+  user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE,
+  myip = NULL, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{lazy}{Specifies whether a future should be resolved
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
-For details, see below section.
-This argument can be specified via the \dots arguments
-for \code{future()} and \code{futureCall()}.}
+For details, see below section.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -76,4 +81,3 @@ host
 
 }}
 }
-

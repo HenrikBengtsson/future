@@ -6,7 +6,7 @@
 \usage{
 availableCores(constraints = NULL,
   methods = getOption("future.availableCores.methods", c("system",
-  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")),
+  "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")),
   na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all"))
 }
 \arguments{
@@ -57,16 +57,17 @@ are supported:
    package is loaded).  The \option{mc.cores} option is used by for
    instance \code{\link[parallel]{mclapply}()}.
  \item \code{"PBS"} -
-   Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
-   Depending on PBS system configuration, this \emph{resource} parameter
-   may or may not default to one.  It can be specified when submitting
-   a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
-   requests four nodes each with two cores.
+   Query TORQUE/PBS environment variable \env{PBS_NUM_PPN}.
+   Depending on PBS system configuration, this \emph{resource}
+   parameter may or may not default to one.
+   An example of a job submission that results in this is
+   \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
  \item \code{"SGE"} -
    Query Sun/Oracle Grid Engine (SGE) environment variable
    \env{NSLOTS}.
-   It can be specified when submitting a job as in, for instance,
-   \code{qsub -pe by_node 2}, which two cores on a single machine.
+   An example of a job submission that results in this is
+   \code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
+   requests two cores on a single machine.
  \item \code{"Slurm"} -
    Query Simple Linux Utility for Resource Management (Slurm)
    environment variable \env{SLURM_CPUS_PER_TASK}.
@@ -91,5 +92,9 @@ Having said this, it is almost always better to do this by explicitly
 setting the number of workers when specifying the future strategy,
 e.g. \code{plan(multiprocess, workers=9)}.
 }
-\keyword{internal}
 
+\seealso{
+To get the number of available workers regardless of machine,
+see \code{\link{availableWorkers}()}.
+}
+\keyword{internal}

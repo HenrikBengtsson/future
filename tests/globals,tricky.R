@@ -9,6 +9,7 @@ message("*** Tricky use cases related to globals ...")
 
 strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
+strategies <- "cluster"
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
@@ -45,7 +46,28 @@ for (cores in 1:min(3L, availableCores())) {
       rm(list="a")
 
       res <- try(y, silent=TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        message(sprintf("y=%g", y))
+        stopifnot(identical(y, yTruth))
+      }
+
+
+      ## Same with forced lazy evaluation
+      a <- 3
+
+      y %<-% {
+        b <- a
+        a <- 2
+        a*b
+      } %lazy% TRUE
+
+      rm(list="a")
+
+      res <- try(y, silent=TRUE)
+      if (method == "conservative") {
         str(list(res=res))
         stopifnot(inherits(res, "try-error"))
       } else {
@@ -66,7 +88,29 @@ for (cores in 1:min(3L, availableCores())) {
       rm(list="a")
 
       res <- try(unlist(res), silent=TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession")) {
+      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
+        str(list(res=res))
+        stopifnot(inherits(res, "try-error"))
+      } else {
+        print(res)
+        stopifnot(all(res == 1:3))
+      }
+
+
+      ## Same with forced lazy evaluation
+      res <- listenv()
+      a <- 1
+      for (ii in 1:3) {
+        res[[ii]] %<-% {
+          b <- a*ii
+          a <- 0
+          b
+        } %lazy% TRUE
+      }
+      rm(list="a")
+
+      res <- try(unlist(res), silent=TRUE)
+      if (method == "conservative") {
         str(list(res=res))
         stopifnot(inherits(res, "try-error"))
       } else {
@@ -83,6 +127,25 @@ for (cores in 1:min(3L, availableCores())) {
       rm(list="a")
       message(sprintf("value(b)=%g", value(b)))
       stopifnot(value(b) == 2)
+
+      a <- future(1)
+      b <- future(value(a)+1, lazy=TRUE)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
+      a <- future(1, lazy=TRUE)
+      b <- future(value(a)+1)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
+      a <- future(1, lazy=TRUE)
+      b <- future(value(a)+1, lazy=TRUE)
+      rm(list="a")
+      message(sprintf("value(b)=%g", value(b)))
+      stopifnot(value(b) == 2)
+
 
       ## BUG FIX: In future (<= 1.0.0) a global 'pkg' would be
       ## overwritten by the name of the last package attached

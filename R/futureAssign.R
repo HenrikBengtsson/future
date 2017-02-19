@@ -1,17 +1,49 @@
-#' @param x the name of a future variable.
-#' @param value the \R \link[base]{expression} to be evaluated in
-#' the future and whose value will be assigned to the variable.
+#' @param x the name of a future variable, which will hold the value
+#'        of the future expression (as a promise).
+#'
 #' @param assign.env The \link[base]{environment} to which the variable
 #' should be assigned.
 #'
+#' @return
+#' \code{x \%<-\% value} (a future assignment) and
+#' \code{futureAssign("x", value)} create a \link{Future} that evaluates
+#' expression \code{expr} and binds its value (as a \link[base]{promise}) to
+#' a variable \code{x}.  The value of the future is automatically retrieved
+#' when the assigned variable (promise) is queried.
+#' The future itself is returned invisibly, e.g.
+#' \code{f <- futureAssign("x", expr)} and \code{f <- (x \%<-\% expr)}.
+#' Alternatively, the future of a future variable \code{x} can be retrieved
+#' without blocking using \code{f <- \link{futureOf}(x)}.
+#' Both the future and the variable (promise) are assigned to environment
+#' \code{assign.env} where the name of the future is \code{.future_<name>}.
+#'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, substitute=TRUE) {
+futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=NA, seed=NULL, globals=TRUE, ..., assign.env=envir) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
+
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## (1) Create future
+  ## (1) Arguments passed to future()
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  future.args <- list(value, envir=envir, lazy = lazy, seed = seed, globals = globals, ...)
+
+  ## Any arguments set via disposible option?
+  args <- getOption("future.disposable", NULL)
+  if (!is.null(args)) {
+    for (name in names(args)) future.args[name] <- args[name]
+    on.exit(options(future.disposable = NULL))
+  }
+
+  ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
+  ## TODO: Remove when lazy() is removed.
+  lazy <- future.args$lazy
+  if (is.logical(lazy) && is.na(lazy)) future.args$lazy <- NULL
+
+
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## (2) Create future
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Name of "future" saved in parallel with the "promise"
   future_name <- sprintf(".future_%s", x)
@@ -24,7 +56,6 @@ futureAssign <- function(x, value, envir=parent.frame(), assign.env=envir, subst
   ## a variable as a "promise".
   ## NOTE: We make sure to pass 'envir' in order for globals to
   ## be located properly.
-  future.args <- list(value, envir=envir)
   future <- do.call(future::future, args=future.args, envir=assign.env)
 
   ## Assign future to assignment environment

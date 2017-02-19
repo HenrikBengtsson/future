@@ -66,7 +66,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param worker The host name or IP number of the machine where the worker should run.
 #' @param master The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' @param port The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.
-#' @param connectTimeout The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}
+#' @param connectTimeout The maximum time (in seconds) allowed for each socket connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}
 #' @param timeout The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).
 #' @param rscript,homogeneous The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).
 #' @param rscript_args Additional arguments to \code{Rscript} (as a character vector).
@@ -87,11 +87,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'         representing an established connection to a worker.
 #'
 #' @details
-#' The default is to use reverse SSH tunnelling for workers
+#' The default is to use reverse SSH tunneling for workers
 #' running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls,
 #' which often requires static IP address but which also most
-#' users don't have priviligies to do themselves.
+#' users don't have privileges to do themselves.
 #' It also has the advantage of not having to know the internal
 #' and / or the public IP address / host name of the master.
 #'
@@ -114,6 +114,13 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @export
 makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = 2*60, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
+
+  ## Could it be that the worker specifies the name of the localhost?
+  ## Note, this approach preserves worker == "127.0.0.1" if that is given.
+  if (!localMachine) {
+    localMachine <- is_localhost(worker)
+    if (localMachine) worker <- "localhost"
+  }
 
   rshcmd <- as.character(rshcmd)
   stopifnot(length(rshcmd) >= 1L)
@@ -284,3 +291,66 @@ addClusterUUIDs <- function(cl) {
   
   cl
 } ## addClusterUUIDs()
+
+
+## Checks if a given worker is the same as the localhost.  It is, iff:
+##
+## * worker == "localhost"
+## * worker == "127.0.0.1"
+## * worker == hostname
+## * worker and hostname appears on the same line in /etc/hosts
+##
+## This should cover cases such as:
+## * Calling is_localhost("n3") from machine n3
+## * Calling is_localhost("n3.myserver.org") from machine n3[.myserver.org]
+##
+## References:
+## * https://en.wikipedia.org/wiki/Hostname
+is_localhost <- local({
+  localhosts <- c("localhost", "127.0.0.1")
+  non_localhosts <- character(0L)
+  
+  function(worker, hostname = Sys.info()[["nodename"]], pathnames = "/etc/hosts") {
+    ## INTERNAL: Clear list of known local hosts?
+    if (is.null(worker) && is.null(hostname)) {
+      localhosts <<- c("localhost", "127.0.0.1")
+      non_localhosts <<- character(0L)
+      return(NA)
+    }
+    
+    stopifnot(length(worker) == 1, length(hostname) == 1)
+  
+    ## Already known to a localhost or not to one?
+    if (worker %in% localhosts) return(TRUE)
+    if (worker %in% non_localhosts) return(FALSE)
+    
+    if (worker == hostname) {
+      ## Add worker to the list of known local hosts.
+      localhosts <<- unique(c(localhosts, worker))
+      return(TRUE)
+    }
+  
+    ## Scan known "hosts" files
+    pathnames <- pathnames[file_test("-f", pathnames)]
+    if (length(pathnames) == 0L) return(FALSE)
+  
+    ## Search for (hostname, worker) and (worker, hostname)
+    ## occuring on the same line and are separates by one or
+    ## more whitespace symbols (but nothing else).
+    pattern <- sprintf("^((|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|)|(|.*[[:space:]])%s[[:space:]]+%s([[:space:]]+|))$", hostname, worker, worker, hostname)
+    
+    for (pathname in pathnames) {
+      bfr <- readLines(pathname, warn = FALSE)
+      if (any(grepl(pattern, bfr, ignore.case = TRUE))) {
+        ## Add worker to the list of known local hosts.
+        localhosts <<- unique(c(localhosts, worker))
+        return(TRUE)
+      }
+    }
+    
+    ## Add worker to the list of known non-local hosts.
+    non_localhosts <<- unique(c(non_localhosts, worker))
+    
+    FALSE
+  }
+}) ## is_localhost()

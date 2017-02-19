@@ -32,4 +32,3 @@ Retrieves global variables of an expression and their associated packages
 Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 }
 \keyword{internal}
-

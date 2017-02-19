@@ -1,5 +1,4 @@
 source("incl/start.R")
-plan(lazy)
 
 ## BACKWARD COMPATIBILITY
 if (getRversion() < "3.2.0") {
@@ -15,11 +14,11 @@ z <- new.env()
 stopifnot(length(names(z)) == 0L)
 
 message("*** %<-% to environment: Assign by index (not allowed)")
-res <- try(z[[1]] %<-% { 2 }, silent=TRUE)
+res <- try(z[[1]] %<-% { 2 } %lazy% TRUE, silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** %<-% to environment: Assign by name (new)")
-z$B %<-% TRUE
+z$B %<-% { TRUE }  %lazy% TRUE
 stopifnot(length(z) == 2) # sic!
 stopifnot("B" %in% ls(z))
 
@@ -31,13 +30,13 @@ stopifnot(identical(names(y), "B"))
 
 message("*** %<-% to environment: Potential task name clashes")
 u <- new.env()
-u$a %<-% 1
+u$a %<-% { 1 } %lazy% TRUE
 stopifnot(length(u) == 2)
 stopifnot("a" %in% names(u))
 fu <- futureOf(u$a)
 
 v <- new.env()
-v$a %<-% 2
+v$a %<-% { 2 } %lazy% TRUE
 stopifnot(length(v) == 2)
 stopifnot("a" %in% names(v))
 fv <- futureOf(v$a)

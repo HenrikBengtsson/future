@@ -22,4 +22,3 @@ All future elements are replaced by their corresponding
 \code{value()} values.  For all other elements, the existing
 object is kept.
 }
-

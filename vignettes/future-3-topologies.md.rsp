@@ -28,13 +28,13 @@ for (ii in 1:3) {
     for (jj in 1:3) {
       y[[jj]] %<-% { ii + jj/10 }
     }
-	y
+    y
   }
 }
 unlist(x)
 ## [1] 1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3
 ```
-The default is to use synchronous futures unless otherwise specified, which is also true for nested futures.  If we for instance specify, `plan(multiprocess)`, the first layer of futures (`x[[ii]] %<-% { expr }`) will be processed asynchronously in background R processes, and the futures in the second layer of futures (`y[[jj]] %<-% { expr }`) will be processed synchronously in the current R processes (one of the background processes).  If we wish to use a different strategy for the second layer, say, lazy synchronous futures, we can specify it as a list of (nested) strategies as `plan(list(multiprocess, lazy))`.
+The default is to use synchronous futures unless otherwise specified, which is also true for nested futures.  If we for instance specify, `plan(multiprocess)`, the first layer of futures (`x[[ii]] %<-% { expr }`) will be processed asynchronously in background R processes, and the futures in the second layer of futures (`y[[jj]] %<-% { expr }`) will be processed synchronously in the separate background R processes.  If we wish to be explicit about this, we can specify `plan(list(multiprocess, sequential))`.
 
 
 ## Example: High-Throughput Sequencing
@@ -68,17 +68,17 @@ The default is to use synchronous futures, so without further specifications, th
 * A compute cluster with 3 machines each with 16 cores
 
 ### One multi-core machine
-With a single machine of 8 cores, we could choose to process multiple samples at the same time while processing chromosomes sequentially.  In other words, we would like to evaluate the outer layer of futures using multiprocess futures and the inner ones as eager synchronous futures.  This can be specified as:
+With a single machine of 8 cores, we could choose to process multiple samples at the same time while processing chromosomes sequentially.  In other words, we would like to evaluate the outer layer of futures using multiprocess futures and the inner ones as sequential futures.  This can be specified as:
 ```r
-plan(list(multiprocess, eager))
+plan(list(multiprocess, sequential))
 ```
 The internals for processing multiprocess future queries `availableCores()` to infer how many cores can be used simultaneously, so there is no need to explicitly specify that there are 8 cores available.
 
-_Comment_: Since synchronous is the default future, we could skip trailing synchronous eager futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(eager)`.  However, it does not hurt to be explicit.
+_Comment_: Since synchronous is the default future, we could skip trailing sequential futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(sequential)`.  However, it does not hurt to be explicit.
 
 If we instead would like to process the sample sequentially and the chromosomes in parallel, we can use:
 ```r
-plan(list(eager, multiprocess))
+plan(list(sequential, multiprocess))
 ```
 
 We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
@@ -163,7 +163,7 @@ print(x)
 ## 8    4    login  391547       n1  391878   n1 393966
 ```
 
-Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))` or `plan(list(eager, lazy, multiprocess))` and see what the output will be.
+Try the above `x %<-% { ... }` future with, say, `plan(list(sequential, multiprocess))` and see what the output will be.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
@@ -171,4 +171,4 @@ Try the above `x %<-% { ... }` future with, say, `plan(list(lazy, multiprocess))
 [Futures in R: Common issues with solutions]: future-issues.html
 
 ---
-Copyright Henrik Bengtsson, 2015-2016
+Copyright Henrik Bengtsson, 2015-2017

@@ -6,13 +6,15 @@
 #'        \code{x \%<-\% \{ expr \}}.
 #' @inheritParams multiprocess
 #'
-#' @details
-#' \code{a \%label\% b} is short for \code{a \%tweak\% list(label = b)}.
-#'
 #' @export
 `%label%` <- function(fassignment, label) {
   fassignment <- substitute(fassignment)
   envir <- parent.frame(1)
-  args <- list(fassignment, list(label=label))
-  do.call(`%tweak%`, args=args, envir=envir)
+
+  ## Temporarily set 'label' argument
+  args <- getOption("future.disposable", list())
+  args["label"] <- list(label)
+  options(future.disposable = args)
+  
+  eval(fassignment, envir=envir)
 }

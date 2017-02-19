@@ -23,4 +23,3 @@ An \link[base:conditions]{error} object of class FutureError.
 An error occurred while trying to evaluate a future
 }
 \keyword{internal}
-

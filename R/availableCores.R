@@ -8,11 +8,15 @@
 #' For instance, on systems where multicore processing is not supported
 #' (i.e. Windows), using \code{constrains="multicore"} will force a
 #' single core to be reported.
+#'
 #' @param methods A character vector specifying how to infer the number
 #' of available cores.
+#'
 #' @param na.rm If TRUE, only non-missing settings are considered/returned.
+#'
 #' @param default The default number of cores to return if no non-missing
 #' settings are available.
+#'
 #' @param which A character specifying which settings to return.
 #' If \code{"min"}, the minimum value is returned.
 #' If \code{"max"}, the maximum value is returned (be careful!)
@@ -41,16 +45,17 @@
 #'    package is loaded).  The \option{mc.cores} option is used by for
 #'    instance \code{\link[parallel]{mclapply}()}.
 #'  \item \code{"PBS"} -
-#'    Query Torque/PBS environment variable \env{PBS_NUM_PPN}.
-#'    Depending on PBS system configuration, this \emph{resource} parameter
-#'    may or may not default to one.  It can be specified when submitting
-#'    a job as in, for instance, \code{qsub -l nodes=4:ppn=2}, which
-#'    requests four nodes each with two cores.
+#'    Query TORQUE/PBS environment variable \env{PBS_NUM_PPN}.
+#'    Depending on PBS system configuration, this \emph{resource}
+#'    parameter may or may not default to one.
+#'    An example of a job submission that results in this is
+#'    \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
 #'  \item \code{"SGE"} -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
 #'    \env{NSLOTS}.
-#'    It can be specified when submitting a job as in, for instance,
-#'    \code{qsub -pe by_node 2}, which two cores on a single machine.
+#'    An example of a job submission that results in this is
+#'    \code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
+#'    requests two cores on a single machine.
 #'  \item \code{"Slurm"} -
 #'    Query Simple Linux Utility for Resource Management (Slurm)
 #'    environment variable \env{SLURM_CPUS_PER_TASK}.
@@ -74,9 +79,13 @@
 #' setting the number of workers when specifying the future strategy,
 #' e.g. \code{plan(multiprocess, workers=9)}.
 #'
+#' @seealso
+#' To get the number of available workers regardless of machine,
+#' see \code{\link{availableWorkers}()}.
+#'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -97,7 +106,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## Number of cores assigned by Slurm
       n <- getenv("SLURM_CPUS_PER_TASK")
     } else if (method == "PBS") {
-      ## Number of cores assigned by Torque/PBS
+      ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
@@ -117,10 +126,14 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## misleading to the reader.
       chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
       chk <- (nzchar(chk) && (chk != "false"))
-      if (chk) n <- 3L ## = 2+1
+      n <- if (chk) 3L else NA_integer_ ## = 2+1
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()
+    } else if (method == "fallback") {
+      ## Number of cores available according to future.availableCores.fallback
+      n <- getOption("future.availableCores.fallback", NA_integer_)
+      n <- as.integer(n)
     } else {
       ## covr: skip=3
       ## Fall back to querying option and system environment variable
@@ -149,17 +162,33 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   ## Fall back to the default?
   if (length(ncores) == 0) ncores <- default
 
-  if (which == "min") {
-    ## which.min() to preserve name
-    ncores <- ncores[which.min(ncores)]
-  } else if (which == "max") {
-    ## which.max() to preserve name
-    ncores <- ncores[which.max(ncores)]
+  ## Keep only one
+  if (length(ncores) >= 2 && (which %in% c("min", "max"))) {
+    ## SPECIAL: The 'fallback' should only be used as a fallback if no other
+    ## options are explicitly set / available.
+    idx_fallback <- which(names(ncores) == "fallback")
+    if (length(idx_fallback) == 1) {
+      ## If 'system' and 'fallback' are the only options, then use 'fallback' ...
+      if (length(ncores) == 2 && "system" %in% names(ncores)) {
+        ncores <- ncores[idx_fallback]
+      } else {
+        ## ... otherwise, ignore 'fallback'.
+        ncores <- ncores[-idx_fallback]
+      }
+    }
+    
+    if (which == "min") {
+      ## which.min() to preserve name
+      ncores <- ncores[which.min(ncores)]
+    } else if (which == "max") {
+      ## which.max() to preserve name
+      ncores <- ncores[which.max(ncores)]
+    }
   }
 
   if (!is.null(constraints)) {
     if (constraints == "multicore") {
-      ## SPECIAL: On some supports such as Windows, multicore processing
+      ## SPECIAL: On some OSes such as Windows, multicore processing
       ## is not supported.  If so, we should override all values to
       ## to reflect that only a single core is available
       if (!supportsMulticore()) ncores[] <- 1L

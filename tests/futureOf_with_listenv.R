@@ -1,13 +1,12 @@
 source("incl/start.R")
 library("listenv")
-plan(lazy)
 
 message("*** futureOf() with listenv ...")
 
 message("*** futureOf() with listenv - future assignments ...")
 
 x <- listenv()
-x$a %<-% { 1 }
+x$a %<-% { 1 } %lazy% TRUE
 
 f1 <- futureOf("a", envir=x)
 print(f1)
@@ -19,8 +18,8 @@ f6 <- futureOf(x[[1]])
 stopifnot(identical(f2, f1), identical(f3, f2), identical(f4, f3),
           identical(f5, f4), identical(f6, f5))
 
-x[[3]] %<-% { 3 }
-x$d %<-% { 4 }
+x[[3]] %<-% { 3 } %lazy% TRUE
+x$d %<-% { 4 } %lazy% TRUE
 x[[5]] <- 5
 
 ## Identify all futures
@@ -42,7 +41,7 @@ message("*** futureOf() with listenv - future assignments ... DONE")
 message("*** futureOf() with listenv - futures ...")
 
 x <- listenv()
-x$a <- future({ 1 })
+x$a <- future({ 1 }, lazy = TRUE)
 
 f1 <- futureOf("a", envir=x)
 print(f1)
@@ -58,8 +57,8 @@ stopifnot(identical(f5, x$a))
 f6 <- futureOf(x[[1]])
 stopifnot(identical(f6, x$a))
 
-x[[3]] <- future({ 3 })
-x$d <- future({ 4 })
+x[[3]] <- future({ 3 }, lazy = TRUE)
+x$d <- future({ 4 }, lazy = TRUE)
 x[[5]] <- 5
 
 ## Identify all futures

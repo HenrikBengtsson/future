@@ -19,4 +19,3 @@ Outputs details on the current R session
 Note that remote futures use \code{persistent=TRUE} by default.
 }
 \keyword{internal}
-

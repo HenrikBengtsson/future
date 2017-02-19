@@ -1,4 +1,4 @@
-#' An uniprocess future is a future whose value will be resolved synchroneously in the current process
+#' An uniprocess future is a future whose value will be resolved synchronously in the current process
 #'
 #' @inheritParams Future-class
 #' @param lazy If \code{FALSE} (default), then the setup and validation of
@@ -14,7 +14,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy) {
@@ -44,7 +44,7 @@ UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, 
   }
   gp <- NULL
 
-  f <- Future(expr=expr, envir=envir, substitute=FALSE, local=local, lazy=lazy, ...)
+  f <- Future(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, asynchronous=FALSE, local=local, ...)
   structure(f, class=c("UniprocessFuture", class(f)))
 }
 
@@ -112,17 +112,32 @@ resolved.UniprocessFuture <- function(x, ...) {
 
 #' @rdname UniprocessFuture-class
 #' @export
-EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+SequentialFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=FALSE, ...)
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, ...)
+  structure(f, class=c("SequentialFuture", class(f)))
+}
+
+
+#' @rdname UniprocessFuture-class
+#' @export
+EagerFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
+  if (substitute) expr <- substitute(expr)
+
+##  .Deprecated(msg = "EagerFuture is deprecated. Instead, use SequentialFuture")
+  
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, ...)
   structure(f, class=c("EagerFuture", class(f)))
 }
 
 
 #' @rdname UniprocessFuture-class
 #' @export
-LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, local=TRUE, lazy=FALSE, ...) {
+LazyFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=TRUE, globals=TRUE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, local=local, lazy=TRUE, ...)
+    
+##  .Deprecated(msg = "LazyFuture is deprecated. Instead, use f <- SequentialFuture(..., lazy = TRUE)")
+    
+  f <- UniprocessFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, globals=globals, local=local, ...)
   structure(f, class=c("LazyFuture", class(f)))
 }

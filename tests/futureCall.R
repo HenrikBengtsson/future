@@ -1,10 +1,9 @@
 source("incl/start.R")
 
 message("*** futureCall() ...")
-plan(lazy)
 
-f1 <- future(do.call(rnorm, args=list(n=100)))
-f2 <- futureCall(rnorm, args=list(n=100))
+f1 <- future(do.call(rnorm, args=list(n=100)), lazy = TRUE)
+f2 <- futureCall(rnorm, args=list(n=100), lazy = TRUE)
 
 set.seed(42L)
 v0 <- rnorm(n=100)

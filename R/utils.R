@@ -222,13 +222,16 @@ detectCores <- local({
 
 
 ## We are currently importing the following non-exported functions:
-## * parallel:::defaultCluster()
-## * parallel:::recvResult()
-## * parallel:::selectChildren()
-## * parallel:::sendCall()
+## * cluster futures:
+##   - parallel:::defaultCluster()  ## non-critical / not really needed
+##   - parallel:::sendCall()        ## run()
+##   - parallel:::recvResult()      ## value()
+## * multicore futures:
+##   - parallel:::selectChildren()  ## resolved()
 ## As well as the following ones (because they are not exported on Windows):
-## * parallel:::mccollect()
-## * parallel:::mcparallel()
+## * multicore futures:
+##   - parallel::mcparallel()       ## run()
+##   - parallel::mccollect()        ## value()
 importParallel <- function(name=NULL) {
   ns <- getNamespace("parallel")
   if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
@@ -285,9 +288,11 @@ myExternalIP <- local({
     ## single third-party server.  This could be improved by falling back
     ## to additional servers, cf. https://github.com/phoemur/ipgetter
     urls <- c(
+      "https://httpbin.org/ip",
       "https://myexternalip.com/raw",
       "https://diagnostic.opendns.com/myip",
       "https://api.ipify.org/",
+      "http://httpbin.org/ip",
       "http://myexternalip.com/raw",
       "http://diagnostic.opendns.com/myip",
       "http://api.ipify.org/"
@@ -295,8 +300,27 @@ myExternalIP <- local({
     value <- NULL
     for (url in urls) {
       value <- tryCatch(readLines(url), error = function(ex) NULL)
-      if (!is.null(value)) break
-    }
+      
+      ## Nothing found?
+      if (is.null(value)) next
+
+      ## Keep only lines that look like they contain IP v4 numbers
+      ip4_pattern <- ".*[^[:digit:]]+([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
+      value <- grep(ip4_pattern, value, value = TRUE)
+  
+      ## Extract the IP numbers
+      value <- gsub(ip4_pattern, "\\1", value)
+  
+      ## Trim and drop empty results (just in case)
+      value <- trim(value)
+      value <- value[nzchar(value)]
+  
+      ## Nothing found?
+      if (length(value) == 0) next
+
+      ## Match?
+      if (length(value) == 1 && nzchar(value)) break
+    } ## for (url ...)
     
     ## Nothing found?
     if (is.null(value)) {
@@ -306,13 +330,6 @@ myExternalIP <- local({
       return(NA_character_)
     }
 
-    ## Trim and drop empty results (just in case)
-    value <- trim(value)
-    value <- value[nzchar(value)]
-
-    ## Nothing found?
-    if (length(value) == 0 && !mustWork) return(NA_character_)
-    
     ## Sanity check
     stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
 
@@ -428,3 +445,105 @@ myInternalIP <- local({
     ip
   }
 }) ## myInternalIP()
+
+
+
+
+## A *rough* estimate of size of an object + its environment.
+#' @importFrom utils object.size
+objectSize <- function(x, depth = 3L) {
+  # Nothing to do?
+  if (isNamespace(x)) return(0)
+  if (depth <= 0) return(0)
+  
+  if (!is.list(x) && !is.environment(x)) {
+    size <- object.size(x)
+    x <- environment(x)
+  } else {
+    size <- 0
+  }
+
+  ## Nothing more to do?
+  if (depth == 1) return(size)
+  
+  .scannedEnvs <- new.env()
+  scanned <- function(e) {
+    for (name in names(.scannedEnvs)) if (identical(e, .scannedEnvs[[name]])) return(TRUE)
+    FALSE
+  }
+
+  objectSize.list <- function(x, depth) {
+    # Nothing to do?
+    if (depth <= 0) return(0)
+    depth <- depth - 1L
+    size <- 0
+    for (kk in seq_along(x)) {
+      ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
+      ## e.g. x <- packageVersion("future") gives x[[1]] == x.
+      x_kk <- .subset2(x, kk)
+      if (is.list(x_kk)) {
+        size <- size + objectSize.list(x_kk, depth = depth)
+      } else if (is.environment(x_kk)) {
+        if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
+      } else {
+        size <- size + object.size(x_kk)
+      }
+    }
+    size
+  } ## objectSize.list()
+  
+  objectSize.env <- function(x, depth) {
+    # Nothing to do?
+    if (depth <= 0) return(0)
+    depth <- depth - 1L
+    if (isNamespace(x)) return(0)
+##    if (inherits(x, "Future")) return(0)
+
+    size <- 0
+
+    ## Get all objects in the environment
+    elements <- ls(envir = x, all.names = TRUE)
+    if (length(elements) == 0) return(0)
+
+    ## Skip variables that are future promises in order
+    ## to avoid inspecting promises that are already
+    ## under investigation.
+    skip <- grep("^.future_", elements, value = TRUE)
+    if (length(skip) > 0) {
+      skip <- gsub("^.future_", "", elements)
+      elements <- setdiff(elements, skip)
+      if (length(elements) == 0) return(0)
+    }
+    
+    ## Avoid scanning the current environment again
+    name <- sprintf("env_%d", length(.scannedEnvs))
+    .scannedEnvs[[name]] <- x
+    
+    for (element in elements) {
+      x_kk <- .subset2(x, element)
+
+      ## Nothing to do?
+      if (missing(x_kk)) next
+      if (is.list(x_kk)) {
+        size <- size + objectSize.list(x_kk, depth = depth)
+      } else if (is.environment(x_kk)) {
+##        if (!inherits(x_kk, "Future") && !scanned(x_kk)) {
+        if (!scanned(x_kk)) {
+          size <- size + objectSize.env(x_kk, depth = depth)
+        }
+      } else {
+        size <- size + object.size(x_kk)
+      }
+    }
+  
+    size
+  } ## objectSize.env()
+
+  if (is.list(x)) {
+    size <- size + objectSize.list(x, depth = depth - 1L)
+  } else if (is.environment(x)) {
+    size <- size + objectSize.env(x, depth = depth - 1L)
+  }
+
+  size
+}

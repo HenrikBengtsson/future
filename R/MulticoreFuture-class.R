@@ -1,4 +1,4 @@
-#' An multicore future is a future whose value will be resolved asynchroneously in a parallel process
+#' An multicore future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
 #'
@@ -14,12 +14,16 @@
 MulticoreFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
+  args <- list(...)
+  lazy <- args$lazy
+  if (is.null(lazy)) lazy <- FALSE
+
   ## Global objects
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
   gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=globals, resolve=TRUE)
 
   ## Assign?
-  if (assignToTarget && length(gp) > 0) {
+   if (length(gp) > 0 && (lazy || assignToTarget)) {
     target <- new.env(parent=envir)
     globalsT <- gp$globals
     for (name in names(globalsT)) {

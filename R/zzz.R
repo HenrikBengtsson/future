@@ -1,7 +1,28 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
-  ## Unless already set, set option 'future.availableCores.system' according
-  ## to system environment variable 'R_FUTURE_AVAILABLECORES_SYSTEM'.
+  ## Unless already set, set option 'future.availableCores.fallback'
+  ## according to environment variable 'R_FUTURE_AVAILABLECORES_FALLBACK'.
+  ncores <- getOption("future.availableCores.fallback")
+  if (is.null(ncores)) {
+    ncores <- trim(Sys.getenv("R_FUTURE_AVAILABLECORES_FALLBACK"))
+    if (nzchar(ncores)) {
+      mdebug("R_FUTURE_AVAILABLECORES_FALLBACK=%s", sQuote(ncores))
+      if (is.element(ncores, c("NA_integer_", "NA"))) {
+        ncores <- NA_integer_
+      } else {
+        ncores <- as.integer(ncores)
+      }
+      mdebug("=> options(future.availableCores.fallback=%d)", ncores)
+      options(future.availableCores.fallback=ncores)
+    }
+    ncores <- getOption("future.availableCores.fallback")
+  }
+  if (!is.null(ncores)) {
+    mdebug("Option 'future.availableCores.fallback=%d", ncores)
+  }
+  
+  ## Unless already set, set option 'future.availableCores.system'
+  ## according to environment variable 'R_FUTURE_AVAILABLECORES_SYSTEM'.
   ncores <- getOption("future.availableCores.system")
   if (is.null(ncores)) {
     ncores <- trim(Sys.getenv("R_FUTURE_AVAILABLECORES_SYSTEM"))
@@ -54,8 +75,8 @@
     if (!is.null(strategy)) {
       mdebug("=> 'future.plan' already set.")
     } else if (p == 1L) {
-      mdebug("=> options(future.plan=eager)")
-      options(future.plan=eager)
+      mdebug("=> options(future.plan=sequential)")
+      options(future.plan=sequential)
     } else {
       mdebug("=> options(future.plan=tweak(multiprocess, workers=%s))", p)
       options(future.plan=tweak(multiprocess, workers=p))
@@ -67,7 +88,9 @@
   mdebug("R process uuid: %s", id)
 
   mdebug("Setting plan('default')")
-  plan("default")
+  
+  ## NOTE: Don't initiate during startup - it might hang / give an error
+  plan("default", .init=FALSE)
 } ## .onLoad()
 
 

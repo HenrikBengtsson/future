@@ -53,6 +53,10 @@ tweak.future <- function(strategy, ..., penvir=parent.frame()) {
   ## Arguments that must not be tweaked
   if (is.element("lazy", names)) {
     stop("Future argument 'lazy' must not be tweaked / set via plan()")
+  } else if (is.element("asynchronous", names)) {
+    stop("Future argument 'asynchronous' must not be tweaked / set via plan()")
+  } else if (is.element("seed", names)) {
+    stop("Future argument 'seed' must not be tweaked / set via plan()")
   }
   
   ## formals()<- drops any attributes including class

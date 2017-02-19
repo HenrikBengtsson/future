@@ -2,10 +2,10 @@
 % Please edit documentation in R/as.cluster.R
 \name{as.cluster}
 \alias{as.cluster}
-\alias{as.cluster.SOCK0node}
-\alias{as.cluster.SOCKnode}
 \alias{as.cluster.cluster}
 \alias{as.cluster.list}
+\alias{as.cluster.SOCKnode}
+\alias{as.cluster.SOCK0node}
 \alias{c.cluster}
 \title{Coerce an object to a cluster object}
 \usage{
@@ -37,4 +37,3 @@ An object of class \code{cluster}.
 \description{
 Coerce an object to a cluster object
 }
-

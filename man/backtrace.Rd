@@ -19,4 +19,3 @@ A list of calls.
 \description{
 Back trace the expressions evaluated before a condition was caught
 }
-

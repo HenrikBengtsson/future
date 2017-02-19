@@ -5,8 +5,8 @@
 \title{Request a core for multicore processing}
 \usage{
 requestCore(await, workers = availableCores(),
-  times = getOption("future.wait.times", 1000),
-  delta = getOption("future.wait.interval", 1),
+  timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60),
+  delta = getOption("future.wait.interval", 0.2),
   alpha = getOption("future.wait.alpha", 1.01))
 }
 \arguments{
@@ -15,8 +15,8 @@ finished multicore subprocesses.}
 
 \item{workers}{Total number of workers available.}
 
-\item{times}{Then maximum number of times subprocesses
-should be collected before timeout.}
+\item{timeout}{Maximum waiting time (in seconds) allowed
+before a timeout error is generated.}
 
 \item{delta}{Then base interval (in seconds) to wait
 between each try.}
@@ -33,4 +33,3 @@ If no cores are available, the current process
 blocks until a core is available.
 }
 \keyword{internal}
-

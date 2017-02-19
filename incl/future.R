@@ -1,6 +1,3 @@
-## Cluster futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 ## Evaluate futures in parallel
 plan(multiprocess)

@@ -2,28 +2,33 @@
 % Please edit documentation in R/multisession.R
 \name{multisession}
 \alias{multisession}
-\title{Create a multisession future whose value will be resolved asynchroneously in a parallel R session}
+\title{Create a multisession future whose value will be resolved asynchronously in a parallel R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, persistent = FALSE, workers = availableCores(),
-  gc = FALSE, earlySignal = FALSE, label = NULL, ...)
+  lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE,
+  workers = availableCores(), gc = FALSE, earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{lazy}{Specifies whether a future should be resolved
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
-For details, see below section.
-This argument can be specified via the \dots arguments
-for \code{future()} and \code{futureCall()}.}
+For details, see below section.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -77,10 +82,8 @@ The reason for this is that background sessions are currently
 created using \code{\link[parallel:makeCluster]{makeCluster}()},
 which requires that all R sessions are created at once.
 }
+
 \examples{
-## Multisession futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 
 ## Use multisession futures
@@ -117,4 +120,3 @@ the former is not supported, see \link{multiprocess} futures.
 Use \code{\link{availableCores}()} to see the total number of
 cores that are available for the current R session.
 }
-

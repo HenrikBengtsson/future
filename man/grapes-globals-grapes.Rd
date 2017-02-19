@@ -18,7 +18,3 @@ in the help for \code{\link{future}()}.}
 \description{
 Specify globals for a future assignment
 }
-\details{
-\code{a \%globals\% b} is short for \code{a \%tweak\% list(globals = b)}.
-}
-

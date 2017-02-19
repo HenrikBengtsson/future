@@ -5,13 +5,13 @@ library("listenv")
 ## (0, 1, 1, 2, 3, 5, 8, ...)
 ## but calculate only the ones need when
 ## a number is actually requested.
-oplan <- plan(lazy)
+oplan <- plan(eager)
 
 x <- listenv()
 x[[1]] <- 0
 x[[2]] <- 1
 for (i in 3:100) {
-  x[[i]] %<-% { x[[i-2]] + x[[i-1]] }
+  x[[i]] %<-% { x[[i-2]] + x[[i-1]] } %lazy% TRUE
 }
 
 ## At this point nothing has been calculated,

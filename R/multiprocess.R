@@ -1,4 +1,4 @@
-#' Create a multiprocess future whose value will be resolved asynchroneously using multicore or a multisession evaluation
+#' Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation
 #'
 #' A multiprocess future is a future that uses \link{multicore} evaluation
 #' if supported, otherwise it uses \link{multisession} evaluation.
@@ -6,6 +6,8 @@
 #' parallel in another process}.
 #'
 #' @inheritParams future
+#' @param lazy If \code{FALSE} (default), the future is resolved eagerly
+#' (immediately), otherwise not.
 #' @param globals (optional) a logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see section 'Globals used by future expressions'
@@ -29,9 +31,11 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
+  fun(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")
+
+

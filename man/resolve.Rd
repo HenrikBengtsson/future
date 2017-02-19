@@ -15,7 +15,7 @@ resolve(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1,
 \item{value}{If TRUE, the values are retrieved, otherwise not.}
 
 \item{recursive}{A non-negative number specifying how deep of
-a recursion should be done.  If TRUE, an infintive recursion
+a recursion should be done.  If TRUE, an infinite recursion
 is used.  If FALSE or zero, no recursion is performed.}
 
 \item{sleep}{Number of seconds to wait before checking
@@ -41,4 +41,3 @@ of already resolved futures.
 \seealso{
 futureOf
 }
-

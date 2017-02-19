@@ -21,9 +21,9 @@ matrix:
     - os: linux
       r: release
       r_github_packages:
-      - jimhester/covr
+        - jimhester/covr
       after_success:
-      - Rscript -e 'covr::codecov(quiet=FALSE)'
+        - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
     - os: linux
       r: devel
@@ -32,6 +32,8 @@ matrix:
     - os: osx
       r: release
 
+before_install:
+  - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
 
 notifications:
   email:

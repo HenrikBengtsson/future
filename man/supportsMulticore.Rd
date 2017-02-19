@@ -17,4 +17,3 @@ except on Microsoft Windows.
 \seealso{
 To use multicore futures, use \code{\link{plan}(\link{multicore})}.
 }
-

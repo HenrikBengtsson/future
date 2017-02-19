@@ -8,20 +8,32 @@
 #' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An R \link[base]{expression}.
+#'
 #' @param envir The \link{environment} in which the evaluation
 #' is done (or inherits from if \code{local} is TRUE).
+#'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
+#'
+#' @param lazy If \code{FALSE} (default), the future is resolved
+#' eagerly (starting immediately), otherwise not.
+#'
+#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#'
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.
+#'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) after the value of the future is collected.
 #' \emph{Some types of futures ignore this argument.}
+#'
 #' @param earlySignal Specified whether conditions should be signaled
 #' as soon as possible or not.
+#'
 #' @param label An optional character string label attached to the
 #' future.
+#'
 #' @param \dots Additional named elements of the future.
 #'
 #' @return An object of class \code{Future}.
@@ -37,16 +49,33 @@
 #' right-hand-side (RHS) R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
+#' @importFrom utils capture.output
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, seed=NULL, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
+  
+  if (!is.null(seed)) {
+    ## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
+    ##    .Random.seed <- c(rng.kind, n)
+    ## where rng.kind == 407L and length(n) == 6L
+    if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
+      msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream()"
+      mdebug(msg)
+      mdebug(capture.output(print(seed)))
+      stop(msg)
+    }
+  }
+  
   args <- list(...)
-
+  
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
   core$owner <- session_uuid(attributes = TRUE)
+  core$lazy <- lazy
+  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+  core$seed <- seed
   core$local <- local
   core$gc <- gc
   core$earlySignal <- earlySignal
@@ -73,12 +102,14 @@ print.Future <- function(x, ...) {
   cat("Label: ", sQuote(label), "\n", sep="")
   cat("Expression:\n")
   print(x$expr)
+  cat(sprintf("Lazy evaluation: %s\n", x$lazy))
+  cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
   g <- x$globals
   ng <- length(g)
   if (ng > 0) {
-    gSizes <- sapply(g, FUN=object.size)
+    gSizes <- sapply(g, FUN=objectSize)
     gTotalSize <- sum(gSizes)
     g <- head(g, n=5L)
     gSizes <- head(gSizes, n=5L)
@@ -87,6 +118,11 @@ print.Future <- function(x, ...) {
     cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
   } else {
     cat("Globals: <none>\n")
+  }
+  if (is.null(x$seed)) {
+    cat("L'Ecuyer-CMRG RNG seed: <none>\n")
+  } else {
+    cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   }
 
   hasValue <- exists("value", envir=x, inherits=FALSE)
@@ -109,7 +145,7 @@ print.Future <- function(x, ...) {
   }
 
   if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(object.size(x$value)), sQuote(class(x$value)[1])))
+    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(x$value)), sQuote(class(x$value)[1])))
   } else {
     cat("Value: <not collected>\n")
   }
@@ -151,6 +187,7 @@ assertOwner <- function(future, ...) {
 #' @rdname run
 #' @export
 #' @export run
+#' @keywords internal
 run.Future <- function(future, ...) {
   if (future$state != 'created') {
     stop("A future can only be launched once.")
@@ -229,7 +266,7 @@ resolved.Future <- function(x, ...) {
 #'
 #' @details
 #' If no next future strategy is specified, the default is to
-#' use \link{eager} futures.  This conservative approach protects
+#' use \link{sequential} futures.  This conservative approach protects
 #' against spawning off recursive futures by mistake, especially
 #' \link{multicore} and \link{multisession} ones.
 #' The default will also set \code{options(mc.cores=0L)}, which
@@ -279,13 +316,25 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- exit <- NULL
   }
 
+  ## Seed RNG seed?
+  if (!is.null(future$seed)) {
+    enter <- bquote({
+      ## covr: skip=2
+      .(enter)
+      ## NOTE: It is not needed to call eRNGkind("L'Ecuyer-CMRG") here
+      ## because the type of RNG is defined by .Random.seed, especially
+      ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
+      assign(".Random.seed", .(future$seed), envir = globalenv(), inherits = FALSE)
+    })
+  }
+
   ## Reset future strategies upon exit of future
   strategies <- plan("list")
   stopifnot(length(strategies) >= 1L)
   exit <- bquote({
     ## covr: skip=2
     .(exit)
-    future::plan(.(strategies))
+    future::plan(.(strategies), .cleanup=FALSE, .init=FALSE, .check_lazy=FALSE)
   })
 
   ## Pass down the default or the remain set of future strategies?
@@ -297,7 +346,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan("default")
+      future::plan("default", .cleanup=FALSE, .init=FALSE)
     })
   } else {
 ##    mdebug("Set plan(<remaining strategies>) inside future")
@@ -337,7 +386,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan(.(strategiesR))
+      future::plan(.(strategiesR), .cleanup=FALSE, .init=FALSE, .check_lazy=FALSE)
     })
   } ## if (length(strategiesR) > 0L)
 

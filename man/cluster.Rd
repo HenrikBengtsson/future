@@ -2,29 +2,34 @@
 % Please edit documentation in R/cluster.R
 \name{cluster}
 \alias{cluster}
-\title{Create a cluster future whose value will be resolved asynchroneously in a parallel process}
+\title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  persistent = FALSE, workers = NULL, user = NULL, revtunnel = TRUE,
+cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
+  seed = NULL, globals = TRUE, persistent = FALSE,
+  workers = availableWorkers(), user = NULL, revtunnel = TRUE,
   homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
   ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression} to be evaluated.}
 
 \item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on "evaluator",
-it may also be the environment in which the expression
-is evaluated.}
+objects should be identified.  Depending on the future
+strategy (the \code{evaluator}), it may also be the environment
+in which the expression is evaluated.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{lazy}{Specifies whether a future should be resolved
+lazily or eagerly.  The default is eager evaluation
+(except when the \emph{deprecated} \code{plan(lazy)} is used).}
+
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+
 \item{globals}{A logical, a character vector,
 or a named list for controlling how globals are handled.
-For details, see below section.
-This argument can be specified via the \dots arguments
-for \code{future()} and \code{futureCall()}.}
+For details, see below section.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -74,9 +79,6 @@ mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 }
 \examples{
-## Cluster futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
-## The same code works in package tests.
 \donttest{
 
 ## Use cluster futures
@@ -108,4 +110,3 @@ parallel::stopCluster(cl)
 
 }
 }
-

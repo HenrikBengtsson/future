@@ -33,7 +33,7 @@ to a worker.}
 
 \item{master}{The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.}
 
-\item{connectTimeout}{The maximum time (in seconds) allowed for each sockect connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}}
+\item{connectTimeout}{The maximum time (in seconds) allowed for each socket connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}}
 
 \item{timeout}{The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).}
 
@@ -77,11 +77,11 @@ Create a Parallel Socket Cluster
 \details{
 The \code{makeClusterPSOCK()} function is similar to \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the \pkg{parallel} package, but provides more flexibility in controlling the setup of the system calls that launch the background R workers and how to connect to external machines.
 
-The default is to use reverse SSH tunnelling for workers
+The default is to use reverse SSH tunneling for workers
 running on other machines.  This avoids the complication of
 otherwise having to configure port forwarding in firewalls,
 which often requires static IP address but which also most
-users don't have priviligies to do themselves.
+users don't have privileges to do themselves.
 It also has the advantage of not having to know the internal
 and / or the public IP address / host name of the master.
 
@@ -101,6 +101,7 @@ to propagate timeout error when it occurs (works on Windows)' on
 it won't happen until the socket connection timeout \code{timeout}
 itself happens.
 }
+
 \examples{
 ## Setup of three R workers on two remote machines are set up
 workers <- c("n1.remote.org", "n2.remote.org", "n1.remote.org")
@@ -222,4 +223,3 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 }
-

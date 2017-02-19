@@ -150,6 +150,19 @@ for (cores in 1:min(3L, availableCores())) {
 
   message("*** multisession(..., gc=TRUE) ... TRUE")
 
+  message("*** multisession(...) - stopping with plan() change ...")
+  
+  plan(multisession, workers=2L)
+  f <- future(1L)
+  cl <- ClusterRegistry("get")
+  stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
+
+  plan(sequential)
+  cl <- ClusterRegistry("get")
+  stopifnot(is.null(cl), length(cl) == 0L)
+  
+  message("*** multisession(...) - stopping with plan() change ... DONE")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 

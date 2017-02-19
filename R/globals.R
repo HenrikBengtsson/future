@@ -13,7 +13,6 @@
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
 #' @importFrom globals globalsOf globalsByName as.Globals packagesOf cleanup
-#' @importFrom utils object.size
 #'
 #' @keywords internal
 getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, globals=TRUE, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
@@ -22,6 +21,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
 
+  debug <- getOption("future.debug", FALSE)
+  
   ## Assert that all identified globals exists when future is created?
   if (persistent) {
     ## If future relies on persistent storage, then the globals may
@@ -75,7 +76,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## Missing global '...'?
     if (!is.list(globals$`...`)) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
-      mdebug(msg)
+      if (debug) mdebug(msg)
       stop(msg)
     }
 
@@ -98,17 +99,17 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## recursively try to resolve everything in every global which may
   ## or may not point to packages (include base R package)
   if (resolve && length(globals) > 0L) {
-    mdebug("Resolving globals that are futures ...")
+    if (debug) mdebug("Resolving globals that are futures ...")
     idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
-    mdebug("Number of global futures: %d", length(idxs))
+    if (debug) mdebug("Number of global futures: %d", length(idxs))
     if (length(idxs) > 0) {
-      mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
+      if (debug) mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
       valuesF <- values(globals[idxs])
       globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
-    mdebug("Resolving globals that are futures ... DONE")
+    if (debug) mdebug("Resolving globals that are futures ... DONE")
   }
 
 
@@ -161,44 +162,49 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## only dive into such environments if they have a certain flag
   ## set.  /HB 2016-02-04
   if (resolve && length(globals) > 0L) {
-    mdebug("Resolving futures part of globals (recursively) ...")
+    if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value=TRUE, recursive=TRUE)
-    mdebug("Resolving futures part of globals (recursively) ... DONE")
+    if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
 
 
   ## Protect against user error exporting too large objects?
-  ## Maximum size of globals (to prevent too large exports) = 500 MiB
-  maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
-  maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
-  stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
-  if (length(globals) > 0L && is.finite(maxSizeOfGlobals)) {
-    sizes <- lapply(globals, FUN=object.size)
-    sizes <- unlist(sizes, use.names=TRUE)
-    totalExportSize <- sum(sizes, na.rm=TRUE)
-    if (totalExportSize > maxSizeOfGlobals) {
-      n <- length(sizes)
-      o <- order(sizes, decreasing=TRUE)[1:3]
-      o <- o[is.finite(o)]
-      sizes <- sizes[o]
-      classes <- lapply(globals[o], FUN=mode)
-      classes <- unlist(classes, use.names=FALSE)
-      largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-      msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.global.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
-      if (n == 1) {
-        fmt <- "%s There is one global: %s."
-      } else if (n == 2) {
-        fmt <- "%s There are two globals: %s."
-      } else if (n == 3) {
-        fmt <- "%s There are three globals: %s."
-      } else {
-        fmt <- "%s The three largest globals are %s."
-      }
-      msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
-      mdebug(msg)
-      stop(msg)
+  if (length(globals) > 0L) {
+    ## Maximum size of globals (to prevent too large exports) = 500 MiB
+    maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
+    maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
+    stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
+    
+    if (is.finite(maxSizeOfGlobals) || debug) {
+      sizes <- lapply(globals, FUN=objectSize)
+      sizes <- unlist(sizes, use.names=TRUE)
+      totalExportSize <- sum(sizes, na.rm=TRUE)
+      if (debug) mdebug("%d global objects identified with a total size of %s (%s bytes)", length(globals), asIEC(totalExportSize), totalExportSize)
+  
+      if (totalExportSize > maxSizeOfGlobals) {
+        n <- length(sizes)
+        o <- order(sizes, decreasing=TRUE)[1:3]
+        o <- o[is.finite(o)]
+        sizes <- sizes[o]
+        classes <- lapply(globals[o], FUN=mode)
+        classes <- unlist(classes, use.names=FALSE)
+        largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
+        msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+        if (n == 1) {
+          fmt <- "%s There is one global: %s."
+        } else if (n == 2) {
+          fmt <- "%s There are two globals: %s."
+        } else if (n == 3) {
+          fmt <- "%s There are three globals: %s."
+        } else {
+          fmt <- "%s The three largest globals are %s."
+        }
+        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
+        if (debug) mdebug(msg)
+        stop(msg)
+      } ## if (totalExportSize > ...)
     }
-  }
+  } ## if (length(globals) > 0)
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

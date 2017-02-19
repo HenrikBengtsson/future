@@ -9,11 +9,11 @@ tweak(strategy, ..., penvir = parent.frame())
 \arguments{
 \item{strategy}{An existing future function or the name of one.}
 
-\item{penvir}{The environment used when searching for a future
-function by its name.}
-
 \item{\dots}{Named arguments to replace the defaults of existing
 arguments.}
+
+\item{penvir}{The environment used when searching for a future
+function by its name.}
 }
 \value{
 a future function.
@@ -25,4 +25,3 @@ Tweaks a future function by adjusting its default arguments
 Use \code{\link{plan}()} to set a future to become the
 new default strategy.
 }
-
