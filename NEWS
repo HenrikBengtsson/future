@@ -11,6 +11,9 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ o Renamed 'eager' futures to 'sequential', e.g. plan(sequential).
+   The 'eager' futures will be deprecated in an upcoming release.
+   
  o Added support for controlling whether a future is resolved eagerly
    or lazily when creating the future, e.g. future(..., lazy = TRUE)
    futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
