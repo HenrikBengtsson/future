@@ -17,22 +17,9 @@
   futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
 }
 
-## Deprecated
-`%<=%` <- function(x, value) {
-  target <- substitute(x)
-  expr <- substitute(value)
-  envir <- parent.frame(1)
-  .Deprecated("%<-%")
-  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
-}
-
-`%=>%` <- function(value, x) {
-  target <- substitute(x)
-  expr <- substitute(value)
-  envir <- parent.frame(1)
-  .Deprecated("%->%")
-  futureAssignInternal(target, expr, envir=envir, substitute=FALSE)
-}
+## DEFUNCTION
+`%<=%` <- function(x, value) .Defunct("%<-%")
+`%=>%` <- function(value, x) .Defunct("%->%")
 
 
 #' @importFrom listenv get_variable parse_env_subset

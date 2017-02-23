@@ -84,7 +84,7 @@ for (cores in 1:min(3L, availableCores())) {
     message("** Left-to-right and right-to-left future assignments")
     c %<-% 1
     printf("c=%s\n", c)
-    1 %=>% d
+    1 %->% d
     printf("d=%s\n", d)
     stopifnot(d == c)
 
@@ -95,13 +95,13 @@ for (cores in 1:min(3L, availableCores())) {
       b <- 1
       c %<-% 2
       3 -> d
-      4 %=>% e
+      4 %->% e
       b + c + d + e
     }
     printf("a=%s\n", a)
     stopifnot(a == 10)
 
-    { a + 1 } %=>% b
+    { a + 1 } %->% b
     printf("b=%s\n", b)
     stopifnot(b == a + 1)
 
