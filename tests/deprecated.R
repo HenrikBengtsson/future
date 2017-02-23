@@ -42,14 +42,14 @@ stopifnot(inherits(res, "error"))
 message("*** Defunct arguments ... DONE")
 
 
-message("*** Deprecated argument values ...")
+message("*** Defunct argument values ...")
 
 res <- tryCatch({
   n <- availableCores(methods="mc.cores")
-}, warning = function(w) w)
-stopifnot(inherits(res, "warning"))
+}, error = function(e) e)
+stopifnot(inherits(res, "error"))
 
-message("*** Deprecated argument values ... DONE")
+message("*** Defunct argument values ... DONE")
 
 
 message("*** Defunct and deprecated API ... DONE")

@@ -6,7 +6,9 @@ Version: 1.3.0-9000 [2017-01-22]
 DEPRECATED AND DEFUNCT:
 
  o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
- 
+ o availableCores(method = "mc.cores") is now defunct in favor of
+   availableCores(method = "mc.cores+1").
+
 
 Version: 1.3.0 [2017-01-18]
 
