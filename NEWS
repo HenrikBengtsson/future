@@ -1,6 +1,13 @@
 Package: future
 ===============
 
+Version: 1.3.0-9000 [2017-01-22]
+
+DEPRECATED AND DEFUNCT:
+
+ o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
+ 
+
 Version: 1.3.0 [2017-01-18]
 
 SIGNIFICANT CHANGES:

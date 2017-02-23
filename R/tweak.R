@@ -66,13 +66,11 @@ tweak.future <- function(strategy, ..., penvir=parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  ## BACKWARD COMPATIBILITY
-  for (name in c("maxCores", "cluster")) {
-    if (name %in% names) {
-      if ("workers" %in% formals) {
-        names <- gsub(name, "workers", names, fixed=TRUE)
-        names(args) <- names
-        .Deprecated(msg=sprintf("Argument '%s' has been renamed to 'workers'. Please update you script/code that uses the future package.", name))
+  ## DEFUNCT
+  if ("workers" %in% formals) {
+    for (name in c("maxCores", "cluster")) {
+      if (name %in% names) {
+        .Defunct(msg = sprintf("Argument '%s' has been renamed to 'workers'. Please update you script/code that uses the future package.", name))
       }
     }
   }

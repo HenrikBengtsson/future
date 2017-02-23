@@ -35,18 +35,14 @@
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
-  defaultCluster <- importParallel("defaultCluster")
-
-  ## BACKWARD COMPATIBILITY
-  args <- list(...)
-  if ("cluster" %in% names(args)) {
-    workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
+  if ("cluster" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)
 
   if (is.null(workers)) {
+    defaultCluster <- importParallel("defaultCluster")
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)

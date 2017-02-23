@@ -55,11 +55,8 @@
 #'
 #' @export
 multisession <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, persistent=FALSE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
-  ## BACKWARD COMPATIBILITY
-  args <- list(...)
-  if ("maxCores" %in% names(args)) {
-    workers <- args$maxCores
-    .Deprecated(msg="Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+  if ("maxCores" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)
