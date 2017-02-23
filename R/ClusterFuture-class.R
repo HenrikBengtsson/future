@@ -338,7 +338,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
     finished <- (used < total)
     if (finished) break
 
-    mdebug(sprintf("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total))
+    mdebug("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
 
     ## Wait
     Sys.sleep(interval)

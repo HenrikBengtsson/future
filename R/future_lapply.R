@@ -220,7 +220,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     }
     
     ## Generate sequence of _all_ RNG seeds needed
-    mdebug(sprintf("Generating random seed streams for %d elements ...", nx))
+    mdebug("Generating random seed streams for %d elements ...", nx)
     for (ii in seq_len(nx)) {
       ## Main random seed for iteration ii
       .seed <- nextRNGStream(.seed)
@@ -233,7 +233,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
       seeds[[ii]] <- nextRNGSubStream(.seed)
     }
 
-    mdebug(sprintf("Generating random seed streams for %d elements ... DONE", nx))
+    mdebug("Generating random seed streams for %d elements ... DONE", nx)
     
     mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
@@ -280,7 +280,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
-    mdebug(sprintf("Chunk #%d of %d ...", ii, length(chunks)))
+    mdebug("Chunk #%d of %d ...", ii, length(chunks))
 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
@@ -301,7 +301,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))
 
-    mdebug(sprintf("Chunk #%d of %d ... DONE", ii, length(chunks)))
+    mdebug("Chunk #%d of %d ... DONE", ii, length(chunks))
   } ## for (ii ...)
 
   ## Not needed anymore
