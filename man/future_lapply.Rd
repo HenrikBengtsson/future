@@ -20,7 +20,8 @@ lazily or eagerly (default).}
 \item{future.globals}{A logical, a character vector, or a named list for
 controlling how globals are handled. For details, see below section.}
 
-\item{future.seed}{A logical or an integer (of length one or seven).
+\item{future.seed}{A logical or an integer (of length one or seven),
+or a list of \code{length(x)} with pre-generated random seeds.
 For details, see below section.}
 
 \item{future.scheduling}{Average number of futures ("chunks") per worker.
@@ -71,6 +72,15 @@ randomly.
 If \code{future.seed = NA}, a L'Ecuyer-CMRG RNG seed is randomly created.
 If none of the function calls \code{FUN(x[[i]], ...)} uses random number
 generation, then \code{future.seed = FALSE} may be used.
+
+In addition to the above, it is possible to specify a pre-generated
+sequence of RNG seeds as a list such that
+\code{length(future.seed) == length(x)} and where each element is an
+integer seed that can be assigned to \code{\link[base:Random]{.Random.seed}}.
+Note that as.list(seq_along(x)) is \emph{not} a valid set of such
+\code{.Random.seed} values.
+\emph{Use this alternative with caution.}
+
 
 In all cases but \code{future.seed = FALSE}, the RNG state of the calling
 R processes after this function returns is guaranteed to be

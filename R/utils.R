@@ -570,6 +570,17 @@ next_random_seed <- function(seed = get_random_seed()) {
   invisible(seed_next)
 }
 
+is_valid_random_seed <- function(seed) {
+  oseed <- get_random_seed()
+  on.exit(set_random_seed(oseed))
+  env <- globalenv()
+  env$.Random.seed <- seed
+  res <- tryCatch({
+    sample.int(n = 1L, size = 1L, replace = FALSE)
+  }, FUN = function(w) w)
+  !inherits(res, "warning")
+}
+
 is_lecyer_cmrg_seed <- function(seed) {
   is.numeric(seed) && length(seed) == 7L &&
     all(is.finite(seed)) && seed[1] == 407L
