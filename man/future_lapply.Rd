@@ -65,9 +65,20 @@ before calling \code{FUN(x[[ii]], ...)}.
 For RNG reproducibility, a fixed seed (integer) may be given, either as a
 full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed for
 \code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
-If \code{future.seed = TRUE}, a L'Ecuyer-CMRG RNG seed is randomly created.
+If \code{future.seed = TRUE}, then \code{\link[base:Random]{.Random.seed}}
+is returned if it holds a L'Ecuyer-CMRG RNG seed, otherwise one is created
+randomly.
+If \code{future.seed = NA}, a L'Ecuyer-CMRG RNG seed is randomly created.
 If none of the function calls \code{FUN(x[[i]], ...)} uses random number
 generation, then \code{future.seed = FALSE} may be used.
+
+In all cases but \code{future.seed = FALSE}, the RNG state of the calling
+R processes after this function returns is guaranteed to be
+"forwarded one step" from the RNG state that was before the call and
+in the same way regardless of \code{future.seed}, \code{future.scheduling}
+and future strategy used.  This is done in order to guarantee that an \R
+script calling \code{future_lapply()} multiple times should be numerically
+reproducible given the same initial seed.
 }
 
 \examples{
