@@ -167,35 +167,32 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
   ## Resolve all elements
   while (length(remaining) > 0) {
-    res <- tryCatch({
-      for (ii in remaining) {
-        obj <- x[[ii]]
-  
-        if (!is.atomic(obj)) {
-          ## If an unresolved future, move on to the next object
-          ## so that future can be resolved in the asynchronously
-          if (inherits(obj, "Future")) {
-            ## Lazy future that is not yet launched?
-            if (obj$state == 'created') obj <- run(obj)
-            if (!resolved(obj)) next
-          }
-  
-          ## In all other cases, try to resolve
-          resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+    for (ii in remaining) {
+      obj <- x[[ii]]
+
+      if (!is.atomic(obj)) {
+        ## If an unresolved future, move on to the next object
+        ## so that future can be resolved in the asynchronously
+        if (inherits(obj, "Future")) {
+          ## Lazy future that is not yet launched?
+          if (obj$state == 'created') obj <- run(obj)
+          if (!resolved(obj)) next
         }
-  
-        ## Assume resolved at this point
-        remaining <- setdiff(remaining, ii)
-        mdebug(" length: %d (resolved future %s)", length(remaining), ii)
-        stopifnot(!anyNA(remaining))
-  
-        if (hasProgress) {
-          done <- total - length(remaining)
-          progress(done, total)
-        }
-      } # for (ii ...)
-    }, error = function(ex) {
-    })
+
+        ## In all other cases, try to resolve
+        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+      }
+
+      ## Assume resolved at this point
+      remaining <- setdiff(remaining, ii)
+      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      stopifnot(!anyNA(remaining))
+
+      if (hasProgress) {
+        done <- total - length(remaining)
+        progress(done, total)
+      }
+    } # for (ii ...)
 
     ## Wait a bit before checking again
     if (length(remaining) > 0) Sys.sleep(sleep)
