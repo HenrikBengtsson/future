@@ -280,7 +280,11 @@ addClusterUUIDs <- function(cl) {
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
     if (is.null(node)) next  ## Happens with dryrun = TRUE
+
+    ## Worker does not use connections?  Then nothing to do.
     con <- node$con
+    if (is.null(con)) next
+    
     uuid <- attr(con, "uuid")
     if (is.null(uuid)) {
       attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
