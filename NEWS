@@ -26,7 +26,7 @@ BUG FIXES:
    This prevented for instance future_lapply() to work with such setups.
 
  o plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
-   would give an instant error due to invalid internal assertion.
+   would give an instant error due to an invalid internal assertion.
 
    
 DEPRECATED AND DEFUNCT:
