@@ -9,7 +9,8 @@
 #' @param future.lazy Specifies whether the futures should be resolved
 #'        lazily or eagerly (default).
 #' 
-#' @param future.seed A logical or an integer (of length one or seven).
+#' @param future.seed A logical or an integer (of length one or seven),
+#'        or a list of \code{length(x)} with pre-generated random seeds.
 #'        For details, see below section.
 #'  
 #' @param future.globals A logical, a character vector, or a named list for
@@ -50,9 +51,29 @@
 #' For RNG reproducibility, a fixed seed (integer) may be given, either as a
 #' full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed for
 #' \code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
-#' If \code{future.seed = TRUE}, a L'Ecuyer-CMRG RNG seed is randomly created.
+#' If \code{future.seed = TRUE}, then \code{\link[base:Random]{.Random.seed}}
+#' is returned if it holds a L'Ecuyer-CMRG RNG seed, otherwise one is created
+#' randomly.
+#' If \code{future.seed = NA}, a L'Ecuyer-CMRG RNG seed is randomly created.
 #' If none of the function calls \code{FUN(x[[i]], ...)} uses random number
 #' generation, then \code{future.seed = FALSE} may be used.
+#'
+#' In addition to the above, it is possible to specify a pre-generated
+#' sequence of RNG seeds as a list such that
+#' \code{length(future.seed) == length(x)} and where each element is an
+#' integer seed that can be assigned to \code{\link[base:Random]{.Random.seed}}.
+#' Note that as.list(seq_along(x)) is \emph{not} a valid set of such
+#' \code{.Random.seed} values.
+#' \emph{Use this alternative with caution.}
+#' 
+#'
+#' In all cases but \code{future.seed = FALSE}, the RNG state of the calling
+#' R processes after this function returns is guaranteed to be
+#' "forwarded one step" from the RNG state that was before the call and
+#' in the same way regardless of \code{future.seed}, \code{future.scheduling}
+#' and future strategy used.  This is done in order to guarantee that an \R
+#' script calling \code{future_lapply()} multiple times should be numerically
+#' reproducible given the same initial seed.
 #'
 #' @example incl/future_lapply.R
 #'
@@ -161,79 +182,81 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   seed <- future.seed
 
-  ## Placeholder for all RNG stream seeds. We pregenerate a seed for each
-  ## elements of 'x' here such that it does not matter what the chunk size
-  ## is or what backend is used. (They'll be NULLs if RNGs are not used).
-  seeds <- vector("list", length = nx)
+  ## Placeholder for all RNG stream seeds.
+  seeds <- NULL
   
-  ## Don't use RNGs?
-  if (is.logical(seed) && !seed) seed <- NULL
+  ## Don't use RNGs? (seed = FALSE)
+  if (is.logical(seed) && !is.na(seed) && !seed) seed <- NULL
 
   # Use RNGs?
   if (!is.null(seed)) {
     mdebug("Generating random seeds ...")
-    
-    ## Use L'Ecuyer-CMRG RNGkind in this function call. Undo afterward.
-    ## NOTE: This will generate a new .Random.seed (also iff missing)
-    orng <- RNGkind("L'Ecuyer-CMRG")[1L]
-    on.exit(RNGkind(orng))
 
-    if (is.logical(seed) && seed) {
-      ## Get current L'Ecuyer-CMRG seed (see comment above)
-      seed <- get(".Random.seed", envir = globalenv())
-    }
+    ## future_lapply() should return with the same RNG state regardless of
+    ## future strategy used. This is be done such that RNG kind is preserved
+    ## and the seed is "forwarded" one step from what it was when this
+    ## function was called. The forwarding is done by generating one random
+    ## number. Note that this approach is also independent on length(x) and
+    ## the diffent FUN() calls.
+    oseed <- next_random_seed()
+    on.exit(set_random_seed(oseed))    
 
-    stopifnot(is.numeric(seed), all(is.finite(seed)))
-    seed <- as.integer(seed)
-
-    ## Passed a L'Ecuyer-CMRG seed or a seed for set.seed()?
-    if (length(seed) == 7) {
-      ## (a) Passed a L'Ecuyer-CMRG seed
-      if (!is.integer(seed) || !all(is.finite(seed)) || seed[1] != 407L) {
-        msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer."
-        mdebug(msg)
-        mdebug(capture.output(print(seed)))
-        stop(msg)
-      }
-      .seed <- seed
-    } else {
-      ## (b) Passed a seed meant for set.seed()
+    ## A pregenerated sequence of random seeds?
+    if (is.list(seed)) {
+      mdebug("Using a pre-define stream of random seeds ...", nx)
       
-      ## Current RNG state
-      .GlobalEnv <- globalenv()
-      oseed <- .GlobalEnv$.Random.seed
+      nseed <- length(seed)
+      if (nseed != nx) {
+        stop("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element in 'x', but length(seed) != length(x): ", nseed, " != ", nx)
+      }
+
+      ## Assert same type of RNG seeds?
+      ns <- unique(unlist(lapply(seed, FUN = length), use.names = FALSE))
+      if (length(ns) != 1) {
+        stop("The elements of the list specified in argument 'seed' are not all of the same lengths (did you really pass RNG seeds?): ", hpaste(ns))
+      }
+
+      ## Did use specify scalar integers as meant for set.seed()?
+      if (ns == 1L) {
+        stop("Argument 'seed' is invalid. Pre-generated random seeds must be valid .Random.seed seeds, which means they should be all integers and consists of two or more elements, not just one.")
+      }
+
+      types <- unlist(lapply(seed, FUN = typeof), use.names = FALSE)
+      if (!all(types == "integer")) {
+        stop("The elements of the list specified in argument 'seed' are not all integers (did you really pass RNG seeds?): ", hpaste(unique(types)))
+      }
+      
+      ## Check if valid random seeds are specified.
+      ## For efficiency, only look at the first one.
+      if (!is_valid_random_seed(seed[[1]])) {
+        stop("The list in argument 'seed' does not seem to hold elements that are valid .Random.seed values: ", capture.output(str(seeds[[1]])))
+      }
+
+      seeds <- seed
+      
+      mdebug("Using a pre-define stream of random seeds ... DONE", nx)
+    } else {
+      mdebug("Generating random seed streams for %d elements ...", nx)
+      
+      ## Generate sequence of _all_ RNG seeds starting with an initial seed
+      ## '.seed' that is based on argument 'seed'.
+      .seed <- as_lecyer_cmrg_seed(seed)
+
+      seeds <- vector("list", length = nx)
+      for (ii in seq_len(nx)) {
+        ## RNG substream seed used in call FUN(x[[ii]], ...):
+        ## This way each future can in turn generate further seeds, also
+        ## recursively, with minimal risk of generating the same seeds as
+        ## another future. This should make it safe to recursively call
+        ## future_lapply(). /HB 2017-01-11
+        seeds[[ii]] <- nextRNGSubStream(.seed)
+        
+        ## Main random seed for next iteration (= ii + 1)
+        .seed <- nextRNGStream(.seed)
+      }
   
-      ## Reset RNG state afterwards?
-      on.exit({
-        ## NOTE: Is this really needed?  Doesn't above RNGkind() guarantee
-        ## it exists?
-        if (is.null(oseed)) {
-           rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-        } else {
-          .GlobalEnv$.Random.seed <- oseed
-        }
-      }, add = TRUE)
-    
-      ## Generate initial L'Ecuyer-CMRG seed.
-      set.seed(seed)
-      .seed <- .GlobalEnv$.Random.seed
+      mdebug("Generating random seed streams for %d elements ... DONE", nx)
     }
-    
-    ## Generate sequence of _all_ RNG seeds needed
-    mdebug("Generating random seed streams for %d elements ...", nx)
-    for (ii in seq_len(nx)) {
-      ## Main random seed for iteration ii
-      .seed <- nextRNGStream(.seed)
-
-      ## RNG substream seed used in call FUN(x[[ii]], ...):
-      ## This way each future can in turn generate further  seeds, also
-      ## recursively, with minimal risk of generating the same seeds as
-      ## another future.  This should make it safe to recursively call
-      ## future_lapply(). /HB 2017-01-11
-      seeds[[ii]] <- nextRNGSubStream(.seed)
-    }
-
-    mdebug("Generating random seed streams for %d elements ... DONE", nx)
     
     mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
@@ -285,19 +308,26 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-    globals_ii["...future.seeds_ii"] <- list(seeds[chunk])
 
-    fs[[ii]] <- future({
-      lapply(seq_along(...future.x_ii), FUN = function(jj) {
-         ...future.x_jj <- ...future.x_ii[[jj]]
-         ...future.seed_jj <- ...future.seeds_ii[[jj]]
-         if (!is.null(...future.seed_jj)) {
-           assign(".Random.seed", ...future.seed_jj, envir = globalenv(), inherits = FALSE)
-         }
-         ...future.FUN(...future.x_jj, ...)
-      })
-    }, envir = envir, lazy = future.lazy, globals = globals_ii)
-
+    ## Using RNG seeds or not?
+    if (is.null(seeds)) {
+      fs[[ii]] <- future({
+        lapply(seq_along(...future.x_ii), FUN = function(jj) {
+           ...future.x_jj <- ...future.x_ii[[jj]]
+           ...future.FUN(...future.x_jj, ...)
+        })
+      }, envir = envir, lazy = future.lazy, globals = globals_ii)
+    } else {
+      globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
+      fs[[ii]] <- future({
+        lapply(seq_along(...future.x_ii), FUN = function(jj) {
+           ...future.x_jj <- ...future.x_ii[[jj]]
+           assign(".Random.seed", ...future.seeds_ii[[jj]], envir = globalenv(), inherits = FALSE)
+           ...future.FUN(...future.x_jj, ...)
+        })
+      }, envir = envir, lazy = future.lazy, globals = globals_ii)
+    }
+    
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))
 
