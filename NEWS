@@ -3,6 +3,11 @@ Package: future
 
 Version: 1.3.0-9000 [2017-03-07]
 
+NEW FEATURES:
+
+ o The default values for arguments 'connectTimeout' and 'timeout' of
+   makeNodePSOCK() can now be controlled via global options.
+
 RANDOM NUMBER GENERATION:
 
  o Now future_lapply() guarantees that the RNG state of the calling R process

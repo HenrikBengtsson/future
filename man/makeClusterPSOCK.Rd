@@ -9,11 +9,13 @@ makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
-  connectTimeout = 2 * 60, timeout = 30 * 24 * 60 * 60, rscript = NULL,
-  homogeneous = NULL, rscript_args = NULL, methods = TRUE,
-  useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
-  rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL,
-  rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE)
+  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60),
+  timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
+  rscript = NULL, homogeneous = NULL, rscript_args = NULL,
+  methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
+  renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE,
+  rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{workers}{The host names of workers (as a character vector) or
