@@ -1,8 +1,18 @@
 Package: future
 ===============
 
-Version: 1.3.0-9000 [2017-01-22]
+Version: 1.3.0-9000 [2017-03-07]
 
+BUG FIXES:
+
+ o nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
+   'cl' is a cluster object created by parallel::makeCluster() etc.
+   This prevented for instance future_lapply() to work with such setups.
+
+ o plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
+   would give an instant error due to invalid internal assertion.
+
+   
 DEPRECATED AND DEFUNCT:
 
  o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
