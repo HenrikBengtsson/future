@@ -47,6 +47,20 @@ for (kk in seq_along(objs)) {
   message(sprintf("objectSize(<%s>) ... DONE", mode(obj)))
 }
 
+message("*** objectSize() - globals with non-trustful length() ...")
+
+length.CantTrustLength <- function(x) length(unclass(x)) + 1L
+
+.length <- future:::.length
+
+x <- structure(as.list(1:3), class = c("CantTrustLength", "list"))
+str(list(n = length(x), n_true = .length(x)))
+stopifnot(length(x) > .length(x))
+size <- objectSize(x)
+print(size)
+
+message("*** objectSize() - globals with non-trustful length() ... DONE")
+
 message("objectSize() ... DONE")
 
 source("incl/end.R")

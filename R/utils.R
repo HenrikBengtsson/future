@@ -477,7 +477,11 @@ objectSize <- function(x, depth = 3L) {
     if (depth <= 0) return(0)
     depth <- depth - 1L
     size <- 0
-    for (kk in seq_along(x)) {
+
+    ## Use the true length that corresponds to what .subset2() uses
+    nx <- .length(x)
+    
+    for (kk in seq_len(nx)) {
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, kk)
@@ -630,3 +634,37 @@ as_lecyer_cmrg_seed <- function(seed) {
   
   stop("Argument 'seed' must be of length 1 or 7 (= 1+6):", capture.output(str(seed)))
 }
+
+
+#' Gets the length of an object without dispatching
+#'
+#' @param x Any R object.
+#'
+#' @return A non-negative integer.
+#'
+#' @details
+#' This function returns \code{length(unclass(x))}, but tries to avoid
+#' calling \code{unclass(x)} unless necessary.
+#' 
+#' @seealso \code{\link{.subset}()} and \code{\link{.subset2}()}.
+#' 
+#' @keywords internal
+#' @rdname private_length
+.length <- function(x) {
+  nx <- length(x)
+  
+  ## Can we trust base::length(x), i.e. is there a risk that there is
+  ## a method that overrides with another definition?
+  classes <- class(x)
+  if (length(classes) == 1L && classes == "list") return(nx)
+
+  ## Identify all length() methods for this object
+  mthds <- sprintf("length.%s", classes)
+  keep <- lapply(mthds, FUN = exists, mode = "function", inherits = TRUE)
+  keep <- unlist(keep, use.names = FALSE)
+
+  ## If found, don't trust them
+  if (any(keep)) nx <- length(unclass(x))
+  
+  nx
+} ## .length()

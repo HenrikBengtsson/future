@@ -17,6 +17,10 @@ RANDOM NUMBER GENERATION:
 
 BUG FIXES:
 
+ o A future that used a global object 'x' of a class that overrides length()
+   would produce an error if length(x) reports more elements than what can
+   be subsetted.
+ 
  o nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
    'cl' is a cluster object created by parallel::makeCluster() etc.
    This prevented for instance future_lapply() to work with such setups.
