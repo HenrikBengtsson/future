@@ -8,6 +8,12 @@ NEW FEATURES:
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
 
+GLOBALS:
+
+ o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
+   and '...' recursively until no new globals are found.  Previously, only
+   the first level of globals were scanned.
+
 RANDOM NUMBER GENERATION:
 
  o Now future_lapply() guarantees that the RNG state of the calling R process

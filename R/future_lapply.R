@@ -114,25 +114,61 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   
       globals <- c("FUN", names(list(...)), "...")
       globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
+      mdebug(" - globals set 1: [%d] %s", length(globals), hpaste(names(globals)))
   
       ## Do we need to scan the globals for for further global variables?
       ns <- lapply(globals, FUN = function(g) environmentName(environment(g)))
       ns <- unlist(ns, use.names = FALSE)
       globalsR <- globals[!ns %in% loadedNamespaces()]
+      mdebug(" - globals set 2: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
+      
       globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
-      if (length(globalsR) > 0) {
+      mdebug(" - globals set 3: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
+
+      globals <- globalsR
+      while (length(globalsR) > 0) {
+        new_globals <- list()
+        
+        namesR <- names(globalsR)
+        mdebug(" - Scanning %s globals (%s) for additional globals: ",
+               length(globalsR), hpaste(sQuote(namesR)))
+        
         for (kk in seq_along(globalsR)) {
           obj <- globalsR[[kk]]
-          globalsT <- globalsOf(obj, envir = envir, mustExist = FALSE)
-          globalsT <- cleanup(globalsT)
-          mdebug(" - globals of %s: %s", sQuote(names(globalsR)[kk]), paste(sQuote(names(globalsT)), collapse = ", "))
-          globals <- c(globals, globalsT)
-        }
-      }
+          env <- environment(obj)  ## (was 'envir' in future 1.3.0)
+          if (is.null(env)) next
+          globalsT <- globalsOf(obj, envir = env, mustExist = FALSE)
+          mdebug("   + global #%d (%s) contains %d additional globals: %s", kk, sQuote(namesR[kk]), length(globalsT), hpaste(sQuote(names(globalsT))))
+          if (length(globalsT) == 0) next
 
-      mdebug(" - globals: %s", paste(sQuote(names(globals)), collapse = ", "))
+          ## Don't add already found globals
+          keep <- !is.element(names(globalsT), namesR)
+          globalsT <- globalsT[keep]
+          if (length(globalsT) == 0) {
+            mdebug("     after filtering already known ones, 0 remain.")
+            next
+          }
+          
+          globalsT <- cleanup(globalsT)
+          if (length(globalsT) == 0) {
+            mdebug("     after filtering missing and those in 'base', 0 remain.")
+            next
+          }
+          mdebug("     after filtering missing and those in 'base', %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
+
+          
+          globals <- c(globals, globalsT)
+          new_globals <- c(new_globals, globalsT)
+        }
+
+        globalsR <- new_globals
+      } ## while()
+      globalsR <- globalsT <- new_globals <- keep <- env <- NULL
+      
+      mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       mdebug("Finding globals ... DONE")
     } else {
+      ## globals = FALSE
       globals <- c("FUN", names(list(...)), "...")
       globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
     }
