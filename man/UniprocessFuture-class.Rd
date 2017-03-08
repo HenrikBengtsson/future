@@ -9,7 +9,7 @@
 \title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  lazy = FALSE, globals = TRUE, local = TRUE, ...)
+  globals = TRUE, lazy = FALSE, local = TRUE, ...)
 
 SequentialFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
@@ -29,12 +29,16 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{globals}{(optional) a named list of global objects needed in order
+for the future to be resolved correctly.}
+
 \item{lazy}{If \code{FALSE} (default), then the setup and validation of
 global variables are done for eager evaluation, otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
-the assignments are done in the calling environment.}
+the assignments are done to the global environment of the \R process
+evaluating the future.}
 
 \item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
 }

@@ -20,15 +20,18 @@
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
+#' @param globals A logical, a character vector,
+#' or a named list for controlling how globals are handled.
+#' For details, see below section.
+#'
+#' @param packages (optional) a character vector specifying packages
+#' to be attached in the R environment evaluating the future.
+#'
 #' @param lazy Specifies whether a future should be resolved
 #' lazily or eagerly.  The default is eager evaluation
 #' (except when the \emph{deprecated} \code{plan(lazy)} is used).
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
-#'
-#' @param globals A logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see below section.
 #'
 #' @param evaluator The actual function that evaluates
 #' the future expression and returns a \link{Future}.
@@ -201,7 +204,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, seed=NULL, globals=TRUE, evaluator=plan("next"), ...) {
+future <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, packages=NULL, lazy=NA, seed=NULL, evaluator=plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
@@ -211,9 +214,9 @@ future <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=NA, seed=NU
   ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
   ## TODO: Remove when lazy() is removed.
   if (is.na(lazy)) {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, seed=seed, globals=globals, ...)
+    future <- evaluator(expr, envir=envir, substitute=FALSE, seed=seed, globals=globals, packages=packages, ...)
   } else {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, ...)
+    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, packages=packages, ...)
   }
 
   ## Assert that a future was returned

@@ -16,6 +16,9 @@
 #' @param future.globals A logical, a character vector, or a named list for
 #'        controlling how globals are handled. For details, see below section.
 #'
+#' @param future.packages (optional) a character vector specifying packages
+#'        to be attached in the R environment evaluating the future.
+#' 
 #' @param future.scheduling Average number of futures ("chunks") per worker.
 #'        If \code{0.0}, then a single future is used to process all elements
 #'        of \code{x}.
@@ -82,7 +85,7 @@
 #' @importFrom utils str
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE, future.seed = TRUE, future.scheduling = 1.0) {
+future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE, future.packages = NULL, future.seed = TRUE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
   
   stopifnot(is.logical(future.lazy))
@@ -106,7 +109,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## The default is to gather globals
   if (is.null(future.globals)) future.globals <- TRUE
 
-  needed_namespaces <- NULL
+  packages <- NULL
   globals <- future.globals
   if (is.logical(globals)) {
     ## Gather all globals?
@@ -126,7 +129,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
       globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
       mdebug(" - preliminary global set #3: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
 
-      needed_namespaces <- NULL
+      packages <- NULL
       globals <- globalsR
       while (length(globalsR) > 0) {
         new_globals <- list()
@@ -171,7 +174,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
           ## Record namespaces that are packages to be attached
           ns <- unique(ns)
           ns <- intersect(ns, loadedNamespaces())
-          needed_namespaces <- c(needed_namespaces, ns)
+          packages <- c(packages, ns)
           if (length(globalsT) == 0) {
             mdebug("     after filtering out those in namespaces, 0 remain.")
             next
@@ -186,11 +189,11 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
       } ## while()
       globalsR <- globalsT <- new_globals <- keep <- env <- NULL
 
-      needed_namespaces <- unique(needed_namespaces)
+      packages <- unique(packages)
       stopifnot(!anyDuplicated(names(globals)))
       
       mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-      mdebug(" - needed namespaces: [%d] %s", length(needed_namespaces), hpaste(sQuote(needed_namespaces)))
+      mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
       mdebug("Finding globals ... DONE")
     } else {
       ## globals = FALSE
@@ -233,15 +236,29 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   names(globals) <- names
 
   if (debug) {
-    mdebug("Globals to be used in all iterations:")
+    mdebug("Globals to be used in all futures:")
     mdebug(paste(capture.output(str(globals)), collapse = "\n"))
-    mdebug("Packages to be attached in all iterations:")
-    mdebug(paste(capture.output(str(needed_namespaces)), collapse = "\n"))
+  }
+
+  
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## 2. Packages
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (!is.null(future.packages)) {
+    stopifnot(is.character(future.packages))
+    future.packages <- unique(future.packages)
+    stopifnot(!anyNA(future.packages), all(nzchar(future.packages)))
+    packages <- unique(c(packages, future.packages))
+  }
+  
+  if (debug) {
+    mdebug("Packages to be attached in all futures:")
+    mdebug(paste(capture.output(str(packages)), collapse = "\n"))
   }
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 2. Reproducible RNG (for sequential and parallel processing)
+  ## 3. Reproducible RNG (for sequential and parallel processing)
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   seed <- future.seed
 
@@ -326,7 +343,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 3. Load balancing ("chunking")
+  ## 4. Load balancing ("chunking")
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.logical(future.scheduling)) {
     if (future.scheduling) {
@@ -356,10 +373,10 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## 4. Create futures
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Add argument placeholders
-  globals <- c(globals, list(...future.packages_to_attach = needed_namespaces, ...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
 
   ## To please R CMD check
-  ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- ...future.packages_to_attach <- NULL
+  ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
   fs <- vector("list", length = length(chunks))
   mdebug("Number of futures (= number of chunks): %d", length(fs))
@@ -375,26 +392,20 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
       fs[[ii]] <- future({
-        if (length(...future.packages_to_attach) > 0) {
-          suppressPackageStartupMessages(lapply(...future.packages_to_attach, FUN = library, character.only = TRUE, quietly = TRUE))
-        }
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
            ...future.FUN(...future.x_jj, ...)
         })
-      }, envir = envir, lazy = future.lazy, globals = globals_ii)
+      }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
     } else {
       globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
       fs[[ii]] <- future({
-        if (length(...future.packages_to_attach) > 0) {
-          suppressPackageStartupMessages(lapply(...future.packages_to_attach, FUN = library, character.only = TRUE, quietly = TRUE))
-        }
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
            assign(".Random.seed", ...future.seeds_ii[[jj]], envir = globalenv(), inherits = FALSE)
            ...future.FUN(...future.x_jj, ...)
         })
-      }, envir = envir, lazy = future.lazy, globals = globals_ii)
+      }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
     }
     
     ## Not needed anymore
