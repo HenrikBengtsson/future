@@ -26,11 +26,6 @@ or a named list for controlling how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for \code{\link{future}()}.}
 
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
-
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 

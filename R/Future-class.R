@@ -21,14 +21,15 @@
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the R environment evaluating the future.
 #'
+#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#'
 #' @param lazy If \code{FALSE} (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
-#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
-#'
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the calling environment.
+#' the assignments are done to the global environment of the \R process
+#' evaluating the future.
 #'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) after the value of the future is collected.
@@ -58,7 +59,7 @@
 #' @importFrom utils capture.output
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NULL, packages=NULL, lazy=FALSE, seed=NULL, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NULL, packages=NULL, seed=NULL, lazy=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {

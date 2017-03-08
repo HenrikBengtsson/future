@@ -4,6 +4,7 @@
 #' and therefore by definition already resolved upon creation.
 #'
 #' @inheritParams Future-class
+#' 
 #' @param \dots Not used.
 #'
 #' @return An object of class \code{ConstantFuture}.

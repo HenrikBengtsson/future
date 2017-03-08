@@ -25,7 +25,8 @@ to be attached in the R environment evaluating the future.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
-the assignments are done in the calling environment.}
+the assignments are done to the global environment of the \R process
+evaluating the future.}
 
 \item{\dots}{Not used.}
 }

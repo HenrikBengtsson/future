@@ -1,23 +1,30 @@
 #' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
+#' 
 #' @param globals (optional) a logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see section 'Globals used by future expressions'
 #' in the help for \code{\link{future}()}.
+#' 
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
+#' 
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
 #' PSOCK cluster nodes to connect back to the master R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
 #' the internal / public IP address of the master R session.
+#' 
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
+#' 
 #' @param master (optional) The hostname or IP address of the master
 #' machine running this node.
+#' 
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
 #' same path to \file{Rscript} as the main R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
@@ -72,7 +79,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, glo
   expr <- gp$expr
   gp <- NULL
 
-  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globals, packages=packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, packages=packages, local=local, gc=gc, persistent=persistent, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 

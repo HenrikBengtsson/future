@@ -6,7 +6,7 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  globals = NULL, packages = NULL, lazy = FALSE, seed = NULL,
+  globals = NULL, packages = NULL, seed = NULL, lazy = FALSE,
   local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
@@ -24,14 +24,15 @@ for the future to be resolved correctly.}
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the R environment evaluating the future.}
 
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+
 \item{lazy}{If \code{FALSE} (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
-
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
-the assignments are done in the calling environment.}
+the assignments are done to the global environment of the \R process
+evaluating the future.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.

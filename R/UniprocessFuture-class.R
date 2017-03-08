@@ -1,8 +1,10 @@
 #' An uniprocess future is a future whose value will be resolved synchronously in the current process
 #'
 #' @inheritParams Future-class
+#' 
 #' @param lazy If \code{FALSE} (default), then the setup and validation of
-#' global variables are done for eager evaluation, otherwise not.
+#'        global variables are done for eager evaluation, otherwise not.
+#' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.
@@ -14,7 +16,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, globals=TRUE, local=TRUE, ...) {
+UniprocessFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, lazy=FALSE, local=TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy) {
