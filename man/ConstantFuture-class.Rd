@@ -6,7 +6,7 @@
 \title{A future with a constant value}
 \usage{
 ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
-  local = FALSE, ...)
+  globals = NULL, packages = NULL, local = FALSE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -16,6 +16,12 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{globals}{(optional) a named list of global objects needed in order
+for the future to be resolved correctly.}
+
+\item{packages}{(optional) a character vector specifying packages
+to be attached in the R environment evaluating the future.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

@@ -5,6 +5,9 @@ Version: 1.3.0-9000 [2017-03-08]
 
 NEW FEATURES:
 
+ o future() and future_lapply() gained argument 'packages' for explicitly
+   specifying packages to be attached when the futures are evaluated.
+
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
 

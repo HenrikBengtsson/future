@@ -34,7 +34,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, packages=NULL, local=!persistent, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
   if ("cluster" %in% names(list(...))) {
     .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
@@ -68,7 +68,7 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent, globals=globals)
   globals <- gp$globals
-  packages <- gp$packages
+  packages <- unique(c(packages, gp$packages))
   expr <- gp$expr
   gp <- NULL
 
@@ -132,8 +132,11 @@ run.ClusterFuture <- function(future, ...) {
 
 
   ## (ii) Attach packages that needs to be attached
+  ##      NOTE: Already take care of by getExpression() of the Future class.
+  ##      However, if we need to get an early error about missing packages,
+  ##      we can get the error here before launching the future.
   packages <- future$packages
-  if (length(packages) > 0) {
+  if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ...",
                       length(packages), hpaste(sQuote(packages)), node_idx)
 
@@ -142,7 +145,7 @@ run.ClusterFuture <- function(future, ...) {
     if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
-
+  
 
   ## (iii) Export globals
   globals <- future$globals

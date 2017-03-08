@@ -32,6 +32,9 @@ is done (or inherits from if \code{local} is TRUE).}
 \item{lazy}{If \code{FALSE} (default), then the setup and validation of
 global variables are done for eager evaluation, otherwise not.}
 
+\item{globals}{(optional) a named list of global objects needed in order
+for the future to be resolved correctly.}
+
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
