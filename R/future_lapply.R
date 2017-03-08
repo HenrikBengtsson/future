@@ -106,6 +106,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## The default is to gather globals
   if (is.null(future.globals)) future.globals <- TRUE
 
+  needed_namespaces <- NULL
   globals <- future.globals
   if (is.logical(globals)) {
     ## Gather all globals?
@@ -114,17 +115,18 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   
       globals <- c("FUN", names(list(...)), "...")
       globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
-      mdebug(" - globals set 1: [%d] %s", length(globals), hpaste(names(globals)))
+      mdebug(" - preliminary global set #1: [%d] %s", length(globals), hpaste(names(globals)))
   
       ## Do we need to scan the globals for for further global variables?
       ns <- lapply(globals, FUN = function(g) environmentName(environment(g)))
       ns <- unlist(ns, use.names = FALSE)
       globalsR <- globals[!ns %in% loadedNamespaces()]
-      mdebug(" - globals set 2: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
+      mdebug(" - preliminary global set #2: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
       
       globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
-      mdebug(" - globals set 3: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
+      mdebug(" - preliminary global set #3: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
 
+      needed_namespaces <- NULL
       globals <- globalsR
       while (length(globalsR) > 0) {
         new_globals <- list()
@@ -141,22 +143,41 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
           mdebug("   + global #%d (%s) contains %d additional globals: %s", kk, sQuote(namesR[kk]), length(globalsT), hpaste(sQuote(names(globalsT))))
           if (length(globalsT) == 0) next
 
+          globalsT <- cleanup(globalsT, drop = c("missing", "base-packages", "primitives", "internals"))
+          if (length(globalsT) == 0) {
+            mdebug("     after filtering out missing, internal, primitive and base-package globals, 0 remain.")
+            next
+          }
+          mdebug("     after filtering out missing, internal, primitive and base-package globals, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
+          
           ## Don't add already found globals
-          keep <- !is.element(names(globalsT), namesR)
+          keep <- !is.element(names(globalsT), c(namesR, names(new_globals)))
           globalsT <- globalsT[keep]
           if (length(globalsT) == 0) {
             mdebug("     after filtering already known ones, 0 remain.")
             next
           }
-          
-          globalsT <- cleanup(globalsT)
+          mdebug("     after filtering already known ones, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
+
+          ## Don't export globals in loaded namespaces, instead make sure
+          ## the corresponding packages are attached.
+          ## (FIXME: Here namespace == package. /HB 2017-03-08)
+          ns <- lapply(globalsT, FUN = function(g) {
+            environmentName(environment(g))
+          })
+          ns <- unlist(ns, use.names = FALSE)
+          globalsT <- globalsT[!ns %in% loadedNamespaces()]
+
+          ## Record namespaces that are packages to be attached
+          ns <- unique(ns)
+          ns <- intersect(ns, loadedNamespaces())
+          needed_namespaces <- c(needed_namespaces, ns)
           if (length(globalsT) == 0) {
-            mdebug("     after filtering missing and those in 'base', 0 remain.")
+            mdebug("     after filtering out those in namespaces, 0 remain.")
             next
           }
-          mdebug("     after filtering missing and those in 'base', %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
-
-          
+          mdebug("     after filtering out those in namespaces, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
+                    
           globals <- c(globals, globalsT)
           new_globals <- c(new_globals, globalsT)
         }
@@ -164,8 +185,12 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
         globalsR <- new_globals
       } ## while()
       globalsR <- globalsT <- new_globals <- keep <- env <- NULL
+
+      needed_namespaces <- unique(needed_namespaces)
+      stopifnot(!anyDuplicated(names(globals)))
       
       mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebug(" - needed namespaces: [%d] %s", length(needed_namespaces), hpaste(sQuote(needed_namespaces)))
       mdebug("Finding globals ... DONE")
     } else {
       ## globals = FALSE
@@ -210,6 +235,8 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   if (debug) {
     mdebug("Globals to be used in all iterations:")
     mdebug(paste(capture.output(str(globals)), collapse = "\n"))
+    mdebug("Packages to be attached in all iterations:")
+    mdebug(paste(capture.output(str(needed_namespaces)), collapse = "\n"))
   }
 
 
@@ -329,10 +356,10 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## 4. Create futures
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Add argument placeholders
-  globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  globals <- c(globals, list(...future.packages_to_attach = needed_namespaces, ...future.x_ii = NULL, ...future.seeds_ii = NULL))
 
   ## To please R CMD check
-  ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
+  ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- ...future.packages_to_attach <- NULL
 
   fs <- vector("list", length = length(chunks))
   mdebug("Number of futures (= number of chunks): %d", length(fs))
@@ -348,6 +375,9 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
       fs[[ii]] <- future({
+        if (length(...future.packages_to_attach) > 0) {
+          suppressPackageStartupMessages(lapply(...future.packages_to_attach, FUN = library, character.only = TRUE, quietly = TRUE))
+        }
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
            ...future.FUN(...future.x_jj, ...)
@@ -356,6 +386,9 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     } else {
       globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
       fs[[ii]] <- future({
+        if (length(...future.packages_to_attach) > 0) {
+          suppressPackageStartupMessages(lapply(...future.packages_to_attach, FUN = library, character.only = TRUE, quietly = TRUE))
+        }
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
            assign(".Random.seed", ...future.seeds_ii[[jj]], envir = globalenv(), inherits = FALSE)
