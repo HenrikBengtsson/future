@@ -3,6 +3,7 @@ source("incl/start.R")
 message("*** future_lapply() and RNGs ...")
 
 options(future.debug = FALSE)
+options(future.debug = TRUE)
 
 strategies <- supportedStrategies()
 

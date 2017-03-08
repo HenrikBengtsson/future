@@ -354,6 +354,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     pkgs <- lapply(strategiesR, FUN=environment)
     pkgs <- lapply(pkgs, FUN=environmentName)
     pkgs <- unique(unlist(pkgs, use.names=FALSE))
+    ## CLEANUP: Only keep those that are loaded in the current session
     pkgs <- intersect(pkgs, loadedNamespaces())
 ##    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
       
