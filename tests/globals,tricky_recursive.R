@@ -91,11 +91,14 @@ for (strategy in strategies) {
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
 
-  ## FIXME: This fails to identify call_my_add() as a global
-##  y2 <- main_futureCall_no_FUN()
-##  str(list(y2 = y2))
-##  stopifnot(identical(y2, y0))
-
+  ## There's a bug in globals (<= 0.8.0) causing it to fail to identify
+  ## call_my_add() as a global.  The bug has been fixed in globals (> 0.8.0).
+  if (packageVersion("globals") > "0.8.0") {
+    y2 <- main_futureCall_no_FUN()
+    str(list(y2 = y2))
+    stopifnot(identical(y2, y0))
+  }
+  
   z <- main_lapply()
   str(list(z = z))
   if (is.null(z0)) z0 <- z
