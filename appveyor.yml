@@ -4,6 +4,8 @@
 # REFERENCES:
 # * AppVeyor CI: https://ci.appveyor.com/
 # * r-appveyor: https://github.com/krlmlr/r-appveyor
+# * r-appveyor functions:
+#   https://raw.github.com/krlmlr/r-appveyor/master/r-travis/scripts/travis-tool.sh
 #
 # Validate your .appveyor.yml file at
 # https://ci.appveyor.com/tools/validate-yaml
@@ -42,7 +44,8 @@ build_script:
   - Rscript -e "c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())"
   - echo Current directory=%CD%
   - travis-tool.sh install_r digest globals listenv markdown R.rsp
-
+  - PKGTYPE=source travis-tool.sh install_r globals
+  
 test_script:
   - travis-tool.sh run_tests
 
