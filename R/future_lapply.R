@@ -100,8 +100,15 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   if (nx == 0) return(list())
 
   debug <- getOption("future.debug", FALSE)
+
+  ## NOTE TO SELF: We'd ideally have a 'future.envir' argument also for
+  ## future_lapply(), cf. future().  However, it's not yet clear to me how
+  ## to do this, because we need to have globalsOf() to search for globals
+  ## from the current environment in order to identify the globals of 
+  ## arguments 'FUN' and '...'. /HB 2017-03-10
+  future.envir <- environment()  ## Not used; just to clarify the above.
   
-  envir <- environment()
+  envir <- future.envir
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 1. Global variables
