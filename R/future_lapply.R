@@ -6,18 +6,18 @@
 #' 
 #' @param ...  (optional) Additional arguments pass to \code{FUN()}.
 #' 
-#' @param future.lazy Specifies whether the futures should be resolved
-#'        lazily or eagerly (default).
-#' 
-#' @param future.seed A logical or an integer (of length one or seven),
-#'        or a list of \code{length(x)} with pre-generated random seeds.
-#'        For details, see below section.
-#'  
 #' @param future.globals A logical, a character vector, or a named list for
 #'        controlling how globals are handled. For details, see below section.
 #'
 #' @param future.packages (optional) a character vector specifying packages
 #'        to be attached in the R environment evaluating the future.
+#' 
+#' @param future.seed A logical or an integer (of length one or seven),
+#'        or a list of \code{length(x)} with pre-generated random seeds.
+#'        For details, see below section.
+#'  
+#' @param future.lazy Specifies whether the futures should be resolved
+#'        lazily or eagerly (default).
 #' 
 #' @param future.scheduling Average number of futures ("chunks") per worker.
 #'        If \code{0.0}, then a single future is used to process all elements
@@ -85,7 +85,7 @@
 #' @importFrom utils str
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE, future.packages = NULL, future.seed = TRUE, future.scheduling = 1.0) {
+future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = NULL, future.seed = TRUE, future.lazy = FALSE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
   
   stopifnot(is.logical(future.lazy))

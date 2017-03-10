@@ -4,8 +4,8 @@
 \alias{future_lapply}
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
-future_lapply(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE,
-  future.packages = NULL, future.seed = TRUE, future.scheduling = 1)
+future_lapply(x, FUN, ..., future.globals = TRUE, future.packages = NULL,
+  future.seed = TRUE, future.lazy = FALSE, future.scheduling = 1)
 }
 \arguments{
 \item{x}{A vector-like object to iterate over.}
@@ -13,9 +13,6 @@ future_lapply(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE,
 \item{FUN}{A function taking at least one argument.}
 
 \item{...}{(optional) Additional arguments pass to \code{FUN()}.}
-
-\item{future.lazy}{Specifies whether the futures should be resolved
-lazily or eagerly (default).}
 
 \item{future.globals}{A logical, a character vector, or a named list for
 controlling how globals are handled. For details, see below section.}
@@ -26,6 +23,9 @@ to be attached in the R environment evaluating the future.}
 \item{future.seed}{A logical or an integer (of length one or seven),
 or a list of \code{length(x)} with pre-generated random seeds.
 For details, see below section.}
+
+\item{future.lazy}{Specifies whether the futures should be resolved
+lazily or eagerly (default).}
 
 \item{future.scheduling}{Average number of futures ("chunks") per worker.
 If \code{0.0}, then a single future is used to process all elements
