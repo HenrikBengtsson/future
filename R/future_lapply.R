@@ -115,81 +115,12 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
     ## Gather all globals?
     if (globals) {
       mdebug("Finding globals ...")
-  
-      globals <- c("FUN", names(list(...)), "...")
-      globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
-      mdebug(" - preliminary global set #1: [%d] %s", length(globals), hpaste(names(globals)))
-  
-      ## Do we need to scan the globals for for further global variables?
-      ns <- lapply(globals, FUN = function(g) environmentName(environment(g)))
-      ns <- unlist(ns, use.names = FALSE)
-      globalsR <- globals[!ns %in% loadedNamespaces()]
-      mdebug(" - preliminary global set #2: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
-      
-      globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
-      mdebug(" - preliminary global set #3: [%d] %s", length(globalsR), hpaste(sQuote(names(globalsR))))
 
-      packages <- NULL
-      globals <- globalsR
-      while (length(globalsR) > 0) {
-        new_globals <- list()
-        
-        namesR <- names(globalsR)
-        mdebug(" - Scanning %s globals (%s) for additional globals: ",
-               length(globalsR), hpaste(sQuote(namesR)))
-        
-        for (kk in seq_along(globalsR)) {
-          obj <- globalsR[[kk]]
-          env <- environment(obj)  ## (was 'envir' in future 1.3.0)
-          if (is.null(env)) next
-          globalsT <- globalsOf(obj, envir = env, mustExist = FALSE)
-          mdebug("   + global #%d (%s) contains %d additional globals: %s", kk, sQuote(namesR[kk]), length(globalsT), hpaste(sQuote(names(globalsT))))
-          if (length(globalsT) == 0) next
-
-          globalsT <- cleanup(globalsT, drop = c("missing", "base-packages", "primitives", "internals"))
-          if (length(globalsT) == 0) {
-            mdebug("     after filtering out missing, internal, primitive and base-package globals, 0 remain.")
-            next
-          }
-          mdebug("     after filtering out missing, internal, primitive and base-package globals, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
-          
-          ## Don't add already found globals
-          keep <- !is.element(names(globalsT), c(namesR, names(new_globals)))
-          globalsT <- globalsT[keep]
-          if (length(globalsT) == 0) {
-            mdebug("     after filtering already known ones, 0 remain.")
-            next
-          }
-          mdebug("     after filtering already known ones, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
-
-          ## Don't export globals in loaded namespaces, instead make sure
-          ## the corresponding packages are attached.
-          ## (FIXME: Here namespace == package. /HB 2017-03-08)
-          ns <- lapply(globalsT, FUN = function(g) {
-            environmentName(environment(g))
-          })
-          ns <- unlist(ns, use.names = FALSE)
-          globalsT <- globalsT[!ns %in% loadedNamespaces()]
-
-          ## Record namespaces that are packages to be attached
-          ns <- unique(ns)
-          ns <- intersect(ns, loadedNamespaces())
-          packages <- c(packages, ns)
-          if (length(globalsT) == 0) {
-            mdebug("     after filtering out those in namespaces, 0 remain.")
-            next
-          }
-          mdebug("     after filtering out those in namespaces, %d remain: %s", length(globalsT), hpaste(sQuote(names(globalsT))))
-                    
-          globals <- c(globals, globalsT)
-          new_globals <- c(new_globals, globalsT)
-        }
-
-        globalsR <- new_globals
-      } ## while()
-      globalsR <- globalsT <- new_globals <- keep <- env <- NULL
-
-      packages <- unique(packages)
+      expr <- do.call(call, args = c(list("FUN"), list(...)))
+      globals <- globalsOf(expr, substitute = FALSE, envir = envir, mustExist = FALSE, recursive = TRUE)
+      mdebug(" - preliminary set of globals: [%d] %s", length(globals), hpaste(names(globals)))
+      packages <- packagesOf(globals)
+      globals <- cleanup(globals)
       stopifnot(!anyDuplicated(names(globals)))
       
       mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))

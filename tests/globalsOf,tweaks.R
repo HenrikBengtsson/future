@@ -33,7 +33,7 @@ for (kk in seq_along(exprs)) {
   expr <- exprs[[kk]]
   cat(sprintf("Expression #%d ('%s'):", kk, name))
   print(expr)
-  globals <- globalsOf(expr, tweak=tweakExpression)
+  globals <- globalsOf(expr, tweak=tweakExpression, recursive=TRUE)
   globals <- cleanup(globals)
   str(globals)
   stopifnot(identical(names(globals), truth[[name]]))

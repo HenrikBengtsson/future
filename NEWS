@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.3.0-9000 [2017-03-08]
+Version: 1.3.0-9000 [2017-03-10]
 
 NEW FEATURES:
 
@@ -15,7 +15,9 @@ GLOBALS:
 
  o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
    and '...' recursively until no new globals are found.  Previously, only
-   the first level of globals were scanned.
+   the first level of globals were scanned.  This is mostly thanks to a bug
+   fix in globals 0.9.0.
+   
 
 RANDOM NUMBER GENERATION:
 

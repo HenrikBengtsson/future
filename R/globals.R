@@ -51,7 +51,8 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                  method=globals.method,
                  unlist=TRUE,
                  ## Passed to globals::globalsByName()
-                 mustExist=mustExist
+                 mustExist=mustExist,
+                 recursive=TRUE
                )
   } else if (is.character(globals)) {
     globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
