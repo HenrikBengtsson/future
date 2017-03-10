@@ -117,7 +117,7 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
       mdebug("Finding globals ...")
 
       expr <- do.call(call, args = c(list("FUN"), list(...)))
-      globals <- globalsOf(expr, substitute = FALSE, envir = envir, mustExist = FALSE)
+      globals <- globalsOf(expr, substitute = FALSE, envir = envir, mustExist = FALSE, recursive = TRUE)
       mdebug(" - preliminary set of globals: [%d] %s", length(globals), hpaste(names(globals)))
       packages <- packagesOf(globals)
       globals <- cleanup(globals)
