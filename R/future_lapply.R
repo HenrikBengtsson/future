@@ -333,10 +333,11 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
-  fs <- vector("list", length = length(chunks))
-  mdebug("Number of futures (= number of chunks): %d", length(fs))
+  nchunks <- length(chunks)
+  fs <- vector("list", length = nchunks)
+  mdebug("Number of futures (= number of chunks): %d", nchunks)
   
-  mdebug("Launching %d futures (chunks) ...", length(fs))
+  mdebug("Launching %d futures (chunks) ...", nchunks)
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
     mdebug("Chunk #%d of %d ...", ii, length(chunks))
@@ -356,7 +357,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
         })
       }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
     } else {
-      mdebug(" - seeds: %s", length(chunk))
+      mdebug(" - seeds: [%d] <seeds>", length(chunk))
       globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
       fs[[ii]] <- future({
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
@@ -370,25 +371,25 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))
 
-    mdebug("Chunk #%d of %d ... DONE", ii, length(chunks))
+    mdebug("Chunk #%d of %d ... DONE", ii, nchunks)
   } ## for (ii ...)
-  mdebug("Launching %d futures (chunks) ... DONE", length(fs))
+  mdebug("Launching %d futures (chunks) ... DONE", nchunks)
 
   ## Not needed anymore
   rm(list = c("chunks", "globals", "envir"))
 
   ## 4. Resolving futures
-  mdebug("Resolving %d futures (chunks) ...", length(fs))
+  mdebug("Resolving %d futures (chunks) ...", nchunks)
   values <- values(fs)
-  mdebug("Resolving %d futures (chunks) ... DONE", length(fs))
+  mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
   
   ## Not needed anymore
   rm(list = "fs")
   
-  mdebug("Reducing values from %d chunks ...", length(values))
+  mdebug("Reducing values from %d chunks ...", nchunks)
   values <- Reduce(c, values)
   names(values) <- names(x)
-  mdebug("Reducing values from %d chunks ... DONE", length(values))
+  mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
   mdebug("future_lapply() ... DONE")
   

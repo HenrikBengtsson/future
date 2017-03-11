@@ -92,6 +92,16 @@ for (cores in 1:min(3L, availableCores())) {
       stopifnot(identical(y, y0))
     }
   }
+
+  
+  message("- future_lapply(x, FUN, ...) for large length(x) ...")
+  a <- 3.14
+  x <- 1:1e6
+  
+  y <- future_lapply(x, FUN = function(z) sqrt(z + a))
+  y <- unlist(y, use.names = FALSE)
+  
+  stopifnot(all.equal(y, sqrt(x + a)))
   
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
