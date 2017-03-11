@@ -18,7 +18,6 @@ matrix:
   include:
     - os: linux
       r: oldrel
-      r_github_packages: HenrikBengtsson/globals
     - os: linux
       r: release
       r_github_packages:
@@ -29,7 +28,6 @@ matrix:
       env: NB='w/ covr' ## Just a label
     - os: linux
       r: devel
-      r_github_packages: HenrikBengtsson/globals
     - os: osx
       r: oldrel
       r_github_packages: HenrikBengtsson/globals
