@@ -457,7 +457,7 @@ objectSize <- function(x, depth = 3L) {
   if (depth <= 0) return(0)
   
   if (!is.list(x) && !is.environment(x)) {
-    size <- object.size(x)
+    size <- unclass(object.size(x))
     x <- environment(x)
   } else {
     size <- 0
@@ -472,6 +472,12 @@ objectSize <- function(x, depth = 3L) {
     FALSE
   }
 
+  objectSize.FutureGlobals <- function(x, ...) {
+    size <- attr(x, "total_size")
+    if (!is.na(size)) return(size)
+    objectSize.list(x, ...)
+  }
+  
   objectSize.list <- function(x, depth) {
     # Nothing to do?
     if (depth <= 0) return(0)
@@ -490,7 +496,7 @@ objectSize <- function(x, depth = 3L) {
       } else if (is.environment(x_kk)) {
         if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
       } else {
-        size <- size + object.size(x_kk)
+        size <- size + unclass(object.size(x_kk))
       }
     }
     size
@@ -536,7 +542,7 @@ objectSize <- function(x, depth = 3L) {
           size <- size + objectSize.env(x_kk, depth = depth)
         }
       } else {
-        size <- size + object.size(x_kk)
+        size <- size + unclass(object.size(x_kk))
       }
     }
   

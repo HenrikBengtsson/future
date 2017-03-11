@@ -80,7 +80,7 @@
 #'
 #' @example incl/future_lapply.R
 #'
-#' @importFrom globals globalsByName globalsOf cleanup
+#' @importFrom globals globalsByName cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
 #' @importFrom utils str
 #' @export
@@ -100,6 +100,8 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   if (nx == 0) return(list())
 
   debug <- getOption("future.debug", FALSE)
+  
+  mdebug("future_lapply() ...")
 
   ## NOTE TO SELF: We'd ideally have a 'future.envir' argument also for
   ## future_lapply(), cf. future().  However, it's not yet clear to me how
@@ -149,18 +151,21 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   } else {
     stop("Invalid argument 'future.globals': ", mode(globals))
   }
-  stopifnot(is.list(globals))
-
-  ## Make sure to preserve 'resolved' attribute
-  resolved <- attr(globals, "resolved")
-
+  globals <- as.FutureGlobals(globals)
+  stopifnot(inherits(globals, "FutureGlobals"))
+  
   names <- names(globals)
   if (!is.element("FUN", names)) {
-    globals <- as.Globals(globals)
     globals <- c(globals, FUN = FUN)
   }
+  
   if (!is.element("...", names)) {
+    if (debug) mdebug("Getting '...' globals ...")
     dotdotdot <- globalsByName("...", envir = envir, mustExist = TRUE)
+    dotdotdot <- as.FutureGlobals(dotdotdot)
+    dotdotdot <- resolve(dotdotdot)
+    attr(dotdotdot, "total_size") <- objectSize(dotdotdot)
+    if (debug) mdebug("Getting '...' globals ... DONE")
     globals <- c(globals, dotdotdot)
   }
 
@@ -315,17 +320,21 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   ## 4. Create futures
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Add argument placeholders
-  globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  globals_extra <- as.FutureGlobals(list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  attr(globals_extra, "resolved") <- TRUE
+  attr(globals_extra, "total_size") <- 0
+  globals <- c(globals, globals_extra)
 
-  ## Make sure to preserve 'resolved' attribute
-  attr(globals, "resolved") <- resolved
+  ## At this point a globals should be resolved and we should know their total size
+  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
 
-  ## To please R CMD check
+    ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
   fs <- vector("list", length = length(chunks))
   mdebug("Number of futures (= number of chunks): %d", length(fs))
   
+  mdebug("Launching %d futures (chunks) ...", length(fs))
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
     mdebug("Chunk #%d of %d ...", ii, length(chunks))
@@ -333,9 +342,11 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
+    stopifnot(attr(globals_ii, "resolved"))
     
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
+      mdebug(" - seeds: <none>")
       fs[[ii]] <- future({
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
@@ -343,6 +354,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
         })
       }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
     } else {
+      mdebug(" - seeds: %s", length(chunk))
       globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
       fs[[ii]] <- future({
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
@@ -358,18 +370,25 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
     mdebug("Chunk #%d of %d ... DONE", ii, length(chunks))
   } ## for (ii ...)
+  mdebug("Launching %d futures (chunks) ... DONE", length(fs))
 
   ## Not needed anymore
   rm(list = c("chunks", "globals", "envir"))
 
   ## 4. Resolving futures
+  mdebug("Resolving %d futures (chunks) ...", length(fs))
   values <- values(fs)
+  mdebug("Resolving %d futures (chunks) ... DONE", length(fs))
   
   ## Not needed anymore
   rm(list = "fs")
   
+  mdebug("Reducing values from %d chunks ...", length(values))
   values <- Reduce(c, values)
   names(values) <- names(x)
+  mdebug("Reducing values from %d chunks ... DONE", length(values))
 
+  mdebug("future_lapply() ... DONE")
+  
   values
 }
