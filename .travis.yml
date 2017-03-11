@@ -29,10 +29,10 @@ matrix:
       r: devel
     - os: osx
       r: oldrel
-      r_github_packages: HenrikBengtsson/globals
+      r_github_packages: HenrikBengtsson/globals@master
     - os: osx
       r: release
-      r_github_packages: HenrikBengtsson/globals
+      r_github_packages: HenrikBengtsson/globals@master
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
