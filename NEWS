@@ -37,7 +37,7 @@ RANDOM NUMBER GENERATION:
    after returning is updated compared to what it was before and in the exact
    same way regardless of 'future.seed' (except FALSE), 'future.scheduling'
    and future strategy used.  This is done in order to guarantee that an R
-   script calling \code{future_lapply()} multiple times should be numerically
+   script calling future_lapply() multiple times should be numerically
    reproducible given the same initial seed.
 
  o It is now possible to specify a pre-generated sequence of .Random.seed
