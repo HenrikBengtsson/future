@@ -5,7 +5,7 @@
 \title{Apply a Function over a List or Vector via Futures}
 \usage{
 future_lapply(x, FUN, ..., future.globals = TRUE, future.packages = NULL,
-  future.seed = TRUE, future.lazy = FALSE, future.scheduling = 1)
+  future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1)
 }
 \arguments{
 \item{x}{A vector-like object to iterate over.}
@@ -60,15 +60,18 @@ passed as globals to each future created as they are always needed.
 
 \section{Reproducible random number generation (RNG)}{
 
-Regardless of type of futures and scheduling ("chunking") strategy, this
-function guarantees to generate the exact same sequence of random
-numbers \emph{given the same initial seed / RNG state}.  This is achieved
-by pregenerating the random seeds for all iterations (over \code{x}) by
-using L'Ecuyer-CMRG RNG streams.  In each iteration, these seeds are set
-before calling \code{FUN(x[[ii]], ...)}.
-For RNG reproducibility, a fixed seed (integer) may be given, either as a
-full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed for
-\code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
+Unless \code{future.seed = FALSE}, this function guarantees to generate
+the exact same sequence of random numbers \emph{given the same initial
+seed / RNG state} - this regardless of type of futures and scheduling
+("chunking") strategy.
+
+RNG reproducibility is achieved by pregenerating the random seeds for all
+iterations (over \code{x}) by using L'Ecuyer-CMRG RNG streams.  In each
+iteration, these seeds are set before calling \code{FUN(x[[ii]], ...)}.
+\emph{Note, for large \code{length(x)} this may introduce a large overhead.}
+As input (\code{future.seed}), a fixed seed (integer) may be given, either
+as a full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed
+generating such a full L'Ecuyer-CMRG seed.
 If \code{future.seed = TRUE}, then \code{\link[base:Random]{.Random.seed}}
 is returned if it holds a L'Ecuyer-CMRG RNG seed, otherwise one is created
 randomly.
@@ -80,10 +83,9 @@ In addition to the above, it is possible to specify a pre-generated
 sequence of RNG seeds as a list such that
 \code{length(future.seed) == length(x)} and where each element is an
 integer seed that can be assigned to \code{\link[base:Random]{.Random.seed}}.
-Note that as.list(seq_along(x)) is \emph{not} a valid set of such
-\code{.Random.seed} values.
-\emph{Use this alternative with caution.}
-
+Use this alternative with caution.
+\emph{Note that as.list(seq_along(x)) is \emph{not} a valid set of such
+\code{.Random.seed} values.}
 
 In all cases but \code{future.seed = FALSE}, the RNG state of the calling
 R processes after this function returns is guaranteed to be

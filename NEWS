@@ -3,6 +3,12 @@ Package: future
 
 Version: 1.3.0-9000 [2017-03-11]
 
+SIGNIFICANT CHANGES:
+
+ o The default for future_lapply() is now to _not_ generate RNG seeds
+   (future.seed = FALSE).  If proper random number generation is needed,
+   use future.seed = TRUE.  For more details, see help page.
+   
 NEW FEATURES:
 
  o future() and future_lapply() gained argument 'packages' for explicitly
