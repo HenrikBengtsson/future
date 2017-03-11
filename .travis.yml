@@ -22,7 +22,7 @@ matrix:
       r: release
       r_github_packages:
         - jimhester/covr
-        - r_github_packages: HenrikBengtsson/globals
+        - HenrikBengtsson/globals
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
