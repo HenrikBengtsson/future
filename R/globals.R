@@ -20,7 +20,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (is.logical(globals) && !globals) {
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
-
+  
   debug <- getOption("future.debug", FALSE)
   
   ## Assert that all identified globals exists when future is created?
@@ -59,7 +59,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   } else if (inherits(globals, "Globals")) {
     ## Keep as is
   } else if (is.list(globals)) {
+    ## Make sure to preserve 'resolved' attribute
+    resolved <- attr(globals, "resolved")
     globals <- as.Globals(globals)
+    attr(globals, "resolved") <- resolves
   } else {
     stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
   }
@@ -69,7 +72,17 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (length(globals) == 0) {
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
-  
+
+  ## Are globals already resolved?
+  t <- attr(globals, "resolved")
+  if (isTRUE(t)) {
+    resolve <- FALSE
+    if (debug) mdebug("Resolving globals: %s (because already done)", resolve)
+  } else {
+    if (debug) mdebug("Resolving globals: %s", resolve)
+  }
+  stopifnot(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
+
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
@@ -110,6 +123,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       valuesF <- NULL  ## Not needed anymore
     }
     idxs <- NULL ## Not needed anymore
+    
     if (debug) mdebug("Resolving globals that are futures ... DONE")
   }
 
@@ -142,6 +156,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
           keep[name] <- FALSE
       }
     }
+
     if (!all(keep)) globals <- globals[keep]
 
     ## Now drop globals that are primitive functions or
@@ -165,6 +180,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (resolve && length(globals) > 0L) {
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value=TRUE, recursive=TRUE)
+    
+    ## Mark all globals resolved
+    attr(globals, "resolved") <- TRUE
+    
     if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
 
