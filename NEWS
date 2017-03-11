@@ -7,6 +7,9 @@ NEW FEATURES:
 
  o future() and future_lapply() gained argument 'packages' for explicitly
    specifying packages to be attached when the futures are evaluated.
+   Note that the default throughout the future package is that all globals
+   and all required packages are automatically identified and gathered, so
+   in most cases those do not have to be specified manually.
 
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
