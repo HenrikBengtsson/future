@@ -139,8 +139,9 @@ BUG FIXES:
    time out already after 40 seconds if all workers were busy.
    New default timeout is 30 days (option 'future.wait.timeout').
 
- o nbrOfWorkers() would give an error for plan(cluster, workers) where
-   workers was a character vector.
+ o nbrOfWorkers() gave an error for plan(cluster, workers) where 'workers'
+   was a character vector or a 'cluster' object of the parallel package.
+   Because of this, future_lapply() gave an error with such setups.
 
  o availableCores(methods = "_R_CHECK_LIMIT_CORES_") would give an error
    if not running R CMD check.
