@@ -14,6 +14,11 @@ NEW FEATURES:
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
 
+ o SPEEDUP: future_lapply() now scans global variables for non-resolved futures
+   (to resolve them) at most once.  This fixes the problem where
+   future_lapply(1:n) could be very slow for large n.
+   
+
 GLOBALS:
 
  o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
