@@ -13,6 +13,7 @@ cache: packages
 warnings_are_errors: false
 r_check_args: --as-cran
 latex: false
+r_github_packages: HenrikBengtsson/globals@master
 
 matrix:
   include:
@@ -29,13 +30,12 @@ matrix:
       r: devel
     - os: osx
       r: oldrel
-      r_github_packages: HenrikBengtsson/globals@master
     - os: osx
       r: release
-      r_github_packages: HenrikBengtsson/globals@master
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
+
 
 notifications:
   email:
