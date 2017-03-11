@@ -79,13 +79,16 @@ Create a Parallel Socket Cluster
 \details{
 The \code{makeClusterPSOCK()} function is similar to \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the \pkg{parallel} package, but provides more flexibility in controlling the setup of the system calls that launch the background R workers and how to connect to external machines.
 
-The default is to use reverse SSH tunneling for workers
-running on other machines.  This avoids the complication of
+The default is to use reverse SSH tunneling (\code{revtunnel = TRUE})
+for workers running on other machines.  This avoids the complication of
 otherwise having to configure port forwarding in firewalls,
 which often requires static IP address but which also most
 users don't have privileges to do themselves.
 It also has the advantage of not having to know the internal
 and / or the public IP address / host name of the master.
+Yet another advantage is that there will be no need for a DNS lookup
+by the worker machines to the master, which may not be configured on
+some compute clusters.
 
 If there is no communication between the master and a
 worker within the \code{timeout} limit, then the corresponding
