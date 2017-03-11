@@ -30,7 +30,6 @@ GLOBALS:
    and '...' recursively until no new globals are found.  Previously, only
    the first level of globals were scanned.  This is mostly thanks to a bug
    fix in globals 0.9.0.
-   
 
 RANDOM NUMBER GENERATION:
 
@@ -49,7 +48,7 @@ BUG FIXES:
  o A future that used a global object 'x' of a class that overrides length()
    would produce an error if length(x) reports more elements than what can
    be subsetted.
- 
+
  o nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
    'cl' is a cluster object created by parallel::makeCluster() etc.
    This prevented for instance future_lapply() to work with such setups.
@@ -57,13 +56,12 @@ BUG FIXES:
  o plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
    would give an instant error due to an invalid internal assertion.
 
-   
 DEPRECATED AND DEFUNCT:
 
  o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
- 
+
  o Previously deprecated assignment operators %<=% and %=>% are now defunct.
- 
+
  o availableCores(method = "mc.cores") is now defunct in favor of "mc.cores+1".
 
 
