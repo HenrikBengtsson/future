@@ -124,14 +124,14 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
       mdebug("Finding globals ...")
 
       expr <- do.call(call, args = c(list("FUN"), list(...)))
-      globals <- globalsOf(expr, substitute = FALSE, envir = envir, mustExist = FALSE, recursive = TRUE)
-      mdebug(" - preliminary set of globals: [%d] %s", length(globals), hpaste(names(globals)))
-      packages <- packagesOf(globals)
-      globals <- cleanup(globals)
-      stopifnot(!anyDuplicated(names(globals)))
+      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=TRUE, resolve=TRUE)
+      globals <- gp$globals
+      packages <- gp$packages
+      gp <- NULL
       
       mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+
       mdebug("Finding globals ... DONE")
     } else {
       ## globals = FALSE
@@ -150,9 +150,13 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     stop("Invalid argument 'future.globals': ", mode(globals))
   }
   stopifnot(is.list(globals))
-  
+
+  ## Make sure to preserve 'resolved' attribute
+  resolved <- attr(globals, "resolved")
+
   names <- names(globals)
   if (!is.element("FUN", names)) {
+    globals <- as.Globals(globals)
     globals <- c(globals, FUN = FUN)
   }
   if (!is.element("...", names)) {
@@ -178,7 +182,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     mdebug(paste(capture.output(str(globals)), collapse = "\n"))
   }
 
-  
+
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 2. Packages
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -313,6 +317,9 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   ## Add argument placeholders
   globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
 
+  ## Make sure to preserve 'resolved' attribute
+  attr(globals, "resolved") <- resolved
+
   ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
@@ -326,7 +333,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-
+    
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
       fs[[ii]] <- future({
