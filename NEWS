@@ -17,12 +17,12 @@ NEW FEATURES:
    and all required packages are automatically identified and gathered, so
    in most cases those do not have to be specified manually.
 
- o The default values for arguments 'connectTimeout' and 'timeout' of
-   makeNodePSOCK() can now be controlled via global options.
-
  o SPEED: future_lapply() scans global variables for non-resolved futures
    (to resolve them) and calculate their total size once.  Previously, each
    chunk (a future) would redo this.
+
+ o The default values for arguments 'connectTimeout' and 'timeout' of
+   makeNodePSOCK() can now be controlled via global options.
 
 GLOBALS:
 
