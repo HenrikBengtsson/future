@@ -18,24 +18,19 @@ matrix:
   include:
     - os: linux
       r: oldrel
-      r_github_packages: HenrikBengtsson/globals
     - os: linux
       r: release
       r_github_packages:
         - jimhester/covr
-        - HenrikBengtsson/globals
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
     - os: linux
       r: devel
-      r_github_packages: HenrikBengtsson/globals
     - os: osx
       r: oldrel
-      r_github_packages: HenrikBengtsson/globals
     - os: osx
       r: release
-      r_github_packages: HenrikBengtsson/globals
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
