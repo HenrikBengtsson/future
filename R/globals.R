@@ -94,9 +94,10 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
-  if (length(globals) > 0 && inherits(globals$`...`, "DotDotDotList")) {
+  if (length(globals) > 0 && inherits(globals[["..."]], "DotDotDotList")) {
+    if (debug) mdebug("Tweak future expression to call with '...' arguments ...")
     ## Missing global '...'?
-    if (!is.list(globals$`...`)) {
+    if (!is.list(globals[["..."]])) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
       if (debug) mdebug(msg)
       stop(msg)
@@ -114,6 +115,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       ## covr: skip=1
       do.call(function(...) a, args=`future.call.arguments`)
     }, list(a=expr))
+    if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
   }
 
   ## Resolve futures and turn into already-resolved "constant" futures

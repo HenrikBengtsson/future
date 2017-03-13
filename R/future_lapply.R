@@ -319,7 +319,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 4. Create futures
+  ## 5. Create futures
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Add argument placeholders
   globals_extra <- as.FutureGlobals(list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
