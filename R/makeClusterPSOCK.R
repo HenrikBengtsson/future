@@ -87,13 +87,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'         representing an established connection to a worker.
 #'
 #' @details
-#' The default is to use reverse SSH tunneling for workers
-#' running on other machines.  This avoids the complication of
+#' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE})
+#' for workers running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls,
 #' which often requires static IP address but which also most
 #' users don't have privileges to do themselves.
 #' It also has the advantage of not having to know the internal
 #' and / or the public IP address / host name of the master.
+#' Yet another advantage is that there will be no need for a DNS lookup
+#' by the worker machines to the master, which may not be configured on
+#' some compute clusters.
 #'
 #' If there is no communication between the master and a
 #' worker within the \code{timeout} limit, then the corresponding
@@ -112,7 +115,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = 2*60, timeout = 30*24*60*60, rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2*60), timeout = getOption("future.makeNodePSOCK.timeout", 30*24*60*60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -280,7 +283,11 @@ addClusterUUIDs <- function(cl) {
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
     if (is.null(node)) next  ## Happens with dryrun = TRUE
+
+    ## Worker does not use connections?  Then nothing to do.
     con <- node$con
+    if (is.null(con)) next
+    
     uuid <- attr(con, "uuid")
     if (is.null(uuid)) {
       attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)

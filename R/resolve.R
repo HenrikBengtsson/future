@@ -91,9 +91,11 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
   
   ## Nothing to do?
   if (recursive < 0) return(x)
+  
+  nx <- .length(x)
 
   ## Nothing to do?
-  if (length(x) == 0) return(x)
+  if (nx == 0) return(x)
 
   x0 <- x
 
@@ -126,8 +128,8 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
     if (is.numeric(idxs)) {
       idxs <- as.numeric(idxs)
-      if (any(idxs < 1 | idxs > length(x))) {
-        stop(sprintf("Indices out of range [1,%d]: %s", length(x), hpaste(idxs)))
+      if (any(idxs < 1 | idxs > nx)) {
+        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
       }
     } else {
       names <- names(x)
@@ -143,13 +145,13 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
     }
 
     x <- x[idxs]
+    nx <- .length(x)
   }
 
   mdebug("resolve() on list ...")
   mdebug(" recursive: %s", recursive)
 
-  ## Everything is considered non-resolved by default
-  nx <- length(x)
+  ## NOTE: Everything is considered non-resolved by default
 
   ## Total number of values to resolve
   total <- nx
@@ -214,8 +216,10 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   ## Nothing to do?
   if (recursive < 0) return(x)
 
+  nx <- .length(x)
+
   ## Nothing to do?
-  if (length(x) == 0) return(x)
+  if (nx == 0) return(x)
 
   ## Subset?
   if (is.null(idxs)) {
@@ -228,7 +232,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
     ## names(x) is only supported in R (>= 3.2.0)
     names <- ls(envir=x, all.names=TRUE)
 
-    ## Sanity check (because length(x) == 0 returns early above)
+    ## Sanity check (because nx == 0 returns early above)
     stopifnot(length(names) > 0)
 
     idxs <- unique(idxs)
@@ -251,7 +255,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   ## Coerce future promises into Future objects
   x0 <- x
   x <- futures(x)
-  nx <- length(x)
+  nx <- .length(x)
   idxs <- ls(envir=x, all.names=TRUE)
   stopifnot(length(idxs) == nx)
 
@@ -304,8 +308,12 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
   ## Nothing to do?
   if (recursive < 0) return(x)
 
+  ## NOTE: Contrary to other implementations that use .length(x), we here
+  ## do need to use generic length() that dispatches on class.
+  nx <- length(x)
+  
   ## Nothing to do?
-  if (length(x) == 0) return(x)
+  if (nx == 0) return(x)
 
   ## Subset?
   if (is.null(idxs)) {
@@ -321,13 +329,13 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
     idxs <- unique(idxs)
 
     if (is.numeric(idxs)) {
-      if (any(idxs < 1 | idxs > length(x))) {
-        stop(sprintf("Indices out of range [1,%d]: %s", length(x), hpaste(idxs)))
+      if (any(idxs < 1 | idxs > nx)) {
+        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
       }
     } else {
       names <- names(x)
       
-      ## Sanity check (because length(x) == 0 returns early above)
+      ## Sanity check (because nx == 0 returns early above)
       stopifnot(length(names) > 0)
 
       idxs <- as.character(idxs)

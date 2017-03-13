@@ -15,14 +15,21 @@
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
-#' @param lazy If \code{FALSE} (default), the future is resolved
-#' eagerly (starting immediately), otherwise not.
+#' @param globals (optional) a named list of global objects needed in order
+#' for the future to be resolved correctly.
+#' 
+#' @param packages (optional) a character vector specifying packages
+#' to be attached in the R environment evaluating the future.
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
+#' @param lazy If \code{FALSE} (default), the future is resolved
+#' eagerly (starting immediately), otherwise not.
+#'
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the calling environment.
+#' the assignments are done to the global environment of the \R process
+#' evaluating the future.
 #'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) after the value of the future is collected.
@@ -52,7 +59,7 @@
 #' @importFrom utils capture.output
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE, seed=NULL, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NULL, packages=NULL, seed=NULL, lazy=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -66,12 +73,25 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, lazy=FALSE
       stop(msg)
     }
   }
+
+  if (!is.null(globals)) {
+    stopifnot(is.list(globals),
+              length(globals) == 0 || inherits(globals, "Globals"))
+  }
+  
+  if (!is.null(packages)) {
+    stopifnot(is.character(packages))
+    packages <- unique(packages)
+    stopifnot(!anyNA(packages), all(nzchar(packages)))
+  }
   
   args <- list(...)
   
   core <- new.env(parent=emptyenv())
   core$expr <- expr
   core$envir <- envir
+  core$globals <- globals
+  core$packages <- packages
   core$owner <- session_uuid(attributes = TRUE)
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
@@ -106,6 +126,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  
   g <- x$globals
   ng <- length(g)
   if (ng > 0) {
@@ -119,6 +140,15 @@ print.Future <- function(x, ...) {
   } else {
     cat("Globals: <none>\n")
   }
+  
+  p <- x$packages
+  np <- length(p)
+  if (np > 0) {
+    cat(sprintf("Packages: %d packages (%s)\n", np, paste(sQuote(p), collapse = ", ")))
+  } else {
+    cat("Packages: <none>\n")
+  }
+  
   if (is.null(x$seed)) {
     cat("L'Ecuyer-CMRG RNG seed: <none>\n")
   } else {
@@ -339,7 +369,57 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 
   ## Pass down the default or the remain set of future strategies?
   strategiesR <- strategies[-1]
-##  mdebug("Number of remaining strategies: %d\n", length(strategiesR))
+  ##  mdebug("Number of remaining strategies: %d\n", length(strategiesR))
+
+  ## Identify packages needed by the futures
+  pkgs <- NULL
+  if (length(strategiesR) > 0L) {
+    ## Identify package namespaces needed for strategies
+    pkgs <- lapply(strategiesR, FUN=environment)
+    pkgs <- lapply(pkgs, FUN=environmentName)
+    pkgs <- unique(unlist(pkgs, use.names=FALSE))
+    ## CLEANUP: Only keep those that are loaded in the current session
+    pkgs <- intersect(pkgs, loadedNamespaces())
+    mdebug("Packages needed by future strategies (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+  } else {
+    mdebug("Packages needed by future strategies (n=0): <none>")
+  }
+
+  pkgsF <- future$packages
+  if (length(pkgsF) > 0) {
+    mdebug("Packages needed by the future expression (n=%d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse=", "))
+    pkgs <- unique(c(pkgs, pkgsF))
+  } else {
+    mdebug("Packages needed by the future expression (n=0): <none>")
+  }
+
+  ## Make sure to load and attach all package needed  
+  if (length(pkgs) > 0L) {
+    ## Sanity check by verifying packages can be loaded already here
+    ## If there is somethings wrong in 'pkgs', we get the error
+    ## already before launching the future.
+    for (pkg in pkgs) loadNamespace(pkg)
+
+    enter <- bquote({
+      ## covr: skip=3
+      .(enter)      
+      ## TROUBLESHOOTING: If the package fails to load, then library()
+      ## suppress that error and generates a generic much less
+      ## informative error message.  Because of this, we load the
+      ## namespace first (to get a better error message) and then
+      ## calls library(), which attaches the package. /HB 2016-06-16
+      ## NOTE: We use local() here such that 'pkg' is not assigned
+      ##       to the future environment. /HB 2016-07-03
+      local({
+        for (pkg in .(pkgs)) {
+          loadNamespace(pkg)
+          library(pkg, character.only=TRUE)
+        }
+      })
+    })
+  }
+
+  ## Make sure to set all nested future strategies needed
   if (length(strategiesR) == 0L) {
 ##    mdebug("Set plan('default') inside future")
     ## Use default future strategy
@@ -348,40 +428,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
       .(enter)
       future::plan("default", .cleanup=FALSE, .init=FALSE)
     })
-  } else {
-##    mdebug("Set plan(<remaining strategies>) inside future")
-    ## Identify package namespaces for strategies
-    pkgs <- lapply(strategiesR, FUN=environment)
-    pkgs <- lapply(pkgs, FUN=environmentName)
-    pkgs <- unique(unlist(pkgs, use.names=FALSE))
-    pkgs <- intersect(pkgs, loadedNamespaces())
-##    mdebug("Packages to be loaded by expression (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
-      
-    if (length(pkgs) > 0L) {
-      ## Sanity check by verifying packages can be loaded already here
-      ## If there is somethings wrong in 'pkgs', we get the error
-      ## already before launching the future.
-      for (pkg in pkgs) loadNamespace(pkg)
-  
-      enter <- bquote({
-        ## covr: skip=3
-        .(enter)      
-        ## TROUBLESHOOTING: If the package fails to load, then library()
-        ## suppress that error and generates a generic much less
-        ## informative error message.  Because of this, we load the
-        ## namespace first (to get a better error message) and then
-        ## calls library(), which attaches the package. /HB 2016-06-16
-        ## NOTE: We use local() here such that 'pkg' is not assigned
-        ##       to the future environment. /HB 2016-07-03
-        local({
-          for (pkg in .(pkgs)) {
-            loadNamespace(pkg)
-            library(pkg, character.only=TRUE)
-          }
-        })
-      })
-    }
-  
+  } else {    
     ## Pass down future strategies
     enter <- bquote({
       ## covr: skip=2

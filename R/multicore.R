@@ -51,11 +51,8 @@
 #'
 #' @export
 multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
-  ## BACKWARD COMPATIBILITY
-  args <- list(...)
-  if ("maxCores" %in% names(args)) {
-    workers <- args$maxCores
-    .Deprecated(msg="Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
+  if ("maxCores" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)
@@ -156,7 +153,7 @@ requestCore <- function(await, workers=availableCores(), timeout = getOption("fu
   stopifnot(is.finite(timeout), timeout >= 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
-  mdebug(sprintf("requestCore(): workers = %d", workers))
+  mdebug("requestCore(): workers = %d", workers)
 
   ## No additional cores available?
   if (workers == 1L) {
@@ -175,7 +172,7 @@ requestCore <- function(await, workers=availableCores(), timeout = getOption("fu
     finished <- (used < workers)
     if (finished) break
 
-    mdebug(sprintf("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers))
+    mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
 
     ## Wait
     Sys.sleep(interval)

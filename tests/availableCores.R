@@ -43,12 +43,6 @@ res <- try(availableCores(methods="FOO_BAR_ENV"), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 
-## Deprecated
-res <- tryCatch(availableCores(methods="mc.cores"), warning=function(w) w)
-print(res)
-stopifnot(inherits(res, "warning"))
-
-
 message("*** Internal detectCores() ...")
 
 ## Option 'future.availableCores.system'

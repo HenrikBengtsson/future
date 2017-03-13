@@ -61,6 +61,16 @@ message(sprintf("nbrOfWorkers: %g", n))
 stopifnot(n >= 0, is.infinite(n))
 
 
+message("Type of future: cluster with workers = <cluster object>")
+
+workers <- makeClusterPSOCK(2L)
+print(workers)
+plan(cluster, workers = workers)
+n <- nbrOfWorkers()
+message(sprintf("nbrOfWorkers: %g", n))
+stopifnot(n == length(workers))
+
+
 message("*** nbrOfWorkers() ... DONE")
 
 source("incl/end.R")

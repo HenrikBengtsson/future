@@ -37,11 +37,8 @@
 #'
 #' @export
 cluster <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, persistent=FALSE, workers=availableWorkers(), user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
-  ## BACKWARD COMPATIBILITY
-  args <- list(...)
-  if ("cluster" %in% names(args)) {
-    workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
+  if ("cluster" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)

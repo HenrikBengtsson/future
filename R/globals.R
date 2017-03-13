@@ -20,8 +20,9 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (is.logical(globals) && !globals) {
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
-
+  
   debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("getGlobalsAndPackages() ...")
   
   ## Assert that all identified globals exists when future is created?
   if (persistent) {
@@ -41,6 +42,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## Alt 1. Identify globals based on expr, envir and tweak
   if (is.logical(globals)) {
     stopifnot(length(globals) == 1, !is.na(globals))
+    if (debug) mdebug("Searching for globals ...")
     ## Algorithm for identifying globals
     globals.method <- getOption("future.globals.method", "ordered")
     globals <- globalsOf(
@@ -51,30 +53,51 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
                  method=globals.method,
                  unlist=TRUE,
                  ## Passed to globals::globalsByName()
-                 mustExist=mustExist
+                 mustExist=mustExist,
+                 recursive=TRUE
                )
+    if (debug) mdebug("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebug("Searching for globals ... DONE")
   } else if (is.character(globals)) {
+    if (debug) mdebug("Retrieving globals ...")
     globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
+    if (debug) mdebug("- globals retrieved: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebug("Retrieving globals ... DONE")
   } else if (inherits(globals, "Globals")) {
-    ## Keep as is
+    if (debug) mdebug("- globals passed as-is: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else if (is.list(globals)) {
-    globals <- as.Globals(globals)
+    if (debug) mdebug("- globals passed as-list: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else {
     stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
   }
-  stopifnot(inherits(globals, "Globals"))
+  ## Make sure to preserve 'resolved' attribute
+  globals <- as.FutureGlobals(globals)
+  stopifnot(inherits(globals, "FutureGlobals"))
 
   ## Nothing more to do?
   if (length(globals) == 0) {
+    if (debug) mdebug("- globals: [0] <none>")
+    if (debug) mdebug("getGlobalsAndPackages() ... DONE")
     return(list(expr=expr, globals=list(), packages=character(0)))
   }
-  
+
+  ## Are globals already resolved?
+  t <- attr(globals, "resolved")
+  if (isTRUE(t)) {
+    resolve <- FALSE
+    if (debug) mdebug("Resolving globals: %s (because already done)", resolve)
+  } else {
+    if (debug) mdebug("Resolving globals: %s", resolve)
+  }
+  stopifnot(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
+
   exprOrg <- expr
 
   ## Tweak expression to be called with global ... arguments?
-  if (length(globals) > 0 && inherits(globals$`...`, "DotDotDotList")) {
+  if (length(globals) > 0 && inherits(globals[["..."]], "DotDotDotList")) {
+    if (debug) mdebug("Tweak future expression to call with '...' arguments ...")
     ## Missing global '...'?
-    if (!is.list(globals$`...`)) {
+    if (!is.list(globals[["..."]])) {
       msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
       if (debug) mdebug(msg)
       stop(msg)
@@ -92,6 +115,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
       ## covr: skip=1
       do.call(function(...) a, args=`future.call.arguments`)
     }, list(a=expr))
+    if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
   }
 
   ## Resolve futures and turn into already-resolved "constant" futures
@@ -99,17 +123,24 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## recursively try to resolve everything in every global which may
   ## or may not point to packages (include base R package)
   if (resolve && length(globals) > 0L) {
-    if (debug) mdebug("Resolving globals that are futures ...")
-    idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
-    if (debug) mdebug("Number of global futures: %d", length(idxs))
-    if (length(idxs) > 0) {
-      if (debug) mdebug("Global futures: %s", hpaste(sQuote(names(globals[idxs]))))
-      valuesF <- values(globals[idxs])
-      globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
-      valuesF <- NULL  ## Not needed anymore
+    if (debug) mdebug("Resolving any globals that are futures ...")
+    globals <- as.FutureGlobals(globals)
+
+    ## Unless already resolved, perform a shallow resolve
+    if (attr(globals, "resolved")) {
+      idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
+      if (debug) mdebug("Number of global futures: %d", length(idxs))
+      
+      ## Nothing to do?
+      if (length(idxs) > 0) {
+        if (debug) mdebug("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
+        valuesF <- values(globals[idxs])
+        globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
+      }
     }
-    idxs <- NULL ## Not needed anymore
-    if (debug) mdebug("Resolving globals that are futures ... DONE")
+
+    if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebug("Resolving any globals that are futures ... DONE")
   }
 
 
@@ -141,17 +172,13 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
           keep[name] <- FALSE
       }
     }
+
     if (!all(keep)) globals <- globals[keep]
 
     ## Now drop globals that are primitive functions or
     ## that are part of the base packages, which now are
     ## part of 'pkgs' if needed.
     globals <- cleanup(globals)
-
-    ## Nothing more to do?
-    if (length(globals) == 0) {
-      return(list(expr=expr, globals=list(), packages=pkgs))
-    }
   }
 
 
@@ -164,6 +191,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (resolve && length(globals) > 0L) {
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value=TRUE, recursive=TRUE)
+    if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
 
@@ -175,13 +203,12 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
     stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
     
-    if (is.finite(maxSizeOfGlobals) || debug) {
-      sizes <- lapply(globals, FUN=objectSize)
-      sizes <- unlist(sizes, use.names=TRUE)
-      totalExportSize <- sum(sizes, na.rm=TRUE)
-      if (debug) mdebug("%d global objects identified with a total size of %s (%s bytes)", length(globals), asIEC(totalExportSize), totalExportSize)
+    if (is.finite(maxSizeOfGlobals)) {
+      total_size <- objectSize(globals)
+      attr(globals, "total_size") <- total_size
+      if (debug) mdebug("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
   
-      if (totalExportSize > maxSizeOfGlobals) {
+      if (total_size > maxSizeOfGlobals) {
         n <- length(sizes)
         o <- order(sizes, decreasing=TRUE)[1:3]
         o <- o[is.finite(o)]
@@ -189,7 +216,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
         classes <- lapply(globals[o], FUN=mode)
         classes <- unlist(classes, use.names=FALSE)
         largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-        msg <- sprintf("The total size of all global objects that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", sQuote(hexpr(exprOrg)), asIEC(totalExportSize), asIEC(maxSizeOfGlobals))
+        msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSizeOfGlobals))
         if (n == 1) {
           fmt <- "%s There is one global: %s."
         } else if (n == 2) {
@@ -202,7 +229,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
         msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
         if (debug) mdebug(msg)
         stop(msg)
-      } ## if (totalExportSize > ...)
+      } ## if (total_size > ...)
     }
   } ## if (length(globals) > 0)
 
@@ -229,5 +256,11 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     pkgs <- pkgs[isAttached]
   }
 
+  if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+  if (debug) mdebug("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
+  if (debug) mdebug("getGlobalsAndPackages() ... DONE")
+
+  stopifnot(inherits(globals, "FutureGlobals"))
+  
   list(expr=expr, globals=globals, packages=pkgs)
 } ## getGlobalsAndPackages()

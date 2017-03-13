@@ -8,9 +8,9 @@
 \title{A cluster future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
 ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  local = !persistent, globals = TRUE, gc = FALSE, persistent = FALSE,
-  workers = NULL, user = NULL, master = NULL, revtunnel = TRUE,
-  homogeneous = TRUE, ...)
+  globals = TRUE, packages = NULL, local = !persistent, gc = FALSE,
+  persistent = FALSE, workers = NULL, user = NULL, master = NULL,
+  revtunnel = TRUE, homogeneous = TRUE, ...)
 }
 \arguments{
 \item{expr}{An R \link[base]{expression}.}
@@ -20,11 +20,6 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
-
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
 
 \item{globals}{(optional) a logical, a character vector,
 or a named list for controlling how globals are handled.

@@ -1,6 +1,70 @@
 Package: future
 ===============
 
+Version: 1.4.0 [2017-03-12]
+
+SIGNIFICANT CHANGES:
+
+ o The default for future_lapply() is now to _not_ generate RNG seeds
+   (future.seed = FALSE).  If proper random number generation is needed,
+   use future.seed = TRUE.  For more details, see help page.
+   
+NEW FEATURES:
+
+ o future() and future_lapply() gained argument 'packages' for explicitly
+   specifying packages to be attached when the futures are evaluated.
+   Note that the default throughout the future package is that all globals
+   and all required packages are automatically identified and gathered, so
+   in most cases those do not have to be specified manually.
+
+ o SPEED: future_lapply() scans global variables for non-resolved futures
+   (to resolve them) and calculate their total size once.  Previously, each
+   chunk (a future) would redo this.
+
+ o The default values for arguments 'connectTimeout' and 'timeout' of
+   makeNodePSOCK() can now be controlled via global options.
+
+GLOBALS:
+
+ o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
+   and '...' recursively until no new globals are found.  Previously, only
+   the first level of globals were scanned.  This is mostly thanks to a bug
+   fix in globals 0.9.0.
+
+RANDOM NUMBER GENERATION:
+
+ o Now future_lapply() guarantees that the RNG state of the calling R process
+   after returning is updated compared to what it was before and in the exact
+   same way regardless of 'future.seed' (except FALSE), 'future.scheduling'
+   and future strategy used.  This is done in order to guarantee that an R
+   script calling future_lapply() multiple times should be numerically
+   reproducible given the same initial seed.
+
+ o It is now possible to specify a pre-generated sequence of .Random.seed
+   seeds to be used for each FUN(x[i], ...) call in future_lapply(x, FUN, ...).
+
+BUG FIXES:
+
+ o A future that used a global object 'x' of a class that overrides length()
+   would produce an error if length(x) reports more elements than what can
+   be subsetted.
+
+ o nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
+   'cl' is a cluster object created by parallel::makeCluster() etc.
+   This prevented for instance future_lapply() to work with such setups.
+
+ o plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
+   would give an instant error due to an invalid internal assertion.
+
+DEPRECATED AND DEFUNCT:
+
+ o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
+
+ o Previously deprecated assignment operators %<=% and %=>% are now defunct.
+
+ o availableCores(method = "mc.cores") is now defunct in favor of "mc.cores+1".
+
+
 Version: 1.3.0 [2017-01-18]
 
 SIGNIFICANT CHANGES:
@@ -11,6 +75,9 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ o Renamed 'eager' futures to 'sequential', e.g. plan(sequential).
+   The 'eager' futures will be deprecated in an upcoming release.
+   
  o Added support for controlling whether a future is resolved eagerly
    or lazily when creating the future, e.g. future(..., lazy = TRUE)
    futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
@@ -80,8 +147,9 @@ BUG FIXES:
    time out already after 40 seconds if all workers were busy.
    New default timeout is 30 days (option 'future.wait.timeout').
 
- o nbrOfWorkers() would give an error for plan(cluster, workers) where
-   workers was a character vector.
+ o nbrOfWorkers() gave an error for plan(cluster, workers) where 'workers'
+   was a character vector or a 'cluster' object of the parallel package.
+   Because of this, future_lapply() gave an error with such setups.
 
  o availableCores(methods = "_R_CHECK_LIMIT_CORES_") would give an error
    if not running R CMD check.
@@ -309,7 +377,7 @@ NEW FEATURES:
    plan(multiprocess, gc=TRUE).  The developer can control this using
    future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
 
- o SPEEDUP: Significantly decreased the overhead of creating a future,
+ o SPEED: Significantly decreased the overhead of creating a future,
    particularly multicore futures.
     
 BUG FIXES: 

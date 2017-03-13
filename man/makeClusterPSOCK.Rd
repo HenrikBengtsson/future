@@ -9,11 +9,13 @@ makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
-  connectTimeout = 2 * 60, timeout = 30 * 24 * 60 * 60, rscript = NULL,
-  homogeneous = NULL, rscript_args = NULL, methods = TRUE,
-  useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
-  rshcmd = "ssh", user = NULL, revtunnel = TRUE, rshopts = NULL,
-  rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE)
+  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60),
+  timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
+  rscript = NULL, homogeneous = NULL, rscript_args = NULL,
+  methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
+  renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE,
+  rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{workers}{The host names of workers (as a character vector) or
@@ -77,13 +79,16 @@ Create a Parallel Socket Cluster
 \details{
 The \code{makeClusterPSOCK()} function is similar to \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the \pkg{parallel} package, but provides more flexibility in controlling the setup of the system calls that launch the background R workers and how to connect to external machines.
 
-The default is to use reverse SSH tunneling for workers
-running on other machines.  This avoids the complication of
+The default is to use reverse SSH tunneling (\code{revtunnel = TRUE})
+for workers running on other machines.  This avoids the complication of
 otherwise having to configure port forwarding in firewalls,
 which often requires static IP address but which also most
 users don't have privileges to do themselves.
 It also has the advantage of not having to know the internal
 and / or the public IP address / host name of the master.
+Yet another advantage is that there will be no need for a DNS lookup
+by the worker machines to the master, which may not be configured on
+some compute clusters.
 
 If there is no communication between the master and a
 worker within the \code{timeout} limit, then the corresponding

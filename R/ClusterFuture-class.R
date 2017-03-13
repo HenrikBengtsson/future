@@ -1,23 +1,30 @@
 #' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
+#' 
 #' @param globals (optional) a logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see section 'Globals used by future expressions'
 #' in the help for \code{\link{future}()}.
+#' 
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
+#' 
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
 #' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
 #' PSOCK cluster nodes to connect back to the master R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
 #' the internal / public IP address of the master R session.
+#' 
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
+#' 
 #' @param master (optional) The hostname or IP address of the master
 #' machine running this node.
+#' 
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
 #' same path to \file{Rscript} as the main R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
@@ -34,19 +41,15 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, local=!persistent, globals=TRUE, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
-  defaultCluster <- importParallel("defaultCluster")
-
-  ## BACKWARD COMPATIBILITY
-  args <- list(...)
-  if ("cluster" %in% names(args)) {
-    workers <- args$cluster
-    .Deprecated(msg="Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
+ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=TRUE, packages=NULL, local=!persistent, gc=FALSE, persistent=FALSE, workers=NULL, user=NULL, master=NULL, revtunnel=TRUE, homogeneous=TRUE, ...) {
+  if ("cluster" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)
 
   if (is.null(workers)) {
+    defaultCluster <- importParallel("defaultCluster")
     workers <- defaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers=workers, user=user, master=master, revtunnel=revtunnel, homogeneous=homogeneous)
@@ -72,11 +75,11 @@ ClusterFuture <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, loc
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir=envir, persistent=persistent, globals=globals)
   globals <- gp$globals
-  packages <- gp$packages
+  packages <- unique(c(packages, gp$packages))
   expr <- gp$expr
   gp <- NULL
 
-  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, local=local, gc=gc, persistent=persistent, globals=globals, packages=packages, workers=workers, node=NA_integer_, ...)
+  f <- MultiprocessFuture(expr=expr, envir=envir, substitute=FALSE, globals=globals, packages=packages, local=local, gc=gc, persistent=persistent, workers=workers, node=NA_integer_, ...)
   structure(f, class=c("ClusterFuture", class(f)))
 }
 
@@ -105,13 +108,13 @@ run.ClusterFuture <- function(future, ...) {
 
 
   ## Next available cluster node
-  node <- requestNode(await=function() {
+  node_idx <- requestNode(await=function() {
     FutureRegistry(reg, action="collect-first")
   }, workers=workers)
-  future$node <- node
+  future$node <- node_idx
 
   ## Cluster node to use
-  cl <- workers[node]
+  cl <- workers[node_idx]
 
 
   ## WORKAROUND: When running covr::package_coverage(), the
@@ -136,24 +139,27 @@ run.ClusterFuture <- function(future, ...) {
 
 
   ## (ii) Attach packages that needs to be attached
+  ##      NOTE: Already take care of by getExpression() of the Future class.
+  ##      However, if we need to get an early error about missing packages,
+  ##      we can get the error here before launching the future.
   packages <- future$packages
-  if (length(packages) > 0) {
+  if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ...",
-                      length(packages), hpaste(sQuote(packages)), node)
+                      length(packages), hpaste(sQuote(packages)), node_idx)
 
     clusterCall(cl, fun=requirePackages, packages)
 
     if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
-                      length(packages), hpaste(sQuote(packages)), node)
+                      length(packages), hpaste(sQuote(packages)), node_idx)
   }
-
+  
 
   ## (iii) Export globals
   globals <- future$globals
   if (length(globals) > 0) {
     if (debug) {
       total_size <- asIEC(objectSize(globals))
-      mdebug("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node)
+      mdebug("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
     }
     for (name in names(globals)) {
       ## For instance sendData.SOCKnode(...) may generate warnings
@@ -164,15 +170,15 @@ run.ClusterFuture <- function(future, ...) {
       value <- globals[[name]]
       if (debug) {
         size <- asIEC(objectSize(value))
-        mdebug("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node)
+        mdebug("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node_idx)
       }
       suppressWarnings({
         clusterCall(cl, fun=gassign, name, value)
       })
-      if (debug) mdebug("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node)
+      if (debug) mdebug("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node_idx)
       value <- NULL
     }
-    if (debug) mdebug("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node)
+    if (debug) mdebug("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
   }
   ## Not needed anymore
   globals <- NULL
@@ -202,19 +208,29 @@ resolved.ClusterFuture <- function(x, timeout=0.2, ...) {
   assertOwner(x)
 
   workers <- x$workers
-  node <- x$node
-  cl <- workers[node]
+  node_idx <- x$node
+  cl <- workers[node_idx]
 
-  ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may
-  ## result in infinite waiting, cf. 
-  ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073218.html
-  if (.Platform$OS.type != "windows") {
-    timeout <- round(timeout, digits = 0L)
-  }
-  
   ## Check if workers socket connection is available for reading
-  con <- cl[[1]]$con
-  res <- socketSelect(list(con), write=FALSE, timeout=timeout)
+  node <- cl[[1]]
+
+  ## FIXME: This assumes that the worker has a connection, which
+  ## is _not_ the case for MPI clusters.  /HB 2017-03-06
+  con <- node$con
+  if (!is.null(con)) {
+    ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may
+    ## result in infinite waiting, cf. 
+    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073218.html
+    if (.Platform$OS.type != "windows") {
+      timeout <- round(timeout, digits = 0L)
+    }
+    res <- socketSelect(list(con), write=FALSE, timeout=timeout)
+  } else {
+    ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
+    warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
+    value(x, signal = FALSE)
+    res <- TRUE
+  }
 
   ## Signal conditions early? (happens only iff requested)
   if (res) signalEarly(x, ...)
@@ -240,8 +256,8 @@ value.ClusterFuture <- function(future, ...) {
   recvResult <- importParallel("recvResult")
 
   workers <- future$workers
-  node <- future$node
-  cl <- workers[node]
+  node_idx <- future$node
+  cl <- workers[node_idx]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
@@ -252,18 +268,25 @@ value.ClusterFuture <- function(future, ...) {
 
   if (inherits(ack, "simpleError")) {
   
-    ## If the connection has changed, report on that!
-    msg <- check_connection_uuid(cl[[1]], future = future)
-    if (!is.null(msg)) {
-      on_failure <- getOption("future.cluster.invalidConnection", "error")
-      if (on_failure == "error") {
-        stop(FutureError(msg, future=future))
+    ## If the worker uses a connection and that has changed, report on that!
+    node <- cl[[1]]
+    if (inherits(node$con, "connection")) {
+      msg <- check_connection_uuid(node, future = future)
+      if (!is.null(msg)) {
+        on_failure <- getOption("future.cluster.invalidConnection", "error")
+        if (on_failure == "error") {
+          stop(FutureError(msg, future=future))
+        }
+        warning(msg)
+        return(sprintf("EXCEPTIONAL ERROR: %s", msg))
       }
-      warning(msg)
-      return(sprintf("EXCEPTIONAL ERROR: %s", msg))
     }
-    
-    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d on %s. ", class(future)[1], node, sQuote(cl[[1]]$host))
+
+    ## AD HOC: This assumes that the worker has a hostname, which is not
+    ## the case for MPI workers. /HB 2017-03-07
+    info <- node$host
+    info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
+    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
     ex <- FutureError(msg, call=ack$call, future=future)
     stop(ex)
@@ -342,7 +365,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
     finished <- (used < total)
     if (finished) break
 
-    mdebug(sprintf("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total))
+    mdebug("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
 
     ## Wait
     Sys.sleep(interval)
@@ -370,10 +393,10 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   ## Sanity check
   stopifnot(any(avail))
 
-  node <- which(avail)[1L]
-  stopifnot(is.numeric(node), is.finite(node), node >= 1)
+  node_idx <- which(avail)[1L]
+  stopifnot(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
 
-  node
+  node_idx
 }
 
 
@@ -383,6 +406,9 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
 check_connection_uuid <- function(worker, future, on_failure = "error") {
   con <- worker$con
+  ## Not a worker with a connection
+  if (!inherits(con, "connection")) return(NULL)
+  
   uuid <- attr(con, "uuid")
   uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
   if (uuid_now == uuid) return(NULL) 

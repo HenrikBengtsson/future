@@ -6,15 +6,19 @@
 #' 
 #' @param ...  (optional) Additional arguments pass to \code{FUN()}.
 #' 
-#' @param future.lazy Specifies whether the futures should be resolved
-#'        lazily or eagerly (default).
-#' 
-#' @param future.seed A logical or an integer (of length one or seven).
-#'        For details, see below section.
-#'  
 #' @param future.globals A logical, a character vector, or a named list for
 #'        controlling how globals are handled. For details, see below section.
 #'
+#' @param future.packages (optional) a character vector specifying packages
+#'        to be attached in the R environment evaluating the future.
+#' 
+#' @param future.seed A logical or an integer (of length one or seven),
+#'        or a list of \code{length(x)} with pre-generated random seeds.
+#'        For details, see below section.
+#'  
+#' @param future.lazy Specifies whether the futures should be resolved
+#'        lazily or eagerly (default).
+#' 
 #' @param future.scheduling Average number of futures ("chunks") per worker.
 #'        If \code{0.0}, then a single future is used to process all elements
 #'        of \code{x}.
@@ -41,27 +45,49 @@
 #' passed as globals to each future created as they are always needed.
 #'
 #' @section Reproducible random number generation (RNG):
-#' Regardless of type of futures and scheduling ("chunking") strategy, this
-#' function guarantees to generate the exact same sequence of random
-#' numbers \emph{given the same initial seed / RNG state}.  This is achieved
-#' by pregenerating the random seeds for all iterations (over \code{x}) by
-#' using L'Ecuyer-CMRG RNG streams.  In each iteration, these seeds are set
-#' before calling \code{FUN(x[[ii]], ...)}.
-#' For RNG reproducibility, a fixed seed (integer) may be given, either as a
-#' full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed for
-#' \code{set.seed(future.seed)} generating such a full L'Ecuyer-CMRG seed.
-#' If \code{future.seed = TRUE}, a L'Ecuyer-CMRG RNG seed is randomly created.
+#' Unless \code{future.seed = FALSE}, this function guarantees to generate
+#' the exact same sequence of random numbers \emph{given the same initial
+#' seed / RNG state} - this regardless of type of futures and scheduling
+#' ("chunking") strategy.
+#' 
+#' RNG reproducibility is achieved by pregenerating the random seeds for all
+#' iterations (over \code{x}) by using L'Ecuyer-CMRG RNG streams.  In each
+#' iteration, these seeds are set before calling \code{FUN(x[[ii]], ...)}.
+#' \emph{Note, for large \code{length(x)} this may introduce a large overhead.}
+#' As input (\code{future.seed}), a fixed seed (integer) may be given, either
+#' as a full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed
+#' generating such a full L'Ecuyer-CMRG seed.
+#' If \code{future.seed = TRUE}, then \code{\link[base:Random]{.Random.seed}}
+#' is returned if it holds a L'Ecuyer-CMRG RNG seed, otherwise one is created
+#' randomly.
+#' If \code{future.seed = NA}, a L'Ecuyer-CMRG RNG seed is randomly created.
 #' If none of the function calls \code{FUN(x[[i]], ...)} uses random number
 #' generation, then \code{future.seed = FALSE} may be used.
 #'
+#' In addition to the above, it is possible to specify a pre-generated
+#' sequence of RNG seeds as a list such that
+#' \code{length(future.seed) == length(x)} and where each element is an
+#' integer seed that can be assigned to \code{\link[base:Random]{.Random.seed}}.
+#' Use this alternative with caution.
+#' \emph{Note that as.list(seq_along(x)) is \emph{not} a valid set of such
+#' \code{.Random.seed} values.}
+#' 
+#' In all cases but \code{future.seed = FALSE}, the RNG state of the calling
+#' R processes after this function returns is guaranteed to be
+#' "forwarded one step" from the RNG state that was before the call and
+#' in the same way regardless of \code{future.seed}, \code{future.scheduling}
+#' and future strategy used.  This is done in order to guarantee that an \R
+#' script calling \code{future_lapply()} multiple times should be numerically
+#' reproducible given the same initial seed.
+#'
 #' @example incl/future_lapply.R
 #'
-#' @importFrom globals globalsByName globalsOf cleanup
+#' @importFrom globals globalsByName cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
 #' @importFrom utils str
 #' @export
 #' @keywords internal
-future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRUE, future.seed = TRUE, future.scheduling = 1.0) {
+future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = NULL, future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1.0) {
   stopifnot(is.function(FUN))
   
   stopifnot(is.logical(future.lazy))
@@ -77,7 +103,16 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   debug <- getOption("future.debug", FALSE)
   
-  envir <- environment()
+  mdebug("future_lapply() ...")
+
+  ## NOTE TO SELF: We'd ideally have a 'future.envir' argument also for
+  ## future_lapply(), cf. future().  However, it's not yet clear to me how
+  ## to do this, because we need to have globalsOf() to search for globals
+  ## from the current environment in order to identify the globals of 
+  ## arguments 'FUN' and '...'. /HB 2017-03-10
+  future.envir <- environment()  ## Not used; just to clarify the above.
+  
+  envir <- future.envir
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 1. Global variables
@@ -85,33 +120,25 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   ## The default is to gather globals
   if (is.null(future.globals)) future.globals <- TRUE
 
+  packages <- NULL
   globals <- future.globals
   if (is.logical(globals)) {
     ## Gather all globals?
     if (globals) {
       mdebug("Finding globals ...")
-  
-      globals <- c("FUN", names(list(...)), "...")
-      globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
-  
-      ## Do we need to scan the globals for for further global variables?
-      ns <- lapply(globals, FUN = function(g) environmentName(environment(g)))
-      ns <- unlist(ns, use.names = FALSE)
-      globalsR <- globals[!ns %in% loadedNamespaces()]
-      globalsR <- globalsR[sapply(globalsR, FUN = typeof) == "closure"]
-      if (length(globalsR) > 0) {
-        for (kk in seq_along(globalsR)) {
-          obj <- globalsR[[kk]]
-          globalsT <- globalsOf(obj, envir = envir, mustExist = FALSE)
-          globalsT <- cleanup(globalsT)
-          mdebug(" - globals of %s: %s", sQuote(names(globalsR)[kk]), paste(sQuote(names(globalsT)), collapse = ", "))
-          globals <- c(globals, globalsT)
-        }
-      }
 
-      mdebug(" - globals: %s", paste(sQuote(names(globals)), collapse = ", "))
+      expr <- do.call(call, args = c(list("FUN"), list(...)))
+      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=TRUE, resolve=TRUE)
+      globals <- gp$globals
+      packages <- gp$packages
+      gp <- NULL
+      
+      mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+
       mdebug("Finding globals ... DONE")
     } else {
+      ## globals = FALSE
       globals <- c("FUN", names(list(...)), "...")
       globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
     }
@@ -126,14 +153,21 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   } else {
     stop("Invalid argument 'future.globals': ", mode(globals))
   }
-  stopifnot(is.list(globals))
+  globals <- as.FutureGlobals(globals)
+  stopifnot(inherits(globals, "FutureGlobals"))
   
   names <- names(globals)
   if (!is.element("FUN", names)) {
     globals <- c(globals, FUN = FUN)
   }
+  
   if (!is.element("...", names)) {
+    if (debug) mdebug("Getting '...' globals ...")
     dotdotdot <- globalsByName("...", envir = envir, mustExist = TRUE)
+    dotdotdot <- as.FutureGlobals(dotdotdot)
+    dotdotdot <- resolve(dotdotdot)
+    attr(dotdotdot, "total_size") <- objectSize(dotdotdot)
+    if (debug) mdebug("Getting '...' globals ... DONE")
     globals <- c(globals, dotdotdot)
   }
 
@@ -151,96 +185,114 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
   names(globals) <- names
 
   if (debug) {
-    mdebug("Globals to be used in all iterations:")
+    mdebug("Globals to be used in all futures:")
     mdebug(paste(capture.output(str(globals)), collapse = "\n"))
   }
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 2. Reproducible RNG (for sequential and parallel processing)
+  ## 2. Packages
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (!is.null(future.packages)) {
+    stopifnot(is.character(future.packages))
+    future.packages <- unique(future.packages)
+    stopifnot(!anyNA(future.packages), all(nzchar(future.packages)))
+    packages <- unique(c(packages, future.packages))
+  }
+  
+  if (debug) {
+    mdebug("Packages to be attached in all futures:")
+    mdebug(paste(capture.output(str(packages)), collapse = "\n"))
+  }
+
+
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## 3. Reproducible RNG (for sequential and parallel processing)
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   seed <- future.seed
 
-  ## Placeholder for all RNG stream seeds. We pregenerate a seed for each
-  ## elements of 'x' here such that it does not matter what the chunk size
-  ## is or what backend is used. (They'll be NULLs if RNGs are not used).
-  seeds <- vector("list", length = nx)
+  ## Placeholder for all RNG stream seeds.
+  seeds <- NULL
   
-  ## Don't use RNGs?
-  if (is.logical(seed) && !seed) seed <- NULL
+  ## Don't use RNGs? (seed = FALSE)
+  if (is.logical(seed) && !is.na(seed) && !seed) seed <- NULL
 
   # Use RNGs?
   if (!is.null(seed)) {
     mdebug("Generating random seeds ...")
-    
-    ## Use L'Ecuyer-CMRG RNGkind in this function call. Undo afterward.
-    ## NOTE: This will generate a new .Random.seed (also iff missing)
-    orng <- RNGkind("L'Ecuyer-CMRG")[1L]
-    on.exit(RNGkind(orng))
 
-    if (is.logical(seed) && seed) {
-      ## Get current L'Ecuyer-CMRG seed (see comment above)
-      seed <- get(".Random.seed", envir = globalenv())
-    }
+    ## future_lapply() should return with the same RNG state regardless of
+    ## future strategy used. This is be done such that RNG kind is preserved
+    ## and the seed is "forwarded" one step from what it was when this
+    ## function was called. The forwarding is done by generating one random
+    ## number. Note that this approach is also independent on length(x) and
+    ## the diffent FUN() calls.
+    oseed <- next_random_seed()
+    on.exit(set_random_seed(oseed))    
 
-    stopifnot(is.numeric(seed), all(is.finite(seed)))
-    seed <- as.integer(seed)
-
-    ## Passed a L'Ecuyer-CMRG seed or a seed for set.seed()?
-    if (length(seed) == 7) {
-      ## (a) Passed a L'Ecuyer-CMRG seed
-      if (!is.integer(seed) || !all(is.finite(seed)) || seed[1] != 407L) {
-        msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer."
-        mdebug(msg)
-        mdebug(capture.output(print(seed)))
-        stop(msg)
-      }
-      .seed <- seed
-    } else {
-      ## (b) Passed a seed meant for set.seed()
+    ## A pregenerated sequence of random seeds?
+    if (is.list(seed)) {
+      mdebug("Using a pre-define stream of random seeds ...", nx)
       
-      ## Current RNG state
-      .GlobalEnv <- globalenv()
-      oseed <- .GlobalEnv$.Random.seed
+      nseed <- length(seed)
+      if (nseed != nx) {
+        stop("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element in 'x', but length(seed) != length(x): ", nseed, " != ", nx)
+      }
+
+      ## Assert same type of RNG seeds?
+      ns <- unique(unlist(lapply(seed, FUN = length), use.names = FALSE))
+      if (length(ns) != 1) {
+        stop("The elements of the list specified in argument 'seed' are not all of the same lengths (did you really pass RNG seeds?): ", hpaste(ns))
+      }
+
+      ## Did use specify scalar integers as meant for set.seed()?
+      if (ns == 1L) {
+        stop("Argument 'seed' is invalid. Pre-generated random seeds must be valid .Random.seed seeds, which means they should be all integers and consists of two or more elements, not just one.")
+      }
+
+      types <- unlist(lapply(seed, FUN = typeof), use.names = FALSE)
+      if (!all(types == "integer")) {
+        stop("The elements of the list specified in argument 'seed' are not all integers (did you really pass RNG seeds?): ", hpaste(unique(types)))
+      }
+      
+      ## Check if valid random seeds are specified.
+      ## For efficiency, only look at the first one.
+      if (!is_valid_random_seed(seed[[1]])) {
+        stop("The list in argument 'seed' does not seem to hold elements that are valid .Random.seed values: ", capture.output(str(seeds[[1]])))
+      }
+
+      seeds <- seed
+      
+      mdebug("Using a pre-define stream of random seeds ... DONE", nx)
+    } else {
+      mdebug("Generating random seed streams for %d elements ...", nx)
+      
+      ## Generate sequence of _all_ RNG seeds starting with an initial seed
+      ## '.seed' that is based on argument 'seed'.
+      .seed <- as_lecyer_cmrg_seed(seed)
+
+      seeds <- vector("list", length = nx)
+      for (ii in seq_len(nx)) {
+        ## RNG substream seed used in call FUN(x[[ii]], ...):
+        ## This way each future can in turn generate further seeds, also
+        ## recursively, with minimal risk of generating the same seeds as
+        ## another future. This should make it safe to recursively call
+        ## future_lapply(). /HB 2017-01-11
+        seeds[[ii]] <- nextRNGSubStream(.seed)
+        
+        ## Main random seed for next iteration (= ii + 1)
+        .seed <- nextRNGStream(.seed)
+      }
   
-      ## Reset RNG state afterwards?
-      on.exit({
-        ## NOTE: Is this really needed?  Doesn't above RNGkind() guarantee
-        ## it exists?
-        if (is.null(oseed)) {
-           rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-        } else {
-          .GlobalEnv$.Random.seed <- oseed
-        }
-      }, add = TRUE)
-    
-      ## Generate initial L'Ecuyer-CMRG seed.
-      set.seed(seed)
-      .seed <- .GlobalEnv$.Random.seed
+      mdebug("Generating random seed streams for %d elements ... DONE", nx)
     }
-    
-    ## Generate sequence of _all_ RNG seeds needed
-    mdebug(sprintf("Generating random seed streams for %d elements ...", nx))
-    for (ii in seq_len(nx)) {
-      ## Main random seed for iteration ii
-      .seed <- nextRNGStream(.seed)
-
-      ## RNG substream seed used in call FUN(x[[ii]], ...):
-      ## This way each future can in turn generate further  seeds, also
-      ## recursively, with minimal risk of generating the same seeds as
-      ## another future.  This should make it safe to recursively call
-      ## future_lapply(). /HB 2017-01-11
-      seeds[[ii]] <- nextRNGSubStream(.seed)
-    }
-
-    mdebug(sprintf("Generating random seed streams for %d elements ... DONE", nx))
     
     mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 3. Load balancing ("chunking")
+  ## 4. Load balancing ("chunking")
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (is.logical(future.scheduling)) {
     if (future.scheduling) {
@@ -267,54 +319,79 @@ future_lapply <- function(x, FUN, ..., future.lazy = FALSE, future.globals = TRU
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 4. Create futures
+  ## 5. Create futures
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Add argument placeholders
-  globals <- c(globals, list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  globals_extra <- as.FutureGlobals(list(...future.x_ii = NULL, ...future.seeds_ii = NULL))
+  attr(globals_extra, "resolved") <- TRUE
+  attr(globals_extra, "total_size") <- 0
+  globals <- c(globals, globals_extra)
 
-  ## To please R CMD check
+  ## At this point a globals should be resolved and we should know their total size
+  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
+
+    ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
-  fs <- vector("list", length = length(chunks))
-  mdebug("Number of futures (= number of chunks): %d", length(fs))
+  nchunks <- length(chunks)
+  fs <- vector("list", length = nchunks)
+  mdebug("Number of futures (= number of chunks): %d", nchunks)
   
+  mdebug("Launching %d futures (chunks) ...", nchunks)
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
-    mdebug(sprintf("Chunk #%d of %d ...", ii, length(chunks)))
+    mdebug("Chunk #%d of %d ...", ii, length(chunks))
 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-    globals_ii["...future.seeds_ii"] <- list(seeds[chunk])
-
-    fs[[ii]] <- future({
-      lapply(seq_along(...future.x_ii), FUN = function(jj) {
-         ...future.x_jj <- ...future.x_ii[[jj]]
-         ...future.seed_jj <- ...future.seeds_ii[[jj]]
-         if (!is.null(...future.seed_jj)) {
-           assign(".Random.seed", ...future.seed_jj, envir = globalenv(), inherits = FALSE)
-         }
-         ...future.FUN(...future.x_jj, ...)
-      })
-    }, envir = envir, lazy = future.lazy, globals = globals_ii)
-
+    stopifnot(attr(globals_ii, "resolved"))
+    
+    ## Using RNG seeds or not?
+    if (is.null(seeds)) {
+      mdebug(" - seeds: <none>")
+      fs[[ii]] <- future({
+        lapply(seq_along(...future.x_ii), FUN = function(jj) {
+           ...future.x_jj <- ...future.x_ii[[jj]]
+           ...future.FUN(...future.x_jj, ...)
+        })
+      }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
+    } else {
+      mdebug(" - seeds: [%d] <seeds>", length(chunk))
+      globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
+      fs[[ii]] <- future({
+        lapply(seq_along(...future.x_ii), FUN = function(jj) {
+           ...future.x_jj <- ...future.x_ii[[jj]]
+           assign(".Random.seed", ...future.seeds_ii[[jj]], envir = globalenv(), inherits = FALSE)
+           ...future.FUN(...future.x_jj, ...)
+        })
+      }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
+    }
+    
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))
 
-    mdebug(sprintf("Chunk #%d of %d ... DONE", ii, length(chunks)))
+    mdebug("Chunk #%d of %d ... DONE", ii, nchunks)
   } ## for (ii ...)
+  mdebug("Launching %d futures (chunks) ... DONE", nchunks)
 
   ## Not needed anymore
   rm(list = c("chunks", "globals", "envir"))
 
   ## 4. Resolving futures
+  mdebug("Resolving %d futures (chunks) ...", nchunks)
   values <- values(fs)
+  mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
   
   ## Not needed anymore
   rm(list = "fs")
   
+  mdebug("Reducing values from %d chunks ...", nchunks)
   values <- Reduce(c, values)
   names(values) <- names(x)
+  mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
+  mdebug("future_lapply() ... DONE")
+  
   values
 }

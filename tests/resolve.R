@@ -312,6 +312,19 @@ for (strategy in strategies) {
 message("*** resolve() for list environments ... DONE")
 
 
+message("*** resolve() - globals with non-trustful length() ...")
+
+length.CantTrustLength <- function(x) length(unclass(x)) + 1L
+
+.length <- future:::.length
+
+x <- structure(as.list(1:3), class = c("CantTrustLength", "list"))
+str(list(n = length(x), n_true = .length(x)))
+stopifnot(length(x) > .length(x))
+x <- resolve(x)
+
+message("*** resolve() - globals with non-trustful length() ... DONE")
+
 
 message("*** resolved() - default ...")
 

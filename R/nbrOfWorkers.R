@@ -18,8 +18,12 @@ nbrOfWorkers <- function(evaluator=NULL) {
 nbrOfWorkers.cluster <- function(evaluator) {
   expr <- formals(evaluator)$workers
   workers <- eval(expr)
-  stopifnot(is.character(workers) || is.numeric(workers), !anyNA(workers))
-  if (is.character(workers)) workers <- length(workers)
+  stopifnot(is.character(workers) || is.numeric(workers) || inherits(workers, "cluster"), !anyNA(workers))
+  if (is.character(workers)) {
+    workers <- length(workers)
+  } else if (inherits(workers, "cluster")) {
+    workers <- length(workers)
+  }
   stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
   workers
 }

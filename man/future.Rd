@@ -12,8 +12,9 @@
 \alias{futureCall}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE, lazy = NA,
-  seed = NULL, globals = TRUE, evaluator = plan("next"), ...)
+future(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
+  packages = NULL, lazy = NA, seed = NULL, evaluator = plan("next"),
+  ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
   lazy = NA, seed = NULL, globals = TRUE, ..., assign.env = envir)
@@ -34,15 +35,18 @@ in which the expression is evaluated.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
+\item{globals}{A logical, a character vector,
+or a named list for controlling how globals are handled.
+For details, see below section.}
+
+\item{packages}{(optional) a character vector specifying packages
+to be attached in the R environment evaluating the future.}
+
 \item{lazy}{Specifies whether a future should be resolved
 lazily or eagerly.  The default is eager evaluation
 (except when the \emph{deprecated} \code{plan(lazy)} is used).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
-
-\item{globals}{A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
 
 \item{evaluator}{The actual function that evaluates
 the future expression and returns a \link{Future}.

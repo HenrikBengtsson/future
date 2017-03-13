@@ -59,6 +59,7 @@ requirePackages <- future:::requirePackages
 supportedStrategies <- future:::supportedStrategies
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
+get_random_seed <- future:::get_random_seed
     
 
 ## Local functions for test scripts
