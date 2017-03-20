@@ -13,9 +13,10 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
   rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE,
-  rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE,
-  verbose = FALSE)
+  renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd",
+  "ssh"), user = NULL, revtunnel = TRUE,
+  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
+  manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{workers}{The host names of workers (as a character vector) or
