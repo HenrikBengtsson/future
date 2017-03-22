@@ -27,6 +27,11 @@ main <- function(x = 1:2, caller = call_my_add_caller,
 strategies <- future:::supportedStrategies()
 strategies <- setdiff(strategies, "lazy")
 
+x <- list(list(1:2))
+z_length <- lapply(x, FUN = do.call, what = length)
+fun <- function(...) sum(...)
+z_fun <- lapply(x, FUN = do.call, what = fun)
+
 y0 <- NULL
 for (strategy in strategies) {
   plan(strategy)
@@ -34,6 +39,15 @@ for (strategy in strategies) {
   y <- main(1:10)
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
+
+  ## BUG FIXES in globals (> 0.9.0)
+  if (packageVersion("globals") > "0.9.0") {
+    message("- future_lapply(x, FUN = do.call, ...) ...")
+    z <- future_lapply(x, FUN = do.call, what = length)
+    stopifnot(identical(z, z_length))
+    z <- future_lapply(x, FUN = do.call, what = fun)
+    stopifnot(identical(z, z_fun))
+  }
 }
 
 message("*** future_lapply() with tricky globals ... DONE")

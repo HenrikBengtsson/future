@@ -102,6 +102,7 @@ for (cores in 1:min(3L, availableCores())) {
   y <- unlist(y, use.names = FALSE)
   
   stopifnot(all.equal(y, sqrt(x + a)))
+
   
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
