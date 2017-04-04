@@ -583,8 +583,8 @@ The goal of this package is to provide a standardized and unified API for using 
 [future.batchjobs]: https://github.com/HenrikBengtsson/future.batchtools
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
-[Futures in R: Common Issues with Solutions]: future-2-issues.html
-[Futures in R: Future Topologies]: future-3-topologies.html
+[Futures in R: Common Issues with Solutions]: https://cran.r-project.org/web/packages/future/vignettes/future-2-issues.html
+[Futures in R: Future Topologies]: https://cran.r-project.org/web/packages/future/vignettes/future-3-topologies.html
 
 ## Installation
 R package future is available on [CRAN](https://cran.r-project.org/package=future) and can be installed in R as:
@@ -592,13 +592,6 @@ R package future is available on [CRAN](https://cran.r-project.org/package=futur
 install.packages('future')
 ```
 
-### Pre-release version
-
-To install the pre-release version that is available in Git branch `develop` on GitHub, use:
-```r
-source('http://callr.org/install#HenrikBengtsson/future@develop')
-```
-This will install the package from source.  
 
 
 
