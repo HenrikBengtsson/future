@@ -26,6 +26,11 @@ matrix:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
     - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/globals@feature/formulas
+      env: NB='w/ formulas' ## Just a label
+    - os: linux
       r: devel
     - os: osx
       r: oldrel
