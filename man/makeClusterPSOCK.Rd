@@ -3,7 +3,7 @@
 \name{makeClusterPSOCK}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
-\title{Create a Parallel Socket Cluster}
+\title{Create a cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))
@@ -19,74 +19,143 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{workers}{The hostnames of workers (as a character vector) or
-the number of localhost workers (as a positive integer).}
+\item{workers}{The hostnames of workers (as a character vector) or the number
+of localhost workers (as a positive integer).}
 
-\item{makeNode}{A function that creates a \code{"SOCKnode"}
-or \code{"SOCK0node"} object, which represents a connection
-to a worker.}
+\item{makeNode}{A function that creates a \code{"SOCKnode"} or
+\code{"SOCK0node"} object, which represents a connection to a worker.}
 
-\item{port}{The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.}
+\item{port}{The port number of the master used to for communicating with all
+the workers (via socket connections).  If an integer vector of ports, then a
+random one among those is chosen.  If \code{"random"}, then a random port in
+\code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
+is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
+\code{"random"} is used.}
 
-\item{...}{Optional arguments passed to \code{makeNode(workers[i], ..., rank = i)} where \code{i = seq_along{workers}}.}
+\item{...}{Optional arguments passed to
+\code{makeNode(workers[i], ..., rank = i)} where
+\code{i = seq_along{workers}}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
-\item{worker}{The hostname or IP number of the machine where the worker should run.}
+\item{worker}{The hostname or IP number of the machine where the worker
+should run.}
 
-\item{master}{The hostname or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or \code{revtunnel = TRUE} in case it is \code{"localhost"}.}
+\item{master}{The hostname or IP number of the master / calling machine, as
+known to the workers.  If NULL (default), then the default is
+\code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
+\code{revtunnel = TRUE} in case it is \code{"localhost"}.}
 
-\item{connectTimeout}{The maximum time (in seconds) allowed for each socket connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}}
+\item{connectTimeout}{The maximum time (in seconds) allowed for each socket
+connection between the master and a worker to be established (defaults to
+2 minutes). \emph{See note below on current lack of support on Linux and
+macOS systems.}}
 
-\item{timeout}{The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).}
+\item{timeout}{The maximum time (in seconds) allowed to pass without the
+master and a worker communicate with each other (defaults to 30 days).}
 
-\item{rscript, homogeneous}{The system command for launching \command{Rscript} on the worker and whether it is installed in the same path as the calling machine or not.  For more details, see below.}
+\item{rscript, homogeneous}{The system command for launching \command{Rscript}
+on the worker and whether it is installed in the same path as the calling
+machine or not.  For more details, see below.}
 
-\item{rscript_args}{Additional arguments to \command{Rscript} (as a character vector).}
+\item{rscript_args}{Additional arguments to \command{Rscript} (as a character
+vector).}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
-\item{useXDR}{If TRUE, the communication between master and workers, which is binary, will use big-endian (XDR).}
+\item{useXDR}{If TRUE, the communication between master and workers, which is
+binary, will use big-endian (XDR).}
 
-\item{outfile}{Where to direct the \link[base:stdout]{stdout} and \link[base:stderr]{stderr} connection output from the workers.}
+\item{outfile}{Where to direct the \link[base:stdout]{stdout} and
+\link[base:stderr]{stderr} connection output from the workers.}
 
-\item{renice}{A numerical 'niceness' (priority) to set for the worker processes.}
+\item{renice}{A numerical 'niceness' (priority) to set for the worker
+processes.}
 
 \item{rshcmd, rshopts}{The command (character vector) to be run on the master
 to launch a process on another host and any additional arguments (character
-vector).  The elements of \code{rshcmd} are automatically "shell" quoted,
-whereas the ones in \code{rshopts} are not.  Element \code{rshcmd[1]} must
-be found by the system call.
-These arguments are only applied if \code{machine} is not \emph{localhost}.}
+vector).  These arguments are only applied if \code{machine} is not
+\emph{localhost}.  For more details, see below.}
 
-\item{user}{(optional) The user name to be used when communicating with another host.}
+\item{user}{(optional) The user name to be used when communicating with
+another host.}
 
-\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such that the worker R process sets up a socket connection to its local port \code{(port - rank + 1)} which then reaches the master on port \code{port}.  If FALSE, then the worker will try to connect directly to port \code{port} on \code{master}.  For more details, see below.}
+\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
+that the worker R process sets up a socket connection to its local port
+\code{(port - rank + 1)} which then reaches the master on port \code{port}.
+If FALSE, then the worker will try to connect directly to port \code{port} on
+\code{master}.  For more details, see below.}
 
 \item{rank}{A unique one-based index for each worker (automatically set).}
 
-\item{manual}{If TRUE the workers will need to be run manually. The command to run will be displayed.}
+\item{manual}{If TRUE the workers will need to be run manually. The command
+to run will be displayed.}
 
-\item{dryrun}{If TRUE, nothing is set up, but a message suggesting how to launch the worker from the terminal is outputted.  This is useful for troubleshooting.}
+\item{dryrun}{If TRUE, nothing is set up, but a message suggesting how to
+launch the worker from the terminal is outputted.  This is useful for
+troubleshooting.}
 }
 \value{
 An object of class \code{c("SOCKcluster", "cluster")} consisting
-        of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
+of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
 
 \code{makeNodePSOCK()} returns a \code{"SOCKnode"} or
-        \code{"SOCK0node"} object representing an established connection
-        to a worker.
+\code{"SOCK0node"} object representing an established connection to a worker.
 }
 \description{
-Create a Parallel Socket Cluster
-}
-\details{
-The \code{makeClusterPSOCK()} function is similar to
+The \code{makeClusterPSOCK()} function creates a cluster of \R workers
+for parallel processing.  These \R workers may be background \R sessions
+on the current machine, \R sessions on external machines (local or remote),
+or a mix of such. For external workers, the default is to use SSH to connect
+to those external machines.  This function works similarly to
 \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the
 \pkg{parallel} package, but provides additional and more flexibility options
-for  controlling the setup of the system calls that launch the background
+for controlling the setup of the system calls that launch the background
 \R workers, and how to connect to external machines.
 }
+\section{Definition of \emph{localhost}}{
+
+A hostname is considered to be \emph{localhost} if it equals:
+\itemize{
+  \item \code{"localhost"},
+  \item \code{"127.0.0.1"}, or
+  \item \code{Sys.info()[["nodename"]]}.
+}
+It is also considered \emph{localhost} if it appears on the same line
+as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
+}
+
+\section{Default values of arguments \code{rshcmd} and \code{rshopts}}{
+
+Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
+to an external host.
+
+The default method for connecting to an external host is via SSH and the
+system executable for this is given by argument \code{rshcmd}.  The default
+is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
+set the default is either of \command{ssh} and \command{plink -ssh}.
+Most Unix-like systems, including macOS, have \command{ssh} preinstalled
+on the \code{PATH}.  It is less common to find this command on Windows
+system, which are more likely to have the \command{PuTTY} software and
+its SSH client \command{plink} installed.
+If neither \command{ssh} nor \command{plink} is found, an informative error
+message is produced.
+It is also possible to specify the absolute path of the SSH client.  To do
+this for PuTTY, specify the absolute path in the first element and option
+\command{-ssh} in the second as in
+\code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
+This is because all elements of \code{rshcmd} are individually "shell"
+quoted.  Element \code{rshcmd[1]} must be on the system \code{PATH}.
+
+Additional SSH options may be specified via argument \code{rshopts}, which
+defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
+private SSH key can be provided as
+\code{rshopts = c("-i", "~/.ssh/my_private_key")}.  PuTTY users should
+specify a PuTTY PPK file, e.g.
+\code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
+Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
+}
+
 \section{Reverse SSH tunneling}{
 
 The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
@@ -101,19 +170,7 @@ worker machines to the master, which may not be configured or is disabled
 on some compute clusters.
 }
 
-\section{Definition of \emph{localhost}}{
-
-A hostname is considered to be \emph{localhost} if it is equals:
-\itemize{
-  \item \code{"localhost"},
-  \item \code{"127.0.0.1"}, or
-  \item \code{Sys.info()[["nodename"]]}.
-}
-It is also considered \emph{localhost} if it appears on the same line
-as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
-}
-
-\section{Default value of arguments \code{rscript}}{
+\section{Default value of argument \code{rscript}}{
 
 If \code{homogenenous} is FALSE, the \code{rscript} defaults to
 \code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
@@ -123,7 +180,7 @@ If \code{homogenenous} is TRUE, the \code{rscript} defaults to
 that the worker and the caller share the same file system and R installation.
 }
 
-\section{Default value of arguments \code{homogeneous}}{
+\section{Default value of argument \code{homogeneous}}{
 
 The default value of \code{homogenenous} is TRUE if and only if either
 of the following is fullfilled:
@@ -153,27 +210,6 @@ If there is no communication between the master and a worker within the
 \code{timeout} limit, then the corresponding socket connection will be
 closed automatically.  This will eventually result in an error in code
 trying to access the connection.
-}
-
-\section{Suggestions for Windows users}{
-
-The default method for connecting to an external host is via SSH and the
-system executable for this is given by argument \code{rshcmd}.  The default
-is \command{ssh}, which should work out of the box on most Unix-like systems
-including macOS as long as it is on the \code{PATH}.  It is less common that
-Windows systems are configured with \command{ssh} on the \code{PATH}.
-Instead it is more likely to find that the \command{PuTTY} software is
-installed on Windows systems. Since \command{PuTTY} uses a different
-command-line call (\command{plink -ssh ...}) than conventional SSH software
-(\command{ssh ...}) for setting up SSH connection, Windows users using
-\command{PuTTY} should use \code{rshcmd = c("plink", "-ssh")} and make sure
-\command{plink} is on the \code{PATH}.  Alternatively, the absolute path can
-be given.
-Just as for Unix-like users, additional SSH options may be specified via
-argument \code{rshopts}.  For instance, a PuTTY-specific SSH key pair can be
-provided as \code{rshopts = c("-i", "C:/Users/joe/.ssh/putty.ppk")}.
-Both of these arguments may be set via global options
-\code{future.makeNodePSOCK.rshcmd} and \code{future.makeNodePSOCK.rshopts}.
 }
 
 \examples{
