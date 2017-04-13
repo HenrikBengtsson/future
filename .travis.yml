@@ -28,7 +28,7 @@ matrix:
     - os: linux
       r: release
       r_github_packages:
-        - HenrikBengtsson/globals@feature/formulas
+        - HenrikBengtsson/globals@develop
       env: NB='w/ formulas' ## Just a label
     - os: linux
       r: devel
@@ -39,6 +39,7 @@ matrix:
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
+  - export _R_CHECK_TIMINGS_=0
 
 
 notifications:
