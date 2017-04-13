@@ -14,7 +14,7 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
   renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd",
-  "ssh"), user = NULL, revtunnel = TRUE,
+  NULL), user = NULL, revtunnel = TRUE,
   rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
   manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }

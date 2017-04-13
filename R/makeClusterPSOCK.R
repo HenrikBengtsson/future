@@ -171,7 +171,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2*60), timeout = getOption("future.makeNodePSOCK.timeout", 30*24*60*60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", "ssh"), user = NULL, revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2*60), timeout = getOption("future.makeNodePSOCK.timeout", 30*24*60*60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -181,6 +181,16 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (localMachine) worker <- "localhost"
   }
 
+  ## Locate a default SSH client?
+  if (is.null(rshcmd)) {
+    rshcmd <- "ssh"
+    if (Sys.which(rshcmd) == "") {
+      rshcmd <- c("plink", "-ssh")
+      if (Sys.which(rshcmd[1]) == "") {
+        stop("Failed to locate a default SSH client. Neither 'ssh' nor 'plink' was found. Please specify one via argument 'rshcmd'.")
+      }
+    }
+  }
   rshcmd <- as.character(rshcmd)
   stopifnot(length(rshcmd) >= 1L)
 
