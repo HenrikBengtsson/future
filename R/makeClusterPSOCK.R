@@ -79,7 +79,12 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param outfile Where to direct the \link[base:stdout]{stdout} and \link[base:stderr]{stderr} connection output from the workers.
 #' @param renice A numerical 'niceness' (priority) to set for the worker processes.
 #' @param rank A unique one-based index for each worker (automatically set).
-#' @param rshcmd,rshopts The command (character vector) to be run on the master to launch a process on another host and any additional arguments (character vector).  Only applicable if \code{machine} is not \emph{localhost}.
+#' @param rshcmd,rshopts The command (character vector) to be run on the master
+#' to launch a process on another host and any additional arguments (character
+#' vector).  The elements of \code{rshcmd} are automatically "shell" quoted,
+#' whereas the ones in \code{rshopts} are not.  Element \code{rshcmd[1]} must
+#' be found by the system call.
+#' These arguments are only applied if \code{machine} is not \emph{localhost}.
 #' @param user (optional) The user name to be used when communicating with another host.
 #' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such that the worker R process sets up a socket connection to its local port \code{(port - rank + 1)} which then reaches the master on port \code{port}.  If FALSE, then the worker will try to connect directly to port \code{port} on \code{master}.  For more details, see below.
 #' @param manual If TRUE the workers will need to be run manually. The command to run will be displayed.
@@ -155,12 +160,13 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' installed on Windows systems. Since \command{PuTTY} uses a different
 #' command-line call (\command{plink -ssh ...}) than conventional SSH software
 #' (\command{ssh ...}) for setting up SSH connection, Windows users using
-#' \command{PuTTY} may want to use the following arguments:
-#' \itemize{
-#'   \item \code{rshcmd = c("plink", "-ssh")}
-#'   \item \code{rshopts = c("-l", "joe", "-i", "C:/Users/joe/.ssh/putty.ppk")}
-#' }
-#' These arguments may also be specified via global options
+#' \command{PuTTY} should use \code{rshcmd = c("plink", "-ssh")} and make sure
+#' \command{plink} is on the \code{PATH}.  Alternatively, the absolute path can
+#' be given.
+#' Just as for Unix-like users, additional SSH options may be specified via
+#' argument \code{rshopts}.  For instance, a PuTTY-specific SSH key pair can be
+#' provided as \code{rshopts = c("-i", "C:/Users/joe/.ssh/putty.ppk")}.
+#' Both of these arguments may be set via global options
 #' \code{future.makeNodePSOCK.rshcmd} and \code{future.makeNodePSOCK.rshopts}.
 #'
 #' @rdname makeClusterPSOCK
