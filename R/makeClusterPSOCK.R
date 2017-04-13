@@ -239,19 +239,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   ## Locate a default SSH client?
-  if (is.null(rshcmd)) {
-    cmds <- list("ssh", c("plink", "-ssh"))
-    for (cmd in cmds) {
-      if (nzchar(Sys.which(cmd[1]))) {
-        rshcmd <- cmd
-        break
-      }
-    }
-    if (is.null(rshcmd)) {
-      cmds <- unlist(lapply(cmds, FUN = function(x) x[1]))
-      stop(sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds), collapse = ", ")))
-    }
-  }
+  if (is.null(rshcmd)) rshcmd <- find_rshcmd()
   rshcmd <- as.character(rshcmd)
   stopifnot(length(rshcmd) >= 1L)
 
@@ -506,4 +494,16 @@ is_ip_number <- function(worker) {
 ## Checks if a worker is specified as a fully qualified domain name (FQDN)
 is_fqdn <- function(worker) {
   grepl(".", worker, fixed = TRUE)
+}
+
+
+## Locate an SSH client
+find_rshcmd <- function() {
+  cmds <- list("ssh", c("plink", "-ssh"))
+  for (cmd in cmds) {
+    if (nzchar(Sys.which(cmd[1]))) return(cmd)
+  }
+  
+  cmds <- unlist(lapply(cmds, FUN = function(x) x[1]))
+  stop(sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds), collapse = ", ")))
 }
