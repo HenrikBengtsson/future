@@ -3,7 +3,7 @@ library("listenv")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   message("*** Global argument '...' in lazy futures ...")
 
@@ -46,7 +46,7 @@ for (cores in 1:min(3L, availableCores())) {
       message(sprintf("** Sum function '%s' with plan('%s') ...", name, strategy))
       sum_fcn <- sum_fcns[[name]]
       print(sum_fcn)
-      y <- try(sum_fcn(1:2,3))
+      y <- try(sum_fcn(1:2, 3))
       print(y)
       if (name %in% c("D")) {
         stopifnot(inherits(y, "try-error"))

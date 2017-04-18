@@ -16,7 +16,7 @@ attachLocally(globals)
 ## Truth
 v0 <- local({
   x <- 1:10
-  sumtwo(a + b*x)
+  sumtwo(a + b * x)
 })
 
 
@@ -30,7 +30,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, globals=TRUE)
   print(f)
   rm(list=names(globals))
@@ -41,7 +41,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- futureAssign("y", {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, globals=TRUE)
   print(f)
   rm(list=names(globals))
@@ -52,7 +52,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %globals% TRUE
   rm(list=names(globals))
   print(y)
@@ -61,7 +61,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, lazy=TRUE, globals=TRUE)
   print(f)
   rm(list=names(globals))
@@ -72,7 +72,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- futureAssign("y", {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, lazy=TRUE, globals=TRUE)
   print(f)
   rm(list=names(globals))
@@ -84,7 +84,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %lazy% TRUE %globals% TRUE
   rm(list=names(globals))
   print(y)
@@ -104,7 +104,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, globals=FALSE)
   print(f)
   rm(list=names(globals))
@@ -131,7 +131,7 @@ for (strategy in supportedStrategies()) {
   
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, globals=globals)
   print(f)
   v <- value(f)
@@ -140,7 +140,7 @@ for (strategy in supportedStrategies()) {
 
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, lazy=TRUE, globals=globals)
   print(f)
   v <- value(f)
@@ -149,14 +149,14 @@ for (strategy in supportedStrategies()) {
 
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %globals% globals
   print(y)
   stopifnot(all.equal(y, v0))
 
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %lazy% TRUE %globals% globals
   print(y)
   stopifnot(all.equal(y, v0))
@@ -177,7 +177,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, globals=c("a", "b", "sumtwo"))
   print(f)
   rm(list=names(globals))
@@ -188,7 +188,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   f <- future({
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   }, lazy=TRUE, globals=c("a", "b", "sumtwo"))
   print(f)
   rm(list=names(globals))
@@ -199,7 +199,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %globals% c("a", "b", "sumtwo")
   rm(list=names(globals))
   print(y)
@@ -208,7 +208,7 @@ for (strategy in supportedStrategies()) {
   attachLocally(globals)
   y %<-% {
     x <- 1:10
-    sumtwo(a + b*x)
+    sumtwo(a + b * x)
   } %lazy% TRUE %globals% c("a", "b", "sumtwo")
   rm(list=names(globals))
   print(y)

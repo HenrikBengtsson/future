@@ -6,7 +6,7 @@ message("*** multicore() ...")
 
 for (cores in 1:min(3L, availableCores("multicore"))) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   if (!supportsMulticore()) {
     message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous uniprocess futures", .Platform$OS.type))

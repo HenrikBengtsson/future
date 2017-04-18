@@ -4,7 +4,7 @@ message("*** %<-% ...")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   for (strategy in supportedStrategies()) {
     message(sprintf("*** %%<-%% with %s futures ...", sQuote(strategy)))
@@ -41,14 +41,14 @@ for (cores in 1:min(3L, availableCores())) {
     }
     res <- try(as.list(y), silent=TRUE)
     stopifnot(inherits(res, "try-error"))
-    z <- y[c(1,3,5)]
+    z <- y[c(1, 3, 5)]
     z <- unlist(z)
-    stopifnot(all(z == c(1,3,5)))
+    stopifnot(all(z == c(1, 3, 5)))
     res <- try(y[[2]], silent=TRUE)
     stopifnot(inherits(res, "try-error"))
     res <- try(y[[4]], silent=TRUE)
     stopifnot(inherits(res, "try-error"))
-    res <- try(y[c(2,4)], silent=TRUE)
+    res <- try(y[c(2, 4)], silent=TRUE)
     stopifnot(inherits(res, "try-error"))
     res <- try(y[1:2], silent=TRUE)
     stopifnot(inherits(res, "try-error"))

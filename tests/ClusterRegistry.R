@@ -4,7 +4,7 @@ message("*** ClusterRegistry() ... ")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   message("Available cores: ", availableCores())
 
@@ -17,7 +17,7 @@ for (cores in 1:min(3L, availableCores())) {
 
   message("Starting cluster ...")
   res <- try({
-    cluster <- ClusterRegistry("set", workers=availableCores()-1L)
+    cluster <- ClusterRegistry("set", workers=availableCores() - 1L)
     str(cluster)
     print(cluster)
   }, silent=TRUE)

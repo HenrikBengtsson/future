@@ -52,9 +52,9 @@ tweakFormulaCall <- function(expr) {
 ##   AST: (<- ([ x a) value)
 ##   tweaked expression: x; x["a"] <- value
 ##
-##   expression: x[1,2,3] <- value
+##   expression: x[1, 2, 3] <- value
 ##   AST: (<- ([ x 1 2 3) value)
-##   tweaked expression: x; x[1,2,3] <- value
+##   tweaked expression: x; x[1, 2, 3] <- value
 tweakSubassignmentCall <- function(expr) {
   if (!is.call(expr)) return(expr)
   op <- expr[[1]]

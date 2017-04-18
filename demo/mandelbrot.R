@@ -51,7 +51,7 @@ if (interactive()) {
   split.screen(dim(Cs))
   for (ii in seq_along(Cs)) {
     screen(ii)
-    par(mar=c(0,0,0,0))
+    par(mar=c(0, 0, 0, 0))
     text(x=1/2, y=1/2, sprintf("Future #%d\nunresolved", ii), cex=2)
   }
 } else {

@@ -19,7 +19,7 @@ call_my_add_caller <- function(a, b, FUN = call_my_add) {
 main <- function(x = 1:2, caller = call_my_add_caller,
                  args = list(FUN = call_my_add)) {
   results <- future_lapply(x, FUN = function(i) {
-    do.call(caller, args = c(list(a = i, b = i+1L), args))
+    do.call(caller, args = c(list(a = i, b = i + 1L), args))
   })
   results
 }
@@ -40,8 +40,8 @@ for (strategy in strategies) {
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
 
-  ## BUG FIXES in globals (> 0.9.0)
-  if (packageVersion("globals") > "0.9.0") {
+  ## BUG FIXES in globals (>= 0.10.0)
+  if (packageVersion("globals") >= "0.10.0") {
     message("- future_lapply(x, FUN = do.call, ...) ...")
     z <- future_lapply(x, FUN = do.call, what = length)
     stopifnot(identical(z, z_length))

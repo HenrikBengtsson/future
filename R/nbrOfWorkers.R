@@ -4,7 +4,7 @@
 #' If NULL (default), the current evaluator as returned
 #' by \code{\link{plan}()} is used.
 #'
-#' @return A number in [1,Inf].
+#' @return A number in [1, Inf].
 #'
 #' @example incl/nbrOfWorkers.R
 #'

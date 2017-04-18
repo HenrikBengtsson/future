@@ -160,10 +160,10 @@ requirePackages <- local(function(pkgs) {
     data <- utils::installed.packages()
 
     ## Installed, but fails to load/attach?
-    if (is.element(pkg, data[,"Package"])) {
-      keep <- (data[,"Package"] == pkg)
-      data <- data[keep,,drop=FALSE]
-      pkgs <- sprintf("%s %s (in %s)", data[,"Package"], data[, "Version"], sQuote(data[,"LibPath"]))
+    if (is.element(pkg, data[, "Package"])) {
+      keep <- (data[, "Package"] == pkg)
+      data <- data[keep, ,drop=FALSE]
+      pkgs <- sprintf("%s %s (in %s)", data[, "Package"], data[, "Version"], sQuote(data[, "LibPath"]))
       msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse=", "))
     } else {
       paths <- .libPaths()

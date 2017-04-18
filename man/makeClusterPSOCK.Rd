@@ -34,7 +34,7 @@ is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 
 \item{...}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
-\code{i = seq_along{workers}}.}
+\code{i = seq_along(workers)}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
@@ -140,12 +140,12 @@ system, which are more likely to have the \command{PuTTY} software and
 its SSH client \command{plink} installed.
 If neither \command{ssh} nor \command{plink} is found, an informative error
 message is produced.
-It is also possible to specify the absolute path of the SSH client.  To do
+It is also possible to specify the absolute path to the SSH client.  To do
 this for PuTTY, specify the absolute path in the first element and option
 \command{-ssh} in the second as in
 \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 This is because all elements of \code{rshcmd} are individually "shell"
-quoted.  Element \code{rshcmd[1]} must be on the system \code{PATH}.
+quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
 
 Additional SSH options may be specified via argument \code{rshopts}, which
 defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
@@ -162,12 +162,12 @@ The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 workers running on other machines.  This avoids the complication of
 otherwise having to configure port forwarding in firewalls, which often
 requires static IP address as well as privilieges to edit the firewall,
-somthing most users don't have.
+something most users don't have.
 It also has the advantage of not having to know the internal and / or the
 public IP address / hostname of the master.
 Yet another advantage is that there will be no need for a DNS lookup by the
 worker machines to the master, which may not be configured or is disabled
-on some compute clusters.
+on some systems, e.g. compute clusters.
 }
 
 \section{Default value of argument \code{rscript}}{

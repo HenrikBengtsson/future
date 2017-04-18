@@ -11,10 +11,10 @@ plan(multisession)
 
 exprs <- list(
   A = substitute({ a }, env=list()),
-  B = substitute({ a*b }, env=list()),
-  C = substitute({ a*b*c }, env=list()),
-  D = substitute({ a*b*c*d }, env=list()),
-  E = substitute({ a*b*c*d*e }, env=list())
+  B = substitute({ a * b }, env=list()),
+  C = substitute({ a * b * c }, env=list()),
+  D = substitute({ a * b * c * d }, env=list()),
+  E = substitute({ a * b * c * d * e }, env=list())
 )
 
 a <- 1:1000

@@ -17,17 +17,17 @@ whichIndex <- function(I, dim, dimnames=NULL) {
         idxs <- as.character(idxs)
         idxs <- match(idxs, dimnames[[kk]])
         if (anyNA(idxs)) {
-          unknown <- I[is.na(idxs),kk]
+          unknown <- I[is.na(idxs), kk]
           stop("Unknown indices: ", hpaste(sQuote(unknown)))
         }
       }
-      I2[,kk] <- idxs
+      I2[, kk] <- idxs
     }
     I <- I2
     I2 <- NULL
   } else if (is.numeric(I)) {
     for (kk in 1:ndim) {
-      idxs <- I[,kk]
+      idxs <- I[, kk]
       if (any(idxs < 1 | idxs > dim[kk])) {
         stop("Index out of range.")
       }
@@ -37,25 +37,25 @@ whichIndex <- function(I, dim, dimnames=NULL) {
     I2 <- array(NA_integer_, dim=dim(I))
     for (kk in 1:ndim) {
       ## Could be, say, factor
-      idxs <- I[,kk]
+      idxs <- I[, kk]
       idxs <- as.character(idxs)
       idxs <- match(idxs, dimnames[[kk]])
       if (anyNA(idxs)) {
-        unknown <- I[is.na(idxs),kk]
+        unknown <- I[is.na(idxs), kk]
         stop("Unknown indices: ", hpaste(sQuote(unknown)))
       }
-      I2[,kk] <- idxs
+      I2[, kk] <- idxs
     }
     I <- I2
     I2 <- NULL
   }
 
   ## Nothing more to do?
-  if (ndim == 1) return(I[,1L])
+  if (ndim == 1) return(I[, 1L])
 
   base <- cumprod(dim[-ndim])
   for (kk in 2:ndim) {
-    I[,kk] <- (I[,kk]-1) * base[kk-1L]
+    I[, kk] <- (I[, kk]-1) * base[kk-1L]
   }
   rowSums(I)
 }

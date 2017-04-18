@@ -13,7 +13,7 @@ strategies <- "cluster"
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   message("availableCores(): ", availableCores())
 
@@ -34,13 +34,13 @@ for (cores in 1:min(3L, availableCores())) {
       yTruth <- local({
         b <- a
         a <- 2
-        a*b
+        a * b
       })
 
       y %<-% {
         b <- a
         a <- 2
-        a*b
+        a * b
       }
 
       rm(list="a")
@@ -61,7 +61,7 @@ for (cores in 1:min(3L, availableCores())) {
       y %<-% {
         b <- a
         a <- 2
-        a*b
+        a * b
       } %lazy% TRUE
 
       rm(list="a")
@@ -80,7 +80,7 @@ for (cores in 1:min(3L, availableCores())) {
       a <- 1
       for (ii in 1:3) {
         res[[ii]] %<-% {
-          b <- a*ii
+          b <- a * ii
           a <- 0
           b
         }
@@ -102,7 +102,7 @@ for (cores in 1:min(3L, availableCores())) {
       a <- 1
       for (ii in 1:3) {
         res[[ii]] %<-% {
-          b <- a*ii
+          b <- a * ii
           a <- 0
           b
         } %lazy% TRUE

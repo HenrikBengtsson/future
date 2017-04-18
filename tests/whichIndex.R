@@ -4,10 +4,10 @@ message("*** whichIndex() ...")
 
 dims <- list(
   c(1),
-  c(1,1),
+  c(1, 1),
   c(2),
-  c(2,1),
-  c(3,4,3)
+  c(2, 1),
+  c(3, 4, 3)
 )
 
 for (dim in dims) {
@@ -30,7 +30,7 @@ for (dim in dims) {
   ## (b) By matrix and dimnames
   N <- array(NA_character_, dim=dim(I))
   for (kk in seq_len(ncol(N))) {
-    N[,kk] <- dimnames[[kk]][I[,kk]]
+    N[, kk] <- dimnames[[kk]][I[, kk]]
   }
   print(N)
   idxs3 <- whichIndex(N, dim=dim(X), dimnames=dimnames(X))
@@ -39,7 +39,7 @@ for (dim in dims) {
 
   ## (b) By data.frame
   D <- as.data.frame(I)
-  for (cc in seq(from=1L, to=ncol(D))) D[[cc]] <- N[,cc]
+  for (cc in seq(from=1L, to=ncol(D))) D[[cc]] <- N[, cc]
   print(D)
   idxs4 <- whichIndex(D, dim=dim(X), dimnames=dimnames(X))
   print(idxs4)
@@ -48,27 +48,27 @@ for (dim in dims) {
 
 
 ## Exceptions
-dim <- c(2,3)
+dim <- c(2, 3)
 ndim <- length(dim)
 dimnames <- lapply(dim, FUN=function(n) letters[seq_len(n)])
 
-I <- matrix(c(1,1,2,4), ncol=ndim)
+I <- matrix(c(1, 1, 2, 4), ncol=ndim)
 res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-I <- matrix(c(0,0), ncol=ndim)
+I <- matrix(c(0, 0), ncol=ndim)
 res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-I <- matrix(c("a","q"), ncol=ndim)
+I <- matrix(c("a", "q"), ncol=ndim)
 res <- try(idxs <- whichIndex(I, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-D <- data.frame(a=c(1,1), b=c(2,4))
+D <- data.frame(a=c(1, 1), b=c(2, 4))
 res <- try(idxs <- whichIndex(D, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-D <- data.frame(a=c("a","q"), b=c(1,2))
+D <- data.frame(a=c("a", "q"), b=c(1, 2))
 res <- try(idxs <- whichIndex(D, dim=dim, dimnames=dimnames), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 

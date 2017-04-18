@@ -55,7 +55,7 @@ message("*** hpaste() ...")
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** asIEC() ...")
 
-for (size in c(0, 10^(0:20))) {
+for (size in c(0, 10 ^ (0:20))) {
   cat(sprintf("Size: %.f bytes = %s\n", size, asIEC(size)))
 }
 

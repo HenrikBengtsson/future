@@ -5,7 +5,7 @@ future::plan(oplan)
 ## Undo options
 ## (a) Added
 added <- setdiff(names(options()), names(oopts0))
-opts <- vector("list", length=length(added))
+opts <- vector("list", length = length(added))
 names(opts) <- added
 options(opts)
 ## (b) Modified

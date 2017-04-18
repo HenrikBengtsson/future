@@ -97,14 +97,14 @@ mandelbrot.numeric <- function(xmid=-0.75, ymid=0, side=3, resolution=400L, maxI
   ## The nx-by-ny bins
   nx <- ny <- resolution
 
-  ## Setup (x,y) bins
-  xrange <- xmid + c(-1,1)*side/2
-  yrange <- ymid + c(-1,1)*side/2
+  ## Setup (x, y) bins
+  xrange <- xmid + c(-1, 1)*side/2
+  yrange <- ymid + c(-1, 1)*side/2
   x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
   y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
 
   ## Set of complex numbers to be investigated
-  Z <- outer(y, x, FUN=function(y,x) complex(real=x, imaginary=y))
+  Z <- outer(y, x, FUN=function(y, x) complex(real=x, imaginary=y))
 
   mandelbrot(Z, maxIter=maxIter, tau=tau)
 } ## mandelbrot() for numeric
@@ -128,9 +128,9 @@ as.raster.Mandelbrot <- function(x, ...) {
 #' @importFrom grDevices as.raster
 #' @importFrom graphics par plot
 #' @keywords internal
-plot.Mandelbrot <- function(x, y, ..., mar=c(0,0,0,0)) {
+plot.Mandelbrot <- function(x, y, ..., mar=c(0, 0, 0, 0)) {
   if (!is.null(mar)) {
-    opar <- par(mar=c(0,0,0,0))
+    opar <- par(mar=c(0, 0, 0, 0))
     on.exit(par(opar))
   }
   plot(as.raster(x), ...)
@@ -158,9 +158,9 @@ mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, 
     ny <- nrow * dy 
   }
   
-  ## Setup (x,y) bins
-  xrange <- xmid + c(-1,1)*side/2
-  yrange <- ymid + c(-1,1)*side/2
+  ## Setup (x, y) bins
+  xrange <- xmid + c(-1, 1)*side/2
+  yrange <- ymid + c(-1, 1)*side/2
   x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
   y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
 
@@ -176,7 +176,7 @@ mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, 
       xcc <- if (cc < ncol) xrr[1:dx] else xrr
       xrr <- xrr[-(1:dx)]
     
-      Ccc <- outer(yrr, xcc, FUN=function(y,x) complex(real=x, imaginary=y))
+      Ccc <- outer(yrr, xcc, FUN=function(y, x) complex(real=x, imaginary=y))
       attr(Ccc, "region") <- list(xrange=range(xcc), yrange=range(yrr))
       attr(Ccc, "tile") <- c(rr, cc)
       res <- c(res, list(Ccc))

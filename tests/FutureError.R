@@ -6,7 +6,7 @@ message("*** FutureError class ...")
 ex <- FutureError(message="Woops")
 print(ex)
 
-f <- future({ 42L; stop("XXX") })
+f <- future({ 42L; stop("woops") })
 v <- value(f, signal=FALSE)
 print(v)
 ex <- FutureError(message="Woops", future=f, output=c("Darn", "it"))

@@ -71,7 +71,7 @@ stopifnot(inherits(res, "try-error"))
 res <- try(futureOf(x[[10]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
-res <- try(futureOf(x[[1+2i]], mustExist=TRUE), silent=TRUE)
+res <- try(futureOf(x[[1 + 2i]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** futureOf() with environment - exceptions ... DONE")

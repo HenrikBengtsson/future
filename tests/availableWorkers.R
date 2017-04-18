@@ -92,7 +92,7 @@ stopifnot(
   all(is.finite(data$count)),
   all(data$count > 0),
   nrow(data) == nrow(data0),
-  all.equal(data[,c("node", "count")], data0[,c("node", "count")])
+  all.equal(data[, c("node", "count")], data0[, c("node", "count")])
 )
 
 workers <- expand_nodes(data)

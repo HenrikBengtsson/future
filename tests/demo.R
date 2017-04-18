@@ -2,7 +2,7 @@ source("incl/start.R")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores=cores - 1L)
 
   options("R_FUTURE_DEMO_MANDELBROT_PLANES"=4L)
 

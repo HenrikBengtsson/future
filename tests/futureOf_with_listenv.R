@@ -92,7 +92,7 @@ res <- try(futureOf(x[[10]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 ## Invalid subscript
-res <- try(futureOf(x[[1+2i]], mustExist=TRUE), silent=TRUE)
+res <- try(futureOf(x[[1 + 2i]], mustExist=TRUE), silent=TRUE)
 stopifnot(inherits(res, "try-error"))
 
 ## Non-existing object

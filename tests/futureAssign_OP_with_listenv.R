@@ -61,16 +61,16 @@ message("*** %<-% to listenv: multiple dimensions ...")
 
 x0 <- list()
 length(x0) <- 6
-dim(x0) <- c(3,2)
+dim(x0) <- c(3, 2)
 
 x <- listenv()
 length(x) <- 6
-dim(x) <- c(3,2)
+dim(x) <- c(3, 2)
 
 for (cc in 1:ncol(x)) {
   for (rr in 1:nrow(x)) {
-    x0[[rr,cc]] <- sprintf("(%s,%s)", rr, cc)
-    x[[rr,cc]] %<-% sprintf("(%s,%s)", rr, cc) %lazy% TRUE
+    x0[[rr, cc]] <- sprintf("(%s, %s)", rr, cc)
+    x[[rr, cc]] %<-% sprintf("(%s, %s)", rr, cc) %lazy% TRUE
   }
 }
 
