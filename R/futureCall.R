@@ -7,13 +7,13 @@
 #'
 #' @rdname future
 #' @export
-futureCall <- function(FUN, args=NULL, envir=parent.frame(), lazy=NA, seed=NULL, globals=TRUE, evaluator=plan("next"), ...) {
+futureCall <- function(FUN, args = NULL, envir = parent.frame(), lazy = NA, seed = NULL, globals = TRUE, evaluator = plan("next"), ...) {
   stopifnot(is.function(FUN))
   stopifnot(is.list(args))
 
-  envirT <- new.env(parent=envir)
+  envirT <- new.env(parent = envir)
   envirT$FUN <- FUN
   envirT$args <- args
 
-  future(do.call(what=FUN, args=args), substitute=TRUE, envir=envirT, lazy=lazy, seed=seed, globals=globals, evaluator=evaluator)
+  future(do.call(what = FUN, args = args), substitute = TRUE, envir = envirT, lazy = lazy, seed = seed, globals = globals, evaluator = evaluator)
 }

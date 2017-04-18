@@ -16,5 +16,5 @@
   args["label"] <- list(label)
   options(future.disposable = args)
   
-  eval(fassignment, envir=envir)
+  eval(fassignment, envir = envir)
 }

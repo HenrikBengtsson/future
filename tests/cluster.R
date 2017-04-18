@@ -4,21 +4,21 @@ library("listenv")
 message("*** cluster() ...")
 
 message("Cluster type: ", parallel:::getClusterOption("type"))
-message("Library paths: ", paste(sQuote(.libPaths()), collapse=", "))
-message("Package path: ", sQuote(system.file(package="future")))
+message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
+message("Package path: ", sQuote(system.file(package = "future")))
 
 for (cores in 1:2) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores = cores-1L)
 
   ## Set up a cluster with <cores> nodes (explicitly)
   cl <- parallel::makeCluster(cores)
-  plan(cluster, workers=cl)
+  plan(cluster, workers = cl)
 
   ## No global variables
   f <- try(cluster({
     42L
-  }, workers=cl), silent=FALSE)
+  }, workers = cl), silent = FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
 
@@ -29,12 +29,12 @@ for (cores in 1:2) {
 
 
   ## Set up a cluster with <cores> nodes (implicitly)
-  plan(cluster, workers=cores)
+  plan(cluster, workers = cores)
 
   ## No global variables
   f <- try(cluster({
     42L
-  }, workers=cl), silent=FALSE)
+  }, workers = cl), silent = FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
 
@@ -71,7 +71,7 @@ for (cores in 1:2) {
     x[[ii]] <- future({ ii })
   }
   message(sprintf(" - Resolving %d cluster futures", length(x)))
-  v <- sapply(x, FUN=value)
+  v <- sapply(x, FUN = value)
   stopifnot(all(v == 1:4))
 
 
@@ -81,22 +81,22 @@ for (cores in 1:2) {
     1
   })
   print(f)
-  v <- value(f, signal=FALSE)
+  v <- value(f, signal = FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
   ## Error is repeated
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
 
   message("*** cluster() - too large globals ...")
-  ooptsT <- options(future.globals.maxSize=1024*4L)
+  ooptsT <- options(future.globals.maxSize = 1024 * 4L)
 
   limit <- getOption("future.globals.maxSize")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
@@ -108,7 +108,7 @@ for (cores in 1:2) {
   cat(sprintf("a: %g bytes\n", size))
   f <- future({ sum(a) })
   print(f)
-  rm(list="a")
+  rm(list = "a")
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
@@ -119,8 +119,8 @@ for (cores in 1:2) {
   yTruth <- sum(a)
   size <- object.size(a)
   cat(sprintf("a: %g bytes\n", size))
-  res <- try(f <- future({ sum(a) }), silent=TRUE)
-  rm(list="a")
+  res <- try(f <- future({ sum(a) }), silent = TRUE)
+  rm(list = "a")
   stopifnot(inherits(res, "try-error"))
 
   ## Undo options changed in this test
@@ -134,18 +134,18 @@ for (cores in 1:2) {
       libPaths = .libPaths(),
       pkgs     = installed.packages()
     )
-  }, workers=cl), silent=FALSE)
+  }, workers = cl), silent = FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)
-  message(paste(capture.output(str(v)), collapse="\n"))
+  message(paste(capture.output(str(v)), collapse = "\n"))
   message("*** cluster() - installed packages ... DONE")
 
 
   message("*** cluster() - assert covr workaround ...")
   f <- try(cluster({
     future:::hpaste(1:100)
-  }, workers=cl), silent=FALSE)
+  }, workers = cl), silent = FALSE)
   print(f)
   stopifnot(inherits(f, "ClusterFuture"))
   v <- value(f)
@@ -178,7 +178,7 @@ message("*** cluster() - setDefaultCluster() ... DONE")
 
 message("*** cluster() - exceptions ...")
 
-res <- try(cluster(42L, workers=NA), silent=TRUE)
+res <- try(cluster(42L, workers = NA), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
@@ -220,7 +220,7 @@ message("*** cluster() - registry ...")
 
 ## Explicitly created clusters are *not* added to the registry
 cl <- parallel::makeCluster(cores)
-plan(cluster, workers=cl)
+plan(cluster, workers = cl)
 clR <- ClusterRegistry("get")
 stopifnot(is.null(clR))
 

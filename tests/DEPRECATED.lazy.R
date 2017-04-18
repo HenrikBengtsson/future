@@ -51,7 +51,7 @@ f <- lazy({
   b <- 3
   c <- 2
   a * b * c
-}, globals=FALSE)
+}, globals = FALSE)
 print(f)
 
 ## Since 'a' is a global variable in _lazy_ future 'f',
@@ -66,13 +66,13 @@ stopifnot(v == 42)
 
 message("*** lazy() with globals (tricky)")
 x <- listenv()
-for (ii in 1:5) x[[ii]] <- lazy({ ii }, globals=TRUE)
-v <- sapply(x, FUN=value)
+for (ii in 1:5) x[[ii]] <- lazy({ ii }, globals = TRUE)
+v <- sapply(x, FUN = value)
 stopifnot(all(v == 1:5))  ## Make sure globals are frozen
 
 x <- listenv()
-for (ii in 1:5) x[[ii]] <- lazy({ ii }, globals=FALSE)
-v <- sapply(x, FUN=value)
+for (ii in 1:5) x[[ii]] <- lazy({ ii }, globals = FALSE)
+v <- sapply(x, FUN = value)
 stopifnot(all(v == 5L))  ## Make sure globals are not frozen
 
 
@@ -82,16 +82,16 @@ f <- lazy({
   1
 })
 print(f)
-v <- value(f, signal=FALSE)
+v <- value(f, signal = FALSE)
 print(v)
 stopifnot(inherits(v, "simpleError"))
 
-res <- try({ v <- value(f) }, silent=TRUE)
+res <- try({ v <- value(f) }, silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
 ## Error is repeated
-res <- try(value(f), silent=TRUE)
+res <- try(value(f), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
@@ -100,7 +100,7 @@ message("*** lazy() and errors ... DONE")
 
 message("*** lazy() - exceptions ...")
 
-res <- try(lazy(42L, local=FALSE, globals=TRUE), silent=TRUE)
+res <- try(lazy(42L, local = FALSE, globals = TRUE), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 

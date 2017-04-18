@@ -1,7 +1,7 @@
 source("incl/start.R")
 library("listenv")
 
-oopts <- c(oopts, options(future.progress=TRUE))
+oopts <- c(oopts, options(future.progress = TRUE))
 
 strategies <- supportedStrategies()
 strategies <- setdiff(strategies, "multiprocess")
@@ -11,36 +11,36 @@ message("*** resolve() ...")
 
 message("*** resolve() for Future objects ...")
 
-plan(multisession, workers=2L)
+plan(multisession, workers = 2L)
 
 for (value in c(FALSE, TRUE)) {
   for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
-    message(sprintf("- value=%s, recursive=%s ...", value, recursive))
+    message(sprintf("- value = %s, recursive = %s ...", value, recursive))
   
     f <- future({
       Sys.sleep(0.5)
-      list(a=1, b=42L)
+      list(a = 1, b = 42L)
     })
-    res <- resolve(f, value=value, recursive=recursive)
+    res <- resolve(f, value = value, recursive = recursive)
     stopifnot(identical(res, f))
 
     f <- future({
       Sys.sleep(0.5)
-      list(a=1, b=42L)
-    }, lazy=TRUE)
-    res <- resolve(f, value=value, recursive=recursive)
+      list(a = 1, b = 42L)
+    }, lazy = TRUE)
+    res <- resolve(f, value = value, recursive = recursive)
     stopifnot(identical(res, f))
 
     message("- w/ exception ...")
-    f <- future(list(a=1, b=42L, c=stop("Nah!")))
-    res <- resolve(f, value=value, recursive=recursive)
+    f <- future(list(a = 1, b = 42L, c = stop("Nah!")))
+    res <- resolve(f, value = value, recursive = recursive)
     stopifnot(identical(res, f))
 
-    f <- future(list(a=1, b=42L, c=stop("Nah!")), lazy=TRUE)
-    res <- resolve(f, value=value, recursive=recursive)
+    f <- future(list(a = 1, b = 42L, c = stop("Nah!")), lazy = TRUE)
+    res <- resolve(f, value = value, recursive = recursive)
     stopifnot(identical(res, f))
 
-    message(sprintf("- value=%s, recursive=%s ... DONE", value, recursive))
+    message(sprintf("- value = %s, recursive = %s ... DONE", value, recursive))
   } ## for (resolve ...)
 } ## for (value ...)
 
@@ -75,7 +75,7 @@ for (strategy in strategies) {
   stopifnot(resolved(x[["b"]]))
 
   x <- list()
-  x$a <- future(1, lazy=TRUE)
+  x$a <- future(1, lazy = TRUE)
   x$b <- future(2)
   x[[3]] <- 3
   y <- resolve(x)
@@ -84,8 +84,8 @@ for (strategy in strategies) {
   stopifnot(resolved(x[["b"]]))
 
   x <- list()
-  x$a <- future(1, lazy=TRUE)
-  x$b <- future(2, lazy=TRUE)
+  x$a <- future(1, lazy = TRUE)
+  x$b <- future(2, lazy = TRUE)
   x[[3]] <- 3
   y <- resolve(x)
   stopifnot(identical(y, x))
@@ -97,20 +97,20 @@ for (strategy in strategies) {
   x$b <- future({Sys.sleep(1); 2})
   x[[4]] <- 4
   dim(x) <- c(2, 2)
-  y <- resolve(x, idxs=1)
+  y <- resolve(x, idxs = 1)
   stopifnot(identical(y, x))
   stopifnot(resolved(x[[1]]))
-  y <- resolve(x, idxs=2)
+  y <- resolve(x, idxs = 2)
   stopifnot(identical(y, x))
   stopifnot(resolved(x[[2]]))
-  y <- resolve(x, idxs=3)
+  y <- resolve(x, idxs = 3)
   stopifnot(identical(y, x))
-  y <- resolve(x, idxs=seq_along(x))
+  y <- resolve(x, idxs = seq_along(x))
   stopifnot(identical(y, x))
-  y <- resolve(x, idxs=names(x))
+  y <- resolve(x, idxs = names(x))
   stopifnot(identical(y, x))
 
-  y <- resolve(x, idxs=matrix(c(1, 2), ncol=2L), value=TRUE)
+  y <- resolve(x, idxs = matrix(c(1, 2), ncol = 2L), value = TRUE)
   stopifnot(identical(y, x))
 
   x <- list()
@@ -119,7 +119,7 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
 
   x <- list()
-  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk }, lazy=TRUE)
+  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk }, lazy = TRUE)
   y <- resolve(x)
   stopifnot(identical(y, x))
 
@@ -128,14 +128,14 @@ for (strategy in strategies) {
   x$a <- 1
   x$b <- 2
 
-  res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
+  res <- try(y <- resolve(x, idxs = 0L), silent = TRUE)
   stopifnot(inherits(res, "try-error"))
 
-  res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
+  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
   stopifnot(inherits(res, "try-error"))
 
   x <- list(1, 2)
-  res <- try(x <- resolve(x, idxs="a"))
+  res <- try(x <- resolve(x, idxs = "a"))
   stopifnot(inherits(res, "try-error"))
 
   message(sprintf("- plan('%s') ...", strategy))
@@ -160,51 +160,51 @@ for (strategy in strategies) {
   x$b <- 2
   y <- resolve(x)
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 0L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 0L)
 
   x <- new.env()
   x$a <- future(1)
   x$b <- future(2)
   x$c <- 3
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
   y <- resolve(x)
   stopifnot(identical(y, x))
   stopifnot(resolved(x$a))
   stopifnot(resolved(x$b))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
 
   x <- new.env()
   x$a %<-% { 1 }
   x$b %<-% { 2 }
   x$c <- 3
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
   y <- resolve(x)  ## FIXME: Should not do value()!
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
 
   x <- new.env()
   x$a <- future({ 1 })
   x$b %<-% { 2 }
   x$c <- 3
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
-  y <- resolve(x, idxs="a")
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
+  y <- resolve(x, idxs = "a")
   stopifnot(identical(y, x))
   stopifnot(resolved(x$a))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
-  y <- resolve(x, idxs="b")
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
+  y <- resolve(x, idxs = "b")
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
-  y <- resolve(x, idxs="c")
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
+  y <- resolve(x, idxs = "c")
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
-  y <- resolve(x, idxs=names(x), value=TRUE)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
+  y <- resolve(x, idxs = names(x), value = TRUE)
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
-  y <- resolve(x, recursive=TRUE, value=TRUE)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
+  y <- resolve(x, recursive = TRUE, value = TRUE)
   stopifnot(identical(y, x))
 
   ## Exceptions
-  res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
+  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
   stopifnot(inherits(res, "try-error"))
 
   message(sprintf("- plan('%s') ...", strategy))
@@ -219,11 +219,11 @@ for (strategy in strategies) {
   message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
 
-  options(future.progress=function(done, total) {
-    msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100*done/total, done, total)
+  options(future.progress = function(done, total) {
+    msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100 * done / total, done, total)
     if (done < total) {
-      bs <- paste(rep("\b", times=nchar(msg)), collapse="")
-      message(paste(msg, bs, sep=""), appendLF=FALSE)
+      bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
+      message(paste(msg, bs, sep = ""), appendLF = FALSE)
     } else {
       message(msg)
     }
@@ -237,7 +237,7 @@ for (strategy in strategies) {
   x <- listenv()
   x$a <- 1
   x$b <- 2
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 0L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 0L)
   y <- resolve(x)
   stopifnot(identical(y, x))
 
@@ -248,21 +248,21 @@ for (strategy in strategies) {
   names <- names(x)
   dim(x) <- c(1, 3)
   names(x) <- names
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
   y <- resolve(x)
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
 
   x <- listenv()
   x$a %<-% { 1 }
   x$b %<-% { 2 }
   x$c <- 3
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
   y <- resolve(x)  ## FIXME: Should not do value()!
   stopifnot(identical(y, x))
-  #stopifnot(is.na(futureOf(x$a, mustExist=FALSE)))
-  #stopifnot(is.na(futureOf(x$b, mustExist=FALSE)))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 2L)
+  #stopifnot(is.na(futureOf(x$a, mustExist = FALSE)))
+  #stopifnot(is.na(futureOf(x$b, mustExist = FALSE)))
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
 
   x <- listenv()
   x$a <- future({ 1 })
@@ -272,38 +272,38 @@ for (strategy in strategies) {
   names <- names(x)
   dim(x) <- c(2, 2)
   names(x) <- names
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
-  y <- resolve(x, idxs="a")
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
+  y <- resolve(x, idxs = "a")
   stopifnot(identical(y, x))
-  stopifnot(identical(futureOf(x$a, mustExist=FALSE), x$a))
+  stopifnot(identical(futureOf(x$a, mustExist = FALSE), x$a))
   stopifnot(resolved(x$a))
-  y <- resolve(x, idxs="b")
+  y <- resolve(x, idxs = "b")
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  idxs <- matrix(c(1, 2), ncol=2L)
-  y <- resolve(x, idxs=idxs)
+  idxs <- matrix(c(1, 2), ncol = 2L)
+  y <- resolve(x, idxs = idxs)
   stopifnot(identical(y, x))
-  #stopifnot(is.na(futureOf(x$c, mustExist=FALSE)))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
+  #stopifnot(is.na(futureOf(x$c, mustExist = FALSE)))
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  y <- resolve(x, idxs=4L)
+  y <- resolve(x, idxs = 4L)
   stopifnot(identical(y, x))
-  #stopifnot(is.na(futureOf(x[[4L]], mustExist=FALSE)))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
+  #stopifnot(is.na(futureOf(x[[4L]], mustExist = FALSE)))
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  y <- resolve(x, idxs=names(x), value=TRUE)
+  y <- resolve(x, idxs = names(x), value = TRUE)
   stopifnot(identical(y, x))
-  stopifnot(length(futureOf(envir=x, drop=TRUE)) == 3L)
+  stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  y <- resolve(x, recursive=TRUE, value=TRUE)
+  y <- resolve(x, recursive = TRUE, value = TRUE)
   stopifnot(identical(y, x))
 
   ## Exceptions
-  res <- try(y <- resolve(x, idxs=0L), silent=TRUE)
+  res <- try(y <- resolve(x, idxs = 0L), silent = TRUE)
   stopifnot(inherits(res, "try-error"))
 
-  res <- try(y <- resolve(x, idxs="unknown"), silent=TRUE)
+  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
   stopifnot(inherits(res, "try-error"))
 
   message(sprintf("- plan('%s') ...", strategy))

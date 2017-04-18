@@ -1,4 +1,4 @@
-signalEarly <- function(future, collect=TRUE, ...) {
+signalEarly <- function(future, collect = TRUE, ...) {
   ## Future is not yet launched
   if (future$state == "created") return(future)
 
@@ -11,14 +11,14 @@ signalEarly <- function(future, collect=TRUE, ...) {
 
   ## Collect value?
   if (collect) {
-    mdebug("signalEarly(): v <- value(f, signal=FALSE)")
-    value <- value(future, signal=FALSE)
+    mdebug("signalEarly(): v <- value(f, signal = FALSE)")
+    value <- value(future, signal = FALSE)
   } else {
     mdebug("signalEarly(): v <- f$value")
     value <- future$value
   }
 
-  mdebug("signalEarly(): class(v) = c(%s)", paste(sQuote(class(value)), collapse=", "))
+  mdebug("signalEarly(): class(v) = c(%s)", paste(sQuote(class(value)), collapse = ", "))
   mdebug("signalEarly(): Retrieving value ... DONE")
 
   ## Was a condition caught?

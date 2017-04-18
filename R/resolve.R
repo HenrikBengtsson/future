@@ -25,13 +25,13 @@
 #' @seealso futureOf
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -61,7 +61,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
 
         ## Recursively resolve the value?
         if (!is.atomic(v)) {
-          v <- resolve(v, value=TRUE, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+          v <- resolve(v, value = TRUE, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
           msg <- sprintf("%s (and resolved itself)", msg)
         }
 
@@ -83,7 +83,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
 
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -104,10 +104,10 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
   ## Setup default progress function?
   if (hasProgress && !is.function(progress)) {
     progress <- function(done, total) {
-      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
+      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100 * done / total, done, total)
       if (done < total) {
-        bs <- paste(rep("\b", times=nchar(msg)), collapse="")
-        message(paste(msg, bs, sep=""), appendLF=FALSE)
+        bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
+        message(paste(msg, bs, sep = ""), appendLF = FALSE)
       } else {
         message(msg)
       }
@@ -122,7 +122,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
     ## Multi-dimensional indices?
     if (is.matrix(idxs)) {
-      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+      idxs <- whichIndex(idxs, dim = dim(x), dimnames = dimnames(x))
     }
     idxs <- unique(idxs)
 
@@ -180,7 +180,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
@@ -207,7 +207,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
+resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -224,13 +224,13 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   ## Subset?
   if (is.null(idxs)) {
     ## names(x) is only supported in R (>= 3.2.0)
-    idxs <- ls(envir=x, all.names=TRUE)
+    idxs <- ls(envir = x, all.names = TRUE)
   } else {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
     ## names(x) is only supported in R (>= 3.2.0)
-    names <- ls(envir=x, all.names=TRUE)
+    names <- ls(envir = x, all.names = TRUE)
 
     ## Sanity check (because nx == 0 returns early above)
     stopifnot(length(names) > 0)
@@ -256,7 +256,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   x0 <- x
   x <- futures(x)
   nx <- .length(x)
-  idxs <- ls(envir=x, all.names=TRUE)
+  idxs <- ls(envir = x, all.names = TRUE)
   stopifnot(length(idxs) == nx)
 
   ## Everything is considered non-resolved by default
@@ -279,7 +279,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
@@ -299,7 +299,7 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
+resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -324,7 +324,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
 
     ## Multi-dimensional indices?
     if (is.matrix(idxs)) {
-      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+      idxs <- whichIndex(idxs, dim = dim(x), dimnames = dimnames(x))
     }
     idxs <- unique(idxs)
 
@@ -380,7 +380,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point

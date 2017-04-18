@@ -94,7 +94,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 # A sequential future with lazy evaluation
@@ -107,7 +107,7 @@ f <- future({
 }) \%lazy\% TRUE
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 # A multicore future
@@ -120,7 +120,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 ## Multisession futures gives an error on R CMD check on
@@ -138,7 +138,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 }
 }

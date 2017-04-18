@@ -128,7 +128,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
       mdebug("Finding globals ...")
 
       expr <- do.call(call, args = c(list("FUN"), list(...)))
-      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=TRUE, resolve=TRUE)
+      gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE, resolve = TRUE)
       globals <- gp$globals
       packages <- gp$packages
       gp <- NULL

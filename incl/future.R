@@ -5,8 +5,8 @@ plan(multiprocess)
 
 ## Data
 x <- rnorm(100)
-y <- 2*x + 0.2 + rnorm(100)
-w <- 1 + x^2
+y <- 2 * x + 0.2 + rnorm(100)
+w <- 1 + x ^ 2
 
 
 ## (1) Regular assignments (evaluated sequentially)

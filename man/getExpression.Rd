@@ -24,7 +24,7 @@ If no next future strategy is specified, the default is to
 use \link{sequential} futures.  This conservative approach protects
 against spawning off recursive futures by mistake, especially
 \link{multicore} and \link{multisession} ones.
-The default will also set \code{options(mc.cores=0L)}, which
+The default will also set \code{options(mc.cores = 0L)}, which
 means that no \emph{additional} R processes may be spawned off
 by functions such as \code{\link[parallel:mclapply]{mclapply}()}
 and friends (*).
@@ -35,7 +35,7 @@ used.
 See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
 for plans on adding support for custom nested future types.
 
-(*) Note that using \code{mc.cores=0} will unfortunately cause
+(*) Note that using \code{mc.cores = 0} will unfortunately cause
     \code{mclapply()} and friends to generate an error saying
     "'mc.cores' must be >= 1".  Ideally those functions should
     fall back to using the non-multicore alternative in this

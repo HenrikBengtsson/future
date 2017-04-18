@@ -30,7 +30,7 @@
 #'    of workers is read from that file, where one worker (node)
 #'    is given per line.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -l nodes=4:ppn=2}, which requests four nodes each
+#'    \code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
 #'    with two cores.
 #'  \item \code{"SGE"} -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
@@ -47,7 +47,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods=getOption("future.availableWorkers.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm=TRUE, default="localhost", which=c("auto", "min", "max", "all")) {
+availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))

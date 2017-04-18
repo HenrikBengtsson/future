@@ -19,7 +19,7 @@
 #'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=NA, seed=NULL, globals=TRUE, ..., assign.env=envir) {
+futureAssign <- function(x, value, envir = parent.frame(), substitute = TRUE, lazy = NA, seed = NULL, globals = TRUE, ..., assign.env = envir) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
@@ -27,7 +27,7 @@ futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=N
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## (1) Arguments passed to future()
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  future.args <- list(value, envir=envir, lazy = lazy, seed = seed, globals = globals, ...)
+  future.args <- list(value, envir = envir, lazy = lazy, seed = seed, globals = globals, ...)
 
   ## Any arguments set via disposible option?
   args <- getOption("future.disposable", NULL)
@@ -47,8 +47,8 @@ futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=N
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## Name of "future" saved in parallel with the "promise"
   future_name <- sprintf(".future_%s", x)
-  if (exists(future_name, envir=envir)) {
-    msg <- sprintf("A future with name %s already exists in environment %s: %s", sQuote(future_name), sQuote(environmentName(envir)), hpaste(ls(envir=envir, all.names=TRUE)))
+  if (exists(future_name, envir = envir)) {
+    msg <- sprintf("A future with name %s already exists in environment %s: %s", sQuote(future_name), sQuote(environmentName(envir)), hpaste(ls(envir = envir, all.names = TRUE)))
 ##    warning(msg)
   }
 
@@ -56,12 +56,12 @@ futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=N
   ## a variable as a "promise".
   ## NOTE: We make sure to pass 'envir' in order for globals to
   ## be located properly.
-  future <- do.call(future::future, args=future.args, envir=assign.env)
+  future <- do.call(future::future, args = future.args, envir = assign.env)
 
   ## Assign future to assignment environment
   future_without_gc <- future
   future_without_gc$.gcenv <- NULL
-  assign(future_name, future_without_gc, envir=assign.env)
+  assign(future_name, future_without_gc, envir = assign.env)
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,9 +75,9 @@ futureAssign <- function(x, value, envir=parent.frame(), substitute=TRUE, lazy=N
   delayedAssign(x, local({
     value <- value(future)
     ## Remove internal future variable
-    rm(list=future_name, envir=assign.env)
+    rm(list = future_name, envir = assign.env)
     value
-  }), eval.env=env, assign.env=assign.env)
+  }), eval.env = env, assign.env = assign.env)
 
   invisible(future)
 }

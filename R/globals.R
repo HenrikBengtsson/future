@@ -15,10 +15,10 @@
 #' @importFrom globals globalsOf globalsByName as.Globals packagesOf cleanup
 #'
 #' @keywords internal
-getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpression, globals=TRUE, resolve=getOption("future.globals.resolve", FALSE), persistent=FALSE, ...) {
+getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, ...) {
   ## Nothing to do?
   if (is.logical(globals) && !globals) {
-    return(list(expr=expr, globals=list(), packages=character(0)))
+    return(list(expr = expr, globals = list(), packages = character(0)))
   }
   
   debug <- getOption("future.debug", FALSE)
@@ -34,7 +34,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## Note: It's possible to switch between 'ignore' and 'error'
     ##       at any time. Tests handles both cases. /HB 2016-06-18
     globals.onMissing <- getOption("future.globals.onMissing", "ignore")
-    globals.onMissing <- match.arg(globals.onMissing, choices=c("error", "ignore"))
+    globals.onMissing <- match.arg(globals.onMissing, choices = c("error", "ignore"))
     mustExist <- is.element(globals.onMissing, "error")
   }
 
@@ -47,20 +47,20 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     globals.method <- getOption("future.globals.method", "ordered")
     globals <- globalsOf(
                  ## Passed to globals::findGlobals()
-                 expr, envir=envir, substitute=FALSE, tweak=tweak,
+                 expr, envir = envir, substitute = FALSE, tweak = tweak,
                  ## Passed to globals::findGlobals() via '...'
-                 dotdotdot="return",
-                 method=globals.method,
-                 unlist=TRUE,
+                 dotdotdot = "return",
+                 method = globals.method,
+                 unlist = TRUE,
                  ## Passed to globals::globalsByName()
-                 mustExist=mustExist,
-                 recursive=TRUE
+                 mustExist = mustExist,
+                 recursive = TRUE
                )
     if (debug) mdebug("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     if (debug) mdebug("Searching for globals ... DONE")
   } else if (is.character(globals)) {
     if (debug) mdebug("Retrieving globals ...")
-    globals <- globalsByName(globals, envir=envir, mustExist=mustExist)
+    globals <- globalsByName(globals, envir = envir, mustExist = mustExist)
     if (debug) mdebug("- globals retrieved: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     if (debug) mdebug("Retrieving globals ... DONE")
   } else if (inherits(globals, "Globals")) {
@@ -78,7 +78,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   if (length(globals) == 0) {
     if (debug) mdebug("- globals: [0] <none>")
     if (debug) mdebug("getGlobalsAndPackages() ... DONE")
-    return(list(expr=expr, globals=list(), packages=character(0)))
+    return(list(expr = expr, globals = list(), packages = character(0)))
   }
 
   ## Are globals already resolved?
@@ -110,11 +110,11 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
     ## To please R CMD check
     a <- `future.call.arguments` <- NULL
-    rm(list=c("a", "future.call.arguments"))
+    rm(list = c("a", "future.call.arguments"))
     expr <- substitute({
       ## covr: skip=1
-      do.call(function(...) a, args=`future.call.arguments`)
-    }, list(a=expr))
+      do.call(function(...) a, args = `future.call.arguments`)
+    }, list(a = expr))
     if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
   }
 
@@ -128,14 +128,14 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
     ## Unless already resolved, perform a shallow resolve
     if (attr(globals, "resolved")) {
-      idxs <- which(unlist(lapply(globals, FUN=inherits, "Future"), use.names=FALSE))
+      idxs <- which(unlist(lapply(globals, FUN = inherits, "Future"), use.names = FALSE))
       if (debug) mdebug("Number of global futures: %d", length(idxs))
       
       ## Nothing to do?
       if (length(idxs) > 0) {
         if (debug) mdebug("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
         valuesF <- values(globals[idxs])
-        globals[idxs] <- lapply(valuesF, FUN=ConstantFuture)
+        globals[idxs] <- lapply(valuesF, FUN = ConstantFuture)
       }
     }
 
@@ -161,14 +161,14 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     where <- attr(globals, "where")
 
     names <- names(globals)
-    keep <- rep(TRUE, times=length(globals))
+    keep <- rep(TRUE, times = length(globals))
     names(keep) <- names
     for (name in names) {
       pkg <- environmentName(where[[name]])
       pkg <- gsub("^package:", "", pkg)
       if (pkg %in% pkgs) {
         ## Only drop exported objects
-        if (exists(name, envir=asPkgEnvironment(pkg)))
+        if (exists(name, envir = asPkgEnvironment(pkg)))
           keep[name] <- FALSE
       }
     }
@@ -190,7 +190,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## set.  /HB 2016-02-04
   if (resolve && length(globals) > 0L) {
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
-    globals <- resolve(globals, value=TRUE, recursive=TRUE)
+    globals <- resolve(globals, value = TRUE, recursive = TRUE)
     if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
   }
@@ -199,7 +199,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L) {
     ## Maximum size of globals (to prevent too large exports) = 500 MiB
-    maxSizeOfGlobals <- getOption("future.globals.maxSize", 500*1024^2)
+    maxSizeOfGlobals <- getOption("future.globals.maxSize", 500 * 1024 ^ 2)
     maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
     stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
     
@@ -210,11 +210,11 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
   
       if (total_size > maxSizeOfGlobals) {
         n <- length(sizes)
-        o <- order(sizes, decreasing=TRUE)[1:3]
+        o <- order(sizes, decreasing = TRUE)[1:3]
         o <- o[is.finite(o)]
         sizes <- sizes[o]
-        classes <- lapply(globals[o], FUN=mode)
-        classes <- unlist(classes, use.names=FALSE)
+        classes <- lapply(globals[o], FUN = mode)
+        classes <- unlist(classes, use.names = FALSE)
         largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
         msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSizeOfGlobals))
         if (n == 1) {
@@ -226,7 +226,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
         } else {
           fmt <- "%s The three largest globals are %s."
         }
-        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse=" and "))
+        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse = " and "))
         if (debug) mdebug(msg)
         stop(msg)
       } ## if (total_size > ...)
@@ -244,7 +244,7 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
     ## Local functions
     attachedPackages <- function() {
       pkgs <- search()
-      pkgs <- grep("^package:", pkgs, value=TRUE)
+      pkgs <- grep("^package:", pkgs, value = TRUE)
       pkgs <- gsub("^package:", "", pkgs)
       pkgs
     }
@@ -262,5 +262,5 @@ getGlobalsAndPackages <- function(expr, envir=parent.frame(), tweak=tweakExpress
 
   stopifnot(inherits(globals, "FutureGlobals"))
   
-  list(expr=expr, globals=globals, packages=pkgs)
+  list(expr = expr, globals = globals, packages = pkgs)
 } ## getGlobalsAndPackages()

@@ -16,6 +16,6 @@ Invisibly a list of all details.
 Outputs details on the current R session
 }
 \details{
-Note that remote futures use \code{persistent=TRUE} by default.
+Note that remote futures use \code{persistent = TRUE} by default.
 }
 \keyword{internal}

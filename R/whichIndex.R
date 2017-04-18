@@ -1,4 +1,4 @@
-whichIndex <- function(I, dim, dimnames=NULL) {
+whichIndex <- function(I, dim, dimnames = NULL) {
   ndim <- length(dim)
   stopifnot((is.matrix(I) || is.data.frame(I)), ncol(I) == ndim)
   if (!is.null(dimnames)) stopifnot(length(dimnames) == ndim)
@@ -6,7 +6,7 @@ whichIndex <- function(I, dim, dimnames=NULL) {
 
   if (is.data.frame(I)) {
     ## Convert each column to indices
-    I2 <- array(NA_integer_, dim=dim(I))
+    I2 <- array(NA_integer_, dim = dim(I))
     for (kk in 1:ndim) {
       idxs <- I[[kk]]
       if (is.numeric(idxs)) {
@@ -34,7 +34,7 @@ whichIndex <- function(I, dim, dimnames=NULL) {
     }
   } else {
     ## Convert dimnames to dimindices
-    I2 <- array(NA_integer_, dim=dim(I))
+    I2 <- array(NA_integer_, dim = dim(I))
     for (kk in 1:ndim) {
       ## Could be, say, factor
       idxs <- I[, kk]
@@ -55,7 +55,7 @@ whichIndex <- function(I, dim, dimnames=NULL) {
 
   base <- cumprod(dim[-ndim])
   for (kk in 2:ndim) {
-    I[, kk] <- (I[, kk]-1) * base[kk-1L]
+    I[, kk] <- (I[, kk] - 1) * base[kk - 1L]
   }
   rowSums(I)
 }

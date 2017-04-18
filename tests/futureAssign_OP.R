@@ -4,22 +4,22 @@ message("*** %<-% ...")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores - 1L)
+  options(mc.cores = cores - 1L)
 
   for (strategy in supportedStrategies()) {
     message(sprintf("*** %%<-%% with %s futures ...", sQuote(strategy)))
     plan(strategy)
 
-    rm(list=intersect(c("x", "y"), ls()))
+    rm(list = intersect(c("x", "y"), ls()))
 
     message("** Future evaluation without globals")
     v1 %<-% { x <- 1 }
-    stopifnot(!exists("x", inherits=FALSE), identical(v1, 1))
+    stopifnot(!exists("x", inherits = FALSE), identical(v1, 1))
 
     message("** Future evaluation with globals")
     a <- 2
     v2 %<-% { x <- a }
-    stopifnot(!exists("x", inherits=FALSE), identical(v2, a))
+    stopifnot(!exists("x", inherits = FALSE), identical(v2, a))
 
     message("** Future evaluation with errors")
     v3 %<-% {
@@ -27,8 +27,8 @@ for (cores in 1:min(3L, availableCores())) {
       stop("Woops!")
       x
     }
-    stopifnot(!exists("x", inherits=FALSE))
-    res <- try(identical(v3, 3), silent=TRUE)
+    stopifnot(!exists("x", inherits = FALSE))
+    res <- try(identical(v3, 3), silent = TRUE)
     stopifnot(inherits(res, "try-error"))
 
 
@@ -39,18 +39,18 @@ for (cores in 1:min(3L, availableCores())) {
         ii
       }
     }
-    res <- try(as.list(y), silent=TRUE)
+    res <- try(as.list(y), silent = TRUE)
     stopifnot(inherits(res, "try-error"))
     z <- y[c(1, 3, 5)]
     z <- unlist(z)
     stopifnot(all(z == c(1, 3, 5)))
-    res <- try(y[[2]], silent=TRUE)
+    res <- try(y[[2]], silent = TRUE)
     stopifnot(inherits(res, "try-error"))
-    res <- try(y[[4]], silent=TRUE)
+    res <- try(y[[4]], silent = TRUE)
     stopifnot(inherits(res, "try-error"))
-    res <- try(y[c(2, 4)], silent=TRUE)
+    res <- try(y[c(2, 4)], silent = TRUE)
     stopifnot(inherits(res, "try-error"))
-    res <- try(y[1:2], silent=TRUE)
+    res <- try(y[1:2], silent = TRUE)
     stopifnot(inherits(res, "try-error"))
 
 
@@ -64,28 +64,28 @@ for (cores in 1:min(3L, availableCores())) {
 
 
     message("** Collecting results")
-    printf("v1=%s\n", v1)
+    printf("v1 = %s\n", v1)
     stopifnot(v1 == 1)
 
-    printf("v2=%s\n", v2)
+    printf("v2 = %s\n", v2)
     stopifnot(v2 == a)
 
     stopifnot(tryCatch({
-      printf("v3=%s\n", v3)
+      printf("v3 = %s\n", v3)
     }, error = function(ex) {
       printf("v3: <%s> (as expect)\n", class(ex)[1])
       TRUE
     }))
 
-    printf("v4=%s\n", v4)
+    printf("v4 = %s\n", v4)
     #stopifnot(v4 == 4)
 
 
     message("** Left-to-right and right-to-left future assignments")
     c %<-% 1
-    printf("c=%s\n", c)
+    printf("c = %s\n", c)
     1 %->% d
-    printf("d=%s\n", d)
+    printf("d = %s\n", d)
     stopifnot(d == c)
 
 
@@ -98,11 +98,11 @@ for (cores in 1:min(3L, availableCores())) {
       4 %->% e
       b + c + d + e
     }
-    printf("a=%s\n", a)
+    printf("a = %s\n", a)
     stopifnot(a == 10)
 
     { a + 1 } %->% b
-    printf("b=%s\n", b)
+    printf("b = %s\n", b)
     stopifnot(b == a + 1)
 
     message(sprintf("*** %%<-%% with %s futures ... DONE", sQuote(strategy)))

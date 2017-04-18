@@ -6,7 +6,7 @@ message("*** transparent() ...")
 ## No global variables
 f <- try(transparent({
   42L
-}), silent=FALSE)
+}), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
 
@@ -20,7 +20,7 @@ plan(transparent)
 ## No global variables
 f <- try(future({
   42L
-}), silent=FALSE)
+}), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
 

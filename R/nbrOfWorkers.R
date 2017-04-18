@@ -9,7 +9,7 @@
 #' @example incl/nbrOfWorkers.R
 #'
 #' @export
-nbrOfWorkers <- function(evaluator=NULL) {
+nbrOfWorkers <- function(evaluator = NULL) {
   UseMethod("nbrOfWorkers")
 }
 

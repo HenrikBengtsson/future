@@ -13,21 +13,21 @@
 #' new default strategy.
 #'
 #' @export
-tweak <- function(strategy, ..., penvir=parent.frame()) UseMethod("tweak")
+tweak <- function(strategy, ..., penvir = parent.frame()) UseMethod("tweak")
 
 #' @export
-tweak.character <- function(strategy, ..., penvir=parent.frame()) {
+tweak.character <- function(strategy, ..., penvir = parent.frame()) {
   ## Search attached packages and the 'future' package
   ## for a future function with this name
-  envirs <- list(penvir, future=getNamespace("future"), NULL)
+  envirs <- list(penvir, future = getNamespace("future"), NULL)
   for (envir in envirs) {
     ## Reached the end? Nothing found.
     if (is.null(envir)) {
       stop("No such strategy for futures: ", sQuote(strategy))
     }
 
-    if (exists(strategy, mode="function", envir=envir, inherits=TRUE)) {
-      strategy <- get(strategy, mode="function", envir=envir, inherits=TRUE)
+    if (exists(strategy, mode = "function", envir = envir, inherits = TRUE)) {
+      strategy <- get(strategy, mode = "function", envir = envir, inherits = TRUE)
       break
     }
   }
@@ -35,11 +35,11 @@ tweak.character <- function(strategy, ..., penvir=parent.frame()) {
   ## Sanity check
   stopifnot(is.function(strategy))
 
-  tweak(strategy, ..., penvir=penvir)
+  tweak(strategy, ..., penvir = penvir)
 }
 
 #' @export
-tweak.future <- function(strategy, ..., penvir=parent.frame()) {
+tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   args <- list(...)
 
   ## Nothing to tweak?
@@ -85,7 +85,7 @@ tweak.future <- function(strategy, ..., penvir=parent.frame()) {
     }
   }
   if (length(unknown) > 0L) {
-    warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse=", ")))
+    warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
   }
 
   ## Restore attributes including class

@@ -73,7 +73,7 @@
 #'
 #' @export
 plan <- local({
-  defaultStrategy <- structure(sequential, call=substitute(plan(sequential)))
+  defaultStrategy <- structure(sequential, call = substitute(plan(sequential)))
   
   defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
 
@@ -109,7 +109,7 @@ plan <- local({
 
 
   ## Main function
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE, .cleanup=TRUE, .init=TRUE) {
+  function(strategy = NULL, ..., substitute = TRUE, .call = TRUE, .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
     if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
     
@@ -178,26 +178,26 @@ plan <- local({
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
-        first <- eval(first, envir=parent.frame())
+        first <- eval(first, envir = parent.frame())
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
-          res <- plan(strategies, substitute=FALSE,
-	              .cleanup=.cleanup, .init=.init,
-                      .check_lazy=check_lazy)
+          res <- plan(strategies, substitute = FALSE,
+	              .cleanup = .cleanup, .init = .init,
+                      .check_lazy = check_lazy)
           return(invisible(res))
         }
 
         ## Example: plan(list(sequential, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
-          strategies <- eval(strategy, envir=parent.frame())
+          strategies <- eval(strategy, envir = parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
           ## Coerce strings to functions, e.g. plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
-              strategy_kk <- tweak(strategy_kk, penvir=parent.frame())
+              strategy_kk <- tweak(strategy_kk, penvir = parent.frame())
               strategies[[kk]] <- strategy_kk
             }
           }
@@ -209,26 +209,26 @@ plan <- local({
     ## (b) Otherwise, assume a single future strategy
     if (is.null(newStack)) {
       if (is.symbol(strategy)) {
-        strategy <- eval(strategy, envir=parent.frame())
+        strategy <- eval(strategy, envir = parent.frame())
       } else if (is.language(strategy)) {
         strategyT <- as.list(strategy)
 
         ## tweak(...)?
         if (strategyT[[1]] == as.symbol("tweak")) {
-          strategy <- eval(strategy, envir=parent.frame())
+          strategy <- eval(strategy, envir = parent.frame())
         } else {
-          isSymbol <- sapply(strategyT, FUN=is.symbol)
+          isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
             targs <- c(targs, strategyT[-1L])
             strategy <- strategyT[[1L]]
           }
-          strategy <- eval(strategy, envir=parent.frame())
+          strategy <- eval(strategy, envir = parent.frame())
         }
       }
 
       ## Tweak future strategy accordingly
-      args <- c(list(strategy), targs, penvir=parent.frame())
-      tstrategy <- do.call(tweak, args=args)
+      args <- c(list(strategy), targs, penvir = parent.frame())
+      tstrategy <- do.call(tweak, args = args)
 
       ## Setup a new stack of future strategies (with a single one)
       newStack <- list(tstrategy)
@@ -280,7 +280,7 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies=c("sequential", "multicore", "multisession", "multiprocess", "cluster", "lazy", "eager")) {
+supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster", "lazy", "eager")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }
@@ -301,7 +301,7 @@ print.future <- function(x, ...) {
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
-  cat(s, "\n", sep="")
+  cat(s, "\n", sep = "")
   invisible(x)
 }
 
@@ -330,6 +330,6 @@ print.FutureStrategyList <- function(x, ...) {
   }
 
   s <- paste(s, collapse = "\n")
-  cat(s, "\n", sep="")
+  cat(s, "\n", sep = "")
   invisible(x)
 }

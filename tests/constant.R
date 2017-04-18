@@ -4,7 +4,7 @@ library("listenv")
 message("*** constant() ...")
 
 ## No global variables
-f <- try(constant(42L), silent=FALSE)
+f <- try(constant(42L), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "ConstantFuture"))
 
@@ -16,7 +16,7 @@ stopifnot(y == 42L)
 
 plan(constant)
 ## No global variables
-f <- try(future(42L), silent=FALSE)
+f <- try(future(42L), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "ConstantFuture"))
 

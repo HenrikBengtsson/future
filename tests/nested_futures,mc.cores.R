@@ -14,8 +14,8 @@ cores <- availableCores()
 print(cores)
 
 for (mc in 0:3) {
-  message(sprintf("- mc.cores=%d ...", mc))
-  options(mc.cores=mc)
+  message(sprintf("- mc.cores = %d ...", mc))
+  options(mc.cores = mc)
   mc2 <- min(mc, cores)
   
   for (strategy in strategies) {
@@ -24,7 +24,7 @@ for (mc in 0:3) {
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()
-      list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
+      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
     print(a)
     stopifnot(a$pid == pid)
@@ -33,11 +33,11 @@ for (mc in 0:3) {
     stopifnot(((mc2 <= 1 || a$cores <= 2) && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
     message(sprintf("plan(list('uniprocess', '%s':3)):", strategy))
-    plan(list('uniprocess', tweak(strategy, workers=3)))
+    plan(list('uniprocess', tweak(strategy, workers = 3)))
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()
-      list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
+      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
     print(a)
     stopifnot(a$pid == pid)
@@ -50,7 +50,7 @@ for (mc in 0:3) {
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()
-      list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
+      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
     print(a)
     stopifnot((mc2 <= 1 && a$pid  == pid) || (a$pid  != pid))
@@ -63,7 +63,7 @@ for (mc in 0:3) {
     a %<-% {
       b1 %<-% { Sys.sleep(1); Sys.getpid() }
       b2 %<-% Sys.getpid()
-      list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
+      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
     print(a)
     stopifnot((mc2 <= 1 && a$pid  == pid) || (a$pid  != pid))
@@ -72,11 +72,11 @@ for (mc in 0:3) {
     stopifnot(a$pid2 == a$pid1)
 
     message(sprintf("plan(list('%s':3, '%s':3)):", strategy, strategy))
-    plan(list(tweak(strategy, workers=3), tweak(strategy, workers=3)))
+    plan(list(tweak(strategy, workers = 3), tweak(strategy, workers = 3)))
     a %<-% {
       b1 %<-% Sys.getpid()  ## This stalls
       b2 %<-% Sys.getpid()
-      list(pid=Sys.getpid(), cores=availableCores(), pid1=b1, pid2=b2)
+      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
     print(a)
     stopifnot(a$pid  != pid)
@@ -85,7 +85,7 @@ for (mc in 0:3) {
     stopifnot(a$pid2 != a$pid1)
   } ## for (strategy ...)
 
-  message(sprintf(" - mc.cores=%d ... DONE", mc))
+  message(sprintf(" - mc.cores = %d ... DONE", mc))
 } ## for (mc ...)
 
 message("*** Nested futures - mc.cores ... DONE")

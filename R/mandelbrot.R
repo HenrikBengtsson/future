@@ -17,14 +17,14 @@
 #' non-negative counts.
 #'
 #' @examples
-#' counts <- mandelbrot(xmid=-0.75, ymid=0, side=3)
+#' counts <- mandelbrot(xmid = -0.75, ymid = 0, side = 3)
 #' str(counts)
 #' \dontrun{
 #' plot(counts)
 #' }
 #' 
 #' \dontrun{
-#' demo("mandelbrot", package="future", ask=FALSE)
+#' demo("mandelbrot", package = "future", ask = FALSE)
 #' }
 #'
 #' @author The internal Mandelbrot algorithm was inspired by and
@@ -38,14 +38,14 @@
 mandelbrot <- function(...) UseMethod("mandelbrot")
 
 #' @export
-mandelbrot.matrix <- function(Z, maxIter=200L, tau=2.0, ...) {
+mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
   stopifnot(is.matrix(Z), mode(Z) == "complex")
   
   ## By default, assume none of the elements will converge
-  counts <- matrix(maxIter, nrow=nrow(Z), ncol=ncol(Z))
+  counts <- matrix(maxIter, nrow = nrow(Z), ncol = ncol(Z))
 
   ## But as a start, flag the to all be non-diverged
-  nonDiverged <- rep(TRUE, times=length(Z))
+  nonDiverged <- rep(TRUE, times = length(Z))
   idxOfNonDiverged <- seq_along(nonDiverged)
 
   ## SPEEDUP: The Mandelbrot sequence will only be calculated on the
@@ -54,7 +54,7 @@ mandelbrot.matrix <- function(Z, maxIter=200L, tau=2.0, ...) {
   Zr <- Z ## The original complex number of the "remaining" set
 
   for (ii in seq_len(maxIter-1L)) {
-    sZ <- sZ*sZ + Zr
+    sZ <- sZ * sZ + Zr
 
     ## Did any of the "remaining" points diverge?
     diverged <- (Mod(sZ) > tau)
@@ -76,7 +76,7 @@ mandelbrot.matrix <- function(Z, maxIter=200L, tau=2.0, ...) {
     }
   }
 
-  attr(counts, "params") <- list(Z=Z, maxIter=maxIter, tau=tau)
+  attr(counts, "params") <- list(Z = Z, maxIter = maxIter, tau = tau)
 
   class(counts) <- c("Mandelbrot", class(counts))
   
@@ -85,7 +85,7 @@ mandelbrot.matrix <- function(Z, maxIter=200L, tau=2.0, ...) {
 
 
 #' @export
-mandelbrot.numeric <- function(xmid=-0.75, ymid=0, side=3, resolution=400L, maxIter=200L, tau=2, ...) {
+mandelbrot.numeric <- function(xmid = -0.75, ymid = 0, side = 3, resolution = 400L, maxIter = 200L, tau = 2, ...) {
   ## Validate arguments
   stopifnot(side > 0) 
   resolution <- as.integer(resolution)
@@ -98,15 +98,15 @@ mandelbrot.numeric <- function(xmid=-0.75, ymid=0, side=3, resolution=400L, maxI
   nx <- ny <- resolution
 
   ## Setup (x, y) bins
-  xrange <- xmid + c(-1, 1)*side/2
-  yrange <- ymid + c(-1, 1)*side/2
-  x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
-  y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
+  xrange <- xmid + c(-1, 1) * side / 2
+  yrange <- ymid + c(-1, 1) * side / 2
+  x <- seq(from = xrange[1], to = xrange[2], length.out = nx)
+  y <- seq(from = yrange[1], to = yrange[2], length.out = ny)
 
   ## Set of complex numbers to be investigated
-  Z <- outer(y, x, FUN=function(y, x) complex(real=x, imaginary=y))
+  Z <- outer(y, x, FUN = function(y, x) complex(real = x, imaginary = y))
 
-  mandelbrot(Z, maxIter=maxIter, tau=tau)
+  mandelbrot(Z, maxIter = maxIter, tau = tau)
 } ## mandelbrot() for numeric
 
 
@@ -115,11 +115,11 @@ mandelbrot.numeric <- function(xmid=-0.75, ymid=0, side=3, resolution=400L, maxI
 #' @keywords internal
 as.raster.Mandelbrot <- function(x, ...) {
   maxIter <- attr(x, "params")$maxIter
-  img <- hsv(h=x/maxIter, s=1, v=1)
+  img <- hsv(h = x / maxIter, s = 1, v = 1)
   img[x == maxIter] <- "#000000"
   dim(img) <- dim(x)
   img <- t(img)
-  img <- structure(img, class="raster")
+  img <- structure(img, class = "raster")
   img
 } ## as.raster()
 
@@ -128,9 +128,9 @@ as.raster.Mandelbrot <- function(x, ...) {
 #' @importFrom grDevices as.raster
 #' @importFrom graphics par plot
 #' @keywords internal
-plot.Mandelbrot <- function(x, y, ..., mar=c(0, 0, 0, 0)) {
+plot.Mandelbrot <- function(x, y, ..., mar = c(0, 0, 0, 0)) {
   if (!is.null(mar)) {
-    opar <- par(mar=c(0, 0, 0, 0))
+    opar <- par(mar = c(0, 0, 0, 0))
     on.exit(par(opar))
   }
   plot(as.raster(x), ...)
@@ -138,7 +138,7 @@ plot.Mandelbrot <- function(x, y, ..., mar=c(0, 0, 0, 0)) {
 
 
 #' @export
-mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, resolution=400L, truncate=TRUE) {
+mandelbrotTiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0, nrow = 2L, ncol = nrow, resolution = 400L, truncate = TRUE) {
   ## Validate arguments
   stopifnot(side > 0) 
   resolution <- as.integer(resolution)
@@ -159,10 +159,10 @@ mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, 
   }
   
   ## Setup (x, y) bins
-  xrange <- xmid + c(-1, 1)*side/2
-  yrange <- ymid + c(-1, 1)*side/2
-  x <- seq(from=xrange[1], to=xrange[2], length.out=nx)
-  y <- seq(from=yrange[1], to=yrange[2], length.out=ny)
+  xrange <- xmid + c(-1, 1) * side / 2
+  yrange <- ymid + c(-1, 1) * side / 2
+  x <- seq(from = xrange[1], to = xrange[2], length.out = nx)
+  y <- seq(from = yrange[1], to = yrange[2], length.out = ny)
 
 
   ## Generate tiles row by row
@@ -176,8 +176,8 @@ mandelbrotTiles <- function(xmid=-0.75, ymid=0.0, side=3.0, nrow=2L, ncol=nrow, 
       xcc <- if (cc < ncol) xrr[1:dx] else xrr
       xrr <- xrr[-(1:dx)]
     
-      Ccc <- outer(yrr, xcc, FUN=function(y, x) complex(real=x, imaginary=y))
-      attr(Ccc, "region") <- list(xrange=range(xcc), yrange=range(yrr))
+      Ccc <- outer(yrr, xcc, FUN = function(y, x) complex(real = x, imaginary = y))
+      attr(Ccc, "region") <- list(xrange = range(xcc), yrange = range(yrr))
       attr(Ccc, "tile") <- c(rr, cc)
       res <- c(res, list(Ccc))
     }

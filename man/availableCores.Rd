@@ -13,7 +13,7 @@ availableCores(constraints = NULL,
 \item{constraints}{An optional character specifying under what
 constraints ("purposes") we are requesting the values.
 For instance, on systems where multicore processing is not supported
-(i.e. Windows), using \code{constrains="multicore"} will force a
+(i.e. Windows), using \code{constrains = "multicore"} will force a
 single core to be reported.}
 
 \item{methods}{A character vector specifying how to infer the number
@@ -30,9 +30,9 @@ If \code{"max"}, the maximum value is returned (be careful!)
 If \code{"all"}, all values are returned.}
 }
 \value{
-Return a positive (>=1) integer.
-If \code{which="all"}, then more than one value may be returned.
-Together with \code{na.rm=FALSE} missing values may also be returned.
+Return a positive (>= 1) integer.
+If \code{which = "all"}, then more than one value may be returned.
+Together with \code{na.rm = FALSE} missing values may also be returned.
 }
 \description{
 The current/main R session counts as one, meaning the minimum
@@ -49,7 +49,7 @@ are supported:
    \code{\link[base:options]{mc.cores}} + 1.
    Note that \option{mc.cores} is defined as the number of
    \emph{additional} R processes that can be used in addition to the
-   main R process.  This means that with \code{mc.cores=0} all
+   main R process.  This means that with \code{mc.cores = 0} all
    calculations should be done in the main R process, i.e. we have
    exactly one core available for our calculations.
    The \option{mc.cores} option defaults to environment variable
@@ -82,15 +82,15 @@ variable is queried.  If neither is set, a missing value is returned.
 \section{Advanced usage}{
 
 It is possible to override the maximum number of cores on the machine
-as reported by \code{availableCores(methods="system")}.  This can be
+as reported by \code{availableCores(methods = "system")}.  This can be
 done by first specifying
-\code{options(future.availableCores.methods="mc.cores+1")} and
+\code{options(future.availableCores.methods = "mc.cores+1")} and
 then the number of cores to use (in addition to the main R process),
-e.g. \code{options(mc.cores=8)} will cause the value of
-\code{availableCores()} to be 9 (=8+1).
+e.g. \code{options(mc.cores = 8)} will cause the value of
+\code{availableCores()} to be 9 (= 8+1).
 Having said this, it is almost always better to do this by explicitly
 setting the number of workers when specifying the future strategy,
-e.g. \code{plan(multiprocess, workers=9)}.
+e.g. \code{plan(multiprocess, workers = 9)}.
 }
 
 \seealso{

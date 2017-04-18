@@ -112,7 +112,7 @@
 #' More precisely, globals are identified via code inspection of the
 #' future expression \code{expr} and their values are retrieved with
 #' environment \code{envir} as the starting point (basically via
-#' \code{get(global, envir=envir, inherits=TRUE)}).
+#' \code{get(global, envir = envir, inherits = TRUE)}).
 #' \emph{In most cases, such automatic collection of globals is sufficient
 #' and less tedious and error prone than if they are manually specified}.
 #'
@@ -204,7 +204,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, packages=NULL, lazy=NA, seed=NULL, evaluator=plan("next"), ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = NA, seed = NULL, evaluator = plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
@@ -214,14 +214,14 @@ future <- function(expr, envir=parent.frame(), substitute=TRUE, globals=TRUE, pa
   ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
   ## TODO: Remove when lazy() is removed.
   if (is.na(lazy)) {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, seed=seed, globals=globals, packages=packages, ...)
+    future <- evaluator(expr, envir = envir, substitute = FALSE, seed = seed, globals = globals, packages = packages, ...)
   } else {
-    future <- evaluator(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, packages=packages, ...)
+    future <- evaluator(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
   }
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {
-    stop("Argument 'evaluator' specifies a function that does not return a Future object: ", paste(sQuote(class(future)), collapse=", "))
+    stop("Argument 'evaluator' specifies a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", "))
   }
 
   future

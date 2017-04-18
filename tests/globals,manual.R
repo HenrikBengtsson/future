@@ -5,9 +5,9 @@ message("*** Globals - manually ...")
 message("*** Globals manually specified as named list ...")
 
 globals <- list(
-  a=1,
-  b=2,
-  sumtwo=function(x) x[1] + x[2]
+  a = 1,
+  b = 2,
+  sumtwo = function(x) x[1] + x[2]
 )
 
 ## Assign 'globals' globally
@@ -31,9 +31,9 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, globals=TRUE)
+  }, globals = TRUE)
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   y <- value(f)
   print(y)
   stopifnot(all.equal(y, v0))
@@ -42,9 +42,9 @@ for (strategy in supportedStrategies()) {
   f <- futureAssign("y", {
     x <- 1:10
     sumtwo(a + b * x)
-  }, globals=TRUE)
+  }, globals = TRUE)
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   z <- value(f)
   print(z)
   stopifnot(all.equal(z, y), all.equal(y, v0))
@@ -54,7 +54,7 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %globals% TRUE
-  rm(list=names(globals))
+  rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
 
@@ -62,9 +62,9 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, lazy=TRUE, globals=TRUE)
+  }, lazy = TRUE, globals = TRUE)
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   y <- value(f)
   print(y)
   stopifnot(all.equal(y, v0))
@@ -73,9 +73,9 @@ for (strategy in supportedStrategies()) {
   f <- futureAssign("y", {
     x <- 1:10
     sumtwo(a + b * x)
-  }, lazy=TRUE, globals=TRUE)
+  }, lazy = TRUE, globals = TRUE)
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   z <- value(f)
   print(z)
   stopifnot(all.equal(z, y), all.equal(y, v0))
@@ -86,7 +86,7 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% TRUE
-  rm(list=names(globals))
+  rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
 
@@ -105,9 +105,9 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, globals=FALSE)
+  }, globals = FALSE)
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   y <- tryCatch(value(f), error = identity)
   if (!inherits(f, c("UniprocessFuture", "MulticoreFuture"))) {
     stopifnot(inherits(y, "simpleError"))
@@ -127,12 +127,12 @@ for (strategy in supportedStrategies()) {
   plan(strategy)
 
   ## Make sure globals do not exist
-  rm(list=names(globals))
+  rm(list = names(globals))
   
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, globals=globals)
+  }, globals = globals)
   print(f)
   v <- value(f)
   print(v)
@@ -141,7 +141,7 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, lazy=TRUE, globals=globals)
+  }, lazy = TRUE, globals = globals)
   print(f)
   v <- value(f)
   print(v)
@@ -178,9 +178,9 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, globals=c("a", "b", "sumtwo"))
+  }, globals = c("a", "b", "sumtwo"))
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   v <- value(f)
   print(v)
   stopifnot(all.equal(v, v0))
@@ -189,9 +189,9 @@ for (strategy in supportedStrategies()) {
   f <- future({
     x <- 1:10
     sumtwo(a + b * x)
-  }, lazy=TRUE, globals=c("a", "b", "sumtwo"))
+  }, lazy = TRUE, globals = c("a", "b", "sumtwo"))
   print(f)
-  rm(list=names(globals))
+  rm(list = names(globals))
   v <- value(f)
   print(v)
   stopifnot(all.equal(v, v0))
@@ -201,7 +201,7 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %globals% c("a", "b", "sumtwo")
-  rm(list=names(globals))
+  rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
 
@@ -210,7 +210,7 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% c("a", "b", "sumtwo")
-  rm(list=names(globals))
+  rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
 

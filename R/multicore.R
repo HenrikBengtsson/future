@@ -50,7 +50,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
+multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(constraints = "multicore"), earlySignal = FALSE, label = NULL, ...) {
   if ("maxCores" %in% names(list(...))) {
     .Defunct(msg = "Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
   }
@@ -64,13 +64,13 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, s
   ## Uniprocess futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, local=TRUE, label=label))
+    return(uniprocess(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label))
   }
 
-  oopts <- options(mc.cores=workers)
+  oopts <- options(mc.cores = workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
+  future <- MulticoreFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, earlySignal = earlySignal, label = label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -91,14 +91,14 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #' @keywords internal
 usedCores <- function() {
   ## Number of unresolved multicore futures
-  futures <- FutureRegistry("multicore", action="list")
+  futures <- FutureRegistry("multicore", action = "list")
   nfutures <- length(futures)
   ncores <- nfutures
 
   ## Total number of multicore processes
   ## To please R CMD check
   ns <- getNamespace("parallel")
-  children <- get("children", envir=ns, mode="function")
+  children <- get("children", envir = ns, mode = "function")
   nchildren <- length(children())
 
   ## Any multicore processes that are not futures?
@@ -147,7 +147,7 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers=availableCores(), timeout = getOption("future.wait.timeout", 30*24*60*60), delta=getOption("future.wait.interval", 0.2), alpha=getOption("future.wait.alpha", 1.01)) {
+requestCore <- function(await, workers = availableCores(), timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
   stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
   stopifnot(is.finite(timeout), timeout >= 0)
@@ -176,7 +176,7 @@ requestCore <- function(await, workers=availableCores(), timeout = getOption("fu
 
     ## Wait
     Sys.sleep(interval)
-    interval <- alpha*interval
+    interval <- alpha * interval
 
     ## Finish/close cores, iff possible
     await()

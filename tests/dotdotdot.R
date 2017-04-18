@@ -3,14 +3,14 @@ library("listenv")
 
 for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores - 1L)
+  options(mc.cores = cores - 1L)
 
   message("*** Global argument '...' in lazy futures ...")
 
   sum_fcns <- list()
 
   sum_fcns$A <- function(x, ...) {
-    message("Arguments '...' exists: ", exists("...", inherits=TRUE))
+    message("Arguments '...' exists: ", exists("...", inherits = TRUE))
     y %<-% { sum(x, ...) }
     y
   }
@@ -18,7 +18,7 @@ for (cores in 1:min(3L, availableCores())) {
 
   sum_fcns$B <- function(x, ...) {
     sumt <- function(x) {
-      message("Arguments '...' exists: ", exists("...", inherits=TRUE))
+      message("Arguments '...' exists: ", exists("...", inherits = TRUE))
       y %<-% { sum(x, ...) }
       y
     }
@@ -26,13 +26,13 @@ for (cores in 1:min(3L, availableCores())) {
   }
 
   sum_fcns$C <- function(x, y) {
-    message("Arguments '...' exists: ", exists("...", inherits=TRUE))
+    message("Arguments '...' exists: ", exists("...", inherits = TRUE))
     y %<-% { sum(x, y) }
     y
   }
 
   sum_fcns$D <- function(x, y) {
-    message("Arguments '...' exists: ", exists("...", inherits=TRUE))
+    message("Arguments '...' exists: ", exists("...", inherits = TRUE))
     y %<-% { sum(x, y, ...) }
     y
   }
@@ -40,7 +40,7 @@ for (cores in 1:min(3L, availableCores())) {
 
   for (strategy in supportedStrategies()) {
     message(sprintf("- plan('%s') ...", strategy))
-    plan(strategy, substitute=FALSE)
+    plan(strategy, substitute = FALSE)
 
     for (name in names(sum_fcns)) {
       message(sprintf("** Sum function '%s' with plan('%s') ...", name, strategy))

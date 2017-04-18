@@ -10,7 +10,7 @@
 #' @aliases getOutput
 #' @export
 #' @keywords internal
-FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
+FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   if (inherits(message, "Future")) {
@@ -25,7 +25,7 @@ FutureError <- function(message, call=NULL, future=NULL, output=NULL) {
   }
 
   ## Create a basic error object
-  cond <- simpleError(message, call=call)
+  cond <- simpleError(message, call = call)
 
   ## Record Future object and optional output messages
   attr(cond, "future") <- future
@@ -64,7 +64,7 @@ print.FutureError <- function(x, ...) {
 
     if (!is.null(output)) {
       cat("Captured output:\n")
-      cat(getOutput(x, tail=30L, collapse="\n"))
+      cat(getOutput(x, tail = 30L, collapse = "\n"))
       cat("\n\n")
     }
 
@@ -76,7 +76,7 @@ print.FutureError <- function(x, ...) {
 
 
 #' @export
-getOutput.FutureError <- function(x, collapse=NULL, head=NULL, tail=NULL, ...) {
+getOutput.FutureError <- function(x, collapse = NULL, head = NULL, tail = NULL, ...) {
   output <- attr(x, "output")
 
   ## Return "as is"?
@@ -85,17 +85,17 @@ getOutput.FutureError <- function(x, collapse=NULL, head=NULL, tail=NULL, ...) {
   ## Truncate?
   if (!is.null(head) && !is.null(tail)) {
     idxs <- seq_along(output)
-    idxs <- sort(unique(c(head(idxs, n=head), tail(idxs, n=tail))))
+    idxs <- sort(unique(c(head(idxs, n = head), tail(idxs, n = tail))))
     output <- output[idxs]
     idxs
   } else if (!is.null(head)) {
-    output <- head(output, n=head)
+    output <- head(output, n = head)
   } else if (!is.null(tail)) {
-    output <- tail(output, n=tail)
+    output <- tail(output, n = tail)
   }
 
   ## Collapse? (add line endings)
-  if (!is.null(collapse)) output <- paste(output, collapse=collapse)
+  if (!is.null(collapse)) output <- paste(output, collapse = collapse)
 
   output
 } ## getOutput()

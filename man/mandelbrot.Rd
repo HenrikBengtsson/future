@@ -34,14 +34,14 @@ non-negative counts.
 Mandelbrot convergence counts
 }
 \examples{
-counts <- mandelbrot(xmid=-0.75, ymid=0, side=3)
+counts <- mandelbrot(xmid = -0.75, ymid = 0, side = 3)
 str(counts)
 \dontrun{
 plot(counts)
 }
 
 \dontrun{
-demo("mandelbrot", package="future", ask=FALSE)
+demo("mandelbrot", package = "future", ask = FALSE)
 }
 
 }

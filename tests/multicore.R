@@ -6,7 +6,7 @@ message("*** multicore() ...")
 
 for (cores in 1:min(3L, availableCores("multicore"))) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores - 1L)
+  options(mc.cores = cores - 1L)
 
   if (!supportsMulticore()) {
     message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous uniprocess futures", .Platform$OS.type))
@@ -14,11 +14,11 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
 
   for (globals in c(FALSE, TRUE)) {
 
-  message(sprintf("*** multicore(..., globals=%s) without globals", globals))
+  message(sprintf("*** multicore(..., globals = %s) without globals", globals))
 
   f <- multicore({
     42L
-  }, globals=globals)
+  }, globals = globals)
   stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "UniprocessFuture")))
 
   print(resolved(f))
@@ -27,14 +27,14 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   stopifnot(y == 42L)
 
 
-  message(sprintf("*** multicore(..., globals=%s) with globals", globals))
+  message(sprintf("*** multicore(..., globals = %s) with globals", globals))
   ## A global variable
   a <- 0
   f <- multicore({
     b <- 3
     c <- 2
     a * b * c
-  }, globals=globals)
+  }, globals = globals)
   print(f)
 
 
@@ -49,54 +49,54 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   stopifnot(v == 0)
 
 
-  message(sprintf("*** multicore(..., globals=%s) with globals and blocking", globals))
+  message(sprintf("*** multicore(..., globals = %s) with globals and blocking", globals))
   x <- listenv()
   for (ii in 1:4) {
     message(sprintf(" - Creating multicore future #%d ...", ii))
-    x[[ii]] <- multicore({ ii }, globals=globals)
+    x[[ii]] <- multicore({ ii }, globals = globals)
   }
   message(sprintf(" - Resolving %d multicore futures", length(x)))
 ##  if ("covr" %in% loadedNamespaces()) v <- 1:4 else ## WORKAROUND
-  v <- sapply(x, FUN=value)
+  v <- sapply(x, FUN = value)
   stopifnot(all(v == 1:4))
 
 
-  message(sprintf("*** multicore(..., globals=%s) and errors", globals))
+  message(sprintf("*** multicore(..., globals = %s) and errors", globals))
   f <- multicore({
     stop("Whoops!")
     1
-  }, globals=globals)
+  }, globals = globals)
   print(f)
-  v <- value(f, signal=FALSE)
+  v <- value(f, signal = FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
   ## Error is repeated
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
   } # for (globals ...)
 
 
-  message("*** multicore(..., workers=1L) ...")
+  message("*** multicore(..., workers = 1L) ...")
 
   a <- 2
   b <- 3
   yTruth <- a * b
 
-  f <- multicore({ a * b }, workers=1L)
-  rm(list=c("a", "b"))
+  f <- multicore({ a * b }, workers = 1L)
+  rm(list = c("a", "b"))
 
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
 
-  message("*** multicore(..., workers=1L) ... DONE")
+  message("*** multicore(..., workers = 1L) ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

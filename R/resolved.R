@@ -33,7 +33,7 @@ resolved.list <- function(x, ...) {
 
   ## Allocate results. Assume everything
   ## is resolved unless not.
-  res <- rep(TRUE, times=length(fs))
+  res <- rep(TRUE, times = length(fs))
   for (ii in seq_along(fs)) {
     f <- fs[[ii]]
     if (inherits(f, "Future")) res[[ii]] <- resolved(f)
