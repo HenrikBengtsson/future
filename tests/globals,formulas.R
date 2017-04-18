@@ -171,8 +171,7 @@ y0 <- outer_function(1L)
 str(y0)
 
 ## Check if globals version installed identifies globals in formulas
-formulas_supported <- ("x" %in% globals::findGlobals(~ x, substitute = TRUE))
-if (formulas_supported) {
+if (packageVersion("globals") >= "0.10.0") {
   for (cores in 1:min(3L, availableCores())) {
     message(sprintf("Testing with %d cores ...", cores))
     options(mc.cores = cores - 1L)
