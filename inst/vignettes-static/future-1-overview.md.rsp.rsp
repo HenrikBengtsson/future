@@ -250,7 +250,7 @@ When multisession evaluation is used, the package launches a set of R sessions i
 availableCores()
 })%>
 ```
-This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
+This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "future")`.
 
 
 #### Multicore Futures
@@ -317,7 +317,7 @@ Any types of clusters that `parallel::makeCluster()` creates can be used for clu
 cl <- parallel::makeCluster(c("n1", "n2", "n3"))
 plan(cluster, workers = cl)
 ```
-Also, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated, which will happen in the first example where the cluster in created internally.  For more information on how to set up and manage such clusters, see `help("makeCluster", package="parallel")`.
+Also, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated, which will happen in the first example where the cluster in created internally.  For more information on how to set up and manage such clusters, see `help("makeCluster", package = "parallel")`.
 
 Note that with automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 
