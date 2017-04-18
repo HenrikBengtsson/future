@@ -44,4 +44,3 @@ for (strategy in supportedStrategies()) {
 message("*** Globals w/ non-standard evaluation (NSE) ... DONE")
 
 source("incl/end.R")
-

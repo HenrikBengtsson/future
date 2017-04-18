@@ -67,4 +67,3 @@ message("*** Internal detectCores() ... DONE")
 message("*** availableCores() ... DONE")
 
 source("incl/end.R")
-

@@ -168,4 +168,3 @@ for (name in names(seed_sets)) {
 message("*** future_lapply() and RNGs ... DONE")
 
 source("incl/end.R")
-

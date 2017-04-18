@@ -128,4 +128,3 @@ stopifnot(inherits(res, "try-error"))
 message("*** availableWorkers() ... DONE")
 
 source("incl/end.R")
-

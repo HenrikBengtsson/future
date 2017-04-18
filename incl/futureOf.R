@@ -28,6 +28,3 @@ print(f3)
 
 fs <- futureOf(envir=env)
 print(fs)
-
-
-

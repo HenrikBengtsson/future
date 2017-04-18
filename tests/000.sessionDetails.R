@@ -1,3 +1,2 @@
 library("future")
 sessionDetails()
-

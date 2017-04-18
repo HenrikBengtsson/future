@@ -64,4 +64,3 @@ message("*** future() - exceptions ... DONE")
 message("*** future() ... DONE")
 
 source("incl/end.R")
-

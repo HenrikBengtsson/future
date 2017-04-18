@@ -223,4 +223,3 @@ supportsMulticore <- local({
     supported
   }
 })
-

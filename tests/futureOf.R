@@ -21,4 +21,3 @@ stopifnot(inherits(res, "try-error"))
 message("*** futureOf() ... DONE")
 
 source("incl/end.R")
-

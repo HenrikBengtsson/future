@@ -32,4 +32,3 @@ backtrace <- function(future, envir=parent.frame(), ...) {
 
   calls
 } ## backtrace()
-

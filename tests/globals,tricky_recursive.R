@@ -118,4 +118,3 @@ for (strategy in strategies) {
 message("*** Tricky globals requiring recursive search ... DONE")
 
 source("incl/end.R")
-

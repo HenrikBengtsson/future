@@ -53,4 +53,3 @@ for (strategy in strategies) {
 message("*** future_lapply() with tricky globals ... DONE")
 
 source("incl/end.R")
-

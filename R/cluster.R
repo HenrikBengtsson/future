@@ -49,4 +49,3 @@ cluster <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, see
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
-
