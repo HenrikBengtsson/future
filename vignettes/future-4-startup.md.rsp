@@ -12,18 +12,18 @@
 <%
 library("R.utils")
 `%<-%` <- future::`%<-%`
-options("withCapture/newline"=FALSE)
+options("withCapture/newline" = FALSE)
 %>
 
 # <%@meta name="title"%>
 
-The default is to use synchronous futures, but this _default_ can be overridden via R options, system environment variables and command-line options as explained below as well as in `help("future.options", package="future")`.
+The default is to use synchronous futures, but this _default_ can be overridden via R options, system environment variables and command-line options as explained below as well as in `help("future.options", package = "future")`.
 
 
 ## R options
 The default strategy for resolving futures can be controlled via R option `future.plan`.  For instance, if we add
 ```r
-options(future.plan="multiprocess")
+options(future.plan = "multiprocess")
 ```
 to our `~/.Rprofile` startup script, the future package will resolve futures in parallel (asynchronously using all available cores), i.e.
 ```sh

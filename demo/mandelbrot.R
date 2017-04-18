@@ -10,7 +10,7 @@ plotWhatIsDone <- function(counts) {
 
     ## Not resolved?
     if (!resolved(f)) next
-    
+
     cat(sprintf("Plotting tile #%d of %d ...\n", kk, n))
     counts[[kk]] <- value(counts[[kk]])
     screen(kk)
@@ -52,7 +52,7 @@ if (interactive()) {
   for (ii in seq_along(Cs)) {
     screen(ii)
     par(mar = c(0, 0, 0, 0))
-    text(x = 1/2, y = 1/2, sprintf("Future #%d\nunresolved", ii), cex = 2)
+    text(x = 1 / 2, y = 1 / 2, sprintf("Future #%d\nunresolved", ii), cex = 2)
   }
 } else {
   split.screen(dim(Cs))
