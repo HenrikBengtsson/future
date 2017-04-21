@@ -29,6 +29,10 @@
 #' same path to \file{Rscript} as the main R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
 #'
+#' @param sessioninfo If TRUE, session information is collected for each
+#' cluster node, otherwise not.  This also servers as testing that each
+#' node is working properly.
+#' 
 #' @return An object of class \code{ClusterFuture}.
 #'
 #' @seealso
@@ -62,7 +66,10 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   stopifnot(length(workers) > 0)
 
   ## Attaching UUID for each cluster connection, unless already done.
-  workers <- addClusterUUIDs(workers)
+  workers <- add_cluster_uuid(workers)
+
+  ## Attached workers' session information, unless already done.
+  workers <- add_cluster_session_info(workers)
   
   ## Attach name to cluster?
   name <- attr(workers, "name")

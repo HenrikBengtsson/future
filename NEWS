@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-04-12]
+Version: 1.4.0-9000 [2017-04-21]
 
  o ...
  
@@ -13,6 +13,13 @@ NEW FEATURES:
    is often the case on Windows, it try to use c("plink", "-ssh") instead.
    Furthermore, argument 'homogeneous' will default to FALSE or TRUE depending
    on whether the hostname suggests the worker is a local machine or not.
+
+ o makeClusterPSOCK() now asserts that each cluster node is functioning, by
+   retrieving session information including the process ID from the
+   corresponding R process.  The same information is also collected by
+   plan(cluster) and plan(multisession) if not already available, e.g. when
+   parallel::makeCluster() is used instead.  This makes it possible to find
+   session information for a future that is not yet resolved.   
 
 SOFTWARE QUALITY:
 

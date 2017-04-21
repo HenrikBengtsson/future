@@ -1,6 +1,6 @@
 source("incl/start.R")
 session_uuid <- future:::session_uuid
-addClusterUUIDs <- future:::addClusterUUIDs
+add_cluster_uuid <- future:::add_cluster_uuid
 
 message("*** session_uuid() ...")
 
@@ -16,10 +16,10 @@ stopifnot(id != id0)
 
 message("*** session_uuid() ... DONE")
 
-message("*** addClusterUUIDs() ...")
+message("*** add_cluster_uuid() ...")
 
 cl <- parallel::makeCluster(1L, type = "PSOCK")
-cl <- addClusterUUIDs(cl)
+cl <- add_cluster_uuid(cl)
 str(cl)
 parallel::stopCluster(cl)
 uuid <- as.vector(attr(cl[[1]]$con, "uuid"))
@@ -29,7 +29,7 @@ stopifnot(is.character(uuid), nzchar(uuid))
 
 if (supportsMulticore()) {
   cl <- parallel::makeCluster(1L, type = "FORK")
-  cl <- addClusterUUIDs(cl)
+  cl <- add_cluster_uuid(cl)
   str(cl)
   parallel::stopCluster(cl)
   uuid <- as.vector(attr(cl[[1]]$con, "uuid"))
@@ -43,8 +43,8 @@ cl <- structure(list(
   ), class = "MPInode")
   ), class = c("spawnedMPIcluster", "MPIcluster", "cluster")
 )
-cl <- addClusterUUIDs(cl)
+cl <- add_cluster_uuid(cl)
 
-message("*** addClusterUUIDs() ... DONE")
+message("*** add_cluster_uuid() ... DONE")
 
 source("incl/end.R")

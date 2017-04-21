@@ -39,6 +39,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+  if (verbose) {
+    message(sprintf("Workers: [n = %d] %s",
+                    length(workers), hpaste(sQuote(workers))))
+  }
 
   if (is.character(port)) {
     port <- match.arg(port)
@@ -59,17 +63,31 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
   }
+  if (verbose) message(sprintf("Base port: %d", port))
 
-  cl <- vector("list", length = length(workers))
-  for (ii in seq_along(cl)) {
-     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii, verbose = verbose)
-  }     
+  n <- length(workers)
+  cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
+  for (ii in seq_along(cl)) {
+    if (verbose) message(sprintf("Creating node %d of %d ...", ii, n))
+    if (verbose) message("- setting up node")
+    cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
+                         verbose = verbose)
+    
+    ## Attaching UUID for each cluster connection.  This is done because
+    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
+    if (verbose) message("- assigning connection UUID")
+    cl[ii] <- add_cluster_uuid(cl[ii])
 
-  ## Attaching UUID for each cluster connection.  This is done because
-  ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-  cl <- addClusterUUIDs(cl)
-
+    ## Attaching session information for each worker.  This is done to assert
+    ## that we have a working cluster already here.  It will also collect
+    ## useful information otherwise not available, e.g. the PID.
+    if (verbose) message("- collecting session information")
+    cl[ii] <- add_cluster_session_info(cl[ii])
+    
+    if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
+  }
+  
   cl
 } ## makeClusterPSOCK()
 
@@ -396,7 +414,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 ## actually work with the same connection.  See R-devel thread
 ## 'closeAllConnections() can really mess things up' on 2016-10-30
 ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-addClusterUUIDs <- function(cl) {
+add_cluster_uuid <- function(cl) {
   stopifnot(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
@@ -416,7 +434,7 @@ addClusterUUIDs <- function(cl) {
   }
   
   cl
-} ## addClusterUUIDs()
+} ## add_cluster_uuid()
 
 
 ## Checks if a given worker is the same as the localhost.  It is, iff:
@@ -507,3 +525,30 @@ find_rshcmd <- function() {
   cmds <- unlist(lapply(cmds, FUN = function(x) x[1]))
   stop(sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds), collapse = ", ")))
 }
+
+
+session_info <- function() {
+  list(
+    r = c(R.version, os.type = .Platform$OS.type),
+    system = as.list(Sys.info()),
+    process = list(pid = Sys.getpid()) 
+  )
+}
+
+
+add_cluster_session_info <- function(cl) {
+  stopifnot(inherits(cl, "cluster"))
+  
+  for (ii in seq_along(cl)) {
+    node <- cl[[ii]]
+    if (is.null(node)) next  ## Happens with dryrun = TRUE
+
+    ## Session information already collected?
+    if (!is.null(node$session_info)) next
+    
+    node$session_info <- clusterCall(cl[ii], fun = session_info)[[1]]
+    cl[[ii]] <- node
+  }
+  
+  cl
+} ## add_cluster_session_info()
