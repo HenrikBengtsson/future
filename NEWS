@@ -17,7 +17,7 @@ NEW FEATURES:
 SOFTWARE QUALITY:
 
  o Added package tests for globals part of formulas part of other globals,
-   e.g. purrr::map(x, ~ rnorm(.)), which requires globals (> 0.9.0).
+   e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
 
 DOCUMENTATION:
 
