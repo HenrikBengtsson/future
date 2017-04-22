@@ -10,11 +10,11 @@ NEW FEATURES:
  o The default arguments values for makeClusterPSOCK(), and more specifically
    its help function makeNodePSOCK(), are now more user friendly.  For instance,
    the default SSH client (argument 'rshcmd') is "ssh" and if not found, which
-   is often the case on Windows, it try to use c("plink", "-ssh") instead.
+   is often the case on Windows, it tries to use c("plink", "-ssh") instead.
    Furthermore, argument 'homogeneous' will default to FALSE or TRUE depending
    on whether the hostname suggests the worker is a local machine or not.
 
- o makeClusterPSOCK() now asserts that each cluster node is functioning, by
+ o makeClusterPSOCK() now asserts that each cluster node is functioning by
    retrieving session information including the process ID from the
    corresponding R process.  The same information is also collected by
    plan(cluster) and plan(multisession) if not already available, e.g. when
