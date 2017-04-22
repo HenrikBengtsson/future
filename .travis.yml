@@ -20,6 +20,15 @@ matrix:
       r: oldrel
     - os: linux
       r: release
+    - os: linux
+      r: devel
+    - os: osx
+      r: oldrel
+    - os: osx
+      r: release
+    - os: linux
+      r: release
+      r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
       r_github_packages:
         - jimhester/covr
       after_success:
@@ -27,17 +36,12 @@ matrix:
       env: NB='w/ covr' ## Just a label
     - os: linux
       r: release
+      r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
       r_github_packages:
         - jimhester/lintr
       after_success:
         - Rscript -e 'library(lintr); lint_package(linters = with_defaults(commented_code_linter = NULL, closed_curly_linter = closed_curly_linter(allow_single_line = TRUE), open_curly_linter = open_curly_linter(allow_single_line = TRUE)))'
       env: NB='w/ lintr' ## Just a label
-    - os: linux
-      r: devel
-    - os: osx
-      r: oldrel
-    - os: osx
-      r: release
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
