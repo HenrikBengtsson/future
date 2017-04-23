@@ -256,10 +256,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (localMachine) worker <- "localhost"
   }
 
+  manual <- as.logical(manual)
+  stopifnot(length(manual) == 1L, !is.na(manual))
+
+  dryrun <- as.logical(dryrun)
+  stopifnot(length(dryrun) == 1L, !is.na(dryrun))
+  
   ## Locate a default SSH client?
-  if (is.null(rshcmd)) rshcmd <- find_rshcmd()
-  rshcmd <- as.character(rshcmd)
-  stopifnot(length(rshcmd) >= 1L)
+  if (!is.null(rshcmd)) {
+    rshcmd <- as.character(rshcmd)
+    stopifnot(length(rshcmd) >= 1L)
+  }
 
   rshopts <- as.character(rshopts)
   
@@ -317,12 +324,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   rank <- as.integer(rank)
   stopifnot(length(rank) == 1L, !is.na(rank))
   
-  manual <- as.logical(manual)
-  stopifnot(length(manual) == 1L, !is.na(manual))
-
-  dryrun <- as.logical(dryrun)
-  stopifnot(length(dryrun) == 1L, !is.na(dryrun))
-
   verbose <- as.logical(verbose)
   stopifnot(length(verbose) == 1L, !is.na(verbose))
 
@@ -354,6 +355,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   if (!localMachine) {
+    ## Find default SSH client
+    if (is.null(rshcmd)) {
+      rshcmd <- find_rshcmd(!localMachine && !manual && !dryrun)
+    }
+    
     ## Local commands
     rshcmd <- paste(shQuote(rshcmd), collapse = " ")
     if (length(user) == 1L) rshopts <- c("-l", user, rshopts)
@@ -516,14 +522,20 @@ is_fqdn <- function(worker) {
 
 
 ## Locate an SSH client
-find_rshcmd <- function() {
+find_rshcmd <- function(must_work = TRUE) {
   cmds <- list("ssh", c("plink", "-ssh"))
   for (cmd in cmds) {
     if (nzchar(Sys.which(cmd[1]))) return(cmd)
   }
   
-  cmds <- unlist(lapply(cmds, FUN = function(x) x[1]))
-  stop(sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds), collapse = ", ")))
+  cmds_checked <- unlist(lapply(cmds, FUN = function(x) x[1]))
+  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds_checked), collapse = ", ")) #nolint
+  if (must_work) stop(msg)
+
+  cmd <- cmds[[1]]
+  msg <- sprintf("%s Will use %s.", msg, sQuote(paste(cmd, collapse = " ")))
+  warning(msg)
+  cmd
 }
 
 
