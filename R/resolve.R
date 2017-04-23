@@ -1,28 +1,39 @@
-#' Wait until all existing futures in an environment are resolved
+#' Resolve one or more futures synchronously
 #'
-#' The environment is first scanned for futures and then the futures
-#' are polled until all are resolved.  When a resolved future is
-#' detected its value is retrieved (optionally).
-#' This provides an efficient mechanism for waiting for a set of
-#' futures to be resolved and in the meanwhile retrieving values
-#' of already resolved futures.
-#'
-#' @param x an environment holding futures.
-#' @param idxs subset of elements to check.
+#' This function provides an efficient mechanism for waiting for multiple
+#' futures in a container (e.g. list or environment) to be resolved while in
+#' the meanwhile retrieving values of already resolved futures.
+#' 
+#' @param x a list, an environment, or a list environment holding futures
+#' that should be resolved.  May also be a single \link{Future}.
+#' 
+#' @param idxs (optional) integer or logical index specifying the subset of
+#' elements to check.
+#' 
 #' @param value If TRUE, the values are retrieved, otherwise not.
-#' @param recursive A non-negative number specifying how deep of
-#' a recursion should be done.  If TRUE, an infinite recursion
-#' is used.  If FALSE or zero, no recursion is performed.
-#' @param sleep Number of seconds to wait before checking
-#' if futures have been resolved since last time.
-#' @param progress If TRUE textual progress summary is outputted.
-#' If a function, the it is called as \code{progress(done, total)}
-#' every time a future is resolved.
+#' 
+#' @param recursive A non-negative number specifying how deep of a recursion
+#' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
+#' no recursion is performed.
+#' 
+#' @param sleep Number of seconds to wait before checking if futures have been
+#' resolved since last time.
+#' 
+#' @param progress If TRUE textual progress summary is outputted.  If a
+#' function, the it is called as \code{progress(done, total)} every time a
+#' future is resolved.
+#' 
 #' @param \dots Not used
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
 #'
-#' @seealso futureOf
+#' @details
+#' This function is resolves synchronously, i.e. it blocks until \code{x} and
+#' any containing futures are resolved.
+#' 
+#' @seealso To resolve a future \emph{variable}, first retrieve its
+#' \link{Future} object using \code{\link{futureOf}()}, e.g.
+#' \code{resolve(futureOf(x))}.
 #'
 #' @export
 resolve <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
@@ -43,7 +54,7 @@ resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep =
   ## Lazy future that is not yet launched?
   if (x$state == 'created') x <- run(x)
 
-  ## Poll for Future to finish
+  ## Poll for the Future to finish
   while (!resolved(x)) {
     Sys.sleep(sleep)
   }
