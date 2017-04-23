@@ -1,18 +1,14 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-04-21]
+Version: 1.4.0-9000 [2017-04-23]
 
  o ...
  
 NEW FEATURES:
 
- o The default arguments values for makeClusterPSOCK(), and more specifically
-   its help function makeNodePSOCK(), are now more user friendly.  For instance,
-   the default SSH client (argument 'rshcmd') is "ssh" and if not found, which
-   is often the case on Windows, it tries to use c("plink", "-ssh") instead.
-   Furthermore, argument 'homogeneous' will default to FALSE or TRUE depending
-   on whether the hostname suggests the worker is a local machine or not.
+ o makeClusterPSOCK() now defaults to use the Windows PuTTY software's SSH
+   client 'plink -ssh', if 'ssh' is not found.
 
  o makeClusterPSOCK() now asserts that each cluster node is functioning by
    retrieving session information including the process ID from the
@@ -20,6 +16,12 @@ NEW FEATURES:
    plan(cluster) and plan(multisession) if not already available, e.g. when
    parallel::makeCluster() is used instead.  This makes it possible to find
    session information for a future that is not yet resolved.   
+
+ o Argument 'homogeneous' of makeNodePSOCK(), a helper function of
+   makeClusterPSOCK(), will default to FALSE also if the hostname is a
+   fully qualified domain name (FQDN), that is, it "contains periods".
+   For instance, c('node1', 'node2.server.org') will use homogeneous = TRUE
+   for the first worker and homogeneous = FALSE for the second.
 
 SOFTWARE QUALITY:
 
