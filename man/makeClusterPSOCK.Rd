@@ -332,4 +332,13 @@ cl <- makeClusterPSOCK(
   ),
   dryrun = TRUE
 )
+
+
+## Connect to remote Unix machine 'remote.server.org' on port 2200
+## as user 'bob' from a Windows machine with PuTTY installed
+cl <- makeClusterPSOCK(
+  "remote.server.org", user = "bob",
+  rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),
+  dryrun = TRUE
+)
 }
