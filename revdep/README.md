@@ -4,51 +4,27 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.3.3 (2017-03-06) |
+|version  |R version 3.4.0 (2017-04-21) |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2017-03-11                   |
+|date     |2017-04-24                   |
 
 ## Packages
 
-|package  |*  |version |date       |source         |
-|:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.12  |2017-01-27 |cran (@0.6.12) |
-|future   |   |1.3.0   |2017-02-19 |cran (@1.3.0)  |
-|globals  |   |0.9.0   |2017-03-10 |cran (@0.9.0)  |
-|listenv  |   |0.6.0   |2015-12-28 |cran (@0.6.0)  |
-|markdown |   |0.7.7   |2015-04-22 |cran (@0.7.7)  |
-|R.rsp    |   |0.40.0  |2016-12-06 |cran (@0.40.0) |
+|package  |*  |version    |date       |source                            |
+|:--------|:--|:----------|:----------|:---------------------------------|
+|digest   |   |0.6.12     |2017-01-27 |cran (@0.6.12)                    |
+|future   |   |1.4.0-9000 |2017-04-25 |local (HenrikBengtsson/future@NA) |
+|globals  |   |0.10.0     |2017-04-17 |cran (@0.10.0)                    |
+|listenv  |   |0.6.0      |2015-12-28 |cran (@0.6.0)                     |
+|markdown |   |0.8        |2017-04-20 |cran (@0.8)                       |
+|R.rsp    |   |0.41.0     |2017-04-16 |cran (@0.41.0)                    |
 
 # Check results
-
-20 packages
-
-|package              |version | errors| warnings| notes|
-|:--------------------|:-------|------:|--------:|-----:|
-|ACNE                 |0.8.1   |      0|        0|     0|
-|aroma.affymetrix     |3.0.0   |      0|        0|     0|
-|aroma.cn             |1.6.1   |      0|        0|     0|
-|aroma.core           |3.0.0   |      0|        0|     1|
-|calmate              |0.12.1  |      0|        0|     0|
-|doFuture             |0.3.0   |      0|        0|     0|
-|fiery                |0.2.2   |      0|        0|     0|
-|future.BatchJobs     |0.13.1  |      0|        0|     0|
-|GeneBreak            |1.4.0   |      0|        0|     1|
-|googleComputeEngineR |0.1.0   |      0|        0|     0|
-|MPAgenomics          |1.1.2   |      0|        0|     2|
-|NSA                  |0.0.32  |      0|        0|     6|
-|pbmcapply            |1.2.1   |      0|        0|     0|
-|PECA                 |1.10.0  |      0|        0|     1|
-|PSCBS                |0.62.0  |      0|        0|     0|
-|PureCN               |1.2.3   |      0|        0|     1|
-|QDNAseq              |1.10.0  |      0|        0|     0|
-|Repitools            |1.20.0  |      0|        0|     2|
-|R.filesets           |2.11.0  |      0|        0|     0|
-|TIN                  |1.6.0   |      0|        0|     2|
+24 packages
 
 ## ACNE (0.8.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -56,7 +32,7 @@ Bug reports: https://github.com/HenrikBengtsson/ACNE/issues
 
 0 errors | 0 warnings | 0 notes
 
-## aroma.affymetrix (3.0.0)
+## aroma.affymetrix (3.1.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 
@@ -68,7 +44,7 @@ Bug reports: https://github.com/HenrikBengtsson/aroma.cn/issues
 
 0 errors | 0 warnings | 0 notes
 
-## aroma.core (3.0.0)
+## aroma.core (3.1.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/aroma.core/issues
 
@@ -77,7 +53,7 @@ Bug reports: https://github.com/HenrikBengtsson/aroma.core/issues
 ```
 checking package dependencies ... NOTE
 Packages suggested but not available for checking:
-  ‘png’ ‘Cairo’ ‘EBImage’ ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
+  ‘expectile’ ‘HaarSeg’ ‘mpcbs’
 ```
 
 ## calmate (0.12.1)
@@ -86,7 +62,7 @@ Bug reports: https://github.com/HenrikBengtsson/calmate/issues
 
 0 errors | 0 warnings | 0 notes
 
-## doFuture (0.3.0)
+## doFuture (0.5.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
@@ -98,13 +74,13 @@ Bug reports: https://github.com/thomasp85/fiery/issues
 
 0 errors | 0 warnings | 0 notes
 
-## future.BatchJobs (0.13.1)
+## future.BatchJobs (0.14.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
 
 0 errors | 0 warnings | 0 notes
 
-## GeneBreak (1.4.0)
+## GeneBreak (1.5.0)
 Maintainer: Evert van den Broek <vandenbroek.evert@gmail.com>
 
 0 errors | 0 warnings | 1 note 
@@ -130,6 +106,12 @@ to your NAMESPACE file.
 ## googleComputeEngineR (0.1.0)
 Maintainer: Mark Edmondson <r@sunholo.com>  
 Bug reports: https://github.com/cloudyr/googleComputeEngineR/issues
+
+0 errors | 0 warnings | 0 notes
+
+## kernelboot (0.1.0)
+Maintainer: Tymoteusz Wolodzko <twolodzko+kernelboot@gmail.com>  
+Bug reports: https://github.com/twolodzko/kernelboot/issues
 
 0 errors | 0 warnings | 0 notes
 
@@ -256,7 +238,7 @@ Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PECA (1.10.0)
+## PECA (1.11.0)
 Maintainer: Tomi Suomi <tomi.suomi@utu.fi>
 
 0 errors | 0 warnings | 1 note 
@@ -276,45 +258,38 @@ Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PureCN (1.2.3)
+## PureCN (1.5.75)
 Maintainer: Markus Riester <markus.riester@novartis.com>
 
 0 errors | 0 warnings | 1 note 
 
 ```
-checking R code for possible problems ... NOTE
-Found the following calls to data() loading into the global environment:
-File ‘PureCN/R/bootstrapResults.R’:
-  data(purecn.example.output)
-File ‘PureCN/R/callAlterations.R’:
-  data(purecn.example.output)
-  data(purecn.example.output)
-File ‘PureCN/R/callLOH.R’:
-  data(purecn.example.output)
-File ‘PureCN/R/createCurationFile.R’:
-  data(purecn.example.output)
-File ‘PureCN/R/curateResults.R’:
-  data(purecn.example.output)
-  data(purecn.example.output)
-File ‘PureCN/R/plotAbs.R’:
-  data(purecn.example.output)
-File ‘PureCN/R/predictSomatic.R’:
-  data(purecn.example.output)
-File ‘PureCN/R/readCurationFile.R’:
-  data(purecn.example.output)
-See section ‘Good practice’ in ‘?data’.
+checking installed package size ... NOTE
+  installed size is  5.3Mb
+  sub-directories of 1Mb or more:
+    doc       1.6Mb
+    extdata   2.4Mb
 ```
 
-## QDNAseq (1.10.0)
+## QDNAseq (1.11.2)
 Maintainer: Daoud Sie <d.sie@vumc.nl>  
 Bug reports: https://github.com/ccagc/QDNAseq/issues
 
-0 errors | 0 warnings | 0 notes
+0 errors | 1 warning  | 0 notes
 
-## Repitools (1.20.0)
+```
+checking for missing documentation entries ... WARNING
+Undocumented code objects:
+  ‘exportVCF’
+All user-level objects in a package should have documentation entries.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+```
+
+## Repitools (1.21.1)
 Maintainer: Mark Robinson <mark.robinson@imls.uzh.ch>
 
-0 errors | 0 warnings | 2 notes
+0 errors | 0 warnings | 3 notes
 
 ```
 checking R code for possible problems ... NOTE
@@ -362,6 +337,15 @@ Rd file 'writeWig.Rd':
      writeWig(rs, seq.len = NULL, design=NULL, sample=20, drop.zero=TRUE, normalize=TRUE, verbose=TRUE)
 
 These lines will be truncated in the PDF manual.
+
+checking compiled code ... NOTE
+File ‘Repitools/libs/Repitools.so’:
+  Found no call to: ‘R_useDynamicSymbols’
+
+It is good practice to register native routines and to disable symbol
+search.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
 ```
 
 ## R.filesets (2.11.0)
@@ -370,7 +354,13 @@ Bug reports: https://github.com/HenrikBengtsson/R.filesets/issues
 
 0 errors | 0 warnings | 0 notes
 
-## TIN (1.6.0)
+## startR (0.0.1)
+Maintainer: Nicolau Manubens <nicolau.manubens@bsc.es>  
+Bug reports: https://earth.bsc.es/gitlab/es/startR/issues
+
+0 errors | 0 warnings | 0 notes
+
+## TIN (1.7.0)
 Maintainer: Bjarne Johannessen <bjajoh@rr-research.no>
 
 0 errors | 0 warnings | 2 notes
@@ -402,5 +392,22 @@ File ‘TIN/R/aberrantExonUsage.R’:
 File ‘TIN/R/correlationPlot.R’:
   assign("randomGeneSetsDist", B, envir = .GlobalEnv)
   assign("traPermutationsDist", L, envir = .GlobalEnv)
+```
+
+## vesselr (0.2.1)
+Maintainer: Jordan D. Dworkin <jdwor@mail.med.upenn.edu>
+
+0 errors | 0 warnings | 0 notes
+
+## warbleR (1.1.7)
+Maintainer: Marcelo Araya-Salas <araya-salas@cornell.edu>  
+Bug reports: https://github.com/maRce10/warbleR/issues
+
+1 error  | 0 warnings | 0 notes
+
+```
+checking whether package ‘warbleR’ can be installed ... ERROR
+Installation failed.
+See ‘/home/hb/repositories/future/revdep/checks/warbleR.Rcheck/00install.out’ for details.
 ```
 
