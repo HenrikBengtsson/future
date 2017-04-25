@@ -25,6 +25,9 @@ SOFTWARE QUALITY:
  o Added package tests for globals part of formulas part of other globals,
    e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
 
+ o Now package tests with parallel::makeCluster() not only test for
+   type = 'PSOCK' clusters but also 'FORK' (when supported).
+
 DOCUMENTATION:
 
  o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
