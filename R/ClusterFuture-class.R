@@ -69,7 +69,11 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   workers <- add_cluster_uuid(workers)
 
   ## Attached workers' session information, unless already done.
-  workers <- add_cluster_session_info(workers)
+  ## FIXME: We cannot do this here, because it introduces a race condition
+  ## where multiple similar requests may appear at the same time bringing
+  ## the send/receive data to be out of sync and therefore corrupt the
+  ## futures' values.
+  ##  workers <- add_cluster_session_info(workers)
   
   ## Attach name to cluster?
   name <- attr(workers, "name")

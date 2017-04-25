@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-04-23]
+Version: 1.4.0-9000 [2017-04-25]
 
  o ...
  
@@ -10,18 +10,15 @@ NEW FEATURES:
  o makeClusterPSOCK() now defaults to use the Windows PuTTY software's SSH
    client 'plink -ssh', if 'ssh' is not found.
 
- o makeClusterPSOCK() now asserts that each cluster node is functioning by
-   retrieving session information including the process ID from the
-   corresponding R process.  The same information is also collected by
-   plan(cluster) and plan(multisession) if not already available, e.g. when
-   parallel::makeCluster() is used instead.  This makes it possible to find
-   session information for a future that is not yet resolved.   
-
  o Argument 'homogeneous' of makeNodePSOCK(), a helper function of
    makeClusterPSOCK(), will default to FALSE also if the hostname is a
    fully qualified domain name (FQDN), that is, it "contains periods".
    For instance, c('node1', 'node2.server.org') will use homogeneous = TRUE
    for the first worker and homogeneous = FALSE for the second.
+
+ o makeClusterPSOCK() now asserts that each cluster node is functioning by
+   retrieving session information including the process ID from the
+   corresponding R process.
 
 SOFTWARE QUALITY:
 
