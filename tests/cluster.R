@@ -3,7 +3,8 @@ library("listenv")
 
 message("*** cluster() ...")
 
-message("Cluster type: ", parallel:::getClusterOption("type"))
+type <- parallel:::getClusterOption("type")
+message("Cluster type: ", type)
 message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
 message("Package path: ", sQuote(system.file(package = "future")))
 
@@ -12,7 +13,7 @@ for (cores in 1:2) {
   options(mc.cores = cores-1L)
 
   ## Set up a cluster with <cores> nodes (explicitly)
-  cl <- parallel::makeCluster(cores)
+  cl <- parallel::makeCluster(cores, type = type)
   plan(cluster, workers = cl)
 
   ## No global variables
@@ -160,7 +161,7 @@ for (cores in 1:2) {
 message("*** cluster() - setDefaultCluster() ...")
 
 library("parallel")
-setDefaultCluster(makeCluster(2))
+setDefaultCluster(makeCluster(2L, type = type))
 plan(cluster)
 
 pid <- Sys.getpid()
@@ -187,7 +188,7 @@ message("*** cluster() - exceptions ... DONE")
 
 message("*** cluster() - crashed worker ...")
 
-cl <- parallel::makeCluster("localhost")
+cl <- parallel::makeCluster("localhost", type = type)
 plan(cluster, workers = cl)
 x %<-% 42L
 stopifnot(x == 42L)
@@ -208,7 +209,7 @@ stopifnot(
 ## plan(uniprocess); x %<-% NULL; print(x)
 
 ## Verify that the reset worked
-cl <- parallel::makeCluster("localhost")
+cl <- parallel::makeCluster("localhost", type = type)
 plan(cluster, workers = cl)
 x %<-% 42L
 stopifnot(x == 42L)
@@ -219,7 +220,7 @@ message("*** cluster() - crashed worker ... DONE")
 message("*** cluster() - registry ...")
 
 ## Explicitly created clusters are *not* added to the registry
-cl <- parallel::makeCluster(cores)
+cl <- parallel::makeCluster(cores, type = type)
 plan(cluster, workers = cl)
 clR <- ClusterRegistry("get")
 stopifnot(is.null(clR))
