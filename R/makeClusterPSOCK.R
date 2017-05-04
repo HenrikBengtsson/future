@@ -562,7 +562,6 @@ add_cluster_session_info <- function(cl) {
     pid <- as.integer(gsub(".* ", "", pid))
     
     info <- clusterCall(cl[ii], fun = session_info)[[1]]
-    str(list(ii = ii, pid = pid, info = info))
     stopifnot(info$process$pid == pid)
     node$session_info <- info
     cl[[ii]] <- node
