@@ -17,8 +17,8 @@ NEW FEATURES:
    for the first worker and homogeneous = FALSE for the second.
 
  o makeClusterPSOCK() now asserts that each cluster node is functioning by
-   retrieving session information including the process ID from the
-   corresponding R process.
+   retrieving and recording the node's session information including the
+   process ID of the corresponding R process.
 
 SOFTWARE QUALITY:
 
