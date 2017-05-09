@@ -204,7 +204,9 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
     
     if (is.finite(maxSizeOfGlobals)) {
-      total_size <- objectSize(globals)
+      sizes <- lapply(globals, FUN = objectSize)
+      sizes <- unlist(sizes, use.names = TRUE)
+      total_size <- sum(sizes, na.rm = TRUE)
       attr(globals, "total_size") <- total_size
       if (debug) mdebug("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
   

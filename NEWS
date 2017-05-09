@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-04-25]
+Version: 1.4.0-9000 [2017-05-09]
 
  o ...
  
@@ -32,6 +32,12 @@ DOCUMENTATION:
 
  o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
    and what their defaults are.
+ 
+BUG FIXES:
+
+ o When globals larger than the allowed size (option 'future.globals.maxSize')
+   are detected an informative error message is generated.  Previous version
+   introduced a bug causing the error to produce another error.
  
 
 Version: 1.4.0 [2017-03-12]
