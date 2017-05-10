@@ -14,7 +14,7 @@
 #'
 #' @return A \link{SequentialFuture}.
 #'
-#' @example incl/uniprocess.R
+#' @example incl/sequential.R
 #'
 #' @details
 #' The preferred way to create a sequential future is not to call these functions
