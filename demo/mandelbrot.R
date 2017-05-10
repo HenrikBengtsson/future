@@ -46,6 +46,9 @@ Cs <- mandelbrotTiles(xmid = region$xmid, ymid = region$ymid,
                       side = region$side, nrow = nrow, resolution = resolution)
 
 if (interactive()) {
+  if (.Platform$GUI == "RStudio") {
+    if (!"RStudioGD" %in% names(dev.list())) dev.new()
+  }
   dev.new()
   plot.new()
   split.screen(dim(Cs))
