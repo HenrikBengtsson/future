@@ -9,7 +9,7 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   options(mc.cores = cores - 1L)
 
   if (!supportsMulticore()) {
-    message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous uniprocess futures", .Platform$OS.type))
+    message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous sequential futures", .Platform$OS.type))
   }
 
   for (globals in c(FALSE, TRUE)) {
@@ -19,7 +19,7 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   f <- multicore({
     42L
   }, globals = globals)
-  stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "UniprocessFuture")))
+  stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "SequentialFuture")))
 
   print(resolved(f))
   y <- value(f)

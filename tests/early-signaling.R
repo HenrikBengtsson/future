@@ -4,9 +4,9 @@ options(future.debug = FALSE)
 
 message("*** Early signaling of conditions ...")
 
-message("*** Early signaling of conditions with uniprocess futures ...")
+message("*** Early signaling of conditions with sequential futures ...")
 
-plan(uniprocess)
+plan(sequential)
 f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 r <- resolved(f)
@@ -14,11 +14,11 @@ stopifnot(r)
 v <- try(value(f), silent = TRUE)
 stopifnot(inherits(v, "try-error"))
 
-plan(uniprocess, earlySignal = TRUE)
+plan(sequential, earlySignal = TRUE)
 f <- try(future({ stop("bang!") }), silent = TRUE)
 stopifnot(inherits(f, "try-error"))
 
-message("*** Early signaling of conditions with uniprocess futures ... DONE")
+message("*** Early signaling of conditions with sequential futures ... DONE")
 
 
 message("Number of available cores: ", availableCores())
@@ -38,7 +38,7 @@ f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 print(f)
 r <- try(resolved(f), silent = TRUE)
-stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
+stopifnot(inherits(r, "try-error") || inherits(f, "SequentialFuture"))
 v <- try(value(f), silent = TRUE)
 stopifnot(inherits(v, "try-error"))
 
@@ -61,7 +61,7 @@ f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 print(f)
 r <- try(resolved(f), silent = TRUE)
-stopifnot(inherits(r, "try-error") || inherits(f, "UniprocessFuture"))
+stopifnot(inherits(r, "try-error") || inherits(f, "SequentialFuture"))
 v <- try(value(f), silent = TRUE)
 stopifnot(inherits(v, "try-error"))
 

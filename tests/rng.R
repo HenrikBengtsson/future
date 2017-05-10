@@ -54,7 +54,7 @@ dummy <- sample(0:9, size = 1L)
 seed0 <- .Random.seed
 
 ## Reference sample with fixed random seed
-plan("uniprocess")
+plan("sequential")
 y0 <- fsample(0:9, seed = 42L)
 
 ## Assert that random seed is reset

@@ -49,7 +49,7 @@ for (strategy1 in strategies) {
           length(nested_b) == 0L,
           length(plan_b) == 1L,
           inherits(plan_b[[1]], "future"),
-          inherits(future::plan(), getOption("future.default", "uniprocess"))
+          inherits(future::plan(), getOption("future.default", "sequential"))
         )
 
         list(a = a, nested_a = nested_a, plan_a = plan_a,
@@ -76,7 +76,7 @@ for (strategy1 in strategies) {
       is.list(x$plan_b),
       length(x$plan_b) == 1L,
       inherits(x$plan_b[[1]], "future"),
-      inherits(x$plan_b[[1]], getOption("future.default", "uniprocess"))
+      inherits(x$plan_b[[1]], getOption("future.default", "sequential"))
     )
 
     ## Attribute 'init' is modified at run time

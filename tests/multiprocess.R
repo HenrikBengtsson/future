@@ -13,7 +13,7 @@ for (cores in 1:min(3L, availableCores())) {
     42L
   })
   print(f)
-  stopifnot(inherits(f, "MultiprocessFuture") || inherits(f, "UniprocessFuture"))
+  stopifnot(inherits(f, "MultiprocessFuture") || inherits(f, "SequentialFuture"))
 
   print(resolved(f))
   y <- value(f)

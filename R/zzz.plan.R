@@ -283,8 +283,9 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster", "lazy", "eager")) {
+supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster"), deprecated = TRUE) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
+  if (deprecated) strategies <- unique(c(strategies, "lazy", "eager"))
   strategies
 }
 

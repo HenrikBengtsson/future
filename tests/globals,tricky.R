@@ -151,7 +151,7 @@ for (cores in 1:min(3L, availableCores())) {
       ## overwritten by the name of the last package attached
       ## by the future.
       pkg <- "foo"
-      f <- uniprocess({ pkg })
+      f <- sequential({ pkg })
       v <- value(f)
       message(sprintf("value(f) = %s", sQuote(v)))
       stopifnot(pkg == "foo", v == "foo")

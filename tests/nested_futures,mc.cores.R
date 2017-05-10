@@ -19,8 +19,8 @@ for (mc in 0:3) {
   mc2 <- min(mc, cores)
   
   for (strategy in strategies) {
-    message(sprintf("plan(list('uniprocess', '%s')):", strategy))
-    plan(list('uniprocess', strategy))
+    message(sprintf("plan(list('sequential', '%s')):", strategy))
+    plan(list('sequential', strategy))
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()
@@ -32,8 +32,8 @@ for (mc in 0:3) {
     stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(((mc2 <= 1 || a$cores <= 2) && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
-    message(sprintf("plan(list('uniprocess', '%s':3)):", strategy))
-    plan(list('uniprocess', tweak(strategy, workers = 3)))
+    message(sprintf("plan(list('sequential', '%s':3)):", strategy))
+    plan(list('sequential', tweak(strategy, workers = 3)))
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()
@@ -45,8 +45,8 @@ for (mc in 0:3) {
     stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot((mc2 <= 1 && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
-    message(sprintf("plan(list('%s', 'uniprocess')):", strategy))
-    plan(list(strategy, 'uniprocess'))
+    message(sprintf("plan(list('%s', 'sequential')):", strategy))
+    plan(list(strategy, 'sequential'))
     a %<-% {
       b1 %<-% Sys.getpid()
       b2 %<-% Sys.getpid()

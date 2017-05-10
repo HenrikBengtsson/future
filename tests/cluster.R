@@ -207,13 +207,7 @@ for (type in types) {
     inherits(res, "simpleError"),
     inherits(res, "FutureError")
   )
-  
-  ## This is needed in order to reset the ClusterRegistry
-  ## future:::ClusterRegistry("stop")
-  
-  ## An alternative is to do:
-  ## plan(uniprocess); x %<-% NULL; print(x)
-  
+
   ## Verify that the reset worked
   cl <- parallel::makeCluster(1L, type = type)
   plan(cluster, workers = cl)
