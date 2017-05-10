@@ -31,7 +31,7 @@
 #' adopted from similar GPL code of Martin Maechler (available
 #' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
 #'
-#' @aliases as.raster.Mandelbrot plot.Mandelbrot mandelbrotTiles
+#' @aliases as.raster.Mandelbrot plot.Mandelbrot mandelbrot_tiles
 #' @export
 #'
 #' @keywords internal
@@ -40,35 +40,33 @@ mandelbrot <- function(...) UseMethod("mandelbrot")
 #' @export
 mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
   stopifnot(is.matrix(Z), mode(Z) == "complex")
-  
+
   ## By default, assume none of the elements will converge
   counts <- matrix(maxIter, nrow = nrow(Z), ncol = ncol(Z))
 
-  ## But as a start, flag the to all be non-diverged
-  nonDiverged <- rep(TRUE, times = length(Z))
-  idxOfNonDiverged <- seq_along(nonDiverged)
+  ## But as a start, mark all be non-diverged
+  idx_of_non_diverged <- seq_along(Z)
 
   ## SPEEDUP: The Mandelbrot sequence will only be calculated on the
   ## "remaining set" of complex numbers that yet hasn't diverged.
   sZ <- Z ## The Mandelbrot sequence of the "remaining" set
   Zr <- Z ## The original complex number of the "remaining" set
 
-  for (ii in seq_len(maxIter-1L)) {
+  for (ii in seq_len(maxIter - 1L)) {
     sZ <- sZ * sZ + Zr
 
     ## Did any of the "remaining" points diverge?
     diverged <- (Mod(sZ) > tau)
     if (any(diverged)) {
       ## Record at what iteration divergence occurred
-      counts[idxOfNonDiverged[diverged]] <- ii
+      counts[idx_of_non_diverged[diverged]] <- ii
 
       ## Early stopping?
       keep <- which(!diverged)
       if (length(keep) == 0) break
 
       ## Drop from remain calculations
-      idxOfNonDiverged <- idxOfNonDiverged[keep]
-      nonDiverged[nonDiverged] <- !diverged
+      idx_of_non_diverged <- idx_of_non_diverged[keep]
 
       ## Update the "remaining" set of complex numbers
       sZ <- sZ[keep]
@@ -81,11 +79,13 @@ mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
   class(counts) <- c("Mandelbrot", class(counts))
   
   counts
-} ## mandelbrot() for matrix
+}
 
 
 #' @export
-mandelbrot.numeric <- function(xmid = -0.75, ymid = 0, side = 3, resolution = 400L, maxIter = 200L, tau = 2, ...) {
+mandelbrot.numeric <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
+                               resolution = 400L, maxIter = 200L,
+                               tau = 2.0, ...) {
   ## Validate arguments
   stopifnot(side > 0) 
   resolution <- as.integer(resolution)
@@ -107,7 +107,7 @@ mandelbrot.numeric <- function(xmid = -0.75, ymid = 0, side = 3, resolution = 40
   Z <- outer(y, x, FUN = function(y, x) complex(real = x, imaginary = y))
 
   mandelbrot(Z, maxIter = maxIter, tau = tau)
-} ## mandelbrot() for numeric
+}
 
 
 #' @export
@@ -121,7 +121,7 @@ as.raster.Mandelbrot <- function(x, ...) {
   img <- t(img)
   img <- structure(img, class = "raster")
   img
-} ## as.raster()
+}
 
 
 #' @export
@@ -138,9 +138,11 @@ plot.Mandelbrot <- function(x, y, ..., mar = c(0, 0, 0, 0)) {
 
 
 #' @export
-mandelbrotTiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0, nrow = 2L, ncol = nrow, resolution = 400L, truncate = TRUE) {
+mandelbrot_tiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
+                             nrow = 2L, ncol = nrow,
+                             resolution = 400L, truncate = TRUE) {
   ## Validate arguments
-  stopifnot(side > 0) 
+  stopifnot(side > 0)
   resolution <- as.integer(resolution)
   stopifnot(resolution > 0)
 
@@ -155,9 +157,9 @@ mandelbrotTiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0, nrow = 2L, nco
   ## Truncate so all tiles have identical dimensions?
   if (truncate) {
     nx <- ncol * dx
-    ny <- nrow * dy 
+    ny <- nrow * dy
   }
-  
+
   ## Setup (x, y) bins
   xrange <- xmid + c(-1, 1) * side / 2
   yrange <- ymid + c(-1, 1) * side / 2
@@ -170,19 +172,21 @@ mandelbrotTiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0, nrow = 2L, nco
   for (rr in seq_len(nrow)) {
     yrr <- if (rr < nrow) y[1:dy] else y
     y <- y[-(1:dy)]
-      
+
     xrr <- x
     for (cc in seq_len(ncol)) {
       xcc <- if (cc < ncol) xrr[1:dx] else xrr
       xrr <- xrr[-(1:dx)]
-    
-      Ccc <- outer(yrr, xcc, FUN = function(y, x) complex(real = x, imaginary = y))
+
+      Ccc <- outer(yrr, xcc, FUN = function(y, x) {
+        complex(real = x, imaginary = y)
+      })
       attr(Ccc, "region") <- list(xrange = range(xcc), yrange = range(yrr))
       attr(Ccc, "tile") <- c(rr, cc)
       res <- c(res, list(Ccc))
     }
   }
   dim(res) <- c(nrow, ncol)
-  
+
   res
-} ## mandelbrotTiles()
+}

@@ -1,7 +1,7 @@
 library("future")
 library("graphics")
 
-plotWhatIsDone <- function(counts) {
+plot_what_is_done <- function(counts) {
   for (kk in seq_along(counts)) {
     f <- counts[[kk]]
 
@@ -15,10 +15,10 @@ plotWhatIsDone <- function(counts) {
     counts[[kk]] <- value(counts[[kk]])
     screen(kk)
     plot(counts[[kk]])
-  } # for (kk ...)
+  }
 
   counts
-} # plotWhatIsDone()
+}
 
 
 ## Options
@@ -42,8 +42,9 @@ if (isTRUE(delay)) {
 }
 
 ## Generate Mandelbrot tiles to be computed
-Cs <- mandelbrotTiles(xmid = region$xmid, ymid = region$ymid,
-                      side = region$side, nrow = nrow, resolution = resolution)
+Cs <- mandelbrot_tiles(xmid = region$xmid, ymid = region$ymid,
+                       side = region$side, nrow = nrow,
+                       resolution = resolution)
 
 if (interactive()) {
   if (.Platform$GUI == "RStudio") {
@@ -67,26 +68,26 @@ n <- length(Cs)
 for (ii in seq_len(n)) {
   cat(sprintf("Mandelbrot tile #%d of %d ...\n", ii, n))
   C <- Cs[[ii]]
-  
+
   counts[[ii]] <- future({
     cat(sprintf("Calculating tile #%d of %d ...\n", ii, n))
     fit <- mandelbrot(C)
-    
+
     ## Emulate slowness
     delay(fit)
-    
+
     cat(sprintf("Calculating tile #%d of %d ... done\n", ii, n))
     fit
   })
 
   ## Plot tiles that are already resolved
-  counts <- plotWhatIsDone(counts)
+  counts <- plot_what_is_done(counts)
 }
 
 
 ## Plot remaining tiles
 repeat {
-  counts <- plotWhatIsDone(counts)
+  counts <- plot_what_is_done(counts)
   if (!any(sapply(counts, FUN = inherits, "Future"))) break
 }
   
