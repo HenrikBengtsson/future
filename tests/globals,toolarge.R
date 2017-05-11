@@ -32,6 +32,8 @@ for (name in names(exprs)) {
   }, error = function(ex) ex)
   print(res)
   stopifnot(inherits(res, "error"))
+  msg <- conditionMessage(res)
+  stopifnot(grepl("exceeds the maximum allowed size", msg))
 }
 
 message("*** Globals - too large ... DONE")
