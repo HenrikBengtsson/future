@@ -10,21 +10,49 @@
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2017-04-24                   |
+|date     |2017-05-17                   |
 
 ## Packages
 
 |package  |*  |version    |date       |source                            |
 |:--------|:--|:----------|:----------|:---------------------------------|
 |digest   |   |0.6.12     |2017-01-27 |cran (@0.6.12)                    |
-|future   |   |1.4.0-9000 |2017-04-25 |local (HenrikBengtsson/future@NA) |
+|future   |   |1.4.0-9000 |2017-05-18 |local (HenrikBengtsson/future@NA) |
 |globals  |   |0.10.0     |2017-04-17 |cran (@0.10.0)                    |
 |listenv  |   |0.6.0      |2015-12-28 |cran (@0.6.0)                     |
 |markdown |   |0.8        |2017-04-20 |cran (@0.8)                       |
 |R.rsp    |   |0.41.0     |2017-04-16 |cran (@0.41.0)                    |
 
 # Check results
+
 24 packages
+
+|package              |version | errors| warnings| notes|
+|:--------------------|:-------|------:|--------:|-----:|
+|ACNE                 |0.8.1   |      0|        0|     0|
+|aroma.affymetrix     |3.1.0   |      0|        0|     0|
+|aroma.cn             |1.6.1   |      0|        0|     0|
+|aroma.core           |3.1.0   |      0|        0|     1|
+|calmate              |0.12.1  |      0|        0|     0|
+|doFuture             |0.5.0   |      0|        0|     0|
+|fiery                |0.2.2   |      0|        0|     0|
+|future.BatchJobs     |0.14.0  |      0|        0|     0|
+|GeneBreak            |1.6.0   |      0|        0|     1|
+|googleComputeEngineR |0.1.0   |      0|        0|     0|
+|kernelboot           |0.1.0   |      0|        0|     0|
+|MPAgenomics          |1.1.2   |      0|        0|     2|
+|NSA                  |0.0.32  |      0|        0|     6|
+|pbmcapply            |1.2.1   |      0|        0|     0|
+|PECA                 |1.12.0  |      0|        0|     1|
+|PSCBS                |0.62.0  |      0|        0|     0|
+|PureCN               |1.6.1   |      0|        0|     1|
+|QDNAseq              |1.12.0  |      0|        1|     0|
+|Repitools            |1.22.0  |      0|        0|     3|
+|R.filesets           |2.11.0  |      0|        0|     0|
+|startR               |0.0.1   |      0|        0|     0|
+|TIN                  |1.8.0   |      0|        0|     2|
+|vesselr              |0.2.1   |      0|        0|     0|
+|warbleR              |1.1.8   |      0|        0|     0|
 
 ## ACNE (0.8.1)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
@@ -80,7 +108,7 @@ Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
 
 0 errors | 0 warnings | 0 notes
 
-## GeneBreak (1.5.0)
+## GeneBreak (1.6.0)
 Maintainer: Evert van den Broek <vandenbroek.evert@gmail.com>
 
 0 errors | 0 warnings | 1 note 
@@ -238,7 +266,7 @@ Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PECA (1.11.0)
+## PECA (1.12.0)
 Maintainer: Tomi Suomi <tomi.suomi@utu.fi>
 
 0 errors | 0 warnings | 1 note 
@@ -258,7 +286,7 @@ Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PureCN (1.5.75)
+## PureCN (1.6.1)
 Maintainer: Markus Riester <markus.riester@novartis.com>
 
 0 errors | 0 warnings | 1 note 
@@ -271,7 +299,7 @@ checking installed package size ... NOTE
     extdata   2.4Mb
 ```
 
-## QDNAseq (1.11.2)
+## QDNAseq (1.12.0)
 Maintainer: Daoud Sie <d.sie@vumc.nl>  
 Bug reports: https://github.com/ccagc/QDNAseq/issues
 
@@ -286,7 +314,7 @@ See chapter ‘Writing R documentation files’ in the ‘Writing R
 Extensions’ manual.
 ```
 
-## Repitools (1.21.1)
+## Repitools (1.22.0)
 Maintainer: Mark Robinson <mark.robinson@imls.uzh.ch>
 
 0 errors | 0 warnings | 3 notes
@@ -360,7 +388,7 @@ Bug reports: https://earth.bsc.es/gitlab/es/startR/issues
 
 0 errors | 0 warnings | 0 notes
 
-## TIN (1.7.0)
+## TIN (1.8.0)
 Maintainer: Bjarne Johannessen <bjajoh@rr-research.no>
 
 0 errors | 0 warnings | 2 notes
@@ -399,15 +427,9 @@ Maintainer: Jordan D. Dworkin <jdwor@mail.med.upenn.edu>
 
 0 errors | 0 warnings | 0 notes
 
-## warbleR (1.1.7)
+## warbleR (1.1.8)
 Maintainer: Marcelo Araya-Salas <araya-salas@cornell.edu>  
 Bug reports: https://github.com/maRce10/warbleR/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking whether package ‘warbleR’ can be installed ... ERROR
-Installation failed.
-See ‘/home/hb/repositories/future/revdep/checks/warbleR.Rcheck/00install.out’ for details.
-```
+0 errors | 0 warnings | 0 notes
 
