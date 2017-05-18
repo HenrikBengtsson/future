@@ -153,7 +153,7 @@ run.ClusterFuture <- function(future, ...) {
   ##      NOTE: Already take care of by getExpression() of the Future class.
   ##      However, if we need to get an early error about missing packages,
   ##      we can get the error here before launching the future.
-  packages <- future$packages
+  packages <- packages(future)
   if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ...",
                       length(packages), hpaste(sQuote(packages)), node_idx)
@@ -166,7 +166,7 @@ run.ClusterFuture <- function(future, ...) {
   
 
   ## (iii) Export globals
-  globals <- future$globals
+  globals <- globals(future)
   if (length(globals) > 0) {
     if (debug) {
       total_size <- asIEC(objectSize(globals))

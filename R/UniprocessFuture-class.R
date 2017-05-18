@@ -34,9 +34,10 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals, resolve = TRUE)
 
-  ## Assign?
-  if (length(gp) > 0 && (lazy || assignToTarget)) {
+  ## Assign globals to "target" environment?
+  if (length(gp$globals) > 0 && (lazy || assignToTarget)) {
     target <- new.env(parent = envir)
+    target[["...future_has_globals"]] <- TRUE
     globalsT <- gp$globals
     for (name in names(globalsT)) {
       target[[name]] <- globalsT[[name]]
@@ -45,7 +46,7 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
     envir <- target
   }
   gp <- NULL
-
+  
   f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, ...)
   structure(f, class = c("UniprocessFuture", class(f)))
 }
@@ -109,6 +110,14 @@ resolved.UniprocessFuture <- function(x, ...) {
     value(x, signal = FALSE)
   }
   NextMethod("resolved")
+}
+
+globals.UniprocessFuture <- function(future, ...) {
+  envir <- future$envir
+  globals <- names(envir)
+  if (!"...future_has_globals" %in% globals) return(NULL)
+  globals <- setdiff(globals, "...future_has_globals")
+  mget(globals, envir = envir, inherits = FALSE)
 }
 
 

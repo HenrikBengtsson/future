@@ -126,8 +126,10 @@ print.Future <- function(x, ...) {
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
-  
-  g <- x$globals
+
+  ## FIXME: Add method globals_of() for Future such that it's possible
+  ## also for SequentialFuture to return something here. /HB 2017-05-17
+  g <- globals(x)
   ng <- length(g)
   if (ng > 0) {
     gSizes <- sapply(g, FUN = objectSize)
@@ -141,7 +143,7 @@ print.Future <- function(x, ...) {
     cat("Globals: <none>\n")
   }
   
-  p <- x$packages
+  p <- packages(x)
   np <- length(p)
   if (np > 0) {
     cat(sprintf("Packages: %d packages (%s)\n", np, paste(sQuote(p), collapse = ", ")))
@@ -385,7 +387,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     mdebug("Packages needed by future strategies (n = 0): <none>")
   }
 
-  pkgsF <- future$packages
+  pkgsF <- packages(future)
   if (length(pkgsF) > 0) {
     mdebug("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
     pkgs <- unique(c(pkgs, pkgsF))
@@ -489,3 +491,16 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
 
   expr
 } ## makeExpression()
+
+
+globals <- function(future, ...) UseMethod("globals")
+
+globals.Future <- function(future, ...) {
+  future[["globals"]]
+}
+
+packages <- function(future, ...) UseMethod("packages")
+
+packages.Future <- function(future, ...) {
+  future[["packages"]]
+}

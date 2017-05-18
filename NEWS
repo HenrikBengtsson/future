@@ -31,6 +31,8 @@ BUG FIXES:
    are detected an informative error message is generated.  Previous version
    introduced a bug causing the error to produce another error.
 
+ o print() would not display globals gathered for lazy sequential futures.
+ 
 SOFTWARE QUALITY:
 
  o Added package tests for globals part of formulas part of other globals,
