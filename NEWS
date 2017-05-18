@@ -20,14 +20,6 @@ NEW FEATURES:
    retrieving and recording the node's session information including the
    process ID of the corresponding R process.
 
-SOFTWARE QUALITY:
-
- o Added package tests for globals part of formulas part of other globals,
-   e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
-
- o Now package tests with parallel::makeCluster() not only test for
-   type = 'PSOCK' clusters but also 'FORK' (when supported).
-
 DOCUMENTATION:
 
  o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
@@ -38,6 +30,14 @@ BUG FIXES:
  o When globals larger than the allowed size (option 'future.globals.maxSize')
    are detected an informative error message is generated.  Previous version
    introduced a bug causing the error to produce another error.
+
+SOFTWARE QUALITY:
+
+ o Added package tests for globals part of formulas part of other globals,
+   e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
+
+ o Now package tests with parallel::makeCluster() not only test for
+   type = 'PSOCK' clusters but also 'FORK' (when supported).
  
 
 Version: 1.4.0 [2017-03-12]
