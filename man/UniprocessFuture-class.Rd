@@ -9,7 +9,7 @@
 \title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
 UniprocessFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  globals = TRUE, lazy = FALSE, local = TRUE, ...)
+  globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...)
 
 SequentialFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
@@ -31,6 +31,9 @@ is done (or inherits from if \code{local} is TRUE).}
 
 \item{globals}{(optional) a named list of global objects needed in order
 for the future to be resolved correctly.}
+
+\item{packages}{(optional) a character vector specifying packages
+to be attached in the R environment evaluating the future.}
 
 \item{lazy}{If \code{FALSE} (default), then the setup and validation of
 global variables are done for eager evaluation, otherwise not.}

@@ -16,7 +16,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, lazy = FALSE, local = TRUE, ...) {
+UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy) {
@@ -45,9 +45,15 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
     globalsT <- NULL
     envir <- target
   }
-  gp <- NULL
+
+  ## Record packages?
+  if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
+    packages <- unique(c(gp$packages, packages))
+  }
   
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, ...)
+  gp <- NULL
+
+  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = NULL, packages = packages, ...)
   structure(f, class = c("UniprocessFuture", class(f)))
 }
 

@@ -31,6 +31,9 @@ BUG FIXES:
    are detected an informative error message is generated.  Previous version
    introduced a bug causing the error to produce another error.
 
+ o Lazy sequential futures would produce an error when resolved if required
+   packages had been detached.
+
  o print() would not display globals gathered for lazy sequential futures.
  
 SOFTWARE QUALITY:
