@@ -43,7 +43,6 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
   ## variable should not affect the result of the
   ## future.
   a <- 7  ## Make sure globals are frozen
-##  if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
   v <- value(f)
   print(v)
   stopifnot(v == 0)
@@ -56,7 +55,6 @@ for (cores in 1:min(3L, availableCores("multicore"))) {
     x[[ii]] <- multicore({ ii }, globals = globals)
   }
   message(sprintf(" - Resolving %d multicore futures", length(x)))
-##  if ("covr" %in% loadedNamespaces()) v <- 1:4 else ## WORKAROUND
   v <- sapply(x, FUN = value)
   stopifnot(all(v == 1:4))
 

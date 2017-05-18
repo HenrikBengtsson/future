@@ -3,11 +3,13 @@ ovars <- ls()
 oenvs <- oenvs0 <- Sys.getenv()
 oopts0 <- options()
 
+covr_testing <- ("covr" %in% loadedNamespaces())
+
 ## Default options
 oopts <- options(
   warn = 1L,
   mc.cores = 2L,
-  future.debug = TRUE,
+  future.debug = !covr_testing,
   ## Reset the following during testing in case
   ## they are set on the test system
   future.availableCores.system = NULL,
