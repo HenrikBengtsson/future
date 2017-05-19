@@ -80,13 +80,13 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 
 #' Get number of cores currently used
 #'
-#' Get number of children plus one (for the current process)
+#' Get number of children (and don't count the current process)
 #' used by the current R session.  The number of children
 #' is the total number of subprocesses launched by this
 #' process that are still running and whose values have yet
 #' not been collected.
 #'
-#' @return A positive integer equal or greater than one.
+#' @return A non-negative integer.
 #'
 #' @keywords internal
 usedCores <- function() {
@@ -119,7 +119,7 @@ usedCores <- function() {
     }
   }
 
-  return(ncores + 1L)
+  ncores
 }
 
 
@@ -156,8 +156,8 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
   mdebug("requestCore(): workers = %d", workers)
 
   ## No additional cores available?
-  if (workers == 1L) {
-    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
+  if (workers == 0L) {
+    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but no cores are available (workers = 0).")
   }
 
   

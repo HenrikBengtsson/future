@@ -68,8 +68,8 @@
     mdebug("R command-line argument: -p %s", p)
     
     ## Apply
-    options(mc.cores = p-1L)
-    ## options(Ncpus = p-1L) ## FIXME: Does it make sense? /HB 2016-04-02
+    options(mc.cores = p)
+    ## options(Ncpus = p) ## FIXME: Does it make sense? /HB 2016-04-02
 
     ## Set 'future.plan' option?
     if (!is.null(strategy)) {

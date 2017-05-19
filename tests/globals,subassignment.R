@@ -37,9 +37,9 @@ stopifnot(identical(y, y0))
 
 stopifnot(identical(x, list()))
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores-1L)
+  options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 

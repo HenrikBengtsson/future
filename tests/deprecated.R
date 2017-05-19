@@ -44,10 +44,10 @@ message("*** Defunct arguments ... DONE")
 
 message("*** Defunct argument values ...")
 
-res <- tryCatch({
-  n <- availableCores(methods = "mc.cores")
-}, error = function(e) e)
-stopifnot(inherits(res, "error"))
+#res <- tryCatch({
+#  n <- availableCores(methods = "mc.cores")
+#}, error = function(e) e)
+#stopifnot(inherits(res, "error"))
 
 message("*** Defunct argument values ... DONE")
 

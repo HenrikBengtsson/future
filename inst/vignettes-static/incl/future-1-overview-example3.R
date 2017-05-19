@@ -15,5 +15,5 @@ b %<-% {
     cat("Resolving 'b2' ...\n")
     Sys.getpid()
   }
-  c(b.pid=Sys.getpid(), b1.pid=b1, b2.pid=b2)
+  c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
 }

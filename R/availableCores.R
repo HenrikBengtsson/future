@@ -32,9 +32,9 @@
 #' \itemize{
 #'  \item \code{"system"} -
 #'    Query \code{\link[parallel]{detectCores}()}.
-#'  \item \code{"mc.cores+1"} -
+#'  \item \code{"mc.cores"} -
 #'    If available, returns the value of option
-#'    \code{\link[base:options]{mc.cores}} + 1.
+#'    \code{\link[base:options]{mc.cores}}.
 #'    Note that \option{mc.cores} is defined as the number of
 #'    \emph{additional} R processes that can be used in addition to the
 #'    main R process.  This means that with \code{mc.cores = 0} all
@@ -71,13 +71,11 @@
 #' It is possible to override the maximum number of cores on the machine
 #' as reported by \code{availableCores(methods = "system")}.  This can be
 #' done by first specifying
-#' \code{options(future.availableCores.methods = "mc.cores+1")} and
-#' then the number of cores to use (in addition to the main R process),
-#' e.g. \code{options(mc.cores = 8)} will cause the value of
-#' \code{availableCores()} to be 9 (= 8+1).
+#' \code{options(future.availableCores.methods = "mc.cores")} and
+#' then the number of cores to use, e.g. \code{options(mc.cores = 8)}.
 #' Having said this, it is almost always better to do this by explicitly
 #' setting the number of workers when specifying the future strategy,
-#' e.g. \code{plan(multiprocess, workers = 9)}.
+#' e.g. \code{plan(multiprocess, workers = 8)}.
 #'
 #' @seealso
 #' To get the number of available workers regardless of machine,
@@ -85,7 +83,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -112,7 +110,9 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
     } else if (method == "mc.cores") {
-      .Defunct(msg = "Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
+      ## Number of cores by option defined by 'parallel' package
+      n <- getopt("mc.cores")
+      if (!is.na(n) && n == 0) n <- 1L  ## Because options(mc.cores = 0) may be set
     } else if (method == "mc.cores+1") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores") + 1L
@@ -125,7 +125,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       ## misleading to the reader.
       chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
       chk <- (nzchar(chk) && (chk != "false"))
-      n <- if (chk) 3L else NA_integer_ ## = 2+1
+      n <- if (chk) 2L else NA_integer_
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()

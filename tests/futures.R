@@ -23,9 +23,9 @@ dims <- list(
 
 message("*** futures() / resolved() / values() ...")
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores-1L)
+  options(mc.cores = cores)
 
   for (type in c("list", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))

@@ -15,7 +15,7 @@ for (type in types) {
   for (cores in 1:2) {
     message(sprintf("Testing with %d cores on type = %s ...",
                     cores, sQuote(type)))
-    options(mc.cores = cores - 1L)
+    options(mc.cores = cores)
   
     ## Set up a cluster with <cores> nodes (explicitly)
     cl <- parallel::makeCluster(cores, type = type)

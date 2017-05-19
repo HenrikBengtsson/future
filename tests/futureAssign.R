@@ -31,9 +31,9 @@ message("*** futureAssign() - sequential w/ lazy evaluation ... DONE")
 
 message("*** futureAssign() - lazy = TRUE / FALSE ...")
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores-1L)
+  options(mc.cores = cores)
 
   for (strategy in supportedStrategies()) {
     message(sprintf("*** futureAssign() with %s futures ...", sQuote(strategy)))

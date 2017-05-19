@@ -70,10 +70,7 @@ multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
     return(sequential(expr, envir = envir, substitute = FALSE, lazy = TRUE, seed = seed, globals = globals, local = TRUE, label = label))
   }
 
-  ## IMPORTANT: When we setup a multisession cluster, we need to
-  ## account for the main R process as well, i.e. we should setup
-  ## a cluster with one less process.
-  workers <- ClusterRegistry("start", workers = workers - 1L)
+  workers <- ClusterRegistry("start", workers = workers)
 
   future <- MultisessionFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, persistent = persistent, workers = workers, gc = gc, earlySignal = earlySignal, label = label, ...)
   if (!future$lazy) future <- run(future)
