@@ -60,6 +60,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
 
 #' @export
 run.UniprocessFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  
   if (future$state != 'created') {
     stop("A future can only be launched once.")
   }
@@ -98,9 +100,11 @@ run.UniprocessFuture <- function(future, ...) {
     })
   }, error = function(ex) {})
 
+  if (debug) mdebug("%s started (and completed)", class(future)[1])
+  
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
-
+  
   invisible(future)
 }
 

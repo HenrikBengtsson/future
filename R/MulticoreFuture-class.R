@@ -41,6 +41,8 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
 
 #' @export
 run.MulticoreFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  
   if (future$state != 'created') {
     stop("A future can only be launched once.")
   }
@@ -68,6 +70,8 @@ run.MulticoreFuture <- function(future, ...) {
   future$job <- job
   future$state <- 'running'
 
+  if (debug) mdebug("%s started", class(future)[1])
+  
   invisible(future)
 }
 

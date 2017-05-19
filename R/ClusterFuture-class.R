@@ -203,6 +203,8 @@ run.ClusterFuture <- function(future, ...) {
 
   future$state <- 'running'
 
+  if (debug) mdebug("%s started", class(future)[1])
+  
   invisible(future)
 }
 
