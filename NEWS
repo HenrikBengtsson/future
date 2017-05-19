@@ -28,7 +28,7 @@ DOCUMENTATION:
 BUG FIXES:
 
  o future_lapply(), as well as lazy multicore and lazy sequential futures, did
-   not respect option 'future.globals.resolve', but was hard coded to always
+   not respect option 'future.globals.resolve', but was hardcoded to always
    resolve globals (future.globals.resolve = TRUE).
 
  o When globals larger than the allowed size (option 'future.globals.maxSize')
