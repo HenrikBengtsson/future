@@ -32,7 +32,7 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
 
   ## Global objects
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
-  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals, resolve = TRUE)
+  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
 
   ## Assign globals to "target" environment?
   if (length(gp$globals) > 0 && (lazy || assignToTarget)) {
