@@ -128,7 +128,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
       mdebug("Finding globals ...")
 
       expr <- do.call(call, args = c(list("FUN"), list(...)))
-      gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE, resolve = TRUE)
+      gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE)
       globals <- gp$globals
       packages <- gp$packages
       gp <- NULL
@@ -328,7 +328,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   globals <- c(globals, globals_extra)
 
   ## At this point a globals should be resolved and we should know their total size
-  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
+##  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
 
     ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
@@ -345,7 +345,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-    stopifnot(attr(globals_ii, "resolved"))
+##    stopifnot(attr(globals_ii, "resolved"))
     
     ## Using RNG seeds or not?
     if (is.null(seeds)) {

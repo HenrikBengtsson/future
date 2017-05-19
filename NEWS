@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-05-10]
+Version: 1.4.0-9000 [2017-05-19]
 
  o ...
  
@@ -26,6 +26,10 @@ DOCUMENTATION:
    and what their defaults are.
  
 BUG FIXES:
+
+ o future_lapply(), as well as lazy multicore and lazy sequential futures, did
+   not respect option 'future.globals.resolve', but was hard coded to always
+   resolve globals (future.globals.resolve = TRUE).
 
  o When globals larger than the allowed size (option 'future.globals.maxSize')
    are detected an informative error message is generated.  Previous version
