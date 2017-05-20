@@ -1,13 +1,3 @@
-## Keep private for now until name has been decided, cf.
-## https://github.com/HenrikBengtsson/future/issues/109
-uniprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-  future <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, ...)
-  if (!future$lazy) future <- run(future)
-  invisible(future)
-}
-class(uniprocess) <- c("uniprocess", "future", "function")
-
 #' @rdname sequential
 #' @export
 eager <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...) {
