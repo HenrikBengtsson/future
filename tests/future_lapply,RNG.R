@@ -10,7 +10,7 @@ x <- 1:5
 message("* future_lapply(x, ..., future.seed = FALSE) ...")
 
 y0 <- y0_nested <- seed00 <- NULL
-for (cores in ncores) {
+for (cores in 1:availCores) {
   message(sprintf("  - Testing with %d cores ...", cores))
   options(mc.cores = cores)
   
@@ -79,7 +79,7 @@ for (name in names(seed_sets)) {
   set.seed(0xBEEF)
   y0 <- seed00 <- NULL
 
-  for (cores in ncores) {
+  for (cores in 1:availCores) {
     message(sprintf("  - Testing with %d cores ...", cores))
     options(mc.cores = cores)
   
