@@ -33,7 +33,7 @@ oenvs2 <- Sys.unsetenv(c(
 oplan <- future::plan()
 
 ## Use eager futures by default
-future::plan("eager")
+future::plan("sequential")
 
 ## Private future functions
 .onLoad <- future:::.onLoad

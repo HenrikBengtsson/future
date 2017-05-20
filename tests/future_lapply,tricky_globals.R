@@ -1,8 +1,44 @@
 source("incl/start.R")
 
+message("*** future_lapply() - globals ...")
+
+plan(cluster, workers = "localhost")
+
+options(future.debug = FALSE)
+a <- 1
+b <- 2
+
+globals_set <- list(
+  A = FALSE,
+  B = TRUE,
+  C = c("a", "b"),
+  D = list(a = 2, b = 3)
+)
+
+x <- list(1)
+y_truth <- list(A = NULL, B = list(1), C = list(1), D = list(2))
+str(y_truth)
+
+for (name in names(globals_set)) {
+  globals <- globals_set[[name]]
+  message("Globals set ", sQuote(name))
+  y <- tryCatch({
+    future_lapply(x, FUN = function(x) {
+      median(c(x, a, b))
+    }, future.globals = globals)
+  }, error = identity)
+  print(y)
+  stopifnot((name == "A" && inherits(y, "error")) || 
+             identical(y, y_truth[[name]]))
+}
+
+message("*** future_lapply() - globals ... DONE")
+
+
+
 ## Test adopted from http://stackoverflow.com/questions/42561088/nested-do-call-within-a-foreach-dopar-environment-cant-find-function-passed-w
 
-message("*** future_lapply() with tricky globals ...")
+message("*** future_lapply() - tricky globals ...")
 
 my_add <- function(a, b) a + b
 
@@ -45,6 +81,6 @@ for (strategy in supportedStrategies()) {
   }
 }
 
-message("*** future_lapply() with tricky globals ... DONE")
+message("*** future_lapply() - tricky globals ... DONE")
 
 source("incl/end.R")
