@@ -1,7 +1,5 @@
 source("incl/start.R")
 
-options(future.debug = FALSE)
-
 message("*** Early signaling of conditions ...")
 
 message("*** Early signaling of conditions with sequential futures ...")
