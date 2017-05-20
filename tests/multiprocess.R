@@ -4,9 +4,9 @@ plan(multiprocess)
 
 message("*** multiprocess() ...")
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores - 1L)
+  options(mc.cores = cores)
 
   ## No global variables
   f <- multiprocess({

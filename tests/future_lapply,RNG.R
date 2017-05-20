@@ -16,14 +16,14 @@ y0 <- y0_nested <- seed00 <- NULL
 for (strategy in strategies) {
   message(sprintf("* plan('%s') ...", strategy))
   if (inherits(plan(), "multiprocess")) {
-    ncores <- 1:min(3L, availableCores())
+    ncores <- 1:min(2L, availableCores())
   } else {
     ncores <- 1L
   }
   
   for (cores in ncores) {
     message(sprintf("  - Testing with %d cores ...", cores))
-    options(mc.cores = cores - 1L)
+    options(mc.cores = cores)
     plan(strategy)
   
     set.seed(0xBEEF)
@@ -88,14 +88,14 @@ for (name in names(seed_sets)) {
   for (strategy in strategies) {
     message(sprintf("* plan('%s') ...", strategy))
     if (inherits(plan(), "multiprocess")) {
-      ncores <- 1:min(3L, availableCores())
+      ncores <- 1:min(2L, availableCores())
     } else {
       ncores <- 1L
     }
     
     for (cores in ncores) {
       message(sprintf("  - Testing with %d cores ...", cores))
-      options(mc.cores = cores - 1L)
+      options(mc.cores = cores)
       plan(strategy)
       set.seed(0xBEEF)
       seed0 <- get_random_seed()

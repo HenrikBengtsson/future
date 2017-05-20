@@ -7,8 +7,10 @@ message("- sequential() w/ required packages ...")
 f <- future(median(1:3), lazy = TRUE)
 print(f)
 
-unloadNamespace("stats")
-stopifnot(!"stats" %in% loadedNamespaces())
+if (!covr_testing) {
+  unloadNamespace("stats")
+  stopifnot(!"stats" %in% loadedNamespaces())
+}
 
 v <- value(f)
 print(v)

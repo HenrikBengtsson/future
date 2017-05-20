@@ -39,7 +39,7 @@ for (strategy1 in strategies) {
 
       y %<-% {
         b <- 2L
-
+        
         ## IMPORTANT: Use future::plan() - not just plan() - otherwise
         ## we're exporting the plan() function including its local stack!
         plan_b <- future::plan("list")

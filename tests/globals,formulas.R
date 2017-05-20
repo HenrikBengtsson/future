@@ -20,9 +20,9 @@ weight <- c(ctl, trt)
 fit0 <- lm(weight ~ group - 1)
 print(fit0)
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores - 1L)
+  options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
@@ -72,9 +72,9 @@ x <- c(1, 1, 2, 2, 2)
 tbl0 <- xtabs(~ x)
 print(tbl0)
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:min(2L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores - 1L)
+  options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
@@ -124,9 +124,9 @@ for (kk in seq_along(exprs)) {
   fit0 <- eval(expr)
   print(fit0)
 
-  for (cores in 1:min(3L, availableCores())) {
+  for (cores in 1:min(2L, availableCores())) {
     message(sprintf("Testing with %d cores ...", cores))
-    options(mc.cores = cores - 1L)
+    options(mc.cores = cores)
   
     message("availableCores(): ", availableCores())
   
@@ -171,30 +171,28 @@ y0 <- outer_function(1L)
 str(y0)
 
 ## Check if globals version installed identifies globals in formulas
-if (packageVersion("globals") >= "0.10.0") {
-  for (cores in 1:min(3L, availableCores())) {
-    message(sprintf("Testing with %d cores ...", cores))
-    options(mc.cores = cores - 1L)
-  
-    message("availableCores(): ", availableCores())
-  
-    for (strategy in strategies) {
-      message(sprintf("- plan('%s') ...", strategy))
-      plan(strategy)
-      
-      f <- future({ outer_function(1L) })
-      y <- value(f)
-      str(y)
-      stopifnot(all.equal(y, y0))
+for (cores in 1:min(2L, availableCores())) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores = cores)
 
-      y %<-% { outer_function(1L) }
-      str(y)
-      stopifnot(all.equal(y, y0))
-    } ## for (strategy ...)
+  message("availableCores(): ", availableCores())
+
+  for (strategy in strategies) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
     
-    message(sprintf("Testing with %d cores ... DONE", cores))
-  } ## for (cores ...)
-}
+    f <- future({ outer_function(1L) })
+    y <- value(f)
+    str(y)
+    stopifnot(all.equal(y, y0))
+
+    y %<-% { outer_function(1L) }
+    str(y)
+    stopifnot(all.equal(y, y0))
+  } ## for (strategy ...)
+  
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
 
 message("*** Globals - map(x, ~ expr) ... DONE")
 

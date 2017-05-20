@@ -4,9 +4,9 @@ plan(multicore)
 
 message("*** multicore() ...")
 
-for (cores in 1:min(3L, availableCores("multicore"))) {
+for (cores in 1:min(2L, availableCores("multicore"))) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores = cores - 1L)
+  options(mc.cores = cores)
 
   if (!supportsMulticore()) {
     message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous sequential futures", .Platform$OS.type))
