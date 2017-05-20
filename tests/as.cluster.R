@@ -18,6 +18,20 @@ local({
   cl2 <- as.cluster(cl)
   stopifnot(inherits(cl2, "cluster"), length(cl2) == 1L,
             identical(cl2[[1]], node))
+
+  node <- cl[[1]]
+  print(node)
+  stopifnot(inherits(node, "SOCKnode"))
+  nodes <- list(node, node)
+  cl3 <- as.cluster(node)
+  print(cl3)
+  stopifnot(inherits(cl3, "cluster"), length(cl3) == 1L,
+            identical(cl3[[1]], node))
+
+  cl4 <- as.cluster(nodes)
+  print(cl4)
+  stopifnot(inherits(cl4, "cluster"), length(cl4) == 2L,
+            identical(cl4[[1]], node), identical(cl4[[2]], node))
 })
 
 message("*** cluster operations - as.cluster() ... DONE")
