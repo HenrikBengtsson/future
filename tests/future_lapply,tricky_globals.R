@@ -4,8 +4,6 @@ source("incl/start.R")
 
 message("*** future_lapply() with tricky globals ...")
 
-strategies <- supportedStrategies()
-
 my_add <- function(a, b) a + b
 
 call_my_add <- function(a, b) {
@@ -24,15 +22,13 @@ main <- function(x = 1:2, caller = call_my_add_caller,
   results
 }
 
-strategies <- future:::supportedStrategies()
-
 x <- list(list(1:2))
 z_length <- lapply(x, FUN = do.call, what = length)
 fun <- function(...) sum(...)
 z_fun <- lapply(x, FUN = do.call, what = fun)
 
 y0 <- NULL
-for (strategy in strategies) {
+for (strategy in supportedStrategies()) {
   plan(strategy)
 
   y <- main(1:10)

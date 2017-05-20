@@ -5,18 +5,16 @@ message("*** future_lapply() and RNGs ...")
 options(future.debug = FALSE)
 options(future.debug = TRUE)
 
-strategies <- supportedStrategies()
-
 ## Iterate of the same set in all tests
 x <- 1:5
 
 message("* future_lapply(x, ..., future.seed = FALSE) ...")
 
 y0 <- y0_nested <- seed00 <- NULL
-for (strategy in strategies) {
+for (strategy in supportedStrategies()) {
   message(sprintf("* plan('%s') ...", strategy))
   if (inherits(plan(), "multiprocess")) {
-    ncores <- 1:min(2L, availableCores())
+    ncores <- 1:availCores
   } else {
     ncores <- 1L
   }
@@ -85,10 +83,10 @@ for (name in names(seed_sets)) {
   
   set.seed(0xBEEF)
   y0 <- seed00 <- NULL
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies()) {
     message(sprintf("* plan('%s') ...", strategy))
     if (inherits(plan(), "multiprocess")) {
-      ncores <- 1:min(2L, availableCores())
+      ncores <- 1:availCores
     } else {
       ncores <- 1L
     }

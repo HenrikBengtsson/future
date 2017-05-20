@@ -3,8 +3,7 @@ library("listenv")
 
 oopts <- c(oopts, options(future.progress = TRUE))
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
+strategies <- supportedStrategies(excl = "multiprocess")
 
 message("*** resolve() ...")
 

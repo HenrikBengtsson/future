@@ -58,7 +58,6 @@ parseCmdArgs <- future:::parseCmdArgs
 requestCore <- future:::requestCore
 requestNode <- future:::requestNode
 requirePackages <- future:::requirePackages
-supportedStrategies <- future:::supportedStrategies
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
 get_random_seed <- future:::get_random_seed
@@ -72,3 +71,15 @@ attachLocally <- function(x, envir = parent.frame()) {
     assign(name, value = x[[name]], envir = envir)
   }
 }
+
+supportedStrategies <- function(cores = 1L, excl = NULL, ...) {
+  strategies <- future:::supportedStrategies(...)
+  strategies <- setdiff(strategies, excl)
+  if (cores > 1) {
+    excl <- strategies %in% c("sequential", "uniprocess", "eager", "lazy")
+    strategies <- strategies[!excl]
+  }
+  strategies
+}
+
+availCores <- min(2L, availableCores())

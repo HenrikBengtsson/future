@@ -2,9 +2,6 @@ source("incl/start.R")
 
 ## Test adopted from http://stackoverflow.com/questions/42561088/nested-do-call-within-a-foreach-dopar-environment-cant-find-function-passed-w
 
-strategies <- supportedStrategies()
-strategies <- future:::supportedStrategies()
-strategies <- setdiff(strategies, "lazy")
 options(future.debug = FALSE)
 
 message("*** Tricky globals requiring recursive search ...")
@@ -72,7 +69,7 @@ main_future_lapply_no_FUN <- function(x = 1:2, caller = call_my_add_caller,
 }
 
 x0 <- y0 <- z0 <- NULL
-for (strategy in strategies) {
+for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
   message(sprintf("*** strategy = %s ...", sQuote(strategy)))
   
   plan(strategy)

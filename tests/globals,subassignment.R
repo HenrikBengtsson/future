@@ -5,8 +5,7 @@ oopts <- c(oopts, options(
   future.globals.onMissing = "error"
 ))
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
+strategies <- supportedStrategies(excl = "multiprocess")
 
 message("*** Globals - subassignments ...")
 
@@ -37,7 +36,7 @@ stopifnot(identical(y, y0))
 
 stopifnot(identical(x, list()))
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 

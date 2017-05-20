@@ -1,5 +1,4 @@
 source("incl/start.R")
-library("future")
 
 message("*** rng ...")
 
@@ -61,11 +60,11 @@ y0 <- fsample(0:9, seed = 42L)
 stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
-  for (strategy in supportedStrategies()) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("%s ...", strategy))
 
     plan(strategy)

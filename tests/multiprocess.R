@@ -4,7 +4,7 @@ plan(multiprocess)
 
 message("*** multiprocess() ...")
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 

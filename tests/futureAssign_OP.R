@@ -2,11 +2,11 @@ source("incl/start.R")
 
 message("*** %<-% ...")
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
-  for (strategy in supportedStrategies()) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("*** %%<-%% with %s futures ...", sQuote(strategy)))
     plan(strategy)
 

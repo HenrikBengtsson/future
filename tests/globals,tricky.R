@@ -7,11 +7,7 @@ oopts <- c(oopts, options(
 
 message("*** Tricky use cases related to globals ...")
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
-strategies <- "cluster"
-
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
@@ -25,7 +21,7 @@ for (cores in 1:min(2L, availableCores())) {
     options(future.globals.method = method)
     message(sprintf("Method for identifying globals: '%s' ...", method))
 
-    for (strategy in strategies) {
+    for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
 

@@ -3,9 +3,6 @@ source("incl/start.R")
 library("datasets") ## cars data set
 library("stats")    ## lm(), poly(), xtabs()
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
-
 message("*** Globals - formulas ...")
 
 message("*** Globals - lm(<formula>) ...")
@@ -20,13 +17,13 @@ weight <- c(ctl, trt)
 fit0 <- lm(weight ~ group - 1)
 print(fit0)
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 
@@ -72,13 +69,13 @@ x <- c(1, 1, 2, 2, 2)
 tbl0 <- xtabs(~ x)
 print(tbl0)
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 
@@ -115,25 +112,25 @@ exprs <- list(
   e = substitute({ lm(dist ~ poly(speed, 2), data = cars) })
 )
 
-for (kk in seq_along(exprs)) {
-  expr <- exprs[[kk]]
-  name <- names(exprs)[kk]
-  message(sprintf("- Globals - lm(<formula #%d (%s)>, data = cars) ...",
-                  kk, sQuote(name)))
-
-  fit0 <- eval(expr)
-  print(fit0)
-
-  for (cores in 1:min(2L, availableCores())) {
-    message(sprintf("Testing with %d cores ...", cores))
-    options(mc.cores = cores)
+for (cores in 1:availCores) {
+  message(sprintf("Testing with %d cores ...", cores))
+  options(mc.cores = cores)
   
-    message("availableCores(): ", availableCores())
+  message("availableCores(): ", availableCores())
   
-    for (strategy in strategies) {
-      message(sprintf("- plan('%s') ...", strategy))
-      plan(strategy)
-      
+  for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
+
+    for (kk in seq_along(exprs)) {
+      expr <- exprs[[kk]]
+      name <- names(exprs)[kk]
+      message(sprintf("- Globals - lm(<formula #%d (%s)>, data = cars) ...",
+                      kk, sQuote(name)))
+    
+      fit0 <- eval(expr)
+      print(fit0)
+    
       f <- future(expr, substitute = FALSE)
       fit <- value(f)
       print(fit)
@@ -171,13 +168,13 @@ y0 <- outer_function(1L)
 str(y0)
 
 ## Check if globals version installed identifies globals in formulas
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
     

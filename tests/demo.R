@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
@@ -11,7 +11,7 @@ for (cores in 1:min(2L, availableCores())) {
   message("*** Mandelbrot demo of the 'future' package ...")
 
   if (getRversion() >= "3.2.0") {
-    for (strategy in supportedStrategies()) {
+    for (strategy in supportedStrategies(cores)) {
       message(sprintf("- plan('%s') ...", strategy))
       plan(strategy)
       demo("mandelbrot", package = "future", ask = FALSE)

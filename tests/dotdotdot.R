@@ -1,7 +1,7 @@
 source("incl/start.R")
 library("listenv")
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
@@ -38,7 +38,7 @@ for (cores in 1:min(2L, availableCores())) {
   }
 
 
-  for (strategy in supportedStrategies()) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy, substitute = FALSE)
 

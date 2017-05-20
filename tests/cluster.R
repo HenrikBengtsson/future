@@ -12,7 +12,7 @@ if (supportsMulticore()) types <- c(types, "FORK")
 for (type in types) {
   message("Testing with cluster type %s ...", sQuote(type))
 
-  for (cores in 1:2) {
+  for (cores in 1:availCores) {
     message(sprintf("Testing with %d cores on type = %s ...",
                     cores, sQuote(type)))
     options(mc.cores = cores)

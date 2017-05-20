@@ -3,11 +3,10 @@ library("listenv")
 
 message("*** future_lapply() ...")
 
-strategies <- supportedStrategies()
-
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
+  strategies <- supportedStrategies(cores)
 
   message("- future_lapply(x, FUN = vector, ...) ...")
 

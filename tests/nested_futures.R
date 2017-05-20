@@ -1,7 +1,6 @@
 source("incl/start.R")
 
-strategies <- future:::supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
+strategies <- supportedStrategies(excl = "multiprocess")
 
 message("*** Nested futures ...")
 

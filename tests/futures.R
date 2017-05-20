@@ -23,14 +23,14 @@ dims <- list(
 
 message("*** futures() / resolved() / values() ...")
 
-for (cores in 1:min(2L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
   for (type in c("list", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))
 
-    for (strategy in supportedStrategies()) {
+    for (strategy in supportedStrategies(cores)) {
       message("Type of future: ", strategy)
       plan(strategy)
 
