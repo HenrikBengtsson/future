@@ -69,7 +69,7 @@ main_future_lapply_no_FUN <- function(x = 1:2, caller = call_my_add_caller,
 }
 
 x0 <- y0 <- z0 <- NULL
-for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
+for (strategy in supportedStrategies(excl = "multiprocess")) {
   message(sprintf("*** strategy = %s ...", sQuote(strategy)))
   
   plan(strategy)
