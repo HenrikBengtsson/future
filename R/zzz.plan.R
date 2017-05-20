@@ -164,7 +164,13 @@ plan <- local({
         }
 
         if (using_lazy) {
-          .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+          .Defunct(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+        }
+
+        using_eager <- lapply(newStack, FUN = inherits, "eager")
+        using_eager <- any(unlist(using_eager, use.names = FALSE))
+        if (using_eager) {
+          .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
         }
       }
       
@@ -257,7 +263,7 @@ plan <- local({
       using_lazy <- lapply(newStack, FUN = inherits, "lazy")
       using_lazy <- any(unlist(using_lazy, use.names = FALSE))
       if (using_lazy) {
-        .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+        .Defunct(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
       }
 
       using_eager <- lapply(newStack, FUN = inherits, "eager")
@@ -285,7 +291,7 @@ plan <- local({
 
 supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster"), deprecated = FALSE) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
-  if (deprecated) strategies <- unique(c(strategies, "lazy", "eager"))
+  if (deprecated) strategies <- unique(c(strategies, "eager"))
   strategies
 }
 

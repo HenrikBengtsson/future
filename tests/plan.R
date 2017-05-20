@@ -40,21 +40,6 @@ res <- try(plan('unknown strategy'), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 
-message("*** plan() by (lazy) function [DEPRECATED]")
-
-## Setting strategy by function
-plan(lazy)
-a <- 0
-f <- future({
-  b <- 3
-  c <- 2
-  a * b * c
-}, lazy = TRUE)
-a <- 7  ## Make sure globals are frozen
-v <- value(f)
-print(v)
-stopifnot(v == 0)
-
 
 message("*** plan(sequential)")
 plan(sequential)
@@ -124,7 +109,7 @@ old <- plan(multisession, globals = FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
 curr <- plan()    ## curr == multisession(globals = FALSE)
-prev <- plan(old) ## prev == lazy(local = FALSE)
+prev <- plan(old) ## prev == sequential(local = FALSE)
 stopifnot(identical(unclass(curr), unclass(prev)))
 
 curr <- plan()    ## curr == old
@@ -157,8 +142,8 @@ print(x)
 stopifnot(x == 0)
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** Nested futures with different plans [DEPRECATED]")
-plan(lazy)
+message("*** Nested futures with different plans")
+
 c %<-% {
   message("Resolving 'c'")
   a %<-% {

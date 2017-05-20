@@ -42,7 +42,7 @@ for (cores in 1:availCores) {
       rm(list = "a")
 
       res <- try(y, silent = TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
+      if (method == "conservative" && strategy %in% c("multisession", "cluster")) {
         str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {
@@ -84,7 +84,7 @@ for (cores in 1:availCores) {
       rm(list = "a")
 
       res <- try(unlist(res), silent = TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
+      if (method == "conservative" && strategy %in% c("multisession", "cluster")) {
         str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {

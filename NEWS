@@ -34,6 +34,13 @@ DOCUMENTATION:
  o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
    and what their defaults are.
  
+DEPRECATED AND DEFUNCT:
+
+ o Formally deprecated eager futures; use sequential instead.
+
+ o Previously deprecated lazy futures are now defunct; use
+   f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE instead.
+
 BUG FIXES:
 
  o future_lapply() with multicore / multisession futures, would use a
@@ -54,10 +61,6 @@ BUG FIXES:
 
  o print() would not display globals gathered for lazy sequential futures.
 
-DEPRECATED AND DEFUNCT:
-
- o Formally deprecated eager futures; use sequential instead.
- 
 SOFTWARE QUALITY:
 
  o Added package tests for globals part of formulas part of other globals,
