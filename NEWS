@@ -39,6 +39,10 @@ BUG FIXES:
    packages had been detached.
 
  o print() would not display globals gathered for lazy sequential futures.
+
+DEPRECATED AND DEFUNCT:
+
+ o Formally deprecated eager futures; use sequential instead.
  
 SOFTWARE QUALITY:
 

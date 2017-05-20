@@ -138,27 +138,3 @@ SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
   structure(f, class = c("SequentialFuture", class(f)))
 }
-
-
-#' @rdname UniprocessFuture-class
-#' @export
-EagerFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
-  if (substitute) expr <- substitute(expr)
-
-##  .Deprecated(msg = "EagerFuture is deprecated. Instead, use SequentialFuture")
-  
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
-  structure(f, class = c("EagerFuture", class(f)))
-}
-
-
-#' @rdname UniprocessFuture-class
-#' @export
-LazyFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, lazy = TRUE, globals = TRUE, local = TRUE, ...) {
-  if (substitute) expr <- substitute(expr)
-    
-##  .Deprecated(msg = "LazyFuture is deprecated. Instead, use f <- SequentialFuture(..., lazy = TRUE)")
-    
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
-  structure(f, class = c("LazyFuture", class(f)))
-}

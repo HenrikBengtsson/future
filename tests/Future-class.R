@@ -25,11 +25,15 @@ stopifnot(is.call(expr))
 clazzes <- list(
   sequential = SequentialFuture,
   multisession = function(...) MultisessionFuture(..., workers = 2L),
-  sequential = SequentialFuture,
-  eager = EagerFuture,
-  lazy = LazyFuture
+  sequential = SequentialFuture
 )
-if (supportsMulticore()) clazzes$multicore = function(...) MulticoreFuture(..., workers = 2L)
+if (supportsMulticore()) {
+  clazzes$multicore = function(...) MulticoreFuture(..., workers = 2L)
+}
+
+## Deprecated classes
+clazzes$eager <- EagerFuture
+clazzes$lazy <- LazyFuture
 
 for (clazz in clazzes) {
   ## Calling run() more than once

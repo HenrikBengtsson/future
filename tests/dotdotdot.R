@@ -5,7 +5,7 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores - 1L)
 
-  message("*** Global argument '...' in lazy futures ...")
+  message("*** Global argument '...' ...")
 
   sum_fcns <- list()
 
@@ -59,6 +59,6 @@ for (cores in 1:min(3L, availableCores())) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
-message("*** Global argument '...' in lazy futures ... DONE")
+message("*** Global argument '...' ... DONE")
 
 source("incl/end.R")

@@ -41,9 +41,7 @@ sequential <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = F
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
-## FIXME: Remove 'eager' when eager is formally deprecated and
-## doFuture package tests no longer assume eager. /HB 2017-02-16
-class(sequential) <- c("sequential", "eager", "uniprocess", "future", "function")
+class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 #' @rdname sequential
 #' @export
@@ -62,34 +60,3 @@ uniprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = F
   invisible(future)
 }
 class(uniprocess) <- c("uniprocess", "future", "function")
-
-#' @rdname sequential
-#' @export
-eager <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-  local <- as.logical(local)
-
-  future <- EagerFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, ...)
-  if (!future$lazy) future <- run(future)
-  invisible(future)
-}
-class(eager) <- c("eager", "uniprocess", "future", "function")
-
-#' @rdname sequential
-#' @export
-lazy <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = TRUE, seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-  local <- as.logical(local)
-
-  .Deprecated(msg = "Future strategy 'lazy' is deprecated. Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-  
-  future <- LazyFuture(expr = expr, envir = envir, local = local, lazy = lazy, seed = seed, globals = globals, earlySignal = earlySignal, label = label, ...)
-  if (!future$lazy) future <- run(future)
-  invisible(future)
-}
-class(lazy) <- c("lazy", "uniprocess", "future", "function")
-
-## WORKAROUND:
-## Avoid lazyeval::print.lazy() being called with print(lazy())
-## https://github.com/HenrikBengtsson/future/issues/52
-class(lazy) <- c("function", class(lazy))

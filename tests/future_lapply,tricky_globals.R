@@ -25,7 +25,6 @@ main <- function(x = 1:2, caller = call_my_add_caller,
 }
 
 strategies <- future:::supportedStrategies()
-strategies <- setdiff(strategies, "lazy")
 
 x <- list(list(1:2))
 z_length <- lapply(x, FUN = do.call, what = length)
