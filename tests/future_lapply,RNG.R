@@ -3,7 +3,6 @@ source("incl/start.R")
 message("*** future_lapply() and RNGs ...")
 
 options(future.debug = FALSE)
-options(future.debug = TRUE)
 
 ## Iterate of the same set in all tests
 x <- 1:5
@@ -11,17 +10,12 @@ x <- 1:5
 message("* future_lapply(x, ..., future.seed = FALSE) ...")
 
 y0 <- y0_nested <- seed00 <- NULL
-for (strategy in supportedStrategies()) {
-  message(sprintf("* plan('%s') ...", strategy))
-  if (inherits(plan(), "multiprocess")) {
-    ncores <- 1:availCores
-  } else {
-    ncores <- 1L
-  }
+for (cores in ncores) {
+  message(sprintf("  - Testing with %d cores ...", cores))
+  options(mc.cores = cores)
   
-  for (cores in ncores) {
-    message(sprintf("  - Testing with %d cores ...", cores))
-    options(mc.cores = cores)
+  for (strategy in supportedStrategies(cores)) {
+    message(sprintf("* plan('%s') ...", strategy))
     plan(strategy)
   
     set.seed(0xBEEF)
@@ -38,12 +32,13 @@ for (strategy in supportedStrategies()) {
     ## NOTE: We cannot guarantee the same random numbers, because
     ## future.seed = FALSE.
     
-    message(sprintf("  - Testing with %d cores ... DONE", cores))
-  }   
-  message(sprintf("* plan('%s') ... DONE", strategy))
-} ## for (strategy ...)
+    message(sprintf("* plan('%s') ... DONE", strategy))
+  }  ## for (strategy ...)
+  message(sprintf("  - Testing with %d cores ... DONE", cores))
+} ## for (core ...)
 
 message("* future_lapply(x, ..., future.seed = FALSE) ... DONE")
+
 
 seed_sets <- list(
   A = TRUE,
@@ -65,7 +60,7 @@ seed_sets$E <- seeds
 ## Generate sequence of L'Ecyer CMRG seeds
 seeds <- seed_sets$F
 seeds[[1]] <- seed_sets$D
-for (kk in 2:length(x)) seeds[[kk]] <- parallel::nextRNGStream(seeds[[kk-1]])
+for (kk in 2:length(x)) seeds[[kk]] <- parallel::nextRNGStream(seeds[[kk - 1]])
 seed_sets$F <- seeds
 
 rm(list = "seeds")
@@ -83,18 +78,15 @@ for (name in names(seed_sets)) {
   
   set.seed(0xBEEF)
   y0 <- seed00 <- NULL
-  for (strategy in supportedStrategies()) {
-    message(sprintf("* plan('%s') ...", strategy))
-    if (inherits(plan(), "multiprocess")) {
-      ncores <- 1:availCores
-    } else {
-      ncores <- 1L
-    }
-    
-    for (cores in ncores) {
-      message(sprintf("  - Testing with %d cores ...", cores))
-      options(mc.cores = cores)
+
+  for (cores in ncores) {
+    message(sprintf("  - Testing with %d cores ...", cores))
+    options(mc.cores = cores)
+  
+    for (strategy in supportedStrategies(cores)) {
+      message(sprintf("* plan('%s') ...", strategy))
       plan(strategy)
+      
       set.seed(0xBEEF)
       seed0 <- get_random_seed()
       y <- future_lapply(x, FUN = function(i) {
@@ -153,10 +145,10 @@ for (name in names(seed_sets)) {
         stopifnot(identical(y, y0_nested))
       }
       
-      message(sprintf("  - Testing with %d cores ... DONE", cores))
-    }   
-    message(sprintf("* plan('%s') ... DONE", strategy))
-  } ## for (strategy ...)
+      message(sprintf("* plan('%s') ... DONE", strategy))
+    } ## for (strategy ...)
+    message(sprintf("  - Testing with %d cores ... DONE", cores))
+  } ## for (cores ...)
   
   message(sprintf("* future_lapply(x, ..., future.seed = %s) ... DONE", label))
 

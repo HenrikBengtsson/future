@@ -82,4 +82,4 @@ supportedStrategies <- function(cores = 1L, excl = NULL, ...) {
   strategies
 }
 
-availCores <- min(2L, availableCores())
+availCores <- min(2L, future::availableCores())
