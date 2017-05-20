@@ -25,7 +25,7 @@ for (name in names(globals_set)) {
   y <- tryCatch({
     future_lapply(x, FUN = function(x) {
       median(c(x, a, b))
-    }, future.globals = globals)
+    }, future.globals = globals, future.packages = "utils")
   }, error = identity)
   print(y)
   stopifnot((name == "A" && inherits(y, "error")) || 
