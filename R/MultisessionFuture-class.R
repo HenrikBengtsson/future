@@ -10,6 +10,6 @@ MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute =
 
 
 #' @export
-getExpression.MultisessionFuture <- function(future, mc.cores = 0L, ...) {
+getExpression.MultisessionFuture <- function(future, mc.cores = 1L, ...) {
   NextMethod("getExpression", mc.cores = mc.cores)
 }

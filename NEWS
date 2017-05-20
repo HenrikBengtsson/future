@@ -29,6 +29,11 @@ NEW FEATURES:
    retrieving and recording the node's session information including the
    process ID of the corresponding R process.
 
+ o Nested futures sets option 'mc.cores' to prevent spawning of recursive
+   parallel processes by mistake.  Because 'mc.cores' controls _additional_
+   processes, it was previously set to zero.  However, since some functions
+   such as mclapply() does not support that, it is now set to one instead.   
+
 DOCUMENTATION:
 
  o Help on makeClusterPSOCK() gained more detailed descriptions on arguments

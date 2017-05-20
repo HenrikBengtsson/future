@@ -153,6 +153,6 @@ value.MulticoreFuture <- function(future, signal = TRUE, ...) {
 
 
 #' @export
-getExpression.MulticoreFuture <- function(future, mc.cores = 0L, ...) {
+getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
   NextMethod("getExpression", mc.cores = mc.cores)
 }
