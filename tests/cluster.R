@@ -9,6 +9,12 @@ message("Package path: ", sQuote(system.file(package = "future")))
 types <- "PSOCK"
 if (supportsMulticore()) types <- c(types, "FORK")
 
+## WORKAROUND: covr::package_coverage() -> merge_coverage() -> ... produces
+## "Error in readRDS(x) : error reading from connection" for type = "FORK".
+## Is this related to mcparallel() comments in help("package_coverage")?
+## /HB 2017-05-20
+if (covr_testing) types <- setdiff(types, "FORK")
+
 for (type in types) {
   message("Testing with cluster type %s ...", sQuote(type))
 
