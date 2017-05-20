@@ -129,6 +129,16 @@ stopifnot(inherits(res, "try-error"))
 res <- try(tweak(sequential, "unnamed-argument"), silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 
+## Arguments that must not be tweaked
+res <- try(tweak(sequential, lazy = TRUE), silent = TRUE)
+stopifnot(inherits(res, "try-error"))
+
+res <- try(tweak(sequential, asynchronous = FALSE), silent = TRUE)
+stopifnot(inherits(res, "try-error"))
+
+res <- try(tweak(sequential, seed = 42L), silent = TRUE)
+stopifnot(inherits(res, "try-error"))
+
 message("*** tweak() - exceptions ... DONE")
 
 
