@@ -17,10 +17,6 @@
   futureAssignInternal(target, expr, envir = envir, substitute = FALSE)
 }
 
-## DEFUNCTION
-`%<=%` <- function(x, value) .Defunct("%<-%")
-`%=>%` <- function(value, x) .Defunct("%->%")
-
 
 #' @importFrom listenv get_variable parse_env_subset
 futureAssignInternal <- function(target, expr, envir = parent.frame(), substitute = FALSE) {
