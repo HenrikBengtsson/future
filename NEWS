@@ -5,14 +5,9 @@ Version: 1.4.0-9000 [2017-05-19]
 
 SIGNIFICANT CHANGES:
 
- o The number of parallel futures for multicore and multisession is now
-   the same argument 'workers'.  Previously the number of parallel futures
-   was one less, which was a conservative attempt to acknowledge the fact
-   that it is technically possible to also use the main R at the same time
-   as the background workers, causing the overall load to be higher than
-   the number of workers specified.  Because the latter is a rare use case,
-   the decision was made to change the default behavior to match that of
-   other types of futures, e.g. with workers on external machines.
+ o Multicore and multisession futures no longer reserve one core for the
+   main R process, which was done to lower the risk for producing a higher
+   CPU load than the number of cores available for the R session.
  
 NEW FEATURES:
 
