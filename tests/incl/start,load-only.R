@@ -75,8 +75,8 @@ supportedStrategies <- function(cores = 1L, excl = NULL, ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
   if (cores > 1) {
-    excl <- strategies %in% c("sequential", "uniprocess", "eager", "lazy")
-    strategies <- strategies[!excl]
+    strategies <- setdiff(strategies,
+                          c("sequential", "uniprocess", "eager", "lazy"))
   }
   strategies
 }
