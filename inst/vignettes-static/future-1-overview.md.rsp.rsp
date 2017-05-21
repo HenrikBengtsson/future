@@ -324,6 +324,7 @@ Note that with automatic authentication setup (e.g. SSH key pairs), there is not
 
 
 
+<%---
 ### Different Strategies for Different Futures
 Sometimes one may want to use an alternative evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and afterward `plan(old)` to temporarily switch strategies, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
@@ -356,7 +357,7 @@ if (availableCores() == 1L) {
 
 
 However, using different plans to individual futures this way has the drawback of hard coding the evaluation strategy.  Doing so may prevent some users from using your script or your package, because they do not have the sufficient resources.  It may also prevent users with a lot of resources from utilizing those because you assumed a less-powerful set of hardware.  Because of this, we recommend against the use of `%plan%` other than for interactive prototyping.
-
+---%>
 
 ### Nested Futures and Evaluation Topologies
 This far we have discussed what can be referred to as "flat topology" of futures, that is, all futures are created in and assigned to the same environment.  However, there is nothing stopping us from using a "nested topology" of futures, where one set of futures may, in turn, create another set of futures internally and so on.
@@ -652,9 +653,3 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
 Copyright Henrik Bengtsson, 2015-2017
-
-LocalWords:  RSP HB VignetteAuthor VignetteKeyword VignetteTangle pid
-LocalWords:  utils withCapture nitty globalsOf stopifnot bfr gsub hoc
-LocalWords:  supportsMulticore Sys getpid Topologies pids se eval str
-LocalWords:  captureOutput enclos traceback evaluator env subsetting
-LocalWords:  html topologies
