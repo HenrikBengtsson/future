@@ -156,7 +156,7 @@ By default, future expressions are evaluated eagerly (= instantaneously) and syn
 
 
 ### Consistent Behavior Across Futures
-Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
+Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hands of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
 
 One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R session or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use sequential evaluation while building up a script and, later, when the script is fully developed, one may turn on asynchronous processing.
 
@@ -305,7 +305,7 @@ bfr <- gsub('hosts', 'c("n1", "n2", "n3")', bfr)
 bfr
 %>
 ```
-Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
+Just as for most other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
 
 <%
 ## Sanity checks
@@ -405,7 +405,7 @@ a
 b
 })%>
 ```
-The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores` to zero ([sic!](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7)) such that no _additional_ parallel processes can be launched.  This is the case for both multisession and multicore evaluation.
+The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores = 1` such that functions like `parallel::mclapply()` will fall back to run sequentially.  This is the case for both multisession and multicore evaluation.
 
 <%
 ## Sanity checks
@@ -452,8 +452,8 @@ Having said this, it is indeed possible to use nested multiprocess evaluation st
 ```r
 <%=withCapture({
 plan(list(
-  tweak(multiprocess, workers = 3L),
-  tweak(multiprocess, workers = 3L)
+  tweak(multiprocess, workers = 2L),
+  tweak(multiprocess, workers = 2L)
 ))
 })%>
 [...]
@@ -476,8 +476,6 @@ if (supportsMulticore()) {
   stopifnot(b[2] != b[1], b[3] != b[1])
 }
 %>
-
-To clarify, when we set up the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
 
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette '[Futures in R: Future Topologies]'.
 
@@ -567,7 +565,7 @@ Moreover, if a global is defined in a package, then that global is not exported.
 As mentioned previously, for consistency across evaluation strategies, all types of futures validate globals upon creation.  This is also true for cases where it would not be necessary, e.g. for eager evaluation of multicore futures (which forks the calling process "as-is").  However, in order to make it as easy as possible to switch between strategies without being surprised by slightly different behaviors, the Future API is designed to check for globals the same way regardless of strategy.
 ---%>
 <%---
-Having said this, it is possible to disable validation of globals by setting `globals=FALSE`.  This could make sense if one know for sure that only sequential or multicore futures will be used.  This argument can be tweaked as `plan(tweak(sequential, globals=FALSE))` and `plan(tweak(multicore, globals=FALSE))`.  However, it is strongly advised not to do this.  Instead, as a best practice, it is always good if the code/script works with any type of futures.
+Having said this, it is possible to disable validation of globals by setting `globals = FALSE`.  This could make sense if one know for sure that only sequential or multicore futures will be used.  This argument can be tweaked as `plan(tweak(sequential, globals=FALSE))` and `plan(tweak(multicore, globals=FALSE))`.  However, it is strongly advised not to do this.  Instead, as a best practice, it is always good if the code/script works with any type of futures.
 ---%>
 
 Finally, it should be clarified that identifying globals from static code inspection alone is a challenging problem.  There will always be corner cases where automatic identification of globals fails so that either false globals are identified (less of a concern) or some of the true globals are missing (which will result in a run-time error or possibly the wrong results).  Vignette '[Futures in R: Common Issues with Solutions]' provides examples of common cases and explains how to avoid them as well as how to help the package to identify globals or to ignore falsely identified globals.  If that does not suffice, it is always possible to manually specify the global variables by their names (e.g. `globals = c("a", "slow_sum")`) or as name-value pairs (e.g. `globals = list(a = 42, slow_sum = my_sum)`).
