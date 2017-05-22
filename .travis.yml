@@ -30,7 +30,8 @@ matrix:
       r: release
       r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
       r_github_packages:
-        - jimhester/covr
+        - HenrikBengtsson/covr@memory-efficient-load-merge
+#        - jimhester/covr
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='w/ covr' ## Just a label
