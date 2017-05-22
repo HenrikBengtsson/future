@@ -6,13 +6,17 @@ message("*** Future class - exception ...")
 
 f <- Future()
 print(f)
-res <- try(value(f), silent = TRUE)
+res <- tryCatch(value(f), error = identity)
 print(res)
-stopifnot(inherits(res, "try-error"))
+stopifnot(inherits(res, "error"))
 
 ## values() is an alias for value() for Future
-res <- try(values(f), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(values(f), error = identity)
+stopifnot(inherits(res, "error"))
+
+## Invalid seed
+res <- tryCatch(f <- Future(42, seed = 1:2), error = identity)
+stopifnot(inherits(res, "error"))
 
 ## When no packages are exported
 foo <- structure(function(...) { Future(1) }, class = "future")

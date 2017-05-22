@@ -7,6 +7,14 @@ strategies <- supportedStrategies(excl = "multiprocess")
 
 message("*** resolve() ...")
 
+message("*** resolve() for default ...")
+
+x <- 1
+y <- resolve(x)
+stopifnot(identical(y, x))
+
+message("*** resolve() for default ... DONE")
+
 
 message("*** resolve() for Future objects ...")
 

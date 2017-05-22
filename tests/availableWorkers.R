@@ -63,6 +63,17 @@ workers <- availableWorkers(methods = "PBS")
 print(workers)
 stopifnot(length(workers) == length(workers0), all(workers == sort(workers0)))
 
+Sys.setenv(PBS_NUM_PPN = 3)
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
+Sys.setenv(PBS_NP = length(workers) + 1)
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 ## Exceptions
 workersE <- c(workers, "n 3")
@@ -71,6 +82,13 @@ writeLines(workersE, con = pathname)
 res <- tryCatch(read_pbs_nodefile(pathname), error = identity)
 print(res)
 stopifnot(inherits(res, "error"))
+
+Sys.setenv(PBS_NODEFILE = "<non-existing-file>")
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
 
 message("*** read_pbs_nodefile() ... DONE")
 
@@ -109,6 +127,12 @@ Sys.setenv(NSLOTS = length(workers0) + 1L)
 workers <- tryCatch(availableWorkers(methods = "SGE"), warning = identity)
 print(workers)
 stopifnot(inherits(workers, "warning"))
+
+Sys.setenv(PE_HOSTFILE = "<non-existing-file>")
+res <- tryCatch({
+  workers <- availableWorkers(methods = "SGE")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 message("*** read_pe_hostfile() ... DONE")
 

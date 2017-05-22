@@ -33,9 +33,7 @@ futureAssignInternal <- function(target, expr, envir = parent.frame(), substitut
       } else if (all(is.finite(target$idx))) {
         name <- get_variable(target$envir, target$idx, mustExist = FALSE, create = TRUE)
       } else {
-        msg <- "INTERNAL ERROR: Zero length variable name and unknown index."
-        mdebug(msg)
-        stop(msg)
+        stop("INTERNAL ERROR: Zero length variable name and unknown index.")
       }
     }
   }

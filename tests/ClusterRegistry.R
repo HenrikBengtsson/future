@@ -16,14 +16,21 @@ for (cores in 1:availCores) {
   message("Stopping any running cluster ... DONE")
 
   message("Starting cluster ...")
-  res <- try({
+  res <- tryCatch({
     cluster <- ClusterRegistry("set", workers = availableCores() - 1L)
     str(cluster)
     print(cluster)
-  }, silent = TRUE)
-  if (cores == 1) stopifnot(inherits(res, "try-error"))
+  }, error = identity)
+  if (cores == 1) stopifnot(inherits(res, "error"))
   message("Starting cluster ... DONE")
 
+  message("Starting dual-worker cluster ...")
+  cluster <- ClusterRegistry(action = "start", workers = 2L)
+  str(cluster)
+  print(cluster)
+  stopifnot(length(cluster) == 2L)
+  message("Starting duel-worker cluster ... DONE")
+  
   message("Starting single-worker cluster ...")
   cluster <- ClusterRegistry(action = "start", workers = 1L)
   str(cluster)

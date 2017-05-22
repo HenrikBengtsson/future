@@ -13,6 +13,11 @@ res <- tryCatch({
 stopifnot(inherits(res, "error"))
 
 res <- tryCatch({
+  plan(list(lazy))
+}, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({
   f <- LazyFuture()
 }, error = identity)
 stopifnot(inherits(res, "error"))

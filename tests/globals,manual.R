@@ -1,5 +1,23 @@
 source("incl/start.R")
 
+message("*** getGlobalsAndPackages() ...")
+
+getGlobalsAndPackages <- future:::getGlobalsAndPackages
+FutureGlobals <- future:::FutureGlobals
+
+globals <- structure(list(a = 1), where = list(a = globalenv()))
+globals <- FutureGlobals(globals, resolved = TRUE)
+gp <- getGlobalsAndPackages(expression(), globals = globals)
+
+message("- getGlobalsAndPackages() - exception ...")
+
+res <- tryCatch({
+  gp <- getGlobalsAndPackages(expression(), globals = 42)
+}, error = identity)
+stopifnot(inherits(res, "error"))
+
+message("*** getGlobalsAndPackages() - ... DONE")
+
 message("*** Globals - manually ...")
 
 message("*** Globals manually specified as named list ...")

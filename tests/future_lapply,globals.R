@@ -83,4 +83,23 @@ for (strategy in supportedStrategies()) {
 
 message("*** future_lapply() - tricky globals ... DONE")
 
+message("*** future_lapply() - globals exceptions ...")
+
+res <- tryCatch({
+  y <- future_lapply(1, FUN = function(x) x, future.globals = 42)
+}, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({
+  y <- future_lapply(1, FUN = function(x) x, future.globals = list(1))
+}, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({
+  y <- future_lapply(1, FUN = function(x) x, future.globals = "...future.FUN")
+}, error = identity)
+stopifnot(inherits(res, "error"))
+
+message("*** future_lapply() - globals exceptions ... DONE")
+
 source("incl/end.R")

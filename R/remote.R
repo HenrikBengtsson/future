@@ -21,7 +21,7 @@
 remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
-  stopifnot(length(workers) >= 1L, is.character(workers), !anyNA(workers))
+  stopifnot(length(workers) >= 1L, !anyNA(workers))
 
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'

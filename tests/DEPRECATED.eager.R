@@ -57,6 +57,17 @@ stopifnot(inherits(res, "try-error"))
 
 } # for (globals ...)
 
+
+res <- tryCatch({
+  plan(eager)
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
+res <- tryCatch({
+  plan(list(eager))
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
 message("*** eager() ... DONE")
 
 source("incl/end.R")

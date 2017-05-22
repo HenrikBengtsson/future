@@ -8,15 +8,22 @@ message("*** Early signaling of conditions with sequential futures ...")
 
 plan(sequential)
 f <- future({ stop("bang!") })
-Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 plan(sequential, earlySignal = TRUE)
-f <- try(future({ stop("bang!") }), silent = TRUE)
-stopifnot(inherits(f, "try-error"))
+f <- tryCatch(future({ stop("bang!") }), error = identity)
+stopifnot(inherits(f, "error"))
+f <- tryCatch(future({ warning("whoops!") }), warning = identity)
+stopifnot(inherits(f, "warning"))
+f <- tryCatch(future({ message("hey!") }), message = identity)
+stopifnot(inherits(f, "message"))
+f <- tryCatch(future({
+  signalCondition(simpleCondition("hmm"))
+}), condition = identity)
+stopifnot(inherits(f, "condition"))
 
 message("*** Early signaling of conditions with sequential futures ... DONE")
 
@@ -30,17 +37,17 @@ f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 plan(multisession, earlySignal = TRUE)
 f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 print(f)
-r <- try(resolved(f), silent = TRUE)
-stopifnot(inherits(r, "try-error") || inherits(f, "SequentialFuture"))
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+r <- tryCatch(resolved(f), error = identity)
+stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 
 message("*** Early signaling of conditions with multisession futures ... DONE")
@@ -53,17 +60,17 @@ f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 plan(multiprocess, earlySignal = TRUE)
 f <- future({ stop("bang!") })
 Sys.sleep(1.0)
 print(f)
-r <- try(resolved(f), silent = TRUE)
-stopifnot(inherits(r, "try-error") || inherits(f, "SequentialFuture"))
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+r <- tryCatch(resolved(f), error = identity)
+stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 message("*** Early signaling of conditions with multiprocess futures ... DONE")
 
@@ -72,25 +79,22 @@ message("*** Early signaling of conditions with lazy evaluation ...")
 
 plan(sequential)
 f <- future({ stop("bang!") }, lazy = TRUE)
-Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 plan(sequential, earlySignal = TRUE)
 
 ## Errors
 f <- future({ stop("bang!") }, lazy = TRUE)
-Sys.sleep(1.0)
-r <- try(resolved(f), silent = TRUE)
-stopifnot(inherits(r, "try-error"))
-v <- try(value(f), silent = TRUE)
-stopifnot(inherits(v, "try-error"))
+r <- tryCatch(resolved(f), error = identity)
+stopifnot(inherits(r, "error"))
+v <- tryCatch(value(f), error = identity)
+stopifnot(inherits(v, "error"))
 
 ## Warnings
 f <- future({ warning("careful!") }, lazy = TRUE)
-Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
@@ -99,7 +103,6 @@ stopifnot(inherits(res, "warning"))
 
 ## Messages
 f <- future({ message("hey!") }, lazy = TRUE)
-Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
@@ -107,7 +110,6 @@ stopifnot(inherits(res, "message"))
 
 ## Condition
 f <- future({ signalCondition(simpleCondition("hmm")) }, lazy = TRUE)
-Sys.sleep(1.0)
 res <- tryCatch({
   r <- resolved(f)
 }, condition = function(w) w)
