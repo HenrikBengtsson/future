@@ -1,8 +1,5 @@
 source("incl/start.R")
 
-## FIXME: Should shallow_resolve() be dropped?
-shallow_resolve <- future:::shallow_resolve.FutureGlobals
-
 message("*** FutureGlobals() ...")
 
 fg1 <- FutureGlobals()
@@ -29,9 +26,6 @@ print(fg_unique)
 
 fg_resolved <- resolve(fg)
 print(fg_resolved)
-
-fg_resolved_s <- shallow_resolve(fg)
-print(fg_resolved_s)
 
 message("- FutureGlobals() - exceptions ...")
 
