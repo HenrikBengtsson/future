@@ -232,16 +232,26 @@ detectCores <- local({
 ## * multicore futures:
 ##   - parallel::mcparallel()       ## run()
 ##   - parallel::mccollect()        ## value()
-importParallel <- function(name = NULL) {
-  ns <- getNamespace("parallel")
-  if (!exists(name, mode = "function", envir = ns, inherits = FALSE)) {
-    ## covr: skip=3
-    msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
-    mdebug(msg)
-    stop(msg, call. = FALSE)
+importParallel <- local({
+  ns <- NULL
+  cache <- list()
+  
+  function(name = NULL) {
+    res <- cache[[name]]
+    if (is.null(res)) {
+      ns <<- getNamespace("parallel")
+      if (!exists(name, mode = "function", envir = ns, inherits = FALSE)) {
+        ## covr: skip=3
+        msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
+        mdebug(msg)
+        stop(msg, call. = FALSE)
+      }
+      res <- get(name, mode = "function", envir = ns, inherits = FALSE)
+      cache[[name]] <<- res
+    }
+    res
   }
-  get(name, mode = "function", envir = ns, inherits = FALSE)
-}
+})
 
 
 parseCmdArgs <- function() {
