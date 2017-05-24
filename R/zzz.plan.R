@@ -91,8 +91,11 @@ plan <- local({
     evaluator <- stack[[1L]]
     init <- attr(evaluator, "init")
     if (identical(init, TRUE)) {
-      mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
-      mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      debug <- getOption("future.debug", FALSE)
+      if (debug) {
+        mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
+        mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      }
 
       ## IMPORANT: Initiate only once.  This avoids an infinite 
       ## recursive loop caused by other plan() calls.
@@ -106,7 +109,7 @@ plan <- local({
       ## (otherwise the garbage collector would have to do it)
       v <- value(f)
 
-      mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
+      if (debug) mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
     }
   }
 

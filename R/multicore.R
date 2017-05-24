@@ -153,7 +153,8 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
   stopifnot(is.finite(timeout), timeout >= 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
-  mdebug("requestCore(): workers = %d", workers)
+  debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("requestCore(): workers = %d", workers)
 
   ## No additional cores available?
   if (workers == 0L) {
@@ -172,7 +173,7 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
     finished <- (used < workers)
     if (finished) break
 
-    mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
+    if (debug) mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
 
     ## Wait
     Sys.sleep(interval)
@@ -187,7 +188,7 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
 
   if (!finished) {
     msg <- sprintf("TIMEOUT: All %d cores are still occupied after %s (polled %d times)", workers, format(round(dt, digits = 2L)), iter)
-    mdebug(msg)
+    if (debug) mdebug(msg)
     stop(msg)
   }
 

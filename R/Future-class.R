@@ -326,7 +326,8 @@ getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
 getExpression.Future <- function(future, mc.cores = NULL, ...) {
-##  mdebug("getExpression() ...")
+  debug <- getOption("future.debug", FALSE)
+  ##  mdebug("getExpression() ...")
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
@@ -381,17 +382,17 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     pkgs <- unique(unlist(pkgs, use.names = FALSE))
     ## CLEANUP: Only keep those that are loaded in the current session
     pkgs <- intersect(pkgs, loadedNamespaces())
-    mdebug("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
+    if (debug) mdebug("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
   } else {
-    mdebug("Packages needed by future strategies (n = 0): <none>")
+    if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
   }
 
   pkgsF <- packages(future)
   if (length(pkgsF) > 0) {
-    mdebug("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
+    if (debug) mdebug("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
     pkgs <- unique(c(pkgs, pkgsF))
   } else {
-    mdebug("Packages needed by the future expression (n = 0): <none>")
+    if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
   }
 
   ## Make sure to load and attach all package needed  
