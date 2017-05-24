@@ -2,10 +2,7 @@ source("incl/start.R")
 
 message("*** Futures - labels ...")
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
-
-for (strategy in strategies) {
+for (strategy in supportedStrategies()) {
   message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
 

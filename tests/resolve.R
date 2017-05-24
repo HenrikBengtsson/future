@@ -3,7 +3,7 @@ library("listenv")
 
 oopts <- c(oopts, options(future.progress = TRUE))
 
-strategies <- supportedStrategies(excl = "multiprocess")
+strategies <- supportedStrategies()
 
 message("*** resolve() ...")
 
@@ -101,7 +101,7 @@ for (strategy in strategies) {
 
   x <- list()
   x$a <- future(1)
-  x$b <- future({Sys.sleep(1); 2})
+  x$b <- future({Sys.sleep(0.5); 2})
   x[[4]] <- 4
   dim(x) <- c(2, 2)
   y <- resolve(x, idxs = 1)
@@ -121,12 +121,12 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
 
   x <- list()
-  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk })
+  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(0.1); kk })
   y <- resolve(x)
   stopifnot(identical(y, x))
 
   x <- list()
-  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(1); kk }, lazy = TRUE)
+  for (kk in 1:3) x[[kk]] <- future({ Sys.sleep(0.1); kk }, lazy = TRUE)
   y <- resolve(x)
   stopifnot(identical(y, x))
 
@@ -135,15 +135,15 @@ for (strategy in strategies) {
   x$a <- 1
   x$b <- 2
 
-  res <- try(y <- resolve(x, idxs = 0L), silent = TRUE)
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(y <- resolve(x, idxs = 0L), error = identity)
+  stopifnot(inherits(res, "error"))
 
-  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(y <- resolve(x, idxs = "unknown"), error = identity)
+  stopifnot(inherits(res, "error"))
 
   x <- list(1, 2)
-  res <- try(x <- resolve(x, idxs = "a"))
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(x <- resolve(x, idxs = "a"), error = identity)
+  stopifnot(inherits(res, "error"))
 
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)
@@ -211,8 +211,8 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
 
   ## Exceptions
-  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(y <- resolve(x, idxs = "unknown"), error = identity)
+  stopifnot(inherits(res, "error"))
 
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)
@@ -273,7 +273,7 @@ for (strategy in strategies) {
 
   x <- listenv()
   x$a <- future({ 1 })
-  x$b %<-% { Sys.sleep(1); 2 }
+  x$b %<-% { Sys.sleep(0.5); 2 }
   x$c %<-% { 3 }
   x$d <- 4
   names <- names(x)
@@ -307,11 +307,11 @@ for (strategy in strategies) {
   stopifnot(identical(y, x))
 
   ## Exceptions
-  res <- try(y <- resolve(x, idxs = 0L), silent = TRUE)
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(y <- resolve(x, idxs = 0L), error = identity)
+  stopifnot(inherits(res, "error"))
 
-  res <- try(y <- resolve(x, idxs = "unknown"), silent = TRUE)
-  stopifnot(inherits(res, "try-error"))
+  res <- tryCatch(y <- resolve(x, idxs = "unknown"), error = identity)
+  stopifnot(inherits(res, "error"))
 
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)

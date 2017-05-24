@@ -23,7 +23,7 @@ plan(multisession, workers = 2L)
 f <- future({ Sys.sleep(100); 1 })
 f2 <- future({ Sys.sleep(100); 2 })
 
-res <- try(requestNode(function() { }, workers = f$workers, timeout = 1.0, delta = 0.1))
+res <- try(requestNode(function() { }, workers = f$workers, timeout = 0.5, delta = 0.1))
 stopifnot(inherits(res, "try-error"))
 
 message("*** requestNode() - timeout ... DONE")

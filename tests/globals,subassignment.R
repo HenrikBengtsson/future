@@ -5,8 +5,6 @@ oopts <- c(oopts, options(
   future.globals.onMissing = "error"
 ))
 
-strategies <- supportedStrategies(excl = "multiprocess")
-
 message("*** Globals - subassignments ...")
 
 message("*** Globals - subassignments w/ x$a <- value ...")
@@ -42,7 +40,7 @@ for (cores in 1:availCores) {
 
   message("availableCores(): ", availableCores())
 
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 

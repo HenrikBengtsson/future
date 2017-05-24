@@ -6,8 +6,8 @@ setTimeLimit(cpu = 10, elapsed = 10, transient = TRUE)
 
 message("*** Tricky use cases related to globals (part 2) ...")
 
-## Allow for two (sic!) background processes
-plan(multisession, workers = 3L)
+## Allow for two background processes
+plan(multisession, workers = 2L)
 
 env <- new.env()
 

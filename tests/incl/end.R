@@ -36,7 +36,7 @@ stopifnot(identical(Sys.getenv(), oenvs0))
 
 
 ## Undo variables
-rm(list=c(setdiff(ls(), ovars)))
+rm(list = c(setdiff(ls(), ovars)))
 
 
 ## Travis CI specific: Explicit garbage collection because it

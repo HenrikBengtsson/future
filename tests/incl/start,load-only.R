@@ -71,7 +71,7 @@ attachLocally <- function(x, envir = parent.frame()) {
   }
 }
 
-supportedStrategies <- function(cores = 1L, excl = NULL, ...) {
+supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
   if (cores > 1) {

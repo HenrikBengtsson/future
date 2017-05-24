@@ -78,13 +78,13 @@ for (type in types) {
   
     message("*** cluster() with globals and blocking")
     x <- listenv()
-    for (ii in 1:4) {
+    for (ii in 1:3) {
       message(sprintf(" - Creating cluster future #%d ...", ii))
       x[[ii]] <- future({ ii })
     }
     message(sprintf(" - Resolving %d cluster futures", length(x)))
     v <- sapply(x, FUN = value)
-    stopifnot(all(v == 1:4))
+    stopifnot(all(v == 1:3))
   
   
     message("*** cluster() and errors")
@@ -97,14 +97,14 @@ for (type in types) {
     print(v)
     stopifnot(inherits(v, "simpleError"))
   
-    res <- try(value(f), silent = TRUE)
+    res <- tryCatch(value(f), error = identity)
     print(res)
-    stopifnot(inherits(res, "try-error"))
+    stopifnot(inherits(res, "error"))
   
     ## Error is repeated
-    res <- try(value(f), silent = TRUE)
+    res <- tryCatch(value(f), error = identity)
     print(res)
-    stopifnot(inherits(res, "try-error"))
+    stopifnot(inherits(res, "error"))
   
   
     message("*** cluster() - too large globals ...")
@@ -131,20 +131,19 @@ for (type in types) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    res <- try(f <- future({ sum(a) }), silent = TRUE)
+    res <- tryCatch(f <- future({ sum(a) }), error = identity)
     rm(list = "a")
-    stopifnot(inherits(res, "try-error"))
+    stopifnot(inherits(res, "error"))
   
     ## Undo options changed in this test
     options(ooptsT)
   
     message("*** cluster() - too large globals ... DONE")
   
-    message("*** cluster() - installed packages ...")
+    message("*** cluster() - installed libraries ...")
     f <- try(cluster({
       list(
-        libPaths = .libPaths(),
-        pkgs     = installed.packages()
+        libPaths = .libPaths()
       )
     }, workers = cl), silent = FALSE)
     print(f)
@@ -173,7 +172,8 @@ for (type in types) {
   message("*** cluster() - setDefaultCluster() ...")
   
   library("parallel")
-  setDefaultCluster(makeCluster(2L, type = type))
+  cl <- makeCluster(1L, type = type)
+  setDefaultCluster(cl)
   plan(cluster)
   
   pid <- Sys.getpid()
@@ -191,16 +191,15 @@ for (type in types) {
   
   message("*** cluster() - exceptions ...")
   
-  res <- try(cluster(42L, workers = NA), silent = TRUE)
+  res <- tryCatch(cluster(42L, workers = NA), error = identity)
   print(res)
-  stopifnot(inherits(res, "try-error"))
+  stopifnot(inherits(res, "error"))
   
   message("*** cluster() - exceptions ... DONE")
   
   
   message("*** cluster() - crashed worker ...")
   
-  cl <- parallel::makeCluster(1L, type = type)
   plan(cluster, workers = cl)
   x %<-% 42L
   stopifnot(x == 42L)

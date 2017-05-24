@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.5.0 [2017-05-23]
+Version: 1.5.0 [2017-05-24]
 
 SIGNIFICANT CHANGES:
 
@@ -68,6 +68,9 @@ SOFTWARE QUALITY:
 
  o Now package tests with parallel::makeCluster() not only test for
    type = 'PSOCK' clusters but also 'FORK' (when supported).
+
+ o TESTS: Cleaned up test scripts such that the overall processing time for
+   the tests was roughly halved, while preservering the same test coverage.
  
 
 Version: 1.4.0 [2017-03-12]

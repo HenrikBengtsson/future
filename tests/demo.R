@@ -1,10 +1,12 @@
 source("incl/start.R")
 
+options(future.demo.mandelbrot.nrow = 2L)
+options(future.demo.mandelbrot.resolution = 50L)
+options(future.demo.mandelbrot.delay = FALSE)
+
 for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
-
-  options("R_FUTURE_DEMO_MANDELBROT_PLANES" = 4L)
 
   message("*** Demos ...")
 

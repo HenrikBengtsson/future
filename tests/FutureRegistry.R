@@ -77,8 +77,8 @@ FutureRegistry(where = "test", action = "add", future = f)
 futures <- FutureRegistry(where = "test", action = "list")
 stopifnot(length(futures) == 1)
 
-res <- try(FutureRegistry(where = "test", action = "add", future = f), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(FutureRegistry(where = "test", action = "add", future = f), error = identity)
+stopifnot(inherits(res, "error"))
 futures <- FutureRegistry(where = "test", action = "list")
 stopifnot(length(futures) == 1)
 
@@ -87,8 +87,8 @@ FutureRegistry(where = "test", action = "remove", future = f)
 futures <- FutureRegistry(where = "test", action = "list")
 stopifnot(length(futures) == 0)
 
-res <- try(FutureRegistry(where = "test", action = "remove", future = f), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(FutureRegistry(where = "test", action = "remove", future = f), error = identity)
+stopifnot(inherits(res, "error"))
 futures <- FutureRegistry(where = "test", action = "list")
 stopifnot(length(futures) == 0)
 
@@ -96,8 +96,8 @@ FutureRegistry(where = "test", action = "reset")
 futures <- FutureRegistry(where = "test", action = "list")
 stopifnot(length(futures) == 0)
 
-res <- try(FutureRegistry(where = "test", action = "<unknown>"), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(FutureRegistry(where = "test", action = "<unknown>"), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** FutureRegistry() - exceptions ... DONE")
 

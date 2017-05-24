@@ -14,7 +14,7 @@ for (cores in 1:availCores) {
   message(sprintf("  - Testing with %d cores ...", cores))
   options(mc.cores = cores)
   
-  for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("* plan('%s') ...", strategy))
     plan(strategy)
   
@@ -83,7 +83,7 @@ for (name in names(seed_sets)) {
     message(sprintf("  - Testing with %d cores ...", cores))
     options(mc.cores = cores)
   
-    for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
+    for (strategy in supportedStrategies(cores)) {
       message(sprintf("* plan('%s') ...", strategy))
       plan(strategy)
       

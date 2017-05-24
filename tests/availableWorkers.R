@@ -146,8 +146,8 @@ print(availableWorkers(methods = c("width", "FOO_BAR_ENV"),
 
 ## Exception handling
 Sys.setenv("FOO_BAR_ENV" = "0")
-res <- try(availableWorkers(methods = "FOO_BAR_ENV"), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(availableWorkers(methods = "FOO_BAR_ENV"), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** availableWorkers() ... DONE")
 

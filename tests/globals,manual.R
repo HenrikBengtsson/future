@@ -45,6 +45,8 @@ for (strategy in supportedStrategies()) {
   
   plan(strategy)
 
+  message("- Globals - automatic ...")
+  
   attachLocally(globals)
   f <- future({
     x <- 1:10
@@ -131,19 +133,8 @@ for (strategy in supportedStrategies()) {
     stopifnot(inherits(y, "simpleError"))
   }
 
-  message(sprintf("- Strategy: %s ... DONE", strategy))
-}
-
-message("*** Globals - automatic ... DONE")
-
-
-message("*** Globals manually specified as named list ...")
-
-for (strategy in supportedStrategies()) {
-  message(sprintf("- Strategy: %s ...", strategy))
   
-  plan(strategy)
-
+  message("- Globals manually specified as named list ...")
   ## Make sure globals do not exist
   rm(list = names(globals))
   
@@ -179,19 +170,8 @@ for (strategy in supportedStrategies()) {
   print(y)
   stopifnot(all.equal(y, v0))
 
-  message(sprintf("- Strategy: %s ... DONE", strategy))
-}
 
-message("*** Globals manually specified as named list ... DONE")
-
-
-message("*** Globals manually specified by their names ...")
-
-for (strategy in supportedStrategies()) {
-  message(sprintf("- Strategy: %s ...", strategy))
-  
-  plan(strategy)
-
+  message("- Globals manually specified by their names ...")
   attachLocally(globals)
   f <- future({
     x <- 1:10
@@ -234,9 +214,6 @@ for (strategy in supportedStrategies()) {
 
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }
-
-message("*** Globals manually specified by their names ... DONE")
-
 
 message("*** Globals - manually ... DONE")
 
