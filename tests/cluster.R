@@ -174,7 +174,7 @@ for (type in types) {
   library("parallel")
   cl <- makeCluster(1L, type = type)
   setDefaultCluster(cl)
-  plan(cluster)
+  plan(cluster, workers = NULL)
   
   pid <- Sys.getpid()
   message(pid)
