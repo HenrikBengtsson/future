@@ -4,23 +4,23 @@ message("*** lazy() - defunct ...")
 
 res <- tryCatch({f <- lazy({
   42L
-})}, error = identity)
-stopifnot(inherits(res, "error"))
+})}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 res <- tryCatch({
   plan(lazy)
-}, error = identity)
-stopifnot(inherits(res, "error"))
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 res <- tryCatch({
   plan(list(lazy))
-}, error = identity)
-stopifnot(inherits(res, "error"))
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
-res <- tryCatch({
-  f <- LazyFuture()
-}, error = identity)
-stopifnot(inherits(res, "error"))
+#res <- tryCatch({
+#  f <- LazyFuture()
+#}, warning = identity)
+#stopifnot(inherits(res, "warning"))
 
 message("*** lazy() - defunct ... DONE")
 
