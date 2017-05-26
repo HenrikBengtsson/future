@@ -35,8 +35,8 @@
 |aroma.core           |3.1.0   |      0|        0|     1|
 |calmate              |0.12.1  |      0|        0|     0|
 |doFuture             |0.5.0   |      0|        0|     0|
-|fiery                |0.2.2   |      1|        0|     0|
-|future.BatchJobs     |0.14.0  |      1|        0|     0|
+|fiery                |0.2.2   |      0|        0|     0|
+|future.BatchJobs     |0.14.0  |      0|        0|     0|
 |GeneBreak            |1.6.0   |      0|        0|     1|
 |googleComputeEngineR |0.1.0   |      0|        0|     0|
 |kernelboot           |0.1.0   |      0|        0|     0|
@@ -44,7 +44,7 @@
 |NSA                  |0.0.32  |      0|        0|     6|
 |pbmcapply            |1.2.1   |      0|        0|     0|
 |PECA                 |1.12.0  |      0|        0|     1|
-|PSCBS                |0.62.0  |      1|        0|     0|
+|PSCBS                |0.62.0  |      0|        0|     0|
 |PureCN               |1.6.2   |      0|        0|     1|
 |QDNAseq              |1.12.0  |      0|        1|     0|
 |Repitools            |1.22.0  |      0|        0|     3|
@@ -100,60 +100,13 @@ Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
 Bug reports: https://github.com/thomasp85/fiery/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘testthat.R’ [1s/11s]
-Running the tests in ‘tests/testthat.R’ failed.
-Last 13 lines of output:
-  5: lazy(expr = {
-         message("test")
-         10
-     })
-  6: .Defunct(msg = "Future strategy 'lazy' is deprecated. Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-  7: stop(paste(msg, collapse = ""), call. = FALSE, domain = NA)
-  
-  testthat results ================================================================
-  OK: 152 SKIPPED: 0 FAILED: 3
-  1. Error: futures can be added and called (@test-Fire.R#214) 
-  2. Error: DelayStack works (@test-FutureStack.R#7) 
-  3. Error: TimeStack works (@test-FutureStack.R#34) 
-  
-  Error: testthat unit tests failed
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## future.BatchJobs (0.14.0)
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘000.sessionDetails.R’
-  Running ‘BatchJobsFuture,gc.R’
-  Running ‘BatchJobsFuture.R’
-  Running ‘BatchJobsFutureError.R’
-  Running ‘DEPRECATED.backend.R’
-  Running ‘DEPRECATED.resources.R’
-  Running ‘batchjobs_custom.R’
-  Running ‘batchjobs_interactive.R’
-  Running ‘batchjobs_job.delay.R’ [10s/13s]
-... 12 lines ...
-  Tweak future expression to call with '...' arguments ...
-  Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: {; sum(x, y, ...); }
-  Error in getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression,  : 
-    Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: {; sum(x, y, ...); }
-  [1] "Error in getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression,  : \n  Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: {; sum(x, y, ...); }\n"
-  attr(,"class")
-  [1] "try-error"
-  attr(,"condition")
-  <simpleError in getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression,     globals = globals): Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: {; sum(x, y, ...); }>
-  Error: Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## GeneBreak (1.6.0)
 Maintainer: Evert van den Broek <vandenbroek.evert@gmail.com>
@@ -331,33 +284,7 @@ These lines will be truncated in the PDF manual.
 Maintainer: Henrik Bengtsson <henrikb@braju.com>  
 Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
-1 error  | 0 warnings | 0 notes
-
-```
-checking tests ... ERROR
-  Running ‘PairedPSCBS,boot.R’
-  Running ‘findLargeGaps.R’
-  Running ‘randomSeed.R’
-  Running ‘segmentByCBS,calls.R’
-  Running ‘segmentByCBS,futures.R’
-Running the tests in ‘tests/segmentByCBS,futures.R’ failed.
-Last 13 lines of output:
-  > knownSegments <- Reduce(rbind, knownSegments)
-  > str(knownSegments)
-  'data.frame':	9 obs. of  3 variables:
-   $ chromosome: int  1 1 1 2 2 2 3 3 3
-   $ start     : num  55168 34194740 41080533 55168 34194740 ...
-   $ end       : num  34142178 41044125 99910827 34142178 41044125 ...
-  > 
-  > message("*** segmentByCBS() via futures ...")
-  *** segmentByCBS() via futures ...
-  > 
-  > message("*** segmentByCBS() via 'lazy' futures without attaching 'future' ...")
-  *** segmentByCBS() via 'lazy' futures without attaching 'future' ...
-  > future::plan("lazy")
-  Error: Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.
-  Execution halted
-```
+0 errors | 0 warnings | 0 notes
 
 ## PureCN (1.6.2)
 Maintainer: Markus Riester <markus.riester@novartis.com>
