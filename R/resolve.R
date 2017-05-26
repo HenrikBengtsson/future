@@ -1,37 +1,48 @@
-#' Wait until all existing futures in an environment are resolved
+#' Resolve one or more futures synchronously
 #'
-#' The environment is first scanned for futures and then the futures
-#' are polled until all are resolved.  When a resolved future is
-#' detected its value is retrieved (optionally).
-#' This provides an efficient mechanism for waiting for a set of
-#' futures to be resolved and in the meanwhile retrieving values
-#' of already resolved futures.
-#'
-#' @param x an environment holding futures.
-#' @param idxs subset of elements to check.
+#' This function provides an efficient mechanism for waiting for multiple
+#' futures in a container (e.g. list or environment) to be resolved while in
+#' the meanwhile retrieving values of already resolved futures.
+#' 
+#' @param x a list, an environment, or a list environment holding futures
+#' that should be resolved.  May also be a single \link{Future}.
+#' 
+#' @param idxs (optional) integer or logical index specifying the subset of
+#' elements to check.
+#' 
 #' @param value If TRUE, the values are retrieved, otherwise not.
-#' @param recursive A non-negative number specifying how deep of
-#' a recursion should be done.  If TRUE, an infinite recursion
-#' is used.  If FALSE or zero, no recursion is performed.
-#' @param sleep Number of seconds to wait before checking
-#' if futures have been resolved since last time.
-#' @param progress If TRUE textual progress summary is outputted.
-#' If a function, the it is called as \code{progress(done, total)}
-#' every time a future is resolved.
+#' 
+#' @param recursive A non-negative number specifying how deep of a recursion
+#' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
+#' no recursion is performed.
+#' 
+#' @param sleep Number of seconds to wait before checking if futures have been
+#' resolved since last time.
+#' 
+#' @param progress If TRUE textual progress summary is outputted.  If a
+#' function, the it is called as \code{progress(done, total)} every time a
+#' future is resolved.
+#' 
 #' @param \dots Not used
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
 #'
-#' @seealso futureOf
+#' @details
+#' This function is resolves synchronously, i.e. it blocks until \code{x} and
+#' any containing futures are resolved.
+#' 
+#' @seealso To resolve a future \emph{variable}, first retrieve its
+#' \link{Future} object using \code{\link{futureOf}()}, e.g.
+#' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=1.0, progress=getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -43,7 +54,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
   ## Lazy future that is not yet launched?
   if (x$state == 'created') x <- run(x)
 
-  ## Poll for Future to finish
+  ## Poll for the Future to finish
   while (!resolved(x)) {
     Sys.sleep(sleep)
   }
@@ -61,7 +72,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
 
         ## Recursively resolve the value?
         if (!is.atomic(v)) {
-          v <- resolve(v, value=TRUE, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+          v <- resolve(v, value = TRUE, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
           msg <- sprintf("%s (and resolved itself)", msg)
         }
 
@@ -83,7 +94,7 @@ resolve.Future <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, pr
 
 
 #' @export
-resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -104,10 +115,10 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
   ## Setup default progress function?
   if (hasProgress && !is.function(progress)) {
     progress <- function(done, total) {
-      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100*done/total, done, total)
+      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100 * done / total, done, total)
       if (done < total) {
-        bs <- paste(rep("\b", times=nchar(msg)), collapse="")
-        message(paste(msg, bs, sep=""), appendLF=FALSE)
+        bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
+        message(paste(msg, bs, sep = ""), appendLF = FALSE)
       } else {
         message(msg)
       }
@@ -122,7 +133,7 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
     ## Multi-dimensional indices?
     if (is.matrix(idxs)) {
-      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+      idxs <- whichIndex(idxs, dim = dim(x), dimnames = dimnames(x))
     }
     idxs <- unique(idxs)
 
@@ -148,8 +159,11 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
     nx <- .length(x)
   }
 
-  mdebug("resolve() on list ...")
-  mdebug(" recursive: %s", recursive)
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("resolve() on list ...")
+    mdebug(" recursive: %s", recursive)
+  }
 
   ## NOTE: Everything is considered non-resolved by default
 
@@ -162,8 +176,10 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
     progress(done, total)
   }
 
-  mdebug(" length: %d", nx)
-  mdebug(" elements: %s", hpaste(sQuote(names(x))))
+  if (debug) {
+    mdebug(" length: %d", nx)
+    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+  }
 
   ## Resolve all elements
   while (length(remaining) > 0) {
@@ -180,12 +196,12 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
       stopifnot(!anyNA(remaining))
 
       if (hasProgress) {
@@ -200,14 +216,14 @@ resolve.list <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, prog
 
   if (hasProgress && done != done0) progress(done, total)
 
-  mdebug("resolve() on list ... DONE")
+  if (debug) mdebug("resolve() on list ... DONE")
 
   x0
 } ## resolve() for list
 
 
 #' @export
-resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
+resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -224,13 +240,13 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   ## Subset?
   if (is.null(idxs)) {
     ## names(x) is only supported in R (>= 3.2.0)
-    idxs <- ls(envir=x, all.names=TRUE)
+    idxs <- ls(envir = x, all.names = TRUE)
   } else {
     ## Nothing to do?
     if (length(idxs) == 0) return(x)
 
     ## names(x) is only supported in R (>= 3.2.0)
-    names <- ls(envir=x, all.names=TRUE)
+    names <- ls(envir = x, all.names = TRUE)
 
     ## Sanity check (because nx == 0 returns early above)
     stopifnot(length(names) > 0)
@@ -249,20 +265,23 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
   nx <- length(idxs)
   if (nx == 0) return(x)
 
-  mdebug("resolve() on environment ...")
-  mdebug(" recursive: %s", recursive)
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("resolve() on environment ...")
+    mdebug(" recursive: %s", recursive)
+  }
 
   ## Coerce future promises into Future objects
   x0 <- x
   x <- futures(x)
   nx <- .length(x)
-  idxs <- ls(envir=x, all.names=TRUE)
+  idxs <- ls(envir = x, all.names = TRUE)
   stopifnot(length(idxs) == nx)
 
   ## Everything is considered non-resolved by default
   remaining <- idxs
 
-  mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
+  if (debug) mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
   ## Resolve all elements
   while (length(remaining) > 0) {
@@ -279,12 +298,12 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
       stopifnot(!anyNA(remaining))
     } # for (ii ...)
 
@@ -292,14 +311,14 @@ resolve.environment <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  mdebug("resolve() on environment ... DONE")
+  if (debug) mdebug("resolve() on environment ... DONE")
 
   x0
 } ## resolve() for environment
 
 
 #' @export
-resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, progress=FALSE, ...) {
+resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -324,7 +343,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
 
     ## Multi-dimensional indices?
     if (is.matrix(idxs)) {
-      idxs <- whichIndex(idxs, dim=dim(x), dimnames=dimnames(x))
+      idxs <- whichIndex(idxs, dim = dim(x), dimnames = dimnames(x))
     }
     idxs <- unique(idxs)
 
@@ -351,8 +370,11 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
   if (nx == 0) return(x)
 
 
-  mdebug("resolve() on list environment ...")
-  mdebug(" recursive: %s", recursive)
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("resolve() on list environment ...")
+    mdebug(" recursive: %s", recursive)
+  }
 
   ## Coerce future promises into Future objects
   x0 <- x
@@ -362,8 +384,10 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
   ## Everything is considered non-resolved by default
   remaining <- seq_len(nx)
 
-  mdebug(" length: %d", nx)
-  mdebug(" elements: %s", hpaste(sQuote(names(x))))
+  if (debug) {
+    mdebug(" length: %d", nx)
+    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+  }
 
   ## Resolve all elements
   while (length(remaining) > 0) {
@@ -380,12 +404,12 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value=value, recursive=recursive-1, sleep=sleep, progress=FALSE, ...)
+        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
       stopifnot(!anyNA(remaining))
     } # for (ii ...)
 
@@ -393,7 +417,7 @@ resolve.listenv <- function(x, idxs=NULL, value=FALSE, recursive=0, sleep=0.1, p
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  mdebug("resolve() on list environment ... DONE")
+  if (debug) mdebug("resolve() on list environment ... DONE")
 
   x0
 } ## resolve() for list environment

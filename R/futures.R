@@ -26,7 +26,7 @@ futures.list <- function(x, ...) {
 
 #' @export
 futures.environment <- function(x, ...) {
-  fs <- futureOf(envir=x, mustExist=FALSE, drop=FALSE)
+  fs <- futureOf(envir = x, mustExist = FALSE, drop = FALSE)
 
   ## Create object of same class as 'x'
   res <- new.env()
@@ -45,7 +45,7 @@ futures.environment <- function(x, ...) {
 #' @export
 #' @importFrom listenv listenv
 futures.listenv <- function(x, ...) {
-  fs <- futureOf(envir=x, mustExist=FALSE, drop=FALSE)
+  fs <- futureOf(envir = x, mustExist = FALSE, drop = FALSE)
 
   ## Create object of same class as 'x'
   res <- listenv()

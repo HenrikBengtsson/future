@@ -5,7 +5,7 @@
 #' @return Invisibly a list of all details.
 #'
 #' @details
-#' Note that remote futures use \code{persistent=TRUE} by default.
+#' Note that remote futures use \code{persistent = TRUE} by default.
 #'
 #' @importFrom utils sessionInfo
 #' @export

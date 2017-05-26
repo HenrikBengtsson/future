@@ -50,7 +50,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(constraints="multicore"), earlySignal=FALSE, label=NULL, ...) {
+multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(constraints = "multicore"), earlySignal = FALSE, label = NULL, ...) {
   if ("maxCores" %in% names(list(...))) {
     .Defunct(msg = "Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
   }
@@ -61,16 +61,16 @@ multicore <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, s
 
   ## Fall back to sequential futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
-  ## Uniprocess futures best reflect how multicore futures handle globals.
+  ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(uniprocess(expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, local=TRUE, label=label))
+    return(sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label))
   }
 
-  oopts <- options(mc.cores=workers)
+  oopts <- options(mc.cores = workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, workers=workers, earlySignal=earlySignal, label=label, ...)
+  future <- MulticoreFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, earlySignal = earlySignal, label = label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -80,25 +80,25 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 
 #' Get number of cores currently used
 #'
-#' Get number of children plus one (for the current process)
+#' Get number of children (and don't count the current process)
 #' used by the current R session.  The number of children
 #' is the total number of subprocesses launched by this
 #' process that are still running and whose values have yet
 #' not been collected.
 #'
-#' @return A positive integer equal or greater than one.
+#' @return A non-negative integer.
 #'
 #' @keywords internal
 usedCores <- function() {
   ## Number of unresolved multicore futures
-  futures <- FutureRegistry("multicore", action="list")
+  futures <- FutureRegistry("multicore", action = "list")
   nfutures <- length(futures)
   ncores <- nfutures
 
   ## Total number of multicore processes
   ## To please R CMD check
   ns <- getNamespace("parallel")
-  children <- get("children", envir=ns, mode="function")
+  children <- get("children", envir = ns, mode = "function")
   nchildren <- length(children())
 
   ## Any multicore processes that are not futures?
@@ -114,12 +114,12 @@ usedCores <- function() {
 
     ## However, ...
     if (nfutures == 0L) {
-      warning(sprintf("Hmm... %d active multicore processes were detected, but without any active multicore futures (it is not clear by what mechanism they were created). Because of this, the 'future' package do not know how to resolve/collect them and will therefore threat them as they do not exist.", nchildren))
+      warning(sprintf("Hmm... %d active multicore processes were detected, but without any active multicore futures (it is not clear by what mechanism they were created). Because of this, the 'future' package do not know how to resolve/collect them and will therefore treat them as they do not exist.", nchildren))
       ncores <- 0L
     }
   }
 
-  return(ncores + 1L)
+  ncores
 }
 
 
@@ -147,17 +147,18 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers=availableCores(), timeout = getOption("future.wait.timeout", 30*24*60*60), delta=getOption("future.wait.interval", 0.2), alpha=getOption("future.wait.alpha", 1.01)) {
+requestCore <- function(await, workers = availableCores(), timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
   stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stopifnot(is.function(await))
   stopifnot(is.finite(timeout), timeout >= 0)
   stopifnot(is.finite(alpha), alpha > 0)
 
-  mdebug("requestCore(): workers = %d", workers)
+  debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("requestCore(): workers = %d", workers)
 
   ## No additional cores available?
-  if (workers == 1L) {
-    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but there is only one core available, which is already occupied by the main R process.")
+  if (workers == 0L) {
+    stop("INTERNAL ERROR: requestCore() was asked to find a free core, but no cores are available (workers = 0).")
   }
 
   
@@ -172,11 +173,11 @@ requestCore <- function(await, workers=availableCores(), timeout = getOption("fu
     finished <- (used < workers)
     if (finished) break
 
-    mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
+    if (debug) mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
 
     ## Wait
     Sys.sleep(interval)
-    interval <- alpha*interval
+    interval <- alpha * interval
 
     ## Finish/close cores, iff possible
     await()
@@ -187,7 +188,7 @@ requestCore <- function(await, workers=availableCores(), timeout = getOption("fu
 
   if (!finished) {
     msg <- sprintf("TIMEOUT: All %d cores are still occupied after %s (polled %d times)", workers, format(round(dt, digits = 2L)), iter)
-    mdebug(msg)
+    if (debug) mdebug(msg)
     stop(msg)
   }
 

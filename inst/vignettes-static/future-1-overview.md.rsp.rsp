@@ -45,8 +45,8 @@ file found under inst/vignettes-static/ of the source package.
 R.utils::use("R.utils")
 use("future")
 `%<-%` <- future::`%<-%`
-options("withCapture/newline"=FALSE)
-options(mc.cores=2L)
+options("withCapture/newline" = FALSE)
+options(mc.cores = 2L)
 %>
 # <%@meta name="title"%>
 
@@ -148,17 +148,17 @@ The future package implements the following types of futures:
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
 | `remote`        | all         | Simple access to remote R sessions
 
-_Note_: Prior to future 1.3.0, `eager` and `lazy` were also options, but has since been deprecated.  The `eager` strategy was renamed to `sequential` (which works identically).  The `lazy` strategy should no longer be used and will eventually be removed.  The reason for this is that whether a future should be resolved by lazy evaluation or not has to, in some cases, be in the control of the developer, and if the end user would be able change that, the code may not function as intended.
+_Note_: Prior to future 1.3.0, `eager` and `lazy` were also options, but has since been deprecated.  The `eager` strategy was renamed to `sequential` (which works identically).  The `lazy` strategy is defunct as of future 1.5.0.  The reason for this is that whether a future should be resolved by lazy evaluation or not has to, in some cases, be in the control of the developer, and if the end user would be able change that, the code may not function as intended.
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  UPDATE: The BatchJobs packages is no longer maintained in favor of the [batchtools] package.  Because of this, I am in the process of implementing the [future.batchtools] package to make use of this new framework.
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.BatchJobs] package provides futures for all types of _cluster functions_ ("backends") that the [BatchJobs] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  UPDATE: The BatchJobs packages is no longer maintained in favor of the [batchtools] package.  Because of this, an early-access version of the [future.batchtools] package is available from GitHub.
 
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session).  This evaluation strategy is referred to as "sequential".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
 
 
 ### Consistent Behavior Across Futures
-Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hand of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
+Before going through each of the different future strategies, it is probably helpful to clarify the objectives the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hands of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
 
-One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R session or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use eager evaluation while building up a script and, later, when the script is fully developed, one may turn on asynchronous processing.
+One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R session or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use sequential evaluation while building up a script and, later, when the script is fully developed, one may turn on asynchronous processing.
 
 Because of this, the defaults of the different strategies are such that the results and side effects of evaluating a future expression are as similar as possible.  More specifically, the following is true for all futures:
 
@@ -250,7 +250,7 @@ When multisession evaluation is used, the package launches a set of R sessions i
 availableCores()
 })%>
 ```
-This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores()-1 %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package="future")`.
+This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total <%= availableCores() %> processes including the main process.  In other words, with these settings, there will be <%= availableCores() %> background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "future")`.
 
 
 #### Multicore Futures
@@ -271,7 +271,7 @@ plan(multicore)
 ## multicore processing, let's fake the future based on
 ## the output of the multisession example
 bfr <- gsub("multisession", "multicore", bfr)
-bfr <- gsub(b, b+5L, bfr)
+bfr <- gsub(b, b + 5L, bfr)
 bfr
 }%>
 ```
@@ -298,14 +298,14 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 ## The second best we can do is to use the local machine.
 hosts <- c("localhost", "localhost", "localhost")
 bfr <- withCapture({
-plan(cluster, workers=hosts)
+plan(cluster, workers = hosts)
 <%@include file="incl/future-1-overview-example2.R"%>
 })
 bfr <- gsub('hosts', 'c("n1", "n2", "n3")', bfr)
 bfr
 %>
 ```
-Just as for the other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
+Just as for most other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
 
 <%
 ## Sanity checks
@@ -315,14 +315,16 @@ stopifnot(b != pid)
 Any types of clusters that `parallel::makeCluster()` creates can be used for cluster futures.  For instance, the above cluster can be explicitly set up as:
 ```r
 cl <- parallel::makeCluster(c("n1", "n2", "n3"))
-plan(cluster, workers=cl)
+plan(cluster, workers = cl)
 ```
-Also, it is considered good style to shut down the cluster when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated, which will happen in the first example where the cluster in created internally.  For more information on how to set up and manage such clusters, see `help("makeCluster", package="parallel")`.
+Also, it is considered good style to shut down cluster `cl` when it is no longer needed, that is, calling `parallel::stopCluster(cl)`.  However, it will shut itself down if the main process is terminated.  For more information on how to set up and manage such clusters, see `help("makeCluster", package = "parallel")`.
+Clusters created implicitly using `plan(cluster, workers = hosts)` where `hosts` is a character vector will also be shut down when the main R session terminates, or when the future strategy is changed, e.g. by calling `plan(sequential)`.
 
 Note that with automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 
 
 
+<%---
 ### Different Strategies for Different Futures
 Sometimes one may want to use an alternative evaluation strategy for a specific future.  Although one can use `old <- plan(new)` and afterward `plan(old)` to temporarily switch strategies, a simpler approach is to use the `%plan%` operator, e.g.
 ```r
@@ -355,7 +357,7 @@ if (availableCores() == 1L) {
 
 
 However, using different plans to individual futures this way has the drawback of hard coding the evaluation strategy.  Doing so may prevent some users from using your script or your package, because they do not have the sufficient resources.  It may also prevent users with a lot of resources from utilizing those because you assumed a less-powerful set of hardware.  Because of this, we recommend against the use of `%plan%` other than for interactive prototyping.
-
+---%>
 
 ### Nested Futures and Evaluation Topologies
 This far we have discussed what can be referred to as "flat topology" of futures, that is, all futures are created in and assigned to the same environment.  However, there is nothing stopping us from using a "nested topology" of futures, where one set of futures may, in turn, create another set of futures internally and so on.
@@ -403,7 +405,7 @@ a
 b
 })%>
 ```
-The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores` to zero ([sic!](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7)) such that no _additional_ parallel processes can be launched.  This is the case for both multisession and multicore evaluation.
+The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores = 1` such that functions like `parallel::mclapply()` will fall back to run sequentially.  This is the case for both multisession and multicore evaluation.
 
 <%
 ## Sanity checks
@@ -450,8 +452,8 @@ Having said this, it is indeed possible to use nested multiprocess evaluation st
 ```r
 <%=withCapture({
 plan(list(
-  tweak(multiprocess, workers=3L),
-  tweak(multiprocess, workers=3L)
+  tweak(multiprocess, workers = 2L),
+  tweak(multiprocess, workers = 2L)
 ))
 })%>
 [...]
@@ -474,8 +476,6 @@ if (supportsMulticore()) {
   stopifnot(b[2] != b[1], b[3] != b[1])
 }
 %>
-
-To clarify, when we set up the two levels of multiprocess evaluation, we specified that in total 3 processes may be used at each level.  We choose three parallel processes, not just two, because one is always consumed by the calling process leaving two to be used for the asynchronous futures.  This is why we see that `pid`, `a` and `b` are all resolved by the same process.  If we had allowed only two cores at the top level, `a` and `b` would have been resolved by the same background process.  The same applies for the second level of futures.  This brings us to another point.  When we use asynchronous futures, there is nothing per se that prevents us from using the main process to keep doing computations while checking in on the asynchronous futures now and then to see if they are resolved.
 
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette '[Futures in R: Future Topologies]'.
 
@@ -519,7 +519,7 @@ a %<-% {
 } %lazy% TRUE
 cat("Everything is still ok although we have created a future that will fail.\n")
 })%>
-<% captureOutput(try(resolve(a), silent=TRUE)) %>
+<% captureOutput(try(resolve(a), silent = TRUE)) %>
 > a
 Resolving 'a' ...
 Error in eval(expr, envir, enclos) : Whoops!
@@ -541,11 +541,11 @@ backtrace(a)
 
 
 ## Globals
-Whenever an R expression is to be evaluated asynchronously (in parallel) or sequentially via lazy evaluation, global objects have to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because, for lazy evaluation, globals may otherwise change between when it is created and when it is resolved.  For asynchronous processing, the reason globals need to be identified is so that they can be exported to the process that evaluates the future.
+Whenever an R expression is to be evaluated asynchronously (in parallel) or sequentially via lazy evaluation, global (aka "free") objects have to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because, for lazy evaluation, globals may otherwise change between when it is created and when it is resolved.  For asynchronous processing, the reason globals need to be identified is so that they can be exported to the process that evaluates the future.
 
-The future package tries to automate these tasks as far as possible.  It does this with help of the [globals] package.  If a global variable is identified, it is captured and made available to the evaluating process.
+The future package tries to automate these tasks as far as possible.  It does this with help of the [globals] package, which uses static-code inspection to identify global variables.  If a global variable is identified, it is captured and made available to the evaluating process.
 <%---
-If it identifies a symbol that it believes is a global object, but it fails to locate it in the calling environment (or any the environment accessible from that one), an error is thrown immediately.  This minimizing the risk for runtime errors occurring later (sometimes much later) and in a different process (possible in a remote R session), which otherwise may be hard to troubleshoot.  For instance,
+If it identifies a symbol that it believes is a global object, but it fails to locate it in the calling environment (or any the environment accessible from that one), an error is thrown immediately.  This minimizing the risk for run-time errors occurring later (sometimes much later) and in a different process (possible in a remote R session), which otherwise may be hard to troubleshoot.  For instance,
 ```r
 > rm(a)
 > x <- 5.0
@@ -565,11 +565,10 @@ Moreover, if a global is defined in a package, then that global is not exported.
 As mentioned previously, for consistency across evaluation strategies, all types of futures validate globals upon creation.  This is also true for cases where it would not be necessary, e.g. for eager evaluation of multicore futures (which forks the calling process "as-is").  However, in order to make it as easy as possible to switch between strategies without being surprised by slightly different behaviors, the Future API is designed to check for globals the same way regardless of strategy.
 ---%>
 <%---
-Having said this, it is possible to disable validation of globals by setting `globals=FALSE`.  This could make sense if one know for sure that only sequential or multicore futures will be used.  This argument can be tweaked as `plan(tweak(sequential, globals=FALSE))` and `plan(tweak(multicore, globals=FALSE))`.  However, it is strongly advised not to do this.  Instead, as a best practice, it is always good if the code/script works with any type of futures.
+Having said this, it is possible to disable validation of globals by setting `globals = FALSE`.  This could make sense if one know for sure that only sequential or multicore futures will be used.  This argument can be tweaked as `plan(tweak(sequential, globals=FALSE))` and `plan(tweak(multicore, globals=FALSE))`.  However, it is strongly advised not to do this.  Instead, as a best practice, it is always good if the code/script works with any type of futures.
 ---%>
 
-Finally, it should be clarified that identifying globals from static code inspection alone is a challenging problem.  There will always be corner cases where automatic identification of globals fails so that either false globals are identified (less of a concern) or some of the true globals are missing (which will result in a runtime error or possibly the wrong results).  Vignette '[Futures in R: Common Issues with Solutions]' provides examples of common cases and explains how to avoid them as well as how to help the package to identify globals or to ignore falsely identified globals.
-
+Finally, it should be clarified that identifying globals from static code inspection alone is a challenging problem.  There will always be corner cases where automatic identification of globals fails so that either false globals are identified (less of a concern) or some of the true globals are missing (which will result in a run-time error or possibly the wrong results).  Vignette '[Futures in R: Common Issues with Solutions]' provides examples of common cases and explains how to avoid them as well as how to help the package to identify globals or to ignore falsely identified globals.  If that does not suffice, it is always possible to manually specify the global variables by their names (e.g. `globals = c("a", "slow_sum")`) or as name-value pairs (e.g. `globals = list(a = 42, slow_sum = my_sum)`).
 
 
 ## Constraints when using Implicit Futures
@@ -582,7 +581,7 @@ f <- list()
 for (ii in 1:3) {
   f[[ii]] <- future({ Sys.getpid() })
 }
-v <- lapply(f, FUN=value)
+v <- lapply(f, FUN = value)
 str(v)
 })%>
 ```
@@ -622,17 +621,17 @@ To see a live illustration how different types of futures are evaluated, run the
 ```r
 library("future")
 plan(sequential)
-demo("mandelbrot", package="future", ask=FALSE)
+demo("mandelbrot", package = "future", ask = FALSE)
 ```
 which resembles how the script would run if futures were not used.  Then, try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
 ```r
 plan(multiprocess)
-demo("mandelbrot", package="future", ask=FALSE)
+demo("mandelbrot", package = "future", ask = FALSE)
 ```
 Finally, if you have access to multiple machines you can try to set up a cluster of workers and use them, e.g.
 ```r
-plan(cluster, workers=c("n2", "n5", "n6", "n6", "n9"))
-demo("mandelbrot", package="future", ask=FALSE)
+plan(cluster, workers = c("n2", "n5", "n6", "n6", "n9"))
+demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
 
@@ -645,7 +644,7 @@ The goal of this package is to provide a standardized and unified API for using 
 [batchtools]: https://cran.r-project.org/package=batchtools
 [future]: https://cran.r-project.org/package=future
 [future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
-[future.batchjobs]: https://github.com/HenrikBengtsson/future.batchtools
+[future.batchtools]: https://github.com/HenrikBengtsson/future.batchtools
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-2-issues.html

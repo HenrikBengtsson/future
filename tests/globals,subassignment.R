@@ -1,12 +1,9 @@
 source("incl/start.R")
 
 oopts <- c(oopts, options(
-  future.globals.resolve=TRUE,
-  future.globals.onMissing="error"
+  future.globals.resolve = TRUE,
+  future.globals.onMissing = "error"
 ))
-
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
 
 message("*** Globals - subassignments ...")
 
@@ -15,7 +12,7 @@ message("*** Globals - subassignments w/ x$a <- value ...")
 ## Truth:
 x <- x0 <- list()
 y0 <- list(a = 1)
-str(list(x=x, y0=y0))
+str(list(x = x, y0 = y0))
 
 y <- local({
   x$a <- 1
@@ -37,13 +34,13 @@ stopifnot(identical(y, y0))
 
 stopifnot(identical(x, list()))
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
-  for (strategy in strategies) {
+  for (strategy in supportedStrategies(cores)) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy)
 
@@ -53,7 +50,7 @@ for (cores in 1:min(3L, availableCores())) {
       x$a <- 1
       x
     })
-    rm(list="x")
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -63,8 +60,8 @@ for (cores in 1:min(3L, availableCores())) {
     f <- future({
       x$a <- 1
       x
-    }, lazy=TRUE)
-    rm(list="x")
+    }, lazy = TRUE)
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -75,7 +72,7 @@ for (cores in 1:min(3L, availableCores())) {
       x$a <- 1
       x
     }
-    rm(list="x")
+    rm(list = "x")
     print(y)
     stopifnot(identical(y, y0))
 
@@ -85,7 +82,7 @@ for (cores in 1:min(3L, availableCores())) {
       x$a <- 1
       x
     } %lazy% TRUE
-    rm(list="x")
+    rm(list = "x")
     print(y)
     stopifnot(identical(y, y0))
 
@@ -96,7 +93,7 @@ for (cores in 1:min(3L, availableCores())) {
       x$a <- 1
       x
     }
-    rm(list="x")
+    rm(list = "x")
     print(y)
     stopifnot(identical(y, list(b = 2, a = 1)))
 
@@ -106,7 +103,7 @@ for (cores in 1:min(3L, availableCores())) {
       x[["a"]] <- 1
       x
     })
-    rm(list="x")
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -116,8 +113,8 @@ for (cores in 1:min(3L, availableCores())) {
     f <- future({
       x[["a"]] <- 1
       x
-    }, lazy=TRUE)
-    rm(list="x")
+    }, lazy = TRUE)
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -128,7 +125,7 @@ for (cores in 1:min(3L, availableCores())) {
       x[["a"]] <- 1
       x
     }
-    rm(list="x")
+    rm(list = "x")
     print(y)
     stopifnot(identical(y, y0))
     
@@ -138,7 +135,7 @@ for (cores in 1:min(3L, availableCores())) {
       x["a"] <- list(1)
       x
     })
-    rm(list="x")
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -148,8 +145,8 @@ for (cores in 1:min(3L, availableCores())) {
     f <- future({
       x["a"] <- list(1)
       x
-    }, lazy=TRUE)
-    rm(list="x")
+    }, lazy = TRUE)
+    rm(list = "x")
     y <- value(f)
     print(y)
     stopifnot(identical(y, y0))
@@ -160,7 +157,7 @@ for (cores in 1:min(3L, availableCores())) {
       x["a"] <- list(1)
       x
     }
-    rm(list="x")
+    rm(list = "x")
     print(y)
     stopifnot(identical(y, y0))
 
@@ -171,7 +168,7 @@ for (cores in 1:min(3L, availableCores())) {
       x[name] <- list(1)
       x
     }
-    rm(list=c("x", "name"))
+    rm(list = c("x", "name"))
     print(y)
     stopifnot(identical(y, y0))
   } ## for (strategy ...)

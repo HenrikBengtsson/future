@@ -12,7 +12,7 @@ If NULL (default), the current evaluator as returned
 by \code{\link{plan}()} is used.}
 }
 \value{
-A number in [1,Inf].
+A number in [1, Inf].
 }
 \description{
 Gets the number of workers available
@@ -21,7 +21,7 @@ Gets the number of workers available
 plan(multiprocess)
 nbrOfWorkers()  ## == availableCores()
 
-plan(multiprocess, workers=2)
+plan(multiprocess, workers = 2)
 nbrOfWorkers()  ## == 2
 
 plan(sequential)

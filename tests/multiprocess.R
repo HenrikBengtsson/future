@@ -4,16 +4,16 @@ plan(multiprocess)
 
 message("*** multiprocess() ...")
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores = cores)
 
   ## No global variables
   f <- multiprocess({
     42L
   })
   print(f)
-  stopifnot(inherits(f, "MultiprocessFuture") || inherits(f, "UniprocessFuture"))
+  stopifnot(inherits(f, "MultiprocessFuture") || inherits(f, "SequentialFuture"))
 
   print(resolved(f))
   y <- value(f)
@@ -48,7 +48,7 @@ for (cores in 1:min(3L, availableCores())) {
     x[[ii]] <- multiprocess({ ii })
   }
   message(sprintf(" - Resolving %d multiprocess futures", length(x)))
-  v <- sapply(x, FUN=value)
+  v <- sapply(x, FUN = value)
   stopifnot(all(v == 1:4))
 
 
@@ -58,22 +58,22 @@ for (cores in 1:min(3L, availableCores())) {
     1
   })
   print(f)
-  v <- value(f, signal=FALSE)
+  v <- value(f, signal = FALSE)
   print(v)
   stopifnot(inherits(v, "simpleError"))
 
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
   ## Error is repeated
-  res <- try(value(f), silent=TRUE)
+  res <- try(value(f), silent = TRUE)
   print(res)
   stopifnot(inherits(res, "try-error"))
 
 
   message("*** multiprocess() - too large globals ...")
-  ooptsT <- options(future.globals.maxSize=1024*4L)
+  ooptsT <- options(future.globals.maxSize = 1024 * 4L)
 
   limit <- getOption("future.globals.maxSize")
   cat(sprintf("Max total size of globals: %g bytes\n", limit))
@@ -86,9 +86,9 @@ for (cores in 1:min(3L, availableCores())) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    f <- multiprocess({ sum(a) }, workers=workers)
+    f <- multiprocess({ sum(a) }, workers = workers)
     print(f)
-    rm(list="a")
+    rm(list = "a")
     v <- value(f)
     print(v)
     stopifnot(v == yTruth)
@@ -99,8 +99,8 @@ for (cores in 1:min(3L, availableCores())) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    res <- try(f <- multiprocess({ sum(a) }, workers=workers), silent=TRUE)
-    rm(list="a")
+    res <- try(f <- multiprocess({ sum(a) }, workers = workers), silent = TRUE)
+    rm(list = "a")
     stopifnot(inherits(res, "try-error"))
   }
 
@@ -110,20 +110,20 @@ for (cores in 1:min(3L, availableCores())) {
   message("*** multiprocess() - too large globals ... DONE")
 
 
-  message("*** multiprocess(..., workers=1L) ...")
+  message("*** multiprocess(..., workers = 1L) ...")
 
   a <- 2
   b <- 3
   yTruth <- a * b
 
-  f <- multiprocess({ a * b }, workers=1L)
-  rm(list=c("a", "b"))
+  f <- multiprocess({ a * b }, workers = 1L)
+  rm(list = c("a", "b"))
 
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
 
-  message("*** multiprocess(..., workers=1L) ... DONE")
+  message("*** multiprocess(..., workers = 1L) ... DONE")
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

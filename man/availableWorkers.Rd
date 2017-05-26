@@ -5,7 +5,7 @@
 \title{Get set of available workers}
 \usage{
 availableWorkers(methods = getOption("future.availableWorkers.methods",
-  c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
+  c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
   "fallback")), na.rm = TRUE, default = "localhost", which = c("auto",
   "min", "max", "all"))
 }
@@ -21,7 +21,7 @@ of available cores.}
 If \code{"auto"}, the first non-empty set found.
 If \code{"min"}, the minimum value is returned.
 If \code{"max"}, the maximum value is returned (be careful!)
-If \code{"all"}, all values are returned.#'}
+If \code{"all"}, all values are returned.}
 }
 \value{
 Return a character vector of workers, which typically consists
@@ -44,7 +44,7 @@ In addition, the following settings ("methods") are also acknowledged:
    of workers is read from that file, where one worker (node)
    is given per line.
    An example of a job submission that results in this is
-   \code{qsub -l nodes=4:ppn=2}, which requests four nodes each
+   \code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
    with two cores.
  \item \code{"SGE"} -
    Query Sun/Oracle Grid Engine (SGE) environment variable

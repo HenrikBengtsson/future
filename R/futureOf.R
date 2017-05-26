@@ -19,15 +19,15 @@
 #'
 #' @export
 #' @importFrom listenv map parse_env_subset
-futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA, drop=FALSE) {
+futureOf <- function(var = NULL, envir = parent.frame(), mustExist = TRUE, default = NA, drop = FALSE) {
   ## Argument 'expr':
   expr <- substitute(var)
 
 
   ## Inspect by expression?
   if (!is.null(expr)) {
-    target <- parse_env_subset(expr, envir=envir, substitute=FALSE)
-    future <- get_future(target, mustExist=mustExist)
+    target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
+    future <- get_future(target, mustExist = mustExist)
     return(future)
   }
 
@@ -40,26 +40,26 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
     names(res) <- names(map)
 
     for (idx in seq_along(res)) {
-      target <- parse_env_subset(idx, envir=envir, substitute=FALSE)
-      future <- get_future(target, mustExist=FALSE, default=default)
+      target <- parse_env_subset(idx, envir = envir, substitute = FALSE)
+      future <- get_future(target, mustExist = FALSE, default = default)
       if (!is.null(future) || !is.atomic(future) || !is.na(future)) {
         res[[idx]] <- future
       }
     }
   } else {
     ## names(x) is only supported in R (>= 3.2.0)
-    vars <- ls(envir=envir, all.names=TRUE)
-    vars <- grep("^.future_", vars, invert=TRUE, value=TRUE)
-    res <- lapply(vars, FUN=function(var) {
-      target <- parse_env_subset(var, envir=envir, substitute=FALSE)
-      get_future(target, mustExist=FALSE, default=default)
+    vars <- ls(envir = envir, all.names = TRUE)
+    vars <- grep("^.future_", vars, invert = TRUE, value = TRUE)
+    res <- lapply(vars, FUN = function(var) {
+      target <- parse_env_subset(var, envir = envir, substitute = FALSE)
+      get_future(target, mustExist = FALSE, default = default)
     })
     names(res) <- vars
   }
 
   ## Keep only futures?
   if (drop && length(res) > 0) {
-    keep <- sapply(res, FUN=inherits, "Future")
+    keep <- sapply(res, FUN = inherits, "Future")
     res <- res[keep]
   } else {
     ## Preserve dimensions
@@ -74,14 +74,14 @@ futureOf <- function(var=NULL, envir=parent.frame(), mustExist=TRUE, default=NA,
 }
 
 
-get_future <- function(target, mustExist=TRUE, default=NA) {
+get_future <- function(target, mustExist = TRUE, default = NA) {
   res <- default
 
   if (!target$exists) {
     msg <- sprintf("No such future variable: %s", target$code)
     if (mustExist) {
       mdebug("ERROR: %s", msg)
-      stop(msg, call.=FALSE)
+      stop(msg, call. = FALSE)
     }
     attr(res, "reason") <- msg
     return(res)
@@ -99,13 +99,13 @@ get_future <- function(target, mustExist=TRUE, default=NA) {
     name <- target$name
   }
   future_name <- sprintf(".future_%s", name)
-  if (exists(future_name, envir=envir, inherits=FALSE)) {
-    return(get(future_name, envir=envir, inherits=FALSE))
+  if (exists(future_name, envir = envir, inherits = FALSE)) {
+    return(get(future_name, envir = envir, inherits = FALSE))
   }
 
   ## (b) Check if element itself is a future object
-  if (exists(name, envir=envir, inherits=FALSE)) {
-    future <- get(name, envir=envir, inherits=FALSE)
+  if (exists(name, envir = envir, inherits = FALSE)) {
+    future <- get(name, envir = envir, inherits = FALSE)
     if (inherits(future, "Future")) return(future)
   }
 
@@ -113,7 +113,7 @@ get_future <- function(target, mustExist=TRUE, default=NA) {
   msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(name), class(envir)[1], sQuote(envirName), sQuote(target$code))
   if (mustExist) {
     mdebug("ERROR: %s", msg)
-    stop(msg, call.=FALSE)
+    stop(msg, call. = FALSE)
   }
 
   attr(res, "reason") <- msg

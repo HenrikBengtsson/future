@@ -31,11 +31,9 @@
 #' are used.
 #'
 #' @export
-multiprocess <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, workers=availableCores(), gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+multiprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   fun <- if (supportsMulticore()) multicore else multisession
-  fun(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, workers=workers, gc=gc, earlySignal=earlySignal, label=label, ...)
+  fun(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, gc = gc, earlySignal = earlySignal, label = label, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")
-
-

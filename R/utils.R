@@ -1,9 +1,9 @@
 ## From R.utils 2.0.2 (2015-05-23)
-hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (missing(lastCollapse)) 3 else Inf, maxTail=if (is.finite(maxHead)) 1 else Inf, abbreviate="...") {
+hpaste <- function(..., sep = "", collapse = ", ", lastCollapse = NULL, maxHead = if (missing(lastCollapse)) 3 else Inf, maxTail = if (is.finite(maxHead)) 1 else Inf, abbreviate = "...") {
   if (is.null(lastCollapse)) lastCollapse <- collapse
 
   # Build vector 'x'
-  x <- paste(..., sep=sep)
+  x <- paste(..., sep = sep)
   n <- length(x)
 
   # Nothing todo?
@@ -20,10 +20,10 @@ hpaste <- function(..., sep="", collapse=", ", lastCollapse=NULL, maxHead=if (mi
 
   if (!is.null(collapse) && n > 1) {
     if (lastCollapse == collapse) {
-      x <- paste(x, collapse=collapse)
+      x <- paste(x, collapse = collapse)
     } else {
-      xT <- paste(x[1:(n-1)], collapse=collapse)
-      x <- paste(xT, x[n], sep=lastCollapse)
+      xT <- paste(x[1:(n-1)], collapse = collapse)
+      x <- paste(xT, x[n], sep = lastCollapse)
     }
   }
 
@@ -36,16 +36,16 @@ trim <- function(s) {
 } # trim()
 
 
-hexpr <- function(expr, trim=TRUE, collapse="; ", maxHead=6L, maxTail=3L, ...) {
+hexpr <- function(expr, trim = TRUE, collapse = "; ", maxHead = 6L, maxTail = 3L, ...) {
   code <- deparse(expr)
   if (trim) code <- trim(code)
-  hpaste(code, collapse=collapse, maxHead=maxHead, maxTail=maxTail, ...)
+  hpaste(code, collapse = collapse, maxHead = maxHead, maxTail = maxTail, ...)
 } # hexpr()
 
 
 ## From R.filesets
-asIEC <- function(size, digits=2L) {
-  if (length(size) > 1L) return(sapply(size, FUN=asIEC, digits=digits))
+asIEC <- function(size, digits = 2L) {
+  if (length(size) > 1L) return(sapply(size, FUN = asIEC, digits = digits))
   units <- c("bytes", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB")
   for (unit in units) {
     if (size < 1000) break;
@@ -71,8 +71,8 @@ mdebug <- function(...) {
 #' @importFrom digest digest
 uuid <- function(source, keep_source = FALSE) {
   uuid <- digest(source)
-  uuid <- strsplit(uuid, split="")[[1]]
-  uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse="")
+  uuid <- strsplit(uuid, split = "")[[1]]
+  uuid <- paste(c(uuid[1:8], "-", uuid[9:12], "-", uuid[13:16], "-", uuid[17:20], "-", uuid[21:32]), collapse = "")
   if (keep_source) attr(uuid, "source") <- source
   uuid
 } ## uuid()
@@ -110,11 +110,11 @@ session_uuid <- local({
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
     host <- host[nzchar(host)][1]
     info <- list(
-      host=host,
-      info=info,
-      pid=Sys.getpid(),
-      time=Sys.time(),
-      random=sample.int(.Machine$integer.max, size=1L)
+      host = host,
+      info = info,
+      pid = Sys.getpid(),
+      time = Sys.time(),
+      random = sample.int(.Machine$integer.max, size = 1L)
     )
     uuid <- uuid(info, keep_source = TRUE)
     value <<- uuid
@@ -133,41 +133,41 @@ session_uuid <- local({
 ## and all of the package content would be exported.
 
 ## Removes all variables in the global environment.
-grmall <- local(function(envir=.GlobalEnv) {
-  vars <- ls(envir=envir, all.names=TRUE)
-  rm(list=vars, envir=envir, inherits=FALSE)
+grmall <- local(function(envir = .GlobalEnv) {
+  vars <- ls(envir = envir, all.names = TRUE)
+  rm(list = vars, envir = envir, inherits = FALSE)
 })
 
 ## Assigns a value to the global environment.
-gassign <- local(function(name, value, envir=.GlobalEnv) {
-  assign(name, value=value, envir=envir)
+gassign <- local(function(name, value, envir = .GlobalEnv) {
+  assign(name, value = value, envir = envir)
   NULL
 })
 
 ## Evaluates an expression in global environment.
-geval <- local(function(expr, substitute=FALSE, envir=.GlobalEnv, ...) {
+geval <- local(function(expr, substitute = FALSE, envir = .GlobalEnv, ...) {
   if (substitute) expr <- substitute(expr)
-  eval(expr, envir=envir)
+  eval(expr, envir = envir)
 })
 
 ## Vectorized version of require() with bells and whistles
 requirePackages <- local(function(pkgs) {
   requirePackage <- function(pkg) {
-    if (require(pkg, character.only=TRUE)) return()
+    if (require(pkg, character.only = TRUE)) return()
 
     ## Failed to attach package
     msg <- sprintf("Failed to attach package %s in %s", sQuote(pkg), R.version$version.string)
     data <- utils::installed.packages()
 
     ## Installed, but fails to load/attach?
-    if (is.element(pkg, data[,"Package"])) {
-      keep <- (data[,"Package"] == pkg)
-      data <- data[keep,,drop=FALSE]
-      pkgs <- sprintf("%s %s (in %s)", data[,"Package"], data[, "Version"], sQuote(data[,"LibPath"]))
-      msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse=", "))
+    if (is.element(pkg, data[, "Package"])) {
+      keep <- (data[, "Package"] == pkg)
+      data <- data[keep, ,drop = FALSE]
+      pkgs <- sprintf("%s %s (in %s)", data[, "Package"], data[, "Version"], sQuote(data[, "LibPath"]))
+      msg <- sprintf("%s, although the package is installed: %s", msg, paste(pkgs, collapse = ", "))
     } else {
       paths <- .libPaths()
-      msg <- sprintf("%s, because the package is not installed in any of the libraries (%s), which contain %d installed packages.", msg, paste(sQuote(paths), collapse=", "), nrow(data))
+      msg <- sprintf("%s, because the package is not installed in any of the libraries (%s), which contain %d installed packages.", msg, paste(sQuote(paths), collapse = ", "), nrow(data))
     }
 
     stop(msg)
@@ -175,7 +175,7 @@ requirePackages <- local(function(pkgs) {
 
   ## require() all packages
   pkgs <- unique(pkgs)
-  lapply(pkgs, FUN=requirePackage)
+  lapply(pkgs, FUN = requirePackage)
 }) ## requirePackages()
 
 
@@ -185,8 +185,8 @@ requirePackages <- local(function(pkgs) {
 ## is used.
 getOption <- local({
   go <- base::getOption
-  function(x, default=NULL) {
-    if (missing(default) || match(x, table=names(.Options), nomatch=0L) > 0L) go(x) else default
+  function(x, default = NULL) {
+    if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
   }
 }) ## getOption()
 
@@ -232,16 +232,26 @@ detectCores <- local({
 ## * multicore futures:
 ##   - parallel::mcparallel()       ## run()
 ##   - parallel::mccollect()        ## value()
-importParallel <- function(name=NULL) {
-  ns <- getNamespace("parallel")
-  if (!exists(name, mode="function", envir=ns, inherits=FALSE)) {
-    ## covr: skip=3
-    msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
-    mdebug(msg)
-    stop(msg, call.=FALSE)
+importParallel <- local({
+  ns <- NULL
+  cache <- list()
+  
+  function(name = NULL) {
+    res <- cache[[name]]
+    if (is.null(res)) {
+      ns <<- getNamespace("parallel")
+      if (!exists(name, mode = "function", envir = ns, inherits = FALSE)) {
+        ## covr: skip=3
+        msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
+        mdebug(msg)
+        stop(msg, call. = FALSE)
+      }
+      res <- get(name, mode = "function", envir = ns, inherits = FALSE)
+      cache[[name]] <<- res
+    }
+    res
   }
-  get(name, mode="function", envir=ns, inherits=FALSE)
-}
+})
 
 
 parseCmdArgs <- function() {
@@ -263,13 +273,13 @@ parseCmdArgs <- function() {
       value <- as.integer(gsub("--parallel=", "", cmdarg))
     }
 
-    max <- availableCores(methods="system")
+    max <- availableCores(methods = "system")
     if (is.na(value) || value <= 0L) {
       msg <- sprintf("future: Ignoring invalid number of processes specified in command-line option: %s", cmdarg)
-      warning(msg, call.=FALSE, immediate.=TRUE)
+      warning(msg, call. = FALSE, immediate. = TRUE)
     } else if (value > max) {
-      msg <- sprintf("future: Ignoring requested number of processes, because it is greater than the number of cores/child processes available (=%d) to this R process: %s", max, cmdarg)
-      warning(msg, call.=FALSE, immediate.=TRUE)
+      msg <- sprintf("future: Ignoring requested number of processes, because it is greater than the number of cores/child processes available (= %d) to this R process: %s", max, cmdarg)
+      warning(msg, call. = FALSE, immediate. = TRUE)
     } else {
       args$p <- value
     }
@@ -281,7 +291,7 @@ parseCmdArgs <- function() {
 
 myExternalIP <- local({
   ip <- NULL
-  function(force=FALSE, mustWork=TRUE) {
+  function(force = FALSE, mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
     
     ## FIXME: The identification of the external IP number relies on a
@@ -325,7 +335,7 @@ myExternalIP <- local({
     ## Nothing found?
     if (is.null(value)) {
       if (mustWork) {
-        stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse=", ")))
+        stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", ")))
       }
       return(NA_character_)
     }
@@ -350,9 +360,9 @@ myInternalIP <- local({
   ##   (3) 192.168.0.0 - 192.168.255.255
   ## https://en.wikipedia.org/wiki/Private_network#Private_IPv4_address_spaces
   isPrivateIP <- function(ips) {
-    ips <- strsplit(ips, split=".", fixed=TRUE)
-    ips <- lapply(ips, FUN=as.integer)
-    res <- logical(length=length(ips))
+    ips <- strsplit(ips, split = ".", fixed = TRUE)
+    ips <- lapply(ips, FUN = as.integer)
+    res <- logical(length = length(ips))
     for (kk in seq_along(ips)) {
       ip <- ips[[kk]]
       if (ip[1] == 10) {
@@ -366,7 +376,7 @@ myInternalIP <- local({
     res
   } ## isPrivateIP()
 
-  function(force=FALSE, which=c("first", "last", "all"), mustWork=TRUE) {
+  function(force = FALSE, which = c("first", "last", "all"), mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
     which <- match.arg(which)
 
@@ -376,46 +386,46 @@ myInternalIP <- local({
     if (grepl("^linux", os)) {
       ## (i) Try command 'hostname -I'
       res <- tryCatch({
-        system2("hostname", args="-I", stdout=TRUE)
+        system2("hostname", args = "-I", stdout = TRUE)
       }, error = identity)
 
       ## (ii) Try commands 'ifconfig'
       if (inherits(res, "simpleError")) {
         res <- tryCatch({
-          system2("ifconfig", stdout=TRUE)
+          system2("ifconfig", stdout = TRUE)
         }, error = identity)
       }
 
       ## (ii) Try command '/sbin/ifconfig'
       if (inherits(res, "simpleError")) {
         res <- tryCatch({
-          system2("/sbin/ifconfig", stdout=TRUE)
+          system2("/sbin/ifconfig", stdout = TRUE)
         }, error = identity)
       }
       
       ## Failed?
       if (inherits(res, "simpleError")) res <- NA_character_
       
-      res <- grep(pattern, res, value=TRUE)
-      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
-      res <- grep(pattern, res, value=TRUE)
-      res <- unlist(strsplit(res, split=":", fixed=FALSE), use.names=FALSE)
-      res <- grep(pattern, res, value=TRUE)
+      res <- grep(pattern, res, value = TRUE)
+      res <- unlist(strsplit(res, split = "[ ]+", fixed = FALSE), use.names = FALSE)
+      res <- grep(pattern, res, value = TRUE)
+      res <- unlist(strsplit(res, split = ":", fixed = FALSE), use.names = FALSE)
+      res <- grep(pattern, res, value = TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
       value <- res[isPrivateIP(res)]
     } else if (grepl("^mingw", os)) {
-      res <- system2("ipconfig", stdout=TRUE)
-      res <- grep("IPv4", res, value=TRUE)
-      res <- grep(pattern, res, value=TRUE)
-      res <- unlist(strsplit(res, split="[ ]+", fixed=FALSE), use.names=FALSE)
-      res <- grep(pattern, res, value=TRUE)
+      res <- system2("ipconfig", stdout = TRUE)
+      res <- grep("IPv4", res, value = TRUE)
+      res <- grep(pattern, res, value = TRUE)
+      res <- unlist(strsplit(res, split = "[ ]+", fixed = FALSE), use.names = FALSE)
+      res <- grep(pattern, res, value = TRUE)
       res <- unique(trim(res))
       ## Keep private network IPs only (just in case)
       value <- res[isPrivateIP(res)]
     } else {
       if (mustWork) {
-        stop(sprintf("remote(..., myip='<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+        stop(sprintf("remote(..., myip = '<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
       }
       return(NA_character_)
     }

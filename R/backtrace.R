@@ -7,13 +7,13 @@
 #' @return A list of calls.
 #'
 #' @export
-backtrace <- function(future, envir=parent.frame(), ...) {
+backtrace <- function(future, envir = parent.frame(), ...) {
   ## Argument 'expr':
   expr <- substitute(future)
 
   if (!is.null(expr)) {
-    target <- parse_env_subset(expr, envir=envir, substitute=FALSE)
-    future <- get_future(target, mustExist=TRUE)
+    target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
+    future <- get_future(target, mustExist = TRUE)
   }
 
   if (!resolved(future)) {
@@ -32,4 +32,3 @@ backtrace <- function(future, envir=parent.frame(), ...) {
 
   calls
 } ## backtrace()
-

@@ -52,15 +52,12 @@ env$c \%<-\% { 3 }
 f <- futureOf(env$c)
 print(f)
 
-f2 <- futureOf(c, envir=env)
+f2 <- futureOf(c, envir = env)
 print(f2)
 
-f3 <- futureOf("c", envir=env)
+f3 <- futureOf("c", envir = env)
 print(f3)
 
-fs <- futureOf(envir=env)
+fs <- futureOf(envir = env)
 print(fs)
-
-
-
 }

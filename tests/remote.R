@@ -6,7 +6,7 @@ message("*** remote() ...")
 ## No global variables
 f <- try(remote({
   42L
-}, workers="localhost"), silent=FALSE)
+}, workers = "localhost"), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "ClusterFuture"))
 
@@ -16,11 +16,11 @@ print(y)
 stopifnot(y == 42L)
 
 
-plan(remote, workers="localhost")
+plan(remote, workers = "localhost")
 ## No global variables
 f <- try(future({
   42L
-}), silent=FALSE)
+}), silent = FALSE)
 print(f)
 stopifnot(inherits(f, "ClusterFuture"))
 
@@ -42,7 +42,7 @@ print(f)
 
 message("*** remote() - exceptions ...")
 
-res <- try(remote(42L, workers=TRUE), silent=TRUE)
+res <- try(remote(42L, workers = TRUE), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
 

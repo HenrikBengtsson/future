@@ -8,7 +8,7 @@ FutureRegistry <- local({
     NA_integer_
   }
 
-  collectValues <- function(where, futures, firstOnly=TRUE) {
+  collectValues <- function(where, futures, firstOnly = TRUE) {
     for (ii in seq_along(futures)) {
       future <- futures[[ii]]
 
@@ -21,13 +21,13 @@ FutureRegistry <- local({
       if (resolved(future)) {
         ## (a) Let future cleanup after itself, iff needed.
         ##     This, this may result in a call to
-        ##     FutureRegistry(..., action="remove").
-        value(future, signal=FALSE)
+        ##     FutureRegistry(..., action = "remove").
+        value(future, signal = FALSE)
 
         ## (b) Make sure future is removed from registry, unless
         ##     already done via above value() call.
         futuresDB <- db[[where]]
-        idx <- indexOf(futuresDB, future=future)
+        idx <- indexOf(futuresDB, future = future)
         if (!is.na(idx)) {
           futuresDB[[idx]] <- NULL
           db[[where]] <<- futuresDB
@@ -42,7 +42,7 @@ FutureRegistry <- local({
   } ## collectValues()
 
 
-  function(where, action=c("add", "remove", "list", "collect-first", "reset"), future=NULL, earlySignal=TRUE, ...) {
+  function(where, action = c("add", "remove", "list", "collect-first", "reset"), future = NULL, earlySignal = TRUE, ...) {
     stopifnot(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
@@ -53,7 +53,7 @@ FutureRegistry <- local({
     }
 
     if (action == "add") {
-      idx <- indexOf(futures, future=future)
+      idx <- indexOf(futures, future = future)
       if (!is.na(idx)) {
         msg <- sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1])
         mdebug("ERROR: %s", msg)
@@ -62,7 +62,7 @@ FutureRegistry <- local({
       futures[[length(futures)+1L]] <- future
       db[[where]] <<- futures
     } else if (action == "remove") {
-      idx <- indexOf(futures, future=future)
+      idx <- indexOf(futures, future = future)
       if (is.na(idx)) {
         msg <- sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1])
         mdebug("ERROR: %s", msg)
@@ -71,7 +71,7 @@ FutureRegistry <- local({
       futures[[idx]] <- NULL
       db[[where]] <<- futures
     } else if (action == "collect-first") {
-      collectValues(where, futures=futures, firstOnly=TRUE)
+      collectValues(where, futures = futures, firstOnly = TRUE)
     } else if (action == "reset") {
       db[[where]] <<- list()
     } else if (action == "list") {
@@ -84,14 +84,14 @@ FutureRegistry <- local({
     ## Early signaling of conditions?
     if (earlySignal && length(futures) > 0L) {
       ## Which futures have early signaling enabled?
-      idxs <- lapply(futures, FUN=function(f) f$earlySignal)
-      idxs <- which(unlist(idxs, use.names=FALSE))
+      idxs <- lapply(futures, FUN = function(f) f$earlySignal)
+      idxs <- which(unlist(idxs, use.names = FALSE))
 
       ## Any futures to be scanned for early signaling?
       if (length(idxs) > 0) {
         ## Collect values, which will trigger signaling during
         ## calls to resolved().
-        collectValues(where, futures=futures[idxs], firstOnly=FALSE)
+        collectValues(where, futures = futures[idxs], firstOnly = FALSE)
       }
     }
 

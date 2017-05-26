@@ -11,7 +11,7 @@
 #' If \code{"auto"}, the first non-empty set found.
 #' If \code{"min"}, the minimum value is returned.
 #' If \code{"max"}, the maximum value is returned (be careful!)
-#' If \code{"all"}, all values are returned.#'
+#' If \code{"all"}, all values are returned.
 #'
 #' @return Return a character vector of workers, which typically consists
 #' of names of machines / compute nodes, but may also be IP numbers.
@@ -30,7 +30,7 @@
 #'    of workers is read from that file, where one worker (node)
 #'    is given per line.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -l nodes=4:ppn=2}, which requests four nodes each
+#'    \code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
 #'    with two cores.
 #'  \item \code{"SGE"} -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
@@ -47,7 +47,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods=getOption("future.availableWorkers.methods", c("mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm=TRUE, default="localhost", which=c("auto", "min", "max", "all")) {
+availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))
@@ -84,7 +84,7 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
       pathname <- getenv("PBS_NODEFILE")
       if (is.na(pathname)) next
       if (!file_test("-f", pathname)) {
-        warning(sprintf("Environent variable %s was set but no such file %s exists", sQuote("PBS_NODEFILE"), sQuote(pathname)))
+        warning(sprintf("Environment variable %s was set but no such file %s exists", sQuote("PBS_NODEFILE"), sQuote(pathname)))
         next
       }
       data <- read_pbs_nodefile(pathname)
@@ -109,7 +109,7 @@ availableWorkers <- function(methods=getOption("future.availableWorkers.methods"
       pathname <- getenv("PE_HOSTFILE")
       if (is.na(pathname)) next
       if (!file_test("-f", pathname)) {
-        warning(sprintf("Environent variable %s was set but no such file %s exists", sQuote("PE_HOSTFILE"), sQuote(pathname)))
+        warning(sprintf("Environment variable %s was set but no such file %s exists", sQuote("PE_HOSTFILE"), sQuote(pathname)))
         next
       }
       data <- read_pe_hostfile(pathname)

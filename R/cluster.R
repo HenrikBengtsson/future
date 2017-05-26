@@ -36,17 +36,16 @@
 #' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 #'
 #' @export
-cluster <- function(expr, envir=parent.frame(), substitute=TRUE, lazy=FALSE, seed=NULL, globals=TRUE, persistent=FALSE, workers=availableWorkers(), user=NULL, revtunnel=TRUE, homogeneous=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+cluster <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableWorkers(), user = NULL, revtunnel = TRUE, homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if ("cluster" %in% names(list(...))) {
     .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
   }
 
   if (substitute) expr <- substitute(expr)
 
-  future <- ClusterFuture(expr=expr, envir=envir, substitute=FALSE, lazy=lazy, seed=seed, globals=globals, persistent=persistent, workers=workers, user=user, revtunnel=revtunnel, homogeneous=homogeneous, gc=gc, earlySignal=earlySignal, label=label, ...)
+  future <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, persistent = persistent, workers = workers, user = user, revtunnel = revtunnel, homogeneous = homogeneous, gc = gc, earlySignal = earlySignal, label = label, ...)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
-

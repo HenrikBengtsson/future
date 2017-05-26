@@ -16,5 +16,5 @@
   args["seed"] <- list(seed)
   options(future.disposable = args)
 
-  eval(fassignment, envir=envir)
+  eval(fassignment, envir = envir)
 }

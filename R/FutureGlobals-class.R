@@ -21,7 +21,7 @@
 #'
 #' @importFrom globals Globals
 #' @export
-FutureGlobals <- function(object=list(), resolved = FALSE, total_size = NA_real_, ...) {
+FutureGlobals <- function(object = list(), resolved = FALSE, total_size = NA_real_, ...) {
   if (!is.list(object)) {
     stop("Argument 'object' is not a list: ", class(object)[1])
   }
@@ -35,7 +35,7 @@ FutureGlobals <- function(object=list(), resolved = FALSE, total_size = NA_real_
     attr(object, "total_size") <- total_size
   }
   
-  structure(object, class=c("FutureGlobals", class(object)))
+  structure(object, class = c("FutureGlobals", class(object)))
 }
 
 #' @export
@@ -137,28 +137,3 @@ resolve.FutureGlobals <- function(x, ...) {
 
   x
 }
-
-
-shallow_resolve.FutureGlobals <- function(x, ...) {
-  ## Nothing to do?
-  if (length(x) == 0) return(x)
-  
-  ## Already resolved?
-  if (isTRUE(attr(x, "resolved"))) return(x)
-
-  idxs <- which(unlist(lapply(x, FUN=inherits, "Future"), use.names=FALSE))
-
-  ## Nothing to do?
-  if (length(idxs) > 0) {
-    mdebug("Global futures: [%d] %s", length(idxs), hpaste(sQuote(names(x[idxs]))))
-    valuesF <- values(x[idxs])
-    x[idxs] <- lapply(valuesF, FUN=ConstantFuture)
-    attr(x, "total_size") <- NA_real_
-  }
-
-  attr(x, "resolved") <- TRUE
-
-  x
-}
-
-    

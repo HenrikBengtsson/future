@@ -8,14 +8,14 @@ print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::multisession, globals=FALSE)")
-oplan <- future::plan(future::multisession, globals=FALSE)
+message("*** Set strategy via future::plan(future::multisession, globals = FALSE)")
+oplan <- future::plan(future::multisession, globals = FALSE)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::multisession(globals=FALSE)")
-oplan <- future::plan(future::multisession(globals=FALSE))
+message("*** Set strategy via future::plan(future::multisession(globals = FALSE)")
+oplan <- future::plan(future::multisession(globals = FALSE))
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
@@ -36,25 +36,9 @@ print(future::plan())
 library("future")
 
 message("*** plan('unknown strategy')")
-res <- try(plan('unknown strategy'), silent=TRUE)
+res <- try(plan('unknown strategy'), silent = TRUE)
 print(res)
 stopifnot(inherits(res, "try-error"))
-
-message("*** plan() by (lazy) function [DEPRECATED]")
-
-## Setting strategy by function
-plan(lazy)
-a <- 0
-f <- future({
-  b <- 3
-  c <- 2
-  a * b * c
-}, lazy = TRUE)
-a <- 7  ## Make sure globals are frozen
-##if ("covr" %in% loadedNamespaces()) v <- 0 else ## WORKAROUND
-v <- value(f)
-print(v)
-stopifnot(v == 0)
 
 
 message("*** plan(sequential)")
@@ -88,8 +72,8 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 0)
 
-message("*** plan(sequential, local=FALSE)")
-plan(sequential, local=FALSE)
+message("*** plan(sequential, local = FALSE)")
+plan(sequential, local = FALSE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -98,22 +82,22 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 1)
 
-message("*** plan(sequential, local=FALSE, abc=1, def=TRUE)")
-plan(sequential, local=FALSE, abc=1, def=TRUE)
+message("*** plan(sequential, local = FALSE, abc = 1, def = TRUE)")
+plan(sequential, local = FALSE, abc = 1, def = TRUE)
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(sequential(local=FALSE))")
+message("*** plan(sequential(local = FALSE))")
 plan(multisession)
-plan(sequential(local=FALSE))
+plan(sequential(local = FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
-message("*** plan(tweak(sequential, local=FALSE))")
+message("*** plan(tweak(sequential, local = FALSE))")
 plan(multisession)
-plan(tweak(sequential, local=FALSE))
+plan(tweak(sequential, local = FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
@@ -121,11 +105,11 @@ stopifnot(formals(fcn)$local == FALSE)
 
 message("*** old <- plan(new)")
 truth <- plan()
-old <- plan(multisession, globals=FALSE)
+old <- plan(multisession, globals = FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
-curr <- plan()    ## curr == multisession(globals=FALSE)
-prev <- plan(old) ## prev == lazy(local=FALSE)
+curr <- plan()    ## curr == multisession(globals = FALSE)
+prev <- plan(old) ## prev == sequential(local = FALSE)
 stopifnot(identical(unclass(curr), unclass(prev)))
 
 curr <- plan()    ## curr == old
@@ -141,7 +125,7 @@ message("*** %plan% sequential")
 plan(multisession)
 
 ## %plan% can operate on any expression, so it
-## works just as an withPlan({ ... }, plan=...)
+## works just as an withPlan({ ... }, plan = ...)
 fun <- { plan() } %plan% sequential
 f <- fun(1)
 stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFuture"))
@@ -149,17 +133,17 @@ stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFutur
 x %<-% { a <- 1 } %plan% sequential
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** %plan% sequential(local=FALSE) ")
+message("*** %plan% sequential(local = FALSE) ")
 plan(multisession)
 a <- 0
-x %<-% { a } %plan% sequential(local=FALSE)
+x %<-% { a } %plan% sequential(local = FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
 stopifnot(identical(body(plan()), body(multisession)))
 
-message("*** Nested futures with different plans [DEPRECATED]")
-plan(lazy)
+message("*** Nested futures with different plans")
+
 c %<-% {
   message("Resolving 'c'")
   a %<-% {

@@ -26,7 +26,7 @@ for (ii in 1:3) {
   x[[ii]] %<-% {
     y <- listenv()
     for (jj in 1:3) {
-      y[[jj]] %<-% { ii + jj/10 }
+      y[[jj]] %<-% { ii + jj / 10 }
     }
     y
   }
@@ -46,7 +46,7 @@ library("future")
 library("listenv")
 htseq_align <- function(fq, chr) { chr }
 
-fqs <- dir(pattern="[.]fastq$")
+fqs <- dir(pattern = "[.]fastq$")
 
 bams <- listenv()
 for (ss in seq_along(fqs)) {
@@ -54,7 +54,7 @@ for (ss in seq_along(fqs)) {
   bams[[ss]] %<-% {
     bams_ss <- listenv()
     for (cc in 1:24) {
-      bams_ss[[cc]] %<-% htseq_align(fq, chr=cc)
+      bams_ss[[cc]] %<-% htseq_align(fq, chr = cc)
     }
     as.list(bams_ss)
   }
@@ -74,7 +74,7 @@ plan(list(multiprocess, sequential))
 ```
 The internals for processing multiprocess future queries `availableCores()` to infer how many cores can be used simultaneously, so there is no need to explicitly specify that there are 8 cores available.
 
-_Comment_: Since synchronous is the default future, we could skip trailing sequential futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(sequential)`.  However, it does not hurt to be explicit.
+_Comment_: Since synchronous is the default future, we could skip trailing sequential futures in the setup, e.g. `plan(list(multiprocess))` or just `plan(multiprocess)`.  However, it does not hurt to be explicit.
 
 If we instead would like to process the sample sequentially and the chromosomes in parallel, we can use:
 ```r
@@ -83,7 +83,7 @@ plan(list(sequential, multiprocess))
 
 We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
 ```r
-plan(list(tweak(multiprocess, workers=2), tweak(multiprocess, workers=4)))
+plan(list(tweak(multiprocess, workers = 2), tweak(multiprocess, workers = 4)))
 ```
 
 
@@ -91,16 +91,16 @@ plan(list(tweak(multiprocess, workers=2), tweak(multiprocess, workers=4)))
 With a compute cluster of 3 machines each with 16 cores, we can run up to 48 alignment processes in parallel.  A natural setup is to have one machine process one sample in parallel.  We could specify this as:
 ```r
 nodes <- c("n1", "n2", "n3")
-plan(list(tweak(cluster, workers=nodes), multiprocess))
+plan(list(tweak(cluster, workers = nodes), multiprocess))
 ```
 _Comment:_ Multiprocess futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.
 
 One possible downside to the above setup is that we might not utilize all available cores all the time.  This is because the alignment of the shorter chromosomes will finish sooner than the longer ones, which means that we might at the end of each sample have only a few alignment processes running on each machine leaving the remaining cores idle/unused.  An alternative set up is then to use the following setup:
 ```r
-nodes <- rep(c("n1", "n2", "n3"), each=8)
-plan(list(tweak(cluster, workers=nodes), multiprocess))
+nodes <- rep(c("n1", "n2", "n3"), each = 8)
+plan(list(tweak(cluster, workers = nodes), multiprocess))
 ```
-This will cause up to 24 (=3*8) samples to be processed in parallel each processing two chromosomes at the same time.
+This will cause up to 24 (= 3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
 
 ## Example: A remote compute cluster
@@ -113,7 +113,7 @@ library("future")
 library("listenv")
 
 ## Set up access to remote login node
-login <- tweak(remote, workers="remote.server.org")
+login <- tweak(remote, workers = "remote.server.org")
 plan(login)
 
 ## Set up cluster nodes on login node
@@ -123,7 +123,7 @@ nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) }
 ## login node -> { cluster nodes } -> { multiple cores }
 plan(list(
   login,
-  tweak(cluster, workers=nodes),
+  tweak(cluster, workers = nodes),
   multiprocess
 ))
 
@@ -141,9 +141,11 @@ x %<-% {
       z <- listenv()
       for (jj in 1:2) {
         ## (c) These will be evaluated in separate processes on the same compute node
-        z[[jj]] %<-% data.frame(task=task, top.host=thost, top.pid=tpid,
-                                mid.host=mhost, mid.pid=mpid,
-                                host=Sys.info()[["nodename"]], pid=Sys.getpid())
+        z[[jj]] %<-% data.frame(task = task,
+		                        top.host = thost, top.pid = tpid,
+                                mid.host = mhost, mid.pid = mpid,
+                                host = Sys.info()[["nodename"]],
+								pid = Sys.getpid())
       }
       Reduce(rbind, z)
     }

@@ -274,7 +274,8 @@ check_Rex:
 
 
 covr:
-	$(R_SCRIPT) -e "source('.covr.R'); covr::shine(covr)"
+	$(R_SCRIPT) -e "c <- covr::package_coverage(quiet = FALSE); saveRDS(c, '.covr.rds'); print(c); covr::report(c)"
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

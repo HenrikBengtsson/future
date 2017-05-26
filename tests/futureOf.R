@@ -15,10 +15,9 @@ fs <- futureOf()
 print(fs)
 
 ## Non-existing object
-res <- try(futureOf("non-exiting-object", mustExist=TRUE), silent=TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf("non-exiting-object", mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** futureOf() ... DONE")
 
 source("incl/end.R")
-

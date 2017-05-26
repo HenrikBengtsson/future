@@ -1,13 +1,13 @@
 source("incl/start.R")
 library("listenv")
 
-oopts <- c(oopts, options(future.globals.resolve=TRUE))
-setTimeLimit(cpu=10, elapsed=10, transient=TRUE)
+oopts <- c(oopts, options(future.globals.resolve = TRUE))
+setTimeLimit(cpu = 10, elapsed = 10, transient = TRUE)
 
 message("*** Tricky use cases related to globals (part 2) ...")
 
-## Allow for two (sic!) background processes
-plan(multisession, workers=3L)
+## Allow for two background processes
+plan(multisession, workers = 2L)
 
 env <- new.env()
 
@@ -18,7 +18,7 @@ env$a %<-% { 5 }
 b %<-% { "a" }
 
 ## Resolve future #2 (frees up background process #2)
-message(sprintf("b=%s\n", sQuote(b)))
+message(sprintf("b = %s\n", sQuote(b)))
 
 ## Create future #3 (consumes background process #2)
 ## THIS IS THE TRICKY PART:
@@ -29,7 +29,7 @@ message(sprintf("b=%s\n", sQuote(b)))
 y %<-% { env[[b]] }
 
 ## Resolve future #3
-message(sprintf("y=%s\n", y))
+message(sprintf("y = %s\n", y))
 
 ## Resolve future #1 if not already done
 str(as.list(env))
@@ -38,7 +38,7 @@ str(as.list(env))
 ## Since future #1 is resolved it will work at this point
 y %<-% { env[[b]] }
 ## Resolve future #4
-message(sprintf("y=%s\n", y))
+message(sprintf("y = %s\n", y))
 
 message("*** Tricky use cases related to globals (part 2) ... DONE")
 

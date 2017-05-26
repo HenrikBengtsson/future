@@ -6,7 +6,7 @@
 #' @param constraints An optional character specifying under what
 #' constraints ("purposes") we are requesting the values.
 #' For instance, on systems where multicore processing is not supported
-#' (i.e. Windows), using \code{constrains="multicore"} will force a
+#' (i.e. Windows), using \code{constrains = "multicore"} will force a
 #' single core to be reported.
 #'
 #' @param methods A character vector specifying how to infer the number
@@ -22,9 +22,9 @@
 #' If \code{"max"}, the maximum value is returned (be careful!)
 #' If \code{"all"}, all values are returned.
 #'
-#' @return Return a positive (>=1) integer.
-#' If \code{which="all"}, then more than one value may be returned.
-#' Together with \code{na.rm=FALSE} missing values may also be returned.
+#' @return Return a positive (>= 1) integer.
+#' If \code{which = "all"}, then more than one value may be returned.
+#' Together with \code{na.rm = FALSE} missing values may also be returned.
 #'
 #' @details
 #' The following settings ("methods") for inferring the number of cores
@@ -32,12 +32,12 @@
 #' \itemize{
 #'  \item \code{"system"} -
 #'    Query \code{\link[parallel]{detectCores}()}.
-#'  \item \code{"mc.cores+1"} -
+#'  \item \code{"mc.cores"} -
 #'    If available, returns the value of option
-#'    \code{\link[base:options]{mc.cores}} + 1.
+#'    \code{\link[base:options]{mc.cores}}.
 #'    Note that \option{mc.cores} is defined as the number of
 #'    \emph{additional} R processes that can be used in addition to the
-#'    main R process.  This means that with \code{mc.cores=0} all
+#'    main R process.  This means that with \code{mc.cores = 0} all
 #'    calculations should be done in the main R process, i.e. we have
 #'    exactly one core available for our calculations.
 #'    The \option{mc.cores} option defaults to environment variable
@@ -69,15 +69,13 @@
 #'
 #' @section Advanced usage:
 #' It is possible to override the maximum number of cores on the machine
-#' as reported by \code{availableCores(methods="system")}.  This can be
+#' as reported by \code{availableCores(methods = "system")}.  This can be
 #' done by first specifying
-#' \code{options(future.availableCores.methods="mc.cores+1")} and
-#' then the number of cores to use (in addition to the main R process),
-#' e.g. \code{options(mc.cores=8)} will cause the value of
-#' \code{availableCores()} to be 9 (=8+1).
+#' \code{options(future.availableCores.methods = "mc.cores")} and
+#' then the number of cores to use, e.g. \code{options(mc.cores = 8)}.
 #' Having said this, it is almost always better to do this by explicitly
 #' setting the number of workers when specifying the future strategy,
-#' e.g. \code{plan(multiprocess, workers=9)}.
+#' e.g. \code{plan(multiprocess, workers = 8)}.
 #'
 #' @seealso
 #' To get the number of available workers regardless of machine,
@@ -85,7 +83,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints=NULL, methods=getOption("future.availableCores.methods", c("system", "mc.cores+1", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm=TRUE, default=c(current=1L), which=c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -98,7 +96,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   which <- match.arg(which)
   stopifnot(length(default) == 1, is.finite(default), default >= 1L)
 
-  ncores <- rep(NA_integer_, times=length(methods))
+  ncores <- rep(NA_integer_, times = length(methods))
   names(ncores) <- methods
   for (kk in seq_along(methods)) {
     method <- methods[kk]
@@ -112,7 +110,9 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
     } else if (method == "mc.cores") {
-      .Defunct(msg = "Method 'mc.cores' for future::availableCores() is deprecated; use 'mc.cores+1' instead.")
+      ## Number of cores by option defined by 'parallel' package
+      n <- getopt("mc.cores")
+      if (!is.na(n) && n == 0) n <- 1L  ## Because options(mc.cores = 0) may be set
     } else if (method == "mc.cores+1") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores") + 1L
@@ -121,11 +121,11 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
       ## cores allowed to be use in package tests.  Here we
       ## acknowledge this and sets number of cores to the
       ## maximum two allowed.  This way we don't have to explicitly
-      ## use options(mc.cores=2L) in example code, which may be
+      ## use options(mc.cores = 2L) in example code, which may be
       ## misleading to the reader.
       chk <- tolower(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))
       chk <- (nzchar(chk) && (chk != "false"))
-      n <- if (chk) 3L else NA_integer_ ## = 2+1
+      n <- if (chk) 2L else NA_integer_
     } else if (method == "system") {
       ## Number of cores available according to parallel::detectCores()
       n <- detectCores()
@@ -148,7 +148,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   ncoresT <- ncoresT[ncoresT <= 0]
   if (length(ncoresT) > 0) {
     msg <- sprintf("Detected invalid (zero or less) core settings: %s",
-         paste(paste0(sQuote(names(ncoresT)), "=", ncoresT), collapse=", "))
+         paste(paste0(sQuote(names(ncoresT)), " = ", ncoresT), collapse = ", "))
     mdebug(msg)
     stop(msg)
   }
@@ -195,7 +195,7 @@ availableCores <- function(constraints=NULL, methods=getOption("future.available
   }
 
   ## Sanity check
-  stopifnot(all(ncores >= 1L, na.rm=TRUE))
+  stopifnot(all(ncores >= 1L, na.rm = TRUE))
 
   ncores
 } # availableCores()
@@ -218,9 +218,8 @@ supportsMulticore <- local({
   function() {
     if (is.na(supported)) {
       ns <- getNamespace("parallel")
-      supported <<- exists("mcparallel", mode="function", envir=ns, inherits=FALSE)
+      supported <<- exists("mcparallel", mode = "function", envir = ns, inherits = FALSE)
     }
     supported
   }
 })
-

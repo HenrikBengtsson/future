@@ -59,7 +59,7 @@
 #' @importFrom utils capture.output
 #' @export
 #' @name Future-class
-Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NULL, packages=NULL, seed=NULL, lazy=FALSE, local=TRUE, gc=FALSE, earlySignal=FALSE, label=NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -87,7 +87,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NU
   
   args <- list(...)
   
-  core <- new.env(parent=emptyenv())
+  core <- new.env(parent = emptyenv())
   core$expr <- expr
   core$envir <- envir
   core$globals <- globals
@@ -108,7 +108,7 @@ Future <- function(expr=NULL, envir=parent.frame(), substitute=FALSE, globals=NU
   ## Additional named arguments
   for (key in names(args)) core[[key]] <- args[[key]]
 
-  structure(core, class=c("Future", class(core)))
+  structure(core, class = c("Future", class(core)))
 }
 
 
@@ -119,29 +119,31 @@ print.Future <- function(x, ...) {
   cat(sprintf("%s:\n", class[1]))
   label <- x$label
   if (is.null(label)) label <- "<none>"
-  cat("Label: ", sQuote(label), "\n", sep="")
+  cat("Label: ", sQuote(label), "\n", sep = "")
   cat("Expression:\n")
   print(x$expr)
   cat(sprintf("Lazy evaluation: %s\n", x$lazy))
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
-  
-  g <- x$globals
+
+  ## FIXME: Add method globals_of() for Future such that it's possible
+  ## also for SequentialFuture to return something here. /HB 2017-05-17
+  g <- globals(x)
   ng <- length(g)
   if (ng > 0) {
-    gSizes <- sapply(g, FUN=objectSize)
+    gSizes <- sapply(g, FUN = objectSize)
     gTotalSize <- sum(gSizes)
-    g <- head(g, n=5L)
-    gSizes <- head(gSizes, n=5L)
-    g <- sprintf("%s %s of %s", sapply(g, FUN=function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN=asIEC))
+    g <- head(g, n = 5L)
+    gSizes <- head(gSizes, n = 5L)
+    g <- sprintf("%s %s of %s", sapply(g, FUN = function(x) class(x)[1]), sQuote(names(g)), sapply(gSizes, FUN = asIEC))
     if (ng > 5L) g <- sprintf("%s ...", g)
     cat(sprintf("Globals: %d objects totaling %s (%s)\n", ng, asIEC(gTotalSize), g))
   } else {
     cat("Globals: <none>\n")
   }
   
-  p <- x$packages
+  p <- packages(x)
   np <- length(p)
   if (np > 0) {
     cat(sprintf("Packages: %d packages (%s)\n", np, paste(sQuote(p), collapse = ", ")))
@@ -155,9 +157,9 @@ print.Future <- function(x, ...) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   }
 
-  hasValue <- exists("value", envir=x, inherits=FALSE)
+  hasValue <- exists("value", envir = x, inherits = FALSE)
 
-  if (exists("value", envir=x, inherits=FALSE)) {
+  if (exists("value", envir = x, inherits = FALSE)) {
     cat("Resolved: TRUE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
@@ -181,7 +183,7 @@ print.Future <- function(x, ...) {
   }
   cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
   cat(sprintf("Owner process: %s\n", x$owner))
-  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse=", ")))
+  cat(sprintf("Class: %s\n", paste(sQuote(class), collapse = ", ")))
 } ## print()
 
 
@@ -193,7 +195,7 @@ assertOwner <- function(future, ...) {
   }
 
   if (!identical(future$owner, session_uuid(attributes = TRUE))) {
-    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future=future))
+    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future = future))
   }
 
   invisible(future)
@@ -250,19 +252,19 @@ run <- function(...) UseMethod("run")
 #' @rdname value
 #' @export
 #' @export value
-value.Future <- function(future, signal=TRUE, ...) {
-  if (future$state == 'created') {
+value.Future <- function(future, signal = TRUE, ...) {
+  if (future$state == "created") {
     future <- run(future)
   }
 
-  if (!future$state %in% c('finished', 'failed', 'interrupted')) {
+  if (!future$state %in% c("finished", "failed", "interrupted")) {
     msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
     mdebug(msg)
-    stop(FutureError(msg, future=future))
+    stop(FutureError(msg, future = future))
   }
 
   value <- future$value
-  if (signal && future$state == 'failed') {
+  if (signal && future$state == "failed") {
     mdebug("Future state: %s", sQuote(future$state))
     mdebug("Future value: %s", sQuote(value))
     stop(FutureError(future))
@@ -277,12 +279,12 @@ value <- function(...) UseMethod("value")
 #' @export
 resolved.Future <- function(x, ...) {
   ## Is future even launched?
-  if (x$state == 'created') return(FALSE)
+  if (x$state == "created") return(FALSE)
 
   ## Signal conditions early, iff specified for the given future
   signalEarly(x, ...)
 
-  x$state %in% c('finished', 'failed', 'interrupted')
+  x$state %in% c("finished", "failed", "interrupted")
 }
 
 
@@ -299,10 +301,9 @@ resolved.Future <- function(x, ...) {
 #' use \link{sequential} futures.  This conservative approach protects
 #' against spawning off recursive futures by mistake, especially
 #' \link{multicore} and \link{multisession} ones.
-#' The default will also set \code{options(mc.cores=0L)}, which
-#' means that no \emph{additional} R processes may be spawned off
-#' by functions such as \code{\link[parallel:mclapply]{mclapply}()}
-#' and friends (*).
+#' The default will also set \code{options(mc.cores = 1L)} (*) so that
+#' no parallel R processes are spawned off by functions such as
+#' \code{\link[parallel:mclapply]{mclapply}()} and friends.
 #'
 #' Currently it is not possible to specify what type of nested
 #' futures to be used, meaning the above default will always be
@@ -310,8 +311,8 @@ resolved.Future <- function(x, ...) {
 #' See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
 #' for plans on adding support for custom nested future types.
 #'
-#' (*) Note that using \code{mc.cores=0} will unfortunately cause
-#'     \code{mclapply()} and friends to generate an error saying
+#' (*) Ideally we would set \code{mc.cores = 0} but that will unfortunately
+#'     cause \code{mclapply()} and friends to generate an error saying
 #'     "'mc.cores' must be >= 1".  Ideally those functions should
 #'     fall back to using the non-multicore alternative in this
 #'     case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
@@ -324,23 +325,24 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, mc.cores=NULL, ...) {
-##  mdebug("getExpression() ...")
+getExpression.Future <- function(future, mc.cores = NULL, ...) {
+  debug <- getOption("future.debug", FALSE)
+  ##  mdebug("getExpression() ...")
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
-##    mdebug("getExpression(): setting mc.cores=%d inside future", mc.cores)
+##    mdebug("getExpression(): setting mc.cores = %d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
     enter <- bquote({
       ## covr: skip=2
       ...future.mc.cores.old <- getOption("mc.cores")
-      options(mc.cores=.(mc.cores))
+      options(mc.cores = .(mc.cores))
     })
 
     exit <- bquote({
       ## covr: skip=1
-      options(mc.cores=...future.mc.cores.old)
+      options(mc.cores = ...future.mc.cores.old)
     })
   } else {
     enter <- exit <- NULL
@@ -364,7 +366,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
   exit <- bquote({
     ## covr: skip=2
     .(exit)
-    future::plan(.(strategies), .cleanup=FALSE, .init=FALSE, .check_lazy=FALSE)
+    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE)
   })
 
   ## Pass down the default or the remain set of future strategies?
@@ -375,22 +377,22 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
   pkgs <- NULL
   if (length(strategiesR) > 0L) {
     ## Identify package namespaces needed for strategies
-    pkgs <- lapply(strategiesR, FUN=environment)
-    pkgs <- lapply(pkgs, FUN=environmentName)
-    pkgs <- unique(unlist(pkgs, use.names=FALSE))
+    pkgs <- lapply(strategiesR, FUN = environment)
+    pkgs <- lapply(pkgs, FUN = environmentName)
+    pkgs <- unique(unlist(pkgs, use.names = FALSE))
     ## CLEANUP: Only keep those that are loaded in the current session
     pkgs <- intersect(pkgs, loadedNamespaces())
-    mdebug("Packages needed by future strategies (n=%d): %s", length(pkgs), paste(sQuote(pkgs), collapse=", "))
+    if (debug) mdebug("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
   } else {
-    mdebug("Packages needed by future strategies (n=0): <none>")
+    if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
   }
 
-  pkgsF <- future$packages
+  pkgsF <- packages(future)
   if (length(pkgsF) > 0) {
-    mdebug("Packages needed by the future expression (n=%d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse=", "))
+    if (debug) mdebug("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
     pkgs <- unique(c(pkgs, pkgsF))
   } else {
-    mdebug("Packages needed by the future expression (n=0): <none>")
+    if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
   }
 
   ## Make sure to load and attach all package needed  
@@ -413,7 +415,7 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
       local({
         for (pkg in .(pkgs)) {
           loadNamespace(pkg)
-          library(pkg, character.only=TRUE)
+          library(pkg, character.only = TRUE)
         }
       })
     })
@@ -426,18 +428,18 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan("default", .cleanup=FALSE, .init=FALSE)
+      future::plan("default", .cleanup = FALSE, .init = FALSE)
     })
   } else {    
     ## Pass down future strategies
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan(.(strategiesR), .cleanup=FALSE, .init=FALSE, .check_lazy=FALSE)
+      future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE)
     })
   } ## if (length(strategiesR) > 0L)
 
-  expr <- makeExpression(expr=future$expr, local=future$local, enter=enter, exit=exit)
+  expr <- makeExpression(expr = future$expr, local = future$local, enter = enter, exit = exit)
   if (getOption("future.debug", FALSE)) {
     print(expr)
   }
@@ -448,11 +450,11 @@ getExpression.Future <- function(future, mc.cores=NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local=TRUE, globals.onMissing=getOption("future.globals.onMissing", "error"), enter=NULL, exit=NULL) {
+makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "error"), enter = NULL, exit = NULL) {
   ## Evaluate expression in a local() environment?
   if (local) {
-    a <- NULL; rm(list="a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a=expr))
+    a <- NULL; rm(list = "a")  ## To please R CMD check
+    expr <- substitute(local(a), list(a = expr))
   }
 
   ## Set and reset certain future.* options
@@ -460,17 +462,17 @@ makeExpression <- function(expr, local=TRUE, globals.onMissing=getOption("future
     ## covr: skip=7
     ...future.oldOptions <- options(
       ## Prevent .future.R from being source():d when future is attached
-      future.startup.loadScript=FALSE,
+      future.startup.loadScript = FALSE,
       ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing=globals.onMissing
+      future.globals.onMissing = globals.onMissing
     )
     enter
-  }, env=list(globals.onMissing=globals.onMissing, enter=enter))
+  }, env = list(globals.onMissing = globals.onMissing, enter = enter))
 
   exit <- substitute({
     exit
     options(...future.oldOptions)
-  }, env=list(exit=exit))
+  }, env = list(exit = exit))
 
 
   ## NOTE: We don't want to use local(body) w/ on.exit() because
@@ -485,7 +487,20 @@ makeExpression <- function(expr, local=TRUE, globals.onMissing=getOption("future
     }, finally = {
       exit
     })
-  }, env=list(enter=enter, body=expr, exit=exit))
+  }, env = list(enter = enter, body = expr, exit = exit))
 
   expr
 } ## makeExpression()
+
+
+globals <- function(future, ...) UseMethod("globals")
+
+globals.Future <- function(future, ...) {
+  future[["globals"]]
+}
+
+packages <- function(future, ...) UseMethod("packages")
+
+packages.Future <- function(future, ...) {
+  future[["packages"]]
+}

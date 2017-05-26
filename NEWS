@@ -1,6 +1,75 @@
 Package: future
 ===============
 
+Version: 1.5.0 [2017-05-24]
+
+SIGNIFICANT CHANGES:
+
+ o Multicore and multisession futures no longer reserve one core for the
+   main R process, which was done to lower the risk for producing a higher
+   CPU load than the number of cores available for the R session.
+ 
+NEW FEATURES:
+
+ o makeClusterPSOCK() now defaults to use the Windows PuTTY software's SSH
+   client 'plink -ssh', if 'ssh' is not found.
+
+ o Argument 'homogeneous' of makeNodePSOCK(), a helper function of
+   makeClusterPSOCK(), will default to FALSE also if the hostname is a
+   fully qualified domain name (FQDN), that is, it "contains periods".
+   For instance, c('node1', 'node2.server.org') will use homogeneous = TRUE
+   for the first worker and homogeneous = FALSE for the second.
+
+ o makeClusterPSOCK() now asserts that each cluster node is functioning by
+   retrieving and recording the node's session information including the
+   process ID of the corresponding R process.
+
+ o Nested futures sets option 'mc.cores' to prevent spawning of recursive
+   parallel processes by mistake.  Because 'mc.cores' controls _additional_
+   processes, it was previously set to zero.  However, since some functions
+   such as mclapply() does not support that, it is now set to one instead.   
+
+DOCUMENTATION:
+
+ o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
+   and what their defaults are.
+ 
+DEPRECATED AND DEFUNCT:
+
+ o Formally deprecated eager futures; use sequential instead.
+
+BUG FIXES:
+
+ o future_lapply() with multicore / multisession futures, would use a
+   suboptimal workload balancing where it split up the data in one chunk too
+   many.  This is no longer a problem because of how argument 'workers' is
+   now defined for those type of futures (see note on top).
+ 
+ o future_lapply(), as well as lazy multicore and lazy sequential futures, did
+   not respect option 'future.globals.resolve', but was hardcoded to always
+   resolve globals (future.globals.resolve = TRUE).
+
+ o When globals larger than the allowed size (option 'future.globals.maxSize')
+   are detected an informative error message is generated.  Previous version
+   introduced a bug causing the error to produce another error.
+
+ o Lazy sequential futures would produce an error when resolved if required
+   packages had been detached.
+
+ o print() would not display globals gathered for lazy sequential futures.
+
+SOFTWARE QUALITY:
+
+ o Added package tests for globals part of formulas part of other globals,
+   e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
+
+ o Now package tests with parallel::makeCluster() not only test for
+   type = 'PSOCK' clusters but also 'FORK' (when supported).
+
+ o TESTS: Cleaned up test scripts such that the overall processing time for
+   the tests was roughly halved, while preservering the same test coverage.
+ 
+
 Version: 1.4.0 [2017-03-12]
 
 SIGNIFICANT CHANGES:

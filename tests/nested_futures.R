@@ -1,14 +1,13 @@
 source("incl/start.R")
 
-strategies <- future:::supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
+strategies <- supportedStrategies()
 
 message("*** Nested futures ...")
 
 for (strategy1 in strategies) {
   for (strategy2 in strategies) {
     message(sprintf("- plan(list('%s', '%s')) ...", strategy1, strategy2))
-    plan(list(a=strategy1, b=strategy2))
+    plan(list(a = strategy1, b = strategy2))
     
     nested <- plan("list")
     stopifnot(
@@ -39,7 +38,7 @@ for (strategy1 in strategies) {
 
       y %<-% {
         b <- 2L
-
+        
         ## IMPORTANT: Use future::plan() - not just plan() - otherwise
         ## we're exporting the plan() function including its local stack!
         plan_b <- future::plan("list")
@@ -49,7 +48,7 @@ for (strategy1 in strategies) {
           length(nested_b) == 0L,
           length(plan_b) == 1L,
           inherits(plan_b[[1]], "future"),
-          inherits(future::plan(), getOption("future.default", "uniprocess"))
+          inherits(future::plan(), getOption("future.default", "sequential"))
         )
 
         list(a = a, nested_a = nested_a, plan_a = plan_a,
@@ -76,7 +75,7 @@ for (strategy1 in strategies) {
       is.list(x$plan_b),
       length(x$plan_b) == 1L,
       inherits(x$plan_b[[1]], "future"),
-      inherits(x$plan_b[[1]], getOption("future.default", "uniprocess"))
+      inherits(x$plan_b[[1]], getOption("future.default", "sequential"))
     )
 
     ## Attribute 'init' is modified at run time
@@ -84,7 +83,7 @@ for (strategy1 in strategies) {
     for (kk in seq_along(nested)) attr(nested[[kk]], "init") <- NULL
     stopifnot(all.equal(x$plan_a, nested[-1L]))
 
-    rm(list=c("nested", "x"))
+    rm(list = c("nested", "x"))
 
     message(sprintf("- plan(list('%s', '%s')) ... DONE", strategy1, strategy2))
   }

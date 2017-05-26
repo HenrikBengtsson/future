@@ -5,7 +5,7 @@ future::plan(oplan)
 ## Undo options
 ## (a) Added
 added <- setdiff(names(options()), names(oopts0))
-opts <- vector("list", length=length(added))
+opts <- vector("list", length = length(added))
 names(opts) <- added
 options(opts)
 ## (b) Modified
@@ -36,7 +36,7 @@ stopifnot(identical(Sys.getenv(), oenvs0))
 
 
 ## Undo variables
-rm(list=c(setdiff(ls(), ovars)))
+rm(list = c(setdiff(ls(), ovars)))
 
 
 ## Travis CI specific: Explicit garbage collection because it

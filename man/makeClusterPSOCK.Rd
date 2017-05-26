@@ -3,7 +3,7 @@
 \name{makeClusterPSOCK}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
-\title{Create a Parallel Socket Cluster}
+\title{Create a cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))
@@ -13,98 +13,203 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
   rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_, rshcmd = "ssh", user = NULL, revtunnel = TRUE,
-  rshopts = NULL, rank = 1L, manual = FALSE, dryrun = FALSE,
-  verbose = FALSE)
+  renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd",
+  NULL), user = NULL, revtunnel = TRUE,
+  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
+  manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{workers}{The host names of workers (as a character vector) or
-the number of localhost workers (as a positive integer).}
+\item{workers}{The hostnames of workers (as a character vector) or the number
+of localhost workers (as a positive integer).}
 
-\item{makeNode}{A function that creates a \code{"SOCKnode"}
-or \code{"SOCK0node"} object, which represents a connection
-to a worker.}
+\item{makeNode}{A function that creates a \code{"SOCKnode"} or
+\code{"SOCK0node"} object, which represents a connection to a worker.}
 
-\item{port}{The port number of the master used to for communicating with all the workers (via socket connections).  If an integer vector of ports, then a random one among those is chosen.  If \code{"random"}, then a random port in \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default is taken from environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is used.}
+\item{port}{The port number of the master used to for communicating with all
+the workers (via socket connections).  If an integer vector of ports, then a
+random one among those is chosen.  If \code{"random"}, then a random port in
+\code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
+is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
+\code{"random"} is used.}
 
-\item{...}{Optional arguments passed to \code{makeNode(workers[i], ..., rank=i)} where \code{i = seq_along{workers}}.}
+\item{...}{Optional arguments passed to
+\code{makeNode(workers[i], ..., rank = i)} where
+\code{i = seq_along(workers)}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
-\item{worker}{The host name or IP number of the machine where the worker should run.}
+\item{worker}{The hostname or IP number of the machine where the worker
+should run.}
 
-\item{master}{The host name or IP number of the master / calling machine, as known to the workers.  If NULL (default), then the default is \code{Sys.info()[["nodename"]]} unless \code{worker} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}) or \code{revtunnel = TRUE} in case it is \code{"localhost"}.}
+\item{master}{The hostname or IP number of the master / calling machine, as
+known to the workers.  If NULL (default), then the default is
+\code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
+\code{revtunnel = TRUE} in case it is \code{"localhost"}.}
 
-\item{connectTimeout}{The maximum time (in seconds) allowed for each socket connection between the master and a worker to be established (defaults to 2 minutes). \emph{See note below on current lack of support on Linux and macOS systems.}}
+\item{connectTimeout}{The maximum time (in seconds) allowed for each socket
+connection between the master and a worker to be established (defaults to
+2 minutes). \emph{See note below on current lack of support on Linux and
+macOS systems.}}
 
-\item{timeout}{The maximum time (in seconds) allowed to pass without the master and a worker communicate with each other (defaults to 30 days).}
+\item{timeout}{The maximum time (in seconds) allowed to pass without the
+master and a worker communicate with each other (defaults to 30 days).}
 
-\item{rscript, homogeneous}{The system command for launching Rscript on the worker. If \code{NULL} (default), the default is \code{"Rscript"} unless \code{homogenenous} is TRUE, which in case it is \code{file.path(R.home("bin"), "Rscript")}.  Argument \code{homogenenous} defaults to FALSE, unless \code{master} is the localhost (\code{"localhost"} or \code{"127.0.0.1"}).}
+\item{rscript, homogeneous}{The system command for launching \command{Rscript}
+on the worker and whether it is installed in the same path as the calling
+machine or not.  For more details, see below.}
 
-\item{rscript_args}{Additional arguments to \code{Rscript} (as a character vector).}
+\item{rscript_args}{Additional arguments to \command{Rscript} (as a character
+vector).}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
-\item{useXDR}{If TRUE, the communication between master and workers, which is binary, will be use big-endian (XDR).}
+\item{useXDR}{If TRUE, the communication between master and workers, which is
+binary, will use big-endian (XDR).}
 
-\item{outfile}{Where to direct the \link[base:stdout]{stdout} and \link[base:stderr]{stderr} connection output from the workers.}
+\item{outfile}{Where to direct the \link[base:stdout]{stdout} and
+\link[base:stderr]{stderr} connection output from the workers.}
 
-\item{renice}{A numerical 'niceness' (priority) to set for the worker processes.}
+\item{renice}{A numerical 'niceness' (priority) to set for the worker
+processes.}
 
-\item{rshcmd}{The command to be run on the master to launch a process on another host.  Only applicable if \code{machine} is not localhost.}
+\item{rshcmd, rshopts}{The command (character vector) to be run on the master
+to launch a process on another host and any additional arguments (character
+vector).  These arguments are only applied if \code{machine} is not
+\emph{localhost}.  For more details, see below.}
 
-\item{user}{(optional) The user name to be used when communicating with another host.}
+\item{user}{(optional) The user name to be used when communicating with
+another host.}
 
-\item{revtunnel}{If TRUE, a reverse SSH tunneling is set up for each worker such that the worker R process sets up a socket connect to its local port \code{(port - rank + 1)} which then reaches the master on port \code{port}.  If FALSE, then the worker will try to connect directly to port \code{port} on \code{master}.}
-
-\item{rshopts}{Additional arguments to \code{rshcmd} (as a character vector).}
+\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
+that the worker R process sets up a socket connection to its local port
+\code{(port - rank + 1)} which then reaches the master on port \code{port}.
+If FALSE, then the worker will try to connect directly to port \code{port} on
+\code{master}.  For more details, see below.}
 
 \item{rank}{A unique one-based index for each worker (automatically set).}
 
-\item{manual}{If TRUE the workers will need to be run manually.}
+\item{manual}{If TRUE the workers will need to be run manually. The command
+to run will be displayed.}
 
-\item{dryrun}{If TRUE, nothing is set up, but a message suggesting how to launch the worker from the terminal is outputted.  This is useful for troubleshooting.}
+\item{dryrun}{If TRUE, nothing is set up, but a message suggesting how to
+launch the worker from the terminal is outputted.  This is useful for
+troubleshooting.}
 }
 \value{
 An object of class \code{c("SOCKcluster", "cluster")} consisting
-        of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
+of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
 
-\code{makeNodePSOCK()} returns a
-        \code{"SOCKnode"} or \code{"SOCK0node"} object
-        representing an established connection to a worker.
+\code{makeNodePSOCK()} returns a \code{"SOCKnode"} or
+\code{"SOCK0node"} object representing an established connection to a worker.
 }
 \description{
-Create a Parallel Socket Cluster
+The \code{makeClusterPSOCK()} function creates a cluster of \R workers
+for parallel processing.  These \R workers may be background \R sessions
+on the current machine, \R sessions on external machines (local or remote),
+or a mix of such. For external workers, the default is to use SSH to connect
+to those external machines.  This function works similarly to
+\code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the
+\pkg{parallel} package, but provides additional and more flexibility options
+for controlling the setup of the system calls that launch the background
+\R workers, and how to connect to external machines.
 }
-\details{
-The \code{makeClusterPSOCK()} function is similar to \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the \pkg{parallel} package, but provides more flexibility in controlling the setup of the system calls that launch the background R workers and how to connect to external machines.
+\section{Definition of \emph{localhost}}{
 
-The default is to use reverse SSH tunneling (\code{revtunnel = TRUE})
-for workers running on other machines.  This avoids the complication of
-otherwise having to configure port forwarding in firewalls,
-which often requires static IP address but which also most
-users don't have privileges to do themselves.
-It also has the advantage of not having to know the internal
-and / or the public IP address / host name of the master.
-Yet another advantage is that there will be no need for a DNS lookup
-by the worker machines to the master, which may not be configured on
-some compute clusters.
-
-If there is no communication between the master and a
-worker within the \code{timeout} limit, then the corresponding
-socket connection will be closed automatically.  This will
-eventually result in an error in code trying to access the
-connection.
+A hostname is considered to be \emph{localhost} if it equals:
+\itemize{
+  \item \code{"localhost"},
+  \item \code{"127.0.0.1"}, or
+  \item \code{Sys.info()[["nodename"]]}.
 }
+It is also considered \emph{localhost} if it appears on the same line
+as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
+}
+
+\section{Default values of arguments \code{rshcmd} and \code{rshopts}}{
+
+Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
+to an external host.
+
+The default method for connecting to an external host is via SSH and the
+system executable for this is given by argument \code{rshcmd}.  The default
+is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
+set the default is either of \command{ssh} and \command{plink -ssh}.
+Most Unix-like systems, including macOS, have \command{ssh} preinstalled
+on the \code{PATH}.  It is less common to find this command on Windows
+system, which are more likely to have the \command{PuTTY} software and
+its SSH client \command{plink} installed.
+If neither \command{ssh} nor \command{plink} is found, an informative error
+message is produced.
+It is also possible to specify the absolute path to the SSH client.  To do
+this for PuTTY, specify the absolute path in the first element and option
+\command{-ssh} in the second as in
+\code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
+This is because all elements of \code{rshcmd} are individually "shell"
+quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
+
+Additional SSH options may be specified via argument \code{rshopts}, which
+defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
+private SSH key can be provided as
+\code{rshopts = c("-i", "~/.ssh/my_private_key")}.  PuTTY users should
+specify a PuTTY PPK file, e.g.
+\code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
+Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
+}
+
+\section{Reverse SSH tunneling}{
+
+The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
+workers running on other machines.  This avoids the complication of
+otherwise having to configure port forwarding in firewalls, which often
+requires static IP address as well as privilieges to edit the firewall,
+something most users don't have.
+It also has the advantage of not having to know the internal and / or the
+public IP address / hostname of the master.
+Yet another advantage is that there will be no need for a DNS lookup by the
+worker machines to the master, which may not be configured or is disabled
+on some systems, e.g. compute clusters.
+}
+
+\section{Default value of argument \code{rscript}}{
+
+If \code{homogenenous} is FALSE, the \code{rscript} defaults to
+\code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
+is available on the \code{PATH} of the worker.
+If \code{homogenenous} is TRUE, the \code{rscript} defaults to
+\code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
+that the worker and the caller share the same file system and R installation.
+}
+
+\section{Default value of argument \code{homogeneous}}{
+
+The default value of \code{homogenenous} is TRUE if and only if either
+of the following is fullfilled:
+\itemize{
+ \item \code{worker} is \emph{localhost}
+ \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
+ \item \code{worker} is neither an IP number nor a fully qualified domain
+       name (FQDN).  A hostname is considered to be a FQDN if it contains
+       one or more periods
+}
+}
+
 \section{Connection time out}{
 
-Argument \code{connectTimeout} does \emph{not} work properly
-on Unix and macOS due to limitation in \R itself.  For more details
-on this, please R devel thread 'BUG?: On Linux setTimeLimit() fails
-to propagate timeout error when it occurs (works on Windows)' on
-2016-10-26 (\url{https://stat.ethz.ch/pipermail/r-devel/2016-October/073309.html}).  When used, the timeout will eventually trigger an error, but
-it won't happen until the socket connection timeout \code{timeout}
-itself happens.
+Argument \code{connectTimeout} does \emph{not} work properly on Unix and
+macOS due to limitation in \R itself.  For more details on this, please see
+R-devel thread 'BUG?: On Linux setTimeLimit() fails to propagate timeout
+error when it occurs (works on Windows)' on 2016-10-26
+(\url{https://stat.ethz.ch/pipermail/r-devel/2016-October/073309.html}).
+When used, the timeout will eventually trigger an error, but it won't happen
+until the socket connection timeout \code{timeout} itself happens.
+}
+
+\section{Communication time out}{
+
+If there is no communication between the master and a worker within the
+\code{timeout} limit, then the corresponding socket connection will be
+closed automatically.  This will eventually result in an error in code
+trying to access the connection.
 }
 
 \examples{
@@ -225,6 +330,15 @@ cl <- makeClusterPSOCK(
   rscript_args = c(
     "-e", shQuote("install.packages('future')")
   ),
+  dryrun = TRUE
+)
+
+
+## Connect to remote Unix machine 'remote.server.org' on port 2200
+## as user 'bob' from a Windows machine with PuTTY installed
+cl <- makeClusterPSOCK(
+  "remote.server.org", user = "bob",
+  rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),
   dryrun = TRUE
 )
 }

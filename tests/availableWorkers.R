@@ -8,23 +8,23 @@ print(w)
 stopifnot(is.character(w), length(w) >= 1)
 
 ## Minimium of all known settings (default)
-print(availableWorkers(which="min"))
+print(availableWorkers(which = "min"))
 
 ## Maximum of all known settings (should never be used)
-print(availableWorkers(which="max"))
+print(availableWorkers(which = "max"))
 
 ## All known settings
-print(availableWorkers(na.rm=FALSE, which="all"))
+print(availableWorkers(na.rm = FALSE, which = "all"))
 
 ## System settings
-w <- availableWorkers(methods="system")
+w <- availableWorkers(methods = "system")
 print(w)
 stopifnot(is.character(w), length(w) >= 1)
 
 ## Predefined ones for known cluster schedulers
-print(availableWorkers(methods="PBS"))
-print(availableWorkers(methods="SGE"))
-print(availableWorkers(methods="Slurm"))
+print(availableWorkers(methods = "PBS"))
+print(availableWorkers(methods = "SGE"))
+print(availableWorkers(methods = "Slurm"))
 
 
 
@@ -63,6 +63,17 @@ workers <- availableWorkers(methods = "PBS")
 print(workers)
 stopifnot(length(workers) == length(workers0), all(workers == sort(workers0)))
 
+Sys.setenv(PBS_NUM_PPN = 3)
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
+Sys.setenv(PBS_NP = length(workers) + 1)
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 ## Exceptions
 workersE <- c(workers, "n 3")
@@ -71,6 +82,13 @@ writeLines(workersE, con = pathname)
 res <- tryCatch(read_pbs_nodefile(pathname), error = identity)
 print(res)
 stopifnot(inherits(res, "error"))
+
+Sys.setenv(PBS_NODEFILE = "<non-existing-file>")
+res <- tryCatch({
+  workers <- availableWorkers(methods = "PBS")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
 
 message("*** read_pbs_nodefile() ... DONE")
 
@@ -92,7 +110,7 @@ stopifnot(
   all(is.finite(data$count)),
   all(data$count > 0),
   nrow(data) == nrow(data0),
-  all.equal(data[,c("node", "count")], data0[,c("node", "count")])
+  all.equal(data[, c("node", "count")], data0[, c("node", "count")])
 )
 
 workers <- expand_nodes(data)
@@ -110,6 +128,12 @@ workers <- tryCatch(availableWorkers(methods = "SGE"), warning = identity)
 print(workers)
 stopifnot(inherits(workers, "warning"))
 
+Sys.setenv(PE_HOSTFILE = "<non-existing-file>")
+res <- tryCatch({
+  workers <- availableWorkers(methods = "SGE")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
+
 message("*** read_pe_hostfile() ... DONE")
 
 
@@ -117,15 +141,14 @@ message("*** HPC related ... DONE")
 
 
 ## Any R options and system environment variable
-print(availableWorkers(methods=c("width", "FOO_BAR_ENV"),
-                     na.rm=FALSE, which="all"))
+print(availableWorkers(methods = c("width", "FOO_BAR_ENV"),
+                     na.rm = FALSE, which = "all"))
 
 ## Exception handling
-Sys.setenv("FOO_BAR_ENV"="0")
-res <- try(availableWorkers(methods="FOO_BAR_ENV"), silent=TRUE)
-stopifnot(inherits(res, "try-error"))
+Sys.setenv("FOO_BAR_ENV" = "0")
+res <- tryCatch(availableWorkers(methods = "FOO_BAR_ENV"), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** availableWorkers() ... DONE")
 
 source("incl/end.R")
-

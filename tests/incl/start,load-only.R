@@ -3,15 +3,17 @@ ovars <- ls()
 oenvs <- oenvs0 <- Sys.getenv()
 oopts0 <- options()
 
+covr_testing <- ("covr" %in% loadedNamespaces())
+
 ## Default options
 oopts <- options(
-  warn=1L,
-  mc.cores=2L,
-  future.debug=TRUE,
+  warn = 1L,
+  mc.cores = 2L,
+  future.debug = TRUE,
   ## Reset the following during testing in case
   ## they are set on the test system
-  future.availableCores.system=NULL,
-  future.availableCores.fallback=NULL
+  future.availableCores.system = NULL,
+  future.availableCores.fallback = NULL
 )
 
 
@@ -31,7 +33,7 @@ oenvs2 <- Sys.unsetenv(c(
 oplan <- future::plan()
 
 ## Use eager futures by default
-future::plan("eager")
+future::plan("sequential")
 
 ## Private future functions
 .onLoad <- future:::.onLoad
@@ -39,7 +41,6 @@ future::plan("eager")
 asIEC <- future:::asIEC
 ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
-uniprocess <- future:::uniprocess ## To become public
 detectCores <- future:::detectCores
 future_lapply <- future:::future_lapply
 FutureRegistry <- future:::FutureRegistry
@@ -56,7 +57,6 @@ parseCmdArgs <- future:::parseCmdArgs
 requestCore <- future:::requestCore
 requestNode <- future:::requestNode
 requirePackages <- future:::requirePackages
-supportedStrategies <- future:::supportedStrategies
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
 get_random_seed <- future:::get_random_seed
@@ -64,9 +64,21 @@ get_random_seed <- future:::get_random_seed
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))
-mstr <- function(...) message(paste(capture.output(str(...)), collapse="\n"))
-attachLocally <- function(x, envir=parent.frame()) {
+mstr <- function(...) message(paste(capture.output(str(...)), collapse = "\n"))
+attachLocally <- function(x, envir = parent.frame()) {
   for (name in names(x)) {
-    assign(name, value=x[[name]], envir=envir)
+    assign(name, value = x[[name]], envir = envir)
   }
 }
+
+supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
+  strategies <- future:::supportedStrategies(...)
+  strategies <- setdiff(strategies, excl)
+  if (cores > 1) {
+    strategies <- setdiff(strategies,
+                          c("sequential", "uniprocess", "eager", "lazy"))
+  }
+  strategies
+}
+
+availCores <- min(2L, future::availableCores())

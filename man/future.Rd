@@ -163,7 +163,7 @@ is that globals are automatically identified and gathered.
 More precisely, globals are identified via code inspection of the
 future expression \code{expr} and their values are retrieved with
 environment \code{envir} as the starting point (basically via
-\code{get(global, envir=envir, inherits=TRUE)}).
+\code{get(global, envir = envir, inherits = TRUE)}).
 \emph{In most cases, such automatic collection of globals is sufficient
 and less tedious and error prone than if they are manually specified}.
 
@@ -252,8 +252,8 @@ plan(multiprocess)
 
 ## Data
 x <- rnorm(100)
-y <- 2*x + 0.2 + rnorm(100)
-w <- 1 + x^2
+y <- 2 * x + 0.2 + rnorm(100)
+w <- 1 + x ^ 2
 
 
 ## (1) Regular assignments (evaluated sequentially)

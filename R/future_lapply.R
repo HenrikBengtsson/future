@@ -103,7 +103,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
   debug <- getOption("future.debug", FALSE)
   
-  mdebug("future_lapply() ...")
+  if (debug) mdebug("future_lapply() ...")
 
   ## NOTE TO SELF: We'd ideally have a 'future.envir' argument also for
   ## future_lapply(), cf. future().  However, it's not yet clear to me how
@@ -125,18 +125,19 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   if (is.logical(globals)) {
     ## Gather all globals?
     if (globals) {
-      mdebug("Finding globals ...")
+      if (debug) mdebug("Finding globals ...")
 
       expr <- do.call(call, args = c(list("FUN"), list(...)))
-      gp <- getGlobalsAndPackages(expr, envir=envir, tweak=tweakExpression, globals=TRUE, resolve=TRUE)
+      gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE)
       globals <- gp$globals
       packages <- gp$packages
       gp <- NULL
       
-      mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-      mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
-
-      mdebug("Finding globals ... DONE")
+      if (debug) {
+        mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+        mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+        mdebug("Finding globals ... DONE")
+      }
     } else {
       ## globals = FALSE
       globals <- c("FUN", names(list(...)), "...")
@@ -219,7 +220,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
   # Use RNGs?
   if (!is.null(seed)) {
-    mdebug("Generating random seeds ...")
+    if (debug) mdebug("Generating random seeds ...")
 
     ## future_lapply() should return with the same RNG state regardless of
     ## future strategy used. This is be done such that RNG kind is preserved
@@ -232,7 +233,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
     ## A pregenerated sequence of random seeds?
     if (is.list(seed)) {
-      mdebug("Using a pre-define stream of random seeds ...", nx)
+      if (debug) mdebug("Using a pre-define stream of random seeds ...", nx)
       
       nseed <- length(seed)
       if (nseed != nx) {
@@ -263,9 +264,9 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
 
       seeds <- seed
       
-      mdebug("Using a pre-define stream of random seeds ... DONE", nx)
+      if (debug) mdebug("Using a pre-define stream of random seeds ... DONE", nx)
     } else {
-      mdebug("Generating random seed streams for %d elements ...", nx)
+      if (debug) mdebug("Generating random seed streams for %d elements ...", nx)
       
       ## Generate sequence of _all_ RNG seeds starting with an initial seed
       ## '.seed' that is based on argument 'seed'.
@@ -284,10 +285,10 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
         .seed <- nextRNGStream(.seed)
       }
   
-      mdebug("Generating random seed streams for %d elements ... DONE", nx)
+      if (debug) mdebug("Generating random seed streams for %d elements ... DONE", nx)
     }
     
-    mdebug("Generating random seeds ... DONE")
+    if (debug) mdebug("Generating random seeds ... DONE")
   } ## if (!is.null(seed))
 
   
@@ -315,7 +316,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   }
 
   chunks <- splitIndices(nx, ncl = nbr_of_futures)
-  mdebug("Number of chunks: %d", length(chunks))   
+  if (debug) mdebug("Number of chunks: %d", length(chunks))   
 
   
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -328,28 +329,28 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   globals <- c(globals, globals_extra)
 
   ## At this point a globals should be resolved and we should know their total size
-  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
+##  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
 
     ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
 
   nchunks <- length(chunks)
   fs <- vector("list", length = nchunks)
-  mdebug("Number of futures (= number of chunks): %d", nchunks)
+  if (debug) mdebug("Number of futures (= number of chunks): %d", nchunks)
   
-  mdebug("Launching %d futures (chunks) ...", nchunks)
+  if (debug) mdebug("Launching %d futures (chunks) ...", nchunks)
   for (ii in seq_along(chunks)) {
     chunk <- chunks[[ii]]
-    mdebug("Chunk #%d of %d ...", ii, length(chunks))
+    if (debug) mdebug("Chunk #%d of %d ...", ii, length(chunks))
 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-    stopifnot(attr(globals_ii, "resolved"))
+##    stopifnot(attr(globals_ii, "resolved"))
     
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
-      mdebug(" - seeds: <none>")
+      if (debug) mdebug(" - seeds: <none>")
       fs[[ii]] <- future({
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
            ...future.x_jj <- ...future.x_ii[[jj]]
@@ -357,7 +358,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
         })
       }, envir = envir, lazy = future.lazy, globals = globals_ii, packages = packages)
     } else {
-      mdebug(" - seeds: [%d] <seeds>", length(chunk))
+      if (debug) mdebug(" - seeds: [%d] <seeds>", length(chunk))
       globals_ii[["...future.seeds_ii"]] <- seeds[chunk]
       fs[[ii]] <- future({
         lapply(seq_along(...future.x_ii), FUN = function(jj) {
@@ -371,27 +372,27 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Not needed anymore
     rm(list = c("chunk", "globals_ii"))
 
-    mdebug("Chunk #%d of %d ... DONE", ii, nchunks)
+    if (debug) mdebug("Chunk #%d of %d ... DONE", ii, nchunks)
   } ## for (ii ...)
-  mdebug("Launching %d futures (chunks) ... DONE", nchunks)
+  if (debug) mdebug("Launching %d futures (chunks) ... DONE", nchunks)
 
   ## Not needed anymore
   rm(list = c("chunks", "globals", "envir"))
 
   ## 4. Resolving futures
-  mdebug("Resolving %d futures (chunks) ...", nchunks)
+  if (debug) mdebug("Resolving %d futures (chunks) ...", nchunks)
   values <- values(fs)
-  mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
+  if (debug) mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
   
   ## Not needed anymore
   rm(list = "fs")
   
-  mdebug("Reducing values from %d chunks ...", nchunks)
+  if (debug) mdebug("Reducing values from %d chunks ...", nchunks)
   values <- Reduce(c, values)
   names(values) <- names(x)
-  mdebug("Reducing values from %d chunks ... DONE", nchunks)
+  if (debug) mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
-  mdebug("future_lapply() ... DONE")
+  if (debug) mdebug("future_lapply() ... DONE")
   
   values
 }

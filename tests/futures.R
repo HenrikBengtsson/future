@@ -5,7 +5,7 @@ library("listenv")
 if (getRversion() < "3.2.0") {
   names <- function(x) {
     if (class(x)[1] == "environment") {
-      ls(envir=x, all.names=TRUE)
+      ls(envir = x, all.names = TRUE)
     } else {
       base::names(x)
     }
@@ -14,23 +14,23 @@ if (getRversion() < "3.2.0") {
 
 dims <- list(
   NULL,
-  c(1,6),
-  c(2,3),
-  c(2,3,1),
-  c(2,1,3,1)
+  c(1, 6),
+  c(2, 3),
+  c(2, 3, 1),
+  c(2, 1, 3, 1)
 )
 
 
 message("*** futures() / resolved() / values() ...")
 
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores = cores)
 
   for (type in c("list", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))
 
-    for (strategy in supportedStrategies()) {
+    for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
       message("Type of future: ", strategy)
       plan(strategy)
 
@@ -56,7 +56,7 @@ for (cores in 1:min(3L, availableCores())) {
           if (type != "environment") {
             names <- names(x)
             dim(x) <- dim
-            dimnames(x) <- lapply(dim, FUN=function(n) letters[1:n])
+            dimnames(x) <- lapply(dim, FUN = function(n) letters[1:n])
             names(x) <- names
           }
         }

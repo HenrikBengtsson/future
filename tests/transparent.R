@@ -6,9 +6,9 @@ message("*** transparent() ...")
 ## No global variables
 f <- try(transparent({
   42L
-}), silent=FALSE)
+}), silent = FALSE)
 print(f)
-stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
+stopifnot(inherits(f, "SequentialFuture"), !f$lazy)
 
 print(resolved(f))
 y <- value(f)
@@ -20,9 +20,9 @@ plan(transparent)
 ## No global variables
 f <- try(future({
   42L
-}), silent=FALSE)
+}), silent = FALSE)
 print(f)
-stopifnot(inherits(f, "UniprocessFuture"), !f$lazy)
+stopifnot(inherits(f, "SequentialFuture"), !f$lazy)
 
 print(resolved(f))
 y <- value(f)

@@ -8,7 +8,10 @@
 #' for resolving a future.  If NULL, then the current strategy is returned.
 #'
 #' @param \dots Additional arguments overriding the default arguments
-#' of the evaluation function.
+#' of the evaluation function.  Which additional arguments are supported
+#' depends on what evaluation function is used, e.g. several support
+#' argument \code{workers} but not all.  For details, see the individual
+#' functions of which some are linked to below.
 #"
 #' @param substitute If TRUE, the \code{strategy} expression is
 #' \code{substitute()}:d, otherwise not.
@@ -73,7 +76,7 @@
 #'
 #' @export
 plan <- local({
-  defaultStrategy <- structure(sequential, call=substitute(plan(sequential)))
+  defaultStrategy <- structure(sequential, call = substitute(plan(sequential)))
   
   defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
 
@@ -88,8 +91,11 @@ plan <- local({
     evaluator <- stack[[1L]]
     init <- attr(evaluator, "init")
     if (identical(init, TRUE)) {
-      mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
-      mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      debug <- getOption("future.debug", FALSE)
+      if (debug) {
+        mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
+        mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      }
 
       ## IMPORANT: Initiate only once.  This avoids an infinite 
       ## recursive loop caused by other plan() calls.
@@ -103,13 +109,13 @@ plan <- local({
       ## (otherwise the garbage collector would have to do it)
       v <- value(f)
 
-      mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
+      if (debug) mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
     }
   }
 
 
   ## Main function
-  function(strategy=NULL, ..., substitute=TRUE, .call=TRUE, .cleanup=TRUE, .init=TRUE) {
+  function(strategy = NULL, ..., substitute = TRUE, .call = TRUE, .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
     if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
     
@@ -159,9 +165,15 @@ plan <- local({
           stopifnot(is.function(strategy[[ii]]))
           using_lazy <- using_lazy || inherits(strategy[[ii]], "lazy")
         }
-        
+
         if (using_lazy) {
           .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+        }
+
+        using_eager <- lapply(newStack, FUN = inherits, "eager")
+        using_eager <- any(unlist(using_eager, use.names = FALSE))
+        if (using_eager) {
+          .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
         }
       }
       
@@ -178,26 +190,26 @@ plan <- local({
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
-        first <- eval(first, envir=parent.frame())
+        first <- eval(first, envir = parent.frame())
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
-          res <- plan(strategies, substitute=FALSE,
-	              .cleanup=.cleanup, .init=.init,
-                      .check_lazy=check_lazy)
+          res <- plan(strategies, substitute = FALSE,
+	              .cleanup = .cleanup, .init = .init,
+                      .check_lazy = check_lazy)
           return(invisible(res))
         }
 
         ## Example: plan(list(sequential, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
-          strategies <- eval(strategy, envir=parent.frame())
+          strategies <- eval(strategy, envir = parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
           ## Coerce strings to functions, e.g. plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
-              strategy_kk <- tweak(strategy_kk, penvir=parent.frame())
+              strategy_kk <- tweak(strategy_kk, penvir = parent.frame())
               strategies[[kk]] <- strategy_kk
             }
           }
@@ -209,26 +221,26 @@ plan <- local({
     ## (b) Otherwise, assume a single future strategy
     if (is.null(newStack)) {
       if (is.symbol(strategy)) {
-        strategy <- eval(strategy, envir=parent.frame())
+        strategy <- eval(strategy, envir = parent.frame())
       } else if (is.language(strategy)) {
         strategyT <- as.list(strategy)
 
         ## tweak(...)?
         if (strategyT[[1]] == as.symbol("tweak")) {
-          strategy <- eval(strategy, envir=parent.frame())
+          strategy <- eval(strategy, envir = parent.frame())
         } else {
-          isSymbol <- sapply(strategyT, FUN=is.symbol)
+          isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
             targs <- c(targs, strategyT[-1L])
             strategy <- strategyT[[1L]]
           }
-          strategy <- eval(strategy, envir=parent.frame())
+          strategy <- eval(strategy, envir = parent.frame())
         }
       }
 
       ## Tweak future strategy accordingly
-      args <- c(list(strategy), targs, penvir=parent.frame())
-      tstrategy <- do.call(tweak, args=args)
+      args <- c(list(strategy), targs, penvir = parent.frame())
+      tstrategy <- do.call(tweak, args = args)
 
       ## Setup a new stack of future strategies (with a single one)
       newStack <- list(tstrategy)
@@ -257,11 +269,11 @@ plan <- local({
         .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
       }
 
-##      using_eager <- lapply(newStack, FUN = inherits, "eager")
-##      using_eager <- any(unlist(using_eager, use.names = FALSE))
-##      if (using_eager) {
-##        .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
-##      }
+      using_eager <- lapply(newStack, FUN = inherits, "eager")
+      using_eager <- any(unlist(using_eager, use.names = FALSE))
+      if (using_eager) {
+        .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
+      }
     }
     
     ## Set new strategy for futures
@@ -280,8 +292,9 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies=c("sequential", "multicore", "multisession", "multiprocess", "cluster", "lazy", "eager")) {
+supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster"), deprecated = FALSE) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
+  if (deprecated) strategies <- unique(c(strategies, "eager"))
   strategies
 }
 
@@ -301,7 +314,7 @@ print.future <- function(x, ...) {
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
-  cat(s, "\n", sep="")
+  cat(s, "\n", sep = "")
   invisible(x)
 }
 
@@ -330,6 +343,6 @@ print.FutureStrategyList <- function(x, ...) {
   }
 
   s <- paste(s, collapse = "\n")
-  cat(s, "\n", sep="")
+  cat(s, "\n", sep = "")
   invisible(x)
 }

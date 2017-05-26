@@ -39,7 +39,7 @@ values.list <- function(x, ...) {
 values.environment <- function(x, ...) {
   y <- futures(x)
   y <- resolve(y)
-  names <- ls(envir=y, all.names=TRUE)
+  names <- ls(envir = y, all.names = TRUE)
   for (key in names) {
     tmp <- y[[key]]
     if (inherits(tmp, "Future")) y[[key]] <- value(tmp, ...)

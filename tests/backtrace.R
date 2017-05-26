@@ -5,7 +5,7 @@ message("*** backtrace( ) ...")
 message("*** backtrace( ) - explicit future ...")
 
 f <- future({ 42L; stop("Woops") })
-v <- value(f, signal=FALSE)
+v <- value(f, signal = FALSE)
 print(v)
 calls <- backtrace(f)
 print(calls)
@@ -26,25 +26,25 @@ message("*** backtrace( ) - exceptions ...")
 
 message("- No condition ...")
 f <- future(42L)
-res <- try(backtrace(f), silent=TRUE)
+res <- tryCatch(backtrace(f), error = identity)
 print(res)
-stopifnot(inherits(res, "try-error"))
+stopifnot(inherits(res, "error"))
 
 message("- No call stack ...")
 f <- future({ 42L; stop("Woops") })
-v <- value(f, signal=FALSE)
+v <- value(f, signal = FALSE)
 f$value$traceback <- NULL ## Remove call stack
-res <- try(backtrace(f), silent=TRUE)
+res <- tryCatch(backtrace(f), error = identity)
 print(res)
-stopifnot(inherits(res, "try-error"))
+stopifnot(inherits(res, "error"))
 
 if (availableCores() >= 2L) {
   message("- Non-resolved future ...")
-  plan(multiprocess, workers=2L)
-  f <- future({ Sys.sleep(10); 42L; stop("Woops") })
-  res <- try(backtrace(f), silent=TRUE)
+  plan(multiprocess, workers = 2L)
+  f <- future({ Sys.sleep(3); 42L; stop("Woops") })
+  res <- tryCatch(backtrace(f), error = identity)
   print(res)
-  stopifnot(inherits(res, "try-error"))
+  stopifnot(inherits(res, "error"))
 }
 
 message("*** backtrace( ) - exceptions ... DONE")

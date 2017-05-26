@@ -2,7 +2,7 @@ source("incl/start.R")
 
 ## BACKWARD COMPATIBILITY
 if (getRversion() < "3.2.0") {
-  names <- function(x) if (is.environment(x)) ls(envir=x) else base::names(x)
+  names <- function(x) if (is.environment(x)) ls(envir = x) else base::names(x)
 }
 
 message("*** %<-% to environment ...")
@@ -14,7 +14,7 @@ z <- new.env()
 stopifnot(length(names(z)) == 0L)
 
 message("*** %<-% to environment: Assign by index (not allowed)")
-res <- try(z[[1]] %<-% { 2 } %lazy% TRUE, silent=TRUE)
+res <- try(z[[1]] %<-% { 2 } %lazy% TRUE, silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 
 message("*** %<-% to environment: Assign by name (new)")

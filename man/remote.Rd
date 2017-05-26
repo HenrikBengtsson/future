@@ -66,13 +66,13 @@ which means that its \emph{value is computed and resolved
 remotely in another process}.
 }
 \details{
-Note that remote futures use \code{persistent=TRUE} by default.
+Note that remote futures use \code{persistent = TRUE} by default.
 }
 \examples{
 \dontrun{\donttest{
 
 ## Use a remote machine
-plan(remote, workers="remote.server.org")
+plan(remote, workers = "remote.server.org")
 
 ## Evaluate expression remotely
 host \%<-\% { Sys.info()[["nodename"]] }

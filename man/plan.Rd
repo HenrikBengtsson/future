@@ -12,7 +12,10 @@ plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
 for resolving a future.  If NULL, then the current strategy is returned.}
 
 \item{\dots}{Additional arguments overriding the default arguments
-of the evaluation function.}
+of the evaluation function.  Which additional arguments are supported
+depends on what evaluation function is used, e.g. several support
+argument \code{workers} but not all.  For details, see the individual
+functions of which some are linked to below.}
 
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
@@ -94,7 +97,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 # A sequential future with lazy evaluation
@@ -107,7 +110,7 @@ f <- future({
 }) \%lazy\% TRUE
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 # A multicore future
@@ -120,7 +123,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 
 ## Multisession futures gives an error on R CMD check on
@@ -138,7 +141,7 @@ f <- future({
 })
 y <- value(f)
 print(y)
-str(list(a=a, b=b, c=c)) ## All NAs
+str(list(a = a, b = b, c = c)) ## All NAs
 
 }
 }

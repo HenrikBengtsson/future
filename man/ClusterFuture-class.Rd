@@ -49,6 +49,10 @@ same path to \file{Rscript} as the main R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}
+
+\item{sessioninfo}{If TRUE, session information is collected for each
+cluster node, otherwise not.  This also servers as testing that each
+node is working properly.}
 }
 \value{
 An object of class \code{ClusterFuture}.

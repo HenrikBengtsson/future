@@ -3,7 +3,7 @@ ClusterRegistry <- local({
   last <- NULL
   cluster <- NULL
 
-  function(action=c("get", "start", "stop"), workers=NULL, ...) {
+  function(action = c("get", "start", "stop"), workers = NULL, ...) {
     action <- match.arg(action)
 
     if (is.null(workers)) {
@@ -27,12 +27,12 @@ ClusterRegistry <- local({
     } else if (action == "start") {
       ## Already setup?
       if (!identical(workers, last)) {
-        ClusterRegistry(action="stop")
+        ClusterRegistry(action = "stop")
         cluster <<- .makeCluster(workers, ...)
         last <<- workers
       }
     } else if (action == "stop") {
-      if (length(cluster) > 0L) try(stopCluster(cluster), silent=TRUE)
+      if (length(cluster) > 0L) try(stopCluster(cluster), silent = TRUE)
       cluster <<- NULL
       last <<- NULL
     }

@@ -1,56 +1,51 @@
 source("incl/start.R")
 library("listenv")
 oopts <- c(oopts, options(
-  future.globals.resolve=TRUE,
-  future.globals.onMissing="error"
+  future.globals.resolve = TRUE,
+  future.globals.onMissing = "error"
 ))
 
 message("*** Tricky use cases related to globals ...")
 
-strategies <- supportedStrategies()
-strategies <- setdiff(strategies, "multiprocess")
-strategies <- "cluster"
-
-for (cores in 1:min(3L, availableCores())) {
+for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
-  options(mc.cores=cores-1L)
+  options(mc.cores = cores)
 
   message("availableCores(): ", availableCores())
 
   message("- Local variables with the same name as globals ...")
 
-  methods <- c("conservative", "ordered")
+  for (strategy in supportedStrategies(cores)) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
 
-  for (method in methods) {
-    options(future.globals.method=method)
-    message(sprintf("Method for identifying globals: '%s' ...", method))
-
-    for (strategy in strategies) {
-      message(sprintf("- plan('%s') ...", strategy))
-      plan(strategy)
+    methods <- c("conservative", "ordered")
+    for (method in methods) {
+      options(future.globals.method = method)
+      message(sprintf("Method for identifying globals: '%s' ...", method))
 
       a <- 3
 
       yTruth <- local({
         b <- a
         a <- 2
-        a*b
+        a * b
       })
 
       y %<-% {
         b <- a
         a <- 2
-        a*b
+        a * b
       }
 
-      rm(list="a")
+      rm(list = "a")
 
-      res <- try(y, silent=TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
-        str(list(res=res))
+      res <- try(y, silent = TRUE)
+      if (method == "conservative" && strategy %in% c("multisession", "cluster")) {
+        str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {
-        message(sprintf("y=%g", y))
+        message(sprintf("y = %g", y))
         stopifnot(identical(y, yTruth))
       }
 
@@ -61,17 +56,17 @@ for (cores in 1:min(3L, availableCores())) {
       y %<-% {
         b <- a
         a <- 2
-        a*b
+        a * b
       } %lazy% TRUE
 
-      rm(list="a")
+      rm(list = "a")
 
-      res <- try(y, silent=TRUE)
+      res <- try(y, silent = TRUE)
       if (method == "conservative") {
-        str(list(res=res))
+        str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {
-        message(sprintf("y=%g", y))
+        message(sprintf("y = %g", y))
         stopifnot(identical(y, yTruth))
       }
 
@@ -80,16 +75,16 @@ for (cores in 1:min(3L, availableCores())) {
       a <- 1
       for (ii in 1:3) {
         res[[ii]] %<-% {
-          b <- a*ii
+          b <- a * ii
           a <- 0
           b
         }
       }
-      rm(list="a")
+      rm(list = "a")
 
-      res <- try(unlist(res), silent=TRUE)
-      if (method == "conservative" && strategy %in% c("lazy", "multisession", "cluster")) {
-        str(list(res=res))
+      res <- try(unlist(res), silent = TRUE)
+      if (method == "conservative" && strategy %in% c("multisession", "cluster")) {
+        str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {
         print(res)
@@ -102,16 +97,16 @@ for (cores in 1:min(3L, availableCores())) {
       a <- 1
       for (ii in 1:3) {
         res[[ii]] %<-% {
-          b <- a*ii
+          b <- a * ii
           a <- 0
           b
         } %lazy% TRUE
       }
-      rm(list="a")
+      rm(list = "a")
 
-      res <- try(unlist(res), silent=TRUE)
+      res <- try(unlist(res), silent = TRUE)
       if (method == "conservative") {
-        str(list(res=res))
+        str(list(res = res))
         stopifnot(inherits(res, "try-error"))
       } else {
         print(res)
@@ -121,29 +116,29 @@ for (cores in 1:min(3L, availableCores())) {
 
       ## Assert that `a` is resolved and turned into a constant future
       ## at the moment when future `b` is created.
-      ## Requires options(future.globals.resolve=TRUE).
+      ## Requires options(future.globals.resolve = TRUE).
       a <- future(1)
-      b <- future(value(a)+1)
-      rm(list="a")
-      message(sprintf("value(b)=%g", value(b)))
+      b <- future(value(a) + 1)
+      rm(list = "a")
+      message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
       a <- future(1)
-      b <- future(value(a)+1, lazy=TRUE)
-      rm(list="a")
-      message(sprintf("value(b)=%g", value(b)))
+      b <- future(value(a) + 1, lazy = TRUE)
+      rm(list = "a")
+      message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
-      a <- future(1, lazy=TRUE)
-      b <- future(value(a)+1)
-      rm(list="a")
-      message(sprintf("value(b)=%g", value(b)))
+      a <- future(1, lazy = TRUE)
+      b <- future(value(a) + 1)
+      rm(list = "a")
+      message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
-      a <- future(1, lazy=TRUE)
-      b <- future(value(a)+1, lazy=TRUE)
-      rm(list="a")
-      message(sprintf("value(b)=%g", value(b)))
+      a <- future(1, lazy = TRUE)
+      b <- future(value(a) + 1, lazy = TRUE)
+      rm(list = "a")
+      message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
 
@@ -151,14 +146,14 @@ for (cores in 1:min(3L, availableCores())) {
       ## overwritten by the name of the last package attached
       ## by the future.
       pkg <- "foo"
-      f <- uniprocess({ pkg })
+      f <- sequential({ pkg })
       v <- value(f)
-      message(sprintf("value(f)=%s", sQuote(v)))
+      message(sprintf("value(f) = %s", sQuote(v)))
       stopifnot(pkg == "foo", v == "foo")
-    } ## for (strategy ...)
-
-    message(sprintf("Method for identifying globals: '%s' ... DONE", method))
-  }
+      
+      message(sprintf("Method for identifying globals: '%s' ... DONE", method))
+    }
+  } ## for (strategy ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

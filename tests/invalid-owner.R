@@ -5,11 +5,11 @@ usedNodes <- function(future) {
   ## Number of unresolved cluster futures
   workers <- future$workers
   reg <- sprintf("workers-%s", attr(workers, "name"))
-  c(used=length(future:::FutureRegistry(reg, action="list")), total=length(workers))
+  c(used = length(future:::FutureRegistry(reg, action = "list")), total = length(workers))
 }
 
 ## This test requires at least two background processes
-plan(multisession, workers=3L)
+plan(multisession, workers = 2L)
 
 message("*** future() - invalid ownership ...")
 
@@ -63,7 +63,7 @@ message("- Asserting ownership ... DONE")
 message("- Trying with invalid ownership ...")
 
 message("Creating future #1:")
-f1 <- future({ Sys.sleep(5); 42L })
+f1 <- future({ 42L })
 print(f1)
 cat(sprintf("Future #1 session: %d\n", f1$node))
 stopifnot(identical(f1$owner, session_uuid))
@@ -77,9 +77,9 @@ stopifnot(identical(f2$owner, session_uuid))
 print(usedNodes(f2))
 
 message("Getting value of future #2:")
-res <- try(value(f2), silent=TRUE)
+res <- tryCatch(value(f2), error = identity)
 print(res)
-stopifnot(inherits(res, "try-error"))
+stopifnot(inherits(res, "error"))
 
 v1 <- value(f1)
 print(v1)
