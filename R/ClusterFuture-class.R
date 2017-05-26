@@ -348,6 +348,8 @@ value.ClusterFuture <- function(future, ...) {
 
 
 requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
+  debug <- getOption("future.debug", FALSE)
+  
   stopifnot(inherits(workers, "cluster"))
   stopifnot(is.function(await))
   stopifnot(is.finite(timeout), timeout >= 0)
@@ -378,7 +380,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
     finished <- (used < total)
     if (finished) break
 
-    mdebug("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
+    if (debug) mdebug("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
 
     ## Wait
     Sys.sleep(interval)
@@ -393,7 +395,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
   if (!finished) {
     msg <- sprintf("TIMEOUT: All %d cluster nodes are still occupied after %s (polled %d times)", total, format(round(dt, digits = 2L)), iter)
-    mdebug(msg)
+    if (debug) mdebug(msg)
     stop(msg)
   }
 

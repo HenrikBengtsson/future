@@ -8,8 +8,6 @@ message(sprintf("detectCores() = %d", n))
 stopifnot(length(n) == 1, is.numeric(n))
 
 ## Default
-print(availableCores())
-
 n <- availableCores()
 message(sprintf("availableCores() = %d", n))
 stopifnot(length(n) == 1, is.numeric(n), n >= 1)

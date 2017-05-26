@@ -67,7 +67,7 @@ y0 <- NULL
 for (strategy in supportedStrategies()) {
   plan(strategy)
 
-  y <- main(1:10)
+  y <- main(1:3)
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
 

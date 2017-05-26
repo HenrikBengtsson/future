@@ -24,8 +24,10 @@ tweakFormulaCall <- function(expr) {
     rhs <- expr[[3]]
   }
   
-  ## covr: skip=1
-  substitute({ lhs; rhs; e }, list(lhs = lhs, rhs = rhs, e = expr))
+  substitute(
+    { lhs; rhs; e },
+    list(lhs = lhs, rhs = rhs, e = expr)
+  )
 } ## tweakFormulaCall()
 
 
@@ -77,8 +79,10 @@ tweakSubassignmentCall <- function(expr) {
 
   target <- expr2[[2]]
   
-  ## covr: skip=1
-  substitute({ target; e }, list(target = target, e = expr))
+  substitute(
+    { target; e },
+    list(target = target, e = expr)
+  )
 } ## tweakSubassignmentCall()
 
 
@@ -98,13 +102,17 @@ tweakFutureAssignmentCall <- function(expr) {
   if (op %in% c("<<-", "%<-%", "%<=%")) {
     lhs <- expr[[2]]
     rhs <- expr[[3]]
-    ## covr: skip=1
-    expr <- substitute({a <- b; e}, list(a = lhs, b = rhs, e = expr))
+    expr <- substitute(
+      {a <- b; e},
+      list(a = lhs, b = rhs, e = expr)
+    )
   } else if (op %in% c("->>", "%->%", "%=>%")) {
     lhs <- expr[[3]]
     rhs <- expr[[2]]
-    ## covr: skip=1
-    expr <- substitute({a <- b; e}, list(a = lhs, b = rhs, e = expr))
+    expr <- substitute(
+      {a <- b; e},
+      list(a = lhs, b = rhs, e = expr)
+    )
   }
   expr
 } ## tweakFutureAssignmentCall()

@@ -10,18 +10,18 @@
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2017-05-22                   |
+|date     |2017-05-25                   |
 
 ## Packages
 
-|package  |*  |version    |date       |source                            |
-|:--------|:--|:----------|:----------|:---------------------------------|
-|digest   |   |0.6.12     |2017-01-27 |cran (@0.6.12)                    |
-|future   |   |1.4.0-9000 |2017-05-23 |local (HenrikBengtsson/future@NA) |
-|globals  |   |0.10.0     |2017-04-17 |cran (@0.10.0)                    |
-|listenv  |   |0.6.0      |2015-12-28 |cran (@0.6.0)                     |
-|markdown |   |0.8        |2017-04-20 |cran (@0.8)                       |
-|R.rsp    |   |0.41.0     |2017-04-16 |cran (@0.41.0)                    |
+|package  |*  |version |date       |source         |
+|:--------|:--|:-------|:----------|:--------------|
+|digest   |   |0.6.12  |2017-01-27 |cran (@0.6.12) |
+|future   |   |1.4.0   |2017-03-13 |cran (@1.4.0)  |
+|globals  |   |0.10.0  |2017-04-17 |cran (@0.10.0) |
+|listenv  |   |0.6.0   |2015-12-28 |cran (@0.6.0)  |
+|markdown |   |0.8     |2017-04-20 |cran (@0.8)    |
+|R.rsp    |   |0.41.0  |2017-04-16 |cran (@0.41.0) |
 
 # Check results
 
@@ -45,7 +45,7 @@
 |pbmcapply            |1.2.1   |      0|        0|     0|
 |PECA                 |1.12.0  |      0|        0|     1|
 |PSCBS                |0.62.0  |      0|        0|     0|
-|PureCN               |1.6.1   |      0|        0|     1|
+|PureCN               |1.6.2   |      0|        0|     1|
 |QDNAseq              |1.12.0  |      0|        1|     0|
 |Repitools            |1.22.0  |      0|        0|     3|
 |R.filesets           |2.11.0  |      0|        0|     0|
@@ -286,7 +286,7 @@ Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
 
 0 errors | 0 warnings | 0 notes
 
-## PureCN (1.6.1)
+## PureCN (1.6.2)
 Maintainer: Markus Riester <markus.riester@novartis.com>
 
 0 errors | 0 warnings | 1 note 

@@ -54,8 +54,8 @@ for (cores in 1:availCores) {
 
 message("*** ClusterRegistry() - exceptions ...")
 
-res <- try(ClusterRegistry(action = "start", workers = TRUE))
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(ClusterRegistry(action = "start", workers = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** ClusterRegistry() - exceptions ... DONE")
 

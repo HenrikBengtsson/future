@@ -45,7 +45,6 @@ if (isTRUE(delay)) {
 Cs <- mandelbrot_tiles(xmid = region$xmid, ymid = region$ymid,
                        side = region$side, nrow = nrow,
                        resolution = resolution)
-
 if (interactive()) {
   if (.Platform$GUI == "RStudio") {
     if (!"RStudioGD" %in% names(dev.list())) dev.new()

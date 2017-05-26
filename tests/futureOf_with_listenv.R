@@ -80,24 +80,24 @@ message("*** futureOf() with listenv - futures ... DONE")
 message("*** futureOf() with listenv - exceptions ...")
 
 ## Invalid subset
-res <- try(futureOf(x[[0]], mustExist = FALSE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[0]], mustExist = FALSE), error = identity)
+stopifnot(inherits(res, "error"))
 
-res <- try(futureOf(x[[0]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[0]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 ## Out-of-bound subscript, cf lists
 stopifnot(is.na(futureOf(x[[10]], mustExist = FALSE)))
-res <- try(futureOf(x[[10]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[10]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 ## Invalid subscript
-res <- try(futureOf(x[[1 + 2i]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[1 + 2i]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 ## Non-existing object
-res <- try(futureOf(z[[1]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(z[[1]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** futureOf() with listenv - exceptions ... DONE")
 

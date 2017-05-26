@@ -62,17 +62,17 @@ message("*** futureOf() with environment - futures ... DONE")
 message("*** futureOf() with environment - exceptions ...")
 
 ## Invalid subset
-res <- try(futureOf(x[[0]], mustExist = FALSE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[0]], mustExist = FALSE), error = identity)
+stopifnot(inherits(res, "error"))
 
-res <- try(futureOf(x[[0]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[0]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
-res <- try(futureOf(x[[10]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[10]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
-res <- try(futureOf(x[[1 + 2i]], mustExist = TRUE), silent = TRUE)
-stopifnot(inherits(res, "try-error"))
+res <- tryCatch(futureOf(x[[1 + 2i]], mustExist = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** futureOf() with environment - exceptions ... DONE")
 

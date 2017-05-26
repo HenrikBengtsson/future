@@ -15,15 +15,14 @@ for (cores in 1:availCores) {
 
   message("- Local variables with the same name as globals ...")
 
-  methods <- c("conservative", "ordered")
+  for (strategy in supportedStrategies(cores)) {
+    message(sprintf("- plan('%s') ...", strategy))
+    plan(strategy)
 
-  for (method in methods) {
-    options(future.globals.method = method)
-    message(sprintf("Method for identifying globals: '%s' ...", method))
-
-    for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
-      message(sprintf("- plan('%s') ...", strategy))
-      plan(strategy)
+    methods <- c("conservative", "ordered")
+    for (method in methods) {
+      options(future.globals.method = method)
+      message(sprintf("Method for identifying globals: '%s' ...", method))
 
       a <- 3
 
@@ -119,25 +118,25 @@ for (cores in 1:availCores) {
       ## at the moment when future `b` is created.
       ## Requires options(future.globals.resolve = TRUE).
       a <- future(1)
-      b <- future(value(a)+1)
+      b <- future(value(a) + 1)
       rm(list = "a")
       message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
       a <- future(1)
-      b <- future(value(a)+1, lazy = TRUE)
+      b <- future(value(a) + 1, lazy = TRUE)
       rm(list = "a")
       message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
       a <- future(1, lazy = TRUE)
-      b <- future(value(a)+1)
+      b <- future(value(a) + 1)
       rm(list = "a")
       message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
 
       a <- future(1, lazy = TRUE)
-      b <- future(value(a)+1, lazy = TRUE)
+      b <- future(value(a) + 1, lazy = TRUE)
       rm(list = "a")
       message(sprintf("value(b) = %g", value(b)))
       stopifnot(value(b) == 2)
@@ -151,10 +150,10 @@ for (cores in 1:availCores) {
       v <- value(f)
       message(sprintf("value(f) = %s", sQuote(v)))
       stopifnot(pkg == "foo", v == "foo")
-    } ## for (strategy ...)
-
-    message(sprintf("Method for identifying globals: '%s' ... DONE", method))
-  }
+      
+      message(sprintf("Method for identifying globals: '%s' ... DONE", method))
+    }
+  } ## for (strategy ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)

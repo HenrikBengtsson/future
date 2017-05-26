@@ -28,36 +28,32 @@ for (cores in 1:availCores) {
       x
     }
     stopifnot(!exists("x", inherits = FALSE))
-    res <- try(identical(v3, 3), silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
+    res <- tryCatch(identical(v3, 3), error = identity)
+    stopifnot(inherits(res, "error"))
 
 
     y <- listenv::listenv()
-    for (ii in 1:5) {
+    for (ii in 1:3) {
       y[[ii]] %<-% {
         if (ii %% 2 == 0) stop("Woops!")
         ii
       }
     }
-    res <- try(as.list(y), silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
-    z <- y[c(1, 3, 5)]
+    res <- tryCatch(as.list(y), error = identity)
+    stopifnot(inherits(res, "error"))
+    z <- y[c(1, 3)]
     z <- unlist(z)
-    stopifnot(all(z == c(1, 3, 5)))
-    res <- try(y[[2]], silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
-    res <- try(y[[4]], silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
-    res <- try(y[c(2, 4)], silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
-    res <- try(y[1:2], silent = TRUE)
-    stopifnot(inherits(res, "try-error"))
+    stopifnot(all(z == c(1, 3)))
+    res <- tryCatch(y[[2]], error = identity)
+    stopifnot(inherits(res, "error"))
+    res <- tryCatch(y[1:2], error = identity)
+    stopifnot(inherits(res, "error"))
 
 
     message("** Future evaluation with progress bar")
     v4 %<-% {
       cat("Processing: ")
-      for (ii in 1:10) { cat("."); Sys.sleep(0.1) }
+      for (ii in 1:10) { cat(".") }
       cat(" [100%]\n")
       4
     }

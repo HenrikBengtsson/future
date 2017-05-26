@@ -76,8 +76,10 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
 
   ## Nothing more to do?
   if (length(globals) == 0) {
-    if (debug) mdebug("- globals: [0] <none>")
-    if (debug) mdebug("getGlobalsAndPackages() ... DONE")
+    if (debug) {
+      mdebug("- globals: [0] <none>")
+      mdebug("getGlobalsAndPackages() ... DONE")
+    }
     return(list(expr = expr, globals = list(), packages = character(0)))
   }
 
@@ -139,8 +141,10 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       }
     }
 
-    if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-    if (debug) mdebug("Resolving any globals that are futures ... DONE")
+    if (debug) {
+      mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebug("Resolving any globals that are futures ... DONE")
+    }
   }
 
 
@@ -191,8 +195,10 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   if (resolve && length(globals) > 0L) {
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value = TRUE, recursive = TRUE)
-    if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-    if (debug) mdebug("Resolving futures part of globals (recursively) ... DONE")
+    if (debug) {
+      mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebug("Resolving futures part of globals (recursively) ... DONE")
+    }
   }
 
 
@@ -258,9 +264,11 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     pkgs <- pkgs[isAttached]
   }
 
-  if (debug) mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-  if (debug) mdebug("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
-  if (debug) mdebug("getGlobalsAndPackages() ... DONE")
+  if (debug) {
+    mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    mdebug("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
+    mdebug("getGlobalsAndPackages() ... DONE")
+  }
 
   stopifnot(inherits(globals, "FutureGlobals"))
   

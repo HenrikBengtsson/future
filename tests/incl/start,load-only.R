@@ -9,7 +9,7 @@ covr_testing <- ("covr" %in% loadedNamespaces())
 oopts <- options(
   warn = 1L,
   mc.cores = 2L,
-  future.debug = !covr_testing,
+  future.debug = TRUE,
   ## Reset the following during testing in case
   ## they are set on the test system
   future.availableCores.system = NULL,
@@ -71,7 +71,7 @@ attachLocally <- function(x, envir = parent.frame()) {
   }
 }
 
-supportedStrategies <- function(cores = 1L, excl = NULL, ...) {
+supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
   if (cores > 1) {

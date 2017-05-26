@@ -91,8 +91,11 @@ plan <- local({
     evaluator <- stack[[1L]]
     init <- attr(evaluator, "init")
     if (identical(init, TRUE)) {
-      mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
-      mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      debug <- getOption("future.debug", FALSE)
+      if (debug) {
+        mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
+        mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+      }
 
       ## IMPORANT: Initiate only once.  This avoids an infinite 
       ## recursive loop caused by other plan() calls.
@@ -106,7 +109,7 @@ plan <- local({
       ## (otherwise the garbage collector would have to do it)
       v <- value(f)
 
-      mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
+      if (debug) mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
     }
   }
 
@@ -164,7 +167,7 @@ plan <- local({
         }
 
         if (using_lazy) {
-          .Defunct(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+          .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
         }
 
         using_eager <- lapply(newStack, FUN = inherits, "eager")
@@ -263,7 +266,7 @@ plan <- local({
       using_lazy <- lapply(newStack, FUN = inherits, "lazy")
       using_lazy <- any(unlist(using_lazy, use.names = FALSE))
       if (using_lazy) {
-        .Defunct(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+        .Deprecated(msg = "Future strategy 'lazy' is deprecated. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
       }
 
       using_eager <- lapply(newStack, FUN = inherits, "eager")

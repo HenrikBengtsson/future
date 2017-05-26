@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-strategies <- supportedStrategies(excl = "multiprocess")
+strategies <- supportedStrategies()
 
 message("*** Nested futures ...")
 

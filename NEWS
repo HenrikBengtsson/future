@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.4.0-9000 [2017-05-19]
+Version: 1.5.0 [2017-05-24]
 
 SIGNIFICANT CHANGES:
 
@@ -38,9 +38,6 @@ DEPRECATED AND DEFUNCT:
 
  o Formally deprecated eager futures; use sequential instead.
 
- o Previously deprecated lazy futures are now defunct; use
-   f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE instead.
-
 BUG FIXES:
 
  o future_lapply() with multicore / multisession futures, would use a
@@ -68,6 +65,9 @@ SOFTWARE QUALITY:
 
  o Now package tests with parallel::makeCluster() not only test for
    type = 'PSOCK' clusters but also 'FORK' (when supported).
+
+ o TESTS: Cleaned up test scripts such that the overall processing time for
+   the tests was roughly halved, while preservering the same test coverage.
  
 
 Version: 1.4.0 [2017-03-12]
