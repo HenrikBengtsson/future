@@ -15,6 +15,9 @@ if (supportsMulticore()) types <- c(types, "FORK")
 ## /HB 2017-05-20
 if (covr_testing) types <- setdiff(types, "FORK")
 
+pid <- Sys.getpid()
+message("Main PID (original): ", pid)
+cl <- NULL
 for (type in types) {
   message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
@@ -192,6 +195,12 @@ for (type in types) {
   stopifnot(is.null(clR))
   
   message("*** cluster() - assert registry behavior ... DONE")
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
   
   message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
@@ -222,6 +231,12 @@ for (type in types) {
   
   message("*** cluster() - setDefaultCluster() ... DONE")
 
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
+  
   message(sprintf("Test set #2 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
@@ -251,12 +266,27 @@ for (type in types) {
   stopifnot(x == 42L)
   
   message("*** cluster() - crashed worker ... DONE")
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
   
   message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
 message("*** cluster() ... DONE")
 
+## Sanity checks
+pid2 <- Sys.getpid()
+message("Main PID (original): ", pid)
+message("Main PID: ", pid2)
+stopifnot(pid2 == pid)
+
 ## Cleanup
-parallel::stopCluster(cl)
+print(cl)
+str(cl)
+if (inherits(cl, "cluster")) parallel::stopCluster(cl)
+
 source("incl/end.R")
