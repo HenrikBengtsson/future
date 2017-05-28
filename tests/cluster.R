@@ -16,7 +16,7 @@ if (supportsMulticore()) types <- c(types, "FORK")
 if (covr_testing) types <- setdiff(types, "FORK")
 
 for (type in types) {
-  message("Testing with cluster type %s ...", sQuote(type))
+  message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
   for (cores in 1:availCores) {
     message(sprintf("Testing with %d cores on type = %s ...",
@@ -25,6 +25,8 @@ for (type in types) {
   
     ## Set up a cluster with <cores> nodes (explicitly)
     cl <- parallel::makeCluster(cores, type = type)
+    print(cl)
+    
     plan(cluster, workers = cl)
   
     ## No global variables
@@ -167,12 +169,44 @@ for (type in types) {
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
   } ## for (cores ...)
+
+  message("*** cluster() - exceptions ...")
   
+  res <- tryCatch(cluster(42L, workers = NA), error = identity)
+  print(res)
+  stopifnot(inherits(res, "error"))
   
+  message("*** cluster() - exceptions ... DONE")
+
+  message("*** cluster() - assert registry behavior ...")
+  
+  ## Explicitly created clusters are *not* added to the registry
+  cl <- parallel::makeCluster(cores, type = type)
+  plan(cluster, workers = cl)
+  clR <- ClusterRegistry("get")
+  stopifnot(is.null(clR))
+  
+  ## ... and therefore changing plans shouldn't change anything
+  plan(sequential)
+  clR <- ClusterRegistry("get")
+  stopifnot(is.null(clR))
+  
+  message("*** cluster() - assert registry behavior ... DONE")
+  
+  message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
+} ## for (type ...)
+
+
+library("parallel")
+
+for (type in types) {
+  message(sprintf("Test set #2 with cluster type %s ...", sQuote(type)))
+
   message("*** cluster() - setDefaultCluster() ...")
   
-  library("parallel")
   cl <- makeCluster(1L, type = type)
+  print(cl)
+  
   setDefaultCluster(cl)
   ## FIXME: Make plan(cluster, workers = NULL) work such that
   ## setDefaultCluster() is actually tested.
@@ -187,16 +221,13 @@ for (type in types) {
   setDefaultCluster(NULL)
   
   message("*** cluster() - setDefaultCluster() ... DONE")
+
+  message(sprintf("Test set #2 with cluster type %s ... DONE", sQuote(type)))
+} ## for (type ...)
+
   
-  
-  message("*** cluster() - exceptions ...")
-  
-  res <- tryCatch(cluster(42L, workers = NA), error = identity)
-  print(res)
-  stopifnot(inherits(res, "error"))
-  
-  message("*** cluster() - exceptions ... DONE")
-  
+for (type in types) {
+  message(sprintf("Test set #3 with cluster type %s ...", sQuote(type)))
   
   message("*** cluster() - crashed worker ...")
   
@@ -221,23 +252,7 @@ for (type in types) {
   
   message("*** cluster() - crashed worker ... DONE")
   
-  
-  message("*** cluster() - registry ...")
-  
-  ## Explicitly created clusters are *not* added to the registry
-  cl <- parallel::makeCluster(cores, type = type)
-  plan(cluster, workers = cl)
-  clR <- ClusterRegistry("get")
-  stopifnot(is.null(clR))
-  
-  ## ... and therefore changing plans shouldn't change anything
-  plan(sequential)
-  clR <- ClusterRegistry("get")
-  stopifnot(is.null(clR))
-  
-  message("*** cluster() - registry ... DONE")
-  
-  message("Testing with cluster type %s ... DONE", sQuote(type))
+  message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
 message("*** cluster() ... DONE")
