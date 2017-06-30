@@ -76,6 +76,11 @@ for (strategy in supportedStrategies()) {
   stopifnot(identical(z, z_length))
   z <- future_lapply(x, FUN = do.call, what = fun)
   stopifnot(identical(z, z_fun))
+
+  message("- future_lapply(x, ...) - passing arguments via '...' ...")
+  data <- data.frame(a = 1:2)
+  y <- future_lapply(1L, function(i, df) dim(df), df = data)
+  stopifnot(identical(y[[1]], dim(data)))
 }
 
 message("*** future_lapply() - tricky globals ... DONE")
