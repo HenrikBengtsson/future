@@ -71,14 +71,11 @@ for (strategy in supportedStrategies()) {
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
 
-  ## BUG FIXES in globals (>= 0.10.0)
-  if (packageVersion("globals") >= "0.10.0") {
-    message("- future_lapply(x, FUN = do.call, ...) ...")
-    z <- future_lapply(x, FUN = do.call, what = length)
-    stopifnot(identical(z, z_length))
-    z <- future_lapply(x, FUN = do.call, what = fun)
-    stopifnot(identical(z, z_fun))
-  }
+  message("- future_lapply(x, FUN = do.call, ...) ...")
+  z <- future_lapply(x, FUN = do.call, what = length)
+  stopifnot(identical(z, z_length))
+  z <- future_lapply(x, FUN = do.call, what = fun)
+  stopifnot(identical(z, z_fun))
 }
 
 message("*** future_lapply() - tricky globals ... DONE")
