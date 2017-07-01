@@ -253,54 +253,56 @@ for (type in types) {
 } ## for (type ...)
 
   
-for (type in types) {
-  message(sprintf("Test set #3 with cluster type %s ...", sQuote(type)))
-
-  cl <- parallel::makeCluster(1L, type = type)
-  print(cl)
-
-  message("*** cluster() - crashed worker ...")
-
-  plan(cluster, workers = cl)
-  x %<-% 42L
-  stopifnot(x == 42L)
-
-  ## Force R worker to quit
-  x %<-% quit(save = "no")
-  res <- tryCatch(y <- x, error = identity)
-  print(res)
-  stopifnot(
-    inherits(res, "simpleError"),
-    inherits(res, "FutureError")
-  )
-
-  ## Cleanup
-  print(cl)
-  ## FIXME: Why doesn't this work here? It causes the below future to stall.
-  # parallel::stopCluster(cl)
-
-  ## Verify that the reset worked
-  cl <- parallel::makeCluster(1L, type = type)
-  print(cl)
-  plan(cluster, workers = cl)
-  x %<-% 42L
-  stopifnot(x == 42L)
-
-  message("*** cluster() - crashed worker ... DONE")
-
-  ## Sanity checks
-  pid2 <- Sys.getpid()
-  message("Main PID (original): ", pid)
-  message("Main PID: ", pid2)
-  stopifnot(pid2 == pid)
-
-  ## Cleanup
-  print(cl)
-  str(cl)
-  parallel::stopCluster(cl)
+if (!on_solaris || type != "FORK") {
+  for (type in types) {
+    message(sprintf("Test set #3 with cluster type %s ...", sQuote(type)))
   
-  message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
-} ## for (type ...)
+    cl <- parallel::makeCluster(1L, type = type)
+    print(cl)
+
+    message("*** cluster() - crashed worker ...")
+  
+    plan(cluster, workers = cl)
+    x %<-% 42L
+    stopifnot(x == 42L)
+  
+    ## Force R worker to quit
+    x %<-% quit(save = "no")
+    res <- tryCatch(y <- x, error = identity)
+    print(res)
+    stopifnot(
+      inherits(res, "simpleError"),
+      inherits(res, "FutureError")
+    )
+
+    ## Cleanup
+    print(cl)
+    ## FIXME: Why doesn't this work here? It causes the below future to stall.
+    # parallel::stopCluster(cl)
+
+    ## Verify that the reset worked
+    cl <- parallel::makeCluster(1L, type = type)
+    print(cl)
+    plan(cluster, workers = cl)
+    x %<-% 42L
+    stopifnot(x == 42L)
+  
+    message("*** cluster() - crashed worker ... DONE")
+
+    ## Sanity checks
+    pid2 <- Sys.getpid()
+    message("Main PID (original): ", pid)
+    message("Main PID: ", pid2)
+    stopifnot(pid2 == pid)
+  
+    ## Cleanup
+    print(cl)
+    str(cl)
+    parallel::stopCluster(cl)
+    
+    message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
+  } ## for (type ...)
+} ## if (!on_solaris || type != "FORK")
 
 message("*** cluster() ... DONE")
 
