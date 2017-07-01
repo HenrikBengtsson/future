@@ -78,9 +78,19 @@ for (strategy in supportedStrategies()) {
   stopifnot(identical(z, z_fun))
 
   message("- future_lapply(x, ...) - passing arguments via '...' ...")
-  data <- data.frame(a = 1:2)
-  y <- future_lapply(1L, function(i, df) dim(df), df = data)
-  stopifnot(identical(y[[1]], dim(data)))
+  ## typeof() == "list"
+  obj <- data.frame(a = 1:2)
+  stopifnot(typeof(obj) == "list")
+  y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+  stopifnot(identical(y[[1]], typeof(obj)))
+
+  ## typeof() == "S4"
+  if (requireNamespace("methods")) {
+    obj <- methods::getClass("MethodDefinition")
+    stopifnot(typeof(obj) == "S4")
+    y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+    stopifnot(identical(y[[1]], typeof(obj)))
+  }  
 }
 
 message("*** future_lapply() - tricky globals ... DONE")
