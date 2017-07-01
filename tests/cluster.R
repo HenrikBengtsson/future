@@ -253,8 +253,8 @@ for (type in types) {
 } ## for (type ...)
 
   
-if (!on_solaris || type != "FORK") {
-  for (type in types) {
+for (type in types) {
+  if (!on_solaris || type != "FORK") {
     message(sprintf("Test set #3 with cluster type %s ...", sQuote(type)))
   
     cl <- parallel::makeCluster(1L, type = type)
@@ -301,8 +301,8 @@ if (!on_solaris || type != "FORK") {
     parallel::stopCluster(cl)
     
     message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
-  } ## for (type ...)
-} ## if (!on_solaris || type != "FORK")
+  } ## if (!on_solaris || type != "FORK")
+} ## for (type ...)
 
 message("*** cluster() ... DONE")
 
