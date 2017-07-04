@@ -77,8 +77,9 @@
 #' @export
 plan <- local({
   defaultStrategy <- structure(sequential, call = substitute(plan(sequential)))
-  
-  defaultStack <- structure(list(defaultStrategy), class = c("FutureStrategyList", "list"))
+
+  defaultStack <- structure(list(defaultStrategy),
+                            class = c("FutureStrategyList", "list"))
 
   ## Stack of type of futures to use
   stack <- defaultStack
@@ -86,18 +87,19 @@ plan <- local({
   plan_cleanup <- function() {
     ClusterRegistry(action = "stop")
   }
-  
+
   plan_init <- function() {
     evaluator <- stack[[1L]]
     init <- attr(evaluator, "init")
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
       if (debug) {
-        mdebug("plan(): plan_init() of %s ...", paste(sQuote(class(evaluator)), collapse = ", "))
+        mdebug("plan(): plan_init() of %s ...",
+               paste(sQuote(class(evaluator)), collapse = ", "))
         mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
       }
 
-      ## IMPORANT: Initiate only once.  This avoids an infinite 
+      ## IMPORANT: Initiate only once.  This avoids an infinite
       ## recursive loop caused by other plan() calls.
       attr(evaluator, "init") <- "done"
       stack[[1L]] <<- evaluator
@@ -109,16 +111,20 @@ plan <- local({
       ## (otherwise the garbage collector would have to do it)
       v <- value(f)
 
-      if (debug) mdebug("plan(): plan_init() of %s ... DONE", paste(sQuote(class(evaluator)), collapse = ", "))
+      if (debug) {
+        mdebug("plan(): plan_init() of %s ... DONE",
+               paste(sQuote(class(evaluator)), collapse = ", "))
+      }
     }
   }
 
 
   ## Main function
-  function(strategy = NULL, ..., substitute = TRUE, .call = TRUE, .cleanup = TRUE, .init = TRUE) {
+  function(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
+           .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
     if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
-    
+
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
@@ -137,7 +143,8 @@ plan <- local({
       if (.cleanup) plan_cleanup()
       return(stack)
     } else if (identical(strategy, "pop")) {
-      ## Pop strategy stack and return old stack (so it can be pushed back later)
+      ## Pop strategy stack and return old stack
+      ## (so it can be pushed back later)
       oldStack <- stack
       stack <<- stack[-1L]
       if (length(stack) == 0L) stack <<- defaultStack
@@ -154,7 +161,7 @@ plan <- local({
     ## Check for deprecated usage of 'lazy'?
     check_lazy <- !identical(targs$.check_lazy, FALSE)
     targs$.check_lazy <- NULL
-    
+
     ## Set new stack?
     if (is.list(strategy)) {
       stopifnot(is.list(strategy), length(strategy) >= 1L)
@@ -176,7 +183,7 @@ plan <- local({
           .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
         }
       }
-      
+
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
       ## Stop any (implicitly started) clusters?
@@ -205,7 +212,8 @@ plan <- local({
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir = parent.frame())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
-          ## Coerce strings to functions, e.g. plan(list("sequential", multicore))
+          ## Coerce strings to functions, e.g.
+          ## plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
             strategy_kk <- strategies[[kk]]
             if (is.character(strategy_kk)) {
@@ -275,7 +283,7 @@ plan <- local({
         .Deprecated(msg = "Future strategy 'eager' is deprecated. Please use 'sequential' instead, which works identical.")
       }
     }
-    
+
     ## Set new strategy for futures
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
@@ -292,7 +300,10 @@ plan <- local({
 }) # plan()
 
 
-supportedStrategies <- function(strategies = c("sequential", "multicore", "multisession", "multiprocess", "cluster"), deprecated = FALSE) {
+supportedStrategies <- function(strategies = c("sequential", "multicore",
+                                               "multisession", "multiprocess",
+                                               "cluster"),
+                                deprecated = FALSE) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   if (deprecated) strategies <- unique(c(strategies, "eager"))
   strategies
@@ -325,7 +336,7 @@ print.FutureStrategy <- print.future
 #' @export
 print.FutureStrategyList <- function(x, ...) {
   s <- "List of future strategies:"
-  
+
   for (kk in seq_along(x)) {
     x_kk <- x[[kk]]
     class <- setdiff(class(x_kk), c("tweaked", "function"))
