@@ -96,3 +96,17 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
 
   strategy
 } ## tweak()
+
+
+#' @export
+tweak.function <- function(strategy, ...) {
+  msg <- "Cannot \"tweak\" a non-future function"
+  env <- environment(strategy)
+  env_name <- environmentName(env)
+  if (nzchar(env_name)) {
+    msg <- sprintf("%s. The non-supported function is from environment / package %s", msg, sQuote(env_name))
+  }
+  args <- deparse(args(strategy), width.cutoff = 500L)[1L]
+  msg <- sprintf("%s: %s { ... }", msg, args)
+  stop(msg)
+}

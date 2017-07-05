@@ -1,9 +1,16 @@
 Package: future
 ===============
 
-Version: 1.5.0-9000 [2017-07-04]
+Version: 1.5.0-9000 [2017-07-05]
 
  o ...
+
+NEW FEATURES:
+
+ o Now tweak(), and hence plan(), generates a more informative error message if
+   a non-future function is specified by mistake, e.g. calling plan(cluster)
+   with the 'survival' package attached after 'future' is equivalent to calling
+   plan(survival::cluster) when plan(future::cluster) was intended.
 
 SOFTWARE QUALITY:
 
