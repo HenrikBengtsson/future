@@ -28,8 +28,7 @@
 #' to be attached in the R environment evaluating the future.
 #'
 #' @param lazy Specifies whether a future should be resolved
-#' lazily or eagerly.  The default is eager evaluation
-#' (except when the \emph{deprecated} \code{plan(lazy)} is used).
+#' lazily or eagerly (default).
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
@@ -86,10 +85,6 @@
 #'
 #' For future assignments, lazy evaluation can be controlled via the
 #' \code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
-#'
-#' Until deprecated \code{plan(lazy)} is defunct, the default
-#' (\code{lazy = NA}) is eager evaluation \emph{unless} \code{plan(lazy)}
-#' is set.
 #'
 #'
 #' @section Globals used by future expressions:
@@ -204,20 +199,14 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = NA, seed = NULL, evaluator = plan("next"), ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, evaluator = plan("next"), ...) {
   if (substitute) expr <- substitute(expr)
 
   if (!is.function(evaluator)) {
     stop("Argument 'evaluator' must be a function: ", typeof(evaluator))
   }
 
-  ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
-  ## TODO: Remove when lazy() is removed.
-  if (is.na(lazy)) {
-    future <- evaluator(expr, envir = envir, substitute = FALSE, seed = seed, globals = globals, packages = packages, ...)
-  } else {
-    future <- evaluator(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
-  }
+ future <- evaluator(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {
