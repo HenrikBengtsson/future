@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.5.0-9000 [2017-07-01]
+Version: 1.5.0-9000 [2017-07-04]
 
  o ...
 
@@ -11,7 +11,11 @@ SOFTWARE QUALITY:
    running on Solaris. The termination was done by launching a future that
    called quit(), but that appeared to have corrupted the main R session when
    running on Solaris.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ o Formally defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+
 
 Version: 1.5.0 [2017-05-24]
 
