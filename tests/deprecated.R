@@ -51,21 +51,6 @@ message("*** Defunct argument values ...")
 
 message("*** Defunct argument values ... DONE")
 
-message("*** Defunct functions ...")
-
-res <- tryCatch({
-  x %<=% 1
-}, error = function(ex) ex)
-stopifnot(inherits(res, "error"))
-
-res <- tryCatch({
-  1 %=>% x
-}, error = function(ex) ex)
-stopifnot(inherits(res, "error"))
-
-message("*** Defunct functions ... DONE")
-
-
 message("*** Defunct and deprecated API ... DONE")
 
 

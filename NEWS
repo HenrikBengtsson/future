@@ -16,6 +16,8 @@ DEPRECATED AND DEFUNCT:
 
  o Formally defunct 'eager' and 'lazy' futures; use 'sequential' instead.
 
+ o Dropped previously defunct %<=% and %=>% operators.
+ 
 
 Version: 1.5.0 [2017-05-24]
 

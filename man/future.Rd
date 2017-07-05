@@ -7,8 +7,6 @@
 \alias{futureAssign}
 \alias{\%<-\%}
 \alias{\%->\%}
-\alias{\%<=\%}
-\alias{\%=>\%}
 \alias{futureCall}
 \title{Create a future}
 \usage{
