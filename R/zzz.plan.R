@@ -158,28 +158,16 @@ plan <- local({
     ## Arguments to be tweaked
     targs <- list(...)
 
-    ## Check for deprecated usage of 'lazy'?
-    check_lazy <- !identical(targs$.check_lazy, FALSE)
-    targs$.check_lazy <- NULL
-
     ## Set new stack?
     if (is.list(strategy)) {
       stopifnot(is.list(strategy), length(strategy) >= 1L)
 
-      if (check_lazy) {
-        using_lazy <- FALSE
-        for (ii in seq_along(strategy)) {
-          stopifnot(is.function(strategy[[ii]]))
-          using_lazy <- using_lazy || inherits(strategy[[ii]], "lazy")
-        }
-
-        if (using_lazy) {
+      ## Check for usage of defunct eager() and lazy()
+      for (ii in seq_along(strategy)) {
+        stopifnot(is.function(strategy[[ii]]))
+        if (inherits(strategy[[ii]], "lazy")) {
           .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-        }
-
-        using_eager <- lapply(newStack, FUN = inherits, "eager")
-        using_eager <- any(unlist(using_eager, use.names = FALSE))
-        if (using_eager) {
+        } else if (inherits(strategy[[ii]], "lazy")) {
           .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identical.")
         }
       }
@@ -202,8 +190,7 @@ plan <- local({
         if (is.list(first)) {
           strategies <- first
           res <- plan(strategies, substitute = FALSE,
-	              .cleanup = .cleanup, .init = .init,
-                      .check_lazy = check_lazy)
+	              .cleanup = .cleanup, .init = .init)
           return(invisible(res))
         }
 
@@ -270,18 +257,16 @@ plan <- local({
       }
     }
 
-    if (check_lazy) {
-      using_lazy <- lapply(newStack, FUN = inherits, "lazy")
-      using_lazy <- any(unlist(using_lazy, use.names = FALSE))
-      if (using_lazy) {
-        .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-      }
+    using_lazy <- lapply(newStack, FUN = inherits, "lazy")
+    using_lazy <- any(unlist(using_lazy, use.names = FALSE))
+    if (using_lazy) {
+      .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
+    }
 
-      using_eager <- lapply(newStack, FUN = inherits, "eager")
-      using_eager <- any(unlist(using_eager, use.names = FALSE))
-      if (using_eager) {
-        .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identical.")
-      }
+    using_eager <- lapply(newStack, FUN = inherits, "eager")
+    using_eager <- any(unlist(using_eager, use.names = FALSE))
+    if (using_eager) {
+      .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identical.")
     }
 
     ## Set new strategy for futures
@@ -302,10 +287,8 @@ plan <- local({
 
 supportedStrategies <- function(strategies = c("sequential", "multicore",
                                                "multisession", "multiprocess",
-                                               "cluster"),
-                                deprecated = FALSE) {
+                                               "cluster")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
-  if (deprecated) strategies <- unique(c(strategies, "eager"))
   strategies
 }
 
