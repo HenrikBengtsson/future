@@ -22,8 +22,7 @@ in which the expression is evaluated.}
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly.  The default is eager evaluation
-(except when the \emph{deprecated} \code{plan(lazy)} is used).}
+lazily or eagerly (default).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
