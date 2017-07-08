@@ -48,11 +48,17 @@ n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == length(workers))
 
+message("Type of future: remote")
+workers <- rep("localhost", times = 2L)
+plan(remote, workers = workers)
+n <- nbrOfWorkers()
+message(sprintf("nbrOfWorkers: %d", n))
+stopifnot(n == length(workers))
+
 message("Type of future: constant")
 n <- nbrOfWorkers(constant)
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == 1)
-
 
 message("Type of future: <future>")
 foo <- structure(function(...) NULL, class = c("future"))
