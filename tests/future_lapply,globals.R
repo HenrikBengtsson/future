@@ -84,6 +84,14 @@ for (strategy in supportedStrategies()) {
   y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
   stopifnot(identical(y[[1]], typeof(obj)))
 
+  ## typeof() == "environment"
+  if (packageVersion("globals") >= "0.10.1-9000") {
+    obj <- new.env()
+    stopifnot(typeof(obj) == "environment")
+    y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+    stopifnot(identical(y[[1]], typeof(obj)))
+  }
+
   ## typeof() == "S4"
   if (requireNamespace("methods")) {
     obj <- methods::getClass("MethodDefinition")
