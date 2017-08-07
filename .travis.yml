@@ -22,6 +22,8 @@ matrix:
       r: release
     - os: linux
       r: devel
+      r_github_packages:
+        - HenrikBengtsson/globals@develop
     - os: osx
       r: oldrel
     - os: osx
