@@ -68,5 +68,5 @@ remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
-class(remote) <- c("remote", "multiprocess", "future", "function")
+class(remote) <- c("remote", "cluster", "multiprocess", "future", "function")
 attr(remote, "init") <- TRUE

@@ -4,24 +4,24 @@
 
 |setting  |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.4.0 (2017-04-21) |
+|version  |R version 3.4.1 (2017-06-30) |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |America/Los_Angeles          |
-|date     |2017-05-25                   |
+|tz       |Europe/Berlin                |
+|date     |2017-08-11                   |
 
 ## Packages
 
-|package  |*  |version |date       |source         |
-|:--------|:--|:-------|:----------|:--------------|
-|digest   |   |0.6.12  |2017-01-27 |cran (@0.6.12) |
-|future   |   |1.4.0   |2017-03-13 |cran (@1.4.0)  |
-|globals  |   |0.10.0  |2017-04-17 |cran (@0.10.0) |
-|listenv  |   |0.6.0   |2015-12-28 |cran (@0.6.0)  |
-|markdown |   |0.8     |2017-04-20 |cran (@0.8)    |
-|R.rsp    |   |0.41.0  |2017-04-16 |cran (@0.41.0) |
+|package  |*  |version     |date       |source                                   |
+|:--------|:--|:-----------|:----------|:----------------------------------------|
+|digest   |   |0.6.12      |2017-01-27 |cran (@0.6.12)                           |
+|future   |   |1.5.0       |2017-05-26 |cran (@1.5.0)                            |
+|globals  |   |0.10.2-9000 |2017-08-10 |Github (HenrikBengtsson/globals@efd9b85) |
+|listenv  |   |0.6.0       |2015-12-28 |cran (@0.6.0)                            |
+|markdown |   |0.8         |2017-04-20 |cran (@0.8)                              |
+|R.rsp    |   |0.41.0      |2017-04-16 |cran (@0.41.0)                           |
 
 # Check results
 

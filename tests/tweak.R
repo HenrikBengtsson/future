@@ -126,6 +126,9 @@ message("*** tweak() - exceptions ...")
 res <- try(tweak("<unknown-future-strategy>"), silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 
+res <- try(tweak(base::eval), silent = TRUE)
+stopifnot(inherits(res, "try-error"))
+
 res <- try(tweak(sequential, "unnamed-argument"), silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 

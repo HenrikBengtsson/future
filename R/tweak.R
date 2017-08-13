@@ -96,3 +96,41 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
 
   strategy
 } ## tweak()
+
+
+#' @export
+tweak.function <- function(strategy, ...) {
+  strategy_name <- NULL
+
+  ## Try to find the name of the function
+  env <- environment(strategy)
+  env_name <- environmentName(env)
+  if (nchar(env_name) == 0) env_name <- "<unknown>"
+
+  names <- ls(envir = env, all.names = TRUE)
+  if (length(names) > 0) {
+    is_fcn <- sapply(names, FUN = exists, mode = "function",
+                     envir = env, inherits = FALSE)
+    names <- names[is_fcn]
+    if (length(names) > 0) {
+      for (name in names) {
+        fcn <- get(name, mode = "function", envir = env, inherits = FALSE)
+        if (identical(fcn, strategy)) {
+          strategy_name <- sprintf("%s::%s", env_name, name)
+          break
+        }
+      }
+    }
+  }
+
+  msg <- "Trying to use non-future function"
+  if (!is.null(strategy_name)) {
+    msg <- sprintf("%s %s", msg, sQuote(strategy_name))
+  } else if (nzchar(env_name)) {
+    msg <- sprintf("%s from environment / package %s", msg, sQuote(env_name))
+  }
+  
+  args <- deparse(args(strategy), width.cutoff = 500L)[1L]
+  msg <- sprintf("%s: %s { ... }", msg, args)
+  stop(msg)
+}

@@ -99,14 +99,14 @@ tweakFutureAssignmentCall <- function(expr) {
   if (n != 3) return(expr)
   
   op <- as.character(op)
-  if (op %in% c("<<-", "%<-%", "%<=%")) {
+  if (op %in% c("<<-", "%<-%")) {
     lhs <- expr[[2]]
     rhs <- expr[[3]]
     expr <- substitute(
       {a <- b; e},
       list(a = lhs, b = rhs, e = expr)
     )
-  } else if (op %in% c("->>", "%->%", "%=>%")) {
+  } else if (op %in% c("->>", "%->%")) {
     lhs <- expr[[3]]
     rhs <- expr[[2]]
     expr <- substitute(

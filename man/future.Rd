@@ -7,21 +7,19 @@
 \alias{futureAssign}
 \alias{\%<-\%}
 \alias{\%->\%}
-\alias{\%<=\%}
-\alias{\%=>\%}
 \alias{futureCall}
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  packages = NULL, lazy = NA, seed = NULL, evaluator = plan("next"),
+  packages = NULL, lazy = FALSE, seed = NULL, evaluator = plan("next"),
   ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
-  lazy = NA, seed = NULL, globals = TRUE, ..., assign.env = envir)
+  lazy = FALSE, seed = NULL, globals = TRUE, ..., assign.env = envir)
 
 x \%<-\% value
 
-futureCall(FUN, args = NULL, envir = parent.frame(), lazy = NA,
+futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
   seed = NULL, globals = TRUE, evaluator = plan("next"), ...)
 }
 \arguments{
@@ -43,8 +41,7 @@ For details, see below section.}
 to be attached in the R environment evaluating the future.}
 
 \item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly.  The default is eager evaluation
-(except when the \emph{deprecated} \code{plan(lazy)} is used).}
+lazily or eagerly (default).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
@@ -136,10 +133,6 @@ at all - it is guaranteed to be evaluated if the value is requested}.
 
 For future assignments, lazy evaluation can be controlled via the
 \code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
-
-Until deprecated \code{plan(lazy)} is defunct, the default
-(\code{lazy = NA}) is eager evaluation \emph{unless} \code{plan(lazy)}
-is set.
 }
 
 \section{Globals used by future expressions}{

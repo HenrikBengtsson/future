@@ -1,6 +1,6 @@
 source("incl/start.R")
 library("listenv")
-
+options(future.debug = FALSE)
 message("*** cluster() ...")
 
 message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
@@ -15,8 +15,11 @@ if (supportsMulticore()) types <- c(types, "FORK")
 ## /HB 2017-05-20
 if (covr_testing) types <- setdiff(types, "FORK")
 
+pid <- Sys.getpid()
+message("Main PID (original): ", pid)
+cl <- NULL
 for (type in types) {
-  message("Testing with cluster type %s ...", sQuote(type))
+  message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
   for (cores in 1:availCores) {
     message(sprintf("Testing with %d cores on type = %s ...",
@@ -25,6 +28,8 @@ for (type in types) {
   
     ## Set up a cluster with <cores> nodes (explicitly)
     cl <- parallel::makeCluster(cores, type = type)
+    print(cl)
+    
     plan(cluster, workers = cl)
   
     ## No global variables
@@ -38,8 +43,8 @@ for (type in types) {
     y <- value(f)
     print(y)
     stopifnot(y == 42L)
-  
-  
+
+
     ## Set up a cluster with <cores> nodes (implicitly)
     plan(cluster, workers = cores)
   
@@ -167,12 +172,57 @@ for (type in types) {
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
   } ## for (cores ...)
+
+  message("*** cluster() - exceptions ...")
   
+  res <- tryCatch(cluster(42L, workers = NA), error = identity)
+  print(res)
+  stopifnot(inherits(res, "error"))
   
+  message("*** cluster() - exceptions ... DONE")
+
+  message("*** cluster() - assert registry behavior ...")
+  
+  ## Explicitly created clusters are *not* added to the registry
+  cl <- parallel::makeCluster(cores, type = type)
+  plan(cluster, workers = cl)
+  clR <- ClusterRegistry("get")
+  stopifnot(is.null(clR))
+  
+  ## ... and therefore changing plans shouldn't change anything
+  plan(sequential)
+  clR <- ClusterRegistry("get")
+  stopifnot(is.null(clR))
+  
+  message("*** cluster() - assert registry behavior ... DONE")
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
+
+  ## Cleanup
+  print(cl)
+  str(cl)
+  parallel::stopCluster(cl)
+  plan(sequential)
+  
+  message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
+} ## for (type ...)
+
+
+library("parallel")
+for (type in types) {
+  if (on_solaris) next
+ 
+  message(sprintf("Test set #2 with cluster type %s ...", sQuote(type)))
+
   message("*** cluster() - setDefaultCluster() ...")
   
-  library("parallel")
   cl <- makeCluster(1L, type = type)
+  print(cl)
+  
   setDefaultCluster(cl)
   ## FIXME: Make plan(cluster, workers = NULL) work such that
   ## setDefaultCluster() is actually tested.
@@ -187,17 +237,31 @@ for (type in types) {
   setDefaultCluster(NULL)
   
   message("*** cluster() - setDefaultCluster() ... DONE")
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
+
+  ## Cleanup
+  print(cl)
+  str(cl)
+  parallel::stopCluster(cl)
+  plan(sequential)
+
+  message(sprintf("Test set #2 with cluster type %s ... DONE", sQuote(type)))
+} ## for (type ...)
+
   
+for (type in types) {
+  if (on_solaris) next
+ 
+  message(sprintf("Test set #3 with cluster type %s ...", sQuote(type)))
   
-  message("*** cluster() - exceptions ...")
-  
-  res <- tryCatch(cluster(42L, workers = NA), error = identity)
-  print(res)
-  stopifnot(inherits(res, "error"))
-  
-  message("*** cluster() - exceptions ... DONE")
-  
-  
+  cl <- parallel::makeCluster(1L, type = type)
+  print(cl)
+
   message("*** cluster() - crashed worker ...")
   
   plan(cluster, workers = cl)
@@ -213,35 +277,40 @@ for (type in types) {
     inherits(res, "FutureError")
   )
 
+  ## Cleanup
+  print(cl)
+  ## FIXME: Why doesn't this work here? It causes the below future to stall.
+  # parallel::stopCluster(cl)
+
   ## Verify that the reset worked
   cl <- parallel::makeCluster(1L, type = type)
+  print(cl)
   plan(cluster, workers = cl)
   x %<-% 42L
   stopifnot(x == 42L)
   
   message("*** cluster() - crashed worker ... DONE")
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
   
-  
-  message("*** cluster() - registry ...")
-  
-  ## Explicitly created clusters are *not* added to the registry
-  cl <- parallel::makeCluster(cores, type = type)
-  plan(cluster, workers = cl)
-  clR <- ClusterRegistry("get")
-  stopifnot(is.null(clR))
-  
-  ## ... and therefore changing plans shouldn't change anything
-  plan(sequential)
-  clR <- ClusterRegistry("get")
-  stopifnot(is.null(clR))
-  
-  message("*** cluster() - registry ... DONE")
-  
-  message("Testing with cluster type %s ... DONE", sQuote(type))
+  ## Cleanup
+  print(cl)
+  str(cl)
+  parallel::stopCluster(cl)
+    
+  message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
 message("*** cluster() ... DONE")
 
-## Cleanup
-parallel::stopCluster(cl)
+## Sanity checks
+pid2 <- Sys.getpid()
+message("Main PID (original): ", pid)
+message("Main PID: ", pid2)
+stopifnot(pid2 == pid)
+
 source("incl/end.R")

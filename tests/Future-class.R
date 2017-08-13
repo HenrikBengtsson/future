@@ -35,9 +35,6 @@ if (supportsMulticore()) {
   clazzes$multicore = function(...) MulticoreFuture(..., workers = 2L)
 }
 
-## Deprecated class
-clazzes$eager <- EagerFuture
-
 for (clazz in clazzes) {
   ## Calling run() more than once
   f <- clazz({ 42L })

@@ -1,6 +1,34 @@
 Package: future
 ===============
 
+Version: 1.6.0 [2017-08-11]
+
+NEW FEATURES:
+
+ o Now tweak(), and hence plan(), generates a more informative error message if
+   a non-future function is specified by mistake, e.g. calling plan(cluster)
+   with the 'survival' package attached after 'future' is equivalent to calling
+   plan(survival::cluster) when plan(future::cluster) was intended.
+
+BUG FIXES:
+
+ o nbrOfWorkers() gave an error with plan(remote). Fixed by making the 'remote'
+   future inherit 'cluster' (as it should).
+
+SOFTWARE QUALITY:
+
+ o TESTS: No longer testing forced termination of forked cluster workers when
+   running on Solaris. The termination was done by launching a future that
+   called quit(), but that appeared to have corrupted the main R session when
+   running on Solaris.
+
+DEPRECATED AND DEFUNCT:
+
+ o Formally defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+
+ o Dropped previously defunct %<=% and %=>% operators.
+ 
+
 Version: 1.5.0 [2017-05-24]
 
 SIGNIFICANT CHANGES:

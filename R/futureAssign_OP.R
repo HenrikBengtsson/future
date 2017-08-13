@@ -1,8 +1,8 @@
 #' @usage x \%<-\% value
 #'
 #' @rdname future
-#' @aliases %<-% %->% %<=% %=>%
-#' @export %<-% %->% %<=% %=>%
+#' @aliases %<-% %->%
+#' @export %<-% %->%
 `%<-%` <- function(x, value) {
   target <- substitute(x)
   expr <- substitute(value)

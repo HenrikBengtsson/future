@@ -19,7 +19,7 @@
 #'
 #' @rdname future
 #' @export
-futureAssign <- function(x, value, envir = parent.frame(), substitute = TRUE, lazy = NA, seed = NULL, globals = TRUE, ..., assign.env = envir) {
+futureAssign <- function(x, value, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, ..., assign.env = envir) {
   stopifnot(is.character(x), !is.na(x), nzchar(x))
   if (substitute) value <- substitute(value)
 
@@ -35,11 +35,6 @@ futureAssign <- function(x, value, envir = parent.frame(), substitute = TRUE, la
     for (name in names(args)) future.args[name] <- args[name]
     on.exit(options(future.disposable = NULL))
   }
-
-  ## BACKWARD COMPATIBILITY: So that plan(lazy) still works
-  ## TODO: Remove when lazy() is removed.
-  lazy <- future.args$lazy
-  if (is.logical(lazy) && is.na(lazy)) future.args$lazy <- NULL
 
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

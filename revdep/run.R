@@ -15,6 +15,6 @@ availableCores <- function() {
   1L
 }
 
-revdep_check(bioconductor = TRUE, recursive = TRUE, threads = availableCores(), reset = FALSE)
+revdep_check(bioconductor = TRUE, recursive = FALSE, threads = availableCores(), reset = FALSE)
 revdep_check_save_summary()
 revdep_check_print_problems()

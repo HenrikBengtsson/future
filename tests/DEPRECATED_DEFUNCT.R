@@ -51,22 +51,41 @@ message("*** Defunct argument values ...")
 
 message("*** Defunct argument values ... DONE")
 
-message("*** Defunct functions ...")
 
-res <- tryCatch({
-  x %<=% 1
-}, error = function(ex) ex)
+message("*** Defunct eager & lazy ...")
+
+res <- tryCatch({ f <- eager(42L) }, error = identity)
 stopifnot(inherits(res, "error"))
 
-res <- tryCatch({
-  1 %=>% x
-}, error = function(ex) ex)
+res <- tryCatch({ f <- lazy(42L) }, error = identity)
 stopifnot(inherits(res, "error"))
 
-message("*** Defunct functions ... DONE")
+res <- tryCatch({ plan(eager) }, error = identity)
+stopifnot(inherits(res, "error"))
 
+res <- tryCatch({ plan(lazy) }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ plan(list(eager)) }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ plan(list(lazy)) }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ plan("eager") }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ plan("lazy") }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ f <- EagerFuture() }, error = identity)
+stopifnot(inherits(res, "error"))
+
+res <- tryCatch({ f <- LazyFuture() }, error = identity)
+stopifnot(inherits(res, "error"))
+
+message("*** Defunct eager & lazy ... DONE")
 
 message("*** Defunct and deprecated API ... DONE")
-
 
 source("incl/end.R")

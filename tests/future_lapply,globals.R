@@ -71,14 +71,32 @@ for (strategy in supportedStrategies()) {
   if (is.null(y0)) y0 <- y
   stopifnot(identical(y, y0))
 
-  ## BUG FIXES in globals (>= 0.10.0)
-  if (packageVersion("globals") >= "0.10.0") {
-    message("- future_lapply(x, FUN = do.call, ...) ...")
-    z <- future_lapply(x, FUN = do.call, what = length)
-    stopifnot(identical(z, z_length))
-    z <- future_lapply(x, FUN = do.call, what = fun)
-    stopifnot(identical(z, z_fun))
-  }
+  message("- future_lapply(x, FUN = do.call, ...) ...")
+  z <- future_lapply(x, FUN = do.call, what = length)
+  stopifnot(identical(z, z_length))
+  z <- future_lapply(x, FUN = do.call, what = fun)
+  stopifnot(identical(z, z_fun))
+
+  message("- future_lapply(x, ...) - passing arguments via '...' ...")
+  ## typeof() == "list"
+  obj <- data.frame(a = 1:2)
+  stopifnot(typeof(obj) == "list")
+  y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+  stopifnot(identical(y[[1]], typeof(obj)))
+
+  ## typeof() == "environment"
+  obj <- new.env()
+  stopifnot(typeof(obj) == "environment")
+  y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+  stopifnot(identical(y[[1]], typeof(obj)))
+
+  ## typeof() == "S4"
+  if (requireNamespace("methods")) {
+    obj <- methods::getClass("MethodDefinition")
+    stopifnot(typeof(obj) == "S4")
+    y <- future_lapply(1L, function(a, b) typeof(b), b = obj)
+    stopifnot(identical(y[[1]], typeof(obj)))
+  }  
 }
 
 message("*** future_lapply() - tricky globals ... DONE")
