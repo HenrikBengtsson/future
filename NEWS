@@ -1,6 +1,15 @@
 Package: future
 ===============
 
+Version: 1.6.0-9000 [2017-08-24]
+
+BUG FIXES:
+
+ o future_lapply() would give "Error in objectSize.env(x, depth = depth -1L):
+   object 'nnn' not found" when for instance 'nnn' is part of an unresolved
+   expression that is an argumnent value.
+
+
 Version: 1.6.0 [2017-08-11]
 
 NEW FEATURES:
