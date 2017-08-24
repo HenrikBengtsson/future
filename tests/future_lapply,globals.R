@@ -102,6 +102,16 @@ for (strategy in supportedStrategies()) {
 message("*** future_lapply() - tricky globals ... DONE")
 
 
+message("*** future_lapply() - missing arguments ...")
+
+## Here 'abc' becomes missing, i.e. missing(abc) is TRUE
+foo <- function(x, abc) future_lapply(x, FUN = function(y) y)
+y <- foo(1:2)
+stopifnot(identical(y, as.list(1:2)))
+
+message("*** future_lapply() - missing arguments ... DONE")
+
+
 message("*** future_lapply() - false positives ...")
 
 ## Here 'abc' becomes a promise, which fails to resolve

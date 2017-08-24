@@ -546,6 +546,7 @@ objectSize <- function(x, depth = 3L) {
       ## we doomed to have to use of tryCatch() here?
       res <- tryCatch({
         x_kk <- .subset2(x, element)
+	NULL  ## So that 'x_kk' is not returned, which may be missing()
       }, error = identity)
 
       ## A promise that cannot be resolved? This could be a false positive,
