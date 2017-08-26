@@ -9,18 +9,18 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |Europe/Berlin                |
-|date     |2017-08-11                   |
+|tz       |America/Los_Angeles          |
+|date     |2017-08-25                   |
 
 ## Packages
 
 |package  |*  |version     |date       |source                                   |
 |:--------|:--|:-----------|:----------|:----------------------------------------|
 |digest   |   |0.6.12      |2017-01-27 |cran (@0.6.12)                           |
-|future   |   |1.5.0       |2017-05-26 |cran (@1.5.0)                            |
+|future   |   |1.6.0       |2017-08-13 |cran (@1.6.0)                            |
 |globals  |   |0.10.2-9000 |2017-08-10 |Github (HenrikBengtsson/globals@efd9b85) |
 |listenv  |   |0.6.0       |2015-12-28 |cran (@0.6.0)                            |
-|markdown |   |0.8         |2017-04-20 |cran (@0.8)                              |
+|markdown |   |0.8.1       |2017-08-25 |cran (@0.8.1)                            |
 |R.rsp    |   |0.41.0      |2017-04-16 |cran (@0.41.0)                           |
 
 # Check results
