@@ -5,9 +5,9 @@ Version: 1.6.0-9000 [2017-08-24]
 
 BUG FIXES:
 
- o future_lapply() would give "Error in objectSize.env(x, depth = depth -1L):
+ o future_lapply() would give "Error in objectSize.env(x, depth = depth - 1L):
    object 'nnn' not found" when for instance 'nnn' is part of an unresolved
-   expression that is an argumnent value.
+   expression that is an argument value.
 
 
 Version: 1.6.0 [2017-08-11]
@@ -104,7 +104,7 @@ SOFTWARE QUALITY:
    type = 'PSOCK' clusters but also 'FORK' (when supported).
 
  o TESTS: Cleaned up test scripts such that the overall processing time for
-   the tests was roughly halved, while preservering the same test coverage.
+   the tests was roughly halved, while preserving the same test coverage.
  
 
 Version: 1.4.0 [2017-03-12]
