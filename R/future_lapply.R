@@ -84,7 +84,7 @@
 #'
 #' @importFrom globals globalsByName cleanup
 #' @importFrom parallel nextRNGStream nextRNGSubStream splitIndices
-#' @importFrom utils str
+#' @importFrom utils capture.output str
 #' @export
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = NULL, future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1.0) {
