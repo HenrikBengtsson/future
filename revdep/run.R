@@ -1,5 +1,3 @@
-library("devtools")
-
 availableCores <- function() {
   getenv <- function(name) {
     as.integer(Sys.getenv(name, NA_character_))
@@ -15,6 +13,17 @@ availableCores <- function() {
   1L
 }
 
-revdep_check(bioconductor = TRUE, recursive = FALSE, threads = availableCores(), reset = FALSE)
-revdep_check_save_summary()
-revdep_check_print_problems()
+revdep_framework <- Sys.getenv("_R_CHECK_REVDEP_", "devtools")
+if (revdep_framework == "devtools") {
+  library("devtools")
+  revdep_check(bioconductor = TRUE, recursive = FALSE, threads = availableCores(), reset = FALSE)
+  revdep_check_save_summary()
+  revdep_check_print_problems()
+} else if (revdep_framework == "revdepchecks") {
+  library("revdepcheck")
+  revdep_check(bioc = TRUE, num_workers = availableCores(), timeout = 30*60, quiet = FALSE)
+  revdep_report_summary()
+  revdep_report_problems()
+} else {
+  stop("Unknown revdep framework: ", revdep_framework)
+}
