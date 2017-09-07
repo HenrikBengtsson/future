@@ -1,4 +1,4 @@
-options(warn = 1, error = function() traceback())
+options(warn = 1)
 
 availableCores <- function() {
   getenv <- function(name) {
@@ -26,9 +26,8 @@ if (revdep_framework == "devtools") {
 } else if (revdep_framework == "revdepcheck") {
   library("revdepcheck")
   if (reset) revdep_reset()
-  revdep_check(bioc = TRUE, num_workers = availableCores(), timeout = 30*60, quiet = FALSE)
-  revdep_report_summary()
-  revdep_report_problems()
+  revdep_check(bioc = TRUE, num_workers = availableCores(),
+               timeout = as.difftime(30, units = "mins"), quiet = FALSE)
 } else {
   stop("Unknown revdep framework: ", revdep_framework)
 }
