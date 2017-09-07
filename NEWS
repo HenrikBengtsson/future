@@ -5,7 +5,7 @@ Version: 1.6.0-9000 [2017-09-06]
 
 NEW FEATURES:
 
- o Now exported getGlobalsAndPackages().
+ o Now exporting getGlobalsAndPackages().
 
 BUG FIXES:
 
