@@ -222,7 +222,9 @@ assertOwner <- function(future, ...) {
 #' @keywords internal
 run.Future <- function(future, ...) {
   if (future$state != 'created') {
-    stop("A future can only be launched once.")
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    stop(sprintf("A future ('%s') can only be launched once.", label))
   }
   
   future
