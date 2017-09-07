@@ -1,3 +1,5 @@
+options(warn = 1, error = function() traceback())
+
 availableCores <- function() {
   getenv <- function(name) {
     as.integer(Sys.getenv(name, NA_character_))
@@ -14,7 +16,7 @@ availableCores <- function() {
 }
 
 reset <- isTRUE(as.logical(toupper(Sys.getenv("_R_CHECK_REVDEP_RESET_", "FALSE"))))
-revdep_framework <- Sys.getenv("_R_CHECK_REVDEP_", "devtools")
+revdep_framework <- Sys.getenv("_R_CHECK_REVDEP_", "revdepcheck")
 if (revdep_framework == "devtools") {
   library("devtools")
   if (reset) revdep_check_reset()
