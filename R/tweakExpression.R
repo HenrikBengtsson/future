@@ -118,12 +118,14 @@ tweakFutureAssignmentCall <- function(expr) {
 } ## tweakFutureAssignmentCall()
 
 
-#' Tweaks a future expression prior to searching for globals
-#'
-#' @param expr An \R expression
-#'
-#' @return An \R expression
-#'
+# Tweaks a future expression prior to searching for globals
+#
+# @param expr An \R expression
+#
+# @return An \R expression
+#
+# @keywords internal
+#
 #' @importFrom globals walkAST
 tweakExpression <- function(expr) {
   if (!is.language(expr)) return(expr)
