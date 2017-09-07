@@ -13,6 +13,7 @@
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
 #' @importFrom globals globalsOf globalsByName as.Globals packagesOf cleanup
+#' @export
 #'
 #' @keywords internal
 getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, ...) {

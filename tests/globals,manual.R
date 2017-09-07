@@ -2,7 +2,6 @@ source("incl/start.R")
 
 message("*** getGlobalsAndPackages() ...")
 
-getGlobalsAndPackages <- future:::getGlobalsAndPackages
 FutureGlobals <- future:::FutureGlobals
 
 globals <- structure(list(a = 1), where = list(a = globalenv()))

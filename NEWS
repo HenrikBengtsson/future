@@ -1,7 +1,11 @@
 Package: future
 ===============
 
-Version: 1.6.0-9000 [2017-08-24]
+Version: 1.6.0-9000 [2017-09-06]
+
+NEW FEATURES:
+
+ o Now exported getGlobalsAndPackages().
 
 BUG FIXES:
 
