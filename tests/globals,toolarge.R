@@ -3,7 +3,7 @@ library("listenv")
 
 message("*** Globals - too large ...")
 
-ooptsT <- options(future.globals.maxSize = 1024L)
+ooptsT <- options(future.globals.maxSize = object.size(1:1000) - 1L)
 limit <- getOption("future.globals.maxSize")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
 

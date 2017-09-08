@@ -113,7 +113,7 @@ for (type in types) {
   
   
     message("*** cluster() - too large globals ...")
-    ooptsT <- options(future.globals.maxSize = 1024 * 4L)
+    ooptsT <- options(future.globals.maxSize = object.size(1:1014))
   
     limit <- getOption("future.globals.maxSize")
     cat(sprintf("Max total size of globals: %g bytes\n", limit))
@@ -132,7 +132,7 @@ for (type in types) {
   
   
     ## A too large object
-    a <- 1:1019 ## also on 32-bit platforms
+    a <- 1:1015
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
