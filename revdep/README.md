@@ -9,18 +9,18 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |Europe/Berlin                |
-|date     |2017-08-11                   |
+|tz       |America/Los_Angeles          |
+|date     |2017-08-25                   |
 
 ## Packages
 
 |package  |*  |version     |date       |source                                   |
 |:--------|:--|:-----------|:----------|:----------------------------------------|
 |digest   |   |0.6.12      |2017-01-27 |cran (@0.6.12)                           |
-|future   |   |1.5.0       |2017-05-26 |cran (@1.5.0)                            |
+|future   |   |1.6.0       |2017-08-13 |cran (@1.6.0)                            |
 |globals  |   |0.10.2-9000 |2017-08-10 |Github (HenrikBengtsson/globals@efd9b85) |
 |listenv  |   |0.6.0       |2015-12-28 |cran (@0.6.0)                            |
-|markdown |   |0.8         |2017-04-20 |cran (@0.8)                              |
+|markdown |   |0.8.1       |2017-08-25 |cran (@0.8.1)                            |
 |R.rsp    |   |0.41.0      |2017-04-16 |cran (@0.41.0)                           |
 
 # Check results
@@ -31,16 +31,16 @@
 |:--------------------|:----------|------:|--------:|-----:|
 |aroma.affymetrix     |3.1.0      |      0|        0|     0|
 |aroma.core           |3.1.0      |      0|        0|     1|
-|brms                 |1.8.0      |      0|        0|     0|
+|brms                 |1.9.0      |      0|        0|     0|
 |doFuture             |0.5.0      |      0|        0|     0|
-|fiery                |0.2.3      |      0|        0|     0|
+|fiery                |1.0.0      |      0|        0|     0|
 |future.BatchJobs     |0.14.1     |      0|        0|     0|
 |future.batchtools    |0.5.0      |      0|        0|     0|
 |googleComputeEngineR |0.1.0      |      0|        0|     0|
 |kernelboot           |0.1.1      |      0|        0|     0|
 |multiApply           |0.0.1      |      0|        0|     0|
 |origami              |0.8.0      |      0|        0|     0|
-|pbmcapply            |1.2.3      |      0|        0|     0|
+|pbmcapply            |1.2.4      |      0|        0|     0|
 |penaltyLearning      |2017.07.11 |      0|        0|     0|
 |PSCBS                |0.63.0     |      0|        0|     0|
 |QDNAseq              |1.12.0     |      0|        1|     0|
@@ -66,7 +66,7 @@ Packages suggested but not available for checking:
   ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
 ```
 
-## brms (1.8.0)
+## brms (1.9.0)
 Maintainer: Paul-Christian Bürkner <paul.buerkner@gmail.com>  
 Bug reports: https://github.com/paul-buerkner/brms/issues
 
@@ -78,7 +78,7 @@ Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
 
 0 errors | 0 warnings | 0 notes
 
-## fiery (0.2.3)
+## fiery (1.0.0)
 Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
 Bug reports: https://github.com/thomasp85/fiery/issues
 
@@ -119,7 +119,7 @@ Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
 
 0 errors | 0 warnings | 0 notes
 
-## pbmcapply (1.2.3)
+## pbmcapply (1.2.4)
 Maintainer: Kevin kuang <kvn.kuang@mail.utoronto.ca>  
 Bug reports: https://github.com/kvnkuang/pbmcapply/issues
 

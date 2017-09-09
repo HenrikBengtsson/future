@@ -538,12 +538,24 @@ objectSize <- function(x, depth = 3L) {
     ## Avoid scanning the current environment again
     name <- sprintf("env_%d", length(.scannedEnvs))
     .scannedEnvs[[name]] <- x
-    
+
     for (element in elements) {
-      x_kk <- .subset2(x, element)
+      ## FIXME: Some elements may not exist, although ls() returns them
+      ## and exists() say they do exist, cf. Issue #161 /HB 2017-08-24
+      ## NOTE: Hmm... is it possible to test for the existence or are
+      ## we doomed to have to use of tryCatch() here?
+      res <- tryCatch({
+        x_kk <- .subset2(x, element)
+	NULL  ## So that 'x_kk' is not returned, which may be missing()
+      }, error = identity)
+
+      ## A promise that cannot be resolved? This could be a false positive,
+      ## e.g. an expression not to be resolved, cf. Issue #161 /HB 2017-08-24
+      if (inherits(res, "error")) next
 
       ## Nothing to do?
       if (missing(x_kk)) next
+      
       if (is.list(x_kk)) {
         size <- size + objectSize.list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
@@ -559,11 +571,16 @@ objectSize <- function(x, depth = 3L) {
     size
   } ## objectSize.env()
 
-  if (is.list(x)) {
-    size <- size + objectSize.list(x, depth = depth - 1L)
-  } else if (is.environment(x)) {
-    size <- size + objectSize.env(x, depth = depth - 1L)
-  }
+  ## Suppress "Warning message:
+  ##   In doTryCatch(return(expr), name, parentenv, handler) :
+  ##   restarting interrupted promise evaluation
+  suppressWarnings({
+    if (is.list(x)) {
+      size <- size + objectSize.list(x, depth = depth - 1L)
+    } else if (is.environment(x)) {
+      size <- size + objectSize.env(x, depth = depth - 1L)
+    }
+  })
 
   size
 }

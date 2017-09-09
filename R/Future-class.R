@@ -222,7 +222,9 @@ assertOwner <- function(future, ...) {
 #' @keywords internal
 run.Future <- function(future, ...) {
   if (future$state != 'created') {
-    stop("A future can only be launched once.")
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    stop(sprintf("A future ('%s') can only be launched once.", label))
   }
   
   future
@@ -366,7 +368,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
   exit <- bquote({
     ## covr: skip=2
     .(exit)
-    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE)
+    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
   ## Pass down the default or the remain set of future strategies?
@@ -435,7 +437,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE)
+      future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
     })
   } ## if (length(strategiesR) > 0L)
 

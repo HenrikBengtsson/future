@@ -17,13 +17,13 @@
 
   ## Temporarily use a different plan
   oplan <- plan("list")
-  on.exit(plan(oplan, substitute = FALSE, .call = NULL, .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE))
+  on.exit(plan(oplan, substitute = FALSE, .call = NULL, .cleanup = FALSE, .init = FALSE))
 
   ## Tweak current strategy and apply
   plans <- oplan
   args <- c(list(plans[[1]], penvir = envir), tweaks)
   plans[[1]] <- do.call(tweak, args = args)
-  plan(plans, substitute = FALSE, .call = NULL, .cleanup = FALSE, .init = FALSE, .check_lazy = FALSE)
+  plan(plans, substitute = FALSE, .call = NULL, .cleanup = FALSE, .init = FALSE)
 
   eval(fassignment, envir = envir)
 }

@@ -101,6 +101,29 @@ for (strategy in supportedStrategies()) {
 
 message("*** future_lapply() - tricky globals ... DONE")
 
+
+message("*** future_lapply() - missing arguments ...")
+
+## Here 'abc' becomes missing, i.e. missing(abc) is TRUE
+foo <- function(x, abc) future_lapply(x, FUN = function(y) y)
+y <- foo(1:2)
+stopifnot(identical(y, as.list(1:2)))
+
+message("*** future_lapply() - missing arguments ... DONE")
+
+
+message("*** future_lapply() - false positives ...")
+
+## Here 'abc' becomes a promise, which fails to resolve
+## iff 'xyz' does not exist. (Issue #161)
+suppressWarnings(rm(list = "xyz"))
+foo <- function(x, abc) future_lapply(x, FUN = function(y) y)
+y <- foo(1:2, abc = (xyz >= 3.14))
+stopifnot(identical(y, as.list(1:2)))
+
+message("*** future_lapply() - false positives ... DONE")
+
+
 message("*** future_lapply() - globals exceptions ...")
 
 res <- tryCatch({
