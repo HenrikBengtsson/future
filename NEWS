@@ -8,7 +8,7 @@ Version: 1.6.1-9000 [2017-09-25]
 BUG FIXES:
 
  o When measuring the size of globals by scanning their content, for certain
-   types of classes then inferred lengths of these objects were incorrect
+   types of classes the inferred lengths of these objects were incorrect
    causing internal subset out-of-range issues.
 
 
