@@ -683,6 +683,7 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' 
 #' @keywords internal
 #' @rdname private_length
+#' @importFrom utils getS3method
 .length <- function(x) {
   nx <- length(x)
   
@@ -692,12 +693,13 @@ as_lecyer_cmrg_seed <- function(seed) {
   if (length(classes) == 1L && classes == "list") return(nx)
 
   ## Identify all length() methods for this object
-  mthds <- sprintf("length.%s", classes)
-  keep <- lapply(mthds, FUN = exists, mode = "function", inherits = TRUE)
-  keep <- unlist(keep, use.names = FALSE)
+  for (class in classes) {
+    fun <- getS3method("length", class, optional = TRUE)
+    if (!is.null(fun)) {
+      nx <- length(unclass(x))
+      break
+    }
+  }
 
-  ## If found, don't trust them
-  if (any(keep)) nx <- length(unclass(x))
-  
   nx
 } ## .length()

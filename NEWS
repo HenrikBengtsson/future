@@ -1,10 +1,16 @@
 Package: future
 ===============
 
-Version: 1.6.1-9000 [2017-09-09]
+Version: 1.6.1-9000 [2017-09-25]
 
  o ...
- 
+
+BUG FIXES:
+
+ o When measuring the size of globals by scanning their content, for certain
+   types of classes then inferred lengths of these objects were incorrect
+   causing internal subset out-of-range issues.
+
 
 Version: 1.6.1 [2017-09-08]
 
