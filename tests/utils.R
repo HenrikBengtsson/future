@@ -81,7 +81,7 @@ truth <- c(a = 3L, b = 3L, c = 3L, d = 1L, e = 1L)
 ## BUG FIX: https://github.com/HenrikBengtsson/future/issues/164
 if (requireNamespace("tools")) {
   objs[["f"]] <- structure(list("foo", length = 5L), class = "pdf_doc")
-  truth["f"]] <- 2L
+  truth["f"] <- 2L
 }
 
 for (name in names(objs)) {
@@ -89,8 +89,8 @@ for (name in names(objs)) {
   len <- length(obj)
   .len <- .length(obj)
   cat(sprintf("%s: length = %d, .length = %d, expected = %d\n",
-              name, len, .len, truth[[name]]))
-  stopifnot(.len == truth[[name]])
+              name, len, .len, truth[name]))
+  stopifnot(.len == truth[name])
 }
 
 message("*** .length() ... DONE")
