@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.1-9000 [2017-09-25]
+Version: 1.6.1-9000 [2017-09-28]
 
  o ...
 
@@ -10,6 +10,9 @@ BUG FIXES:
  o When measuring the size of globals by scanning their content, for certain
    types of classes the inferred lengths of these objects were incorrect
    causing internal subset out-of-range issues.
+
+ o print() for Future would output one global per line instead of
+   concatenating the information with commas.
 
 
 Version: 1.6.1 [2017-09-08]
