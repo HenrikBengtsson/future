@@ -197,6 +197,10 @@ plan(list("sequential", "sequential"))
 a %<-% { b %<-% 42; b }
 stopifnot(a == 42)
 
+plan(list("future::sequential", "sequential"))
+a %<-% { b %<-% 42; b }
+stopifnot(a == 42)
+
 message("*** plan() by functions and character names ... DONE")
 
 

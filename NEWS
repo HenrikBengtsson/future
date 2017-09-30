@@ -1,9 +1,11 @@
 Package: future
 ===============
 
-Version: 1.6.1-9000 [2017-09-28]
+Version: 1.6.1-9000 [2017-09-29]
 
- o ...
+NEW FEATURES:
+
+ o Now plan() accepts also strings such as "future::cluster".
 
 BUG FIXES:
 
