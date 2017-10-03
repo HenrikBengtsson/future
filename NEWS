@@ -7,7 +7,7 @@ NEW FEATURES:
 
  o Now plan() accepts also strings such as "future::cluster".
 
- o Now backtrace(x[[idx]]) works also for non-environment 'x':s, e.g. lists.
+ o Now backtrace(x[[el]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 
