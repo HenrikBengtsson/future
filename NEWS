@@ -1,11 +1,13 @@
 Package: future
 ===============
 
-Version: 1.6.1-9000 [2017-09-29]
+Version: 1.6.1-9000 [2017-10-03]
 
 NEW FEATURES:
 
  o Now plan() accepts also strings such as "future::cluster".
+
+ o Now backtrace(x[[idx]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 
