@@ -31,7 +31,8 @@ objs <- list(
   env2,
   env3,
   fcn,
-  as.FutureGlobals(list(a = 3.14, b = 1:100))
+  as.FutureGlobals(list(a = 3.14, b = 1:100)),
+  list(x = as.FutureGlobals(list(a = 3.14, b = 1:100)))
 )
 
 for (kk in seq_along(objs)) {
