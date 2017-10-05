@@ -233,10 +233,9 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   ## is _not_ the case for MPI clusters.  /HB 2017-03-06
   con <- node$con
   if (!is.null(con)) {
-    ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may
-    ## result in infinite waiting, cf. 
-    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073218.html
-    if (.Platform$OS.type != "windows") {
+    ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
+    ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05).
+    if (.Platform$OS.type != "windows" && getRversion() < "3.5.0") {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
