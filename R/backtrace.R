@@ -12,8 +12,13 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   expr <- substitute(future)
 
   if (!is.null(expr)) {
-    target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
-    future <- get_future(target, mustExist = TRUE)
+    future <- tryCatch({
+      target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
+      get_future(target, mustExist = TRUE)
+    }, simpleError = function(ex) {
+      eval(expr, envir = envir)
+    })
+    stopifnot(inherits(future, "Future"))    
   }
 
   if (!resolved(future)) {

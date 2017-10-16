@@ -1,171 +1,53 @@
-# Setup
+# Platform
 
-## Platform
-
-|setting  |value                        |
+|field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.4.1 (2017-06-30) |
+|version  |R version 3.4.2 (2017-09-28) |
+|os       |Ubuntu 16.04.3 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2017-08-25                   |
+|date     |2017-10-15                   |
 
-## Packages
+# Dependencies
 
-|package  |*  |version     |date       |source                                   |
-|:--------|:--|:-----------|:----------|:----------------------------------------|
-|digest   |   |0.6.12      |2017-01-27 |cran (@0.6.12)                           |
-|future   |   |1.6.0       |2017-08-13 |cran (@1.6.0)                            |
-|globals  |   |0.10.2-9000 |2017-08-10 |Github (HenrikBengtsson/globals@efd9b85) |
-|listenv  |   |0.6.0       |2015-12-28 |cran (@0.6.0)                            |
-|markdown |   |0.8.1       |2017-08-25 |cran (@0.8.1)                            |
-|R.rsp    |   |0.41.0      |2017-04-16 |cran (@0.41.0)                           |
+|package |old    |new        |Δ  |
+|:-------|:------|:----------|:--|
+|future  |1.6.1  |1.6.1-9000 |*  |
+|digest  |0.6.12 |0.6.12     |   |
+|globals |0.10.3 |0.10.3     |   |
+|listenv |0.6.0  |0.6.0      |   |
 
-# Check results
+# Revdeps
 
-18 packages
+## Couldn't check (1)
 
-|package              |version    | errors| warnings| notes|
-|:--------------------|:----------|------:|--------:|-----:|
-|aroma.affymetrix     |3.1.0      |      0|        0|     0|
-|aroma.core           |3.1.0      |      0|        0|     1|
-|brms                 |1.9.0      |      0|        0|     0|
-|doFuture             |0.5.0      |      0|        0|     0|
-|fiery                |1.0.0      |      0|        0|     0|
-|future.BatchJobs     |0.14.1     |      0|        0|     0|
-|future.batchtools    |0.5.0      |      0|        0|     0|
-|googleComputeEngineR |0.1.0      |      0|        0|     0|
-|kernelboot           |0.1.1      |      0|        0|     0|
-|multiApply           |0.0.1      |      0|        0|     0|
-|origami              |0.8.0      |      0|        0|     0|
-|pbmcapply            |1.2.4      |      0|        0|     0|
-|penaltyLearning      |2017.07.11 |      0|        0|     0|
-|PSCBS                |0.63.0     |      0|        0|     0|
-|QDNAseq              |1.12.0     |      0|        1|     0|
-|R.filesets           |2.11.0     |      0|        0|     0|
-|sperrorest           |2.0.1      |      0|        0|     0|
-|startR               |0.0.1      |      0|        0|     0|
+|package                  |version |error |warning |note |
+|:------------------------|:-------|:-----|:-------|:----|
+|[brms](problems.md#brms) |1.10.0  |1     |1       |1    |
 
-## aroma.affymetrix (3.1.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
+## All (18)
 
-0 errors | 0 warnings | 0 notes
-
-## aroma.core (3.1.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/aroma.core/issues
-
-0 errors | 0 warnings | 1 note 
-
-```
-checking package dependencies ... NOTE
-Packages suggested but not available for checking:
-  ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
-```
-
-## brms (1.9.0)
-Maintainer: Paul-Christian Bürkner <paul.buerkner@gmail.com>  
-Bug reports: https://github.com/paul-buerkner/brms/issues
-
-0 errors | 0 warnings | 0 notes
-
-## doFuture (0.5.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/doFuture/issues
-
-0 errors | 0 warnings | 0 notes
-
-## fiery (1.0.0)
-Maintainer: Thomas Lin Pedersen <thomasp85@gmail.com>  
-Bug reports: https://github.com/thomasp85/fiery/issues
-
-0 errors | 0 warnings | 0 notes
-
-## future.BatchJobs (0.14.1)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
-
-0 errors | 0 warnings | 0 notes
-
-## future.batchtools (0.5.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/future.batchtools/issues
-
-0 errors | 0 warnings | 0 notes
-
-## googleComputeEngineR (0.1.0)
-Maintainer: Mark Edmondson <r@sunholo.com>  
-Bug reports: https://github.com/cloudyr/googleComputeEngineR/issues
-
-0 errors | 0 warnings | 0 notes
-
-## kernelboot (0.1.1)
-Maintainer: Tymoteusz Wolodzko <twolodzko+kernelboot@gmail.com>  
-Bug reports: https://github.com/twolodzko/kernelboot/issues
-
-0 errors | 0 warnings | 0 notes
-
-## multiApply (0.0.1)
-Maintainer: Alasdair Hunter <alasdair.hunter@bsc.es>  
-Bug reports: https://earth.bsc.es/gitlab/ces/multiApply/issues
-
-0 errors | 0 warnings | 0 notes
-
-## origami (0.8.0)
-Maintainer: Jeremy Coyle <jeremyrcoyle@gmail.com>
-
-0 errors | 0 warnings | 0 notes
-
-## pbmcapply (1.2.4)
-Maintainer: Kevin kuang <kvn.kuang@mail.utoronto.ca>  
-Bug reports: https://github.com/kvnkuang/pbmcapply/issues
-
-0 errors | 0 warnings | 0 notes
-
-## penaltyLearning (2017.07.11)
-Maintainer: Toby Dylan Hocking <toby.hocking@r-project.org>
-
-0 errors | 0 warnings | 0 notes
-
-## PSCBS (0.63.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/PSCBS/issues
-
-0 errors | 0 warnings | 0 notes
-
-## QDNAseq (1.12.0)
-Maintainer: Daoud Sie <d.sie@vumc.nl>  
-Bug reports: https://github.com/ccagc/QDNAseq/issues
-
-0 errors | 1 warning  | 0 notes
-
-```
-checking for missing documentation entries ... WARNING
-Undocumented code objects:
-  ‘exportVCF’
-All user-level objects in a package should have documentation entries.
-See chapter ‘Writing R documentation files’ in the ‘Writing R
-Extensions’ manual.
-```
-
-## R.filesets (2.11.0)
-Maintainer: Henrik Bengtsson <henrikb@braju.com>  
-Bug reports: https://github.com/HenrikBengtsson/R.filesets/issues
-
-0 errors | 0 warnings | 0 notes
-
-## sperrorest (2.0.1)
-Maintainer: Alexander Brenning <alexander.brenning@uni-jena.de>  
-Bug reports: https://github.com/pat-s/sperrorest/issues
-
-0 errors | 0 warnings | 0 notes
-
-## startR (0.0.1)
-Maintainer: Nicolau Manubens <nicolau.manubens@bsc.es>  
-Bug reports: https://earth.bsc.es/gitlab/es/startR/issues
-
-0 errors | 0 warnings | 0 notes
+|package                                                  |version    |error |warning |note |
+|:--------------------------------------------------------|:----------|:-----|:-------|:----|
+|[aroma.affymetrix](problems.md#aroma.affymetrix)         |3.1.0      |      |1       |     |
+|[aroma.core](problems.md#aroma.core)                     |3.1.1      |      |1       |1    |
+|[brms](problems.md#brms)                                 |1.10.0     |1     |1       |1    |
+|[doFuture](problems.md#dofuture)                         |0.5.1      |      |1       |     |
+|[fiery](problems.md#fiery)                               |1.0.0      |      |2       |1    |
+|[future.BatchJobs](problems.md#future.batchjobs)         |0.15.0     |      |1       |     |
+|[future.batchtools](problems.md#future.batchtools)       |0.6.0      |      |1       |     |
+|[googleComputeEngineR](problems.md#googlecomputeenginer) |0.2.0      |      |1       |     |
+|[kernelboot](problems.md#kernelboot)                     |0.1.2      |      |1       |     |
+|[multiApply](problems.md#multiapply)                     |0.0.1      |      |1       |     |
+|[origami](problems.md#origami)                           |0.8.0      |      |1       |1    |
+|[pbmcapply](problems.md#pbmcapply)                       |1.2.4      |      |1       |     |
+|[penaltyLearning](problems.md#penaltylearning)           |2017.07.11 |      |1       |     |
+|[PSCBS](problems.md#pscbs)                               |0.63.0     |      |1       |     |
+|[QDNAseq](problems.md#qdnaseq)                           |1.12.0     |      |1       |1    |
+|[R.filesets](problems.md#r.filesets)                     |2.11.0     |      |1       |     |
+|[sperrorest](problems.md#sperrorest)                     |2.1.0      |      |1       |     |
+|[startR](problems.md#startr)                             |0.0.1      |      |1       |     |
 

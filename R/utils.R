@@ -475,44 +475,45 @@ objectSize <- function(x, depth = 3L) {
 
   ## Nothing more to do?
   if (depth == 1) return(size)
-  
+
   .scannedEnvs <- new.env()
   scanned <- function(e) {
-    for (name in names(.scannedEnvs)) if (identical(e, .scannedEnvs[[name]])) return(TRUE)
+    for (name in names(.scannedEnvs))
+      if (identical(e, .scannedEnvs[[name]])) return(TRUE)
     FALSE
   }
-
-  objectSize.FutureGlobals <- function(x, ...) {
-    size <- attr(x, "total_size")
-    if (!is.na(size)) return(size)
-    objectSize.list(x, ...)
-  }
   
-  objectSize.list <- function(x, depth) {
-    # Nothing to do?
+  objectSize_list <- function(x, depth) {
+    ## Nothing to do?
     if (depth <= 0) return(0)
+
+    if (inherits(x, "FutureGlobals")) {
+      size <- attr(x, "total_size")
+      if (!is.na(size)) return(size)
+    }
+
     depth <- depth - 1L
     size <- 0
 
     ## Use the true length that corresponds to what .subset2() uses
     nx <- .length(x)
-    
+
     for (kk in seq_len(nx)) {
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, kk)
       if (is.list(x_kk)) {
-        size <- size + objectSize.list(x_kk, depth = depth)
+        size <- size + objectSize_list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
-        if (!scanned(x_kk)) size <- size + objectSize.env(x_kk, depth = depth)
+        if (!scanned(x_kk)) size <- size + objectSize_env(x_kk, depth = depth)
       } else {
         size <- size + unclass(object.size(x_kk))
       }
     }
     size
-  } ## objectSize.list()
+  } ## objectSize_list()
   
-  objectSize.env <- function(x, depth) {
+  objectSize_env <- function(x, depth) {
     # Nothing to do?
     if (depth <= 0) return(0)
     depth <- depth - 1L
@@ -557,11 +558,11 @@ objectSize <- function(x, depth = 3L) {
       if (missing(x_kk)) next
       
       if (is.list(x_kk)) {
-        size <- size + objectSize.list(x_kk, depth = depth)
+        size <- size + objectSize_list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
 ##        if (!inherits(x_kk, "Future") && !scanned(x_kk)) {
         if (!scanned(x_kk)) {
-          size <- size + objectSize.env(x_kk, depth = depth)
+          size <- size + objectSize_env(x_kk, depth = depth)
         }
       } else {
         size <- size + unclass(object.size(x_kk))
@@ -569,16 +570,16 @@ objectSize <- function(x, depth = 3L) {
     }
   
     size
-  } ## objectSize.env()
+  } ## objectSize_env()
 
   ## Suppress "Warning message:
   ##   In doTryCatch(return(expr), name, parentenv, handler) :
-  ##   restarting interrupted promise evaluation
+  ##   restarting interrupted promise evaluation"
   suppressWarnings({
     if (is.list(x)) {
-      size <- size + objectSize.list(x, depth = depth - 1L)
+      size <- size + objectSize_list(x, depth = depth - 1L)
     } else if (is.environment(x)) {
-      size <- size + objectSize.env(x, depth = depth - 1L)
+      size <- size + objectSize_env(x, depth = depth - 1L)
     }
   })
 
@@ -683,6 +684,7 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' 
 #' @keywords internal
 #' @rdname private_length
+#' @importFrom utils getS3method
 .length <- function(x) {
   nx <- length(x)
   
@@ -692,12 +694,13 @@ as_lecyer_cmrg_seed <- function(seed) {
   if (length(classes) == 1L && classes == "list") return(nx)
 
   ## Identify all length() methods for this object
-  mthds <- sprintf("length.%s", classes)
-  keep <- lapply(mthds, FUN = exists, mode = "function", inherits = TRUE)
-  keep <- unlist(keep, use.names = FALSE)
+  for (class in classes) {
+    fun <- getS3method("length", class, optional = TRUE)
+    if (!is.null(fun)) {
+      nx <- length(unclass(x))
+      break
+    }
+  }
 
-  ## If found, don't trust them
-  if (any(keep)) nx <- length(unclass(x))
-  
   nx
 } ## .length()

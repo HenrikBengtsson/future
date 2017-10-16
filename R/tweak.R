@@ -17,18 +17,29 @@ tweak <- function(strategy, ..., penvir = parent.frame()) UseMethod("tweak")
 
 #' @export
 tweak.character <- function(strategy, ..., penvir = parent.frame()) {
-  ## Search attached packages and the 'future' package
-  ## for a future function with this name
-  envirs <- list(penvir, future = getNamespace("future"), NULL)
-  for (envir in envirs) {
-    ## Reached the end? Nothing found.
-    if (is.null(envir)) {
+  parts <- strsplit(strategy, split = "::", fixed = TRUE)[[1]]
+  nparts <- length(parts)
+  if (nparts == 2) {
+    envir <- getNamespace(parts[[1]])
+    s <- parts[[2]]
+    if (!exists(s, mode = "function", envir = envir, inherits = TRUE)) {
       stop("No such strategy for futures: ", sQuote(strategy))
     }
-
-    if (exists(strategy, mode = "function", envir = envir, inherits = TRUE)) {
-      strategy <- get(strategy, mode = "function", envir = envir, inherits = TRUE)
-      break
+    strategy <- get(s, mode = "function", envir = envir, inherits = TRUE)
+  } else {
+    ## Search attached packages and the 'future' package
+    ## for a future function with this name
+    envirs <- list(penvir, future = getNamespace("future"), NULL)
+    for (envir in envirs) {
+      ## Reached the end? Nothing found.
+      if (is.null(envir)) {
+        stop("No such strategy for futures: ", sQuote(strategy))
+      }
+  
+      if (exists(strategy, mode = "function", envir = envir, inherits = TRUE)) {
+        strategy <- get(strategy, mode = "function", envir = envir, inherits = TRUE)
+        break
+      }
     }
   }
 

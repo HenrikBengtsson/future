@@ -168,7 +168,7 @@ plan <- local({
         if (inherits(strategy[[ii]], "lazy")) {
           .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
         } else if (inherits(strategy[[ii]], "lazy")) {
-          .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identical.")
+          .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identically.")
         }
       }
 

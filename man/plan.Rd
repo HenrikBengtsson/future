@@ -113,8 +113,8 @@ print(y)
 str(list(a = a, b = b, c = c)) ## All NAs
 
 
-# A multicore future
-plan(multicore)
+# A multicore future (specified as a string)
+plan("multicore")
 f <- future({
   a <- 7
   b <- 3
@@ -131,8 +131,9 @@ str(list(a = a, b = b, c = c)) ## All NAs
 ## The same code works in package tests.
 \donttest{
 
-# A multisession future
-plan(multisession)
+# A multisession future (specified via a string variable)
+strategy <- "future::multisession"
+plan(strategy)
 f <- future({
   a <- 7
   b <- 3
