@@ -6,7 +6,8 @@ Imports:
     globals (>= 0.10.3),
     listenv (>= 0.6.0),
     parallel,
-    utils
+    utils,
+    promises
 Suggests:
     R.rsp,
     markdown

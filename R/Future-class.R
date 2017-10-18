@@ -100,6 +100,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   core$gc <- gc
   core$earlySignal <- earlySignal
   core$label <- label
+  core$promise <- NULL
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -506,4 +507,45 @@ packages <- function(future, ...) UseMethod("packages")
 
 packages.Future <- function(future, ...) {
   future[["packages"]]
+}
+
+#' @export
+as.promise.Future <- function(x) {
+  # Look for cached promise. We don't want to create it unless it's needed, and
+  # we don't want to create more than one, because each future-promise uses its
+  # own polling loop.
+  p <- x[["promise"]]
+
+  if (is.null(p)) {
+    # Cached promise didn't exist--create a new one
+    p <- promise(function(resolve, reject) {
+      # Number of seconds between checks. (If desired, this could become an
+      # option or a property of the future)
+      poll_interval <- 0.1
+      check <- function() {
+        # It's very important that this check be extremely fast in the common
+        # case where the future has not yet resolved
+        
+        # timeout = 0 is important, the default waits for 200ms
+        if (resolved(x, timeout = 0)) {
+          tryCatch(
+            {
+              result <- value(x, signal = TRUE)
+              resolve(result)
+            },
+            error = function(e) {
+              reject(e)
+            }
+          )
+        } else {
+          # Continue polling
+          later::later(check, poll_interval)
+        }
+      }
+      check()
+    })
+    # Cache for next time
+    x[["promise"]] <- p
+  }
+  p
 }
