@@ -181,6 +181,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' on the \code{PATH}.  It is less common to find this command on Windows
 #' system, which are more likely to have the \command{PuTTY} software and
 #' its SSH client \command{plink} installed.
+#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
+#' client that is distributed with RStudio will be used as a fallback option.
 #' If neither \command{ssh} nor \command{plink} is found, an informative error
 #' message is produced.
 #' It is also possible to specify the absolute path to the SSH client.  To do
@@ -523,6 +525,19 @@ is_fqdn <- function(worker) {
 
 ## Locate an SSH client
 find_rshcmd <- function(must_work = TRUE) {
+  ## On Windows, RStudio distributes an 'ssh.exe' client
+  if (.Platform$OS.type == "windows") {
+    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
+    if (file_test("-d", path)) {
+      path <- normalizePath(path)
+      path_org <- Sys.getenv("PATH")
+      on.exit(Sys.setenv(PATH = path_org))
+      ## Append RSTUDIO_MSYS_SSH with the rationale that it
+      ## emulates how RStudio's 'Tools -> Shell ...' is set up.
+      Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
+    }
+  }
+
   cmds <- list("ssh", c("plink", "-ssh"))
   for (cmd in cmds) {
     if (nzchar(Sys.which(cmd[1]))) return(cmd)
