@@ -174,17 +174,17 @@ on some systems, e.g. compute clusters.
 
 \section{Default value of argument \code{rscript}}{
 
-If \code{homogenenous} is FALSE, the \code{rscript} defaults to
+If \code{homogeneous} is FALSE, the \code{rscript} defaults to
 \code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
 is available on the \code{PATH} of the worker.
-If \code{homogenenous} is TRUE, the \code{rscript} defaults to
+If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
 that the worker and the caller share the same file system and R installation.
 }
 
 \section{Default value of argument \code{homogeneous}}{
 
-The default value of \code{homogenenous} is TRUE if and only if either
+The default value of \code{homogeneous} is TRUE if and only if either
 of the following is fullfilled:
 \itemize{
  \item \code{worker} is \emph{localhost}
