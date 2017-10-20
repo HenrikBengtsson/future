@@ -540,7 +540,8 @@ find_rshcmd <- function(must_work = TRUE) {
 
   cmds <- list("ssh", c("plink", "-ssh"))
   for (cmd in cmds) {
-    if (nzchar(Sys.which(cmd[1]))) return(cmd)
+    path <- Sys.which(cmd[1])
+    if (nzchar(path)) return(path)
   }
   
   cmds_checked <- unlist(lapply(cmds, FUN = function(x) x[1]))
