@@ -139,9 +139,9 @@ on the \code{PATH}.  It is less common to find this command on Windows
 system, which are more likely to have the \command{PuTTY} software and
 its SSH client \command{plink} installed.
 Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-client that is distributed with RStudio will be used as a fallback option.
-If neither \command{ssh} nor \command{plink} is found, an informative error
-message is produced.
+client that is distributed with RStudio will be used as a fallback if
+neither of the above two commands are available on the \code{PATH}.
+If no SSH-client is found, an informative error message is produced.
 It is also possible to specify the absolute path to the SSH client.  To do
 this for PuTTY, specify the absolute path in the first element and option
 \command{-ssh} in the second as in

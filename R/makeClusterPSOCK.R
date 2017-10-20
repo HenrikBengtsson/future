@@ -182,9 +182,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' system, which are more likely to have the \command{PuTTY} software and
 #' its SSH client \command{plink} installed.
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-#' client that is distributed with RStudio will be used as a fallback option.
-#' If neither \command{ssh} nor \command{plink} is found, an informative error
-#' message is produced.
+#' client that is distributed with RStudio will be used as a fallback if
+#' neither of the above two commands are available on the \code{PATH}.
+#' If no SSH-client is found, an informative error message is produced.
 #' It is also possible to specify the absolute path to the SSH client.  To do
 #' this for PuTTY, specify the absolute path in the first element and option
 #' \command{-ssh} in the second as in
@@ -525,7 +525,17 @@ is_fqdn <- function(worker) {
 
 ## Locate an SSH client
 find_rshcmd <- function(must_work = TRUE) {
-  ## On Windows, RStudio distributes an 'ssh.exe' client
+  cmd_calls <- list(
+    "ssh",
+    c("plink", "-ssh")
+  )
+  for (cmd_call in cmd_calls) {
+    cmd <- cmd_call[1]
+    cmd_bin <- Sys.which(cmd)
+    if (nzchar(cmd_bin)) return(c(cmd_bin, cmd_call[-1]))
+  }
+
+  ## FALLBACK: On Windows, RStudio distributes an 'ssh.exe' client
   if (.Platform$OS.type == "windows") {
     path <- Sys.getenv("RSTUDIO_MSYS_SSH")
     if (file_test("-d", path)) {
@@ -535,17 +545,9 @@ find_rshcmd <- function(must_work = TRUE) {
       ## Append RSTUDIO_MSYS_SSH with the rationale that it
       ## emulates how RStudio's 'Tools -> Shell ...' is set up.
       Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
+      cmd_bin <- Sys.which("ssh")
+      if (nzchar(cmd_bin)) return(cmd_bin)
     }
-  }
-
-  cmd_calls <- list(
-    "ssh",
-    c("plink", "-ssh")
-  )
-  for (cmd_call in cmd_calls) {
-    cmd <- cmd_call[1]
-    cmd_bin <- Sys.which(cmd)
-    if (nzchar(cmd_bin)) return(c(cmd_bin, cmd_call[-1]))
   }
   
   cmds_checked <- unlist(lapply(cmds, FUN = function(x) x[1]))
