@@ -92,7 +92,7 @@ The future package implements the following types of futures:
 | `sequential`    | all         | sequentially and in the current R process
 | `transparent`   | all         | as sequential w/ early signaling and w/out local (for debugging)
 | _asynchronous:_ |             | _parallel_:
-| `multiprocess`  | all         | multicore iff supported, otherwise multisession
+| `multiprocess`  | all         | multicore, if supported, otherwise multisession
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows | forked R processes (on current machine)
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
