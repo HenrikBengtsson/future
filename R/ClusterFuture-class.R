@@ -53,8 +53,8 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   if (substitute) expr <- substitute(expr)
 
   if (is.null(workers)) {
-    defaultCluster <- importParallel("defaultCluster")
-    workers <- defaultCluster()
+    getDefaultCluster <- importParallel("getDefaultCluster")
+    workers <- getDefaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous)
   } else {

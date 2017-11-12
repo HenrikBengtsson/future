@@ -223,7 +223,8 @@ detectCores <- local({
 
 ## We are currently importing the following non-exported functions:
 ## * cluster futures:
-##   - parallel:::defaultCluster()  ## non-critical / not really needed
+##   - parallel:::defaultCluster()  ## non-critical / not really needed /
+##                                  ## can be dropped in R (>= 3.5.0)
 ##   - parallel:::sendCall()        ## run()
 ##   - parallel:::recvResult()      ## value()
 ## * multicore futures:
@@ -240,6 +241,16 @@ importParallel <- local({
     res <- cache[[name]]
     if (is.null(res)) {
       ns <<- getNamespace("parallel")
+
+      ## SPECIAL: parallel::getDefaultCluster() was added in R devel r73712
+      ## (to become 3.5.0) on 2017-11-11.  The fallback in R (< 3.5.0) is
+      ## to use parallel:::defaultCluster(). /HB 2017-11-11
+      if (name == "getDefaultCluster") {
+        if (!exists(name, mode = "function", envir = ns, inherits = FALSE)) {
+          name <- "defaultCluster"
+        }
+      }
+
       if (!exists(name, mode = "function", envir = ns, inherits = FALSE)) {
         ## covr: skip=3
         msg <- sprintf("This type of future processing is not supported on this system (%s), because parallel function %s() is not available", sQuote(.Platform$OS.type), name)
