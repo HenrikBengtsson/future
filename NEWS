@@ -1,13 +1,16 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2017-10-19]
+Version: 1.6.2-9000 [2017-11-26]
 
 NEW FEATURES:
 
  o On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
+
+ o Add fold(x, f), which is a more efficient (memory and speed) version of
+   base::Reduce(f, x), especially when length(x) is large.
 
 
 Version: 1.6.2 [2017-10-16]
