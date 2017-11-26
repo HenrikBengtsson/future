@@ -12,7 +12,10 @@ NEW FEATURES:
  o Add fold(x, f), which is a more efficient (memory and speed) version of
    base::Reduce(f, x), especially when length(x) is large.
 
-
+ o SPEED: future_lapply(x, ...) is now much faster and more memory efficient
+   for large 'x' vectors because it uses fold() instead of Reduce().
+   
+ 
 Version: 1.6.2 [2017-10-16]
 
 NEW FEATURES:

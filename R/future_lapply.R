@@ -388,7 +388,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   rm(list = "fs")
   
   if (debug) mdebug("Reducing values from %d chunks ...", nchunks)
-  values <- Reduce(c, values)
+  values <- fold(values, c)
   names(values) <- names(x)
   if (debug) mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
