@@ -550,11 +550,11 @@ find_rshcmd <- function(must_work = TRUE) {
     }
   }
   
-  cmds_checked <- unlist(lapply(cmds, FUN = function(x) x[1]))
+  cmds_checked <- unlist(lapply(cmd_calls, FUN = function(x) x[1]))
   msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds_checked), collapse = ", ")) #nolint
   if (must_work) stop(msg)
 
-  cmd <- cmds[[1]]
+  cmd <- cmd_calls[[1]]
   msg <- sprintf("%s Will use %s.", msg, sQuote(paste(cmd, collapse = " ")))
   warning(msg)
   cmd
