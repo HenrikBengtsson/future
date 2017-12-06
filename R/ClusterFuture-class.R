@@ -234,8 +234,9 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   con <- node$con
   if (!is.null(con)) {
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
-    ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05).
-    if (.Platform$OS.type != "windows" && getRversion() < "3.5.0") {
+    ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
+    ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)
+    if (.Platform$OS.type != "windows" && getRversion() < "3.4.3") {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
