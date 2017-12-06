@@ -626,8 +626,8 @@ is_valid_random_seed <- function(seed) {
   env$.Random.seed <- seed
   res <- tryCatch({
     sample.int(n = 1L, size = 1L, replace = FALSE)
-  }, FUN = function(w) w)
-  !inherits(res, "warning")
+  }, simpleWarning = function(w) w)
+  !inherits(res, "simpleWarning")
 }
 
 is_lecyer_cmrg_seed <- function(seed) {
