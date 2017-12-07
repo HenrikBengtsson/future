@@ -61,7 +61,8 @@ requirePackages <- future:::requirePackages
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
 get_random_seed <- future:::get_random_seed
-    
+as_lecyer_cmrg_seed <- future:::as_lecyer_cmrg_seed
+
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))
