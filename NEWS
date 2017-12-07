@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2017-11-26]
+Version: 1.6.2-9000 [2017-12-06]
 
 NEW FEATURES:
 
@@ -9,11 +9,10 @@ NEW FEATURES:
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
 
- o Add fold(x, f), which is a more efficient (memory and speed) version of
-   base::Reduce(f, x), especially when length(x) is large.
-
- o SPEED: future_lapply(x, ...) is now much faster and more memory efficient
-   for large 'x' vectors because it uses fold() instead of Reduce().
+ o PERFORMANCE: future_lapply(x, ...) is now much faster and more memory
+   efficient for large 'x' vectors because it uses an internal recursive
+   divide'n'conquer fold() function that is more efficient (memory and speed)
+   version of base::Reduce(f, x), especially when length(x) is large.
    
  
 Version: 1.6.2 [2017-10-16]

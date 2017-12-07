@@ -12,16 +12,19 @@
 #'
 #' @param threshold An integer (>= 2) specifying the length where the
 #' recursive divide'and'conquer call will stop and incremental building of
-#' the partial value is performed.
+#' the partial value is performed.  Using `threshold = +Inf` will disable
+#' recursive folding.
 #'
 #' @return A vector.
 #' 
 #' @details
+#' In order for recursive folding to give the same results as non-recursive
+#' folding, binary function `f` must be _associative_ with itself, i.e.
+#' `f(f(x[[1]], x[[2]]), x[[3]])` equals `f(x[[1]], f(x[[2]]), x[[3]])`.
+#' 
 #' This function is a more efficient (memory and speed) of
 #' [`base::Reduce(f, x, right = !left, accumulate = FALSE)`][base::Reduce],
 #' especially when `x` is long.
-#' 
-#' @export
 fold <- function(x, f, left = TRUE, unname = TRUE, threshold = 1000L) {
   f <- match.fun(f)
   n <- length(x)

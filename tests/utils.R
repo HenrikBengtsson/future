@@ -184,23 +184,6 @@ message("*** importParallel() ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# import_from()
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** import_from() ...")
-
-obj <- import_from("non-existing-fcn", default = NA, package = "future")
-stopifnot(identical(obj, NA))
-
-res <- tryCatch({
-  obj <- import_from("non-existing-fcn", package = "future")
-}, error = identity)
-print(res)
-stopifnot(inherits(res, "simpleError"))
-
-message("*** import_from() ... DONE")
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Random seeds
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** Random seeds ...")
