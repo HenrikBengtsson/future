@@ -21,8 +21,26 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ## Issues with globals
 
 ### Missing globals (false negatives)
+If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
+```r
+library(multisession)
 
-TODO: Document https://github.com/HenrikBengtsson/globals/issues/31
+reset <- TRUE
+x <- 1
+y %<-% { if (reset) x <- 0; x + 1 }
+y
+## [1] 1
+```
+the following does _not_ work:
+```r
+reset <- FALSE
+x <- 1
+y %<-% { if (reset) x <- 0; x + 1 }
+y
+## Error: object 'x' not found
+```
+
+_Comment:_ The goal is to in a future version of the package detect globals also in expression where the local-global state of a variable is only known at run time.
 
 
 #### do.call() - function not found
