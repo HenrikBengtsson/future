@@ -568,7 +568,7 @@ install.packages('future')
 
 To install the pre-release version that is available in Git branch `develop` on GitHub, use:
 ```r
-source('http://callr.org/install#HenrikBengtsson/future@develop')
+remotes::install_github('HenrikBengtsson/future@develop')
 ```
 This will install the package from source.  
 

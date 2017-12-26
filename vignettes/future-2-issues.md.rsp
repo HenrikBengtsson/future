@@ -20,34 +20,9 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 
 ## Issues with globals
 
-### Missing or incorrect globals (false negatives)
+### Missing globals (false negatives)
 
-#### Missing globals due to self assignment
-
-If a global variable is (only) part of a "self" assignment, such as `x <- x + 1`, then the global is not identified and therefore neither exported / frozen.  This explains the error in the following example:
-```r
-> library("future")
-> plan(sequential)
-> x <- 0
-> y %<-% { x <- x + 1 } %lazy% TRUE
-> rm(x)
-> y
-Error: object 'x' not found
-```
-
-The workaround is to guide R to find the missing global by explicitly listing it, e.g.
-```r
-> library("future")
-> plan(sequential)
-> x <- 0
-> y %<-% { x; x <- x + 1 } %lazy% TRUE
-> rm(x)
-> y
-[1] 1
-```
-
-_Comment:_ The goal is to in a future version of the package detect globals also in such self-assignment constructs.
-
+TODO: Document https://github.com/HenrikBengtsson/globals/issues/31
 
 
 #### do.call() - function not found
