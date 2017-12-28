@@ -35,7 +35,9 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
- o Dropped defunct arguments 'cluster' and 'maxCores' - use 'workers' instead.
+ o Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+
+ o Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
 
  
 Version: 1.6.2 [2017-10-16]
