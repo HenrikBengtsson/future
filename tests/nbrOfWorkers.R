@@ -26,6 +26,12 @@ workers <- availableWorkers()
 nworkers <- length(workers)
 message(sprintf("Available workers: [n = %d] %s", nworkers, hpaste(sQuote(workers))))
 
+allButOneCore <- function() max(1L, future::availableCores() - 1L)
+allButOneWorker <- function() {
+  w <- future::availableWorkers()
+  if (length(w) > 1) w[-1] else w
+}
+
 for (strategy in strategies) {
   message("Type of future: ", strategy)
 
@@ -38,6 +44,11 @@ for (strategy in strategies) {
   n <- nbrOfWorkers()
   message(sprintf("nbrOfWorkers: %d", n))
   stopifnot(n == nworkers)
+
+  plan(strategy, workers = allButOneCore)
+  n <- nbrOfWorkers()
+  message(sprintf("nbrOfWorkers: %d", n))
+  stopifnot(n == max(1L, nworkers - 1L))
 } ## for (strategy ...)
 
 
@@ -47,6 +58,10 @@ plan(cluster, workers = workers)
 n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == length(workers))
+plan(cluster, workers = allButOneWorker)
+n <- nbrOfWorkers()
+message(sprintf("nbrOfWorkers: %d", n))
+stopifnot(n == max(1L, nworkers - 1L))
 
 message("Type of future: remote")
 workers <- rep("localhost", times = 2L)
@@ -54,6 +69,10 @@ plan(remote, workers = workers)
 n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == length(workers))
+plan(remote, workers = allButOneWorker)
+n <- nbrOfWorkers()
+message(sprintf("nbrOfWorkers: %d", n))
+stopifnot(n == max(1L, nworkers - 1L))
 
 message("Type of future: constant")
 n <- nbrOfWorkers(constant)
