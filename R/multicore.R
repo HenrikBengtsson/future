@@ -56,6 +56,8 @@ multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FA
   }
 
   if (substitute) expr <- substitute(expr)
+
+  if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stopifnot(is.finite(workers), workers >= 1L)
 
