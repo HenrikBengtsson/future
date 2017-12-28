@@ -52,6 +52,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
 
   if (substitute) expr <- substitute(expr)
 
+  if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
     workers <- getDefaultCluster()

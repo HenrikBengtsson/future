@@ -18,6 +18,7 @@ nbrOfWorkers <- function(evaluator = NULL) {
 nbrOfWorkers.cluster <- function(evaluator) {
   expr <- formals(evaluator)$workers
   workers <- eval(expr)
+  if (is.function(workers)) workers <- workers()
   stopifnot(is.character(workers) || is.numeric(workers) || inherits(workers, "cluster"), !anyNA(workers))
   if (is.character(workers)) {
     workers <- length(workers)
@@ -35,6 +36,7 @@ nbrOfWorkers.uniprocess <- function(evaluator) 1L
 nbrOfWorkers.multiprocess <- function(evaluator) {
   expr <- formals(evaluator)$workers
   workers <- eval(expr)
+  if (is.function(workers)) workers <- workers()
   stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
   workers
 }
@@ -43,6 +45,7 @@ nbrOfWorkers.multiprocess <- function(evaluator) {
 nbrOfWorkers.future <- function(evaluator) {
   expr <- formals(evaluator)$workers
   workers <- eval(expr)
+  if (is.function(workers)) workers <- workers()
   if (is.null(workers)) workers <- Inf
   workers
 }

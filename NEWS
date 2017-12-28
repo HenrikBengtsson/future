@@ -1,10 +1,16 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2017-12-26]
+Version: 1.6.2-9000 [2017-12-27]
 
 NEW FEATURES:
 
+ o Argument 'workers' of future strategies may now also be a function, which
+   is called without argument when the future strategy is set up and used as
+   is.  For instance, plan(multiprocess, workers = halfCores) where
+   halfCores <- function() { max(1, round(availableCores() / 2)) } will use
+   half of the number of available cores.
+ 
  o On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.

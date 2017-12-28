@@ -60,6 +60,7 @@ multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
   }
 
   if (substitute) expr <- substitute(expr)
+  if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
 
