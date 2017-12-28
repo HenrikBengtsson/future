@@ -46,10 +46,6 @@
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
-  if ("cluster" %in% names(list(...))) {
-    .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
-  }
-
   if (substitute) expr <- substitute(expr)
 
   if (is.function(workers)) workers <- workers()

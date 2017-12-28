@@ -32,7 +32,11 @@ BUG FIXES:
    global failed to identify 'x' as a global because the right-hand side (RHS)
    'x' would override it as a local variable.  Updates to the globals package
    fixed this problem.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ o Dropped defunct arguments 'cluster' and 'maxCores' - use 'workers' instead.
+
  
 Version: 1.6.2 [2017-10-16]
 

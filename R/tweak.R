@@ -77,15 +77,6 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  ## DEFUNCT
-  if ("workers" %in% formals) {
-    for (name in c("maxCores", "cluster")) {
-      if (name %in% names) {
-        .Defunct(msg = sprintf("Argument '%s' has been renamed to 'workers'. Please update you script/code that uses the future package.", name))
-      }
-    }
-  }
-
   unknown <- NULL
   for (kk in seq_along(args)) {
     name <- names[kk]
