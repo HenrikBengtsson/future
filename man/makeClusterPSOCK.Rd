@@ -243,10 +243,10 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 
-## Setup of Docker worker running rocker/r-base
+## Setup of 2 Docker workers running rocker/r-base
 ## (requires installation of future package)
 cl <- makeClusterPSOCK(
-  "localhost",
+  rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
     "docker", "run", "--net=host", "rocker/r-base",
@@ -260,7 +260,7 @@ cl <- makeClusterPSOCK(
 )
                        
 
-## Setup of udocker.py worker running rocker/r-base
+## Setup of a single udocker.py worker running rocker/r-base
 ## (requires installation of future package and extra quoting)
 cl <- makeClusterPSOCK(
   "localhost",
