@@ -9,16 +9,19 @@ NEW FEATURES:
    is called without argument when the future strategy is set up and used as
    is.  For instance, plan(multiprocess, workers = halfCores) where
    halfCores <- function() { max(1, round(availableCores() / 2)) } will use
-   half of the number of available cores.
+   half of the number of available cores.  This is useful when using nested
+   future strategies with remote machines.
  
  o On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
 
- o PERFORMANCE: future_lapply(x, ...) is now much faster and more memory
-   efficient for large 'x' vectors because it uses an internal recursive
-   divide'n'conquer fold() function that is more efficient (memory and speed)
-   version of base::Reduce(f, x), especially when length(x) is large.
+PERFORMANCE:
+
+ o future_lapply(x, ...) is now much faster and more memory efficient for large
+   'x' vectors because it uses an internal recursive divide'n'conquer fold()
+   function that is more efficient (memory and speed) version of
+   base::Reduce(f, x), especially when length(x) is large.
 
 DOCUMENTATION:
 
@@ -195,19 +198,8 @@ NEW FEATURES:
    and all required packages are automatically identified and gathered, so
    in most cases those do not have to be specified manually.
 
- o SPEED: future_lapply() scans global variables for non-resolved futures
-   (to resolve them) and calculate their total size once.  Previously, each
-   chunk (a future) would redo this.
-
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
-
-GLOBALS:
-
- o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
-   and '...' recursively until no new globals are found.  Previously, only
-   the first level of globals were scanned.  This is mostly thanks to a bug
-   fix in globals 0.9.0.
 
 RANDOM NUMBER GENERATION:
 
@@ -221,7 +213,18 @@ RANDOM NUMBER GENERATION:
  o It is now possible to specify a pre-generated sequence of .Random.seed
    seeds to be used for each FUN(x[i], ...) call in future_lapply(x, FUN, ...).
 
-BUG FIXES:
+PERFORMANCE:
+
+ o future_lapply() scans global variables for non-resolved futures (to resolve
+   them) and calculate their total size once.  Previously, each chunk
+   (a future) would redo this.
+
+BUG FIX:
+
+ o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
+   and '...' recursively until no new globals are found.  Previously, only
+   the first level of globals were scanned.  This is mostly thanks to a bug
+   fix in globals 0.9.0.
 
  o A future that used a global object 'x' of a class that overrides length()
    would produce an error if length(x) reports more elements than what can
@@ -555,8 +558,10 @@ NEW FEATURES:
    plan(multiprocess, gc=TRUE).  The developer can control this using
    future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
 
- o SPEED: Significantly decreased the overhead of creating a future,
-   particularly multicore futures.
+PERFORMANCE:
+
+ o Significantly decreased the overhead of creating a future, particularly
+   multicore futures.
     
 BUG FIXES: 
 
@@ -656,8 +661,10 @@ NEW FEATURES:
    forked R process was terminated before completing and if so generates
    an informative error messages.
 
- o SPEED: Adjusted the parameters for the schema used to wait for next
-   available cluster node such that nodes are polled more frequently.
+PERFORMANCE:
+
+ o Adjusted the parameters for the schema used to wait for next available
+   cluster node such that nodes are polled more frequently.
 
 GLOBALS:
 
