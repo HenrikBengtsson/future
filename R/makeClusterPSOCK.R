@@ -355,7 +355,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   ## Renice?
   if (!is.na(renice) && renice > 0L) {
-    cmd <- sprintf("nice +%d %s", renice, cmd)
+    cmd <- sprintf("nice --adjustment=%d %s", renice, cmd)
   }
 
   if (!localMachine) {
