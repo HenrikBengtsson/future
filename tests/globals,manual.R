@@ -223,6 +223,14 @@ for (strategy in supportedStrategies()) {
   str(y)
   stopifnot(identical(y, y_truth))
 
+  ## Make sure it's possible to specify '...' as a global (not just last)
+  ## Requires globals (> 0.11.0)
+  sub <- function(x, ...) value(future(x[...], globals = c("...", "x")))
+  if (packageVersion("globals") > "0.11.0")
+    y <- sub(x, 2:3)
+  str(y)
+  stopifnot(identical(y, y_truth))
+  
   ## And if '...' is forgotten, it may give an error
   sub <- function(x, ...) value(future(x[...], globals = "x"))
   y <- tryCatch(sub(x, 2:3), error = identity)
