@@ -42,7 +42,6 @@
 #' @aliases MultisessionFuture MultisessionFuture-class
 #' @export
 #' @export MultisessionFuture
-#' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
@@ -75,8 +74,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   ## Attach name to cluster?
   name <- attr(workers, "name")
   if (is.null(name)) {
-    name <- digest(workers)
-    stopifnot(length(name) > 0, nzchar(name))
+    name <- uuid(workers)
     attr(workers, "name") <- name
   }
 

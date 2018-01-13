@@ -3,6 +3,12 @@ Package: future
 
 Version: 1.6.2-9000 [2018-01-12]
 
+SIGNIFICANT CHANGES:
+
+ o Package no longer depend on the 'digest' package. The installation size
+   of 'future' when installing from source is now 30% (120 KB) smaller
+   totalling 260 KB.
+   
 NEW FEATURES:
 
  o Argument 'workers' of future strategies may now also be a function, which
@@ -16,7 +22,7 @@ NEW FEATURES:
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
 
-PERFORMANCE:
+PERFORMANCE:  
 
  o future_lapply(x, ...) is now much faster and more memory efficient for large
    'x' vectors because it uses an internal recursive divide'n'conquer fold()
