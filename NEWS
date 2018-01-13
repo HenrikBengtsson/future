@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2018-01-09]
+Version: 1.6.2-9000 [2018-01-12]
 
 NEW FEATURES:
 
@@ -41,6 +41,9 @@ BUG FIXES:
    This bug was inherited from parallel::makePSOCKcluster().  Now using
    'nice --adjustment=19' instead.
 
+ o Protection against passing future objects to other futures did not work
+   for future strategy 'multicore'.
+ 
 DEPRECATED AND DEFUNCT:
 
  o Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.

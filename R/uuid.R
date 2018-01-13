@@ -27,28 +27,32 @@ uuid_of_connection <- function(con, ..., must_work = TRUE) {
 } ## uuid_of_connection()
 
 ## A universally unique identifier (UUID) for the current
-## R process.  Generated only once.
+## R process UUID. Generated only once per process ID 'pid'.
+## The 'pid' may differ when using forked processes.
 session_uuid <- local({
-  value <- NULL
-  function(attributes = FALSE) {
-    uuid <- value
+  uuids <- list()
+
+  function(pid = Sys.getpid(), attributes = FALSE) {
+    pidstr <- as.character(pid)
+    uuid <- uuids[[pidstr]]
     if (!is.null(uuid)) {
       if (!attributes) attr(uuid, "source") <- NULL
       return(uuid)
     }
+
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
     host <- host[nzchar(host)][1]
     info <- list(
       host = host,
       info = info,
-      pid = Sys.getpid(),
+      pid = pid,
       time = Sys.time(),
       ## NOTE: This will set/update .GlobalEnv$.Random.seed
       random = sample.int(.Machine$integer.max, size = 1L)
     )
     uuid <- uuid(info, keep_source = TRUE)
-    value <<- uuid
+    uuids[[pidstr]] <<- uuid
     if (!attributes) attr(uuid, "source") <- NULL
     uuid
   }
