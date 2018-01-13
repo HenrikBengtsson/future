@@ -34,19 +34,22 @@ hash_pearson <- local({
 })
 
 
-serialize_to_raw <- function(x) {
+serialize_to_raw <- function(x, ascii = FALSE) {
   con <- rawConnection(raw(0L), open = "wb")
   on.exit(close(con))
-  serialize(x, connection = con, ascii = FALSE)
-  raw <- rawConnectionValue(con)
-  ## The first 14 bytes are "useless", cf. digest::digest()
-  raw[-(1:14)]
+  serialize(x, connection = con, ascii = ascii)
+  rawConnectionValue(con)
+}
+
+## This is ~25% faster than digest::digest(info)
+serialize_to_string <- function(x) {
+  rawToChar(serialize_to_raw(x, ascii = TRUE))
 }
 
 ## This is ~5-10 times slower than digest::digest(info) for below 'info'
 ## because of hash_pearson(). Bigger 'info' will be slower as processing
 ## time of hash_pearson() is a function of length of serialized 'info'.
-simple_checksum <- function(x, mode = "hex", length = 16L, collapse = FALSE) {
+simple_checksum <- function(x, mode = "hex", collapse = FALSE) {
   raw <- serialize_to_raw(x)
   hash <- hash_pearson(raw)
   if (mode == "raw") {
@@ -61,12 +64,16 @@ simple_checksum <- function(x, mode = "hex", length = 16L, collapse = FALSE) {
 }
 
 ## Create a universally unique identifier (UUID) for an R object
-uuid <- function(x, keep_source = FALSE) {
-  x <- simple_checksum(x)
-  uuid <- paste(c(x[1:4], "-", x[5:6], "-", x[7:8], "-",
-                  x[9:10], "-", x[11:16]), collapse = "")
-  if (keep_source) attr(uuid, "source") <- source
-  uuid
+uuid <- function(source, format = "ascii", keep_source = FALSE) {
+  if (format == "ascii") {
+    res <- serialize_to_string(source)
+  } else if (format == "uuid") {
+    x <- simple_checksum(source)
+    res <- paste(c(x[1:4], "-", x[5:6], "-", x[7:8], "-",
+                   x[9:10], "-", x[11:16]), collapse = "")
+  }
+  if (keep_source) attr(res, "source") <- source
+  res
 }
 
 uuid_of_connection <- function(con, ..., must_work = TRUE) {
