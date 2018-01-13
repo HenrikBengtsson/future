@@ -74,10 +74,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
                          verbose = verbose)
     
-    ## Attaching UUID for each cluster connection.  This is done because
+    ## Attaching unique ID for each cluster connection.  This is done because
     ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-    if (verbose) message("- assigning connection UUID")
-    cl[ii] <- add_cluster_uuid(cl[ii])
+    if (verbose) message("- assigning connection unique ID")
+    cl[ii] <- add_cluster_uid(cl[ii])
 
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
@@ -419,12 +419,12 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
 
 
-## Attaching UUID for each cluster connection.
+## Attaching unique ID for each cluster connection.
 ## This is needed in order to be able to assert that we later
 ## actually work with the same connection.  See R-devel thread
 ## 'closeAllConnections() can really mess things up' on 2016-10-30
 ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-add_cluster_uuid <- function(cl) {
+add_cluster_uid <- function(cl) {
   stopifnot(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
@@ -435,16 +435,16 @@ add_cluster_uuid <- function(cl) {
     con <- node$con
     if (is.null(con)) next
     
-    uuid <- attr(con, "uuid")
-    if (is.null(uuid)) {
-      attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
+    uid <- attr(con, "uid")
+    if (is.null(uid)) {
+      attr(con, "uid") <- uid_of_connection(con)
       node$con <- con
       cl[[ii]] <- node
     }
   }
   
   cl
-} ## add_cluster_uuid()
+} ## add_cluster_uid()
 
 
 ## Checks if a given worker is the same as the localhost.  It is, iff:

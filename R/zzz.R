@@ -1,8 +1,8 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
-  ## Initiate the R session UUID, which will also set/update
+  ## Initiate a session unique ID, which will also set/update
   ## .GlobalEnv$.Random.seed.
-  session_uuid()
+  id <- session_uid()
   
   debug <- getOption("future.debug", FALSE)
   
@@ -93,11 +93,8 @@
     }
   }
 
-  ## Create UUID for this process
-  id <- session_uuid(attributes = TRUE)
-
   if (debug) {
-    mdebug("R process uuid: %s", id)
+    mdebug("R process uuid: %s", uuid(id))
     mdebug("Setting plan('default')")
   }
   

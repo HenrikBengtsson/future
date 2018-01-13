@@ -92,7 +92,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   core$envir <- envir
   core$globals <- globals
   core$packages <- packages
-  core$owner <- session_uuid(attributes = TRUE)
+  core$owner <- session_uid()
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
   core$seed <- seed
@@ -183,20 +183,20 @@ print.Future <- function(x, ...) {
     cat("Value: <not collected>\n")
   }
   cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
-  cat(sprintf("Owner process: %s\n", x$owner))
+  cat(sprintf("Owner process: %s\n", uuid(x$owner)))
   cat(sprintf("Class: %s\n", paste(sQuote(class), collapse = ", ")))
 } ## print()
 
 
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
-  hpid <- function(uuid) {
-    info <- attr(uuid, "source")
-    sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+  hpid <- function(uid) {
+    info <- attr(uid, "source")
+    sprintf("%s; pid %d on %s", uuid(uid), info$pid, info$host)
   }
 
-  if (!identical(future$owner, session_uuid(attributes = TRUE))) {
-    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future = future))
+  if (!identical(future$owner, session_uid())) {
+    stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uid()), hexpr(future$expr)), future = future))
   }
 
   invisible(future)

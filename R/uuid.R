@@ -63,50 +63,41 @@ simple_checksum <- function(x, mode = "hex", collapse = FALSE) {
   hash
 }
 
-## Create a universally unique identifier (UUID) for an R object
-uuid <- function(source, format = "ascii", keep_source = FALSE) {
-  if (format == "ascii") {
-    res <- serialize_to_string(source)
-  } else if (format == "uuid") {
-    x <- simple_checksum(source)
-    res <- paste(c(x[1:4], "-", x[5:6], "-", x[7:8], "-",
-                   x[9:10], "-", x[11:16]), collapse = "")
-  }
+## Create in-house unique identifier (UID) based on an R object
+simple_uid <- function(source, keep_source = TRUE) {
+  res <- serialize_to_string(source)
   if (keep_source) attr(res, "source") <- source
   res
 }
 
-uuid_of_connection <- function(con, ..., must_work = TRUE) {
+uid_of_connection <- function(con, ..., must_work = TRUE) {
   stopifnot(inherits(con, "connection"))
   if (must_work) {
     info <- summary(con)
     info$opened <- NULL
-    uuid <- uuid(info, ...)
+    uid <- simple_uid(info, ...)
   } else {
-    uuid <- tryCatch({
+    uid <- tryCatch({
       info <- summary(con)
       info$opened <- NULL
-      uuid(info, ...)
+      simple_uid(info, ...)
     }, error = function(ex) {
-      attr(con, "uuid")
+      attr(con, "uid")
     })
   }
-  uuid
-} ## uuid_of_connection()
+  uid
+}
 
-## A universally unique identifier (UUID) for the current
-## R process UUID. Generated only once per process ID 'pid'.
+## An in-house unique identifier (UID) for the current R process.
+## Generated only once per process ID 'pid'.
 ## The 'pid' may differ when using forked processes.
-session_uuid <- local({
-  uuids <- list()
-
-  function(pid = Sys.getpid(), attributes = FALSE) {
+session_uid <- local({
+  uids <- list()
+  
+  function(pid = Sys.getpid()) {
     pidstr <- as.character(pid)
-    uuid <- uuids[[pidstr]]
-    if (!is.null(uuid)) {
-      if (!attributes) attr(uuid, "source") <- NULL
-      return(uuid)
-    }
+    uid <- uids[[pidstr]]
+    if (!is.null(uid)) return(uid)
 
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
@@ -119,9 +110,20 @@ session_uuid <- local({
       ## NOTE: This will set/update .GlobalEnv$.Random.seed
       random = sample.int(.Machine$integer.max, size = 1L)
     )
-    uuid <- uuid(info, keep_source = TRUE)
-    uuids[[pidstr]] <<- uuid
-    if (!attributes) attr(uuid, "source") <- NULL
-    uuid
+    uid <- simple_uid(info, keep_source = TRUE)
+    uids[[pidstr]] <<- uid
+    uid
   }
 })
+
+
+## Create a universally unique identifier (UUID) base on in-house UID
+## Only used for print() etc.
+uuid <- function(uid) {
+  source <- attr(uid, "source")
+  stopifnot(!is.null(source))
+  x <- simple_checksum(source)
+  res <- paste(c(x[1:4], "-", x[5:6], "-", x[7:8], "-",
+                 x[9:10], "-", x[11:16]), collapse = "")
+  res
+}

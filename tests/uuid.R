@@ -1,16 +1,19 @@
 source("incl/start.R")
-session_uuid <- future:::session_uuid
-add_cluster_uuid <- future:::add_cluster_uuid
+uuid <- future:::uuid
+session_uid <- future:::session_uid
+add_cluster_uid <- future:::add_cluster_uid
 
-message("*** session_uuid() ...")
+message("*** session_uid() ...")
 
-id0 <- session_uuid()
+id0 <- session_uid()
 print(id0)
 
-## Reset session UUID (hack)
-environment(session_uuid)$uuids <- list()
+print(uuid(id0))
 
-id <- session_uuid()
+## Reset session UID (hack)
+environment(session_uid)$uids <- list()
+
+id <- session_uid()
 print(id)
 stopifnot(id != id0)
 
@@ -21,7 +24,7 @@ if (supportsMulticore()) {
   fs <- lapply(1:2, FUN = function(i) {
     future({
       Sys.sleep(0.2)
-      session_uuid()
+      session_uid()
     })
   })
   ids <- unlist(values(fs))
@@ -29,27 +32,27 @@ if (supportsMulticore()) {
   stopifnot(all(ids != id), length(unique(ids)) == 2L)
 }
 
-message("*** session_uuid() ... DONE")
+message("*** session_uid() ... DONE")
 
-message("*** add_cluster_uuid() ...")
+message("*** add_cluster_uid() ...")
 
 cl <- parallel::makeCluster(1L, type = "PSOCK")
-cl <- add_cluster_uuid(cl)
+cl <- add_cluster_uid(cl)
 str(cl)
 parallel::stopCluster(cl)
-uuid <- as.vector(attr(cl[[1]]$con, "uuid"))
-print(uuid)
-stopifnot(is.character(uuid), nzchar(uuid))
+uid <- as.vector(attr(cl[[1]]$con, "uid"))
+print(uid)
+stopifnot(is.character(uid), nzchar(uid))
 
 
 if (supportsMulticore()) {
   cl <- parallel::makeCluster(1L, type = "FORK")
-  cl <- add_cluster_uuid(cl)
+  cl <- add_cluster_uid(cl)
   str(cl)
   parallel::stopCluster(cl)
-  uuid <- as.vector(attr(cl[[1]]$con, "uuid"))
-  print(uuid)
-  stopifnot(is.character(uuid), nzchar(uuid))
+  uid <- as.vector(attr(cl[[1]]$con, "uid"))
+  print(uid)
+  stopifnot(is.character(uid), nzchar(uid))
 }
 
 cl <- structure(list(
@@ -58,8 +61,8 @@ cl <- structure(list(
   ), class = "MPInode")
   ), class = c("spawnedMPIcluster", "MPIcluster", "cluster")
 )
-cl <- add_cluster_uuid(cl)
+cl <- add_cluster_uid(cl)
 
-message("*** add_cluster_uuid() ... DONE")
+message("*** add_cluster_uid() ... DONE")
 
 source("incl/end.R")
