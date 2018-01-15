@@ -1,3 +1,9 @@
+## DEPRECATION NOTICES: The future_lapply() function has moved to the
+## future.apply package.  Going forward, please make sure to use that
+## one instead, by using:
+##
+##   library("future.apply")
+
 ## Regardless of the future plan, the number of workers,
 ## and where they are, the random numbers will be identical
 plan(sequential)

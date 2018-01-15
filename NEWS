@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2018-01-12]
+Version: 1.6.2-9000 [2018-01-15]
 
 NEW FEATURES:
 
@@ -46,6 +46,11 @@ BUG FIXES:
  
 DEPRECATED AND DEFUNCT:
 
+ o future_lapply() has moved to the new future.apply package available on CRAN.
+   The future::future_lapply() function will soon be deprecated, then defunct,
+   and eventually be removed from the future package. Please update your code
+   to make use of future.apply::future_lapply() instead.
+   
  o Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.
 
  o Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
