@@ -9,20 +9,20 @@
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |tz       |US/Pacific                   |
-|date     |2018-01-13                   |
+|date     |2018-01-21                   |
 
 # Dependencies
 
 |package |old    |new        |Δ  |
 |:-------|:------|:----------|:--|
 |future  |1.6.2  |1.6.2-9000 |*  |
-|digest  |0.6.13 |0.6.13     |   |
+|digest  |0.6.14 |0.6.14     |   |
 |globals |0.11.0 |0.11.0     |   |
-|listenv |0.6.0  |0.6.0      |   |
+|listenv |0.7.0  |0.7.0      |   |
 
 # Revdeps
 
-## All (25)
+## All (26)
 
 |package                              |version    |error |warning |note |
 |:------------------------------------|:----------|:-----|:-------|:----|
@@ -35,6 +35,7 @@
 |doFuture                             |0.6.0      |      |        |     |
 |drake                                |4.4.0      |      |        |     |
 |[fiery](problems.md#fiery)           |1.1.0      |1     |        |1    |
+|future.apply                         |0.1.0      |      |        |     |
 |future.BatchJobs                     |0.15.0     |      |        |     |
 |future.batchtools                    |0.6.0      |      |        |     |
 |googleComputeEngineR                 |0.2.0      |      |        |     |
