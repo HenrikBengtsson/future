@@ -258,6 +258,13 @@ plan <- local({
     ## Initiate future workers?
     if (.init) plan_init()
 
+    ## Sanity checks
+    n <- nbrOfWorkers()
+    if (getOption("future.debug", FALSE)) {
+      mdebug(sprintf("plan(): nbrOfWorkers() = %g", n))
+    }
+    stopifnot(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
+
     invisible(oldStack[[1L]])
   } # function()
 }) # plan()
