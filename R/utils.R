@@ -697,11 +697,13 @@ find_references <- function(x, first_only = FALSE) {
 
   refhook <- if (first_only) {
     function(ref) {
+      if (typeof(ref) == "environment") return(NULL)
       refs <<- c(refs, list(ref))
       stop(structure(list(message = ""), class = c("refhook", "condition")))
     }
   } else {
     function(ref) {
+      if (typeof(ref) == "environment") return(NULL)
       refs <<- c(refs, list(ref))
       NULL
     }
