@@ -203,6 +203,17 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
 
 
+  ## Protect against references?
+  if (length(globals) > 0L) {
+    action <- getOption("future.globals.onReference", "ignore")
+    if (action != "ignore") {
+      if (debug) {
+        mdebug("Checking for globals with references (future.globals.onReference = \"%s\")", action)
+      }
+      assert_no_references(globals, action = action)
+    }
+  }
+  
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L) {
     ## Maximum size of globals (to prevent too large exports) = 500 MiB
