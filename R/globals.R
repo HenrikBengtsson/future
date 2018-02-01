@@ -208,9 +208,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     action <- getOption("future.globals.onReference", "ignore")
     if (action != "ignore") {
       if (debug) {
-        mdebug("Checking for globals with references (future.globals.onReference = \"%s\")", action)
+        mdebug("Checking for globals with references (future.globals.onReference = \"%s\") ...", action, appendLF = FALSE)
       }
-      assert_no_references(globals, action = action)
+      t <- system.time({
+        assert_no_references(globals, action = action)
+      }, gcFirst = FALSE)
+      if (debug) mdebug("[%.3f s]", t[3])
     }
   }
   

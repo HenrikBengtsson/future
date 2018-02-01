@@ -61,10 +61,10 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(...) {
+mdebug <- function(..., appendLF = TRUE) {
   if (!getOption("future.debug", FALSE)) return()
-  message(sprintf(...))
-} ## mdebug()
+  message(sprintf(...), appendLF = appendLF)
+}
 
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
