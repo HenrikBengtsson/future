@@ -758,9 +758,9 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   
   msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
   if (action == "error") {
-    stop(msg)
+    stop(msg, call. = FALSE)
   } else if (action == "warning") {
-    warning(msg)
+    warning(msg, call. = FALSE)
   } else if (action == "message") {
     message(msg)
   } else if (action == "string") {
