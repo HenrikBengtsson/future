@@ -19,7 +19,7 @@ NEW FEATURES:
  o Now plan() makes sure that nbrOfWorkers() will work for the new strategy.
    This will help catch mistakes such as plan(cluster, workers = cl) where
    'cl' is a basic R list rather than a 'cluster' list early on.
- 
+
 PERFORMANCE:
 
  o future_lapply(x, ...) is now much faster and more memory efficient for large
@@ -32,6 +32,17 @@ DOCUMENTATION:
  o Vignette 'Common Issues with Solutions' now documents the case where the
    future framework fails to identify a variable as being global because it
    is only so conditionally, e.g. 'if (runif(1) < 1/2) x <- 0; y <- 2 * x'.
+
+BETA FEATURES:
+ o Added mechanism for detecting globals that _may_ not be exportable to an
+   external R process (a "worker").  Typically, globals that carry connections
+   and external pointers ("externalptr") can not be exported, but there are
+   exceptions.  By setting options 'future.globals.onReference' to "warning",
+   a warning is produced informing the user about potential problems.  If
+   "error", an error is produced.  Because there might be false positive, the
+   default is "ignore", which will cause above scans to be skipped.  If there
+   are non-exportable globals and these tests are skipped, a run-time error
+   may be produced only when the future expression is evaluated.
 
 BUG FIXES:
 

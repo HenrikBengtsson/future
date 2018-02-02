@@ -61,10 +61,10 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(...) {
+mdebug <- function(..., appendLF = TRUE) {
   if (!getOption("future.debug", FALSE)) return()
-  message(sprintf(...))
-} ## mdebug()
+  message(sprintf(...), appendLF = appendLF)
+}
 
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -658,3 +658,112 @@ as_lecyer_cmrg_seed <- function(seed) {
 
   nx
 } ## .length()
+
+
+#' Creates a connection to the system null device
+#'
+#' @return Returns a open, binary [base::connection()].
+nullcon <- local({
+  nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
+  .nullcon <- function() file(nullfile, open = "wb")
+
+  ## Assert that a null device exists
+  tryCatch({
+    con <- .nullcon()
+    on.exit(close(con))
+    cat("test", file = con)
+  }, error = function(ex) {
+    stop(sprintf("Failed to write to null file (%s) on this platform (%s). Please report this the maintainer of the 'future' package.", sQuote(nullfile), sQuote(.Platform$OS.type)))
+  })
+  
+  .nullcon
+})
+
+
+#' Get first or all references of an \R object
+#'
+#' @param x The \R object to be checked.
+#' 
+#' @param first_only If `TRUE`, only the first reference is returned,
+#' otherwise all references.
+#'
+#' @return `find_references()` returns a list of one or more references
+#' identified.
+find_references <- function(x, first_only = FALSE) {
+  con <- nullcon()
+  on.exit(close(con))
+
+  refs <- list()
+
+  refhook <- if (first_only) {
+    function(ref) {
+      if (typeof(ref) == "environment") return(NULL)
+      refs <<- c(refs, list(ref))
+      stop(structure(list(message = ""), class = c("refhook", "condition")))
+    }
+  } else {
+    function(ref) {
+      if (typeof(ref) == "environment") return(NULL)
+      refs <<- c(refs, list(ref))
+      NULL
+    }
+  }
+  
+  tryCatch({
+    serialize(x, connection = con, ascii = FALSE, xdr = FALSE,
+              refhook = refhook)
+  }, refhook = identity)
+  
+  refs
+}
+
+
+#' Assert that there are no references among the identified globals
+#'
+#' @param action Type of action to take if a reference is found.
+#' 
+#' @return If a reference is detected, an informative error, warning, message,
+#' or a character string is produced, otherwise `NULL` is returned invisibly.
+#'
+#' @rdname find_references
+assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
+  ref <- find_references(x, first_only = TRUE)
+  if (length(ref) == 0) return()
+
+  action <- match.arg(action)
+  
+  ## Identify which global object has a reference
+  global <- ""
+  ref <- ref[[1]]
+  if (is.list(x) && !is.null(names(x))) {
+    for (ii in seq_along(x)) {
+      x_ii <- x[[ii]]
+      ref_ii <- find_references(x_ii, first_only = TRUE)
+      if (length(ref_ii) > 0) {
+        global <- sprintf(" (%s of class %s)",
+                          sQuote(names(x)[ii]), sQuote(class(x_ii)[1]))
+        ref <- ref_ii[[1]]
+        break
+      }
+    }
+  }
+
+  typeof <- typeof(ref)
+  class <- class(ref)[1]
+  if (class == typeof) {
+    typeof <- sQuote(typeof)
+  } else {
+    typeof <- sprintf("%s of class %s", sQuote(typeof), sQuote(class))
+  }
+  
+  msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
+  if (action == "error") {
+    stop(msg, call. = FALSE)
+  } else if (action == "warning") {
+    warning(msg, call. = FALSE)
+  } else if (action == "message") {
+    message(msg)
+  } else if (action == "string") {
+    msg
+  }
+}
