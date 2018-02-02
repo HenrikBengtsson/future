@@ -16,8 +16,6 @@ assert_no_references(x, action = c("error", "warning", "message", "string"))
 otherwise all references.}
 
 \item{action}{Type of action to take if a reference is found.}
-
-\item{x}{The \R object to be checked.}
 }
 \value{
 `find_references()` returns a list of one or more references

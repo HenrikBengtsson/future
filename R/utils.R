@@ -720,8 +720,6 @@ find_references <- function(x, first_only = FALSE) {
 
 #' Assert that there are no references among the identified globals
 #'
-#' @param x The \R object to be checked.
-#' 
 #' @param action Type of action to take if a reference is found.
 #' 
 #' @return If a reference is detected, an informative error, warning, message,
