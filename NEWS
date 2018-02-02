@@ -34,6 +34,7 @@ DOCUMENTATION:
    is only so conditionally, e.g. 'if (runif(1) < 1/2) x <- 0; y <- 2 * x'.
 
 BETA FEATURES:
+
  o Added mechanism for detecting globals that _may_ not be exportable to an
    external R process (a "worker").  Typically, globals that carry connections
    and external pointers ("externalptr") can not be exported, but there are
