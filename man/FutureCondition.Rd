@@ -2,17 +2,16 @@
 % Please edit documentation in R/FutureCondition-class.R
 \name{FutureCondition}
 \alias{FutureCondition}
-\alias{getOutput}
 \alias{FutureMessage}
 \alias{FutureWarning}
 \alias{FutureError}
 \title{A condition (message, warning, or error) that occurred while resolving a future}
 \usage{
-FutureCondition(message, call = NULL, future = NULL, output = NULL)
+FutureCondition(message, call = NULL, future = NULL)
 
-FutureMessage(message, call = NULL, future = NULL, output = NULL)
+FutureMessage(message, call = NULL, future = NULL)
 
-FutureWarning(message, call = NULL, future = NULL, output = NULL)
+FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL, output = NULL)
 }
@@ -23,7 +22,7 @@ FutureError(message, call = NULL, future = NULL, output = NULL)
 
 \item{future}{The \link{Future} involved.}
 
-\item{output}{Output captured when condition occurred.}
+\item{output}{(Don't use!) only for backward compatibility}
 }
 \value{
 An object of class FutureCondition which inherits from class

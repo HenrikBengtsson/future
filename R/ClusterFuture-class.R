@@ -287,7 +287,7 @@ value.ClusterFuture <- function(future, ...) {
       if (!is.null(msg)) {
         on_failure <- getOption("future.cluster.invalidConnection", "error")
         if (on_failure == "error") {
-          stop(FutureError(msg, future = future))
+          stop(FutureEvaluationError(msg, future = future))
         }
         warning(msg)
         return(sprintf("EXCEPTIONAL ERROR: %s", msg))
