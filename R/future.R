@@ -20,7 +20,7 @@
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
-#' @param globals A logical, a character vector,
+#' @param globals (optional) A logical, a character vector,
 #' or a named list for controlling how globals are handled.
 #' For details, see below section.
 #'

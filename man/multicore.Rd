@@ -24,7 +24,7 @@ lazily or eagerly (default).}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{A logical, a character vector,
+\item{globals}{(optional) A logical, a character vector,
 or a named list for controlling how globals are handled.
 For details, see below section.}
 

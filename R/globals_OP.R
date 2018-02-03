@@ -1,13 +1,18 @@
 #' Specify globals and packages for a future assignment
 #'
-#' @usage fassignment \%globals\% globals
+#' @usage
+#' fassignment \%globals\% globals
+#' fassignment \%packages\% globals
 #'
-#' @usage fassignment \%packages\% globals
+#' @inheritParams future
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
-#' @inheritParams multiprocess
+#' 
+#' @param packages (optional) a character vector specifying packages
+#' to be attached in the R environment evaluating the future.
 #'
+#' @aliases %packages%
 #' @export
 `%globals%` <- function(fassignment, globals) {
   fassignment <- substitute(fassignment)
@@ -20,7 +25,6 @@
 
   eval(fassignment, envir = envir)
 }
-
 
 #' @export
 `%packages%` <- function(fassignment, packages) {
