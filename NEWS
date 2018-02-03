@@ -24,7 +24,10 @@ NEW FEATURES:
    future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
-   
+
+ o Added condition class FutureCondition, which message-class FutureMessage
+   (new), warning-class FutureWarning (new), and error-class FutureError (old)
+   all inherits from.
 
 PERFORMANCE:
 

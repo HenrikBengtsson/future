@@ -1,22 +1,27 @@
-#' An error occurred while trying to evaluate a future
+#' A condition (message, warning, or error) related to a future
 #'
-#' @param message The error message.
-#' @param call The call stack that led up to the error.
+#' @param message A message.
+#' @param call The call stack that led up to the condition.
 #' @param future The \link{Future} involved.
-#' @param output Output captured when error occurred.
+#' @param output Output captured when condition occurred.
 #'
-#' @return An \link[base:conditions]{error} object of class FutureError.
+#' @return An object of class FutureCondition which inherits from class
+#' \link[base:conditions]{condition} and FutureMessage, FutureWarning,
+#' and FutureError all inherits from FutureCondition.
+#' Moreover, a FutureError inherits from \link[base:conditions]{error},
+#' a FutureWarning from \link[base:conditions]{warning}, and
+#' a FutureMessage from \link[base:conditions]{warning}.
 #'
 #' @aliases getOutput
 #' @export
 #' @keywords internal
-FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
+FutureCondition <- function(message, call = NULL, future = NULL, output = NULL) {
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   if (inherits(message, "Future")) {
     future <- message
     value <- future$value
-    stopifnot(inherits(value, "condition"), inherits(value, "error"))
+    stopifnot(inherits(value, "condition"))
     cond <- value
     message <- conditionMessage(cond)
   } else if (inherits(message, "condition")) {
@@ -24,21 +29,15 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
     message <- conditionMessage(cond)
   }
 
-  ## Create a basic error object
-  cond <- simpleError(message, call = call)
-
-  ## Record Future object and optional output messages
-  attr(cond, "future") <- future
-  attr(cond, "output") <- output
-  
-  class(cond) <- unique(c("FutureError", class(cond)))
-  
-  cond
+  ## Create a condition object
+  structure(list(message = as.character(message), call = call), 
+            class = c("FutureCondition", "condition"),
+            future = future, output = output)
 }
 
 
 #' @export
-print.FutureError <- function(x, ...) {
+print.FutureCondition <- function(x, ...) {
   NextMethod("print")
 
   future <- attr(x, "future")
@@ -76,7 +75,7 @@ print.FutureError <- function(x, ...) {
 
 
 #' @export
-getOutput.FutureError <- function(x, collapse = NULL, head = NULL, tail = NULL, ...) {
+getOutput.FutureCondition <- function(x, collapse = NULL, head = NULL, tail = NULL, ...) {
   output <- attr(x, "output")
 
   ## Return "as is"?
@@ -103,3 +102,32 @@ getOutput.FutureError <- function(x, collapse = NULL, head = NULL, tail = NULL, 
 
 #' @export
 getOutput <- function(...) UseMethod("getOutput")
+
+#' @rdname FutureCondition
+#' @export
+FutureMessage <- function(message, call = NULL, future = NULL, output = NULL) {
+  cond <- FutureCondition(message = message, call = call,
+                          future = future, output = output)
+  class(cond) <- c("FutureMessage", "message", class(cond))
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+FutureWarning <- function(message, call = NULL, future = NULL, output = NULL) {
+  cond <- FutureCondition(message = message, call = call,
+                          future = future, output = output)
+  class(cond) <- c("FutureWarning", "warning", class(cond))
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
+  cond <- FutureCondition(message = message, call = call,
+                          future = future, output = output)
+  ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
+  class(cond) <- c("FutureError", "simpleError", "error", class(cond))
+  cond
+}
+
