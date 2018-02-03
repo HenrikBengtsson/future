@@ -1,8 +1,11 @@
-#' A condition (message, warning, or error) related to a future
+#' A condition (message, warning, or error) that occurred while resolving a future
 #'
 #' @param message A message.
+#' 
 #' @param call The call stack that led up to the condition.
+#' 
 #' @param future The \link{Future} involved.
+#' 
 #' @param output Output captured when condition occurred.
 #'
 #' @return An object of class FutureCondition which inherits from class
@@ -103,6 +106,7 @@ getOutput.FutureCondition <- function(x, collapse = NULL, head = NULL, tail = NU
 #' @export
 getOutput <- function(...) UseMethod("getOutput")
 
+
 #' @rdname FutureCondition
 #' @export
 FutureMessage <- function(message, call = NULL, future = NULL, output = NULL) {
@@ -130,4 +134,3 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
   class(cond) <- c("FutureError", "simpleError", "error", class(cond))
   cond
 }
-
