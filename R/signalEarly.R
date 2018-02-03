@@ -33,9 +33,9 @@ signalEarly <- function(future, collect = TRUE, ...) {
   if (inherits(value, "error")) {
     stop(FutureEvaluationError(future))
   } else if (inherits(value, "warning")) {
-    warning(FutureEvaluationWarning(value))
+    warning(FutureEvaluationWarning(future))
   } else if (inherits(value, "message")) {
-    message(FutureEvaluationMessage(value))
+    message(FutureEvaluationMessage(future))
     message("\n") ## TODO: Remove this? /HB 2018-02-03
   } else {
     signalCondition(value)
