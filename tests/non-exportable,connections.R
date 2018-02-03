@@ -21,9 +21,9 @@ message("- Run-time error")
 ## Assert we can detect the reference
 res <- tryCatch({
   f <- future(cat("world\n", file = con))
-}, warning = identity)
+}, FutureWarning = identity)
 print(res)
-stopifnot(inherits(res, "warning"),
+stopifnot(inherits(res, "FutureWarning"),
           grepl("non-exportable reference", conditionMessage(res)))
 
 f <- future(cat("world\n", file = con))
