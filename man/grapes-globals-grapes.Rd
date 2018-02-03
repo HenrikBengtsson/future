@@ -6,7 +6,7 @@
 \title{Specify globals and packages for a future assignment}
 \usage{
 fassignment \%globals\% globals
-fassignment \%packages\% globals
+fassignment \%packages\% packages
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
