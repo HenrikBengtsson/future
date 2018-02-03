@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2018-01-27]
+Version: 1.6.2-9000 [2018-02-03]
 
 NEW FEATURES:
 
@@ -19,6 +19,12 @@ NEW FEATURES:
  o Now plan() makes sure that nbrOfWorkers() will work for the new strategy.
    This will help catch mistakes such as plan(cluster, workers = cl) where
    'cl' is a basic R list rather than a 'cluster' list early on.
+
+ o Added %packages% to explicitly control packages to be attached when a
+   future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
+   Note, this is only needed in cases where the automatic identification of
+   global and package dependencies is not sufficient.
+   
 
 PERFORMANCE:
 

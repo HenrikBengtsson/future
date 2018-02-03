@@ -2,7 +2,7 @@
 % Please edit documentation in R/globals_OP.R
 \name{\%globals\%}
 \alias{\%globals\%}
-\title{Specify globals for a future assignment}
+\title{Specify globals and packages for a future assignment}
 \usage{
 fassignment \%globals\% globals
 }
@@ -16,5 +16,5 @@ For details, see section 'Globals used by future expressions'
 in the help for \code{\link{future}()}.}
 }
 \description{
-Specify globals for a future assignment
+Specify globals and packages for a future assignment
 }

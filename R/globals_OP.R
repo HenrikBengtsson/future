@@ -1,6 +1,8 @@
-#' Specify globals for a future assignment
+#' Specify globals and packages for a future assignment
 #'
 #' @usage fassignment \%globals\% globals
+#'
+#' @usage fassignment \%packages\% globals
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
@@ -14,6 +16,20 @@
   ## Temporarily set 'globals' argument
   args <- getOption("future.disposable", list())
   args["globals"] <- list(globals)
+  options(future.disposable = args)
+
+  eval(fassignment, envir = envir)
+}
+
+
+#' @export
+`%packages%` <- function(fassignment, packages) {
+  fassignment <- substitute(fassignment)
+  envir <- parent.frame(1)
+
+  ## Temporarily set 'packages' argument
+  args <- getOption("future.disposable", list())
+  args["packages"] <- list(packages)
   options(future.disposable = args)
 
   eval(fassignment, envir = envir)

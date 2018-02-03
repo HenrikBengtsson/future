@@ -37,7 +37,7 @@ v0 <- local({
 })
 
 
-message("*** Globals - automatic ...")
+message("*** Globals & packages - automatic ...")
 
 for (strategy in supportedStrategies()) {
   message(sprintf("- Strategy: %s ...", strategy))
@@ -236,10 +236,53 @@ for (strategy in supportedStrategies()) {
   y <- tryCatch(sub(x, 2:3), error = identity)
   str(y)
   stopifnot((strategy %in% c("multisession") && inherits(y, "FutureError")) || identical(y, y_truth))
+
+
+  message("- Packages - manual ...")
+
+  ## Make sure 'iris', and thereby the 'datasets' package,
+  ## is not picked up as a global
+  unloadNamespace("datasets")
+  stopifnot(!"dataset" %in% loadedNamespaces(), !exists("iris", mode = "list"))
+  
+  ns %<-% {
+    unloadNamespace("datasets")
+    loadedNamespaces()
+  }
+  print(ns)
+  stopifnot(!"dataset" %in% ns)
+
+  res <- tryCatch({
+    f <- future({ iris })
+    v <- value(f)
+    print(head(v))
+  }, error = identity)
+  stopifnot(inherits(res, "error"))
+
+  f <- future({ iris }, packages = "datasets")
+  v <- value(f)
+  print(head(v))
+  
+  ns %<-% {
+    unloadNamespace("datasets")
+    loadedNamespaces()
+  }
+  print(ns)
+  stopifnot(!"dataset" %in% ns)
+
+  res <- tryCatch({
+    df %<-% { iris }
+    print(head(df))
+  }, error = identity)
+  stopifnot(inherits(res, "error"))
+
+  df %<-% { iris } %packages% "datasets"
+  print(head(df))
   
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }
 
 message("*** Globals - manually ... DONE")
+
 
 source("incl/end.R")
