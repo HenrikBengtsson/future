@@ -34,7 +34,7 @@ An object of class FutureEvaluationCondition which inherits from class
 and FutureEvaluationError all inherits from FutureEvaluationCondition.
 Moreover, a FutureEvaluationError inherits from \link[base:conditions]{error},
 a FutureEvaluationWarning from \link[base:conditions]{warning}, and
-a FutureEvaluationMessage from \link[base:conditions]{warning}.
+a FutureEvaluationMessage from \link[base:conditions]{message}.
 }
 \description{
 A condition (message, warning, or error) that occurred while evaluation a future

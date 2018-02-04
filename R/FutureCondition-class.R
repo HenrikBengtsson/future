@@ -1,5 +1,11 @@
-#' A condition (message, warning, or error) that occurred while resolving a future
+#' A condition (message, warning, or error) that occurred while orchestrating a future
 #'
+#' While \emph{orchestrating} (creating, launching, querying, collection)
+#' futures, unexpected run-time errors (and other types of conditions) may
+#' occur.  Such conditions are coerced to a corresponding FutureConditions
+#' class to help distinguish them from conditions that occur due to the
+#' \emph{evaluation} of the future.
+#' 
 #' @param message A message.
 #' 
 #' @param call The call stack that led up to the condition.
@@ -11,7 +17,7 @@
 #' and FutureError all inherits from FutureCondition.
 #' Moreover, a FutureError inherits from \link[base:conditions]{error},
 #' a FutureWarning from \link[base:conditions]{warning}, and
-#' a FutureMessage from \link[base:conditions]{warning}.
+#' a FutureMessage from \link[base:conditions]{message}.
 #'
 #' @export
 #' @keywords internal

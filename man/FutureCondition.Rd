@@ -5,7 +5,7 @@
 \alias{FutureMessage}
 \alias{FutureWarning}
 \alias{FutureError}
-\title{A condition (message, warning, or error) that occurred while resolving a future}
+\title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
 FutureCondition(message, call = NULL, future = NULL)
 
@@ -30,9 +30,13 @@ An object of class FutureCondition which inherits from class
 and FutureError all inherits from FutureCondition.
 Moreover, a FutureError inherits from \link[base:conditions]{error},
 a FutureWarning from \link[base:conditions]{warning}, and
-a FutureMessage from \link[base:conditions]{warning}.
+a FutureMessage from \link[base:conditions]{message}.
 }
 \description{
-A condition (message, warning, or error) that occurred while resolving a future
+While \emph{orchestrating} (creating, launching, querying, collection)
+futures, unexpected run-time errors (and other types of conditions) may
+occur.  Such conditions are coerced to a corresponding FutureConditions
+class to help distinguish them from conditions that occur due to the
+\emph{evaluation} of the future.
 }
 \keyword{internal}
