@@ -25,9 +25,12 @@ NEW FEATURES:
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
 
- o Added condition class FutureCondition, which message-class FutureMessage
-   (new), warning-class FutureWarning (new), and error-class FutureError (old)
-   all inherits from.
+ o Added condition classes FutureCondition, FutureMessage, FutureWarning, and
+   FutureError representing conditions that occur while a future is setup,
+   launched, queried, or retrieved.  They do *not* represent conditions that
+   occur while evaluating the future expression.  For those conditions, new
+   classes FutureEvaluationCondition, FutureEvaulationMessage,
+   FutureEvaluationWarning, and FutureEvaluationError exists.
 
 PERFORMANCE:
 
@@ -80,7 +83,13 @@ DEPRECATED AND DEFUNCT:
 
  o Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
 
- 
+ o In previous version of the future package the FutureError class was used
+   to represent both orchestration errors (now FutureError) and evaluation
+   errors (now FutureEvaluationError).  Any usage of class FutureError for
+   the latter type of errors is deprecated and should be updated to
+   FutureEvaluationError.
+
+
 Version: 1.6.2 [2017-10-16]
 
 NEW FEATURES:
