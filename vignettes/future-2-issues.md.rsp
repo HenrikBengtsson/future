@@ -137,14 +137,16 @@ which will result in a warning in the above example:
 ```r
 > f <- future({ cat("world!", file = con); flush(con) })
 Warning in FALSE :
-  Detected a non-exportable reference ('externalptr') in one of the globals ('con' of class 'file') used in the future expression
+  Detected a non-exportable reference ('externalptr') in one of the globals
+('con' of class 'file') used in the future expression
 ```
 To be more conservative, we can also tell it to produce an error:
 ```r
 > options(future.globals.onReference = "error")
 > f <- future({ cat("world!", file = con); flush(con) })
 Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals ('con' of class 'file') used in the future expression
+  Detected a non-exportable reference ('externalptr') in one of the globals
+('con' of class 'file') used in the future expression
 ```
 
 Another example is XML objects of the xml2 package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
@@ -162,9 +164,45 @@ The future framework can help detect this _before_ sending off the future to the
 > options(future.globals.onReference = "error")
 > f <- future(xml_children(xml))
 Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals ('xml' of class 'xml_document') used in the future expression
+  Detected a non-exportable reference ('externalptr') in one of the globals
+('xml' of class 'xml_document') used in the future expression
 ```
 
+A third example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
+```r
+Rcpp::sourceCpp(code = "
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+int my_length(NumericVector x) {
+    return x.size();
+}
+")
+```
+so that:
+```
+> x <- 1:10
+> my_length(x)
+[1] 10
+```
+However, since this function uses an external pointer internally, we cannot pass it to another R process:
+```r
+> library("future")
+> plan(multisession)
+> n %<-% my_length(x)
+> n
+Error: NULL value passed as symbol address
+```
+We can detect / protect against this using:
+```r
+> options(future.globals.onReference = "error")
+> n %<-% my_length(x)
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr' of class 'NativeSymbol')
+in one of the globals ('my_length' of class 'function') used in the future
+expression
+```
 
 (*) The exception _may_ be if you use forked R processes, e.g. `plan(multicore)`.
 
