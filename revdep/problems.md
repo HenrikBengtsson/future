@@ -164,52 +164,6 @@ Version: 2.1.0
         doc   2.3Mb
     ```
 
-# civis
-
-Version: 1.2.0
-
-## In both
-
-*   checking whether package ‘civis’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/netapp/home/hb/repositories/future/revdep/checks/civis/new/civis.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘civis’ ...
-** package ‘civis’ successfully unpacked and MD5 sums checked
-Generating API
-The environment variable CIVIS_API_KEY is not set, using cached API specification.
-Writing API to R/generated_client.R
-Error in check_dep_version(pkg, version, compare) : 
-  Dependency package roxygen2 not available.
-Calls: fetch_and_generate_client ... <Anonymous> -> check_suggested -> check_dep_version
-Execution halted
-ERROR: configuration failed for package ‘civis’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/civis/new/civis.Rcheck/civis’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘civis’ ...
-** package ‘civis’ successfully unpacked and MD5 sums checked
-Generating API
-The environment variable CIVIS_API_KEY is not set, using cached API specification.
-Writing API to R/generated_client.R
-Error in check_dep_version(pkg, version, compare) : 
-  Dependency package roxygen2 not available.
-Calls: fetch_and_generate_client ... <Anonymous> -> check_suggested -> check_dep_version
-Execution halted
-ERROR: configuration failed for package ‘civis’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/civis/old/civis.Rcheck/civis’
-
-```
 # doFuture
 
 Version: 0.6.0
@@ -253,40 +207,12 @@ Version: 1.1.0
 
 ## In both
 
-*   checking whether package ‘fiery’ can be installed ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Installation failed.
-    See ‘/netapp/home/hb/repositories/future/revdep/checks/fiery/new/fiery.Rcheck/00install.out’ for details.
+    Namespace in Imports field not imported from: ‘desc’
+      All declared Imports should be used.
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘fiery’ ...
-** package ‘fiery’ successfully unpacked and MD5 sums checked
-** R
-** preparing package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘xml2’
-ERROR: lazy loading failed for package ‘fiery’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/fiery/new/fiery.Rcheck/fiery’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘fiery’ ...
-** package ‘fiery’ successfully unpacked and MD5 sums checked
-** R
-** preparing package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘xml2’
-ERROR: lazy loading failed for package ‘fiery’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/fiery/old/fiery.Rcheck/fiery’
-
-```
 # future.BatchJobs
 
 Version: 0.15.0
@@ -389,42 +315,11 @@ Version: 0.0.2
 
 Version: 1.0.0
 
-## In both
+## Newly broken
 
-*   checking whether package ‘methyvim’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/netapp/home/hb/repositories/future/revdep/checks/methyvim/new/methyvim.Rcheck/00install.out’ for details.
-    ```
+*   R CMD check timed out
+    
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘methyvim’ ...
-** R
-** inst
-** preparing package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘openssl’
-ERROR: lazy loading failed for package ‘methyvim’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/methyvim/new/methyvim.Rcheck/methyvim’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘methyvim’ ...
-** R
-** inst
-** preparing package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘openssl’
-ERROR: lazy loading failed for package ‘methyvim’
-* removing ‘/netapp/home/hb/repositories/future/revdep/checks/methyvim/old/methyvim.Rcheck/methyvim’
-
-```
 # multiApply
 
 Version: 0.0.1
