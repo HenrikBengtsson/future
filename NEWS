@@ -1,7 +1,11 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2018-02-03]
+Version: 1.6.2-9000 [2018-02-05]
+
+SIGNIFICANT CHANGES:
+
+ o future_lapply() has moved to the future.apply package available on CRAN.
 
 NEW FEATURES:
 
@@ -31,13 +35,6 @@ NEW FEATURES:
    occur while evaluating the future expression.  For those conditions, new
    classes FutureEvaluationCondition, FutureEvaulationMessage,
    FutureEvaluationWarning, and FutureEvaluationError exists.
-
-PERFORMANCE:
-
- o future_lapply(x, ...) is now much faster and more memory efficient for large
-   'x' vectors because it uses an internal recursive divide'n'conquer fold()
-   function that is more efficient (memory and speed) version of
-   base::Reduce(f, x), especially when length(x) is large.
 
 DOCUMENTATION:
 
