@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.6.2-9000 [2018-02-05]
+Version: 1.6.2-9000 [2018-02-08]
 
 SIGNIFICANT CHANGES:
 
@@ -55,6 +55,11 @@ BETA FEATURES:
    may be produced only when the future expression is evaluated.
 
 BUG FIXES:
+
+ o The total size of global variables was overestimated, and dramatically so
+   if defined in the global environment and there were are large objects there
+   too.  This would sometimes result in a false error saying that the total
+   size is larger than the allowed limit.
 
  o An assignment such as 'x <- x + 1' where the left-hand side (LHS) 'x' is a
    global failed to identify 'x' as a global because the right-hand side (RHS)

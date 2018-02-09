@@ -415,14 +415,15 @@ myInternalIP <- local({
 
 ## A *rough* estimate of size of an object + its environment.
 #' @importFrom utils object.size
-objectSize <- function(x, depth = 3L) {
+objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.objectSize.enclosure", FALSE)) {
   # Nothing to do?
   if (isNamespace(x)) return(0)
   if (depth <= 0) return(0)
   
   if (!is.list(x) && !is.environment(x)) {
     size <- unclass(object.size(x))
-    x <- environment(x)
+    ## Issue #176 is because of this
+    if (enclosure) x <- environment(x)
   } else {
     size <- 0
   }
