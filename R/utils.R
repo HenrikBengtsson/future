@@ -680,6 +680,39 @@ nullcon <- local({
 })
 
 
+reference_filters <- local({
+  filters <- default <- list(
+    ignore_envirs = function(ref, typeof, class, ...) {
+      typeof != "environment"
+    }
+  )
+
+  function(action = "drop_function", ...) {
+    if (action == "drop_function") {
+      function(ref) {
+        typeof <- typeof(ref)
+        class <- class(ref)
+        for (kk in seq_along(filters)) {
+          filter <- filters[[kk]]
+          if (filter(ref, typeof = typeof, class = class)) next
+          return(TRUE) ## drop reference
+        }
+        FALSE  ## don't drop reference
+      }
+    } else if (action == "set") {
+      filters <- list(...)
+    } else if (action == "reset") {
+      filters <<- default
+    } else if (action == "append") {
+      filters <<- c(filters, list(...))
+    } else if (action == "prepend") {
+      filters <<- c(list(...), filters)
+    } else if (action == "get") {
+      filters
+    }
+  }
+})
+
 #' Get first or all references of an \R object
 #'
 #' @param x The \R object to be checked.
@@ -693,17 +726,20 @@ find_references <- function(x, first_only = FALSE) {
   con <- nullcon()
   on.exit(close(con))
 
+  ## Get function that drops references
+  drop_reference <- reference_filters()
+  
   refs <- list()
-
+    
   refhook <- if (first_only) {
     function(ref) {
-      if (typeof(ref) == "environment") return(NULL)
+      if (drop_reference(ref)) return(NULL)
       refs <<- c(refs, list(ref))
       stop(structure(list(message = ""), class = c("refhook", "condition")))
     }
   } else {
     function(ref) {
-      if (typeof(ref) == "environment") return(NULL)
+      if (drop_reference(ref)) return(NULL)
       refs <<- c(refs, list(ref))
       NULL
     }
