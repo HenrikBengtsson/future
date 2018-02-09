@@ -19,15 +19,8 @@
 UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (lazy) {
-    ## Evaluate in a local environment?
-    if (local) {
-      envir <- new.env(parent = envir)
-    } else {
-      if (!is.logical(globals) || globals) {
-        stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
-      }
-    }
+  if (lazy && !local && (!is.logical(globals) || globals)) {
+    stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
   }
 
   ## Global objects?
@@ -63,14 +56,15 @@ run.UniprocessFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
-  ## Assign globals to "target" environment?
+  ## Assign globals to separate "globals" enclosure environment?
   globals <- future$globals
-  if (future$local && length(globals) > 0) {
-    target <- new.env(parent = envir)
-    for (name in names(globals)) {
-      target[[name]] <- globals[[name]]
+  if (length(globals) > 0) {
+    if (future$local) {
+      envir <- new.env(parent = envir)
     }
-    envir <- target
+    for (name in names(globals)) {
+      envir[[name]] <- globals[[name]]
+    }
   }
 
   ## Run future
