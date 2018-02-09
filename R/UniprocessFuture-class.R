@@ -30,21 +30,9 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
     }
   }
 
-  ## Global objects
-  assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
+  ## Global objects?
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-
-  ## Assign globals to "target" environment?
-  if (length(gp$globals) > 0 && (lazy || assignToTarget)) {
-    target <- new.env(parent = envir)
-    target[["...future_has_globals"]] <- TRUE
-    globalsT <- gp$globals
-    for (name in names(globalsT)) {
-      target[[name]] <- globalsT[[name]]
-    }
-    globalsT <- NULL
-    envir <- target
-  }
+  globals <- gp$globals
 
   ## Record packages?
   if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
@@ -52,8 +40,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   }
   
   gp <- NULL
-
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = NULL, packages = packages, ...)
+ 
+  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
   structure(f, class = c("UniprocessFuture", class(f)))
 }
 
@@ -74,6 +62,16 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
+
+  ## Assign globals to "target" environment?
+  globals <- future$globals
+  if (future$local && length(globals) > 0) {
+    target <- new.env(parent = envir)
+    for (name in names(globals)) {
+      target[[name]] <- globals[[name]]
+    }
+    envir <- target
+  }
 
   ## Run future
   future$state <- 'running'
@@ -122,14 +120,6 @@ resolved.UniprocessFuture <- function(x, ...) {
     value(x, signal = FALSE)
   }
   NextMethod("resolved")
-}
-
-globals.UniprocessFuture <- function(future, ...) {
-  envir <- future$envir
-  globals <- names(envir)
-  if (!"...future_has_globals" %in% globals) return(NULL)
-  globals <- setdiff(globals, "...future_has_globals")
-  mget(globals, envir = envir, inherits = FALSE)
 }
 
 
