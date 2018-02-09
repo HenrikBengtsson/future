@@ -389,14 +389,31 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   ## 4. Resolving futures
   if (debug) mdebug("Resolving %d futures (chunks) ...", nchunks)
   values <- values(fs)
-  if (debug) mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
   
   ## Not needed anymore
   rm(list = "fs")
   
+  if (debug) {
+    mdebug(" - Number of value chunks collected: %d", length(values))
+    mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
+  }
+
+  ## Sanity check
+  stopifnot(length(values) == nchunks)
+  
   if (debug) mdebug("Reducing values from %d chunks ...", nchunks)
   values <- fold(values, c)
+
+  if (debug) {
+    mdebug(" - Number of values collected after folding: %d", length(values))
+    mdebug(" - Number of values expected: %d", length(x))
+  }
+  
+  ## Sanity check (this may happen if the future backend is broken)
+  stopifnot(length(values) == length(x))
+  
   names(values) <- names(x)
+  
   if (debug) mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
   if (debug) mdebug("future_lapply() ... DONE")
