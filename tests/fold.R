@@ -66,8 +66,8 @@ tables <- lapply(sizes, make_table)
 key_merge <- function(x, y) merge(x, y, by = "key", all = FALSE)
 
 suppressWarnings(
-folded <- fold(tables, key_merge, left = TRUE, unname = FALSE
-    , threshold = 6L)
+folded <- fold(tables, key_merge, left = TRUE, unname = FALSE,
+               threshold = 6L)
 )
 
 suppressWarnings(
