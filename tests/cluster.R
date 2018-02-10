@@ -262,6 +262,9 @@ for (type in types) {
   cl <- parallel::makeCluster(1L, type = type)
   print(cl)
 
+
+  ## Crashing FORK:ed processes seems to harsh on R (< 3.2.0)
+  if (type != "FORK" || getRversion() >= "3.2.0") {
   message("*** cluster() - crashed worker ...")
   
   plan(cluster, workers = cl)
@@ -290,6 +293,7 @@ for (type in types) {
   stopifnot(x == 42L)
   
   message("*** cluster() - crashed worker ... DONE")
+  } ## if (type != "FORK" || getRversion() >= "3.2.0")
 
   ## Sanity checks
   pid2 <- Sys.getpid()

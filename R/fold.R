@@ -69,3 +69,9 @@ fold <- function(x, f, left = TRUE, unname = TRUE, threshold = 1000L) {
 
   y
 }
+
+
+## base::forceAndCall() was introduced in R 3.2.0
+if (!exists("forceAndCall", mode = "function")) {
+  forceAndCall <- function(n, FUN, ...) FUN(...)
+}
