@@ -35,7 +35,7 @@ The package has been verified using `R CMD check --as-cran` on:
   - R version 3.4.3 (2017-11-30)
 
 * Platform i686-pc-linux-gnu (32-bit):
-#  - R version 3.4.3 (2017-11-30)  ## restart machine
+  - R version 3.4.3 (2017-11-30)
 
 * Platform i386-w64-mingw32 (32-bit) [Appveyor CI]:
   - R Under development (unstable) (2018-02-08 r74238)
