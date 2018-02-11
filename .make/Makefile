@@ -277,6 +277,12 @@ covr:
 	$(R_SCRIPT) -e "c <- covr::package_coverage(quiet = FALSE); saveRDS(c, '.covr.rds'); print(c); covr::report(c)"
 
 
+revdep:
+	$(R_SCRIPT) revdep/run.R
+
+revdep_reset:
+	$(R_SCRIPT) -e "revdepcheck::revdep_reset()"
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Install and build binaries

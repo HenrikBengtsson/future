@@ -1,6 +1,6 @@
 #' Plan how to resolve a future
 #'
-#' This function allows you to plan the future, more specifically,
+#' This function allows \emph{the user} to plan the future, more specifically,
 #' it specifies how \code{\link{future}()}:s are resolved,
 #' e.g. sequentially or in parallel.
 #'
@@ -68,11 +68,29 @@
 #' }
 #'
 #' Other package may provide additional evaluation strategies.
-#' Notably, the \pkg{future.BatchJobs} package implements a
+#' Notably, the \pkg{future.batchtools} package implements a
 #' type of futures that will be resolved via job schedulers
 #' that are typically available on high-performance compute
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
+#'
+#' @section For package developers:
+#' Please refrain from modifying the future strategy inside your packages /
+#' functions, i.e. do not call \code{plan()} in your code.  Instead, leave
+#' the control on what backend to use to the end user.  This idea is part of
+#' the core philosophy of the future framework - as a developer you can never
+#' know what future backends the user have access to.  Moreover, by not making
+#' any assumptions about what backends are available, your code will also work
+#' automatically will any new backends developed after you wrote your code.
+#'
+#' If you think it is necessary to modify the future strategy within a
+#' function, then make sure to undo the changes when exiting the function.
+#' This can be done using:
+#' \preformatted{
+#'   oplan <- plan()
+#'   on.exit(plan(oplan), add = TRUE)
+#'   [...]
+#' }
 #'
 #' @export
 plan <- local({
@@ -162,16 +180,6 @@ plan <- local({
     if (is.list(strategy)) {
       stopifnot(is.list(strategy), length(strategy) >= 1L)
 
-      ## Check for usage of defunct eager() and lazy()
-      for (ii in seq_along(strategy)) {
-        stopifnot(is.function(strategy[[ii]]))
-        if (inherits(strategy[[ii]], "lazy")) {
-          .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-        } else if (inherits(strategy[[ii]], "lazy")) {
-          .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identically.")
-        }
-      }
-
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
       ## Stop any (implicitly started) clusters?
@@ -257,18 +265,6 @@ plan <- local({
       }
     }
 
-    using_lazy <- lapply(newStack, FUN = inherits, "lazy")
-    using_lazy <- any(unlist(using_lazy, use.names = FALSE))
-    if (using_lazy) {
-      .Defunct(msg = "Future strategy 'lazy' is defunct. Lazy evaluation can no longer be set via plan(). Instead, use f <- future(..., lazy = TRUE) or v %<-% { ... } %lazy% TRUE.")
-    }
-
-    using_eager <- lapply(newStack, FUN = inherits, "eager")
-    using_eager <- any(unlist(using_eager, use.names = FALSE))
-    if (using_eager) {
-      .Defunct(msg = "Future strategy 'eager' is defunct. Please use 'sequential' instead, which works identical.")
-    }
-
     ## Set new strategy for futures
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
@@ -279,6 +275,13 @@ plan <- local({
 
     ## Initiate future workers?
     if (.init) plan_init()
+
+    ## Sanity checks
+    n <- nbrOfWorkers()
+    if (getOption("future.debug", FALSE)) {
+      mdebug(sprintf("plan(): nbrOfWorkers() = %g", n))
+    }
+    stopifnot(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
 
     invisible(oldStack[[1L]])
   } # function()

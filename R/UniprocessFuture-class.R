@@ -19,32 +19,13 @@
 UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (lazy) {
-    ## Evaluate in a local environment?
-    if (local) {
-      envir <- new.env(parent = envir)
-    } else {
-      if (!is.logical(globals) || globals) {
-        stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
-      }
-    }
+  if (lazy && !local && (!is.logical(globals) || globals)) {
+    stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
   }
 
-  ## Global objects
-  assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
+  ## Global objects?
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-
-  ## Assign globals to "target" environment?
-  if (length(gp$globals) > 0 && (lazy || assignToTarget)) {
-    target <- new.env(parent = envir)
-    target[["...future_has_globals"]] <- TRUE
-    globalsT <- gp$globals
-    for (name in names(globalsT)) {
-      target[[name]] <- globalsT[[name]]
-    }
-    globalsT <- NULL
-    envir <- target
-  }
+  globals <- gp$globals
 
   ## Record packages?
   if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
@@ -52,8 +33,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   }
   
   gp <- NULL
-
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = NULL, packages = packages, ...)
+ 
+  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
   structure(f, class = c("UniprocessFuture", class(f)))
 }
 
@@ -74,6 +55,17 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
+
+  ## Assign globals to separate "globals" enclosure environment?
+  globals <- future$globals
+  if (length(globals) > 0) {
+    if (future$local) {
+      envir <- new.env(parent = envir)
+    }
+    for (name in names(globals)) {
+      envir[[name]] <- globals[[name]]
+    }
+  }
 
   ## Run future
   future$state <- 'running'
@@ -122,14 +114,6 @@ resolved.UniprocessFuture <- function(x, ...) {
     value(x, signal = FALSE)
   }
   NextMethod("resolved")
-}
-
-globals.UniprocessFuture <- function(future, ...) {
-  envir <- future$envir
-  globals <- names(envir)
-  if (!"...future_has_globals" %in% globals) return(NULL)
-  globals <- setdiff(globals, "...future_has_globals")
-  mget(globals, envir = envir, inherits = FALSE)
 }
 
 

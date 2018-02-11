@@ -153,6 +153,31 @@ for (cores in 1:availCores) {
       
       message(sprintf("Method for identifying globals: '%s' ... DONE", method))
     }
+
+    ## BUG FIX: In globals (<= 0.10.3) a global 'x' in LHS of an assignment
+    ## would be missed.
+    options(future.globals.method = "ordered")
+
+    ## A local
+    x <- 1
+    f <- future({ x <- 0; x <- x + 1; x })
+    v <- value(f)
+    message(sprintf("value(f) = %s", sQuote(v)))
+    stopifnot(v == 1)
+    
+    ## A global
+    x <- 1
+    f <- future({ x <- x + 1; x })
+    v <- value(f)
+    message(sprintf("value(f) = %s", sQuote(v)))
+    stopifnot(v == 2)
+
+    ## A global
+    x <- function() TRUE
+    f <- future({ x <- x(); x })
+    v <- value(f)
+    message(sprintf("value(f) = %s", sQuote(v)))
+    stopifnot(v == TRUE)
   } ## for (strategy ...)
 
   message(sprintf("Testing with %d cores ... DONE", cores))

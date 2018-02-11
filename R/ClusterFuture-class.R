@@ -46,15 +46,12 @@
 #' @name ClusterFuture-class
 #' @keywords internal
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
-  if ("cluster" %in% names(list(...))) {
-    .Defunct(msg = "Argument 'cluster' has been renamed to 'workers'. Please update your script/code that uses the future package.")
-  }
-
   if (substitute) expr <- substitute(expr)
 
+  if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
-    defaultCluster <- importParallel("defaultCluster")
-    workers <- defaultCluster()
+    getDefaultCluster <- importParallel("getDefaultCluster")
+    workers <- getDefaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous)
   } else {
@@ -234,8 +231,9 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   con <- node$con
   if (!is.null(con)) {
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
-    ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05).
-    if (.Platform$OS.type != "windows" && getRversion() < "3.5.0") {
+    ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
+    ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)
+    if (.Platform$OS.type != "windows" && getRversion() < "3.4.3") {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
@@ -289,7 +287,7 @@ value.ClusterFuture <- function(future, ...) {
       if (!is.null(msg)) {
         on_failure <- getOption("future.cluster.invalidConnection", "error")
         if (on_failure == "error") {
-          stop(FutureError(msg, future = future))
+          stop(FutureEvaluationError(msg, future = future))
         }
         warning(msg)
         return(sprintf("EXCEPTIONAL ERROR: %s", msg))

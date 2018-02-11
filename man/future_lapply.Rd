@@ -40,7 +40,12 @@ If \code{Inf} or \code{FALSE}, then one future per element of
 A list with same length and names as \code{x}.
 }
 \description{
-Apply a Function over a List or Vector via Futures
+\emph{DEPRECATION NOTICE: The \code{future_lapply()} function has moved to
+the new
+\href{https://cran.r-project.org/package=future.apply}{\strong{future.apply}}
+package.  The implementation here in (the \pkg{future} package) will soon be
+deprecated, then be made defunct, and eventually be removed. Please update
+your code to make use of \code{future.apply::future_lapply()} instead.}
 }
 \section{Global variables}{
 
@@ -97,6 +102,12 @@ reproducible given the same initial seed.
 }
 
 \examples{
+## DEPRECATION NOTICES: The future_lapply() function has moved to the
+## future.apply package.  Going forward, please make sure to use that
+## one instead, by using:
+##
+##   library("future.apply")
+
 ## Regardless of the future plan, the number of workers,
 ## and where they are, the random numbers will be identical
 plan(sequential)

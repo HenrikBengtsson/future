@@ -2,19 +2,23 @@
 % Please edit documentation in R/globals_OP.R
 \name{\%globals\%}
 \alias{\%globals\%}
-\title{Specify globals for a future assignment}
+\alias{\%packages\%}
+\title{Specify globals and packages for a future assignment}
 \usage{
 fassignment \%globals\% globals
+fassignment \%packages\% packages
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
 
-\item{globals}{(optional) a logical, a character vector,
+\item{globals}{(optional) A logical, a character vector,
 or a named list for controlling how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+For details, see below section.}
+
+\item{packages}{(optional) a character vector specifying packages
+to be attached in the R environment evaluating the future.}
 }
 \description{
-Specify globals for a future assignment
+Specify globals and packages for a future assignment
 }

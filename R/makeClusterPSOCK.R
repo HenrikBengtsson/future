@@ -181,8 +181,12 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' on the \code{PATH}.  It is less common to find this command on Windows
 #' system, which are more likely to have the \command{PuTTY} software and
 #' its SSH client \command{plink} installed.
-#' If neither \command{ssh} nor \command{plink} is found, an informative error
-#' message is produced.
+#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
+#' client that is distributed with RStudio will be used as a fallback if
+#' neither of the above two commands are available on the \code{PATH}.
+#' Note that on Windows 10, there is a beta version of OpenSSH that can
+#' be enabled in the Windows Settings, cf. \url{https://www.thomasmaurer.ch/2017/11/install-ssh-on-windows-10-as-optional-feature/}.
+#' If no SSH-client is found, an informative error message is produced.
 #' It is also possible to specify the absolute path to the SSH client.  To do
 #' this for PuTTY, specify the absolute path in the first element and option
 #' \command{-ssh} in the second as in
@@ -211,15 +215,15 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' on some systems, e.g. compute clusters.
 #'
 #' @section Default value of argument \code{rscript}:
-#' If \code{homogenenous} is FALSE, the \code{rscript} defaults to
+#' If \code{homogeneous} is FALSE, the \code{rscript} defaults to
 #' \code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
 #' is available on the \code{PATH} of the worker.
-#' If \code{homogenenous} is TRUE, the \code{rscript} defaults to
+#' If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 #' \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
 #' that the worker and the caller share the same file system and R installation.
 #' 
 #' @section Default value of argument \code{homogeneous}:
-#' The default value of \code{homogenenous} is TRUE if and only if either
+#' The default value of \code{homogeneous} is TRUE if and only if either
 #' of the following is fullfilled:
 #' \itemize{
 #'  \item \code{worker} is \emph{localhost}
@@ -351,7 +355,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   ## Renice?
   if (!is.na(renice) && renice > 0L) {
-    cmd <- sprintf("nice +%d %s", renice, cmd)
+    cmd <- sprintf("nice --adjustment=%d %s", renice, cmd)
   }
 
   if (!localMachine) {
@@ -523,16 +527,36 @@ is_fqdn <- function(worker) {
 
 ## Locate an SSH client
 find_rshcmd <- function(must_work = TRUE) {
-  cmds <- list("ssh", c("plink", "-ssh"))
-  for (cmd in cmds) {
-    if (nzchar(Sys.which(cmd[1]))) return(cmd)
+  cmd_calls <- list(
+    "ssh",
+    c("plink", "-ssh")
+  )
+  for (cmd_call in cmd_calls) {
+    cmd <- cmd_call[1]
+    cmd_bin <- Sys.which(cmd)
+    if (nzchar(cmd_bin)) return(c(cmd_bin, cmd_call[-1]))
+  }
+
+  ## FALLBACK: On Windows, RStudio distributes an 'ssh.exe' client
+  if (.Platform$OS.type == "windows") {
+    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
+    if (file_test("-d", path)) {
+      path <- normalizePath(path)
+      path_org <- Sys.getenv("PATH")
+      on.exit(Sys.setenv(PATH = path_org))
+      ## Append RSTUDIO_MSYS_SSH with the rationale that it
+      ## emulates how RStudio's 'Tools -> Shell ...' is set up.
+      Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
+      cmd_bin <- Sys.which("ssh")
+      if (nzchar(cmd_bin)) return(cmd_bin)
+    }
   }
   
-  cmds_checked <- unlist(lapply(cmds, FUN = function(x) x[1]))
+  cmds_checked <- unlist(lapply(cmd_calls, FUN = function(x) x[1]))
   msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds_checked), collapse = ", ")) #nolint
   if (must_work) stop(msg)
 
-  cmd <- cmds[[1]]
+  cmd <- cmd_calls[[1]]
   msg <- sprintf("%s Will use %s.", msg, sQuote(paste(cmd, collapse = " ")))
   warning(msg)
   cmd

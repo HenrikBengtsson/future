@@ -1,0 +1,48 @@
+source("incl/start.R")
+
+message("*** Non-exportable globals ...")
+
+options(future.globals.onReference = "warning")
+plan(multisession, workers = 2L)
+
+
+message("* R connections ...")
+
+tmp_file <- tempfile()
+con <- file(tmp_file, open = "wb")
+cat("hello\n", file = con)
+flush(con)
+bfr <- readLines(con = tmp_file)
+print(bfr)
+stopifnot(bfr == "hello")
+
+message("- Run-time error")
+
+## Assert we can detect the reference
+res <- tryCatch({
+  f <- future(cat("world\n", file = con))
+}, FutureWarning = identity)
+print(res)
+stopifnot(inherits(res, "FutureWarning"),
+          grepl("non-exportable reference", conditionMessage(res)))
+
+f <- future(cat("world\n", file = con))
+res <- tryCatch({
+  v <- value(f)
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "error"))
+## Nothing changed
+bfr <- readLines(con = tmp_file)
+print(bfr)
+stopifnot(bfr == "hello")
+
+close(con)
+file.remove(tmp_file)
+
+message("* R connections ... DONE")
+
+
+message("*** Non-exportable globals ... DONE")
+
+source("incl/end.R")

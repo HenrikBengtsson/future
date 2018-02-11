@@ -270,7 +270,7 @@ value.Future <- function(future, signal = TRUE, ...) {
   if (signal && future$state == "failed") {
     mdebug("Future state: %s", sQuote(future$state))
     mdebug("Future value: %s", sQuote(value))
-    stop(FutureError(future))
+    stop(FutureEvaluationError(future))
   }
 
   value

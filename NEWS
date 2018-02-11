@@ -1,6 +1,97 @@
 Package: future
 ===============
 
+Version: 1.7.0 [2018-02-10]
+
+SIGNIFICANT CHANGES:
+
+ o future_lapply() has moved to the future.apply package available on CRAN.
+
+NEW FEATURES:
+
+ o Argument 'workers' of future strategies may now also be a function, which
+   is called without argument when the future strategy is set up and used as
+   is.  For instance, plan(multiprocess, workers = halfCores) where
+   halfCores <- function() { max(1, round(availableCores() / 2)) } will use
+   half of the number of available cores.  This is useful when using nested
+   future strategies with remote machines.
+ 
+ o On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
+   plan(multiprocess), will use the SSH client distributed with RStudio as
+   a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
+
+ o Now plan() makes sure that nbrOfWorkers() will work for the new strategy.
+   This will help catch mistakes such as plan(cluster, workers = cl) where
+   'cl' is a basic R list rather than a 'cluster' list early on.
+
+ o Added %packages% to explicitly control packages to be attached when a
+   future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
+   Note, this is only needed in cases where the automatic identification of
+   global and package dependencies is not sufficient.
+
+ o Added condition classes FutureCondition, FutureMessage, FutureWarning, and
+   FutureError representing conditions that occur while a future is setup,
+   launched, queried, or retrieved.  They do *not* represent conditions that
+   occur while evaluating the future expression.  For those conditions, new
+   classes FutureEvaluationCondition, FutureEvaulationMessage,
+   FutureEvaluationWarning, and FutureEvaluationError exists.
+
+DOCUMENTATION:
+
+ o Vignette 'Common Issues with Solutions' now documents the case where the
+   future framework fails to identify a variable as being global because it
+   is only so conditionally, e.g. 'if (runif(1) < 1/2) x <- 0; y <- 2 * x'.
+
+BETA FEATURES:
+
+ o Added mechanism for detecting globals that _may_ not be exportable to an
+   external R process (a "worker").  Typically, globals that carry connections
+   and external pointers ("externalptr") can not be exported, but there are
+   exceptions.  By setting options 'future.globals.onReference' to "warning",
+   a warning is produced informing the user about potential problems.  If
+   "error", an error is produced.  Because there might be false positive, the
+   default is "ignore", which will cause above scans to be skipped.  If there
+   are non-exportable globals and these tests are skipped, a run-time error
+   may be produced only when the future expression is evaluated.
+
+BUG FIXES:
+
+ o The total size of global variables was overestimated, and dramatically so
+   if defined in the global environment and there were are large objects there
+   too.  This would sometimes result in a false error saying that the total
+   size is larger than the allowed limit.
+
+ o An assignment such as 'x <- x + 1' where the left-hand side (LHS) 'x' is a
+   global failed to identify 'x' as a global because the right-hand side (RHS)
+   'x' would override it as a local variable.  Updates to the globals package
+   fixed this problem.
+
+ o makeClusterPSOCK(..., renice = 19) would launch each PSOCK worker via
+   'nice +19' resulting in the error "nice: '+19': No such file or directory".
+   This bug was inherited from parallel::makePSOCKcluster().  Now using
+   'nice --adjustment=19' instead.
+
+ o Protection against passing future objects to other futures did not work
+   for future strategy 'multicore'.
+ 
+DEPRECATED AND DEFUNCT:
+
+ o future_lapply() has moved to the new future.apply package available on CRAN.
+   The future::future_lapply() function will soon be deprecated, then defunct,
+   and eventually be removed from the future package. Please update your code
+   to make use of future.apply::future_lapply() instead.
+   
+ o Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+
+ o Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
+
+ o In previous version of the future package the FutureError class was used
+   to represent both orchestration errors (now FutureError) and evaluation
+   errors (now FutureEvaluationError).  Any usage of class FutureError for
+   the latter type of errors is deprecated and should be updated to
+   FutureEvaluationError.
+
+
 Version: 1.6.2 [2017-10-16]
 
 NEW FEATURES:
@@ -151,19 +242,8 @@ NEW FEATURES:
    and all required packages are automatically identified and gathered, so
    in most cases those do not have to be specified manually.
 
- o SPEED: future_lapply() scans global variables for non-resolved futures
-   (to resolve them) and calculate their total size once.  Previously, each
-   chunk (a future) would redo this.
-
  o The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
-
-GLOBALS:
-
- o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
-   and '...' recursively until no new globals are found.  Previously, only
-   the first level of globals were scanned.  This is mostly thanks to a bug
-   fix in globals 0.9.0.
 
 RANDOM NUMBER GENERATION:
 
@@ -177,7 +257,18 @@ RANDOM NUMBER GENERATION:
  o It is now possible to specify a pre-generated sequence of .Random.seed
    seeds to be used for each FUN(x[i], ...) call in future_lapply(x, FUN, ...).
 
-BUG FIXES:
+PERFORMANCE:
+
+ o future_lapply() scans global variables for non-resolved futures (to resolve
+   them) and calculate their total size once.  Previously, each chunk
+   (a future) would redo this.
+
+BUG FIX:
+
+ o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
+   and '...' recursively until no new globals are found.  Previously, only
+   the first level of globals were scanned.  This is mostly thanks to a bug
+   fix in globals 0.9.0.
 
  o A future that used a global object 'x' of a class that overrides length()
    would produce an error if length(x) reports more elements than what can
@@ -511,8 +602,10 @@ NEW FEATURES:
    plan(multiprocess, gc=TRUE).  The developer can control this using
    future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
 
- o SPEED: Significantly decreased the overhead of creating a future,
-   particularly multicore futures.
+PERFORMANCE:
+
+ o Significantly decreased the overhead of creating a future, particularly
+   multicore futures.
     
 BUG FIXES: 
 
@@ -612,8 +705,10 @@ NEW FEATURES:
    forked R process was terminated before completing and if so generates
    an informative error messages.
 
- o SPEED: Adjusted the parameters for the schema used to wait for next
-   available cluster node such that nodes are polled more frequently.
+PERFORMANCE:
+
+ o Adjusted the parameters for the schema used to wait for next available
+   cluster node such that nodes are polled more frequently.
 
 GLOBALS:
 

@@ -1,11 +1,18 @@
-#' Specify globals for a future assignment
+#' Specify globals and packages for a future assignment
 #'
-#' @usage fassignment \%globals\% globals
+#' @usage
+#' fassignment \%globals\% globals
+#' fassignment \%packages\% packages
+#'
+#' @inheritParams future
 #'
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
-#' @inheritParams multiprocess
 #'
+#' @param packages (optional) a character vector specifying packages
+#' to be attached in the R environment evaluating the future.
+#' 
+#' @aliases %packages%
 #' @export
 `%globals%` <- function(fassignment, globals) {
   fassignment <- substitute(fassignment)
@@ -14,6 +21,19 @@
   ## Temporarily set 'globals' argument
   args <- getOption("future.disposable", list())
   args["globals"] <- list(globals)
+  options(future.disposable = args)
+
+  eval(fassignment, envir = envir)
+}
+
+#' @export
+`%packages%` <- function(fassignment, packages) {
+  fassignment <- substitute(fassignment)
+  envir <- parent.frame(1)
+
+  ## Temporarily set 'packages' argument
+  args <- getOption("future.disposable", list())
+  args["packages"] <- list(packages)
   options(future.disposable = args)
 
   eval(fassignment, envir = envir)

@@ -1,5 +1,9 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
+  ## Initiate the R session UUID, which will also set/update
+  ## .GlobalEnv$.Random.seed.
+  session_uuid()
+  
   debug <- getOption("future.debug", FALSE)
   
   ## Unless already set, set option 'future.availableCores.fallback'

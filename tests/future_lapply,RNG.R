@@ -4,6 +4,43 @@ message("*** future_lapply() and RNGs ...")
 
 options(future.debug = FALSE)
 
+message("* future_lapply(x, ..., future.seed = <invalid>) ...")
+
+res <- tryCatch({
+  y <- future_lapply(1:3, FUN = identity, future.seed = as.list(1:2))
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "simpleError"))
+
+res <- tryCatch({
+  y <- future_lapply(1:3, FUN = identity, future.seed = list(1, 2, 3:4))
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "simpleError"))
+
+res <- tryCatch({
+  y <- future_lapply(1:3, FUN = identity, future.seed = as.list(1:3))
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "simpleError"))
+
+seeds <- lapply(1:3, FUN = as_lecyer_cmrg_seed)
+res <- tryCatch({
+  y <- future_lapply(1:3, FUN = identity, future.seed = lapply(seeds, FUN = as.numeric))
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "simpleError"))
+
+seeds[[1]][1] <- seeds[[1]][1] + 1L
+res <- tryCatch({
+  y <- future_lapply(1:3, FUN = identity, future.seed = seeds)
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "simpleError"))
+
+message("* future_lapply(x, ..., future.seed = <invalid>) ... DONE")
+
+
 ## Iterate of the same set in all tests
 x <- 1:5
 

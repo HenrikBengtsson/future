@@ -31,7 +31,7 @@ If a new strategy is chosen, then the previous one is returned
 (invisible), otherwise the current one is returned (visibly).
 }
 \description{
-This function allows you to plan the future, more specifically,
+This function allows \emph{the user} to plan the future, more specifically,
 it specifies how \code{\link{future}()}:s are resolved,
 e.g. sequentially or in parallel.
 }
@@ -77,11 +77,31 @@ To reset the strategy back to the default, use \code{plan("default")}.
 }
 
 Other package may provide additional evaluation strategies.
-Notably, the \pkg{future.BatchJobs} package implements a
+Notably, the \pkg{future.batchtools} package implements a
 type of futures that will be resolved via job schedulers
 that are typically available on high-performance compute
 (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 and OpenLava.
+}
+
+\section{For package developers}{
+
+Please refrain from modifying the future strategy inside your packages /
+functions, i.e. do not call \code{plan()} in your code.  Instead, leave
+the control on what backend to use to the end user.  This idea is part of
+the core philosophy of the future framework - as a developer you can never
+know what future backends the user have access to.  Moreover, by not making
+any assumptions about what backends are available, your code will also work
+automatically will any new backends developed after you wrote your code.
+
+If you think it is necessary to modify the future strategy within a
+function, then make sure to undo the changes when exiting the function.
+This can be done using:
+\preformatted{
+  oplan <- plan()
+  on.exit(plan(oplan), add = TRUE)
+  [...]
+}
 }
 
 \examples{

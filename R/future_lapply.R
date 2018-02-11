@@ -1,5 +1,12 @@
 #' Apply a Function over a List or Vector via Futures
 #'
+#' \emph{DEPRECATION NOTICE: The \code{future_lapply()} function has moved to
+#' the new
+#' \href{https://cran.r-project.org/package=future.apply}{\strong{future.apply}}
+#' package.  The implementation here in (the \pkg{future} package) will soon be
+#' deprecated, then be made defunct, and eventually be removed. Please update
+#' your code to make use of \code{future.apply::future_lapply()} instead.}
+#'
 #' @param x  A vector-like object to iterate over.
 #' 
 #' @param FUN  A function taking at least one argument.
@@ -382,14 +389,31 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   ## 4. Resolving futures
   if (debug) mdebug("Resolving %d futures (chunks) ...", nchunks)
   values <- values(fs)
-  if (debug) mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
   
   ## Not needed anymore
   rm(list = "fs")
   
+  if (debug) {
+    mdebug(" - Number of value chunks collected: %d", length(values))
+    mdebug("Resolving %d futures (chunks) ... DONE", nchunks)
+  }
+
+  ## Sanity check
+  stopifnot(length(values) == nchunks)
+  
   if (debug) mdebug("Reducing values from %d chunks ...", nchunks)
-  values <- Reduce(c, values)
+  values <- fold(values, c)
+
+  if (debug) {
+    mdebug(" - Number of values collected after folding: %d", length(values))
+    mdebug(" - Number of values expected: %d", length(x))
+  }
+  
+  ## Sanity check (this may happen if the future backend is broken)
+  stopifnot(length(values) == length(x))
+  
   names(values) <- names(x)
+  
   if (debug) mdebug("Reducing values from %d chunks ... DONE", nchunks)
 
   if (debug) mdebug("future_lapply() ... DONE")

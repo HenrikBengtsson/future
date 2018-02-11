@@ -29,6 +29,7 @@ for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
   strategies <- supportedStrategies(cores)
+  if (cores == 1) strategies <- c("transparent", strategies)
 
   for (strategy in strategies) {
     message(sprintf("- plan('%s') ...", strategy))

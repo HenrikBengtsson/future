@@ -43,6 +43,7 @@ asIEC <- future:::asIEC
 ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
 detectCores <- future:::detectCores
+fold <- future:::fold
 future_lapply <- future:::future_lapply
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign
@@ -61,7 +62,9 @@ requirePackages <- future:::requirePackages
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
 get_random_seed <- future:::get_random_seed
-    
+set_random_seed <- future:::set_random_seed
+as_lecyer_cmrg_seed <- future:::as_lecyer_cmrg_seed
+
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))

@@ -55,11 +55,8 @@
 #'
 #' @export
 multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
-  if ("maxCores" %in% names(list(...))) {
-    .Defunct(msg = "Argument 'maxCores' has been renamed to 'workers'. Please update you script/code that uses the future package.")
-  }
-
   if (substitute) expr <- substitute(expr)
+  if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
 

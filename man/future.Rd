@@ -33,7 +33,7 @@ in which the expression is evaluated.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{A logical, a character vector,
+\item{globals}{(optional) A logical, a character vector,
 or a named list for controlling how globals are handled.
 For details, see below section.}
 
