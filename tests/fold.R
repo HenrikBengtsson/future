@@ -55,6 +55,27 @@ for (kk in seq_along(xs)) {
   }
 }
 
+
+make_table <- function(n) data.frame(key = sample(n), value = sample(n))
+
+sizes <- rep(10, 20)
+
+set.seed(3180)
+tables <- lapply(sizes, make_table)
+
+key_merge <- function(x, y) merge(x, y, by = "key", all = FALSE)
+
+suppressWarnings(
+folded <- fold(tables, key_merge, left = TRUE, unname = FALSE,
+               threshold = 6L)
+)
+
+suppressWarnings(
+reduced <- Reduce(key_merge, tables[-1], tables[[1]])
+)
+
+stopifnot(all.equal(unname(folded), unname(reduced)))
+
 message("*** fold() ... DONE")
 
 source("incl/end.R")

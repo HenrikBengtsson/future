@@ -39,9 +39,9 @@ fold <- function(x, f, left = TRUE, unname = TRUE, threshold = 1000L) {
     ## Divide and conquer, i.e. split, build the two parts, and merge
     n_mid <- n %/% 2
     y_left  <- Recall(f = f, x = x[     1:n_mid], left = left,
-                      threshold = threshold)
+                      unname = unname, threshold = threshold)
     y_right <- Recall(f = f, x = x[(n_mid+1L):n], left = left,
-                      threshold = threshold)
+                      unname = unname, threshold = threshold)
     y <- f(y_left, y_right)
     y_left <- y_right <- NULL
   } else {
