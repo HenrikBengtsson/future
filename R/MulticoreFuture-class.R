@@ -138,7 +138,7 @@ value.MulticoreFuture <- function(future, signal = TRUE, ...) {
 
   ## Update value and state
   condition <- attr(res, "condition")
-  if (inherits(condition, "simpleError")) {
+  if (inherits(condition, "error")) {
     future$state <- 'failed'
     future$value <- condition
   } else {

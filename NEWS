@@ -1,10 +1,15 @@
 Package: future
 ===============
 
-Version: 1.7.0-9000 [2018-02-11]
+Version: 1.7.0-9000 [2018-02-20]
 
  o ...
- 
+
+BUG FIXES:
+
+ o value() for MulticoreFuture would not signal errors unless they inherited
+   from 'simpleError' - now it's enough for them to inherit 'error'.
+
 
 Version: 1.7.0 [2018-02-10]
 

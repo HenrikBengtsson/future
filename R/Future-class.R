@@ -225,7 +225,8 @@ run.Future <- function(future, ...) {
   if (future$state != 'created') {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    msg <- sprintf("A future ('%s') can only be launched once.", label)
+    stop(FutureError(msg, future = future))
   }
   
   future
