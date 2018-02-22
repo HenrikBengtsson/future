@@ -111,6 +111,25 @@ for (type in types) {
     print(res)
     stopifnot(inherits(res, "error"))
   
+    ## Custom error class
+    f <- future({
+      stop(structure(list(message = "boom"),
+                     class = c("MyError", "error", "condition")))
+    })
+    print(f)
+    v <- value(f, signal = FALSE)
+    print(v)
+    stopifnot(inherits(v, "error"))
+    ## FIXME: Related to Issue #200
+    ## stopifnot(inherits(v, "MyError"))
+  
+    ## Make sure error is signaled
+    res <- tryCatch(value(f), error = identity)
+    stopifnot(inherits(res, "error"))
+  
+    ## Issue #200: Custom condition class attributes are lost 
+    ## FIXME:
+    ## stopifnot(inherits(res, "MyError"))    
   
     message("*** cluster() - too large globals ...")
     ooptsT <- options(future.globals.maxSize = object.size(1:1014))

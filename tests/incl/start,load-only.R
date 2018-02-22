@@ -65,7 +65,6 @@ get_random_seed <- future:::get_random_seed
 set_random_seed <- future:::set_random_seed
 as_lecyer_cmrg_seed <- future:::as_lecyer_cmrg_seed
 
-
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))
 mstr <- function(...) message(paste(capture.output(str(...)), collapse = "\n"))
