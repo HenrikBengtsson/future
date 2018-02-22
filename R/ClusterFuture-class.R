@@ -307,19 +307,15 @@ value.ClusterFuture <- function(future, ...) {
 
   ## An error?
   if (inherits(res, "try-error")) {
-    msg <- simpleError(res)
+    msg <- as.character(res)
     mdebug("Received error on future: %s", sQuote(msg))
-    attr(res, "condition") <- msg
-  }
-
-  ## Update value and state
-  condition <- attr(res, "condition")
-  if (inherits(condition, "error")) {
-    future$state <- 'failed'
+    condition <- FutureEvaluationError(msg)
+    class(condition) <- c(class(res), class(condition))
+    future$state <- "failed"
     future$value <- condition
   } else {
     future$value <- res
-    future$state <- 'finished'
+    future$state <- "finished"
   }
   res <- NULL ## Not needed anymore
 
