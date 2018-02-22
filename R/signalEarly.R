@@ -28,20 +28,40 @@ signalEarly <- function(future, collect = TRUE, ...) {
   if (!inherits(value, "condition")) return(future)
 
   if (debug) mdebug("signalEarly(): signalCondition(v)")
+  resignalCondition(future)
+  if (debug) mdebug("signalEarly() ... DONE")
 
+  invisible(future)
+}
+
+resignalCondition <- function(future, ...) {
+  ## Future is not yet launched
+  if (!future$state %in% c("finished", "failed")) {
+    stop(FutureError("Internal error: Future has not yet been resolved",
+    future = future))
+  }
+
+  value <- future$value
+  
+  ## Was a condition caught?
+  if (!inherits(value, "condition")) {
+    stop(FutureError("Internal error: Future did not produce a condition",
+    future = future))
+  }
+
+  cond <- value
+  
   ## Signal detected condition
-  if (inherits(value, "error")) {
+  if (inherits(cond, "error")) {
     stop(FutureEvaluationError(future))
-  } else if (inherits(value, "warning")) {
+  } else if (inherits(cond, "warning")) {
     warning(FutureEvaluationWarning(future))
-  } else if (inherits(value, "message")) {
+  } else if (inherits(cond, "message")) {
     message(FutureEvaluationMessage(future))
     message("\n") ## TODO: Remove this? /HB 2018-02-03
   } else {
     signalCondition(value)
   }
-
-  if (debug) mdebug("signalEarly() ... DONE")
-
+  
   invisible(future)
 }
