@@ -21,6 +21,7 @@
 FutureEvaluationCondition <- function(message, call = NULL, future = NULL, output = NULL) {
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
+  cond <- NULL
   if (inherits(message, "Future")) {
     future <- message
     value <- future$value
@@ -33,8 +34,9 @@ FutureEvaluationCondition <- function(message, call = NULL, future = NULL, outpu
   }
 
   ## Create a condition object
-  structure(list(message = as.character(message), call = call), 
-            class = c("FutureEvaluationCondition", "condition"),
+  structure(list(message = as.character(message), cond = cond, call = call), 
+            class = unique(c("FutureEvaluationCondition", class(cond),
+                             "condition")),
             future = future, output = output)
 }
 
@@ -112,7 +114,7 @@ getOutput <- function(...) UseMethod("getOutput")
 FutureEvaluationMessage <- function(message, call = NULL, future = NULL, output = NULL) {
   cond <- FutureEvaluationCondition(message = message, call = call,
                           future = future, output = output)
-  class(cond) <- c("FutureEvaluationMessage", "message", class(cond))
+  class(cond) <- unique(c("FutureEvaluationMessage", "message", class(cond)))
   cond
 }
 
@@ -121,7 +123,7 @@ FutureEvaluationMessage <- function(message, call = NULL, future = NULL, output 
 FutureEvaluationWarning <- function(message, call = NULL, future = NULL, output = NULL) {
   cond <- FutureEvaluationCondition(message = message, call = call,
                           future = future, output = output)
-  class(cond) <- c("FutureEvaluationWarning", "warning", class(cond))
+  class(cond) <- unique(c("FutureEvaluationWarning", "warning", class(cond)))
   cond
 }
 
@@ -132,9 +134,9 @@ FutureEvaluationError <- function(message, call = NULL, future = NULL, output = 
                           future = future, output = output)
   ## TODO: Remove usage of 'FutureError'. Various packages' tests use this.
   ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
-  class(cond) <- c("FutureEvaluationError",
-                   "FutureError", ## to be removed in a later release
-                   "simpleError", ## to be removed in a later release
-                   "error", class(cond))
+  class(cond) <- unique(c("FutureEvaluationError",
+                          "FutureError", ## to be removed in a later release
+                          "simpleError", ## to be removed in a later release
+                          "error", class(cond)))
   cond
 }

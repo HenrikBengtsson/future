@@ -93,8 +93,7 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
     stopifnot(inherits(res, "error"))
   
     ## Issue #200: Custom condition class attributes are lost 
-    ## FIXME:
-    ## stopifnot(inherits(res, "MyError"))    
+    stopifnot(inherits(res, "MyError"))    
   } # for (globals ...)
 
 

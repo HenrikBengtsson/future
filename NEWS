@@ -3,7 +3,16 @@ Package: future
 
 Version: 1.7.0-9000 [2018-02-21]
 
+NEW FEATURES:
+
  o ...
+
+TEMPORARY WORKAROUND / KNOWN ISSUES:
+
+ o The class attribute of a FutureEvaluateCondition now also contains the
+   classes of the original evaluation condition. Due to limitations in the
+   parallel package, this is _not_ yet supported for cluster and multisession
+   futures (Issue #200).
 
 BUG FIXES:
 

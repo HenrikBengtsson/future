@@ -81,14 +81,15 @@ for (cores in 1:availCores) {
   print(v)
   stopifnot(inherits(v, "error"))
   ## FIXME: Related to Issue #200
+  ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
   ## stopifnot(inherits(v, "MyError"))
 
   ## Make sure error is signaled
   res <- tryCatch(value(f), error = identity)
   stopifnot(inherits(res, "error"))
 
-  ## Issue #200: Custom condition class attributes are lost 
-  ## FIXME:
+  ## Issue #200: Custom condition class attributes are lost
+  ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
   ## stopifnot(inherits(res, "MyError"))    
 
   message("*** multisession() - too large globals ...")

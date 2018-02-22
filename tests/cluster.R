@@ -121,6 +121,7 @@ for (type in types) {
     print(v)
     stopifnot(inherits(v, "error"))
     ## FIXME: Related to Issue #200
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
     ## stopifnot(inherits(v, "MyError"))
   
     ## Make sure error is signaled
@@ -128,6 +129,7 @@ for (type in types) {
     stopifnot(inherits(res, "error"))
   
     ## Issue #200: Custom condition class attributes are lost 
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
     ## FIXME:
     ## stopifnot(inherits(res, "MyError"))    
   
