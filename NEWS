@@ -1,14 +1,18 @@
 Package: future
 ===============
 
-Version: 1.7.0-9000 [2018-02-20]
+Version: 1.7.0-9000 [2018-02-21]
 
  o ...
 
 BUG FIXES:
 
  o value() for MulticoreFuture would not signal errors unless they inherited
-   from 'simpleError' - now it's enough for them to inherit 'error'.
+   from 'simpleError' - now it's enough for them to inherits from 'error'.
+
+ o value() for ClusterFuture no longer produces a FutureEvaluationError, but
+   FutureError, if the connection to the R worker has changed (which happens
+   if something as drastic as closeAllConnections() have been called.)
 
 
 Version: 1.7.0 [2018-02-10]

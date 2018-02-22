@@ -287,9 +287,9 @@ value.ClusterFuture <- function(future, ...) {
       if (!is.null(msg)) {
         on_failure <- getOption("future.cluster.invalidConnection", "error")
         if (on_failure == "error") {
-          stop(FutureEvaluationError(msg, future = future))
+          stop(FutureError(msg, future = future))
         }
-        warning(msg)
+        warning(FutureWarning(msg, future = future))
         return(sprintf("EXCEPTIONAL ERROR: %s", msg))
       }
     }
@@ -314,7 +314,7 @@ value.ClusterFuture <- function(future, ...) {
 
   ## Update value and state
   condition <- attr(res, "condition")
-  if (inherits(condition, "simpleError")) {
+  if (inherits(condition, "error")) {
     future$state <- 'failed'
     future$value <- condition
   } else {
