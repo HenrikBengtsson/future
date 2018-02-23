@@ -97,6 +97,20 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
   } # for (globals ...)
 
 
+  message("*** multicore() - terminating workers ...")
+  
+  ## Force R worker to quit
+  x %<-% quit(save = "no")
+  res <- tryCatch(y <- x, error = identity)
+  print(res)
+  stopifnot(
+    inherits(res, "simpleError"),
+    inherits(res, "FutureError")
+  )
+
+  message("*** multicore() - terminating workers ... DONE")
+  
+  
   message("*** multicore(..., workers = 1L) ...")
 
   a <- 2

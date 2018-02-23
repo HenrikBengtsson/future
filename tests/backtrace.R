@@ -61,6 +61,7 @@ message("- No call stack ...")
 f <- future({ 42L; stop("Woops") })
 v <- value(f, signal = FALSE)
 f$value$traceback <- NULL ## Remove call stack
+f$value$calls <- NULL ## Remove call stack
 res <- tryCatch(backtrace(f), error = identity)
 print(res)
 stopifnot(inherits(res, "error"))

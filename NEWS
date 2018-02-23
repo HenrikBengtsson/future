@@ -1,11 +1,16 @@
 Package: future
 ===============
 
-Version: 1.7.0-9000 [2018-02-21]
+Version: 1.7.0-9000 [2018-02-23]
 
 NEW FEATURES:
 
- o ...
+ o Add support for a richer set of results returned by resolved futures.
+   Previously only the value of the future expression, which could be a
+   captured error to be resignaled, was expected.  Now a FutureResult object
+   may be returned which will be able to contain further information of the
+   evaluation of the future, e.g. captured output, timing and memory
+   benchmarks etc.
 
 TEMPORARY WORKAROUND / KNOWN ISSUES:
 
@@ -15,6 +20,11 @@ TEMPORARY WORKAROUND / KNOWN ISSUES:
    futures (Issue #200).
 
 BUG FIXES:
+
+ o value() for MulticoreFuture would not produce an error when a (forked)
+   background R workers would terminate before the future expression is
+   resolved.  This was a limitation inherited from the parallel package.
+   Now an informative FutureError message is produced.
 
  o value() for MulticoreFuture would not signal errors unless they inherited
    from 'simpleError' - now it's enough for them to inherits from 'error'.
