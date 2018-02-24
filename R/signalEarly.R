@@ -51,7 +51,7 @@ resignalCondition <- function(future, ...) {
   
   condition <- result$condition
   stopifnot(inherits(condition, "condition"))
-    
+
   ## Signal detected condition
   if (inherits(condition, "error")) {
     stop(FutureEvaluationError(future))

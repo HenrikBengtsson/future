@@ -305,15 +305,21 @@ value.ClusterFuture <- function(future, ...) {
   }
   stopifnot(isTRUE(ack))
 
-  ## An error?
-  if (inherits(res, "try-error")) {
-    msg <- as.character(res)
-    mdebug("Received error on future: %s", sQuote(msg))
-    condition <- FutureEvaluationError(msg)
-    class(condition) <- c(class(res), class(condition))
-    future$state <- "failed"
-    future$value <- condition
+  if (future$version == "1.7") {
+    ## An error?
+    if (inherits(res, "try-error")) {
+      msg <- as.character(res)
+      mdebug("Received error on future: %s", sQuote(msg))
+      condition <- FutureEvaluationError(msg)
+      class(condition) <- c(class(res), class(condition))
+      future$state <- "failed"
+      future$value <- condition
+    } else {
+      future$value <- res
+      future$state <- "finished"
+    }
   } else {
+    stopifnot(inherits(res, "FutureResult"))
     future$value <- res
     future$state <- "finished"
   }
