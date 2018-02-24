@@ -54,11 +54,11 @@ resignalCondition <- function(future, ...) {
 
   ## Signal detected condition
   if (inherits(condition, "error")) {
-    stop(FutureEvaluationError(future))
+    stop(condition)
   } else if (inherits(condition, "warning")) {
-    warning(FutureEvaluationWarning(future))
+    warning(condition)
   } else if (inherits(condition, "message")) {
-    message(FutureEvaluationMessage(future))
+    message(condition)
     message("\n") ## TODO: Remove this? /HB 2018-02-03
   } else if (inherits(condition, "condition")) {
     signalCondition(condition)

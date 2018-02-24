@@ -3,7 +3,7 @@ Package: future
 
 Version: 1.7.0-9000 [2018-02-23]
 
-NEW FEATURES:
+SIGNIFICANT CHANGES:
 
  o Add support for a richer set of results returned by resolved futures.
    Previously only the value of the future expression, which could be a
@@ -12,13 +12,13 @@ NEW FEATURES:
    evaluation of the future, e.g. captured output, timing and memory
    benchmarks etc.
 
-TEMPORARY WORKAROUND / KNOWN ISSUES:
+ o Errors produces when evaluating futures are now (re-)signaled on the master
+   R process "as is" with the original content and class attributes.
+ 
+NEW FEATURES:
 
- o The class attribute of a FutureEvaluateCondition now also contains the
-   classes of the original evaluation condition. Due to limitations in the
-   parallel package, this is _not_ yet supported for cluster and multisession
-   futures (Issue #200).
-
+ o ...
+ 
 BUG FIXES:
 
  o value() for MulticoreFuture would not produce an error when a (forked)
