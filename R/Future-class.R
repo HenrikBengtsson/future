@@ -163,8 +163,7 @@ print.Future <- function(x, ...) {
   }
 
   hasValue <- exists("value", envir = x, inherits = FALSE)
-
-  if (exists("value", envir = x, inherits = FALSE)) {
+  if (hasValue) {
     cat("Resolved: TRUE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
