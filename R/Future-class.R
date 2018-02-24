@@ -86,8 +86,12 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   }
   
   args <- list(...)
+
+  version <- args$version
+  if (is.null(version)) version <- "1.7"
   
   core <- new.env(parent = emptyenv())
+  core$version <- version
   core$expr <- expr
   core$envir <- envir
   core$globals <- globals
@@ -107,7 +111,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
 
   ## Additional named arguments
   for (key in names(args)) core[[key]] <- args[[key]]
-
+  
   structure(core, class = c("Future", class(core)))
 }
 
@@ -255,11 +259,6 @@ result <- function(...) UseMethod("result")
 #' @export
 #' @keywords internal
 result.Future <- function(future, ...) {
-  getFutureResult(future, ...)
-}
-
-
-getFutureResult <- function(future, ...) {
   if (future$state == "created") {
     future <- run(future)
   }
@@ -279,7 +278,10 @@ getFutureResult <- function(future, ...) {
   if (inherits(result, "FutureResult")) return(result)
 
   version <- future$version
-  if (is.null(version)) version <- "1.7"
+  if (is.null(version)) {
+    warning(FutureWarning("Future version was not set. Using default %s",
+                          sQuote(version)))
+  }
 
   ## Sanity check
   if (version == "1.8") {
@@ -333,7 +335,7 @@ value.Future <- function(future, signal = TRUE, ...) {
     stop(FutureError(msg, future = future))
   }
 
-  result <- getFutureResult(future)
+  result <- result(future)
   stopifnot(inherits(result, "FutureResult"))
 
   value <- result$value
@@ -403,15 +405,15 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, version = NULL, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
+  version <- future$version
   if (is.null(version)) {
-    version <- future$version
-    if (is.null(version)) version <- "1.7"
+    warning(FutureWarning("Future version was not set. Using default %s",
+                          sQuote(version)))
   }
-  
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
@@ -595,7 +597,7 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
       })
     }, env = list(enter = enter, body = expr, exit = exit))
   } else {
-    stop("Internal error: Non-supported future expression version: ", version)
+    stop(FutureError("Internal error: Non-supported future expression version: ", version))
   }
 
   expr
