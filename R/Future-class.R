@@ -78,32 +78,41 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
     stopifnot(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
   }
-  
+
   if (!is.null(packages)) {
     stopifnot(is.character(packages))
     packages <- unique(packages)
     stopifnot(!anyNA(packages), all(nzchar(packages)))
   }
-  
+
   args <- list(...)
 
+  core <- new.env(parent = emptyenv())
+
+  ## Version of future
   version <- args$version
   if (is.null(version)) version <- "1.7"
-  
-  core <- new.env(parent = emptyenv())
   core$version <- version
+
+  ## Future evaluation
   core$expr <- expr
   core$envir <- envir
   core$globals <- globals
   core$packages <- packages
-  core$owner <- session_uuid(attributes = TRUE)
-  core$lazy <- lazy
-  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
   core$seed <- seed
   core$local <- local
-  core$gc <- gc
-  core$earlySignal <- earlySignal
+  core$lazy <- lazy
+  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+
+  ## Result
+  core$result <- NULL
+  core$value <- NULL  ## Backward compatibility
+
+  ## Future miscellaneous
   core$label <- label
+  core$owner <- session_uuid(attributes = TRUE)
+  core$earlySignal <- earlySignal
+  core$gc <- gc
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
@@ -538,26 +547,25 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "error"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
-    a <- NULL; rm(list = "a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a = expr))
+    expr <- bquote(local(.(expr)))
   }
 
   ## Set and reset certain future.* options
-  enter <- substitute({
+  enter <- bquote({
     ## covr: skip=7
     ...future.oldOptions <- options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.loadScript = FALSE,
       ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing = globals.onMissing
+      future.globals.onMissing = .(globals.onMissing)
     )
-    enter
-  }, env = list(globals.onMissing = globals.onMissing, enter = enter))
+    .(enter)
+  })
 
-  exit <- substitute({
-    exit
+  exit <- bquote({
+    .(exit)
     options(...future.oldOptions)
-  }, env = list(exit = exit))
+  })
 
 
   ## NOTE: We don't want to use local(body) w/ on.exit() because
@@ -566,21 +574,21 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
   ## a tryCatch() statement. /HB 2016-03-14
 
   if (version == "1.7") {
-    expr <- substitute({
+    expr <- bquote({
       ## covr: skip=6
-      enter
+      .(enter)
       tryCatch({
-        body
+        .(expr)
       }, finally = {
-        exit
+        .(exit)
       })
-    }, env = list(enter = enter, body = expr, exit = exit))
+    })
   } else if (version == "1.8") {
-    expr <- substitute({
+    expr <- bquote({
       ## covr: skip=6
-      enter
+      .(enter)
       tryCatch({
-        ...future.value <- body
+        ...future.value <- .(expr)
         future::FutureResult(value = ...future.value)
       }, error = function(cond) {
         calls <- sys.calls()
@@ -592,9 +600,9 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
   #      if (future$local) calls <- calls[-seq_len(6L)]
         future::FutureResult(value = NULL, condition = cond, calls = calls)
       }, finally = {
-        exit
+        .(exit)
       })
-    }, env = list(enter = enter, body = expr, exit = exit))
+    })
   } else {
     stop(FutureError("Internal error: Non-supported future expression version: ", version))
   }
