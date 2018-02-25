@@ -7,6 +7,8 @@
 #' @param condition A [[base::condition]] captured while resolving the future,
 #' if any.  This is typically an error.
 #' 
+#' @param calls A list of calls that led up to the captured condition, if any.
+#' 
 #' @param \ldots (optional) Additional named results to be returned.
 #' 
 #' @param version The version format of the results.
@@ -19,16 +21,26 @@
 #' 
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, condition = NULL, ..., version = "1.7") {
+FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
+                         version = "1.7") {
+  if (!is.null(condition)) stopifnot(inherits(condition, "condition"))
+  if (!is.null(calls)) stopifnot(is.list(calls))
+  
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)
     if (is.null(names) || any(nchar(names) == 0)) {
-      stop(FutureError("Internal error: All arguments to FutureResult() must be named"))
+      stop(FutureError(
+        "Internal error: All arguments to FutureResult() must be named"
+      ))
     }
   }
   
-  structure(list(value = value, condition = condition, ..., version = version),
-            class = c("FutureResult", "list"))
+  structure(list(
+    value = value,
+    condition = condition,
+    calls = calls,
+    ...,
+    version = version
+  ), class = c("FutureResult", "list"))
 }
-

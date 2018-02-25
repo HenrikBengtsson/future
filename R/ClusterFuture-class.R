@@ -101,7 +101,7 @@ run.ClusterFuture <- function(future, ...) {
   if (future$state != 'created') {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    stop(FutureError(sprintf("A future ('%s') can only be launched once.", label), future = future))
   }
   
   ## Assert that the process that created the future is
@@ -300,8 +300,7 @@ value.ClusterFuture <- function(future, ...) {
     info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
     msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
-    ex <- FutureError(msg, call = ack$call, future = future)
-    stop(ex)
+    stop(FutureError(msg, call = ack$call, future = future))
   }
   stopifnot(isTRUE(ack))
 

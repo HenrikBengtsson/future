@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.7.0-9000 [2018-02-23]
+Version: 1.7.0-9000 [2018-02-25]
 
 SIGNIFICANT CHANGES:
 
@@ -17,7 +17,8 @@ SIGNIFICANT CHANGES:
  
 NEW FEATURES:
 
- o ...
+ o More errors related to orchestration of futures are of class FutureError to
+   make it easier to distinguish them from future evaluation errors.
  
 BUG FIXES:
 

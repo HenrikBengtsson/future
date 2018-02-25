@@ -4,7 +4,8 @@
 \alias{FutureResult}
 \title{Results from resolving a future}
 \usage{
-FutureResult(value = NULL, condition = NULL, ..., version = "1.7")
+FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
+  version = "1.7")
 }
 \arguments{
 \item{value}{The value of the future expression.
@@ -13,6 +14,8 @@ the the value is `NULL`.}
 
 \item{condition}{A [[base::condition]] captured while resolving the future,
 if any.  This is typically an error.}
+
+\item{calls}{A list of calls that led up to the captured condition, if any.}
 
 \item{version}{The version format of the results.}
 

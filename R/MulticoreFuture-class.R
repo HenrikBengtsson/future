@@ -46,7 +46,7 @@ run.MulticoreFuture <- function(future, ...) {
   if (future$state != 'created') {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    stop(FutureError(sprintf("A future ('%s') can only be launched once.", label), future = future))
   }
   
   ## Assert that the process that created the future is
