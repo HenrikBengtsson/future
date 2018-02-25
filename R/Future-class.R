@@ -93,6 +93,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   version <- args$version
   if (is.null(version)) version <- "1.7"
   core$version <- version
+  core$.callResult <- FALSE  ## Temporary until "1.7" defunct
 
   ## Future evaluation
   core$expr <- expr
@@ -337,10 +338,13 @@ value.Future <- function(future, signal = TRUE, ...) {
     future <- run(future)
   }
 
-  if (!future$state %in% c("finished", "failed", "interrupted")) {
-    msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
-    mdebug(msg)
-    stop(FutureError(msg, future = future))
+  ## Sanity check
+  if (is.null(future$result) && !future$state %in% c("finished", "failed", "interrupted")) {
+    if (future$version == "1.7" || !future$.callResult) {
+      msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
+      mdebug(msg)
+      stop(FutureError(msg, future = future))
+    }
   }
 
   result <- result(future)

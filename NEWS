@@ -34,6 +34,12 @@ BUG FIXES:
    FutureError, if the connection to the R worker has changed (which happens
    if something as drastic as closeAllConnections() have been called.)
 
+DEPRECATED AND DEFUNCT:
+
+ o Recentently introduced FutureEvaluationCondition classes are deprecated,
+   because they no longer serve a purpose since future evaluation conditions
+   are now signalled as is.
+   
 
 Version: 1.7.0 [2018-02-10]
 
