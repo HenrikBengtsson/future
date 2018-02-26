@@ -95,6 +95,8 @@
 #' @export
 #' @keywords internal
 future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = NULL, future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1.0) {
+  .Deprecated(msg = "The implementation of future_lapply() in the 'future' package has been deprecated. Please use the one in the 'future.apply' package instead.")
+  
   stopifnot(is.function(FUN))
   
   stopifnot(is.logical(future.lazy))
