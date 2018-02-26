@@ -117,7 +117,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
-  core$state <- 'created'
+  core$state <- "created"
 
   ## Additional named arguments
   for (key in names(args)) core[[key]] <- args[[key]]
@@ -379,7 +379,7 @@ resolved.Future <- function(x, ...) {
   ## Signal conditions early, iff specified for the given future
   signalEarly(x, ...)
 
-  if (inherits(future$result, "FutureResult")) return(TRUE)
+  if (inherits(x$result, "FutureResult")) return(TRUE)
   
   x$state %in% c("finished", "failed", "interrupted")
 }
