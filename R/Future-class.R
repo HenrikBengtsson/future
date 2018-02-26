@@ -107,7 +107,11 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
 
   ## Result
   core$result <- NULL
-  core$value <- NULL  ## Backward compatibility
+  ## IMPORTANT: Do *not* set 'value', because there are, checks for a future
+  ## being resolved or not that checks for its existance, e.g.
+  ## exists("value", envir = future).
+  ## UPDATE: 'value' is being replaced by 'result$value' /HB 2018-02-25
+  ## core$value <- NULL
 
   ## Future miscellaneous
   core$label <- label
@@ -172,8 +176,11 @@ print.Future <- function(x, ...) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   }
 
-  hasValue <- exists("value", envir = x, inherits = FALSE)
-  if (hasValue) {
+  result <- x$result
+  hasResult <- inherits(result, "FutureResult")
+  ## BACKWARD COMPATIBILITY
+  hasResult <- hasResult || exists("value", envir = x, inherits = FALSE)
+  if (hasResult) {
     cat("Resolved: TRUE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
@@ -190,10 +197,19 @@ print.Future <- function(x, ...) {
     })
   }
 
-  if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(x$value)), sQuote(class(x$value)[1])))
+  if (hasResult) {
+    if (inherits(result, "FutureResult")) {
+      value <- result$value
+    } else {
+      value <- x$value
+    }
+    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
+    if (inherits(result, "FutureResult")) {
+      cat(sprintf("Condition: %s\n", sQuote(class(result$condition)[1])))
+    }
   } else {
     cat("Value: <not collected>\n")
+    cat("Condition: <not collected>\n")
   }
   cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
   cat(sprintf("Owner process: %s\n", x$owner))

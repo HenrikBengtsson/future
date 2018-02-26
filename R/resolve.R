@@ -64,15 +64,16 @@ resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep =
   if (value) {
     ## Allow for errors
     msg <- tryCatch({
-      v <- x$value
-      if (is.null(v)) {
-        v <- value(x)
-
+      result <- x$result
+      if (is.null(result)) {
+        result <- result(x)
+        v <- result$value
+        
         msg <- sprintf("%s and its value was collected", msg)
 
         ## Recursively resolve the value?
         if (!is.atomic(v)) {
-          v <- resolve(v, value = TRUE, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+          v <- resolve(v, value = TRUE, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
           msg <- sprintf("%s (and resolved itself)", msg)
         }
 
