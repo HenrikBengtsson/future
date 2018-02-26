@@ -36,6 +36,9 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
+ o future::future_lapply() is formally deprecated. Please use the one in the
+   future.apply package instead.
+  
  o Recentently introduced FutureEvaluationCondition classes are deprecated,
    because they no longer serve a purpose since future evaluation conditions
    are now signalled as is.
