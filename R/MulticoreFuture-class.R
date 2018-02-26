@@ -107,14 +107,6 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   res
 }
 
-#' @export
-## value.MulticoreFuture <- function(future, signal = TRUE, ...) {
-##   ## Collect results?
-##   if (is.null(future$result)) {
-##     result(future)
-##   }
-##   NextMethod("value")
-## }
 
 #' @export
 result.MulticoreFuture <- function(future, ...) {

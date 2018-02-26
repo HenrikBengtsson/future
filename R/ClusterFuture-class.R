@@ -88,6 +88,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   gp <- NULL
 
   f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, packages = packages, local = local, gc = gc, persistent = persistent, workers = workers, node = NA_integer_, version = "1.8", ...)
+  f$.callResult <- TRUE
   structure(f, class = c("ClusterFuture", class(f)))
 }
 
@@ -213,7 +214,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   if (x$state == 'created') return(FALSE)
 
   ## Is value already collected?
-  if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
+  if (!is.null(x$result)) return(TRUE)
 
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -251,13 +252,12 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 }
 
 #' @export
-value.ClusterFuture <- function(future, ...) {
+result.ClusterFuture <- function(future, ...) {
   ## Has the value already been collected?
-  if (future$state %in% c('finished', 'failed', 'interrupted')) {
-    return(NextMethod("value"))
-  }
+  result <- future$result
+  if (!is.null(result)) return(result)
 
-  if (future$state == 'created') {
+  if (future$state == "created") {
     future <- run(future)
   }
 
@@ -274,7 +274,7 @@ value.ClusterFuture <- function(future, ...) {
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
-    res <- recvResult(cl[[1]])
+    result <- recvResult(cl[[1]])
     TRUE
   }, simpleError = function(ex) ex)
 
@@ -304,25 +304,13 @@ value.ClusterFuture <- function(future, ...) {
   }
   stopifnot(isTRUE(ack))
 
-  if (future$version == "1.7") {
-    ## An error?
-    if (inherits(res, "try-error")) {
-      msg <- as.character(res)
-      mdebug("Received error on future: %s", sQuote(msg))
-      condition <- FutureEvaluationError(msg)
-      class(condition) <- c(class(res), class(condition))
-      future$state <- "failed"
-      future$value <- condition
-    } else {
-      future$value <- res
-      future$state <- "finished"
-    }
-  } else {
-    stopifnot(inherits(res, "FutureResult"))
-    future$value <- res
-    future$state <- "finished"
+  if (!inherits(result, "FutureResult")) {
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    stop(FutureError(sprintf("Internal error: Unexpected value retrieve a %s future (%s): %s", result, class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
   }
-  res <- NULL ## Not needed anymore
+  
+  future$result <- result
 
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name"))
@@ -343,7 +331,7 @@ value.ClusterFuture <- function(future, ...) {
     clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
   }
 
-  NextMethod("value")
+  result
 }
 
 

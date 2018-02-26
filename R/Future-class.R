@@ -268,6 +268,9 @@ result <- function(...) UseMethod("result")
 #' @export
 #' @keywords internal
 result.Future <- function(future, ...) {
+  result <- future$result
+  if (inherits(result, "FutureResult")) return(result)
+  
   if (future$state == "created") {
     future <- run(future)
   }
@@ -376,6 +379,8 @@ resolved.Future <- function(x, ...) {
   ## Signal conditions early, iff specified for the given future
   signalEarly(x, ...)
 
+  if (inherits(future$result, "FutureResult")) return(TRUE)
+  
   x$state %in% c("finished", "failed", "interrupted")
 }
 
