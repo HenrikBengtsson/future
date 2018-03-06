@@ -17,19 +17,21 @@ Version: 3.1.0
 
 Version: 3.1.1
 
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking:
-      'sfit' 'expectile' 'HaarSeg' 'mpcbs'
-    ```
+## Newly fixed
 
 *   checking installed package size ... NOTE
     ```
       installed size is 1025.6Mb
       sub-directories of 1Mb or more:
         R  1024.5Mb
+    ```
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      'sfit' 'expectile' 'HaarSeg' 'mpcbs'
     ```
 
 # batchtools
@@ -41,26 +43,26 @@ Version: 0.9.8
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/home/henrik/tmp/1038095.cclc01.som.ucsf.edu/Rtmp2pmhQb/registry57b874dd8a436' using cluster functions 'Interactive'
     No configuration file found
-    Created registry in '/home/henrik/tmp/1038095.cclc01.som.ucsf.edu/Rtmp2pmhQb/registry57b875024b2fe' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e34e3dabd' using cluster functions 'Interactive'
     No configuration file found
-    Created registry in '/home/henrik/tmp/1038095.cclc01.som.ucsf.edu/Rtmp2pmhQb/registry57b87545728a5' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e5679539f' using cluster functions 'Interactive'
+    No configuration file found
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e6f2ce5d1' using cluster functions 'Interactive'
+    No configuration file found
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e17720694' using cluster functions 'Interactive'
     Error in (function (value)  : Ooops.
-    Error producing PDF.
+    You are recommended to install the tinytex package to build PDF.FALSE
+    This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6)
+     %&-line parsing enabled.
+    entering extended mode
     ! LaTeX Error: File `ifxetex.sty' not found.
     
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    
-    Enter file name: 
     ! Emergency stop.
     <read *> 
-             
-    l.5 \usepackage
     
     Error: processing vignette 'batchtools.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 43
+    Failed to compile batchtools.tex. See batchtools.log for more info.
     Execution halted
     ```
 
@@ -139,11 +141,37 @@ Version: 1.0.2
     checking a package with encoding  'UTF-8'  in an ASCII locale
     ```
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Loading required package: nloptr
+    Loading required package: quadprog
+    Loading required package: gam
+    Loading required package: splines
+    Loading required package: foreach
+    Loaded gam 1.15
+    
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Quitting from lines 492-499 (using_drtmle.Rmd) 
+    Error: processing vignette 'using_drtmle.Rmd' failed with diagnostics:
+    matrix D in quadratic function is not positive definite!
+    Execution halted
+    ```
+
 # fiery
 
 Version: 1.1.0
 
-## In both
+## Newly fixed
 
 *   checking tests ...
     ```
@@ -153,19 +181,21 @@ Version: 1.1.0
              onWSOpen = private$websocket_logic))
       10: stop("Failed to create server")
       
-      
       == testthat results  ===========================================================
-      OK: 240 SKIPPED: 0 FAILED: 6
-      1. Error: life cycle events get fired (@test-Fire.R#168) 
+      OK: 236 SKIPPED: 0 FAILED: 7
+      1. Error: life cycle events get fired (@test-Fire.R#171) 
       2. Error: errors in start and resume gets caught (@test-Fire.R#288) 
       3. Error: futures can be added and called (@test-Fire.R#317) 
       4. Error: ignite is blocked during run (@test-Fire.R#404) 
       5. Error: external triggers are fired (@test-Fire.R#424) 
       6. Error: showcase opens a browser (@test-Fire.R#453) 
+      7. Error: is_running works (@test-Fire.R#529) 
       
       Error: testthat unit tests failed
       Execution halted
     ```
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
