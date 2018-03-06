@@ -26,9 +26,14 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   if (inherits(message, "Future")) {
     future <- message
-    value <- future$value
-    stopifnot(inherits(value, "condition"))
-    cond <- value
+    result <- future$result
+    if (inherits(result, "FutureResult")) {
+      cond <- result$condition
+    } else {
+      ## BACKWARD COMPATIBILITY
+      cond <- future$value
+    }
+    stopifnot(inherits(cond, "condition"))
     message <- conditionMessage(cond)
   } else if (inherits(message, "condition")) {
     cond <- message
@@ -60,9 +65,16 @@ print.FutureCondition <- function(x, ...) {
       cat("\n")
     }
 
-    cond <- future$value
+    result <- future$result
+    if (inherits(result, "FutureResult")) {
+      cond <- result$condition
+    } else {
+      ## BACKWARD COMPATIBILITY
+      cond <- future$value
+    }
     if (inherits(cond, "condition")) {
-      fcalls <- cond$traceback
+      fcalls <- result$calls
+      if (is.null(fcalls)) fcalls <- cond$traceback ## BACKWARD COMPATIBILITY
       if (!is.null(fcalls)) {
         cat("Future call stack:\n")
         print(fcalls)

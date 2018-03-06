@@ -4,34 +4,34 @@ Version: 3.1.0
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+      installed size is 1028.1Mb
+      sub-directories of 1Mb or more:
+        R            1024.9Mb
+        help            1.1Mb
+        testScripts     1.2Mb
     ```
 
 # aroma.core
 
 Version: 3.1.1
 
-## In both
+## Newly fixed
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+      installed size is 1025.6Mb
+      sub-directories of 1Mb or more:
+        R  1024.5Mb
     ```
+
+## In both
 
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
+      'sfit' 'expectile' 'HaarSeg' 'mpcbs'
     ```
 
 # batchtools
@@ -40,86 +40,40 @@ Version: 0.9.8
 
 ## In both
 
-*   checking top-level files ... WARNING
-    ```
-    Conversion of ‘README.md’ failed:
-    pandoc: Could not fetch http://joss.theoj.org/papers/10.21105/joss.00135/status.svg
-    FailedConnectionException2 "joss.theoj.org" 80 False getAddrInfo: does not exist (Name or service not known)
-    ```
-
-*   checking Rd cross-references ... WARNING
-    ```
-    Unknown package ‘Rmpi’ in Rd xrefs
-    ```
-
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/hb/Rtmp3BgFfE/registry73776f819424' using cluster functions 'Interactive'
     No configuration file found
-    Created registry in '/scratch/hb/Rtmp3BgFfE/registry73773e4c32b4' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e34e3dabd' using cluster functions 'Interactive'
     No configuration file found
-    Created registry in '/scratch/hb/Rtmp3BgFfE/registry737742f4c707' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e5679539f' using cluster functions 'Interactive'
+    No configuration file found
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e6f2ce5d1' using cluster functions 'Interactive'
+    No configuration file found
+    Created registry in '/scratch/henrik/1069740.cclc01.som.ucsf.edu/RtmpweyJmX/registry35d9e17720694' using cluster functions 'Interactive'
     Error in (function (value)  : Ooops.
-    ! LaTeX Error: File `framed.sty' not found.
+    You are recommended to install the tinytex package to build PDF.FALSE
+    This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6)
+     %&-line parsing enabled.
+    entering extended mode
+    ! LaTeX Error: File `ifxetex.sty' not found.
     
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    
-    Enter file name: 
     ! Emergency stop.
     <read *> 
-             
-    l.42 \definecolor
     
-    pandoc: Error producing PDF
     Error: processing vignette 'batchtools.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 43
+    Failed to compile batchtools.tex. See batchtools.log for more info.
     Execution halted
-    ```
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Michel Lang <michellang@gmail.com>’
-    
-    Uses the superseded package: ‘snow’
-    
-    This build time stamp is over a month old.
     ```
 
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘doMPI’
+    Package suggested but not available for checking: 'doMPI'
     ```
 
-# biotmle
-
-Version: 1.3.0
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-    Maintainer: ‘Nima Hejazi <nhejazi@berkeley.edu>’
-    
-    The Description field should not start with the package name,
-      'This package' or similar.
-    
-    This build time stamp is over a month old.
-    ```
-
-*   checking DESCRIPTION meta-information ... NOTE
-    ```
-    Author field differs from that derived from Authors@R
-      Author:    ‘Nima Hejazi [aut, cre, cph], Alan Hubbard [aut], Weixin Cai [ctb]’
-      Authors@R: ‘Nima Hejazi [aut, cre, cph] (0000-0002-7127-2789), Alan Hubbard [aut] (0000-0002-3769-0127), Weixin Cai [ctb] (0000-0003-2680-3066)’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘DBI’ ‘Matrix’ ‘SuperLearner’ ‘biotmleData’
-      All declared Imports should be used.
+    Package unavailable to check Rd xrefs: 'Rmpi'
     ```
 
 # brms
@@ -128,11 +82,9 @@ Version: 2.1.0
 
 ## In both
 
-*   checking top-level files ... WARNING
+*   checking examples ... WARNING
     ```
-    Conversion of ‘README.md’ failed:
-    pandoc: Could not fetch https://travis-ci.org/paul-buerkner/brms.svg?branch=master
-    FailedConnectionException2 "travis-ci.org" 443 True getAddrInfo: does not exist (Name or service not known)
+    checking a package with encoding  'UTF-8'  in an ASCII locale
     ```
 
 *   checking re-building of vignette outputs ... WARNING
@@ -158,85 +110,97 @@ Version: 2.1.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.4Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
         R     2.2Mb
         doc   2.3Mb
     ```
 
-# doFuture
+# civis
 
-Version: 0.6.0
+Version: 1.2.0
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 1026.3Mb
+      sub-directories of 1Mb or more:
+        R     1024.4Mb
+        help     1.4Mb
+    ```
+
+# drtmle
+
+Version: 1.0.2
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking examples ... WARNING
     ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    This build time stamp is over a month old.
+    checking a package with encoding  'UTF-8'  in an ASCII locale
     ```
-
-# drake
-
-Version: 5.0.0
-
-## In both
 
 *   checking re-building of vignette outputs ... WARNING
     ```
-    Error in re-building vignettes:
-      ...
-    Error building target my_target: unusual error
-    Quitting from lines 17-25 (example-gsp.Rmd) 
-    Error: processing vignette 'example-gsp.Rmd' failed with diagnostics:
-    package 'Ecfun' could not be loaded
+    ...
+    Loading required package: nloptr
+    Loading required package: quadprog
+    Loading required package: gam
+    Loading required package: splines
+    Loading required package: foreach
+    Loaded gam 1.15
+    
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Error : 'predict.gam' is not an exported object from 'namespace:gam'
+    Quitting from lines 492-499 (using_drtmle.Rmd) 
+    Error: processing vignette 'using_drtmle.Rmd' failed with diagnostics:
+    matrix D in quadratic function is not positive definite!
     Execution halted
-    ```
-
-*   checking DESCRIPTION meta-information ... NOTE
-    ```
-    Authors@R field gives persons with non-standard roles:
-      Ben Marwick <bmarwick@uw.edu> [rev]: rev
-      Peter Slaughter <slaughter@nceas.ucsb.edu> [rev]: rev
     ```
 
 # fiery
 
 Version: 1.1.0
 
+## Newly fixed
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in 'tests/testthat.R' failed.
+    Last 13 lines of output:
+             onWSOpen = private$websocket_logic))
+      10: stop("Failed to create server")
+      
+      == testthat results  ===========================================================
+      OK: 236 SKIPPED: 0 FAILED: 7
+      1. Error: life cycle events get fired (@test-Fire.R#171) 
+      2. Error: errors in start and resume gets caught (@test-Fire.R#288) 
+      3. Error: futures can be added and called (@test-Fire.R#317) 
+      4. Error: ignite is blocked during run (@test-Fire.R#404) 
+      5. Error: external triggers are fired (@test-Fire.R#424) 
+      6. Error: showcase opens a browser (@test-Fire.R#453) 
+      7. Error: is_running works (@test-Fire.R#529) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘desc’
+    Namespace in Imports field not imported from: 'desc'
       All declared Imports should be used.
-    ```
-
-# future.BatchJobs
-
-Version: 0.15.0
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    This build time stamp is over a month old.
-    ```
-
-# future.batchtools
-
-Version: 0.6.0
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    This build time stamp is over a month old.
     ```
 
 # googleComputeEngineR
@@ -245,26 +209,30 @@ Version: 0.2.0
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Maintainer: ‘Mark Edmondson <r@sunholo.com>’
-    
-    This build time stamp is over a month old.
+      installed size is 1027.0Mb
+      sub-directories of 1Mb or more:
+        doc          1024.3Mb
+        dockerfiles     2.3Mb
     ```
 
 # kernelboot
 
-Version: 0.1.3
+Version: 0.1.4
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking examples ... WARNING
     ```
-    Maintainer: ‘Tymoteusz Wolodzko <twolodzko+kernelboot@gmail.com>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+    checking a package with encoding  'UTF-8'  in an ASCII locale
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 1024.1Mb
+      sub-directories of 1Mb or more:
+        libs  1024.0Mb
     ```
 
 # lidR
@@ -276,11 +244,11 @@ Version: 1.4.1
 *   checking package dependencies ... ERROR
     ```
     Packages required but not available:
-      ‘rgl’ ‘rgeos’ ‘gdalUtils’ ‘mapview’ ‘mapedit’
+      'rgeos' 'gdalUtils' 'mapview' 'mapedit'
     
-    Package suggested but not available for checking: ‘rgdal’
+    Package suggested but not available for checking: 'rgdal'
     
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    See section 'The DESCRIPTION file' in the 'Writing R Extensions'
     manual.
     ```
 
@@ -290,47 +258,11 @@ Version: 0.0.2
 
 ## In both
 
-*   checking top-level files ... WARNING
-    ```
-    Conversion of ‘README.md’ failed:
-    pandoc: Could not fetch https://zenodo.org/badge/19045/etheleon/metamaps.svg
-    FailedConnectionException2 "zenodo.org" 443 True getAddrInfo: does not exist (Name or service not known)
-    ```
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Wesley GOI <wesley@bic.nus.edu.sg>’
-    
-    This build time stamp is over a month old.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘Matrix’ ‘shiny’
+      'Matrix' 'shiny'
       All declared Imports should be used.
-    ```
-
-# methyvim
-
-Version: 1.0.0
-
-## Newly broken
-
-*   R CMD check timed out
-    
-
-# multiApply
-
-Version: 0.0.1
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Alasdair Hunter <alasdair.hunter@bsc.es>’
-    
-    This build time stamp is over a month old.
     ```
 
 # origami
@@ -339,30 +271,15 @@ Version: 0.8.0
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking examples ... WARNING
     ```
-    Maintainer: ‘Jeremy Coyle <jeremyrcoyle@gmail.com>’
-    
-    This build time stamp is over a month old.
+    checking a package with encoding  'UTF-8'  in an ASCII locale
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘methods’
+    Namespace in Imports field not imported from: 'methods'
       All declared Imports should be used.
-    ```
-
-# pbmcapply
-
-Version: 1.2.4
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Kevin kuang <kvn.kuang@mail.utoronto.ca>’
-    
-    This build time stamp is over a month old.
     ```
 
 # penaltyLearning
@@ -371,14 +288,11 @@ Version: 2017.12.08
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Maintainer: ‘Toby Dylan Hocking <toby.hocking@r-project.org>’
-    
-    Version contains leading zeroes (2017.12.08)
-    Version contains large components (2017.12.08)
-    
-    This build time stamp is over a month old.
+      installed size is 1024.2Mb
+      sub-directories of 1Mb or more:
+        data  1024.0Mb
     ```
 
 # PSCBS
@@ -387,113 +301,26 @@ Version: 0.63.0
 
 ## In both
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+      installed size is 1025.9Mb
+      sub-directories of 1Mb or more:
+        data-ex  1024.0Mb
     ```
 
 # QDNAseq
 
-Version: 1.14.0
+Version: 1.12.0
 
 ## In both
 
 *   checking for missing documentation entries ... WARNING
     ```
     Undocumented code objects:
-      ‘exportVCF’
+      'exportVCF'
     All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Daoud Sie <d.sie@vumc.nl>’
-    
-    The Title field should be in title case, current version then in title case:
-    ‘Quantitative DNA sequencing for chromosomal aberrations’
-    ‘Quantitative DNA Sequencing for Chromosomal Aberrations’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
-    ```
-
-*   checking re-building of vignette outputs ... NOTE
-    ```
-    ...
-    25324424808509135.336.738865427951052207.660.738865426552920207.650
-    FINISHED!
-    
-    Total time:0minutes
-    
-    Error in texi2dvi(file = file, pdf = TRUE, clean = clean, quiet = quiet,  : 
-      Running 'texi2dvi' on 'QDNAseq.tex' failed.
-    LaTeX errors:
-    ! LaTeX Error: File `titlesec.sty' not found.
-    
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    
-    ! Emergency stop.
-    <read *> 
-             
-    l.95 \makeatletter
-                      ^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    Calls: buildVignettes -> texi2pdf -> texi2dvi
-    Execution halted
-    ```
-
-# R.filesets
-
-Version: 2.11.0
-
-## In both
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Henrik Bengtsson <henrikb@braju.com>’
-    
-    This build time stamp is over a month old.
-    ```
-
-# robotstxt
-
-Version: 0.5.2
-
-## In both
-
-*   checking top-level files ... WARNING
-    ```
-    Conversion of ‘README.md’ failed:
-    pandoc: Could not fetch https://api.travis-ci.org/ropenscilabs/robotstxt.svg?branch=master
-    FailedConnectionException2 "api.travis-ci.org" 443 True getAddrInfo: does not exist (Name or service not known)
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    
-     google.com                      Quitting from lines 48-51 (using_robotstxt.Rmd) 
-    Error: processing vignette 'using_robotstxt.Rmd' failed with diagnostics:
-    Could not resolve host: google.com; Name or service not known
-    Execution halted
-    ```
-
-*   checking CRAN incoming feasibility ... NOTE
-    ```
-    Maintainer: ‘Peter Meissner <retep.meissner@gmail.com>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+    See chapter 'Writing R documentation files' in the 'Writing R
+    Extensions' manual.
     ```
 
 # sperrorest
@@ -502,52 +329,34 @@ Version: 2.1.1
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             magrittr, e1071) at testthat/test-sperrorest.R:5
-      2: sapply(packages, p_load_single, install = install)
-      3: lapply(X = X, FUN = FUN, ...)
-      4: FUN(X[[i]], ...)
-      5: p_install(package, character.only = TRUE, ...)
-      6: try_bioc(package)
-      7: source("http://bioconductor.org/biocLite.R")
-      8: file(filename, "r", encoding = encoding)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 10 SKIPPED: 33 FAILED: 1
-      1. Error: (unknown) (@test-sperrorest.R#5) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking top-level files ... WARNING
-    ```
-    Conversion of ‘README.md’ failed:
-    pandoc: Could not fetch http://www.repostatus.org/badges/latest/inactive.svg
-    FailedConnectionException2 "www.repostatus.org" 80 False getAddrInfo: does not exist (Name or service not known)
-    ```
-
 *   checking re-building of vignette outputs ... WARNING
     ```
+    ...
     Error in re-building vignettes:
       ...
-    pandoc: Could not fetch https://raw.githubusercontent.com/pat-s/sperrorest/master/inst/figure/resamp-plot.png
-    FailedConnectionException2 "raw.githubusercontent.com" 443 True getAddrInfo: does not exist (Name or service not known)
+    Could not fetch https://raw.githubusercontent.com/pat-s/sperrorest/master/inst/figure/resamp-plot.png
+    HttpExceptionRequest Request {
+      host                 = "raw.githubusercontent.com"
+      port                 = 443
+      secure               = True
+      requestHeaders       = []
+      path                 = "/pat-s/sperrorest/master/inst/figure/resamp-plot.png"
+      queryString          = ""
+      method               = "GET"
+      proxy                = Nothing
+      rawBody              = False
+      redirectCount        = 10
+      responseTimeout      = ResponseTimeoutDefault
+      requestVersion       = HTTP/1.1
+    }
+     (InternalException (HandshakeFailed (Error_Protocol ("certificate has unknown CA",True,UnknownCa))))
     Error: processing vignette 'spatial-modeling-use-case.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 67
+    pandoc document conversion failed with error 61
     Execution halted
     ```
 
-*   checking CRAN incoming feasibility ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Maintainer: ‘Alexander Brenning <alexander.brenning@uni-jena.de>’
-    
-    The Date field is over a month old.
-    
-    This build time stamp is over a month old.
+    Package suggested but not available for checking: 'RSAGA'
     ```
 

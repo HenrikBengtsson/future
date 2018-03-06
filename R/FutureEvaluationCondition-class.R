@@ -24,14 +24,15 @@ FutureEvaluationCondition <- function(message, call = NULL, future = NULL, outpu
   cond <- NULL
   if (inherits(message, "Future")) {
     future <- message
-    value <- future$value
-    stopifnot(inherits(value, "condition"))
-    cond <- value
+    result <- result(future)
+    cond <- result$condition
     message <- conditionMessage(cond)
   } else if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
   }
+  
+  stopifnot(inherits(cond, "condition"))
 
   ## Create a condition object
   structure(list(message = as.character(message), cond = cond, call = call), 
@@ -56,7 +57,8 @@ print.FutureEvaluationCondition <- function(x, ...) {
       cat("\n")
     }
 
-    cond <- future$value
+    result <- result(future)
+    cond <- future$condition
     if (inherits(cond, "condition")) {
       fcalls <- cond$traceback
       if (!is.null(fcalls)) {

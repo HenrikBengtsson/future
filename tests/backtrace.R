@@ -60,7 +60,11 @@ stopifnot(inherits(res, "error"))
 message("- No call stack ...")
 f <- future({ 42L; stop("Woops") })
 v <- value(f, signal = FALSE)
-f$value$traceback <- NULL ## Remove call stack
+
+## Remove call stack
+f$result$calls <- NULL
+f$value$traceback <- f$value$calls <- NULL ## BACKWARD COMPATIBILITY
+
 res <- tryCatch(backtrace(f), error = identity)
 print(res)
 stopifnot(inherits(res, "error"))

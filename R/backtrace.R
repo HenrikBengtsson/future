@@ -25,12 +25,13 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     stop("No condition has been caught because the future is unresolved: ", sQuote(expr))
   }
 
-  value <- future$value
-  if (!inherits(value, "condition")) {
+  result <- result(future)
+  condition <- result$condition
+  if (!inherits(condition, "condition")) {
     stop("No condition was caught for this future: ", sQuote(expr))
   }
 
-  calls <- value$traceback
+  calls <- result$calls
   if (is.null(calls)) {
     stop("No call trace was recorded for this future: ", sQuote(expr))
   }

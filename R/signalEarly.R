@@ -8,27 +8,32 @@ signalEarly <- function(future, collect = TRUE, ...) {
   if (!earlySignal) return(future)
 
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("signalEarly(): Retrieving value ...")
+  if (debug) mdebug("signalEarly() ...")
 
-  ## Collect value?
-  if (collect) {
-    if (debug) mdebug("signalEarly(): v <- value(f, signal = FALSE)")
-    value <- value(future, signal = FALSE)
-  } else {
-    if (debug) mdebug("signalEarly(): v <- f$value")
-    value <- future$value
+  ## Nothing to do?
+  if (!collect && !resolved(future)) {
+    if (debug) mdebug("Future not resolved and collect = FALSE. Skipping")
+    return(future)
   }
-
-  if (debug) {
-    mdebug("signalEarly(): class(v) = c(%s)", paste(sQuote(class(value)), collapse = ", "))
-    mdebug("signalEarly(): Retrieving value ... DONE")
+  
+  result <- result(future)
+  stopifnot(inherits(result, "FutureResult"))
+  
+  condition <- result$condition
+  
+  ## Nothing to do?
+  if (is.null(condition)) {
+    if (debug) mdebug("signalEarly() ... DONE")
+    return(future)
   }
+  
+  if (debug) mdebug("signalEarly(): Condition class = c(%s)", paste(sQuote(class(condition)), collapse = ", "))
 
-  ## Was a condition caught?
-  if (!inherits(value, "condition")) return(future)
+  ## Sanity check
+  stopifnot(inherits(condition, "condition"))
 
-  if (debug) mdebug("signalEarly(): signalCondition(v)")
   resignalCondition(future)
+  
   if (debug) mdebug("signalEarly() ... DONE")
 
   invisible(future)
@@ -41,26 +46,22 @@ resignalCondition <- function(future, ...) {
     future = future))
   }
 
-  value <- future$value
+  result <- result(future)
+  stopifnot(inherits(result, "FutureResult"))
   
-  ## Was a condition caught?
-  if (!inherits(value, "condition")) {
-    stop(FutureError("Internal error: Future did not produce a condition",
-    future = future))
-  }
+  condition <- result$condition
+  stopifnot(inherits(condition, "condition"))
 
-  cond <- value
-  
   ## Signal detected condition
-  if (inherits(cond, "error")) {
-    stop(FutureEvaluationError(future))
-  } else if (inherits(cond, "warning")) {
-    warning(FutureEvaluationWarning(future))
-  } else if (inherits(cond, "message")) {
-    message(FutureEvaluationMessage(future))
+  if (inherits(condition, "error")) {
+    stop(condition)
+  } else if (inherits(condition, "warning")) {
+    warning(condition)
+  } else if (inherits(condition, "message")) {
+    message(condition)
     message("\n") ## TODO: Remove this? /HB 2018-02-03
-  } else {
-    signalCondition(value)
+  } else if (inherits(condition, "condition")) {
+    signalCondition(condition)
   }
   
   invisible(future)
