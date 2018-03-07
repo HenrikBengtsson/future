@@ -311,6 +311,8 @@ result.ClusterFuture <- function(future, ...) {
   }
   
   future$result <- result
+  ## BACKWARD COMPATIBILITY
+  future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name"))

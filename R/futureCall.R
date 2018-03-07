@@ -7,13 +7,84 @@
 #'
 #' @rdname future
 #' @export
-futureCall <- function(FUN, args = NULL, envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, evaluator = plan("next"), ...) {
+futureCall <- function(FUN, args = NULL, envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, packages = NULL, evaluator = plan("next"), ...) {
   stopifnot(is.function(FUN))
   stopifnot(is.list(args))
 
-  envirT <- new.env(parent = envir)
-  envirT$FUN <- FUN
-  envirT$args <- args
+  debug <- getOption("future.debug", FALSE)  
+  if (debug) mdebug("futureCall() ...")
+  
+  ## NOTE TO SELF: We'd ideally have an 'envir' argument also for
+  ## futureCall(), cf. future().  However, it's not yet clear to me how
+  ## to do this, because we need to have globalsOf() to search for globals
+  ## from the current environment in order to identify the globals of 
+  ## arguments 'FUN' and 'args', cf. future.apply::future_lapply().
+  ## /HB 2018-03-06
+  envir <- environment()
+#  envir <- new.env(parent = envir)
 
-  future(do.call(what = FUN, args = args), substitute = TRUE, envir = envirT, lazy = lazy, seed = seed, globals = globals, evaluator = evaluator)
+  expr <- quote(do.call(what = FUN, args = args))
+  
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## 1. Global variables
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (is.logical(globals)) {
+    ## Gather all globals?
+    if (globals) {
+      if (debug) mdebug("Finding globals ...")
+
+#      expr <- do.call(call, args = c(list("FUN"), list(...)))
+      gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE)
+      globals <- gp$globals
+      packages <- unique(c(packages, gp$packages))
+      gp <- NULL
+      
+      if (debug) {
+        mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+        mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+        mdebug("Finding globals ... DONE")
+      }
+    } else {
+      ## globals = FALSE
+      globals <- c("FUN", "args")
+      globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
+    }
+  } else if (is.character(globals)) {
+    globals <- unique(c(globals, "FUN", "args"))
+    globals <- globalsByName(globals, envir = envir, mustExist = FALSE)
+  } else if (is.list(globals)) {
+    names <- names(globals)
+    if (length(globals) > 0 && is.null(names)) {
+      stop(FutureError("Invalid argument 'globals'. All globals must be named."))
+    }
+  } else {
+    stop(FutureError("Invalid argument 'globals': ", mode(globals)))
+  }
+  globals <- as.FutureGlobals(globals)
+  stopifnot(inherits(globals, "FutureGlobals"))
+  
+  names <- names(globals)
+  if (!is.element("FUN", names)) globals$FUN <- FUN
+  if (!is.element("args", names)) globals$args <- args
+
+  names <- setdiff(names(globals), c("FUN", "args"))
+  if (length(names) > 0) {
+    env <- environment(globals$FUN)
+    env <- new.env(parent = env)
+    environment(globals$FUN) <- env
+    for (name in names) {
+      env[[name]] <- globals[[name]]
+    }
+  }
+  
+  if (debug) {
+    mdebug("Globals to be used in the future:")
+    mdebug(paste(capture.output(str(globals)), collapse = "\n"))
+  }
+
+  f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, ..., evaluator = evaluator)
+
+  if (debug) mdebug("futureCall() ... DONE")
+  
+  f
 }

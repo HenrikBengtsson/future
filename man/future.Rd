@@ -20,7 +20,8 @@ futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
 x \%<-\% value
 
 futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
-  seed = NULL, globals = TRUE, evaluator = plan("next"), ...)
+  seed = NULL, globals = TRUE, packages = NULL,
+  evaluator = plan("next"), ...)
 }
 \arguments{
 \item{expr, value}{An \R \link[base]{expression} to be evaluated.}

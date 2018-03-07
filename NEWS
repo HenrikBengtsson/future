@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.7.0-9001 [2018-03-05]
+Version: 1.7.0-9001 [2018-03-06]
 
 SIGNIFICANT CHANGES:
 
@@ -33,6 +33,11 @@ BUG FIXES:
  o value() for ClusterFuture no longer produces a FutureEvaluationError, but
    FutureError, if the connection to the R worker has changed (which happens
    if something as drastic as closeAllConnections() have been called.)
+
+ o futureCall(..., globals = FALSE) would produce "Error: second argument must
+   be a list", because the explicit arguments where not exported.  This could
+   also happen when specifying globals by name or as a named list.  Did a major
+   overhaul of how futureCall() handles globals.
 
 DEPRECATED AND DEFUNCT:
 
