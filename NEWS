@@ -5,13 +5,6 @@ Version: 1.7.0-9001 [2018-03-06]
 
 SIGNIFICANT CHANGES:
 
- o Add support for a richer set of results returned by resolved futures.
-   Previously only the value of the future expression, which could be a
-   captured error to be resignaled, was expected.  Now a FutureResult object
-   may be returned which will be able to contain further information of the
-   evaluation of the future, e.g. captured output, timing and memory
-   benchmarks etc.
-
  o Errors produces when evaluating futures are now (re-)signaled on the master
    R process "as is" with the original content and class attributes.
  
@@ -19,7 +12,16 @@ NEW FEATURES:
 
  o More errors related to orchestration of futures are of class FutureError to
    make it easier to distinguish them from future evaluation errors.
- 
+   
+ o Add support for a richer set of results returned by resolved futures.
+   Previously only the value of the future expression, which could be a
+   captured error to be resignaled, was expected. Now a FutureResult object
+   may be returned instead.  Although not supported in this release, this
+   update opens up for reporting on additional information from the evaluation
+   of futures, e.g. captured output, timing and memory benchmarks etc. Before
+   that can take place, existing future backend packages will have to be
+   updated accordingly.
+   
 BUG FIXES:
 
  o value() for MulticoreFuture would not produce an error when a (forked)
@@ -36,8 +38,7 @@ BUG FIXES:
 
  o futureCall(..., globals = FALSE) would produce "Error: second argument must
    be a list", because the explicit arguments where not exported.  This could
-   also happen when specifying globals by name or as a named list.  Did a major
-   overhaul of how futureCall() handles globals.
+   also happen when specifying globals by name or as a named list.
 
 DEPRECATED AND DEFUNCT:
 
