@@ -27,7 +27,8 @@ signalEarly <- function(future, collect = TRUE, ...) {
     return(future)
   }
   
-  if (debug) mdebug("signalEarly(): Condition class = c(%s)", paste(sQuote(class(condition)), collapse = ", "))
+  if (debug) mdebug("signalEarly(): Condition class = c(%s)",
+                    paste(sQuote(class(condition)), collapse = ", "))
 
   ## Sanity check
   stopifnot(inherits(condition, "condition"))
@@ -44,7 +45,7 @@ resignalCondition <- function(future, ...) {
   if (!future$state %in% c("finished", "failed")) {
     stop(FutureError(
       sprintf(
-        "Internal error: %s has not yet been resolved (state = %s)",
+        "Internal error: Cannot resignal future condition. %s has not yet been resolved (state = %s)",
         class(future)[1], paste(sQuote(future$state), collapse = ", ")),
       future = future))
   }
