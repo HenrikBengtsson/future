@@ -42,8 +42,11 @@ signalEarly <- function(future, collect = TRUE, ...) {
 resignalCondition <- function(future, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
-    stop(FutureError("Internal error: Future has not yet been resolved",
-    future = future))
+    stop(FutureError(
+      sprintf(
+        "Internal error: %s has not yet been resolved (state = %s)",
+        class(future)[1], paste(sQuote(future$state), collapse = ", ")),
+      future = future))
   }
 
   result <- result(future)
