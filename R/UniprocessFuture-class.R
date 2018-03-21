@@ -70,7 +70,7 @@ run.UniprocessFuture <- function(future, ...) {
 
   ## Run future
   future$state <- 'running'
-  future$result <- eval(expr, envir = envir)
+  future$result <- eval(expr, envir = envir, enclos = baseenv())
   future$state <- 'finished'
 
   if (debug) mdebug("%s started (and completed)", class(future)[1])

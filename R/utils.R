@@ -88,9 +88,9 @@ gassign <- local(function(name, value, envir = .GlobalEnv) {
 })
 
 ## Evaluates an expression in global environment.
-geval <- local(function(expr, substitute = FALSE, envir = .GlobalEnv, ...) {
+geval <- local(function(expr, substitute = FALSE, envir = .GlobalEnv, enclos = baseenv(), ...) {
   if (substitute) expr <- substitute(expr)
-  eval(expr, envir = envir)
+  eval(expr, envir = envir, enclos = enclos)
 })
 
 ## Vectorized version of require() with bells and whistles

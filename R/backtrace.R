@@ -16,7 +16,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
       target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
       get_future(target, mustExist = TRUE)
     }, simpleError = function(ex) {
-      eval(expr, envir = envir)
+      eval(expr, envir = envir, enclos = baseenv())
     })
     stopifnot(inherits(future, "Future"))    
   }
