@@ -40,6 +40,9 @@ BUG FIXES:
    be a list", because the explicit arguments where not exported.  This could
    also happen when specifying globals by name or as a named list.
 
+ o Nested futures was too conservative in requiring global variables to exist,
+   even when they were was false positives.
+
 DEPRECATED AND DEFUNCT:
 
  o future::future_lapply() is formally deprecated. Please use the one in the

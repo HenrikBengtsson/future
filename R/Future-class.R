@@ -569,7 +569,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "error"), enter = NULL, exit = NULL, version = "1.7") {
+makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
     expr <- bquote(local(.(expr)))
