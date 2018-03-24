@@ -33,7 +33,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else {
     ## Default for 'future.globals.onMissing':
     ## Note: It's possible to switch between 'ignore' and 'error'
-    ##       at any time. Tests handles both cases. /HB 2016-06-18
+    ##       at any time. Tests handle both cases. /HB 2016-06-18
     globals.onMissing <- getOption("future.globals.onMissing", "ignore")
     globals.onMissing <- match.arg(globals.onMissing, choices = c("error", "ignore"))
     mustExist <- is.element(globals.onMissing, "error")
