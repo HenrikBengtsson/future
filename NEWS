@@ -40,7 +40,7 @@ BUG FIXES:
    be a list", because the explicit arguments where not exported.  This could
    also happen when specifying globals by name or as a named list.
 
- o Nested futures was too conservative in requiring global variables to exist,
+ o Nested futures were too conservative in requiring global variables to exist,
    even when they were was false positives.
 
 DEPRECATED AND DEFUNCT:
@@ -48,9 +48,9 @@ DEPRECATED AND DEFUNCT:
  o future::future_lapply() is formally deprecated. Please use the one in the
    future.apply package instead.
   
- o Recentently introduced FutureEvaluationCondition classes are deprecated,
+ o Recently introduced FutureEvaluationCondition classes are deprecated,
    because they no longer serve a purpose since future evaluation conditions
-   are now signalled as is.
+   are now signaled as is.
    
 
 Version: 1.7.0 [2018-02-10]
@@ -77,7 +77,7 @@ NEW FEATURES:
    'cl' is a basic R list rather than a 'cluster' list early on.
 
  o Added %packages% to explicitly control packages to be attached when a
-   future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
+   future is resolved, e.g. y %<-% { YT[2] } %packages% "data.table".
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
 
@@ -150,7 +150,7 @@ NEW FEATURES:
 
  o Now plan() accepts also strings such as "future::cluster".
 
- o Now backtrace(x[[el]]) works also for non-environment 'x':s, e.g. lists.
+ o Now backtrace(x[[ER]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 
