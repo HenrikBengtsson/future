@@ -307,7 +307,7 @@ result.ClusterFuture <- function(future, ...) {
   if (!inherits(result, "FutureResult")) {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(FutureError(sprintf("Internal error: Unexpected value retrieve a %s future (%s): %s", result, class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
   }
   
   future$result <- result
