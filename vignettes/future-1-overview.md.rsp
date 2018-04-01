@@ -155,7 +155,7 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.  (In future 1.2.0 and before, there was also _lazy_ futures, which has now been deprecated in favor of `f <- future(..., lazy = TRUE)` and `v %<-% { ... } %lazy% TRUE`.)
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.
 
 
 #### Sequential Futures
@@ -454,9 +454,10 @@ Error in log(b) : non-numeric argument to mathematical function
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
-To see the _call_ that gave the error, we can use the `backtrace()` function(\*) on the future, i.e.
+To see the _last_ call in the call stack that gave the error, we can use the `backtrace()` function(\*) on the future, i.e.
 ```r
 > backtrace(a)
+[[1]]
 log(a)
 ```
 
@@ -563,4 +564,4 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2017
+Copyright Henrik Bengtsson, 2015-2018

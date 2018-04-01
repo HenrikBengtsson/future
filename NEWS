@@ -22,7 +22,7 @@ NEW FEATURES:
    that can take place, existing future backend packages will have to be
    updated accordingly.
 
- o backtrace() returns only the call that produced the error.  It is
+ o backtrace() returns only the last call that produced the error.  It is
    unfortunately not possible to capture the call stack that led up to the
    error when evaluating a future expression.
    

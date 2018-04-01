@@ -14,7 +14,7 @@ backtrace(future, envir = parent.frame(), ...)
 \item{\dots}{Not used.}
 }
 \value{
-A call.
+A list with one call.
 }
 \description{
 Back trace the expression evaluated when a condition was caught

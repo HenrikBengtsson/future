@@ -136,7 +136,7 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.  (In future 1.2.0 and before, there was also _lazy_ futures, which has now been deprecated in favor of `f <- future(..., lazy = TRUE)` and `v %<-% { ... } %lazy% TRUE`.)
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.
 
 
 #### Sequential Futures

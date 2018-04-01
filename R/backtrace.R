@@ -4,7 +4,7 @@
 #' @param envir the environment where to locate the future.
 #' @param \dots Not used.
 #'
-#' @return A call.
+#' @return A list with one call.
 #'
 #' @section Known limitations:
 #' It is currently \emph{not} possible to infer the full call stack prior to
@@ -43,5 +43,5 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     stop("No call was recorded for this future: ", sQuote(expr))
   }
 
-  call
+  list(call)
 } ## backtrace()
