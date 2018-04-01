@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.7.0-9001 [2018-03-06]
+Version: 1.7.0-9001 [2018-04-01]
 
 SIGNIFICANT CHANGES:
 
@@ -21,6 +21,10 @@ NEW FEATURES:
    of futures, e.g. captured output, timing and memory benchmarks etc. Before
    that can take place, existing future backend packages will have to be
    updated accordingly.
+
+ o backtrace() returns only the call that produced the error.  It is
+   unfortunately not possible to capture the call stack that led up to the
+   error when evaluating a future expression.
    
 BUG FIXES:
 
