@@ -45,7 +45,7 @@ BUG FIXES:
    also happen when specifying globals by name or as a named list.
 
  o Nested futures were too conservative in requiring global variables to exist,
-   even when they were was false positives.
+   even when they were false positives.
 
 DEPRECATED AND DEFUNCT:
 
