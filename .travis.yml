@@ -22,6 +22,10 @@ matrix:
       r: release
     - os: linux
       r: devel
+      env:
+        - R_KEEP_PKG_SOURCE=yes
+        - _R_S3_METHOD_LOOKUP_BASEENV_AFTER_GLOBALENV_=true
+        - _R_S3_METHOD_LOOKUP_USE_TOPENV_AS_DEFENV_=true
     - os: osx
       r: oldrel
       r_github_packages:
@@ -32,8 +36,6 @@ matrix:
     - os: linux
       r: release
       r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
-#      r_github_packages:
-#        - jimhester/covr
       r_packages:
         - covr
       after_success:
