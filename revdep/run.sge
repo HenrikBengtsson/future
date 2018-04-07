@@ -1,5 +1,5 @@
 #!/bin/bash
-## Example: qsub -pe smp 24 -l mem_free=10G revdep/run.pbs
+## Example: qsub -pe smp 24 -l mem_free=30G revdep/run.pbs
 #$ -S /bin/bash
 #$ -R yes  # SGE host reservation, highly recommended
 #$ -cwd    # Current working directory

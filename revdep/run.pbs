@@ -1,5 +1,5 @@
 #!/bin/bash
-## Example: qsub -l nodes=1:ppn=24 -l vmem=10gb revdep/run.pbs
+## Example: qsub -l nodes=1:ppn=24 -l vmem=30gb revdep/run.pbs
 #PBS -j oe  # Join STDERR and STDOUT
 cd "$PBS_O_WORKDIR"
 

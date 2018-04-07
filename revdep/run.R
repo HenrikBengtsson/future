@@ -14,7 +14,7 @@ availableCores <- function() {
 
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
-unlink("revdep/check/aroma.affymetrix", recursive = TRUE)
+unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)
 
 revdep_check(bioc = TRUE, num_workers = availableCores(),
              timeout = as.difftime(30, units = "mins"), quiet = FALSE)
