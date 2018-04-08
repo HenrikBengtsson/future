@@ -1,11 +1,18 @@
-#' Back trace the expressions evaluated before a condition was caught
+#' Back trace the expression evaluated when a condition was caught
 #'
-#' @param future The future with a caught condition.
+#' @param future A future with a caught condition.
 #' @param envir the environment where to locate the future.
 #' @param \dots Not used.
 #'
-#' @return A list of calls.
+#' @return A list with one call.
 #'
+#' @section Known limitations:
+#' It is currently \emph{not} possible to infer the full call stack prior to
+#' when an error occurred.  It is only possible to get the call that produced
+#' the call.
+#' This is a limitation of \code{\link[base:tryCatch]{tryCatch()}} used
+#' internally for evaluating the future expression.
+#' 
 #' @export
 backtrace <- function(future, envir = parent.frame(), ...) {
   ## Argument 'expr':
@@ -16,7 +23,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
       target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
       get_future(target, mustExist = TRUE)
     }, simpleError = function(ex) {
-      eval(expr, envir = envir)
+      eval(expr, envir = envir, enclos = baseenv())
     })
     stopifnot(inherits(future, "Future"))    
   }
@@ -25,15 +32,16 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     stop("No condition has been caught because the future is unresolved: ", sQuote(expr))
   }
 
-  value <- future$value
-  if (!inherits(value, "condition")) {
+  result <- result(future)
+  condition <- result$condition
+  if (!inherits(condition, "condition")) {
     stop("No condition was caught for this future: ", sQuote(expr))
   }
 
-  calls <- value$traceback
-  if (is.null(calls)) {
-    stop("No call trace was recorded for this future: ", sQuote(expr))
+  call <- conditionCall(condition)
+  if (is.null(call)) {
+    stop("No call was recorded for this future: ", sQuote(expr))
   }
 
-  calls
+  list(call)
 } ## backtrace()

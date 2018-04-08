@@ -34,7 +34,8 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   }
   gp <- NULL
 
-  f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, job = NULL, ...)
+  f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, job = NULL, version = "1.8", ...)
+  f$.callResult <- TRUE
   structure(f, class = c("MulticoreFuture", class(f)))
 }
 
@@ -43,10 +44,10 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
 run.MulticoreFuture <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
   
-  if (future$state != 'created') {
+  if (future$state != "created") {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    stop(FutureError(sprintf("A future ('%s') can only be launched once.", label), future = future))
   }
   
   ## Assert that the process that created the future is
@@ -70,7 +71,7 @@ run.MulticoreFuture <- function(future, ...) {
   job <- do.call(parallel::mcparallel, args = future.args, envir = envir)
 
   future$job <- job
-  future$state <- 'running'
+  future$state <- "running"
 
   if (debug) mdebug("%s started", class(future)[1])
   
@@ -80,10 +81,10 @@ run.MulticoreFuture <- function(future, ...) {
 #' @export
 resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## Is future even launched?
-  if (x$state == 'created') return(FALSE)
+  if (x$state == "created") return(FALSE)
 
   ## Is value already collected?
-  if (x$state %in% c('finished', 'failed', 'interrupted')) return(TRUE)
+  if (!is.null(x$result)) return(TRUE)
 
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -106,14 +107,14 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   res
 }
 
-#' @export
-value.MulticoreFuture <- function(future, signal = TRUE, ...) {
-  ## Has the value already been collected?
-  if (future$state %in% c('finished', 'failed', 'interrupted')) {
-    return(NextMethod("value"))
-  }
 
-  if (future$state == 'created') {
+#' @export
+result.MulticoreFuture <- function(future, ...) {
+  ## Has the value already been collected?
+  result <- future$result
+  if (!is.null(result)) return(result)
+
+  if (future$state == "created") {
     future <- run(future)
   }
 
@@ -126,31 +127,33 @@ value.MulticoreFuture <- function(future, signal = TRUE, ...) {
   mccollect <- importParallel("mccollect")
   job <- future$job
   stopifnot(inherits(job, "parallelJob"))
-  res <- mccollect(job, wait = TRUE)[[1L]]
+  result <- mccollect(job, wait = TRUE)[[1L]]
 
-  ## SPECIAL: Check for fallback 'fatal error in wrapper code'
-  ## try-error from parallel:::mcparallel().  If detected, then
-  ## turn into an error with a more informative error message, cf.
-  ## https://github.com/HenrikBengtsson/future/issues/35
-  if (identical(res, structure("fatal error in wrapper code", class = "try-error"))) {
-    stop(FutureError(sprintf("Detected an error ('%s') by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed.", res, class(future)[1], sQuote(hexpr(future$expr))), future = future))
+  ## Sanity checks
+  if (!inherits(result, "FutureResult")) {
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    
+    ## SPECIAL: Check for fallback 'fatal error in wrapper code'
+    ## try-error from parallel:::mcparallel().  If detected, then
+    ## turn into an error with a more informative error message, cf.
+    ## https://github.com/HenrikBengtsson/future/issues/35
+    if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
+      msg <- result
+      stop(FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    }
+    
+    stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
   }
-
-  ## Update value and state
-  condition <- attr(res, "condition")
-  if (inherits(condition, "simpleError")) {
-    future$state <- 'failed'
-    future$value <- condition
-  } else {
-    future$value <- res
-    future$state <- 'finished'
-  }
-  res <- NULL ## Not needed anymore
+  
+  future$result <- result
+  ## BACKWARD COMPATIBILITY
+  future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## Remove from registry
   FutureRegistry("multicore", action = "remove", future = future)
 
-  NextMethod("value")
+  result
 }
 
 

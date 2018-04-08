@@ -78,36 +78,54 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
     stopifnot(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
   }
-  
+
   if (!is.null(packages)) {
     stopifnot(is.character(packages))
     packages <- unique(packages)
     stopifnot(!anyNA(packages), all(nzchar(packages)))
   }
-  
+
   args <- list(...)
-  
+
   core <- new.env(parent = emptyenv())
+
+  ## Version of future
+  version <- args$version
+  if (is.null(version)) version <- "1.7"
+  core$version <- version
+  core$.callResult <- FALSE  ## Temporary until "1.7" defunct
+
+  ## Future evaluation
   core$expr <- expr
   core$envir <- envir
   core$globals <- globals
   core$packages <- packages
-  core$owner <- session_uuid(attributes = TRUE)
-  core$lazy <- lazy
-  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
   core$seed <- seed
   core$local <- local
-  core$gc <- gc
-  core$earlySignal <- earlySignal
+  core$lazy <- lazy
+  core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+
+  ## Result
+  core$result <- NULL
+  ## IMPORTANT: Do *not* set 'value', because there are, checks for a future
+  ## being resolved or not that checks for its existance, e.g.
+  ## exists("value", envir = future).
+  ## UPDATE: 'value' is being replaced by 'result$value' /HB 2018-02-25
+  ## core$value <- NULL
+
+  ## Future miscellaneous
   core$label <- label
+  core$owner <- session_uuid(attributes = TRUE)
+  core$earlySignal <- earlySignal
+  core$gc <- gc
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
-  core$state <- 'created'
+  core$state <- "created"
 
   ## Additional named arguments
   for (key in names(args)) core[[key]] <- args[[key]]
-
+  
   structure(core, class = c("Future", class(core)))
 }
 
@@ -158,9 +176,11 @@ print.Future <- function(x, ...) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   }
 
-  hasValue <- exists("value", envir = x, inherits = FALSE)
-
-  if (exists("value", envir = x, inherits = FALSE)) {
+  result <- x$result
+  hasResult <- inherits(result, "FutureResult")
+  ## BACKWARD COMPATIBILITY
+  hasResult <- hasResult || exists("value", envir = x, inherits = FALSE)
+  if (hasResult) {
     cat("Resolved: TRUE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
@@ -177,10 +197,19 @@ print.Future <- function(x, ...) {
     })
   }
 
-  if (hasValue) {
-    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(x$value)), sQuote(class(x$value)[1])))
+  if (hasResult) {
+    if (inherits(result, "FutureResult")) {
+      value <- result$value
+    } else {
+      value <- x$value
+    }
+    cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
+    if (inherits(result, "FutureResult")) {
+      cat(sprintf("Condition: %s\n", sQuote(class(result$condition)[1])))
+    }
   } else {
     cat("Value: <not collected>\n")
+    cat("Condition: <not collected>\n")
   }
   cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
   cat(sprintf("Owner process: %s\n", x$owner))
@@ -225,7 +254,8 @@ run.Future <- function(future, ...) {
   if (future$state != 'created') {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    msg <- sprintf("A future ('%s') can only be launched once.", label)
+    stop(FutureError(msg, future = future))
   }
   
   future
@@ -233,6 +263,73 @@ run.Future <- function(future, ...) {
 
 run <- function(...) UseMethod("run")
 
+
+#' @export
+#' @keywords internal
+result <- function(...) UseMethod("result")
+
+#' Get the results of a resolved future
+#'
+#' @param future A \link{Future}.
+#' @param \dots Not used.
+#'
+#' @return The \link{FutureResult} object.
+#'
+#' @details
+#' This function is only part of the _backend_ Future API.
+#' This function is _not_ part of the frontend Future API.
+#'
+#' @aliases result
+#' @rdname result
+#' @export
+#' @keywords internal
+result.Future <- function(future, ...) {
+  result <- future$result
+  if (inherits(result, "FutureResult")) return(result)
+  
+  if (future$state == "created") {
+    future <- run(future)
+  }
+
+  if (!future$state %in% c("finished", "failed", "interrupted")) {
+    ## BACKWARD COMPATIBILITY:
+    ## For now, it is value() that collects the results.  Later we want
+    ## all future backends to use result() to do it. /HB 2018-02-22
+    value(future, signal = FALSE)
+  }
+
+  result <- future$result
+  if (inherits(result, "FutureResult")) return(result)
+
+  ## BACKWARD COMPATIBILITY
+  result <- future$value
+  if (inherits(result, "FutureResult")) return(result)
+
+  version <- future$version
+  if (is.null(version)) {
+    warning(FutureWarning("Future version was not set. Using default %s",
+                          sQuote(version)))
+  }
+
+  ## Sanity check
+  if (version == "1.8") {
+    if (is.null(result) && inherits(future, "MulticoreFuture")) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+      msg <- sprintf("A future ('%s') of class %s did not produce a FutureResult object but NULL. This suggests that the R worker terminated (crashed?) before the future expression was resolved.", label, class(future)[1])
+      stop(FutureError(msg, future = future))
+    }
+  }
+  
+  ## BACKWARD COMPATIBILITY
+  if (future$state == "failed") {
+    value <- result
+    calls <- value$traceback
+    return(FutureResult(condition = value, calls = calls, version = "1.7"))
+  }
+
+  FutureResult(value = result, version = "1.7")
+}
 
 
 #' The value of a future
@@ -260,17 +357,28 @@ value.Future <- function(future, signal = TRUE, ...) {
     future <- run(future)
   }
 
-  if (!future$state %in% c("finished", "failed", "interrupted")) {
-    msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
-    mdebug(msg)
-    stop(FutureError(msg, future = future))
+  ## Sanity check
+  if (is.null(future$result) && !future$state %in% c("finished", "failed", "interrupted")) {
+    if (future$version == "1.7" || !future$.callResult) {
+      msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
+      mdebug(msg)
+      stop(FutureError(msg, future = future))
+    }
   }
 
-  value <- future$value
-  if (signal && future$state == "failed") {
-    mdebug("Future state: %s", sQuote(future$state))
-    mdebug("Future value: %s", sQuote(value))
-    stop(FutureEvaluationError(future))
+  result <- result(future)
+  stopifnot(inherits(result, "FutureResult"))
+
+  value <- result$value
+  condition <- result$condition
+  if (inherits(condition, "condition")) {
+    if (signal) {
+      mdebug("Future state: %s", sQuote(future$state))
+      resignalCondition(future) ## Will produce an error
+    } else {
+      ## BACKWARD COMPATIBILITY
+      value <- condition
+    }
   }
 
   value
@@ -287,6 +395,8 @@ resolved.Future <- function(x, ...) {
   ## Signal conditions early, iff specified for the given future
   signalEarly(x, ...)
 
+  if (inherits(x$result, "FutureResult")) return(TRUE)
+  
   x$state %in% c("finished", "failed", "interrupted")
 }
 
@@ -331,6 +441,12 @@ getExpression <- function(future, ...) UseMethod("getExpression")
 getExpression.Future <- function(future, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
+
+  version <- future$version
+  if (is.null(version)) {
+    warning(FutureWarning("Future version was not set. Using default %s",
+                          sQuote(version)))
+  }
 
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
@@ -442,7 +558,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     })
   } ## if (length(strategiesR) > 0L)
 
-  expr <- makeExpression(expr = future$expr, local = future$local, enter = enter, exit = exit)
+  expr <- makeExpression(expr = future$expr, local = future$local, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) {
     print(expr)
   }
@@ -453,44 +569,68 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "error"), enter = NULL, exit = NULL) {
+makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
-    a <- NULL; rm(list = "a")  ## To please R CMD check
-    expr <- substitute(local(a), list(a = expr))
+    expr <- bquote(local(.(expr)))
   }
 
   ## Set and reset certain future.* options
-  enter <- substitute({
+  enter <- bquote({
     ## covr: skip=7
     ...future.oldOptions <- options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.loadScript = FALSE,
       ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing = globals.onMissing
+      future.globals.onMissing = .(globals.onMissing)
     )
-    enter
-  }, env = list(globals.onMissing = globals.onMissing, enter = enter))
+    .(enter)
+  })
 
-  exit <- substitute({
-    exit
+  exit <- bquote({
+    .(exit)
     options(...future.oldOptions)
-  }, env = list(exit = exit))
+  })
 
 
   ## NOTE: We don't want to use local(body) w/ on.exit() because
   ## evaluation in a local is optional, cf. argument 'local'.
   ## If this was mandatory, we could.  Instead we use
   ## a tryCatch() statement. /HB 2016-03-14
-  expr <- substitute({
-    ## covr: skip=6
-    enter
-    tryCatch({
-      body
-    }, finally = {
-      exit
+
+  if (version == "1.7") {
+    expr <- bquote({
+      ## covr: skip=6
+      .(enter)
+      tryCatch({
+        .(expr)
+      }, finally = {
+        .(exit)
+      })
     })
-  }, env = list(enter = enter, body = expr, exit = exit))
+  } else if (version == "1.8") {
+    expr <- bquote({
+      ## covr: skip=6
+      .(enter)
+      tryCatch({
+        ...future.value <- .(expr)
+        future::FutureResult(value = ...future.value)
+      }, error = function(cond) {
+        calls <- sys.calls()
+        ## Drop fluff added by tryCatch()
+  #      calls <- calls[seq_len(length(calls) - 2L)]
+        ## Drop fluff added by outer tryCatch()
+  #      calls <- calls[-seq_len(current+7L)]
+        ## Drop fluff added by outer local = TRUE
+  #      if (future$local) calls <- calls[-seq_len(6L)]
+        future::FutureResult(value = NULL, condition = cond, calls = calls)
+      }, finally = {
+        .(exit)
+      })
+    })
+  } else {
+    stop(FutureError("Internal error: Non-supported future expression version: ", version))
+  }
 
   expr
 } ## makeExpression()
@@ -507,3 +647,5 @@ packages <- function(future, ...) UseMethod("packages")
 packages.Future <- function(future, ...) {
   future[["packages"]]
 }
+
+

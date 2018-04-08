@@ -111,6 +111,27 @@ for (type in types) {
     print(res)
     stopifnot(inherits(res, "error"))
   
+    ## Custom error class
+    f <- future({
+      stop(structure(list(message = "boom"),
+                     class = c("MyError", "error", "condition")))
+    })
+    print(f)
+    v <- value(f, signal = FALSE)
+    print(v)
+    stopifnot(inherits(v, "error"))
+    ## FIXME: Related to Issue #200
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
+    ## stopifnot(inherits(v, "MyError"))
+  
+    ## Make sure error is signaled
+    res <- tryCatch(value(f), error = identity)
+    stopifnot(inherits(res, "error"))
+  
+    ## Issue #200: Custom condition class attributes are lost 
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
+    ## FIXME:
+    ## stopifnot(inherits(res, "MyError"))    
   
     message("*** cluster() - too large globals ...")
     ooptsT <- options(future.globals.maxSize = object.size(1:1014))
@@ -263,7 +284,7 @@ for (type in types) {
   print(cl)
 
 
-  ## Crashing FORK:ed processes seems to harsh on R (< 3.2.0)
+  ## Crashing FORK:ed processes seems too harsh on R (< 3.2.0)
   if (type != "FORK" || getRversion() >= "3.2.0") {
   message("*** cluster() - crashed worker ...")
   

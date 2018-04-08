@@ -8,40 +8,65 @@ signalEarly <- function(future, collect = TRUE, ...) {
   if (!earlySignal) return(future)
 
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("signalEarly(): Retrieving value ...")
+  if (debug) mdebug("signalEarly() ...")
 
-  ## Collect value?
-  if (collect) {
-    if (debug) mdebug("signalEarly(): v <- value(f, signal = FALSE)")
-    value <- value(future, signal = FALSE)
-  } else {
-    if (debug) mdebug("signalEarly(): v <- f$value")
-    value <- future$value
+  ## Nothing to do?
+  if (!collect && !resolved(future)) {
+    if (debug) mdebug("Future not resolved and collect = FALSE. Skipping")
+    return(future)
   }
-
-  if (debug) {
-    mdebug("signalEarly(): class(v) = c(%s)", paste(sQuote(class(value)), collapse = ", "))
-    mdebug("signalEarly(): Retrieving value ... DONE")
+  
+  result <- result(future)
+  stopifnot(inherits(result, "FutureResult"))
+  
+  condition <- result$condition
+  
+  ## Nothing to do?
+  if (is.null(condition)) {
+    if (debug) mdebug("signalEarly() ... DONE")
+    return(future)
   }
+  
+  if (debug) mdebug("signalEarly(): Condition class = c(%s)",
+                    paste(sQuote(class(condition)), collapse = ", "))
 
-  ## Was a condition caught?
-  if (!inherits(value, "condition")) return(future)
+  ## Sanity check
+  stopifnot(inherits(condition, "condition"))
 
-  if (debug) mdebug("signalEarly(): signalCondition(v)")
-
-  ## Signal detected condition
-  if (inherits(value, "error")) {
-    stop(FutureEvaluationError(future))
-  } else if (inherits(value, "warning")) {
-    warning(FutureEvaluationWarning(future))
-  } else if (inherits(value, "message")) {
-    message(FutureEvaluationMessage(future))
-    message("\n") ## TODO: Remove this? /HB 2018-02-03
-  } else {
-    signalCondition(value)
-  }
-
+  resignalCondition(future)
+  
   if (debug) mdebug("signalEarly() ... DONE")
 
+  invisible(future)
+}
+
+resignalCondition <- function(future, ...) {
+  ## Future is not yet launched
+  if (!future$state %in% c("finished", "failed")) {
+    stop(FutureError(
+      sprintf(
+        "Internal error: Cannot resignal future condition. %s has not yet been resolved (state = %s)",
+        class(future)[1], paste(sQuote(future$state), collapse = ", ")),
+      future = future))
+  }
+
+  result <- result(future)
+  stopifnot(inherits(result, "FutureResult"))
+  
+  condition <- result$condition
+  stopifnot(inherits(condition, "condition"))
+
+  ## Signal detected condition
+  if (inherits(condition, "error")) {
+    stop(condition)
+  } else if (inherits(condition, "warning")) {
+    warning(condition)
+  } else if (inherits(condition, "message")) {
+    message(condition)
+    message("\n") ## TODO: Remove this? /HB 2018-02-03
+  } else if (inherits(condition, "condition")) {
+    signalCondition(condition)
+  }
+  
   invisible(future)
 }

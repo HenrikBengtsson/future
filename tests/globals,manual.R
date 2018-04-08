@@ -235,7 +235,7 @@ for (strategy in supportedStrategies()) {
   sub <- function(x, ...) value(future(x[...], globals = "x"))
   y <- tryCatch(sub(x, 2:3), error = identity)
   str(y)
-  stopifnot((strategy %in% c("multisession") && inherits(y, "FutureError")) || identical(y, y_truth))
+  stopifnot((strategy %in% c("multisession") && inherits(y, "error")) || identical(y, y_truth))
 
 
   message("- Packages - manual ...")

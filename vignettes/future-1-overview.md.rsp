@@ -155,7 +155,7 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.  (In future 1.2.0 and before, there was also _lazy_ futures, which has now been deprecated in favor of `f <- future(..., lazy = TRUE)` and `v %<-% { ... } %lazy% TRUE`.)
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.
 
 
 #### Sequential Futures
@@ -436,43 +436,32 @@ Waiting for 'a' to be resolved ... DONE
 Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, if we use lazy evaluation on a future that generates an error, we might see something like
 ```r
 > plan(sequential)
+> b <- "hello"
 > a %<-% {
 +     cat("Resolving 'a' ...\n")
-+     stop("Whoops!")
-+     42
++     log(b)
 + } %lazy% TRUE
 > cat("Everything is still ok although we have created a future that will fail.\n")
 Everything is still ok although we have created a future that will fail.
 > a
 Resolving 'a' ...
-Error in eval(expr, envir, enclos) : Whoops!
+Error in log(b) : non-numeric argument to mathematical function
 ```
 The error is thrown each time the value is requested, that is, if we try to get the value again will generate the same error:
 ```r
 > a
-Error in eval(expr, envir, enclos) : Whoops!
+Error in log(b) : non-numeric argument to mathematical function
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
-To see the list of calls (evaluated expressions) that lead up to the error, we can use the `backtrace()` function(*) on the future, i.e.
+To see the _last_ call in the call stack that gave the error, we can use the `backtrace()` function(\*) on the future, i.e.
 ```r
 > backtrace(a)
 [[1]]
-eval(quote({
-    cat("Resolving 'a' ...\\n")
-    stop("Whoops!")
-    42
-}), new.env())
-[[2]]
-eval(quote({
-    cat("Resolving 'a' ...\\n")
-    stop("Whoops!")
-    42
-}), new.env())
-[[3]]
-stop("Whoops!")
+log(a)
 ```
-(*) The commonly used `traceback()` does not provide relevant information in the context of futures.
+
+(\*\) The commonly used `traceback()` does not provide relevant information in the context of futures.  Furthermore, it is unfortunately not possible to see the list of calls (evaluated expressions) that led up to the error; only the call that gave the error (this is due to a limitation in `tryCatch()` used internally).
 
 
 ## Globals
@@ -575,4 +564,4 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Common Issues with Solutions]: future-2-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2017
+Copyright Henrik Bengtsson, 2015-2018

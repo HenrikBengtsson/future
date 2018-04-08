@@ -1,6 +1,62 @@
 Package: future
 ===============
 
+Version: 1.8.0 [2018-04-08]
+
+SIGNIFICANT CHANGES:
+
+ o Errors produces when evaluating futures are now (re-)signaled on the master
+   R process "as is" with the original content and class attributes.
+ 
+NEW FEATURES:
+
+ o More errors related to orchestration of futures are of class FutureError to
+   make it easier to distinguish them from future evaluation errors.
+   
+ o Add support for a richer set of results returned by resolved futures.
+   Previously only the value of the future expression, which could be a
+   captured error to be resignaled, was expected. Now a FutureResult object
+   may be returned instead.  Although not supported in this release, this
+   update opens up for reporting on additional information from the evaluation
+   of futures, e.g. captured output, timing and memory benchmarks etc. Before
+   that can take place, existing future backend packages will have to be
+   updated accordingly.
+
+ o backtrace() returns only the last call that produced the error.  It is
+   unfortunately not possible to capture the call stack that led up to the
+   error when evaluating a future expression.
+   
+BUG FIXES:
+
+ o value() for MulticoreFuture would not produce an error when a (forked)
+   background R workers would terminate before the future expression is
+   resolved.  This was a limitation inherited from the parallel package.
+   Now an informative FutureError message is produced.
+
+ o value() for MulticoreFuture would not signal errors unless they inherited
+   from 'simpleError' - now it's enough for them to inherits from 'error'.
+
+ o value() for ClusterFuture no longer produces a FutureEvaluationError, but
+   FutureError, if the connection to the R worker has changed (which happens
+   if something as drastic as closeAllConnections() have been called.)
+
+ o futureCall(..., globals = FALSE) would produce "Error: second argument must
+   be a list", because the explicit arguments where not exported.  This could
+   also happen when specifying globals by name or as a named list.
+
+ o Nested futures were too conservative in requiring global variables to exist,
+   even when they were false positives.
+
+DEPRECATED AND DEFUNCT:
+
+ o future::future_lapply() is formally deprecated. Please use the one in the
+   future.apply package instead.
+  
+ o Recently introduced FutureEvaluationCondition classes are deprecated,
+   because they no longer serve a purpose since future evaluation conditions
+   are now signaled as is.
+   
+
 Version: 1.7.0 [2018-02-10]
 
 SIGNIFICANT CHANGES:
@@ -25,7 +81,7 @@ NEW FEATURES:
    'cl' is a basic R list rather than a 'cluster' list early on.
 
  o Added %packages% to explicitly control packages to be attached when a
-   future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
+   future is resolved, e.g. y %<-% { YT[2] } %packages% "data.table".
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
 
@@ -98,7 +154,7 @@ NEW FEATURES:
 
  o Now plan() accepts also strings such as "future::cluster".
 
- o Now backtrace(x[[el]]) works also for non-environment 'x':s, e.g. lists.
+ o Now backtrace(x[[ER]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 

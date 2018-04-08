@@ -14,73 +14,103 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
 
   for (globals in c(FALSE, TRUE)) {
 
-  message(sprintf("*** multicore(..., globals = %s) without globals", globals))
+    message(sprintf("*** multicore(..., globals = %s) without globals", globals))
+  
+    f <- multicore({
+      42L
+    }, globals = globals)
+    stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "SequentialFuture")))
+  
+    print(resolved(f))
+    y <- value(f)
+    print(y)
+    stopifnot(y == 42L)
+  
+  
+    message(sprintf("*** multicore(..., globals = %s) with globals", globals))
+    ## A global variable
+    a <- 0
+    f <- multicore({
+      b <- 3
+      c <- 2
+      a * b * c
+    }, globals = globals)
+    print(f)
+  
+  
+    ## A multicore future is evaluated in a separated
+    ## forked process.  Changing the value of a global
+    ## variable should not affect the result of the
+    ## future.
+    a <- 7  ## Make sure globals are frozen
+    v <- value(f)
+    print(v)
+    stopifnot(v == 0)
+  
+  
+    message(sprintf("*** multicore(..., globals = %s) with globals and blocking", globals))
+    x <- listenv()
+    for (ii in 1:4) {
+      message(sprintf(" - Creating multicore future #%d ...", ii))
+      x[[ii]] <- multicore({ ii }, globals = globals)
+    }
+    message(sprintf(" - Resolving %d multicore futures", length(x)))
+    v <- sapply(x, FUN = value)
+    stopifnot(all(v == 1:4))
+  
+  
+    message(sprintf("*** multicore(..., globals = %s) and errors", globals))
+    f <- multicore({
+      stop("Whoops!")
+      1
+    }, globals = globals)
+    print(f)
+    v <- value(f, signal = FALSE)
+    print(v)
+    stopifnot(inherits(v, "simpleError"))
+  
+    res <- try(value(f), silent = TRUE)
+    print(res)
+    stopifnot(inherits(res, "try-error"))
+  
+    ## Error is repeated
+    res <- try(value(f), silent = TRUE)
+    print(res)
+    stopifnot(inherits(res, "try-error"))
 
-  f <- multicore({
-    42L
-  }, globals = globals)
-  stopifnot(inherits(f, "MulticoreFuture") || ((cores ==1 || !supportsMulticore()) && inherits(f, "SequentialFuture")))
-
-  print(resolved(f))
-  y <- value(f)
-  print(y)
-  stopifnot(y == 42L)
-
-
-  message(sprintf("*** multicore(..., globals = %s) with globals", globals))
-  ## A global variable
-  a <- 0
-  f <- multicore({
-    b <- 3
-    c <- 2
-    a * b * c
-  }, globals = globals)
-  print(f)
-
-
-  ## A multicore future is evaluated in a separated
-  ## forked process.  Changing the value of a global
-  ## variable should not affect the result of the
-  ## future.
-  a <- 7  ## Make sure globals are frozen
-  v <- value(f)
-  print(v)
-  stopifnot(v == 0)
-
-
-  message(sprintf("*** multicore(..., globals = %s) with globals and blocking", globals))
-  x <- listenv()
-  for (ii in 1:4) {
-    message(sprintf(" - Creating multicore future #%d ...", ii))
-    x[[ii]] <- multicore({ ii }, globals = globals)
-  }
-  message(sprintf(" - Resolving %d multicore futures", length(x)))
-  v <- sapply(x, FUN = value)
-  stopifnot(all(v == 1:4))
-
-
-  message(sprintf("*** multicore(..., globals = %s) and errors", globals))
-  f <- multicore({
-    stop("Whoops!")
-    1
-  }, globals = globals)
-  print(f)
-  v <- value(f, signal = FALSE)
-  print(v)
-  stopifnot(inherits(v, "simpleError"))
-
-  res <- try(value(f), silent = TRUE)
-  print(res)
-  stopifnot(inherits(res, "try-error"))
-
-  ## Error is repeated
-  res <- try(value(f), silent = TRUE)
-  print(res)
-  stopifnot(inherits(res, "try-error"))
-
+    ## Custom error class
+    f <- multicore({
+      stop(structure(list(message = "boom"),
+                     class = c("MyError", "error", "condition")))
+    })
+    print(f)
+    v <- value(f, signal = FALSE)
+    print(v)
+    stopifnot(inherits(v, "error"), inherits(v, "MyError"))
+  
+    ## Make sure error is signaled
+    res <- tryCatch(value(f), error = identity)
+    stopifnot(inherits(res, "error"))
+  
+    ## Issue #200: Custom condition class attributes are lost 
+    stopifnot(inherits(res, "MyError"))    
   } # for (globals ...)
 
 
+  message("*** multicore() - terminating workers ...")
+  
+  ## Force R worker to quit
+  x %<-% quit(save = "no")
+  res <- tryCatch(y <- x, error = identity)
+  print(res)
+  stopifnot(
+    inherits(res, "simpleError"),
+    inherits(res, "FutureError")
+  )
+
+  message("*** multicore() - terminating workers ... DONE")
+  
+  
   message("*** multicore(..., workers = 1L) ...")
 
   a <- 2

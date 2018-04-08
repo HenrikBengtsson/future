@@ -25,5 +25,5 @@
   plans[[1]] <- do.call(tweak, args = args)
   plan(plans, substitute = FALSE, .call = NULL, .cleanup = FALSE, .init = FALSE)
 
-  eval(fassignment, envir = envir)
+  eval(fassignment, envir = envir, enclos = baseenv())
 }

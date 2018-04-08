@@ -2,20 +2,29 @@
 % Please edit documentation in R/backtrace.R
 \name{backtrace}
 \alias{backtrace}
-\title{Back trace the expressions evaluated before a condition was caught}
+\title{Back trace the expression evaluated when a condition was caught}
 \usage{
 backtrace(future, envir = parent.frame(), ...)
 }
 \arguments{
-\item{future}{The future with a caught condition.}
+\item{future}{A future with a caught condition.}
 
 \item{envir}{the environment where to locate the future.}
 
 \item{\dots}{Not used.}
 }
 \value{
-A list of calls.
+A list with one call.
 }
 \description{
-Back trace the expressions evaluated before a condition was caught
+Back trace the expression evaluated when a condition was caught
 }
+\section{Known limitations}{
+
+It is currently \emph{not} possible to infer the full call stack prior to
+when an error occurred.  It is only possible to get the call that produced
+the call.
+This is a limitation of \code{\link[base:tryCatch]{tryCatch()}} used
+internally for evaluating the future expression.
+}
+

@@ -173,4 +173,4 @@ Try the above `x %<-% { ... }` future with, say, `plan(list(sequential, multipro
 [Futures in R: Common issues with solutions]: future-issues.html
 
 ---
-Copyright Henrik Bengtsson, 2015-2017
+Copyright Henrik Bengtsson, 2015-2018

@@ -193,7 +193,7 @@ plan <- local({
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
-        first <- eval(first, envir = parent.frame())
+        first <- eval(first, envir = parent.frame(), enclos = baseenv())
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
@@ -205,7 +205,7 @@ plan <- local({
         ## Example: plan(list(sequential, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
-          strategies <- eval(strategy, envir = parent.frame())
+          strategies <- eval(strategy, envir = parent.frame(), enclos = baseenv())
           stopifnot(is.list(strategies), length(strategies) >= 1L)
           ## Coerce strings to functions, e.g.
           ## plan(list("sequential", multicore))
@@ -224,20 +224,20 @@ plan <- local({
     ## (b) Otherwise, assume a single future strategy
     if (is.null(newStack)) {
       if (is.symbol(strategy)) {
-        strategy <- eval(strategy, envir = parent.frame())
+        strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
       } else if (is.language(strategy)) {
         strategyT <- as.list(strategy)
 
         ## tweak(...)?
         if (strategyT[[1]] == as.symbol("tweak")) {
-          strategy <- eval(strategy, envir = parent.frame())
+          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         } else {
           isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
             targs <- c(targs, strategyT[-1L])
             strategy <- strategyT[[1L]]
           }
-          strategy <- eval(strategy, envir = parent.frame())
+          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         }
       }
 

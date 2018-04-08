@@ -15,7 +15,7 @@
 ConstantFuture <- function(expr = NULL, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...) {
   expr <- force(expr)
   f <- Future(expr = expr, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...)
-  f$value <- expr
+  f$result <- FutureResult(value = expr)
   f$state <- "finished"
   structure(f, class = c("ConstantFuture", class(f)))
   f

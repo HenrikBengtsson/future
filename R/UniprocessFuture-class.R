@@ -34,7 +34,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   
   gp <- NULL
  
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
+  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, version = "1.8", ...)
+  f$.callResult <- TRUE
   structure(f, class = c("UniprocessFuture", class(f)))
 }
 
@@ -46,7 +47,7 @@ run.UniprocessFuture <- function(future, ...) {
   if (future$state != 'created') {
     label <- future$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("A future ('%s') can only be launched once.", label))
+    stop(FutureError(sprintf("A future ('%s') can only be launched once.", label), future = future))
   }
 
   ## Assert that the process that created the future is
@@ -69,30 +70,8 @@ run.UniprocessFuture <- function(future, ...) {
 
   ## Run future
   future$state <- 'running'
-
-
-  ## WORKAROUND: tryCatch() does not record the traceback and
-  ## it is too late to infer it when the error has been caught.
-  ## Because of this with we use withCallingHandlers() to
-  ## capture errors and if they occur we record the call trace.
-  current <- sys.nframe()
-  tryCatch({
-    withCallingHandlers({
-      future$value <- eval(expr, envir = envir)
-      future$state <- 'finished'
-    }, error = function(ex) {
-      calls <- sys.calls()
-      ## Drop fluff added by withCallingHandlers()
-      calls <- calls[seq_len(length(calls)-2L)]
-      ## Drop fluff added by outer tryCatch()
-      calls <- calls[-seq_len(current+7L)]
-      ## Drop fluff added by outer local = TRUE
-      if (future$local) calls <- calls[-seq_len(6L)]
-      ex$traceback <- calls
-      future$value <- ex
-      future$state <- 'failed'
-    })
-  }, error = function(ex) {})
+  future$result <- eval(expr, envir = envir, enclos = baseenv())
+  future$state <- 'finished'
 
   if (debug) mdebug("%s started (and completed)", class(future)[1])
   
@@ -103,15 +82,32 @@ run.UniprocessFuture <- function(future, ...) {
 }
 
 
+#' @export
+result.UniprocessFuture <- function(future, ...) {
+  result <- future$result
+  if (inherits(result, "FutureResult")) return(result)
+  
+  if (future$state == "created") {
+    run(future)
+  }
+
+  result <- future$result
+  if (inherits(result, "FutureResult")) return(result)
+
+  label <- future$label
+  if (is.null(label)) label <- "<none>"
+  stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+}
+
 
 #' @export
 resolved.UniprocessFuture <- function(x, ...) {
   if (x$lazy) {
-    ## resolved() for lazy uniprocess futures must force value()
+    ## resolved() for lazy uniprocess futures must force result()
     ## such that the future gets resolved.  The reason for this
     ## is so that polling is always possible, e.g.
     ## while(!resolved(f)) Sys.sleep(5);
-    value(x, signal = FALSE)
+    result(x)
   }
   NextMethod("resolved")
 }
