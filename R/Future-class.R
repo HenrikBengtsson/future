@@ -614,7 +614,7 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
       .(enter)
       tryCatch({
         ...future.value <- .(expr)
-        future::FutureResult(value = ...future.value)
+        future::FutureResult(value = ...future.value, version = "1.8")
       }, error = function(cond) {
         calls <- sys.calls()
         ## Drop fluff added by tryCatch()
@@ -647,5 +647,3 @@ packages <- function(future, ...) UseMethod("packages")
 packages.Future <- function(future, ...) {
   future[["packages"]]
 }
-
-
