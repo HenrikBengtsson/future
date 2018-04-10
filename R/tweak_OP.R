@@ -11,9 +11,9 @@
 `%tweak%` <- function(fassignment, tweaks) {
   fassignment <- substitute(fassignment)
   envir <- parent.frame(1)
-  stopifnot(is.vector(tweaks))
+  stop_if_not(is.vector(tweaks))
   tweaks <- as.list(tweaks)
-  stopifnot(!is.null(names(tweaks)))
+  stop_if_not(!is.null(names(tweaks)))
 
   ## Temporarily use a different plan
   oplan <- plan("list")

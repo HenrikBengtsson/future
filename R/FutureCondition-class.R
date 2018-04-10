@@ -33,7 +33,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
       ## BACKWARD COMPATIBILITY
       cond <- future$value
     }
-    stopifnot(inherits(cond, "condition"))
+    stop_if_not(inherits(cond, "condition"))
     message <- conditionMessage(cond)
   } else if (inherits(message, "condition")) {
     cond <- message

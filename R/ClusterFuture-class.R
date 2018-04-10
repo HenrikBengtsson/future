@@ -60,7 +60,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
-  stopifnot(length(workers) > 0)
+  stop_if_not(length(workers) > 0)
 
   ## Attaching UUID for each cluster connection, unless already done.
   workers <- add_cluster_uuid(workers)
@@ -76,7 +76,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   name <- attr(workers, "name")
   if (is.null(name)) {
     name <- digest(workers)
-    stopifnot(length(name) > 0, nzchar(name))
+    stop_if_not(length(name) > 0, nzchar(name))
     attr(workers, "name") <- name
   }
 
@@ -302,7 +302,7 @@ result.ClusterFuture <- function(future, ...) {
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
     stop(FutureError(msg, call = ack$call, future = future))
   }
-  stopifnot(isTRUE(ack))
+  stop_if_not(isTRUE(ack))
 
   if (!inherits(result, "FutureResult")) {
     label <- future$label
@@ -340,17 +340,17 @@ result.ClusterFuture <- function(future, ...) {
 requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
   debug <- getOption("future.debug", FALSE)
   
-  stopifnot(inherits(workers, "cluster"))
-  stopifnot(is.function(await))
-  stopifnot(is.finite(timeout), timeout >= 0)
-  stopifnot(is.finite(alpha), alpha > 0)
+  stop_if_not(inherits(workers, "cluster"))
+  stop_if_not(is.function(await))
+  stop_if_not(is.finite(timeout), timeout >= 0)
+  stop_if_not(is.finite(alpha), alpha > 0)
 
   ## Maximum number of nodes available
   total <- length(workers)
 
   ## FutureRegistry to use
   name <- attr(workers, "name")
-  stopifnot(is.character(name), length(name) == 1L)
+  stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)
   
   usedNodes <- function() {
@@ -396,10 +396,10 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   avail[nodes] <- FALSE
 
   ## Sanity check
-  stopifnot(any(avail))
+  stop_if_not(any(avail))
 
   node_idx <- which(avail)[1L]
-  stopifnot(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
+  stop_if_not(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
 
   node_idx
 }

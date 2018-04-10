@@ -141,7 +141,7 @@ plan <- local({
   function(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
            .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
-    if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
+    if (is.logical(.call)) stop_if_not(length(.call) == 1L, !is.na(.call))
 
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
@@ -178,7 +178,7 @@ plan <- local({
 
     ## Set new stack?
     if (is.list(strategy)) {
-      stopifnot(is.list(strategy), length(strategy) >= 1L)
+      stop_if_not(is.list(strategy), length(strategy) >= 1L)
 
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
@@ -206,7 +206,7 @@ plan <- local({
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
           strategies <- eval(strategy, envir = parent.frame(), enclos = baseenv())
-          stopifnot(is.list(strategies), length(strategies) >= 1L)
+          stop_if_not(is.list(strategies), length(strategies) >= 1L)
           ## Coerce strings to functions, e.g.
           ## plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
@@ -268,7 +268,7 @@ plan <- local({
     ## Set new strategy for futures
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
-    stopifnot(is.list(stack), length(stack) >= 1L)
+    stop_if_not(is.list(stack), length(stack) >= 1L)
 
     ## Stop any (implicitly started) clusters?
     if (.cleanup) plan_cleanup()
@@ -281,7 +281,7 @@ plan <- local({
     if (getOption("future.debug", FALSE)) {
       mdebug(sprintf("plan(): nbrOfWorkers() = %g", n))
     }
-    stopifnot(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
+    stop_if_not(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
 
     invisible(oldStack[[1L]])
   } # function()

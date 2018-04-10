@@ -43,7 +43,7 @@ FutureRegistry <- local({
 
 
   function(where, action = c("add", "remove", "list", "collect-first", "reset"), future = NULL, earlySignal = TRUE, ...) {
-    stopifnot(length(where) == 1, nzchar(where))
+    stop_if_not(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
     ## Automatically create?

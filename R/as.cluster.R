@@ -46,7 +46,7 @@ c.cluster <- function(..., recursive = FALSE) {
   ## AD HOC: Use common demonator class as new class
   class <- lapply(x, FUN = class)
   class <- Reduce(intersect, class)
-  stopifnot(is.element("cluster", class))
+  stop_if_not(is.element("cluster", class))
 
   ## Combine list of clusters
   x <- lapply(x, FUN = unclass)

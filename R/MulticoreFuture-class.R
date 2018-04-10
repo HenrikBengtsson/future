@@ -92,7 +92,7 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
 
   selectChildren <- importParallel("selectChildren")
   job <- x$job
-  stopifnot(inherits(job, "parallelJob"))
+  stop_if_not(inherits(job, "parallelJob"))
 
   ## NOTE: We cannot use mcollect(job, wait = FALSE, timeout = 0.2),
   ## because that will return NULL if there's a timeout, which is
@@ -126,7 +126,7 @@ result.MulticoreFuture <- function(future, ...) {
   ## then collect and record the value
   mccollect <- importParallel("mccollect")
   job <- future$job
-  stopifnot(inherits(job, "parallelJob"))
+  stop_if_not(inherits(job, "parallelJob"))
   result <- mccollect(job, wait = TRUE)[[1L]]
 
   ## Sanity checks

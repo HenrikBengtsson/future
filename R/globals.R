@@ -53,7 +53,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
 
   ## Alt 1. Identify globals based on expr, envir and tweak
   if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
+    stop_if_not(length(globals) == 1, !is.na(globals))
     if (debug) mdebug("Searching for globals ...")
     ## Algorithm for identifying globals
     globals.method <- getOption("future.globals.method", "ordered")
@@ -84,7 +84,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)
-  stopifnot(inherits(globals, "FutureGlobals"))
+  stop_if_not(inherits(globals, "FutureGlobals"))
 
   ## Nothing more to do?
   if (length(globals) == 0) {
@@ -103,7 +103,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else {
     if (debug) mdebug("Resolving globals: %s", resolve)
   }
-  stopifnot(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
+  stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
 
   exprOrg <- expr
 
@@ -231,7 +231,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L) {
     maxSize <- as.numeric(maxSize)
-    stopifnot(!is.na(maxSize), maxSize > 0)
+    stop_if_not(!is.na(maxSize), maxSize > 0)
     
     if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
@@ -294,7 +294,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     mdebug("getGlobalsAndPackages() ... DONE")
   }
 
-  stopifnot(inherits(globals, "FutureGlobals"))
+  stop_if_not(inherits(globals, "FutureGlobals"))
   
   list(expr = expr, globals = globals, packages = pkgs)
 } ## getGlobalsAndPackages()

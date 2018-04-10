@@ -55,7 +55,7 @@ multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FA
 
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
-  stopifnot(is.finite(workers), workers >= 1L)
+  stop_if_not(is.finite(workers), workers >= 1L)
 
   ## Fall back to sequential futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
@@ -146,10 +146,10 @@ usedCores <- function() {
 #'
 #' @keywords internal
 requestCore <- function(await, workers = availableCores(), timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
-  stopifnot(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
-  stopifnot(is.function(await))
-  stopifnot(is.finite(timeout), timeout >= 0)
-  stopifnot(is.finite(alpha), alpha > 0)
+  stop_if_not(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
+  stop_if_not(is.function(await))
+  stop_if_not(is.finite(timeout), timeout >= 0)
+  stop_if_not(is.finite(alpha), alpha > 0)
 
   debug <- getOption("future.debug", FALSE)
   if (debug) mdebug("requestCore(): workers = %d", workers)

@@ -9,9 +9,9 @@ ClusterRegistry <- local({
     if (is.null(workers)) {
     } else if (is.numeric(workers)) {
       workers <- as.integer(workers)
-      stopifnot(length(workers) == 1, is.finite(workers))
+      stop_if_not(length(workers) == 1, is.finite(workers))
     } else if (is.character(workers)) {
-      stopifnot(length(workers) >= 1, !anyNA(workers))
+      stop_if_not(length(workers) >= 1, !anyNA(workers))
       workers <- sort(workers)
     } else {
       stop("Unknown mode of argument 'workers': ", mode(workers))

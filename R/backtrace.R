@@ -25,7 +25,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     }, simpleError = function(ex) {
       eval(expr, envir = envir, enclos = baseenv())
     })
-    stopifnot(inherits(future, "Future"))    
+    stop_if_not(inherits(future, "Future"))    
   }
 
   if (!resolved(future)) {

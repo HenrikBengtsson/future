@@ -23,8 +23,8 @@
 #' @keywords internal
 FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
                          version = "1.7") {
-  if (!is.null(condition)) stopifnot(inherits(condition, "condition"))
-  if (!is.null(calls)) stopifnot(is.list(calls))
+  if (!is.null(condition)) stop_if_not(inherits(condition, "condition"))
+  if (!is.null(calls)) stop_if_not(is.list(calls))
   
   args <- list(...)
   if (length(args) > 0) {

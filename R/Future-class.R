@@ -75,14 +75,14 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   }
 
   if (!is.null(globals)) {
-    stopifnot(is.list(globals),
+    stop_if_not(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
   }
 
   if (!is.null(packages)) {
-    stopifnot(is.character(packages))
+    stop_if_not(is.character(packages))
     packages <- unique(packages)
-    stopifnot(!anyNA(packages), all(nzchar(packages)))
+    stop_if_not(!anyNA(packages), all(nzchar(packages)))
   }
 
   args <- list(...)
@@ -367,7 +367,7 @@ value.Future <- function(future, signal = TRUE, ...) {
   }
 
   result <- result(future)
-  stopifnot(inherits(result, "FutureResult"))
+  stop_if_not(inherits(result, "FutureResult"))
 
   value <- result$value
   condition <- result$condition
@@ -481,7 +481,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 
   ## Reset future strategies upon exit of future
   strategies <- plan("list")
-  stopifnot(length(strategies) >= 1L)
+  stop_if_not(length(strategies) >= 1L)
   exit <- bquote({
     ## covr: skip=2
     .(exit)

@@ -31,8 +31,8 @@ fold <- function(x, f, left = TRUE, unname = TRUE, threshold = 1000L) {
   if (n == 0L) return(NULL)
   if (!is.vector(x) || is.object(x)) x <- as.list(x)
   if (n == 1L) return(x[[1]])
-  stopifnot(length(left) == 1, is.logical(left), !is.na(left))
-  stopifnot(length(threshold) == 1, is.numeric(threshold), !is.na(threshold),
+  stop_if_not(length(left) == 1, is.logical(left), !is.na(left))
+  stop_if_not(length(threshold) == 1, is.numeric(threshold), !is.na(threshold),
             threshold >= 2)
 
   if (n >= threshold) {

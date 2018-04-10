@@ -9,7 +9,7 @@ uuid <- function(source, keep_source = FALSE) {
 } ## uuid()
 
 uuid_of_connection <- function(con, ..., must_work = TRUE) {
-  stopifnot(inherits(con, "connection"))
+  stop_if_not(inherits(con, "connection"))
   if (must_work) {
     info <- summary(con)
     info$opened <- NULL

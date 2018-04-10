@@ -65,7 +65,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
   }
 
   which <- match.arg(which)
-  stopifnot(is.character(default), length(default) >= 1, !anyNA(default))
+  stop_if_not(is.character(default), length(default) >= 1, !anyNA(default))
 
 
   ## Default is to use the current machine
@@ -176,10 +176,10 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
   min_count <- as.integer(na.rm)
   if (is.list(workers)) {
     lapply(workers, FUN = function(w) {
-      stopifnot(is.character(w), length(w) >= 0L, all(nchar(w) > 0))
+      stop_if_not(is.character(w), length(w) >= 0L, all(nchar(w) > 0))
     })
   } else {
-    stopifnot(is.character(workers), length(workers) >= min_count, all(nchar(workers) > 0))
+    stop_if_not(is.character(workers), length(workers) >= min_count, all(nchar(workers) > 0))
   }
 
   workers
@@ -194,7 +194,7 @@ read_pbs_nodefile <- function(pathname, sort = TRUE) {
   lines <- trim(lines)
 
   ## Sanity checks
-  stopifnot(
+  stop_if_not(
     all(nzchar(lines)),
     !anyNA(lines),
     !any(grepl("[[:space:]]", lines))
@@ -219,13 +219,13 @@ read_pe_hostfile <- function(pathname, sort = TRUE) {
   data <- read.table(pathname, header = FALSE, sep = " ", stringsAsFactors = FALSE)
   
   ## Sanity checks
-  stopifnot(ncol(data) >= 2)
+  stop_if_not(ncol(data) >= 2)
   
   colnames(data)[1:2] <- c("node", "count")
   if (ncol(data) >= 3) colnames(data)[3] <- "via"
   if (ncol(data) >= 4) colnames(data)[4] <- "notes"
 
-  stopifnot(
+  stop_if_not(
     is.character(data$node),
     !anyNA(data$node),
     !any(grepl("[[:space:]]", data$node)),
