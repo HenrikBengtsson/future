@@ -1,12 +1,15 @@
 Package: future
 ===============
 
-Version: 1.8.0-9000 [2018-04-10]
+Version: 1.8.0-9000 [2018-04-11]
 
 NEW FEATURES:
 
  o getGlobalsAndPackages() gained argument 'maxSize'.
 
+ o makeClusterPSOCK() now produce a more informative warning if environment
+   variable R_PARALLEL_PORT specifies a non-numeric port.
+   
 
 Version: 1.8.0 [2018-04-08]
 

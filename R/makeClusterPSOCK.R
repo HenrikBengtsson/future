@@ -47,9 +47,14 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.character(port)) {
     port <- match.arg(port)
     if (identical(port, "auto")) {
-      port <- Sys.getenv("R_PARALLEL_PORT", NA_character_)
-      port <- as.integer(port)
-      if (is.na(port)) port <- 11000:11999
+      port0 <- Sys.getenv("R_PARALLEL_PORT")
+      port <- suppressWarnings(as.integer(port0))
+      if (is.na(port)) {
+        if (nzchar(port0)) {
+          warning("Non-numeric value of environment variable 'R_PARALLEL_PORT' coerced to NA_integer_: ", sQuote(port0))
+        }
+        port <- 11000:11999
+      }
     } else if (identical(port, "random")) {
       port <- 11000:11999
     }
