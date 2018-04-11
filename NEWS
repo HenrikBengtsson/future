@@ -7,7 +7,7 @@ NEW FEATURES:
 
  o getGlobalsAndPackages() gained argument 'maxSize'.
 
- o makeClusterPSOCK() now produce a more informative warning if environment
+ o makeClusterPSOCK() now produces a more informative warning if environment
    variable R_PARALLEL_PORT specifies a non-numeric port.
    
 
