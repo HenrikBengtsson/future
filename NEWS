@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.0-9000 [2018-04-11]
+Version: 1.8.0-9000 [2018-04-26]
 
 NEW FEATURES:
 
@@ -9,7 +9,10 @@ NEW FEATURES:
 
  o makeClusterPSOCK() now produces a more informative warning if environment
    variable R_PARALLEL_PORT specifies a non-numeric port.
-   
+
+ o Now plan() gives a more informative error message in case it fails, e.g.
+   if the internal future validation fails.
+
 
 Version: 1.8.0 [2018-04-08]
 

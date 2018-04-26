@@ -32,7 +32,7 @@ cl <- NULL
 for (type in types) {
   message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
-  cl <- setupClusterWithoutFuture()  
+  cl <- setupClusterWithoutFuture(type)  
   if (!attr(cl, "has_future")) {
     ## If worker does not have 'future' installed, then there will be an
     ## error already when plan() is called, because it will attempt to
