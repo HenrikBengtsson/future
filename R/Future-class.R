@@ -284,8 +284,12 @@ result <- function(...) UseMethod("result")
 #' @export
 #' @keywords internal
 result.Future <- function(future, ...) {
+  ## Has the result already been collected?
   result <- future$result
-  if (inherits(result, "FutureResult")) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
   
   if (future$state == "created") {
     future <- run(future)

@@ -84,8 +84,12 @@ run.UniprocessFuture <- function(future, ...) {
 
 #' @export
 result.UniprocessFuture <- function(future, ...) {
+  ## Has the result already been collected?
   result <- future$result
-  if (inherits(result, "FutureResult")) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
   
   if (future$state == "created") {
     run(future)
@@ -96,7 +100,9 @@ result.UniprocessFuture <- function(future, ...) {
 
   label <- future$label
   if (is.null(label)) label <- "<none>"
-  stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+  ex <- FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+  future$result <- ex
+  stop(ex)
 }
 
 

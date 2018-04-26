@@ -63,18 +63,37 @@ for (type in types) {
     print(res)
     stopifnot(inherits(res, "FutureError"))
     
-    ## Assert that the result was actually recorded for future use.
-    ## FIXME: This is actually not the case, which causes the next
-    ## test to stall. /HB 2018-04-25
-    # stopifnot(inherits(f$result, "FutureResult"))
+    ## Assert that the "result" was recorded for future use and
+    ## it was recorded as a FutureError.
+    str(f$result)
+    stopifnot(!is.null(f$result), inherits(f$result, "FutureError"))
+
+    ## Any attempts to re-request the result / value for this future
+    ## should from now on re-throw that recorded FutureError.
+    str(f$result)
+    stopifnot(!is.null(f$result))
     
-    ## FIXME: However however, if we do the same again, it will stall.
-    ## /HB 2018-04-25
-    # res <- tryCatch({
-    #   f <- future(42L)
-    # }, error = identity)
-    # stopifnot(inherits(res, "FutureError"))
+    ## The main rationale for this is that we don't want result() to
+    ## wait for ever from retrying to retrieve already retrieved results
+    ## from worker.
+    res <- tryCatch({
+       result(f)
+    }, error = identity)
+    stopifnot(inherits(res, "FutureError"))
+
+    ## ... and obviously the same for value().
+    res <- tryCatch({
+       value(f)
+    }, error = identity)
+    stopifnot(inherits(res, "FutureError"))
+    
+    ## Retrying with a new future should give the same failure as above.
+    res <- tryCatch({
+      f <- future(42L)
+    }, error = identity)
+    stopifnot(inherits(res, "FutureError"))
   }
+  
   parallel::stopCluster(cl)
   cl <- NULL
   
