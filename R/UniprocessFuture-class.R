@@ -100,7 +100,7 @@ result.UniprocessFuture <- function(future, ...) {
 
   label <- future$label
   if (is.null(label)) label <- "<none>"
-  ex <- FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+  ex <- FutureError(sprintf("Internal error: Unexpected result (of class %s != %s) retrieved for %s future (%s): %s", sQuote(class(result)[1]), sQuote("FutureResult"), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
   future$result <- ex
   stop(ex)
 }
