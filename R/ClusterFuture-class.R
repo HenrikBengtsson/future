@@ -311,12 +311,12 @@ result.ClusterFuture <- function(future, ...) {
   }
   stop_if_not(isTRUE(ack))
 
+  future$result <- result
+  
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    ex <- FutureError(sprintf("Internal error: Unexpected result (of class %s != %s) retrieved for %s future (%s): %s", sQuote(class(result)[1]), sQuote("FutureResult"), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+    ex <- UnexpectedFutureResultError(future)
     future$result <- ex
-    stop(ex)          
+    stop(ex)
   }
   
   future$result <- result

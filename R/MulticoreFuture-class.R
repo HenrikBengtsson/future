@@ -136,18 +136,17 @@ result.MulticoreFuture <- function(future, ...) {
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.
     ## https://github.com/HenrikBengtsson/future/issues/35
     if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
       msg <- result
       ex <- FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
     } else {
-      ex <- FutureError(sprintf("Internal error: Unexpected result (of class %s != %s) retrieved for %s future (%s): %s", sQuote(class(result)[1]), sQuote("FutureResult"), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+      ex <- UnexpectedFutureResultError(future)
     }
     future$result <- ex
     stop(ex)

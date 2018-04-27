@@ -45,7 +45,7 @@ for (type in types) {
     stopifnot(inherits(res, "FutureError"))
   }
   parallel::stopCluster(cl)
-  
+
   cl <- setupClusterWithoutFuture()  
   if (!attr(cl, "has_future")) {
     ## However, if we disable the quick future test, we should not get

@@ -452,13 +452,43 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
                           sQuote(version)))
   }
 
+
+  enter <- bquote({
+    ## covr: skip=4
+    ## If 'future' is not installed on the worker, or a too old version
+    ## of 'future' is used, then give an early error
+    ## If future::FutureResult does not exist, give an error
+    has_future <- requireNamespace("future", quietly = TRUE)
+    version <- if (has_future) packageVersion("future") else NULL
+    if (!has_future || version < "1.8.0") {
+      info <- c(
+        r_version = gsub("R version ", "", R.version$version.string),
+        platform = sprintf("%s (%s-bit)",
+                           R.version$platform, 8 * .Machine$sizeof.pointer),
+        os = paste(Sys.info()[c("sysname", "release", "version")],
+                   collapse = " "),
+        hostname = Sys.info()[["nodename"]]
+      )
+      info <- sprintf("%s: %s", names(info), info)
+      info <- paste(info, collapse = "; ")
+      if (!has_future) {
+        msg <- sprintf("Package 'future' is not installed on worker (%s)", info)
+      } else {
+        msg <- sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
+      }
+      stop(msg)
+    }
+  })
+  exit <- NULL
+  
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
 ##    mdebug("getExpression(): setting mc.cores = %d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
     enter <- bquote({
-      ## covr: skip=2
+      ## covr: skip=3
+      .(enter)
       ...future.mc.cores.old <- getOption("mc.cores")
       options(mc.cores = .(mc.cores))
     })
@@ -467,10 +497,8 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
       ## covr: skip=1
       options(mc.cores = ...future.mc.cores.old)
     })
-  } else {
-    enter <- exit <- NULL
   }
-
+  
   ## Seed RNG seed?
   if (!is.null(future$seed)) {
     enter <- bquote({
@@ -612,12 +640,19 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
         .(exit)
       })
     })
-  } else if (version == "1.8") {
+  } else if (version == "1.8") {    
     expr <- bquote({
       ## covr: skip=6
       .(enter)
       tryCatch({
         ...future.value <- .(expr)
+        ## A FutureResult object (without requiring the future package)
+#       structure(list(
+#          value = ...future.value,
+#          condition = NULL,
+#          calls = NULL,
+#          version = "1.8"
+#       ), class = c("FutureResult", "list"))
         future::FutureResult(value = ...future.value, version = "1.8")
       }, error = function(cond) {
         calls <- sys.calls()
@@ -626,8 +661,13 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
         ## Drop fluff added by outer tryCatch()
   #      calls <- calls[-seq_len(current+7L)]
         ## Drop fluff added by outer local = TRUE
-  #      if (future$local) calls <- calls[-seq_len(6L)]
-        future::FutureResult(value = NULL, condition = cond, calls = calls)
+        #      if (future$local) calls <- calls[-seq_len(6L)]
+        structure(list(
+          value = NULL,
+          condition = cond,
+          calls = calls,
+          version = "1.8"
+        ), class = "FutureResult")
       }, finally = {
         .(exit)
       })

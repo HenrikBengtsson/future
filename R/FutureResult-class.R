@@ -42,5 +42,5 @@ FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
     calls = calls,
     ...,
     version = version
-  ), class = c("FutureResult", "list"))
+  ), class = "FutureResult")
 }

@@ -11,7 +11,10 @@ NEW FEATURES:
    variable R_PARALLEL_PORT specifies a non-numeric port.
 
  o Now plan() gives a more informative error message in case it fails, e.g.
-   if the internal future validation fails.
+    when the internal future validation fails and why.
+
+ o Added UnexpectedFutureResultError to be used by backends for signalling
+   in a standard way that an unexpected result was retrieved from a worker.
 
 BUG FIX:
 
