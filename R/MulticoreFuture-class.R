@@ -130,7 +130,9 @@ result.MulticoreFuture <- function(future, ...) {
   mccollect <- importParallel("mccollect")
   job <- future$job
   stop_if_not(inherits(job, "parallelJob"))
-  result <- mccollect(job, wait = TRUE)[[1L]]
+  ## WORKAROUND: Pass single job as list, cf.
+  ## https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
+  result <- mccollect(jobs = list(job), wait = TRUE)[[1L]]
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
