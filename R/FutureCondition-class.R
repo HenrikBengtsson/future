@@ -101,7 +101,8 @@ getOutput.FutureError <- function(x, ...) {
   ## TODO: Deprecated/for backward compatibility only. /HB 2018-02-03
   getOutput.FutureEvaluationCondition(x, ...)
 }
-                                                
+
+
 #' @rdname FutureCondition
 #' @export
 FutureMessage <- function(message, call = NULL, future = NULL) {
@@ -110,6 +111,7 @@ FutureMessage <- function(message, call = NULL, future = NULL) {
   cond
 }
 
+
 #' @rdname FutureCondition
 #' @export
 FutureWarning <- function(message, call = NULL, future = NULL) {
@@ -117,6 +119,7 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
   class(cond) <- c("FutureWarning", "warning", class(cond))
   cond
 }
+
 
 #' @param output (Don't use!) only for backward compatibility
 #' 
@@ -132,5 +135,26 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
     attr(cond, "output") <- output
   }
   
+  cond
+}
+
+
+#' @rdname FutureCondition
+#' @export
+UnexpectedFutureResultError <- function(future) {
+  label <- future$label
+  if (is.null(label)) label <- "<none>"
+  expr <- hexpr(future$expr)
+  result <- future$result
+  result_string <- hpaste(as.character(result))
+  if (nchar(result_string) > 512L)
+    result_string <- paste(substr(result_string, start = 1L, stop = 512L),
+                           "...")
+  msg <- sprintf("Unexpected result (of class %s != %s) retrieved for %s future (label = %s, expression = %s): %s",
+                 sQuote(class(result)[1]), sQuote("FutureResult"),
+                 class(future)[1], sQuote(label), sQuote(expr),
+                 result_string)
+  cond <- FutureError(msg, future = future)
+  class(cond) <- c("UnexpectedFutureResultError", class(cond))
   cond
 }

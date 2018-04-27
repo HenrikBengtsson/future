@@ -110,9 +110,12 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.MulticoreFuture <- function(future, ...) {
-  ## Has the value already been collected?
+  ## Has the result already been collected?
   result <- future$result
-  if (!is.null(result)) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
 
   if (future$state == "created") {
     future <- run(future)
@@ -127,26 +130,30 @@ result.MulticoreFuture <- function(future, ...) {
   mccollect <- importParallel("mccollect")
   job <- future$job
   stop_if_not(inherits(job, "parallelJob"))
-  result <- mccollect(job, wait = TRUE)[[1L]]
+  ## WORKAROUND: Pass single job as list, cf.
+  ## https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
+  result <- mccollect(jobs = list(job), wait = TRUE)[[1L]]
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.
     ## https://github.com/HenrikBengtsson/future/issues/35
     if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
       msg <- result
-      stop(FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+      ex <- FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+    } else {
+      ex <- UnexpectedFutureResultError(future)
     }
-    
-    stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    future$result <- ex
+    stop(ex)
   }
   
   future$result <- result
+  
   ## BACKWARD COMPATIBILITY
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 

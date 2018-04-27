@@ -125,10 +125,21 @@ plan <- local({
       ## Create dummy future to trigger setup (minimum overhead)
       f <- evaluator(NA, globals = FALSE, lazy = FALSE)
 
-      ## Cleanup, but resolving it
+      ## Cleanup, by resolving it
       ## (otherwise the garbage collector would have to do it)
-      v <- value(f)
+      res <- tryCatch({
+        value(f)
+      }, FutureError = identity)
+      if (inherits(res, "FutureError")) {
+        res$message <- paste0(
+          "Initialization of plan() failed, because the test future used for validation failed. The reason was: ", conditionMessage(res))
+        stop(res)
+      }
 
+      if (!identical(res, NA)) {
+        stop(FutureError("Initialization of plan() failed, because the value of the test future is not the expected one: ", sQuote(res)))
+      }
+      
       if (debug) {
         mdebug("plan(): plan_init() of %s ... DONE",
                paste(sQuote(class(evaluator)), collapse = ", "))

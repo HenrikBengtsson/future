@@ -5,6 +5,7 @@
 \alias{FutureMessage}
 \alias{FutureWarning}
 \alias{FutureError}
+\alias{UnexpectedFutureResultError}
 \title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
 FutureCondition(message, call = NULL, future = NULL)
@@ -14,6 +15,8 @@ FutureMessage(message, call = NULL, future = NULL)
 FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL, output = NULL)
+
+UnexpectedFutureResultError(future)
 }
 \arguments{
 \item{message}{A message.}

@@ -253,9 +253,12 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.ClusterFuture <- function(future, ...) {
-  ## Has the value already been collected?
+  ## Has the result already been collected?
   result <- future$result
-  if (!is.null(result)) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
 
   if (future$state == "created") {
     future <- run(future)
@@ -287,7 +290,9 @@ result.ClusterFuture <- function(future, ...) {
       if (!is.null(msg)) {
         on_failure <- getOption("future.cluster.invalidConnection", "error")
         if (on_failure == "error") {
-          stop(FutureError(msg, future = future))
+          ex <- FutureError(msg, future = future)
+          future$result <- ex
+          stop(ex)          
         }
         warning(FutureWarning(msg, future = future))
         return(sprintf("EXCEPTIONAL ERROR: %s", msg))
@@ -300,14 +305,18 @@ result.ClusterFuture <- function(future, ...) {
     info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
     msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
-    stop(FutureError(msg, call = ack$call, future = future))
+    ex <- FutureError(msg, call = ack$call, future = future)
+    future$result <- ex
+    stop(ex)          
   }
   stop_if_not(isTRUE(ack))
 
+  future$result <- result
+  
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    stop(FutureError(sprintf("Internal error: Unexpected result retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    ex <- UnexpectedFutureResultError(future)
+    future$result <- ex
+    stop(ex)
   }
   
   future$result <- result

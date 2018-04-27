@@ -682,7 +682,7 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' @return Returns a open, binary [base::connection()].
 nullcon <- local({
   nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
-  .nullcon <- function() file(nullfile, open = "wb")
+  .nullcon <- function() file(nullfile, open = "wb", raw = TRUE)
 
   ## Assert that a null device exists
   tryCatch({
