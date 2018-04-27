@@ -2,10 +2,13 @@
 % Please edit documentation in R/FutureResult-class.R
 \name{FutureResult}
 \alias{FutureResult}
+\alias{as.character.FutureResult}
 \title{Results from resolving a future}
 \usage{
 FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
   version = "1.7")
+
+\method{as.character}{FutureResult}(x, ...)
 }
 \arguments{
 \item{value}{The value of the future expression.

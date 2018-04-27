@@ -44,3 +44,23 @@ FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
     version = version
   ), class = "FutureResult")
 }
+
+
+#' @rdname FutureResult
+#' @export
+#' @keywords internal
+as.character.FutureResult <- function(x, ...) {
+  info <- x[c("value", "condition", "version")]
+  info <- sapply(info, FUN = function(value) {
+    if (is.null(value)) return("NULL")
+    value <- as.character(value)
+    if (length(value) == 0L) return("")
+    value <- hpaste(value)
+    if (nchar(value) > 20L)
+      value <- paste0(substr(value, start = 1L, stop = 20L), " ...")
+    value
+  })
+  info <- sprintf("%s: %s", names(info), sQuote(info))
+  info <- paste(info, collapse = "; ")
+  sprintf("%s: %s", class(x)[1], info)
+}
