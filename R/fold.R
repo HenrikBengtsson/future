@@ -11,7 +11,7 @@
 #' otherwise as `f(y, x[[ii]])`, which may introduce name `"y"`.
 #'
 #' @param threshold An integer (>= 2) specifying the length where the
-#' recursive divide'and'conquer call will stop and incremental building of
+#' recursive divide-and-conquer call will stop and incremental building of
 #' the partial value is performed.  Using `threshold = +Inf` will disable
 #' recursive folding.
 #'

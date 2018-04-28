@@ -38,7 +38,7 @@ a FutureMessage from \link[base:conditions]{message}.
 \description{
 While \emph{orchestrating} (creating, launching, querying, collection)
 futures, unexpected run-time errors (and other types of conditions) may
-occur.  Such conditions are coerced to a corresponding FutureConditions
+occur.  Such conditions are coerced to a corresponding FutureCondition
 class to help distinguish them from conditions that occur due to the
 \emph{evaluation} of the future.
 }

@@ -12,6 +12,11 @@ availableCores <- function() {
   1L
 }
 
+if (file_test("-f", p <- Sys.getenv("R_CHECK_ENVIRON", "~/.R/check.Renviron"))) {
+  cat(sprintf("R CMD check will use env vars from %s\n", sQuote(p)))
+  cat(sprintf("To disable, set 'R_CHECK_ENVIRON=false' (a fake pathname)\n"))
+}
+
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
 unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)

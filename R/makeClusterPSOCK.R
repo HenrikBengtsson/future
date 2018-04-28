@@ -211,7 +211,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 #' workers running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls, which often
-#' requires static IP address as well as privilieges to edit the firewall,
+#' requires static IP address as well as privileges to edit the firewall,
 #' something most users don't have.
 #' It also has the advantage of not having to know the internal and / or the
 #' public IP address / hostname of the master.
@@ -229,7 +229,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @section Default value of argument \code{homogeneous}:
 #' The default value of \code{homogeneous} is TRUE if and only if either
-#' of the following is fullfilled:
+#' of the following is fulfilled:
 #' \itemize{
 #'  \item \code{worker} is \emph{localhost}
 #'  \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
