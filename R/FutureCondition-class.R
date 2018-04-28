@@ -147,7 +147,9 @@ UnexpectedFutureResultError <- function(future) {
   expr <- hexpr(future$expr)
   result <- future$result
   result_string <- hpaste(as.character(result))
-  if (nchar(result_string) > 512L)
+  if (length(result_string) == 0L)
+    result_string <- ""
+  else if (nchar(result_string) > 512L)
     result_string <- paste(substr(result_string, start = 1L, stop = 512L),
                            "...")
   msg <- sprintf("Unexpected result (of class %s != %s) retrieved for %s future (label = %s, expression = %s): %s",
