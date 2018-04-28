@@ -43,7 +43,7 @@
 |future.callr                                    |0.2.0      |      |        |     |
 |googleComputeEngineR                            |0.2.0      |      |        |     |
 |kernelboot                                      |0.1.4      |      |        |     |
-|[lidR](problems.md#lidr)                        |1.4.2      |1     |        |     |
+|[lidR](problems.md#lidr)                        |1.4.2      |      |        |2    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2      |      |        |1    |
 |[methyvim](problems.md#methyvim)                |1.0.0      |1     |        |     |
 |origami                                         |1.0.0      |      |        |     |

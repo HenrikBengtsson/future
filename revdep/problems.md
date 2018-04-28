@@ -125,12 +125,19 @@ Version: 1.4.2
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Packages required but not available: ‘mapview’ ‘mapedit’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is  7.8Mb
+      sub-directories of 1Mb or more:
+        R      1.4Mb
+        libs   5.2Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Rcpp’ ‘memoise’
+      All declared Imports should be used.
     ```
 
 # MetamapsDB
