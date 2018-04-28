@@ -17,6 +17,10 @@ if (file_test("-f", p <- Sys.getenv("R_CHECK_ENVIRON", "~/.R/check.Renviron"))) 
   cat(sprintf("To disable, set 'R_CHECK_ENVIRON=false' (a fake pathname)\n"))
 }
 
+## Packages that needed to be installed manually on fresh R 3.5.0 setup:
+## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown"))
+
+
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
 unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)
