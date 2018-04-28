@@ -48,7 +48,7 @@
 |[methyvim](problems.md#methyvim)                |1.0.0      |1     |        |     |
 |origami                                         |1.0.0      |      |        |     |
 |pbmcapply                                       |1.2.4      |      |        |     |
-|[penaltyLearning](problems.md#penaltylearning)  |2017.12.08 |1     |        |     |
+|penaltyLearning                                 |2017.12.08 |      |        |     |
 |[promises](problems.md#promises)                |1.0.1      |      |        |1    |
 |[PSCBS](problems.md#pscbs)                      |0.63.0     |1     |        |1    |
 |[QDNAseq](problems.md#qdnaseq)                  |1.14.0     |      |2       |     |

@@ -170,31 +170,6 @@ Version: 1.0.0
     Execution halted
     ```
 
-# penaltyLearning
-
-Version: 2017.12.08
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘penaltyLearning-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: featureMatrix
-    > ### Title: featureMatrix
-    > ### Aliases: featureMatrix
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > data(neuroblastoma, package="neuroblastoma", envir=environment())
-    Error in find.package(package, lib.loc, verbose = verbose) : 
-      there is no package called ‘neuroblastoma’
-    Calls: data -> find.package
-    Execution halted
-    ```
-
 # promises
 
 Version: 1.0.1
