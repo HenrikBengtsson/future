@@ -1,5 +1,4 @@
 source("incl/start.R")
-library("listenv")
 options(future.debug = FALSE)
 
 message("*** cluster() ...")
@@ -10,7 +9,7 @@ message("Package path: ", sQuote(system.file(package = "future")))
 types <- "PSOCK"
 if (supportsMulticore()) types <- c(types, "FORK")
 
-setupClusterWithoutFuture <- function(type = "PSOCK") {
+setupClusterWithoutPkgs <- function(type = "PSOCK", withouts = c("future")) {
   cl <- parallel::makeCluster(1L, type = type)
 
   ## Emulate a worker that does not have 'future' installed.
@@ -20,10 +19,11 @@ setupClusterWithoutFuture <- function(type = "PSOCK") {
   ## Check whether 'future' is still available on the worker or not.
   ## It could be that it is installed in the system library path, which
   ## in case we cannot "hide" the future package from the worker.
-  has_future <- parallel::clusterEvalQ(cl, requireNamespace("future"))[[1]]
+  has_pkgs <- parallel::clusterCall(cl, fun = sapply, X = withouts,
+                                    FUN = requireNamespace)[[1]]
 
   attr(cl, "libs") <- libs
-  attr(cl, "has_future") <- has_future
+  attr(cl, "has_pkgs") <- has_pkgs
 
   cl
 }
@@ -32,8 +32,8 @@ cl <- NULL
 for (type in types) {
   message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
-  cl <- setupClusterWithoutFuture(type)  
-  if (!attr(cl, "has_future")) {
+  cl <- setupClusterWithoutPkgs(type)  
+  if (!all(attr(cl, "has_pkgs"))) {
     ## If worker does not have 'future' installed, then there will be an
     ## error already when plan() is called, because it will attempt to
     ## launch a quick future to validate that everything works.
@@ -46,8 +46,8 @@ for (type in types) {
   }
   parallel::stopCluster(cl)
 
-  cl <- setupClusterWithoutFuture()  
-  if (!attr(cl, "has_future")) {
+  cl <- setupClusterWithoutPkgs(type)  
+  if (!all(attr(cl, "has_pkgs"))) {
     ## However, if we disable the quick future test, we should not get
     ## an error here.
     plan(cluster, workers = cl, .init = FALSE)

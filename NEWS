@@ -24,7 +24,7 @@ BUG FIX:
    recorded and re-signalled if any further querying attempts.
  
  o Internal, seldomly used myExternalIP() failed to recognize IPv4 answers
-   from some of the lookup servers.
+   from some of the lookup servers. This could in turn produce another error.
 
 
 Version: 1.8.0 [2018-04-08]
