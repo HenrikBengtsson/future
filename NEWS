@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.0-9000 [2018-04-27]
+Version: 1.8.0-9000 [2018-04-28]
 
 NEW FEATURES:
 
@@ -23,6 +23,9 @@ BUG FIX:
    in an infinite waiting loop.  Now the failed communication error is
    recorded and re-signalled if any further querying attempts.
  
+ o Internal, seldomly used myExternalIP() failed to recognize IPv4 answers
+   from some of the lookup servers.
+
 
 Version: 1.8.0 [2018-04-08]
 

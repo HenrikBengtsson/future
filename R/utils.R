@@ -261,8 +261,10 @@ parseCmdArgs <- function() {
 
 myExternalIP <- local({
   ip <- NULL
-  function(force = FALSE, mustWork = TRUE) {
+  function(force = FALSE, random = TRUE, mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
+
+    mdebug("myExternalIP() ...")
     
     ## FIXME: The identification of the external IP number relies on a
     ## single third-party server.  This could be improved by falling back
@@ -277,16 +279,31 @@ myExternalIP <- local({
       "http://diagnostic.opendns.com/myip",
       "http://api.ipify.org/"
     )
+
+    ## Randomize order of lookup URLs to lower the load on a specific
+    ## server.
+    if (random) urls <- sample(urls)
+
+    ## Only wait 5 seconds for server to respond
+    setTimeLimit(cpu = 5, elapsed = 5, transient = TRUE)
+    on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
+    
     value <- NULL
     for (url in urls) {
-      value <- tryCatch(readLines(url), error = function(ex) NULL)
+      mdebug(" - query: %s", sQuote(url))
+      value <- tryCatch({
+        readLines(url, warn = FALSE)
+      }, error = function(ex) NULL)
+
+      mdebug(" - answer: %s", sQuote(paste(value, collapse = "\n")))
       
       ## Nothing found?
       if (is.null(value)) next
-
+; 
       ## Keep only lines that look like they contain IP v4 numbers
-      ip4_pattern <- ".*[^[:digit:]]+([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
+      ip4_pattern <- ".*[^[:digit:]]*([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
       value <- grep(ip4_pattern, value, value = TRUE)
+      mdebug(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Extract the IP numbers
       value <- gsub(ip4_pattern, "\\1", value)
@@ -294,6 +311,7 @@ myExternalIP <- local({
       ## Trim and drop empty results (just in case)
       value <- trim(value)
       value <- value[nzchar(value)]
+      mdebug(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Nothing found?
       if (length(value) == 0) next
@@ -307,6 +325,7 @@ myExternalIP <- local({
       if (mustWork) {
         stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", ")))
       }
+      mdebug("myExternalIP() ... failed")
       return(NA_character_)
     }
 
@@ -315,6 +334,8 @@ myExternalIP <- local({
 
     ## Cache result
     ip <<- value
+
+    mdebug("myExternalIP() ... done")
     
     ip
   }
