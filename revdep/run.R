@@ -17,6 +17,12 @@ if (file_test("-f", p <- Sys.getenv("R_CHECK_ENVIRON", "~/.R/check.Renviron"))) 
   cat(sprintf("To disable, set 'R_CHECK_ENVIRON=false' (a fake pathname)\n"))
 }
 
+envs <- grep("^_R_CHECK_", names(Sys.getenv()), value = TRUE)
+if (length(envs) > 0L) {
+  cat(sprintf("Detected _R_CHECK_* env vars that will affect R CMD check: %s\n",
+              paste(sQuote(envs), collapse = ", ")))
+}
+
 ## Packages that needed to be installed manually on fresh R 3.5.0 setup:
 ## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown"))
 
