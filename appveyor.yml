@@ -26,7 +26,7 @@ install:
         Bootstrap
 
 cache:
-  - C:\RLibrary -> appveyor.yml
+#  - C:\RLibrary -> appveyor.yml
 
 build_script:
   - Rscript -e "c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())"
