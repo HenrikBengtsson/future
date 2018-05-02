@@ -98,7 +98,12 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## because that will return NULL if there's a timeout, which is
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
-  pid <- selectChildren(job, timeout = timeout)
+  ## WORKAROUND 2: In R (>= 3.5.0) the below call to selectChildren() produces
+  ## warnings such as "cannot wait for child 13206 as it does not exist", cf.
+  ## https://github.com/HenrikBengtsson/future/issues/218.
+  ## For now, we're suppressing those warnings until the underlying problem 
+  ## is fully understood and fixed. /HB 2018-05-01
+  pid <- suppressWarnings(selectChildren(job, timeout = timeout))
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
@@ -132,7 +137,12 @@ result.MulticoreFuture <- function(future, ...) {
   stop_if_not(inherits(job, "parallelJob"))
   ## WORKAROUND: Pass single job as list, cf.
   ## https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
-  result <- mccollect(jobs = list(job), wait = TRUE)[[1L]]
+  ## WORKAROUND 2: In R (>= 3.5.0) the below call to selectChildren() produces
+  ## warnings such as "cannot wait for child 13206 as it does not exist", cf.
+  ## https://github.com/HenrikBengtsson/future/issues/218.
+  ## For now, we're suppressing those warnings until the underlying problem 
+  ## is fully understood and fixed. /HB 2018-05-01
+  result <- suppressWarnings(mccollect(jobs = list(job), wait = TRUE))[[1L]]
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
@@ -167,4 +177,9 @@ result.MulticoreFuture <- function(future, ...) {
 #' @export
 getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
   NextMethod("getExpression", mc.cores = mc.cores)
+}
+
+
+select_children <- function(children, timeout = 0) {
+  selectChildren <- importParallel("selectChildren")
 }
