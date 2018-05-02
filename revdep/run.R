@@ -29,11 +29,11 @@ if (length(envs) > 0L) {
 ## crancache::install_packages(c("forecast", "randomForest", "neuroblastoma", "purrr", "Hmisc", "PSCBS"))
 ## crancache::install_packages(c("aroma.core", "XML", "xml2", "roxygen2"))
 ## crancache::install_packages(c("png", "Cairo", "EBImage", "GLAD", "RCurl", "tinytex", "shinystan", "curl"))
-## crancache::install_packages(c("rgl", "rgeos", "gdalUtils", "mapview", "mapedit"))
+## crancache::install_packages(c("rgl", "rgeos", "gdalUtils", "mapview", "mapedit", "s2dverification"))
 
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
 unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)
 
 revdep_check(bioc = TRUE, num_workers = availableCores(),
-             timeout = as.difftime(30, units = "mins"), quiet = FALSE)
+             timeout = as.difftime(20, units = "mins"), quiet = FALSE)
