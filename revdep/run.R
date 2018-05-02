@@ -24,8 +24,12 @@ if (length(envs) > 0L) {
 }
 
 ## Packages that needed to be installed manually on fresh R 3.5.0 setup:
-## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown"))
-
+## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown", "snow", "labelled"))
+## crancache::install_packages(c("Ecdat", "nloptr", "hexbin", "earth", "arm", "minfiData", "methyvimData"))
+## crancache::install_packages(c("forecast", "randomForest", "neuroblastoma", "purrr", "Hmisc", "PSCBS"))
+## crancache::install_packages(c("aroma.core", "XML", "xml2", "roxygen2"))
+## crancache::install_packages(c("png", "Cairo", "EBImage", "GLAD", "RCurl", "tinytex", "shinystan", "curl"))
+## crancache::install_packages(c("rgl", "rgeos", "gdalUtils", "mapview", "mapedit"))
 
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
