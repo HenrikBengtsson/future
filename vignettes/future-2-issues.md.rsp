@@ -149,6 +149,13 @@ Error in FALSE :
 ('con' of class 'file') used in the future expression
 ```
 
+Below are few examples of commonly used packages that produce non-exportable objects.  If you find other examples, please report back.
+
+(*) The exception _may_ be if you use _forked_ R processes, e.g. `plan(multicore)`.  However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable.  Moreover, such code will certainly fail to parallelize on other future backends.
+
+
+### Example: Non-exportable objects by the xml2 package
+
 Another example is XML objects of the xml2 package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
 ```r
 > library("future")
@@ -167,6 +174,9 @@ Error in FALSE :
   Detected a non-exportable reference ('externalptr') in one of the globals
 ('xml' of class 'xml_document') used in the future expression
 ```
+
+
+### Example: Non-exportable objects by the Rcpp package
 
 A third example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
 ```r
@@ -204,7 +214,77 @@ in one of the globals ('my_length' of class 'function') used in the future
 expression
 ```
 
-(*) The exception _may_ be if you use forked R processes, e.g. `plan(multicore)`.
+
+### Example: Non-exportable objects by the rJava package
+
+Here is an example that show how rJava objects cannot be used when
+exported to external R processes.
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("rJava")
+> .jinit() Initialize Java VM on master
+
+> Double <- J("java.lang.Double")
+> d0 <- new(Double, "3.14")
+> print(d0)
+[1] "Java-Object{3.14}"
+
+> f <- future({
+    .jinit() ## Initialize Java VM on worker
+    new(Double, "3.14")
+  })
+> d1 <- value(f)
+> print(d1)
+## [1] "Java-Object<null>"
+```
+
+Although no error is produced, we see that the value `d1` is a Java NULL Object.  As before, we can catch this by using:
+
+```r
+> options(future.globals.onReference = "error")
+> f <- future({
+    .jinit() ## Initialize Java VM on worker
+    new(Double, "3.14")
+> })
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('Double' of class 'jclassName') used in the future expression
+```
+
+
+### Example: Non-exportable objects by the rlang package
+
+Yet another example comes from the rlang package.  This example is somewhat twisted - it uses `value(future(x))` which is quite meaningless by itself- but it is a minimal example of showing what can happen:
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("dplyr")  ## relies on 'rlang'
+> iris <- as_tibble(iris)
+> res <- mutate(iris, mod = value(future({
+    list(lm(Species ~ Sepal.Length, data = .))
+  })))
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: NULL value passed as symbol address.
+```
+
+In this case the mistake is caught by dplyr's `mutate_impl()`, but to be on the safe side, we could have used:
+
+```r
+> options(future.globals.onReference = "error")
+> res <- mutate(iris, mod = value(future({
+    list(lm(Species ~ Sepal.Length, data = .))
+  })))
+Timing stopped at: 0.004 0 0.001
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: Detected a non-exportable reference ('externalptr'
+  of class 'RegisteredNativeSymbol') in one of the globals ('~' of
+  class 'function') used in the future expression.
+```
 
 
 ## Trying to pass an unresolved future to another future

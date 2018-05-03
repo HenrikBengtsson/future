@@ -94,7 +94,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
   } # getopt()
 
   which <- match.arg(which)
-  stopifnot(length(default) == 1, is.finite(default), default >= 1L)
+  stop_if_not(length(default) == 1, is.finite(default), default >= 1L)
 
   ncores <- rep(NA_integer_, times = length(methods))
   names(ncores) <- methods
@@ -195,7 +195,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
   }
 
   ## Sanity check
-  stopifnot(all(ncores >= 1L, na.rm = TRUE))
+  stop_if_not(all(ncores >= 1L, na.rm = TRUE))
 
   ncores
 } # availableCores()

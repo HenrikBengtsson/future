@@ -39,7 +39,7 @@ mandelbrot <- function(...) UseMethod("mandelbrot")
 
 #' @export
 mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
-  stopifnot(is.matrix(Z), mode(Z) == "complex")
+  stop_if_not(is.matrix(Z), mode(Z) == "complex")
 
   ## By default, assume none of the elements will converge
   counts <- matrix(maxIter, nrow = nrow(Z), ncol = ncol(Z))
@@ -87,12 +87,12 @@ mandelbrot.numeric <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
                                resolution = 400L, maxIter = 200L,
                                tau = 2.0, ...) {
   ## Validate arguments
-  stopifnot(side > 0) 
+  stop_if_not(side > 0) 
   resolution <- as.integer(resolution)
-  stopifnot(resolution > 0)
+  stop_if_not(resolution > 0)
 
   maxIter <- as.integer(maxIter)
-  stopifnot(maxIter > 0)
+  stop_if_not(maxIter > 0)
 
   ## The nx-by-ny bins
   nx <- ny <- resolution
@@ -142,9 +142,9 @@ mandelbrot_tiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
                              nrow = 2L, ncol = nrow,
                              resolution = 400L, truncate = TRUE) {
   ## Validate arguments
-  stopifnot(side > 0)
+  stop_if_not(side > 0)
   resolution <- as.integer(resolution)
-  stopifnot(resolution > 0)
+  stop_if_not(resolution > 0)
 
   ## The nx-by-ny bins
   nx <- ny <- resolution
@@ -152,7 +152,7 @@ mandelbrot_tiles <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
   ## Bins per tile
   dx <- ceiling(nx / ncol)
   dy <- ceiling(ny / nrow)
-  stopifnot(dx > 0, dy > 0)
+  stop_if_not(dx > 0, dy > 0)
 
   ## Truncate so all tiles have identical dimensions?
   if (truncate) {

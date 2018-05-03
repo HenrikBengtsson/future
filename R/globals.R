@@ -1,11 +1,22 @@
 #' Retrieves global variables of an expression and their associated packages 
 #'
 #' @param expr An R expression whose globals should be found.
+#' 
 #' @param envir The environment from which globals should be searched.
+#' 
 #' @param tweak (optional) A function that takes an expression and returned a modified one.
+#' 
 #' @param globals (optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on \code{expr} and \code{tweak} searching from environment \code{envir}.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names \code{globals} searching from environment \code{envir}.  If a named list or a Globals object, the globals are used as is.
+#' 
 #' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 #' persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \code{future.globals.onMissing == "error"}.
+#'
+#' @param maxSize The maximum allowed total size (in bytes) of globals - for
+#' the purpose of preventing too large exports / transfers happening by
+#' mistake.  If the total size of the global objects are greater than this
+#' limit, an informative error message is produced. If
+#' \code{maxSize = +Inf}, then this assertion is skipped. (Default: 500 MiB).
+#'
 #' @param \dots Not used.
 #'
 #' @return A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list) and \code{packages} (a character string).
@@ -16,7 +27,7 @@
 #' @export
 #'
 #' @keywords internal
-getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, ...) {
+getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
   ## Nothing to do?
   if (is.logical(globals) && !globals) {
     return(list(expr = expr, globals = list(), packages = character(0)))
@@ -42,7 +53,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
 
   ## Alt 1. Identify globals based on expr, envir and tweak
   if (is.logical(globals)) {
-    stopifnot(length(globals) == 1, !is.na(globals))
+    stop_if_not(length(globals) == 1, !is.na(globals))
     if (debug) mdebug("Searching for globals ...")
     ## Algorithm for identifying globals
     globals.method <- getOption("future.globals.method", "ordered")
@@ -73,7 +84,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)
-  stopifnot(inherits(globals, "FutureGlobals"))
+  stop_if_not(inherits(globals, "FutureGlobals"))
 
   ## Nothing more to do?
   if (length(globals) == 0) {
@@ -92,7 +103,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else {
     if (debug) mdebug("Resolving globals: %s", resolve)
   }
-  stopifnot(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
+  stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
 
   exprOrg <- expr
 
@@ -219,19 +230,17 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   
   ## Protect against user error exporting too large objects?
   if (length(globals) > 0L) {
-    ## Maximum size of globals (to prevent too large exports) = 500 MiB
-    maxSizeOfGlobals <- getOption("future.globals.maxSize", 500 * 1024 ^ 2)
-    maxSizeOfGlobals <- as.numeric(maxSizeOfGlobals)
-    stopifnot(!is.na(maxSizeOfGlobals), maxSizeOfGlobals > 0)
+    maxSize <- as.numeric(maxSize)
+    stop_if_not(!is.na(maxSize), maxSize > 0)
     
-    if (is.finite(maxSizeOfGlobals)) {
+    if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
       sizes <- unlist(sizes, use.names = TRUE)
       total_size <- sum(sizes, na.rm = TRUE)
       attr(globals, "total_size") <- total_size
       if (debug) mdebug("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
   
-      if (total_size > maxSizeOfGlobals) {
+      if (total_size > maxSize) {
         n <- length(sizes)
         o <- order(sizes, decreasing = TRUE)[1:3]
         o <- o[is.finite(o)]
@@ -239,7 +248,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
         classes <- lapply(globals[o], FUN = mode)
         classes <- unlist(classes, use.names = FALSE)
         largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-        msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSizeOfGlobals))
+        msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSize))
         if (n == 1) {
           fmt <- "%s There is one global: %s."
         } else if (n == 2) {
@@ -285,7 +294,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     mdebug("getGlobalsAndPackages() ... DONE")
   }
 
-  stopifnot(inherits(globals, "FutureGlobals"))
+  stop_if_not(inherits(globals, "FutureGlobals"))
   
   list(expr = expr, globals = globals, packages = pkgs)
 } ## getGlobalsAndPackages()

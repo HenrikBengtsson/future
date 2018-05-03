@@ -58,7 +58,7 @@ multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
   if (substitute) expr <- substitute(expr)
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
-  stopifnot(length(workers) == 1, is.finite(workers), workers >= 1)
+  stop_if_not(length(workers) == 1, is.finite(workers), workers >= 1)
 
   ## Fall back to lazy sequential futures if only a single R session can be used,
   ## i.e. the use the current main R process.

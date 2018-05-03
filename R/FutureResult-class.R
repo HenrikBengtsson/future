@@ -23,8 +23,8 @@
 #' @keywords internal
 FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
                          version = "1.7") {
-  if (!is.null(condition)) stopifnot(inherits(condition, "condition"))
-  if (!is.null(calls)) stopifnot(is.list(calls))
+  if (!is.null(condition)) stop_if_not(inherits(condition, "condition"))
+  if (!is.null(calls)) stop_if_not(is.list(calls))
   
   args <- list(...)
   if (length(args) > 0) {
@@ -42,5 +42,25 @@ FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
     calls = calls,
     ...,
     version = version
-  ), class = c("FutureResult", "list"))
+  ), class = "FutureResult")
+}
+
+
+#' @rdname FutureResult
+#' @export
+#' @keywords internal
+as.character.FutureResult <- function(x, ...) {
+  info <- x[c("value", "condition", "version")]
+  info <- sapply(info, FUN = function(value) {
+    if (is.null(value)) return("NULL")
+    value <- as.character(value)
+    if (length(value) == 0L) return("")
+    value <- hpaste(value)
+    if (nchar(value) > 20L)
+      value <- paste0(substr(value, start = 1L, stop = 20L), " ...")
+    value
+  })
+  info <- sprintf("%s: %s", names(info), sQuote(info))
+  info <- paste(info, collapse = "; ")
+  sprintf("%s: %s", class(x)[1], info)
 }

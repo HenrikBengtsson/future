@@ -97,13 +97,13 @@
 future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = NULL, future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1.0) {
   .Deprecated(msg = "The implementation of future_lapply() in the 'future' package has been deprecated. Please use the one in the 'future.apply' package instead.")
   
-  stopifnot(is.function(FUN))
+  stop_if_not(is.function(FUN))
   
-  stopifnot(is.logical(future.lazy))
+  stop_if_not(is.logical(future.lazy))
 
-  stopifnot(!is.null(future.seed))
+  stop_if_not(!is.null(future.seed))
   
-  stopifnot(length(future.scheduling) == 1, !is.na(future.scheduling),
+  stop_if_not(length(future.scheduling) == 1, !is.na(future.scheduling),
             is.numeric(future.scheduling) || is.logical(future.scheduling))
 
   ## Nothing to do?
@@ -164,7 +164,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     stop("Invalid argument 'future.globals': ", mode(globals))
   }
   globals <- as.FutureGlobals(globals)
-  stopifnot(inherits(globals, "FutureGlobals"))
+  stop_if_not(inherits(globals, "FutureGlobals"))
   
   names <- names(globals)
   if (!is.element("FUN", names)) {
@@ -204,9 +204,9 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   ## 2. Packages
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (!is.null(future.packages)) {
-    stopifnot(is.character(future.packages))
+    stop_if_not(is.character(future.packages))
     future.packages <- unique(future.packages)
-    stopifnot(!anyNA(future.packages), all(nzchar(future.packages)))
+    stop_if_not(!anyNA(future.packages), all(nzchar(future.packages)))
     packages <- unique(c(packages, future.packages))
   }
   
@@ -313,7 +313,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     }
   } else {
     ## Treat 'future.scheduling' as the number of futures per worker.
-    stopifnot(future.scheduling >= 0)
+    stop_if_not(future.scheduling >= 0)
     nbr_of_workers <- nbrOfWorkers()
     if (nbr_of_workers > nx) nbr_of_workers <- nx
     nbr_of_futures <- future.scheduling * nbr_of_workers
@@ -338,7 +338,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   globals <- c(globals, globals_extra)
 
   ## At this point a globals should be resolved and we should know their total size
-##  stopifnot(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
+##  stop_if_not(attr(globals, "resolved"), !is.na(attr(globals, "total_size")))
 
     ## To please R CMD check
   ...future.FUN <- ...future.x_ii <- ...future.seeds_ii <- NULL
@@ -355,7 +355,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
     ## Subsetting outside future is more efficient
     globals_ii <- globals
     globals_ii[["...future.x_ii"]] <- x[chunk]
-##    stopifnot(attr(globals_ii, "resolved"))
+##    stop_if_not(attr(globals_ii, "resolved"))
     
     ## Using RNG seeds or not?
     if (is.null(seeds)) {
@@ -401,7 +401,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   }
 
   ## Sanity check
-  stopifnot(length(values) == nchunks)
+  stop_if_not(length(values) == nchunks)
   
   if (debug) mdebug("Reducing values from %d chunks ...", nchunks)
   values <- fold(values, c)
@@ -412,7 +412,7 @@ future_lapply <- function(x, FUN, ..., future.globals = TRUE, future.packages = 
   }
   
   ## Sanity check (this may happen if the future backend is broken)
-  stopifnot(length(values) == length(x))
+  stop_if_not(length(values) == length(x))
   
   names(values) <- names(x)
   

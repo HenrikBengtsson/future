@@ -1,3 +1,19 @@
+stop_if_not <- function(...) {
+  res <- list(...)
+  for (ii in 1L:length(res)) {
+    res_ii <- .subset2(res, ii)
+    if (length(res_ii) != 1L || is.na(res_ii) || !res_ii) {
+        mc <- match.call()
+        call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
+        if (length(call) > 1L) call <- paste(call[1L], "....")
+        stop(sprintf("%s is not TRUE", sQuote(call)),
+             call. = FALSE, domain = NA)
+    }
+  }
+  
+  NULL
+}
+
 ## From R.utils 2.0.2 (2015-05-23)
 hpaste <- function(..., sep = "", collapse = ", ", lastCollapse = NULL, maxHead = if (missing(lastCollapse)) 3 else Inf, maxTail = if (is.finite(maxHead)) 1 else Inf, abbreviate = "...") {
   if (is.null(lastCollapse)) lastCollapse <- collapse
@@ -154,7 +170,7 @@ detectCores <- local({
       value <- as.integer(value)
       
       ## Assert positive integer
-      stopifnot(length(value) == 1L, is.numeric(value),
+      stop_if_not(length(value) == 1L, is.numeric(value),
                 is.finite(value), value >= 1L)
 
       res <<- value
@@ -245,8 +261,10 @@ parseCmdArgs <- function() {
 
 myExternalIP <- local({
   ip <- NULL
-  function(force = FALSE, mustWork = TRUE) {
+  function(force = FALSE, random = TRUE, mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
+
+    mdebug("myExternalIP() ...")
     
     ## FIXME: The identification of the external IP number relies on a
     ## single third-party server.  This could be improved by falling back
@@ -261,16 +279,31 @@ myExternalIP <- local({
       "http://diagnostic.opendns.com/myip",
       "http://api.ipify.org/"
     )
+
+    ## Randomize order of lookup URLs to lower the load on a specific
+    ## server.
+    if (random) urls <- sample(urls)
+
+    ## Only wait 5 seconds for server to respond
+    setTimeLimit(cpu = 5, elapsed = 5, transient = TRUE)
+    on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
+    
     value <- NULL
     for (url in urls) {
-      value <- tryCatch(readLines(url), error = function(ex) NULL)
+      mdebug(" - query: %s", sQuote(url))
+      value <- tryCatch({
+        readLines(url, warn = FALSE)
+      }, error = function(ex) NULL)
+
+      mdebug(" - answer: %s", sQuote(paste(value, collapse = "\n")))
       
       ## Nothing found?
       if (is.null(value)) next
-
+; 
       ## Keep only lines that look like they contain IP v4 numbers
-      ip4_pattern <- ".*[^[:digit:]]+([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
+      ip4_pattern <- ".*[^[:digit:]]*([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
       value <- grep(ip4_pattern, value, value = TRUE)
+      mdebug(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Extract the IP numbers
       value <- gsub(ip4_pattern, "\\1", value)
@@ -278,6 +311,7 @@ myExternalIP <- local({
       ## Trim and drop empty results (just in case)
       value <- trim(value)
       value <- value[nzchar(value)]
+      mdebug(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Nothing found?
       if (length(value) == 0) next
@@ -291,14 +325,17 @@ myExternalIP <- local({
       if (mustWork) {
         stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", ")))
       }
+      mdebug("myExternalIP() ... failed")
       return(NA_character_)
     }
 
     ## Sanity check
-    stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
+    stop_if_not(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
 
     ## Cache result
     ip <<- value
+
+    mdebug("myExternalIP() ... done")
     
     ip
   }
@@ -401,7 +438,7 @@ myInternalIP <- local({
     }
     ## Sanity check
 
-    stopifnot(is.character(value), length(value) >= 1, !any(is.na(value)))
+    stop_if_not(is.character(value), length(value) >= 1, !any(is.na(value)))
 
     ## Cache result
     ip <<- value
@@ -559,7 +596,7 @@ set_random_seed <- function(seed) {
 next_random_seed <- function(seed = get_random_seed()) {
   sample.int(n = 1L, size = 1L, replace = FALSE)
   seed_next <- get_random_seed()
-  stopifnot(!any(seed_next != seed))
+  stop_if_not(!any(seed_next != seed))
   invisible(seed_next)
 }
 
@@ -583,7 +620,7 @@ is_lecyer_cmrg_seed <- function(seed) {
 as_lecyer_cmrg_seed <- function(seed) {
   ## Generate a L'Ecuyer-CMRG seed (existing or random)?
   if (is.logical(seed)) {
-    stopifnot(length(seed) == 1L)
+    stop_if_not(length(seed) == 1L)
     if (!is.na(seed) && !seed) {
       stop("Argument 'seed' must be TRUE if logical: ", seed)
     }
@@ -601,7 +638,7 @@ as_lecyer_cmrg_seed <- function(seed) {
     return(get_random_seed())
   }
 
-  stopifnot(is.numeric(seed), all(is.finite(seed)))
+  stop_if_not(is.numeric(seed), all(is.finite(seed)))
   seed <- as.integer(seed)
 
   ## Already a L'Ecuyer-CMRG seed?
@@ -666,7 +703,7 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' @return Returns a open, binary [base::connection()].
 nullcon <- local({
   nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
-  .nullcon <- function() file(nullfile, open = "wb")
+  .nullcon <- function() file(nullfile, open = "wb", raw = TRUE)
 
   ## Assert that a null device exists
   tryCatch({

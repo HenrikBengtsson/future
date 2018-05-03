@@ -44,7 +44,7 @@ tweak.character <- function(strategy, ..., penvir = parent.frame()) {
   }
 
   ## Sanity check
-  stopifnot(is.function(strategy))
+  stop_if_not(is.function(strategy))
 
   tweak(strategy, ..., penvir = penvir)
 }

@@ -32,7 +32,7 @@ FutureEvaluationCondition <- function(message, call = NULL, future = NULL, outpu
     message <- conditionMessage(cond)
   }
   
-  stopifnot(inherits(cond, "condition"))
+  stop_if_not(inherits(cond, "condition"))
 
   ## Create a condition object
   structure(list(message = as.character(message), cond = cond, call = call), 

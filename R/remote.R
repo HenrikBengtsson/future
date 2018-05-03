@@ -22,7 +22,7 @@ remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   if (substitute) expr <- substitute(expr)
 
   if (is.function(workers)) workers <- workers()
-  stopifnot(length(workers) >= 1L, !anyNA(workers))
+  stop_if_not(length(workers) >= 1L, !anyNA(workers))
 
   if (is.character(workers)) {
     homogeneous <- FALSE ## Calls plain 'Rscript'
@@ -54,7 +54,7 @@ remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
         myip <- "<external>"
       }
     }
-    stopifnot(length(myip) == 1, is.character(myip), !is.na(myip))
+    stop_if_not(length(myip) == 1, is.character(myip), !is.na(myip))
     
     if (myip == "<external>") {
       myip <- myExternalIP()

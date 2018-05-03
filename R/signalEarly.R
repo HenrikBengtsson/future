@@ -17,7 +17,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
   }
   
   result <- result(future)
-  stopifnot(inherits(result, "FutureResult"))
+  stop_if_not(inherits(result, "FutureResult"))
   
   condition <- result$condition
   
@@ -31,7 +31,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
                     paste(sQuote(class(condition)), collapse = ", "))
 
   ## Sanity check
-  stopifnot(inherits(condition, "condition"))
+  stop_if_not(inherits(condition, "condition"))
 
   resignalCondition(future)
   
@@ -51,10 +51,10 @@ resignalCondition <- function(future, ...) {
   }
 
   result <- result(future)
-  stopifnot(inherits(result, "FutureResult"))
+  stop_if_not(inherits(result, "FutureResult"))
   
   condition <- result$condition
-  stopifnot(inherits(condition, "condition"))
+  stop_if_not(inherits(condition, "condition"))
 
   ## Signal detected condition
   if (inherits(condition, "error")) {

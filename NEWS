@@ -1,6 +1,36 @@
 Package: future
 ===============
 
+Version: 1.8.1 [2018-05-02]
+
+NEW FEATURES:
+
+ o getGlobalsAndPackages() gained argument 'maxSize'.
+
+ o makeClusterPSOCK() now produces a more informative warning if environment
+   variable R_PARALLEL_PORT specifies a non-numeric port.
+
+ o Now plan() gives a more informative error message in case it fails, e.g.
+   when the internal future validation fails and why.
+
+ o Added UnexpectedFutureResultError to be used by backends for signalling
+   in a standard way that an unexpected result was retrieved from a worker.
+
+BUG FIX:
+
+ o When the communication between an asynchronous future and a background R
+   process failed, further querying of the future state/results could end up
+   in an infinite waiting loop.  Now the failed communication error is
+   recorded and re-signalled if any further querying attempts.
+ 
+ o Internal, seldom used myExternalIP() failed to recognize IPv4 answers
+   from some of the lookup servers. This could in turn produce another error.
+
+ o In R (>= 3.5.0), multicore futures would produce multiple warnings
+   originating from querying whether background processes have completed
+   or not. These warnings are now suppressed.
+   
+
 Version: 1.8.0 [2018-04-08]
 
 SIGNIFICANT CHANGES:

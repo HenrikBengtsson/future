@@ -47,9 +47,14 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.character(port)) {
     port <- match.arg(port)
     if (identical(port, "auto")) {
-      port <- Sys.getenv("R_PARALLEL_PORT", NA_character_)
-      port <- as.integer(port)
-      if (is.na(port)) port <- 11000:11999
+      port0 <- Sys.getenv("R_PARALLEL_PORT")
+      port <- suppressWarnings(as.integer(port0))
+      if (is.na(port)) {
+        if (nzchar(port0)) {
+          warning("Non-numeric value of environment variable 'R_PARALLEL_PORT' coerced to NA_integer_: ", sQuote(port0))
+        }
+        port <- 11000:11999
+      }
     } else if (identical(port, "random")) {
       port <- 11000:11999
     }
@@ -206,7 +211,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 #' workers running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls, which often
-#' requires static IP address as well as privilieges to edit the firewall,
+#' requires static IP address as well as privileges to edit the firewall,
 #' something most users don't have.
 #' It also has the advantage of not having to know the internal and / or the
 #' public IP address / hostname of the master.
@@ -224,7 +229,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @section Default value of argument \code{homogeneous}:
 #' The default value of \code{homogeneous} is TRUE if and only if either
-#' of the following is fullfilled:
+#' of the following is fulfilled:
 #' \itemize{
 #'  \item \code{worker} is \emph{localhost}
 #'  \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
@@ -261,21 +266,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   manual <- as.logical(manual)
-  stopifnot(length(manual) == 1L, !is.na(manual))
+  stop_if_not(length(manual) == 1L, !is.na(manual))
 
   dryrun <- as.logical(dryrun)
-  stopifnot(length(dryrun) == 1L, !is.na(dryrun))
+  stop_if_not(length(dryrun) == 1L, !is.na(dryrun))
   
   ## Locate a default SSH client?
   if (!is.null(rshcmd)) {
     rshcmd <- as.character(rshcmd)
-    stopifnot(length(rshcmd) >= 1L)
+    stop_if_not(length(rshcmd) >= 1L)
   }
 
   rshopts <- as.character(rshopts)
   
   user <- as.character(user)
-  stopifnot(length(user) <= 1L)
+  stop_if_not(length(user) <= 1L)
   
   port <- as.integer(port)
   if (is.na(port) || port < 0L || port > 65535L) {
@@ -283,7 +288,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   revtunnel <- as.logical(revtunnel)
-  stopifnot(length(revtunnel) == 1L, !is.na(revtunnel))
+  stop_if_not(length(revtunnel) == 1L, !is.na(revtunnel))
   
   if (is.null(master)) {
     if (localMachine || revtunnel) {
@@ -292,13 +297,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       master <- Sys.info()[["nodename"]]
     }
   }
-  stopifnot(!is.null(master))
+  stop_if_not(!is.null(master))
 
   timeout <- as.numeric(timeout)
-  stopifnot(length(timeout) == 1L, !is.na(timeout), is.finite(timeout), timeout >= 0)
+  stop_if_not(length(timeout) == 1L, !is.na(timeout), is.finite(timeout), timeout >= 0)
   
   methods <- as.logical(methods)
-  stopifnot(length(methods) == 1L, !is.na(methods))
+  stop_if_not(length(methods) == 1L, !is.na(methods))
  
   if (is.null(homogeneous)) {
     homogeneous <- {
@@ -308,28 +313,28 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     }
   }
   homogeneous <- as.logical(homogeneous)
-  stopifnot(length(homogeneous) == 1L, !is.na(homogeneous))
+  stop_if_not(length(homogeneous) == 1L, !is.na(homogeneous))
 
   if (is.null(rscript)) {
     rscript <- "Rscript"
     if (homogeneous) rscript <- file.path(R.home("bin"), rscript)
   }
   rscript <- as.character(rscript)
-  stopifnot(length(rscript) >= 1L)
+  stop_if_not(length(rscript) >= 1L)
 
   rscript_args <- as.character(rscript_args)
 
   useXDR <- as.logical(useXDR)
-  stopifnot(length(useXDR) == 1L, !is.na(useXDR))
+  stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
   renice <- as.integer(renice)
-  stopifnot(length(renice) == 1L)
+  stop_if_not(length(renice) == 1L)
 
   rank <- as.integer(rank)
-  stopifnot(length(rank) == 1L, !is.na(rank))
+  stop_if_not(length(rank) == 1L, !is.na(rank))
   
   verbose <- as.logical(verbose)
-  stopifnot(length(verbose) == 1L, !is.na(verbose))
+  stop_if_not(length(verbose) == 1L, !is.na(verbose))
 
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
@@ -375,7 +380,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   } else {
     local_cmd <- cmd
   }
-  stopifnot(length(local_cmd) == 1L)
+  stop_if_not(length(local_cmd) == 1L)
   
   if (manual || dryrun) {
     msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
@@ -425,7 +430,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 ## 'closeAllConnections() can really mess things up' on 2016-10-30
 ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
 add_cluster_uuid <- function(cl) {
-  stopifnot(inherits(cl, "cluster"))
+  stop_if_not(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
@@ -472,7 +477,7 @@ is_localhost <- local({
       return(NA)
     }
     
-    stopifnot(length(worker) == 1, length(hostname) == 1)
+    stop_if_not(length(worker) == 1, length(hostname) == 1)
   
     ## Already known to a localhost or not to one?
     if (worker %in% localhosts) return(TRUE)
@@ -573,7 +578,7 @@ session_info <- function() {
 
 
 add_cluster_session_info <- function(cl) {
-  stopifnot(inherits(cl, "cluster"))
+  stop_if_not(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
@@ -586,7 +591,7 @@ add_cluster_session_info <- function(cl) {
     pid <- as.integer(gsub(".* ", "", pid))
     
     info <- clusterCall(cl[ii], fun = session_info)[[1]]
-    stopifnot(info$process$pid == pid)
+    stop_if_not(info$process$pid == pid)
     node$session_info <- info
     cl[[ii]] <- node
   }

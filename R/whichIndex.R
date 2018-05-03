@@ -1,7 +1,7 @@
 whichIndex <- function(I, dim, dimnames = NULL) {
   ndim <- length(dim)
-  stopifnot((is.matrix(I) || is.data.frame(I)), ncol(I) == ndim)
-  if (!is.null(dimnames)) stopifnot(length(dimnames) == ndim)
+  stop_if_not((is.matrix(I) || is.data.frame(I)), ncol(I) == ndim)
+  if (!is.null(dimnames)) stop_if_not(length(dimnames) == ndim)
   if (ndim == 0L) return(integer(0L))
 
   if (is.data.frame(I)) {

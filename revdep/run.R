@@ -12,9 +12,28 @@ availableCores <- function() {
   1L
 }
 
+if (file_test("-f", p <- Sys.getenv("R_CHECK_ENVIRON", "~/.R/check.Renviron"))) {
+  cat(sprintf("R CMD check will use env vars from %s\n", sQuote(p)))
+  cat(sprintf("To disable, set 'R_CHECK_ENVIRON=false' (a fake pathname)\n"))
+}
+
+envs <- grep("^_R_CHECK_", names(Sys.getenv()), value = TRUE)
+if (length(envs) > 0L) {
+  cat(sprintf("Detected _R_CHECK_* env vars that will affect R CMD check: %s\n",
+              paste(sQuote(envs), collapse = ", ")))
+}
+
+## Packages that needed to be installed manually on fresh R 3.5.0 setup:
+## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown", "snow", "labelled"))
+## crancache::install_packages(c("Ecdat", "nloptr", "hexbin", "earth", "arm", "minfiData", "methyvimData"))
+## crancache::install_packages(c("forecast", "randomForest", "neuroblastoma", "purrr", "Hmisc", "PSCBS"))
+## crancache::install_packages(c("aroma.core", "XML", "xml2", "roxygen2"))
+## crancache::install_packages(c("png", "Cairo", "EBImage", "GLAD", "RCurl", "tinytex", "shinystan", "curl"))
+## crancache::install_packages(c("rgl", "rgeos", "gdalUtils", "mapview", "mapedit", "s2dverification"))
+
 ## WORKAROUND: Remove checked pkgs that use file links, which otherwise
 ## produce warnings which are promoted to errors by revdepcheck.
 unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)
 
 revdep_check(bioc = TRUE, num_workers = availableCores(),
-             timeout = as.difftime(30, units = "mins"), quiet = FALSE)
+             timeout = as.difftime(20, units = "mins"), quiet = FALSE)
