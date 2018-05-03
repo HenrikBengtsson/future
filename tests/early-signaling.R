@@ -106,7 +106,7 @@ stopifnot(inherits(v, "error"))
 f <- future({ stop("bang!") }, earlySignal = TRUE)
 Sys.sleep(0.5)
 r <- tryCatch(resolved(f), error = identity)
-stopifnot(inherits(r, "error"))
+stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
 v <- tryCatch(value(f), error = identity)
 stopifnot(inherits(v, "error"))
 
