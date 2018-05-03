@@ -259,9 +259,11 @@ for (strategy in supportedStrategies()) {
   }, error = identity)
   stopifnot(inherits(res, "error"))
 
-  f <- future({ iris }, packages = "datasets")
-  v <- value(f)
-  print(head(v))
+  if (nbrOfWorkers() > 1L) {
+    f <- future({ iris }, packages = "datasets")
+    v <- value(f)
+    print(head(v))
+  }
   
   ns %<-% {
     unloadNamespace("datasets")
@@ -276,8 +278,10 @@ for (strategy in supportedStrategies()) {
   }, error = identity)
   stopifnot(inherits(res, "error"))
 
-  df %<-% { iris } %packages% "datasets"
-  print(head(df))
+  if (nbrOfWorkers() > 1L) {
+    df %<-% { iris } %packages% "datasets"
+    print(head(df))
+  }
   
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }

@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.0-9000 [2018-05-01]
+Version: 1.8.1 [2018-05-02]
 
 NEW FEATURES:
 
@@ -23,7 +23,7 @@ BUG FIX:
    in an infinite waiting loop.  Now the failed communication error is
    recorded and re-signalled if any further querying attempts.
  
- o Internal, seldomly used myExternalIP() failed to recognize IPv4 answers
+ o Internal, seldom used myExternalIP() failed to recognize IPv4 answers
    from some of the lookup servers. This could in turn produce another error.
 
  o In R (>= 3.5.0), multicore futures would produce multiple warnings
