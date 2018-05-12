@@ -68,7 +68,7 @@
 #' and expression \code{value}.  However, by using non-standard evaluation,
 #' this constructs can emulate an assignment operator similar to
 #' \code{x <- value}. Due to \R's precedence rules of operators,
-#' future expressions often needs to be explicitly bracketed, e.g.
+#' future expressions often need to be explicitly bracketed, e.g.
 #' \code{x \%<-\% { a + b }}.
 #'
 #'
