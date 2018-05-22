@@ -613,8 +613,17 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
     ...future.oldOptions <- options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.loadScript = FALSE,
+      
       ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing = .(globals.onMissing)
+      future.globals.onMissing = .(globals.onMissing),
+      
+      ## Pass down other future.* options
+      future.globals.maxSize     = .(getOption("future.globals.maxSize")),
+      future.globals.method      = .(getOption("future.globals.method")),
+      future.globals.onMissing   = .(getOption("future.globals.onMissing")),
+      future.globals.onReference = .(getOption("future.globals.onReference")),
+      future.globals.resolve     = .(getOption("future.globals.resolve")),
+      future.resolve.recursive   = .(getOption("future.resolve.recursive"))
     )
     .(enter)
   })

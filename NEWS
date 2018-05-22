@@ -3,7 +3,10 @@ Package: future
 
 Version: 1.8.1-9000 [2018-05-22]
 
- o ...
+NEW FEATURES:
+
+ o Now more 'future.*' options are passed down so that they are also
+   acknowledged when using nested futures.
  
 BUG FIX:
 
