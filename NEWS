@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.1-9000 [2018-05-22]
+Version: 1.8.1-9000 [2018-05-24]
 
 NEW FEATURES:
 
@@ -13,6 +13,9 @@ BUG FIX:
  o makeClusterPSOCK() produced a warning when environment variable
    'R_PARALLEL_PORT' was set to 'random' (e.g. as on CRAN).
 
+ o Printing a plan() could produce an error when the deparsed call used to set
+   up the plan() was longer than 60 characters.
+ 
 
 Version: 1.8.1 [2018-05-02]
 

@@ -312,13 +312,14 @@ print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))
   s <- sprintf("%s:", class[1])
   specs <- list()
-  args <- deparse(args(x))
+  args <- deparse(args(x), width.cutoff = 500L)
   args <- args[-length(args)]
   args <- gsub("(^[ ]+|[ ]+$)", "", args)
   args <- paste(args, collapse = " ")
   specs$args <- args
   specs$tweaked <- inherits(x, "tweaked")
-  specs$call <- deparse(attr(x, "call"))
+  specs$call <- paste(deparse(attr(x, "call"), width.cutoff = 500L),
+                      collapse="")
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
@@ -339,13 +340,14 @@ print.FutureStrategyList <- function(x, ...) {
     class <- setdiff(class(x_kk), c("tweaked", "function"))
     s_kk <- sprintf("%d. %s:", kk, class[1])
     specs <- list()
-    args <- deparse(args(x_kk))
+    args <- deparse(args(x_kk), width.cutoff = 500L)
     args <- args[-length(args)]
     args <- gsub("(^[ ]+|[ ]+$)", "", args)
     args <- paste(args, collapse = " ")
     specs$args <- args
     specs$tweaked <- inherits(x_kk, "tweaked")
-    specs$call <- deparse(attr(x_kk, "call"))
+    specs$call <- paste(deparse(attr(x_kk, "call"), width.cutoff = 500L),
+                        collapse = "")
     specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
     s <- c(s, s_kk, specs)
   }
