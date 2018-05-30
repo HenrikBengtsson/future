@@ -113,7 +113,7 @@ resolved.UniprocessFuture <- function(x, ...) {
     ## while(!resolved(f)) Sys.sleep(5);
     result(x)
   }
-  NextMethod("resolved")
+  NextMethod()
 }
 
 

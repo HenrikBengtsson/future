@@ -44,7 +44,7 @@ FutureEvaluationCondition <- function(message, call = NULL, future = NULL, outpu
 
 #' @export
 print.FutureEvaluationCondition <- function(x, ...) {
-  NextMethod("print")
+  NextMethod()
 
   future <- attr(x, "future")
   output <- attr(x, "output")

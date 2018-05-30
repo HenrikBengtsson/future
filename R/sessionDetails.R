@@ -39,7 +39,7 @@ sessionDetails <- function(env = FALSE) {
 #' @export
 `[.sessionDetails` <- function(x, ...) {
   class <- class(x)
-  x <- NextMethod("[")
+  x <- NextMethod()
   class(x) <- class
   x
 }

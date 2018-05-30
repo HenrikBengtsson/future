@@ -49,7 +49,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
 
 #' @export
 print.FutureCondition <- function(x, ...) {
-  NextMethod("print")
+  NextMethod()
 
   future <- attr(x, "future")
 
