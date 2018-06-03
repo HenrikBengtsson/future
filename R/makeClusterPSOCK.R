@@ -185,15 +185,18 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
 #' set the default is either of \command{ssh} and \command{plink -ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
-#' on the \code{PATH}.  It is less common to find this command on Windows
-#' system, which are more likely to have the \command{PuTTY} software and
-#' its SSH client \command{plink} installed.
+#' on the \code{PATH}.  This is also true for recent Windows 10
+#' (since version 1803; April 2018).
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 #' client that is distributed with RStudio will be used as a fallback if
 #' neither of the above two commands are available on the \code{PATH}.
-#' Note that on Windows 10, there is a beta version of OpenSSH that can
-#' be enabled in the Windows Settings, cf. \url{https://www.thomasmaurer.ch/2017/11/install-ssh-on-windows-10-as-optional-feature/}.
+#' 
+#' For Windows systems prior to Windows 10, which do not have RStudio
+#' installed, it is less common to find \command{ssh}. Instead it is more
+#' likely that such systems have the \command{PuTTY} software and its SSH
+#' client \command{plink} installed.
 #' If no SSH-client is found, an informative error message is produced.
+#' 
 #' It is also possible to specify the absolute path to the SSH client.  To do
 #' this for PuTTY, specify the absolute path in the first element and option
 #' \command{-ssh} in the second as in
