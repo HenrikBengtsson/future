@@ -81,10 +81,19 @@ If we instead would like to process the sample sequentially and the chromosomes 
 plan(list(sequential, multiprocess))
 ```
 
-We could also process the data such that we allocate two cores for processing two samples in parallel each using four cores for processing four chromosomes in parallel:
+#### Built-in protection against recursive parallelism
+
+Above we have processed either the outer or the inner set of future in parallel.  What if we want to process both layers in parallel?  It's tempting to use:
+```r
+plan(list(multiprocess, multiprocess))
+```
+Although this does not give an error, we will find that the inner layer of futures will be processed sequentially just as if we would use `plan(list(multiprocess, sequential))`.  This behavior is due to the built in protection against nested parallelism.  If both layers would run in parallel, each using the 8 cores available on the machine, we would be running 8 * 8 = 64 parallel processes - that would for sure overload our computer.  What happens internally is that for the outer layer, `availableCores()` equals eight (8), whereas for the inner layer it equals one (1).
+
+Now, we could imagine that we process the our layer with, say, two parallel futures, and then the inner layer with four parallel futures.  In that case, we would end up running on at most eight cores.  This can achieved by using:
 ```r
 plan(list(tweak(multiprocess, workers = 2), tweak(multiprocess, workers = 4)))
 ```
+
 
 
 ### An ad-hoc compute cluster
