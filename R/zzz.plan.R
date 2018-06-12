@@ -66,13 +66,17 @@
 #'    network.
 #'  }
 #' }
-#'
+#' 
 #' Other package may provide additional evaluation strategies.
 #' Notably, the \pkg{future.batchtools} package implements a
 #' type of futures that will be resolved via job schedulers
 #' that are typically available on high-performance compute
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
+#'
+#' To "close" any background workers (e.g. `multisession`), change
+#' the plan to something different; `plan(sequential)` is recommended
+#' for this.
 #'
 #' @section For package developers:
 #' Please refrain from modifying the future strategy inside your packages /
