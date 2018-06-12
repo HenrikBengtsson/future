@@ -1,7 +1,5 @@
-\donttest{
 ## Evaluate futures in parallel
 plan(multiprocess)
-}
 
 ## Data
 x <- rnorm(100)
@@ -59,3 +57,9 @@ futureAssign("fitC", {
 print(fitA)
 print(fitB)
 print(fitC)
+
+
+\dontshow{
+## Make sure to "close" an multisession workers on Windows
+plan(sequential)
+}
