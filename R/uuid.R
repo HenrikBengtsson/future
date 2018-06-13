@@ -32,7 +32,7 @@ uuid_of_connection <- function(con, ..., must_work = TRUE) {
 session_uuid <- local({
   uuids <- list()
 
-  function(pid = Sys.getpid(), attributes = FALSE) {
+  function(pid = Sys.getpid(), attributes = TRUE) {
     pidstr <- as.character(pid)
     uuid <- uuids[[pidstr]]
     if (!is.null(uuid)) {

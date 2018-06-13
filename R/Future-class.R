@@ -115,7 +115,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
 
   ## Future miscellaneous
   core$label <- label
-  core$owner <- session_uuid(attributes = TRUE)
+  core$owner <- session_uuid()
   core$earlySignal <- earlySignal
   core$gc <- gc
 
@@ -221,10 +221,14 @@ print.Future <- function(x, ...) {
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
     info <- attr(uuid, "source")
-    sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+    if (is.null(info)) info <- list(pid = NA_integer_, host = NA_character_)
+    stop_if_not(is.list(info), length(info$pid) == 1L, length(info$host) == 1L)
+    pid <- sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+    stop_if_not(length(pid) == 1L)
+    pid
   }
 
-  if (!identical(future$owner, session_uuid(attributes = TRUE))) {
+  if (!identical(future$owner, session_uuid())) {
     stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future = future))
   }
 

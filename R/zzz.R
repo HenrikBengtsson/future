@@ -2,7 +2,7 @@
 .onLoad <- function(libname, pkgname) {
   ## Initiate the R session UUID, which will also set/update
   ## .GlobalEnv$.Random.seed.
-  session_uuid()
+  session_uuid(attributes = FALSE)
   
   debug <- getOption("future.debug", FALSE)
   
@@ -94,7 +94,7 @@
   }
 
   ## Create UUID for this process
-  id <- session_uuid(attributes = TRUE)
+  id <- session_uuid()
 
   if (debug) {
     mdebug("R process uuid: %s", id)
