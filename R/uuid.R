@@ -42,7 +42,8 @@ session_uuid <- local({
 
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
-    host <- host[nzchar(host)][1]
+    host <- host[nzchar(host)]
+    host <- if (length(host) == 0L) info[["nodename"]] else host[1L]
     info <- list(
       host = host,
       info = info,
