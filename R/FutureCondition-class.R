@@ -39,9 +39,17 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
     cond <- message
     message <- conditionMessage(cond)
   }
-
+  
+  if (is.null(message)) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
+  }
+  message <- as.character(message)
+  if (length(message) != 1L) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
+  }
+  
   ## Create a condition object
-  structure(list(message = as.character(message), call = call), 
+  structure(list(message = message, call = call), 
             class = c("FutureCondition", "condition"),
             future = future)
 }
