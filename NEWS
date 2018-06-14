@@ -10,6 +10,11 @@ NEW FEATURES:
  
 BUG FIX:
 
+ o When using forced, nested 'multicore' parallel processing, such as,
+   plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))),
+   then the child process would attempt to resolve futures owned by the parent
+   process resulting in an error (on 'bad error message').
+   
  o When using plan(multicore), if a forked worker would terminate unexpectedly,
    it could corrupt the master R session such that any further attempts of
    using forked workers would fail.  A forked worker could be terminated this

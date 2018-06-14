@@ -89,7 +89,8 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #' @keywords internal
 usedCores <- function() {
   ## Number of unresolved multicore futures
-  futures <- FutureRegistry("multicore", action = "list")
+  reg <- sprintf("multicore-%s", session_uuid())
+  futures <- FutureRegistry(reg, action = "list")
   nfutures <- length(futures)
   ncores <- nfutures
 

@@ -59,13 +59,14 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
+  reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
-    await = function() FutureRegistry("multicore", action = "collect-first"),
+    await = function() FutureRegistry(reg, action = "collect-first"),
     workers = future$workers
   )
 
   ## Add to registry
-  FutureRegistry("multicore", action = "add", future = future)
+  FutureRegistry(reg, action = "add", future = future)
 
   future.args <- list(expr)
   job <- do.call(parallel::mcparallel, args = future.args, envir = envir)
@@ -168,7 +169,8 @@ result.MulticoreFuture <- function(future, ...) {
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## Remove from registry
-  FutureRegistry("multicore", action = "remove", future = future)
+  reg <- sprintf("multicore-%s", session_uuid())
+  FutureRegistry(reg, action = "remove", future = future)
 
   result
 }
