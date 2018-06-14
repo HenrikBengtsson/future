@@ -1,3 +1,12 @@
+assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
+  ast <- as.list(call)
+  if (length(ast) <= 2L) return()
+  names <- names(ast[-(1:2)])
+  if (is.null(names) || any(names == "")) {
+    stop(sprintf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L)))
+  }
+}
+
 stop_if_not <- function(...) {
   res <- list(...)
   for (ii in 1L:length(res)) {

@@ -178,7 +178,9 @@ result.MulticoreFuture <- function(future, ...) {
 
 #' @export
 getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
-  NextMethod("getExpression", mc.cores = mc.cores)
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+  NextMethod(mc.cores = mc.cores)
 }
 
 
