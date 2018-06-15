@@ -6,6 +6,7 @@
 #' \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 #'
 #' @rdname future
+#' @importFrom utils capture.output str
 #' @export
 futureCall <- function(FUN, args = NULL, envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, packages = NULL, evaluator = plan("next"), ...) {
   stop_if_not(is.function(FUN))

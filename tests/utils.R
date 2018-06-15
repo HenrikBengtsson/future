@@ -184,56 +184,6 @@ message("*** importParallel() ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Random seeds
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** Random seeds ...")
-
-set_random_seed(seed = NULL)
-seed <- get_random_seed()
-stopifnot(is.null(seed))
-
-set_random_seed(seed = 42L)
-seed <- get_random_seed()
-stopifnot(identical(seed, 42L))
-
-res <- tryCatch({
-  seed <- as_lecyer_cmrg_seed(seed = FALSE)
-}, error = identity)
-print(res)
-stopifnot(inherits(res, "simpleError"))
-
-seed <- as_lecyer_cmrg_seed(seed = 42L)
-str(seed)
-set_random_seed(seed = seed)
-stopifnot(identical(get_random_seed(), seed))
-
-seed2 <- as_lecyer_cmrg_seed(seed = TRUE)
-str(seed2)
-stopifnot(identical(seed2, seed))
-
-seed3 <- as_lecyer_cmrg_seed(seed = seed)
-str(seed3)
-stopifnot(identical(seed3, seed))
-
-## Invalid L'Ecuyer seed
-seed_invalid <- seed + 1L
-res <- tryCatch({
-  seed <- as_lecyer_cmrg_seed(seed = seed_invalid)
-}, error = identity)
-print(res)
-stopifnot(inherits(res, "simpleError"))
-
-## Invalid seed
-res <- tryCatch({
-  seed <- as_lecyer_cmrg_seed(seed = 1:2)
-}, error = identity)
-print(res)
-stopifnot(inherits(res, "simpleError"))
-
-message("*** Random seeds ... DONE")
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # myInternalIP() and myExternalIP()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** myInternalIP() ...")
