@@ -460,6 +460,7 @@ myInternalIP <- local({
 
 
 ## A *rough* estimate of size of an object + its environment.
+#' @keywords internal 
 #' @importFrom utils object.size
 objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.objectSize.enclosure", FALSE)) {
   # Nothing to do?
@@ -710,6 +711,8 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' Creates a connection to the system null device
 #'
 #' @return Returns a open, binary [base::connection()].
+#' 
+#' @keywords internal
 nullcon <- local({
   nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
   .nullcon <- function() file(nullfile, open = "wb", raw = TRUE)
@@ -769,6 +772,8 @@ reference_filters <- local({
 #'
 #' @return `find_references()` returns a list of one or more references
 #' identified.
+#' 
+#' @keywords internal
 find_references <- function(x, first_only = FALSE) {
   con <- nullcon()
   on.exit(close(con))
@@ -809,6 +814,8 @@ find_references <- function(x, first_only = FALSE) {
 #' or a character string is produced, otherwise `NULL` is returned invisibly.
 #'
 #' @rdname find_references
+#' 
+#' @keywords internal
 assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()

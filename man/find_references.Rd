@@ -29,3 +29,4 @@ Get first or all references of an \R object
 
 Assert that there are no references among the identified globals
 }
+\keyword{internal}
