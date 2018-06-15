@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.1-9000 [2018-06-13]
+Version: 1.8.9-9000 [2018-06-13]
 
 NEW FEATURES:
 
@@ -26,6 +26,11 @@ BUG FIX:
  o Printing a plan() could produce an error when the deparsed call used to set
    up the plan() was longer than 60 characters.
  
+DEPRECATED AND DEFUNCT:
+
+ o future::future_lapply() is defunct (gives an error if called).  Please use
+   the one in the future.apply package instead.
+
 
 Version: 1.8.1 [2018-05-02]
 
