@@ -12,7 +12,7 @@
 #'
 #' @inheritParams Future-class
 #' 
-#' @param expr,value An \R \link[base]{expression} to be evaluated.
+#' @param expr,value An \R \link[base]{expression}.
 #'
 #' @param evaluator The actual function that evaluates
 #' the future expression and returns a \link{Future}.

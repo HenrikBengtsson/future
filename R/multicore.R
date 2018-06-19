@@ -5,8 +5,8 @@
 #' parallel in another process}.
 #'
 #' @inheritParams multiprocess
-#' @inheritParams future
 #' @inheritParams Future-class
+#' @inheritParams future
 #' 
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.

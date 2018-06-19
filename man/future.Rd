@@ -24,7 +24,7 @@ futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
   evaluator = plan("next"), ...)
 }
 \arguments{
-\item{expr, value}{An \R \link[base]{expression} to be evaluated.}
+\item{expr, value}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

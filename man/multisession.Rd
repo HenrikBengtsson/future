@@ -10,7 +10,7 @@ multisession(expr, envir = parent.frame(), substitute = TRUE,
   label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
@@ -43,7 +43,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Not used.}
 }
 \value{
 A \link{MultisessionFuture}.

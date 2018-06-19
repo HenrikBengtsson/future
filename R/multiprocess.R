@@ -5,8 +5,8 @@
 #' Regardless, its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @inheritParams future
 #' @inheritParams Future-class
+#' @inheritParams future
 #' 
 #' @param workers The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.

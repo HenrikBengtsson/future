@@ -4,10 +4,10 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another \R session}.
 #'
-#' @inheritParams future
 #' @inheritParams multiprocess
 #' @inheritParams cluster
 #' @inheritParams Future-class
+#' @inheritParams future
 #' 
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.

@@ -6,8 +6,8 @@
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
-#' @inheritParams future
 #' @inheritParams Future-class
+#' @inheritParams future
 #'
 #' @return A \link{ClusterFuture}.
 #'

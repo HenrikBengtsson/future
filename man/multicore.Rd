@@ -9,7 +9,7 @@ multicore(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   "multicore"), earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
