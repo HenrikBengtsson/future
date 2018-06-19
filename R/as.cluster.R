@@ -1,7 +1,7 @@
 #' Coerce an object to a cluster object
 #'
 #' @param x An object to be coerced.
-#' @param ... Additional arguments passed to the underlying coercion method.
+#' @param \dots Additional arguments passed to the underlying coercion method.
 #'            For \code{c(...)}, the clusters and cluster nodes to be combined.
 #'
 #' @return An object of class \code{cluster}.

@@ -35,7 +35,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Not used.}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{MulticoreFuture}

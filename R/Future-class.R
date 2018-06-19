@@ -43,7 +43,7 @@
 #' @param label An optional character string label attached to the future.
 #'
 #' @param \dots Additional named elements of the future.
-#'
+#' 
 #' @return An object of class \code{Future}.
 #'
 #' @details

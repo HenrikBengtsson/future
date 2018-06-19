@@ -7,7 +7,7 @@
 future_lapply(...)
 }
 \arguments{
-\item{...}{Not used.}
+\item{\dots}{Not used.}
 }
 \description{
 \emph{

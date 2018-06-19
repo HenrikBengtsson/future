@@ -9,7 +9,7 @@
 #' \code{future.apply::future_lapply()} instead.
 #' }
 #'
-#' @param ... Not used.
+#' @param \dots Not used.
 #' 
 #' @export
 #' @keywords internal

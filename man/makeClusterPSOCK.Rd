@@ -32,7 +32,7 @@ random one among those is chosen.  If \code{"random"}, then a random port in
 is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 \code{"random"} is used.}
 
-\item{...}{Optional arguments passed to
+\item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
 \code{i = seq_along(workers)}.}
 

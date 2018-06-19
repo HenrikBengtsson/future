@@ -22,7 +22,7 @@
 #' The default evaluator function is the one that the user
 #' has specified via \code{\link{plan}()}.
 #'
-#' @param ... Additional arguments passed to the "evaluator".
+#' @param \dots Additional arguments passed to the "evaluator".
 #'
 #' @return
 #' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.

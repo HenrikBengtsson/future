@@ -53,7 +53,7 @@ arguments as the ones listed here
 The default evaluator function is the one that the user
 has specified via \code{\link{plan}()}.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{\dots}{Additional arguments passed to the "evaluator".}
 
 \item{x}{the name of a future variable, which will hold the value
 of the future expression (as a promise).}

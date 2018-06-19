@@ -16,7 +16,7 @@
 #' @param makeNode A function that creates a \code{"SOCKnode"} or
 #' \code{"SOCK0node"} object, which represents a connection to a worker.
 #' 
-#' @param ... Optional arguments passed to
+#' @param \dots Optional arguments passed to
 #' \code{makeNode(workers[i], ..., rank = i)} where
 #' \code{i = seq_along(workers)}.
 #' 

@@ -5,13 +5,13 @@
 #' Regardless, its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @inheritParams Future-class
 #' @inheritParams future
+#' @inheritParams Future-class
 #' 
 #' @param workers The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.
 #' 
-#' @param ... Not used.
+#' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a
 #' \link{MulticoreFuture} or a \link{MultisessionFuture}.
