@@ -9,7 +9,7 @@
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' @param workers A cluster object created by
-#' \code{\link[parallel]{makeCluster}()}.
+#' \code{\link[parallel]{makeCluster}()} or \code{\link{makeClusterPSOCK}()}.
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
 #' PSOCK cluster nodes to connect back to the master \R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know

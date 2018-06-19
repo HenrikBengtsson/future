@@ -31,7 +31,7 @@ from objects prior to the evaluation of the future.}
 
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
 Alternatively, a character vector of host names or a numeric scalar,
-for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.}
+for creating a cluster via \code{\link{makeClusterPSOCK}(workers)}.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}

@@ -12,7 +12,7 @@
 #' 
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
 #' Alternatively, a character vector of host names or a numeric scalar,
-#' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' for creating a cluster via \code{\link{makeClusterPSOCK}(workers)}.
 #' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
 #' PSOCK cluster nodes to connect back to the master \R process.  This

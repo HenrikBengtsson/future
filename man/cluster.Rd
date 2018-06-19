@@ -34,7 +34,7 @@ For details, see below section.}
 from objects prior to the evaluation of the future.}
 
 \item{workers}{A cluster object created by
-\code{\link[parallel]{makeCluster}()}.}
+\code{\link[parallel]{makeCluster}()} or \code{\link{makeClusterPSOCK}()}.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}
