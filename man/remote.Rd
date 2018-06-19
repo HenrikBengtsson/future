@@ -31,8 +31,12 @@ in the help for \code{\link{future}()}.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{The maximum number of multiprocess futures that
-can be active at the same time before blocking.}
+\item{workers}{A positive numeric scalar or a function specifying the
+maximum number of parallel futures that can be active at the same time
+before blocking.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return a numeric scalar.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}

@@ -8,9 +8,6 @@
 #' @inheritParams cluster
 #' @inheritParams Future-class
 #' @inheritParams future
-#' 
-#' @param workers The maximum number of multisession futures that
-#' can be active at the same time before blocking.
 #'
 #' @return A \link{MultisessionFuture}.
 #' If \code{workers == 1}, then all processing using done in the

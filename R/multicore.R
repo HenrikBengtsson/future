@@ -7,9 +7,6 @@
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
-#' 
-#' @param workers The maximum number of multicore futures that can
-#' be active at the same time before blocking.
 #'
 #' @return A \link{MulticoreFuture}
 #' If \code{workers == 1}, then all processing using done in the

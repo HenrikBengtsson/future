@@ -5,11 +5,16 @@
 #' Regardless, its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
+#' @inheritParams ClusterFuture-class
 #' @inheritParams future
 #' @inheritParams Future-class
 #' 
-#' @param workers The maximum number of multiprocess futures that
-#' can be active at the same time before blocking.
+#' @param workers A positive numeric scalar or a function specifying the
+#' maximum number of parallel futures that can be active at the same time
+#' before blocking.
+#' If a function, it is called without arguments \emph{when the future
+#' is created} and its value is used to configure the workers.
+#' The function should return a numeric scalar.
 #' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
