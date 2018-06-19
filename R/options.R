@@ -31,7 +31,7 @@
 #'
 #' @section Options for controlling package startup:
 #' \describe{
-#'  \item{\option{future.startup.script}:}{If \code{FALSE}, any \file{.future.R} startup scripts, which may exist in the current directory and / or the user's home directory, are ignored. Such startup scripts are otherwise sourced when the \pkg{future} package is \emph{attached}. \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main R process but not in future processes. (Default: \code{TRUE} in main R process and \code{FALSE} in future processes / during future evaluation)}
+#'  \item{\option{future.startup.script}:}{If \code{FALSE}, any \file{.future.R} startup scripts, which may exist in the current directory and / or the user's home directory, are ignored. Such startup scripts are otherwise sourced when the \pkg{future} package is \emph{attached}. \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main \R process but not in future processes. (Default: \code{TRUE} in main \R process and \code{FALSE} in future processes / during future evaluation)}
 #'  \item{\option{future.cmdargs}:}{Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is \emph{loaded}.}
 #' }
 #'

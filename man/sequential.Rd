@@ -4,7 +4,7 @@
 \alias{sequential}
 \alias{uniprocess}
 \alias{transparent}
-\title{Create a sequential future whose value will be in the current R session}
+\title{Create a sequential future whose value will be in the current \R session}
 \usage{
 sequential(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE,
@@ -50,8 +50,8 @@ A \link{SequentialFuture}.
 }
 \description{
 A sequential future is a future that is evaluated sequentially in the
-current R session similarly to how \R expressions are evaluated in R.
-The only difference to R itself is that globals are validated
+current \R session similarly to how \R expressions are evaluated in \R.
+The only difference to \R itself is that globals are validated
 by default just as for all other types of futures in this package.
 }
 \details{

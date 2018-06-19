@@ -9,7 +9,7 @@ MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   globals = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
 is done (or inherits from if \code{local} is TRUE).}

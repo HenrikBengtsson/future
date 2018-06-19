@@ -151,7 +151,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' another host.
 #' 
 #' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such
-#' that the worker R process sets up a socket connection to its local port
+#' that the worker \R process sets up a socket connection to its local port
 #' \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 #' If FALSE, then the worker will try to connect directly to port \code{port} on
 #' \code{master}.  For more details, see below.
@@ -230,7 +230,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' is available on the \code{PATH} of the worker.
 #' If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 #' \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-#' that the worker and the caller share the same file system and R installation.
+#' that the worker and the caller share the same file system and \R installation.
 #' 
 #' @section Default value of argument \code{homogeneous}:
 #' The default value of \code{homogeneous} is TRUE if and only if either

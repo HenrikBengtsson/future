@@ -36,20 +36,20 @@
 #' @section Implemented evaluation strategies:
 #' \itemize{
 #'  \item{\code{\link{sequential}}:}{
-#'    Resolves futures sequentially in the current R process.
+#'    Resolves futures sequentially in the current \R process.
 #'  }
 #'  \item{\code{\link{transparent}}:}{
-#'    Resolves futures sequentially in the current R process and
+#'    Resolves futures sequentially in the current \R process and
 #'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
 #'  \item{\code{\link{multisession}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running in the background on the same machine.
+#'    \R sessions running in the background on the same machine.
 #'  }
 #'  \item{\code{\link{multicore}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \emph{forked} R processes running in the background on
+#'    \emph{forked} \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
 #'  \item{\code{\link{multiprocess}}:}{
@@ -58,10 +58,10 @@
 #'  }
 #'  \item{\code{\link{cluster}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running typically on one or more machines.
+#'    \R sessions running typically on one or more machines.
 #'  }
 #'  \item{\code{\link{remote}}:}{
-#'    Resolves futures asynchronously in a separate R session
+#'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
 #'  }

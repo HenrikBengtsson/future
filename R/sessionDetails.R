@@ -1,4 +1,4 @@
-#' Outputs details on the current R session
+#' Outputs details on the current \R session
 #'
 #' @param env If TRUE, \code{Sys.getenv()} information is returned.
 #'

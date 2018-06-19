@@ -10,7 +10,7 @@ Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
   local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
 is done (or inherits from if \code{local} is TRUE).}
@@ -22,7 +22,7 @@ is done (or inherits from if \code{local} is TRUE).}
 for the future to be resolved correctly.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
@@ -62,9 +62,9 @@ A Future object is itself an \link{environment}.
 }
 \seealso{
 One function that creates a Future is \code{\link{future}()}.
-It returns a Future that evaluates an R expression in the future.
+It returns a Future that evaluates an \R expression in the future.
 An alternative approach is to use the \code{\link{\%<-\%}} infix
 assignment operator, which creates a future from the
-right-hand-side (RHS) R expression and assigns its future value
+right-hand-side (RHS) \R expression and assigns its future value
 to a variable as a \emph{\link[base]{promise}}.
 }

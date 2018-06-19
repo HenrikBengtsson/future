@@ -591,7 +591,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 
 #' Gets the length of an object without dispatching
 #'
-#' @param x Any R object.
+#' @param x Any \R object.
 #'
 #' @return A non-negative integer.
 #'

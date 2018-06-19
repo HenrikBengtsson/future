@@ -25,7 +25,7 @@
 #' For details, see below section.
 #'
 #' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
+#' to be attached in the \R environment evaluating the future.
 #'
 #' @param lazy Specifies whether a future should be resolved
 #' lazily or eagerly (default).

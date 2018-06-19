@@ -13,7 +13,7 @@ SequentialFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
 is done (or inherits from if \code{local} is TRUE).}
@@ -25,7 +25,7 @@ is done (or inherits from if \code{local} is TRUE).}
 for the future to be resolved correctly.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 
 \item{lazy}{If \code{FALSE} (default), then the setup and validation of
 global variables are done for eager evaluation, otherwise not.}

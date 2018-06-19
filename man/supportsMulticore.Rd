@@ -11,7 +11,7 @@ TRUE if multicore processing is supported, otherwise FALSE.
 }
 \description{
 Multicore futures are only supported on systems supporting
-multicore processing.  R supports this on most systems,
+multicore processing.  \R supports this on most systems,
 except on Microsoft Windows.
 }
 \seealso{

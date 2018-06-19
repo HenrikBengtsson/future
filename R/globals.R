@@ -1,6 +1,6 @@
 #' Retrieves global variables of an expression and their associated packages 
 #'
-#' @param expr An R expression whose globals should be found.
+#' @param expr An \R expression whose globals should be found.
 #' 
 #' @param envir The environment from which globals should be searched.
 #' 

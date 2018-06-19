@@ -16,7 +16,7 @@ should signaled or be returned as values.}
 \item{\dots}{Not used.}
 }
 \value{
-An R object of any data type.
+An \R object of any data type.
 }
 \description{
 Gets the value of a future.  If the future is unresolved, then

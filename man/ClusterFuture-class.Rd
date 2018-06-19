@@ -13,7 +13,7 @@ ClusterFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   revtunnel = TRUE, homogeneous = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
 \item{envir}{The \link{environment} in which the evaluation
 is done (or inherits from if \code{local} is TRUE).}
@@ -40,12 +40,12 @@ with another host.}
 machine running this node.}
 
 \item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master R process.  This
+PSOCK cluster nodes to connect back to the master \R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master R session.}
+the internal / public IP address of the master \R session.}
 
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
-same path to \file{Rscript} as the main R session.  If FALSE, the
+same path to \file{Rscript} as the main \R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
 
 \item{...}{Additional named elements passed to \code{\link{Future}()}.}

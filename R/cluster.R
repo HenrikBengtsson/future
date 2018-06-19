@@ -11,13 +11,13 @@
 #' @param workers A cluster object created by
 #' \code{\link[parallel]{makeCluster}()}.
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
-#' PSOCK cluster nodes to connect back to the master R process.  This
+#' PSOCK cluster nodes to connect back to the master \R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
-#' the internal / public IP address of the master R session.
+#' the internal / public IP address of the master \R session.
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
-#' same path to \file{Rscript} as the main R session.  If FALSE, the
+#' same path to \file{Rscript} as the main \R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
 #'
 #' @return A \link{ClusterFuture}.
@@ -25,7 +25,7 @@
 #' @example incl/cluster.R
 #'
 #' @details
-#' This function will block if all available R cluster nodes are
+#' This function will block if all available \R cluster nodes are
 #' occupied and will be unblocked as soon as one of the already
 #' running cluster futures is resolved.
 #'

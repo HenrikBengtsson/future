@@ -10,7 +10,7 @@
 #'        \code{x \%<-\% \{ expr \}}.
 #'
 #' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
+#' to be attached in the \R environment evaluating the future.
 #' 
 #' @aliases %packages%
 #' @export

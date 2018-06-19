@@ -7,7 +7,7 @@
 #' value is not available.  As soon as it is \emph{resolved}, the value
 #' is available via \code{\link[future]{value}()}.
 #'
-#' @param expr An R \link[base]{expression}.
+#' @param expr An \R \link[base]{expression}.
 #'
 #' @param envir The \link{environment} in which the evaluation
 #' is done (or inherits from if \code{local} is TRUE).
@@ -19,7 +19,7 @@
 #' for the future to be resolved correctly.
 #' 
 #' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
+#' to be attached in the \R environment evaluating the future.
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
@@ -50,10 +50,10 @@
 #'
 #' @seealso
 #' One function that creates a Future is \code{\link{future}()}.
-#' It returns a Future that evaluates an R expression in the future.
+#' It returns a Future that evaluates an \R expression in the future.
 #' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the
-#' right-hand-side (RHS) R expression and assigns its future value
+#' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
 #' @importFrom utils capture.output
@@ -350,7 +350,7 @@ result.Future <- function(future, ...) {
 #' should signaled or be returned as values.
 #' @param \dots Not used.
 #'
-#' @return An R object of any data type.
+#' @return An \R object of any data type.
 #'
 #' @details
 #' This method needs to be implemented by the class that implement
@@ -423,7 +423,7 @@ resolved.Future <- function(x, ...) {
 #' against spawning off recursive futures by mistake, especially
 #' \link{multicore} and \link{multisession} ones.
 #' The default will also set \code{options(mc.cores = 1L)} (*) so that
-#' no parallel R processes are spawned off by functions such as
+#' no parallel \R processes are spawned off by functions such as
 #' \code{\link[parallel:mclapply]{mclapply}()} and friends.
 #'
 #' Currently it is not possible to specify what type of nested

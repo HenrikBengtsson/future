@@ -39,9 +39,9 @@ can be active at the same time before blocking.}
 with another host.}
 
 \item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master R process.  This
+PSOCK cluster nodes to connect back to the master \R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master R session.}
+the internal / public IP address of the master \R session.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
 evaluated the future) after the value of the future is collected.}
