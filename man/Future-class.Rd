@@ -68,3 +68,4 @@ assignment operator, which creates a future from the
 right-hand-side (RHS) \R expression and assigns its future value
 to a variable as a \emph{\link[base]{promise}}.
 }
+\keyword{internal}

@@ -1,13 +1,19 @@
 Package: future
 ===============
 
-Version: 1.8.9-9000 [2018-06-13]
+Version: 1.8.9-9000 [2018-06-19]
 
 NEW FEATURES:
 
  o Now more 'future.*' options are passed down so that they are also
    acknowledged when using nested futures.
- 
+
+DOCUMENTATION:
+
+ o CLEANUP: Only the core parts of the API are now listed in the help index.
+   This was done to clarify the Future API.  Help for non-core parts are still
+   via cross references in the indexed API as well via help().
+
 BUG FIX:
 
  o When using forced, nested 'multicore' parallel processing, such as,

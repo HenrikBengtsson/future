@@ -213,6 +213,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
 #' To use multicore futures, use \code{\link{plan}(\link{multicore})}.
 #'
 #' @export
+#' @keywords internal
 supportsMulticore <- local({
   supported <- NA
   function() {
