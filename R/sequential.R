@@ -8,6 +8,8 @@
 #'
 #' @inheritParams future
 #' @inheritParams multiprocess
+#' @inheritParams Future-class
+#' 
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.

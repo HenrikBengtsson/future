@@ -1,11 +1,7 @@
 #' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
-#' 
-#' @param globals (optional) a logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' @inheritParams Future-class
 #' 
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
@@ -34,11 +30,8 @@
 #' same path to \file{Rscript} as the main \R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
 #'
-#' @param sessioninfo If TRUE, session information is collected for each
-#' cluster node, otherwise not.  This also servers as testing that each
-#' node is working properly.
-#' 
-#' @return An object of class \code{ClusterFuture}.
+#' @return
+#' \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function

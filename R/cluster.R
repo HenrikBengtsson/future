@@ -4,9 +4,10 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @inheritParams future
 #' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
+#' @inheritParams future
+#' @inheritParams Future-class
 #'
 #' @return A \link{ClusterFuture}.
 #'

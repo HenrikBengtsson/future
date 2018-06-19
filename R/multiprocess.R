@@ -6,19 +6,11 @@
 #' parallel in another process}.
 #'
 #' @inheritParams future
-#' @param lazy If \code{FALSE} (default), the future is resolved eagerly
-#' (immediately), otherwise not.
-#' @param globals (optional) a logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' @inheritParams Future-class
+#' 
 #' @param workers The maximum number of multiprocess futures that
 #' can be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run (in the process that
-#' evaluated the future) after the value of the future is collected.
-#' @param earlySignal Specified whether conditions should be signaled
-#' as soon as possible or not.
-#' @param label An optional character string label attached to the future.
+#' 
 #' @param ... Not used.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a

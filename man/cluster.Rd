@@ -11,24 +11,23 @@ cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -55,14 +54,15 @@ same path to \file{Rscript} as the main \R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.}
+evaluated the future) after the value of the future is collected.
+\emph{Some types of futures ignore this argument.}}
 
-\item{earlySignal}{Specified whether conditions should be signaled
-as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{ClusterFuture}.

@@ -7,6 +7,8 @@
 #' @inheritParams future
 #' @inheritParams multiprocess
 #' @inheritParams cluster
+#' @inheritParams Future-class
+#' 
 #' @param workers The maximum number of multisession futures that
 #' can be active at the same time before blocking.
 #'

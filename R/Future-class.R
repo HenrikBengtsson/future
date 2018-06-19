@@ -9,14 +9,16 @@
 #'
 #' @param expr An \R \link[base]{expression}.
 #'
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
+#' @param envir The \link{environment} from where global objects should be
+#' identified.
 #'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
-#' @param globals (optional) a named list of global objects needed in order
-#' for the future to be resolved correctly.
+#' @param globals (optional) a logical, a character vector, or a named list
+#' to control how globals are handled.
+#' For details, see section 'Globals used by future expressions'
+#' in the help for \code{\link{future}()}.
 #' 
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.
@@ -35,11 +37,10 @@
 #' evaluated the future) after the value of the future is collected.
 #' \emph{Some types of futures ignore this argument.}
 #'
-#' @param earlySignal Specified whether conditions should be signaled
-#' as soon as possible or not.
+#' @param earlySignal Specified whether conditions should be signaled as soon
+#' as possible or not.
 #'
-#' @param label An optional character string label attached to the
-#' future.
+#' @param label An optional character string label attached to the future.
 #'
 #' @param \dots Additional named elements of the future.
 #'

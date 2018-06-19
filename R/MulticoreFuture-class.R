@@ -1,6 +1,7 @@
 #' An multicore future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
+#' @inheritParams Future-class
 #'
 #' @return An object of class \code{MulticoreFuture}.
 #'

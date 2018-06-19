@@ -1,7 +1,12 @@
 #' @inheritParams ClusterFuture-class
+#' @inheritParams Future-class
 #'
-## Currently aliased in ClusterFuture
+#' @return
+#' \code{MultisessionFuture()} returns an object of class
+#' \code{MultisessionFuture}, which inherits from \code{ClusterFuture}.
+#' 
 #' @export
+#' @rdname ClusterFuture-class
 MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, persistent = FALSE, local = !persistent, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   f <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, persistent = persistent, local = local, workers = workers, ...)

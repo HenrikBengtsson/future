@@ -4,8 +4,10 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @inheritParams future
 #' @inheritParams multiprocess
+#' @inheritParams future
+#' @inheritParams Future-class
+#' 
 #' @param workers The maximum number of multicore futures that can
 #' be active at the same time before blocking.
 #'
