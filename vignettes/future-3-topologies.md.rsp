@@ -112,7 +112,7 @@ plan(list(tweak(cluster, workers = nodes), multiprocess))
 This will cause up to 24 (= 3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
 
-## Example: A remote compute cluster
+## Example: A Remote Compute Cluster
 Imagine we have access to a remote compute cluster, with login node `remote.server.org`, and that the cluster has three nodes `n1`, `n2`, and `n3`.  Also, let us assume we have already set up the cluster such that we can log in via public key authentication via SSH, i.e. when we do `ssh remote.server.org` authentication is done automatically.
 
 With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes.  Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.
@@ -175,6 +175,49 @@ print(x)
 ```
 
 Try the above `x %<-% { ... }` future with, say, `plan(list(sequential, multiprocess))` and see what the output will be.
+
+
+
+## Example: Adjust the Number of Workers for Each Cluster Node
+
+When using
+```r
+nodes <- c("n1", "n2", "n3")
+plan(list(tweak(cluster, workers = nodes), multiprocess))
+```
+the number of workers used on each of the nodes (`n1`, `n2`, and `n3`) is
+given by the value of `availableCores()` on each of those nodes.  In turn,
+`availableCores()` typically defaults to the number of cores on those nodes.
+Now, imagine you want to use only 50% of these cores.  This can be done by
+tweaking the `multiprocess` plan by passing a function to `workers`;
+```r
+halfCores <- function() { max(1, round(0.5 * availableCores()))
+plan(list(
+  tweak(cluster, workers = nodes),
+  tweak(multiprocess, workers = halfCores)
+))
+```
+With this, each node will use at most 50% of the cores available.
+For instance, if `n1` and `n2` have eight cores, and `n3` has 32 cores,
+then they nodes will use four, four, and 16 cores, respectively.
+
+Another example is:
+```r
+customWorkers <- function() {
+  switch(Sys.info()[["nodename"]],
+    "n1" = 2L,
+    "n2" = 3L,
+    ## default:
+    availableCores()
+  )
+}
+plan(list(
+  tweak(cluster, workers = nodes),
+  tweak(multiprocess, workers = customWorkers)
+))
+```
+In this case, node `n1` will always use two cores, `n2` three cores,
+and `n3` will respect what `availableCores()` returns.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
