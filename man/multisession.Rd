@@ -57,7 +57,11 @@ which means that its \emph{value is computed and resolved in
 parallel in another R session}.
 }
 \details{
-This function will block if all available R session are occupied
+The background R sessions ("workers") are created using
+\code{\link{makeClusterPSOCK}()}.
+
+The \code{multisession()} function will block if all available R
+session are occupied
 and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
 R sessions available including the current/main R process, see
@@ -71,17 +75,6 @@ this function directly, but to register it via
 mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 }
-\section{Known issues}{
-
-In the current implementation, \emph{all} background R sessions
-are allocated and launched in the background \emph{as soon as the
-first multisession future is created}. This means that more R
-sessions may be running than what will ever be used.
-The reason for this is that background sessions are currently
-created using \code{\link[parallel:makeCluster]{makeCluster}()},
-which requires that all R sessions are created at once.
-}
-
 \examples{
 \donttest{
 
