@@ -27,8 +27,8 @@ for the future to be resolved correctly.}
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{If \code{FALSE} (default), then the setup and validation of
-global variables are done for eager evaluation, otherwise not.}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

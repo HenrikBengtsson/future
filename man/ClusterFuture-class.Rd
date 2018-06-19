@@ -29,9 +29,14 @@ in the help for \code{\link{future}()}.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A \code{\link[parallel:makeCluster]{cluster}}.
-Alternatively, a character vector of host names or a numeric scalar,
-for creating a cluster via \code{\link{makeClusterPSOCK}(workers)}.}
+\item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
+a character vector of host names, a positive numeric scalar,
+or a function.
+If a character vector or a numeric scalar, a \code{cluster} object
+is created using \code{\link{makeClusterPSOCK}(workers)}.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return any of the above types.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}

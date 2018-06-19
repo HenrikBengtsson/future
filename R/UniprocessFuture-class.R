@@ -2,9 +2,6 @@
 #'
 #' @inheritParams Future-class
 #' 
-#' @param lazy If \code{FALSE} (default), then the setup and validation of
-#'        global variables are done for eager evaluation, otherwise not.
-#' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.
