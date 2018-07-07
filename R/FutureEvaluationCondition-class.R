@@ -15,10 +15,11 @@
 #' a FutureEvaluationWarning from \link[base:conditions]{warning}, and
 #' a FutureEvaluationMessage from \link[base:conditions]{message}.
 #'
-#' @aliases getOutput
-#' @export
 #' @keywords internal
+#' @export
 FutureEvaluationCondition <- function(message, call = NULL, future = NULL, output = NULL) {
+  .Deprecated()
+  
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   cond <- NULL
@@ -70,7 +71,7 @@ print.FutureEvaluationCondition <- function(x, ...) {
 
     if (!is.null(output)) {
       cat("Captured output:\n")
-      cat(getOutput(x, tail = 30L, collapse = "\n"))
+      cat(getOutput.FutureEvaluationCondition(x, tail = 30L, collapse = "\n"))
       cat("\n\n")
     }
 
@@ -81,7 +82,6 @@ print.FutureEvaluationCondition <- function(x, ...) {
 } ## print()
 
 
-#' @export
 getOutput.FutureEvaluationCondition <- function(x, collapse = NULL, head = NULL, tail = NULL, ...) {
   output <- attr(x, "output")
 
@@ -106,14 +106,11 @@ getOutput.FutureEvaluationCondition <- function(x, collapse = NULL, head = NULL,
   output
 } ## getOutput()
 
-
-#' @export
-getOutput <- function(...) UseMethod("getOutput")
-
-
 #' @rdname FutureEvaluationCondition
 #' @export
 FutureEvaluationMessage <- function(message, call = NULL, future = NULL, output = NULL) {
+  .Deprecated()
+  
   cond <- FutureEvaluationCondition(message = message, call = call,
                           future = future, output = output)
   class(cond) <- unique(c("FutureEvaluationMessage", "message", class(cond)))
@@ -123,6 +120,8 @@ FutureEvaluationMessage <- function(message, call = NULL, future = NULL, output 
 #' @rdname FutureEvaluationCondition
 #' @export
 FutureEvaluationWarning <- function(message, call = NULL, future = NULL, output = NULL) {
+  .Deprecated()
+  
   cond <- FutureEvaluationCondition(message = message, call = call,
                           future = future, output = output)
   class(cond) <- unique(c("FutureEvaluationWarning", "warning", class(cond)))
@@ -132,6 +131,8 @@ FutureEvaluationWarning <- function(message, call = NULL, future = NULL, output 
 #' @rdname FutureEvaluationCondition
 #' @export
 FutureEvaluationError <- function(message, call = NULL, future = NULL, output = NULL) {
+  .Deprecated()
+  
   cond <- FutureEvaluationCondition(message = message, call = call,
                           future = future, output = output)
   ## TODO: Remove usage of 'FutureError'. Various packages' tests use this.

@@ -14,28 +14,14 @@ stopifnot(conditionMessage(ex2) == conditionMessage(ex))
 f <- future({ 42L; stop("woops") })
 v <- value(f, signal = FALSE)
 print(v)
-ex <- FutureError(message = "Woops", future = f, output = c("Darn", "it"))
+ex <- FutureError(message = "Woops", future = f)
 print(ex)
 
-res <- getOutput(ex)
-print(res)
-stopifnot(all(res == c("Darn", "it")))
-
-res <- getOutput(ex, head = 1L)
-print(res)
-stopifnot(res == "Darn")
-
-res <- getOutput(ex, tail = 1L)
-print(res)
-stopifnot(res == "it")
-
-res <- getOutput(ex, head = 1L, tail = 1L)
-print(res)
-stopifnot(res == c("Darn", "it"))
-
-res <- getOutput(ex, collapse = "\n")
-print(res)
-stopifnot(res == "Darn\nit")
+## Deprecated
+res <- tryCatch({
+  FutureError(message = "Woops", future = f, output = "Boom")
+}, warning = identity)
+stopifnot(inherits(res, "warning"))
 
 message("*** FutureError class ... DONE")
 

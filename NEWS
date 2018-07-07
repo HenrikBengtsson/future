@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.8.9-9000 [2018-06-19]
+Version: 1.8.9-9000 [2018-07-06]
 
 NEW FEATURES:
 
@@ -36,6 +36,8 @@ DEPRECATED AND DEFUNCT:
 
  o future::future_lapply() is defunct (gives an error if called).  Please use
    the one in the future.apply package instead.
+
+ o Argument 'output' of FutureError() is formally deprecated.
 
 
 Version: 1.8.1 [2018-05-02]

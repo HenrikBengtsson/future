@@ -2,7 +2,6 @@
 % Please edit documentation in R/FutureEvaluationCondition-class.R
 \name{FutureEvaluationCondition}
 \alias{FutureEvaluationCondition}
-\alias{getOutput}
 \alias{FutureEvaluationMessage}
 \alias{FutureEvaluationWarning}
 \alias{FutureEvaluationError}
