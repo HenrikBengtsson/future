@@ -55,6 +55,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
 }
 
 
+#' @importFrom utils tail
 #' @export
 print.FutureCondition <- function(x, ...) {
   NextMethod()
@@ -93,7 +94,7 @@ print.FutureCondition <- function(x, ...) {
     ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
     if (!is.null(output)) {
       cat("Captured output:\n")
-      cat(getOutput.FutureEvaluationCondition(x, tail = 30L, collapse = "\n"))
+      cat(tail(output, n = 30L), sep = "\n")
       cat("\n\n")
     }
 
