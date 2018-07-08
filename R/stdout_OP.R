@@ -1,0 +1,21 @@
+#' Control whether standard output should be captured or not
+#'
+#' @usage fassignment \%stdout\% capture
+#'
+#' @inheritParams multiprocess
+#' 
+#' @param fassignment The future assignment, e.g.
+#'        \code{x \%<-\% \{ expr \}}.
+#'
+#' @export
+`%stdout%` <- function(fassignment, capture) {
+  fassignment <- substitute(fassignment)
+  envir <- parent.frame(1)
+
+  ## Temporarily set 'lazy' argument
+  args <- getOption("future.disposable", list())
+  args["stdout"] <- list(capture)
+  options(future.disposable = args)
+
+  eval(fassignment, envir = envir, enclos = baseenv())
+}

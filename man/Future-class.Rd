@@ -6,8 +6,9 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  globals = NULL, packages = NULL, seed = NULL, lazy = FALSE,
-  local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
+  stdout = TRUE, globals = NULL, packages = NULL, seed = NULL,
+  lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -17,6 +18,10 @@ identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{stdout}{If TRUE, then the standard output is captured, and
+re-outputted when \code{value()} is called.  If FALSE, the
+standard output is \emph{not} captured.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.

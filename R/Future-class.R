@@ -15,6 +15,10 @@
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
+#' @param stdout If TRUE, then the standard output is captured, and
+#' re-outputted when \code{value()} is called.  If FALSE, the
+#' standard output is \emph{not} captured.
+#' 
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
 #' For details, see section 'Globals used by future expressions'
@@ -61,7 +65,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -76,6 +80,8 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
     }
   }
 
+  stop_if_not(is.logical(stdout), length(stdout) == 1L, !is.na(stdout))
+  
   if (!is.null(globals)) {
     stop_if_not(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
@@ -100,6 +106,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   ## Future evaluation
   core$expr <- expr
   core$envir <- envir
+  core$stdout <- stdout
   core$globals <- globals
   core$packages <- packages
   core$seed <- seed
@@ -146,6 +153,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  cat(sprintf("Capture standard output: %s\n", x$stdout))
 
   ## FIXME: Add method globals_of() for Future such that it's possible
   ## also for SequentialFuture to return something here. /HB 2017-05-17
@@ -348,8 +356,13 @@ result.Future <- function(future, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
+#' 
+#' @param stdout If TRUE, any captured standard output is outputted,
+#' otherwise not.
+#' 
 #' @param signal A logical specifying whether (\link[base]{conditions})
 #' should signaled or be returned as values.
+#' 
 #' @param \dots Not used.
 #'
 #' @return An \R object of any data type.
@@ -362,7 +375,7 @@ result.Future <- function(future, ...) {
 #' @rdname value
 #' @export
 #' @export value
-value.Future <- function(future, signal = TRUE, ...) {
+value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (future$state == "created") {
     future <- run(future)
   }
@@ -380,6 +393,14 @@ value.Future <- function(future, signal = TRUE, ...) {
   stop_if_not(inherits(result, "FutureResult"))
 
   value <- result$value
+
+  ## Output captured standard output?
+  if (stdout && length(result$stdout) > 0 &&
+      inherits(result$stdout, "character")) {
+    cat(paste(result$stdout, collapse = "\n"))
+  }
+  
+  ## Signal captured conditions?
   condition <- result$condition
   if (inherits(condition, "condition")) {
     if (signal) {
@@ -596,7 +617,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     })
   } ## if (length(strategiesR) > 0L)
 
-  expr <- makeExpression(expr = future$expr, local = future$local, enter = enter, exit = exit, version = version)
+  expr <- makeExpression(expr = future$expr, stdout = future$stdout, local = future$local, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) {
     print(expr)
   }
@@ -607,7 +628,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+makeExpression <- function(expr, stdout = TRUE, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
     expr <- bquote(local(.(expr)))
@@ -659,7 +680,21 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
     expr <- bquote({
       ## covr: skip=6
       .(enter)
-      tryCatch({
+
+      ## Capture standard output?
+      if (.(stdout)) {
+        ## NOTE: Capturing to a raw connection is much more efficient
+        ## than to a character connection, cf.
+        ## https://www.jottr.org/2014/05/26/captureoutput/
+        ...future.stdout <- rawConnection(raw(0L), open = "w")
+        sink(...future.stdout, type = "output", append = FALSE, split = FALSE)
+        on.exit(if (!is.null(...future.stdout)) {
+          sink(type = "output", split = FALSE)
+          close(...future.stdout)
+        }, add = TRUE)
+      }
+      
+      ...future.result <- tryCatch({
         ...future.value <- .(expr)
         ## A FutureResult object (without requiring the future package)
 #       structure(list(
@@ -679,6 +714,7 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
         #      if (future$local) calls <- calls[-seq_len(6L)]
         structure(list(
           value = NULL,
+          value2 = NA,
           condition = cond,
           calls = calls,
           version = "1.8"
@@ -686,6 +722,15 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
       }, finally = {
         .(exit)
       })
+
+      if (.(stdout)) {
+        sink(type = "output", split = FALSE)
+        ...future.result$stdout <- rawToChar(rawConnectionValue(...future.stdout))
+        close(...future.stdout)
+        ...future.stdout <- NULL
+      }
+      
+      ...future.result
     })
   } else {
     stop(FutureError("Internal error: Non-supported future expression version: ", version))
