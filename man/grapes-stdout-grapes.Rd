@@ -9,6 +9,8 @@ fassignment \%stdout\% capture
 \arguments{
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
+
+\item{capture}{If TRUE, the standard output will be captured, otherwise not.}
 }
 \description{
 Control whether standard output should be captured or not

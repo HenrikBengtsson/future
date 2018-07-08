@@ -313,7 +313,7 @@ result.Future <- function(future, ...) {
     ## BACKWARD COMPATIBILITY:
     ## For now, it is value() that collects the results.  Later we want
     ## all future backends to use result() to do it. /HB 2018-02-22
-    value(future, signal = FALSE)
+    value(future, stdout = FALSE, signal = FALSE)
   }
 
   result <- future$result

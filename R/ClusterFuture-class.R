@@ -239,7 +239,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   } else {
     ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
     warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
-    value(x, signal = FALSE)
+    value(x, stdout = FALSE, signal = FALSE)
     res <- TRUE
   }
 

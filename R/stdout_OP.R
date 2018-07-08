@@ -7,6 +7,8 @@
 #' @param fassignment The future assignment, e.g.
 #'        \code{x \%<-\% \{ expr \}}.
 #'
+#' @param capture If TRUE, the standard output will be captured, otherwise not.
+#'
 #' @export
 `%stdout%` <- function(fassignment, capture) {
   fassignment <- substitute(fassignment)
