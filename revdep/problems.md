@@ -6,9 +6,9 @@ Version: 3.1.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.0Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
-        R             8.4Mb
+        R             2.4Mb
         help          1.1Mb
         testScripts   1.3Mb
     ```
@@ -25,13 +25,6 @@ Version: 3.1.3
       ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.9Mb
-      sub-directories of 1Mb or more:
-        R   4.8Mb
-    ```
-
 # BAMBI
 
 Version: 2.0.0
@@ -42,6 +35,23 @@ Version: 2.0.0
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
+    ```
+
+# biotmle
+
+Version: 1.4.0
+
+## In both
+
+*   checking R code for possible problems ... NOTE
+    ```
+    .biotmle: no visible global function definition for ‘new’
+    Undefined global functions or variables:
+      new
+    Consider adding
+      importFrom("methods", "new")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
     ```
 
 # brms
@@ -56,20 +66,6 @@ Version: 2.3.1
       sub-directories of 1Mb or more:
         R     3.5Mb
         doc   2.4Mb
-    ```
-
-# civis
-
-Version: 1.5.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        R      2.9Mb
-        help   1.6Mb
     ```
 
 # codebook
@@ -216,20 +212,6 @@ Version: 1.0.1
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘purrr’
-    ```
-
-# PSCBS
-
-Version: 0.63.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.9Mb
-      sub-directories of 1Mb or more:
-        R         3.0Mb
-        data-ex   2.6Mb
     ```
 
 # QDNAseq
