@@ -15,9 +15,11 @@
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
-#' @param stdout If TRUE, then the standard output is captured, and
-#' re-outputted when \code{value()} is called.  If FALSE, the
-#' standard output is \emph{not} captured.
+#' @param stdout If TRUE (default), then the standard output is captured,
+#' and re-outputted when \code{value()} is called.
+#' If FALSE, any output is silenced (by sinking it to the null device as
+#' it is outputted).
+#' If NA (not recommended), output is \emph{not} intercepted.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
@@ -80,7 +82,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
     }
   }
 
-  stop_if_not(is.logical(stdout), length(stdout) == 1L, !is.na(stdout))
+  stop_if_not(is.logical(stdout), length(stdout) == 1L)
   
   if (!is.null(globals)) {
     stop_if_not(is.list(globals),
@@ -682,12 +684,23 @@ makeExpression <- function(expr, stdout = TRUE, local = TRUE, globals.onMissing 
       .(enter)
 
       ## Capture standard output?
-      if (.(stdout)) {
-        ## NOTE: Capturing to a raw connection is much more efficient
-        ## than to a character connection, cf.
-        ## https://www.jottr.org/2014/05/26/captureoutput/
-        ...future.stdout <- rawConnection(raw(0L), open = "w")
-        sink(...future.stdout, type = "output", append = FALSE, split = FALSE)
+      if (is.na(.(stdout))) {  ## stdout = NA
+        ## Don't capture, but also don't block any output
+      } else {
+        if (.(stdout)) {  ## stdout = TRUE
+          ## Capture all output
+          ## NOTE: Capturing to a raw connection is much more efficient
+          ## than to a character connection, cf.
+          ## https://www.jottr.org/2014/05/26/captureoutput/
+          ...future.stdout <- rawConnection(raw(0L), open = "w")
+        } else {  ## stdout = FALSE
+          ## Silence all output by sending it to the void
+          ...future.stdout <- file(
+            switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
+            open = "w"
+          )
+        }
+        sink(...future.stdout, type = "output", split = FALSE)
         on.exit(if (!is.null(...future.stdout)) {
           sink(type = "output", split = FALSE)
           close(...future.stdout)
@@ -723,9 +736,14 @@ makeExpression <- function(expr, stdout = TRUE, local = TRUE, globals.onMissing 
         .(exit)
       })
 
-      if (.(stdout)) {
+      if (is.na(.(stdout))) {
+      } else {
         sink(type = "output", split = FALSE)
-        ...future.result$stdout <- rawToChar(rawConnectionValue(...future.stdout))
+        if (.(stdout)) {
+          ...future.result$stdout <- rawToChar(
+            rawConnectionValue(...future.stdout)
+          )
+        }
         close(...future.stdout)
         ...future.stdout <- NULL
       }
