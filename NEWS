@@ -1,13 +1,15 @@
 Package: future
 ===============
 
-Version: 1.8.9-9000 [2018-07-07]
+Version: 1.8.9-9000 [2018-07-09]
 
-NEW FEATURES:
+SIGNIFICANT CHANGES:
 
  o Standard output is now captured and re-outputted when value() is called.
    This new behavior can be controlled by the argument 'stdout' to future()
    or by specifying the %stdout% operator if a future assignment is used.
+
+NEW FEATURES:
  
  o Now more 'future.*' options are passed down so that they are also
    acknowledged when using nested futures.
