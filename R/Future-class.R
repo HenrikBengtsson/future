@@ -471,7 +471,7 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, local = future$local, stdout = future$stdout, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -619,7 +619,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     })
   } ## if (length(strategiesR) > 0L)
 
-  expr <- makeExpression(expr = future$expr, stdout = future$stdout, local = future$local, enter = enter, exit = exit, version = version)
+  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) {
     print(expr)
   }
@@ -630,7 +630,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, stdout = TRUE, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
     expr <- bquote(local(.(expr)))
@@ -743,6 +743,8 @@ makeExpression <- function(expr, stdout = TRUE, local = TRUE, globals.onMissing 
           ...future.result$stdout <- rawToChar(
             rawConnectionValue(...future.stdout)
           )
+        } else {
+          ...future.result["stdout"] <- list(NULL)
         }
         close(...future.stdout)
         ...future.stdout <- NULL
