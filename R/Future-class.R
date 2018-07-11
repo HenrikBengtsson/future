@@ -636,7 +636,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing 
     expr <- bquote(local(.(expr)))
   }
 
-  ## Set and reset certain future.* options
+  ## Set and reset certain future.* options etc.
   enter <- bquote({
     ## covr: skip=7
     ...future.oldOptions <- options(
@@ -652,7 +652,11 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing 
       future.globals.onMissing   = .(getOption("future.globals.onMissing")),
       future.globals.onReference = .(getOption("future.globals.onReference")),
       future.globals.resolve     = .(getOption("future.globals.resolve")),
-      future.resolve.recursive   = .(getOption("future.resolve.recursive"))
+      future.resolve.recursive   = .(getOption("future.resolve.recursive")),
+      
+      ## Other options relevant to making futures behave consistently
+      ## across backends
+      width = .(getOption("width"))
     )
     .(enter)
   })
