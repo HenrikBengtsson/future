@@ -23,7 +23,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ### Missing globals (false negatives)
 If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
 ```r
-library(multisession)
+plan(multisession)
 
 reset <- TRUE
 x <- 1
