@@ -92,20 +92,20 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(x)
 
-  selectChildren <- importParallel("selectChildren")
   job <- x$job
   stop_if_not(inherits(job, "parallelJob"))
 
+  selectChildren <- importParallel("selectChildren")
+  
   ## NOTE: We cannot use mcollect(job, wait = FALSE, timeout = 0.2),
   ## because that will return NULL if there's a timeout, which is
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
-  ## WORKAROUND 2: In R (>= 3.5.0) the below call to selectChildren() produces
-  ## warnings such as "cannot wait for child 13206 as it does not exist", cf.
-  ## https://github.com/HenrikBengtsson/future/issues/218.
-  ## For now, we're suppressing those warnings until the underlying problem 
-  ## is fully understood and fixed. /HB 2018-05-01
-  pid <- suppressWarnings(selectChildren(job, timeout = timeout))
+  ## FIXME: Can we use result() instead? /HB 2018-07-16
+  ## NOTE 2: We have to suppress warnings because the forked process
+  ## may have already finished and terminated.
+  pid <- suppressWarnings(selectChildren(children = job,
+                                         timeout = timeout))
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
@@ -137,14 +137,24 @@ result.MulticoreFuture <- function(future, ...) {
   mccollect <- importParallel("mccollect")
   job <- future$job
   stop_if_not(inherits(job, "parallelJob"))
-  ## WORKAROUND: Pass single job as list, cf.
-  ## https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
-  ## WORKAROUND 2: In R (>= 3.5.0) the below call to selectChildren() produces
-  ## warnings such as "cannot wait for child 13206 as it does not exist", cf.
-  ## https://github.com/HenrikBengtsson/future/issues/218.
-  ## For now, we're suppressing those warnings until the underlying problem 
-  ## is fully understood and fixed. /HB 2018-05-01
-  result <- suppressWarnings(mccollect(jobs = list(job), wait = TRUE))[[1L]]
+
+  ## WORKAROUNDS for R (< 3.6.0):
+  ##  1. Pass single job as list, cf.
+  ##     https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
+  jobs <- if (getRversion() >= "3.6.0") job else list(job)
+  
+  ## WORKAROUNDS for R (>= 3.6.0):
+  ##  2. Suppress warnings because mccollect() produces:
+  ##     "Warning in selectChildren(pids[!fin], -1) :
+  ##      cannot wait for child 32193 as it does not exist"
+  ##     cf. https://github.com/HenrikBengtsson/future/issues/218
+  result <- suppressWarnings(mccollect(jobs = jobs, wait = TRUE)[[1L]])
+  
+  ## NOTE: In Issue #218 it was suggested that parallel:::rmChild() could
+  ## fix this, but there seems to be more to this story, because we still
+  ## get some of those warning even after removing children here.
+  rmChild <- importParallel("rmChild")
+  rmChild(child = job)
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {

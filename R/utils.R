@@ -197,6 +197,7 @@ detectCores <- local({
 ##   - parallel:::recvResult()      ## value()
 ## * multicore futures:
 ##   - parallel:::selectChildren()  ## resolved()
+##   - parallel:::rmChild()         ## value()
 ## As well as the following ones (because they are not exported on Windows):
 ## * multicore futures:
 ##   - parallel::mcparallel()       ## run()
