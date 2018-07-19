@@ -8,8 +8,8 @@
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
-|tz       |America/Los_Angeles          |
-|date     |2018-07-07                   |
+|tz       |Europe/Copenhagen            |
+|date     |2018-07-19                   |
 
 # Dependencies
 
@@ -22,15 +22,13 @@
 
 # Revdeps
 
-## Broken (3)
+## Broken (1)
 
-|package                                         |version    |error  |warning |note |
-|:-----------------------------------------------|:----------|:------|:-------|:----|
-|[future.BatchJobs](problems.md#futurebatchjobs) |0.15.0     |__+1__ |        |     |
-|[penaltyLearning](problems.md#penaltylearning)  |2017.12.08 |__+1__ |        |     |
-|[robotstxt](problems.md#robotstxt)              |0.6.0      |       |__+1__  |     |
+|package                                        |version    |error  |warning |note |
+|:----------------------------------------------|:----------|:------|:-------|:----|
+|[penaltyLearning](problems.md#penaltylearning) |2017.12.08 |__+1__ |        |     |
 
-## All (34)
+## All (35)
 
 |package                                         |version    |error  |warning |note |
 |:-----------------------------------------------|:----------|:------|:-------|:----|
@@ -48,9 +46,9 @@
 |[fiery](problems.md#fiery)                      |1.1.0      |       |        |1    |
 |furrr                                           |0.1.0      |       |        |     |
 |future.apply                                    |1.0.0      |       |        |     |
-|[future.BatchJobs](problems.md#futurebatchjobs) |0.15.0     |__+1__ |        |     |
-|future.batchtools                               |0.7.0      |       |        |     |
-|future.callr                                    |0.3.0      |       |        |     |
+|future.BatchJobs                                |0.16.0     |       |        |     |
+|future.batchtools                               |0.7.1      |       |        |     |
+|future.callr                                    |0.3.1      |       |        |     |
 |googleComputeEngineR                            |0.2.0      |       |        |     |
 |kernelboot                                      |0.1.5      |       |        |     |
 |[lidR](problems.md#lidr)                        |1.5.1      |       |        |2    |
@@ -64,7 +62,8 @@
 |PSCBS                                           |0.63.0     |       |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.16.0     |       |1       |     |
 |R.filesets                                      |2.12.1     |       |        |     |
-|[robotstxt](problems.md#robotstxt)              |0.6.0      |       |__+1__  |     |
+|[robotstxt](problems.md#robotstxt)              |0.6.2      |       |        |1    |
+|[skpr](problems.md#skpr)                        |0.53.4     |       |        |1    |
 |sperrorest                                      |2.1.5      |       |        |     |
 |[startR](problems.md#startr)                    |0.0.1      |       |        |1    |
 |vinereg                                         |0.3.0      |       |        |     |

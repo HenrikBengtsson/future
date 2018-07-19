@@ -103,34 +103,6 @@ Version: 1.1.0
       All declared Imports should be used.
     ```
 
-# future.BatchJobs
-
-Version: 0.15.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/future_lapply.R’ failed.
-    Last 13 lines of output:
-        .. ..$ : NULL
-      > 
-      > for (scheduling in list(FALSE, TRUE)) {
-      +   for (strategy in strategies) {
-      +     message(sprintf("- plan('%s') ...", strategy))
-      +     plan(strategy)
-      +     y <- future_lapply(x, FUN=vector, length=2L, future.scheduling = scheduling)
-      +     str(list(y=y))
-      +     stopifnot(identical(y, y0))
-      +   }
-      + }
-      - plan('sequential') ...
-      plan(): nbrOfWorkers() = 1
-      Error: The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead.
-      Execution halted
-    ```
-
 # lidR
 
 Version: 1.5.1
@@ -231,18 +203,27 @@ Version: 1.16.0
 
 # robotstxt
 
-Version: 0.6.0
+Version: 0.6.2
 
-## Newly broken
+## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 48-51 (using_robotstxt.Rmd) 
-    Error: processing vignette 'using_robotstxt.Rmd' failed with diagnostics:
-    The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead.
-    Execution halted
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
+    ```
+
+# skpr
+
+Version: 0.53.4
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 44.7Mb
+      sub-directories of 1Mb or more:
+        libs  43.2Mb
     ```
 
 # startR
