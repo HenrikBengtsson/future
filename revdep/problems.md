@@ -25,18 +25,6 @@ Version: 3.1.3
       ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
     ```
 
-# BAMBI
-
-Version: 2.0.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘future’
-      All declared Imports should be used.
-    ```
-
 # biotmle
 
 Version: 1.4.0
@@ -56,7 +44,7 @@ Version: 1.4.0
 
 # brms
 
-Version: 2.3.1
+Version: 2.4.0
 
 ## In both
 
@@ -101,6 +89,17 @@ Version: 1.1.0
     ```
     Namespace in Imports field not imported from: ‘desc’
       All declared Imports should be used.
+    ```
+
+# jstor
+
+Version: 0.3.2
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Packages unavailable to check Rd xrefs: ‘foreach’, ‘snow’
     ```
 
 # lidR
