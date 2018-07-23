@@ -2,7 +2,7 @@
 % Please edit documentation in R/sessionDetails.R
 \name{sessionDetails}
 \alias{sessionDetails}
-\title{Outputs details on the current R session}
+\title{Outputs details on the current \R session}
 \usage{
 sessionDetails(env = FALSE)
 }
@@ -13,7 +13,7 @@ sessionDetails(env = FALSE)
 Invisibly a list of all details.
 }
 \description{
-Outputs details on the current R session
+Outputs details on the current \R session
 }
 \details{
 Note that remote futures use \code{persistent = TRUE} by default.

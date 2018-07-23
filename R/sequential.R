@@ -1,13 +1,15 @@
-#' Create a sequential future whose value will be in the current R session
+#' Create a sequential future whose value will be in the current \R session
 #'
 #' A sequential future is a future that is evaluated sequentially in the
-#' current R session similarly to how \R expressions are evaluated in R.
-#' The only difference to R itself is that globals are validated
+#' current \R session similarly to how \R expressions are evaluated in \R.
+#' The only difference to \R itself is that globals are validated
 #' by default just as for all other types of futures in this package.
 #'
 #'
 #' @inheritParams future
 #' @inheritParams multiprocess
+#' @inheritParams Future-class
+#' 
 #' @param local If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done in the calling environment.

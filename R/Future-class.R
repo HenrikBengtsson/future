@@ -7,19 +7,27 @@
 #' value is not available.  As soon as it is \emph{resolved}, the value
 #' is available via \code{\link[future]{value}()}.
 #'
-#' @param expr An R \link[base]{expression}.
+#' @param expr An \R \link[base]{expression}.
 #'
-#' @param envir The \link{environment} in which the evaluation
-#' is done (or inherits from if \code{local} is TRUE).
+#' @param envir The \link{environment} from where global objects should be
+#' identified.
 #'
 #' @param substitute If TRUE, argument \code{expr} is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
-#' @param globals (optional) a named list of global objects needed in order
-#' for the future to be resolved correctly.
+#' @param stdout If TRUE (default), then the standard output is captured,
+#' and re-outputted when \code{value()} is called.
+#' If FALSE, any output is silenced (by sinking it to the null device as
+#' it is outputted).
+#' If NA (not recommended), output is \emph{not} intercepted.
+#' 
+#' @param globals (optional) a logical, a character vector, or a named list
+#' to control how globals are handled.
+#' For details, see section 'Globals used by future expressions'
+#' in the help for \code{\link{future}()}.
 #' 
 #' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
+#' to be attached in the \R environment evaluating the future.
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
@@ -35,14 +43,13 @@
 #' evaluated the future) after the value of the future is collected.
 #' \emph{Some types of futures ignore this argument.}
 #'
-#' @param earlySignal Specified whether conditions should be signaled
-#' as soon as possible or not.
+#' @param earlySignal Specified whether conditions should be signaled as soon
+#' as possible or not.
 #'
-#' @param label An optional character string label attached to the
-#' future.
+#' @param label An optional character string label attached to the future.
 #'
 #' @param \dots Additional named elements of the future.
-#'
+#' 
 #' @return An object of class \code{Future}.
 #'
 #' @details
@@ -50,16 +57,17 @@
 #'
 #' @seealso
 #' One function that creates a Future is \code{\link{future}()}.
-#' It returns a Future that evaluates an R expression in the future.
+#' It returns a Future that evaluates an \R expression in the future.
 #' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the
-#' right-hand-side (RHS) R expression and assigns its future value
+#' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
 #' @importFrom utils capture.output
 #' @export
+#' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -74,6 +82,8 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
     }
   }
 
+  stop_if_not(is.logical(stdout), length(stdout) == 1L)
+  
   if (!is.null(globals)) {
     stop_if_not(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
@@ -98,6 +108,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
   ## Future evaluation
   core$expr <- expr
   core$envir <- envir
+  core$stdout <- stdout
   core$globals <- globals
   core$packages <- packages
   core$seed <- seed
@@ -115,7 +126,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, glob
 
   ## Future miscellaneous
   core$label <- label
-  core$owner <- session_uuid(attributes = TRUE)
+  core$owner <- session_uuid()
   core$earlySignal <- earlySignal
   core$gc <- gc
 
@@ -144,6 +155,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
   cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  cat(sprintf("Capture standard output: %s\n", x$stdout))
 
   ## FIXME: Add method globals_of() for Future such that it's possible
   ## also for SequentialFuture to return something here. /HB 2017-05-17
@@ -221,10 +233,14 @@ print.Future <- function(x, ...) {
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
     info <- attr(uuid, "source")
-    sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+    if (is.null(info)) info <- list(pid = NA_integer_, host = NA_character_)
+    stop_if_not(is.list(info), length(info$pid) == 1L, length(info$host) == 1L)
+    pid <- sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
+    stop_if_not(length(pid) == 1L)
+    pid
   }
 
-  if (!identical(future$owner, session_uuid(attributes = TRUE))) {
+  if (!identical(future$owner, session_uuid())) {
     stop(FutureError(sprintf("Invalid usage of futures: A future whose value has not yet been collected can only be queried by the R process (%s) that created it, not by any other R processes (%s): %s", hpid(future$owner), hpid(session_uuid()), hexpr(future$expr)), future = future))
   }
 
@@ -299,7 +315,7 @@ result.Future <- function(future, ...) {
     ## BACKWARD COMPATIBILITY:
     ## For now, it is value() that collects the results.  Later we want
     ## all future backends to use result() to do it. /HB 2018-02-22
-    value(future, signal = FALSE)
+    value(future, stdout = FALSE, signal = FALSE)
   }
 
   result <- future$result
@@ -342,11 +358,16 @@ result.Future <- function(future, ...) {
 #' the evaluation blocks until the future is resolved.
 #'
 #' @param future A \link{Future}.
+#' 
+#' @param stdout If TRUE, any captured standard output is outputted,
+#' otherwise not.
+#' 
 #' @param signal A logical specifying whether (\link[base]{conditions})
 #' should signaled or be returned as values.
+#' 
 #' @param \dots Not used.
 #'
-#' @return An R object of any data type.
+#' @return An \R object of any data type.
 #'
 #' @details
 #' This method needs to be implemented by the class that implement
@@ -356,7 +377,7 @@ result.Future <- function(future, ...) {
 #' @rdname value
 #' @export
 #' @export value
-value.Future <- function(future, signal = TRUE, ...) {
+value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (future$state == "created") {
     future <- run(future)
   }
@@ -374,6 +395,14 @@ value.Future <- function(future, signal = TRUE, ...) {
   stop_if_not(inherits(result, "FutureResult"))
 
   value <- result$value
+
+  ## Output captured standard output?
+  if (stdout && length(result$stdout) > 0 &&
+      inherits(result$stdout, "character")) {
+    cat(paste(result$stdout, collapse = "\n"))
+  }
+  
+  ## Signal captured conditions?
   condition <- result$condition
   if (inherits(condition, "condition")) {
     if (signal) {
@@ -419,7 +448,7 @@ resolved.Future <- function(x, ...) {
 #' against spawning off recursive futures by mistake, especially
 #' \link{multicore} and \link{multisession} ones.
 #' The default will also set \code{options(mc.cores = 1L)} (*) so that
-#' no parallel R processes are spawned off by functions such as
+#' no parallel \R processes are spawned off by functions such as
 #' \code{\link[parallel:mclapply]{mclapply}()} and friends.
 #'
 #' Currently it is not possible to specify what type of nested
@@ -442,7 +471,7 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, local = future$local, stdout = future$stdout, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -590,7 +619,7 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
     })
   } ## if (length(strategiesR) > 0L)
 
-  expr <- makeExpression(expr = future$expr, local = future$local, enter = enter, exit = exit, version = version)
+  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) {
     print(expr)
   }
@@ -601,20 +630,33 @@ getExpression.Future <- function(future, mc.cores = NULL, ...) {
 } ## getExpression()
 
 
-makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
   ## Evaluate expression in a local() environment?
   if (local) {
     expr <- bquote(local(.(expr)))
   }
 
-  ## Set and reset certain future.* options
+  ## Set and reset certain future.* options etc.
   enter <- bquote({
     ## covr: skip=7
     ...future.oldOptions <- options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.loadScript = FALSE,
+      
       ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing = .(globals.onMissing)
+      future.globals.onMissing = .(globals.onMissing),
+      
+      ## Pass down other future.* options
+      future.globals.maxSize     = .(getOption("future.globals.maxSize")),
+      future.globals.method      = .(getOption("future.globals.method")),
+      future.globals.onMissing   = .(getOption("future.globals.onMissing")),
+      future.globals.onReference = .(getOption("future.globals.onReference")),
+      future.globals.resolve     = .(getOption("future.globals.resolve")),
+      future.resolve.recursive   = .(getOption("future.resolve.recursive")),
+      
+      ## Other options relevant to making futures behave consistently
+      ## across backends
+      width = .(getOption("width"))
     )
     .(enter)
   })
@@ -644,7 +686,32 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
     expr <- bquote({
       ## covr: skip=6
       .(enter)
-      tryCatch({
+
+      ## Capture standard output?
+      if (is.na(.(stdout))) {  ## stdout = NA
+        ## Don't capture, but also don't block any output
+      } else {
+        if (.(stdout)) {  ## stdout = TRUE
+          ## Capture all output
+          ## NOTE: Capturing to a raw connection is much more efficient
+          ## than to a character connection, cf.
+          ## https://www.jottr.org/2014/05/26/captureoutput/
+          ...future.stdout <- rawConnection(raw(0L), open = "w")
+        } else {  ## stdout = FALSE
+          ## Silence all output by sending it to the void
+          ...future.stdout <- file(
+            switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
+            open = "w"
+          )
+        }
+        sink(...future.stdout, type = "output", split = FALSE)
+        on.exit(if (!is.null(...future.stdout)) {
+          sink(type = "output", split = FALSE)
+          close(...future.stdout)
+        }, add = TRUE)
+      }
+      
+      ...future.result <- tryCatch({
         ...future.value <- .(expr)
         ## A FutureResult object (without requiring the future package)
 #       structure(list(
@@ -664,6 +731,7 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
         #      if (future$local) calls <- calls[-seq_len(6L)]
         structure(list(
           value = NULL,
+          value2 = NA,
           condition = cond,
           calls = calls,
           version = "1.8"
@@ -671,6 +739,22 @@ makeExpression <- function(expr, local = TRUE, globals.onMissing = getOption("fu
       }, finally = {
         .(exit)
       })
+
+      if (is.na(.(stdout))) {
+      } else {
+        sink(type = "output", split = FALSE)
+        if (.(stdout)) {
+          ...future.result$stdout <- rawToChar(
+            rawConnectionValue(...future.stdout)
+          )
+        } else {
+          ...future.result["stdout"] <- list(NULL)
+        }
+        close(...future.stdout)
+        ...future.stdout <- NULL
+      }
+      
+      ...future.result
     })
   } else {
     stop(FutureError("Internal error: Non-supported future expression version: ", version))

@@ -9,39 +9,42 @@ multicore(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   "multicore"), earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
-\item{workers}{The maximum number of multicore futures that can
-be active at the same time before blocking.}
+\item{workers}{A positive numeric scalar or a function specifying the
+maximum number of parallel futures that can be active at the same time
+before blocking.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return a numeric scalar.}
 
-\item{earlySignal}{Specified whether conditions should be signaled
-as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{MulticoreFuture}
 If \code{workers == 1}, then all processing using done in the
-current/main R session and we therefore fall back to using
+current/main \R session and we therefore fall back to using
 an sequential future.  This is also the case whenever multicore
 processing is not supported, e.g. on Windows.
 }
@@ -54,7 +57,7 @@ parallel in another process}.
 This function will block if all cores are occupied and
 will be unblocked as soon as one of the already running
 multicore futures is resolved.  For the total number of
-cores available including the current/main R process, see
+cores available including the current/main \R process, see
 \code{\link{availableCores}()}.
 
 Not all systems support multicore futures.  For instance,
@@ -95,13 +98,13 @@ print(v)
 stopifnot(v == 0)
 }
 \seealso{
-For processing in multiple background R sessions, see
+For processing in multiple background \R sessions, see
 \link{multisession} futures.
 For multicore processing with fallback to multisession where
 the former is not supported, see \link{multiprocess} futures.
 
 Use \code{\link{availableCores}()} to see the total number of
-cores that are available for the current R session.
+cores that are available for the current \R session.
 Use \code{\link{availableCores}("multicore") > 1L} to check
 whether multicore futures are supported or not on the current
 system.

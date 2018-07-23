@@ -24,25 +24,24 @@ futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
   evaluator = plan("next"), ...)
 }
 \arguments{
-\item{expr, value}{An \R \link[base]{expression} to be evaluated.}
+\item{expr, value}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
@@ -54,7 +53,7 @@ arguments as the ones listed here
 The default evaluator function is the one that the user
 has specified via \code{\link{plan}()}.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{\dots}{Additional arguments passed to the "evaluator".}
 
 \item{x}{the name of a future variable, which will hold the value
 of the future expression (as a promise).}
@@ -117,7 +116,7 @@ assignment per se, but a binary infix operator on objects \code{x}
 and expression \code{value}.  However, by using non-standard evaluation,
 this constructs can emulate an assignment operator similar to
 \code{x <- value}. Due to \R's precedence rules of operators,
-future expressions often needs to be explicitly bracketed, e.g.
+future expressions often need to be explicitly bracketed, e.g.
 \code{x \%<-\% { a + b }}.
 }
 \section{Eager or lazy evaluation}{
@@ -239,10 +238,8 @@ using the \code{\link{\%globals\%}} operator, e.g.
 }
 
 \examples{
-\donttest{
 ## Evaluate futures in parallel
 plan(multiprocess)
-}
 
 ## Data
 x <- rnorm(100)
@@ -300,6 +297,12 @@ futureAssign("fitC", {
 print(fitA)
 print(fitB)
 print(fitC)
+
+
+\dontshow{
+## Make sure to "close" an multisession workers on Windows
+plan(sequential)
+}
 }
 \seealso{
 How, when and where futures are resolved is given by the

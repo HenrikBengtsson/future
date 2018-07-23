@@ -1,6 +1,58 @@
 Package: future
 ===============
 
+Version: 1.9.0 [2018-07-22]
+
+SIGNIFICANT CHANGES:
+
+ o Standard output is now captured and re-outputted when value() is called.
+   This new behavior can be controlled by the argument 'stdout' to future()
+   or by specifying the %stdout% operator if a future assignment is used.
+
+NEW FEATURES:
+
+ o R option 'width' is passed down so that standard output is captured
+   consistently across workers and consistently with the master process.
+   
+ o Now more 'future.*' options are passed down so that they are also
+   acknowledged when using nested futures.
+
+DOCUMENTATION:
+
+ o Add vignette on 'Outputting Text'.
+
+ o CLEANUP: Only the core parts of the API are now listed in the help index.
+   This was done to clarify the Future API.  Help for non-core parts are still
+   via cross references in the indexed API as well via help().
+
+BUG FIX:
+
+ o When using forced, nested 'multicore' parallel processing, such as,
+   plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))),
+   then the child process would attempt to resolve futures owned by the parent
+   process resulting in an error (on 'bad error message').
+   
+ o When using plan(multicore), if a forked worker would terminate unexpectedly,
+   it could corrupt the master R session such that any further attempts of
+   using forked workers would fail.  A forked worker could be terminated this
+   way if the user pressed Ctrl-C (the worker receives a SIGINT signal).
+
+ o makeClusterPSOCK() produced a warning when environment variable
+   'R_PARALLEL_PORT' was set to 'random' (e.g. as on CRAN).
+
+ o Printing a plan() could produce an error when the deparsed call used to set
+   up the plan() was longer than 60 characters.
+ 
+DEPRECATED AND DEFUNCT:
+
+ o future::future_lapply() is defunct (gives an error if called).  Please use
+   the one in the future.apply package instead.
+
+ o Argument 'output' of FutureError() is formally deprecated.
+
+ o Removed all FutureEvaluationCondition classes and related methods.
+ 
+
 Version: 1.8.1 [2018-05-02]
 
 NEW FEATURES:

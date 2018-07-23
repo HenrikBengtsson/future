@@ -12,3 +12,4 @@ Returns a open, binary [base::connection()].
 \description{
 Creates a connection to the system null device
 }
+\keyword{internal}

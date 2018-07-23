@@ -25,7 +25,7 @@ UnexpectedFutureResultError(future)
 
 \item{future}{The \link{Future} involved.}
 
-\item{output}{(Don't use!) only for backward compatibility}
+\item{output}{(DEPRECATED - don't use!) only for backward compatibility}
 }
 \value{
 An object of class FutureCondition which inherits from class

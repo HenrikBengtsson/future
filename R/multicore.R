@@ -4,14 +4,13 @@
 #' which means that its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
-#' @inheritParams future
 #' @inheritParams multiprocess
-#' @param workers The maximum number of multicore futures that can
-#' be active at the same time before blocking.
+#' @inheritParams Future-class
+#' @inheritParams future
 #'
 #' @return A \link{MulticoreFuture}
 #' If \code{workers == 1}, then all processing using done in the
-#' current/main R session and we therefore fall back to using
+#' current/main \R session and we therefore fall back to using
 #' an sequential future.  This is also the case whenever multicore
 #' processing is not supported, e.g. on Windows.
 #'
@@ -21,7 +20,7 @@
 #' This function will block if all cores are occupied and
 #' will be unblocked as soon as one of the already running
 #' multicore futures is resolved.  For the total number of
-#' cores available including the current/main R process, see
+#' cores available including the current/main \R process, see
 #' \code{\link{availableCores}()}.
 #'
 #' Not all systems support multicore futures.  For instance,
@@ -38,13 +37,13 @@
 #' and \code{\link{\%<-\%}} will create \emph{multicore futures}.
 #'
 #' @seealso
-#' For processing in multiple background R sessions, see
+#' For processing in multiple background \R sessions, see
 #' \link{multisession} futures.
 #' For multicore processing with fallback to multisession where
 #' the former is not supported, see \link{multiprocess} futures.
 #'
 #' Use \code{\link{availableCores}()} to see the total number of
-#' cores that are available for the current R session.
+#' cores that are available for the current \R session.
 #' Use \code{\link{availableCores}("multicore") > 1L} to check
 #' whether multicore futures are supported or not on the current
 #' system.
@@ -79,7 +78,7 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #' Get number of cores currently used
 #'
 #' Get number of children (and don't count the current process)
-#' used by the current R session.  The number of children
+#' used by the current \R session.  The number of children
 #' is the total number of subprocesses launched by this
 #' process that are still running and whose values have yet
 #' not been collected.
@@ -89,7 +88,8 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #' @keywords internal
 usedCores <- function() {
   ## Number of unresolved multicore futures
-  futures <- FutureRegistry("multicore", action = "list")
+  reg <- sprintf("multicore-%s", session_uuid())
+  futures <- FutureRegistry(reg, action = "list")
   nfutures <- length(futures)
   ncores <- nfutures
 

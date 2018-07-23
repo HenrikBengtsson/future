@@ -39,17 +39,26 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
     cond <- message
     message <- conditionMessage(cond)
   }
-
+  
+  if (is.null(message)) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
+  }
+  message <- as.character(message)
+  if (length(message) != 1L) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
+  }
+  
   ## Create a condition object
-  structure(list(message = as.character(message), call = call), 
+  structure(list(message = message, call = call), 
             class = c("FutureCondition", "condition"),
             future = future)
 }
 
 
+#' @importFrom utils tail
 #' @export
 print.FutureCondition <- function(x, ...) {
-  NextMethod("print")
+  NextMethod()
 
   future <- attr(x, "future")
 
@@ -85,7 +94,7 @@ print.FutureCondition <- function(x, ...) {
     ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
     if (!is.null(output)) {
       cat("Captured output:\n")
-      cat(getOutput(x, tail = 30L, collapse = "\n"))
+      cat(tail(output, n = 30L), sep = "\n")
       cat("\n\n")
     }
 
@@ -95,12 +104,6 @@ print.FutureCondition <- function(x, ...) {
   invisible(x)
 } ## print()
 
-
-#' @export
-getOutput.FutureError <- function(x, ...) {
-  ## TODO: Deprecated/for backward compatibility only. /HB 2018-02-03
-  getOutput.FutureEvaluationCondition(x, ...)
-}
 
 
 #' @rdname FutureCondition
@@ -121,7 +124,7 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 }
 
 
-#' @param output (Don't use!) only for backward compatibility
+#' @param output (DEPRECATED - don't use!) only for backward compatibility
 #' 
 #' @rdname FutureCondition
 #' @export
@@ -130,8 +133,9 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
   ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
   class(cond) <- c("FutureError", "simpleError", "error", class(cond))
 
-  ## TODO: Deprecate
+  ## DEPREACTED
   if (!is.null(output)) {
+    .Deprecated(msg = "Argument 'output' of FutureError is deprecated")
     attr(cond, "output") <- output
   }
   

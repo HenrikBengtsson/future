@@ -9,10 +9,10 @@ MultiprocessFuture(expr = NULL, envir = parent.frame(),
   substitute = FALSE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}

@@ -36,20 +36,20 @@
 #' @section Implemented evaluation strategies:
 #' \itemize{
 #'  \item{\code{\link{sequential}}:}{
-#'    Resolves futures sequentially in the current R process.
+#'    Resolves futures sequentially in the current \R process.
 #'  }
 #'  \item{\code{\link{transparent}}:}{
-#'    Resolves futures sequentially in the current R process and
+#'    Resolves futures sequentially in the current \R process and
 #'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
 #'  \item{\code{\link{multisession}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running in the background on the same machine.
+#'    \R sessions running in the background on the same machine.
 #'  }
 #'  \item{\code{\link{multicore}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \emph{forked} R processes running in the background on
+#'    \emph{forked} \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
 #'  \item{\code{\link{multiprocess}}:}{
@@ -58,21 +58,25 @@
 #'  }
 #'  \item{\code{\link{cluster}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running typically on one or more machines.
+#'    \R sessions running typically on one or more machines.
 #'  }
 #'  \item{\code{\link{remote}}:}{
-#'    Resolves futures asynchronously in a separate R session
+#'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
 #'  }
 #' }
-#'
+#' 
 #' Other package may provide additional evaluation strategies.
 #' Notably, the \pkg{future.batchtools} package implements a
 #' type of futures that will be resolved via job schedulers
 #' that are typically available on high-performance compute
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
+#'
+#' To "close" any background workers (e.g. `multisession`), change
+#' the plan to something different; `plan(sequential)` is recommended
+#' for this.
 #'
 #' @section For package developers:
 #' Please refrain from modifying the future strategy inside your packages /
@@ -312,13 +316,14 @@ print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))
   s <- sprintf("%s:", class[1])
   specs <- list()
-  args <- deparse(args(x))
+  args <- deparse(args(x), width.cutoff = 500L)
   args <- args[-length(args)]
   args <- gsub("(^[ ]+|[ ]+$)", "", args)
   args <- paste(args, collapse = " ")
   specs$args <- args
   specs$tweaked <- inherits(x, "tweaked")
-  specs$call <- deparse(attr(x, "call"))
+  specs$call <- paste(deparse(attr(x, "call"), width.cutoff = 500L),
+                      collapse="")
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
@@ -339,13 +344,14 @@ print.FutureStrategyList <- function(x, ...) {
     class <- setdiff(class(x_kk), c("tweaked", "function"))
     s_kk <- sprintf("%d. %s:", kk, class[1])
     specs <- list()
-    args <- deparse(args(x_kk))
+    args <- deparse(args(x_kk), width.cutoff = 500L)
     args <- args[-length(args)]
     args <- gsub("(^[ ]+|[ ]+$)", "", args)
     args <- paste(args, collapse = " ")
     specs$args <- args
     specs$tweaked <- inherits(x_kk, "tweaked")
-    specs$call <- deparse(attr(x_kk, "call"))
+    specs$call <- paste(deparse(attr(x_kk, "call"), width.cutoff = 500L),
+                        collapse = "")
     specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
     s <- c(s, s_kk, specs)
   }

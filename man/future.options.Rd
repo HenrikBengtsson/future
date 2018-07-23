@@ -31,18 +31,19 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
  \item{\option{future.plan}:}{Default future strategy plan used unless otherwise specified via \code{\link{plan}()}. This will also be the future plan set when calling \code{plan("default")}.  If not specified, this option may be set when the \pkg{future} package is \emph{loaded} if command-line option \code{--parallel=ncores} (short \code{-p ncores}) is specified; if \code{ncores > 1}, then option \option{future.plan} is set to \code{multiprocess} otherwise \code{sequential} (in addition to option \option{mc.cores} being set to \code{ncores}, if \code{ncores >= 1}).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: \code{sequential})}
- \item{\option{future.globals.onMissing}:}{Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"error"}; likely to change to \code{"ignore"} in a future release)}
+ \item{\option{future.globals.onMissing}:}{Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"ignore"})}
  \item{\option{future.globals.method}:}{Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: \code{"ordered"})}
  \item{\option{future.globals.maxSize}:}{Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of \code{+Inf}, then the check for large globals is skipped. (Default: \code{500 * 1024 ^ 2} = 500 MiB)}
  \item{\option{future.globals.resolve}:}{If \code{TRUE}, globals that are \code{\link{Future}} objects (typically created as \emph{explicit} futures) will be resolved and have their values (using \code{value()}) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: \code{FALSE})}
   \item{\option{future.globals.onReference}: (\emph{beta version - may change})}{Controls whether the identified globals should be scanned for so called \emph{references} (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process - we call such objects \emph{non-exportable globals}.
    If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
-   If \code{"warning"} (default; but may change), a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
+   If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
    If \code{"ignore"}, no scan is performed.
+   (Default: \code{"ignore"} but may change)
  }
  \item{\option{future.resolve.recursive}:}{An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
  \item{\option{future.wait.timeout}:}{Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
- \item{\option{future.wait.interval}:}{Initial interval (in seconds) between polls. (Default: \code{0.2} (0.2 seconds))}
+ \item{\option{future.wait.interval}:}{Initial interval (in seconds) between polls. (Default: \code{0.2} = 0.2 seconds)}
  \item{\option{future.wait.alpha}:}{Positive scale factor used to increase the interval after each poll. (Default: \code{1.01})}
 }
 }
@@ -58,7 +59,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 \section{Options for controlling package startup}{
 
 \describe{
- \item{\option{future.startup.script}:}{If \code{FALSE}, any \file{.future.R} startup scripts, which may exist in the current directory and / or the user's home directory, are ignored. Such startup scripts are otherwise sourced when the \pkg{future} package is \emph{attached}. \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main R process but not in future processes. (Default: \code{TRUE} in main R process and \code{FALSE} in future processes / during future evaluation)}
+ \item{\option{future.startup.script}:}{If \code{FALSE}, any \file{.future.R} startup scripts, which may exist in the current directory and / or the user's home directory, are ignored. Such startup scripts are otherwise sourced when the \pkg{future} package is \emph{attached}. \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main \R process but not in future processes. (Default: \code{TRUE} in main \R process and \code{FALSE} in future processes / during future evaluation)}
  \item{\option{future.cmdargs}:}{Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is \emph{loaded}.}
 }
 }
@@ -79,7 +80,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 \section{Options for demos}{
 
 \describe{
- \item{\option{future.demo.mandelbrot.region}:}{Either a named list of \code{\link{mandelbrot}()} arguments or an integer in [1,3] specifying a predefined Mandelbrot region. (Default: \code{1L})}
+ \item{\option{future.demo.mandelbrot.region}:}{Either a named list of \code{\link{mandelbrot}()} arguments or an integer in \{1, 2, 3\} specifying a predefined Mandelbrot region. (Default: \code{1L})}
  \item{\option{future.demo.mandelbrot.nrow}:}{Number of rows and columns of tiles. (Default: \code{3L})}
 }
 }

@@ -11,7 +11,7 @@ A non-negative integer.
 }
 \description{
 Get number of children (and don't count the current process)
-used by the current R session.  The number of children
+used by the current \R session.  The number of children
 is the total number of subprocesses launched by this
 process that are still running and whose values have yet
 not been collected.

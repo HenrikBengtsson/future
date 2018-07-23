@@ -1,23 +1,24 @@
 #' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
-#' 
-#' @param globals (optional) a logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' @inheritParams Future-class
 #' 
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' 
-#' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
-#' Alternatively, a character vector of host names or a numeric scalar,
-#' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' @param workers A \code{\link[parallel:makeCluster]{cluster}} object,
+#' a character vector of host names, a positive numeric scalar,
+#' or a function.
+#' If a character vector or a numeric scalar, a \code{cluster} object
+#' is created using \code{\link{makeClusterPSOCK}(workers)}.
+#' If a function, it is called without arguments \emph{when the future
+#' is created} and its value is used to configure the workers.
+#' The function should return any of the above types.
 #' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
-#' PSOCK cluster nodes to connect back to the master R process.  This
+#' PSOCK cluster nodes to connect back to the master \R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
-#' the internal / public IP address of the master R session.
+#' the internal / public IP address of the master \R session.
 #' 
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
@@ -26,14 +27,11 @@
 #' machine running this node.
 #' 
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
-#' same path to \file{Rscript} as the main R session.  If FALSE, the
+#' same path to \file{Rscript} as the main \R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
 #'
-#' @param sessioninfo If TRUE, session information is collected for each
-#' cluster node, otherwise not.  This also servers as testing that each
-#' node is working properly.
-#' 
-#' @return An object of class \code{ClusterFuture}.
+#' @return
+#' \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function
@@ -241,7 +239,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   } else {
     ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
     warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
-    value(x, signal = FALSE)
+    value(x, stdout = FALSE, signal = FALSE)
     res <- TRUE
   }
 

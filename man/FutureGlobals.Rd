@@ -34,3 +34,4 @@ A representation of a set of globals used with futures
 This class extends the \link[globals]{Globals} class by add
 attribute \code{resolved}.
 }
+\keyword{internal}

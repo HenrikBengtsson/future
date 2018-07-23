@@ -25,7 +25,7 @@ use \link{sequential} futures.  This conservative approach protects
 against spawning off recursive futures by mistake, especially
 \link{multicore} and \link{multisession} ones.
 The default will also set \code{options(mc.cores = 1L)} (*) so that
-no parallel R processes are spawned off by functions such as
+no parallel \R processes are spawned off by functions such as
 \code{\link[parallel:mclapply]{mclapply}()} and friends.
 
 Currently it is not possible to specify what type of nested

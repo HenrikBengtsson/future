@@ -54,19 +54,6 @@ main_lapply_no_FUN <- function(x = 1:2, caller = call_my_add_caller,
   })
 }
 
-main_future_lapply <- function(x = 1:2, caller = call_my_add_caller,
-                               args = list(FUN = call_my_add)) {
-  future_lapply(x, FUN = function(i) {
-    do.call(caller, args = c(list(a = i, b = i + 1L), args))
-  })
-}
-
-main_future_lapply_no_FUN <- function(x = 1:2, caller = call_my_add_caller,
-                               args = list(FUN = call_my_add)) {
-  future_lapply(x, FUN = function(i) {
-    do.call(caller, args = list(a = i, b = i + 1L))
-  })
-}
 
 x0 <- y0 <- z0 <- NULL
 for (strategy in supportedStrategies()) {
@@ -100,15 +87,7 @@ for (strategy in supportedStrategies()) {
   z2 <- main_lapply_no_FUN()
   str(list(z2 = z2))
   stopifnot(identical(z2, z0))
-  
-  z3 <- main_future_lapply()
-  str(list(z3 = z3))
-  stopifnot(identical(z3, z0))
-
-  z4 <- main_future_lapply_no_FUN()
-  str(list(z4 = z4))
-  stopifnot(identical(z4, z0))
-  
+    
   message(sprintf("*** strategy = %s ... DONE", sQuote(strategy)))
 }
 

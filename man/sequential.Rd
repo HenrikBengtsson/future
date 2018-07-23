@@ -4,7 +4,7 @@
 \alias{sequential}
 \alias{uniprocess}
 \alias{transparent}
-\title{Create a sequential future whose value will be in the current R session}
+\title{Create a sequential future whose value will be in the current \R session}
 \usage{
 sequential(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE,
@@ -15,31 +15,30 @@ transparent(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done in the calling environment.}
 
-\item{earlySignal}{Specified whether conditions should be signaled
-as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
@@ -50,8 +49,8 @@ A \link{SequentialFuture}.
 }
 \description{
 A sequential future is a future that is evaluated sequentially in the
-current R session similarly to how \R expressions are evaluated in R.
-The only difference to R itself is that globals are validated
+current \R session similarly to how \R expressions are evaluated in \R.
+The only difference to \R itself is that globals are validated
 by default just as for all other types of futures in this package.
 }
 \details{

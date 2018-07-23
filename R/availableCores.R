@@ -1,6 +1,6 @@
 #' Get number of available cores on current machine
 #'
-#' The current/main R session counts as one, meaning the minimum
+#' The current/main \R session counts as one, meaning the minimum
 #' number of cores available is always at least one.
 #'
 #' @param constraints An optional character specifying under what
@@ -36,9 +36,9 @@
 #'    If available, returns the value of option
 #'    \code{\link[base:options]{mc.cores}}.
 #'    Note that \option{mc.cores} is defined as the number of
-#'    \emph{additional} R processes that can be used in addition to the
-#'    main R process.  This means that with \code{mc.cores = 0} all
-#'    calculations should be done in the main R process, i.e. we have
+#'    \emph{additional} \R processes that can be used in addition to the
+#'    main \R process.  This means that with \code{mc.cores = 0} all
+#'    calculations should be done in the main \R process, i.e. we have
 #'    exactly one core available for our calculations.
 #'    The \option{mc.cores} option defaults to environment variable
 #'    \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
@@ -63,7 +63,7 @@
 #'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
 #'    \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.
 #' }
-#' For any other value of a \code{methods} element, the R option with the
+#' For any other value of a \code{methods} element, the \R option with the
 #' same name is queried.  If that is not set, the system environment
 #' variable is queried.  If neither is set, a missing value is returned.
 #'
@@ -204,7 +204,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
 #' Check whether multicore processing is supported or not
 #'
 #' Multicore futures are only supported on systems supporting
-#' multicore processing.  R supports this on most systems,
+#' multicore processing.  \R supports this on most systems,
 #' except on Microsoft Windows.
 #'
 #' @return TRUE if multicore processing is supported, otherwise FALSE.
@@ -213,6 +213,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
 #' To use multicore futures, use \code{\link{plan}(\link{multicore})}.
 #'
 #' @export
+#' @keywords internal
 supportsMulticore <- local({
   supported <- NA
   function() {

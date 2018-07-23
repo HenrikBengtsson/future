@@ -10,7 +10,7 @@ getGlobalsAndPackages(expr, envir = parent.frame(), tweak = tweakExpression,
   1024^2), ...)
 }
 \arguments{
-\item{expr}{An R expression whose globals should be found.}
+\item{expr}{An \R expression whose globals should be found.}
 
 \item{envir}{The environment from which globals should be searched.}
 

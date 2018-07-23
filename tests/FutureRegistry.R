@@ -2,7 +2,7 @@ source("incl/start.R")
 
 message("*** FutureRegistry() ...")
 
-for (where in c("multicore", "rscript")) {
+for (where in c(sprintf("multicore-%s", future:::session_uuid()), "rscript")) {
   message(sprintf("*** FutureRegistry('%s', 'list') ...", where))
   futures <- FutureRegistry(where, action = "list")
   print(futures)

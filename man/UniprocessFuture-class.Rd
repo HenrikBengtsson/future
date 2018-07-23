@@ -13,22 +13,24 @@ SequentialFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
   lazy = FALSE, globals = TRUE, local = TRUE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{(optional) a named list of global objects needed in order
-for the future to be resolved correctly.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{If \code{FALSE} (default), then the setup and validation of
-global variables are done for eager evaluation, otherwise not.}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

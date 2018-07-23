@@ -9,19 +9,21 @@ ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
   globals = NULL, packages = NULL, local = FALSE, ...)
 }
 \arguments{
-\item{expr}{An R \link[base]{expression}.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} in which the evaluation
-is done (or inherits from if \code{local} is TRUE).}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{(optional) a named list of global objects needed in order
-for the future to be resolved correctly.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise

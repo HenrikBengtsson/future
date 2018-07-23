@@ -20,13 +20,17 @@ message("- Run-time error")
 
 ## Assert we can detect the reference
 res <- tryCatch({
-  f <- future(cat("world\n", file = con))
+  f <- future(cat("world\n", file = con), stdout = NA)
 }, FutureWarning = identity)
 print(res)
 stopifnot(inherits(res, "FutureWarning"),
           grepl("non-exportable reference", conditionMessage(res)))
 
-f <- future(cat("world\n", file = con))
+## ISSUE: When using stdout = TRUE/FALSE below, a connection will be opened
+## on the worker (due to sink:ing), which then will be hijacked by the
+## global 'con' connection in the below expression.  Because of this, we
+## have to test with stdout = NA.
+f <- future(cat("world\n", file = con), stdout = NA)
 res <- tryCatch({
   v <- value(f)
 }, error = identity)

@@ -1,18 +1,17 @@
-#' Create a multisession future whose value will be resolved asynchronously in a parallel R session
+#' Create a multisession future whose value will be resolved asynchronously in a parallel \R session
 #'
 #' A multisession future is a future that uses multisession evaluation,
 #' which means that its \emph{value is computed and resolved in
-#' parallel in another R session}.
+#' parallel in another \R session}.
 #'
-#' @inheritParams future
 #' @inheritParams multiprocess
 #' @inheritParams cluster
-#' @param workers The maximum number of multisession futures that
-#' can be active at the same time before blocking.
+#' @inheritParams Future-class
+#' @inheritParams future
 #'
 #' @return A \link{MultisessionFuture}.
 #' If \code{workers == 1}, then all processing using done in the
-#' current/main R session and we therefore fall back to using
+#' current/main \R session and we therefore fall back to using
 #' a lazy future.
 #'
 ## FIXME: It seem that multisession futures in examples gives errors
@@ -21,10 +20,14 @@
 #'@example incl/multisession.R
 #'
 #' @details
-#' This function will block if all available R session are occupied
+#' The background \R sessions (the "workers") are created using
+#' \code{\link{makeClusterPSOCK}()}.
+#' 
+#' The \code{multisession()} function will block if all available
+#' \R session are occupied
 #' and will be unblocked as soon as one of the already running
 #' multisession futures is resolved.  For the total number of
-#' R sessions available including the current/main R process, see
+#' \R sessions available including the current/main \R process, see
 #' \code{\link{availableCores}()}.
 #'
 #' A multisession future is a special type of cluster future.
@@ -35,23 +38,14 @@
 #' mechanism for all futures.  After this \code{\link{future}()}
 #' and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 #'
-#' @section Known issues:
-#' In the current implementation, \emph{all} background R sessions
-#' are allocated and launched in the background \emph{as soon as the
-#' first multisession future is created}. This means that more R
-#' sessions may be running than what will ever be used.
-#' The reason for this is that background sessions are currently
-#' created using \code{\link[parallel:makeCluster]{makeCluster}()},
-#' which requires that all R sessions are created at once.
-#'
 #' @seealso
-#' For processing in multiple forked R sessions, see
+#' For processing in multiple forked \R sessions, see
 #' \link{multicore} futures.
 #' For multicore processing with fallback to multisession where
 #' the former is not supported, see \link{multiprocess} futures.
 #'
 #' Use \code{\link{availableCores}()} to see the total number of
-#' cores that are available for the current R session.
+#' cores that are available for the current \R session.
 #'
 #' @export
 multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {

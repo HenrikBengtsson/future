@@ -23,7 +23,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ### Missing globals (false negatives)
 If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
 ```r
-library(multisession)
+plan(multisession)
 
 reset <- TRUE
 x <- 1
@@ -254,6 +254,51 @@ Error in FALSE :
   ('Double' of class 'jclassName') used in the future expression
 ```
 
+### Example: Non-exportable objects by the reticulate package
+
+Analogously to rJava, the reticulate package provides methods for creating and calling Python code from within R.  If one attempt to use Python-binding objects from this package, we get errors like:
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("reticulate")
+> os <- import("os")
+> pwd %<-% os$getcwd()
+Error in eval(quote(os$getcwd()), new.env()) : 
+  attempt to apply non-function
+```
+and by telling the future package to validate globals further, we get:
+```r
+> options(future.globals.onReference = "error")
+> pwd %<-% os$getcwd()
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('os' of class 'python.builtin.module') used in the future expression
+```
+
+Another reticulate example is when we try to use a Python function that we create ourselves as in:
+
+```r
+> cat("def twice(x):\n    return 2*x\n", file = "twice.py")
+> source_python("twice.py")
+> twice(1.2)
+[1] 2.4
+> y %<-% twice(1.2)
+> y
+Error in unserialize(node$con) : 
+  Failed to retrieve the value of MultisessionFuture from cluster node #1
+  (on 'localhost').  The reason reported was 'error reading from connection'
+```
+which, again, is because:
+```r
+> options(future.globals.onReference = "error")
+> y %<-% twice(1.2)
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('twice' of class 'python.builtin.function') used in the future expression
+```
+
 
 ### Example: Non-exportable objects by the rlang package
 
@@ -285,6 +330,7 @@ Error in mutate_impl(.data, dots) :
   of class 'RegisteredNativeSymbol') in one of the globals ('~' of
   class 'function') used in the future expression.
 ```
+
 
 
 ## Trying to pass an unresolved future to another future

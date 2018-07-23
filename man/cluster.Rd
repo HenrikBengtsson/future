@@ -11,52 +11,58 @@ cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
   ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A cluster object created by
-\code{\link[parallel]{makeCluster}()}.}
+\item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
+a character vector of host names, a positive numeric scalar,
+or a function.
+If a character vector or a numeric scalar, a \code{cluster} object
+is created using \code{\link{makeClusterPSOCK}(workers)}.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return any of the above types.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}
 
 \item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master R process.  This
+PSOCK cluster nodes to connect back to the master \R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master R session.}
+the internal / public IP address of the master \R session.}
 
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
-same path to \file{Rscript} as the main R session.  If FALSE, the
+same path to \file{Rscript} as the main \R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.}
+evaluated the future) after the value of the future is collected.
+\emph{Some types of futures ignore this argument.}}
 
-\item{earlySignal}{Specified whether conditions should be signaled
-as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{ClusterFuture}.
@@ -67,7 +73,7 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
-This function will block if all available R cluster nodes are
+This function will block if all available \R cluster nodes are
 occupied and will be unblocked as soon as one of the already
 running cluster futures is resolved.
 

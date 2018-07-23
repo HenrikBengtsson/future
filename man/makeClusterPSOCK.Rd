@@ -32,7 +32,7 @@ random one among those is chosen.  If \code{"random"}, then a random port in
 is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 \code{"random"} is used.}
 
-\item{...}{Optional arguments passed to
+\item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
 \code{i = seq_along(workers)}.}
 
@@ -81,7 +81,7 @@ vector).  These arguments are only applied if \code{machine} is not
 another host.}
 
 \item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
-that the worker R process sets up a socket connection to its local port
+that the worker \R process sets up a socket connection to its local port
 \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 If FALSE, then the worker will try to connect directly to port \code{port} on
 \code{master}.  For more details, see below.}
@@ -135,15 +135,18 @@ system executable for this is given by argument \code{rshcmd}.  The default
 is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
 set the default is either of \command{ssh} and \command{plink -ssh}.
 Most Unix-like systems, including macOS, have \command{ssh} preinstalled
-on the \code{PATH}.  It is less common to find this command on Windows
-system, which are more likely to have the \command{PuTTY} software and
-its SSH client \command{plink} installed.
+on the \code{PATH}.  This is also true for recent Windows 10
+(since version 1803; April 2018).
 Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 client that is distributed with RStudio will be used as a fallback if
 neither of the above two commands are available on the \code{PATH}.
-Note that on Windows 10, there is a beta version of OpenSSH that can
-be enabled in the Windows Settings, cf. \url{https://www.thomasmaurer.ch/2017/11/install-ssh-on-windows-10-as-optional-feature/}.
+
+For Windows systems prior to Windows 10, which do not have RStudio
+installed, it is less common to find \command{ssh}. Instead it is more
+likely that such systems have the \command{PuTTY} software and its SSH
+client \command{plink} installed.
 If no SSH-client is found, an informative error message is produced.
+
 It is also possible to specify the absolute path to the SSH client.  To do
 this for PuTTY, specify the absolute path in the first element and option
 \command{-ssh} in the second as in
@@ -181,7 +184,7 @@ If \code{homogeneous} is FALSE, the \code{rscript} defaults to
 is available on the \code{PATH} of the worker.
 If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-that the worker and the caller share the same file system and R installation.
+that the worker and the caller share the same file system and \R installation.
 }
 
 \section{Default value of argument \code{homogeneous}}{

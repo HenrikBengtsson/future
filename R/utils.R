@@ -1,3 +1,12 @@
+assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
+  ast <- as.list(call)
+  if (length(ast) <= 2L) return()
+  names <- names(ast[-(1:2)])
+  if (is.null(names) || any(names == "")) {
+    stop(sprintf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L)))
+  }
+}
+
 stop_if_not <- function(...) {
   res <- list(...)
   for (ii in 1L:length(res)) {
@@ -188,6 +197,7 @@ detectCores <- local({
 ##   - parallel:::recvResult()      ## value()
 ## * multicore futures:
 ##   - parallel:::selectChildren()  ## resolved()
+##   - parallel:::rmChild()         ## value()
 ## As well as the following ones (because they are not exported on Windows):
 ## * multicore futures:
 ##   - parallel::mcparallel()       ## run()
@@ -451,6 +461,7 @@ myInternalIP <- local({
 
 
 ## A *rough* estimate of size of an object + its environment.
+#' @keywords internal 
 #' @importFrom utils object.size
 objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.objectSize.enclosure", FALSE)) {
   # Nothing to do?
@@ -579,92 +590,9 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 }
 
 
-get_random_seed <- function() {
-  env <- globalenv()
-  env$.Random.seed
-}
-
-set_random_seed <- function(seed) {
-  env <- globalenv()
-  if (is.null(seed)) {
-    rm(list = ".Random.seed", envir = env, inherits = FALSE)
-  } else {
-    env$.Random.seed <- seed
-  }
-}
-
-next_random_seed <- function(seed = get_random_seed()) {
-  sample.int(n = 1L, size = 1L, replace = FALSE)
-  seed_next <- get_random_seed()
-  stop_if_not(!any(seed_next != seed))
-  invisible(seed_next)
-}
-
-is_valid_random_seed <- function(seed) {
-  oseed <- get_random_seed()
-  on.exit(set_random_seed(oseed))
-  env <- globalenv()
-  env$.Random.seed <- seed
-  res <- tryCatch({
-    sample.int(n = 1L, size = 1L, replace = FALSE)
-  }, simpleWarning = function(w) w)
-  !inherits(res, "simpleWarning")
-}
-
-is_lecyer_cmrg_seed <- function(seed) {
-  is.numeric(seed) && length(seed) == 7L &&
-    all(is.finite(seed)) && seed[1] == 407L
-}
-
-# @importFrom utils capture.output
-as_lecyer_cmrg_seed <- function(seed) {
-  ## Generate a L'Ecuyer-CMRG seed (existing or random)?
-  if (is.logical(seed)) {
-    stop_if_not(length(seed) == 1L)
-    if (!is.na(seed) && !seed) {
-      stop("Argument 'seed' must be TRUE if logical: ", seed)
-    }
-
-    oseed <- get_random_seed()
-    
-    ## Already a L'Ecuyer-CMRG seed?  Then use that as is.
-    if (!is.na(seed) && seed) {
-      if (is_lecyer_cmrg_seed(oseed)) return(oseed)
-    }
-    
-    ## Otherwise, generate a random one.
-    on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
-    return(get_random_seed())
-  }
-
-  stop_if_not(is.numeric(seed), all(is.finite(seed)))
-  seed <- as.integer(seed)
-
-  ## Already a L'Ecuyer-CMRG seed?
-  if (length(seed) == 7L) {
-    if (seed[1] != 407L) {
-      stop("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: ", capture.output(str(seed)))
-    }
-    return(seed)
-  }
-  
-  ## Generate a new L'Ecuyer-CMRG seed?
-  if (length(seed) == 1L) {
-    oseed <- get_random_seed()
-    on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
-    set.seed(seed)
-    return(get_random_seed())
-  }
-  
-  stop("Argument 'seed' must be of length 1 or 7 (= 1+6):", capture.output(str(seed)))
-}
-
-
 #' Gets the length of an object without dispatching
 #'
-#' @param x Any R object.
+#' @param x Any \R object.
 #'
 #' @return A non-negative integer.
 #'
@@ -701,6 +629,8 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' Creates a connection to the system null device
 #'
 #' @return Returns a open, binary [base::connection()].
+#' 
+#' @keywords internal
 nullcon <- local({
   nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
   .nullcon <- function() file(nullfile, open = "wb", raw = TRUE)
@@ -760,6 +690,8 @@ reference_filters <- local({
 #'
 #' @return `find_references()` returns a list of one or more references
 #' identified.
+#' 
+#' @keywords internal
 find_references <- function(x, first_only = FALSE) {
   con <- nullcon()
   on.exit(close(con))
@@ -800,6 +732,8 @@ find_references <- function(x, first_only = FALSE) {
 #' or a character string is produced, otherwise `NULL` is returned invisibly.
 #'
 #' @rdname find_references
+#' 
+#' @keywords internal
 assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()

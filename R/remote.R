@@ -7,6 +7,8 @@
 #' @inheritParams future
 #' @inheritParams multiprocess
 #' @inheritParams cluster
+#' @inheritParams Future-class
+#' 
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
 #'

@@ -12,12 +12,13 @@ fassignment \%packages\% packages
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% \{ expr \}}.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
+to be attached in the \R environment evaluating the future.}
 }
 \description{
 Specify globals and packages for a future assignment

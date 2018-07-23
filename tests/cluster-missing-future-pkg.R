@@ -42,7 +42,8 @@ for (type in types) {
       plan(cluster, workers = cl)
     }, error = identity)
     print(res)
-    stopifnot(inherits(res, "FutureError"))
+    stopifnot(inherits(res, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
   }
   parallel::stopCluster(cl)
 
@@ -51,7 +52,7 @@ for (type in types) {
     ## However, if we disable the quick future test, we should not get
     ## an error here.
     plan(cluster, workers = cl, .init = FALSE)
-    
+
     ## But we will get:
     ##   <FutureError: Internal error: Unexpected result retrieved for
     ##   ClusterFuture future ('<none>'): '42L'>
@@ -61,12 +62,15 @@ for (type in types) {
       result(f)
     }, error = identity)
     print(res)
-    stopifnot(inherits(res, "FutureError"))
-    
+    stopifnot(inherits(res, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
+
     ## Assert that the "result" was recorded for future use and
     ## it was recorded as a FutureError.
     str(f$result)
-    stopifnot(!is.null(f$result), inherits(f$result, "FutureError"))
+    stopifnot(!is.null(f$result),
+              inherits(f$result, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
 
     ## Any attempts to re-request the result / value for this future
     ## should from now on re-throw that recorded FutureError.
@@ -79,19 +83,24 @@ for (type in types) {
     res <- tryCatch({
        result(f)
     }, error = identity)
-    stopifnot(inherits(res, "FutureError"))
+    stopifnot(inherits(res, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
 
     ## ... and obviously the same for value().
     res <- tryCatch({
        value(f)
     }, error = identity)
-    stopifnot(inherits(res, "FutureError"))
+    stopifnot(inherits(res, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
     
     ## Retrying with a new future should give the same failure as above.
+    f <- future(42L)
     res <- tryCatch({
-      f <- future(42L)
+      result(f)
     }, error = identity)
-    stopifnot(inherits(res, "FutureError"))
+    print(res)
+    stopifnot(inherits(res, "FutureError"),
+              inherits(res, "UnexpectedFutureResultError"))
   }
   
   parallel::stopCluster(cl)
