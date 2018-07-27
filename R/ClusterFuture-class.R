@@ -236,6 +236,8 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+  } else if (inherits(node, "MPInode")) {
+    res <- resolveMPI(x)
   } else {
     ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
     warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
