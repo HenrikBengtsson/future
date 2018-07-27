@@ -5,6 +5,10 @@ Version: 1.9.0-9000 [2018-07-27]
 
 NEW FEATURES:
 
+ o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
+   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
+   issues where parallel::stopCluster() causes R to stall.
+   
  o [BETA] Now resolved() for ClusterFuture is non-blocking also for clusters
    of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
 

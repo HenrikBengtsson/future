@@ -3,7 +3,7 @@
 \name{makeClusterPSOCK}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
-\title{Create a cluster of \R workers for parallel processing}
+\title{Create a PSOCK cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))

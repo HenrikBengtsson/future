@@ -1,4 +1,4 @@
-#' Create a cluster of \R workers for parallel processing
+#' Create a PSOCK cluster of \R workers for parallel processing
 #' 
 #' The \code{makeClusterPSOCK()} function creates a cluster of \R workers
 #' for parallel processing.  These \R workers may be background \R sessions
