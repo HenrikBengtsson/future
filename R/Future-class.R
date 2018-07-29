@@ -731,7 +731,6 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing 
         #      if (future$local) calls <- calls[-seq_len(6L)]
         structure(list(
           value = NULL,
-          value2 = NA,
           condition = cond,
           calls = calls,
           version = "1.8"

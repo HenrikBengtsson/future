@@ -572,14 +572,14 @@ The goal of this package is to provide a standardized and unified API for using 
 ## Installation
 R package future is available on [CRAN](https://cran.r-project.org/package=future) and can be installed in R as:
 ```r
-install.packages('future')
+install.packages("future")
 ```
 
 ### Pre-release version
 
 To install the pre-release version that is available in Git branch `develop` on GitHub, use:
 ```r
-remotes::install_github('HenrikBengtsson/future@develop')
+remotes::install_github("HenrikBengtsson/future@develop")
 ```
 This will install the package from source.  
 
