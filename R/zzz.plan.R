@@ -127,7 +127,8 @@ plan <- local({
       stack[[1L]] <<- evaluator
 
       ## Create dummy future to trigger setup (minimum overhead)
-      f <- evaluator(NA, globals = FALSE, lazy = FALSE)
+      f <- evaluator(NA, label = "future-plan-test", 
+                     globals = FALSE, lazy = FALSE)
 
       ## Cleanup, by resolving it
       ## (otherwise the garbage collector would have to do it)
