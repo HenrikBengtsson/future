@@ -8,7 +8,6 @@ Imports:
     parallel,
     utils
 Suggests:
-    Rmpi,
     R.rsp,
     markdown
 VignetteBuilder: R.rsp
