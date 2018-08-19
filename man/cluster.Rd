@@ -4,11 +4,11 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
-cluster(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
-  seed = NULL, globals = TRUE, persistent = FALSE,
+cluster(expr, envir = parent.frame(), substitute = TRUE,
+  lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE,
   workers = availableWorkers(), user = NULL, revtunnel = TRUE,
-  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL,
-  ...)
+  homogeneous = TRUE, gc = FALSE, earlySignal = FALSE,
+  label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
