@@ -7,15 +7,15 @@
 \alias{futureAssign}
 \alias{\%<-\%}
 \alias{\%->\%}
-\alias{futureCall}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  packages = NULL, lazy = FALSE, seed = NULL, evaluator = plan("next"),
-  ...)
+future(expr, envir = parent.frame(), substitute = TRUE,
+  globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL,
+  evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, seed = NULL, globals = TRUE, ..., assign.env = envir)
+  lazy = FALSE, seed = NULL, globals = TRUE, ...,
+  assign.env = envir)
 
 x \%<-\% value
 

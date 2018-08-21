@@ -775,3 +775,49 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
     msg
   }
 }
+
+
+## https://github.com/HenrikBengtsson/future/issues/130
+#' @importFrom utils packageVersion
+resolveMPI <- local({
+  cache <- list()
+  
+  function(future) {
+    resolveMPI <- cache$resolveMPI
+    if (is.null(resolveMPI)) {
+      resolveMPI <- function(future) {
+        node <- future$workers[[future$node]]
+        warning(sprintf("resolved() on %s failed to load the Rmpi package. Will use blocking value() instead and return TRUE", sQuote(class(node)[1])))
+        value(future, stdout = FALSE, signal = FALSE)
+        TRUE
+      }
+
+      if (requireNamespace(pkg <- "Rmpi", quietly = TRUE)) {
+        ns <- getNamespace("Rmpi")
+
+        resolveMPI <- function(future) {
+          node <- future$workers[[future$node]]
+          warning(sprintf("resolved() on %s failed to find mpi.iprobe() and mpi.any.tag() in Rmpi %s. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]), packageVersion("Rmpi")))
+          value(future, stdout = FALSE, signal = FALSE)
+          TRUE
+        }
+
+        if (all(sapply(c("mpi.iprobe", "mpi.any.tag"), FUN = exists,
+                       mode = "function", envir = ns, inherits = FALSE))) {
+          mpi.iprobe <- get("mpi.iprobe", mode = "function", envir = ns,
+	                    inherits = FALSE)
+          mpi.any.tag <- get("mpi.any.tag", mode = "function", envir = ns,
+  	                     inherits = FALSE)
+          resolveMPI <- function(future) {
+            node <- future$workers[[future$node]]
+            mpi.iprobe(source = node$rank, tag = mpi.any.tag())
+	  }
+        }
+      }
+      stopifnot(is.function(resolveMPI))
+      cache$resolveMPI <<- resolveMPI
+    }
+
+    resolveMPI(future)
+  }
+})

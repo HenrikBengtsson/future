@@ -6,13 +6,13 @@
 \alias{transparent}
 \title{Create a sequential future whose value will be in the current \R session}
 \usage{
-sequential(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
-  seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE,
-  label = NULL, ...)
+sequential(expr, envir = parent.frame(), substitute = TRUE,
+  lazy = FALSE, seed = NULL, globals = TRUE, local = TRUE,
+  earlySignal = FALSE, label = NULL, ...)
 
-transparent(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
-  seed = NULL, globals = FALSE, local = FALSE, earlySignal = TRUE,
-  label = NULL, ...)
+transparent(expr, envir = parent.frame(), substitute = TRUE,
+  lazy = FALSE, seed = NULL, globals = FALSE, local = FALSE,
+  earlySignal = TRUE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
