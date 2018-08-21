@@ -9,6 +9,8 @@
 #' @inheritParams Future-class
 #' @inheritParams future
 #'
+#' @param \dots Additional named elements passed to \code{\link{ClusterFuture}()}.
+#'
 #' @return A \link{ClusterFuture}.
 #'
 #' @example incl/cluster.R

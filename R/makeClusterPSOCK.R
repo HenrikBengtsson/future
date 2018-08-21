@@ -242,6 +242,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'        name (FQDN).  A hostname is considered to be a FQDN if it contains
 #'        one or more periods
 #' }
+#' In all other cases, \code{homogeneous} defaults to FALSE.
 #' 
 #' @section Connection time out:
 #' Argument \code{connectTimeout} does \emph{not} work properly on Unix and

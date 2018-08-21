@@ -62,7 +62,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{\dots}{Additional named elements passed to \code{\link{ClusterFuture}()}.}
 }
 \value{
 A \link{ClusterFuture}.

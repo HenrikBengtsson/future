@@ -31,12 +31,14 @@ in the help for \code{\link{future}()}.}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{A positive numeric scalar or a function specifying the
-maximum number of parallel futures that can be active at the same time
-before blocking.
+\item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
+a character vector of host names, a positive numeric scalar,
+or a function.
+If a character vector or a numeric scalar, a \code{cluster} object
+is created using \code{\link{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
-The function should return a numeric scalar.}
+The function should return any of the above types.}
 
 \item{user}{(optional) The user name to be used when communicating
 with another host.}
@@ -58,7 +60,7 @@ If NULL, then it is inferred using an online service (default).}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{ClusterFuture}()}.}
 }
 \value{
 A \link{ClusterFuture}.
@@ -68,9 +70,15 @@ A remote future is a future that uses remote cluster evaluation,
 which means that its \emph{value is computed and resolved
 remotely in another process}.
 }
-\details{
-Note that remote futures use \code{persistent = TRUE} by default.
+\section{'remote' versus 'cluster'}{
+
+The \code{remote} plan is a very similar to the \code{\link{cluster}} plan, but provides
+more convenient default argument values when connecting to remote machines.  Specifically,
+\code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
+\code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
+See below for example on how \code{remote} and \code{cluster} are related.
 }
+
 \examples{
 \dontrun{\donttest{
 
@@ -81,6 +89,22 @@ plan(remote, workers = "remote.server.org")
 host \%<-\% { Sys.info()[["nodename"]] }
 host
 [1] "remote.server.org"
+
+
+## The following setups are equivalent:
+plan(remote, workers = "localhost")
+plan(cluster, workers = "localhost", persistent = TRUE)
+plan(cluster, workers = 1L, persistent = TRUE)
+plan(multisession, workers = 1L, persistent = TRUE)
+
+## The following setups are equivalent:
+plan(remote, workers = "remote.server.org")
+plan(cluster, workers = "remote.server.org", persistent = TRUE, homogeneous = FALSE)
+
+## The following setups are equivalent:
+cl <- makeClusterPSOCK("remote.server.org")
+plan(remote, workers = cl)
+plan(cluster, workers = cl, persistent = TRUE)
 
 }}
 }
