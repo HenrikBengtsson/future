@@ -107,12 +107,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
 #' \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' 
-#' @param port The port number of the master used to for communicating with all
+#' @param port The port number of the master used for communicating with all
 #' the workers (via socket connections).  If an integer vector of ports, then a
 #' random one among those is chosen.  If \code{"random"}, then a random port in
 #' \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
 #' is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 #' \code{"random"} is used.
+#' \emph{Note, do not use this argument to specify the port number used by
+#' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+#' runs on a different port than the default 22, specify the SSH port by
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
+#' options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
