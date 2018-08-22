@@ -29,10 +29,12 @@ terminate(x, ...)
 
 \item{signal}{Integer specifying the signal level used to terminate
 the future.}
+
+\item{\ldots}{(optional) Reserved for future use.}
 }
 \value{
-Return a logical indicating success or failure of process
-signalling.
+Returns (invisibly) a logical indicating success or failure of
+process signalling.
 }
 \description{
 Terminate a Future Process

@@ -5,8 +5,10 @@
 #' @param signal Integer specifying the signal level used to terminate
 #' the future.
 #'
-#' @return Return a logical indicating success or failure of process
-#' signalling.
+#' @param \ldots (optional) Reserved for future use.
+#'
+#' @return Returns (invisibly) a logical indicating success or failure of
+#' process signalling.
 #' 
 #' @importFrom tools pskill
 #' @export
@@ -21,6 +23,7 @@ terminate.Future <- function(x, ...) {
   warning(sprintf(
     "Do not know how to terminate a future (%s) of class %s.",
     sQuote(label), sQuote(class(x)[1])))
+  invisible(FALSE)
 }
 
 
@@ -56,19 +59,19 @@ terminate.SOCKnode <- function(x, ...) {
   session_info <- x$session_info
   if (is.null(session_info)) {
     warning(sprintf("Cannot terminate %s worker. Worker session information and therefore the worker process id (PID) is unknown.", sQuote(class(x)[1])))
-    return(invisible(x))
+    return(invisible(FALSE))
   }
 
   process <- session_info$process
   if (is.null(process)) {
     warning(sprintf("Cannot terminate %s worker. Worker process information and therefore the worker process id (PID) is unknown.", sQuote(class(x)[1])))
-    return(invisible(x))
+    return(invisible(FALSE))
   }
   
   pid <- process$pid
   if (is.null(pid)) {
     warning(sprintf("Cannot terminate %s worker. Worker process id (PID) is unknown.", sQuote(class(x)[1])))
-    return(invisible(x))
+    return(invisible(FALSE))
   }
 
   terminate(pid, ...)
@@ -78,7 +81,7 @@ terminate.SOCKnode <- function(x, ...) {
 #' @rdname terminate
 #' @export
 terminate.SOCKcluster <- function(x, ...) {
-  sapply(X = x, FUN = terminate, ...)
+  invisible(sapply(X = x, FUN = terminate, ...))
 }
 
 
@@ -110,5 +113,5 @@ terminate.integer <- function(x, signal = tools::SIGINT, ...) {
     }
   }
   
-  res
+  invisible(res)
 }
