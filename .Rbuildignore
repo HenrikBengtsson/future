@@ -8,6 +8,7 @@
 ^OVERVIEW[.]md$
 ^README[.]md$
 ^CONDUCT[.]md$
+^docs/
 
 #----------------------------
 # devtools

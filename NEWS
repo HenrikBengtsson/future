@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.9.0-9000 [2018-07-27]
+Version: 1.9.0-9000 [2018-08-22]
 
 NEW FEATURES:
 
@@ -11,6 +11,11 @@ NEW FEATURES:
    
  o [BETA] Now resolved() for ClusterFuture is non-blocking also for clusters
    of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
+
+BUG FIXES:
+
+ o On Windows, plan(multiprocess) would not initiate the workers. Instead
+   workers would be set up only when the first future was created.
 
 
 Version: 1.9.0 [2018-07-22]
