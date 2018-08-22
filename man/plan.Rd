@@ -83,8 +83,8 @@ that are typically available on high-performance compute
 (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 and OpenLava.
 
-To "close" any background workers (e.g. `multisession`), change
-the plan to something different; `plan(sequential)` is recommended
+To "close" any background workers (e.g. \code{multisession}), change
+the plan to something different; \code{plan(sequential)} is recommended
 for this.
 }
 
@@ -106,6 +106,20 @@ This can be done using:
   on.exit(plan(oplan), add = TRUE)
   [...]
 }
+}
+
+\section{Using plan() in scripts and vignettes}{
+
+When writing scripts or vignettes that uses futures, try to place any
+call to \code{plan()} as far up (as early on) in the code as possible.  
+This will help users to quickly identify where the future plan is set up
+and allow them to modify it to their computational resources.
+Even better is to leave it to the user to set the \code{plan()} prior to
+\code{source()}:ing the script or running the vignette.
+If a \file{\link{.future.R}} exists in the current directory and / or in
+the user's home directory, it is sourced when the \pkg{future} package is
+\emph{loaded}.  Because of this, the \file{.future.R} file provides a
+convenient place for users to set the \code{plan()}.
 }
 
 \examples{
