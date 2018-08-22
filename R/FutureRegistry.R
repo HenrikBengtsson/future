@@ -22,7 +22,12 @@ FutureRegistry <- local({
         ## (a) Let future cleanup after itself, iff needed.
         ##     This, this may result in a call to
         ##     FutureRegistry(..., action = "remove").
-        value(future, signal = FALSE)
+        tryCatch({
+          value(future, stdout = FALSE, signal = FALSE)
+        }, FutureError = function(ex) {
+          mdebug(sprintf("Detected a %s while FutureRegistry collecting results: %s",
+                 class(ex)[1], paste(capture.output(print(ex)), collapse = "\n")))
+        })
 
         ## (b) Make sure future is removed from registry, unless
         ##     already done via above value() call.
@@ -43,7 +48,7 @@ FutureRegistry <- local({
 
 
   function(where, action = c("add", "remove", "list", "collect-first", "reset"), future = NULL, earlySignal = TRUE, ...) {
-    stopifnot(length(where) == 1, nzchar(where))
+    stop_if_not(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
     ## Automatically create?

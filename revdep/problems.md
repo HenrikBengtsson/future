@@ -1,168 +1,82 @@
 # aroma.affymetrix
 
-Version: 3.1.0
+Version: 3.1.1
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 1028.1Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
-        R            1024.9Mb
-        help            1.1Mb
-        testScripts     1.2Mb
+        R             2.4Mb
+        help          1.1Mb
+        testScripts   1.3Mb
     ```
 
 # aroma.core
 
-Version: 3.1.1
+Version: 3.1.3
 
 ## In both
 
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'sfit' 'expectile' 'HaarSeg' 'mpcbs'
+      ‘sfit’ ‘expectile’ ‘HaarSeg’ ‘mpcbs’
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is 1025.6Mb
-      sub-directories of 1Mb or more:
-        R  1024.5Mb
-    ```
+# biotmle
 
-# batchtools
-
-Version: 0.9.8
+Version: 1.4.0
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking R code for possible problems ... NOTE
     ```
-    ...
-    No configuration file found
-    Created registry in '/scratch/henrik/1083743.cclc01.som.ucsf.edu/Rtmpwlxq94/registry2ed225602661' using cluster functions 'Interactive'
-    No configuration file found
-    Created registry in '/scratch/henrik/1083743.cclc01.som.ucsf.edu/Rtmpwlxq94/registry2ed22206ecfb' using cluster functions 'Interactive'
-    No configuration file found
-    Created registry in '/scratch/henrik/1083743.cclc01.som.ucsf.edu/Rtmpwlxq94/registry2ed218653802' using cluster functions 'Interactive'
-    No configuration file found
-    Created registry in '/scratch/henrik/1083743.cclc01.som.ucsf.edu/Rtmpwlxq94/registry2ed26d8a2630' using cluster functions 'Interactive'
-    Error in (function (value)  : Ooops.
-    You are recommended to install the tinytex package to build PDF.FALSE
-    This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6)
-     %&-line parsing enabled.
-    entering extended mode
-    ! LaTeX Error: File `ifxetex.sty' not found.
-    
-    ! Emergency stop.
-    <read *> 
-    
-    Error: processing vignette 'batchtools.Rmd' failed with diagnostics:
-    Failed to compile batchtools.tex. See batchtools.log for more info.
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: 'doMPI'
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: 'Rmpi'
+    .biotmle: no visible global function definition for ‘new’
+    Undefined global functions or variables:
+      new
+    Consider adding
+      importFrom("methods", "new")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
     ```
 
 # brms
 
-Version: 2.1.0
-
-## In both
-
-*   checking examples ... WARNING
-    ```
-    checking a package with encoding  'UTF-8'  in an ASCII locale
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Error: processing vignette 'brms_multilevel.ltx' failed with diagnostics:
-    Running 'texi2dvi' on 'brms_multilevel.ltx' failed.
-    LaTeX errors:
-    ! LaTeX Error: File `inconsolata.sty' not found.
-    
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    
-    ! Emergency stop.
-    <read *> 
-             
-    l.47 \RequirePackage
-                        [T1]{fontenc}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        R     2.2Mb
-        doc   2.3Mb
-    ```
-
-# civis
-
-Version: 1.2.0
+Version: 2.4.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 1026.3Mb
+      installed size is  6.7Mb
       sub-directories of 1Mb or more:
-        R     1024.4Mb
-        help     1.4Mb
+        R     3.5Mb
+        doc   2.4Mb
     ```
 
-# drtmle
+# codebook
 
-Version: 1.0.2
+Version: 0.5.9
 
 ## In both
 
-*   checking examples ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    checking a package with encoding  'UTF-8'  in an ASCII locale
+    Namespaces in Imports field not imported from:
+      ‘graphics’ ‘htmltools’ ‘pander’ ‘readr’
+      All declared Imports should be used.
     ```
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking Rd cross-references ... NOTE
     ```
-    ...
-    Loading required package: nloptr
-    Loading required package: quadprog
-    Loading required package: gam
-    Loading required package: splines
-    Loading required package: foreach
-    Loaded gam 1.15
-    
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Error : 'predict.gam' is not an exported object from 'namespace:gam'
-    Quitting from lines 492-499 (using_drtmle.Rmd) 
-    Error: processing vignette 'using_drtmle.Rmd' failed with diagnostics:
-    matrix D in quadratic function is not positive definite!
-    Execution halted
+    Package unavailable to check Rd xrefs: ‘labelled’
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 65 marked UTF-8 strings
     ```
 
 # fiery
@@ -173,57 +87,39 @@ Version: 1.1.0
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: 'desc'
+    Namespace in Imports field not imported from: ‘desc’
       All declared Imports should be used.
     ```
 
-# googleComputeEngineR
+# jstor
 
-Version: 0.2.0
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 1027.0Mb
-      sub-directories of 1Mb or more:
-        doc          1024.3Mb
-        dockerfiles     2.3Mb
-    ```
-
-# kernelboot
-
-Version: 0.1.4
+Version: 0.3.2
 
 ## In both
 
-*   checking examples ... WARNING
+*   checking Rd cross-references ... NOTE
     ```
-    checking a package with encoding  'UTF-8'  in an ASCII locale
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 1024.1Mb
-      sub-directories of 1Mb or more:
-        libs  1024.0Mb
+    Packages unavailable to check Rd xrefs: ‘foreach’, ‘snow’
     ```
 
 # lidR
 
-Version: 1.4.1
+Version: 1.5.1
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Packages required but not available:
-      'rgeos' 'gdalUtils' 'mapview' 'mapedit'
-    
-    Package suggested but not available for checking: 'rgdal'
-    
-    See section 'The DESCRIPTION file' in the 'Writing R Extensions'
-    manual.
+      installed size is  7.8Mb
+      sub-directories of 1Mb or more:
+        libs   5.7Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Rcpp’ ‘memoise’
+      All declared Imports should be used.
     ```
 
 # MetamapsDB
@@ -235,96 +131,109 @@ Version: 0.0.2
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      'Matrix' 'shiny'
+      ‘Matrix’ ‘shiny’
       All declared Imports should be used.
-    ```
-
-# origami
-
-Version: 1.0.0
-
-## In both
-
-*   checking examples ... WARNING
-    ```
-    checking a package with encoding  'UTF-8'  in an ASCII locale
     ```
 
 # penaltyLearning
 
 Version: 2017.12.08
 
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Actual message: "The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead."
+      
+      ── 3. Failure: error for NA and constant features (@test-errors.R#124)  ────────
+      `{ ... }` threw an error with unexpected message.
+      Expected match: "after filtering NA and constant features, none remain for training"
+      Actual message: "The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead."
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 50 SKIPPED: 0 FAILED: 3
+      1. Error: (unknown) (@test-demo8.R#8) 
+      2. Failure: error for constant features (@test-errors.R#110) 
+      3. Failure: error for NA and constant features (@test-errors.R#124) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+# phylolm
+
+Version: 2.6
+
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      installed size is 1024.2Mb
-      sub-directories of 1Mb or more:
-        data  1024.0Mb
+    Packages unavailable to check Rd xrefs: ‘surface’, ‘bayou’, ‘geiger’, ‘caper’
     ```
 
-# PSCBS
+# promises
 
-Version: 0.63.0
+Version: 1.0.1
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      installed size is 1025.9Mb
-      sub-directories of 1Mb or more:
-        data-ex  1024.0Mb
+    Package unavailable to check Rd xrefs: ‘purrr’
     ```
 
 # QDNAseq
 
-Version: 1.12.0
+Version: 1.16.0
 
 ## In both
 
 *   checking for missing documentation entries ... WARNING
     ```
     Undocumented code objects:
-      'exportVCF'
+      ‘exportVCF’
     All user-level objects in a package should have documentation entries.
-    See chapter 'Writing R documentation files' in the 'Writing R
-    Extensions' manual.
+    See chapter ‘Writing R documentation files’ in the ‘Writing R
+    Extensions’ manual.
     ```
 
-# sperrorest
+# robotstxt
 
-Version: 2.1.1
+Version: 0.6.2
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    Error in re-building vignettes:
-      ...
-    Could not fetch https://raw.githubusercontent.com/pat-s/sperrorest/master/inst/figure/resamp-plot.png
-    HttpExceptionRequest Request {
-      host                 = "raw.githubusercontent.com"
-      port                 = 443
-      secure               = True
-      requestHeaders       = []
-      path                 = "/pat-s/sperrorest/master/inst/figure/resamp-plot.png"
-      queryString          = ""
-      method               = "GET"
-      proxy                = Nothing
-      rawBody              = False
-      redirectCount        = 10
-      responseTimeout      = ResponseTimeoutDefault
-      requestVersion       = HTTP/1.1
-    }
-     (InternalException (HandshakeFailed (Error_Protocol ("certificate has unknown CA",True,UnknownCa))))
-    Error: processing vignette 'spatial-modeling-use-case.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 61
-    Execution halted
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
     ```
 
-*   checking package dependencies ... NOTE
+# skpr
+
+Version: 0.53.4
+
+## In both
+
+*   checking installed package size ... NOTE
     ```
-    Package suggested but not available for checking: 'RSAGA'
+      installed size is 44.7Mb
+      sub-directories of 1Mb or more:
+        libs  43.2Mb
+    ```
+
+# startR
+
+Version: 0.0.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Unavailable namespace imported from by a ':::' call: ‘s2dverification’
+      See the note in ?`:::` about the use of this operator.
     ```
 

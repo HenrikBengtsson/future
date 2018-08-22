@@ -14,7 +14,12 @@ oopts <- options(
   ## Reset the following during testing in case
   ## they are set on the test system
   future.availableCores.system = NULL,
-  future.availableCores.fallback = NULL
+  future.availableCores.fallback = NULL,
+  ## To be nicer to test environments (e.g. CRAN, Travis CI, AppVeyor CI, ...),
+  ## timeout much earlier than the default 30 days.  This will also give a more
+  ## informative error message produced by R itself, rather than whatever the
+  ## test environment produces.
+  future.makeNodePSOCK.timeout = 2 * 60 ## 2 minutes
 )
 
 
@@ -43,8 +48,6 @@ asIEC <- future:::asIEC
 ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
 detectCores <- future:::detectCores
-fold <- future:::fold
-future_lapply <- future:::future_lapply
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign
 get_future <- future:::get_future
@@ -61,9 +64,6 @@ requestNode <- future:::requestNode
 requirePackages <- future:::requirePackages
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
-get_random_seed <- future:::get_random_seed
-set_random_seed <- future:::set_random_seed
-as_lecyer_cmrg_seed <- future:::as_lecyer_cmrg_seed
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))

@@ -36,20 +36,20 @@
 #' @section Implemented evaluation strategies:
 #' \itemize{
 #'  \item{\code{\link{sequential}}:}{
-#'    Resolves futures sequentially in the current R process.
+#'    Resolves futures sequentially in the current \R process.
 #'  }
 #'  \item{\code{\link{transparent}}:}{
-#'    Resolves futures sequentially in the current R process and
+#'    Resolves futures sequentially in the current \R process and
 #'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
 #'  \item{\code{\link{multisession}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running in the background on the same machine.
+#'    \R sessions running in the background on the same machine.
 #'  }
 #'  \item{\code{\link{multicore}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \emph{forked} R processes running in the background on
+#'    \emph{forked} \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
 #'  \item{\code{\link{multiprocess}}:}{
@@ -58,21 +58,25 @@
 #'  }
 #'  \item{\code{\link{cluster}}:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    R sessions running typically on one or more machines.
+#'    \R sessions running typically on one or more machines.
 #'  }
 #'  \item{\code{\link{remote}}:}{
-#'    Resolves futures asynchronously in a separate R session
+#'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
 #'  }
 #' }
-#'
+#' 
 #' Other package may provide additional evaluation strategies.
 #' Notably, the \pkg{future.batchtools} package implements a
 #' type of futures that will be resolved via job schedulers
 #' that are typically available on high-performance compute
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
+#'
+#' To "close" any background workers (e.g. \code{multisession}), change
+#' the plan to something different; \code{plan(sequential)} is recommended
+#' for this.
 #'
 #' @section For package developers:
 #' Please refrain from modifying the future strategy inside your packages /
@@ -91,6 +95,18 @@
 #'   on.exit(plan(oplan), add = TRUE)
 #'   [...]
 #' }
+#'
+#' @section Using plan() in scripts and vignettes:
+#' When writing scripts or vignettes that uses futures, try to place any
+#' call to \code{plan()} as far up (as early on) in the code as possible.  
+#' This will help users to quickly identify where the future plan is set up
+#' and allow them to modify it to their computational resources.
+#' Even better is to leave it to the user to set the \code{plan()} prior to
+#' \code{source()}:ing the script or running the vignette.
+#' If a \file{\link{.future.R}} exists in the current directory and / or in
+#' the user's home directory, it is sourced when the \pkg{future} package is
+#' \emph{loaded}.  Because of this, the \file{.future.R} file provides a
+#' convenient place for users to set the \code{plan()}.
 #'
 #' @export
 plan <- local({
@@ -123,12 +139,24 @@ plan <- local({
       stack[[1L]] <<- evaluator
 
       ## Create dummy future to trigger setup (minimum overhead)
-      f <- evaluator(NA, globals = FALSE, lazy = FALSE)
+      f <- evaluator(NA, label = "future-plan-test", 
+                     globals = FALSE, lazy = FALSE)
 
-      ## Cleanup, but resolving it
+      ## Cleanup, by resolving it
       ## (otherwise the garbage collector would have to do it)
-      v <- value(f)
+      res <- tryCatch({
+        value(f)
+      }, FutureError = identity)
+      if (inherits(res, "FutureError")) {
+        res$message <- paste0(
+          "Initialization of plan() failed, because the test future used for validation failed. The reason was: ", conditionMessage(res))
+        stop(res)
+      }
 
+      if (!identical(res, NA)) {
+        stop(FutureError("Initialization of plan() failed, because the value of the test future is not the expected one: ", sQuote(res)))
+      }
+      
       if (debug) {
         mdebug("plan(): plan_init() of %s ... DONE",
                paste(sQuote(class(evaluator)), collapse = ", "))
@@ -141,7 +169,7 @@ plan <- local({
   function(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
            .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
-    if (is.logical(.call)) stopifnot(length(.call) == 1L, !is.na(.call))
+    if (is.logical(.call)) stop_if_not(length(.call) == 1L, !is.na(.call))
 
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
@@ -178,7 +206,7 @@ plan <- local({
 
     ## Set new stack?
     if (is.list(strategy)) {
-      stopifnot(is.list(strategy), length(strategy) >= 1L)
+      stop_if_not(is.list(strategy), length(strategy) >= 1L)
 
       class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
       stack <<- strategy
@@ -193,7 +221,7 @@ plan <- local({
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
-        first <- eval(first, envir = parent.frame())
+        first <- eval(first, envir = parent.frame(), enclos = baseenv())
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
@@ -205,8 +233,8 @@ plan <- local({
         ## Example: plan(list(sequential, multicore))
         if (is.function(first) && identical(first, list)) {
           ## Specified explicitly using plan(list(...))?
-          strategies <- eval(strategy, envir = parent.frame())
-          stopifnot(is.list(strategies), length(strategies) >= 1L)
+          strategies <- eval(strategy, envir = parent.frame(), enclos = baseenv())
+          stop_if_not(is.list(strategies), length(strategies) >= 1L)
           ## Coerce strings to functions, e.g.
           ## plan(list("sequential", multicore))
           for (kk in seq_along(strategies)) {
@@ -224,20 +252,20 @@ plan <- local({
     ## (b) Otherwise, assume a single future strategy
     if (is.null(newStack)) {
       if (is.symbol(strategy)) {
-        strategy <- eval(strategy, envir = parent.frame())
+        strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
       } else if (is.language(strategy)) {
         strategyT <- as.list(strategy)
 
         ## tweak(...)?
         if (strategyT[[1]] == as.symbol("tweak")) {
-          strategy <- eval(strategy, envir = parent.frame())
+          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         } else {
           isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
             targs <- c(targs, strategyT[-1L])
             strategy <- strategyT[[1L]]
           }
-          strategy <- eval(strategy, envir = parent.frame())
+          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         }
       }
 
@@ -268,7 +296,7 @@ plan <- local({
     ## Set new strategy for futures
     class(newStack) <- c("FutureStrategyList", class(newStack))
     stack <<- newStack
-    stopifnot(is.list(stack), length(stack) >= 1L)
+    stop_if_not(is.list(stack), length(stack) >= 1L)
 
     ## Stop any (implicitly started) clusters?
     if (.cleanup) plan_cleanup()
@@ -281,7 +309,7 @@ plan <- local({
     if (getOption("future.debug", FALSE)) {
       mdebug(sprintf("plan(): nbrOfWorkers() = %g", n))
     }
-    stopifnot(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
+    stop_if_not(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
 
     invisible(oldStack[[1L]])
   } # function()
@@ -301,13 +329,14 @@ print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))
   s <- sprintf("%s:", class[1])
   specs <- list()
-  args <- deparse(args(x))
+  args <- deparse(args(x), width.cutoff = 500L)
   args <- args[-length(args)]
   args <- gsub("(^[ ]+|[ ]+$)", "", args)
   args <- paste(args, collapse = " ")
   specs$args <- args
   specs$tweaked <- inherits(x, "tweaked")
-  specs$call <- deparse(attr(x, "call"))
+  specs$call <- paste(deparse(attr(x, "call"), width.cutoff = 500L),
+                      collapse="")
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
@@ -328,13 +357,14 @@ print.FutureStrategyList <- function(x, ...) {
     class <- setdiff(class(x_kk), c("tweaked", "function"))
     s_kk <- sprintf("%d. %s:", kk, class[1])
     specs <- list()
-    args <- deparse(args(x_kk))
+    args <- deparse(args(x_kk), width.cutoff = 500L)
     args <- args[-length(args)]
     args <- gsub("(^[ ]+|[ ]+$)", "", args)
     args <- paste(args, collapse = " ")
     specs$args <- args
     specs$tweaked <- inherits(x_kk, "tweaked")
-    specs$call <- deparse(attr(x_kk, "call"))
+    specs$call <- paste(deparse(attr(x_kk, "call"), width.cutoff = 500L),
+                        collapse = "")
     specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
     s <- c(s, s_kk, specs)
   }

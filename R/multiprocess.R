@@ -5,21 +5,18 @@
 #' Regardless, its \emph{value is computed and resolved in
 #' parallel in another process}.
 #'
+#' @inheritParams ClusterFuture-class
 #' @inheritParams future
-#' @param lazy If \code{FALSE} (default), the future is resolved eagerly
-#' (immediately), otherwise not.
-#' @param globals (optional) a logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
-#' @param workers The maximum number of multiprocess futures that
-#' can be active at the same time before blocking.
-#' @param gc If TRUE, the garbage collector run (in the process that
-#' evaluated the future) after the value of the future is collected.
-#' @param earlySignal Specified whether conditions should be signaled
-#' as soon as possible or not.
-#' @param label An optional character string label attached to the future.
-#' @param ... Not used.
+#' @inheritParams Future-class
+#' 
+#' @param workers A positive numeric scalar or a function specifying the
+#' maximum number of parallel futures that can be active at the same time
+#' before blocking.
+#' If a function, it is called without arguments \emph{when the future
+#' is created} and its value is used to configure the workers.
+#' The function should return a numeric scalar.
+#' 
+#' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return A \link{MultiprocessFuture} implemented as either a
 #' \link{MulticoreFuture} or a \link{MultisessionFuture}.

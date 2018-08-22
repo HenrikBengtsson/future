@@ -9,7 +9,7 @@ uuid <- function(source, keep_source = FALSE) {
 } ## uuid()
 
 uuid_of_connection <- function(con, ..., must_work = TRUE) {
-  stopifnot(inherits(con, "connection"))
+  stop_if_not(inherits(con, "connection"))
   if (must_work) {
     info <- summary(con)
     info$opened <- NULL
@@ -32,7 +32,7 @@ uuid_of_connection <- function(con, ..., must_work = TRUE) {
 session_uuid <- local({
   uuids <- list()
 
-  function(pid = Sys.getpid(), attributes = FALSE) {
+  function(pid = Sys.getpid(), attributes = TRUE) {
     pidstr <- as.character(pid)
     uuid <- uuids[[pidstr]]
     if (!is.null(uuid)) {
@@ -42,7 +42,8 @@ session_uuid <- local({
 
     info <- Sys.info()
     host <- Sys.getenv(c("HOST", "HOSTNAME", "COMPUTERNAME"))
-    host <- host[nzchar(host)][1]
+    host <- host[nzchar(host)]
+    host <- if (length(host) == 0L) info[["nodename"]] else host[1L]
     info <- list(
       host = host,
       info = info,

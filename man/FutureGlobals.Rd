@@ -11,8 +11,8 @@
 \alias{unique.FutureGlobals}
 \title{A representation of a set of globals used with futures}
 \usage{
-FutureGlobals(object = list(), resolved = FALSE, total_size = NA_real_,
-  ...)
+FutureGlobals(object = list(), resolved = FALSE,
+  total_size = NA_real_, ...)
 }
 \arguments{
 \item{object}{A named list.}
@@ -34,3 +34,4 @@ A representation of a set of globals used with futures
 This class extends the \link[globals]{Globals} class by add
 attribute \code{resolved}.
 }
+\keyword{internal}

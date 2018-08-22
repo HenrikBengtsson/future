@@ -85,6 +85,19 @@ for (strategy1 in strategies) {
 
     rm(list = c("nested", "x"))
 
+
+    ## Nested futures and globals
+    ## In future (<= 1.7.0), the below would produce an error saying
+    ## "Failed to locate global object in the relevant environments: 'a'"
+    ## Related to https://github.com/HenrikBengtsson/globals/issues/35
+    data <- data.frame(a = 1:3, b = 3:1)
+    y_truth <- subset(data, a == 2)
+    f <- future({
+      value(future( subset(data, a == 2) ))
+    })
+    y <- value(f)
+    stopifnot(identical(y, y_truth))
+    
     message(sprintf("- plan(list('%s', '%s')) ... DONE", strategy1, strategy2))
   }
 }

@@ -1,6 +1,7 @@
 #' An multicore future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
+#' @inheritParams Future-class
 #'
 #' @return An object of class \code{MulticoreFuture}.
 #'
@@ -59,13 +60,14 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
+  reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
-    await = function() FutureRegistry("multicore", action = "collect-first"),
+    await = function() FutureRegistry(reg, action = "collect-first"),
     workers = future$workers
   )
 
   ## Add to registry
-  FutureRegistry("multicore", action = "add", future = future)
+  FutureRegistry(reg, action = "add", future = future)
 
   future.args <- list(expr)
   job <- do.call(parallel::mcparallel, args = future.args, envir = envir)
@@ -90,15 +92,20 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(x)
 
-  selectChildren <- importParallel("selectChildren")
   job <- x$job
-  stopifnot(inherits(job, "parallelJob"))
+  stop_if_not(inherits(job, "parallelJob"))
 
+  selectChildren <- importParallel("selectChildren")
+  
   ## NOTE: We cannot use mcollect(job, wait = FALSE, timeout = 0.2),
   ## because that will return NULL if there's a timeout, which is
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
-  pid <- selectChildren(job, timeout = timeout)
+  ## FIXME: Can we use result() instead? /HB 2018-07-16
+  ## NOTE 2: We have to suppress warnings because the forked process
+  ## may have already finished and terminated.
+  pid <- suppressWarnings(selectChildren(children = job,
+                                         timeout = timeout))
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
@@ -110,9 +117,12 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.MulticoreFuture <- function(future, ...) {
-  ## Has the value already been collected?
+  ## Has the result already been collected?
   result <- future$result
-  if (!is.null(result)) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
 
   if (future$state == "created") {
     future <- run(future)
@@ -126,32 +136,52 @@ result.MulticoreFuture <- function(future, ...) {
   ## then collect and record the value
   mccollect <- importParallel("mccollect")
   job <- future$job
-  stopifnot(inherits(job, "parallelJob"))
-  result <- mccollect(job, wait = TRUE)[[1L]]
+  stop_if_not(inherits(job, "parallelJob"))
+
+  ## WORKAROUNDS for R (< 3.6.0):
+  ##  1. Pass single job as list, cf.
+  ##     https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
+  jobs <- if (getRversion() >= "3.6.0") job else list(job)
+  
+  ## WORKAROUNDS for R (>= 3.6.0):
+  ##  2. Suppress warnings because mccollect() produces:
+  ##     "Warning in selectChildren(pids[!fin], -1) :
+  ##      cannot wait for child 32193 as it does not exist"
+  ##     cf. https://github.com/HenrikBengtsson/future/issues/218
+  result <- suppressWarnings(mccollect(jobs = jobs, wait = TRUE)[[1L]])
+  
+  ## NOTE: In Issue #218 it was suggested that parallel:::rmChild() could
+  ## fix this, but there seems to be more to this story, because we still
+  ## get some of those warning even after removing children here.
+  rmChild <- importParallel("rmChild")
+  rmChild(child = job)
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.
     ## https://github.com/HenrikBengtsson/future/issues/35
     if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
       msg <- result
-      stop(FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+      ex <- FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+    } else {
+      ex <- UnexpectedFutureResultError(future)
     }
-    
-    stop(FutureError(sprintf("Internal error: Unexpected value retrieved for %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    future$result <- ex
+    stop(ex)
   }
   
   future$result <- result
+  
   ## BACKWARD COMPATIBILITY
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## Remove from registry
-  FutureRegistry("multicore", action = "remove", future = future)
+  reg <- sprintf("multicore-%s", session_uuid())
+  FutureRegistry(reg, action = "remove", future = future)
 
   result
 }
@@ -159,5 +189,12 @@ result.MulticoreFuture <- function(future, ...) {
 
 #' @export
 getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
-  NextMethod("getExpression", mc.cores = mc.cores)
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+  NextMethod(mc.cores = mc.cores)
+}
+
+
+select_children <- function(children, timeout = 0) {
+  selectChildren <- importParallel("selectChildren")
 }

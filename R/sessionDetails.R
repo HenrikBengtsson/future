@@ -1,4 +1,4 @@
-#' Outputs details on the current R session
+#' Outputs details on the current \R session
 #'
 #' @param env If TRUE, \code{Sys.getenv()} information is returned.
 #'
@@ -39,7 +39,7 @@ sessionDetails <- function(env = FALSE) {
 #' @export
 `[.sessionDetails` <- function(x, ...) {
   class <- class(x)
-  x <- NextMethod("[")
+  x <- NextMethod()
   class(x) <- class
   x
 }

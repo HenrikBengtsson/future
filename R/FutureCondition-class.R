@@ -2,7 +2,7 @@
 #'
 #' While \emph{orchestrating} (creating, launching, querying, collection)
 #' futures, unexpected run-time errors (and other types of conditions) may
-#' occur.  Such conditions are coerced to a corresponding FutureConditions
+#' occur.  Such conditions are coerced to a corresponding FutureCondition
 #' class to help distinguish them from conditions that occur due to the
 #' \emph{evaluation} of the future.
 #' 
@@ -33,23 +33,32 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
       ## BACKWARD COMPATIBILITY
       cond <- future$value
     }
-    stopifnot(inherits(cond, "condition"))
+    stop_if_not(inherits(cond, "condition"))
     message <- conditionMessage(cond)
   } else if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
   }
-
+  
+  if (is.null(message)) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
+  }
+  message <- as.character(message)
+  if (length(message) != 1L) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
+  }
+  
   ## Create a condition object
-  structure(list(message = as.character(message), call = call), 
+  structure(list(message = message, call = call), 
             class = c("FutureCondition", "condition"),
             future = future)
 }
 
 
+#' @importFrom utils tail
 #' @export
 print.FutureCondition <- function(x, ...) {
-  NextMethod("print")
+  NextMethod()
 
   future <- attr(x, "future")
 
@@ -85,7 +94,7 @@ print.FutureCondition <- function(x, ...) {
     ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
     if (!is.null(output)) {
       cat("Captured output:\n")
-      cat(getOutput(x, tail = 30L, collapse = "\n"))
+      cat(tail(output, n = 30L), sep = "\n")
       cat("\n\n")
     }
 
@@ -96,12 +105,7 @@ print.FutureCondition <- function(x, ...) {
 } ## print()
 
 
-#' @export
-getOutput.FutureError <- function(x, ...) {
-  ## TODO: Deprecated/for backward compatibility only. /HB 2018-02-03
-  getOutput.FutureEvaluationCondition(x, ...)
-}
-                                                
+
 #' @rdname FutureCondition
 #' @export
 FutureMessage <- function(message, call = NULL, future = NULL) {
@@ -109,6 +113,7 @@ FutureMessage <- function(message, call = NULL, future = NULL) {
   class(cond) <- c("FutureMessage", "message", class(cond))
   cond
 }
+
 
 #' @rdname FutureCondition
 #' @export
@@ -118,7 +123,8 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
   cond
 }
 
-#' @param output (Don't use!) only for backward compatibility
+
+#' @param output (DEPRECATED - don't use!) only for backward compatibility
 #' 
 #' @rdname FutureCondition
 #' @export
@@ -127,10 +133,34 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
   ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
   class(cond) <- c("FutureError", "simpleError", "error", class(cond))
 
-  ## TODO: Deprecate
+  ## DEPREACTED
   if (!is.null(output)) {
+    .Deprecated(msg = "Argument 'output' of FutureError is deprecated")
     attr(cond, "output") <- output
   }
   
+  cond
+}
+
+
+#' @rdname FutureCondition
+#' @export
+UnexpectedFutureResultError <- function(future) {
+  label <- future$label
+  if (is.null(label)) label <- "<none>"
+  expr <- hexpr(future$expr)
+  result <- future$result
+  result_string <- hpaste(as.character(result))
+  if (length(result_string) == 0L)
+    result_string <- ""
+  else if (nchar(result_string) > 512L)
+    result_string <- paste(substr(result_string, start = 1L, stop = 512L),
+                           "...")
+  msg <- sprintf("Unexpected result (of class %s != %s) retrieved for %s future (label = %s, expression = %s): %s",
+                 sQuote(class(result)[1]), sQuote("FutureResult"),
+                 class(future)[1], sQuote(label), sQuote(expr),
+                 result_string)
+  cond <- FutureError(msg, future = future)
+  class(cond) <- c("UnexpectedFutureResultError", class(cond))
   cond
 }

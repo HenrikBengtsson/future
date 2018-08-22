@@ -21,6 +21,7 @@
 #'
 #' @importFrom globals Globals
 #' @export
+#' @keywords internal
 FutureGlobals <- function(object = list(), resolved = FALSE, total_size = NA_real_, ...) {
   if (!is.list(object)) {
     stop("Argument 'object' is not a list: ", class(object)[1])
@@ -64,7 +65,7 @@ as.FutureGlobals.list <- function(x, ...) {
 `[.FutureGlobals` <- function(x, i) {
   resolved <- attr(x, "resolved")
   size <- attr(x, "total_size")
-  x <- NextMethod("[")
+  x <- NextMethod()
   attr(x, "resolved") <- resolved
   attr(x, "total_size") <- size
   x
@@ -92,7 +93,7 @@ c.FutureGlobals <- function(x, ...) {
     size <- size + sum(size_args, na.rm = FALSE)
   }
   
-  x <- NextMethod("c")
+  x <- NextMethod()
 
   attr(x, "resolved") <- resolved
   attr(x, "total_size") <- size
@@ -107,7 +108,7 @@ unique.FutureGlobals <- function(x, ...) {
   
   resolved <- attr(x, "resolved")
   size <- attr(x, "total_size")
-  x <- NextMethod("unique")
+  x <- NextMethod()
   attr(x, "resolved") <- resolved
 
   ## Were any elements dropped?
@@ -126,7 +127,7 @@ resolve.FutureGlobals <- function(x, ...) {
   ## Already resolved?
   if (isTRUE(attr(x, "resolved"))) return(x)
 
-  x <- NextMethod("resolve")
+  x <- NextMethod()
 
   ## At this point we consider these future globals resolved (regardless of 'recursive')
   attr(x, "resolved") <- TRUE

@@ -7,7 +7,8 @@
 \usage{
 find_references(x, first_only = FALSE)
 
-assert_no_references(x, action = c("error", "warning", "message", "string"))
+assert_no_references(x, action = c("error", "warning", "message",
+  "string"))
 }
 \arguments{
 \item{x}{The \R object to be checked.}
@@ -29,3 +30,4 @@ Get first or all references of an \R object
 
 Assert that there are no references among the identified globals
 }
+\keyword{internal}

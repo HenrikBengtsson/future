@@ -2,122 +2,21 @@
 % Please edit documentation in R/future_lapply.R
 \name{future_lapply}
 \alias{future_lapply}
-\title{Apply a Function over a List or Vector via Futures}
+\title{[DEFUNCT] Apply a Function over a List or Vector via Futures}
 \usage{
-future_lapply(x, FUN, ..., future.globals = TRUE, future.packages = NULL,
-  future.seed = FALSE, future.lazy = FALSE, future.scheduling = 1)
+future_lapply(...)
 }
 \arguments{
-\item{x}{A vector-like object to iterate over.}
-
-\item{FUN}{A function taking at least one argument.}
-
-\item{...}{(optional) Additional arguments pass to \code{FUN()}.}
-
-\item{future.globals}{A logical, a character vector, or a named list for
-controlling how globals are handled. For details, see below section.}
-
-\item{future.packages}{(optional) a character vector specifying packages
-to be attached in the R environment evaluating the future.}
-
-\item{future.seed}{A logical or an integer (of length one or seven),
-or a list of \code{length(x)} with pre-generated random seeds.
-For details, see below section.}
-
-\item{future.lazy}{Specifies whether the futures should be resolved
-lazily or eagerly (default).}
-
-\item{future.scheduling}{Average number of futures ("chunks") per worker.
-If \code{0.0}, then a single future is used to process all elements
-of \code{x}.
-If \code{1.0} or \code{TRUE}, then one future per worker is used.
-If \code{2.0}, then each worker will process two futures
-(if there are enough elements in \code{x}).
-If \code{Inf} or \code{FALSE}, then one future per element of
-\code{x} is used.}
-}
-\value{
-A list with same length and names as \code{x}.
+\item{\dots}{Not used.}
 }
 \description{
-\emph{DEPRECATION NOTICE: The \code{future_lapply()} function has moved to
-the new
-\href{https://cran.r-project.org/package=future.apply}{\strong{future.apply}}
-package.  The implementation here in (the \pkg{future} package) will soon be
-deprecated, then be made defunct, and eventually be removed. Please update
-your code to make use of \code{future.apply::future_lapply()} instead.}
+\emph{
+IMPORTANT: The \code{future_lapply()} function has been moved to the
+\href{https://cran.r-project.org/package=future.apply}{future.apply} package.
+The version in this package (future) is defunct and gives an error if used.
+It will be fully removed in an upcoming release.
+Please update your code to make use of
+\code{future.apply::future_lapply()} instead.
 }
-\section{Global variables}{
-
-Argument \code{future.globals} may be used to control how globals
-should be handled similarly how the \code{globals} argument is used with
-\code{\link{future}()}.
-Since all function calls use the same set of globals, this function can do
-any gathering of globals upfront (once), which is more efficient than if
-it would be done for each future independently.
-If \code{TRUE}, \code{NULL} or not is specified (default), then globals
-are automatically identified and gathered.
-If a character vector of names is specified, then those globals are gathered.
-If a named list, then those globals are used as is.
-In all cases, \code{FUN} and any \code{...} arguments are automatically
-passed as globals to each future created as they are always needed.
-}
-
-\section{Reproducible random number generation (RNG)}{
-
-Unless \code{future.seed = FALSE}, this function guarantees to generate
-the exact same sequence of random numbers \emph{given the same initial
-seed / RNG state} - this regardless of type of futures and scheduling
-("chunking") strategy.
-
-RNG reproducibility is achieved by pregenerating the random seeds for all
-iterations (over \code{x}) by using L'Ecuyer-CMRG RNG streams.  In each
-iteration, these seeds are set before calling \code{FUN(x[[ii]], ...)}.
-\emph{Note, for large \code{length(x)} this may introduce a large overhead.}
-As input (\code{future.seed}), a fixed seed (integer) may be given, either
-as a full L'Ecuyer-CMRG RNG seed (vector of 1+6 integers) or as a seed
-generating such a full L'Ecuyer-CMRG seed.
-If \code{future.seed = TRUE}, then \code{\link[base:Random]{.Random.seed}}
-is returned if it holds a L'Ecuyer-CMRG RNG seed, otherwise one is created
-randomly.
-If \code{future.seed = NA}, a L'Ecuyer-CMRG RNG seed is randomly created.
-If none of the function calls \code{FUN(x[[i]], ...)} uses random number
-generation, then \code{future.seed = FALSE} may be used.
-
-In addition to the above, it is possible to specify a pre-generated
-sequence of RNG seeds as a list such that
-\code{length(future.seed) == length(x)} and where each element is an
-integer seed that can be assigned to \code{\link[base:Random]{.Random.seed}}.
-Use this alternative with caution.
-\emph{Note that as.list(seq_along(x)) is \emph{not} a valid set of such
-\code{.Random.seed} values.}
-
-In all cases but \code{future.seed = FALSE}, the RNG state of the calling
-R processes after this function returns is guaranteed to be
-"forwarded one step" from the RNG state that was before the call and
-in the same way regardless of \code{future.seed}, \code{future.scheduling}
-and future strategy used.  This is done in order to guarantee that an \R
-script calling \code{future_lapply()} multiple times should be numerically
-reproducible given the same initial seed.
-}
-
-\examples{
-## DEPRECATION NOTICES: The future_lapply() function has moved to the
-## future.apply package.  Going forward, please make sure to use that
-## one instead, by using:
-##
-##   library("future.apply")
-
-## Regardless of the future plan, the number of workers,
-## and where they are, the random numbers will be identical
-plan(sequential)
-y1 <- future_lapply(1:5, FUN = rnorm, future.seed = 0xBEEF)
-str(y1)
-
-plan(multiprocess)
-y2 <- future_lapply(1:5, FUN = rnorm, future.seed = 0xBEEF)
-str(y2)
-
-stopifnot(all.equal(y1, y2))
 }
 \keyword{internal}

@@ -2,9 +2,6 @@
 #'
 #' @inheritParams Future-class
 #' 
-#' @param lazy If \code{FALSE} (default), then the setup and validation of
-#'        global variables are done for eager evaluation, otherwise not.
-#' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
 #' @return An object of class \code{UniprocessFuture}.
@@ -70,7 +67,7 @@ run.UniprocessFuture <- function(future, ...) {
 
   ## Run future
   future$state <- 'running'
-  future$result <- eval(expr, envir = envir)
+  future$result <- eval(expr, envir = envir, enclos = baseenv())
   future$state <- 'finished'
 
   if (debug) mdebug("%s started (and completed)", class(future)[1])
@@ -84,8 +81,12 @@ run.UniprocessFuture <- function(future, ...) {
 
 #' @export
 result.UniprocessFuture <- function(future, ...) {
+  ## Has the result already been collected?
   result <- future$result
-  if (inherits(result, "FutureResult")) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
   
   if (future$state == "created") {
     run(future)
@@ -94,9 +95,9 @@ result.UniprocessFuture <- function(future, ...) {
   result <- future$result
   if (inherits(result, "FutureResult")) return(result)
 
-  label <- future$label
-  if (is.null(label)) label <- "<none>"
-  stop(FutureError(sprintf("Internal error: Unexpected value retrieve a %s future (%s): %s", class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+  ex <- UnexpectedFutureResultError(future)
+  future$result <- ex
+  stop(ex)
 }
 
 
@@ -109,7 +110,7 @@ resolved.UniprocessFuture <- function(x, ...) {
     ## while(!resolved(f)) Sys.sleep(5);
     result(x)
   }
-  NextMethod("resolved")
+  NextMethod()
 }
 
 

@@ -1,23 +1,24 @@
 #' A cluster future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
-#' 
-#' @param globals (optional) a logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' @inheritParams Future-class
 #' 
 #' @param persistent If FALSE, the evaluation environment is cleared
 #' from objects prior to the evaluation of the future.
 #' 
-#' @param workers A \code{\link[parallel:makeCluster]{cluster}}.
-#' Alternatively, a character vector of host names or a numeric scalar,
-#' for creating a cluster via \code{\link[parallel]{makeCluster}(workers)}.
+#' @param workers A \code{\link[parallel:makeCluster]{cluster}} object,
+#' a character vector of host names, a positive numeric scalar,
+#' or a function.
+#' If a character vector or a numeric scalar, a \code{cluster} object
+#' is created using \code{\link{makeClusterPSOCK}(workers)}.
+#' If a function, it is called without arguments \emph{when the future
+#' is created} and its value is used to configure the workers.
+#' The function should return any of the above types.
 #' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
-#' PSOCK cluster nodes to connect back to the master R process.  This
+#' PSOCK cluster nodes to connect back to the master \R process.  This
 #' avoids the hassle of firewalls, port forwarding and having to know
-#' the internal / public IP address of the master R session.
+#' the internal / public IP address of the master \R session.
 #' 
 #' @param user (optional) The user name to be used when communicating
 #' with another host.
@@ -26,14 +27,11 @@
 #' machine running this node.
 #' 
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
-#' same path to \file{Rscript} as the main R session.  If FALSE, the
+#' same path to \file{Rscript} as the main \R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
 #'
-#' @param sessioninfo If TRUE, session information is collected for each
-#' cluster node, otherwise not.  This also servers as testing that each
-#' node is working properly.
-#' 
-#' @return An object of class \code{ClusterFuture}.
+#' @return
+#' \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function
@@ -60,7 +58,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
-  stopifnot(length(workers) > 0)
+  stop_if_not(length(workers) > 0)
 
   ## Attaching UUID for each cluster connection, unless already done.
   workers <- add_cluster_uuid(workers)
@@ -76,7 +74,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   name <- attr(workers, "name")
   if (is.null(name)) {
     name <- digest(workers)
-    stopifnot(length(name) > 0, nzchar(name))
+    stop_if_not(length(name) > 0, nzchar(name))
     attr(workers, "name") <- name
   }
 
@@ -238,10 +236,12 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+  } else if (inherits(node, "MPInode")) {
+    res <- resolveMPI(x)
   } else {
     ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
     warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
-    value(x, signal = FALSE)
+    value(x, stdout = FALSE, signal = FALSE)
     res <- TRUE
   }
 
@@ -253,9 +253,12 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.ClusterFuture <- function(future, ...) {
-  ## Has the value already been collected?
+  ## Has the result already been collected?
   result <- future$result
-  if (!is.null(result)) return(result)
+  if (!is.null(result)) {
+    if (inherits(result, "FutureError")) stop(result)
+    return(result)
+  }
 
   if (future$state == "created") {
     future <- run(future)
@@ -287,7 +290,9 @@ result.ClusterFuture <- function(future, ...) {
       if (!is.null(msg)) {
         on_failure <- getOption("future.cluster.invalidConnection", "error")
         if (on_failure == "error") {
-          stop(FutureError(msg, future = future))
+          ex <- FutureError(msg, future = future)
+          future$result <- ex
+          stop(ex)          
         }
         warning(FutureWarning(msg, future = future))
         return(sprintf("EXCEPTIONAL ERROR: %s", msg))
@@ -300,14 +305,18 @@ result.ClusterFuture <- function(future, ...) {
     info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
     msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
-    stop(FutureError(msg, call = ack$call, future = future))
+    ex <- FutureError(msg, call = ack$call, future = future)
+    future$result <- ex
+    stop(ex)          
   }
-  stopifnot(isTRUE(ack))
+  stop_if_not(isTRUE(ack))
 
+  future$result <- result
+  
   if (!inherits(result, "FutureResult")) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    stop(FutureError(sprintf("Internal error: Unexpected value retrieve a %s future (%s): %s", result, class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future))
+    ex <- UnexpectedFutureResultError(future)
+    future$result <- ex
+    stop(ex)
   }
   
   future$result <- result
@@ -340,17 +349,17 @@ result.ClusterFuture <- function(future, ...) {
 requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
   debug <- getOption("future.debug", FALSE)
   
-  stopifnot(inherits(workers, "cluster"))
-  stopifnot(is.function(await))
-  stopifnot(is.finite(timeout), timeout >= 0)
-  stopifnot(is.finite(alpha), alpha > 0)
+  stop_if_not(inherits(workers, "cluster"))
+  stop_if_not(is.function(await))
+  stop_if_not(is.finite(timeout), timeout >= 0)
+  stop_if_not(is.finite(alpha), alpha > 0)
 
   ## Maximum number of nodes available
   total <- length(workers)
 
   ## FutureRegistry to use
   name <- attr(workers, "name")
-  stopifnot(is.character(name), length(name) == 1L)
+  stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)
   
   usedNodes <- function() {
@@ -396,10 +405,10 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   avail[nodes] <- FALSE
 
   ## Sanity check
-  stopifnot(any(avail))
+  stop_if_not(any(avail))
 
   node_idx <- which(avail)[1L]
-  stopifnot(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
+  stop_if_not(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
 
   node_idx
 }

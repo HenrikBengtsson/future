@@ -1,7 +1,101 @@
 Package: future
 ===============
 
-Version: 1.7.0-9001 [2018-03-06]
+Version: 1.9.0-9000 [2018-07-27]
+
+NEW FEATURES:
+
+ o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
+   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
+   issues where parallel::stopCluster() causes R to stall.
+   
+ o [BETA] Now resolved() for ClusterFuture is non-blocking also for clusters
+   of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
+
+
+Version: 1.9.0 [2018-07-22]
+
+SIGNIFICANT CHANGES:
+
+ o Standard output is now captured and re-outputted when value() is called.
+   This new behavior can be controlled by the argument 'stdout' to future()
+   or by specifying the %stdout% operator if a future assignment is used.
+
+NEW FEATURES:
+
+ o R option 'width' is passed down so that standard output is captured
+   consistently across workers and consistently with the master process.
+   
+ o Now more 'future.*' options are passed down so that they are also
+   acknowledged when using nested futures.
+
+DOCUMENTATION:
+
+ o Add vignette on 'Outputting Text'.
+
+ o CLEANUP: Only the core parts of the API are now listed in the help index.
+   This was done to clarify the Future API.  Help for non-core parts are still
+   via cross references in the indexed API as well via help().
+
+BUG FIX:
+
+ o When using forced, nested 'multicore' parallel processing, such as,
+   plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))),
+   then the child process would attempt to resolve futures owned by the parent
+   process resulting in an error (on 'bad error message').
+   
+ o When using plan(multicore), if a forked worker would terminate unexpectedly,
+   it could corrupt the master R session such that any further attempts of
+   using forked workers would fail.  A forked worker could be terminated this
+   way if the user pressed Ctrl-C (the worker receives a SIGINT signal).
+
+ o makeClusterPSOCK() produced a warning when environment variable
+   'R_PARALLEL_PORT' was set to 'random' (e.g. as on CRAN).
+
+ o Printing a plan() could produce an error when the deparsed call used to set
+   up the plan() was longer than 60 characters.
+ 
+DEPRECATED AND DEFUNCT:
+
+ o future::future_lapply() is defunct (gives an error if called).  Please use
+   the one in the future.apply package instead.
+
+ o Argument 'output' of FutureError() is formally deprecated.
+
+ o Removed all FutureEvaluationCondition classes and related methods.
+ 
+
+Version: 1.8.1 [2018-05-02]
+
+NEW FEATURES:
+
+ o getGlobalsAndPackages() gained argument 'maxSize'.
+
+ o makeClusterPSOCK() now produces a more informative warning if environment
+   variable R_PARALLEL_PORT specifies a non-numeric port.
+
+ o Now plan() gives a more informative error message in case it fails, e.g.
+   when the internal future validation fails and why.
+
+ o Added UnexpectedFutureResultError to be used by backends for signalling
+   in a standard way that an unexpected result was retrieved from a worker.
+
+BUG FIX:
+
+ o When the communication between an asynchronous future and a background R
+   process failed, further querying of the future state/results could end up
+   in an infinite waiting loop.  Now the failed communication error is
+   recorded and re-signalled if any further querying attempts.
+ 
+ o Internal, seldom used myExternalIP() failed to recognize IPv4 answers
+   from some of the lookup servers. This could in turn produce another error.
+
+ o In R (>= 3.5.0), multicore futures would produce multiple warnings
+   originating from querying whether background processes have completed
+   or not. These warnings are now suppressed.
+   
+
+Version: 1.8.0 [2018-04-08]
 
 SIGNIFICANT CHANGES:
 
@@ -21,6 +115,10 @@ NEW FEATURES:
    of futures, e.g. captured output, timing and memory benchmarks etc. Before
    that can take place, existing future backend packages will have to be
    updated accordingly.
+
+ o backtrace() returns only the last call that produced the error.  It is
+   unfortunately not possible to capture the call stack that led up to the
+   error when evaluating a future expression.
    
 BUG FIXES:
 
@@ -40,14 +138,17 @@ BUG FIXES:
    be a list", because the explicit arguments where not exported.  This could
    also happen when specifying globals by name or as a named list.
 
+ o Nested futures were too conservative in requiring global variables to exist,
+   even when they were false positives.
+
 DEPRECATED AND DEFUNCT:
 
  o future::future_lapply() is formally deprecated. Please use the one in the
    future.apply package instead.
   
- o Recentently introduced FutureEvaluationCondition classes are deprecated,
+ o Recently introduced FutureEvaluationCondition classes are deprecated,
    because they no longer serve a purpose since future evaluation conditions
-   are now signalled as is.
+   are now signaled as is.
    
 
 Version: 1.7.0 [2018-02-10]
@@ -74,7 +175,7 @@ NEW FEATURES:
    'cl' is a basic R list rather than a 'cluster' list early on.
 
  o Added %packages% to explicitly control packages to be attached when a
-   future is resolved, e.g. y %<-% { DT[2] } %packages% "data.table".
+   future is resolved, e.g. y %<-% { YT[2] } %packages% "data.table".
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
 
@@ -147,7 +248,7 @@ NEW FEATURES:
 
  o Now plan() accepts also strings such as "future::cluster".
 
- o Now backtrace(x[[el]]) works also for non-environment 'x':s, e.g. lists.
+ o Now backtrace(x[[ER]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 

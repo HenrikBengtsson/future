@@ -1,4 +1,4 @@
-#' Create a cluster of \R workers for parallel processing
+#' Create a PSOCK cluster of \R workers for parallel processing
 #' 
 #' The \code{makeClusterPSOCK()} function creates a cluster of \R workers
 #' for parallel processing.  These \R workers may be background \R sessions
@@ -16,7 +16,7 @@
 #' @param makeNode A function that creates a \code{"SOCKnode"} or
 #' \code{"SOCK0node"} object, which represents a connection to a worker.
 #' 
-#' @param ... Optional arguments passed to
+#' @param \dots Optional arguments passed to
 #' \code{makeNode(workers[i], ..., rank = i)} where
 #' \code{i = seq_along(workers)}.
 #' 
@@ -47,9 +47,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.character(port)) {
     port <- match.arg(port)
     if (identical(port, "auto")) {
-      port <- Sys.getenv("R_PARALLEL_PORT", NA_character_)
-      port <- as.integer(port)
-      if (is.na(port)) port <- 11000:11999
+      port0 <- Sys.getenv("R_PARALLEL_PORT", "random")
+      if (identical(port0, "random")) {
+        port <- 11000:11999
+      } else {
+        port <- suppressWarnings(as.integer(port0))
+        if (is.na(port)) {
+          warning("Non-numeric value of environment variable 'R_PARALLEL_PORT' coerced to NA_integer_: ", sQuote(port0))
+          port <- 11000:11999
+        }
+      }
     } else if (identical(port, "random")) {
       port <- 11000:11999
     }
@@ -100,12 +107,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
 #' \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' 
-#' @param port The port number of the master used to for communicating with all
+#' @param port The port number of the master used for communicating with all
 #' the workers (via socket connections).  If an integer vector of ports, then a
 #' random one among those is chosen.  If \code{"random"}, then a random port in
 #' \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
 #' is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 #' \code{"random"} is used.
+#' \emph{Note, do not use this argument to specify the port number used by
+#' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+#' runs on a different port than the default 22, specify the SSH port by
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
+#' options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
@@ -144,7 +156,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' another host.
 #' 
 #' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such
-#' that the worker R process sets up a socket connection to its local port
+#' that the worker \R process sets up a socket connection to its local port
 #' \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 #' If FALSE, then the worker will try to connect directly to port \code{port} on
 #' \code{master}.  For more details, see below.
@@ -178,15 +190,18 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
 #' set the default is either of \command{ssh} and \command{plink -ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
-#' on the \code{PATH}.  It is less common to find this command on Windows
-#' system, which are more likely to have the \command{PuTTY} software and
-#' its SSH client \command{plink} installed.
+#' on the \code{PATH}.  This is also true for recent Windows 10
+#' (since version 1803; April 2018).
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 #' client that is distributed with RStudio will be used as a fallback if
 #' neither of the above two commands are available on the \code{PATH}.
-#' Note that on Windows 10, there is a beta version of OpenSSH that can
-#' be enabled in the Windows Settings, cf. \url{https://www.thomasmaurer.ch/2017/11/install-ssh-on-windows-10-as-optional-feature/}.
+#' 
+#' For Windows systems prior to Windows 10, which do not have RStudio
+#' installed, it is less common to find \command{ssh}. Instead it is more
+#' likely that such systems have the \command{PuTTY} software and its SSH
+#' client \command{plink} installed.
 #' If no SSH-client is found, an informative error message is produced.
+#' 
 #' It is also possible to specify the absolute path to the SSH client.  To do
 #' this for PuTTY, specify the absolute path in the first element and option
 #' \command{-ssh} in the second as in
@@ -206,7 +221,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 #' workers running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls, which often
-#' requires static IP address as well as privilieges to edit the firewall,
+#' requires static IP address as well as privileges to edit the firewall,
 #' something most users don't have.
 #' It also has the advantage of not having to know the internal and / or the
 #' public IP address / hostname of the master.
@@ -220,11 +235,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' is available on the \code{PATH} of the worker.
 #' If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 #' \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-#' that the worker and the caller share the same file system and R installation.
+#' that the worker and the caller share the same file system and \R installation.
 #' 
 #' @section Default value of argument \code{homogeneous}:
 #' The default value of \code{homogeneous} is TRUE if and only if either
-#' of the following is fullfilled:
+#' of the following is fulfilled:
 #' \itemize{
 #'  \item \code{worker} is \emph{localhost}
 #'  \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
@@ -232,6 +247,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'        name (FQDN).  A hostname is considered to be a FQDN if it contains
 #'        one or more periods
 #' }
+#' In all other cases, \code{homogeneous} defaults to FALSE.
 #' 
 #' @section Connection time out:
 #' Argument \code{connectTimeout} does \emph{not} work properly on Unix and
@@ -261,21 +277,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   manual <- as.logical(manual)
-  stopifnot(length(manual) == 1L, !is.na(manual))
+  stop_if_not(length(manual) == 1L, !is.na(manual))
 
   dryrun <- as.logical(dryrun)
-  stopifnot(length(dryrun) == 1L, !is.na(dryrun))
+  stop_if_not(length(dryrun) == 1L, !is.na(dryrun))
   
   ## Locate a default SSH client?
   if (!is.null(rshcmd)) {
     rshcmd <- as.character(rshcmd)
-    stopifnot(length(rshcmd) >= 1L)
+    stop_if_not(length(rshcmd) >= 1L)
   }
 
   rshopts <- as.character(rshopts)
   
   user <- as.character(user)
-  stopifnot(length(user) <= 1L)
+  stop_if_not(length(user) <= 1L)
   
   port <- as.integer(port)
   if (is.na(port) || port < 0L || port > 65535L) {
@@ -283,7 +299,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   revtunnel <- as.logical(revtunnel)
-  stopifnot(length(revtunnel) == 1L, !is.na(revtunnel))
+  stop_if_not(length(revtunnel) == 1L, !is.na(revtunnel))
   
   if (is.null(master)) {
     if (localMachine || revtunnel) {
@@ -292,13 +308,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       master <- Sys.info()[["nodename"]]
     }
   }
-  stopifnot(!is.null(master))
+  stop_if_not(!is.null(master))
 
   timeout <- as.numeric(timeout)
-  stopifnot(length(timeout) == 1L, !is.na(timeout), is.finite(timeout), timeout >= 0)
+  stop_if_not(length(timeout) == 1L, !is.na(timeout), is.finite(timeout), timeout >= 0)
   
   methods <- as.logical(methods)
-  stopifnot(length(methods) == 1L, !is.na(methods))
+  stop_if_not(length(methods) == 1L, !is.na(methods))
  
   if (is.null(homogeneous)) {
     homogeneous <- {
@@ -308,28 +324,28 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     }
   }
   homogeneous <- as.logical(homogeneous)
-  stopifnot(length(homogeneous) == 1L, !is.na(homogeneous))
+  stop_if_not(length(homogeneous) == 1L, !is.na(homogeneous))
 
   if (is.null(rscript)) {
     rscript <- "Rscript"
     if (homogeneous) rscript <- file.path(R.home("bin"), rscript)
   }
   rscript <- as.character(rscript)
-  stopifnot(length(rscript) >= 1L)
+  stop_if_not(length(rscript) >= 1L)
 
   rscript_args <- as.character(rscript_args)
 
   useXDR <- as.logical(useXDR)
-  stopifnot(length(useXDR) == 1L, !is.na(useXDR))
+  stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
   renice <- as.integer(renice)
-  stopifnot(length(renice) == 1L)
+  stop_if_not(length(renice) == 1L)
 
   rank <- as.integer(rank)
-  stopifnot(length(rank) == 1L, !is.na(rank))
+  stop_if_not(length(rank) == 1L, !is.na(rank))
   
   verbose <- as.logical(verbose)
-  stopifnot(length(verbose) == 1L, !is.na(verbose))
+  stop_if_not(length(verbose) == 1L, !is.na(verbose))
 
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
@@ -375,7 +391,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   } else {
     local_cmd <- cmd
   }
-  stopifnot(length(local_cmd) == 1L)
+  stop_if_not(length(local_cmd) == 1L)
   
   if (manual || dryrun) {
     msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
@@ -425,7 +441,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 ## 'closeAllConnections() can really mess things up' on 2016-10-30
 ## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
 add_cluster_uuid <- function(cl) {
-  stopifnot(inherits(cl, "cluster"))
+  stop_if_not(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
@@ -472,7 +488,7 @@ is_localhost <- local({
       return(NA)
     }
     
-    stopifnot(length(worker) == 1, length(hostname) == 1)
+    stop_if_not(length(worker) == 1, length(hostname) == 1)
   
     ## Already known to a localhost or not to one?
     if (worker %in% localhosts) return(TRUE)
@@ -573,7 +589,7 @@ session_info <- function() {
 
 
 add_cluster_session_info <- function(cl) {
-  stopifnot(inherits(cl, "cluster"))
+  stop_if_not(inherits(cl, "cluster"))
   
   for (ii in seq_along(cl)) {
     node <- cl[[ii]]
@@ -586,7 +602,7 @@ add_cluster_session_info <- function(cl) {
     pid <- as.integer(gsub(".* ", "", pid))
     
     info <- clusterCall(cl[ii], fun = session_info)[[1]]
-    stopifnot(info$process$pid == pid)
+    stop_if_not(info$process$pid == pid)
     node$session_info <- info
     cl[[ii]] <- node
   }

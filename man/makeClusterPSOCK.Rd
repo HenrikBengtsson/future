@@ -3,20 +3,21 @@
 \name{makeClusterPSOCK}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
-\title{Create a cluster of \R workers for parallel processing}
+\title{Create a PSOCK cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   "random"), ..., verbose = getOption("future.debug", FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
-  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60),
-  timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
-  rscript = NULL, homogeneous = NULL, rscript_args = NULL,
+  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 *
+  60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 *
+  60), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd",
-  NULL), user = NULL, revtunnel = TRUE,
-  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
-  manual = FALSE, dryrun = FALSE, verbose = FALSE)
+  renice = NA_integer_,
+  rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL,
+  revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts",
+  NULL), rank = 1L, manual = FALSE, dryrun = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{workers}{The hostnames of workers (as a character vector) or the number
@@ -25,14 +26,19 @@ of localhost workers (as a positive integer).}
 \item{makeNode}{A function that creates a \code{"SOCKnode"} or
 \code{"SOCK0node"} object, which represents a connection to a worker.}
 
-\item{port}{The port number of the master used to for communicating with all
+\item{port}{The port number of the master used for communicating with all
 the workers (via socket connections).  If an integer vector of ports, then a
 random one among those is chosen.  If \code{"random"}, then a random port in
 \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
 is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
-\code{"random"} is used.}
+\code{"random"} is used.
+\emph{Note, do not use this argument to specify the port number used by
+\code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+runs on a different port than the default 22, specify the SSH port by
+appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
+options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}}
 
-\item{...}{Optional arguments passed to
+\item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
 \code{i = seq_along(workers)}.}
 
@@ -81,7 +87,7 @@ vector).  These arguments are only applied if \code{machine} is not
 another host.}
 
 \item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
-that the worker R process sets up a socket connection to its local port
+that the worker \R process sets up a socket connection to its local port
 \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 If FALSE, then the worker will try to connect directly to port \code{port} on
 \code{master}.  For more details, see below.}
@@ -135,15 +141,18 @@ system executable for this is given by argument \code{rshcmd}.  The default
 is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
 set the default is either of \command{ssh} and \command{plink -ssh}.
 Most Unix-like systems, including macOS, have \command{ssh} preinstalled
-on the \code{PATH}.  It is less common to find this command on Windows
-system, which are more likely to have the \command{PuTTY} software and
-its SSH client \command{plink} installed.
+on the \code{PATH}.  This is also true for recent Windows 10
+(since version 1803; April 2018).
 Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 client that is distributed with RStudio will be used as a fallback if
 neither of the above two commands are available on the \code{PATH}.
-Note that on Windows 10, there is a beta version of OpenSSH that can
-be enabled in the Windows Settings, cf. \url{https://www.thomasmaurer.ch/2017/11/install-ssh-on-windows-10-as-optional-feature/}.
+
+For Windows systems prior to Windows 10, which do not have RStudio
+installed, it is less common to find \command{ssh}. Instead it is more
+likely that such systems have the \command{PuTTY} software and its SSH
+client \command{plink} installed.
 If no SSH-client is found, an informative error message is produced.
+
 It is also possible to specify the absolute path to the SSH client.  To do
 this for PuTTY, specify the absolute path in the first element and option
 \command{-ssh} in the second as in
@@ -165,7 +174,7 @@ Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 workers running on other machines.  This avoids the complication of
 otherwise having to configure port forwarding in firewalls, which often
-requires static IP address as well as privilieges to edit the firewall,
+requires static IP address as well as privileges to edit the firewall,
 something most users don't have.
 It also has the advantage of not having to know the internal and / or the
 public IP address / hostname of the master.
@@ -181,13 +190,13 @@ If \code{homogeneous} is FALSE, the \code{rscript} defaults to
 is available on the \code{PATH} of the worker.
 If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-that the worker and the caller share the same file system and R installation.
+that the worker and the caller share the same file system and \R installation.
 }
 
 \section{Default value of argument \code{homogeneous}}{
 
 The default value of \code{homogeneous} is TRUE if and only if either
-of the following is fullfilled:
+of the following is fulfilled:
 \itemize{
  \item \code{worker} is \emph{localhost}
  \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
@@ -195,6 +204,7 @@ of the following is fullfilled:
        name (FQDN).  A hostname is considered to be a FQDN if it contains
        one or more periods
 }
+In all other cases, \code{homogeneous} defaults to FALSE.
 }
 
 \section{Connection time out}{

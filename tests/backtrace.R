@@ -61,14 +61,6 @@ message("- No call stack ...")
 f <- future({ 42L; stop("Woops") })
 v <- value(f, signal = FALSE)
 
-## Remove call stack
-f$result$calls <- NULL
-f$value$traceback <- f$value$calls <- NULL ## BACKWARD COMPATIBILITY
-
-res <- tryCatch(backtrace(f), error = identity)
-print(res)
-stopifnot(inherits(res, "error"))
-
 if (availableCores() >= 2L) {
   message("- Non-resolved future ...")
   plan(multiprocess, workers = 2L)

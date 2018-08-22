@@ -2,7 +2,7 @@
 % Please edit documentation in R/multisession.R
 \name{multisession}
 \alias{multisession}
-\title{Create a multisession future whose value will be resolved asynchronously in a parallel R session}
+\title{Create a multisession future whose value will be resolved asynchronously in a parallel \R session}
 \usage{
 multisession(expr, envir = parent.frame(), substitute = TRUE,
   lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE,
@@ -10,57 +10,65 @@ multisession(expr, envir = parent.frame(), substitute = TRUE,
   label = NULL, ...)
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression} to be evaluated.}
+\item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global
-objects should be identified.  Depending on the future
-strategy (the \code{evaluator}), it may also be the environment
-in which the expression is evaluated.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{Specifies whether a future should be resolved
-lazily or eagerly (default).}
+\item{lazy}{If \code{FALSE} (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{globals}{(optional) A logical, a character vector,
-or a named list for controlling how globals are handled.
-For details, see below section.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link{future}()}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
-\item{workers}{The maximum number of multisession futures that
-can be active at the same time before blocking.}
+\item{workers}{A positive numeric scalar or a function specifying the
+maximum number of parallel futures that can be active at the same time
+before blocking.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return a numeric scalar.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.}
+evaluated the future) after the value of the future is collected.
+\emph{Some types of futures ignore this argument.}}
 
-\item{earlySignal}{Specified whether conditions should be signaled
-as soon as possible or not.}
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{MultisessionFuture}.
 If \code{workers == 1}, then all processing using done in the
-current/main R session and we therefore fall back to using
+current/main \R session and we therefore fall back to using
 a lazy future.
 }
 \description{
 A multisession future is a future that uses multisession evaluation,
 which means that its \emph{value is computed and resolved in
-parallel in another R session}.
+parallel in another \R session}.
 }
 \details{
-This function will block if all available R session are occupied
+The background \R sessions (the "workers") are created using
+\code{\link{makeClusterPSOCK}()}.
+
+The \code{multisession()} function will block if all available
+\R session are occupied
 and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
-R sessions available including the current/main R process, see
+\R sessions available including the current/main \R process, see
 \code{\link{availableCores}()}.
 
 A multisession future is a special type of cluster future.
@@ -71,17 +79,6 @@ this function directly, but to register it via
 mechanism for all futures.  After this \code{\link{future}()}
 and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 }
-\section{Known issues}{
-
-In the current implementation, \emph{all} background R sessions
-are allocated and launched in the background \emph{as soon as the
-first multisession future is created}. This means that more R
-sessions may be running than what will ever be used.
-The reason for this is that background sessions are currently
-created using \code{\link[parallel:makeCluster]{makeCluster}()},
-which requires that all R sessions are created at once.
-}
-
 \examples{
 \donttest{
 
@@ -111,11 +108,11 @@ stopifnot(v == 0)
 }
 }
 \seealso{
-For processing in multiple forked R sessions, see
+For processing in multiple forked \R sessions, see
 \link{multicore} futures.
 For multicore processing with fallback to multisession where
 the former is not supported, see \link{multiprocess} futures.
 
 Use \code{\link{availableCores}()} to see the total number of
-cores that are available for the current R session.
+cores that are available for the current \R session.
 }

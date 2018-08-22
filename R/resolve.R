@@ -203,7 +203,7 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
-      stopifnot(!anyNA(remaining))
+      stop_if_not(!anyNA(remaining))
 
       if (hasProgress) {
         done <- total - length(remaining)
@@ -250,7 +250,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
     names <- ls(envir = x, all.names = TRUE)
 
     ## Sanity check (because nx == 0 returns early above)
-    stopifnot(length(names) > 0)
+    stop_if_not(length(names) > 0)
 
     idxs <- unique(idxs)
 
@@ -277,7 +277,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
   x <- futures(x)
   nx <- .length(x)
   idxs <- ls(envir = x, all.names = TRUE)
-  stopifnot(length(idxs) == nx)
+  stop_if_not(length(idxs) == nx)
 
   ## Everything is considered non-resolved by default
   remaining <- idxs
@@ -305,7 +305,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
-      stopifnot(!anyNA(remaining))
+      stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 
     ## Wait a bit before checking again
@@ -356,7 +356,7 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
       names <- names(x)
       
       ## Sanity check (because nx == 0 returns early above)
-      stopifnot(length(names) > 0)
+      stop_if_not(length(names) > 0)
 
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]
@@ -411,7 +411,7 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
-      stopifnot(!anyNA(remaining))
+      stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 
     ## Wait a bit before checking again

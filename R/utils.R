@@ -1,3 +1,28 @@
+assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
+  ast <- as.list(call)
+  if (length(ast) <= 2L) return()
+  names <- names(ast[-(1:2)])
+  if (is.null(names) || any(names == "")) {
+    stop(sprintf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L)))
+  }
+}
+
+stop_if_not <- function(...) {
+  res <- list(...)
+  for (ii in 1L:length(res)) {
+    res_ii <- .subset2(res, ii)
+    if (length(res_ii) != 1L || is.na(res_ii) || !res_ii) {
+        mc <- match.call()
+        call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
+        if (length(call) > 1L) call <- paste(call[1L], "....")
+        stop(sprintf("%s is not TRUE", sQuote(call)),
+             call. = FALSE, domain = NA)
+    }
+  }
+  
+  NULL
+}
+
 ## From R.utils 2.0.2 (2015-05-23)
 hpaste <- function(..., sep = "", collapse = ", ", lastCollapse = NULL, maxHead = if (missing(lastCollapse)) 3 else Inf, maxTail = if (is.finite(maxHead)) 1 else Inf, abbreviate = "...") {
   if (is.null(lastCollapse)) lastCollapse <- collapse
@@ -88,9 +113,9 @@ gassign <- local(function(name, value, envir = .GlobalEnv) {
 })
 
 ## Evaluates an expression in global environment.
-geval <- local(function(expr, substitute = FALSE, envir = .GlobalEnv, ...) {
+geval <- local(function(expr, substitute = FALSE, envir = .GlobalEnv, enclos = baseenv(), ...) {
   if (substitute) expr <- substitute(expr)
-  eval(expr, envir = envir)
+  eval(expr, envir = envir, enclos = enclos)
 })
 
 ## Vectorized version of require() with bells and whistles
@@ -154,7 +179,7 @@ detectCores <- local({
       value <- as.integer(value)
       
       ## Assert positive integer
-      stopifnot(length(value) == 1L, is.numeric(value),
+      stop_if_not(length(value) == 1L, is.numeric(value),
                 is.finite(value), value >= 1L)
 
       res <<- value
@@ -172,6 +197,7 @@ detectCores <- local({
 ##   - parallel:::recvResult()      ## value()
 ## * multicore futures:
 ##   - parallel:::selectChildren()  ## resolved()
+##   - parallel:::rmChild()         ## value()
 ## As well as the following ones (because they are not exported on Windows):
 ## * multicore futures:
 ##   - parallel::mcparallel()       ## run()
@@ -245,8 +271,10 @@ parseCmdArgs <- function() {
 
 myExternalIP <- local({
   ip <- NULL
-  function(force = FALSE, mustWork = TRUE) {
+  function(force = FALSE, random = TRUE, mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
+
+    mdebug("myExternalIP() ...")
     
     ## FIXME: The identification of the external IP number relies on a
     ## single third-party server.  This could be improved by falling back
@@ -261,16 +289,31 @@ myExternalIP <- local({
       "http://diagnostic.opendns.com/myip",
       "http://api.ipify.org/"
     )
+
+    ## Randomize order of lookup URLs to lower the load on a specific
+    ## server.
+    if (random) urls <- sample(urls)
+
+    ## Only wait 5 seconds for server to respond
+    setTimeLimit(cpu = 5, elapsed = 5, transient = TRUE)
+    on.exit(setTimeLimit(cpu = Inf, elapsed = Inf, transient = FALSE))
+    
     value <- NULL
     for (url in urls) {
-      value <- tryCatch(readLines(url), error = function(ex) NULL)
+      mdebug(" - query: %s", sQuote(url))
+      value <- tryCatch({
+        readLines(url, warn = FALSE)
+      }, error = function(ex) NULL)
+
+      mdebug(" - answer: %s", sQuote(paste(value, collapse = "\n")))
       
       ## Nothing found?
       if (is.null(value)) next
-
+; 
       ## Keep only lines that look like they contain IP v4 numbers
-      ip4_pattern <- ".*[^[:digit:]]+([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
+      ip4_pattern <- ".*[^[:digit:]]*([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
       value <- grep(ip4_pattern, value, value = TRUE)
+      mdebug(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Extract the IP numbers
       value <- gsub(ip4_pattern, "\\1", value)
@@ -278,6 +321,7 @@ myExternalIP <- local({
       ## Trim and drop empty results (just in case)
       value <- trim(value)
       value <- value[nzchar(value)]
+      mdebug(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Nothing found?
       if (length(value) == 0) next
@@ -291,14 +335,17 @@ myExternalIP <- local({
       if (mustWork) {
         stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", ")))
       }
+      mdebug("myExternalIP() ... failed")
       return(NA_character_)
     }
 
     ## Sanity check
-    stopifnot(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
+    stop_if_not(length(value) == 1, is.character(value), !is.na(value), nzchar(value))
 
     ## Cache result
     ip <<- value
+
+    mdebug("myExternalIP() ... done")
     
     ip
   }
@@ -401,7 +448,7 @@ myInternalIP <- local({
     }
     ## Sanity check
 
-    stopifnot(is.character(value), length(value) >= 1, !any(is.na(value)))
+    stop_if_not(is.character(value), length(value) >= 1, !any(is.na(value)))
 
     ## Cache result
     ip <<- value
@@ -414,6 +461,7 @@ myInternalIP <- local({
 
 
 ## A *rough* estimate of size of an object + its environment.
+#' @keywords internal 
 #' @importFrom utils object.size
 objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.objectSize.enclosure", FALSE)) {
   # Nothing to do?
@@ -542,92 +590,9 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 }
 
 
-get_random_seed <- function() {
-  env <- globalenv()
-  env$.Random.seed
-}
-
-set_random_seed <- function(seed) {
-  env <- globalenv()
-  if (is.null(seed)) {
-    rm(list = ".Random.seed", envir = env, inherits = FALSE)
-  } else {
-    env$.Random.seed <- seed
-  }
-}
-
-next_random_seed <- function(seed = get_random_seed()) {
-  sample.int(n = 1L, size = 1L, replace = FALSE)
-  seed_next <- get_random_seed()
-  stopifnot(!any(seed_next != seed))
-  invisible(seed_next)
-}
-
-is_valid_random_seed <- function(seed) {
-  oseed <- get_random_seed()
-  on.exit(set_random_seed(oseed))
-  env <- globalenv()
-  env$.Random.seed <- seed
-  res <- tryCatch({
-    sample.int(n = 1L, size = 1L, replace = FALSE)
-  }, simpleWarning = function(w) w)
-  !inherits(res, "simpleWarning")
-}
-
-is_lecyer_cmrg_seed <- function(seed) {
-  is.numeric(seed) && length(seed) == 7L &&
-    all(is.finite(seed)) && seed[1] == 407L
-}
-
-# @importFrom utils capture.output
-as_lecyer_cmrg_seed <- function(seed) {
-  ## Generate a L'Ecuyer-CMRG seed (existing or random)?
-  if (is.logical(seed)) {
-    stopifnot(length(seed) == 1L)
-    if (!is.na(seed) && !seed) {
-      stop("Argument 'seed' must be TRUE if logical: ", seed)
-    }
-
-    oseed <- get_random_seed()
-    
-    ## Already a L'Ecuyer-CMRG seed?  Then use that as is.
-    if (!is.na(seed) && seed) {
-      if (is_lecyer_cmrg_seed(oseed)) return(oseed)
-    }
-    
-    ## Otherwise, generate a random one.
-    on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
-    return(get_random_seed())
-  }
-
-  stopifnot(is.numeric(seed), all(is.finite(seed)))
-  seed <- as.integer(seed)
-
-  ## Already a L'Ecuyer-CMRG seed?
-  if (length(seed) == 7L) {
-    if (seed[1] != 407L) {
-      stop("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: ", capture.output(str(seed)))
-    }
-    return(seed)
-  }
-  
-  ## Generate a new L'Ecuyer-CMRG seed?
-  if (length(seed) == 1L) {
-    oseed <- get_random_seed()
-    on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
-    set.seed(seed)
-    return(get_random_seed())
-  }
-  
-  stop("Argument 'seed' must be of length 1 or 7 (= 1+6):", capture.output(str(seed)))
-}
-
-
 #' Gets the length of an object without dispatching
 #'
-#' @param x Any R object.
+#' @param x Any \R object.
 #'
 #' @return A non-negative integer.
 #'
@@ -664,9 +629,11 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' Creates a connection to the system null device
 #'
 #' @return Returns a open, binary [base::connection()].
+#' 
+#' @keywords internal
 nullcon <- local({
   nullfile <- switch(.Platform$OS.type, windows = "NUL", "/dev/null")
-  .nullcon <- function() file(nullfile, open = "wb")
+  .nullcon <- function() file(nullfile, open = "wb", raw = TRUE)
 
   ## Assert that a null device exists
   tryCatch({
@@ -723,6 +690,8 @@ reference_filters <- local({
 #'
 #' @return `find_references()` returns a list of one or more references
 #' identified.
+#' 
+#' @keywords internal
 find_references <- function(x, first_only = FALSE) {
   con <- nullcon()
   on.exit(close(con))
@@ -763,6 +732,8 @@ find_references <- function(x, first_only = FALSE) {
 #' or a character string is produced, otherwise `NULL` is returned invisibly.
 #'
 #' @rdname find_references
+#' 
+#' @keywords internal
 assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()
@@ -804,3 +775,49 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
     msg
   }
 }
+
+
+## https://github.com/HenrikBengtsson/future/issues/130
+#' @importFrom utils packageVersion
+resolveMPI <- local({
+  cache <- list()
+  
+  function(future) {
+    resolveMPI <- cache$resolveMPI
+    if (is.null(resolveMPI)) {
+      resolveMPI <- function(future) {
+        node <- future$workers[[future$node]]
+        warning(sprintf("resolved() on %s failed to load the Rmpi package. Will use blocking value() instead and return TRUE", sQuote(class(node)[1])))
+        value(future, stdout = FALSE, signal = FALSE)
+        TRUE
+      }
+
+      if (requireNamespace(pkg <- "Rmpi", quietly = TRUE)) {
+        ns <- getNamespace("Rmpi")
+
+        resolveMPI <- function(future) {
+          node <- future$workers[[future$node]]
+          warning(sprintf("resolved() on %s failed to find mpi.iprobe() and mpi.any.tag() in Rmpi %s. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]), packageVersion("Rmpi")))
+          value(future, stdout = FALSE, signal = FALSE)
+          TRUE
+        }
+
+        if (all(sapply(c("mpi.iprobe", "mpi.any.tag"), FUN = exists,
+                       mode = "function", envir = ns, inherits = FALSE))) {
+          mpi.iprobe <- get("mpi.iprobe", mode = "function", envir = ns,
+	                    inherits = FALSE)
+          mpi.any.tag <- get("mpi.any.tag", mode = "function", envir = ns,
+  	                     inherits = FALSE)
+          resolveMPI <- function(future) {
+            node <- future$workers[[future$node]]
+            mpi.iprobe(source = node$rank, tag = mpi.any.tag())
+	  }
+        }
+      }
+      stopifnot(is.function(resolveMPI))
+      cache$resolveMPI <<- resolveMPI
+    }
+
+    resolveMPI(future)
+  }
+})

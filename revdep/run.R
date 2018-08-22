@@ -1,12 +1,9 @@
-options(warn = 1)
+library("revdepcheck")
+options(warn = 1L)
 
 availableCores <- function() {
-  getenv <- function(name) {
-    as.integer(Sys.getenv(name, NA_character_))
-  }
-  getopt <- function(name) {
-    as.integer(getOption(name, NA_integer_))
-  }
+  getenv <- function(name) as.integer(Sys.getenv(name, NA_character_))
+  getopt <- function(name) as.integer(getOption(name, NA_integer_))
   if (is.finite(n <- getopt("mc.cores") + 1L)) return(n)
   if (is.finite(n <- getopt("Ncpus") + 1L)) return(n)
   if (is.finite(n <- getenv("PBS_NUM_PPN"))) return(n)
@@ -15,19 +12,28 @@ availableCores <- function() {
   1L
 }
 
-reset <- isTRUE(as.logical(toupper(Sys.getenv("_R_CHECK_REVDEP_RESET_", "FALSE"))))
-revdep_framework <- Sys.getenv("_R_CHECK_REVDEP_", "revdepcheck")
-if (revdep_framework == "devtools") {
-  library("devtools")
-  if (reset) revdep_check_reset()
-  revdep_check(bioconductor = TRUE, recursive = FALSE, threads = availableCores(), reset = FALSE)
-  revdep_check_save_summary()
-  revdep_check_print_problems()
-} else if (revdep_framework == "revdepcheck") {
-  library("revdepcheck")
-  if (reset) revdep_reset()
-  revdep_check(bioc = TRUE, num_workers = availableCores(),
-               timeout = as.difftime(30, units = "mins"), quiet = FALSE)
-} else {
-  stop("Unknown revdep framework: ", revdep_framework)
+if (file_test("-f", p <- Sys.getenv("R_CHECK_ENVIRON", "~/.R/check.Renviron"))) {
+  cat(sprintf("R CMD check will use env vars from %s\n", sQuote(p)))
+  cat(sprintf("To disable, set 'R_CHECK_ENVIRON=false' (a fake pathname)\n"))
 }
+
+envs <- grep("^_R_CHECK_", names(Sys.getenv()), value = TRUE)
+if (length(envs) > 0L) {
+  cat(sprintf("Detected _R_CHECK_* env vars that will affect R CMD check: %s\n",
+              paste(sQuote(envs), collapse = ", ")))
+}
+
+## Packages that needed to be installed manually on fresh R 3.5.0 setup:
+## crancache::install_packages(c("KernSmooth", "ranger", "future.batchtools", "rmarkdown", "snow", "labelled"))
+## crancache::install_packages(c("Ecdat", "nloptr", "hexbin", "earth", "arm", "minfiData", "methyvimData"))
+## crancache::install_packages(c("forecast", "randomForest", "neuroblastoma", "purrr", "Hmisc", "PSCBS"))
+## crancache::install_packages(c("aroma.core", "XML", "xml2", "roxygen2"))
+## crancache::install_packages(c("png", "Cairo", "EBImage", "GLAD", "RCurl", "tinytex", "shinystan", "curl"))
+## crancache::install_packages(c("rgl", "rgeos", "gdalUtils", "mapview", "mapedit", "s2dverification"))
+
+## WORKAROUND: Remove checked pkgs that use file links, which otherwise
+## produce warnings which are promoted to errors by revdepcheck.
+unlink("revdep/checks/aroma.affymetrix", recursive = TRUE)
+
+revdep_check(bioc = TRUE, num_workers = availableCores(),
+             timeout = as.difftime(20, units = "mins"), quiet = FALSE)

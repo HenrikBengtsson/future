@@ -5,6 +5,7 @@
 \alias{FutureMessage}
 \alias{FutureWarning}
 \alias{FutureError}
+\alias{UnexpectedFutureResultError}
 \title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
 FutureCondition(message, call = NULL, future = NULL)
@@ -14,6 +15,8 @@ FutureMessage(message, call = NULL, future = NULL)
 FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL, output = NULL)
+
+UnexpectedFutureResultError(future)
 }
 \arguments{
 \item{message}{A message.}
@@ -22,7 +25,7 @@ FutureError(message, call = NULL, future = NULL, output = NULL)
 
 \item{future}{The \link{Future} involved.}
 
-\item{output}{(Don't use!) only for backward compatibility}
+\item{output}{(DEPRECATED - don't use!) only for backward compatibility}
 }
 \value{
 An object of class FutureCondition which inherits from class
@@ -35,7 +38,7 @@ a FutureMessage from \link[base:conditions]{message}.
 \description{
 While \emph{orchestrating} (creating, launching, querying, collection)
 futures, unexpected run-time errors (and other types of conditions) may
-occur.  Such conditions are coerced to a corresponding FutureConditions
+occur.  Such conditions are coerced to a corresponding FutureCondition
 class to help distinguish them from conditions that occur due to the
 \emph{evaluation} of the future.
 }

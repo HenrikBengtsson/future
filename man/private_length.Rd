@@ -7,7 +7,7 @@
 .length(x)
 }
 \arguments{
-\item{x}{Any R object.}
+\item{x}{Any \R object.}
 }
 \value{
 A non-negative integer.

@@ -8,10 +8,10 @@ In programming, a _future_ is an abstraction for a _value_ that may be available
 Here is an example illustrating how the basics of futures work.  First, consider the following code snippet that uses plain R code:
 ```r
 > v <- {
-+   cat("Resolving...\n")
++   cat("Hello world!\n")
 +   3.14
 + }
-Resolving...
+Hello world!
 > v
 [1] 3.14
 ```
@@ -21,24 +21,25 @@ Here is the same code snippet modified to use futures instead:
 ```r
 > library("future")
 > v %<-% {
-+   cat("Resolving...\n")
++   cat("Hello world!\n")
 +   3.14
 + }
-Resolving...
 > v
+Hello world!
 [1] 3.14
 ```
-The difference is in how `v` is constructed; with plain R we use `<-` whereas with futures we use `%<-%`.
+The difference is in how `v` is constructed; with plain R we use `<-` whereas with futures we use `%<-%`.  The other difference is that output is relayed _after_ the future is resolved (not during) and when the value is queried (see Vignette 'Outputting Text').
 
 So why are futures useful?  Because we can choose to evaluate the future expression in a separate R process asynchronously by simply switching settings as:
 ```r
 > library("future")
 > plan(multiprocess)
 > v %<-% {
-+   cat("Resolving...\n")
++   cat("Hello world!\n")
 +   3.14
 + }
 > v
+Hello world!
 [1] 3.14
 ```
 With asynchronous futures, the current/main R process does _not_ block, which means it is available for further processing while the futures are being resolved
@@ -55,11 +56,11 @@ Futures can be created either _implicitly_ or _explicitly_.  In the introductory
 ```r
 > library("future")
 > f <- future({
-+   cat("Resolving...\n")
++   cat("Hello world!\n")
 +   3.14
 + })
-Resolving...
 > v <- value(f)
+Hello world!
 > v
 [1] 3.14
 ```
@@ -98,7 +99,7 @@ The future package implements the following types of futures:
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
 | `remote`        | all         | Simple access to remote R sessions
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  (_Comment_: The [future.BatchJobs] package provides analogue backends based on the [BatchJobs] package; however the BatchJobs developers have deprecated it in favor of batchtools.)
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  (_Comment_: The [future.BatchJobs] package provides analogue backends based on the [BatchJobs] package; however the BatchJobs developers have deprecated it in favor of batchtools.)
 
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session).  This evaluation strategy is referred to as "sequential".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
 
@@ -136,7 +137,7 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.  (In future 1.2.0 and before, there was also _lazy_ futures, which has now been deprecated in favor of `f <- future(..., lazy = TRUE)` and `v %<-% { ... } %lazy% TRUE`.)
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.
 
 
 #### Sequential Futures
@@ -148,26 +149,26 @@ Sequential futures are the default unless otherwise specified.  They were design
 [1] 28518
 > a %<-% {
 +     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
++     cat("Future 'a' ...\n")
 +     3.14
 + }
-Resolving 'a' ...
 > b %<-% {
-+     rm(pid)
-+     cat("Resolving 'b' ...\n")
++     rm(pid)  ## no effect on global 'pid'
++     cat("Future 'b' ...\n")
 +     Sys.getpid()
 + }
-Resolving 'b' ...
 > c %<-% {
-+     cat("Resolving 'c' ...\n")
++     cat("Future 'c' ...\n")
 +     2 * a
 + }
-Resolving 'c' ...
 > b
+Future 'b' ...
 [1] 28518
 > c
+Future 'c' ...
 [1] 6.28
 > a
+Future 'a' ...
 [1] 3.14
 > pid
 [1] 28518
@@ -192,28 +193,31 @@ We start with multisession futures because they are supported by all operating s
 [1] 28518
 > a %<-% {
 +     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
++     cat("Future 'a' ...\n")
 +     3.14
 + }
 > b %<-% {
 +     rm(pid)
-+     cat("Resolving 'b' ...\n")
++     cat("Future 'b' ...\n")
 +     Sys.getpid()
 + }
 > c %<-% {
-+     cat("Resolving 'c' ...\n")
++     cat("Future 'c' ...\n")
 +     2 * a
 + }
 > b
+Future 'b' ...
 [1] 28539
 > c
+Future 'c' ...
 [1] 6.28
 > a
+Future 'a' ...
 [1] 3.14
 > pid
 [1] 28518
 ```
-The first thing we observe is that the values of `a`, `c` and `pid` are the same as previously.  However, we notice that `b` is different from before.  This is because future `b` is evaluated in a different R process and therefore it returns a different process ID.  Another difference is that the messages, generated by `cat()`, are no longer displayed.  This is because they are outputted to the background sessions and not the calling session.
+The first thing we observe is that the values of `a`, `c` and `pid` are the same as previously.  However, we notice that `b` is different from before.  This is because future `b` is evaluated in a different R process and therefore it returns a different process ID.
 
 
 When multisession evaluation is used, the package launches a set of R sessions in the background that will serve multisession futures by evaluating their expressions as they are created.  If all background sessions are busy serving other futures, the creation of the next multisession future is _blocked_ until a background session becomes available again.  The total number of background processes launched is decided by the value of `availableCores()`, e.g.
@@ -222,19 +226,20 @@ When multisession evaluation is used, the package launches a set of R sessions i
 mc.cores 
        2 
 ```
-This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total 2 processes including the main process.  In other words, with these settings, there will be 2 background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "future")`.
+This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total two (2) processes including the main process.  In other words, with these settings, there will be two (2) background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "future")`.
 
 
 #### Multicore Futures
-On operating systems where R supports _forking_ of processes, which is basically all operating system except Windows, an alternative to spawning R sessions in the background is to fork the existing R process.  Forking an R process is considered faster than working with a separate R session running in the background.  One reason is that the overhead of exporting large globals to the background session can be greater than when forking is used.
-To use multicore futures, we specify:
+On operating systems where R supports _forking_ of processes, which is basically all operating system except Windows, an alternative to spawning R sessions in the background is to fork the existing R process.  To use multicore futures, we specify:
+
 ```r
 plan(multicore)
 ```
-The only real different between using multicore and multisession futures is that any output written (to standard output or standard error) by a multicore process is instantaneously outputted in calling process.  Other than this, the behavior of using multicore evaluation is very similar to that of using multisession evaluation.
 
 Just like for multisession futures, the maximum number of parallel processes running will be decided by `availableCores()`, since in both cases the evaluation is done on the local machine.
 
+
+Forking an R process can be faster than working with a separate R session running in the background.  One reason is that the overhead of exporting large globals to the background session can be greater than when forking, and therefore shared memory, is used.  On the other hand, the shared memory is _read only_, meaning any modifications to shared objects by one of the forked processes ("workers") will cause a copy by the operating system.  This can also happen when the R garbage collector runs in one of the forked processes.
 
 
 #### Multiprocess Futures
@@ -254,29 +259,30 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 [1] 28518
 > a %<-% {
 +     pid <- Sys.getpid()
-+     cat("Resolving 'a' ...\n")
++     cat("Future 'a' ...\n")
 +     3.14
 + }
 > b %<-% {
 +     rm(pid)
-+     cat("Resolving 'b' ...\n")
++     cat("Future 'b' ...\n")
 +     Sys.getpid()
 + }
 > c %<-% {
-+     cat("Resolving 'c' ...\n")
++     cat("Future 'c' ...\n")
 +     2 * a
 + }
 > b
+Future 'b' ...
 [1] 28561
 > c
+Future 'c' ...
 [1] 6.28
 > a
+Future 'a' ...
 [1] 3.14
 > pid
 [1] 28518
 ```
-Just as for most other asynchronous evaluation strategies, the output from `cat()` is not displayed on the current/calling machine.
-
 
 Any types of clusters that `parallel::makeCluster()` creates can be used for cluster futures.  For instance, the above cluster can be explicitly set up as:
 ```r
@@ -299,17 +305,17 @@ For instance, here is an example of two "top" futures (`a` and `b`) that uses mu
 > plan(multiprocess)
 > pid <- Sys.getpid()
 > a %<-% {
-+     cat("Resolving 'a' ...\n")
++     cat("Future 'a' ...\n")
 +     Sys.getpid()
 + }
 > b %<-% {
-+     cat("Resolving 'b' ...\n")
++     cat("Future 'b' ...\n")
 +     b1 %<-% {
-+         cat("Resolving 'b1' ...\n")
++         cat("Future 'b1' ...\n")
 +         Sys.getpid()
 +     }
 +     b2 %<-% {
-+         cat("Resolving 'b2' ...\n")
++         cat("Future 'b2' ...\n")
 +         Sys.getpid()
 +     }
 +     c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
@@ -317,8 +323,12 @@ For instance, here is an example of two "top" futures (`a` and `b`) that uses mu
 > pid
 [1] 28518
 > a
+Future 'a' ...
 [1] 28584
 > b
+Future 'b' ...
+Future 'b1' ...
+Future 'b2' ...
  b.pid b1.pid b2.pid 
  28585  28585  28585 
 ```
@@ -337,8 +347,12 @@ We would actually get the same behavior if we try with multiple levels of multip
 > pid
 [1] 28518
 > a
+Future 'a' ...
 [1] 28586
 > b
+Future 'b' ...
+Future 'b1' ...
+Future 'b2' ...
  b.pid b1.pid b2.pid 
  28587  28587  28587 
 ```
@@ -349,13 +363,15 @@ Continuing, if we start off by sequential evaluation and then use multiprocess e
 ```r
 > plan(list(sequential, multiprocess))
 [...]
-Resolving 'a' ...
-Resolving 'b' ...
 > pid
 [1] 28518
 > a
+Future 'a' ...
 [1] 28518
 > b
+Future 'b' ...
+Future 'b1' ...
+Future 'b2' ...
  b.pid b1.pid b2.pid 
  28518  28588  28589 
 ```
@@ -371,8 +387,12 @@ Having said this, it is indeed possible to use nested multiprocess evaluation st
 > pid
 [1] 28518
 > a
+Future 'a' ...
 [1] 28590
 > b
+Future 'b' ...
+Future 'b1' ...
+Future 'b2' ...
  b.pid b1.pid b2.pid 
  28591  28592  28594 
 ```
@@ -385,13 +405,13 @@ For more details on working with nested futures and different evaluation strateg
 ### Checking A Future without Blocking
 It is possible to check whether a future has been resolved or not without blocking.  This can be done using the `resolved(f)` function, which takes an explicit future `f` as input.  If we work with implicit futures (as in all the examples above), we can use the `f <- futureOf(a)` function to retrieve the explicit future from an implicit one.  For example,
 ```r
-> plan(multiprocess)
-> a %<-% {
-+     cat("Resolving 'a' ...")
-+     Sys.sleep(2)
-+     cat("done\n")
-+     Sys.getpid()
-+ }
+ plan(multiprocess)
+ a %<-% {
+     cat("Future 'a' ...")
+     Sys.sleep(2)
+     cat("done\n")
+     Sys.getpid()
+ }
 > cat("Waiting for 'a' to be resolved ...\n")
 Waiting for 'a' to be resolved ...
 > f <- futureOf(a)
@@ -409,6 +429,7 @@ Waiting for 'a' to be resolved ...
 > cat("Waiting for 'a' to be resolved ... DONE\n")
 Waiting for 'a' to be resolved ... DONE
 > a
+Future 'a' ... done
 [1] 28595
 ```
 
@@ -417,43 +438,33 @@ Waiting for 'a' to be resolved ... DONE
 Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, if we use lazy evaluation on a future that generates an error, we might see something like
 ```r
 > plan(sequential)
+> b <- "hello"
 > a %<-% {
-+     cat("Resolving 'a' ...\n")
-+     stop("Whoops!")
-+     42
-+ } %lazy% TRUE
+     cat("Future 'a' ...\n")
+     log(b)
+ } %lazy% TRUE
 > cat("Everything is still ok although we have created a future that will fail.\n")
 Everything is still ok although we have created a future that will fail.
 > a
-Resolving 'a' ...
-Error in eval(expr, envir, enclos) : Whoops!
+Future 'a' ...
+Error in log(b) : non-numeric argument to mathematical function
 ```
-The error is thrown each time the value is requested, that is, if we try to get the value again will generate the same error:
+The error is thrown each time the value is requested, that is, if we try to get the value again will generate the same error (and output):
 ```r
 > a
-Error in eval(expr, envir, enclos) : Whoops!
+Future 'a' ...
+Error in log(b) : non-numeric argument to mathematical function
 In addition: Warning message:
 restarting interrupted promise evaluation
 ```
-To see the list of calls (evaluated expressions) that lead up to the error, we can use the `backtrace()` function(*) on the future, i.e.
+To see the _last_ call in the call stack that gave the error, we can use the `backtrace()` function(\*) on the future, i.e.
 ```r
 > backtrace(a)
 [[1]]
-eval(quote({
-    cat("Resolving 'a' ...\\n")
-    stop("Whoops!")
-    42
-}), new.env())
-[[2]]
-eval(quote({
-    cat("Resolving 'a' ...\\n")
-    stop("Whoops!")
-    42
-}), new.env())
-[[3]]
-stop("Whoops!")
+log(a)
 ```
-(*) The commonly used `traceback()` does not provide relevant information in the context of futures.
+
+(\*\) The commonly used `traceback()` does not provide relevant information in the context of futures.  Furthermore, it is unfortunately not possible to see the list of calls (evaluated expressions) that led up to the error; only the call that gave the error (this is due to a limitation in `tryCatch()` used internally).
 
 
 ## Globals
@@ -548,7 +559,9 @@ The goal of this package is to provide a standardized and unified API for using 
 
 [BatchJobs]: https://cran.r-project.org/package=BatchJobs
 [batchtools]: https://cran.r-project.org/package=batchtools
+[callr]: https://cran.r-project.org/package=callr
 [future]: https://cran.r-project.org/package=future
+[future.callr]: https://cran.r-project.org/package=future.callr
 [future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
 [future.batchtools]: https://cran.r-project.org/package=future.batchtools
 [globals]: https://cran.r-project.org/package=globals
@@ -559,14 +572,14 @@ The goal of this package is to provide a standardized and unified API for using 
 ## Installation
 R package future is available on [CRAN](https://cran.r-project.org/package=future) and can be installed in R as:
 ```r
-install.packages('future')
+install.packages("future")
 ```
 
 ### Pre-release version
 
 To install the pre-release version that is available in Git branch `develop` on GitHub, use:
 ```r
-remotes::install_github('HenrikBengtsson/future@develop')
+remotes::install_github("HenrikBengtsson/future@develop")
 ```
 This will install the package from source.  
 

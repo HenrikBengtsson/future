@@ -10,27 +10,9 @@
 #' on these settings and there is no need to modify the code when
 #' switching from, say, sequential to parallel processing.
 #'
-#' @param expr,value An \R \link[base]{expression} to be evaluated.
-#'
-#' @param envir The \link{environment} from where global
-#' objects should be identified.  Depending on the future
-#' strategy (the \code{evaluator}), it may also be the environment
-#' in which the expression is evaluated.
-#'
-#' @param substitute If TRUE, argument \code{expr} is
-#' \code{\link[base]{substitute}()}:ed, otherwise not.
-#'
-#' @param globals (optional) A logical, a character vector,
-#' or a named list for controlling how globals are handled.
-#' For details, see below section.
-#'
-#' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
-#'
-#' @param lazy Specifies whether a future should be resolved
-#' lazily or eagerly (default).
-#'
-#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#' @inheritParams Future-class
+#' 
+#' @param expr,value An \R \link[base]{expression}.
 #'
 #' @param evaluator The actual function that evaluates
 #' the future expression and returns a \link{Future}.
@@ -40,7 +22,7 @@
 #' The default evaluator function is the one that the user
 #' has specified via \code{\link{plan}()}.
 #'
-#' @param ... Additional arguments passed to the "evaluator".
+#' @param \dots Additional arguments passed to the "evaluator".
 #'
 #' @return
 #' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.
@@ -68,7 +50,7 @@
 #' and expression \code{value}.  However, by using non-standard evaluation,
 #' this constructs can emulate an assignment operator similar to
 #' \code{x <- value}. Due to \R's precedence rules of operators,
-#' future expressions often needs to be explicitly bracketed, e.g.
+#' future expressions often need to be explicitly bracketed, e.g.
 #' \code{x \%<-\% { a + b }}.
 #'
 #'

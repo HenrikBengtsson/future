@@ -10,7 +10,7 @@
 #'        \code{x \%<-\% \{ expr \}}.
 #'
 #' @param packages (optional) a character vector specifying packages
-#' to be attached in the R environment evaluating the future.
+#' to be attached in the \R environment evaluating the future.
 #' 
 #' @aliases %packages%
 #' @export
@@ -23,7 +23,7 @@
   args["globals"] <- list(globals)
   options(future.disposable = args)
 
-  eval(fassignment, envir = envir)
+  eval(fassignment, envir = envir, enclos = baseenv())
 }
 
 #' @export
@@ -36,5 +36,5 @@
   args["packages"] <- list(packages)
   options(future.disposable = args)
 
-  eval(fassignment, envir = envir)
+  eval(fassignment, envir = envir, enclos = baseenv())
 }

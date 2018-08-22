@@ -23,7 +23,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ### Missing globals (false negatives)
 If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
 ```r
-library(multisession)
+plan(multisession)
 
 reset <- TRUE
 x <- 1
@@ -71,7 +71,7 @@ It may also become a problem with futures evaluated with lazy evaluation if the 
 
 ### Missing packages (false negatives)
 
-Occassionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when a expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
+Occassionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
 ```r
 > library("future")
 > plan(multisession)
@@ -149,6 +149,13 @@ Error in FALSE :
 ('con' of class 'file') used in the future expression
 ```
 
+Below are few examples of commonly used packages that produce non-exportable objects.  If you find other examples, please report back.
+
+(*) The exception _may_ be if you use _forked_ R processes, e.g. `plan(multicore)`.  However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable.  Moreover, such code will certainly fail to parallelize on other future backends.
+
+
+### Example: Non-exportable objects by the xml2 package
+
 Another example is XML objects of the xml2 package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
 ```r
 > library("future")
@@ -167,6 +174,9 @@ Error in FALSE :
   Detected a non-exportable reference ('externalptr') in one of the globals
 ('xml' of class 'xml_document') used in the future expression
 ```
+
+
+### Example: Non-exportable objects by the Rcpp package
 
 A third example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
 ```r
@@ -204,7 +214,123 @@ in one of the globals ('my_length' of class 'function') used in the future
 expression
 ```
 
-(*) The exception _may_ be if you use forked R processes, e.g. `plan(multicore)`.
+
+### Example: Non-exportable objects by the rJava package
+
+Here is an example that show how rJava objects cannot be used when
+exported to external R processes.
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("rJava")
+> .jinit() Initialize Java VM on master
+
+> Double <- J("java.lang.Double")
+> d0 <- new(Double, "3.14")
+> print(d0)
+[1] "Java-Object{3.14}"
+
+> f <- future({
+    .jinit() ## Initialize Java VM on worker
+    new(Double, "3.14")
+  })
+> d1 <- value(f)
+> print(d1)
+## [1] "Java-Object<null>"
+```
+
+Although no error is produced, we see that the value `d1` is a Java NULL Object.  As before, we can catch this by using:
+
+```r
+> options(future.globals.onReference = "error")
+> f <- future({
+    .jinit() ## Initialize Java VM on worker
+    new(Double, "3.14")
+> })
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('Double' of class 'jclassName') used in the future expression
+```
+
+### Example: Non-exportable objects by the reticulate package
+
+Analogously to rJava, the reticulate package provides methods for creating and calling Python code from within R.  If one attempt to use Python-binding objects from this package, we get errors like:
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("reticulate")
+> os <- import("os")
+> pwd %<-% os$getcwd()
+Error in eval(quote(os$getcwd()), new.env()) : 
+  attempt to apply non-function
+```
+and by telling the future package to validate globals further, we get:
+```r
+> options(future.globals.onReference = "error")
+> pwd %<-% os$getcwd()
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('os' of class 'python.builtin.module') used in the future expression
+```
+
+Another reticulate example is when we try to use a Python function that we create ourselves as in:
+
+```r
+> cat("def twice(x):\n    return 2*x\n", file = "twice.py")
+> source_python("twice.py")
+> twice(1.2)
+[1] 2.4
+> y %<-% twice(1.2)
+> y
+Error in unserialize(node$con) : 
+  Failed to retrieve the value of MultisessionFuture from cluster node #1
+  (on 'localhost').  The reason reported was 'error reading from connection'
+```
+which, again, is because:
+```r
+> options(future.globals.onReference = "error")
+> y %<-% twice(1.2)
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals
+  ('twice' of class 'python.builtin.function') used in the future expression
+```
+
+
+### Example: Non-exportable objects by the rlang package
+
+Yet another example comes from the rlang package.  This example is somewhat twisted - it uses `value(future(x))` which is quite meaningless by itself- but it is a minimal example of showing what can happen:
+
+```r
+> library("future")
+> plan(multisession)
+
+> library("dplyr")  ## relies on 'rlang'
+> iris <- as_tibble(iris)
+> res <- mutate(iris, mod = value(future({
+    list(lm(Species ~ Sepal.Length, data = .))
+  })))
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: NULL value passed as symbol address.
+```
+
+In this case the mistake is caught by dplyr's `mutate_impl()`, but to be on the safe side, we could have used:
+
+```r
+> options(future.globals.onReference = "error")
+> res <- mutate(iris, mod = value(future({
+    list(lm(Species ~ Sepal.Length, data = .))
+  })))
+Timing stopped at: 0.004 0 0.001
+Error in mutate_impl(.data, dots) : 
+  Evaluation error: Detected a non-exportable reference ('externalptr'
+  of class 'RegisteredNativeSymbol') in one of the globals ('~' of
+  class 'function') used in the future expression.
+```
+
 
 
 ## Trying to pass an unresolved future to another future
