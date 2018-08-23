@@ -447,15 +447,14 @@ add_cluster_uuid <- function(cl) {
     node <- cl[[ii]]
     if (is.null(node)) next  ## Happens with dryrun = TRUE
 
-    ## Worker does not use connections?  Then nothing to do.
-    con <- node$con
-    if (is.null(con)) next
-    
-    uuid <- attr(con, "uuid")
-    if (is.null(uuid)) {
-      attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
-      node$con <- con
-      cl[[ii]] <- node
+    ## For workers with connections, get the UUID for the connection
+    if (!is.null(con <- node$con)) {
+      uuid <- attr(con, "uuid")
+      if (is.null(uuid)) {
+        attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
+        node$con <- con
+        cl[[ii]] <- node
+      }
     }
   }
   
@@ -598,12 +597,15 @@ add_cluster_session_info <- function(cl) {
     ## Session information already collected?
     if (!is.null(node$session_info)) next
 
-    pid <- capture.output(print(node))
-    pid <- as.integer(gsub(".* ", "", pid))
+    node$session_info <- clusterCall(cl[ii], fun = session_info)[[1]]
+
+    ## Sanity check, iff possible
+    if (inherits(node, "SOCK0node") || inherits(node, "SOCKnode")) {
+      pid <- capture.output(print(node))
+      pid <- as.integer(gsub(".* ", "", pid))
+      stop_if_not(node$session_info$process$pid == pid)
+    }
     
-    info <- clusterCall(cl[ii], fun = session_info)[[1]]
-    stop_if_not(info$process$pid == pid)
-    node$session_info <- info
     cl[[ii]] <- node
   }
   

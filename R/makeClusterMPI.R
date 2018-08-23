@@ -51,15 +51,15 @@ makeClusterMPI <- function(workers, makeNode = makeNodeMPI, ..., verbose = getOp
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
     ## useful information otherwise not available, e.g. the PID.
-#    if (verbose) message("- collecting session information")
-#    cl[ii] <- add_cluster_session_info(cl[ii])
+    if (verbose) message("- collecting session information")
+    cl[ii] <- add_cluster_session_info(cl[ii])
     
     if (verbose) message(sprintf("Updating node %d of %d ... DONE", ii, n))
   }
 
   ## WORKAROUND:
   ## https://stackoverflow.com/a/44317647/1072091
-  ## Note, any of the below, stalls R:
+  ## Note, any of the below, may stall R:
   ##   Rmpi::mpi.finalize()
   ##   Rmpi::mpi.exit()
   class(cl) <- c("FutureMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
