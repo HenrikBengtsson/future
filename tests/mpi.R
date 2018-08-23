@@ -5,7 +5,7 @@ test_mpi <- isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_", "TRUE")))
 message("*** MPI ...")
 
 pkg <- "Rmpi"
-if (requireNamespace(pkg, quietly = TRUE)) {
+if (test_mpi && requireNamespace(pkg, quietly = TRUE)) {
   cl <- makeClusterMPI(availableCores())
   str(cl)
   
