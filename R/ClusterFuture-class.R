@@ -225,10 +225,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   ## Check if workers socket connection is available for reading
   node <- cl[[1]]
 
-  ## FIXME: This assumes that the worker has a connection, which
-  ## is _not_ the case for MPI clusters.  /HB 2017-03-06
-  con <- node$con
-  if (!is.null(con)) {
+  if (!is.null(con <- node$con)) {
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
     ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
     ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)

@@ -792,7 +792,7 @@ resolveMPI <- local({
         TRUE
       }
 
-      if (requireNamespace(pkg <- "Rmpi", quietly = TRUE)) {
+      if (requireNamespace("Rmpi", quietly = TRUE)) {
         ns <- getNamespace("Rmpi")
 
         resolveMPI <- function(future) {

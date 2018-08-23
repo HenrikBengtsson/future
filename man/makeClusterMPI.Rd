@@ -2,33 +2,21 @@
 % Please edit documentation in R/makeClusterMPI.R
 \name{makeClusterMPI}
 \alias{makeClusterMPI}
-\alias{makeNodeMPI}
 \title{Create an MPI cluster of \R workers for parallel processing}
 \usage{
-makeClusterMPI(workers, makeNode = makeNodeMPI, ...,
-  verbose = getOption("future.debug", FALSE))
-
-makeNodeMPI(rank = 1L, verbose = FALSE)
+makeClusterMPI(workers, ..., verbose = getOption("future.debug", FALSE))
 }
 \arguments{
 \item{workers}{The number workers (as a positive integer).}
 
-\item{makeNode}{A function that creates a \code{"MPInode"}, which
-represents an MPI worker.}
-
 \item{\dots}{Optional arguments passed to
-\code{makeNode(..., rank = i)} where \code{i = seq_along(workers)}.}
+\code{\link[parallel:makeCluster]{makeCluster(workers, type = "MPI", ...)}}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
-
-\item{rank}{A unique one-based index for each worker (automatically set).}
 }
 \value{
 An object of class \code{"FutureMPIcluster"} consisting
 of a list of \code{"MPInode"} workers.
-
-\code{makeNodeMPI()} returns a \code{"FutureMPInode"} object
-representing an established MPI worker.
 }
 \description{
 The \code{makeClusterMPI()} function creates a cluster of \R workers
