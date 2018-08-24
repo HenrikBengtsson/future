@@ -5,7 +5,7 @@
 #' on the current machine, \R sessions on external machines (local or remote),
 #' or a mix of such. For external workers, the default is to use SSH to connect
 #' to those external machines.  This function works similarly to
-#' \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the
+#' \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}()} of the
 #' \pkg{parallel} package, but provides additional and more flexibility options
 #' for controlling the setup of the system calls that launch the background
 #' \R workers, and how to connect to external machines.

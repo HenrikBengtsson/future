@@ -2,7 +2,7 @@
 % Please edit documentation in R/makeClusterMPI.R
 \name{makeClusterMPI}
 \alias{makeClusterMPI}
-\title{Create an MPI cluster of \R workers for parallel processing}
+\title{Create a Message Passing Interface (MPI) cluster of \R workers for parallel processing}
 \usage{
 makeClusterMPI(workers, ..., verbose = getOption("future.debug", FALSE))
 }
@@ -10,7 +10,7 @@ makeClusterMPI(workers, ..., verbose = getOption("future.debug", FALSE))
 \item{workers}{The number workers (as a positive integer).}
 
 \item{\dots}{Optional arguments passed to
-\code{\link[parallel:makeCluster]{makeCluster(workers, type = "MPI", ...)}}.}
+\code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 }
@@ -19,8 +19,21 @@ An object of class \code{"FutureMPIcluster"} consisting
 of a list of \code{"MPInode"} workers.
 }
 \description{
-The \code{makeClusterMPI()} function creates a cluster of \R workers
-for parallel processing.  This function works similarly to
-\code{\link[parallel:makeCluster]{makeCluster(..., type = "MPI")}} of the
-\pkg{parallel} package, but is a bit more user friendly and robust.
+The \code{makeClusterMPI()} function creates an MPI cluster of \R workers
+for parallel processing.  This function utilizes 
+\code{makeCluster(..., type = "MPI")} of the \pkg{parallel} package and
+tweaks the cluster in an attempt to avoid
+\code{\link[parallel:stopCluster]{stopCluster()}} from hanging [1].
+\emph{WARNING: This function is very much in a beta version and should
+only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
+}
+\details{
+\emph{Creating MPI clusters requires the \bold{Rmpi} package.}
+}
+\references{
+[1] R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28. \cr
+}
+\seealso{
+\code{\link{makeClusterPSOCK}()} and
+\code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
 }
