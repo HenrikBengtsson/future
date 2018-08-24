@@ -31,6 +31,7 @@ Description: The purpose of this package is to provide a lightweight and
     straightforward to tweak existing code to make use of futures.
 License: LGPL (>= 2.1)
 LazyLoad: TRUE
+ByteCompile: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
 RoxygenNote: 6.1.0
