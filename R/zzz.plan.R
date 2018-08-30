@@ -124,7 +124,7 @@ plan <- local({
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
-    init <- attr(evaluator, "init")
+    init <- attr(evaluator, "init", exact = TRUE)
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
       if (debug) {
@@ -286,7 +286,7 @@ plan <- local({
       for (kk in seq_along(newStack)) {
         strategy <- newStack[[kk]]
         ## Skip if already has a call attibute
-        if (!is.null(attr(strategy, "call"))) next
+        if (!is.null(attr(strategy, "call", exact = TRUE))) next
         ## Attach call
         attr(strategy, "call") <- call
         newStack[[kk]] <- strategy
@@ -335,7 +335,8 @@ print.future <- function(x, ...) {
   args <- paste(args, collapse = " ")
   specs$args <- args
   specs$tweaked <- inherits(x, "tweaked")
-  specs$call <- paste(deparse(attr(x, "call"), width.cutoff = 500L),
+  specs$call <- paste(deparse(attr(x, "call", exact = TRUE), 
+                              width.cutoff = 500L),
                       collapse="")
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
@@ -363,7 +364,8 @@ print.FutureStrategyList <- function(x, ...) {
     args <- paste(args, collapse = " ")
     specs$args <- args
     specs$tweaked <- inherits(x_kk, "tweaked")
-    specs$call <- paste(deparse(attr(x_kk, "call"), width.cutoff = 500L),
+    specs$call <- paste(deparse(attr(x_kk, "call", exact = TRUE), 
+                                width.cutoff = 500L),
                         collapse = "")
     specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
     s <- c(s, s_kk, specs)

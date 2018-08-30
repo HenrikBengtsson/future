@@ -2,7 +2,7 @@
 .onLoad <- function(libname, pkgname) {
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
-  if (is.na(attr(multiprocess, "init"))) {
+  if (is.na(attr(multiprocess, "init", exact = TRUE))) {
     attr(multiprocess, "init") <<- !supportsMulticore()
   }
   

@@ -96,7 +96,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
 
   ## Are globals already resolved?
-  t <- attr(globals, "resolved")
+  t <- attr(globals, "resolved", exact = TRUE)
   if (isTRUE(t)) {
     resolve <- FALSE
     if (debug) mdebug("Resolving globals: %s (because already done)", resolve)
@@ -141,7 +141,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     globals <- as.FutureGlobals(globals)
 
     ## Unless already resolved, perform a shallow resolve
-    if (attr(globals, "resolved")) {
+    if (attr(globals, "resolved", exact = TRUE)) {
       idxs <- which(unlist(lapply(globals, FUN = inherits, "Future"), use.names = FALSE))
       if (debug) mdebug("Number of global futures: %d", length(idxs))
       
@@ -174,7 +174,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     ## Drop all globals which are located in one of
     ## the packages in 'pkgs'.  They will be available
     ## since those packages are attached.
-    where <- attr(globals, "where")
+    where <- attr(globals, "where", exact = TRUE)
 
     names <- names(globals)
     keep <- rep(TRUE, times = length(globals))
