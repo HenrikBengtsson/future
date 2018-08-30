@@ -449,7 +449,7 @@ add_cluster_uuid <- function(cl) {
 
     ## For workers with connections, get the UUID for the connection
     if (!is.null(con <- node$con)) {
-      uuid <- attr(con, "uuid")
+      uuid <- attr(con, "uuid", exact = TRUE)
       if (is.null(uuid)) {
         attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
         node$con <- con

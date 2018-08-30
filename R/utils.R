@@ -491,7 +491,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
     if (depth <= 0) return(0)
 
     if (inherits(x, "FutureGlobals")) {
-      size <- attr(x, "total_size")
+      size <- attr(x, "total_size", exact = TRUE)
       if (!is.na(size)) return(size)
     }
 

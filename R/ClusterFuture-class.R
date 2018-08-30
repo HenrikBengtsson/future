@@ -71,7 +71,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   ##  workers <- add_cluster_session_info(workers)
   
   ## Attach name to cluster?
-  name <- attr(workers, "name")
+  name <- attr(workers, "name", exact = TRUE)
   if (is.null(name)) {
     name <- digest(workers)
     stop_if_not(length(name) > 0, nzchar(name))
@@ -113,7 +113,7 @@ run.ClusterFuture <- function(future, ...) {
   persistent <- future$persistent
 
   ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
 
   ## Next available cluster node
@@ -321,7 +321,7 @@ result.ClusterFuture <- function(future, ...) {
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
   ## Remove from registry
   FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
@@ -355,7 +355,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   total <- length(workers)
 
   ## FutureRegistry to use
-  name <- attr(workers, "name")
+  name <- attr(workers, "name", exact = TRUE)
   stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)
   
@@ -420,8 +420,8 @@ check_connection_uuid <- function(worker, future, on_failure = "error") {
   ## Not a worker with a connection
   if (!inherits(con, "connection")) return(NULL)
   
-  uuid <- attr(con, "uuid")
+  uuid <- attr(con, "uuid", exact = TRUE)
   uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
   if (uuid_now == uuid) return(NULL) 
-  sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason is that the socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", class(future)[1], future$node, sQuote(worker$host), uuid, sQuote(attr(uuid, "source")$class), sQuote(attr(uuid, "source")$description), uuid_now, sQuote(attr(uuid_now, "source")$class), sQuote(attr(uuid_now, "source")$description), Sys.getpid())
+  sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason is that the socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", class(future)[1], future$node, sQuote(worker$host), uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
 } ## check_connection_uuid()

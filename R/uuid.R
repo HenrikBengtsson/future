@@ -20,7 +20,7 @@ uuid_of_connection <- function(con, ..., must_work = TRUE) {
       info$opened <- NULL
       uuid(info, ...)
     }, error = function(ex) {
-      attr(con, "uuid")
+      attr(con, "uuid", exact = TRUE)
     })
   }
   uuid

@@ -60,10 +60,10 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
 print.FutureCondition <- function(x, ...) {
   NextMethod()
 
-  future <- attr(x, "future")
+  future <- attr(x, "future", exact = TRUE)
 
   ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
-  output <- attr(x, "output")
+  output <- attr(x, "output", exact = TRUE)
   
   if (!is.null(future) || !is.null(output)) {
     cat("\n\nDEBUG: BEGIN TROUBLESHOOTING HELP\n")
