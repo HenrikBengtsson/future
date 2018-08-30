@@ -28,11 +28,6 @@
 #'
 #' @keywords internal
 getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
-  ## Nothing to do?
-  if (is.logical(globals) && !globals) {
-    return(list(expr = expr, globals = list(), packages = character(0)))
-  }
-  
   debug <- getOption("future.debug", FALSE)
   if (debug) mdebug("getGlobalsAndPackages() ...")
   
@@ -50,26 +45,48 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     mustExist <- is.element(globals.onMissing, "error")
   }
 
-
-  ## Alt 1. Identify globals based on expr, envir and tweak
+  ## Any manually added globals?
+  add <- attr(globals, "add", exact = TRUE)
+  if (!is.null(add)) {
+    if (is.character(add)) {
+      if (debug) mdebug("Retrieving 'add' globals ...")
+      add <- globalsByName(add, envir = envir, mustExist = mustExist)
+      if (debug) mdebug("- 'add' globals retrieved: [%d] %s", length(add), hpaste(sQuote(names(add))))
+      if (debug) mdebug("Retrieving 'add' globals ... DONE")
+    } else if (inherits(add, "Globals")) {
+      if (debug) mdebug("- 'add' globals passed as-is: [%d] %s", length(add), hpaste(sQuote(names(add))))
+    } else if (is.list(add)) {
+      if (debug) mdebug("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
+    } else {
+      stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
+    }
+    add <- as.FutureGlobals(add)
+    stop_if_not(inherits(add, "FutureGlobals"))
+  }
+  
   if (is.logical(globals)) {
     stop_if_not(length(globals) == 1, !is.na(globals))
-    if (debug) mdebug("Searching for globals ...")
-    ## Algorithm for identifying globals
-    globals.method <- getOption("future.globals.method", "ordered")
-    globals <- globalsOf(
-                 ## Passed to globals::findGlobals()
-                 expr, envir = envir, substitute = FALSE, tweak = tweak,
-                 ## Passed to globals::findGlobals() via '...'
-                 dotdotdot = "return",
-                 method = globals.method,
-                 unlist = TRUE,
-                 ## Passed to globals::globalsByName()
-                 mustExist = mustExist,
-                 recursive = TRUE
-               )
-    if (debug) mdebug("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-    if (debug) mdebug("Searching for globals ... DONE")
+    if (globals) {
+      if (debug) mdebug("Searching for globals ...")
+      ## Algorithm for identifying globals
+      globals.method <- getOption("future.globals.method", "ordered")
+      globals <- globalsOf(
+                   ## Passed to globals::findGlobals()
+                   expr, envir = envir, substitute = FALSE, tweak = tweak,
+                   ## Passed to globals::findGlobals() via '...'
+                   dotdotdot = "return",
+                   method = globals.method,
+                   unlist = TRUE,
+                   ## Passed to globals::globalsByName()
+                   mustExist = mustExist,
+                   recursive = TRUE
+                 )
+      if (debug) mdebug("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      if (debug) mdebug("Searching for globals ... DONE")
+    } else {
+      if (debug) mdebug("Not searching for globals")
+      globals <- FutureGlobals()
+    }
   } else if (is.character(globals)) {
     if (debug) mdebug("Retrieving globals ...")
     globals <- globalsByName(globals, envir = envir, mustExist = mustExist)
@@ -85,6 +102,11 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)
   stop_if_not(inherits(globals, "FutureGlobals"))
+
+  ## Append 'add' globals?
+  if (inherits(add, "FutureGlobals")) {
+    globals <- unique(c(globals, add))
+  }
 
   ## Nothing more to do?
   if (length(globals) == 0) {
