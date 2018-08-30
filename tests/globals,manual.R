@@ -155,6 +155,15 @@ for (strategy in supportedStrategies()) {
   print(v)
   stopifnot(all.equal(v, v0))
 
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = globals))
+  print(f)
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
   y %<-% {
     x <- 1:10
     sumtwo(a + b * x)
@@ -166,6 +175,13 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% globals
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = globals)
   print(y)
   stopifnot(all.equal(y, v0))
 
@@ -194,6 +210,17 @@ for (strategy in supportedStrategies()) {
   stopifnot(all.equal(v, v0))
 
   attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = c("a", "b", "sumtwo")))
+  print(f)
+  rm(list = names(globals))
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  attachLocally(globals)
   y %<-% {
     x <- 1:10
     sumtwo(a + b * x)
@@ -207,6 +234,15 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% c("a", "b", "sumtwo")
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = c("a", "b", "sumtwo"))
   rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
