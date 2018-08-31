@@ -850,13 +850,16 @@ pid_exists <- function(pid) {
         ##  signal is actually sent. The null signal can be used to check the 
         ##  validity of pid." [1]
         as.logical(pskill(pid, signal = 0L))
-      }, error = function(ex) NULL)
-      if (is.logical(res)) return(res)
+      }, error = function(ex) NA)
+      if (!is.na(res)) return(res)
     }
     res <- tryCatch({
-      system2("ps", args = c("--pid", pid), stdout = FALSE) == 0L
-    }, error = function(ex) NULL)
-    if (is.logical(res)) return(res)
+      ## 'ps -p <pid>' is likely to work in more cases than 'ps --pid <pid>'
+      res <- system2("ps", args = c("-p", pid), stdout = FALSE, stderr = FALSE)
+      if (res < 0) return(NA)
+      (res == 0L)
+    }, error = function(ex) NA)
+    if (!is.na(res)) return(res)
   }
 
   if (os == "windows") {  ## Microsoft Windows
@@ -866,8 +869,8 @@ pid_exists <- function(pid) {
                      args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH"),
                      stdout = TRUE)
       any(grepl(sprintf(" %g ", pid), out))
-    }, error = function(ex) NULL)	      
-    if (is.logical(res)) return(res)
+    }, error = function(ex) NA)
+    if (!is.na(res)) return(res)
 
     ## Example: tasklist [2]
     res <- tryCatch({
@@ -879,8 +882,8 @@ pid_exists <- function(pid) {
       out <- lapply(out, FUN = function(x) x[2])
       out <- as.integer(unlist(out, use.names = FALSE))
       any(out == pid)
-    }, error = function(ex) NULL)	      
-    if (is.logical(res)) return(res)
+    }, error = function(ex) NA)
+    if (!is.na(res)) return(res)
   }
 
   NA 
