@@ -880,7 +880,7 @@ pid_exists <- local({
       }, error = function(ex) NA)
     }
   } else {
-    pid_exists_by_pskill <- function(pid) NA
+    pid_exists_by_pskill <- function(pid, debug = FALSE) NA
   }
 
   pid_exists_by_ps <- function(pid, debug = FALSE) {
