@@ -213,11 +213,22 @@ message("*** myExternalIP() ... DONE")
 # pid_exists()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** pid_exists() ...")
+options(future.debug = TRUE)
+
 pid <- Sys.getpid()
 printf("Current PID: %d\n", pid)
 
 exists <- pid_exists(pid)
 printf("Does it exist: %s\n", exists)
+
+if (is.na(exists)) {
+  if (.Platform$OS.type == "unix") {
+    print(try(system2("ps", args = pid, stdout = TRUE)))
+  } else if (.Platform$OS.type == "windows") {
+    print(try(system2("tasklist", stdout = TRUE)))
+  }
+  stop("Failed to query system for PID ", pid)
+}
 
 ## Either pid_exists() works and return TRUE here, or it fails
 ## to query the process information at all in case it returns NA

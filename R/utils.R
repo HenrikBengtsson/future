@@ -866,92 +866,155 @@ pid_exists <- local({
   ## This was fixed in R (>= 3.5.0).
   ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
   if (getRversion() >= "3.5.0") {
-    pid_exists_by_pskill <- function(pid) {
+    pid_exists_by_pskill <- function(pid, debug = FALSE) {
       tryCatch({
         ## "If sig is 0 (the null signal), error checking is performed but no 
         ##  signal is actually sent. The null signal can be used to check the 
         ##  validity of pid." [1]
-        as.logical(pskill(pid, signal = 0L))
+        res <- pskill(pid, signal = 0L)
+	if (debug) {
+          cat(sprintf("Call: tools::pskill(%s, signal = 0L)\n", pid))
+	  print(res)
+	}
+        as.logical(res)
       }, error = function(ex) NA)
     }
   } else {
     pid_exists_by_pskill <- function(pid) NA
   }
 
-  pid_exists_by_ps <- function(pid) {
+  pid_exists_by_ps <- function(pid, debug = FALSE) {
     tryCatch({
       ## 'ps <pid> is likely to be supported by more 'ps' clients than
       ## 'ps -p <pid>' and 'ps --pid <pid>'
       out <- suppressWarnings({
-        system2("ps", args = c("-p", pid), stdout = TRUE, stderr = FALSE)
-      })	
+        system2("ps", args = pid, stdout = TRUE, stderr = FALSE)
+      })
+      if (debug) {
+        cat(sprintf("Call: ps %s\n", pid))
+        print(out)
+	str(out)
+      }
       status <- attr(out, "status")
       if (is.numeric(status) && status < 0) return(NA)
       out <- gsub("(^[ ]+|[ ]+$)", "", out)
+      out <- out[nzchar(out)]
+      if (debug) {
+        cat("Trimmed:\n")
+        print(out)
+	str(out)
+      }
       out <- strsplit(out, split = "[ ]+", fixed = FALSE)
       out <- lapply(out, FUN = function(x) x[1])
-      out <- suppressWarnings(as.integer(unlist(out, use.names = FALSE)))
+      out <- unlist(out, use.names = FALSE)
+      if (debug) {
+        cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
+      out <- suppressWarnings(as.integer(out))
+      if (debug) {
+        cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
       any(out == pid)
     }, error = function(ex) NA)
   }
 
-  pid_exists_by_tasklist_filter <- function(pid) {
+  pid_exists_by_tasklist_filter <- function(pid, debug = FALSE) {
     ## Example: tasklist /FI "PID eq 12345" /NH  [2]
     tryCatch({
-      out <- system2(
-        "tasklist",
-        args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH"),
-        stdout = TRUE
-      )
-      any(grepl(sprintf(" %g ", pid), out))
+      args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH")
+      out <- system2("tasklist", args = args, stdout = TRUE)
+      if (debug) {
+        cat(sprintf("Call: tasklist %s\n", paste(args, collapse = " ")))
+        print(out)
+	str(out)
+      }
+      out <- gsub("(^[ ]+|[ ]+$)", "", out)
+      out <- out[nzchar(out)]
+      if (debug) {
+        cat("Trimmed:\n")
+        print(out)
+	str(out)
+      }
+      out <- grepl(sprintf(" %g ", pid), out)
+      if (debug) {
+        cat("Contains PID: ", paste(out, collapse = ", "), "\n", sep = "")
+      }
+      any(out)
     }, error = function(ex) NA)
   }
 
-  pid_exists_by_tasklist <- function(pid) {
+  pid_exists_by_tasklist <- function(pid, debug = FALSE) {
     ## Example: tasklist [2]
     tryCatch({
       out <- system2("tasklist", stdout = TRUE)
+      if (debug) {
+        cat("Call: tasklist\n")
+        print(out)
+	str(out)
+      }
+      out <- gsub("(^[ ]+|[ ]+$)", "", out)
       out <- out[nzchar(out)]
       skip <- grep("^====", out)[1]
       if (!is.na(skip)) out <- out[seq(from = skip + 1L, to = length(out))]
+      if (debug) {
+        cat("Trimmed:\n")
+        print(out)
+	str(out)
+      }
       out <- strsplit(out, split = "[ ]+", fixed = FALSE)
       out <- lapply(out, FUN = function(x) x[2])
-      out <- as.integer(unlist(out, use.names = FALSE))
-      any(out == pid)
+      out <- unlist(out, use.names = FALSE)
+      if (debug) {
+        cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
+      out <- as.integer(out)
+      if (debug) {
+        cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
+      out <- (out == pid)
+      if (debug) {
+        cat("Equals PID: ", paste(out, collapse = ", "), "\n", sep = "")
+      }
+      any(out)
     }, error = function(ex) NA)
   }
 
-  pid_check <- NULL
+  cache <- list()
 
-  function(pid) {
+  function(pid, debug = getOption("future.debug", FALSE)) {
     stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
 
-    print(pid_check)
+    pid_check <- cache$pid_check
     
     ## Does a working pid_check() exist?
-    if (!is.null(pid_check)) return(pid_check(pid))
-
-    ## Default to NA
-    pid_check <<- function(pid) NA
+    if (!is.null(pid_check)) return(pid_check(pid, debug = debug))
 
     ## Try to find a working pid_check() function, i.e. one where
     ## pid_check(Sys.getpid()) == TRUE
     if (os == "unix") {  ## Unix, Linux, and macOS
-      if (isTRUE(pid_exists_by_pskill(Sys.getpid()))) {
-        pid_check <<- pid_exists_by_pskill
-      } else if (isTRUE(pid_exists_by_ps(Sys.getpid()))) {
-        pid_check <<- pid_exists_by_ps
+      if (isTRUE(pid_exists_by_pskill(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_pskill
+      } else if (isTRUE(pid_exists_by_ps(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_ps
       }
     } else if (os == "windows") {  ## Microsoft Windows
-      if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid()))) {
-        pid_check <<- pid_exists_by_tasklist_filter
-      } else if (isTRUE(pid_exists_by_tasklist(Sys.getpid()))) {
-        pid_check <<- pid_exists_by_tasklist_filter
+      if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_tasklist_filter
+      } else if (isTRUE(pid_exists_by_tasklist(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_tasklist
       }
     }
 
-    ## Sanity check
-    stop_if_not(isTRUE(pid_check(Sys.getpid())))
+    if (is.null(pid_check)) {
+      ## Default to NA
+      pid_check <- function(pid) NA
+    } else {
+      ## Sanity check
+      stop_if_not(isTRUE(pid_check(Sys.getpid(), debug = debug)))
+    }
+
+    ## Record
+    cache$pid_check <- pid_check
     
     pid_check(pid)
   }
