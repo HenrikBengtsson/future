@@ -946,6 +946,7 @@ pid_exists <- local({
         any(out)
       }, error = function(ex) NA)
       if (isTRUE(res)) return(res)
+      Sys.sleep(0.1)
     }
     res
   }
@@ -986,6 +987,7 @@ pid_exists <- local({
         any(out)
       }, error = function(ex) NA)
       if (isTRUE(res)) return(res)
+      Sys.sleep(0.1)
     }
     res
   }
