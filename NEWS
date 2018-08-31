@@ -5,6 +5,11 @@ Version: 1.9.0-9000 [2018-08-30]
 
 NEW FEATURES:
 
+ o Add support for manually specifying globals in addition to those that are
+   automatically identified via argument 'globals' or %globals%. Two examples
+   are globals = structure(TRUE, add = c("a", "b")) and
+   globals = structure(TRUE, add = list(a = 42L, b = 3.14)).
+
  o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
    parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
    issues where parallel::stopCluster() causes R to stall.
