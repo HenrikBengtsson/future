@@ -841,13 +841,18 @@ pid_exists <- function(pid) {
 
   os <- .Platform$OS.type
   if (os == "unix") {  ## Unix, Linux, and macOS
-    res <- tryCatch({
-      ## "If sig is 0 (the null signal), error checking is performed but no 
-      ##  signal is actually sent. The null signal can be used to check the 
-      ##  validity of pid." [1]
-      as.logical(pskill(pid, signal = 0L))
-    }, error = function(ex) NULL)
-    if (is.logical(res)) return(res)
+    ## The value of tools::pskill() is incorrect in R (< 3.5.0).
+    ## This was fixed in R (>= 3.5.0).
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
+    if (getRversion() >= "3.5.0") {
+      res <- tryCatch({
+        ## "If sig is 0 (the null signal), error checking is performed but no 
+        ##  signal is actually sent. The null signal can be used to check the 
+        ##  validity of pid." [1]
+        as.logical(pskill(pid, signal = 0L))
+      }, error = function(ex) NULL)
+      if (is.logical(res)) return(res)
+    }
     res <- tryCatch({
       system2("ps", args = c("--pid", pid), stdout = FALSE) == 0L
     }, error = function(ex) NULL)
