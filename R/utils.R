@@ -550,7 +550,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
       ## we doomed to have to use of tryCatch() here?
       res <- tryCatch({
         x_kk <- .subset2(x, element)
-	NULL  ## So that 'x_kk' is not returned, which may be missing()
+        NULL  ## So that 'x_kk' is not returned, which may be missing()
       }, error = identity)
 
       ## A promise that cannot be resolved? This could be a false positive,
@@ -805,13 +805,13 @@ resolveMPI <- local({
         if (all(sapply(c("mpi.iprobe", "mpi.any.tag"), FUN = exists,
                        mode = "function", envir = ns, inherits = FALSE))) {
           mpi.iprobe <- get("mpi.iprobe", mode = "function", envir = ns,
-	                    inherits = FALSE)
+                            inherits = FALSE)
           mpi.any.tag <- get("mpi.any.tag", mode = "function", envir = ns,
-  	                     inherits = FALSE)
+                             inherits = FALSE)
           resolveMPI <- function(future) {
             node <- future$workers[[future$node]]
             mpi.iprobe(source = node$rank, tag = mpi.any.tag())
-	  }
+          }
         }
       }
       stopifnot(is.function(resolveMPI))
@@ -872,10 +872,10 @@ pid_exists <- local({
         ##  signal is actually sent. The null signal can be used to check the 
         ##  validity of pid." [1]
         res <- pskill(pid, signal = 0L)
-	if (debug) {
+        if (debug) {
           cat(sprintf("Call: tools::pskill(%s, signal = 0L)\n", pid))
-	  print(res)
-	}
+          print(res)
+        }
         as.logical(res)
       }, error = function(ex) NA)
     }
@@ -893,7 +893,7 @@ pid_exists <- local({
       if (debug) {
         cat(sprintf("Call: ps %s\n", pid))
         print(out)
-	str(out)
+        str(out)
       }
       status <- attr(out, "status")
       if (is.numeric(status) && status < 0) return(NA)
@@ -902,7 +902,7 @@ pid_exists <- local({
       if (debug) {
         cat("Trimmed:\n")
         print(out)
-	str(out)
+        str(out)
       }
       out <- strsplit(out, split = "[ ]+", fixed = FALSE)
       out <- lapply(out, FUN = function(x) x[1])
@@ -920,63 +920,74 @@ pid_exists <- local({
 
   pid_exists_by_tasklist_filter <- function(pid, debug = FALSE) {
     ## Example: tasklist /FI "PID eq 12345" /NH  [2]
-    tryCatch({
-      args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH")
-      out <- system2("tasklist", args = args, stdout = TRUE)
-      if (debug) {
-        cat(sprintf("Call: tasklist %s\n", paste(args, collapse = " ")))
-        print(out)
-	str(out)
-      }
-      out <- gsub("(^[ ]+|[ ]+$)", "", out)
-      out <- out[nzchar(out)]
-      if (debug) {
-        cat("Trimmed:\n")
-        print(out)
-	str(out)
-      }
-      out <- grepl(sprintf(" %g ", pid), out)
-      if (debug) {
-        cat("Contains PID: ", paste(out, collapse = ", "), "\n", sep = "")
-      }
-      any(out)
-    }, error = function(ex) NA)
+    ## Try multiple times, because 'tasklist' seems to be unreliable, e.g.
+    ## I've observed on win-builder that two consecutive calls filtering
+    ## on Sys.getpid() once found a match while the second time none.
+    for (kk in 1:5) {
+      res <- tryCatch({
+        args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH")
+        out <- system2("tasklist", args = args, stdout = TRUE)
+        if (debug) {
+          cat(sprintf("Call: tasklist %s\n", paste(args, collapse = " ")))
+          print(out)
+          str(out)
+        }
+        out <- gsub("(^[ ]+|[ ]+$)", "", out)
+        out <- out[nzchar(out)]
+        if (debug) {
+          cat("Trimmed:\n")
+          print(out)
+          str(out)
+        }
+        out <- grepl(sprintf(" %g ", pid), out)
+        if (debug) {
+          cat("Contains PID: ", paste(out, collapse = ", "), "\n", sep = "")
+        }
+        any(out)
+      }, error = function(ex) NA)
+      if (isTRUE(res)) return(res)
+    }
+    res
   }
 
   pid_exists_by_tasklist <- function(pid, debug = FALSE) {
     ## Example: tasklist [2]
-    tryCatch({
-      out <- system2("tasklist", stdout = TRUE)
-      if (debug) {
-        cat("Call: tasklist\n")
-        print(out)
-	str(out)
-      }
-      out <- gsub("(^[ ]+|[ ]+$)", "", out)
-      out <- out[nzchar(out)]
-      skip <- grep("^====", out)[1]
-      if (!is.na(skip)) out <- out[seq(from = skip + 1L, to = length(out))]
-      if (debug) {
-        cat("Trimmed:\n")
-        print(out)
-	str(out)
-      }
-      out <- strsplit(out, split = "[ ]+", fixed = FALSE)
-      out <- lapply(out, FUN = function(x) x[2])
-      out <- unlist(out, use.names = FALSE)
-      if (debug) {
-        cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
-      }
-      out <- as.integer(out)
-      if (debug) {
-        cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
-      }
-      out <- (out == pid)
-      if (debug) {
-        cat("Equals PID: ", paste(out, collapse = ", "), "\n", sep = "")
-      }
-      any(out)
-    }, error = function(ex) NA)
+    for (kk in 1:5) {
+      res <- tryCatch({
+        out <- system2("tasklist", stdout = TRUE)
+        if (debug) {
+          cat("Call: tasklist\n")
+          print(out)
+          str(out)
+        }
+        out <- gsub("(^[ ]+|[ ]+$)", "", out)
+        out <- out[nzchar(out)]
+        skip <- grep("^====", out)[1]
+        if (!is.na(skip)) out <- out[seq(from = skip + 1L, to = length(out))]
+        if (debug) {
+          cat("Trimmed:\n")
+          print(out)
+          str(out)
+        }
+        out <- strsplit(out, split = "[ ]+", fixed = FALSE)
+        out <- lapply(out, FUN = function(x) x[2])
+        out <- unlist(out, use.names = FALSE)
+        if (debug) {
+          cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+        }
+        out <- as.integer(out)
+        if (debug) {
+          cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+        }
+        out <- (out == pid)
+        if (debug) {
+          cat("Equals PID: ", paste(out, collapse = ", "), "\n", sep = "")
+        }
+        any(out)
+      }, error = function(ex) NA)
+      if (isTRUE(res)) return(res)
+    }
+    res
   }
 
   cache <- list()
@@ -998,10 +1009,10 @@ pid_exists <- local({
         pid_check <- pid_exists_by_ps
       }
     } else if (os == "windows") {  ## Microsoft Windows
-      if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid(), debug = debug))) {
-        pid_check <- pid_exists_by_tasklist_filter
-      } else if (isTRUE(pid_exists_by_tasklist(Sys.getpid(), debug = debug))) {
+      if (isTRUE(pid_exists_by_tasklist(Sys.getpid(), debug = debug))) {
         pid_check <- pid_exists_by_tasklist
+      } else if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_tasklist_filter
       }
     }
 
