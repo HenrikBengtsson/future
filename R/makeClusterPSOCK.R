@@ -275,6 +275,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     localMachine <- is_localhost(worker)
     if (localMachine) worker <- "localhost"
   }
+  attr(worker, "localhost") <- localMachine
 
   manual <- as.logical(manual)
   stop_if_not(length(manual) == 1L, !is.na(manual))
