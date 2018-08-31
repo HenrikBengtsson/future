@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.9.0-9000 [2018-08-23]
+Version: 1.9.0-9000 [2018-08-30]
 
 NEW FEATURES:
 
@@ -11,6 +11,10 @@ NEW FEATURES:
    
  o [BETA] Now resolved() for ClusterFuture is non-blocking also for clusters
    of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
+
+ o The error reported when failing to retrieve the results of a future
+   evaluated on a localhost cluster worker is now more informative,
+   specifically it mentions whether the worker process is still alive or not.
 
 BUG FIXES:
 

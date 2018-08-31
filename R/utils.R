@@ -821,3 +821,38 @@ resolveMPI <- local({
     resolveMPI(future)
   }
 })
+
+
+#' @references
+#' 1. The Open Group Base Specifications Issue 7, 2018 edition,
+#'    IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
+#'    <http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html>
+#' 2. R-devel thread 'Detecting whether a process exists or not by its PID?',
+#'    2018-08-30.
+#'    <https://stat.ethz.ch/pipermail/r-devel/2018-August/076702.html>
+#'
+#' @importFrom tools pskill
+pid_exists <- function(pid) {
+  stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
+
+  os <- .Platform$OS.type
+  if (os == "unix") {
+    res <- tryCatch({
+      ## "If sig is 0 (the null signal), error checking is performed but no 
+      ##  signal is actually sent. The null signal can be used to check the 
+      ##  validity of pid." [1]
+      as.logical(pskill(pid, signal = 0L))
+    }, error = function(ex) NULL)
+    if (is.logical(res)) return(res)
+    res <- tryCatch({
+      system2("ps", args = c("--pid", pid), stdout = FALSE) == 0L
+    }, error = function(ex) NULL)
+    if (is.logical(res)) return(res)
+    return(NA)
+  }
+
+  if (os == "windows") {
+  }
+
+  NA 
+}

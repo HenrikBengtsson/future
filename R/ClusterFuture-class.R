@@ -270,38 +270,64 @@ result.ClusterFuture <- function(future, ...) {
   workers <- future$workers
   node_idx <- future$node
   cl <- workers[node_idx]
+  node <- cl[[1]]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
-    result <- recvResult(cl[[1]])
+    result <- recvResult(node)
     TRUE
   }, simpleError = function(ex) ex)
 
   if (inherits(ack, "simpleError")) {
-  
-    ## If the worker uses a connection and that has changed, report on that!
-    node <- cl[[1]]
-    if (inherits(node$con, "connection")) {
-      msg <- check_connection_uuid(node, future = future)
-      if (!is.null(msg)) {
-        on_failure <- getOption("future.cluster.invalidConnection", "error")
-        if (on_failure == "error") {
-          ex <- FutureError(msg, future = future)
-          future$result <- ex
-          stop(ex)          
-        }
-        warning(FutureWarning(msg, future = future))
-        return(sprintf("EXCEPTIONAL ERROR: %s", msg))
-      }
-    }
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    
+    pid <- node$session_info$process$pid
+    pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
 
     ## AD HOC: This assumes that the worker has a hostname, which is not
     ## the case for MPI workers. /HB 2017-03-07
-    info <- node$host
-    info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
-    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
+    host <- node$host
+    localhost <- isTRUE(attr(host, "localhost", exact = TRUE))
+    host_info <- if (!is.null(host)) {
+      sprintf("on %s%s", if (localhost) "localhost " else "", sQuote(host))
+    } else NULL
+    
+    info <- paste(c(pid_info, host_info), collapse = " ")
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).", class(future)[1], label, class(node)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
+    
+    ## POST-MORTEM ANALYSIS:
+    postmortem <- list()
+    
+    ## (a) Did the worker use a connection that changed?
+    if (inherits(node$con, "connection")) {
+      postmortem$connection <- check_connection_uuid(node, future = future)
+    }
+
+    ## (b) Did a localhost worker process terminate?
+    if (!is.null(host)) {
+      if (localhost && is.numeric(pid)) {
+        alive <- pid_exists(pid)
+	if (is.na(alive)) {
+	  msg2 <- "Failed to determined whether this localhost worker is alive or not."
+	} else if (alive) {
+	  msg2 <- "This localhost worker is alive."
+	} else {
+	  msg2 <- "This localhost worker is no longer alive."
+	}
+	postmortem$alive <- msg2
+      }
+    }
+
+    postmortem <- unlist(postmortem, use.names = FALSE)
+    if (!is.null(postmortem)) {
+       postmortem <- sprintf("Post-mortem diagnostic: %s",
+                             paste(postmortem, collapse = ". "))
+       msg <- paste0(msg, ". ", postmortem)
+    }
+
     ex <- FutureError(msg, call = ack$call, future = future)
     future$result <- ex
     stop(ex)          
@@ -422,6 +448,6 @@ check_connection_uuid <- function(worker, future, on_failure = "error") {
   
   uuid <- attr(con, "uuid", exact = TRUE)
   uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
-  if (uuid_now == uuid) return(NULL) 
-  sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason is that the socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", class(future)[1], future$node, sQuote(worker$host), uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
+  if (uuid_now == uuid) return(NULL)
+  sprintf("The socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
 } ## check_connection_uuid()

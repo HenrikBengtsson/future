@@ -209,6 +209,21 @@ message("myExternalIP(): ", ip)
 message("*** myExternalIP() ... DONE")
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# pid_exists()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** pid_exists() ...")
+pid <- Sys.getpid()
+printf("Current PID: %d\n", pid)
+
+exists <- pid_exists(pid)
+printf("Does it exist: %s\n", exists)
+
+os <- .Platform$OS.type
+stopifnot(os != "unix" || exists)
+
+message("*** pid_exists() ... DONE")
+
 message("*** utils ... DONE")
 
 source("incl/end.R")
