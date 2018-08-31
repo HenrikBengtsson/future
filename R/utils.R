@@ -821,3 +821,67 @@ resolveMPI <- local({
     resolveMPI(future)
   }
 })
+
+
+#' @references
+#' 1. The Open Group Base Specifications Issue 7, 2018 edition,
+#'    IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
+#'    <http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html>
+#'
+#' 2. Microsoft, tasklist, 2018-08-30,
+#'    <https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist>
+#'
+#' 3. R-devel thread 'Detecting whether a process exists or not by its PID?',
+#'    2018-08-30.
+#'    <https://stat.ethz.ch/pipermail/r-devel/2018-August/076702.html>
+#'
+#' @importFrom tools pskill
+pid_exists <- function(pid) {
+  stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
+
+  os <- .Platform$OS.type
+  if (os == "unix") {  ## Unix, Linux, and macOS
+    ## The value of tools::pskill() is incorrect in R (< 3.5.0).
+    ## This was fixed in R (>= 3.5.0).
+    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
+    if (getRversion() >= "3.5.0") {
+      res <- tryCatch({
+        ## "If sig is 0 (the null signal), error checking is performed but no 
+        ##  signal is actually sent. The null signal can be used to check the 
+        ##  validity of pid." [1]
+        as.logical(pskill(pid, signal = 0L))
+      }, error = function(ex) NULL)
+      if (is.logical(res)) return(res)
+    }
+    res <- tryCatch({
+      system2("ps", args = c("--pid", pid), stdout = FALSE) == 0L
+    }, error = function(ex) NULL)
+    if (is.logical(res)) return(res)
+  }
+
+  if (os == "windows") {  ## Microsoft Windows
+    ## Example: tasklist /FI "PID eq 12345" /NH  [2]
+    res <- tryCatch({
+      out <- system2("tasklist",
+                     args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH"),
+                     stdout = TRUE)
+      any(grepl(sprintf(" %g ", pid), out))
+    }, error = function(ex) NULL)	      
+    if (is.logical(res)) return(res)
+
+    ## Example: tasklist [2]
+    res <- tryCatch({
+      out <- system2("tasklist", stdout = TRUE)
+      out <- out[nzchar(out)]
+      skip <- grep("^====", out)[1]
+      if (!is.na(skip)) out <- out[seq(from = skip + 1L, to = length(out))]
+      out <- strsplit(out, split = "[ ]+", fixed = FALSE)
+      out <- lapply(out, FUN = function(x) x[2])
+      out <- as.integer(unlist(out, use.names = FALSE))
+      any(out == pid)
+    }, error = function(ex) NULL)	      
+    if (is.logical(res)) return(res)
+  }
+
+  NA 
+}
