@@ -822,58 +822,94 @@ resolveMPI <- local({
   }
 })
 
-
+#' Check whether a process PID exists or not
+#'
+#' @param pid A postive integer.
+#'
+#' @return Returns \code{TRUE} if a process with the given PID exists,
+#' \code{FALSE} if a process with the given PID does not exists, and
+#' \code{NA} if it is not possible to check PIDs on the current system.
+#'
+#' @details
+#' There is no single go-to function in \R for testing whether a PID exists
+#' or not.  Instead, this function tries to identify a working one among
+#' multiple possible alternatives.  A method is considered working if the
+#' PID of the current process is successfully identified as being existing
+#' such that \code{pid_exists(Sys.getpid())} is \code{TRUE}.  If no working
+#' approach is found, \code{pid_exists()} will always return \code{NA}
+#' regardless of PID tested.
+#' On Unix, including macOS, alternatives \code{tools::pskill(pid, signal = 0L)}
+#' and \code{system2("ps", args = pid)} are used.
+#' On Windows, various alternatives of \code{system2("tasklist", ...)} are used.
+#'
 #' @references
 #' 1. The Open Group Base Specifications Issue 7, 2018 edition,
 #'    IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
-#'    <http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html>
+#'    \url{http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html}
 #'
 #' 2. Microsoft, tasklist, 2018-08-30,
-#'    <https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist>
+#'    \url{https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist}
 #'
 #' 3. R-devel thread 'Detecting whether a process exists or not by its PID?',
 #'    2018-08-30.
-#'    <https://stat.ethz.ch/pipermail/r-devel/2018-August/076702.html>
+#'    \url{https://stat.ethz.ch/pipermail/r-devel/2018-August/076702.html}
+#'
+#' @seealso
+#' \code{\link[tools]{pskill}()} and \code{\link[base]{system2}()}.
 #'
 #' @importFrom tools pskill
-pid_exists <- function(pid) {
-  stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
-
+#' @keywords internal
+pid_exists <- local({
   os <- .Platform$OS.type
-  if (os == "unix") {  ## Unix, Linux, and macOS
-    ## The value of tools::pskill() is incorrect in R (< 3.5.0).
-    ## This was fixed in R (>= 3.5.0).
-    ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
-    if (getRversion() >= "3.5.0") {
-      res <- tryCatch({
+
+  ## The value of tools::pskill() is incorrect in R (< 3.5.0).
+  ## This was fixed in R (>= 3.5.0).
+  ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
+  if (getRversion() >= "3.5.0") {
+    pid_exists_by_pskill <- function(pid) {
+      tryCatch({
         ## "If sig is 0 (the null signal), error checking is performed but no 
         ##  signal is actually sent. The null signal can be used to check the 
         ##  validity of pid." [1]
         as.logical(pskill(pid, signal = 0L))
       }, error = function(ex) NA)
-      if (!is.na(res)) return(res)
     }
-    res <- tryCatch({
-      ## 'ps -p <pid>' is likely to work in more cases than 'ps --pid <pid>'
-      res <- system2("ps", args = c("-p", pid), stdout = FALSE, stderr = FALSE)
-      if (res < 0) return(NA)
-      (res == 0L)
-    }, error = function(ex) NA)
-    if (!is.na(res)) return(res)
+  } else {
+    pid_exists_by_pskill <- function(pid) NA
   }
 
-  if (os == "windows") {  ## Microsoft Windows
+  pid_exists_by_ps <- function(pid) {
+    tryCatch({
+      ## 'ps <pid> is likely to be supported by more 'ps' clients than
+      ## 'ps -p <pid>' and 'ps --pid <pid>'
+      out <- suppressWarnings({
+        system2("ps", args = c("-p", pid), stdout = TRUE, stderr = FALSE)
+      })	
+      status <- attr(out, "status")
+      if (is.numeric(status) && status < 0) return(NA)
+      out <- gsub("(^[ ]+|[ ]+$)", "", out)
+      out <- strsplit(out, split = "[ ]+", fixed = FALSE)
+      out <- lapply(out, FUN = function(x) x[1])
+      out <- suppressWarnings(as.integer(unlist(out, use.names = FALSE)))
+      any(out == pid)
+    }, error = function(ex) NA)
+  }
+
+  pid_exists_by_tasklist_filter <- function(pid) {
     ## Example: tasklist /FI "PID eq 12345" /NH  [2]
-    res <- tryCatch({
-      out <- system2("tasklist",
-                     args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH"),
-                     stdout = TRUE)
+    tryCatch({
+      out <- system2(
+        "tasklist",
+        args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH"),
+        stdout = TRUE
+      )
       any(grepl(sprintf(" %g ", pid), out))
     }, error = function(ex) NA)
-    if (!is.na(res)) return(res)
+  }
 
+  pid_exists_by_tasklist <- function(pid) {
     ## Example: tasklist [2]
-    res <- tryCatch({
+    tryCatch({
       out <- system2("tasklist", stdout = TRUE)
       out <- out[nzchar(out)]
       skip <- grep("^====", out)[1]
@@ -883,8 +919,40 @@ pid_exists <- function(pid) {
       out <- as.integer(unlist(out, use.names = FALSE))
       any(out == pid)
     }, error = function(ex) NA)
-    if (!is.na(res)) return(res)
   }
 
-  NA 
-}
+  pid_check <- NULL
+
+  function(pid) {
+    stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
+
+    print(pid_check)
+    
+    ## Does a working pid_check() exist?
+    if (!is.null(pid_check)) return(pid_check(pid))
+
+    ## Default to NA
+    pid_check <<- function(pid) NA
+
+    ## Try to find a working pid_check() function, i.e. one where
+    ## pid_check(Sys.getpid()) == TRUE
+    if (os == "unix") {  ## Unix, Linux, and macOS
+      if (isTRUE(pid_exists_by_pskill(Sys.getpid()))) {
+        pid_check <<- pid_exists_by_pskill
+      } else if (isTRUE(pid_exists_by_ps(Sys.getpid()))) {
+        pid_check <<- pid_exists_by_ps
+      }
+    } else if (os == "windows") {  ## Microsoft Windows
+      if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid()))) {
+        pid_check <<- pid_exists_by_tasklist_filter
+      } else if (isTRUE(pid_exists_by_tasklist(Sys.getpid()))) {
+        pid_check <<- pid_exists_by_tasklist_filter
+      }
+    }
+
+    ## Sanity check
+    stop_if_not(isTRUE(pid_check(Sys.getpid())))
+    
+    pid_check(pid)
+  }
+})
