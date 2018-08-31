@@ -219,8 +219,11 @@ printf("Current PID: %d\n", pid)
 exists <- pid_exists(pid)
 printf("Does it exist: %s\n", exists)
 
-os <- .Platform$OS.type
-stopifnot(os != "unix" || exists)
+## Either pid_exists() works and return TRUE here, or it fails
+## to query the process information at all in case it returns NA
+## However, it should never return FALSE.
+stopifnot(is.logical(exists), length(exists) == 1L,
+          isTRUE(exists) || is.na(exists))
 
 message("*** pid_exists() ... DONE")
 
