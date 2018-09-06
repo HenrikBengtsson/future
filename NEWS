@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.9.0-9000 [2018-08-30]
+Version: 1.9.0-9000 [2018-09-05]
 
 NEW FEATURES:
 
@@ -20,6 +20,10 @@ NEW FEATURES:
  o The error reported when failing to retrieve the results of a future
    evaluated on a localhost cluster worker is now more informative,
    specifically it mentions whether the worker process is still alive or not.
+
+ o makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for
+   controlling whether the cluster should be automatically stopped when
+   garbage collected or not.
 
 BUG FIXES:
 

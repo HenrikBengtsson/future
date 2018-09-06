@@ -10,13 +10,13 @@
 #'
 #' \emph{Creating MPI clusters requires the \bold{Rmpi} package.}
 #'
+#' @inheritParams makeClusterPSOCK
+#'
 #' @param workers The number workers (as a positive integer).
 #' 
 #' @param \dots Optional arguments passed to
 #' \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.
 #' 
-#' @param verbose If TRUE, informative messages are outputted.
-#'
 #' @return An object of class \code{"FutureMPIcluster"} consisting
 #' of a list of \code{"MPInode"} workers.
 #'
@@ -29,7 +29,7 @@
 #'
 #' @importFrom parallel makeCluster
 #' @export
-makeClusterMPI <- function(workers, ..., verbose = getOption("future.debug", FALSE)) {
+makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -75,6 +75,8 @@ makeClusterMPI <- function(workers, ..., verbose = getOption("future.debug", FAL
   ## REFERENCE: https://stackoverflow.com/a/44317647/1072091
   class(cl) <- c("FutureMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
 
+  if (autoStop) cl <- autoStopCluster(cl)
+  
   cl
 } ## makeClusterMPI()
 

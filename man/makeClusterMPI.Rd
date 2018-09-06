@@ -4,13 +4,16 @@
 \alias{makeClusterMPI}
 \title{Create a Message Passing Interface (MPI) cluster of \R workers for parallel processing}
 \usage{
-makeClusterMPI(workers, ..., verbose = getOption("future.debug", FALSE))
+makeClusterMPI(workers, ..., autoStop = FALSE,
+  verbose = getOption("future.debug", FALSE))
 }
 \arguments{
 \item{workers}{The number workers (as a positive integer).}
 
 \item{\dots}{Optional arguments passed to
 \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.}
+
+\item{autoStop}{If TRUE, the cluster will be automatically stopped}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 }

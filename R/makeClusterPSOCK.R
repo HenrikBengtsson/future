@@ -19,7 +19,11 @@
 #' @param \dots Optional arguments passed to
 #' \code{makeNode(workers[i], ..., rank = i)} where
 #' \code{i = seq_along(workers)}.
-#' 
+#'
+#' @param autoStop If TRUE, the cluster will be automatically stopped
+#  (using \code{\link[parallel:stopCluster]{stopCluster}()}) when it is
+#  garbage collected, unless already stopped.
+#'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
 #' @return An object of class \code{c("SOCKcluster", "cluster")} consisting
@@ -28,7 +32,7 @@
 #' @example incl/makeClusterPSOCK.R
 #'
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -94,6 +98,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     
     if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
   }
+
+  if (autoStop) cl <- autoStopCluster(cl)
   
   cl
 } ## makeClusterPSOCK()
@@ -612,3 +618,48 @@ add_cluster_session_info <- function(cl) {
   
   cl
 } ## add_cluster_session_info()
+
+#' Automatically stop a cluster when garbage collected
+#'
+#' Registers a finalizer to a cluster such that the cluster will
+#' be stopped when garbage collected
+#'
+#' @param cl A cluster object
+#'
+#' @param debug If TRUE, then debug messages are produced when
+#' the cluster is garbage collected.
+#'
+#' @return The cluster object with attribute `gcMe` set.
+#'
+#' @importFrom parallel stopCluster
+#' @importFrom utils capture.output
+#'
+#' @seealso
+#' The cluster is stopped using
+#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}).
+#'
+#' @keywords internal
+#' @export
+autoStopCluster <- function(cl, debug = FALSE) {
+  stop_if_not(inherits(cl, "cluster"))
+  ## Already got a finalizer?
+  if (inherits(attr(cl, "gcMe"), "environment")) return(cl)
+  
+  env <- new.env()
+  env$cluster <- cl
+  attr(cl, "gcMe") <- env
+
+  if (debug) {
+    reg.finalizer(env, function(e) {
+      message("Finalizing cluster ...")
+      message(capture.output(print(e$cluster)))
+      try(stopCluster(e$cluster), silent = FALSE)
+      message("Finalizing cluster ... done")
+    })
+  } else {
+    reg.finalizer(env, function(e) {
+      try(stopCluster(e$cluster), silent = TRUE)
+    })
+  }
+  cl
+}

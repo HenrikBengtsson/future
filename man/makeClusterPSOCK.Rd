@@ -6,7 +6,8 @@
 \title{Create a PSOCK cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
-  "random"), ..., verbose = getOption("future.debug", FALSE))
+  "random"), ..., autoStop = FALSE, verbose = getOption("future.debug",
+  FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
   connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 *
@@ -41,6 +42,8 @@ options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}}
 \item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
 \code{i = seq_along(workers)}.}
+
+\item{autoStop}{If TRUE, the cluster will be automatically stopped}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
