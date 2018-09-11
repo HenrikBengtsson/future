@@ -315,7 +315,7 @@ result.ClusterFuture <- function(future, ...) {
 	} else if (alive) {
 	  msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
 	} else {
-	  msg2 <- "No process exist with this PID, i.e. the localhost worker is no longer alive."
+	  msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
 	}
 	postmortem$alive <- msg2
       }
