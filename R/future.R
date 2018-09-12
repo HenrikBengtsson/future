@@ -164,8 +164,9 @@
 #'
 #'
 #' Although rarely needed, a combination of automatic identification and manual
-#' specification of globals is supported via attributes \code{add} and
-#' \code{ignore} on value \code{TRUE}.  For example, with
+#' specification of globals is supported via attributes \code{add} (to add
+#' false negatives) and \code{ignore} (to ignore false positives) on value
+#' \code{TRUE}.  For example, with
 #' \code{globals = structure(TRUE, ignore = "b", add = "a")} any globals
 #' automatically identified except \code{b} will be used in addition to
 #' global \code{a}.
