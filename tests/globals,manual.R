@@ -276,6 +276,24 @@ for (strategy in supportedStrategies()) {
 
   message("- Packages - manual ...")
 
+  a <- 42
+  message("  + future(..., globals = FALSE)")
+  res <- tryCatch({
+    f <- future({ 2 * a }, globals = FALSE)
+    v <- value(f)
+    print(head(v))
+  }, error = identity)
+  stopifnot(!inherits(f, "ClusterFuture") || inherits(res, "error"))
+
+  message("  + future(..., globals = structure(TRUE, ignore = 'a'))")
+  res <- tryCatch({
+    f <- future({ 2 * a }, globals = structure(TRUE, ignore = "a"))
+    v <- value(f)
+    print(head(v))
+  }, error = identity)
+  stopifnot(!inherits(f, "ClusterFuture") || inherits(res, "error"))
+
+  message("  + future(iris, globals = TRUE) without 'datasets'")
   ## Make sure 'iris', and thereby the 'datasets' package,
   ## is not picked up as a global
   unloadNamespace("datasets")

@@ -45,29 +45,36 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     mustExist <- is.element(globals.onMissing, "error")
   }
 
-  ## Any manually added globals?
-  add <- attr(globals, "add", exact = TRUE)
-  if (!is.null(add)) {
-    if (is.character(add)) {
-      if (debug) mdebug("Retrieving 'add' globals ...")
-      add <- globalsByName(add, envir = envir, mustExist = mustExist)
-      if (debug) mdebug("- 'add' globals retrieved: [%d] %s", length(add), hpaste(sQuote(names(add))))
-      if (debug) mdebug("Retrieving 'add' globals ... DONE")
-    } else if (inherits(add, "Globals")) {
-      if (debug) mdebug("- 'add' globals passed as-is: [%d] %s", length(add), hpaste(sQuote(names(add))))
-    } else if (is.list(add)) {
-      if (debug) mdebug("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
-    } else {
-      stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
-    }
-    add <- as.FutureGlobals(add)
-    stop_if_not(inherits(add, "FutureGlobals"))
-  }
-  
   if (is.logical(globals)) {
     stop_if_not(length(globals) == 1, !is.na(globals))
+
+    ## Any manually added globals?
+    add <- attr(globals, "add", exact = TRUE)
+    if (!is.null(add)) {
+      if (is.character(add)) {
+        if (debug) mdebug("Retrieving 'add' globals ...")
+        add <- globalsByName(add, envir = envir, mustExist = mustExist)
+        if (debug) mdebug("- 'add' globals retrieved: [%d] %s", length(add), hpaste(sQuote(names(add))))
+        if (debug) mdebug("Retrieving 'add' globals ... DONE")
+      } else if (inherits(add, "Globals")) {
+        if (debug) mdebug("- 'add' globals passed as-is: [%d] %s", length(add), hpaste(sQuote(names(add))))
+      } else if (is.list(add)) {
+        if (debug) mdebug("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
+      } else {
+        stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
+      }
+      add <- as.FutureGlobals(add)
+      stop_if_not(inherits(add, "FutureGlobals"))
+    }
+    
+    ## Any manually dropped/ignored globals?
+    ignore <- attr(globals, "ignore", exact = TRUE)
+    if (!is.null(ignore)) {
+      stop_if_not(is.character(ignore))
+    }
+  
     if (globals) {
-      if (debug) mdebug("Searching for globals ...")
+      if (debug) mdebug("Searching for globals...")
       ## Algorithm for identifying globals
       globals.method <- getOption("future.globals.method", "ordered")
       globals <- globalsOf(
@@ -87,6 +94,19 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (debug) mdebug("Not searching for globals")
       globals <- FutureGlobals()
     }
+
+    ## Drop 'ignore' globals?
+    ## FIXME: This should really be implemented in globals::globalsOf()
+    if (!is.null(ignore)) {
+      if (any(ignore %in% names(globals))) {
+        globals <- globals[setdiff(names(globals), ignore)]
+      }
+    }
+  
+    ## Append 'add' globals?
+    if (inherits(add, "FutureGlobals")) {
+      globals <- unique(c(globals, add))
+    }
   } else if (is.character(globals)) {
     if (debug) mdebug("Retrieving globals ...")
     globals <- globalsByName(globals, envir = envir, mustExist = mustExist)
@@ -102,11 +122,6 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)
   stop_if_not(inherits(globals, "FutureGlobals"))
-
-  ## Append 'add' globals?
-  if (inherits(add, "FutureGlobals")) {
-    globals <- unique(c(globals, add))
-  }
 
   ## Nothing more to do?
   if (length(globals) == 0) {
