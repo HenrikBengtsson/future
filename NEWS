@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.9.0-9000 [2018-09-11]
+Version: 1.10.0 [2018-10-16]
 
 NEW FEATURES:
 
@@ -11,21 +11,21 @@ NEW FEATURES:
    globals = structure(TRUE, add = c("a", "b")).  Analogously, attribute
    'ignore' can be used to exclude automatically identified globals.
 
- o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
-   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
-   issues where parallel::stopCluster() causes R to stall.
-   
- o [BETA] Now resolved() for ClusterFuture is non-blocking also for clusters
-   of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
-
  o The error reported when failing to retrieve the results of a future
    evaluated on a localhost cluster/multisession worker or a forked/multicore
    worker is now more informative. Specifically, it mentions whether the worker
    process is still alive or not.
 
+ o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
+   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
+   issues where parallel::stopCluster() causes R to stall.
+   
  o makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for
    controlling whether the cluster should be automatically stopped when
    garbage collected or not.
+
+ o BETA: Now resolved() for ClusterFuture is non-blocking also for clusters
+   of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
 
 BUG FIXES:
 

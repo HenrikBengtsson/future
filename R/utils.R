@@ -824,7 +824,7 @@ resolveMPI <- local({
 
 #' Check whether a process PID exists or not
 #'
-#' @param pid A postive integer.
+#' @param pid A positive integer.
 #'
 #' @return Returns \code{TRUE} if a process with the given PID exists,
 #' \code{FALSE} if a process with the given PID does not exists, and
