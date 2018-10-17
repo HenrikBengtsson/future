@@ -1,6 +1,5 @@
 source("incl/start.R")
 library("listenv")
-plan(multisession)
 
 message("*** multisession() ...")
 
@@ -43,13 +42,13 @@ for (cores in 1:availCores) {
 
   message("*** multisession() with globals and blocking")
   x <- listenv()
-  for (ii in 1:4) {
+  for (ii in 2:1) {
     message(sprintf(" - Creating multisession future #%d ...", ii))
     x[[ii]] <- multisession({ ii })
   }
   message(sprintf(" - Resolving %d multisession futures", length(x)))
   v <- sapply(x, FUN = value)
-  stopifnot(all(v == 1:4))
+  stopifnot(all(v == 1:2))
 
 
   message("*** multisession() and errors")
@@ -92,99 +91,100 @@ for (cores in 1:availCores) {
   ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
   ## stopifnot(inherits(res, "MyError"))    
 
-  message("*** multisession() - too large globals ...")
-  ooptsT <- options(future.globals.maxSize = object.size(1:1014))
-
-  limit <- getOption("future.globals.maxSize")
-  cat(sprintf("Max total size of globals: %g bytes\n", limit))
-
-  for (workers in unique(c(1L, availableCores()))) {
-    message("Max number of sessions: ", workers)
-
-    ## A large object
-    a <- 1:1014
-    yTruth <- sum(a)
-    size <- object.size(a)
-    cat(sprintf("a: %g bytes\n", size))
-    f <- multisession({ sum(a) }, workers = workers)
-    print(f)
-    rm(list = "a")
-    v <- value(f)
-    print(v)
-    stopifnot(v == yTruth)
+  message(sprintf("Testing with %d cores ... DONE", cores))
+} ## for (cores ...)
 
 
-    ## A too large object
-    a <- 1:1015
-    yTruth <- sum(a)
-    size <- object.size(a)
-    cat(sprintf("a: %g bytes\n", size))
-    res <- try(f <- multisession({ sum(a) }, workers = workers), silent = TRUE)
-    rm(list = "a")
-    stopifnot(inherits(res, "try-error"))
-  }
+message("*** multisession() - too large globals ...")
+ooptsT <- options(future.globals.maxSize = object.size(1:1014))
 
-  ## Undo options changed in this test
-  options(ooptsT)
+limit <- getOption("future.globals.maxSize")
+cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
-  message("*** multisession() - too large globals ... DONE")
+for (workers in unique(c(1L, availableCores()))) {
+  message("Max number of sessions: ", workers)
 
-
-  message("*** multisession(..., workers = 1L) ...")
-
-  a <- 2
-  b <- 3
-  yTruth <- a * b
-
-  f <- multisession({ a * b }, workers = 1L)
-  rm(list = c("a", "b"))
-
+  ## A large object
+  a <- 1:1014
+  yTruth <- sum(a)
+  size <- object.size(a)
+  cat(sprintf("a: %g bytes\n", size))
+  f <- multisession({ sum(a) }, workers = workers)
+  print(f)
+  rm(list = "a")
   v <- value(f)
   print(v)
   stopifnot(v == yTruth)
 
-  message("*** multisession(..., workers = 1L) ... DONE")
 
-  message("*** multisession(..., gc = TRUE) ...")
-  plan(multisession, workers = 2L)
+  ## A too large object
+  a <- 1:1015
+  yTruth <- sum(a)
+  size <- object.size(a)
+  cat(sprintf("a: %g bytes\n", size))
+  res <- try(f <- multisession({ sum(a) }, workers = workers), silent = TRUE)
+  rm(list = "a")
+  stopifnot(inherits(res, "try-error"))
+} ## for (workers in ...)
+
+## Undo options changed in this test
+options(ooptsT)
+
+message("*** multisession() - too large globals ... DONE")
+
+message("*** multisession(..., workers = 1L) ...")
+
+a <- 2
+b <- 3
+yTruth <- a * b
+
+f <- multisession({ a * b }, workers = 1L)
+rm(list = c("a", "b"))
+
+v <- value(f)
+print(v)
+stopifnot(v == yTruth)
+
+message("*** multisession(..., workers = 1L) ... DONE")
+
+message("*** multisession(..., gc = TRUE) ...")
+plan(multisession, workers = 2L)
+
+f <- future({ gc() })
+v <- value(f)
+print(v)
+
+f <- future({ integer(10e6) })
+v <- value(f)
+str(v)
+
+f <- future({ gc() })
+v <- value(f)
+print(v)
+
+f <- future({ integer(10e6) }, gc = TRUE)
+v <- value(f)
+str(v)
+
+f <- future({ gc() })
+v <- value(f)
+print(v)
+
+message("*** multisession(..., gc = TRUE) ... TRUE")
+
+
+message("*** multisession(...) - stopping with plan() change ...")
   
-  f <- future({ gc() })
-  v <- value(f)
-  print(v)
+plan(multisession, workers = 2L)
+f <- future(1L)
+cl <- ClusterRegistry("get")
+stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
 
-  f <- future({ integer(10e6) })
-  v <- value(f)
-  str(v)
-
-  f <- future({ gc() })
-  v <- value(f)
-  print(v)
-
-  f <- future({ integer(10e6) }, gc = TRUE)
-  v <- value(f)
-  str(v)
-
-  f <- future({ gc() })
-  v <- value(f)
-  print(v)
-
-  message("*** multisession(..., gc = TRUE) ... TRUE")
-
-  message("*** multisession(...) - stopping with plan() change ...")
+plan(sequential)
+cl <- ClusterRegistry("get")
+stopifnot(is.null(cl), length(cl) == 0L)
   
-  plan(multisession, workers = 2L)
-  f <- future(1L)
-  cl <- ClusterRegistry("get")
-  stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
-
-  plan(sequential)
-  cl <- ClusterRegistry("get")
-  stopifnot(is.null(cl), length(cl) == 0L)
-  
-  message("*** multisession(...) - stopping with plan() change ... DONE")
-
-  message(sprintf("Testing with %d cores ... DONE", cores))
-} ## for (cores ...)
+message("*** multisession(...) - stopping with plan() change ... DONE")
 
 message("*** multisession() ... DONE")
 
