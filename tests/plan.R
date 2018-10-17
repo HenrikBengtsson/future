@@ -2,26 +2,29 @@ source("incl/start,load-only.R")
 
 message("*** plan() ...")
 
-message("*** Set strategy via future::plan(future::multisession)")
-oplan <- future::plan(future::multisession)
+cl <- future::makeClusterPSOCK(1L)
+print(cl)
+
+message("*** Set strategy via future::plan(future::sequential)")
+oplan <- future::plan(future::sequential)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::multisession, globals = FALSE)")
-oplan <- future::plan(future::multisession, globals = FALSE)
+message("*** Set strategy via future::plan(future::cluster, workers = cl, globals = FALSE)")
+oplan <- future::plan(future::cluster, workers = cl, globals = FALSE)
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan(future::multisession(globals = FALSE)")
-oplan <- future::plan(future::multisession(globals = FALSE))
+message("*** Set strategy via future::plan(future::cluster(workers = cl, globals = FALSE)")
+oplan <- future::plan(future::cluster(workers = cl, globals = FALSE))
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
 
-message("*** Set strategy via future::plan('multisession')")
-oplan <- future::plan("multisession")
+message("*** Set strategy via future::plan('sequential')")
+oplan <- future::plan("sequential")
 print(future::plan())
 future::plan(oplan)
 print(future::plan())
@@ -57,7 +60,7 @@ stopifnot(v == 0)
 
 message("*** plan('sequential')")
 ## Setting strategy by name
-plan("multisession")
+plan("sequential")
 print(plan())
 
 
@@ -89,14 +92,14 @@ print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(sequential(local = FALSE))")
-plan(multisession)
+plan(cluster, workers = cl)
 plan(sequential(local = FALSE))
 fcn <- plan()
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(tweak(sequential, local = FALSE))")
-plan(multisession)
+plan(cluster, workers = cl)
 plan(tweak(sequential, local = FALSE))
 fcn <- plan()
 print(fcn)
@@ -105,10 +108,10 @@ stopifnot(formals(fcn)$local == FALSE)
 
 message("*** old <- plan(new)")
 truth <- plan()
-old <- plan(multisession, globals = FALSE)
+old <- plan(cluster, workers = cl, globals = FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
-curr <- plan()    ## curr == multisession(globals = FALSE)
+curr <- plan()    ## curr == cluster(workers = cl, globals = FALSE)
 prev <- plan(old) ## prev == sequential(local = FALSE)
 stopifnot(identical(unclass(curr), unclass(prev)))
 
@@ -117,12 +120,12 @@ stopifnot(identical(unclass(curr), unclass(old)))
 stopifnot(identical(unclass(curr), unclass(truth)))
 
 message("*** %plan% 'sequential'")
-plan(multisession)
+plan(cluster, workers = cl)
 x %<-% { a <- 1 } %plan% "sequential"
-stopifnot(identical(body(plan()), body(multisession)))
+stopifnot(identical(body(plan()), body(cluster)))
 
 message("*** %plan% sequential")
-plan(multisession)
+plan(cluster, workers = cl)
 
 ## %plan% can operate on any expression, so it
 ## works just as an withPlan({ ... }, plan = ...)
@@ -131,16 +134,16 @@ f <- fun(1)
 stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFuture"))
 
 x %<-% { a <- 1 } %plan% sequential
-stopifnot(identical(body(plan()), body(multisession)))
+stopifnot(identical(body(plan()), body(cluster)))
 
 message("*** %plan% sequential(local = FALSE) ")
-plan(multisession)
+plan(cluster, workers = cl)
 a <- 0
 x %<-% { a } %plan% sequential(local = FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
-stopifnot(identical(body(plan()), body(multisession)))
+stopifnot(identical(body(plan()), body(cluster)))
 
 message("*** Nested futures with different plans")
 
@@ -221,6 +224,7 @@ print(plan())
 
 message("*** plan() w/ commands ... DONE")
 
+parallel::stopCluster(cl)
 
 message("*** plan() ... DONE")
 

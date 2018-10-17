@@ -16,51 +16,48 @@ stopifnot(identical(y, x))
 message("*** resolve() for default ... DONE")
 
 
-message("*** resolve() for Future objects ...")
-
-plan(multisession, workers = 2L)
-
-for (value in c(FALSE, TRUE)) {
-  for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
-    message(sprintf("- value = %s, recursive = %s ...", value, recursive))
-  
-    f <- future({
-      Sys.sleep(0.5)
-      list(a = 1, b = 42L)
-    })
-    res <- resolve(f, value = value, recursive = recursive)
-    stopifnot(identical(res, f))
-
-    f <- future({
-      Sys.sleep(0.5)
-      list(a = 1, b = 42L)
-    }, lazy = TRUE)
-    res <- resolve(f, value = value, recursive = recursive)
-    stopifnot(identical(res, f))
-
-    message("- w/ exception ...")
-    f <- future(list(a = 1, b = 42L, c = stop("Nah!")))
-    res <- resolve(f, value = value, recursive = recursive)
-    stopifnot(identical(res, f))
-
-    f <- future(list(a = 1, b = 42L, c = stop("Nah!")), lazy = TRUE)
-    res <- resolve(f, value = value, recursive = recursive)
-    stopifnot(identical(res, f))
-
-    message(sprintf("- value = %s, recursive = %s ... DONE", value, recursive))
-  } ## for (resolve ...)
-} ## for (value ...)
-
-message("- exception ... DONE")
-
-message("*** resolve() for Future objects ... DONE")
-
-
-message("*** resolve() for lists ...")
-
 for (strategy in strategies) {
   message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
+
+  if (strategy == "multisession" && availableCores() >= 2) {
+    message("*** resolve() for Future objects ...")
+    
+    for (value in c(FALSE, TRUE)) {
+      for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
+        message(sprintf("- value = %s, recursive = %s ...", value, recursive))
+      
+        f <- future({
+          Sys.sleep(0.5)
+          list(a = 1, b = 42L)
+        })
+        res <- resolve(f, value = value, recursive = recursive)
+        stopifnot(identical(res, f))
+    
+        f <- future({
+          Sys.sleep(0.5)
+          list(a = 1, b = 42L)
+        }, lazy = TRUE)
+        res <- resolve(f, value = value, recursive = recursive)
+        stopifnot(identical(res, f))
+    
+        message("- w/ exception ...")
+        f <- future(list(a = 1, b = 42L, c = stop("Nah!")))
+        res <- resolve(f, value = value, recursive = recursive)
+        stopifnot(identical(res, f))
+    
+        f <- future(list(a = 1, b = 42L, c = stop("Nah!")), lazy = TRUE)
+        res <- resolve(f, value = value, recursive = recursive)
+        stopifnot(identical(res, f))
+    
+        message(sprintf("- value = %s, recursive = %s ... DONE", value, recursive))
+      } ## for (resolve ...)
+    } ## for (value ...)
+    
+    message("*** resolve() for Future objects ... DONE")
+  } ## if (strategy == "multisession" && availableCores() >= 2)
+  
+  message("*** resolve() for lists ...")
 
   x <- list()
   y <- resolve(x)
@@ -145,18 +142,10 @@ for (strategy in strategies) {
   res <- tryCatch(x <- resolve(x, idxs = "a"), error = identity)
   stopifnot(inherits(res, "error"))
 
-  message(sprintf("- plan('%s') ...", strategy))
-} ## for (strategy ...)
+  message("*** resolve() for lists ... DONE")
 
 
-message("*** resolve() for lists ... DONE")
-
-
-message("*** resolve() for environments ...")
-
-for (strategy in strategies) {
-  message(sprintf("- plan('%s') ...", strategy))
-  plan(strategy)
+  message("*** resolve() for environments ...")
 
   x <- new.env()
   y <- resolve(x)
@@ -214,17 +203,10 @@ for (strategy in strategies) {
   res <- tryCatch(y <- resolve(x, idxs = "unknown"), error = identity)
   stopifnot(inherits(res, "error"))
 
-  message(sprintf("- plan('%s') ...", strategy))
-} ## for (strategy ...)
-
-message("*** resolve() for environments ... DONE")
+  message("*** resolve() for environments ... DONE")
 
 
-message("*** resolve() for list environments ...")
-
-for (strategy in strategies) {
-  message(sprintf("- plan('%s') ...", strategy))
-  plan(strategy)
+  message("*** resolve() for list environments ...")
 
   options(future.progress = function(done, total) {
     msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100 * done / total, done, total)
@@ -313,10 +295,10 @@ for (strategy in strategies) {
   res <- tryCatch(y <- resolve(x, idxs = "unknown"), error = identity)
   stopifnot(inherits(res, "error"))
 
+  message("*** resolve() for list environments ... DONE")
+
   message(sprintf("- plan('%s') ...", strategy))
 } ## for (strategy ...)
-
-message("*** resolve() for list environments ... DONE")
 
 
 message("*** resolve() - globals with non-trustful length() ...")

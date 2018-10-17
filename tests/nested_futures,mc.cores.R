@@ -33,18 +33,20 @@ for (mc in 1:2) {
     stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(((mc2 <= 1 || a$cores <= 2) && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
-    message(sprintf("plan(list('sequential', '%s':2)):", strategy))
-    plan(list('sequential', tweak(strategy, workers = 2)))
-    a %<-% {
-      b1 %<-% Sys.getpid()
-      b2 %<-% Sys.getpid()
-      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
+    if (mc == 1L) {
+      message(sprintf("plan(list('sequential', '%s':2)):", strategy))
+      plan(list('sequential', tweak(strategy, workers = 2)))
+      a %<-% {
+        b1 %<-% Sys.getpid()
+        b2 %<-% Sys.getpid()
+        list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
+      }
+      print(a)
+      stopifnot(a$pid == pid)
+      stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
+      stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
+      stopifnot((mc2 <= 1 && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
     }
-    print(a)
-    stopifnot(a$pid == pid)
-    stopifnot((mc2 <= 1 && a$pid1 == pid) || (a$pid1 != pid))
-    stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
-    stopifnot((mc2 <= 1 && a$pid2 == a$pid1) || (a$pid2 != a$pid1))
 
     message(sprintf("plan(list('%s', 'sequential')):", strategy))
     plan(list(strategy, 'sequential'))
@@ -62,7 +64,7 @@ for (mc in 1:2) {
     message(sprintf("plan(list('%s', '%s')):", strategy, strategy))
     plan(list(strategy, strategy))
     a %<-% {
-      b1 %<-% { Sys.sleep(1); Sys.getpid() }
+      b1 %<-% { Sys.sleep(0.2); Sys.getpid() }
       b2 %<-% Sys.getpid()
       list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
     }
@@ -72,18 +74,20 @@ for (mc in 1:2) {
     stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(a$pid2 == a$pid1)
 
-    message(sprintf("plan(list('%s':2, '%s':2)):", strategy, strategy))
-    plan(list(tweak(strategy, workers = 2), tweak(strategy, workers = 2)))
-    a %<-% {
-      b1 %<-% Sys.getpid()  ## This stalls
-      b2 %<-% Sys.getpid()
-      list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
+    if (mc == 1L) {
+      message(sprintf("plan(list('%s':2, '%s':2)):", strategy, strategy))
+      plan(list(tweak(strategy, workers = 2), tweak(strategy, workers = 2)))
+      a %<-% {
+        b1 %<-% Sys.getpid()  ## This stalls
+        b2 %<-% Sys.getpid()
+        list(pid = Sys.getpid(), cores = availableCores(), pid1 = b1, pid2 = b2)
+      }
+      print(a)
+      stopifnot(a$pid  != pid)
+      stopifnot(a$pid1 != pid)
+      stopifnot(a$pid2 != pid)
+      stopifnot(a$pid2 != a$pid1)
     }
-    print(a)
-    stopifnot(a$pid  != pid)
-    stopifnot(a$pid1 != pid)
-    stopifnot(a$pid2 != pid)
-    stopifnot(a$pid2 != a$pid1)
 
     ## Assert that nested the FutureRegistry is not inherited when using
     ## nested strategies, particularly 'multicore'.
