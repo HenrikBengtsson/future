@@ -209,6 +209,26 @@ message("myExternalIP(): ", ip)
 message("*** myExternalIP() ... DONE")
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# pid_exists()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+message("*** pid_exists() ...")
+options(future.debug = TRUE)
+
+pid <- Sys.getpid()
+printf("Current PID: %d\n", pid)
+
+exists <- pid_exists(pid)
+printf("Does it exist: %s\n", exists)
+
+## Either pid_exists() works and return TRUE here, or it fails
+## to query the process information at all in case it returns NA
+## However, it should never return FALSE.
+stopifnot(is.logical(exists), length(exists) == 1L,
+          isTRUE(exists) || is.na(exists))
+
+message("*** pid_exists() ... DONE")
+
 message("*** utils ... DONE")
 
 source("incl/end.R")

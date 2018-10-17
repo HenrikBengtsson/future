@@ -167,6 +167,40 @@ result.MulticoreFuture <- function(future, ...) {
       if (is.null(label)) label <- "<none>"
       msg <- result
       ex <- FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
+    } else if (is.null(result)) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+
+      pid <- job$pid
+      pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
+
+      info <- pid_info
+      msg <- sprintf("Failed to retrieve the result of %s (%s) from the forked worker (on localhost; %s)", class(future)[1], label, info)
+
+      ## POST-MORTEM ANALYSIS:
+      postmortem <- list()
+    
+      ## (a) Did a localhost worker process terminate?
+      if (is.numeric(pid)) {
+        alive <- pid_exists(pid)
+  	if (is.na(alive)) {
+  	  msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not."
+  	} else if (alive) {
+  	  msg2 <- "A process with this PID exists, which suggests that the forked localhost worker is still alive."
+  	} else {
+  	  msg2 <- "No process exists with this PID, i.e. the forked localhost worker is no longer alive."
+  	}
+  	postmortem$alive <- msg2
+      }
+
+      postmortem <- unlist(postmortem, use.names = FALSE)
+      if (!is.null(postmortem)) {
+         postmortem <- sprintf("Post-mortem diagnostic: %s",
+                               paste(postmortem, collapse = ". "))
+         msg <- paste0(msg, ". ", postmortem)
+      }
+
+      ex <- FutureError(msg, future = future)
     } else {
       ex <- UnexpectedFutureResultError(future)
     }

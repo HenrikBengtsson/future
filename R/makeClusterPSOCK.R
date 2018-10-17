@@ -1,11 +1,11 @@
-#' Create a cluster of \R workers for parallel processing
+#' Create a PSOCK cluster of \R workers for parallel processing
 #' 
 #' The \code{makeClusterPSOCK()} function creates a cluster of \R workers
 #' for parallel processing.  These \R workers may be background \R sessions
 #' on the current machine, \R sessions on external machines (local or remote),
 #' or a mix of such. For external workers, the default is to use SSH to connect
 #' to those external machines.  This function works similarly to
-#' \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the
+#' \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}()} of the
 #' \pkg{parallel} package, but provides additional and more flexibility options
 #' for controlling the setup of the system calls that launch the background
 #' \R workers, and how to connect to external machines.
@@ -19,7 +19,11 @@
 #' @param \dots Optional arguments passed to
 #' \code{makeNode(workers[i], ..., rank = i)} where
 #' \code{i = seq_along(workers)}.
-#' 
+#'
+#' @param autoStop If TRUE, the cluster will be automatically stopped
+#  (using \code{\link[parallel:stopCluster]{stopCluster}()}) when it is
+#  garbage collected, unless already stopped.
+#'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
 #' @return An object of class \code{c("SOCKcluster", "cluster")} consisting
@@ -28,7 +32,7 @@
 #' @example incl/makeClusterPSOCK.R
 #'
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -94,6 +98,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     
     if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
   }
+
+  if (autoStop) cl <- autoStopCluster(cl)
   
   cl
 } ## makeClusterPSOCK()
@@ -107,12 +113,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
 #' \code{revtunnel = TRUE} in case it is \code{"localhost"}.
 #' 
-#' @param port The port number of the master used to for communicating with all
+#' @param port The port number of the master used for communicating with all
 #' the workers (via socket connections).  If an integer vector of ports, then a
 #' random one among those is chosen.  If \code{"random"}, then a random port in
 #' \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
 #' is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 #' \code{"random"} is used.
+#' \emph{Note, do not use this argument to specify the port number used by
+#' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+#' runs on a different port than the default 22, specify the SSH port by
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
+#' options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
@@ -242,6 +253,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'        name (FQDN).  A hostname is considered to be a FQDN if it contains
 #'        one or more periods
 #' }
+#' In all other cases, \code{homogeneous} defaults to FALSE.
 #' 
 #' @section Connection time out:
 #' Argument \code{connectTimeout} does \emph{not} work properly on Unix and
@@ -269,6 +281,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     localMachine <- is_localhost(worker)
     if (localMachine) worker <- "localhost"
   }
+  attr(worker, "localhost") <- localMachine
 
   manual <- as.logical(manual)
   stop_if_not(length(manual) == 1L, !is.na(manual))
@@ -441,15 +454,14 @@ add_cluster_uuid <- function(cl) {
     node <- cl[[ii]]
     if (is.null(node)) next  ## Happens with dryrun = TRUE
 
-    ## Worker does not use connections?  Then nothing to do.
-    con <- node$con
-    if (is.null(con)) next
-    
-    uuid <- attr(con, "uuid")
-    if (is.null(uuid)) {
-      attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
-      node$con <- con
-      cl[[ii]] <- node
+    ## For workers with connections, get the UUID for the connection
+    if (!is.null(con <- node$con)) {
+      uuid <- attr(con, "uuid", exact = TRUE)
+      if (is.null(uuid)) {
+        attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
+        node$con <- con
+        cl[[ii]] <- node
+      }
     }
   }
   
@@ -592,14 +604,62 @@ add_cluster_session_info <- function(cl) {
     ## Session information already collected?
     if (!is.null(node$session_info)) next
 
-    pid <- capture.output(print(node))
-    pid <- as.integer(gsub(".* ", "", pid))
+    node$session_info <- clusterCall(cl[ii], fun = session_info)[[1]]
+
+    ## Sanity check, iff possible
+    if (inherits(node, "SOCK0node") || inherits(node, "SOCKnode")) {
+      pid <- capture.output(print(node))
+      pid <- as.integer(gsub(".* ", "", pid))
+      stop_if_not(node$session_info$process$pid == pid)
+    }
     
-    info <- clusterCall(cl[ii], fun = session_info)[[1]]
-    stop_if_not(info$process$pid == pid)
-    node$session_info <- info
     cl[[ii]] <- node
   }
   
   cl
 } ## add_cluster_session_info()
+
+#' Automatically stop a cluster when garbage collected
+#'
+#' Registers a finalizer to a cluster such that the cluster will
+#' be stopped when garbage collected
+#'
+#' @param cl A cluster object
+#'
+#' @param debug If TRUE, then debug messages are produced when
+#' the cluster is garbage collected.
+#'
+#' @return The cluster object with attribute `gcMe` set.
+#'
+#' @importFrom parallel stopCluster
+#' @importFrom utils capture.output
+#'
+#' @seealso
+#' The cluster is stopped using
+#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}).
+#'
+#' @keywords internal
+#' @export
+autoStopCluster <- function(cl, debug = FALSE) {
+  stop_if_not(inherits(cl, "cluster"))
+  ## Already got a finalizer?
+  if (inherits(attr(cl, "gcMe"), "environment")) return(cl)
+  
+  env <- new.env()
+  env$cluster <- cl
+  attr(cl, "gcMe") <- env
+
+  if (debug) {
+    reg.finalizer(env, function(e) {
+      message("Finalizing cluster ...")
+      message(capture.output(print(e$cluster)))
+      try(stopCluster(e$cluster), silent = FALSE)
+      message("Finalizing cluster ... done")
+    })
+  } else {
+    reg.finalizer(env, function(e) {
+      try(stopCluster(e$cluster), silent = TRUE)
+    })
+  }
+  cl
+}

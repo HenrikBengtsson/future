@@ -155,6 +155,15 @@ for (strategy in supportedStrategies()) {
   print(v)
   stopifnot(all.equal(v, v0))
 
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = globals))
+  print(f)
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
   y %<-% {
     x <- 1:10
     sumtwo(a + b * x)
@@ -166,6 +175,13 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% globals
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = globals)
   print(y)
   stopifnot(all.equal(y, v0))
 
@@ -194,6 +210,17 @@ for (strategy in supportedStrategies()) {
   stopifnot(all.equal(v, v0))
 
   attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = c("a", "b", "sumtwo")))
+  print(f)
+  rm(list = names(globals))
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  attachLocally(globals)
   y %<-% {
     x <- 1:10
     sumtwo(a + b * x)
@@ -207,6 +234,15 @@ for (strategy in supportedStrategies()) {
     x <- 1:10
     sumtwo(a + b * x)
   } %lazy% TRUE %globals% c("a", "b", "sumtwo")
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = c("a", "b", "sumtwo"))
   rm(list = names(globals))
   print(y)
   stopifnot(all.equal(y, v0))
@@ -240,6 +276,24 @@ for (strategy in supportedStrategies()) {
 
   message("- Packages - manual ...")
 
+  a <- 42
+  message("  + future(..., globals = FALSE)")
+  res <- tryCatch({
+    f <- future({ 2 * a }, globals = FALSE)
+    v <- value(f)
+    print(head(v))
+  }, error = identity)
+  stopifnot(!inherits(f, "ClusterFuture") || inherits(res, "error"))
+
+  message("  + future(..., globals = structure(TRUE, ignore = 'a'))")
+  res <- tryCatch({
+    f <- future({ 2 * a }, globals = structure(TRUE, ignore = "a"))
+    v <- value(f)
+    print(head(v))
+  }, error = identity)
+  stopifnot(!inherits(f, "ClusterFuture") || inherits(res, "error"))
+
+  message("  + future(iris, globals = TRUE) without 'datasets'")
   ## Make sure 'iris', and thereby the 'datasets' package,
   ## is not picked up as a global
   unloadNamespace("datasets")

@@ -15,7 +15,7 @@ futureAssign("b", {
 }, lazy = TRUE)
 
 ## Because "lazy future" is used, the expression/value
-## for 'b' will be resolved at the point.  For other
+## for 'b' will not be resolved at the point.  For other
 ## types of futures, it may already have been resolved
 cat(sprintf("b = %s\n", b))
 

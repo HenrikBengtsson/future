@@ -491,7 +491,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
     if (depth <= 0) return(0)
 
     if (inherits(x, "FutureGlobals")) {
-      size <- attr(x, "total_size")
+      size <- attr(x, "total_size", exact = TRUE)
       if (!is.na(size)) return(size)
     }
 
@@ -550,7 +550,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
       ## we doomed to have to use of tryCatch() here?
       res <- tryCatch({
         x_kk <- .subset2(x, element)
-	NULL  ## So that 'x_kk' is not returned, which may be missing()
+        NULL  ## So that 'x_kk' is not returned, which may be missing()
       }, error = identity)
 
       ## A promise that cannot be resolved? This could be a false positive,
@@ -775,3 +775,260 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
     msg
   }
 }
+
+
+## https://github.com/HenrikBengtsson/future/issues/130
+#' @importFrom utils packageVersion
+resolveMPI <- local({
+  cache <- list()
+  
+  function(future) {
+    resolveMPI <- cache$resolveMPI
+    if (is.null(resolveMPI)) {
+      resolveMPI <- function(future) {
+        node <- future$workers[[future$node]]
+        warning(sprintf("resolved() on %s failed to load the Rmpi package. Will use blocking value() instead and return TRUE", sQuote(class(node)[1])))
+        value(future, stdout = FALSE, signal = FALSE)
+        TRUE
+      }
+
+      if (requireNamespace(pkg <- "Rmpi", quietly = TRUE)) {
+        ns <- getNamespace("Rmpi")
+
+        resolveMPI <- function(future) {
+          node <- future$workers[[future$node]]
+          warning(sprintf("resolved() on %s failed to find mpi.iprobe() and mpi.any.tag() in Rmpi %s. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]), packageVersion("Rmpi")))
+          value(future, stdout = FALSE, signal = FALSE)
+          TRUE
+        }
+
+        if (all(sapply(c("mpi.iprobe", "mpi.any.tag"), FUN = exists,
+                       mode = "function", envir = ns, inherits = FALSE))) {
+          mpi.iprobe <- get("mpi.iprobe", mode = "function", envir = ns,
+                            inherits = FALSE)
+          mpi.any.tag <- get("mpi.any.tag", mode = "function", envir = ns,
+                             inherits = FALSE)
+          resolveMPI <- function(future) {
+            node <- future$workers[[future$node]]
+            mpi.iprobe(source = node$rank, tag = mpi.any.tag())
+          }
+        }
+      }
+      stopifnot(is.function(resolveMPI))
+      cache$resolveMPI <<- resolveMPI
+    }
+
+    resolveMPI(future)
+  }
+})
+
+#' Check whether a process PID exists or not
+#'
+#' @param pid A positive integer.
+#'
+#' @return Returns \code{TRUE} if a process with the given PID exists,
+#' \code{FALSE} if a process with the given PID does not exists, and
+#' \code{NA} if it is not possible to check PIDs on the current system.
+#'
+#' @details
+#' There is no single go-to function in \R for testing whether a PID exists
+#' or not.  Instead, this function tries to identify a working one among
+#' multiple possible alternatives.  A method is considered working if the
+#' PID of the current process is successfully identified as being existing
+#' such that \code{pid_exists(Sys.getpid())} is \code{TRUE}.  If no working
+#' approach is found, \code{pid_exists()} will always return \code{NA}
+#' regardless of PID tested.
+#' On Unix, including macOS, alternatives \code{tools::pskill(pid, signal = 0L)}
+#' and \code{system2("ps", args = pid)} are used.
+#' On Windows, various alternatives of \code{system2("tasklist", ...)} are used.
+#'
+#' @references
+#' 1. The Open Group Base Specifications Issue 7, 2018 edition,
+#'    IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
+#'    \url{http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html}
+#'
+#' 2. Microsoft, tasklist, 2018-08-30,
+#'    \url{https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist}
+#'
+#' 3. R-devel thread 'Detecting whether a process exists or not by its PID?',
+#'    2018-08-30.
+#'    \url{https://stat.ethz.ch/pipermail/r-devel/2018-August/076702.html}
+#'
+#' @seealso
+#' \code{\link[tools]{pskill}()} and \code{\link[base]{system2}()}.
+#'
+#' @importFrom tools pskill
+#' @keywords internal
+pid_exists <- local({
+  os <- .Platform$OS.type
+
+  ## The value of tools::pskill() is incorrect in R (< 3.5.0).
+  ## This was fixed in R (>= 3.5.0).
+  ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/62
+  if (getRversion() >= "3.5.0") {
+    pid_exists_by_pskill <- function(pid, debug = FALSE) {
+      tryCatch({
+        ## "If sig is 0 (the null signal), error checking is performed but no 
+        ##  signal is actually sent. The null signal can be used to check the 
+        ##  validity of pid." [1]
+        res <- pskill(pid, signal = 0L)
+        if (debug) {
+          cat(sprintf("Call: tools::pskill(%s, signal = 0L)\n", pid))
+          print(res)
+        }
+        as.logical(res)
+      }, error = function(ex) NA)
+    }
+  } else {
+    pid_exists_by_pskill <- function(pid, debug = FALSE) NA
+  }
+
+  pid_exists_by_ps <- function(pid, debug = FALSE) {
+    tryCatch({
+      ## 'ps <pid> is likely to be supported by more 'ps' clients than
+      ## 'ps -p <pid>' and 'ps --pid <pid>'
+      out <- suppressWarnings({
+        system2("ps", args = pid, stdout = TRUE, stderr = FALSE)
+      })
+      if (debug) {
+        cat(sprintf("Call: ps %s\n", pid))
+        print(out)
+        str(out)
+      }
+      status <- attr(out, "status")
+      if (is.numeric(status) && status < 0) return(NA)
+      out <- gsub("(^[ ]+|[ ]+$)", "", out)
+      out <- out[nzchar(out)]
+      if (debug) {
+        cat("Trimmed:\n")
+        print(out)
+        str(out)
+      }
+      out <- strsplit(out, split = "[ ]+", fixed = FALSE)
+      out <- lapply(out, FUN = function(x) x[1])
+      out <- unlist(out, use.names = FALSE)
+      if (debug) {
+        cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
+      out <- suppressWarnings(as.integer(out))
+      if (debug) {
+        cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+      }
+      any(out == pid)
+    }, error = function(ex) NA)
+  }
+
+  pid_exists_by_tasklist_filter <- function(pid, debug = FALSE) {
+    ## Example: tasklist /FI "PID eq 12345" /NH  [2]
+    ## Try multiple times, because 'tasklist' seems to be unreliable, e.g.
+    ## I've observed on win-builder that two consecutive calls filtering
+    ## on Sys.getpid() once found a match while the second time none.
+    for (kk in 1:5) {
+      res <- tryCatch({
+        args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH")
+        out <- system2("tasklist", args = args, stdout = TRUE)
+        if (debug) {
+          cat(sprintf("Call: tasklist %s\n", paste(args, collapse = " ")))
+          print(out)
+          str(out)
+        }
+        out <- gsub("(^[ ]+|[ ]+$)", "", out)
+        out <- out[nzchar(out)]
+        if (debug) {
+          cat("Trimmed:\n")
+          print(out)
+          str(out)
+        }
+        out <- grepl(sprintf(" %g ", pid), out)
+        if (debug) {
+          cat("Contains PID: ", paste(out, collapse = ", "), "\n", sep = "")
+        }
+        any(out)
+      }, error = function(ex) NA)
+      if (isTRUE(res)) return(res)
+      Sys.sleep(0.1)
+    }
+    res
+  }
+
+  pid_exists_by_tasklist <- function(pid, debug = FALSE) {
+    ## Example: tasklist [2]
+    for (kk in 1:5) {
+      res <- tryCatch({
+        out <- system2("tasklist", stdout = TRUE)
+        if (debug) {
+          cat("Call: tasklist\n")
+          print(out)
+          str(out)
+        }
+        out <- gsub("(^[ ]+|[ ]+$)", "", out)
+        out <- out[nzchar(out)]
+        skip <- grep("^====", out)[1]
+        if (!is.na(skip)) out <- out[seq(from = skip + 1L, to = length(out))]
+        if (debug) {
+          cat("Trimmed:\n")
+          print(out)
+          str(out)
+        }
+        out <- strsplit(out, split = "[ ]+", fixed = FALSE)
+        out <- lapply(out, FUN = function(x) x[2])
+        out <- unlist(out, use.names = FALSE)
+        if (debug) {
+          cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+        }
+        out <- as.integer(out)
+        if (debug) {
+          cat("Parsed: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
+        }
+        out <- (out == pid)
+        if (debug) {
+          cat("Equals PID: ", paste(out, collapse = ", "), "\n", sep = "")
+        }
+        any(out)
+      }, error = function(ex) NA)
+      if (isTRUE(res)) return(res)
+      Sys.sleep(0.1)
+    }
+    res
+  }
+
+  cache <- list()
+
+  function(pid, debug = getOption("future.debug", FALSE)) {
+    stop_if_not(is.numeric(pid), length(pid) == 1L, is.finite(pid), pid > 0L)
+
+    pid_check <- cache$pid_check
+    
+    ## Does a working pid_check() exist?
+    if (!is.null(pid_check)) return(pid_check(pid, debug = debug))
+
+    ## Try to find a working pid_check() function, i.e. one where
+    ## pid_check(Sys.getpid()) == TRUE
+    if (os == "unix") {  ## Unix, Linux, and macOS
+      if (isTRUE(pid_exists_by_pskill(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_pskill
+      } else if (isTRUE(pid_exists_by_ps(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_ps
+      }
+    } else if (os == "windows") {  ## Microsoft Windows
+      if (isTRUE(pid_exists_by_tasklist(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_tasklist
+      } else if (isTRUE(pid_exists_by_tasklist_filter(Sys.getpid(), debug = debug))) {
+        pid_check <- pid_exists_by_tasklist_filter
+      }
+    }
+
+    if (is.null(pid_check)) {
+      ## Default to NA
+      pid_check <- function(pid) NA
+    } else {
+      ## Sanity check
+      stop_if_not(isTRUE(pid_check(Sys.getpid(), debug = debug)))
+    }
+
+    ## Record
+    cache$pid_check <- pid_check
+    
+    pid_check(pid)
+  }
+})

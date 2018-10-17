@@ -2,23 +2,28 @@
 % Please edit documentation in R/options.R
 \name{future.options}
 \alias{future.options}
-\alias{future.availableCores.methods}
+\alias{future.startup.script}
+\alias{.future.R}
 \alias{future.cmdargs}
-\alias{future.cores}
-\alias{future.debug}
+\alias{future.plan}
+\alias{R_FUTURE_PLAN}
+\alias{future.availableCores.methods}
+\alias{future.availableCores.fallback}
+\alias{R_FUTURE_AVAILABLECORES_FALLBACK}
+\alias{future.availableCores.system}
+\alias{R_FUTURE_AVAILABLECORES_SYSTEM}
+\alias{future.availableWorkers.methods}
 \alias{future.globals.maxSize}
 \alias{future.globals.method}
 \alias{future.globals.onMissing}
 \alias{future.globals.resolve}
-\alias{future.plan}
-\alias{future.progress}
+\alias{future.globals.onReference}
 \alias{future.resolve.recursive}
-\alias{future.startup.script}
 \alias{future.wait.alpha}
 \alias{future.wait.interval}
-\alias{future.wait.times}
-\alias{R_FUTURE_PLAN}
-\alias{R_FUTURE_CORES}
+\alias{future.wait.timeout}
+\alias{future.progress}
+\alias{future.debug}
 \alias{future.demo.mandelbrot.region}
 \alias{future.demo.mandelbrot.nrow}
 \title{Options used for futures}
@@ -71,7 +76,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
  \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")})}
 
- \item{\option{future.availableCores.fallback}:}{Number of cores to use when no core-specifying settings are detected other than \code{"system"}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_FALLBACK} when the \pkg{future} package is \emph{loaded}. This options makes it possible to set the default number of cores returned by \code{availableCores()} / \code{availableWorkers()} yet allow users and schedulers to override it. In HPC environment, it is useful to set \code{R_FUTURE_AVAILABLECORES_FALLBACK=1}.}
+ \item{\option{future.availableCores.fallback}:}{Number of cores to use when no core-specifying settings are detected other than \code{"system"}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_FALLBACK} when the \pkg{future} package is \emph{loaded}. This options makes it possible to set the default number of cores returned by \code{availableCores()} / \code{availableWorkers()} yet allow users and schedulers to override it. In multi-tenant environment, such as HPC clusters, it is useful to set \code{R_FUTURE_AVAILABLECORES_FALLBACK=1}.}
 
  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which = "system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}. This option allows you to effectively override what \code{parallel::detectCores()} reports the system has.}
 }

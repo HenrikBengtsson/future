@@ -34,3 +34,4 @@ multiprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
   fun(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, gc = gc, earlySignal = earlySignal, label = label, ...)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")
+attr(multiprocess, "init") <- NA ## Set to FALSE/TRUE in .onLoad()

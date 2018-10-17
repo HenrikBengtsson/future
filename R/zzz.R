@@ -1,5 +1,11 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
+  ## Does multiprocess resolve to multisession? If so, then
+  ## plan(multiprocess) should initiate the workers.
+  if (is.na(attr(multiprocess, "init", exact = TRUE))) {
+    attr(multiprocess, "init") <<- !supportsMulticore()
+  }
+  
   ## Initiate the R session UUID, which will also set/update
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)

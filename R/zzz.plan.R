@@ -74,8 +74,8 @@
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
 #'
-#' To "close" any background workers (e.g. `multisession`), change
-#' the plan to something different; `plan(sequential)` is recommended
+#' To "close" any background workers (e.g. \code{multisession}), change
+#' the plan to something different; \code{plan(sequential)} is recommended
 #' for this.
 #'
 #' @section For package developers:
@@ -96,6 +96,18 @@
 #'   [...]
 #' }
 #'
+#' @section Using plan() in scripts and vignettes:
+#' When writing scripts or vignettes that uses futures, try to place any
+#' call to \code{plan()} as far up (as early on) in the code as possible.  
+#' This will help users to quickly identify where the future plan is set up
+#' and allow them to modify it to their computational resources.
+#' Even better is to leave it to the user to set the \code{plan()} prior to
+#' \code{source()}:ing the script or running the vignette.
+#' If a \file{\link{.future.R}} exists in the current directory and / or in
+#' the user's home directory, it is sourced when the \pkg{future} package is
+#' \emph{loaded}.  Because of this, the \file{.future.R} file provides a
+#' convenient place for users to set the \code{plan()}.
+#'
 #' @export
 plan <- local({
   defaultStrategy <- structure(sequential, call = substitute(plan(sequential)))
@@ -112,7 +124,7 @@ plan <- local({
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
-    init <- attr(evaluator, "init")
+    init <- attr(evaluator, "init", exact = TRUE)
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
       if (debug) {
@@ -127,7 +139,8 @@ plan <- local({
       stack[[1L]] <<- evaluator
 
       ## Create dummy future to trigger setup (minimum overhead)
-      f <- evaluator(NA, globals = FALSE, lazy = FALSE)
+      f <- evaluator(NA, label = "future-plan-test", 
+                     globals = FALSE, lazy = FALSE)
 
       ## Cleanup, by resolving it
       ## (otherwise the garbage collector would have to do it)
@@ -273,7 +286,7 @@ plan <- local({
       for (kk in seq_along(newStack)) {
         strategy <- newStack[[kk]]
         ## Skip if already has a call attibute
-        if (!is.null(attr(strategy, "call"))) next
+        if (!is.null(attr(strategy, "call", exact = TRUE))) next
         ## Attach call
         attr(strategy, "call") <- call
         newStack[[kk]] <- strategy
@@ -322,7 +335,8 @@ print.future <- function(x, ...) {
   args <- paste(args, collapse = " ")
   specs$args <- args
   specs$tweaked <- inherits(x, "tweaked")
-  specs$call <- paste(deparse(attr(x, "call"), width.cutoff = 500L),
+  specs$call <- paste(deparse(attr(x, "call", exact = TRUE), 
+                              width.cutoff = 500L),
                       collapse="")
   specs <- sprintf("- %s: %s", names(specs), unlist(specs))
   s <- c(s, specs)
@@ -350,7 +364,8 @@ print.FutureStrategyList <- function(x, ...) {
     args <- paste(args, collapse = " ")
     specs$args <- args
     specs$tweaked <- inherits(x_kk, "tweaked")
-    specs$call <- paste(deparse(attr(x_kk, "call"), width.cutoff = 500L),
+    specs$call <- paste(deparse(attr(x_kk, "call", exact = TRUE), 
+                                width.cutoff = 500L),
                         collapse = "")
     specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
     s <- c(s, s_kk, specs)

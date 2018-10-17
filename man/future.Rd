@@ -7,15 +7,15 @@
 \alias{futureAssign}
 \alias{\%<-\%}
 \alias{\%->\%}
-\alias{futureCall}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE,
-  packages = NULL, lazy = FALSE, seed = NULL, evaluator = plan("next"),
-  ...)
+future(expr, envir = parent.frame(), substitute = TRUE,
+  globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL,
+  evaluator = plan("next"), ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, seed = NULL, globals = TRUE, ..., assign.env = envir)
+  lazy = FALSE, seed = NULL, globals = TRUE, ...,
+  assign.env = envir)
 
 x \%<-\% value
 
@@ -228,6 +228,15 @@ or
   }, globals = list(x = x))
 }
 Both are effectively the same.
+
+
+Although rarely needed, a combination of automatic identification and manual
+specification of globals is supported via attributes \code{add} (to add
+false negatives) and \code{ignore} (to ignore false positives) on value
+\code{TRUE}.  For example, with
+\code{globals = structure(TRUE, ignore = "b", add = "a")} any globals
+automatically identified except \code{b} will be used in addition to
+global \code{a}.
 
 When using future assignments, globals can be specified analogously
 using the \code{\link{\%globals\%}} operator, e.g.

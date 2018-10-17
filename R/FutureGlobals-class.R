@@ -40,7 +40,7 @@ FutureGlobals <- function(object = list(), resolved = FALSE, total_size = NA_rea
 }
 
 #' @export
-resolved.FutureGlobals <- function(x, ...) attr(x, "resolved")
+resolved.FutureGlobals <- function(x, ...) attr(x, "resolved", exact = TRUE)
 
 #' @export
 as.FutureGlobals <- function(x, ...) UseMethod("as.FutureGlobals")
@@ -63,8 +63,8 @@ as.FutureGlobals.list <- function(x, ...) {
 
 #' @export
 `[.FutureGlobals` <- function(x, i) {
-  resolved <- attr(x, "resolved")
-  size <- attr(x, "total_size")
+  resolved <- attr(x, "resolved", exact = TRUE)
+  size <- attr(x, "total_size", exact = TRUE)
   x <- NextMethod()
   attr(x, "resolved") <- resolved
   attr(x, "total_size") <- size
@@ -77,16 +77,16 @@ c.FutureGlobals <- function(x, ...) {
   if (length(args) == 0) return(x)
 
   ## Are all imputs resolved?
-  resolved <- attr(x, "resolved") 
-  resolved_args <- lapply(args, FUN = function(x) isTRUE(attr(x, "resolved")))
+  resolved <- attr(x, "resolved", exact = TRUE)
+  resolved_args <- lapply(args, FUN = function(x) isTRUE(attr(x, "resolved", exact = TRUE)))
   resolved_args <- unlist(resolved_args, use.names = FALSE)
   resolved <- resolved && all(resolved_args)
 
   ## Total size?
-  size <- attr(x, "total_size")
+  size <- attr(x, "total_size", exact = TRUE)
   if (!is.na(size)) {
     size_args <- lapply(args, FUN = function(z) {
-      size <- attr(z, "total_size")
+      size <- attr(z, "total_size", exact = TRUE)
       if (is.null(size)) NA_real_ else size
     })
     size_args <- unlist(size_args, use.names = FALSE)
@@ -106,8 +106,8 @@ unique.FutureGlobals <- function(x, ...) {
   nx <- length(x)
   if (nx == 0) return(x)
   
-  resolved <- attr(x, "resolved")
-  size <- attr(x, "total_size")
+  resolved <- attr(x, "resolved", exact = TRUE)
+  size <- attr(x, "total_size", exact = TRUE)
   x <- NextMethod()
   attr(x, "resolved") <- resolved
 
@@ -125,7 +125,7 @@ resolve.FutureGlobals <- function(x, ...) {
   if (length(x) == 0) return(x)
   
   ## Already resolved?
-  if (isTRUE(attr(x, "resolved"))) return(x)
+  if (isTRUE(attr(x, "resolved", exact = TRUE))) return(x)
 
   x <- NextMethod()
 

@@ -64,6 +64,7 @@ requestNode <- future:::requestNode
 requirePackages <- future:::requirePackages
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
+pid_exists <- future:::pid_exists
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))

@@ -71,7 +71,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   ##  workers <- add_cluster_session_info(workers)
   
   ## Attach name to cluster?
-  name <- attr(workers, "name")
+  name <- attr(workers, "name", exact = TRUE)
   if (is.null(name)) {
     name <- digest(workers)
     stop_if_not(length(name) > 0, nzchar(name))
@@ -113,7 +113,7 @@ run.ClusterFuture <- function(future, ...) {
   persistent <- future$persistent
 
   ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
 
   ## Next available cluster node
@@ -225,10 +225,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   ## Check if workers socket connection is available for reading
   node <- cl[[1]]
 
-  ## FIXME: This assumes that the worker has a connection, which
-  ## is _not_ the case for MPI clusters.  /HB 2017-03-06
-  con <- node$con
-  if (!is.null(con)) {
+  if (!is.null(con <- node$con)) {
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
     ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
     ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)
@@ -236,6 +233,8 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+  } else if (inherits(node, "MPInode")) {
+    res <- resolveMPI(x)
   } else {
     ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
     warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
@@ -271,38 +270,64 @@ result.ClusterFuture <- function(future, ...) {
   workers <- future$workers
   node_idx <- future$node
   cl <- workers[node_idx]
+  node <- cl[[1]]
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
-    result <- recvResult(cl[[1]])
+    result <- recvResult(node)
     TRUE
   }, simpleError = function(ex) ex)
 
   if (inherits(ack, "simpleError")) {
-  
-    ## If the worker uses a connection and that has changed, report on that!
-    node <- cl[[1]]
-    if (inherits(node$con, "connection")) {
-      msg <- check_connection_uuid(node, future = future)
-      if (!is.null(msg)) {
-        on_failure <- getOption("future.cluster.invalidConnection", "error")
-        if (on_failure == "error") {
-          ex <- FutureError(msg, future = future)
-          future$result <- ex
-          stop(ex)          
-        }
-        warning(FutureWarning(msg, future = future))
-        return(sprintf("EXCEPTIONAL ERROR: %s", msg))
-      }
-    }
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    
+    pid <- node$session_info$process$pid
+    pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
 
     ## AD HOC: This assumes that the worker has a hostname, which is not
     ## the case for MPI workers. /HB 2017-03-07
-    info <- node$host
-    info <- if (is.null(info)) NA_character_ else sprintf("on %s", sQuote(info))
-    msg <- sprintf("Failed to retrieve the value of %s from cluster node #%d (%s). ", class(future)[1], node_idx, info)
+    host <- node$host
+    localhost <- isTRUE(attr(host, "localhost", exact = TRUE))
+    host_info <- if (!is.null(host)) {
+      sprintf("on %s%s", if (localhost) "localhost " else "", sQuote(host))
+    } else NULL
+    
+    info <- paste(c(pid_info, host_info), collapse = " ")
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).", class(future)[1], label, class(node)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
+    
+    ## POST-MORTEM ANALYSIS:
+    postmortem <- list()
+    
+    ## (a) Did the worker use a connection that changed?
+    if (inherits(node$con, "connection")) {
+      postmortem$connection <- check_connection_uuid(node, future = future)
+    }
+
+    ## (b) Did a localhost worker process terminate?
+    if (!is.null(host)) {
+      if (localhost && is.numeric(pid)) {
+        alive <- pid_exists(pid)
+	if (is.na(alive)) {
+	  msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
+	} else if (alive) {
+	  msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
+	} else {
+	  msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
+	}
+	postmortem$alive <- msg2
+      }
+    }
+
+    postmortem <- unlist(postmortem, use.names = FALSE)
+    if (!is.null(postmortem)) {
+       postmortem <- sprintf("Post-mortem diagnostic: %s",
+                             paste(postmortem, collapse = ". "))
+       msg <- paste0(msg, ". ", postmortem)
+    }
+
     ex <- FutureError(msg, call = ack$call, future = future)
     future$result <- ex
     stop(ex)          
@@ -322,7 +347,7 @@ result.ClusterFuture <- function(future, ...) {
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
   ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name"))
+  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
   ## Remove from registry
   FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
@@ -356,7 +381,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   total <- length(workers)
 
   ## FutureRegistry to use
-  name <- attr(workers, "name")
+  name <- attr(workers, "name", exact = TRUE)
   stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)
   
@@ -421,8 +446,8 @@ check_connection_uuid <- function(worker, future, on_failure = "error") {
   ## Not a worker with a connection
   if (!inherits(con, "connection")) return(NULL)
   
-  uuid <- attr(con, "uuid")
+  uuid <- attr(con, "uuid", exact = TRUE)
   uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
-  if (uuid_now == uuid) return(NULL) 
-  sprintf("Failed to retrieve the value of %s from cluster node #%d on %s.  The reason is that the socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", class(future)[1], future$node, sQuote(worker$host), uuid, sQuote(attr(uuid, "source")$class), sQuote(attr(uuid, "source")$description), uuid_now, sQuote(attr(uuid_now, "source")$class), sQuote(attr(uuid_now, "source")$description), Sys.getpid())
+  if (uuid_now == uuid) return(NULL)
+  sprintf("The socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
 } ## check_connection_uuid()

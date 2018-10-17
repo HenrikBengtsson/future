@@ -75,7 +75,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
     ##    .Random.seed <- c(rng.kind, n)
     ## where rng.kind == 407L and length(n) == 6L
     if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
-      msg <- "Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream()"
+      msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
       mdebug(msg)
       mdebug(capture.output(print(seed)))
       stop(msg)
@@ -232,7 +232,7 @@ print.Future <- function(x, ...) {
 ## Checks whether Future is owned by the current process or not
 assertOwner <- function(future, ...) {
   hpid <- function(uuid) {
-    info <- attr(uuid, "source")
+    info <- attr(uuid, "source", exact = TRUE)
     if (is.null(info)) info <- list(pid = NA_integer_, host = NA_character_)
     stop_if_not(is.list(info), length(info$pid) == 1L, length(info$host) == 1L)
     pid <- sprintf("%s; pid %d on %s", uuid, info$pid, info$host)
@@ -731,7 +731,6 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, globals.onMissing 
         #      if (future$local) calls <- calls[-seq_len(6L)]
         structure(list(
           value = NULL,
-          value2 = NA,
           condition = cond,
           calls = calls,
           version = "1.8"

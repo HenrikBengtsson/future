@@ -3,20 +3,22 @@
 \name{makeClusterPSOCK}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
-\title{Create a cluster of \R workers for parallel processing}
+\title{Create a PSOCK cluster of \R workers for parallel processing}
 \usage{
 makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
-  "random"), ..., verbose = getOption("future.debug", FALSE))
+  "random"), ..., autoStop = FALSE, verbose = getOption("future.debug",
+  FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
-  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60),
-  timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60),
-  rscript = NULL, homogeneous = NULL, rscript_args = NULL,
+  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 *
+  60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 *
+  60), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd",
-  NULL), user = NULL, revtunnel = TRUE,
-  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
-  manual = FALSE, dryrun = FALSE, verbose = FALSE)
+  renice = NA_integer_,
+  rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL,
+  revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts",
+  NULL), rank = 1L, manual = FALSE, dryrun = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{workers}{The hostnames of workers (as a character vector) or the number
@@ -25,16 +27,23 @@ of localhost workers (as a positive integer).}
 \item{makeNode}{A function that creates a \code{"SOCKnode"} or
 \code{"SOCK0node"} object, which represents a connection to a worker.}
 
-\item{port}{The port number of the master used to for communicating with all
+\item{port}{The port number of the master used for communicating with all
 the workers (via socket connections).  If an integer vector of ports, then a
 random one among those is chosen.  If \code{"random"}, then a random port in
 \code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
 is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
-\code{"random"} is used.}
+\code{"random"} is used.
+\emph{Note, do not use this argument to specify the port number used by
+\code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+runs on a different port than the default 22, specify the SSH port by
+appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
+options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}}
 
 \item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
 \code{i = seq_along(workers)}.}
+
+\item{autoStop}{If TRUE, the cluster will be automatically stopped}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
@@ -108,7 +117,7 @@ for parallel processing.  These \R workers may be background \R sessions
 on the current machine, \R sessions on external machines (local or remote),
 or a mix of such. For external workers, the default is to use SSH to connect
 to those external machines.  This function works similarly to
-\code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}} of the
+\code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}()} of the
 \pkg{parallel} package, but provides additional and more flexibility options
 for controlling the setup of the system calls that launch the background
 \R workers, and how to connect to external machines.
@@ -198,6 +207,7 @@ of the following is fulfilled:
        name (FQDN).  A hostname is considered to be a FQDN if it contains
        one or more periods
 }
+In all other cases, \code{homogeneous} defaults to FALSE.
 }
 
 \section{Connection time out}{

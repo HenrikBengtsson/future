@@ -5,8 +5,8 @@
 \alias{MulticoreFuture}
 \title{An multicore future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
-MulticoreFuture(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  globals = TRUE, ...)
+MulticoreFuture(expr = NULL, envir = parent.frame(),
+  substitute = FALSE, globals = TRUE, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

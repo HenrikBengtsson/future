@@ -4,10 +4,10 @@
 #' which means that its \emph{value is computed and resolved
 #' remotely in another process}.
 #'
-#' @inheritParams future
-#' @inheritParams multiprocess
 #' @inheritParams cluster
+#' @inheritParams multiprocess
 #' @inheritParams Future-class
+#' @inheritParams future
 #' 
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
@@ -16,8 +16,12 @@
 #'
 #' @example incl/remote.R
 #'
-#' @details
-#' Note that remote futures use \code{persistent = TRUE} by default.
+#' @section 'remote' versus 'cluster':
+#' The \code{remote} plan is a very similar to the \code{\link{cluster}} plan, but provides
+#' more convenient default argument values when connecting to remote machines.  Specifically,
+#' \code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
+#' \code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
+#' See below for example on how \code{remote} and \code{cluster} are related.
 #'
 #' @export
 remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...) {

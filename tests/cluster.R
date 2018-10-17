@@ -284,8 +284,8 @@ for (type in types) {
   print(cl)
 
 
-  ## Crashing FORK:ed processes seems too harsh on R (< 3.2.0)
-  if (type != "FORK" || getRversion() >= "3.2.0") {
+  ## Crashing FORK:ed processes seems too harsh on R (< 3.3.0)
+  if (type != "FORK" || getRversion() >= "3.3.0") {
   message("*** cluster() - crashed worker ...")
   
   plan(cluster, workers = cl)
