@@ -7,7 +7,7 @@
 pid_exists(pid, debug = getOption("future.debug", FALSE))
 }
 \arguments{
-\item{pid}{A postive integer.}
+\item{pid}{A positive integer.}
 }
 \value{
 Returns \code{TRUE} if a process with the given PID exists,
