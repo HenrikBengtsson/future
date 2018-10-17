@@ -57,13 +57,13 @@ Version: 1.4.0
 
 # brms
 
-Version: 2.4.0
+Version: 2.5.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
         R     3.5Mb
         doc   2.4Mb
@@ -133,15 +133,52 @@ Version: 1.1.0
       All declared Imports should be used.
     ```
 
-# jstor
+# ipc
 
-Version: 0.3.2
+Version: 0.1.0
 
 ## In both
 
-*   checking Rd cross-references ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Packages unavailable to check Rd xrefs: ‘foreach’, ‘snow’
+    Namespaces in Imports field not imported from:
+      ‘redux’ ‘txtq’
+      All declared Imports should be used.
+    ```
+
+# jstor
+
+Version: 0.3.3
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > test_check("jstor")
+      ── 1. Failure: jst_define_import validates input (@test-import-spec.R#17)  ─────
+      `jst_define_import(article = jst_get_book)` did not throw an error.
+      
+      ── 2. Failure: jst_define_import validates input (@test-import-spec.R#18)  ─────
+      `jst_define_import(...)` did not throw an error.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 238 SKIPPED: 3 FAILED: 2
+      1. Failure: jst_define_import validates input (@test-import-spec.R#17) 
+      2. Failure: jst_define_import validates input (@test-import-spec.R#18) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+      Error while shutting down parallel: unable to terminate some child processes
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘curl’ ‘readxl’
+      All declared Imports should be used.
     ```
 
 # lidR
@@ -152,7 +189,7 @@ Version: 1.6.1
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.6Mb
+      installed size is  7.7Mb
       sub-directories of 1Mb or more:
         libs   5.9Mb
     ```
@@ -175,34 +212,6 @@ Version: 0.0.2
     Namespaces in Imports field not imported from:
       ‘Matrix’ ‘shiny’
       All declared Imports should be used.
-    ```
-
-# penaltyLearning
-
-Version: 2017.12.08
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Actual message: "The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead."
-      
-      ── 3. Failure: error for NA and constant features (@test-errors.R#124)  ────────
-      `{ ... }` threw an error with unexpected message.
-      Expected match: "after filtering NA and constant features, none remain for training"
-      Actual message: "The implementation of future_lapply() in the 'future' package is defunct. Please use the one in the 'future.apply' package instead."
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 50 SKIPPED: 0 FAILED: 3
-      1. Error: (unknown) (@test-demo8.R#8) 
-      2. Failure: error for constant features (@test-errors.R#110) 
-      3. Failure: error for NA and constant features (@test-errors.R#124) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # phylolm
@@ -248,6 +257,28 @@ Version: 0.2.3
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 13 lines of output:
+      Receiving objects:  21% (85/401),   32 kb
+      Receiving objects:  31% (125/401),  160 kb
+      Receiving objects:  41% (165/401),  176 kb
+      Receiving objects:  51% (205/401),  184 kb
+      Receiving objects:  61% (245/401),  192 kb
+      Receiving objects:  71% (285/401),  192 kb
+      Receiving objects:  81% (325/401),  200 kb
+      Receiving objects:  91% (365/401),  205 kb
+      Receiving objects: 100% (401/401),  205 kb, done.
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 189 SKIPPED: 11 FAILED: 1
+      1. Failure: fastMask produces correct results (@test-gis.R#22) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘gdalUtils’
@@ -268,13 +299,13 @@ Version: 0.6.2
 
 # skpr
 
-Version: 0.54.3
+Version: 0.56.1
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 46.4Mb
+      installed size is 46.3Mb
       sub-directories of 1Mb or more:
         libs  44.9Mb
     ```
