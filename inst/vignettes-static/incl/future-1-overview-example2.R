@@ -2,16 +2,16 @@ pid <- Sys.getpid()
 pid
 a %<-% {
   pid <- Sys.getpid()
-  cat("Resolving 'a' ...\n")
+  cat("Future 'a' ...\n")
   3.14
 }
 b %<-% {
-  rm(pid)
-  cat("Resolving 'b' ...\n")
+  rm(pid)  ## no effect on global 'pid'
+  cat("Future 'b' ...\n")
   Sys.getpid()
 }
 c %<-% {
-  cat("Resolving 'c' ...\n")
+  cat("Future 'c' ...\n")
   2 * a
 }
 b
