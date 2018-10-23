@@ -371,7 +371,13 @@ a
 b
 })%>
 ```
-By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process (pid <%= pid %>), and there are the two processes used by `a` (pid <%= a %>) and `b` (pid <%= b[1] %>).  However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use sequential evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
+By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process
+(pid <%= pid %>),
+and there are the two processes used by `a`
+(pid <%= a %>)
+and `b`
+(pid <%= b[1] %>).
+However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use sequential evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 
 <%
 ## Sanity checks
@@ -432,7 +438,10 @@ a
 b
 })%>
 ```
-which clearly show that `a` and `b` are resolved in the calling process (pid <%= pid %>) whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes (pids <%= b[2] %> and <%= b[3] %>).
+which clearly show that `a` and `b` are resolved in the calling process
+(pid <%= pid %>)
+whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes
+(pids <%= b[2] %> and <%= b[3] %>).
 
 <%
 ## Sanity checks
@@ -465,7 +474,12 @@ a
 b
 })%>
 ```
-First, we see that both `a` and `b` are resolved in different processes (pids <%= a %> and <%= b[1] %>) than the calling process (pid <%= pid %>).  Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes (pids <%= b[2] %> and <%= b[3] %>).
+First, we see that both `a` and `b` are resolved in different processes
+(pids <%= a %> and <%= b[1] %>)
+than the calling process
+(pid <%= pid %>).
+Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes
+(pids <%= b[2] %> and <%= b[3] %>).
 
 <%
 ## Sanity checks
