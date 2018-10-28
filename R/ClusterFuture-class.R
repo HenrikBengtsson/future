@@ -226,6 +226,12 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
+    if (!is_still_same_connection(con)) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+      stop(FutureError(sprintf("Cannot resolve future: The set of registered connections in R have changed since this %s (%s) was created such that the connection (%s) to the background workers is no longer available.", class(future)[1], label, connection_info(con)), future = future))
+    }
+
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
     ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
     ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)
@@ -271,6 +277,12 @@ result.ClusterFuture <- function(future, ...) {
   node_idx <- future$node
   cl <- workers[node_idx]
   node <- cl[[1]]
+
+  if (!is.null(con <- node$con) && !is_still_same_connection(con)) {
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    stop(FutureError(sprintf("Cannot recieve result of future: the set of registered connections in R have changed since this %s (%s) was created such that the connection (%s) to the background workers is no longer available.", class(future)[1], label, connection_info(con)), future = future))
+  }
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
@@ -451,3 +463,26 @@ check_connection_uuid <- function(worker, future, on_failure = "error") {
   if (uuid_now == uuid) return(NULL)
   sprintf("The socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
 } ## check_connection_uuid()
+
+
+is_still_same_connection <- function(con) {
+  con_idx <- as.integer(con)
+  other <- getConnection(con_idx)
+  summary <- attr(attr(con, "uuid"), "source")
+  other_summary <- summary(other)
+  other_summary$opened <- NULL
+  identical(summary, other_summary)
+}
+
+connection_info <- function(con) {
+  stop_if_not(inherits(con, "connection"))
+  summary <- summary(con)
+  summary$uuid <- uuid_of_connection(con)
+  names <- gsub(" ", "_", names(summary))
+  info <- sapply(summary, FUN = paste0, collapse = " ")
+  info <- sprintf("%s=%s", names, info)
+  info <- paste(info, collapse = ", ")
+  info <- sprintf("connection: %s", info)
+  info
+}
+
