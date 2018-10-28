@@ -52,10 +52,10 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
   for (ii in seq_along(cl)) {
     if (verbose) message(sprintf("Updating node %d of %d ...", ii, n))
     
-    ## Attaching UUID for each cluster connection.  This is done because
+    ## Record cluster connection details.  This is done because
     ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-    if (verbose) message("- assigning connection UUID")
-    cl[ii] <- add_cluster_uuid(cl[ii])
+    if (verbose) message("- Record cluster connection details")
+    cl[ii] <- annotate_cluster_connections(cl[ii])
 
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
