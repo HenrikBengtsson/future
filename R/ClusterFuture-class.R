@@ -230,7 +230,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
     if (!is_valid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot resolve %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason")), future = future))
+      stop(FutureError(sprintf("Cannot resolve %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason", exact = TRUE)), future = future))
     }
 
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
@@ -284,7 +284,7 @@ result.ClusterFuture <- function(future, ...) {
     if (!is_valid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot receive result of %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason")), future = future))
+      stop(FutureError(sprintf("Cannot receive result of %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason", exact = TRUE)), future = future))
     }
   }
 
@@ -319,7 +319,7 @@ result.ClusterFuture <- function(future, ...) {
     
     ## (a) Did the worker use a connection that changed?
     if (inherits(node$con, "connection")) {
-      postmortem$connection <- check_connection_uuid(node, future = future)
+      postmortem$connection <- check_connection_details(node, future = future)
     }
 
     ## (b) Did a localhost worker process terminate?
@@ -451,64 +451,3 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
   node_idx
 }
-
-
-## This is needed in order to be able to assert that we later
-## actually work with the same connection.  See R-devel thread
-## 'closeAllConnections() can really mess things up' on 2016-10-30
-## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-check_connection_uuid <- function(worker, future, on_failure = "error") {
-  con <- worker$con
-  ## Not a worker with a connection
-  if (!inherits(con, "connection")) return(NULL)
-  
-  uuid <- attr(con, "uuid", exact = TRUE)
-  uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
-  if (uuid_now == uuid) return(NULL)
-  sprintf("The socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
-} ## check_connection_uuid()
-
-
-is_connection_valid <- function(con) {
-  details <- attr(con, "details")
-  stop_if_not(is.list(details))
-
-  res <- TRUE
-  index <- as.integer(con)
-  avail_indices <- getAllConnections()
-  if (!is.element(index, avail_indices)) {
-    res <- FALSE
-    attr(res, "reason") <- sprintf("Connection (%s) is not part of the currently registed set of R connections: %d not in {%s}", connection_info(con), index, hpaste(avail_indices))
-  } else {
-    current_con <- getConnection(index)
-    current_details <- connection_details(current_con)
-    res <- identical(details, current_details)
-    if (!isTRUE(res)) {
-      attr(res, "reason") <- sprintf("Connection (%s) is different from the currently registered R connection (%s) with the same index: %d", connection_info(con), connection_info(current_details), index)
-    }
-  }
-  
-  res
-}
-
-connection_info <- function(con) {
-  if (inherits(con, "connection_details")) {
-    details <- con
-  } else {
-    details <- attr(con, "details")
-    if (is.null(details)) {
-      stop_if_not(inherits(con, "connection"))
-      details <- connection_details(con)
-    }
-  }
-  info <- unlist(lapply(details, FUN = function(x) {
-    if (is.character(x)) x <- sprintf('"%s"', x)
-    x <- paste0(x, collapse = "+")
-  }), use.names = FALSE)
-  info <- sprintf("%s=%s", names(details), info)
-  info <- paste(info, collapse = ", ")
-  info <- sprintf("connection: %s", info)
-  stop_if_not(is.character(info), length(info) == 1L, !is.na(info))
-  info
-}
-

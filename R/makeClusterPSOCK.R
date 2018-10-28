@@ -441,48 +441,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 } ## makeNodePSOCK()
 
 
-connection_details <- function(con) {
-  if (inherits(con, "connection_details")) return(con)
-  details <- summary(con)
-  details$opened <- NULL
-  details$index <- as.integer(con)
-  structure(details, class = "connection_details")
-}
-
-## Attaching UUID for each cluster connection.
-## This is needed in order to be able to assert that we later
-## actually work with the same connection.  See R-devel thread
-## 'closeAllConnections() can really mess things up' on 2016-10-30
-## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-annotate_cluster_connections <- function(cl) {
-  stop_if_not(inherits(cl, "cluster"))
-  
-  for (ii in seq_along(cl)) {
-    node <- cl[[ii]]
-    if (is.null(node)) next  ## Happens with dryrun = TRUE
-
-    ## For workers with connections, get the UUID for the connection
-    if (!is.null(con <- node$con)) {
-      details <- attr(con, "details", exact = TRUE)
-      if (is.null(details)) {
-        attr(con, "details") <- connection_details(con)
-        node$con <- con
-        cl[[ii]] <- node
-      }
-      
-      uuid <- attr(con, "uuid", exact = TRUE)
-      if (is.null(uuid)) {
-        attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
-        node$con <- con
-        cl[[ii]] <- node
-      }
-    }
-  }
-  
-  cl
-} ## annotate_cluster_connections()
-
-
 ## Checks if a given worker is the same as the localhost.  It is, iff:
 ##
 ## * worker == "localhost"
