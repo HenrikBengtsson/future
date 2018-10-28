@@ -60,8 +60,8 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   }
   stop_if_not(length(workers) > 0)
 
-  ## Attaching UUID for each cluster connection, unless already done.
-  workers <- add_cluster_uuid(workers)
+  ## Record cluster connection details, unless already done.
+  workers <- annotate_cluster_connections(workers)
 
   ## Attached workers' session information, unless already done.
   ## FIXME: We cannot do this here, because it introduces a race condition
@@ -226,10 +226,11 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
-    if (!is_still_same_connection(con)) {
+    is_valid <- is_connection_valid(con)
+    if (!is_valid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot resolve future: The set of registered connections in R have changed since this %s (%s) was created such that the connection (%s) to the background workers is no longer available.", class(future)[1], label, connection_info(con)), future = future))
+      stop(FutureError(sprintf("Cannot resolve %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason")), future = future))
     }
 
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
@@ -278,10 +279,13 @@ result.ClusterFuture <- function(future, ...) {
   cl <- workers[node_idx]
   node <- cl[[1]]
 
-  if (!is.null(con <- node$con) && !is_still_same_connection(con)) {
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    stop(FutureError(sprintf("Cannot recieve result of future: the set of registered connections in R have changed since this %s (%s) was created such that the connection (%s) to the background workers is no longer available.", class(future)[1], label, connection_info(con)), future = future))
+  if (!is.null(con <- node$con)) {
+    is_valid <- is_connection_valid(con)
+    if (!is_valid) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+      stop(FutureError(sprintf("Cannot receive result of %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason")), future = future))
+    }
   }
 
   ## If not, wait for process to finish, and
@@ -465,24 +469,46 @@ check_connection_uuid <- function(worker, future, on_failure = "error") {
 } ## check_connection_uuid()
 
 
-is_still_same_connection <- function(con) {
-  con_idx <- as.integer(con)
-  other <- getConnection(con_idx)
-  summary <- attr(attr(con, "uuid"), "source")
-  other_summary <- summary(other)
-  other_summary$opened <- NULL
-  identical(summary, other_summary)
+is_connection_valid <- function(con) {
+  details <- attr(con, "details")
+  stop_if_not(is.list(details))
+
+  res <- TRUE
+  index <- as.integer(con)
+  avail_indices <- getAllConnections()
+  if (!is.element(index, avail_indices)) {
+    res <- FALSE
+    attr(res, "reason") <- sprintf("Connection (%s) is not part of the currently registed set of R connections: %d not in {%s}", connection_info(con), index, hpaste(avail_indices))
+  } else {
+    current_con <- getConnection(index)
+    current_details <- connection_details(current_con)
+    res <- identical(details, current_details)
+    if (!isTRUE(res)) {
+      attr(res, "reason") <- sprintf("Connection (%s) is different from the currently registered R connection (%s) with the same index: %d", connection_info(con), connection_info(current_details), index)
+    }
+  }
+  
+  res
 }
 
 connection_info <- function(con) {
-  stop_if_not(inherits(con, "connection"))
-  summary <- summary(con)
-  summary$uuid <- uuid_of_connection(con)
-  names <- gsub(" ", "_", names(summary))
-  info <- sapply(summary, FUN = paste0, collapse = " ")
-  info <- sprintf("%s=%s", names, info)
+  if (inherits(con, "connection_details")) {
+    details <- con
+  } else {
+    details <- attr(con, "details")
+    if (is.null(details)) {
+      stop_if_not(inherits(con, "connection"))
+      details <- connection_details(con)
+    }
+  }
+  info <- unlist(lapply(details, FUN = function(x) {
+    if (is.character(x)) x <- sprintf('"%s"', x)
+    x <- paste0(x, collapse = "+")
+  }), use.names = FALSE)
+  info <- sprintf("%s=%s", names(details), info)
   info <- paste(info, collapse = ", ")
   info <- sprintf("connection: %s", info)
+  stop_if_not(is.character(info), length(info) == 1L, !is.na(info))
   info
 }
 
