@@ -51,11 +51,6 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
   n <- length(cl)
   for (ii in seq_along(cl)) {
     if (verbose) message(sprintf("Updating node %d of %d ...", ii, n))
-    
-    ## Record cluster connection details.  This is done because
-    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-    if (verbose) message("- Record cluster connection details")
-    cl[ii] <- annotate_cluster_connections(cl[ii])
 
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect

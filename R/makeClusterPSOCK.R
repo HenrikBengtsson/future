@@ -85,11 +85,6 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
                          verbose = verbose)
     
-    ## Record cluster connection details.  This is done because
-    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-    if (verbose) message("- Record cluster connection details")
-    cl[ii] <- annotate_cluster_connections(cl[ii])
-
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
     ## useful information otherwise not available, e.g. the PID.

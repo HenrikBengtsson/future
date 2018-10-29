@@ -10,9 +10,8 @@ BUG FIXES:
    set up after the future was created/launched but before the results were
    retrieved.  This could happen because connections in R are indexed solely
    by an integer number which is recycled when old connections are closed and
-   new ones are created.  Now cluster futures assert that the original   
-   connection details has not changed, and if they have then an informative
-   error message is produced.
+   new ones are created.  Now cluster futures assert that the connections to
+   the workers are valid, and if not, an informative error message is produced.
 
 
 Version: 1.10.0 [2018-10-16]

@@ -60,9 +60,6 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   }
   stop_if_not(length(workers) > 0)
 
-  ## Record cluster connection details, unless already done.
-  workers <- annotate_cluster_connections(workers)
-
   ## Attached workers' session information, unless already done.
   ## FIXME: We cannot do this here, because it introduces a race condition
   ## where multiple similar requests may appear at the same time bringing
@@ -226,11 +223,14 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
-    is_valid <- is_connection_valid(con)
-    if (!is_valid) {
-      label <- future$label
+    ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
+    if (connectionId(con) < 0) return(FALSE)
+
+    isValid <- isValidConnection(con)
+    if (!isValid) {
+      label <- x$label
       if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot resolve %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason", exact = TRUE)), future = future))
+      stop(FutureError(sprintf("Cannot resolve %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
     }
 
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
@@ -280,11 +280,11 @@ result.ClusterFuture <- function(future, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
-    is_valid <- is_connection_valid(con)
-    if (!is_valid) {
+    isValid <- isValidConnection(con)
+    if (!isValid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot receive result of %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(is_valid, "reason", exact = TRUE)), future = future))
+      stop(FutureError(sprintf("Cannot receive result of %s future (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
     }
   }
 
