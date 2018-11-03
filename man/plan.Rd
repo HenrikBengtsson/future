@@ -2,10 +2,12 @@
 % Please edit documentation in R/zzz.plan.R
 \name{plan}
 \alias{plan}
-\title{Plan how to resolve a future}
+\title{This function allows \emph{the user} to plan the future, more specifically,
+it specifies how \code{\link{future}()}:s are resolved,
+e.g. sequentially or in parallel.}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
-  .cleanup = TRUE, .init = TRUE)
+plan(strategy = NULL, ..., substitute = TRUE, .skip = TRUE,
+  .call = TRUE, .cleanup = TRUE, .init = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function (or name of it) to use
@@ -19,6 +21,9 @@ functions of which some are linked to below.}
 
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
+
+\item{.skip}{(internal) If \code{TRUE}, then attempts to set a strategy
+that is the same as what is currently in use, will skipped.}
 
 \item{.call}{(internal) Used for recording the call to this function.}
 

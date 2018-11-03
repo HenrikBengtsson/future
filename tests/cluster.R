@@ -294,7 +294,7 @@ for (type in types) {
   if (type != "FORK" || getRversion() >= "3.3.0") {
   message("*** cluster() - crashed worker ...")
   
-  plan(cluster, workers = cl)
+  plan(cluster, workers = cl, .skip = FALSE)
   x %<-% 42L
   stopifnot(x == 42L)
   
@@ -315,9 +315,9 @@ for (type in types) {
   ## Verify that the reset worked
   cl <- parallel::makeCluster(1L, type = type)
   print(cl)
-  plan(cluster, workers = cl)
-  x %<-% 42L
-  stopifnot(x == 42L)
+  plan(cluster, workers = cl, .skip = FALSE)
+  x %<-% 43L
+  stopifnot(x == 43L)
   
   message("*** cluster() - crashed worker ... DONE")
   } ## if (type != "FORK" || getRversion() >= "3.2.0")
@@ -342,7 +342,7 @@ message("*** cluster() - exception when re-creating workers ...")
 
 plan(cluster, workers = "localhost")
 f <- future(1)
-plan(cluster, workers = "localhost")
+plan(cluster, workers = "localhost", .skip = FALSE)
 res <- tryCatch({
   value(f)
 }, FutureError = function(ex) {
@@ -351,7 +351,7 @@ res <- tryCatch({
 })
 stopifnot(inherits(res, "FutureError"))
 
-message("*** cluster() - exception when re-creating workers E... DONE")
+message("*** cluster() - exception when re-creating workers ... DONE")
 
 
 message("*** cluster() ... DONE")
