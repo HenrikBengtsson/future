@@ -205,7 +205,7 @@ print.Future <- function(x, ...) {
       earlySignal <- x$earlySignal
       x$earlySignal <- FALSE
       on.exit(x$earlySignal <- earlySignal)
-      cat(sprintf("Resolved: %s\n", resolved(x)))
+      cat(sprintf("Resolved: %s\n", tryCatch(resolved(x), error = conditionMessage)))
     })
   }
 

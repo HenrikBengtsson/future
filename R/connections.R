@@ -7,9 +7,11 @@ connectionId <- function(con) {
   if (index <= 2) return(index)
 
   id <- attr(con, "conn_id")
+  if (is.null(id)) return(NA_integer_)
+  
   id <- capture.output(print(id))
   
-  ## Not sure how this can happen, but I've observed it /HB 2018-10-27
+  ## Has the connection been serialized?
   if (id == "<pointer: (nil)>") return(-1L)
   
   id <- gsub("(<pointer:| |>)", "", id)
@@ -18,8 +20,6 @@ connectionId <- function(con) {
   id
 }
 
-
-#' @return A character string.
 connectionInfo <- function(con) {
   index <- as.integer(con)
   if (is.element(index, getAllConnections())) {

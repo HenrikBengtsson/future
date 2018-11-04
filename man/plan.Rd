@@ -2,9 +2,7 @@
 % Please edit documentation in R/zzz.plan.R
 \name{plan}
 \alias{plan}
-\title{This function allows \emph{the user} to plan the future, more specifically,
-it specifies how \code{\link{future}()}:s are resolved,
-e.g. sequentially or in parallel.}
+\title{Plan how to resolve a future}
 \usage{
 plan(strategy = NULL, ..., substitute = TRUE, .skip = TRUE,
   .call = TRUE, .cleanup = TRUE, .init = TRUE)
