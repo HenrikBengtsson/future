@@ -57,15 +57,15 @@ Version: 1.4.0
 
 # brms
 
-Version: 2.5.0
+Version: 2.6.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
-        R     3.5Mb
+        R     2.9Mb
         doc   2.4Mb
     ```
 
@@ -121,16 +121,15 @@ Version: 0.10.0
       All declared Imports should be used.
     ```
 
-# fiery
+# greta
 
-Version: 1.1.0
+Version: 0.3.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘desc’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘truncdist’
     ```
 
 # ipc
@@ -143,41 +142,6 @@ Version: 0.1.0
     ```
     Namespaces in Imports field not imported from:
       ‘redux’ ‘txtq’
-      All declared Imports should be used.
-    ```
-
-# jstor
-
-Version: 0.3.3
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > test_check("jstor")
-      ── 1. Failure: jst_define_import validates input (@test-import-spec.R#17)  ─────
-      `jst_define_import(article = jst_get_book)` did not throw an error.
-      
-      ── 2. Failure: jst_define_import validates input (@test-import-spec.R#18)  ─────
-      `jst_define_import(...)` did not throw an error.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 238 SKIPPED: 3 FAILED: 2
-      1. Failure: jst_define_import validates input (@test-import-spec.R#17) 
-      2. Failure: jst_define_import validates input (@test-import-spec.R#18) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-      Error while shutting down parallel: unable to terminate some child processes
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘curl’ ‘readxl’
       All declared Imports should be used.
     ```
 
@@ -257,32 +221,12 @@ Version: 0.2.3
 
 ## In both
 
-*   checking tests ...
+*   checking package dependencies ... ERROR
     ```
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 13 lines of output:
-      Receiving objects:  21% (85/401),   32 kb
-      Receiving objects:  31% (125/401),  160 kb
-      Receiving objects:  41% (165/401),  176 kb
-      Receiving objects:  51% (205/401),  184 kb
-      Receiving objects:  61% (245/401),  192 kb
-      Receiving objects:  71% (285/401),  192 kb
-      Receiving objects:  81% (325/401),  200 kb
-      Receiving objects:  91% (365/401),  205 kb
-      Receiving objects: 100% (401/401),  205 kb, done.
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 189 SKIPPED: 11 FAILED: 1
-      1. Failure: fastMask produces correct results (@test-gis.R#22) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘gdalUtils’
-      All declared Imports should be used.
+    Package required but not available: ‘rgeos’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # robotstxt
