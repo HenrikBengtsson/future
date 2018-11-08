@@ -16,6 +16,9 @@ NEW FEATURES:
  
 BUG FIXES:
 
+ * When evaluated in a local environment, futureCall(..., globals = "a") would
+   set the value of global 'a' to NULL if it lived in that local environment.
+
  * ROBUSTNESS: A cluster future, including a multisession one, could retrieve
    results from the wrong workers if a new set of cluster workers had been
    set up after the future was created/launched but before the results were

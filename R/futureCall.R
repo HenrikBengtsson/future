@@ -63,7 +63,10 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   }
   globals <- as.FutureGlobals(globals)
   stop_if_not(inherits(globals, "FutureGlobals"))
-  
+
+  ## Make sure to clean out globals not found
+  globals <- cleanup(globals, drop = "missing")
+
   names <- names(globals)
   if (!is.element("FUN", names)) globals$FUN <- FUN
   if (!is.element("args", names)) globals$args <- args
