@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-11-03]
+Version: 1.10.0-9000 [2018-11-08]
 
 SIGNIFICANT CHANGES:
 
@@ -9,6 +9,11 @@ SIGNIFICANT CHANGES:
    ignored, e.g. calling plan(multisession) consecutively will have the same
    effect as calling it just once.
 
+NEW FEATURES:
+
+ * Now futureCall() defaults to args = list() making is possible to call
+   functions that does not take arguments, e.g. futureCall(function() 42).
+ 
 BUG FIXES:
 
  * ROBUSTNESS: A cluster future, including a multisession one, could retrieve

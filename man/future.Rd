@@ -19,7 +19,7 @@ futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
 
 x \%<-\% value
 
-futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
+futureCall(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   seed = NULL, globals = TRUE, packages = NULL,
   evaluator = plan("next"), ...)
 }
