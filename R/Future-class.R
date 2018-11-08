@@ -63,7 +63,6 @@
 #' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
-#' @importFrom utils capture.output
 #' @export
 #' @keywords internal
 #' @name Future-class
@@ -77,7 +76,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
     if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
       msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
       mdebug(msg)
-      mdebug(capture.output(print(seed)))
+      mprint(seed)
       stop(msg)
     }
   }
@@ -468,7 +467,6 @@ resolved.Future <- function(x, ...) {
 #' @aliases getExpression.Future
 #' @keywords internal
 #'
-#' @importFrom utils capture.output
 #' @export
 getExpression <- function(future, ...) UseMethod("getExpression")
 
@@ -622,9 +620,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
   } ## if (length(strategiesR) > 0L)
 
   expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, enter = enter, exit = exit, version = version)
-  if (getOption("future.debug", FALSE)) {
-    mdebug(capture.output(print(expr)))
-  }
+  if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")
   

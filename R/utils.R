@@ -86,9 +86,13 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(..., appendLF = TRUE) {
-  if (!getOption("future.debug", FALSE)) return()
-  message(sprintf(...), appendLF = appendLF)
+mdebug <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (debug) message(sprintf(...), appendLF = appendLF)
+}
+
+#' @importFrom utils capture.output
+mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (debug) message(paste(capture.output(print(...)), collapse = "\n"), appendLF = appendLF)
 }
 
 
