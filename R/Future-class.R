@@ -465,9 +465,11 @@ resolved.Future <- function(x, ...) {
 #'     See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
 #'     for a discussion on this.
 #'
-#' @export
 #' @aliases getExpression.Future
 #' @keywords internal
+#'
+#' @importFrom utils capture.output
+#' @export
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
@@ -621,7 +623,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 
   expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) {
-    print(expr)
+    mdebug(capture.output(print(expr)))
   }
 
 ##  mdebug("getExpression() ... DONE")
