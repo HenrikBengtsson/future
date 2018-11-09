@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-11-08]
+Version: 1.10.0-9000 [2018-11-09]
 
 SIGNIFICANT CHANGES:
 
@@ -17,7 +17,8 @@ NEW FEATURES:
 BUG FIXES:
 
  * When evaluated in a local environment, futureCall(..., globals = "a") would
-   set the value of global 'a' to NULL if it lived in that local environment.
+   set the value of global 'a' to NULL, regardless whether it exists or what
+   its true value is.
 
  * ROBUSTNESS: A cluster future, including a multisession one, could retrieve
    results from the wrong workers if a new set of cluster workers had been
