@@ -5,6 +5,14 @@
 #' @return
 #' \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 #'
+#' @example incl/futureCall.R
+#'
+#' @details
+#' The \code{futureCall()} function works analogously to
+#' \code{\link[base]{do.call}()}, which calls a function with a set of
+#' arguments.  The difference is that \code{do.call()} returns the value of
+#' the call whereas \code{futureCall()} returns a future.
+#'
 #' @rdname future
 #' @importFrom utils capture.output str
 #' @export

@@ -7,7 +7,7 @@ y <- 2 * x + 0.2 + rnorm(100)
 w <- 1 + x ^ 2
 
 
-## (1) Regular assignments (evaluated sequentially)
+## EXAMPLE: Regular assignments (evaluated sequentially)
 fitA <- lm(y ~ x, weights = w)      ## with offset
 fitB <- lm(y ~ x - 1, weights = w)  ## without offset
 fitC <- {
@@ -19,7 +19,7 @@ print(fitB)
 print(fitC)
 
 
-## (2) Future assignments (evaluated in parallel)
+## EXAMPLE: Future assignments (evaluated in parallel)
 fitA %<-% lm(y ~ x, weights = w)      ## with offset
 fitB %<-% lm(y ~ x - 1, weights = w)  ## without offset
 fitC %<-% {
@@ -31,7 +31,7 @@ print(fitB)
 print(fitC)
 
 
-## (3) Explicitly create futures (evaluated in parallel)
+## EXAMPLE: Explicitly create futures (evaluated in parallel)
 ## and retrieve their values
 fA <- future( lm(y ~ x, weights = w) )
 fB <- future( lm(y ~ x - 1, weights = w) )
@@ -47,7 +47,7 @@ print(fitB)
 print(fitC)
 
 
-## (4) Explit future assignments (evaluated in parallel)
+## EXAMPLE: Explicit future assignments (evaluated in parallel)
 futureAssign("fitA", lm(y ~ x, weights = w))
 futureAssign("fitB", lm(y ~ x - 1, weights = w))
 futureAssign("fitC", {
@@ -57,7 +57,6 @@ futureAssign("fitC", {
 print(fitA)
 print(fitB)
 print(fitC)
-
 
 \dontshow{
 ## Make sure to "close" an multisession workers on Windows

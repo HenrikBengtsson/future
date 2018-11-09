@@ -42,7 +42,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional arguments passed to the "evaluator".}
+\item{...}{Additional named elements passed to \code{\link{Future}()}.}
 }
 \value{
 A \link{SequentialFuture}.
