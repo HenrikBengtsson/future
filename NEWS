@@ -13,7 +13,12 @@ NEW FEATURES:
 
  * Now futureCall() defaults to args = list() making is possible to call
    functions that does not take arguments, e.g. futureCall(function() 42).
- 
+
+ * makeClusterPSOCK() produces more informative error messages whenever the
+   setup of R workers fails.  Also, its verbose messages are now prefixed
+   with "[local output] " to help distinguish the output produced by the
+   current R session from that produced by background workers.
+   
 BUG FIXES:
 
  * When evaluated in a local environment, futureCall(..., globals = "a") would

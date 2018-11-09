@@ -43,8 +43,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+
+  verbose_prefix <- "[local output] "
+
   if (verbose) {
-    message(sprintf("Workers: [n = %d] %s",
+    message(sprintf("%sWorkers: [n = %d] %s", verbose_prefix,
                     length(workers), hpaste(sQuote(workers))))
   }
 
@@ -74,24 +77,30 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
   }
-  if (verbose) message(sprintf("Base port: %d", port))
+  if (verbose) message(sprintf("%sBase port: %d", verbose_prefix, port))
 
   n <- length(workers)
   cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
   for (ii in seq_along(cl)) {
-    if (verbose) message(sprintf("Creating node %d of %d ...", ii, n))
-    if (verbose) message("- setting up node")
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
+      message(sprintf("%s- setting up node", verbose_prefix))
+    }
     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
                          verbose = verbose)
     
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
     ## useful information otherwise not available, e.g. the PID.
-    if (verbose) message("- collecting session information")
+    if (verbose) {
+      message(sprintf("%s- collecting session information", verbose_prefix))
+    }
     cl[ii] <- add_cluster_session_info(cl[ii])
     
-    if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ... done", verbose_prefix, ii, n))
+    }
   }
 
   if (autoStop) cl <- autoStopCluster(cl)
@@ -340,6 +349,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   useXDR <- as.logical(useXDR)
   stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
+  stop_if_not(is.null(outfile) || is.character(outfile))
+
   renice <- as.integer(renice)
   stop_if_not(length(renice) == 1L)
 
@@ -348,6 +359,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   
   verbose <- as.logical(verbose)
   stop_if_not(length(verbose) == 1L, !is.na(verbose))
+
+  verbose_prefix <- "[local output] "
 
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
@@ -406,14 +419,14 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (dryrun) return(NULL)
   } else {
     if (verbose) {
-      message(sprintf("Starting worker #%s on %s: %s", rank, sQuote(worker), local_cmd))
+      message(sprintf("%sStarting worker #%s on %s: %s", verbose_prefix, rank, sQuote(worker), local_cmd))
     }
     input <- if (.Platform$OS.type == "windows") "" else NULL
     system(local_cmd, wait = FALSE, input = input)
   }
 
   if (verbose) {
-    message(sprintf("Waiting for worker #%s on %s to connect back", rank, sQuote(worker)))
+    message(sprintf("%sWaiting for worker #%s on %s to connect back", verbose_prefix, rank, sQuote(worker)))
   }
   
   con <- local({
@@ -422,13 +435,28 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
      ##       undo it manually :/  /HB 2016-11-05
      setTimeLimit(elapsed = connectTimeout)
      on.exit(setTimeLimit(elapsed = Inf))
-     
-     socketConnection("localhost", port = port, server = TRUE, 
-                      blocking = TRUE, open = "a+b", timeout = timeout)
+     tryCatch({
+       socketConnection("localhost", port = port, server = TRUE, 
+                        blocking = TRUE, open = "a+b", timeout = timeout)
+     }, error = function(ex) {
+       ## Tweak the error message to be more informative:
+       machineType <- if (localMachine) "local" else "remote"
+       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s.", machineType, sQuote(worker))
+       msg <- c(msg, sprintf("The reason reported was: %s.", sQuote(conditionMessage(ex))))
+       msg <- c(msg, sprintf("The worker was launched using the following system call: %s.", local_cmd))
+       msg <- c(msg, sprintf("The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.", port, timeout, connectTimeout))
+       is_worker_output_visible <- is.null(outfile)
+       if (!is_worker_output_visible) {
+         msg <- c(msg, sprintf("Troubleshooting suggestion: To see output from the R worker, retry with argument 'out = NULL', which is currently set to 'out = \"%s\"'.", outfile))
+       }
+       msg <- paste(msg, collapse = " ")
+       ex$message <- msg
+       stop(ex)
+     })
   })
 
   if (verbose) {
-    message(sprintf("Connection with worker #%s on %s established", rank, sQuote(worker)))
+    message(sprintf("%sConnection with worker #%s on %s established", verbose_prefix, rank, sQuote(worker)))
   }
 
   structure(list(con = con, host = worker, rank = rank),
