@@ -428,21 +428,37 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   if (verbose) {
     message(sprintf("%sWaiting for worker #%s on %s to connect back", verbose_prefix, rank, sQuote(worker)))
   }
-  
+    
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
      ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
      ##       undo it manually :/  /HB 2016-11-05
      setTimeLimit(elapsed = connectTimeout)
      on.exit(setTimeLimit(elapsed = Inf))
+
+     warnings <- list()
      tryCatch({
-       socketConnection("localhost", port = port, server = TRUE, 
-                        blocking = TRUE, open = "a+b", timeout = timeout)
+       withCallingHandlers({
+         socketConnection("localhost", port = port, server = TRUE, 
+                          blocking = TRUE, open = "a+b", timeout = timeout)
+       }, warning = function(w) {
+         if (verbose) {
+           message(sprintf("%sDetected a warning from socketConnection(): %s", verbose_prefix, sQuote(conditionMessage(w))))
+         }
+         warnings <<- c(warnings, list(w))
+       })
      }, error = function(ex) {
+         utils::str(list(warnings = warnings))
        ## Tweak the error message to be more informative:
        machineType <- if (localMachine) "local" else "remote"
        msg <- sprintf("Failed to launch and connect to R worker on %s machine %s.", machineType, sQuote(worker))
-       msg <- c(msg, sprintf("The reason reported was: %s.", sQuote(conditionMessage(ex))))
+       msg <- c(msg, sprintf("The error produced by socketConnection() was: %s.", sQuote(conditionMessage(ex))))
+       if (length(warnings) > 0) {
+         msg <- c(msg, sprintf("In addition, socketConnection() produced the %d warning(s).", length(warnings)))
+	 for (kk in seq_along(warnings)) {
+           msg <- c(msg, sprintf("Warning #%d: %s.", kk, sQuote(conditionMessage(warnings[[kk]]))))
+	 }
+       }
        msg <- c(msg, sprintf("The worker was launched using the following system call: %s.", local_cmd))
        msg <- c(msg, sprintf("The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.", port, timeout, connectTimeout))
        is_worker_output_visible <- is.null(outfile)
