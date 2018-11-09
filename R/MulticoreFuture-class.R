@@ -102,10 +102,7 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
   ## FIXME: Can we use result() instead? /HB 2018-07-16
-  ## NOTE 2: We have to suppress warnings because the forked process
-  ## may have already finished and terminated.
-  pid <- suppressWarnings(selectChildren(children = job,
-                                         timeout = timeout))
+  pid <- selectChildren(children = job, timeout = timeout)
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
@@ -143,12 +140,7 @@ result.MulticoreFuture <- function(future, ...) {
   ##     https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
   jobs <- if (getRversion() >= "3.6.0") job else list(job)
   
-  ## WORKAROUNDS for R (>= 3.6.0):
-  ##  2. Suppress warnings because mccollect() produces:
-  ##     "Warning in selectChildren(pids[!fin], -1) :
-  ##      cannot wait for child 32193 as it does not exist"
-  ##     cf. https://github.com/HenrikBengtsson/future/issues/218
-  result <- suppressWarnings(mccollect(jobs = jobs, wait = TRUE)[[1L]])
+  result <- mccollect(jobs = jobs, wait = TRUE)[[1L]]
   
   ## NOTE: In Issue #218 it was suggested that parallel:::rmChild() could
   ## fix this, but there seems to be more to this story, because we still
@@ -226,9 +218,4 @@ getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
   NextMethod(mc.cores = mc.cores)
-}
-
-
-select_children <- function(children, timeout = 0) {
-  selectChildren <- importParallel("selectChildren")
 }

@@ -230,7 +230,21 @@ importParallel <- local({
         mdebug(msg)
         stop(msg, call. = FALSE)
       }
+
       res <- get(name, mode = "function", envir = ns, inherits = FALSE)
+
+      if (getRversion() >= "3.5.0" && getRversion() <= "3.5.1") {
+        ## Suppress warnings produced by parallel::mccollect() and
+	## parallel::selectChildren() in R 3.5.0 and and R 3.5.1
+	## (https://github.com/HenrikBengtsson/future/issues/218), e.g.
+	##
+        ##  "Warning in selectChildren(pids[!fin], -1) :
+        ##   cannot wait for child 32193 as it does not exist"
+	##
+	res_org <- res
+        res <- function(...) suppressWarnings(res_org(...))
+      }
+      
       cache[[name]] <<- res
     }
     res
