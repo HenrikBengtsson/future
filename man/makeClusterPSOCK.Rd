@@ -150,7 +150,7 @@ Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 client that is distributed with RStudio will be used as a fallback if
 neither of the above two commands are available on the \code{PATH}.
 
-For Windows systems prior to Windows 10, which do not have RStudio
+For \emph{Windows systems prior to Windows 10}, which do not have RStudio
 installed, it is less common to find \command{ssh}. Instead it is more
 likely that such systems have the \command{PuTTY} software and its SSH
 client \command{plink} installed.
@@ -230,10 +230,21 @@ trying to access the connection.
 }
 
 \examples{
+## NOTE: Drop 'dryrun = TRUE' below in order to actually connect.  Add
+## 'verbose = TRUE' if you run into problems and need to troubleshoot.
+
+
+## EXAMPLE: Two workers on the local machine
+workers <- c("localhost", "localhost")
+cl <- makeClusterPSOCK(workers, dryrun = TRUE)
+
+## EXAMPLE: Three remote workers
 ## Setup of three R workers on two remote machines are set up
 workers <- c("n1.remote.org", "n2.remote.org", "n1.remote.org")
 cl <- makeClusterPSOCK(workers, dryrun = TRUE)
 
+
+## EXAMPLE: Local and remote workers
 ## Same setup when the two machines are on the local network and
 ## have identical software setups
 cl <- makeClusterPSOCK(
@@ -242,6 +253,7 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 
+## EXAMPLE: Remote workers with specific setup
 ## Setup of remote worker with more detailed control on
 ## authentication and reverse SSH tunnelling
 cl <- makeClusterPSOCK(
@@ -256,6 +268,7 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 
+## EXAMPLE: Two workers running in Docker on the local machine
 ## Setup of 2 Docker workers running rocker/r-base
 ## (requires installation of future package)
 cl <- makeClusterPSOCK(
@@ -273,6 +286,7 @@ cl <- makeClusterPSOCK(
 )
                        
 
+## EXAMPLE: One worker running in udocker on the local machine
 ## Setup of a single udocker.py worker running rocker/r-base
 ## (requires installation of future package and extra quoting)
 cl <- makeClusterPSOCK(
@@ -292,6 +306,7 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remote worker running on AWS
 ## Launching worker on Amazon AWS EC2 running one of the
 ## Amazon Machine Images (AMI) provided by RStudio
 ## (http://www.louisaslett.com/RStudio_AMI/)
@@ -322,6 +337,7 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remove worker running on GCE
 ## Launching worker on Google Cloud Engine (GCE) running a
 ## container based VM (with a #cloud-config specification)
 public_ip <- "1.2.3.4"
@@ -351,8 +367,11 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remove worker running on Linux from old Windows machine
 ## Connect to remote Unix machine 'remote.server.org' on port 2200
 ## as user 'bob' from a Windows machine with PuTTY installed
+## Note, if you have Windows 10, then you have SSH built-in and
+## can use the same above approach as Linux and macOS users use.
 cl <- makeClusterPSOCK(
   "remote.server.org", user = "bob",
   rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),

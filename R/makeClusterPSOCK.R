@@ -197,7 +197,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' client that is distributed with RStudio will be used as a fallback if
 #' neither of the above two commands are available on the \code{PATH}.
 #' 
-#' For Windows systems prior to Windows 10, which do not have RStudio
+#' For \emph{Windows systems prior to Windows 10}, which do not have RStudio
 #' installed, it is less common to find \command{ssh}. Instead it is more
 #' likely that such systems have the \command{PuTTY} software and its SSH
 #' client \command{plink} installed.
