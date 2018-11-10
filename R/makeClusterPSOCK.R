@@ -210,7 +210,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 #' client that is distributed with RStudio will be used as a fallback if
 #' neither of the above two commands are available on the \code{PATH}.
-#' 
+#'
 #' For \emph{Windows systems prior to Windows 10}, which do not have RStudio
 #' installed, it is less common to find \command{ssh}. Instead it is more
 #' likely that such systems have the \command{PuTTY} software and its SSH
@@ -224,6 +224,14 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' This is because all elements of \code{rshcmd} are individually "shell"
 #' quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
 #'
+#' \emph{Known issue with the Windows 10 SSH client: As of 2018-11-09, there
+#' is a bug in the SSH client of Windows 10 that prevents it to work with
+#' reverse SSH tunneling
+#' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}).
+#' Because of this, the PuTTY SSH client and the RStudio SSH client are
+#' prioritized over the Windows 10 SSH client until this bug has been
+#' resolved.}
+#' 
 #' Additional SSH options may be specified via argument \code{rshopts}, which
 #' defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
 #' private SSH key can be provided as
@@ -411,7 +419,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   if (!localMachine) {
     ## Find default SSH client
     if (is.null(rshcmd)) {
-      rshcmd <- find_rshcmd(!localMachine && !manual && !dryrun)
+      rshcmd <- find_rshcmd(first = TRUE, must_work = !localMachine && !manual && !dryrun)
     }
     
     ## Local commands
@@ -629,41 +637,84 @@ is_fqdn <- function(worker) {
 }
 
 
-## Locate an SSH client
-find_rshcmd <- function(must_work = TRUE) {
-  cmd_calls <- list(
-    "ssh",
-    c("plink", "-ssh")
-  )
-  for (cmd_call in cmd_calls) {
-    cmd <- cmd_call[1]
-    cmd_bin <- Sys.which(cmd)
-    if (nzchar(cmd_bin)) return(c(cmd_bin, cmd_call[-1]))
+#' Search for SSH clients on the current system
+#'
+#' @param first If TRUE, the first client found is returned, otherwise
+#' all located clients are returned.
+#'
+#' @param must_work If TRUE and no clients was found, then an error
+#' is produced, otherwise only a warning.
+#'
+#' @return A named list of pathnames to all located SSH clients.
+#' If \code{first = TRUE}, only the first one is returned.
+#'
+#' @export
+#' @keyword internal
+find_rshcmd <- function(first = FALSE, must_work = TRUE) {
+  find_rstudio_ssh <- function() {
+    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
+    if (!file_test("-d", path)) return(NULL)   
+    path <- normalizePath(path)
+    path_org <- Sys.getenv("PATH")
+    on.exit(Sys.setenv(PATH = path_org))
+    ## Append RSTUDIO_MSYS_SSH with the rationale that it
+    ## emulates how RStudio's 'Tools -> Shell ...' is set up.
+    Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
+    bin <- Sys.which("ssh")
+    if (nzchar(bin)) return(bin)
+    NULL
   }
 
-  ## FALLBACK: On Windows, RStudio distributes an 'ssh.exe' client
+  find_putty_plink <- function() {
+    bin <- Sys.which("plink")
+    if (nzchar(bin)) return(bin, "-ssh")
+    NULL
+  }
+
+  find_ssh <- function() {
+    bin <- Sys.which("ssh")
+    if (nzchar(bin)) return(bin)
+    NULL
+  }
+
+  stop_if_not(is.logical(first), length(first) == 1L, !is.na(first))
+  stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
+
+  res <- list()
+  names <- c()
+
   if (.Platform$OS.type == "windows") {
-    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
-    if (file_test("-d", path)) {
-      path <- normalizePath(path)
-      path_org <- Sys.getenv("PATH")
-      on.exit(Sys.setenv(PATH = path_org))
-      ## Append RSTUDIO_MSYS_SSH with the rationale that it
-      ## emulates how RStudio's 'Tools -> Shell ...' is set up.
-      Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
-      cmd_bin <- Sys.which("ssh")
-      if (nzchar(cmd_bin)) return(cmd_bin)
+    names <- c(names, name <- "PuTTY")
+    pathname <- find_putty_plink()
+    if (!is.null(pathname)) {
+      if (first) return(pathname)
+      res[[name]] <- pathname
+    }
+
+    names <- c(names, name <- "RStudioSSH")
+    pathname <- find_rstudio_ssh()
+    if (!is.null(pathname)) {
+      if (first) return(pathname)
+      res[[name]] <- pathname
     }
   }
+
+  names <- c(names, name <- "ssh")
+  pathname <- find_ssh()
+  if (!is.null(pathname)) {
+    if (first) return(pathname)
+    res[[name]] <- pathname
+  }
+
+  if (length(res) > 0) return(res)
   
-  cmds_checked <- unlist(lapply(cmd_calls, FUN = function(x) x[1]))
-  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds_checked), collapse = ", ")) #nolint
+  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(names), collapse = ", ")) #nolint
   if (must_work) stop(msg)
 
-  cmd <- cmd_calls[[1]]
-  msg <- sprintf("%s Will use %s.", msg, sQuote(paste(cmd, collapse = " ")))
+  pathname <- "ssh"
+  msg <- sprintf("%s Will still try with %s.", msg, sQuote(paste(pathname, collapse = " ")))
   warning(msg)
-  cmd
+  pathname
 }
 
 

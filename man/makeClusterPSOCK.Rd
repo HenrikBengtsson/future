@@ -168,6 +168,14 @@ this for PuTTY, specify the absolute path in the first element and option
 This is because all elements of \code{rshcmd} are individually "shell"
 quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
 
+\emph{Known issue with the Windows 10 SSH client: As of 2018-11-09, there
+is a bug in the SSH client of Windows 10 that prevents it to work with
+reverse SSH tunneling
+(\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}).
+Because of this, the PuTTY SSH client and the RStudio SSH client are
+prioritized over the Windows 10 SSH client until this bug has been
+resolved.}
+
 Additional SSH options may be specified via argument \code{rshopts}, which
 defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
 private SSH key can be provided as
