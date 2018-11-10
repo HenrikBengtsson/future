@@ -521,7 +521,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        suggestions <- NULL
        is_worker_output_visible <- is.null(outfile)
        if (!is_worker_output_visible) {
-	 suggestions <- c(suggestions, "Set 'out=NULL' to set output from worker.")
+	 suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
        }
        if (is.character(logfile)) {
 	 smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
