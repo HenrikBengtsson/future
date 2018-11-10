@@ -451,12 +451,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          utils::str(list(warnings = warnings))
        ## Tweak the error message to be more informative:
        machineType <- if (localMachine) "local" else "remote"
-       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s.", machineType, sQuote(worker))
+       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
        msg <- c(msg, sprintf("The error produced by socketConnection() was: %s.", sQuote(conditionMessage(ex))))
        if (length(warnings) > 0) {
-         msg <- c(msg, sprintf("In addition, socketConnection() produced the %d warning(s).", length(warnings)))
+         msg <- c(msg, sprintf("In addition, socketConnection() produced %d warning(s).", length(warnings)))
 	 for (kk in seq_along(warnings)) {
-           msg <- c(msg, sprintf("Warning #%d: %s.", kk, sQuote(conditionMessage(warnings[[kk]]))))
+	   cmsg <- conditionMessage(warnings[[kk]])
+	   if (grepl("port [0-9]+ cannot be opened", cmsg)) {
+             msg <- c(msg, sprintf("Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine).", kk, sQuote(cmsg)))
+	   } else {
+             msg <- c(msg, sprintf("Warning #%d: %s.", kk, sQuote(cmsg)))
+	   }
 	 }
        }
        msg <- c(msg, sprintf("The worker was launched using the following system call: %s.", local_cmd))
