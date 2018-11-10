@@ -657,9 +657,12 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     path <- normalizePath(path)
     path_org <- Sys.getenv("PATH")
     on.exit(Sys.setenv(PATH = path_org))
-    ## Append RSTUDIO_MSYS_SSH with the rationale that it
-    ## emulates how RStudio's 'Tools -> Shell ...' is set up.
-    Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
+    
+    ## Set PATH to only look in RSTUDIO_MSYS_SSH to avoid
+    ## picking up other clients with the same name
+    ## Comment: In RStudio, RSTUDIO_MSYS_SSH is appended
+    ## to the PATH, see PATH in 'Tools -> Shell ...'.
+    Sys.setenv(PATH = path)
     bin <- Sys.which("ssh")
     if (nzchar(bin)) return(bin)
     NULL
