@@ -418,21 +418,42 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     cmd <- sprintf("nice --adjustment=%d %s", renice, cmd)
   }
 
+  rshcmd_type <- "<unknown>"
   if (!localMachine) {
     ## Find default SSH client
     if (is.null(rshcmd)) {
-      rshcmd <- find_rshcmd(first = TRUE, must_work = !localMachine && !manual && !dryrun)
+      rshcmd <- find_rshcmd(must_work = !localMachine && !manual && !dryrun)
+      if (verbose) {
+        s <- unlist(lapply(names(rshcmd), FUN = function(name) {
+	  sprintf("%s [type = %s, version_string = %s]", sQuote(rshcmd[[name]]), sQuote(name), sQuote(attr(rshcmd[[name]], "version_string")))
+	}))
+	s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
+        message(sprintf("%sFound the following available 'rshcmd':\n%s", verbose_prefix, s))
+      }
+      rshcmd_type <- names(rshcmd)[1]
+      rshcmd <- rshcmd[[1]]
+    }
+    if (verbose) {
+      message(sprintf("%sUsing 'rshcmd': %s [type = %s, version_string = %s]", verbose_prefix, paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(attr(rshcmd, "version_string"))))
     }
     
     ## Local commands
     rshcmd <- paste(shQuote(rshcmd), collapse = " ")
     if (length(user) == 1L) rshopts <- c("-l", user, rshopts)
+
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
+      ## AD HOC: Warn about Windows 10 ssh bug with rev tunneling
+      if (isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         msg <- sprintf("WARNING: This 'rshcmd' (%s [type = %s, version_string = %s]) may not support reverse tunneling (revtunnel = TRUE)", paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(attr(rshcmd, "version_string")))
+         if (verbose) message(c(verbose_prefix, msg))
+      }
     }
+    
     if (is.character(logfile)) {
       rshopts <- c(sprintf("-E %s", shQuote(logfile)), rshopts)
     }
+    
     rshopts <- paste(rshopts, collapse = " ")
     local_cmd <- paste(rshcmd, rshopts, worker, shQuote(cmd))
   } else {
@@ -517,8 +538,20 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## Report on how the worker was launched
        msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
 
+       ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
+       ## https://github.com/PowerShell/Win32-OpenSSH/issues/1265
+       if (revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         v <- attr(rshcmd, "version_string")
+	 if (is.null(v)) v <- "<unknown>"
+         msg <- c(msg, sprintf("WARNING: The 'rshcmd' used may not support reverse tunneling (revtunnel = TRUE): %s [type = %s, version_string = %s]", paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(v)))
+         if (verbose) message(c(verbose_prefix, msg))
+       }
+
        ## Propose further troubleshooting methods
        suggestions <- NULL
+       if (!verbose) {
+	 suggestions <- c(suggestions, "Set 'verbose=TRUE' to see more details.")
+       }
        is_worker_output_visible <- is.null(outfile)
        if (!is_worker_output_visible) {
 	 suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
@@ -649,6 +682,8 @@ is_fqdn <- function(worker) {
 #'
 #' @return A named list of pathnames to all located SSH clients.
 #' If \code{first = TRUE}, only the first one is returned.
+#' Attribute `version_string` contains the output from querying the
+#' executable for its version (via command-line option `-V`).
 #'
 #' @export
 #' @keywords internal
@@ -682,6 +717,11 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     NULL
   }
 
+  query_version <- function(bin, args = "-V") {
+    v <- suppressWarnings(system2(bin, args = args, stdout = TRUE, stderr = TRUE))
+    paste(v, collapse = "; ")
+  }
+  
   stop_if_not(is.logical(first), length(first) == 1L, !is.na(first))
   stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
 
@@ -691,6 +731,10 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
   names <- c(names, name <- "ssh")
   pathname <- find_ssh()
   if (!is.null(pathname)) {
+    v <- query_version(pathname, args = "-V")
+    attr(pathname, "version_string") <- v
+    if (any(grepl("OpenSSH_for_Windows", v)))
+      attr(pathname, "OpenSSH_for_Windows") <- TRUE
     if (first) return(pathname)
     res[[name]] <- pathname
   }
@@ -699,6 +743,7 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     names <- c(names, name <- "PuTTY")
     pathname <- find_putty_plink()
     if (!is.null(pathname)) {
+      attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
       res[[name]] <- pathname
     }
@@ -706,6 +751,7 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     names <- c(names, name <- "RStudioSSH")
     pathname <- find_rstudio_ssh()
     if (!is.null(pathname)) {
+      attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
       res[[name]] <- pathname
     }
