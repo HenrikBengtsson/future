@@ -424,16 +424,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rshcmd <- find_rshcmd(must_work = !localMachine && !manual && !dryrun)
       if (verbose) {
         s <- unlist(lapply(rshcmd, FUN = function(r) {
-	  sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), attr(r, "type"), attr(r, "version"))
+	  sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), sQuote(attr(r, "type")), sQuote(attr(r, "version")))
 	}))
 	s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
         message(sprintf("%sFound the following available 'rshcmd':\n%s", verbose_prefix, s))
       }
       rshcmd <- rshcmd[[1]]
-      s <- sprintf("type=%s, version=%s", attr(rshcmd, "type"), attr(rshcmd, "version"))
     } else {
-      s <- sprintf("type=%s, version=%s", attr(rshcmd, "type"), attr(rshcmd, "version"))
+      if (is.null(attr(rshcmd, "type"))) attr(rshcmd, "type") <- "<unknown>"
+      if (is.null(attr(rshcmd, "version"))) attr(rshcmd, "version") <- "<unknown>"
     }
+    s <- sprintf("type=%s, version=%s", sQuote(attr(rshcmd, "type")), sQuote(attr(rshcmd, "version")))
     rshcmd_label <- sprintf("%s [%s]", paste(sQuote(rshcmd), collapse = ", "), s)
 
     if (verbose) message(sprintf("%sUsing 'rshcmd': %s", verbose_prefix, rshcmd_label))
@@ -728,11 +729,11 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
   stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
 
   res <- list()
-  names <- c()
 
-  names <- c(names, name <- "ssh")
   pathname <- find_ssh()
   if (!is.null(pathname)) {
+    name <- "ssh"
+    attr(pathname, "type") <- name
     v <- query_version(pathname, args = "-V")
     attr(pathname, "version_string") <- v
     if (any(grepl("OpenSSH_for_Windows", v)))
@@ -742,17 +743,19 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
   }
 
   if (.Platform$OS.type == "windows") {
-    names <- c(names, name <- "PuTTY")
     pathname <- find_putty_plink()
     if (!is.null(pathname)) {
+      name <- "PuTTY"
+      attr(pathname, "type") <- name
       attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
       res[[name]] <- pathname
     }
 
-    names <- c(names, name <- "RStudioSSH")
     pathname <- find_rstudio_ssh()
     if (!is.null(pathname)) {
+      name <- "RStudioSSH"
+      attr(pathname, "type") <- name
       attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
       res[[name]] <- pathname
