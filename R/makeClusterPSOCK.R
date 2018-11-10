@@ -43,8 +43,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+
+  verbose_prefix <- "[local output] "
+
   if (verbose) {
-    message(sprintf("Workers: [n = %d] %s",
+    message(sprintf("%sWorkers: [n = %d] %s", verbose_prefix,
                     length(workers), hpaste(sQuote(workers))))
   }
 
@@ -74,24 +77,30 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
   }
-  if (verbose) message(sprintf("Base port: %d", port))
+  if (verbose) message(sprintf("%sBase port: %d", verbose_prefix, port))
 
   n <- length(workers)
   cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
   for (ii in seq_along(cl)) {
-    if (verbose) message(sprintf("Creating node %d of %d ...", ii, n))
-    if (verbose) message("- setting up node")
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
+      message(sprintf("%s- setting up node", verbose_prefix))
+    }
     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
                          verbose = verbose)
     
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
     ## useful information otherwise not available, e.g. the PID.
-    if (verbose) message("- collecting session information")
+    if (verbose) {
+      message(sprintf("%s- collecting session information", verbose_prefix))
+    }
     cl[ii] <- add_cluster_session_info(cl[ii])
     
-    if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ... done", verbose_prefix, ii, n))
+    }
   }
 
   if (autoStop) cl <- autoStopCluster(cl)
@@ -153,6 +162,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' vector).  These arguments are only applied if \code{machine} is not
 #' \emph{localhost}.  For more details, see below.
 #' 
+#' @param logfile (optional) If a filename, the output produced by the
+#' \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
+#' to a temporary file.  The log file name is available as an attribute
+#' as part of the return node object.
+#'
 #' @param user (optional) The user name to be used when communicating with
 #' another host.
 #' 
@@ -267,7 +281,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, logfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -302,7 +316,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   revtunnel <- as.logical(revtunnel)
   stop_if_not(length(revtunnel) == 1L, !is.na(revtunnel))
-  
+
+  if (!is.null(logfile)) {
+    if (is.logical(logfile)) {
+      stop_if_not(!is.na(logfile))
+      if (logfile) {
+        logfile <- tempfile(pattern = "future_makeClusterPSOCK_", fileext = ".log")
+      } else {
+        logfile <- NULL
+      }
+    } else {
+      logfile <- as.character(logfile)
+      logfile <- normalizePath(logfile, mustWork = FALSE)
+    }
+  }
+
   if (is.null(master)) {
     if (localMachine || revtunnel) {
       master <- "localhost"
@@ -340,6 +368,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   useXDR <- as.logical(useXDR)
   stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
+  stop_if_not(is.null(outfile) || is.character(outfile))
+
   renice <- as.integer(renice)
   stop_if_not(length(renice) == 1L)
 
@@ -348,6 +378,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   
   verbose <- as.logical(verbose)
   stop_if_not(length(verbose) == 1L, !is.na(verbose))
+
+  verbose_prefix <- "[local output] "
 
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
@@ -388,6 +420,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
     }
+    if (is.character(logfile)) {
+      rshopts <- c(sprintf("-E %s", shQuote(logfile)), rshopts)
+    }
     rshopts <- paste(rshopts, collapse = " ")
     local_cmd <- paste(rshcmd, rshopts, worker, shQuote(cmd))
   } else {
@@ -406,32 +441,112 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (dryrun) return(NULL)
   } else {
     if (verbose) {
-      message(sprintf("Starting worker #%s on %s: %s", rank, sQuote(worker), local_cmd))
+      message(sprintf("%sStarting worker #%s on %s: %s", verbose_prefix, rank, sQuote(worker), local_cmd))
     }
     input <- if (.Platform$OS.type == "windows") "" else NULL
-    system(local_cmd, wait = FALSE, input = input)
+    res <- system(local_cmd, wait = FALSE, input = input)
+    if (verbose) {
+      message(sprintf("%s- Exit code of system() call: %s", verbose_prefix, res))
+    }
+    if (res != 0) {
+      warning(sprintf("system(%s) had a non-zero exit code: %d", local_cmd, res))
+    }
   }
 
   if (verbose) {
-    message(sprintf("Waiting for worker #%s on %s to connect back", rank, sQuote(worker)))
+    message(sprintf("%sWaiting for worker #%s on %s to connect back", verbose_prefix, rank, sQuote(worker)))
   }
-  
+    
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
      ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
      ##       undo it manually :/  /HB 2016-11-05
      setTimeLimit(elapsed = connectTimeout)
      on.exit(setTimeLimit(elapsed = Inf))
-     
-     socketConnection("localhost", port = port, server = TRUE, 
-                      blocking = TRUE, open = "a+b", timeout = timeout)
+
+     warnings <- list()
+     tryCatch({
+       withCallingHandlers({
+         socketConnection("localhost", port = port, server = TRUE, 
+                          blocking = TRUE, open = "a+b", timeout = timeout)
+       }, warning = function(w) {
+         if (verbose) {
+           message(sprintf("%sDetected a warning from socketConnection(): %s", verbose_prefix, sQuote(conditionMessage(w))))
+         }
+         warnings <<- c(warnings, list(w))
+       })
+     }, error = function(ex) {
+       ## Tweak the error message to be more informative:
+       machineType <- if (localMachine) "local" else "remote"
+       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.\n", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
+
+       ## Inspect and report on the error message
+       cmsg <- conditionMessage(ex)
+       if (grepl(gettext("reached elapsed time limit"), cmsg)) {
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s (which suggests that the connection timeout of %.0f seconds (argument 'connectTimeout') kicked in)\n", sQuote(cmsg), connectTimeout))
+       } else {
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s\n", sQuote(cmsg)))
+       }
+
+       ## Inspect and report on any warnings
+       if (length(warnings) > 0) {
+         msg <- c(msg, sprintf(" * In addition, socketConnection() produced %d warning(s):\n", length(warnings)))
+	 for (kk in seq_along(warnings)) {
+	   cmsg <- conditionMessage(warnings[[kk]])
+	   if (grepl("port [0-9]+ cannot be opened", cmsg)) {
+             msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine)\n", kk, sQuote(cmsg)))
+	   } else {
+             msg <- c(msg, sprintf("   - Warning #%d: %s\n", kk, sQuote(cmsg)))
+	   }
+	 }
+       }
+
+       ## Report on how the local socket connect was setup
+       msg <- c(msg, sprintf(" * The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.\n", port, timeout, connectTimeout))
+
+       ## Report on how the worker was launched
+       msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
+
+       ## Propose further troubleshooting methods
+       suggestions <- NULL
+       is_worker_output_visible <- is.null(outfile)
+       if (!is_worker_output_visible) {
+	 suggestions <- c(suggestions, "Set 'out=NULL' to set output from worker.")
+       }
+       if (is.character(logfile)) {
+	 smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
+         lmsg <- tryCatch(readLines(logfile, n = 15L, warn = FALSE), error = function(ex) NULL)
+	 if (length(lmsg) > 0) {
+	   lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
+	   smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
+	 }
+	 suggestions <- c(suggestions, smsg)
+       } else {
+	 suggestions <- c(suggestions, sprintf("Set 'logfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
+       }
+       
+       if (length(suggestions) > 0) {
+	 suggestions <- sprintf("   - Suggestion #%d: %s\n", seq_along(suggestions), suggestions)
+         msg <- c(msg, " * Troubleshooting suggestions:\n", suggestions)
+       }
+       
+       msg <- paste(msg, collapse = "")
+       ex$message <- msg
+
+       ## Relay error and temporarily avoid truncating the error message in case it is too long
+       local({
+         oopts <- options(warning.length = 2000L)
+ 	 on.exit(options(oopts))
+         stop(ex)
+       })
+     })
   })
 
   if (verbose) {
-    message(sprintf("Connection with worker #%s on %s established", rank, sQuote(worker)))
+    message(sprintf("%sConnection with worker #%s on %s established", verbose_prefix, rank, sQuote(worker)))
   }
 
-  structure(list(con = con, host = worker, rank = rank),
+  structure(list(con = con, host = worker, rank = rank, logfile = logfile),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
 } ## makeNodePSOCK()
 
