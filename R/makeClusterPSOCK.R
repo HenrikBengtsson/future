@@ -418,44 +418,48 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     cmd <- sprintf("nice --adjustment=%d %s", renice, cmd)
   }
 
-  rshcmd_type <- "<unknown>"
   if (!localMachine) {
     ## Find default SSH client
     if (is.null(rshcmd)) {
       rshcmd <- find_rshcmd(must_work = !localMachine && !manual && !dryrun)
       if (verbose) {
-        s <- unlist(lapply(names(rshcmd), FUN = function(name) {
-	  sprintf("%s [type = %s, version_string = %s]", sQuote(rshcmd[[name]]), sQuote(name), sQuote(attr(rshcmd[[name]], "version_string")))
+        s <- unlist(lapply(rshcmd, FUN = function(r) {
+	  sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), attr(r, "type"), attr(r, "version"))
 	}))
 	s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
         message(sprintf("%sFound the following available 'rshcmd':\n%s", verbose_prefix, s))
       }
-      rshcmd_type <- names(rshcmd)[1]
       rshcmd <- rshcmd[[1]]
+      s <- sprintf("type=%s, version=%s", attr(rshcmd, "type"), attr(rshcmd, "version"))
+    } else {
+      s <- sprintf("type=%s, version=%s", attr(rshcmd, "type"), attr(rshcmd, "version"))
     }
-    if (verbose) {
-      message(sprintf("%sUsing 'rshcmd': %s [type = %s, version_string = %s]", verbose_prefix, paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(attr(rshcmd, "version_string"))))
-    }
+    rshcmd_label <- sprintf("%s [%s]", paste(sQuote(rshcmd), collapse = ", "), s)
+
+    if (verbose) message(sprintf("%sUsing 'rshcmd': %s", verbose_prefix, rshcmd_label))
     
-    ## Local commands
-    rshcmd <- paste(shQuote(rshcmd), collapse = " ")
+    ## User?
     if (length(user) == 1L) rshopts <- c("-l", user, rshopts)
 
+    ## Reverse tunneling?
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
       ## AD HOC: Warn about Windows 10 ssh bug with rev tunneling
       if (isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
-         msg <- sprintf("WARNING: This 'rshcmd' (%s [type = %s, version_string = %s]) may not support reverse tunneling (revtunnel = TRUE)", paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(attr(rshcmd, "version_string")))
+         msg <- sprintf("WARNING: This 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE)", paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
          if (verbose) message(c(verbose_prefix, msg))
       }
     }
     
+    ## SSH log file?
     if (is.character(logfile)) {
       rshopts <- c(sprintf("-E %s", shQuote(logfile)), rshopts)
     }
     
     rshopts <- paste(rshopts, collapse = " ")
-    local_cmd <- paste(rshcmd, rshopts, worker, shQuote(cmd))
+    
+    ## Local commands
+    local_cmd <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker, shQuote(cmd))
   } else {
     local_cmd <- cmd
   }
@@ -540,10 +544,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
        ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
        ## https://github.com/PowerShell/Win32-OpenSSH/issues/1265
-       if (revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
-         v <- attr(rshcmd, "version_string")
-	 if (is.null(v)) v <- "<unknown>"
-         msg <- c(msg, sprintf("WARNING: The 'rshcmd' used may not support reverse tunneling (revtunnel = TRUE): %s [type = %s, version_string = %s]", paste(sQuote(rshcmd), collapse = ", "), sQuote(rshcmd_type), sQuote(v)))
+       if (!localMachine && revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         msg <- c(msg, sprintf("WARNING: The 'rshcmd' used may not support reverse tunneling (revtunnel = TRUE): %s", rshcmd_label))
          if (verbose) message(c(verbose_prefix, msg))
        }
 
