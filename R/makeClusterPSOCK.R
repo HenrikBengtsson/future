@@ -166,6 +166,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
 #' to a temporary file.  The log file name is available as an attribute
 #' as part of the return node object.
+#' \emph{Warning: This only works with SSH clients that support option
+#' \code{-E out.log}.}
 #'
 #' @param user (optional) The user name to be used when communicating with
 #' another host.
@@ -202,35 +204,35 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' The default method for connecting to an external host is via SSH and the
 #' system executable for this is given by argument \code{rshcmd}.  The default
-#' is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
-#' set the default is either of \command{ssh} and \command{plink -ssh}.
+#' is given by option \code{future.makeNodePSOCK.rshcmd}.  If that is not
+#' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 #' on the \code{PATH}.  This is also true for recent Windows 10
-#' (since version 1803; April 2018).
-#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-#' client that is distributed with RStudio will be used as a fallback if
-#' neither of the above two commands are available on the \code{PATH}.
+#' (since version 1803; April 2018) (*).
 #'
-#' For \emph{Windows systems prior to Windows 10}, which do not have RStudio
-#' installed, it is less common to find \command{ssh}. Instead it is more
-#' likely that such systems have the \command{PuTTY} software and its SSH
-#' client \command{plink} installed.
-#' If no SSH-client is found, an informative error message is produced.
-#' 
-#' It is also possible to specify the absolute path to the SSH client.  To do
-#' this for PuTTY, specify the absolute path in the first element and option
-#' \command{-ssh} in the second as in
+#' For \emph{Windows systems prior to Windows 10}, it is less common to find
+#' \command{ssh} on the \code{PATH}. Instead it is more likely that such
+#' systems have the \command{PuTTY} software and its SSH client
+#' \command{plink} installed.  Note, to manually set specify PuTTY as the
+#' SSH client, specify the absolute pathname of \file{plink.exe} in the first
+#' element and option \command{-ssh} in the second as in
 #' \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 #' This is because all elements of \code{rshcmd} are individually "shell"
 #' quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
 #'
-#' \emph{Known issue with the Windows 10 SSH client: As of 2018-11-09, there
-#' is a bug in the SSH client of Windows 10 that prevents it to work with
-#' reverse SSH tunneling
-#' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}).
-#' Because of this, the PuTTY SSH client and the RStudio SSH client are
-#' prioritized over the Windows 10 SSH client until this bug has been
-#' resolved.}
+#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
+#' client that is distributed with RStudio will be also be considered.
+#' This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
+#' is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
+#' variable - a variable that is (only) set when running RStudio.
+#'
+#' If no SSH-client is found, an informative error message is produced.
+#'
+#' (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
+#' SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
+#' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+#' Because of this, it is recommended to use the PuTTY SSH client or the
+#' RStudio SSH client until this bug has been resolved in Windows 10.}
 #' 
 #' Additional SSH options may be specified via argument \code{rshopts}, which
 #' defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
@@ -649,7 +651,7 @@ is_fqdn <- function(worker) {
 #' If \code{first = TRUE}, only the first one is returned.
 #'
 #' @export
-#' @keyword internal
+#' @keywords internal
 find_rshcmd <- function(first = FALSE, must_work = TRUE) {
   find_rstudio_ssh <- function() {
     path <- Sys.getenv("RSTUDIO_MSYS_SSH")
@@ -686,6 +688,13 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
   res <- list()
   names <- c()
 
+  names <- c(names, name <- "ssh")
+  pathname <- find_ssh()
+  if (!is.null(pathname)) {
+    if (first) return(pathname)
+    res[[name]] <- pathname
+  }
+
   if (.Platform$OS.type == "windows") {
     names <- c(names, name <- "PuTTY")
     pathname <- find_putty_plink()
@@ -700,13 +709,6 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
       if (first) return(pathname)
       res[[name]] <- pathname
     }
-  }
-
-  names <- c(names, name <- "ssh")
-  pathname <- find_ssh()
-  if (!is.null(pathname)) {
-    if (first) return(pathname)
-    res[[name]] <- pathname
   }
 
   if (length(res) > 0) return(res)

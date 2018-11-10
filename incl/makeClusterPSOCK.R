@@ -105,7 +105,7 @@ cl <- makeClusterPSOCK(
 )
 
 
-## EXAMPLE: Remove worker running on GCE
+## EXAMPLE: Remote worker running on GCE
 ## Launching worker on Google Cloud Engine (GCE) running a
 ## container based VM (with a #cloud-config specification)
 public_ip <- "1.2.3.4"
@@ -135,7 +135,7 @@ cl <- makeClusterPSOCK(
 )
 
 
-## EXAMPLE: Remove worker running on Linux from old Windows machine
+## EXAMPLE: Remote worker running on Linux from old Windows machine
 ## Connect to remote Unix machine 'remote.server.org' on port 2200
 ## as user 'bob' from a Windows machine with PuTTY installed
 ## Note, if you have Windows 10, then you have SSH built-in and

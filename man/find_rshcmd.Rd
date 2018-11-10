@@ -20,3 +20,4 @@ If \code{first = TRUE}, only the first one is returned.
 \description{
 Search for SSH clients on the current system
 }
+\keyword{internal}
