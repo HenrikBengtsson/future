@@ -478,34 +478,34 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
      }, error = function(ex) {
        ## Tweak the error message to be more informative:
        machineType <- if (localMachine) "local" else "remote"
-       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
+       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.\n", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
 
        ## Inspect and report on the error message
        cmsg <- conditionMessage(ex)
        if (grepl(gettext("reached elapsed time limit"), cmsg)) {
-         msg <- c(msg, sprintf("The error produced by socketConnection() was: %s (which suggests that the connection timeout of %.0f seconds (argument 'connectTimeout') kicked in).", sQuote(cmsg), connectTimeout))
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s (which suggests that the connection timeout of %.0f seconds (argument 'connectTimeout') kicked in)\n", sQuote(cmsg), connectTimeout))
        } else {
-         msg <- c(msg, sprintf("The error produced by socketConnection() was: %s.", sQuote(cmsg)))
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s\n", sQuote(cmsg)))
        }
 
        ## Inspect and report on any warnings
        if (length(warnings) > 0) {
-         msg <- c(msg, sprintf("In addition, socketConnection() produced %d warning(s).", length(warnings)))
+         msg <- c(msg, sprintf(" * In addition, socketConnection() produced %d warning(s):\n", length(warnings)))
 	 for (kk in seq_along(warnings)) {
 	   cmsg <- conditionMessage(warnings[[kk]])
 	   if (grepl("port [0-9]+ cannot be opened", cmsg)) {
-             msg <- c(msg, sprintf("Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine).", kk, sQuote(cmsg)))
+             msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine)\n", kk, sQuote(cmsg)))
 	   } else {
-             msg <- c(msg, sprintf("Warning #%d: %s.", kk, sQuote(cmsg)))
+             msg <- c(msg, sprintf("   - Warning #%d: %s\n", kk, sQuote(cmsg)))
 	   }
 	 }
        }
 
        ## Report on how the local socket connect was setup
-       msg <- c(msg, sprintf("The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.", port, timeout, connectTimeout))
+       msg <- c(msg, sprintf(" * The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.\n", port, timeout, connectTimeout))
 
        ## Report on how the worker was launched
-       msg <- c(msg, sprintf("The worker was launched using the following system call: %s.", local_cmd))
+       msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
 
        ## Propose further troubleshooting methods
        suggestions <- NULL
@@ -515,10 +515,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        }
        if (is.character(logfile)) {
 	 smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
-         lmsg <- tryCatch(readLines(logfile, n = 5L, warn = FALSE), error = function(ex) NULL)
+         lmsg <- tryCatch(readLines(logfile, n = 15L, warn = FALSE), error = function(ex) NULL)
 	 if (length(lmsg) > 0) {
-	   lmsg <- paste(lmsg, collapse = "\\n")
-	   smsg <- sprintf("%s The first few lines are: %s", smsg, lmsg)
+	   lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
+	   smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
 	 }
 	 suggestions <- c(suggestions, smsg)
        } else {
@@ -526,11 +526,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        }
        
        if (length(suggestions) > 0) {
-	 suggestions <- sprintf("Suggestion #%d: %s", seq_along(suggestions), suggestions)
-         msg <- c(msg, "Troubleshooting suggestions:", suggestions)
+	 suggestions <- sprintf("   - Suggestion #%d: %s\n", seq_along(suggestions), suggestions)
+         msg <- c(msg, " * Troubleshooting suggestions:\n", suggestions)
        }
        
-       msg <- paste(msg, collapse = " ")
+       msg <- paste(msg, collapse = "")
        ex$message <- msg
 
        ## Relay error and temporarily avoid truncating the error message in case it is too long
