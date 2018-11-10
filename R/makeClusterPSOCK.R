@@ -512,7 +512,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          warnings <<- c(warnings, list(w))
        })
      }, error = function(ex) {
-       ## Tweak the error message to be more informative:
+       ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       ## Post-mortem analysis
+       ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        machineType <- if (localMachine) "local" else "remote"
        msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.\n", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
 
@@ -543,22 +545,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## Report on how the worker was launched
        msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
 
-       ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
-       ## https://github.com/PowerShell/Win32-OpenSSH/issues/1265
-       if (!localMachine && revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
-         msg <- c(msg, sprintf("WARNING: The 'rshcmd' used may not support reverse tunneling (revtunnel = TRUE): %s", rshcmd_label))
-         if (verbose) message(c(verbose_prefix, msg))
-       }
-
        ## Propose further troubleshooting methods
        suggestions <- NULL
+
+       ## Enable verbose=TRUE?
        if (!verbose) {
 	 suggestions <- c(suggestions, "Set 'verbose=TRUE' to see more details.")
        }
+
+       ## outfile=NULL?
        is_worker_output_visible <- is.null(outfile)
        if (!is_worker_output_visible) {
 	 suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
        }
+
+       ## Log file?
        if (is.character(logfile)) {
 	 smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
          lmsg <- tryCatch(readLines(logfile, n = 15L, warn = FALSE), error = function(ex) NULL)
@@ -569,6 +570,12 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 	 suggestions <- c(suggestions, smsg)
        } else {
 	 suggestions <- c(suggestions, sprintf("Set 'logfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
+       }
+       
+       ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
+       ## https://github.com/PowerShell/Win32-OpenSSH/issues/1265
+       if (!localMachine && revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         suggestions <- c(suggestions, sprintf("The 'rshcmd' (%s) used may not support reverse tunneling (revtunnel = TRUE). See ?future::makeClusterPSOCK for alternatives.\n", rshcmd_label))
        }
        
        if (length(suggestions) > 0) {
