@@ -151,6 +151,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param outfile Where to direct the \link[base:stdout]{stdout} and
 #' \link[base:stderr]{stderr} connection output from the workers.
+#' If 'NULL', then no redirection of output is done, which means that the
+#' output is relayed in the terminal on the local computer.  On Windows, the
+#' output is only relayed when running R from a terminal but not from a GUI.
 #' 
 #' @param renice A numerical 'niceness' (priority) to set for the worker
 #' processes.
@@ -424,9 +427,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rshcmd <- find_rshcmd(must_work = !localMachine && !manual && !dryrun)
       if (verbose) {
         s <- unlist(lapply(rshcmd, FUN = function(r) {
-	  sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), sQuote(attr(r, "type")), sQuote(attr(r, "version")))
-	}))
-	s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
+          sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), sQuote(attr(r, "type")), sQuote(attr(r, "version")))
+        }))
+        s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
         message(sprintf("%sFound the following available 'rshcmd':\n%s", verbose_prefix, s))
       }
       rshcmd <- rshcmd[[1]]
@@ -465,7 +468,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     local_cmd <- cmd
   }
   stop_if_not(length(local_cmd) == 1L)
-  
+
+  is_worker_output_visible <- is.null(outfile)
+
   if (manual || dryrun) {
     msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
     if (!localMachine) {
@@ -491,6 +496,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   if (verbose) {
     message(sprintf("%sWaiting for worker #%s on %s to connect back", verbose_prefix, rank, sQuote(worker)))
+    if (is_worker_output_visible) {
+      if (.Platform$OS.type == "windows") {
+        message(sprintf("%s- Detected 'outfile=NULL' on Windows: this will make the output from the background worker visible when running R from a terminal, but it will most likely not be visible when using a GUI.", verbose_prefix))
+      } else {
+        message(sprintf("%s- Detected 'outfile=NULL': this will make the output from the background worker visible", verbose_prefix))
+      }
+    }
   }
     
   con <- local({
@@ -529,14 +541,14 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## Inspect and report on any warnings
        if (length(warnings) > 0) {
          msg <- c(msg, sprintf(" * In addition, socketConnection() produced %d warning(s):\n", length(warnings)))
-	 for (kk in seq_along(warnings)) {
-	   cmsg <- conditionMessage(warnings[[kk]])
-	   if (grepl("port [0-9]+ cannot be opened", cmsg)) {
+         for (kk in seq_along(warnings)) {
+           cmsg <- conditionMessage(warnings[[kk]])
+           if (grepl("port [0-9]+ cannot be opened", cmsg)) {
              msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine)\n", kk, sQuote(cmsg)))
-	   } else {
+           } else {
              msg <- c(msg, sprintf("   - Warning #%d: %s\n", kk, sQuote(cmsg)))
-	   }
-	 }
+           }
+         }
        }
 
        ## Report on how the local socket connect was setup
@@ -550,26 +562,33 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
        ## Enable verbose=TRUE?
        if (!verbose) {
-	 suggestions <- c(suggestions, "Set 'verbose=TRUE' to see more details.")
+         suggestions <- c(suggestions, "Set 'verbose=TRUE' to see more details.")
        }
 
        ## outfile=NULL?
-       is_worker_output_visible <- is.null(outfile)
-       if (!is_worker_output_visible) {
-	 suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
+       if (.Platform$OS.type == "windows") {
+         if (is_worker_output_visible) {
+           suggestions <- c(suggestions, "On Windows, to see output from worker, set 'outfile=NULL' and run R from a terminal (not a GUI).")
+         } else {
+           suggestions <- c(suggestions, "On Windows, output from worker when using 'outfile=NULL' is only visible when running R from a terminal (not a GUI).")
+         }
+       } else {
+         if (!is_worker_output_visible) {
+           suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
+         }
        }
 
        ## Log file?
        if (is.character(logfile)) {
-	 smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
+         smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
          lmsg <- tryCatch(readLines(logfile, n = 15L, warn = FALSE), error = function(ex) NULL)
-	 if (length(lmsg) > 0) {
-	   lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
-	   smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
-	 }
-	 suggestions <- c(suggestions, smsg)
+         if (length(lmsg) > 0) {
+           lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
+           smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
+         }
+         suggestions <- c(suggestions, smsg)
        } else {
-	 suggestions <- c(suggestions, sprintf("Set 'logfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
+         suggestions <- c(suggestions, sprintf("Set 'logfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
        }
        
        ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
@@ -579,7 +598,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        }
        
        if (length(suggestions) > 0) {
-	 suggestions <- sprintf("   - Suggestion #%d: %s\n", seq_along(suggestions), suggestions)
+         suggestions <- sprintf("   - Suggestion #%d: %s\n", seq_along(suggestions), suggestions)
          msg <- c(msg, " * Troubleshooting suggestions:\n", suggestions)
        }
        
@@ -589,7 +608,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## Relay error and temporarily avoid truncating the error message in case it is too long
        local({
          oopts <- options(warning.length = 2000L)
- 	 on.exit(options(oopts))
+         on.exit(options(oopts))
          stop(ex)
        })
      })

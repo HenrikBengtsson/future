@@ -76,7 +76,10 @@ vector).}
 binary, will use big-endian (XDR).}
 
 \item{outfile}{Where to direct the \link[base:stdout]{stdout} and
-\link[base:stderr]{stderr} connection output from the workers.}
+\link[base:stderr]{stderr} connection output from the workers.
+If 'NULL', then no redirection of output is done, which means that the
+output is relayed in the terminal on the local computer.  On Windows, the
+output is only relayed when running R from a terminal but not from a GUI.}
 
 \item{renice}{A numerical 'niceness' (priority) to set for the worker
 processes.}
