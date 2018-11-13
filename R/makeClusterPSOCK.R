@@ -736,7 +736,7 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
 
   find_putty_plink <- function() {
     bin <- Sys.which("plink")
-    if (nzchar(bin)) return(bin, "-ssh")
+    if (nzchar(bin)) return(c(bin, "-ssh"))
     NULL
   }
 
