@@ -431,8 +431,9 @@ cl <- makeClusterPSOCK(
 ## makeClusterPSOCK() to search for and use the PuTTY plink software,
 ## preventing it from using other SSH clients on the system search PATH.
 cl <- makeClusterPSOCK(
-  "remote.server.org", user = "bob", rshcmd = "<putty-plink>",
-  rshopts = c("-i", "C:/Users/bobby/.ssh/putty.ppk"),
+  "remote.server.org", user = "bob",
+  rshcmd = "<putty-plink>",
+  rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),
   dryrun = TRUE
 )
 

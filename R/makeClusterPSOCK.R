@@ -765,7 +765,7 @@ is_fqdn <- function(worker) {
 #'
 #' @return A named list of pathnames to all located SSH clients.
 #' If \code{first = TRUE}, only the first one is returned.
-#' Attribute `version_string` contains the output from querying the
+#' Attribute `version` contains the output from querying the
 #' executable for its version (via command-line option `-V`).
 #'
 #' @export
@@ -791,7 +791,7 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
     bin <- Sys.which("ssh")
     if (!nzchar(bin)) return(NULL)
     attr(bin, "type") <- "rstudio-ssh"
-    attr(bin, "version_string") <- query_version(bin, args = "-V")
+    attr(bin, "version") <- query_version(bin, args = "-V")
     bin
   }
 
@@ -800,7 +800,7 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
     if (!nzchar(bin)) return(NULL)
     res <- c(bin, "-ssh")
     attr(res, "type") <- "putty-plink"
-    attr(res, "version_string") <- query_version(bin, args = "-V")
+    attr(res, "version") <- query_version(bin, args = "-V")
     res
   }
 
@@ -809,7 +809,7 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
     if (!nzchar(bin)) return(NULL)
     attr(bin, "type") <- "ssh"
     v <- query_version(bin, args = "-V")
-    attr(bin, "version_string") <- v
+    attr(bin, "version") <- v
     if (any(grepl("OpenSSH_for_Windows", v)))
       attr(bin, "OpenSSH_for_Windows") <- TRUE
     bin
