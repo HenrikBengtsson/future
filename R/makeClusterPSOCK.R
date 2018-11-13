@@ -201,7 +201,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' It is also considered \emph{localhost} if it appears on the same line
 #' as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
 #' 
-#' @section Default values of arguments \code{rshcmd} and \code{rshopts}:
+#' @section Default SSH client and options (arguments \code{rshcmd} and \code{rshopts}):
 #' Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
 #' to an external host.
 #' 
@@ -229,6 +229,11 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
 #' variable - a variable that is (only) set when running RStudio.
 #'
+#' You can override the default set of SSH clients that are searched for
+#' by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
+#' \code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
+#' below for examples.
+#'
 #' If no SSH-client is found, an informative error message is produced.
 #'
 #' (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
@@ -245,6 +250,34 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
 #' Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 #' 
+#' @section Accessing external machines that prompts for a password:
+#' \emph{IMPORTANT: It is not possible to for these functions to log in
+#' and launch R workers on external machines that requires a password to
+#' be entered manually for authentication.}
+#'
+#' Note, depending on whether you run R in a terminal or via a GUI, you might
+#' not even see the password prompt.  It is also likely that you cannot enter
+#' a password, because the connection is set up via a background system call.
+#'
+#' The poor man's workaround for setup that requires a password is to manually
+#' log into the each of the external machines and launch the R workers by hand.
+#' For this approach, use \code{manual = TRUE} and follow the instructions
+#' which include cut'n'pasteable commands on how to launch the worker from the
+#' external machine.
+#'
+#' However, a much more convenient and less tedious method is to set up
+#' key-based SSH authentication between your local machine and the external
+#' machine(s), as explain below.
+#'
+#' @section Accessing external machines via key-based SSH authentication:
+#' The best approach to automatically launch R workers on external machines
+#' over SSH is to set up key-based SSH authentication.  This will allow you
+#' to log into the external machine without have to enter a password.
+#'
+#' Key-based SSH authentication is taken care of by the SSH client and not \R.
+#' To configure this, see the manuals of your SSH client or search the web
+#' for "ssh key authentication".
+#'
 #' @section Reverse SSH tunneling:
 #' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 #' workers running on other machines.  This avoids the complication of
@@ -423,8 +456,25 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   if (!localMachine) {
     ## Find default SSH client
-    if (is.null(rshcmd)) {
-      rshcmd <- find_rshcmd(must_work = !localMachine && !manual && !dryrun)
+    find <- is.null(rshcmd)
+    if (find) {
+      which <- NULL
+      if (verbose) {
+        message(sprintf("%sWill search for all 'rshcmd' available\n",
+	        verbose_prefix))
+      }	
+    } else if (all(grepl("^<[a-zA-Z]+>$", rshcmd))) {
+      find <- TRUE
+      if (verbose) {
+        message(sprintf("%sWill search for specified 'rshcmd' types: %s\n",
+	  verbose_prefix, paste(sQuote(rshcmd), collapse = ", ")))
+      }	  
+      which <- gsub("^<([a-zA-Z]+)>$", "\\1", rshcmd)
+    }
+
+    if (find) {
+      rshcmd <- find_rshcmd(which = which,
+                            must_work = !localMachine && !manual && !dryrun)
       if (verbose) {
         s <- unlist(lapply(rshcmd, FUN = function(r) {
           sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), sQuote(attr(r, "type")), sQuote(attr(r, "version")))
@@ -703,6 +753,10 @@ is_fqdn <- function(worker) {
 
 #' Search for SSH clients on the current system
 #'
+#' @param which A character vector specifying which types of SSH clients
+#' to search for.  If NULL, a default set of clients supported by the
+#' current platform is searched for.
+#'
 #' @param first If TRUE, the first client found is returned, otherwise
 #' all located clients are returned.
 #'
@@ -716,7 +770,7 @@ is_fqdn <- function(worker) {
 #'
 #' @export
 #' @keywords internal
-find_rshcmd <- function(first = FALSE, must_work = TRUE) {
+find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
   query_version <- function(bin, args = "-V") {
     v <- suppressWarnings(system2(bin, args = args, stdout = TRUE, stderr = TRUE))
     paste(v, collapse = "; ")
@@ -736,7 +790,7 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     Sys.setenv(PATH = path)
     bin <- Sys.which("ssh")
     if (!nzchar(bin)) return(NULL)
-    attr(bin, "type") <- "RStudioSSH"
+    attr(bin, "type") <- "rstudio-ssh"
     attr(bin, "version_string") <- query_version(bin, args = "-V")
     bin
   }
@@ -745,7 +799,7 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     bin <- Sys.which("plink")
     if (!nzchar(bin)) return(NULL)
     res <- c(bin, "-ssh")
-    attr(res, "type") <- "PuTTY"
+    attr(res, "type") <- "putty-plink"
     attr(res, "version_string") <- query_version(bin, args = "-V")
     res
   }
@@ -761,34 +815,35 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     bin
   }
 
+  if (!is.null(which)) stop_if_not(is.character(which), length(which) >= 1L, !anyNA(which))
   stop_if_not(is.logical(first), length(first) == 1L, !is.na(first))
   stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
 
+  if (is.null(which)) {
+    if (.Platform$OS.type == "windows") {
+      which <- c("ssh", "putty-plink", "rstudio-ssh")
+    } else {
+      which <- "ssh"
+    }
+  }
   res <- list()
-
-  pathname <- find_ssh()
-  if (!is.null(pathname)) {
-    if (first) return(pathname)
-    res[["ssh"]] <- pathname
-  }
-
-  if (.Platform$OS.type == "windows") {
-    pathname <- find_putty_plink()
+  for (name in which) {
+    pathname <- switch(name,
+      "ssh"         = find_ssh(),
+      "putty-plink" = find_putty_plink(),
+      "rstudio-ssh" = find_rstudio_ssh(),
+      stop("Unknown 'rshcmd' type: ", sQuote(name))
+    )
+    
     if (!is.null(pathname)) {
       if (first) return(pathname)
-      res[["PuTTY"]] <- pathname
+      res[[name]] <- pathname
     }
-
-    pathname <- find_rstudio_ssh()
-    if (!is.null(pathname)) {
-      if (first) return(pathname)
-      res[["RStudioSSH"]] <- pathname
-    }
-  }
+  }    
 
   if (length(res) > 0) return(res)
   
-  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(names), collapse = ", ")) #nolint
+  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(which), collapse = ", ")) #nolint
   if (must_work) stop(msg)
 
   pathname <- "ssh"

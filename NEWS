@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-11-09]
+Version: 1.10.0-9000 [2018-11-13]
 
 SIGNIFICANT CHANGES:
 
@@ -13,6 +13,10 @@ NEW FEATURES:
 
  * Now futureCall() defaults to args = list() making is possible to call
    functions that does not take arguments, e.g. futureCall(function() 42).
+
+ * It is now possible to specify what type of SSH clients makeClusterPSOCK()
+   automatically searches for and in what order, e.g.
+   'rshcmd = c("rstudio-ssh", "putty-plink")'.
 
  * makeClusterPSOCK() gained argument 'logfile'.
 

@@ -144,7 +144,7 @@ It is also considered \emph{localhost} if it appears on the same line
 as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
 }
 
-\section{Default values of arguments \code{rshcmd} and \code{rshopts}}{
+\section{Default SSH client and options (arguments \code{rshcmd} and \code{rshopts})}{
 
 Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
 to an external host.
@@ -173,6 +173,11 @@ This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
 is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
 variable - a variable that is (only) set when running RStudio.
 
+You can override the default set of SSH clients that are searched for
+by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
+\code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
+below for examples.
+
 If no SSH-client is found, an informative error message is produced.
 
 (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
@@ -188,6 +193,38 @@ private SSH key can be provided as
 specify a PuTTY PPK file, e.g.
 \code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
 Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
+}
+
+\section{Accessing external machines that prompts for a password}{
+
+\emph{IMPORTANT: It is not possible to for these functions to log in
+and launch R workers on external machines that requires a password to
+be entered manually for authentication.}
+
+Note, depending on whether you run R in a terminal or via a GUI, you might
+not even see the password prompt.  It is also likely that you cannot enter
+a password, because the connection is set up via a background system call.
+
+The poor man's workaround for setup that requires a password is to manually
+log into the each of the external machines and launch the R workers by hand.
+For this approach, use \code{manual = TRUE} and follow the instructions
+which include cut'n'pasteable commands on how to launch the worker from the
+external machine.
+
+However, a much more convenient and less tedious method is to set up
+key-based SSH authentication between your local machine and the external
+machine(s), as explain below.
+}
+
+\section{Accessing external machines via key-based SSH authentication}{
+
+The best approach to automatically launch R workers on external machines
+over SSH is to set up key-based SSH authentication.  This will allow you
+to log into the external machine without have to enter a password.
+
+Key-based SSH authentication is taken care of by the SSH client and not \R.
+To configure this, see the manuals of your SSH client or search the web
+for "ssh key authentication".
 }
 
 \section{Reverse SSH tunneling}{
@@ -387,12 +424,27 @@ cl <- makeClusterPSOCK(
 
 ## EXAMPLE: Remote worker running on Linux from old Windows machine
 ## Connect to remote Unix machine 'remote.server.org' on port 2200
-## as user 'bob' from a Windows machine with PuTTY installed
+## as user 'bob' from a Windows machine with PuTTY installed.
 ## Note, if you have Windows 10, then you have SSH built-in and
 ## can use the same above approach as Linux and macOS users use.
+## Using the explicit special rshcmd = "<putty-plink>", will force
+## makeClusterPSOCK() to search for and use the PuTTY plink software,
+## preventing it from using other SSH clients on the system search PATH.
 cl <- makeClusterPSOCK(
-  "remote.server.org", user = "bob",
-  rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),
+  "remote.server.org", user = "bob", rshcmd = "<putty-plink>",
+  rshopts = c("-i", "C:/Users/bobby/.ssh/putty.ppk"),
+  dryrun = TRUE
+)
+
+
+## EXAMPLE: Remote worker running on Linux from RStudio on Windows
+## Connect to remote Unix machine 'remote.server.org' on port 2200
+## as user 'bob' from a Windows machine via RStudio's SSH client.
+## Using the explicit special rshcmd = "<rstudio-ssh>", will force
+## makeClusterPSOCK() to use the SSH client that comes with RStudio,
+## preventing it from using other SSH clients on the system search PATH.
+cl <- makeClusterPSOCK(
+  "remote.server.org", user = "bob", rshcmd = "<rstudio-ssh>",
   dryrun = TRUE
 )
 }

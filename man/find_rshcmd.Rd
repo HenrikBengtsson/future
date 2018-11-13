@@ -4,9 +4,13 @@
 \alias{find_rshcmd}
 \title{Search for SSH clients on the current system}
 \usage{
-find_rshcmd(first = FALSE, must_work = TRUE)
+find_rshcmd(which = NULL, first = FALSE, must_work = TRUE)
 }
 \arguments{
+\item{which}{A character vector specifying which types of SSH clients
+to search for.  If NULL, a default set of clients supported by the
+current platform is searched for.}
+
 \item{first}{If TRUE, the first client found is returned, otherwise
 all located clients are returned.}
 
