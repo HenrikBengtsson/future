@@ -717,6 +717,11 @@ is_fqdn <- function(worker) {
 #' @export
 #' @keywords internal
 find_rshcmd <- function(first = FALSE, must_work = TRUE) {
+  query_version <- function(bin, args = "-V") {
+    v <- suppressWarnings(system2(bin, args = args, stdout = TRUE, stderr = TRUE))
+    paste(v, collapse = "; ")
+  }
+  
   find_rstudio_ssh <- function() {
     path <- Sys.getenv("RSTUDIO_MSYS_SSH")
     if (!file_test("-d", path)) return(NULL)   
@@ -730,27 +735,32 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
     ## to the PATH, see PATH in 'Tools -> Shell ...'.
     Sys.setenv(PATH = path)
     bin <- Sys.which("ssh")
-    if (nzchar(bin)) return(bin)
-    NULL
+    if (!nzchar(bin)) return(NULL)
+    attr(bin, "type") <- "RStudioSSH"
+    attr(bin, "version_string") <- query_version(bin, args = "-V")
+    bin
   }
 
   find_putty_plink <- function() {
     bin <- Sys.which("plink")
-    if (nzchar(bin)) return(c(bin, "-ssh"))
-    NULL
+    if (!nzchar(bin)) return(NULL)
+    res <- c(bin, "-ssh")
+    attr(res, "type") <- "PuTTY"
+    attr(res, "version_string") <- query_version(bin, args = "-V")
+    res
   }
 
   find_ssh <- function() {
     bin <- Sys.which("ssh")
-    if (nzchar(bin)) return(bin)
-    NULL
+    if (!nzchar(bin)) return(NULL)
+    attr(bin, "type") <- "ssh"
+    v <- query_version(bin, args = "-V")
+    attr(bin, "version_string") <- v
+    if (any(grepl("OpenSSH_for_Windows", v)))
+      attr(bin, "OpenSSH_for_Windows") <- TRUE
+    bin
   }
 
-  query_version <- function(bin, args = "-V") {
-    v <- suppressWarnings(system2(bin, args = args, stdout = TRUE, stderr = TRUE))
-    paste(v, collapse = "; ")
-  }
-  
   stop_if_not(is.logical(first), length(first) == 1L, !is.na(first))
   stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
 
@@ -758,33 +768,21 @@ find_rshcmd <- function(first = FALSE, must_work = TRUE) {
 
   pathname <- find_ssh()
   if (!is.null(pathname)) {
-    name <- "ssh"
-    attr(pathname, "type") <- name
-    v <- query_version(pathname, args = "-V")
-    attr(pathname, "version_string") <- v
-    if (any(grepl("OpenSSH_for_Windows", v)))
-      attr(pathname, "OpenSSH_for_Windows") <- TRUE
     if (first) return(pathname)
-    res[[name]] <- pathname
+    res[["ssh"]] <- pathname
   }
 
   if (.Platform$OS.type == "windows") {
     pathname <- find_putty_plink()
     if (!is.null(pathname)) {
-      name <- "PuTTY"
-      attr(pathname, "type") <- name
-      attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
-      res[[name]] <- pathname
+      res[["PuTTY"]] <- pathname
     }
 
     pathname <- find_rstudio_ssh()
     if (!is.null(pathname)) {
-      name <- "RStudioSSH"
-      attr(pathname, "type") <- name
-      attr(pathname, "version_string") <- query_version(pathname, args = "-V")
       if (first) return(pathname)
-      res[[name]] <- pathname
+      res[["RStudioSSH"]] <- pathname
     }
   }
 
