@@ -3,7 +3,7 @@ ClusterRegistry <- local({
   last <- NULL
   cluster <- NULL
 
-  function(action = c("get", "start", "stop"), workers = NULL, ...) {
+  function(action = c("get", "start", "stop"), workers = NULL, makeCluster = .makeCluster, ...) {
     action <- match.arg(action, choices = c("get", "start", "stop"))
 
     if (is.null(workers)) {
@@ -18,7 +18,7 @@ ClusterRegistry <- local({
     }
 
     if (length(cluster) == 0L && action != "stop") {
-      cluster <<- .makeCluster(workers, ...)
+      cluster <<- makeCluster(workers, ...)
       last <<- workers
     }
 
@@ -28,7 +28,7 @@ ClusterRegistry <- local({
       ## Already setup?
       if (!identical(workers, last)) {
         ClusterRegistry(action = "stop")
-        cluster <<- .makeCluster(workers, ...)
+        cluster <<- makeCluster(workers, ...)
         last <<- workers
       }
     } else if (action == "stop") {
