@@ -87,40 +87,6 @@ Version: 0.6.3
       Note: found 65 marked UTF-8 strings
     ```
 
-# DeclareDesign
-
-Version: 0.10.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(DeclareDesign)
-      Loading required package: randomizr
-      Loading required package: fabricatr
-      Loading required package: estimatr
-      > 
-      > test_check("DeclareDesign")
-      ── 1. Failure: error if you try to draw POs at a level using a variable that doe
-      `my_potential_outcomes_formula(pop)` did not throw an error.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 436 SKIPPED: 1 FAILED: 1
-      1. Failure: error if you try to draw POs at a level using a variable that doesn't exist at that level (@test-potential-outcomes.R#160) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘methods’
-      All declared Imports should be used.
-    ```
-
 # greta
 
 Version: 0.3.0
@@ -130,19 +96,6 @@ Version: 0.3.0
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘truncdist’
-    ```
-
-# ipc
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘redux’ ‘txtq’
-      All declared Imports should be used.
     ```
 
 # lidR
@@ -221,12 +174,32 @@ Version: 0.2.3
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking tests ...
     ```
-    Package required but not available: ‘rgeos’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 13 lines of output:
+      Attributes: < Component "layers": Component 2: Attributes: < Component 3: Attributes: < Component 13: 'is.NA' value mismatch: 25 in current 27 in target > > >
+      
+      ── 2. Error: git-related functions work (@test-git.R#14)  ──────────────────────
+      object 'parse_git_repo' not found
+      1: checkoutVersion("PredictiveEcology/reproducible", localRepoPath = tmpDir, progress = FALSE) at testthat/test-git.R:14
+      2: utils::getFromNamespace("parse_git_repo", "devtools")
+      3: get(x, envir = ns, inherits = FALSE)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 169 SKIPPED: 11 FAILED: 2
+      1. Failure: fastMask produces correct results (@test-gis.R#22) 
+      2. Error: git-related functions work (@test-git.R#14) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘gdalUtils’
+      All declared Imports should be used.
     ```
 
 # robotstxt
@@ -243,14 +216,14 @@ Version: 0.6.2
 
 # skpr
 
-Version: 0.56.1
+Version: 0.57.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 46.3Mb
+      installed size is 45.2Mb
       sub-directories of 1Mb or more:
-        libs  44.9Mb
+        libs  43.7Mb
     ```
 
