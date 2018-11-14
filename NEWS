@@ -16,7 +16,7 @@ NEW FEATURES:
 
  * It is now possible to specify what type of SSH clients makeClusterPSOCK()
    automatically searches for and in what order, e.g.
-   'rshcmd = c("rstudio-ssh", "putty-plink")'.
+   'rshcmd = c("<rstudio-ssh>", "<putty-plink>")'.
 
  * makeClusterPSOCK() gained argument 'logfile'.
 
