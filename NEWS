@@ -39,6 +39,11 @@ BUG FIXES:
    new ones are created.  Now cluster futures assert that the connections to
    the workers are valid, and if not, an informative error message is produced.
 
+DEPRECATED AND DEFUNCT:
+
+ * Removed defunct future::future_lapply().  Please use the one in the
+   future.apply package instead.
+
 
 Version: 1.10.0 [2018-10-16]
 
@@ -96,7 +101,7 @@ DOCUMENTATION:
    This was done to clarify the Future API.  Help for non-core parts are still
    via cross references in the indexed API as well via help().
 
-BUG FIX:
+BUG FIXES:
 
  * When using forced, nested 'multicore' parallel processing, such as,
    plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))),
@@ -139,7 +144,7 @@ NEW FEATURES:
  * Added UnexpectedFutureResultError to be used by backends for signalling
    in a standard way that an unexpected result was retrieved from a worker.
 
-BUG FIX:
+BUG FIXES:
 
  * When the communication between an asynchronous future and a background R
    process failed, further querying of the future state/results could end up
@@ -472,7 +477,7 @@ PERFORMANCE:
    them) and calculate their total size once.  Previously, each chunk
    (a future) would redo this.
 
-BUG FIX:
+BUG FIXES:
 
  * Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
    and '...' recursively until no new globals are found.  Previously, only
@@ -934,7 +939,7 @@ GLOBALS:
    that only the R process that created the future can resolve it.
    The default is currently FALSE.
 
-BUG FIX:
+BUG FIXES:
 
  * FIX: Exports of objects available in packages already attached
    by the future were still exported.
