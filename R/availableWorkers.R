@@ -64,7 +64,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
     x
   }
 
-  which <- match.arg(which)
+  which <- match.arg(which, choices = c("auto", "min", "max", "all"))
   stop_if_not(is.character(default), length(default) >= 1, !anyNA(default))
 
 

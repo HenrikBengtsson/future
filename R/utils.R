@@ -398,7 +398,7 @@ myInternalIP <- local({
 
   function(force = FALSE, which = c("first", "last", "all"), mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
-    which <- match.arg(which)
+    which <- match.arg(which, choices = c("first", "last", "all"))
 
     value <- NULL
     os <- R.version$os
@@ -757,7 +757,7 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()
 
-  action <- match.arg(action)
+  action <- match.arg(action, choices = c("error", "warning", "message", "string"))
   
   ## Identify which global object has a reference
   global <- ""

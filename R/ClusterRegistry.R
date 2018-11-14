@@ -4,7 +4,7 @@ ClusterRegistry <- local({
   cluster <- NULL
 
   function(action = c("get", "start", "stop"), workers = NULL, ...) {
-    action <- match.arg(action)
+    action <- match.arg(action, choices = c("get", "start", "stop"))
 
     if (is.null(workers)) {
     } else if (is.numeric(workers)) {

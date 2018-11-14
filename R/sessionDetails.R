@@ -59,7 +59,7 @@ print.sessionDetails <- function(x, output = c("output", "message"), headers = T
     paste(x, collapse = "")
   }
   
-  output <- match.arg(output)
+  output <- match.arg(output, choices = c("output", "message"))
   
   con <- NULL
   if (output == "output") {

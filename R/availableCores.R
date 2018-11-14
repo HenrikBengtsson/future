@@ -93,7 +93,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     as.integer(getOption(name, NA_integer_))
   } # getopt()
 
-  which <- match.arg(which)
+  which <- match.arg(which, choices = c("min", "max", "all"))
   stop_if_not(length(default) == 1, is.finite(default), default >= 1L)
 
   ncores <- rep(NA_integer_, times = length(methods))

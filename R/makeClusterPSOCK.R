@@ -52,7 +52,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   }
 
   if (is.character(port)) {
-    port <- match.arg(port)
+    port <- match.arg(port, choices = c("auto", "random"))
     if (identical(port, "auto")) {
       port0 <- Sys.getenv("R_PARALLEL_PORT", "random")
       if (identical(port0, "random")) {
