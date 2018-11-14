@@ -515,7 +515,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rshopts <- paste(rshopts, collapse = " ")
     
     ## Local commands
-    local_cmd <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker, shQuote(cmd))
+    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker)
+    local_cmd <- paste(rsh_call, shQuote(cmd))
   } else {
     local_cmd <- cmd
   }
@@ -524,9 +525,16 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   is_worker_output_visible <- is.null(outfile)
 
   if (manual || dryrun) {
-    msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
-    if (!localMachine) {
-      msg <- c(msg, "Alternatively, start it from the local machine with:", sprintf("  %s", local_cmd))
+    msg <- c("----------------------------------------------------------------------")
+    if (localMachine) {
+      msg <- c(msg, sprintf("Manually, start worker #%s on local machine %s with:", rank, sQuote(worker)), sprintf("\n  %s\n", cmd))
+    } else {
+      msg <- c(msg, sprintf("Manually, (i) login into external machine %s:", sQuote(worker)),
+               sprintf("\n  %s\n", rsh_call))
+      msg <- c(msg, sprintf("and (ii) start worker #%s from there:", rank),
+               sprintf("\n  %s\n", cmd))
+      msg <- c(msg, sprintf("Alternatively, start worker #%s from the local machine by combining both step in a single call:", rank),
+               sprintf("\n  %s\n", local_cmd))
     }
     msg <- paste(c(msg, ""), collapse = "\n")
     cat(msg)
