@@ -4,7 +4,7 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .skip = TRUE,
+plan(strategy = NULL, ..., substitute = TRUE, .skip = FALSE,
   .call = TRUE, .cleanup = TRUE, .init = TRUE)
 }
 \arguments{
