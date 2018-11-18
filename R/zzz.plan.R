@@ -280,7 +280,7 @@ plan <- local({
         if (is.list(first)) {
           strategies <- first
           res <- plan(strategies, substitute = FALSE,
-	              .cleanup = .cleanup, .init = .init)
+                      .cleanup = .cleanup, .init = .init)
           return(invisible(res))
         }
 

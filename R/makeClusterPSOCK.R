@@ -463,14 +463,14 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       which <- NULL
       if (verbose) {
         message(sprintf("%sWill search for all 'rshcmd' available\n",
-	        verbose_prefix))
-      }	
+                verbose_prefix))
+      }
     } else if (all(grepl("^<[a-zA-Z-]+>$", rshcmd))) {
       find <- TRUE
       if (verbose) {
         message(sprintf("%sWill search for specified 'rshcmd' types: %s\n",
-	  verbose_prefix, paste(sQuote(rshcmd), collapse = ", ")))
-      }	  
+                verbose_prefix, paste(sQuote(rshcmd), collapse = ", ")))
+      }
       which <- gsub("^<([a-zA-Z-]+)>$", "\\1", rshcmd)
     }
 

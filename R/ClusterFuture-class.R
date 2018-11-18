@@ -326,14 +326,14 @@ result.ClusterFuture <- function(future, ...) {
     if (!is.null(host)) {
       if (localhost && is.numeric(pid)) {
         alive <- pid_exists(pid)
-	if (is.na(alive)) {
-	  msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
-	} else if (alive) {
-	  msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
-	} else {
-	  msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
-	}
-	postmortem$alive <- msg2
+        if (is.na(alive)) {
+          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
+        } else if (alive) {
+          msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
+        } else {
+          msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
+        }
+        postmortem$alive <- msg2
       }
     }
 
