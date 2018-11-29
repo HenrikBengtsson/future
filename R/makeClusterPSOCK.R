@@ -73,7 +73,13 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (length(port) == 0L) {
     stop("Argument 'post' must be of length one or more: 0")
   }
-  if (length(port) > 1L) port <- sample(port, size = 1L)
+  if (length(port) > 1L) {
+    port <- local({
+      oseed <- .GlobalEnv$.Random.seed
+      on.exit(.GlobalEnv$.Random.seed <- oseed)
+      sample(port, size = 1L)
+    })
+  }
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
   }

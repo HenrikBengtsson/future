@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-11-17]
+Version: 1.10.0-9000 [2018-11-29]
 
 NEW FEATURES:
 
@@ -21,6 +21,9 @@ NEW FEATURES:
    automatically searches for and in what order, e.g.
    'rshcmd = c("<rstudio-ssh>", "<putty-plink>")'.
 
+ * Now makeClusterPSOCK() preserves the global RNG state (.Random.seed) also
+   when it draws a random port number.
+   
  * makeClusterPSOCK() gained argument 'logfile'.
 
 BUG FIXES:
