@@ -634,7 +634,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          }
        } else {
          if (!is_worker_output_visible) {
-           suggestions <- c(suggestions, "Set 'outfile=NULL' to set output from worker.")
+           suggestions <- c(suggestions, "Set 'outfile=NULL' to see output from worker.")
          }
        }
 
