@@ -330,7 +330,7 @@ cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "singularity", "run", "--net=host", "rocker/r-base",
     "Rscript"
   ),
   ## Install future package
@@ -339,7 +339,25 @@ cl <- makeClusterPSOCK(
   ),
   dryrun = TRUE
 )
-                       
+
+
+## EXAMPLE: Two workers running in Singularity on the local machine
+## Setup of 2 Singularity workers running rocker/r-base
+## (requires installation of future package)
+cl <- makeClusterPSOCK(
+  rep("localhost", times = 2L),
+  ## Launch Rscript inside Docker container
+  rscript = c(
+    "singularity", "exec", "docker://rocker/r-base",
+    "Rscript"
+  ),
+  ## Install future package
+  rscript_args = c(
+    "-e", shQuote("install.packages('future')")
+  ),
+  dryrun = TRUE
+)
+
 
 ## EXAMPLE: One worker running in udocker on the local machine
 ## Setup of a single udocker.py worker running rocker/r-base
