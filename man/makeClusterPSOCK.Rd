@@ -337,6 +337,12 @@ cl <- makeClusterPSOCK(
   rscript_args = c(
     "-e", shQuote("install.packages('future')")
   ),
+  ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
+  ## and Windows (not Linux), when the R worker tries to connect back to
+  ## the default 'localhost' it will fail, because the main R session is
+  ## not running in the VM, but outside on the host.  To reach the host on
+  ## macOS and Windows, make sure to use master = "host.docker.internal"
+  # master = "host.docker.internal",  # <= macOS & Windows
   dryrun = TRUE
 )
 
