@@ -232,7 +232,9 @@ plan <- local({
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
       strategy <- stack[[1L]]
-      class(strategy) <- c("FutureStrategy", class(strategy))
+      if (!inherits(strategy, "FutureStrategy")) {
+        class(strategy) <- c("FutureStrategy", class(strategy))
+      }
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
