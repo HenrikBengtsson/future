@@ -115,7 +115,7 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node_idx <- requestNode(await = function() {
-    FutureRegistry(reg, action = "collect-first")
+    FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
   }, workers = workers)
   future$node <- node_idx
 
