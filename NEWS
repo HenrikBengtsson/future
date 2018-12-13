@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-11-30]
+Version: 1.10.0-9000 [2018-12-12]
 
 NEW FEATURES:
 
@@ -27,6 +27,9 @@ NEW FEATURES:
  * makeClusterPSOCK() gained argument 'logfile'.
 
 BUG FIXES:
+
+ * Argument 'stdout' was forced to TRUE when using single-core multicore or
+   single-core multisession futures.
 
  * When evaluated in a local environment, futureCall(..., globals = "a") would
    set the value of global 'a' to NULL, regardless whether it exists or what

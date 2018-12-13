@@ -35,17 +35,12 @@ for (cores in seq_len(min(2L, availCores))) {
       str(r)
       stopifnot(value(f) == 42L)
       if (is.na(stdout)) {
-        if (cores > 1L || ! strategy %in% c("multicore", "multisession", "multiprocess")) {
-          stopifnot(!"stdout" %in% names(r))
-        }
+        stopifnot(!"stdout" %in% names(r))
       } else if (stdout) {
         print(r)
         stopifnot(identical(r$stdout, truth))
       } else {
-        ## FIXME: https://github.com/HenrikBengtsson/future/issues/271
-        if (cores > 1L || ! strategy %in% c("multicore", "multisession", "multiprocess")) {
-          stopifnot(is.null(r$stdout))
-        }
+        stopifnot(is.null(r$stdout))
       }
 
       v %<-% {
@@ -58,14 +53,16 @@ for (cores in seq_len(min(2L, availCores))) {
       } %stdout% stdout
       out <- utils::capture.output(y <- v)
       stopifnot(y == 42L)
-      if (is.na(stdout) || !stdout) {
-        ## FIXME: https://github.com/HenrikBengtsson/future/issues/271
-        if (cores > 1L || ! strategy %in% c("multicore", "multisession", "multiprocess")) {
+      if (is.na(stdout)) {
+        ## Single-core multisession => sequential
+        if (cores > 1L || strategy != "multisession") {
           stopifnot(out == "")
         }
-      } else {
+      } else if (stdout) {
         print(out)
         stopifnot(identical(out, truth_rows))
+      } else {
+        stopifnot(out == "")
       }
     } ## for (stdout ...)
 

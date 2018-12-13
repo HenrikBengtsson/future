@@ -613,7 +613,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          for (kk in seq_along(warnings)) {
            cmsg <- conditionMessage(warnings[[kk]])
            if (grepl("port [0-9]+ cannot be opened", cmsg)) {
-             msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or block by the firewall on your local machine)\n", kk, sQuote(cmsg)))
+             msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or blocked by the firewall on your local machine)\n", kk, sQuote(cmsg)))
            } else {
              msg <- c(msg, sprintf("   - Warning #%d: %s\n", kk, sQuote(cmsg)))
            }
