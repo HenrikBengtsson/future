@@ -1,12 +1,12 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-12-12]
+Version: 1.10.0-9000 [2018-12-28]
 
 NEW FEATURES:
 
- * Now futureCall() defaults to args = list() making is possible to call
-   functions that does not take arguments, e.g. futureCall(function() 42).
+ * Now futureCall() defaults to args = list() making is easier to call
+   functions that do not take arguments, e.g. futureCall(function() 42).
 
  * plan() gained argument '.skip = FALSE'.  When TRUE, setting the same future
    trategy as already set will be skipped, e.g. calling plan(multisession)
@@ -32,8 +32,8 @@ BUG FIXES:
    single-core multisession futures.
 
  * When evaluated in a local environment, futureCall(..., globals = "a") would
-   set the value of global 'a' to NULL, regardless whether it exists or what
-   its true value is.
+   set the value of global 'a' to NULL, regardless if it exists or not and
+   what its true value is.
 
  * makeClusterPSOCK(..., rscript = "my_r") would in some cases fail to find
    the intended 'my_r' executable.
@@ -42,9 +42,12 @@ BUG FIXES:
    results from the wrong workers if a new set of cluster workers had been
    set up after the future was created/launched but before the results were
    retrieved.  This could happen because connections in R are indexed solely
-   by an integer number which is recycled when old connections are closed and
-   new ones are created.  Now cluster futures assert that the connections to
-   the workers are valid, and if not, an informative error message is produced.
+   by integers which are recycled when old connections are closed and new ones
+   are created.  Now cluster futures assert that the connections to the workers
+   are valid, and if not, an informative error message is produced.
+
+ * Calling result() on a non-resolved UniprocessFuture would signal evaluation
+   errors.
 
 DEPRECATED AND DEFUNCT:
 
