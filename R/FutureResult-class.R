@@ -4,8 +4,11 @@
 #' If the expression was not fully resolved (e.g. an error) occurred,
 #' the the value is `NULL`.
 #' 
-#' @param condition A [[base::condition]] captured while resolving the future,
-#' if any.  This is typically an error.
+#' @param conditions A list of zero or more [[base::condition]] objects
+#' captured while resolving the future,
+#'
+#' @param (deprecated) A condition A [[base::condition]] captured while
+#  resolving the future, if any.  This is typically an error.
 #' 
 #' @param calls A list of calls that led up to the captured condition, if any.
 #' 
@@ -21,9 +24,11 @@
 #' 
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
-                         version = "1.7") {
-  if (!is.null(condition)) stop_if_not(inherits(condition, "condition"))
+FutureResult <- function(value = NULL, condition = NULL,
+                         calls = NULL, ..., version = "1.7") {
+  if (!is.null(condition)) {
+    stop_if_not(is.list(condition) || inherits(condition, "condition"))
+  }
   if (!is.null(calls)) stop_if_not(is.list(calls))
   
   args <- list(...)
@@ -35,7 +40,7 @@ FutureResult <- function(value = NULL, condition = NULL, calls = NULL, ...,
       ))
     }
   }
-  
+
   structure(list(
     value = value,
     condition = condition,

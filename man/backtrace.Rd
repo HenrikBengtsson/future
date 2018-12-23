@@ -2,12 +2,12 @@
 % Please edit documentation in R/backtrace.R
 \name{backtrace}
 \alias{backtrace}
-\title{Back trace the expression evaluated when a condition was caught}
+\title{Back trace the expression evaluated when an error was caught}
 \usage{
 backtrace(future, envir = parent.frame(), ...)
 }
 \arguments{
-\item{future}{A future with a caught condition.}
+\item{future}{A future with a caught error.}
 
 \item{envir}{the environment where to locate the future.}
 
@@ -17,7 +17,7 @@ backtrace(future, envir = parent.frame(), ...)
 A list with one call.
 }
 \description{
-Back trace the expression evaluated when a condition was caught
+Back trace the expression evaluated when an error was caught
 }
 \section{Known limitations}{
 

@@ -1,6 +1,6 @@
-#' Back trace the expression evaluated when a condition was caught
+#' Back trace the expression evaluated when an error was caught
 #'
-#' @param future A future with a caught condition.
+#' @param future A future with a caught error.
 #' @param envir the environment where to locate the future.
 #' @param \dots Not used.
 #'
@@ -29,16 +29,22 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   }
 
   if (!resolved(future)) {
-    stop("No condition has been caught because the future is unresolved: ", sQuote(expr))
+    stop("No error has been caught because the future is unresolved: ", sQuote(expr))
   }
 
   result <- result(future)
-  condition <- result$condition
-  if (!inherits(condition, "condition")) {
-    stop("No condition was caught for this future: ", sQuote(expr))
+  conditions <- result$condition
+  if (inherits(conditions, "condition")) conditions <- list(conditions)
+
+  ## BACKWARD COMPATIBILITY: Drop anything but 'error' conditions
+  keep <- vapply(conditions, FUN = inherits, "error", FUN.VALUE = FALSE)
+  conditions <- conditions[keep]
+  
+  if (length(conditions) == 0) {
+    stop("No error was caught for this future: ", sQuote(expr))
   }
 
-  call <- conditionCall(condition)
+  call <- conditionCall(conditions[[1]])
   if (is.null(call)) {
     stop("No call was recorded for this future: ", sQuote(expr))
   }

@@ -15,12 +15,14 @@ FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
 If the expression was not fully resolved (e.g. an error) occurred,
 the the value is `NULL`.}
 
-\item{condition}{A [[base::condition]] captured while resolving the future,
-if any.  This is typically an error.}
-
 \item{calls}{A list of calls that led up to the captured condition, if any.}
 
 \item{version}{The version format of the results.}
+
+\item{conditions}{A list of zero or more [[base::condition]] objects
+captured while resolving the future,}
+
+\item{(deprecated)}{A condition A [[base::condition]] captured while}
 
 \item{\ldots}{(optional) Additional named results to be returned.}
 }

@@ -19,19 +19,20 @@ signalEarly <- function(future, collect = TRUE, ...) {
   result <- result(future)
   stop_if_not(inherits(result, "FutureResult"))
   
-  condition <- result$condition
+  conditions <- result$condition
   
   ## Nothing to do?
-  if (is.null(condition)) {
+  if (length(conditions) == 0L) {
     if (debug) mdebug("signalEarly() ... DONE")
     return(future)
   }
   
-  if (debug) mdebug("signalEarly(): Condition class = c(%s)",
-                    paste(sQuote(class(condition)), collapse = ", "))
-
-  ## Sanity check
-  stop_if_not(inherits(condition, "condition"))
+  if (debug) {
+    conditionClasses <- vapply(conditions, FUN = function(c) class(c)[1],
+                                           FUN.VALUE = NA_character_)
+    mdebug("signalEarly(): Condition classes = [n=%s] %s",
+           length(conditionClasses), hpaste(sQuote(conditionClasses)))
+  }		    
 
   resignalCondition(future)
   
@@ -53,19 +54,23 @@ resignalCondition <- function(future, ...) {
   result <- result(future)
   stop_if_not(inherits(result, "FutureResult"))
   
-  condition <- result$condition
-  stop_if_not(inherits(condition, "condition"))
+  conditions <- result$condition
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (inherits(conditions, "condition")) conditions <- list(conditions)
 
-  ## Signal detected condition
-  if (inherits(condition, "error")) {
-    stop(condition)
-  } else if (inherits(condition, "warning")) {
-    warning(condition)
-  } else if (inherits(condition, "message")) {
-    message(condition)
-    message("\n") ## TODO: Remove this? /HB 2018-02-03
-  } else if (inherits(condition, "condition")) {
-    signalCondition(condition)
+  for (condition in conditions) {
+    ## Signal detected condition
+    if (inherits(condition, "error")) {
+      stop(condition)
+    } else if (inherits(condition, "warning")) {
+      warning(condition)
+    } else if (inherits(condition, "message")) {
+      message(condition)
+    } else if (inherits(condition, "condition")) {
+      signalCondition(condition)
+    } else {
+      stop_if_not(inherits(condition, "condition"))
+    }
   }
   
   invisible(future)
