@@ -745,7 +745,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
     #      calls <- calls[-seq_len(current+7L)]
           ## Drop fluff added by outer local = TRUE
           #      if (future$local) calls <- calls[-seq_len(6L)]
-          conditions <<- c(conditions, list(ex))
+          conditions[[length(conditions) + 1L]] <<- ex
           structure(list(
             value = NULL,
             conditions = conditions,
@@ -764,14 +764,16 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
           ##    reference or earlier problems?"
 	  ## To avoid this, we make sure to import the functions explicitly
           ## /HB 2018-12-22
-          c <- base::c
-          list <- base::list
           inherits <- base::inherits
           invokeRestart <- base::invokeRestart
+          length <- base::length
+	  `[[` <- base::`[[`
+	  `+` <- base::`+`
+	  `<<-` <- base::`<<-`
 
           function(cond) {
             if (inherits(cond, .(conditionClasses))) {
-              conditions <<- c(conditions, list(cond))
+              conditions[[length(conditions) + 1L]] <<- cond
               if (inherits(cond, "message")) {
                 invokeRestart("muffleMessage")
               } else if (inherits(cond, "warning")) {
