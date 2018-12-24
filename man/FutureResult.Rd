@@ -5,8 +5,8 @@
 \alias{as.character.FutureResult}
 \title{Results from resolving a future}
 \usage{
-FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
-  version = "1.7")
+FutureResult(value = NULL, conditions = NULL, condition = NULL,
+  calls = NULL, ..., version = "1.7")
 
 \method{as.character}{FutureResult}(x, ...)
 }
@@ -15,14 +15,15 @@ FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
 If the expression was not fully resolved (e.g. an error) occurred,
 the the value is `NULL`.}
 
-\item{calls}{A list of calls that led up to the captured condition, if any.}
-
-\item{version}{The version format of the results.}
-
 \item{conditions}{A list of zero or more [[base::condition]] objects
 captured while resolving the future,}
 
-\item{(deprecated)}{A condition A [[base::condition]] captured while}
+\item{condition}{(deprecated) A condition A [[base::condition]] captured
+while resolving the future, if any.  This is typically an error.}
+
+\item{calls}{A list of calls that led up to the captured condition, if any.}
+
+\item{version}{The version format of the results.}
 
 \item{\ldots}{(optional) Additional named results to be returned.}
 }

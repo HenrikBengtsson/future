@@ -19,7 +19,10 @@ signalEarly <- function(future, collect = TRUE, ...) {
   result <- result(future)
   stop_if_not(inherits(result, "FutureResult"))
   
-  conditions <- result$condition
+  conditions <- result$conditions
+  
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (!is.list(conditions)) conditions <- list(result$condition)
   
   ## Nothing to do?
   if (length(conditions) == 0L) {
@@ -54,9 +57,12 @@ resignalCondition <- function(future, ...) {
   result <- result(future)
   stop_if_not(inherits(result, "FutureResult"))
   
-  conditions <- result$condition
+  conditions <- result$conditions
+  
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (inherits(conditions, "condition")) conditions <- list(conditions)
+  if (!is.list(conditions) && !is.null(result$condition)) {
+    conditions <- list(result$condition)
+  }
 
   for (condition in conditions) {
     ## Signal detected condition

@@ -226,9 +226,11 @@ print.Future <- function(x, ...) {
     }
     cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
     if (inherits(result, "FutureResult")) {
-      conditions <- result$condition
+      conditions <- result$conditions
       ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-      if (inherits(conditions, "condition")) conditions <- list(conditions)
+      if (!is.list(conditions) && !is.null(result$condition)) {
+        conditions <- list(result$condition)
+      }
       conditionClasses <- vapply(conditions, FUN = function(c) class(c)[1], FUN.VALUE = NA_character_)
       cat(sprintf("Conditions captured: [n=%d] %s\n", length(conditionClasses), hpaste(sQuote(conditionClasses))))
     }
@@ -358,7 +360,7 @@ result.Future <- function(future, ...) {
   if (future$state == "failed") {
     value <- result
     calls <- value$traceback
-    return(FutureResult(condition = list(value), calls = calls, version = "1.7"))
+    return(FutureResult(conditions = list(value), calls = calls, version = "1.7"))
   }
 
   FutureResult(value = result, version = "1.7")
@@ -416,9 +418,11 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   }
   
   ## Signal captured conditions?
-  conditions <- result$condition
+  conditions <- result$conditions
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (inherits(conditions, "condition")) conditions <- list(conditions)
+  if (!is.list(conditions) && !is.null(result$condition)) {
+    conditions <- list(result$condition)
+  }
   if (length(conditions) > 0) {
     if (signal) {
       mdebug("Future state: %s", sQuote(future$state))
@@ -744,7 +748,8 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
           conditions <<- c(conditions, list(ex))
           structure(list(
             value = NULL,
-            condition = conditions,
+            conditions = conditions,
+	    condition = ex,  ## BACKWARD COMPATIBILITY future (< 1.11.0)
             calls = calls,
             version = "1.8"
           ), class = "FutureResult")
@@ -791,7 +796,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
         ...future.stdout <- NULL
       }
 
-      ...future.result$condition <- conditions
+      ...future.result$conditions <- conditions
       
       ...future.result
     })

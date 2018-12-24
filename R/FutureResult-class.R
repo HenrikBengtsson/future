@@ -7,8 +7,8 @@
 #' @param conditions A list of zero or more [[base::condition]] objects
 #' captured while resolving the future,
 #'
-#' @param (deprecated) A condition A [[base::condition]] captured while
-#  resolving the future, if any.  This is typically an error.
+#' @param condition (deprecated) A condition A [[base::condition]] captured
+#' while resolving the future, if any.  This is typically an error.
 #' 
 #' @param calls A list of calls that led up to the captured condition, if any.
 #' 
@@ -24,10 +24,24 @@
 #' 
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, condition = NULL,
+FutureResult <- function(value = NULL, conditions = NULL, condition = NULL,
                          calls = NULL, ..., version = "1.7") {
-  if (!is.null(condition)) {
-    stop_if_not(is.list(condition) || inherits(condition, "condition"))
+  if (is.null(conditions)) {
+    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+    if (!is.null(condition)) {
+      stop_if_not(inherits(condition, "condition"))
+      conditions <- list(condition)
+    }
+  } else {
+    stop_if_not(is.list(conditions))
+    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+    ## Make sure that 'condition' is set, in case some pkgs use that
+    for (kk in seq_along(conditions)) {
+      if (inherits(conditions[[kk]], "error")) {
+        condition <- conditions[[kk]]
+	break
+      }
+    }
   }
   if (!is.null(calls)) stop_if_not(is.list(calls))
   
@@ -43,7 +57,8 @@ FutureResult <- function(value = NULL, condition = NULL,
 
   structure(list(
     value = value,
-    condition = condition,
+    conditions = conditions,
+    condition = condition,    ## DEPRECATED future (>= 1.11.0)
     calls = calls,
     ...,
     version = version
@@ -55,7 +70,7 @@ FutureResult <- function(value = NULL, condition = NULL,
 #' @export
 #' @keywords internal
 as.character.FutureResult <- function(x, ...) {
-  info <- x[c("value", "condition", "version")]
+  info <- x[c("value", "conditions", "condition", "version")]
   info <- sapply(info, FUN = function(value) {
     if (is.null(value)) return("NULL")
     value <- as.character(value)
