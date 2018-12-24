@@ -731,7 +731,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
         }, add = TRUE)
       }
 
-      conditions <- list()
+      ...future.conditions <- list()
       ...future.result <- withCallingHandlers({
         tryCatch({
           ...future.value <- .(expr)
@@ -745,10 +745,10 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
     #      calls <- calls[-seq_len(current+7L)]
           ## Drop fluff added by outer local = TRUE
           #      if (future$local) calls <- calls[-seq_len(6L)]
-          conditions[[length(conditions) + 1L]] <<- ex
+          ...future.conditions[[length(...future.conditions) + 1L]] <<- ex
           structure(list(
             value = NULL,
-            conditions = conditions,
+            conditions = ...future.conditions,
 	    condition = ex,  ## BACKWARD COMPATIBILITY future (< 1.11.0)
             calls = calls,
             version = "1.8"
@@ -773,7 +773,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
 
           function(cond) {
             if (inherits(cond, .(conditionClasses))) {
-              conditions[[length(conditions) + 1L]] <<- cond
+              ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
               if (inherits(cond, "message")) {
                 invokeRestart("muffleMessage")
               } else if (inherits(cond, "warning")) {
@@ -798,7 +798,7 @@ makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses =
         ...future.stdout <- NULL
       }
 
-      ...future.result$conditions <- conditions
+      ...future.result$conditions <- ...future.conditions
       
       ...future.result
     })
