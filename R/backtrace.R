@@ -33,8 +33,9 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   }
 
   result <- result(future)
-  conditions <- result$condition
-  if (inherits(conditions, "condition")) conditions <- list(conditions)
+  conditions <- result$conditions
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (!is.list(conditions)) conditions <- list(result$condition)
 
   ## BACKWARD COMPATIBILITY: Drop anything but 'error' conditions
   keep <- vapply(conditions, FUN = inherits, "error", FUN.VALUE = FALSE)
