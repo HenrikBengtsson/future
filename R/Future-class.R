@@ -229,9 +229,9 @@ print.Future <- function(x, ...) {
       conditions <- result$conditions
       ## BACKWARD COMPATIBILITY: future (< 1.11.0)
       if (!is.list(conditions) && !is.null(result$condition)) {
-        conditions <- list(result$condition)
+        conditions <- list(list(condition = result$condition))
       }
-      conditionClasses <- vapply(conditions, FUN = function(c) class(c)[1], FUN.VALUE = NA_character_)
+      conditionClasses <- vapply(conditions, FUN = function(c) class(c$condition)[1], FUN.VALUE = NA_character_)
       cat(sprintf("Conditions captured: [n=%d] %s\n", length(conditionClasses), hpaste(sQuote(conditionClasses))))
     }
   } else {
@@ -360,7 +360,7 @@ result.Future <- function(future, ...) {
   if (future$state == "failed") {
     value <- result
     calls <- value$traceback
-    return(FutureResult(conditions = list(value), calls = calls, version = "1.7"))
+    return(FutureResult(conditions = list(list(condition = value)), calls = calls, version = "1.7"))
   }
 
   FutureResult(value = result, version = "1.7")
@@ -421,7 +421,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   conditions <- result$conditions
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
   if (!is.list(conditions) && !is.null(result$condition)) {
-    conditions <- list(result$condition)
+    conditions <- list(list(condition = result$condition))
   }
   if (length(conditions) > 0) {
     if (signal) {
@@ -429,7 +429,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       resignalConditions(future) ## Will signal an (eval) error, iff exists
     } else {
       ## BACKWARD COMPATIBILITY
-      value <- conditions[[length(conditions)]]
+      value <- conditions[[length(conditions)]]$condition
     }
   }
 
@@ -776,10 +776,10 @@ makeExpression <- local({
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
                   ...future.calls <<- sysCalls(from = ...future.frame)
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = ...future.calls)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond)
                   if (inherits(cond, "message")) {
                     invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {

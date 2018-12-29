@@ -11,7 +11,7 @@
 #' @example incl/backtrace.R
 #'
 #' @export
-backtrace <- function(future, envir = parent.frame(), trim = NULL, ...) {
+backtrace <- function(future, envir = parent.frame(), ...) {
   ## Argument 'expr':
   expr <- substitute(future)
 
@@ -33,17 +33,27 @@ backtrace <- function(future, envir = parent.frame(), trim = NULL, ...) {
   conditions <- result$conditions
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(result$condition)
+  if (!is.list(conditions)) conditions <- list(list(condition = result$condition))
 
-  ## BACKWARD COMPATIBILITY: Drop anything but 'error' conditions
-  keep <- vapply(conditions, FUN = inherits, "error", FUN.VALUE = FALSE)
-  conditions <- conditions[keep]
-  
-  if (length(conditions) == 0) {
+  ## Find 'error' condition
+  error <- NULL
+  for (kk in seq_along(conditions)) {
+    c <- conditions[[kk]]
+    if (inherits(c$condition, "error")) {
+      error <- c
+      break
+    }
+  }
+
+  if (is.null(error)) {
     stop("No error was caught for this future: ", sQuote(expr))
   }
 
-  calls <- result$calls
+  calls <- error$calls
+
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (is.null(calls)) calls <- result$calls
+  
   if (is.null(calls)) {
     stop("The error call stack was not recorded for this future: ", sQuote(expr))
   }

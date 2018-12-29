@@ -22,7 +22,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
   conditions <- result$conditions
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(result$condition)
+  if (!is.list(conditions)) conditions <- list(list(condition = result$condition))
   
   ## Nothing to do?
   if (length(conditions) == 0L) {
@@ -31,8 +31,9 @@ signalEarly <- function(future, collect = TRUE, ...) {
   }
   
   if (debug) {
-    conditionClasses <- vapply(conditions, FUN = function(c) class(c)[1],
-                                           FUN.VALUE = NA_character_)
+    conditionClasses <- vapply(conditions,
+                               FUN = function(c) class(c$condition)[1],
+                               FUN.VALUE = NA_character_)
     mdebug("signalEarly(): Condition classes = [n=%s] %s",
            length(conditionClasses), hpaste(sQuote(conditionClasses)))
   }		    
@@ -61,14 +62,22 @@ resignalConditions <- function(future, ...) {
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
   if (!is.list(conditions) && !is.null(result$condition)) {
-    conditions <- list(result$condition)
+    conditions <- list(list(condition = result$condition))
   }
 
   ## Signal detected conditions one by one
-  for (condition in conditions) {
+  for (kk in seq_along(conditions)) {
+    cond <- conditions[[kk]]
+    condition <- cond$condition
+    
     if (inherits(condition, "error")) {
-      ## SPECIAL: Pass on error call stack too
-      if (!is.null(result$calls)) condition$call <- result$calls
+      ## SPECIAL: Pass on traceback as 'future.call'
+      if (!"future.call" %in% names(condition)) {
+        calls <- condition$calls
+        ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+        if (is.null(calls)) calls <- result$calls
+        condition$future.call <- calls
+      }
       stop(condition)
     } else if (inherits(condition, "warning")) {
       warning(condition)
