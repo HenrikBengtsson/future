@@ -49,6 +49,9 @@ BUG FIXES:
    are created.  Now cluster futures assert that the connections to the workers
    are valid, and if not, an informative error message is produced.
 
+ * Calling result() on a non-resolved UniprocessFuture would signal evaluation
+   errors.
+
 DEPRECATED AND DEFUNCT:
 
  * Removed defunct future::future_lapply().  Please use the one in the

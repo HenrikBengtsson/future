@@ -89,7 +89,7 @@ result.UniprocessFuture <- function(future, ...) {
   }
   
   if (future$state == "created") {
-    run(future)
+    tryCatch(run(future), error = identity)
   }
 
   result <- future$result
