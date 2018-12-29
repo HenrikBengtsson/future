@@ -36,7 +36,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
                                FUN.VALUE = NA_character_)
     mdebug("signalEarly(): Condition classes = [n=%s] %s",
            length(conditionClasses), hpaste(sQuote(conditionClasses)))
-  }		    
+  }
 
   resignalConditions(future)
   
@@ -71,12 +71,12 @@ resignalConditions <- function(future, ...) {
     condition <- cond$condition
     
     if (inherits(condition, "error")) {
-      ## SPECIAL: Pass on traceback as 'future.call'
-      if (!"future.call" %in% names(condition)) {
-        calls <- condition$calls
+      ## SPECIAL: Pass on 'future.info'
+      if (!"future.info" %in% names(condition)) {
         ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-        if (is.null(calls)) calls <- result$calls
-        condition$future.call <- calls
+        if (is.null(cond$calls)) cond$calls <- result$calls
+        cond$condition <- NULL
+        condition$future.info <- cond
       }
       stop(condition)
     } else if (inherits(condition, "warning")) {

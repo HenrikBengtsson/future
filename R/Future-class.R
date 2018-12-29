@@ -744,7 +744,6 @@ makeExpression <- local({
         }
   
         ...future.frame <- sys.nframe()
-        ...future.calls <- NULL
         ...future.conditions <- list()
         ...future.result <- tryCatch({
           withCallingHandlers({
@@ -775,8 +774,7 @@ makeExpression <- local({
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.calls <<- sysCalls(from = ...future.frame)
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = ...future.calls)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time())
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond)
@@ -793,8 +791,8 @@ makeExpression <- local({
           structure(list(
             value = NULL,
             conditions = ...future.conditions,
-            condition = ex,  ## BACKWARD COMPATIBILITY future (< 1.11.0)
-            calls = ...future.calls,
+            condition = ex,      ## DEPRECATED: future (>= 1.11.0)
+            calls = sys.calls(), ## DEPRECATED: future (>= 1.11.0)
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))
