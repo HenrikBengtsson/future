@@ -428,8 +428,9 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       mdebug("Future state: %s", sQuote(future$state))
       resignalConditions(future) ## Will signal an (eval) error, iff exists
     } else {
-      ## BACKWARD COMPATIBILITY
-      value <- conditions[[length(conditions)]]$condition
+      ## Return 'error' object, iff exists, otherwise NULL
+      error <- conditions[[length(conditions)]]$condition
+      if (inherits(error, "error")) value <- error
     }
   }
 
