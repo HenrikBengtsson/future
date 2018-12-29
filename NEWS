@@ -3,6 +3,10 @@ Package: future
 
 Version: 1.10.0-9000 [2018-12-28]
 
+SIGNIFICANT CHANGES:
+
+ * Message and warning conditions are now captured and relayed by default.
+
 NEW FEATURES:
 
  * The call stack ("traceback") is now recorded when the evaluation of a
