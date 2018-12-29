@@ -65,14 +65,20 @@ resignalConditions <- function(future, ...) {
     conditions <- list(list(condition = result$condition))
   }
 
+  ## Nothing to do
+  if (length(conditions) == 0) return(invisible(future))
+  
+  debug <- getOption("future.debug", FALSE)
+
   ## Signal detected conditions one by one
   for (kk in seq_along(conditions)) {
     cond <- conditions[[kk]]
     condition <- cond$condition
-    
+
     if (inherits(condition, "error")) {
-      ## SPECIAL: Pass on 'future.info'
-      if (!"future.info" %in% names(condition)) {
+      ## SPECIAL: By default, don't add 'future.info' because it
+      ## modifies the error object, which may break things.
+      if (debug && !"future.info" %in% names(condition)) {
         ## BACKWARD COMPATIBILITY: future (< 1.11.0)
         if (is.null(cond$calls)) cond$calls <- result$calls
         cond$condition <- NULL
