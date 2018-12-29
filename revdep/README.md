@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2018-12-23                   |
+|date     |2018-12-28                   |
 
 # Dependencies
 
@@ -23,14 +23,12 @@
 
 # Revdeps
 
-## Broken (4)
+## Broken (2)
 
 |package                                           |version |error  |warning |note |
 |:-------------------------------------------------|:-------|:------|:-------|:----|
-|[biotmle](problems.md#biotmle)                    |1.4.0   |__+2__ |        |1    |
 |[future.BatchJobs](problems.md#futurebatchjobs)   |0.16.0  |__+1__ |        |     |
 |[future.batchtools](problems.md#futurebatchtools) |0.7.1   |__+1__ |        |     |
-|[methyvim](problems.md#methyvim)                  |1.2.0   |__+2__ |__+1__  |     |
 
 ## All (46)
 
@@ -40,7 +38,7 @@
 |[aroma.core](problems.md#aromacore)               |3.1.3      |       |        |1    |
 |[BAMBI](problems.md#bambi)                        |2.0.1      |       |        |1    |
 |batchtools                                        |0.9.11     |       |        |     |
-|[biotmle](problems.md#biotmle)                    |1.4.0      |__+2__ |        |1    |
+|[biotmle](problems.md#biotmle)                    |1.4.0      |       |        |1    |
 |[brms](problems.md#brms)                          |2.7.0      |       |        |1    |
 |civis                                             |1.5.1      |       |        |     |
 |[codebook](problems.md#codebook)                  |0.7.5      |       |        |3    |
@@ -59,12 +57,12 @@
 |googleComputeEngineR                              |0.2.0      |       |        |     |
 |[greta](problems.md#greta)                        |0.3.0      |       |        |1    |
 |GSODR                                             |1.3.1      |       |        |     |
-|ipc                                               |0.1.1      |       |        |     |
+|ipc                                               |0.1.1      |-1     |        |     |
 |jstor                                             |0.3.6      |       |        |     |
 |kernelboot                                        |0.1.5      |       |        |     |
 |[lidR](problems.md#lidr)                          |1.6.1      |       |        |2    |
 |[MetamapsDB](problems.md#metamapsdb)              |0.0.2      |       |        |1    |
-|[methyvim](problems.md#methyvim)                  |1.2.0      |__+2__ |__+1__  |     |
+|methyvim                                          |1.2.0      |       |        |     |
 |ngstk                                             |0.2.3      |       |        |     |
 |origami                                           |1.0.0      |       |        |     |
 |pbmcapply                                         |1.3.0      |       |        |     |
