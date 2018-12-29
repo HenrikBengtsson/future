@@ -37,19 +37,19 @@ signalEarly <- function(future, collect = TRUE, ...) {
            length(conditionClasses), hpaste(sQuote(conditionClasses)))
   }		    
 
-  resignalCondition(future)
+  resignalConditions(future)
   
   if (debug) mdebug("signalEarly() ... DONE")
 
   invisible(future)
 }
 
-resignalCondition <- function(future, ...) {
+resignalConditions <- function(future, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
     stop(FutureError(
       sprintf(
-        "Internal error: Cannot resignal future condition. %s has not yet been resolved (state = %s)",
+        "Internal error: Cannot resignal future conditions. %s has not yet been resolved (state = %s)",
         class(future)[1], paste(sQuote(future$state), collapse = ", ")),
       future = future))
   }
@@ -64,9 +64,11 @@ resignalCondition <- function(future, ...) {
     conditions <- list(result$condition)
   }
 
+  ## Signal detected conditions one by one
   for (condition in conditions) {
-    ## Signal detected condition
     if (inherits(condition, "error")) {
+      ## SPECIAL: Pass on error call stack too
+      if (!is.null(result$calls)) condition$call <- result$calls
       stop(condition)
     } else if (inherits(condition, "warning")) {
       warning(condition)

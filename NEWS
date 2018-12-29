@@ -1,9 +1,12 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-12-12]
+Version: 1.10.0-9000 [2018-12-28]
 
 NEW FEATURES:
+
+ * The call stack ("traceback") is now recorded when the evaluation of a
+   future produces an error.  Use backtrace() on the future to retrieve it.
 
  * Now futureCall() defaults to args = list() making is easier to call
    functions that do not take arguments, e.g. futureCall(function() 42).

@@ -1,20 +1,17 @@
-#' Back trace the expression evaluated when an error was caught
+#' Back trace the expressions evaluated when an error was caught
 #'
 #' @param future A future with a caught error.
+#'
 #' @param envir the environment where to locate the future.
+#'
 #' @param \dots Not used.
 #'
-#' @return A list with one call.
+#' @return A @list with the future's call stack that led up to the error.
 #'
-#' @section Known limitations:
-#' It is currently \emph{not} possible to infer the full call stack prior to
-#' when an error occurred.  It is only possible to get the call that produced
-#' the call.
-#' This is a limitation of \code{\link[base:tryCatch]{tryCatch()}} used
-#' internally for evaluating the future expression.
-#' 
+#' @example incl/backtrace.R
+#'
 #' @export
-backtrace <- function(future, envir = parent.frame(), ...) {
+backtrace <- function(future, envir = parent.frame(), trim = NULL, ...) {
   ## Argument 'expr':
   expr <- substitute(future)
 
@@ -34,6 +31,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
 
   result <- result(future)
   conditions <- result$conditions
+  
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
   if (!is.list(conditions)) conditions <- list(result$condition)
 
@@ -45,10 +43,10 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     stop("No error was caught for this future: ", sQuote(expr))
   }
 
-  call <- conditionCall(conditions[[1]])
-  if (is.null(call)) {
-    stop("No call was recorded for this future: ", sQuote(expr))
+  calls <- result$calls
+  if (is.null(calls)) {
+    stop("The error call stack was not recorded for this future: ", sQuote(expr))
   }
 
-  list(call)
+  calls
 } ## backtrace()

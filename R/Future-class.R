@@ -426,10 +426,10 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (length(conditions) > 0) {
     if (signal) {
       mdebug("Future state: %s", sQuote(future$state))
-      resignalCondition(future) ## Will produce an error
+      resignalConditions(future) ## Will signal an (eval) error, iff exists
     } else {
       ## BACKWARD COMPATIBILITY
-      value <- conditions[[1]]
+      value <- conditions[[length(conditions)]]
     }
   }
 
@@ -648,166 +648,182 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 } ## getExpression()
 
 
-makeExpression <- function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
-  if (is.null(conditionClasses)) conditionClasses <- character(0L)
+makeExpression <- local({
+  skip <- skip.local <- NULL
   
-  ## Evaluate expression in a local() environment?
-  if (local) {
-    expr <- bquote(local(.(expr)))
-  }
-
-  ## Set and reset certain future.* options etc.
-  enter <- bquote({
-    ## covr: skip=7
-    ...future.oldOptions <- options(
-      ## Prevent .future.R from being source():d when future is attached
-      future.startup.loadScript = FALSE,
-      
-      ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing = .(globals.onMissing),
-      
-      ## Pass down other future.* options
-      future.globals.maxSize     = .(getOption("future.globals.maxSize")),
-      future.globals.method      = .(getOption("future.globals.method")),
-      future.globals.onMissing   = .(getOption("future.globals.onMissing")),
-      future.globals.onReference = .(getOption("future.globals.onReference")),
-      future.globals.resolve     = .(getOption("future.globals.resolve")),
-      future.resolve.recursive   = .(getOption("future.resolve.recursive")),
-      
-      ## Other options relevant to making futures behave consistently
-      ## across backends
-      width = .(getOption("width"))
-    )
-    .(enter)
-  })
-
-  exit <- bquote({
-    .(exit)
-    options(...future.oldOptions)
-  })
-
-
-  ## NOTE: We don't want to use local(body) w/ on.exit() because
-  ## evaluation in a local is optional, cf. argument 'local'.
-  ## If this was mandatory, we could.  Instead we use
-  ## a tryCatch() statement. /HB 2016-03-14
-
-  if (version == "1.7") {
-    expr <- bquote({
-      ## covr: skip=6
+  function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+    if (is.null(conditionClasses)) conditionClasses <- character(0L)
+  
+    if (is.null(skip)) {
+      ## WORKAROUND: skip = c(7/12, 3) makes assumption about withCallingHandlers()
+      ## and local().  In case this changes, provide internal options to adjust this.
+      ## /HB 2018-12-28
+      skip <<- getOption("future.makeExpression.skip", c(6L, 3L))
+      skip.local <<- getOption("future.makeExpression.skip.local", c(12L, 3L))
+    }
+    
+    ## Evaluate expression in a local() environment?
+    if (local) {
+      expr <- bquote(local(.(expr)))
+      skip <- skip.local
+    }
+  
+    ## Set and reset certain future.* options etc.
+    enter <- bquote({
+      ## covr: skip=7
+      ...future.oldOptions <- options(
+        ## Prevent .future.R from being source():d when future is attached
+        future.startup.loadScript = FALSE,
+        
+        ## Assert globals when future is created (or at run time)?
+        future.globals.onMissing = .(globals.onMissing),
+        
+        ## Pass down other future.* options
+        future.globals.maxSize     = .(getOption("future.globals.maxSize")),
+        future.globals.method      = .(getOption("future.globals.method")),
+        future.globals.onMissing   = .(getOption("future.globals.onMissing")),
+        future.globals.onReference = .(getOption("future.globals.onReference")),
+        future.globals.resolve     = .(getOption("future.globals.resolve")),
+        future.resolve.recursive   = .(getOption("future.resolve.recursive")),
+        
+        ## Other options relevant to making futures behave consistently
+        ## across backends
+        width = .(getOption("width"))
+      )
       .(enter)
-      tryCatch({
-        .(expr)
-      }, finally = {
-        .(exit)
-      })
     })
-  } else if (version == "1.8") {    
-    expr <- bquote({
-      ## covr: skip=6
-      .(enter)
-
-      ## Capture standard output?
-      if (is.na(.(stdout))) {  ## stdout = NA
-        ## Don't capture, but also don't block any output
-      } else {
-        if (.(stdout)) {  ## stdout = TRUE
-          ## Capture all output
-          ## NOTE: Capturing to a raw connection is much more efficient
-          ## than to a character connection, cf.
-          ## https://www.jottr.org/2014/05/26/captureoutput/
-          ...future.stdout <- rawConnection(raw(0L), open = "w")
-        } else {  ## stdout = FALSE
-          ## Silence all output by sending it to the void
-          ...future.stdout <- file(
-            switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
-            open = "w"
-          )
-        }
-        sink(...future.stdout, type = "output", split = FALSE)
-        on.exit(if (!is.null(...future.stdout)) {
-          sink(type = "output", split = FALSE)
-          close(...future.stdout)
-        }, add = TRUE)
-      }
-
-      ...future.conditions <- list()
-      ...future.result <- withCallingHandlers({
+  
+    exit <- bquote({
+      .(exit)
+      options(...future.oldOptions)
+    })
+  
+  
+    ## NOTE: We don't want to use local(body) w/ on.exit() because
+    ## evaluation in a local is optional, cf. argument 'local'.
+    ## If this was mandatory, we could.  Instead we use
+    ## a tryCatch() statement. /HB 2016-03-14
+  
+    if (version == "1.7") {
+      expr <- bquote({
+        ## covr: skip=6
+        .(enter)
         tryCatch({
-          ...future.value <- .(expr)
-          ## A FutureResult object (without requiring the future package)
-          future::FutureResult(value = ...future.value, version = "1.8")
-        }, error = function(ex) {
-          calls <- sys.calls()
-          ## Drop fluff added by tryCatch()
-    #      calls <- calls[seq_len(length(calls) - 2L)]
-          ## Drop fluff added by outer tryCatch()
-    #      calls <- calls[-seq_len(current+7L)]
-          ## Drop fluff added by outer local = TRUE
-          #      if (future$local) calls <- calls[-seq_len(6L)]
-          ...future.conditions[[length(...future.conditions) + 1L]] <<- ex
-          structure(list(
-            value = NULL,
-            conditions = ...future.conditions,
-	    condition = ex,  ## BACKWARD COMPATIBILITY future (< 1.11.0)
-            calls = calls,
-            version = "1.8"
-          ), class = "FutureResult")
+          .(expr)
         }, finally = {
           .(exit)
         })
-      }, condition = local({
-          ## WORKAROUND: If the name of any of the below objects/functions
-	  ## coincides with a promise (e.g. a future assignment) then we
-	  ## we will end up with a recursive evaluation resulting in error:
-          ##   "promise already under evaluation: recursive default argument
-          ##    reference or earlier problems?"
-	  ## To avoid this, we make sure to import the functions explicitly
-          ## /HB 2018-12-22
-          inherits <- base::inherits
-          invokeRestart <- base::invokeRestart
-          length <- base::length
-	  `[[` <- base::`[[`
-	  `+` <- base::`+`
-	  `<<-` <- base::`<<-`
-
-          function(cond) {
-            if (inherits(cond, .(conditionClasses))) {
-              ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
-              if (inherits(cond, "message")) {
-                invokeRestart("muffleMessage")
-              } else if (inherits(cond, "warning")) {
-                invokeRestart("muffleWarning")
-              }
-            }
-          }
-        })
-      )
-      
-      if (is.na(.(stdout))) {
-      } else {
-        sink(type = "output", split = FALSE)
-        if (.(stdout)) {
-          ...future.result$stdout <- rawToChar(
-            rawConnectionValue(...future.stdout)
-          )
+      })
+    } else if (version == "1.8") {    
+      expr <- bquote({
+        ## covr: skip=6
+        .(enter)
+  
+        ## Capture standard output?
+        if (is.na(.(stdout))) {  ## stdout = NA
+          ## Don't capture, but also don't block any output
         } else {
-          ...future.result["stdout"] <- list(NULL)
+          if (.(stdout)) {  ## stdout = TRUE
+            ## Capture all output
+            ## NOTE: Capturing to a raw connection is much more efficient
+            ## than to a character connection, cf.
+            ## https://www.jottr.org/2014/05/26/captureoutput/
+            ...future.stdout <- rawConnection(raw(0L), open = "w")
+          } else {  ## stdout = FALSE
+            ## Silence all output by sending it to the void
+            ...future.stdout <- file(
+              switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
+              open = "w"
+            )
+          }
+          sink(...future.stdout, type = "output", split = FALSE)
+          on.exit(if (!is.null(...future.stdout)) {
+            sink(type = "output", split = FALSE)
+            close(...future.stdout)
+          }, add = TRUE)
         }
-        close(...future.stdout)
-        ...future.stdout <- NULL
-      }
-
-      ...future.result$conditions <- ...future.conditions
-      
-      ...future.result
-    })
-  } else {
-    stop(FutureError("Internal error: Non-supported future expression version: ", version))
+  
+        ...future.frame <- sys.nframe()
+        ...future.calls <- NULL
+        ...future.conditions <- list()
+        ...future.result <- tryCatch({
+          withCallingHandlers({
+            ...future.value <- .(expr)
+            ## A FutureResult object (without requiring the future package)
+            future::FutureResult(value = ...future.value, version = "1.8")
+          }, condition = local({
+              ## WORKAROUND: If the name of any of the below objects/functions
+              ## coincides with a promise (e.g. a future assignment) then we
+              ## we will end up with a recursive evaluation resulting in error:
+              ##   "promise already under evaluation: recursive default argument
+              ##    reference or earlier problems?"
+              ## To avoid this, we make sure to import the functions explicitly
+              ## /HB 2018-12-22
+              inherits <- base::inherits
+              invokeRestart <- base::invokeRestart
+              length <- base::length
+              seq.int <- base::seq.int
+              sys.calls <- base::sys.calls
+              `[[` <- base::`[[`
+              `+` <- base::`+`
+              `<<-` <- base::`<<-`
+              
+              sysCalls <- function(calls = sys.calls(), from = 1L) {
+                calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
+              }
+  
+              function(cond) {
+                ## Handle error:s specially
+                if (inherits(cond, "error")) {
+                  ...future.calls <<- sysCalls(from = ...future.frame)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
+                  signalCondition(cond)
+                } else if (inherits(cond, .(conditionClasses))) {
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- cond
+                  if (inherits(cond, "message")) {
+                    invokeRestart("muffleMessage")
+                  } else if (inherits(cond, "warning")) {
+                    invokeRestart("muffleWarning")
+                  }
+                }
+              }
+            }) ## local()
+          ) ## withCallingHandlers()
+        }, error = function(ex) {
+          structure(list(
+            value = NULL,
+            conditions = ...future.conditions,
+            condition = ex,  ## BACKWARD COMPATIBILITY future (< 1.11.0)
+            calls = ...future.calls,
+            version = "1.8"
+          ), class = "FutureResult")
+        }, finally = .(exit))
+        
+        if (is.na(.(stdout))) {
+        } else {
+          sink(type = "output", split = FALSE)
+          if (.(stdout)) {
+            ...future.result$stdout <- rawToChar(
+              rawConnectionValue(...future.stdout)
+            )
+          } else {
+            ...future.result["stdout"] <- list(NULL)
+          }
+          close(...future.stdout)
+          ...future.stdout <- NULL
+        }
+  
+        ...future.result$conditions <- ...future.conditions
+        
+        ...future.result
+      })
+    } else {
+      stop(FutureError("Internal error: Non-supported future expression version: ", version))
+    }
+  
+    expr
   }
-
-  expr
-} ## makeExpression()
+}) ## makeExpression()
 
 
 globals <- function(future, ...) UseMethod("globals")

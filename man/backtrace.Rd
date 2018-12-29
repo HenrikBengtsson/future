@@ -2,7 +2,7 @@
 % Please edit documentation in R/backtrace.R
 \name{backtrace}
 \alias{backtrace}
-\title{Back trace the expression evaluated when an error was caught}
+\title{Back trace the expressions evaluated when an error was caught}
 \usage{
 backtrace(future, envir = parent.frame(), ...)
 }
@@ -14,17 +14,8 @@ backtrace(future, envir = parent.frame(), ...)
 \item{\dots}{Not used.}
 }
 \value{
-A list with one call.
+A @list with the future's call stack that led up to the error.
 }
 \description{
-Back trace the expression evaluated when an error was caught
+Back trace the expressions evaluated when an error was caught
 }
-\section{Known limitations}{
-
-It is currently \emph{not} possible to infer the full call stack prior to
-when an error occurred.  It is only possible to get the call that produced
-the call.
-This is a limitation of \code{\link[base:tryCatch]{tryCatch()}} used
-internally for evaluating the future expression.
-}
-
