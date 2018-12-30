@@ -35,7 +35,7 @@ for (cores in seq_len(min(2L, availCores))) {
       str(r)
       stopifnot(value(f) == 42L)
       if (is.na(stdout)) {
-        stopifnot(!"stdout" %in% names(r))
+        stopifnot(is.null(r$stdout) || r$stdout == "")
       } else if (stdout) {
         print(r)
         stopifnot(identical(r$stdout, truth))
