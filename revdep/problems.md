@@ -120,60 +120,32 @@ Version: 0.12.0
       Execution halted
     ```
 
-# future.BatchJobs
+# future.callr
 
-Version: 0.16.0
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/BatchJobsFutureError.R’ failed.
-    Last 13 lines of output:
-       'expired' status countdown: 3
-      Poll #19 (4.03 secs): status = expired, started, submitted
-       'expired' status countdown: 2
-      Poll #20 (4.28 secs): status = expired, started, submitted
-       'expired' status countdown: 1
-      Poll #21 (4.53 secs): status = expired, started, submitted
-       'expired' status countdown: 0
-      Results:
-      Error : BatchJobsExpiration: Future ('BatchJobs') expired (registry path /home/hb/repositories/future/revdep/checks/future.BatchJobs/new/future.BatchJobs.Rcheck/tests/.future/20181228_211923-F0SbfN/BatchJobs_350452167-files).. The last few lines of the logged output:
-      Warning in formals(fun) : argument is not a function
-        Fun formals: 
-        Name: NA
-        Seed: 357186306
-        Pars: <unnamed>=<call>
-      Setting seed: 357186306
-    ```
-
-# future.batchtools
-
-Version: 0.7.1
+Version: 0.3.1
 
 ## Newly broken
 
 *   checking tests ...
     ```
      ERROR
-    Running the tests in ‘tests/BatchtoolsFutureError.R’ failed.
+    Running the tests in ‘tests/stdout.R’ failed.
     Last 13 lines of output:
-      +   v <- value(f)
-      + }, error = identity)
-      > stopifnot(inherits(res, "error"),
-      +           inherits(res, "FutureError"))
-      > err_msg <- unlist(strsplit(conditionMessage(res), split = "\n", fixed = TRUE))
-      > stopifnot(any(grepl(msg, err_msg, fixed = TRUE)))
-      Error: any(grepl(msg, err_msg, fixed = TRUE)) is not TRUE
+       $ value     : int 42
+       $ stdout    : chr ""
+       $ conditions: list()
+       $ version   : chr "1.8"
+       - attr(*, "class")= chr "FutureResult"
+      List of 6
+       $ value            : int 42
+       $ stdout           : chr ""
+       $ conditions       : list()
+       $ version          : chr "1.8"
+       $ stderr           : chr ""
+       $ PROTOTYPE_WARNING: chr "WARNING: The fields 'stderr' should be considered internal and experimental for now, that is, until the Future "| __truncated__
+       - attr(*, "class")= chr "FutureResult"
+      Error: is.null(r$stdout) is not TRUE
       Execution halted
-      Error : BatchtoolsExpiration: Future ('<none>') expired (registry path /home/hb/repositories/future/revdep/checks/future.batchtools/new/future.batchtools.Rcheck/tests/.future/20181228_212127-XtPbvZ/batchtools_1068498169).. The last few lines of the logged output:
-      ### [bt]: This is batchtools v0.9.11
-      ### [bt]: Starting calculation of 1 jobs
-      ### [bt]: Setting working directory to '/home/hb/repositories/future/revdep/checks/future.batchtools/new/future.batchtools.Rcheck/tests'
-      ### [bt]: Memory measurement disabled
-      ### [bt]: Starting job [batchtools job.id=1]
-      ### [bt]: Setting seed to 1 ...
     ```
 
 # greta
@@ -189,21 +161,20 @@ Version: 0.3.0
 
 # lidR
 
-Version: 1.6.1
+Version: 2.0.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.7Mb
+      installed size is 10.4Mb
       sub-directories of 1Mb or more:
-        libs   5.9Mb
+        libs   7.6Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘memoise’
+    Namespace in Imports field not imported from: ‘Rcpp’
       All declared Imports should be used.
     ```
 
