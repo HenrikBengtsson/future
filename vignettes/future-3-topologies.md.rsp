@@ -225,4 +225,4 @@ and `n3` will respect what `availableCores()` returns.
 [Futures in R: Common issues with solutions]: future-issues.html
 
 ---
-Copyright Henrik Bengtsson, 2015-2018
+Copyright Henrik Bengtsson, 2015-2019
