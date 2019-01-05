@@ -132,19 +132,19 @@ Version: 0.3.1
     Running the tests in ‘tests/stdout.R’ failed.
     Last 13 lines of output:
        $ value     : int 42
-       $ stdout    : chr ""
+       $ stdout    : NULL
        $ conditions: list()
        $ version   : chr "1.8"
        - attr(*, "class")= chr "FutureResult"
       List of 6
        $ value            : int 42
-       $ stdout           : chr ""
+       $ stdout           : NULL
        $ conditions       : list()
        $ version          : chr "1.8"
        $ stderr           : chr ""
        $ PROTOTYPE_WARNING: chr "WARNING: The fields 'stderr' should be considered internal and experimental for now, that is, until the Future "| __truncated__
        - attr(*, "class")= chr "FutureResult"
-      Error: is.null(r$stdout) is not TRUE
+      Error: !"stdout" %in% names(r) is not TRUE
       Execution halted
     ```
 

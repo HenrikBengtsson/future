@@ -30,7 +30,7 @@
 #'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, stdout = "", conditions = NULL, ..., version = "1.7") {
+FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., version = "1.7") {
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)

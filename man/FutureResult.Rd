@@ -5,7 +5,7 @@
 \alias{as.character.FutureResult}
 \title{Results from resolving a future}
 \usage{
-FutureResult(value = NULL, stdout = "", conditions = NULL, ...,
+FutureResult(value = NULL, stdout = NULL, conditions = NULL, ...,
   version = "1.7")
 
 \method{as.character}{FutureResult}(x, ...)
