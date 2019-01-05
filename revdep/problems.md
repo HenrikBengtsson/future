@@ -57,21 +57,21 @@ Version: 1.4.0
 
 # brms
 
-Version: 2.6.0
+Version: 2.7.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.2Mb
+      installed size is  5.6Mb
       sub-directories of 1Mb or more:
         R     2.9Mb
-        doc   2.4Mb
+        doc   1.8Mb
     ```
 
 # codebook
 
-Version: 0.6.3
+Version: 0.7.5
 
 ## In both
 
@@ -82,9 +82,70 @@ Version: 0.6.3
       All declared Imports should be used.
     ```
 
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘mice’
+    ```
+
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 65 marked UTF-8 strings
+    ```
+
+# DeclareDesign
+
+Version: 0.12.0
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(DeclareDesign)
+      Loading required package: randomizr
+      Loading required package: fabricatr
+      Loading required package: estimatr
+      > 
+      > test_check("DeclareDesign")
+      ── 1. Failure: gam (@test-model.R#247)  ────────────────────────────────────────
+      `expect_equal(ncol(draw_estimates(des)), 7)` did not produce any warnings.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 456 SKIPPED: 5 FAILED: 1
+      1. Failure: gam (@test-model.R#247) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
+# future.callr
+
+Version: 0.3.1
+
+## Newly broken
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/stdout.R’ failed.
+    Last 13 lines of output:
+       $ value     : int 42
+       $ stdout    : NULL
+       $ conditions: list()
+       $ version   : chr "1.8"
+       - attr(*, "class")= chr "FutureResult"
+      List of 6
+       $ value            : int 42
+       $ stdout           : NULL
+       $ conditions       : list()
+       $ version          : chr "1.8"
+       $ stderr           : chr ""
+       $ PROTOTYPE_WARNING: chr "WARNING: The fields 'stderr' should be considered internal and experimental for now, that is, until the Future "| __truncated__
+       - attr(*, "class")= chr "FutureResult"
+      Error: !"stdout" %in% names(r) is not TRUE
+      Execution halted
     ```
 
 # greta
@@ -100,21 +161,20 @@ Version: 0.3.0
 
 # lidR
 
-Version: 1.6.1
+Version: 2.0.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.7Mb
+      installed size is 10.4Mb
       sub-directories of 1Mb or more:
-        libs   5.9Mb
+        libs   7.6Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘memoise’
+    Namespace in Imports field not imported from: ‘Rcpp’
       All declared Imports should be used.
     ```
 
@@ -170,35 +230,13 @@ Version: 1.16.0
 
 # reproducible
 
-Version: 0.2.3
+Version: 0.2.5
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 13 lines of output:
-      Attributes: < Component "layers": Component 2: Attributes: < Component 3: Attributes: < Component 13: 'is.NA' value mismatch: 25 in current 27 in target > > >
-      
-      ── 2. Error: git-related functions work (@test-git.R#14)  ──────────────────────
-      object 'parse_git_repo' not found
-      1: checkoutVersion("PredictiveEcology/reproducible", localRepoPath = tmpDir, progress = FALSE) at testthat/test-git.R:14
-      2: utils::getFromNamespace("parse_git_repo", "devtools")
-      3: get(x, envir = ns, inherits = FALSE)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 169 SKIPPED: 11 FAILED: 2
-      1. Failure: fastMask produces correct results (@test-gis.R#22) 
-      2. Error: git-related functions work (@test-git.R#14) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘gdalUtils’
+    Namespace in Imports field not imported from: ‘devtools’
       All declared Imports should be used.
     ```
 
@@ -222,8 +260,25 @@ Version: 0.57.0
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 45.2Mb
+      installed size is 49.1Mb
       sub-directories of 1Mb or more:
-        libs  43.7Mb
+        libs  47.6Mb
+    ```
+
+# tableschema.r
+
+Version: 1.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘iterators’
+      All declared Imports should be used.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
