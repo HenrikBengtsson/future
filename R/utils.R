@@ -108,12 +108,15 @@ mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE
 grmall <- local(function(envir = .GlobalEnv) {
   vars <- ls(envir = envir, all.names = TRUE)
   rm(list = vars, envir = envir, inherits = FALSE)
+  ## Return a value identifiable for troubleshooting purposes
+  invisible("future-grmall")
 })
 
 ## Assigns a value to the global environment.
 gassign <- local(function(name, value, envir = .GlobalEnv) {
   assign(name, value = value, envir = envir)
-  NULL
+  ## Return a value identifiable for troubleshooting purposes
+  invisible("future-grassign")
 })
 
 ## Evaluates an expression in global environment.

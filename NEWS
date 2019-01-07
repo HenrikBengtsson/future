@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2018-12-28]
+Version: 1.10.0-9000 [2019-01-06]
 
 SIGNIFICANT CHANGES:
 
@@ -32,6 +32,9 @@ NEW FEATURES:
    when it draws a random port number.
    
  * makeClusterPSOCK() gained argument 'logfile'.
+
+ * Cluster futures provide more informative error messages when the
+   communication with the worker node is out of sync.
 
 BUG FIXES:
 

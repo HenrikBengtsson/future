@@ -257,14 +257,20 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.ClusterFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("result() for ClusterFuture ...")
+  
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
+    if (debug) mdebug("- result already collected: %s", class(result)[1])
     if (inherits(result, "FutureError")) stop(result)
+    if (debug) mdebug("result() for ClusterFuture ... done")
     return(result)
   }
 
   if (future$state == "created") {
+    if (debug) mdebug("- starting non-launched future")
     future <- run(future)
   }
 
@@ -280,6 +286,7 @@ result.ClusterFuture <- function(future, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
+    if (debug) mdebug("- Validating connection of %s", class(future)[1])
     isValid <- isValidConnection(con)
     if (!isValid) {
       label <- future$label
@@ -295,7 +302,10 @@ result.ClusterFuture <- function(future, ...) {
     TRUE
   }, simpleError = function(ex) ex)
 
+  if (debug) mdebug("- class(result): %s", class(result)[1])
+
   if (inherits(ack, "simpleError")) {
+    if (debug) mdebug("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
     label <- future$label
     if (is.null(label)) label <- "<none>"
     
@@ -311,7 +321,8 @@ result.ClusterFuture <- function(future, ...) {
     } else NULL
     
     info <- paste(c(pid_info, host_info), collapse = " ")
-    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).", class(future)[1], label, class(node)[1], node_idx, info)
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).",
+                   class(future)[1], label, class(node)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
     
     ## POST-MORTEM ANALYSIS:
@@ -353,12 +364,14 @@ result.ClusterFuture <- function(future, ...) {
   future$result <- result
   
   if (!inherits(result, "FutureResult")) {
-    ex <- UnexpectedFutureResultError(future)
+    str(list(node_idx = node_idx, node = node))
+    hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
+                    class(future)[1], sQuote(class(node)[1]), node_idx)
+    ex <- UnexpectedFutureResultError(future, hint = hint)
     future$result <- ex
     stop(ex)
   }
   
-  future$result <- result
   ## BACKWARD COMPATIBILITY
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
@@ -376,7 +389,8 @@ result.ClusterFuture <- function(future, ...) {
     ## WORKAROUND: Need to clear cluster worker before garbage collection,
     ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
     ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
-    clusterCall(cl[1], function() NULL)
+    ## Return a value identifiable for troubleshooting purposes
+    clusterCall(cl[1], function() "future-clearing-cluster-worker")
     
     clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
   }
