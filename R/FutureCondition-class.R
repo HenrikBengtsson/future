@@ -143,6 +143,8 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
 }
 
 
+#' @param hint (optional) A string with a suggestion on what might be wrong.
+#'
 #' @rdname FutureCondition
 #' @export
 UnexpectedFutureResultError <- function(future, hint = NULL) {
