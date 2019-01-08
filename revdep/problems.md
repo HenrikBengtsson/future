@@ -92,62 +92,6 @@ Version: 0.7.5
       Note: found 65 marked UTF-8 strings
     ```
 
-# DeclareDesign
-
-Version: 0.12.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(DeclareDesign)
-      Loading required package: randomizr
-      Loading required package: fabricatr
-      Loading required package: estimatr
-      > 
-      > test_check("DeclareDesign")
-      ── 1. Failure: gam (@test-model.R#247)  ────────────────────────────────────────
-      `expect_equal(ncol(draw_estimates(des)), 7)` did not produce any warnings.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 456 SKIPPED: 5 FAILED: 1
-      1. Failure: gam (@test-model.R#247) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-# future.callr
-
-Version: 0.3.1
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/stdout.R’ failed.
-    Last 13 lines of output:
-       $ value     : int 42
-       $ stdout    : NULL
-       $ conditions: list()
-       $ version   : chr "1.8"
-       - attr(*, "class")= chr "FutureResult"
-      List of 6
-       $ value            : int 42
-       $ stdout           : NULL
-       $ conditions       : list()
-       $ version          : chr "1.8"
-       $ stderr           : chr ""
-       $ PROTOTYPE_WARNING: chr "WARNING: The fields 'stderr' should be considered internal and experimental for now, that is, until the Future "| __truncated__
-       - attr(*, "class")= chr "FutureResult"
-      Error: !"stdout" %in% names(r) is not TRUE
-      Execution halted
-    ```
-
 # greta
 
 Version: 0.3.0
