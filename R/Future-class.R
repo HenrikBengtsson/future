@@ -129,9 +129,10 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
 
   ## Future miscellaneous
   core$label <- label
-  core$owner <- session_uuid()
   core$earlySignal <- earlySignal
   core$gc <- gc
+  core$owner <- session_uuid()
+  core$calls <- sys.calls()
 
   ## The current state of the future, e.g.
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.

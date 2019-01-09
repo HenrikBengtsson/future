@@ -58,5 +58,8 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     stop("The error call stack was not recorded for this future: ", sQuote(expr))
   }
 
+  ## Recreate the full call stack
+  calls <- c(future$calls, calls)
+  
   calls
 } ## backtrace()

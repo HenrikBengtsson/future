@@ -371,7 +371,7 @@ result.ClusterFuture <- function(future, ...) {
     future$result <- ex
     stop(ex)
   }
-  
+
   ## BACKWARD COMPATIBILITY
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 

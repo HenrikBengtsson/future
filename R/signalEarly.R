@@ -81,7 +81,8 @@ resignalConditions <- function(future, ...) {
       if (debug && !"future.info" %in% names(condition)) {
         ## BACKWARD COMPATIBILITY: future (< 1.11.0)
         if (is.null(cond$calls)) cond$calls <- result$calls
-        cond$condition <- NULL
+        ## Recreate the full call stack
+        cond$calls <- c(future$calls, cond$calls)
         condition$future.info <- cond
       }
       stop(condition)

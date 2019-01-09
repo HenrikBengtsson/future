@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2019-01-06]
+Version: 1.10.0-9000 [2019-01-08]
 
 SIGNIFICANT CHANGES:
 
@@ -9,7 +9,7 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
- * The call stack ("traceback") is now recorded when the evaluation of a
+ * The future call stack ("traceback") is now recorded when the evaluation of a
    future produces an error.  Use backtrace() on the future to retrieve it.
 
  * Now futureCall() defaults to args = list() making is easier to call
