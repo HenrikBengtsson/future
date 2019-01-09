@@ -11,7 +11,7 @@ plot_what_is_done <- function(counts) {
     ## Not resolved?
     if (!resolved(f)) next
 
-    cat(sprintf("Plotting tile #%d of %d ...\n", kk, n))
+    message(sprintf("Plotting tile #%d of %d ...", kk, n))
     counts[[kk]] <- value(counts[[kk]])
     screen(kk)
     plot(counts[[kk]])
@@ -65,17 +65,17 @@ if (interactive()) {
 counts <- list()
 n <- length(Cs)
 for (ii in seq_len(n)) {
-  cat(sprintf("Mandelbrot tile #%d of %d ...\n", ii, n))
+  message(sprintf("Mandelbrot tile #%d of %d ...", ii, n))
   C <- Cs[[ii]]
 
   counts[[ii]] <- future({
-    cat(sprintf("Calculating tile #%d of %d ...\n", ii, n))
+    message(sprintf("Calculating tile #%d of %d ...", ii, n))
     fit <- mandelbrot(C)
 
     ## Emulate slowness
     delay(fit)
 
-    cat(sprintf("Calculating tile #%d of %d ... done\n", ii, n))
+    message(sprintf("Calculating tile #%d of %d ... done", ii, n))
     fit
   })
 
