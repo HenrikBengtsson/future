@@ -948,8 +948,8 @@ autoStopCluster <- function(cl, debug = FALSE) {
 }
 
 
-stealth_sample <- function(n, size = n, replace = FALSE, ...) {
+stealth_sample <- function(x, size = n, replace = FALSE, ...) {
   oseed <- .GlobalEnv$.Random.seed
   on.exit(.GlobalEnv$.Random.seed <- oseed)
-  sample(n = n, size = size, replace = replace, ...)
+  sample(x, size = size, replace = replace, ...)
 }
