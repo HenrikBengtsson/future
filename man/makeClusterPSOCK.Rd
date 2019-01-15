@@ -160,9 +160,11 @@ on the \code{PATH}.  This is also true for recent Windows 10
 For \emph{Windows systems prior to Windows 10}, it is less common to find
 \command{ssh} on the \code{PATH}. Instead it is more likely that such
 systems have the \command{PuTTY} software and its SSH client
-\command{plink} installed.  Note, to manually set specify PuTTY as the
-SSH client, specify the absolute pathname of \file{plink.exe} in the first
-element and option \command{-ssh} in the second as in
+\command{plink} installed.  PuTTY puts itself on the system \code{PATH}
+when installed, meaning this function will find PuTTY automatically if
+installed.  If not, to manually set specify PuTTY as the SSH client,
+specify the absolute pathname of \file{plink.exe} in the first element and
+option \command{-ssh} in the second as in
 \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 This is because all elements of \code{rshcmd} are individually "shell"
 quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
