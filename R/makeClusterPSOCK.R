@@ -505,10 +505,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     ## Reverse tunneling?
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
-      ## AD HOC: Warn about Windows 10 ssh bug with rev tunneling
+      ## AD HOC: Warn about Windows 10 SSH bug with rev tunneling
       if (isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
-         msg <- sprintf("WARNING: This 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE)", paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
-         if (verbose) message(c(verbose_prefix, msg))
+         ver <- windows_build_version()
+         if (!is.null(ver) && ver < "10.0.17763.253") {
+           msg <- sprintf("WARNING: On Windows 10 prior to version 1809/build 17763.253 (2018-11-13), this 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE) resulting in worker failing to launch", paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
+           if (verbose) message(c(verbose_prefix, msg))
+	 }
       }
     }
     
