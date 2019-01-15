@@ -508,8 +508,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       ## AD HOC: Warn about Windows 10 SSH bug with rev tunneling
       if (isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
          ver <- windows_build_version()
-         if (!is.null(ver) && ver < "10.0.17763.253") {
-           msg <- sprintf("WARNING: On Windows 10 prior to version 1809/build 17763.253 (2018-11-13), this 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE) resulting in worker failing to launch", paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
+         if (!is.null(ver) && ver <= "10.0.17763.253") {
+           msg <- sprintf("WARNING: You're running Windows 10 (build %s) where this 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE) resulting in worker failing to launch", ver, paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
            if (verbose) message(c(verbose_prefix, msg))
 	 }
       }
@@ -840,11 +840,12 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
   if (is.null(which)) {
     if (.Platform$OS.type == "windows") {
       which <- c("putty-plink", "rstudio-ssh")
-      ## Reverse tunnelling on SSH is not supported on Windows 10 prior to
-      ## version 1809 (= build 17763.253 released on 2018-11-13), so unlikely
-      ## that will work out of the box.
+      ## Reverse tunnelling on SSH is not supported on Windows 10:
+      ## - version 1803 (= build 17134.523, 2018-07-10)
+      ## - version 1809 (= build 17763.253, 2018-11-13)
+      ## So unlikely this will work out of the box.
       ver <- windows_build_version()
-      if (!is.null(ver) && ver >= "10.0.17763.253") {
+      if (!is.null(ver) && ver > "10.0.17763.253") {
         which <- c("ssh", which)
       } else {
         which <- c(which, "ssh")
