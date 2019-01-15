@@ -836,9 +836,16 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
 
   if (is.null(which)) {
     if (.Platform$OS.type == "windows") {
-      which <- c("ssh", "putty-plink", "rstudio-ssh")
-    } else {
-      which <- "ssh"
+      which <- c("putty-plink", "rstudio-ssh")
+      ## Reverse tunnelling on SSH is not supported on Windows 10 prior to
+      ## version 1809 (= build 17763.253 released on 2018-11-13), so unlikely
+      ## that will work out of the box.
+      ver <- windows_build_version()
+      if (!is.null(ver) && ver >= "10.0.17763.253") {
+        which <- c("ssh", which)
+      } else {
+        which <- c(which, "ssh")
+      }
     }
   }
   res <- list()
@@ -953,3 +960,22 @@ stealth_sample <- function(x, size = n, replace = FALSE, ...) {
   on.exit(.GlobalEnv$.Random.seed <- oseed)
   sample(x, size = size, replace = replace, ...)
 }
+
+
+
+## Gets the Windows build version, e.g. '10.0.17134.523' (Windows 10 v1803)
+## and '10.0.17763.253' (Windows 10 v1809).
+windows_build_version <- local({
+  if (.Platform$OS.type != "windows") return(function() NULL)
+  function() {
+    res <- shell("ver", intern = TRUE)
+    if (length(res) == 0) return(NULL)
+    res <- grep("Microsoft", res, value = TRUE)
+    if (length(res) == 0) return(NULL)
+    res <- gsub(".*Version ([0-9.]+).*", "\\1", res)
+    tryCatch({
+      numeric_version(res)
+    }, error = function(ex) NULL)
+  }
+})
+
