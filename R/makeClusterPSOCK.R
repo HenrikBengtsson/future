@@ -964,7 +964,8 @@ autoStopCluster <- function(cl, debug = FALSE) {
 }
 
 
-stealth_sample <- function(x, size = n, replace = FALSE, ...) {
+## A version of base::sample() that does not change .Random.seed
+stealth_sample <- function(x, size = x, replace = FALSE, ...) {
   oseed <- .GlobalEnv$.Random.seed
   on.exit(.GlobalEnv$.Random.seed <- oseed)
   sample(x, size = size, replace = replace, ...)

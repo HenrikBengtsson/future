@@ -25,6 +25,11 @@ If FALSE, any output is silenced (by sinking it to the null device as
 it is outputted).
 If NA (not recommended), output is \emph{not} intercepted.}
 
+\item{conditions}{A character string of conditions classes to be captured
+and relayed.  The default is to relay messages and warnings.
+To not intercept conditions, use \code{conditions = character(0L)}.
+Errors are always relayed.}
+
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
