@@ -2,7 +2,7 @@
 
 |field    |value                        |
 |:--------|:----------------------------|
-|version  |R version 3.5.1 (2018-07-02) |
+|version  |R version 3.5.2 (2018-12-20) |
 |os       |Ubuntu 18.04.1 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-01-07                   |
+|date     |2019-01-17                   |
 
 # Dependencies
 
@@ -34,7 +34,7 @@
 |[biotmle](problems.md#biotmle)                  |1.4.0      |      |        |1    |
 |[brms](problems.md#brms)                        |2.7.0      |      |        |1    |
 |civis                                           |1.5.1      |      |        |     |
-|[codebook](problems.md#codebook)                |0.7.5      |      |        |3    |
+|[codebook](problems.md#codebook)                |0.7.6      |      |        |3    |
 |DeclareDesign                                   |0.14.0     |      |        |     |
 |discoveR                                        |1.0.1      |      |        |     |
 |doFuture                                        |0.7.0      |      |        |     |
@@ -50,7 +50,7 @@
 |googleComputeEngineR                            |0.2.0      |      |        |     |
 |[greta](problems.md#greta)                      |0.3.0      |      |        |1    |
 |GSODR                                           |1.3.1      |      |        |     |
-|ipc                                             |0.1.1      |      |        |     |
+|[ipc](problems.md#ipc)                          |0.1.2      |      |1       |     |
 |jstor                                           |0.3.6      |      |        |     |
 |kernelboot                                      |0.1.5      |      |        |     |
 |[lidR](problems.md#lidr)                        |2.0.0      |      |        |2    |
@@ -58,7 +58,7 @@
 |methyvim                                        |1.2.0      |      |        |     |
 |ngstk                                           |0.2.3      |      |        |     |
 |origami                                         |1.0.0      |      |        |     |
-|pbmcapply                                       |1.3.0      |      |        |     |
+|pbmcapply                                       |1.3.1      |      |        |     |
 |penaltyLearning                                 |2018.09.04 |      |        |     |
 |[phylolm](problems.md#phylolm)                  |2.6        |      |        |1    |
 |[promises](problems.md#promises)                |1.0.1      |      |        |1    |

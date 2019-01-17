@@ -71,7 +71,7 @@ Version: 2.7.0
 
 # codebook
 
-Version: 0.7.5
+Version: 0.7.6
 
 ## In both
 
@@ -101,6 +101,22 @@ Version: 0.3.0
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘truncdist’
+    ```
+
+# ipc
+
+Version: 0.1.2
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error in re-building vignettes:
+      ...
+    Quitting from lines 253-275 (shinymp.Rmd) 
+    Error: processing vignette 'shinymp.Rmd' failed with diagnostics:
+    argument 1 (type 'list') cannot be handled by 'cat'
+    Execution halted
     ```
 
 # lidR
