@@ -964,15 +964,6 @@ autoStopCluster <- function(cl, debug = FALSE) {
 }
 
 
-## A version of base::sample() that does not change .Random.seed
-stealth_sample <- function(x, size = x, replace = FALSE, ...) {
-  oseed <- .GlobalEnv$.Random.seed
-  on.exit(.GlobalEnv$.Random.seed <- oseed)
-  sample(x, size = size, replace = replace, ...)
-}
-
-
-
 ## Gets the Windows build version, e.g. '10.0.17134.523' (Windows 10 v1803)
 ## and '10.0.17763.253' (Windows 10 v1809).
 windows_build_version <- local({

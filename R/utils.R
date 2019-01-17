@@ -291,6 +291,15 @@ parseCmdArgs <- function() {
 } # parseCmdArgs()
 
 
+
+## A version of base::sample() that does not change .Random.seed
+stealth_sample <- function(x, size = length(x), replace = FALSE, ...) {
+  oseed <- .GlobalEnv$.Random.seed
+  on.exit(.GlobalEnv$.Random.seed <- oseed)
+  sample(x, size = size, replace = replace, ...)
+}
+
+
 myExternalIP <- local({
   ip <- NULL
   function(force = FALSE, random = TRUE, mustWork = TRUE) {
@@ -314,7 +323,7 @@ myExternalIP <- local({
 
     ## Randomize order of lookup URLs to lower the load on a specific
     ## server.
-    if (random) urls <- sample(urls)
+    if (random) urls <- stealth_sample(urls)
 
     ## Only wait 5 seconds for server to respond
     setTimeLimit(cpu = 5, elapsed = 5, transient = TRUE)
