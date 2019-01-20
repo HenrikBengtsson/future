@@ -20,8 +20,8 @@ is produced, otherwise only a warning.}
 \value{
 A named list of pathnames to all located SSH clients.
 If \code{first = TRUE}, only the first one is returned.
-Attribute `version` contains the output from querying the
-executable for its version (via command-line option `-V`).
+Attribute \code{version} contains the output from querying the
+executable for its version (via command-line option \code{-V}).
 }
 \description{
 Search for SSH clients on the current system

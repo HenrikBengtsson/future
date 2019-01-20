@@ -716,10 +716,10 @@ reference_filters <- local({
 #'
 #' @param x The \R object to be checked.
 #' 
-#' @param first_only If `TRUE`, only the first reference is returned,
+#' @param first_only If \code{TRUE}, only the first reference is returned,
 #' otherwise all references.
 #'
-#' @return `find_references()` returns a list of one or more references
+#' @return \code{find_references()} returns a list of one or more references
 #' identified.
 #' 
 #' @keywords internal
@@ -760,7 +760,8 @@ find_references <- function(x, first_only = FALSE) {
 #' @param action Type of action to take if a reference is found.
 #' 
 #' @return If a reference is detected, an informative error, warning, message,
-#' or a character string is produced, otherwise `NULL` is returned invisibly.
+#' or a character string is produced, otherwise \code{NULL} is returned
+#' invisibly.
 #'
 #' @rdname find_references
 #' 

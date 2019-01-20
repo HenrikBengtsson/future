@@ -36,8 +36,8 @@ is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 \emph{Note, do not use this argument to specify the port number used by
 \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 runs on a different port than the default 22, specify the SSH port by
-appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
-options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}}
+appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
+SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 
 \item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
@@ -68,7 +68,10 @@ on the worker and whether it is installed in the same path as the calling
 machine or not.  For more details, see below.}
 
 \item{rscript_args}{Additional arguments to \command{Rscript} (as a character
-vector).}
+vector).  This argument can be used to customize the \R environment of the
+workers before they launches.  For instance, use
+\code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+to set the working directory to \file{/path/to} on _all_ workers.}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
@@ -92,8 +95,7 @@ vector).  These arguments are only applied if \code{machine} is not
 \item{user}{(optional) The user name to be used when communicating with
 another host.}
 
-\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
-that the worker \R process sets up a socket connection to its local port
+\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such#' that the worker \R process sets up a socket connection to its local port
 \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 If FALSE, then the worker will try to connect directly to port \code{port} on
 \code{master}.  For more details, see below.}
@@ -203,7 +205,7 @@ Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 functions to log in and launch R workers on external machines that requires
 a password to be entered manually for authentication.}
 The only known exception is the PuTTY client on Windows for which one can
-pass the password via command-line option `-pw`, e.g. 
+pass the password via command-line option \code{-pw}, e.g. 
 \code{rshopts = c("-pw", "MySecretPassword")}.
 
 Note, depending on whether you run R in a terminal or via a GUI, you might

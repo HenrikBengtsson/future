@@ -13,7 +13,7 @@ autoStopCluster(cl, debug = FALSE)
 the cluster is garbage collected.}
 }
 \value{
-The cluster object with attribute `gcMe` set.
+The cluster object with attribute \code{gcMe} set.
 }
 \description{
 Registers a finalizer to a cluster such that the cluster will

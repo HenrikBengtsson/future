@@ -13,17 +13,18 @@ assert_no_references(x, action = c("error", "warning", "message",
 \arguments{
 \item{x}{The \R object to be checked.}
 
-\item{first_only}{If `TRUE`, only the first reference is returned,
+\item{first_only}{If \code{TRUE}, only the first reference is returned,
 otherwise all references.}
 
 \item{action}{Type of action to take if a reference is found.}
 }
 \value{
-`find_references()` returns a list of one or more references
+\code{find_references()} returns a list of one or more references
 identified.
 
 If a reference is detected, an informative error, warning, message,
-or a character string is produced, otherwise `NULL` is returned invisibly.
+or a character string is produced, otherwise \code{NULL} is returned
+invisibly.
 }
 \description{
 Get first or all references of an \R object

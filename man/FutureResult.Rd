@@ -13,7 +13,7 @@ FutureResult(value = NULL, stdout = NULL, conditions = NULL, ...,
 \arguments{
 \item{value}{The value of the future expression.
 If the expression was not fully resolved (e.g. an error) occurred,
-the the value is `NULL`.}
+the the value is \code{NULL}.}
 
 \item{conditions}{A list of zero or more list elements each containing
 a captured [[base::condition]] and possibly more meta data such as the
@@ -43,8 +43,8 @@ to do so in your code.
 
 \section{Deprecated elements}{
 
-* future (>= 1.11.0): elements `condition` and `calls` are deprecated
-  in favor of `conditions`
+* future (>= 1.11.0): elements \code{condition} and \code{calls} are
+  deprecated in favor of \code{conditions}
 }
 
 \keyword{internal}

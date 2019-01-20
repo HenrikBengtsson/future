@@ -128,8 +128,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \emph{Note, do not use this argument to specify the port number used by
 #' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 #' runs on a different port than the default 22, specify the SSH port by
-#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
-#' options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}
+#' appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
+#' SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
@@ -144,7 +144,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' machine or not.  For more details, see below.
 #' 
 #' @param rscript_args Additional arguments to \command{Rscript} (as a character
-#' vector).
+#' vector).  This argument can be used to customize the \R environment of the
+#' workers before they launches.  For instance, use
+#' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+#' to set the working directory to \file{/path/to} on _all_ workers.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -258,7 +261,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' functions to log in and launch R workers on external machines that requires
 #' a password to be entered manually for authentication.}
 #' The only known exception is the PuTTY client on Windows for which one can
-#' pass the password via command-line option `-pw`, e.g. 
+#' pass the password via command-line option \code{-pw}, e.g. 
 #' \code{rshopts = c("-pw", "MySecretPassword")}.
 #'
 #' Note, depending on whether you run R in a terminal or via a GUI, you might
@@ -787,8 +790,8 @@ is_fqdn <- function(worker) {
 #'
 #' @return A named list of pathnames to all located SSH clients.
 #' If \code{first = TRUE}, only the first one is returned.
-#' Attribute `version` contains the output from querying the
-#' executable for its version (via command-line option `-V`).
+#' Attribute \code{version} contains the output from querying the
+#' executable for its version (via command-line option \code{-V}).
 #'
 #' @export
 #' @keywords internal
@@ -927,7 +930,7 @@ add_cluster_session_info <- function(cl) {
 #' @param debug If TRUE, then debug messages are produced when
 #' the cluster is garbage collected.
 #'
-#' @return The cluster object with attribute `gcMe` set.
+#' @return The cluster object with attribute \code{gcMe} set.
 #'
 #' @importFrom parallel stopCluster
 #' @importFrom utils capture.output
