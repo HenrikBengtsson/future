@@ -16,7 +16,7 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
   renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL,
-  revtunnel = TRUE, logfile = NULL,
+  revtunnel = TRUE, rshlogfile = NULL,
   rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
   manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
@@ -98,7 +98,7 @@ that the worker \R process sets up a socket connection to its local port
 If FALSE, then the worker will try to connect directly to port \code{port} on
 \code{master}.  For more details, see below.}
 
-\item{logfile}{(optional) If a filename, the output produced by the
+\item{rshlogfile}{(optional) If a filename, the output produced by the
 \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
 to a temporary file.  The log file name is available as an attribute
 as part of the return node object.

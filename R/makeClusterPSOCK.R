@@ -167,7 +167,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' vector).  These arguments are only applied if \code{machine} is not
 #' \emph{localhost}.  For more details, see below.
 #' 
-#' @param logfile (optional) If a filename, the output produced by the
+#' @param rshlogfile (optional) If a filename, the output produced by the
 #' \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
 #' to a temporary file.  The log file name is available as an attribute
 #' as part of the return node object.
@@ -177,8 +177,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param user (optional) The user name to be used when communicating with
 #' another host.
 #' 
-#' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such
-#' that the worker \R process sets up a socket connection to its local port
+#' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such#' that the worker \R process sets up a socket connection to its local port
 #' \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 #' If FALSE, then the worker will try to connect directly to port \code{port} on
 #' \code{master}.  For more details, see below.
@@ -334,7 +333,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, logfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -370,17 +369,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   revtunnel <- as.logical(revtunnel)
   stop_if_not(length(revtunnel) == 1L, !is.na(revtunnel))
 
-  if (!is.null(logfile)) {
-    if (is.logical(logfile)) {
-      stop_if_not(!is.na(logfile))
-      if (logfile) {
-        logfile <- tempfile(pattern = "future_makeClusterPSOCK_", fileext = ".log")
+  if (!is.null(rshlogfile)) {
+    if (is.logical(rshlogfile)) {
+      stop_if_not(!is.na(rshlogfile))
+      if (rshlogfile) {
+        rshlogfile <- tempfile(pattern = "future_makeClusterPSOCK_", fileext = ".log")
       } else {
-        logfile <- NULL
+        rshlogfile <- NULL
       }
     } else {
-      logfile <- as.character(logfile)
-      logfile <- normalizePath(logfile, mustWork = FALSE)
+      rshlogfile <- as.character(rshlogfile)
+      rshlogfile <- normalizePath(rshlogfile, mustWork = FALSE)
     }
   }
 
@@ -521,8 +520,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     }
     
     ## SSH log file?
-    if (is.character(logfile)) {
-      rshopts <- c(sprintf("-E %s", shQuote(logfile)), rshopts)
+    if (is.character(rshlogfile)) {
+      rshopts <- c(sprintf("-E %s", shQuote(rshlogfile)), rshopts)
     }
     
     rshopts <- paste(rshopts, collapse = " ")
@@ -652,16 +651,16 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        }
 
        ## Log file?
-       if (is.character(logfile)) {
-         smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(logfile), sQuote(rshcmd))
-         lmsg <- tryCatch(readLines(logfile, n = 15L, warn = FALSE), error = function(ex) NULL)
+       if (is.character(rshlogfile)) {
+         smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(rshlogfile), sQuote(rshcmd))
+         lmsg <- tryCatch(readLines(rshlogfile, n = 15L, warn = FALSE), error = function(ex) NULL)
          if (length(lmsg) > 0) {
            lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
            smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
          }
          suggestions <- c(suggestions, smsg)
        } else {
-         suggestions <- c(suggestions, sprintf("Set 'logfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
+         suggestions <- c(suggestions, sprintf("Set 'rshlogfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
        }
        
        ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
@@ -691,7 +690,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     message(sprintf("%sConnection with worker #%s on %s established", verbose_prefix, rank, sQuote(worker)))
   }
 
-  structure(list(con = con, host = worker, rank = rank, logfile = logfile),
+  structure(list(con = con, host = worker, rank = rank, rshlogfile = rshlogfile),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
 } ## makeNodePSOCK()
 

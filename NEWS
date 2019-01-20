@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.10.0-9000 [2019-01-08]
+Version: 1.10.0-9000 [2019-01-20]
 
 SIGNIFICANT CHANGES:
 
@@ -31,7 +31,7 @@ NEW FEATURES:
  * Now makeClusterPSOCK() preserves the global RNG state (.Random.seed) also
    when it draws a random port number.
    
- * makeClusterPSOCK() gained argument 'logfile'.
+ * makeClusterPSOCK() gained argument 'rshlogfile'.
 
  * Cluster futures provide more informative error messages when the
    communication with the worker node is out of sync.
