@@ -857,8 +857,11 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
       } else {
         which <- c(which, "ssh")
       }
+    } else {
+      which <- c("ssh")
     }
   }
+  
   res <- list()
   for (name in which) {
     pathname <- switch(name,
