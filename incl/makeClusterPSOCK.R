@@ -159,11 +159,9 @@ cl <- makeClusterPSOCK(
 )
 
 
-## EXAMPLE: Remote worker running on Linux from old Windows machine
+## EXAMPLE: Remote worker running on Linux from Windows machine
 ## Connect to remote Unix machine 'remote.server.org' on port 2200
 ## as user 'bob' from a Windows machine with PuTTY installed.
-## Note, if you have Windows 10, then you have SSH built-in and
-## can use the same above approach as Linux and macOS users use.
 ## Using the explicit special rshcmd = "<putty-plink>", will force
 ## makeClusterPSOCK() to search for and use the PuTTY plink software,
 ## preventing it from using other SSH clients on the system search PATH.
