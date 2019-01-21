@@ -6,9 +6,9 @@
 \title{A future represents a value that will be available at some point in the future}
 \usage{
 Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  stdout = TRUE, globals = NULL, packages = NULL, seed = NULL,
-  lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE,
-  label = NULL, ...)
+  stdout = TRUE, conditions = c("message", "warning"),
+  globals = NULL, packages = NULL, seed = NULL, lazy = FALSE,
+  local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -24,6 +24,11 @@ and re-outputted when \code{value()} is called.
 If FALSE, any output is silenced (by sinking it to the null device as
 it is outputted).
 If NA (not recommended), output is \emph{not} intercepted.}
+
+\item{conditions}{A character string of conditions classes to be captured
+and relayed.  The default is to relay messages and warnings.
+To not intercept conditions, use \code{conditions = character(0L)}.
+Errors are always relayed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
@@ -44,7 +49,10 @@ the assignments are done to the global environment of the \R process
 evaluating the future.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.
+evaluated the future) only after the value of the future is collected.
+Exactly when the values are collected may depend on various factors such
+as number of free workers and whether \code{earlySignal} is TRUE (more
+frequently) or FALSE (less frequently).
 \emph{Some types of futures ignore this argument.}}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon

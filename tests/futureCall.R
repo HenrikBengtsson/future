@@ -102,6 +102,21 @@ for (cores in 1:availCores) {
 
 message("- futureCall() - mix of strategies, cores, lazy and globals ... DONE")
 
+message("- futureCall() - bug fixes")
+
+fcn <- function() a
+v <- tryCatch(local({
+  a <- 42
+  f <- futureCall(fcn, args = list(), globals = "a")
+  value(f)
+}), error = identity)
+
+## Bug #262: the above used to return NULL
+stopifnot(!is.null(v))
+
+## Bug: Now, it instead fails, because it cannot find 'a'
+stopifnot(inherits(v, "error"))
+
 message("*** futureCall() ... DONE")
 
 source("incl/end.R")

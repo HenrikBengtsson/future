@@ -19,7 +19,8 @@ oopts <- options(
   ## timeout much earlier than the default 30 days.  This will also give a more
   ## informative error message produced by R itself, rather than whatever the
   ## test environment produces.
-  future.makeNodePSOCK.timeout = 2 * 60 ## 2 minutes
+  future.makeNodePSOCK.timeout = 2 * 60, ## 2 minutes
+  future.wait.interval = 0.01 ## 0.01s (instead of default 0.2s)
 )
 
 

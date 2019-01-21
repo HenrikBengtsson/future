@@ -55,12 +55,12 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
 } # fsample()
 
 
-dummy <- sample(0:9, size = 1L)
+dummy <- sample(0:3, size = 1L)
 seed0 <- .Random.seed
 
 ## Reference sample with fixed random seed
 plan("sequential")
-y0 <- fsample(0:9, seed = 42L)
+y0 <- fsample(0:3, seed = 42L)
 
 ## Assert that random seed is reset
 stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
@@ -79,7 +79,7 @@ for (cores in 1:availCores) {
       .GlobalEnv$.Random.seed <- seed0
 
       ## Fixed random seed
-      y1 <- fsample(0:9, seed = 42L, what = what)
+      y1 <- fsample(0:3, seed = 42L, what = what)
       print(y1)
       stopifnot(identical(y1, y0))
   
@@ -87,7 +87,7 @@ for (cores in 1:availCores) {
       stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
   
       ## Fixed random seed
-      y2 <- fsample(0:9, seed = 42L, what = what)
+      y2 <- fsample(0:3, seed = 42L, what = what)
       print(y2)
       stopifnot(identical(y2, y1))
       stopifnot(identical(y2, y0))
@@ -96,11 +96,11 @@ for (cores in 1:availCores) {
       stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
   
       ## No seed
-      y3 <- fsample(0:9, what = what)
+      y3 <- fsample(0:3, what = what)
       print(y3)
   
       ## No seed
-      y4 <- fsample(0:9, what = what)
+      y4 <- fsample(0:3, what = what)
       print(y4)
     }
 

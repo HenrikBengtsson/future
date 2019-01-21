@@ -143,9 +143,11 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
 }
 
 
+#' @param hint (optional) A string with a suggestion on what might be wrong.
+#'
 #' @rdname FutureCondition
 #' @export
-UnexpectedFutureResultError <- function(future) {
+UnexpectedFutureResultError <- function(future, hint = NULL) {
   label <- future$label
   if (is.null(label)) label <- "<none>"
   expr <- hexpr(future$expr)
@@ -160,6 +162,7 @@ UnexpectedFutureResultError <- function(future) {
                  sQuote(class(result)[1]), sQuote("FutureResult"),
                  class(future)[1], sQuote(label), sQuote(expr),
                  result_string)
+  if (!is.null(hint)) msg <- sprintf("%s. %s", msg, hint)
   cond <- FutureError(msg, future = future)
   class(cond) <- c("UnexpectedFutureResultError", class(cond))
   cond

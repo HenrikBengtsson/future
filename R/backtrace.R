@@ -1,18 +1,15 @@
-#' Back trace the expression evaluated when a condition was caught
+#' Back trace the expressions evaluated when an error was caught
 #'
-#' @param future A future with a caught condition.
+#' @param future A future with a caught error.
+#'
 #' @param envir the environment where to locate the future.
+#'
 #' @param \dots Not used.
 #'
-#' @return A list with one call.
+#' @return A @list with the future's call stack that led up to the error.
 #'
-#' @section Known limitations:
-#' It is currently \emph{not} possible to infer the full call stack prior to
-#' when an error occurred.  It is only possible to get the call that produced
-#' the call.
-#' This is a limitation of \code{\link[base:tryCatch]{tryCatch()}} used
-#' internally for evaluating the future expression.
-#' 
+#' @example incl/backtrace.R
+#'
 #' @export
 backtrace <- function(future, envir = parent.frame(), ...) {
   ## Argument 'expr':
@@ -29,19 +26,40 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   }
 
   if (!resolved(future)) {
-    stop("No condition has been caught because the future is unresolved: ", sQuote(expr))
+    stop("No error has been caught because the future is unresolved: ", sQuote(expr))
   }
 
   result <- result(future)
-  condition <- result$condition
-  if (!inherits(condition, "condition")) {
-    stop("No condition was caught for this future: ", sQuote(expr))
+  conditions <- result$conditions
+  
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (!is.list(conditions)) conditions <- list(list(condition = result$condition))
+
+  ## Find 'error' condition
+  error <- NULL
+  for (kk in seq_along(conditions)) {
+    c <- conditions[[kk]]
+    if (inherits(c$condition, "error")) {
+      error <- c
+      break
+    }
   }
 
-  call <- conditionCall(condition)
-  if (is.null(call)) {
-    stop("No call was recorded for this future: ", sQuote(expr))
+  if (is.null(error)) {
+    stop("No error was caught for this future: ", sQuote(expr))
   }
 
-  list(call)
+  calls <- error$calls
+
+  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
+  if (is.null(calls)) calls <- result$calls
+  
+  if (is.null(calls)) {
+    stop("The error call stack was not recorded for this future: ", sQuote(expr))
+  }
+
+  ## Recreate the full call stack
+  calls <- c(future$calls, calls)
+  
+  calls
 } ## backtrace()

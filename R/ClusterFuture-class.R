@@ -60,9 +60,6 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   }
   stop_if_not(length(workers) > 0)
 
-  ## Attaching UUID for each cluster connection, unless already done.
-  workers <- add_cluster_uuid(workers)
-
   ## Attached workers' session information, unless already done.
   ## FIXME: We cannot do this here, because it introduces a race condition
   ## where multiple similar requests may appear at the same time bringing
@@ -118,7 +115,7 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Next available cluster node
   node_idx <- requestNode(await = function() {
-    FutureRegistry(reg, action = "collect-first")
+    FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
   }, workers = workers)
   future$node <- node_idx
 
@@ -226,6 +223,16 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
+    ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
+    if (connectionId(con) < 0) return(FALSE)
+
+    isValid <- isValidConnection(con)
+    if (!isValid) {
+      label <- x$label
+      if (is.null(label)) label <- "<none>"
+      stop(FutureError(sprintf("Cannot resolve %s (%s), because the connection to the worker is corrupt: %s", class(x)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
+    }
+
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in
     ## infinite waiting (PR17203).  Fixed in R devel r73470 (2017-10-05)
     ## and R 3.4.3 (https://github.com/HenrikBengtsson/Wishlist-for-R/issues/35)
@@ -250,14 +257,20 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
 #' @export
 result.ClusterFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("result() for ClusterFuture ...")
+  
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
+    if (debug) mdebug("- result already collected: %s", class(result)[1])
     if (inherits(result, "FutureError")) stop(result)
+    if (debug) mdebug("result() for ClusterFuture ... done")
     return(result)
   }
 
   if (future$state == "created") {
+    if (debug) mdebug("- starting non-launched future")
     future <- run(future)
   }
 
@@ -272,6 +285,16 @@ result.ClusterFuture <- function(future, ...) {
   cl <- workers[node_idx]
   node <- cl[[1]]
 
+  if (!is.null(con <- node$con)) {
+    if (debug) mdebug("- Validating connection of %s", class(future)[1])
+    isValid <- isValidConnection(con)
+    if (!isValid) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+      stop(FutureError(sprintf("Cannot receive results for %s (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
+    }
+  }
+
   ## If not, wait for process to finish, and
   ## then collect and record the value
   ack <- tryCatch({
@@ -279,7 +302,10 @@ result.ClusterFuture <- function(future, ...) {
     TRUE
   }, simpleError = function(ex) ex)
 
+  if (debug) mdebug("- class(result): %s", class(result)[1])
+
   if (inherits(ack, "simpleError")) {
+    if (debug) mdebug("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
     label <- future$label
     if (is.null(label)) label <- "<none>"
     
@@ -295,7 +321,8 @@ result.ClusterFuture <- function(future, ...) {
     } else NULL
     
     info <- paste(c(pid_info, host_info), collapse = " ")
-    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).", class(future)[1], label, class(node)[1], node_idx, info)
+    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).",
+                   class(future)[1], label, class(node)[1], node_idx, info)
     msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
     
     ## POST-MORTEM ANALYSIS:
@@ -303,21 +330,21 @@ result.ClusterFuture <- function(future, ...) {
     
     ## (a) Did the worker use a connection that changed?
     if (inherits(node$con, "connection")) {
-      postmortem$connection <- check_connection_uuid(node, future = future)
+      postmortem$connection <- check_connection_details(node, future = future)
     }
 
     ## (b) Did a localhost worker process terminate?
     if (!is.null(host)) {
       if (localhost && is.numeric(pid)) {
         alive <- pid_exists(pid)
-	if (is.na(alive)) {
-	  msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
-	} else if (alive) {
-	  msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
-	} else {
-	  msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
-	}
-	postmortem$alive <- msg2
+        if (is.na(alive)) {
+          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
+        } else if (alive) {
+          msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
+        } else {
+          msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
+        }
+        postmortem$alive <- msg2
       }
     }
 
@@ -337,12 +364,14 @@ result.ClusterFuture <- function(future, ...) {
   future$result <- result
   
   if (!inherits(result, "FutureResult")) {
-    ex <- UnexpectedFutureResultError(future)
+    str(list(node_idx = node_idx, node = node))
+    hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
+                    class(future)[1], sQuote(class(node)[1]), node_idx)
+    ex <- UnexpectedFutureResultError(future, hint = hint)
     future$result <- ex
     stop(ex)
   }
-  
-  future$result <- result
+
   ## BACKWARD COMPATIBILITY
   future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
 
@@ -360,7 +389,8 @@ result.ClusterFuture <- function(future, ...) {
     ## WORKAROUND: Need to clear cluster worker before garbage collection,
     ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
     ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
-    clusterCall(cl[1], function() NULL)
+    ## Return a value identifiable for troubleshooting purposes
+    clusterCall(cl[1], function() "future-clearing-cluster-worker")
     
     clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
   }
@@ -435,19 +465,3 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
   node_idx
 }
-
-
-## This is needed in order to be able to assert that we later
-## actually work with the same connection.  See R-devel thread
-## 'closeAllConnections() can really mess things up' on 2016-10-30
-## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-check_connection_uuid <- function(worker, future, on_failure = "error") {
-  con <- worker$con
-  ## Not a worker with a connection
-  if (!inherits(con, "connection")) return(NULL)
-  
-  uuid <- attr(con, "uuid", exact = TRUE)
-  uuid_now <- uuid_of_connection(con, keep_source = TRUE, must_work = FALSE)
-  if (uuid_now == uuid) return(NULL)
-  sprintf("The socket connection to the worker has been lost.  Its original UUID was %s (%s with description %s), but now it is %s (%s with description %s). This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", uuid, sQuote(attr(uuid, "source", exact = TRUE)$class), sQuote(attr(uuid, "source", exact = TRUE)$description), uuid_now, sQuote(attr(uuid_now, "source", exact = TRUE)$class), sQuote(attr(uuid_now, "source", exact = TRUE)$description), Sys.getpid())
-} ## check_connection_uuid()

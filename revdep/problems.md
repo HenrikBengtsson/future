@@ -57,21 +57,21 @@ Version: 1.4.0
 
 # brms
 
-Version: 2.5.0
+Version: 2.7.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  5.6Mb
       sub-directories of 1Mb or more:
-        R     3.5Mb
-        doc   2.4Mb
+        R     2.9Mb
+        doc   1.8Mb
     ```
 
 # codebook
 
-Version: 0.6.3
+Version: 0.7.6
 
 ## In both
 
@@ -82,122 +82,43 @@ Version: 0.6.3
       All declared Imports should be used.
     ```
 
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘mice’
+    ```
+
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 65 marked UTF-8 strings
     ```
 
-# DeclareDesign
+# greta
 
-Version: 0.10.0
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(DeclareDesign)
-      Loading required package: randomizr
-      Loading required package: fabricatr
-      Loading required package: estimatr
-      > 
-      > test_check("DeclareDesign")
-      ── 1. Failure: error if you try to draw POs at a level using a variable that doe
-      `my_potential_outcomes_formula(pop)` did not throw an error.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 436 SKIPPED: 1 FAILED: 1
-      1. Failure: error if you try to draw POs at a level using a variable that doesn't exist at that level (@test-potential-outcomes.R#160) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘methods’
-      All declared Imports should be used.
-    ```
-
-# fiery
-
-Version: 1.1.0
+Version: 0.3.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘desc’
-      All declared Imports should be used.
-    ```
-
-# ipc
-
-Version: 0.1.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘redux’ ‘txtq’
-      All declared Imports should be used.
-    ```
-
-# jstor
-
-Version: 0.3.3
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > test_check("jstor")
-      ── 1. Failure: jst_define_import validates input (@test-import-spec.R#17)  ─────
-      `jst_define_import(article = jst_get_book)` did not throw an error.
-      
-      ── 2. Failure: jst_define_import validates input (@test-import-spec.R#18)  ─────
-      `jst_define_import(...)` did not throw an error.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 238 SKIPPED: 3 FAILED: 2
-      1. Failure: jst_define_import validates input (@test-import-spec.R#17) 
-      2. Failure: jst_define_import validates input (@test-import-spec.R#18) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-      Error while shutting down parallel: unable to terminate some child processes
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘curl’ ‘readxl’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘truncdist’
     ```
 
 # lidR
 
-Version: 1.6.1
+Version: 2.0.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.7Mb
+      installed size is 10.4Mb
       sub-directories of 1Mb or more:
-        libs   5.9Mb
+        libs   7.6Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘memoise’
+    Namespace in Imports field not imported from: ‘Rcpp’
       All declared Imports should be used.
     ```
 
@@ -253,35 +174,13 @@ Version: 1.16.0
 
 # reproducible
 
-Version: 0.2.3
+Version: 0.2.5
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 13 lines of output:
-      Receiving objects:  21% (85/401),   32 kb
-      Receiving objects:  31% (125/401),  160 kb
-      Receiving objects:  41% (165/401),  176 kb
-      Receiving objects:  51% (205/401),  184 kb
-      Receiving objects:  61% (245/401),  192 kb
-      Receiving objects:  71% (285/401),  192 kb
-      Receiving objects:  81% (325/401),  200 kb
-      Receiving objects:  91% (365/401),  205 kb
-      Receiving objects: 100% (401/401),  205 kb, done.
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 189 SKIPPED: 11 FAILED: 1
-      1. Failure: fastMask produces correct results (@test-gis.R#22) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘gdalUtils’
+    Namespace in Imports field not imported from: ‘devtools’
       All declared Imports should be used.
     ```
 
@@ -297,16 +196,47 @@ Version: 0.6.2
       All declared Imports should be used.
     ```
 
+# shinyrecap
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘CARE1’ ‘LCMCR’ ‘coda’ ‘conting’ ‘dga’ ‘future’ ‘ggplot2’ ‘ipc’
+      ‘promises’ ‘reshape’ ‘shinycssloaders’ ‘testthat’
+      All declared Imports should be used.
+    ```
+
 # skpr
 
-Version: 0.56.1
+Version: 0.57.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 46.3Mb
+      installed size is 49.1Mb
       sub-directories of 1Mb or more:
-        libs  44.9Mb
+        libs  47.6Mb
+    ```
+
+# tableschema.r
+
+Version: 1.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘iterators’
+      All declared Imports should be used.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 

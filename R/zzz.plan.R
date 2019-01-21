@@ -18,6 +18,9 @@
 #'
 #' @param .call (internal) Used for recording the call to this function.
 #'
+#' @param .skip (internal) If \code{TRUE}, then attempts to set a strategy
+#' that is the same as what is currently in use, will skipped.
+#'
 #' @param .cleanup (internal) Used to stop implicitly started clusters.
 #'
 #' @param .init (internal) Used to initiate workers.
@@ -108,6 +111,7 @@
 #' \emph{loaded}.  Because of this, the \file{.future.R} file provides a
 #' convenient place for users to set the \code{plan()}.
 #'
+#' @importFrom utils capture.output
 #' @export
 plan <- local({
   defaultStrategy <- structure(sequential, call = substitute(plan(sequential)))
@@ -165,17 +169,72 @@ plan <- local({
   }
 
 
+  equal_strategy_stacks <- function(stack, other) {
+    stop_if_not(is.list(stack), is.list(other))
+    stack <- lapply(stack, FUN = function(s) { attr(s, "call") <- attr(s, "init") <- NULL; s })
+    other <- lapply(other, FUN = function(s) { attr(s, "call") <- attr(s, "init") <- NULL; s })
+
+    if (identical(stack, other)) return(TRUE)
+    if (isTRUE(all.equal(stack, other))) return(TRUE)
+    FALSE
+  }
+
+  plan_set <- function(newStack, skip = TRUE, cleanup = TRUE, init = TRUE) {
+    stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
+
+    oldStack <- stack
+
+    ## Assign new stack
+    class(newStack) <- unique(c("FutureStrategyList", class(newStack)))
+
+    ## Skip if already set?
+    if (skip && equal_strategy_stacks(newStack, oldStack)) {
+      if (getOption("future.debug", FALSE)) {
+        mdebug(sprintf("plan(): Skip setting new future strategy stack because it is the same as the current one:\n%s\n", 
+               paste(capture.output(print(newStack)), collapse = "\n")))
+      }
+      return(oldStack)
+    }
+
+    if (getOption("future.debug", FALSE)) {
+      mdebug(sprintf("plan(): Setting new future strategy stack:\n%s\n", 
+             paste(capture.output(print(newStack)), collapse = "\n")))
+    }
+    
+    stack <<- newStack
+
+    ## Stop any (implicitly started) clusters?
+    if (cleanup) plan_cleanup()
+
+    ## Initiate future workers?
+    if (init) plan_init()
+
+    ## Sanity checks
+    nbrOfWorkers <- nbrOfWorkers()
+    if (getOption("future.debug", FALSE)) {
+      mdebug(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
+    }
+    stop_if_not(is.numeric(nbrOfWorkers), length(nbrOfWorkers) == 1L, 
+                !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)
+
+    invisible(oldStack)
+  }
+
+
   ## Main function
-  function(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
+  function(strategy = NULL, ..., substitute = TRUE, .skip = FALSE, .call = TRUE,
            .cleanup = TRUE, .init = TRUE) {
     if (substitute) strategy <- substitute(strategy)
+    if (is.logical(.skip)) stop_if_not(length(.skip) == 1L, !is.na(.skip))
     if (is.logical(.call)) stop_if_not(length(.call) == 1L, !is.na(.call))
 
     ## Predefined "actions":
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
       strategy <- stack[[1L]]
-      class(strategy) <- c("FutureStrategy", class(strategy))
+      if (!inherits(strategy, "FutureStrategy")) {
+        class(strategy) <- c("FutureStrategy", class(strategy))
+      }
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
@@ -205,15 +264,12 @@ plan <- local({
     targs <- list(...)
 
     ## Set new stack?
-    if (is.list(strategy)) {
-      stop_if_not(is.list(strategy), length(strategy) >= 1L)
+    if (is.function(strategy)) {
+      strategy <- list(strategy)
+    }
 
-      class(strategy) <- unique(c("FutureStrategyList", class(strategy)))
-      stack <<- strategy
-      ## Stop any (implicitly started) clusters?
-      if (.cleanup) plan_cleanup()
-      ## Initiate future workers?
-      if (.init) plan_init()
+    if (is.list(strategy)) {
+      oldStack <- plan_set(strategy, skip = .skip, cleanup = .cleanup, init = .init)
       return(invisible(oldStack[[1L]]))
     }
 
@@ -226,7 +282,7 @@ plan <- local({
         if (is.list(first)) {
           strategies <- first
           res <- plan(strategies, substitute = FALSE,
-	              .cleanup = .cleanup, .init = .init)
+                      .cleanup = .cleanup, .init = .init)
           return(invisible(res))
         }
 
@@ -245,6 +301,7 @@ plan <- local({
             }
           }
           newStack <- strategies
+          stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
         }
       }
     }
@@ -275,6 +332,7 @@ plan <- local({
 
       ## Setup a new stack of future strategies (with a single one)
       newStack <- list(tstrategy)
+      stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
     }
 
 
@@ -291,26 +349,11 @@ plan <- local({
         attr(strategy, "call") <- call
         newStack[[kk]] <- strategy
       }
+      stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
     }
 
     ## Set new strategy for futures
-    class(newStack) <- c("FutureStrategyList", class(newStack))
-    stack <<- newStack
-    stop_if_not(is.list(stack), length(stack) >= 1L)
-
-    ## Stop any (implicitly started) clusters?
-    if (.cleanup) plan_cleanup()
-
-    ## Initiate future workers?
-    if (.init) plan_init()
-
-    ## Sanity checks
-    n <- nbrOfWorkers()
-    if (getOption("future.debug", FALSE)) {
-      mdebug(sprintf("plan(): nbrOfWorkers() = %g", n))
-    }
-    stop_if_not(is.numeric(n), length(n) == 1, !is.na(n), n >= 1)
-
+    oldStack <- plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
     invisible(oldStack[[1L]])
   } # function()
 }) # plan()

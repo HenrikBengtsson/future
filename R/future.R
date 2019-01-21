@@ -14,15 +14,14 @@
 #' 
 #' @param expr,value An \R \link[base]{expression}.
 #'
-#' @param evaluator The actual function that evaluates
-#' the future expression and returns a \link{Future}.
+#' @param evaluator,\dots (internal) The actual function that evaluates
+#' the future expression and returns a \link{Future} and additional
+#' arguments passed to it.
 #' The evaluator function should accept all of the same
 #' arguments as the ones listed here
 #' (except \code{evaluator}, \code{FUN} and \code{args}).
 #' The default evaluator function is the one that the user
 #' has specified via \code{\link{plan}()}.
-#'
-#' @param \dots Additional arguments passed to the "evaluator".
 #'
 #' @return
 #' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.

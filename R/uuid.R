@@ -50,6 +50,7 @@ session_uuid <- local({
       pid = pid,
       time = Sys.time(),
       ## NOTE: This will set/update .GlobalEnv$.Random.seed
+      ## FIXME: Should/can this be using stealth_sample() instead?
       random = sample.int(.Machine$integer.max, size = 1L)
     )
     uuid <- uuid(info, keep_source = TRUE)

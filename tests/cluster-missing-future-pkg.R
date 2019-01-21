@@ -51,7 +51,7 @@ for (type in types) {
   if (!all(attr(cl, "has_pkgs"))) {
     ## However, if we disable the quick future test, we should not get
     ## an error here.
-    plan(cluster, workers = cl, .init = FALSE)
+    plan(cluster, workers = cl, .skip = FALSE, .init = FALSE)
 
     ## But we will get:
     ##   <FutureError: Internal error: Unexpected result retrieved for

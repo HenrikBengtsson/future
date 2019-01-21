@@ -61,7 +61,7 @@
 #'    environment variable \env{SLURM_CPUS_PER_TASK}.
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
-#'    \code{#SBATCH --cpus-per-task=2} to the `hello.sh` script.
+#'    \code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
 #' }
 #' For any other value of a \code{methods} element, the \R option with the
 #' same name is queried.  If that is not set, the system environment
@@ -93,7 +93,7 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     as.integer(getOption(name, NA_integer_))
   } # getopt()
 
-  which <- match.arg(which)
+  which <- match.arg(which, choices = c("min", "max", "all"))
   stop_if_not(length(default) == 1, is.finite(default), default >= 1L)
 
   ncores <- rep(NA_integer_, times = length(methods))

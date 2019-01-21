@@ -83,20 +83,30 @@ res <- tryCatch({
 print(res)
 stopifnot(inherits(res, "error"))
 
+
 message("- makeClusterPSOCK() - exceptions")
 
+## Invalid port
 res <- tryCatch({
   cl <- makeNodePSOCK("localhost", port = NA_integer_)
 }, error = identity)
 print(res)
 stopifnot(inherits(res, "error"))
 
+## Occupied/blocked port
+res <- tryCatch(
+  cl <- future::makeClusterPSOCK("localhost", port = 80L),
+error = identity)
+print(res)
+## Skip error assertion in case this actually works on some machine.
+## But where it fails, we are testing the port-failure exception code.
+
+## Non-existing hostname
 res <- tryCatch({
   cl <- makeNodePSOCK("not.a.localhost.hostname", revtunnel = TRUE)
 }, error = identity)
 print(res)
 stopifnot(inherits(res, "error"))
-
 
 
 message("*** makeClusterPSOCK() ... DONE")

@@ -86,9 +86,13 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(..., appendLF = TRUE) {
-  if (!getOption("future.debug", FALSE)) return()
-  message(sprintf(...), appendLF = appendLF)
+mdebug <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (debug) message(sprintf(...), appendLF = appendLF)
+}
+
+#' @importFrom utils capture.output
+mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (debug) message(paste(capture.output(print(...)), collapse = "\n"), appendLF = appendLF)
 }
 
 
@@ -104,12 +108,15 @@ mdebug <- function(..., appendLF = TRUE) {
 grmall <- local(function(envir = .GlobalEnv) {
   vars <- ls(envir = envir, all.names = TRUE)
   rm(list = vars, envir = envir, inherits = FALSE)
+  ## Return a value identifiable for troubleshooting purposes
+  invisible("future-grmall")
 })
 
 ## Assigns a value to the global environment.
 gassign <- local(function(name, value, envir = .GlobalEnv) {
   assign(name, value = value, envir = envir)
-  NULL
+  ## Return a value identifiable for troubleshooting purposes
+  invisible("future-grassign")
 })
 
 ## Evaluates an expression in global environment.
@@ -226,7 +233,22 @@ importParallel <- local({
         mdebug(msg)
         stop(msg, call. = FALSE)
       }
+
       res <- get(name, mode = "function", envir = ns, inherits = FALSE)
+
+      if (name %in% c("mccollect", "selectChildren") &&
+          getRversion() >= "3.5.0" && getRversion() <= "3.5.1") {
+        ## Suppress warnings produced by parallel::mccollect() and
+        ## parallel::selectChildren() in R 3.5.0 and and R 3.5.1
+        ## (https://github.com/HenrikBengtsson/future/issues/218), e.g.
+        ##
+        ##  "Warning in selectChildren(pids[!fin], -1) :
+        ##   cannot wait for child 32193 as it does not exist"
+        ##
+        res_org <- res
+        res <- function(...) suppressWarnings(res_org(...))
+      }
+      
       cache[[name]] <<- res
     }
     res
@@ -269,6 +291,15 @@ parseCmdArgs <- function() {
 } # parseCmdArgs()
 
 
+
+## A version of base::sample() that does not change .Random.seed
+stealth_sample <- function(x, size = length(x), replace = FALSE, ...) {
+  oseed <- .GlobalEnv$.Random.seed
+  on.exit(.GlobalEnv$.Random.seed <- oseed)
+  sample(x, size = size, replace = replace, ...)
+}
+
+
 myExternalIP <- local({
   ip <- NULL
   function(force = FALSE, random = TRUE, mustWork = TRUE) {
@@ -292,7 +323,7 @@ myExternalIP <- local({
 
     ## Randomize order of lookup URLs to lower the load on a specific
     ## server.
-    if (random) urls <- sample(urls)
+    if (random) urls <- stealth_sample(urls)
 
     ## Only wait 5 seconds for server to respond
     setTimeLimit(cpu = 5, elapsed = 5, transient = TRUE)
@@ -379,7 +410,7 @@ myInternalIP <- local({
 
   function(force = FALSE, which = c("first", "last", "all"), mustWork = TRUE) {
     if (!force && !is.null(ip)) return(ip)
-    which <- match.arg(which)
+    which <- match.arg(which, choices = c("first", "last", "all"))
 
     value <- NULL
     os <- R.version$os
@@ -685,10 +716,10 @@ reference_filters <- local({
 #'
 #' @param x The \R object to be checked.
 #' 
-#' @param first_only If `TRUE`, only the first reference is returned,
+#' @param first_only If \code{TRUE}, only the first reference is returned,
 #' otherwise all references.
 #'
-#' @return `find_references()` returns a list of one or more references
+#' @return \code{find_references()} returns a list of one or more references
 #' identified.
 #' 
 #' @keywords internal
@@ -729,7 +760,8 @@ find_references <- function(x, first_only = FALSE) {
 #' @param action Type of action to take if a reference is found.
 #' 
 #' @return If a reference is detected, an informative error, warning, message,
-#' or a character string is produced, otherwise `NULL` is returned invisibly.
+#' or a character string is produced, otherwise \code{NULL} is returned
+#' invisibly.
 #'
 #' @rdname find_references
 #' 
@@ -738,7 +770,7 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()
 
-  action <- match.arg(action)
+  action <- match.arg(action, choices = c("error", "warning", "message", "string"))
   
   ## Identify which global object has a reference
   global <- ""

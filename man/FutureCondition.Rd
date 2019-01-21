@@ -16,7 +16,7 @@ FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL, output = NULL)
 
-UnexpectedFutureResultError(future)
+UnexpectedFutureResultError(future, hint = NULL)
 }
 \arguments{
 \item{message}{A message.}
@@ -26,6 +26,8 @@ UnexpectedFutureResultError(future)
 \item{future}{The \link{Future} involved.}
 
 \item{output}{(DEPRECATED - don't use!) only for backward compatibility}
+
+\item{hint}{(optional) A string with a suggestion on what might be wrong.}
 }
 \value{
 An object of class FutureCondition which inherits from class

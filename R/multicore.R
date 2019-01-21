@@ -61,7 +61,7 @@ multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FA
   ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore()) {
     ## covr: skip=1
-    return(sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label))
+    return(sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label, ...))
   }
 
   oopts <- options(mc.cores = workers)
@@ -89,7 +89,7 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 usedCores <- function() {
   ## Number of unresolved multicore futures
   reg <- sprintf("multicore-%s", session_uuid())
-  futures <- FutureRegistry(reg, action = "list")
+  futures <- FutureRegistry(reg, action = "list", earlySignal = TRUE)
   nfutures <- length(futures)
   ncores <- nfutures
 

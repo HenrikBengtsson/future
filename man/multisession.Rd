@@ -39,7 +39,10 @@ is created} and its value is used to configure the workers.
 The function should return a numeric scalar.}
 
 \item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) after the value of the future is collected.
+evaluated the future) only after the value of the future is collected.
+Exactly when the values are collected may depend on various factors such
+as number of free workers and whether \code{earlySignal} is TRUE (more
+frequently) or FALSE (less frequently).
 \emph{Some types of futures ignore this argument.}}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon

@@ -4,8 +4,8 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .call = TRUE,
-  .cleanup = TRUE, .init = TRUE)
+plan(strategy = NULL, ..., substitute = TRUE, .skip = FALSE,
+  .call = TRUE, .cleanup = TRUE, .init = TRUE)
 }
 \arguments{
 \item{strategy}{The evaluation function (or name of it) to use
@@ -19,6 +19,9 @@ functions of which some are linked to below.}
 
 \item{substitute}{If TRUE, the \code{strategy} expression is
 \code{substitute()}:d, otherwise not.}
+
+\item{.skip}{(internal) If \code{TRUE}, then attempts to set a strategy
+that is the same as what is currently in use, will skipped.}
 
 \item{.call}{(internal) Used for recording the call to this function.}
 

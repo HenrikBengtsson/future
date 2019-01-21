@@ -1,35 +1,99 @@
 Package: future
 ===============
 
+Version: 1.11.0 [2019-01-21]
+
+SIGNIFICANT CHANGES:
+
+ * Message and warning conditions are now captured and relayed by default.
+
+NEW FEATURES:
+
+ * The future call stack ("traceback") is now recorded when the evaluation of a
+   future produces an error.  Use backtrace() on the future to retrieve it.
+
+ * Now futureCall() defaults to args = list() making is easier to call
+   functions that do not take arguments, e.g. futureCall(function() 42).
+
+ * plan() gained argument '.skip = FALSE'.  When TRUE, setting the same future
+   trategy as already set will be skipped, e.g. calling plan(multisession)
+   consecutively will have the same effect as calling it just once.
+
+ * makeClusterPSOCK() produces more informative error messages whenever the
+   setup of R workers fails.  Also, its verbose messages are now prefixed
+   with "[local output] " to help distinguish the output produced by the
+   current R session from that produced by background workers.
+   
+ * It is now possible to specify what type of SSH clients makeClusterPSOCK()
+   automatically searches for and in what order, e.g.
+   'rshcmd = c("<rstudio-ssh>", "<putty-plink>")'.
+
+ * Now makeClusterPSOCK() preserves the global RNG state (.Random.seed) also
+   when it draws a random port number.
+   
+ * makeClusterPSOCK() gained argument 'rshlogfile'.
+
+ * Cluster futures provide more informative error messages when the
+   communication with the worker node is out of sync.
+
+BUG FIXES:
+
+ * Argument 'stdout' was forced to TRUE when using single-core multicore or
+   single-core multisession futures.
+
+ * When evaluated in a local environment, futureCall(..., globals = "a") would
+   set the value of global 'a' to NULL, regardless if it exists or not and
+   what its true value is.
+
+ * makeClusterPSOCK(..., rscript = "my_r") would in some cases fail to find
+   the intended 'my_r' executable.
+
+ * ROBUSTNESS: A cluster future, including a multisession one, could retrieve
+   results from the wrong workers if a new set of cluster workers had been
+   set up after the future was created/launched but before the results were
+   retrieved.  This could happen because connections in R are indexed solely
+   by integers which are recycled when old connections are closed and new ones
+   are created.  Now cluster futures assert that the connections to the workers
+   are valid, and if not, an informative error message is produced.
+
+ * Calling result() on a non-resolved UniprocessFuture would signal evaluation
+   errors.
+
+DEPRECATED AND DEFUNCT:
+
+ * Removed defunct future::future_lapply().  Please use the one in the
+   future.apply package instead.
+
+
 Version: 1.10.0 [2018-10-16]
 
 NEW FEATURES:
 
- o Add support for manually specifying globals in addition to those that are
+ * Add support for manually specifying globals in addition to those that are
    automatically identified via argument 'globals' or %globals%. Two examples
    are globals = structure(TRUE, add = list(a = 42L, b = 3.14)) and
    globals = structure(TRUE, add = c("a", "b")).  Analogously, attribute
    'ignore' can be used to exclude automatically identified globals.
 
- o The error reported when failing to retrieve the results of a future
+ * The error reported when failing to retrieve the results of a future
    evaluated on a localhost cluster/multisession worker or a forked/multicore
    worker is now more informative. Specifically, it mentions whether the worker
    process is still alive or not.
 
- o Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
+ * Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
    parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
    issues where parallel::stopCluster() causes R to stall.
    
- o makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for
+ * makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for
    controlling whether the cluster should be automatically stopped when
    garbage collected or not.
 
- o BETA: Now resolved() for ClusterFuture is non-blocking also for clusters
+ * BETA: Now resolved() for ClusterFuture is non-blocking also for clusters
    of type MPIcluster as created by parallel::makeCluster(..., type = "MPI").
 
 BUG FIXES:
 
- o On Windows, plan(multiprocess) would not initiate the workers. Instead
+ * On Windows, plan(multiprocess) would not initiate the workers. Instead
    workers would be set up only when the first future was created.
 
 
@@ -37,80 +101,80 @@ Version: 1.9.0 [2018-07-22]
 
 SIGNIFICANT CHANGES:
 
- o Standard output is now captured and re-outputted when value() is called.
+ * Standard output is now captured and re-outputted when value() is called.
    This new behavior can be controlled by the argument 'stdout' to future()
    or by specifying the %stdout% operator if a future assignment is used.
 
 NEW FEATURES:
 
- o R option 'width' is passed down so that standard output is captured
+ * R option 'width' is passed down so that standard output is captured
    consistently across workers and consistently with the master process.
    
- o Now more 'future.*' options are passed down so that they are also
+ * Now more 'future.*' options are passed down so that they are also
    acknowledged when using nested futures.
 
 DOCUMENTATION:
 
- o Add vignette on 'Outputting Text'.
+ * Add vignette on 'Outputting Text'.
 
- o CLEANUP: Only the core parts of the API are now listed in the help index.
+ * CLEANUP: Only the core parts of the API are now listed in the help index.
    This was done to clarify the Future API.  Help for non-core parts are still
    via cross references in the indexed API as well via help().
 
-BUG FIX:
+BUG FIXES:
 
- o When using forced, nested 'multicore' parallel processing, such as,
+ * When using forced, nested 'multicore' parallel processing, such as,
    plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))),
    then the child process would attempt to resolve futures owned by the parent
    process resulting in an error (on 'bad error message').
    
- o When using plan(multicore), if a forked worker would terminate unexpectedly,
+ * When using plan(multicore), if a forked worker would terminate unexpectedly,
    it could corrupt the master R session such that any further attempts of
    using forked workers would fail.  A forked worker could be terminated this
    way if the user pressed Ctrl-C (the worker receives a SIGINT signal).
 
- o makeClusterPSOCK() produced a warning when environment variable
+ * makeClusterPSOCK() produced a warning when environment variable
    'R_PARALLEL_PORT' was set to 'random' (e.g. as on CRAN).
 
- o Printing a plan() could produce an error when the deparsed call used to set
+ * Printing a plan() could produce an error when the deparsed call used to set
    up the plan() was longer than 60 characters.
  
 DEPRECATED AND DEFUNCT:
 
- o future::future_lapply() is defunct (gives an error if called).  Please use
+ * future::future_lapply() is defunct (gives an error if called).  Please use
    the one in the future.apply package instead.
 
- o Argument 'output' of FutureError() is formally deprecated.
+ * Argument 'output' of FutureError() is formally deprecated.
 
- o Removed all FutureEvaluationCondition classes and related methods.
+ * Removed all FutureEvaluationCondition classes and related methods.
  
 
 Version: 1.8.1 [2018-05-02]
 
 NEW FEATURES:
 
- o getGlobalsAndPackages() gained argument 'maxSize'.
+ * getGlobalsAndPackages() gained argument 'maxSize'.
 
- o makeClusterPSOCK() now produces a more informative warning if environment
+ * makeClusterPSOCK() now produces a more informative warning if environment
    variable R_PARALLEL_PORT specifies a non-numeric port.
 
- o Now plan() gives a more informative error message in case it fails, e.g.
+ * Now plan() gives a more informative error message in case it fails, e.g.
    when the internal future validation fails and why.
 
- o Added UnexpectedFutureResultError to be used by backends for signalling
+ * Added UnexpectedFutureResultError to be used by backends for signalling
    in a standard way that an unexpected result was retrieved from a worker.
 
-BUG FIX:
+BUG FIXES:
 
- o When the communication between an asynchronous future and a background R
+ * When the communication between an asynchronous future and a background R
    process failed, further querying of the future state/results could end up
    in an infinite waiting loop.  Now the failed communication error is
    recorded and re-signalled if any further querying attempts.
  
- o Internal, seldom used myExternalIP() failed to recognize IPv4 answers
+ * Internal, seldom used myExternalIP() failed to recognize IPv4 answers
    from some of the lookup servers. This could in turn produce another error.
 
- o In R (>= 3.5.0), multicore futures would produce multiple warnings
+ * In R (>= 3.5.0), multicore futures would produce multiple warnings
    originating from querying whether background processes have completed
    or not. These warnings are now suppressed.
    
@@ -119,15 +183,15 @@ Version: 1.8.0 [2018-04-08]
 
 SIGNIFICANT CHANGES:
 
- o Errors produces when evaluating futures are now (re-)signaled on the master
+ * Errors produces when evaluating futures are now (re-)signaled on the master
    R process "as is" with the original content and class attributes.
  
 NEW FEATURES:
 
- o More errors related to orchestration of futures are of class FutureError to
+ * More errors related to orchestration of futures are of class FutureError to
    make it easier to distinguish them from future evaluation errors.
    
- o Add support for a richer set of results returned by resolved futures.
+ * Add support for a richer set of results returned by resolved futures.
    Previously only the value of the future expression, which could be a
    captured error to be resignaled, was expected. Now a FutureResult object
    may be returned instead.  Although not supported in this release, this
@@ -136,37 +200,37 @@ NEW FEATURES:
    that can take place, existing future backend packages will have to be
    updated accordingly.
 
- o backtrace() returns only the last call that produced the error.  It is
+ * backtrace() returns only the last call that produced the error.  It is
    unfortunately not possible to capture the call stack that led up to the
    error when evaluating a future expression.
    
 BUG FIXES:
 
- o value() for MulticoreFuture would not produce an error when a (forked)
+ * value() for MulticoreFuture would not produce an error when a (forked)
    background R workers would terminate before the future expression is
    resolved.  This was a limitation inherited from the parallel package.
    Now an informative FutureError message is produced.
 
- o value() for MulticoreFuture would not signal errors unless they inherited
+ * value() for MulticoreFuture would not signal errors unless they inherited
    from 'simpleError' - now it's enough for them to inherits from 'error'.
 
- o value() for ClusterFuture no longer produces a FutureEvaluationError, but
+ * value() for ClusterFuture no longer produces a FutureEvaluationError, but
    FutureError, if the connection to the R worker has changed (which happens
    if something as drastic as closeAllConnections() have been called.)
 
- o futureCall(..., globals = FALSE) would produce "Error: second argument must
+ * futureCall(..., globals = FALSE) would produce "Error: second argument must
    be a list", because the explicit arguments where not exported.  This could
    also happen when specifying globals by name or as a named list.
 
- o Nested futures were too conservative in requiring global variables to exist,
+ * Nested futures were too conservative in requiring global variables to exist,
    even when they were false positives.
 
 DEPRECATED AND DEFUNCT:
 
- o future::future_lapply() is formally deprecated. Please use the one in the
+ * future::future_lapply() is formally deprecated. Please use the one in the
    future.apply package instead.
   
- o Recently introduced FutureEvaluationCondition classes are deprecated,
+ * Recently introduced FutureEvaluationCondition classes are deprecated,
    because they no longer serve a purpose since future evaluation conditions
    are now signaled as is.
    
@@ -175,31 +239,31 @@ Version: 1.7.0 [2018-02-10]
 
 SIGNIFICANT CHANGES:
 
- o future_lapply() has moved to the future.apply package available on CRAN.
+ * future_lapply() has moved to the future.apply package available on CRAN.
 
 NEW FEATURES:
 
- o Argument 'workers' of future strategies may now also be a function, which
+ * Argument 'workers' of future strategies may now also be a function, which
    is called without argument when the future strategy is set up and used as
    is.  For instance, plan(multiprocess, workers = halfCores) where
    halfCores <- function() { max(1, round(availableCores() / 2)) } will use
    half of the number of available cores.  This is useful when using nested
    future strategies with remote machines.
  
- o On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
+ * On Windows, makeClusterPSOCK(), and therefore plan(multisession) and
    plan(multiprocess), will use the SSH client distributed with RStudio as
    a fallback if neither 'ssh' nor 'plink' is available on the system PATH.
 
- o Now plan() makes sure that nbrOfWorkers() will work for the new strategy.
+ * Now plan() makes sure that nbrOfWorkers() will work for the new strategy.
    This will help catch mistakes such as plan(cluster, workers = cl) where
    'cl' is a basic R list rather than a 'cluster' list early on.
 
- o Added %packages% to explicitly control packages to be attached when a
+ * Added %packages% to explicitly control packages to be attached when a
    future is resolved, e.g. y %<-% { YT[2] } %packages% "data.table".
    Note, this is only needed in cases where the automatic identification of
    global and package dependencies is not sufficient.
 
- o Added condition classes FutureCondition, FutureMessage, FutureWarning, and
+ * Added condition classes FutureCondition, FutureMessage, FutureWarning, and
    FutureError representing conditions that occur while a future is setup,
    launched, queried, or retrieved.  They do *not* represent conditions that
    occur while evaluating the future expression.  For those conditions, new
@@ -208,13 +272,13 @@ NEW FEATURES:
 
 DOCUMENTATION:
 
- o Vignette 'Common Issues with Solutions' now documents the case where the
+ * Vignette 'Common Issues with Solutions' now documents the case where the
    future framework fails to identify a variable as being global because it
    is only so conditionally, e.g. 'if (runif(1) < 1/2) x <- 0; y <- 2 * x'.
 
 BETA FEATURES:
 
- o Added mechanism for detecting globals that _may_ not be exportable to an
+ * Added mechanism for detecting globals that _may_ not be exportable to an
    external R process (a "worker").  Typically, globals that carry connections
    and external pointers ("externalptr") can not be exported, but there are
    exceptions.  By setting options 'future.globals.onReference' to "warning",
@@ -226,36 +290,36 @@ BETA FEATURES:
 
 BUG FIXES:
 
- o The total size of global variables was overestimated, and dramatically so
+ * The total size of global variables was overestimated, and dramatically so
    if defined in the global environment and there were are large objects there
    too.  This would sometimes result in a false error saying that the total
    size is larger than the allowed limit.
 
- o An assignment such as 'x <- x + 1' where the left-hand side (LHS) 'x' is a
+ * An assignment such as 'x <- x + 1' where the left-hand side (LHS) 'x' is a
    global failed to identify 'x' as a global because the right-hand side (RHS)
    'x' would override it as a local variable.  Updates to the globals package
    fixed this problem.
 
- o makeClusterPSOCK(..., renice = 19) would launch each PSOCK worker via
+ * makeClusterPSOCK(..., renice = 19) would launch each PSOCK worker via
    'nice +19' resulting in the error "nice: '+19': No such file or directory".
    This bug was inherited from parallel::makePSOCKcluster().  Now using
    'nice --adjustment=19' instead.
 
- o Protection against passing future objects to other futures did not work
+ * Protection against passing future objects to other futures did not work
    for future strategy 'multicore'.
  
 DEPRECATED AND DEFUNCT:
 
- o future_lapply() has moved to the new future.apply package available on CRAN.
+ * future_lapply() has moved to the new future.apply package available on CRAN.
    The future::future_lapply() function will soon be deprecated, then defunct,
    and eventually be removed from the future package. Please update your code
    to make use of future.apply::future_lapply() instead.
    
- o Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+ * Dropped defunct 'eager' and 'lazy' futures; use 'sequential' instead.
 
- o Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
+ * Dropped defunct arguments 'cluster' and 'maxCores'; use 'workers' instead.
 
- o In previous version of the future package the FutureError class was used
+ * In previous version of the future package the FutureError class was used
    to represent both orchestration errors (now FutureError) and evaluation
    errors (now FutureEvaluationError).  Any usage of class FutureError for
    the latter type of errors is deprecated and should be updated to
@@ -266,17 +330,17 @@ Version: 1.6.2 [2017-10-16]
 
 NEW FEATURES:
 
- o Now plan() accepts also strings such as "future::cluster".
+ * Now plan() accepts also strings such as "future::cluster".
 
- o Now backtrace(x[[ER]]) works also for non-environment 'x':s, e.g. lists.
+ * Now backtrace(x[[ER]]) works also for non-environment 'x':s, e.g. lists.
 
 BUG FIXES:
 
- o When measuring the size of globals by scanning their content, for certain
+ * When measuring the size of globals by scanning their content, for certain
    types of classes the inferred lengths of these objects were incorrect
    causing internal subset out-of-range issues.
 
- o print() for Future would output one global per line instead of
+ * print() for Future would output one global per line instead of
    concatenating the information with commas.
 
 
@@ -284,17 +348,17 @@ Version: 1.6.1 [2017-09-08]
 
 NEW FEATURES:
 
- o Now exporting getGlobalsAndPackages().
+ * Now exporting getGlobalsAndPackages().
 
 BUG FIXES:
 
- o future_lapply() would give "Error in objectSize.env(x, depth = depth - 1L):
+ * future_lapply() would give "Error in objectSize.env(x, depth = depth - 1L):
    object 'nnn' not found" when for instance 'nnn' is part of an unresolved
    expression that is an argument value.
 
 SOFTWARE QUALITY:
 
- o FIX: Some of the package assertion tests made too precise assumptions about
+ * FIX: Some of the package assertion tests made too precise assumptions about
    the object sizes, which fails with the introduction of ALTREP in R-devel
    which causes the R's SEXP header size to change.
  
@@ -303,96 +367,96 @@ Version: 1.6.0 [2017-08-11]
 
 NEW FEATURES:
 
- o Now tweak(), and hence plan(), generates a more informative error message if
+ * Now tweak(), and hence plan(), generates a more informative error message if
    a non-future function is specified by mistake, e.g. calling plan(cluster)
    with the 'survival' package attached after 'future' is equivalent to calling
    plan(survival::cluster) when plan(future::cluster) was intended.
 
 BUG FIXES:
 
- o nbrOfWorkers() gave an error with plan(remote). Fixed by making the 'remote'
+ * nbrOfWorkers() gave an error with plan(remote). Fixed by making the 'remote'
    future inherit 'cluster' (as it should).
 
 SOFTWARE QUALITY:
 
- o TESTS: No longer testing forced termination of forked cluster workers when
+ * TESTS: No longer testing forced termination of forked cluster workers when
    running on Solaris. The termination was done by launching a future that
    called quit(), but that appeared to have corrupted the main R session when
    running on Solaris.
 
 DEPRECATED AND DEFUNCT:
 
- o Formally defunct 'eager' and 'lazy' futures; use 'sequential' instead.
+ * Formally defunct 'eager' and 'lazy' futures; use 'sequential' instead.
 
- o Dropped previously defunct %<=% and %=>% operators.
+ * Dropped previously defunct %<=% and %=>% operators.
  
 
 Version: 1.5.0 [2017-05-24]
 
 SIGNIFICANT CHANGES:
 
- o Multicore and multisession futures no longer reserve one core for the
+ * Multicore and multisession futures no longer reserve one core for the
    main R process, which was done to lower the risk for producing a higher
    CPU load than the number of cores available for the R session.
  
 NEW FEATURES:
 
- o makeClusterPSOCK() now defaults to use the Windows PuTTY software's SSH
+ * makeClusterPSOCK() now defaults to use the Windows PuTTY software's SSH
    client 'plink -ssh', if 'ssh' is not found.
 
- o Argument 'homogeneous' of makeNodePSOCK(), a helper function of
+ * Argument 'homogeneous' of makeNodePSOCK(), a helper function of
    makeClusterPSOCK(), will default to FALSE also if the hostname is a
    fully qualified domain name (FQDN), that is, it "contains periods".
    For instance, c('node1', 'node2.server.org') will use homogeneous = TRUE
    for the first worker and homogeneous = FALSE for the second.
 
- o makeClusterPSOCK() now asserts that each cluster node is functioning by
+ * makeClusterPSOCK() now asserts that each cluster node is functioning by
    retrieving and recording the node's session information including the
    process ID of the corresponding R process.
 
- o Nested futures sets option 'mc.cores' to prevent spawning of recursive
+ * Nested futures sets option 'mc.cores' to prevent spawning of recursive
    parallel processes by mistake.  Because 'mc.cores' controls _additional_
    processes, it was previously set to zero.  However, since some functions
    such as mclapply() does not support that, it is now set to one instead.   
 
 DOCUMENTATION:
 
- o Help on makeClusterPSOCK() gained more detailed descriptions on arguments
+ * Help on makeClusterPSOCK() gained more detailed descriptions on arguments
    and what their defaults are.
  
 DEPRECATED AND DEFUNCT:
 
- o Formally deprecated eager futures; use sequential instead.
+ * Formally deprecated eager futures; use sequential instead.
 
 BUG FIXES:
 
- o future_lapply() with multicore / multisession futures, would use a
+ * future_lapply() with multicore / multisession futures, would use a
    suboptimal workload balancing where it split up the data in one chunk too
    many.  This is no longer a problem because of how argument 'workers' is
    now defined for those type of futures (see note on top).
  
- o future_lapply(), as well as lazy multicore and lazy sequential futures, did
+ * future_lapply(), as well as lazy multicore and lazy sequential futures, did
    not respect option 'future.globals.resolve', but was hardcoded to always
    resolve globals (future.globals.resolve = TRUE).
 
- o When globals larger than the allowed size (option 'future.globals.maxSize')
+ * When globals larger than the allowed size (option 'future.globals.maxSize')
    are detected an informative error message is generated.  Previous version
    introduced a bug causing the error to produce another error.
 
- o Lazy sequential futures would produce an error when resolved if required
+ * Lazy sequential futures would produce an error when resolved if required
    packages had been detached.
 
- o print() would not display globals gathered for lazy sequential futures.
+ * print() would not display globals gathered for lazy sequential futures.
 
 SOFTWARE QUALITY:
 
- o Added package tests for globals part of formulas part of other globals,
+ * Added package tests for globals part of formulas part of other globals,
    e.g. purrr::map(x, ~ rnorm(.)), which requires globals (>= 0.10.0).
 
- o Now package tests with parallel::makeCluster() not only test for
+ * Now package tests with parallel::makeCluster() not only test for
    type = 'PSOCK' clusters but also 'FORK' (when supported).
 
- o TESTS: Cleaned up test scripts such that the overall processing time for
+ * TESTS: Cleaned up test scripts such that the overall processing time for
    the tests was roughly halved, while preserving the same test coverage.
  
 
@@ -400,118 +464,118 @@ Version: 1.4.0 [2017-03-12]
 
 SIGNIFICANT CHANGES:
 
- o The default for future_lapply() is now to _not_ generate RNG seeds
+ * The default for future_lapply() is now to _not_ generate RNG seeds
    (future.seed = FALSE).  If proper random number generation is needed,
    use future.seed = TRUE.  For more details, see help page.
    
 NEW FEATURES:
 
- o future() and future_lapply() gained argument 'packages' for explicitly
+ * future() and future_lapply() gained argument 'packages' for explicitly
    specifying packages to be attached when the futures are evaluated.
    Note that the default throughout the future package is that all globals
    and all required packages are automatically identified and gathered, so
    in most cases those do not have to be specified manually.
 
- o The default values for arguments 'connectTimeout' and 'timeout' of
+ * The default values for arguments 'connectTimeout' and 'timeout' of
    makeNodePSOCK() can now be controlled via global options.
 
 RANDOM NUMBER GENERATION:
 
- o Now future_lapply() guarantees that the RNG state of the calling R process
+ * Now future_lapply() guarantees that the RNG state of the calling R process
    after returning is updated compared to what it was before and in the exact
    same way regardless of 'future.seed' (except FALSE), 'future.scheduling'
    and future strategy used.  This is done in order to guarantee that an R
    script calling future_lapply() multiple times should be numerically
    reproducible given the same initial seed.
 
- o It is now possible to specify a pre-generated sequence of .Random.seed
+ * It is now possible to specify a pre-generated sequence of .Random.seed
    seeds to be used for each FUN(x[i], ...) call in future_lapply(x, FUN, ...).
 
 PERFORMANCE:
 
- o future_lapply() scans global variables for non-resolved futures (to resolve
+ * future_lapply() scans global variables for non-resolved futures (to resolve
    them) and calculate their total size once.  Previously, each chunk
    (a future) would redo this.
 
-BUG FIX:
+BUG FIXES:
 
- o Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
+ * Now future_lapply(x, FUN, ...) identifies global objects among 'x', 'FUN'
    and '...' recursively until no new globals are found.  Previously, only
    the first level of globals were scanned.  This is mostly thanks to a bug
    fix in globals 0.9.0.
 
- o A future that used a global object 'x' of a class that overrides length()
+ * A future that used a global object 'x' of a class that overrides length()
    would produce an error if length(x) reports more elements than what can
    be subsetted.
 
- o nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
+ * nbrOfWorkers() gave an error with plan(cluster, workers = cl) where
    'cl' is a cluster object created by parallel::makeCluster() etc.
    This prevented for instance future_lapply() to work with such setups.
 
- o plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
+ * plan(cluster, workers = cl) where cl <- makeCluster(..., type = MPI") 
    would give an instant error due to an invalid internal assertion.
 
 DEPRECATED AND DEFUNCT:
 
- o Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
+ * Previously deprecated arguments 'maxCores' and 'cluster' are now defunct.
 
- o Previously deprecated assignment operators %<=% and %=>% are now defunct.
+ * Previously deprecated assignment operators %<=% and %=>% are now defunct.
 
- o availableCores(method = "mc.cores") is now defunct in favor of "mc.cores+1".
+ * availableCores(method = "mc.cores") is now defunct in favor of "mc.cores+1".
 
 
 Version: 1.3.0 [2017-01-18]
 
 SIGNIFICANT CHANGES:
 
- o Where applicable, workers are now initiated when calling plan(), e.g.
+ * Where applicable, workers are now initiated when calling plan(), e.g.
    plan(cluster) will set up workers on all cluster nodes.  Previously,
    this only happened when the first future was created.
 
 NEW FEATURES:
 
- o Renamed 'eager' futures to 'sequential', e.g. plan(sequential).
+ * Renamed 'eager' futures to 'sequential', e.g. plan(sequential).
    The 'eager' futures will be deprecated in an upcoming release.
    
- o Added support for controlling whether a future is resolved eagerly
+ * Added support for controlling whether a future is resolved eagerly
    or lazily when creating the future, e.g. future(..., lazy = TRUE)
    futureAssign(..., lazy = TRUE), and x %<-% { ... } %lazy% TRUE.
 
- o future(), futureAssign() and futureCall() gained argument 'seed',
+ * future(), futureAssign() and futureCall() gained argument 'seed',
    which specifies a L'Ecuyer-CMRG random seed to be used by the future.
    The seed for future assignment can be specified via %seed%.
    
- o futureAssign() now passes all additional arguments to future().
+ * futureAssign() now passes all additional arguments to future().
 
- o Added future_lapply() which supports load balancing ("chunking")
+ * Added future_lapply() which supports load balancing ("chunking")
    and perfect reproducibility (regardless of type of load balancing
    and how futures are resolved) via initial random seed.
  
- o Added availableWorkers().  By default it returns localhost workers
+ * Added availableWorkers().  By default it returns localhost workers
    according to availableCores().  In addition, it detects common
    HPC allocations given in environment variables set by the HPC
    scheduler.
    
- o The default for plan(cluster) is now workers = availableWorkers().
+ * The default for plan(cluster) is now workers = availableWorkers().
  
- o Now plan() stops any clusters that were implicitly created. For
+ * Now plan() stops any clusters that were implicitly created. For
    instance, a multisession cluster created by plan(multisession) will
    be stopped when plan(eager) is called.
 
- o makeClusterPSOCK() treats workers that refer to a local machine by
+ * makeClusterPSOCK() treats workers that refer to a local machine by
    its local or canonical hostname as "localhost".  This avoids having
    to launch such workers over SSH, which may not be supported on all
    systems / compute cluster.
 
- o Option 'future.debug' = TRUE also reports on total size of
+ * Option 'future.debug' = TRUE also reports on total size of
    globals identified and for cluster futures also the size of the
    individual global variables exported.
 
- o Option 'future.wait.timeout' (replaces 'future.wait.times') specifies
+ * Option 'future.wait.timeout' (replaces 'future.wait.times') specifies
    the maximum waiting time for a free workers (e.g. a core or a
    compute node) before generating a timeout error.  
 
- o Option 'future.availableCores.fallback', which defaults to environment
+ * Option 'future.availableCores.fallback', which defaults to environment
    variable 'R_FUTURE_AVAILABLECORES_FALLBACK' can now be used to specify
    the default number of cores / workers returned by availableCores()
    and availableWorkers() when no other settings are available.  For
@@ -524,12 +588,12 @@ NEW FEATURES:
 
 GLOBALS:
 
- o Globals part of locally defined functions are now also identified
+ * Globals part of locally defined functions are now also identified
    thanks to globals (>= 0.8.0) updates.
    
 DEPRECATED AND DEFUNCT:
 
- o Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager)
+ * Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager)
    and then f <- future(..., lazy = TRUE) or x %<-% { ... } %lazy% TRUE.
    The reason behind this is that in some cases code that uses futures
    only works under eager evaluation (lazy = FALSE; the default), or vice
@@ -538,15 +602,15 @@ DEPRECATED AND DEFUNCT:
  
 BUG FIXES:
 
- o Creation of cluster futures (including multisession ones) would
+ * Creation of cluster futures (including multisession ones) would
    time out already after 40 seconds if all workers were busy.
    New default timeout is 30 days (option 'future.wait.timeout').
 
- o nbrOfWorkers() gave an error for plan(cluster, workers) where 'workers'
+ * nbrOfWorkers() gave an error for plan(cluster, workers) where 'workers'
    was a character vector or a 'cluster' object of the parallel package.
    Because of this, future_lapply() gave an error with such setups.
 
- o availableCores(methods = "_R_CHECK_LIMIT_CORES_") would give an error
+ * availableCores(methods = "_R_CHECK_LIMIT_CORES_") would give an error
    if not running R CMD check.
    
     
@@ -554,46 +618,46 @@ Version: 1.2.0 [2016-11-12]
 
 NEW FEATURES:
 
- o Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
+ * Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster()
    that allows for more flexible control of how PSOCK cluster workers
    are set up and how they are launched and communicated with if running
    on external machines.
 
- o Added generic as.cluster() for coercing objects to cluster objects
+ * Added generic as.cluster() for coercing objects to cluster objects
    to be used as in plan(cluster, workers = as.cluster(x)).  Also added
    a c() implementation for cluster objects such that multiple cluster
    objects can be combined into a single one.
 
- o Added sessionDetails() for gathering details of the current R session.
+ * Added sessionDetails() for gathering details of the current R session.
 
- o plan() and plan("list") now prints more user-friendly output.
+ * plan() and plan("list") now prints more user-friendly output.
 
- o On Unix, internal myInternalIP() tries more alternatives for finding
+ * On Unix, internal myInternalIP() tries more alternatives for finding
    the local IP number.
 
 DEPRECATED AND DEFUNCT:
 
- o %<=% is deprecated. Use %<-% instead. Same for %=>%.
+ * %<=% is deprecated. Use %<-% instead. Same for %=>%.
     
 BUG FIXES:
 
- o values() for lists and list environments of futures where one or more
+ * values() for lists and list environments of futures where one or more
    of the futures resolved to NULL would give an error.
 
- o value() for ClusterFuture would give cryptic error message
+ * value() for ClusterFuture would give cryptic error message
    "Error in stop(ex) : bad error message" if the cluster worker had
    crashed / terminated.  Now it will instead give an error message like
    "Failed to retrieve the value of ClusterFuture from cluster node #1 on
    'localhost'. The reason reported was "error reading from connection".
 
- o Argument 'user' to remote() was ignored (since 1.1.0).
+ * Argument 'user' to remote() was ignored (since 1.1.0).
     
     
 Version: 1.1.1 [2016-10-10]
 
 BUG FIXES:
 
- o For the special case where 'remote' futures use workers = "localhost"
+ * For the special case where 'remote' futures use workers = "localhost"
    they (again) use the exact same R executable as the main / calling R
    session (in all other cases it uses whatever 'Rscript' is found in the
    PATH).  This was already indeed implemented in 1.0.1, but with the
@@ -605,46 +669,46 @@ Version: 1.1.0 [2016-10-09]
 
 NEW FEATURES:
 
- o REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
+ * REMOTE CLUSTERS: It is now very simple to use cluster() and remote()
    to connect to remote clusters / machines.  As long as you can connect
    via ssh to those machines, it works also with these future.  The new
    code completely avoids incoming firewall and incoming port forwarding
    issues previously needed.  This is done by using reverse SSH tunneling.
    There is also no need to worry about internal or external IP numbers.
 
- o Added optional argument 'label' to all futures, e.g.
+ * Added optional argument 'label' to all futures, e.g.
    f <- future(42, label="answer") and v %<-% { 42 } %label% "answer".
 
- o Added argument 'user' to cluster() and remote().
+ * Added argument 'user' to cluster() and remote().
 
- o Now all Future classes supports run() for launching the future and
+ * Now all Future classes supports run() for launching the future and
    value() calls run() if the future has not been launched.
 
- o MEMORY: Now plan(cluster, gc=TRUE) causes the background
+ * MEMORY: Now plan(cluster, gc=TRUE) causes the background
    R session to be garbage collected immediately after the value
    is collected.  Since multisession and remote futures are special
    cases of cluster futures, the same is true for these as well.
 
- o ROBUSTNESS: Now the default future strategy is explicitly set when
+ * ROBUSTNESS: Now the default future strategy is explicitly set when
    no strategies are set, e.g. when used nested futures.  Previously,
    only mc.cores was set so that only a single core was used, but now
    also plan("default") set.
 
- o WORKAROUND: resolved() on cluster futures would block on Linux until
+ * WORKAROUND: resolved() on cluster futures would block on Linux until
    future was resolved.  This is due to a bug in R.  The workaround is
    to use round the timeout (in seconds) to an integer, which seems to
    always work / be respected.
 
 GLOBALS:
 
- o Global variables part of subassignments in future expressions
+ * Global variables part of subassignments in future expressions
    are recognized and exported (iff found), e.g. x$a <- value,
    x[["a"]] <- value, and x[1,2,3] <- value.
 
- o Global variables part of formulae in future expressions are
+ * Global variables part of formulae in future expressions are
    recognized and exported (iff found), e.g. y ~ x | z.
 
- o As an alternative to the default automatic identification of
+ * As an alternative to the default automatic identification of
    globals, it is now also possible to explicitly specify them either
    by their names (as a character vector) or by their names and values
    (as a named list), e.g. f <- future({ 2*a }, globals=c("a")) or
@@ -653,32 +717,34 @@ GLOBALS:
 
 DOCUMENTATION:
 
- o Added vignette on command-line options and other methods for
+ * Added vignette on command-line options and other methods for
    controlling the default type of futures to use.
     
     
 Version: 1.0.1 [2016-07-04]
 
- o ROBUSTNESS: For the special case where 'remote' futures use
+NEW FEATURES:
+
+ * ROBUSTNESS: For the special case where 'remote' futures use
    workers = "localhost" they now use the exact same R executable
    as the main / calling R session (in all other cases it uses
    whatever 'Rscript' is found in the PATH).
 
- o FutureError now extends simpleError and no longer the error
+ * FutureError now extends simpleError and no longer the error
    class of captured errors.
 
 DOCUMENTATION:
 
- o Adding section to vignette on globals in formulas describing how
+ * Adding section to vignette on globals in formulas describing how
    they are currently not automatically detected and how to explicitly
    export them.
 
 BUG FIXES:
   
- o Since future 0.13.0, a global 'pkg' would be overwritten by the
+ * Since future 0.13.0, a global 'pkg' would be overwritten by the
    name of the last package attached in future.
 
- o Futures that generated R.oo::Exception errors, they triggered
+ * Futures that generated R.oo::Exception errors, they triggered
    another internal error.
    
     
@@ -686,17 +752,17 @@ Version: 1.0.0 [2016-06-24]
 
 NEW FEATURES:
 
- o Add support for remote(..., myip="<external>"), which now
+ * Add support for remote(..., myip="<external>"), which now
    queries a set of external lookup services in case one of them
    fails.
 
- o Add mandelbrot() function used in demo to the API for convenience.
+ * Add mandelbrot() function used in demo to the API for convenience.
 
- o ROBUSTNESS: If .future.R script, which is sourced when the future
+ * ROBUSTNESS: If .future.R script, which is sourced when the future
    package is attached, gives an error, then the error is ignored
    with a warning.
 
- o TROUBLESHOOTING: If the future requires attachment of packages,
+ * TROUBLESHOOTING: If the future requires attachment of packages,
    then each namespace is loaded separately and before attaching
    the package.  This is done in order to see the actual error
    message in case there is a problem while loading the namespace.
@@ -705,7 +771,7 @@ NEW FEATURES:
 
 GLOBALS:
 
- o Falsely identified global variables no longer generate
+ * Falsely identified global variables no longer generate
    an error when the future is created.  Instead, we leave it to R
    and the evaluation of the individual futures to throw an error
    if the a global variable is truly missing.  This was done in order
@@ -713,26 +779,26 @@ GLOBALS:
    evaluation (NSE), e.g. subset(df, x < 3) where 'x' is falsely
    identified as a global variable.
 
- o Dropped support for system environment variable 'R_FUTURE_GLOBALS_MAXSIZE'.
+ * Dropped support for system environment variable 'R_FUTURE_GLOBALS_MAXSIZE'.
 
 DOCUMENTATION:
 
- o DEMO: Now the Mandelbrot demo tiles a single Mandelbrot region
+ * DEMO: Now the Mandelbrot demo tiles a single Mandelbrot region
    with one future per tile. This better illustrates parallelism.
 
- o Documented R options used by the future package.
+ * Documented R options used by the future package.
     
 BUG FIXES:
 
- o Custom futures based on a constructor function that
+ * Custom futures based on a constructor function that
    is defined outside a package gave an error.
 
- o plan("default") assumed that the 'future.plan' option
+ * plan("default") assumed that the 'future.plan' option
    was a string; gave an error if it was a function.
 
- o Various future options were not passed on to futures.
+ * Various future options were not passed on to futures.
 
- o A startup .future.R script is no longer sourced if the
+ * A startup .future.R script is no longer sourced if the
    future package is attached by a future expression.
     
     
@@ -740,31 +806,31 @@ Version: 0.15.0 [2016-06-13]
 
 NEW FEATURES:
 
- o Added remote futures, which are cluster futures with convenient
+ * Added remote futures, which are cluster futures with convenient
    default arguments for simple remote access to R, e.g.
    plan(remote, workers="login.my-server.org").
 
- o Now .future.R (if found in the current directory or otherwise in
+ * Now .future.R (if found in the current directory or otherwise in
    the user's home directory) is sourced when the future package is
    attach (but not loaded).  This helps separating scripts from
    configuration of futures.
 
- o Added support for plan(cluster, workers=c("n1", "n2", "n2", "n4")),
+ * Added support for plan(cluster, workers=c("n1", "n2", "n2", "n4")),
    where 'workers' (also for ClusterFuture()) is a set of host names
    passed to parallel::makeCluster(workers).  It can also be the number
    of localhost workers.
 
- o Added command line option --parallel=<p>, which is long for -p <p>.
+ * Added command line option --parallel=<p>, which is long for -p <p>.
 
- o Now command line option -p <p> also set the default future strategy
+ * Now command line option -p <p> also set the default future strategy
    to multiprocessing (if p >= 2 and eager otherwise), unless another
    strategy is already specified via option 'future.plan' or system
    environment variable R_FUTURE_PLAN.
 
- o Now availableCores() also acknowledges environment variable NSLOTS
+ * Now availableCores() also acknowledges environment variable NSLOTS
    set by Sun/Oracle Grid Engine (SGE).
 
- o MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
+ * MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
    garbage collector will run at the very end in the process that
    evaluated the future (just before returning the value).  This may
    help lowering the overall memory footprint when running multiple
@@ -774,12 +840,12 @@ NEW FEATURES:
 
 PERFORMANCE:
 
- o Significantly decreased the overhead of creating a future, particularly
+ * Significantly decreased the overhead of creating a future, particularly
    multicore futures.
     
 BUG FIXES: 
 
- o Future would give an error with plan(list("eager")),
+ * Future would give an error with plan(list("eager")),
    whereas it did work with plan("eager") and plan(list(eager)).
     
     
@@ -787,23 +853,23 @@ Version: 0.14.0 [2016-05-16]
 
 NEW FEATURES:
 
- o Added nbrOfWorkers().
+ * Added nbrOfWorkers().
 
- o Added informative print() method for the Future class.
+ * Added informative print() method for the Future class.
 
- o values() passes arguments '...' to value() of each Future.
+ * values() passes arguments '...' to value() of each Future.
 
- o Added FutureError class.
+ * Added FutureError class.
 
 DEPRECATED AND DEFUNCT:
 
- o Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
+ * Renamed arguments 'maxCores' and 'cluster' to 'workers'.  If using
    the old argument names a deprecation warning will be generated, but
    it will still work until made defunct in a future release.
     
 BUG FIXES:
 
- o resolve() for lists and environments did not work
+ * resolve() for lists and environments did not work
    properly when the set of futures was not resolved in order,
    which could happen with asynchronous futures.
     
@@ -812,30 +878,30 @@ Version: 0.13.0 [2016-04-13]
 
 NEW FEATURES:
 
- o Add support to plan() for specifying different future strategies for
+ * Add support to plan() for specifying different future strategies for
    the different levels of nested futures.
 
- o Add backtrace() for listing the trace the expressions evaluated (the
+ * Add backtrace() for listing the trace the expressions evaluated (the
    calls made) before a condition was caught.
 
- o Add transparent futures, which are eager futures with early signaling
+ * Add transparent futures, which are eager futures with early signaling
    of conditioned enabled and whose expression is evaluated in the calling
    environment.  This makes the evaluation of such futures as similar
    as possible to how R evaluates expressions, which in turn simplifies
    troubleshooting errors etc.
 
- o Add support for early signaling of conditions.  The default is
+ * Add support for early signaling of conditions.  The default is
    (as before) to signal conditions when the value is queried.
    In addition, they may be signals as soon as possible, e.g. when
    checking whether a future is resolved or not.
 
- o Signaling of conditions when calling value() is now controlled by
+ * Signaling of conditions when calling value() is now controlled by
    argument 'signal' (previously 'onError').
 
- o Now UniprocessFuture:s captures the call stack for errors occurring
+ * Now UniprocessFuture:s captures the call stack for errors occurring
    while resolving futures.
 
- o ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
+ * ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
    any objects in the cluster R session that was created during the
    evaluation of a previous future is available for succeeding futures
    that are evaluated in the same session.  Moreover, globals are
@@ -843,48 +909,48 @@ NEW FEATURES:
    an error - instead it is assumed such globals are available in the
    environment where the future is evaluated.
 
- o OVERHEAD: Utility functions exported by ClusterFuture are now much
+ * OVERHEAD: Utility functions exported by ClusterFuture are now much
    smaller; previously they would export all of the package environment.
     
 BUG FIXES:
   
- o f <- multicore(NA, maxCores=2) would end up in an endless
+ * f <- multicore(NA, maxCores=2) would end up in an endless
    waiting loop for a free core if availableCores() returned one.
 
- o ClusterFuture would ignore local=TRUE.
+ * ClusterFuture would ignore local=TRUE.
     
     
 Version: 0.12.0 [2016-02-23]
 
 NEW FEATURES:
 
- o Added multiprocess futures, which are multicore futures if supported,
+ * Added multiprocess futures, which are multicore futures if supported,
    otherwise multisession futures.  This makes it possible to use
    plan(multiprocess) everywhere regardless of operating system.
 
- o Future strategy functions gained class attributes such that it is
+ * Future strategy functions gained class attributes such that it is
    possible to test what type of future is currently used, e.g.
    inherits(plan(), "multicore").
 
- o ROBUSTNESS: It is only the R process that created a future that can
+ * ROBUSTNESS: It is only the R process that created a future that can
    resolve it. If a non-resolved future is queried by another R process,
    then an informative error is generated explaining that this is not
    possible.
 
- o ROBUSTNESS: Now value() for multicore futures detects if the underlying
+ * ROBUSTNESS: Now value() for multicore futures detects if the underlying
    forked R process was terminated before completing and if so generates
    an informative error messages.
 
 PERFORMANCE:
 
- o Adjusted the parameters for the schema used to wait for next available
+ * Adjusted the parameters for the schema used to wait for next available
    cluster node such that nodes are polled more frequently.
 
 GLOBALS:
 
- o resolve() gained argument 'recursive'.
+ * resolve() gained argument 'recursive'.
 
- o Added option 'future.globals.resolve' for controlling whether
+ * Added option 'future.globals.resolve' for controlling whether
    global variables should be resolved for futures or not.  If TRUE, then
    globals are searched recursively for any futures and if found such
    "global" futures are resolved.  If FALSE, global futures are not
@@ -893,12 +959,12 @@ GLOBALS:
    that only the R process that created the future can resolve it.
    The default is currently FALSE.
 
-BUG FIX:
+BUG FIXES:
 
- o FIX: Exports of objects available in packages already attached
+ * FIX: Exports of objects available in packages already attached
    by the future were still exported.
 
- o FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
+ * FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L
    if _R_CHECK_LIMIT_CORES_ is set.
     
     
@@ -906,46 +972,46 @@ Version: 0.11.0 [2016-01-15]
 
 NEW FEATURES:
 
- o Add multisession futures, which analogously to multicore ones,
+ * Add multisession futures, which analogously to multicore ones,
    use multiple cores on the local machine with the difference
    that they are evaluated in separate R session running in the
    background rather than separate forked R processes.
    A multisession future is a special type of cluster futures that
    do not require explicit setup of cluster nodes.
 
- o Add support for cluster futures, which can make use of a cluster
+ * Add support for cluster futures, which can make use of a cluster
    of nodes created by parallel::makeCluster().
 
- o Add futureCall(), which is for futures what do.call() is otherwise.
+ * Add futureCall(), which is for futures what do.call() is otherwise.
 
- o Standardized how options are named, i.e. 'future.<option>'.
+ * Standardized how options are named, i.e. 'future.<option>'.
    If you used any future options previously, make sure to check
    they follow the above format.
 
 GLOBALS:
 
- o All futures now validates globals by default (globals=TRUE).
+ * All futures now validates globals by default (globals=TRUE).
    
     
 Version: 0.10.0 [2015-12-30]
 
 NEW FEATURES:
 
- o Now %<=% can also assign to multi-dimensional list environments.
+ * Now %<=% can also assign to multi-dimensional list environments.
 
- o Add futures(), values() and resolved().
+ * Add futures(), values() and resolved().
 
- o Add resolve() to resolve futures in lists and environments.
+ * Add resolve() to resolve futures in lists and environments.
 
- o Now availableCores() also acknowledges the number of CPUs
+ * Now availableCores() also acknowledges the number of CPUs
    allotted by Slurm.
 
- o CLEANUP: Now the internal future variable created by %<=% is
+ * CLEANUP: Now the internal future variable created by %<=% is
    removed when the future variable is resolved.
     
 BUG FIXES:  
 
- o futureOf(envir=x) did not work properly when 'x' was
+ * futureOf(envir=x) did not work properly when 'x' was
    a list environment.
     
     
@@ -953,29 +1019,29 @@ Version: 0.9.0 [2015-12-11]
 
 NEW FEATURES:
 
- o ROBUSTNESS: Now values of environment variables are trimmed
+ * ROBUSTNESS: Now values of environment variables are trimmed
    before being parsed.
 
- o ROBUSTNESS: Add reproducibility test for random number
+ * ROBUSTNESS: Add reproducibility test for random number
    generation using Pierre L'Ecuyer's RNG stream regardless
    of how futures are evaluated, e.g. eager, lazy and multicore.
 
 GLOBALS:
 
- o Now globals ("unknown" variables) are identified using the
+ * Now globals ("unknown" variables) are identified using the
    new findGlobals(..., method="ordered") in globals (> 0.5.0)
    such that a global variable preceding a local variable with
    the same name is properly identified and exported/frozen.
 
 DOCUMENTATION:
 
- o Updated vignette on common issues with the case where a global
+ * Updated vignette on common issues with the case where a global
    variable is not identified because it is hidden by an element
    assignment in the future expression.
     
 BUG FIXES:
  
- o Errors occurring in multicore futures could prevent
+ * Errors occurring in multicore futures could prevent
    further multicore futures from being created.
     
     
@@ -983,10 +1049,10 @@ Version: 0.8.2 [2015-10-14]
     
 BUG FIXES:
   
- o Globals that were copies of package objects were not exported to the
+ * Globals that were copies of package objects were not exported to the
    future environments.
 
- o The future package had to be attached or future::future() had to be
+ * The future package had to be attached or future::future() had to be
    imported, if %<=% was used internally in another package.
    Similarly, it also had to be attached if multicore futures where used.
     
@@ -995,11 +1061,11 @@ Version: 0.8.1 [2015-10-05]
 
 DOCUMENTATION:
 
- o Added vignette 'Futures in R: Common issues with solutions'.
+ * Added vignette 'Futures in R: Common issues with solutions'.
 
 GLOBALS:
 
- o eager() and multicore() gained argument 'globals', where
+ * eager() and multicore() gained argument 'globals', where
    globals=TRUE will validate that all global variables
    identified can be located already before the future is
    created.  This provides the means for providing the same
@@ -1008,7 +1074,7 @@ GLOBALS:
 
 BUG FIXES:
 
- o lazy(sum(x, ...), globals=TRUE) now properly passes `...`
+ * lazy(sum(x, ...), globals=TRUE) now properly passes `...`
    from the function from which the future is setup.  If not
    called within a function or called within a function without
    `...` arguments, an informative error message is thrown.
@@ -1018,39 +1084,39 @@ Version: 0.8.0 [2015-09-06]
 
 NEW FEATURES:
 
- o plan("default") resets to the default strategy, which is
+ * plan("default") resets to the default strategy, which is
    synchronous eager evaluation unless option 'future_plan'
    or environment variable 'R_FUTURE_PLAN' has been set.
 
- o availableCores("mc.cores") returns getOption("mc.cores") + 1L,
+ * availableCores("mc.cores") returns getOption("mc.cores") + 1L,
    because option 'mc.cores' specifies "allowed number of _additional_
    R processes" to be used in addition to the main R process.
     
 BUG FIXES:
 
- o plan(future::lazy) and similar gave errors.
+ * plan(future::lazy) and similar gave errors.
     
     
 Version: 0.7.0 [2015-07-13]
 
 NEW FEATURES:
 
- o multicore() gained argument 'maxCores', which makes it
+ * multicore() gained argument 'maxCores', which makes it
    possible to use for instance plan(multicore, maxCores=4L).
 
- o Add availableMulticore() [from (in-house) 'async' package].
+ * Add availableMulticore() [from (in-house) 'async' package].
 
 DOCUMENTATION:
 
- o More colorful demo("mandelbrot", package="future").
+ * More colorful demo("mandelbrot", package="future").
     
 BUG FIXES:
   
- o ROBUSTNESS: multicore() blocks until one of the CPU cores
+ * ROBUSTNESS: multicore() blocks until one of the CPU cores
    is available, iff all are currently occupied by other
    multicore futures.
 
- o old <- plan(new) now returns the old plan/strategy
+ * old <- plan(new) now returns the old plan/strategy
    (was the newly set one).
     
     
@@ -1058,7 +1124,7 @@ Version: 0.6.0 [2015-06-18]
 
 NEW FEATURES:
 
- o Add multicore futures, which are futures that are resolved
+ * Add multicore futures, which are futures that are resolved
    asynchronously in a separate process.  These are only
    supported on Unix-like systems, but not on Windows.
     
@@ -1067,13 +1133,13 @@ Version: 0.5.1 [2015-06-18]
 
 NEW FEATURES:
 
- o Eager and lazy futures now records the result internally
+ * Eager and lazy futures now records the result internally
    such that the expression is only evaluated once, even if
    their errored values are requested multiple times.
 
- o Eager futures are always created regardless of error or not.
+ * Eager futures are always created regardless of error or not.
 
- o All Future objects are environments themselves that record
+ * All Future objects are environments themselves that record
    the expression, the call environment and optional variables.
     
     
@@ -1081,7 +1147,7 @@ Version: 0.5.0 [2015-06-16]
 
 GLOBALS:
 
- o lazy() "freezes" global variables at the time when
+ * lazy() "freezes" global variables at the time when
    the future is created.  This way the result of a lazy
    future is more likely to be the same as an eager future.
    This is also how globals are likely to be handled by
@@ -1092,11 +1158,11 @@ Version: 0.4.2 [2015-06-15]
 
 NEW FEATURES:
 
- o plan() records the call.
+ * plan() records the call.
 
 DOCUMENTATION:
 
- o Added demo("mandelbrot", package="future"), which can be
+ * Added demo("mandelbrot", package="future"), which can be
    re-used by other future packages.
     
     
@@ -1104,11 +1170,11 @@ Version: 0.4.1 [2015-06-14]
 
 NEW FEATURES:
 
- o Added plan().
+ * Added plan().
 
- o Added eager future - useful for troubleshooting.
+ * Added eager future - useful for troubleshooting.
     
     
 Version: 0.4.0 [2015-06-07]
 
- o Distilled Future API from (in-house) 'async' package.
+ * Distilled Future API from (in-house) 'async' package.

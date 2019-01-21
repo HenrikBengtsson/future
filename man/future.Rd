@@ -19,7 +19,7 @@ futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
 
 x \%<-\% value
 
-futureCall(FUN, args = NULL, envir = parent.frame(), lazy = FALSE,
+futureCall(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   seed = NULL, globals = TRUE, packages = NULL,
   evaluator = plan("next"), ...)
 }
@@ -45,15 +45,14 @@ eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{evaluator}{The actual function that evaluates
-the future expression and returns a \link{Future}.
+\item{evaluator, \dots}{(internal) The actual function that evaluates
+the future expression and returns a \link{Future} and additional
+arguments passed to it.
 The evaluator function should accept all of the same
 arguments as the ones listed here
 (except \code{evaluator}, \code{FUN} and \code{args}).
 The default evaluator function is the one that the user
 has specified via \code{\link{plan}()}.}
-
-\item{\dots}{Additional arguments passed to the "evaluator".}
 
 \item{x}{the name of a future variable, which will hold the value
 of the future expression (as a promise).}
@@ -118,6 +117,11 @@ this constructs can emulate an assignment operator similar to
 \code{x <- value}. Due to \R's precedence rules of operators,
 future expressions often need to be explicitly bracketed, e.g.
 \code{x \%<-\% { a + b }}.
+
+The \code{futureCall()} function works analogously to
+\code{\link[base]{do.call}()}, which calls a function with a set of
+arguments.  The difference is that \code{do.call()} returns the value of
+the call whereas \code{futureCall()} returns a future.
 }
 \section{Eager or lazy evaluation}{
 
@@ -256,7 +260,7 @@ y <- 2 * x + 0.2 + rnorm(100)
 w <- 1 + x ^ 2
 
 
-## (1) Regular assignments (evaluated sequentially)
+## EXAMPLE: Regular assignments (evaluated sequentially)
 fitA <- lm(y ~ x, weights = w)      ## with offset
 fitB <- lm(y ~ x - 1, weights = w)  ## without offset
 fitC <- {
@@ -268,7 +272,7 @@ print(fitB)
 print(fitC)
 
 
-## (2) Future assignments (evaluated in parallel)
+## EXAMPLE: Future assignments (evaluated in parallel)
 fitA \%<-\% lm(y ~ x, weights = w)      ## with offset
 fitB \%<-\% lm(y ~ x - 1, weights = w)  ## without offset
 fitC \%<-\% {
@@ -280,7 +284,7 @@ print(fitB)
 print(fitC)
 
 
-## (3) Explicitly create futures (evaluated in parallel)
+## EXAMPLE: Explicitly create futures (evaluated in parallel)
 ## and retrieve their values
 fA <- future( lm(y ~ x, weights = w) )
 fB <- future( lm(y ~ x - 1, weights = w) )
@@ -296,7 +300,7 @@ print(fitB)
 print(fitC)
 
 
-## (4) Explit future assignments (evaluated in parallel)
+## EXAMPLE: Explicit future assignments (evaluated in parallel)
 futureAssign("fitA", lm(y ~ x, weights = w))
 futureAssign("fitB", lm(y ~ x - 1, weights = w))
 futureAssign("fitC", {
@@ -307,11 +311,18 @@ print(fitA)
 print(fitB)
 print(fitC)
 
-
 \dontshow{
 ## Make sure to "close" an multisession workers on Windows
 plan(sequential)
 }
+## EXAMPLE: futureCall() and do.call()
+x <- 1:100
+y0 <- do.call(sum, args = list(x))
+print(y0)
+
+f1 <- futureCall(sum, args = list(x))
+y1 <- value(f1)
+print(y1)
 }
 \seealso{
 How, when and where futures are resolved is given by the

@@ -62,12 +62,12 @@ run.MulticoreFuture <- function(future, ...) {
 
   reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
-    await = function() FutureRegistry(reg, action = "collect-first"),
+    await = function() FutureRegistry(reg, action = "collect-first", earlySignal = TRUE),
     workers = future$workers
   )
 
   ## Add to registry
-  FutureRegistry(reg, action = "add", future = future)
+  FutureRegistry(reg, action = "add", future = future, earlySignal = TRUE)
 
   future.args <- list(expr)
   job <- do.call(parallel::mcparallel, args = future.args, envir = envir)
@@ -102,10 +102,7 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().
   ## FIXME: Can we use result() instead? /HB 2018-07-16
-  ## NOTE 2: We have to suppress warnings because the forked process
-  ## may have already finished and terminated.
-  pid <- suppressWarnings(selectChildren(children = job,
-                                         timeout = timeout))
+  pid <- selectChildren(children = job, timeout = timeout)
   res <- (is.integer(pid) || is.null(pid))
 
   ## Signal conditions early? (happens only iff requested)
@@ -143,12 +140,7 @@ result.MulticoreFuture <- function(future, ...) {
   ##     https://bugs.r-project.org/bugzilla3/show_bug.cgi?id=17413
   jobs <- if (getRversion() >= "3.6.0") job else list(job)
   
-  ## WORKAROUNDS for R (>= 3.6.0):
-  ##  2. Suppress warnings because mccollect() produces:
-  ##     "Warning in selectChildren(pids[!fin], -1) :
-  ##      cannot wait for child 32193 as it does not exist"
-  ##     cf. https://github.com/HenrikBengtsson/future/issues/218
-  result <- suppressWarnings(mccollect(jobs = jobs, wait = TRUE)[[1L]])
+  result <- mccollect(jobs = jobs, wait = TRUE)[[1L]]
   
   ## NOTE: In Issue #218 it was suggested that parallel:::rmChild() could
   ## fix this, but there seems to be more to this story, because we still
@@ -183,14 +175,14 @@ result.MulticoreFuture <- function(future, ...) {
       ## (a) Did a localhost worker process terminate?
       if (is.numeric(pid)) {
         alive <- pid_exists(pid)
-  	if (is.na(alive)) {
-  	  msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not."
-  	} else if (alive) {
-  	  msg2 <- "A process with this PID exists, which suggests that the forked localhost worker is still alive."
-  	} else {
-  	  msg2 <- "No process exists with this PID, i.e. the forked localhost worker is no longer alive."
-  	}
-  	postmortem$alive <- msg2
+        if (is.na(alive)) {
+          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not."
+        } else if (alive) {
+          msg2 <- "A process with this PID exists, which suggests that the forked localhost worker is still alive."
+        } else {
+          msg2 <- "No process exists with this PID, i.e. the forked localhost worker is no longer alive."
+        }
+        postmortem$alive <- msg2
       }
 
       postmortem <- unlist(postmortem, use.names = FALSE)
@@ -215,7 +207,7 @@ result.MulticoreFuture <- function(future, ...) {
 
   ## Remove from registry
   reg <- sprintf("multicore-%s", session_uuid())
-  FutureRegistry(reg, action = "remove", future = future)
+  FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
 
   result
 }
@@ -226,9 +218,4 @@ getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
   NextMethod(mc.cores = mc.cores)
-}
-
-
-select_children <- function(children, timeout = 0) {
-  selectChildren <- importParallel("selectChildren")
 }

@@ -89,7 +89,11 @@ result.UniprocessFuture <- function(future, ...) {
   }
   
   if (future$state == "created") {
+    ## Make sure that run() does not signal errors
+    earlySignal <- future$earlySignal
+    future$earlySignal <- FALSE
     run(future)
+    future$earlySignal <- earlySignal
   }
 
   result <- future$result

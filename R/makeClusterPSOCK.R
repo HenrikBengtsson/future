@@ -43,13 +43,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+
+  verbose_prefix <- "[local output] "
+
   if (verbose) {
-    message(sprintf("Workers: [n = %d] %s",
+    message(sprintf("%sWorkers: [n = %d] %s", verbose_prefix,
                     length(workers), hpaste(sQuote(workers))))
   }
 
   if (is.character(port)) {
-    port <- match.arg(port)
+    port <- match.arg(port, choices = c("auto", "random"))
     if (identical(port, "auto")) {
       port0 <- Sys.getenv("R_PARALLEL_PORT", "random")
       if (identical(port0, "random")) {
@@ -70,33 +73,36 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   if (length(port) == 0L) {
     stop("Argument 'post' must be of length one or more: 0")
   }
-  if (length(port) > 1L) port <- sample(port, size = 1L)
+  if (length(port) > 1L) {
+    port <- stealth_sample(port, size = 1L)
+  }
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
   }
-  if (verbose) message(sprintf("Base port: %d", port))
+  if (verbose) message(sprintf("%sBase port: %d", verbose_prefix, port))
 
   n <- length(workers)
   cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
   for (ii in seq_along(cl)) {
-    if (verbose) message(sprintf("Creating node %d of %d ...", ii, n))
-    if (verbose) message("- setting up node")
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
+      message(sprintf("%s- setting up node", verbose_prefix))
+    }
     cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
                          verbose = verbose)
     
-    ## Attaching UUID for each cluster connection.  This is done because
-    ## https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html
-    if (verbose) message("- assigning connection UUID")
-    cl[ii] <- add_cluster_uuid(cl[ii])
-
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
     ## useful information otherwise not available, e.g. the PID.
-    if (verbose) message("- collecting session information")
+    if (verbose) {
+      message(sprintf("%s- collecting session information", verbose_prefix))
+    }
     cl[ii] <- add_cluster_session_info(cl[ii])
     
-    if (verbose) message(sprintf("Creating node %d of %d ... done", ii, n))
+    if (verbose) {
+      message(sprintf("%sCreating node %d of %d ... done", verbose_prefix, ii, n))
+    }
   }
 
   if (autoStop) cl <- autoStopCluster(cl)
@@ -122,8 +128,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \emph{Note, do not use this argument to specify the port number used by
 #' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 #' runs on a different port than the default 22, specify the SSH port by
-#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
-#' options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}
+#' appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
+#' SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
@@ -138,7 +144,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' machine or not.  For more details, see below.
 #' 
 #' @param rscript_args Additional arguments to \command{Rscript} (as a character
-#' vector).
+#' vector).  This argument can be used to customize the \R environment of the
+#' workers before they launches.  For instance, use
+#' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+#' to set the working directory to \file{/path/to} on _all_ workers.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -147,6 +156,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param outfile Where to direct the \link[base:stdout]{stdout} and
 #' \link[base:stderr]{stderr} connection output from the workers.
+#' If 'NULL', then no redirection of output is done, which means that the
+#' output is relayed in the terminal on the local computer.  On Windows, the
+#' output is only relayed when running R from a terminal but not from a GUI.
 #' 
 #' @param renice A numerical 'niceness' (priority) to set for the worker
 #' processes.
@@ -158,11 +170,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' vector).  These arguments are only applied if \code{machine} is not
 #' \emph{localhost}.  For more details, see below.
 #' 
+#' @param rshlogfile (optional) If a filename, the output produced by the
+#' \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
+#' to a temporary file.  The log file name is available as an attribute
+#' as part of the return node object.
+#' \emph{Warning: This only works with SSH clients that support option
+#' \code{-E out.log}.}
+#'
 #' @param user (optional) The user name to be used when communicating with
 #' another host.
 #' 
-#' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such
-#' that the worker \R process sets up a socket connection to its local port
+#' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such#' that the worker \R process sets up a socket connection to its local port
 #' \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 #' If FALSE, then the worker will try to connect directly to port \code{port} on
 #' \code{master}.  For more details, see below.
@@ -187,34 +205,49 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' It is also considered \emph{localhost} if it appears on the same line
 #' as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
 #' 
-#' @section Default values of arguments \code{rshcmd} and \code{rshopts}:
+#' @section Default SSH client and options (arguments \code{rshcmd} and \code{rshopts}):
 #' Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
 #' to an external host.
 #' 
 #' The default method for connecting to an external host is via SSH and the
 #' system executable for this is given by argument \code{rshcmd}.  The default
-#' is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
-#' set the default is either of \command{ssh} and \command{plink -ssh}.
+#' is given by option \code{future.makeNodePSOCK.rshcmd}.  If that is not
+#' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 #' on the \code{PATH}.  This is also true for recent Windows 10
-#' (since version 1803; April 2018).
-#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-#' client that is distributed with RStudio will be used as a fallback if
-#' neither of the above two commands are available on the \code{PATH}.
-#' 
-#' For Windows systems prior to Windows 10, which do not have RStudio
-#' installed, it is less common to find \command{ssh}. Instead it is more
-#' likely that such systems have the \command{PuTTY} software and its SSH
-#' client \command{plink} installed.
-#' If no SSH-client is found, an informative error message is produced.
-#' 
-#' It is also possible to specify the absolute path to the SSH client.  To do
-#' this for PuTTY, specify the absolute path in the first element and option
-#' \command{-ssh} in the second as in
+#' (since version 1803; April 2018) (*).
+#'
+#' For \emph{Windows systems prior to Windows 10}, it is less common to find
+#' \command{ssh} on the \code{PATH}. Instead it is more likely that such
+#' systems have the \command{PuTTY} software and its SSH client
+#' \command{plink} installed.  PuTTY puts itself on the system \code{PATH}
+#' when installed, meaning this function will find PuTTY automatically if
+#' installed.  If not, to manually set specify PuTTY as the SSH client,
+#' specify the absolute pathname of \file{plink.exe} in the first element and
+#' option \command{-ssh} in the second as in
 #' \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 #' This is because all elements of \code{rshcmd} are individually "shell"
 #' quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
 #'
+#' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
+#' client that is distributed with RStudio will be also be considered.
+#' This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
+#' is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
+#' variable - a variable that is (only) set when running RStudio.
+#'
+#' You can override the default set of SSH clients that are searched for
+#' by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
+#' \code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
+#' below for examples.
+#'
+#' If no SSH-client is found, an informative error message is produced.
+#'
+#' (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
+#' SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
+#' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+#' Because of this, it is recommended to use the PuTTY SSH client or the
+#' RStudio SSH client until this bug has been resolved in Windows 10.}
+#' 
 #' Additional SSH options may be specified via argument \code{rshopts}, which
 #' defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
 #' private SSH key can be provided as
@@ -223,6 +256,37 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
 #' Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 #' 
+#' @section Accessing external machines that prompts for a password:
+#' \emph{IMPORTANT: With one exception, it is not possible to for these
+#' functions to log in and launch R workers on external machines that requires
+#' a password to be entered manually for authentication.}
+#' The only known exception is the PuTTY client on Windows for which one can
+#' pass the password via command-line option \code{-pw}, e.g. 
+#' \code{rshopts = c("-pw", "MySecretPassword")}.
+#'
+#' Note, depending on whether you run R in a terminal or via a GUI, you might
+#' not even see the password prompt.  It is also likely that you cannot enter
+#' a password, because the connection is set up via a background system call.
+#'
+#' The poor man's workaround for setup that requires a password is to manually
+#' log into the each of the external machines and launch the R workers by hand.
+#' For this approach, use \code{manual = TRUE} and follow the instructions
+#' which include cut'n'pasteable commands on how to launch the worker from the
+#' external machine.
+#'
+#' However, a much more convenient and less tedious method is to set up
+#' key-based SSH authentication between your local machine and the external
+#' machine(s), as explain below.
+#'
+#' @section Accessing external machines via key-based SSH authentication:
+#' The best approach to automatically launch R workers on external machines
+#' over SSH is to set up key-based SSH authentication.  This will allow you
+#' to log into the external machine without have to enter a password.
+#'
+#' Key-based SSH authentication is taken care of by the SSH client and not \R.
+#' To configure this, see the manuals of your SSH client or search the web
+#' for "ssh key authentication".
+#'
 #' @section Reverse SSH tunneling:
 #' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
 #' workers running on other machines.  This avoids the complication of
@@ -272,7 +336,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' @rdname makeClusterPSOCK
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 * 60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 * 60), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -307,7 +371,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   revtunnel <- as.logical(revtunnel)
   stop_if_not(length(revtunnel) == 1L, !is.na(revtunnel))
-  
+
+  if (!is.null(rshlogfile)) {
+    if (is.logical(rshlogfile)) {
+      stop_if_not(!is.na(rshlogfile))
+      if (rshlogfile) {
+        rshlogfile <- tempfile(pattern = "future_makeClusterPSOCK_", fileext = ".log")
+      } else {
+        rshlogfile <- NULL
+      }
+    } else {
+      rshlogfile <- as.character(rshlogfile)
+      rshlogfile <- normalizePath(rshlogfile, mustWork = FALSE)
+    }
+  }
+
   if (is.null(master)) {
     if (localMachine || revtunnel) {
       master <- "localhost"
@@ -336,14 +414,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   if (is.null(rscript)) {
     rscript <- "Rscript"
     if (homogeneous) rscript <- file.path(R.home("bin"), rscript)
+  } else {
+    rscript <- as.character(rscript)
+    stop_if_not(length(rscript) >= 1L)
+    
+    bin <- Sys.which(rscript[1])
+    if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+    rscript[1] <- bin
   }
-  rscript <- as.character(rscript)
-  stop_if_not(length(rscript) >= 1L)
 
   rscript_args <- as.character(rscript_args)
 
   useXDR <- as.logical(useXDR)
   stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
+
+  stop_if_not(is.null(outfile) || is.character(outfile))
 
   renice <- as.integer(renice)
   stop_if_not(length(renice) == 1L)
@@ -353,6 +438,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   
   verbose <- as.logical(verbose)
   stop_if_not(length(verbose) == 1L, !is.na(verbose))
+
+  verbose_prefix <- "[local output] "
 
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
@@ -383,27 +470,86 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   if (!localMachine) {
     ## Find default SSH client
-    if (is.null(rshcmd)) {
-      rshcmd <- find_rshcmd(!localMachine && !manual && !dryrun)
+    find <- is.null(rshcmd)
+    if (find) {
+      which <- NULL
+      if (verbose) {
+        message(sprintf("%sWill search for all 'rshcmd' available\n",
+                verbose_prefix))
+      }
+    } else if (all(grepl("^<[a-zA-Z-]+>$", rshcmd))) {
+      find <- TRUE
+      if (verbose) {
+        message(sprintf("%sWill search for specified 'rshcmd' types: %s\n",
+                verbose_prefix, paste(sQuote(rshcmd), collapse = ", ")))
+      }
+      which <- gsub("^<([a-zA-Z-]+)>$", "\\1", rshcmd)
     }
+
+    if (find) {
+      rshcmd <- find_rshcmd(which = which,
+                            must_work = !localMachine && !manual && !dryrun)
+      if (verbose) {
+        s <- unlist(lapply(rshcmd, FUN = function(r) {
+          sprintf("%s [type=%s, version=%s]", paste(sQuote(r), collapse = ", "), sQuote(attr(r, "type")), sQuote(attr(r, "version")))
+        }))
+        s <- paste(sprintf("%s %d. %s", verbose_prefix, seq_along(s), s), collapse = "\n")
+        message(sprintf("%sFound the following available 'rshcmd':\n%s", verbose_prefix, s))
+      }
+      rshcmd <- rshcmd[[1]]
+    } else {
+      if (is.null(attr(rshcmd, "type"))) attr(rshcmd, "type") <- "<unknown>"
+      if (is.null(attr(rshcmd, "version"))) attr(rshcmd, "version") <- "<unknown>"
+    }
+    s <- sprintf("type=%s, version=%s", sQuote(attr(rshcmd, "type")), sQuote(attr(rshcmd, "version")))
+    rshcmd_label <- sprintf("%s [%s]", paste(sQuote(rshcmd), collapse = ", "), s)
+
+    if (verbose) message(sprintf("%sUsing 'rshcmd': %s", verbose_prefix, rshcmd_label))
     
-    ## Local commands
-    rshcmd <- paste(shQuote(rshcmd), collapse = " ")
+    ## User?
     if (length(user) == 1L) rshopts <- c("-l", user, rshopts)
+
+    ## Reverse tunneling?
     if (revtunnel) {
       rshopts <- c(sprintf("-R %d:%s:%d", rscript_port, master, port), rshopts)
+      ## AD HOC: Warn about Windows 10 SSH bug with rev tunneling
+      if (isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         ver <- windows_build_version()
+         if (!is.null(ver) && ver <= "10.0.17763.253") {
+           msg <- sprintf("WARNING: You're running Windows 10 (build %s) where this 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE) resulting in worker failing to launch", ver, paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
+           if (verbose) message(c(verbose_prefix, msg))
+	 }
+      }
     }
+    
+    ## SSH log file?
+    if (is.character(rshlogfile)) {
+      rshopts <- c(sprintf("-E %s", shQuote(rshlogfile)), rshopts)
+    }
+    
     rshopts <- paste(rshopts, collapse = " ")
-    local_cmd <- paste(rshcmd, rshopts, worker, shQuote(cmd))
+    
+    ## Local commands
+    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker)
+    local_cmd <- paste(rsh_call, shQuote(cmd))
   } else {
     local_cmd <- cmd
   }
   stop_if_not(length(local_cmd) == 1L)
-  
+
+  is_worker_output_visible <- is.null(outfile)
+
   if (manual || dryrun) {
-    msg <- c("----------------------------------------------------------------------", sprintf("Manually start worker #%s on %s with:", rank, sQuote(worker)), sprintf("  %s", cmd))
-    if (!localMachine) {
-      msg <- c(msg, "Alternatively, start it from the local machine with:", sprintf("  %s", local_cmd))
+    msg <- c("----------------------------------------------------------------------")
+    if (localMachine) {
+      msg <- c(msg, sprintf("Manually, start worker #%s on local machine %s with:", rank, sQuote(worker)), sprintf("\n  %s\n", cmd))
+    } else {
+      msg <- c(msg, sprintf("Manually, (i) login into external machine %s:", sQuote(worker)),
+               sprintf("\n  %s\n", rsh_call))
+      msg <- c(msg, sprintf("and (ii) start worker #%s from there:", rank),
+               sprintf("\n  %s\n", cmd))
+      msg <- c(msg, sprintf("Alternatively, start worker #%s from the local machine by combining both step in a single call:", rank),
+               sprintf("\n  %s\n", local_cmd))
     }
     msg <- paste(c(msg, ""), collapse = "\n")
     cat(msg)
@@ -411,62 +557,145 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (dryrun) return(NULL)
   } else {
     if (verbose) {
-      message(sprintf("Starting worker #%s on %s: %s", rank, sQuote(worker), local_cmd))
+      message(sprintf("%sStarting worker #%s on %s: %s", verbose_prefix, rank, sQuote(worker), local_cmd))
     }
     input <- if (.Platform$OS.type == "windows") "" else NULL
-    system(local_cmd, wait = FALSE, input = input)
+    res <- system(local_cmd, wait = FALSE, input = input)
+    if (verbose) {
+      message(sprintf("%s- Exit code of system() call: %s", verbose_prefix, res))
+    }
+    if (res != 0) {
+      warning(sprintf("system(%s) had a non-zero exit code: %d", local_cmd, res))
+    }
   }
 
   if (verbose) {
-    message(sprintf("Waiting for worker #%s on %s to connect back", rank, sQuote(worker)))
+    message(sprintf("%sWaiting for worker #%s on %s to connect back", verbose_prefix, rank, sQuote(worker)))
+    if (is_worker_output_visible) {
+      if (.Platform$OS.type == "windows") {
+        message(sprintf("%s- Detected 'outfile=NULL' on Windows: this will make the output from the background worker visible when running R from a terminal, but it will most likely not be visible when using a GUI.", verbose_prefix))
+      } else {
+        message(sprintf("%s- Detected 'outfile=NULL': this will make the output from the background worker visible", verbose_prefix))
+      }
+    }
   }
-  
+    
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
      ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
      ##       undo it manually :/  /HB 2016-11-05
      setTimeLimit(elapsed = connectTimeout)
      on.exit(setTimeLimit(elapsed = Inf))
-     
-     socketConnection("localhost", port = port, server = TRUE, 
-                      blocking = TRUE, open = "a+b", timeout = timeout)
+
+     warnings <- list()
+     tryCatch({
+       withCallingHandlers({
+         socketConnection("localhost", port = port, server = TRUE, 
+                          blocking = TRUE, open = "a+b", timeout = timeout)
+       }, warning = function(w) {
+         if (verbose) {
+           message(sprintf("%sDetected a warning from socketConnection(): %s", verbose_prefix, sQuote(conditionMessage(w))))
+         }
+         warnings <<- c(warnings, list(w))
+       })
+     }, error = function(ex) {
+       ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       ## Post-mortem analysis
+       ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+       machineType <- if (localMachine) "local" else "remote"
+       msg <- sprintf("Failed to launch and connect to R worker on %s machine %s from local machine %s.\n", machineType, sQuote(worker), sQuote(Sys.info()[["nodename"]]))
+
+       ## Inspect and report on the error message
+       cmsg <- conditionMessage(ex)
+       if (grepl(gettext("reached elapsed time limit"), cmsg)) {
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s (which suggests that the connection timeout of %.0f seconds (argument 'connectTimeout') kicked in)\n", sQuote(cmsg), connectTimeout))
+       } else {
+         msg <- c(msg, sprintf(" * The error produced by socketConnection() was: %s\n", sQuote(cmsg)))
+       }
+
+       ## Inspect and report on any warnings
+       if (length(warnings) > 0) {
+         msg <- c(msg, sprintf(" * In addition, socketConnection() produced %d warning(s):\n", length(warnings)))
+         for (kk in seq_along(warnings)) {
+           cmsg <- conditionMessage(warnings[[kk]])
+           if (grepl("port [0-9]+ cannot be opened", cmsg)) {
+             msg <- c(msg, sprintf("   - Warning #%d: %s (which suggests that this port is either already occupied by another process or blocked by the firewall on your local machine)\n", kk, sQuote(cmsg)))
+           } else {
+             msg <- c(msg, sprintf("   - Warning #%d: %s\n", kk, sQuote(cmsg)))
+           }
+         }
+       }
+
+       ## Report on how the local socket connect was setup
+       msg <- c(msg, sprintf(" * The localhost socket connection that failed to connect to the R worker used port %d using a communication timeout of %.0f seconds and a connection timeout of %.0f seconds.\n", port, timeout, connectTimeout))
+
+       ## Report on how the worker was launched
+       msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
+
+       ## Propose further troubleshooting methods
+       suggestions <- NULL
+
+       ## Enable verbose=TRUE?
+       if (!verbose) {
+         suggestions <- c(suggestions, "Set 'verbose=TRUE' to see more details.")
+       }
+
+       ## outfile=NULL?
+       if (.Platform$OS.type == "windows") {
+         if (is_worker_output_visible) {
+           suggestions <- c(suggestions, "On Windows, to see output from worker, set 'outfile=NULL' and run R from a terminal (not a GUI).")
+         } else {
+           suggestions <- c(suggestions, "On Windows, output from worker when using 'outfile=NULL' is only visible when running R from a terminal (not a GUI).")
+         }
+       } else {
+         if (!is_worker_output_visible) {
+           suggestions <- c(suggestions, "Set 'outfile=NULL' to see output from worker.")
+         }
+       }
+
+       ## Log file?
+       if (is.character(rshlogfile)) {
+         smsg <- sprintf("Inspect the content of log file %s for %s.", sQuote(rshlogfile), sQuote(rshcmd))
+         lmsg <- tryCatch(readLines(rshlogfile, n = 15L, warn = FALSE), error = function(ex) NULL)
+         if (length(lmsg) > 0) {
+           lmsg <- sprintf("     %2d: %s", seq_along(lmsg), lmsg)
+           smsg <- sprintf("%s The first %d lines are:\n%s", smsg, length(lmsg), paste(lmsg, collapse = "\n"))
+         }
+         suggestions <- c(suggestions, smsg)
+       } else {
+         suggestions <- c(suggestions, sprintf("Set 'rshlogfile=TRUE' to enable logging for %s.", sQuote(rshcmd)))
+       }
+       
+       ## Special: Windows 10 ssh client may not support reverse tunneling. /2018-11-10
+       ## https://github.com/PowerShell/Win32-OpenSSH/issues/1265
+       if (!localMachine && revtunnel && isTRUE(attr(rshcmd, "OpenSSH_for_Windows"))) {
+         suggestions <- c(suggestions, sprintf("The 'rshcmd' (%s) used may not support reverse tunneling (revtunnel = TRUE). See ?future::makeClusterPSOCK for alternatives.\n", rshcmd_label))
+       }
+       
+       if (length(suggestions) > 0) {
+         suggestions <- sprintf("   - Suggestion #%d: %s\n", seq_along(suggestions), suggestions)
+         msg <- c(msg, " * Troubleshooting suggestions:\n", suggestions)
+       }
+       
+       msg <- paste(msg, collapse = "")
+       ex$message <- msg
+
+       ## Relay error and temporarily avoid truncating the error message in case it is too long
+       local({
+         oopts <- options(warning.length = 2000L)
+         on.exit(options(oopts))
+         stop(ex)
+       })
+     })
   })
 
   if (verbose) {
-    message(sprintf("Connection with worker #%s on %s established", rank, sQuote(worker)))
+    message(sprintf("%sConnection with worker #%s on %s established", verbose_prefix, rank, sQuote(worker)))
   }
 
-  structure(list(con = con, host = worker, rank = rank),
+  structure(list(con = con, host = worker, rank = rank, rshlogfile = rshlogfile),
             class = if (useXDR) "SOCKnode" else "SOCK0node")
 } ## makeNodePSOCK()
-
-
-
-## Attaching UUID for each cluster connection.
-## This is needed in order to be able to assert that we later
-## actually work with the same connection.  See R-devel thread
-## 'closeAllConnections() can really mess things up' on 2016-10-30
-## (https://stat.ethz.ch/pipermail/r-devel/2016-October/073331.html)
-add_cluster_uuid <- function(cl) {
-  stop_if_not(inherits(cl, "cluster"))
-  
-  for (ii in seq_along(cl)) {
-    node <- cl[[ii]]
-    if (is.null(node)) next  ## Happens with dryrun = TRUE
-
-    ## For workers with connections, get the UUID for the connection
-    if (!is.null(con <- node$con)) {
-      uuid <- attr(con, "uuid", exact = TRUE)
-      if (is.null(uuid)) {
-        attr(con, "uuid") <- uuid_of_connection(con, keep_source = TRUE)
-        node$con <- con
-        cl[[ii]] <- node
-      }
-    }
-  }
-  
-  cl
-} ## add_cluster_uuid()
 
 
 ## Checks if a given worker is the same as the localhost.  It is, iff:
@@ -547,41 +776,116 @@ is_fqdn <- function(worker) {
 }
 
 
-## Locate an SSH client
-find_rshcmd <- function(must_work = TRUE) {
-  cmd_calls <- list(
-    "ssh",
-    c("plink", "-ssh")
-  )
-  for (cmd_call in cmd_calls) {
-    cmd <- cmd_call[1]
-    cmd_bin <- Sys.which(cmd)
-    if (nzchar(cmd_bin)) return(c(cmd_bin, cmd_call[-1]))
+#' Search for SSH clients on the current system
+#'
+#' @param which A character vector specifying which types of SSH clients
+#' to search for.  If NULL, a default set of clients supported by the
+#' current platform is searched for.
+#'
+#' @param first If TRUE, the first client found is returned, otherwise
+#' all located clients are returned.
+#'
+#' @param must_work If TRUE and no clients was found, then an error
+#' is produced, otherwise only a warning.
+#'
+#' @return A named list of pathnames to all located SSH clients.
+#' If \code{first = TRUE}, only the first one is returned.
+#' Attribute \code{version} contains the output from querying the
+#' executable for its version (via command-line option \code{-V}).
+#'
+#' @export
+#' @keywords internal
+find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
+  query_version <- function(bin, args = "-V") {
+    v <- suppressWarnings(system2(bin, args = args, stdout = TRUE, stderr = TRUE))
+    paste(v, collapse = "; ")
+  }
+  
+  find_rstudio_ssh <- function() {
+    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
+    if (!file_test("-d", path)) return(NULL)   
+    path <- normalizePath(path)
+    path_org <- Sys.getenv("PATH")
+    on.exit(Sys.setenv(PATH = path_org))
+    
+    ## Set PATH to only look in RSTUDIO_MSYS_SSH to avoid
+    ## picking up other clients with the same name
+    ## Comment: In RStudio, RSTUDIO_MSYS_SSH is appended
+    ## to the PATH, see PATH in 'Tools -> Shell ...'.
+    Sys.setenv(PATH = path)
+    bin <- Sys.which("ssh")
+    if (!nzchar(bin)) return(NULL)
+    attr(bin, "type") <- "rstudio-ssh"
+    attr(bin, "version") <- query_version(bin, args = "-V")
+    bin
   }
 
-  ## FALLBACK: On Windows, RStudio distributes an 'ssh.exe' client
-  if (.Platform$OS.type == "windows") {
-    path <- Sys.getenv("RSTUDIO_MSYS_SSH")
-    if (file_test("-d", path)) {
-      path <- normalizePath(path)
-      path_org <- Sys.getenv("PATH")
-      on.exit(Sys.setenv(PATH = path_org))
-      ## Append RSTUDIO_MSYS_SSH with the rationale that it
-      ## emulates how RStudio's 'Tools -> Shell ...' is set up.
-      Sys.setenv(PATH = file.path(path_org, path, fsep = ";"))
-      cmd_bin <- Sys.which("ssh")
-      if (nzchar(cmd_bin)) return(cmd_bin)
+  find_putty_plink <- function() {
+    bin <- Sys.which("plink")
+    if (!nzchar(bin)) return(NULL)
+    res <- c(bin, "-ssh")
+    attr(res, "type") <- "putty-plink"
+    attr(res, "version") <- query_version(bin, args = "-V")
+    res
+  }
+
+  find_ssh <- function() {
+    bin <- Sys.which("ssh")
+    if (!nzchar(bin)) return(NULL)
+    attr(bin, "type") <- "ssh"
+    v <- query_version(bin, args = "-V")
+    attr(bin, "version") <- v
+    if (any(grepl("OpenSSH_for_Windows", v)))
+      attr(bin, "OpenSSH_for_Windows") <- TRUE
+    bin
+  }
+
+  if (!is.null(which)) stop_if_not(is.character(which), length(which) >= 1L, !anyNA(which))
+  stop_if_not(is.logical(first), length(first) == 1L, !is.na(first))
+  stop_if_not(is.logical(must_work), length(must_work) == 1L, !is.na(must_work))
+
+  if (is.null(which)) {
+    if (.Platform$OS.type == "windows") {
+      which <- c("putty-plink", "rstudio-ssh")
+      ## Reverse tunnelling on SSH is not supported on Windows 10:
+      ## - version 1803 (= build 17134.523, 2018-07-10)
+      ## - version 1809 (= build 17763.253, 2018-11-13)
+      ## So unlikely this will work out of the box.
+      ver <- windows_build_version()
+      if (!is.null(ver) && ver > "10.0.17763.253") {
+        which <- c("ssh", which)
+      } else {
+        which <- c(which, "ssh")
+      }
+    } else {
+      which <- c("ssh")
     }
   }
   
-  cmds_checked <- unlist(lapply(cmd_calls, FUN = function(x) x[1]))
-  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(cmds_checked), collapse = ", ")) #nolint
+  res <- list()
+  for (name in which) {
+    pathname <- switch(name,
+      "ssh"         = find_ssh(),
+      "putty-plink" = find_putty_plink(),
+      "rstudio-ssh" = find_rstudio_ssh(),
+      stop("Unknown 'rshcmd' type: ", sQuote(name))
+    )
+    
+    if (!is.null(pathname)) {
+      if (first) return(pathname)
+      res[[name]] <- pathname
+    }
+  }    
+
+  if (length(res) > 0) return(res)
+  
+  msg <- sprintf("Failed to locate a default SSH client (checked: %s). Please specify one via argument 'rshcmd'.", paste(sQuote(which), collapse = ", ")) #nolint
   if (must_work) stop(msg)
 
-  cmd <- cmd_calls[[1]]
-  msg <- sprintf("%s Will use %s.", msg, sQuote(paste(cmd, collapse = " ")))
+  pathname <- "ssh"
+  msg <- sprintf("%s Will still try with %s.", msg, sQuote(paste(pathname, collapse = " ")))
   warning(msg)
-  cmd
+  pathname
 }
 
 
@@ -629,7 +933,7 @@ add_cluster_session_info <- function(cl) {
 #' @param debug If TRUE, then debug messages are produced when
 #' the cluster is garbage collected.
 #'
-#' @return The cluster object with attribute `gcMe` set.
+#' @return The cluster object with attribute \code{gcMe} set.
 #'
 #' @importFrom parallel stopCluster
 #' @importFrom utils capture.output
@@ -663,3 +967,20 @@ autoStopCluster <- function(cl, debug = FALSE) {
   }
   cl
 }
+
+
+## Gets the Windows build version, e.g. '10.0.17134.523' (Windows 10 v1803)
+## and '10.0.17763.253' (Windows 10 v1809).
+windows_build_version <- local({
+  if (.Platform$OS.type != "windows") return(function() NULL)
+  function() {
+    res <- shell("ver", intern = TRUE)
+    if (length(res) == 0) return(NULL)
+    res <- grep("Microsoft", res, value = TRUE)
+    if (length(res) == 0) return(NULL)
+    res <- gsub(".*Version ([0-9.]+).*", "\\1", res)
+    tryCatch({
+      numeric_version(res)
+    }, error = function(ex) NULL)
+  }
+})

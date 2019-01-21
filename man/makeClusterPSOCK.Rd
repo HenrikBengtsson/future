@@ -16,9 +16,9 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
   renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL,
-  revtunnel = TRUE, rshopts = getOption("future.makeNodePSOCK.rshopts",
-  NULL), rank = 1L, manual = FALSE, dryrun = FALSE,
-  verbose = FALSE)
+  revtunnel = TRUE, rshlogfile = NULL,
+  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
+  manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{workers}{The hostnames of workers (as a character vector) or the number
@@ -36,8 +36,8 @@ is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
 \emph{Note, do not use this argument to specify the port number used by
 \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 runs on a different port than the default 22, specify the SSH port by
-appending it to the hostname, e.g. `"remote.server.org:2200"` or via SSH
-options \code{-p}, e.g. `rshopts = c("-p", "2200")`.}}
+appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
+SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 
 \item{\dots}{Optional arguments passed to
 \code{makeNode(workers[i], ..., rank = i)} where
@@ -68,7 +68,10 @@ on the worker and whether it is installed in the same path as the calling
 machine or not.  For more details, see below.}
 
 \item{rscript_args}{Additional arguments to \command{Rscript} (as a character
-vector).}
+vector).  This argument can be used to customize the \R environment of the
+workers before they launches.  For instance, use
+\code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+to set the working directory to \file{/path/to} on _all_ workers.}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
@@ -76,7 +79,10 @@ vector).}
 binary, will use big-endian (XDR).}
 
 \item{outfile}{Where to direct the \link[base:stdout]{stdout} and
-\link[base:stderr]{stderr} connection output from the workers.}
+\link[base:stderr]{stderr} connection output from the workers.
+If 'NULL', then no redirection of output is done, which means that the
+output is relayed in the terminal on the local computer.  On Windows, the
+output is only relayed when running R from a terminal but not from a GUI.}
 
 \item{renice}{A numerical 'niceness' (priority) to set for the worker
 processes.}
@@ -89,11 +95,17 @@ vector).  These arguments are only applied if \code{machine} is not
 \item{user}{(optional) The user name to be used when communicating with
 another host.}
 
-\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such
-that the worker \R process sets up a socket connection to its local port
+\item{revtunnel}{If TRUE, a reverse SSH tunnel is set up for each worker such#' that the worker \R process sets up a socket connection to its local port
 \code{(port - rank + 1)} which then reaches the master on port \code{port}.
 If FALSE, then the worker will try to connect directly to port \code{port} on
 \code{master}.  For more details, see below.}
+
+\item{rshlogfile}{(optional) If a filename, the output produced by the
+\code{rshcmd} call is logged to this file, of if TRUE, then it is logged
+to a temporary file.  The log file name is available as an attribute
+as part of the return node object.
+\emph{Warning: This only works with SSH clients that support option
+\code{-E out.log}.}}
 
 \item{rank}{A unique one-based index for each worker (automatically set).}
 
@@ -134,34 +146,49 @@ It is also considered \emph{localhost} if it appears on the same line
 as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
 }
 
-\section{Default values of arguments \code{rshcmd} and \code{rshopts}}{
+\section{Default SSH client and options (arguments \code{rshcmd} and \code{rshopts})}{
 
 Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
 to an external host.
 
 The default method for connecting to an external host is via SSH and the
 system executable for this is given by argument \code{rshcmd}.  The default
-is given by option \code{future.makeNodePSOCK.rshcmd} and if that is not
-set the default is either of \command{ssh} and \command{plink -ssh}.
+is given by option \code{future.makeNodePSOCK.rshcmd}.  If that is not
+set, then the default is to use \command{ssh}.
 Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 on the \code{PATH}.  This is also true for recent Windows 10
-(since version 1803; April 2018).
-Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-client that is distributed with RStudio will be used as a fallback if
-neither of the above two commands are available on the \code{PATH}.
+(since version 1803; April 2018) (*).
 
-For Windows systems prior to Windows 10, which do not have RStudio
-installed, it is less common to find \command{ssh}. Instead it is more
-likely that such systems have the \command{PuTTY} software and its SSH
-client \command{plink} installed.
-If no SSH-client is found, an informative error message is produced.
-
-It is also possible to specify the absolute path to the SSH client.  To do
-this for PuTTY, specify the absolute path in the first element and option
-\command{-ssh} in the second as in
+For \emph{Windows systems prior to Windows 10}, it is less common to find
+\command{ssh} on the \code{PATH}. Instead it is more likely that such
+systems have the \command{PuTTY} software and its SSH client
+\command{plink} installed.  PuTTY puts itself on the system \code{PATH}
+when installed, meaning this function will find PuTTY automatically if
+installed.  If not, to manually set specify PuTTY as the SSH client,
+specify the absolute pathname of \file{plink.exe} in the first element and
+option \command{-ssh} in the second as in
 \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 This is because all elements of \code{rshcmd} are individually "shell"
 quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
+
+Furthermore, when running \R from RStudio on Windows, the \command{ssh}
+client that is distributed with RStudio will be also be considered.
+This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
+is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
+variable - a variable that is (only) set when running RStudio.
+
+You can override the default set of SSH clients that are searched for
+by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
+\code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
+below for examples.
+
+If no SSH-client is found, an informative error message is produced.
+
+(*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
+SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
+(\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+Because of this, it is recommended to use the PuTTY SSH client or the
+RStudio SSH client until this bug has been resolved in Windows 10.}
 
 Additional SSH options may be specified via argument \code{rshopts}, which
 defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
@@ -170,6 +197,41 @@ private SSH key can be provided as
 specify a PuTTY PPK file, e.g.
 \code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
 Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
+}
+
+\section{Accessing external machines that prompts for a password}{
+
+\emph{IMPORTANT: With one exception, it is not possible to for these
+functions to log in and launch R workers on external machines that requires
+a password to be entered manually for authentication.}
+The only known exception is the PuTTY client on Windows for which one can
+pass the password via command-line option \code{-pw}, e.g. 
+\code{rshopts = c("-pw", "MySecretPassword")}.
+
+Note, depending on whether you run R in a terminal or via a GUI, you might
+not even see the password prompt.  It is also likely that you cannot enter
+a password, because the connection is set up via a background system call.
+
+The poor man's workaround for setup that requires a password is to manually
+log into the each of the external machines and launch the R workers by hand.
+For this approach, use \code{manual = TRUE} and follow the instructions
+which include cut'n'pasteable commands on how to launch the worker from the
+external machine.
+
+However, a much more convenient and less tedious method is to set up
+key-based SSH authentication between your local machine and the external
+machine(s), as explain below.
+}
+
+\section{Accessing external machines via key-based SSH authentication}{
+
+The best approach to automatically launch R workers on external machines
+over SSH is to set up key-based SSH authentication.  This will allow you
+to log into the external machine without have to enter a password.
+
+Key-based SSH authentication is taken care of by the SSH client and not \R.
+To configure this, see the manuals of your SSH client or search the web
+for "ssh key authentication".
 }
 
 \section{Reverse SSH tunneling}{
@@ -230,10 +292,21 @@ trying to access the connection.
 }
 
 \examples{
+## NOTE: Drop 'dryrun = TRUE' below in order to actually connect.  Add
+## 'verbose = TRUE' if you run into problems and need to troubleshoot.
+
+
+## EXAMPLE: Two workers on the local machine
+workers <- c("localhost", "localhost")
+cl <- makeClusterPSOCK(workers, dryrun = TRUE)
+
+## EXAMPLE: Three remote workers
 ## Setup of three R workers on two remote machines are set up
 workers <- c("n1.remote.org", "n2.remote.org", "n1.remote.org")
 cl <- makeClusterPSOCK(workers, dryrun = TRUE)
 
+
+## EXAMPLE: Local and remote workers
 ## Same setup when the two machines are on the local network and
 ## have identical software setups
 cl <- makeClusterPSOCK(
@@ -242,6 +315,7 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 
+## EXAMPLE: Remote workers with specific setup
 ## Setup of remote worker with more detailed control on
 ## authentication and reverse SSH tunnelling
 cl <- makeClusterPSOCK(
@@ -256,13 +330,38 @@ cl <- makeClusterPSOCK(
   dryrun = TRUE
 )
 
+## EXAMPLE: Two workers running in Docker on the local machine
 ## Setup of 2 Docker workers running rocker/r-base
 ## (requires installation of future package)
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "singularity", "run", "--net=host", "rocker/r-base",
+    "Rscript"
+  ),
+  ## Install future package
+  rscript_args = c(
+    "-e", shQuote("install.packages('future')")
+  ),
+  ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
+  ## and Windows (not Linux), when the R worker tries to connect back to
+  ## the default 'localhost' it will fail, because the main R session is
+  ## not running in the VM, but outside on the host.  To reach the host on
+  ## macOS and Windows, make sure to use master = "host.docker.internal"
+  # master = "host.docker.internal",  # <= macOS & Windows
+  dryrun = TRUE
+)
+
+
+## EXAMPLE: Two workers running in Singularity on the local machine
+## Setup of 2 Singularity workers running rocker/r-base
+## (requires installation of future package)
+cl <- makeClusterPSOCK(
+  rep("localhost", times = 2L),
+  ## Launch Rscript inside Docker container
+  rscript = c(
+    "singularity", "exec", "docker://rocker/r-base",
     "Rscript"
   ),
   ## Install future package
@@ -271,8 +370,9 @@ cl <- makeClusterPSOCK(
   ),
   dryrun = TRUE
 )
-                       
 
+
+## EXAMPLE: One worker running in udocker on the local machine
 ## Setup of a single udocker.py worker running rocker/r-base
 ## (requires installation of future package and extra quoting)
 cl <- makeClusterPSOCK(
@@ -292,6 +392,7 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remote worker running on AWS
 ## Launching worker on Amazon AWS EC2 running one of the
 ## Amazon Machine Images (AMI) provided by RStudio
 ## (http://www.louisaslett.com/RStudio_AMI/)
@@ -322,6 +423,7 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remote worker running on GCE
 ## Launching worker on Google Cloud Engine (GCE) running a
 ## container based VM (with a #cloud-config specification)
 public_ip <- "1.2.3.4"
@@ -351,11 +453,28 @@ cl <- makeClusterPSOCK(
 )
 
 
+## EXAMPLE: Remote worker running on Linux from Windows machine
 ## Connect to remote Unix machine 'remote.server.org' on port 2200
-## as user 'bob' from a Windows machine with PuTTY installed
+## as user 'bob' from a Windows machine with PuTTY installed.
+## Using the explicit special rshcmd = "<putty-plink>", will force
+## makeClusterPSOCK() to search for and use the PuTTY plink software,
+## preventing it from using other SSH clients on the system search PATH.
 cl <- makeClusterPSOCK(
   "remote.server.org", user = "bob",
+  rshcmd = "<putty-plink>",
   rshopts = c("-P", 2200, "-i", "C:/Users/bobby/.ssh/putty.ppk"),
+  dryrun = TRUE
+)
+
+
+## EXAMPLE: Remote worker running on Linux from RStudio on Windows
+## Connect to remote Unix machine 'remote.server.org' on port 2200
+## as user 'bob' from a Windows machine via RStudio's SSH client.
+## Using the explicit special rshcmd = "<rstudio-ssh>", will force
+## makeClusterPSOCK() to use the SSH client that comes with RStudio,
+## preventing it from using other SSH clients on the system search PATH.
+cl <- makeClusterPSOCK(
+  "remote.server.org", user = "bob", rshcmd = "<rstudio-ssh>",
   dryrun = TRUE
 )
 }

@@ -176,9 +176,22 @@ Error in FALSE :
 ```
 
 
+### Example: Non-exportable objects by the DBI package
+
+A third example are DBIConnection S4 objects as defined by the DBI package.  DBI provides a unified database interface for communication between R and various database engines.  Analogously to regular connections in R, DBIConnection can _not_ safely be exported to another R process, e.g.
+```r
+> library(future)
+> options(future.globals.onReference = "error")
+> con <- dbConnect(RSQLite::SQLite(), ":memory:")
+> dummy %<-% print(con)
+Error in FALSE : 
+  Detected a non-exportable reference ('externalptr') in one of the globals ('con' of class 'SQLiteConnection') used in the future expression
+```
+
+
 ### Example: Non-exportable objects by the Rcpp package
 
-A third example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
+Another example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
 ```r
 Rcpp::sourceCpp(code = "
 #include <Rcpp.h>
@@ -506,4 +519,4 @@ foo <- function() {
 [listenv]: https://cran.r-project.org/package=listenv
 
 ---
-Copyright Henrik Bengtsson, 2015-2018
+Copyright Henrik Bengtsson, 2015-2019

@@ -5,7 +5,7 @@
 \alias{as.character.FutureResult}
 \title{Results from resolving a future}
 \usage{
-FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
+FutureResult(value = NULL, stdout = NULL, conditions = NULL, ...,
   version = "1.7")
 
 \method{as.character}{FutureResult}(x, ...)
@@ -13,12 +13,11 @@ FutureResult(value = NULL, condition = NULL, calls = NULL, ...,
 \arguments{
 \item{value}{The value of the future expression.
 If the expression was not fully resolved (e.g. an error) occurred,
-the the value is `NULL`.}
+the the value is \code{NULL}.}
 
-\item{condition}{A [[base::condition]] captured while resolving the future,
-if any.  This is typically an error.}
-
-\item{calls}{A list of calls that led up to the captured condition, if any.}
+\item{conditions}{A list of zero or more list elements each containing
+a captured [[base::condition]] and possibly more meta data such as the
+call stack and a timestamp.}
 
 \item{version}{The version format of the results.}
 
@@ -34,4 +33,18 @@ Results from resolving a future
 This function is only part of the _backend_ Future API.
 This function is _not_ part of the frontend Future API.
 }
+\section{Note to developers}{
+
+The FutureResult structure is _under development_ and may change at anytime,
+e.g. elements may be renamed or removed.  Because of this, please avoid
+accessing the elements directly in code.  Feel free to reach out if you need
+to do so in your code.
+}
+
+\section{Deprecated elements}{
+
+* future (>= 1.11.0): elements \code{condition} and \code{calls} are
+  deprecated in favor of \code{conditions}
+}
+
 \keyword{internal}
