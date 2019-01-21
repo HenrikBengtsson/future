@@ -103,22 +103,6 @@ Version: 0.3.0
     Package suggested but not available for checking: ‘truncdist’
     ```
 
-# ipc
-
-Version: 0.1.2
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error in re-building vignettes:
-      ...
-    Quitting from lines 253-275 (shinymp.Rmd) 
-    Error: processing vignette 'shinymp.Rmd' failed with diagnostics:
-    argument 1 (type 'list') cannot be handled by 'cat'
-    Execution halted
-    ```
-
 # lidR
 
 Version: 2.0.0
@@ -209,6 +193,20 @@ Version: 0.6.2
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
+    ```
+
+# shinyrecap
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘CARE1’ ‘LCMCR’ ‘coda’ ‘conting’ ‘dga’ ‘future’ ‘ggplot2’ ‘ipc’
+      ‘promises’ ‘reshape’ ‘shinycssloaders’ ‘testthat’
       All declared Imports should be used.
     ```
 

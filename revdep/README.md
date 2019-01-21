@@ -10,20 +10,20 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-01-17                   |
+|date     |2019-01-21                   |
 
 # Dependencies
 
-|package |old    |new         |Δ  |
-|:-------|:------|:-----------|:--|
-|future  |1.10.0 |1.10.0-9000 |*  |
-|digest  |0.6.18 |0.6.18      |   |
-|globals |0.12.4 |0.12.4      |   |
-|listenv |0.7.0  |0.7.0       |   |
+|package |old    |new    |Δ  |
+|:-------|:------|:------|:--|
+|future  |1.10.0 |1.11.0 |*  |
+|digest  |0.6.18 |0.6.18 |   |
+|globals |0.12.4 |0.12.4 |   |
+|listenv |0.7.0  |0.7.0  |   |
 
 # Revdeps
 
-## All (46)
+## All (47)
 
 |package                                         |version    |error |warning |note |
 |:-----------------------------------------------|:----------|:-----|:-------|:----|
@@ -43,14 +43,14 @@
 |FAMoS                                           |0.1.0      |      |        |     |
 |fiery                                           |1.1.1      |      |        |     |
 |furrr                                           |0.1.0      |      |        |     |
-|future.apply                                    |1.0.1      |      |        |     |
+|future.apply                                    |1.1.0      |      |        |     |
 |future.BatchJobs                                |0.16.1     |      |        |     |
 |future.batchtools                               |0.7.2      |      |        |     |
 |future.callr                                    |0.4.0      |      |        |     |
 |googleComputeEngineR                            |0.2.0      |      |        |     |
 |[greta](problems.md#greta)                      |0.3.0      |      |        |1    |
-|GSODR                                           |1.3.1      |      |        |     |
-|[ipc](problems.md#ipc)                          |0.1.2      |      |1       |     |
+|GSODR                                           |1.3.2      |      |        |     |
+|ipc                                             |0.1.2      |      |        |     |
 |jstor                                           |0.3.6      |      |        |     |
 |kernelboot                                      |0.1.5      |      |        |     |
 |[lidR](problems.md#lidr)                        |2.0.0      |      |        |2    |
@@ -68,6 +68,7 @@
 |[reproducible](problems.md#reproducible)        |0.2.5      |      |        |1    |
 |[robotstxt](problems.md#robotstxt)              |0.6.2      |      |        |1    |
 |RTransferEntropy                                |0.2.7      |      |        |     |
+|[shinyrecap](problems.md#shinyrecap)            |0.1.0      |      |        |1    |
 |[skpr](problems.md#skpr)                        |0.57.0     |      |        |1    |
 |sperrorest                                      |2.1.5      |      |        |     |
 |startR                                          |0.0.1      |      |        |     |
