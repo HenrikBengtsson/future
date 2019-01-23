@@ -10,6 +10,9 @@ NEW FEATURES:
    that was supported in the past. An advantage of using environment variables
    is that they will be inherited by child processes, also nested ones.
 
+ * The session information collected by makeClusterPSOCK() for each node now
+   also includes the package library folder path and the working directory.
+   
 SOFTWARE QUALITY:
 
  * TESTS: Now the socket connection timeout is set to 2 minutes (instead of

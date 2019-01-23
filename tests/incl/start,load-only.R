@@ -27,6 +27,9 @@ oopts <- options(
 ## nested ones.
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT = 2 * 60)
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
+## Collect more session details from workers to helps troubleshooting on
+## remote servers, e.g. CRAN servers
+Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
 
 ## Reset the following during testing in case
 ## they are set on the test system

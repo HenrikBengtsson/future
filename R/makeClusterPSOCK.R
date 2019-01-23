@@ -891,12 +891,23 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
 }
 
 
-session_info <- function() {
-  list(
+session_info <- function(pkgs = getOption("future.makeNodePSOCK.sessionInfo.pkgs", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS", FALSE)))) {
+  info <- list(
     r = c(R.version, os.type = .Platform$OS.type),
     system = as.list(Sys.info()),
-    process = list(pid = Sys.getpid()) 
+    libs = .libPaths(),
+    pwd = getwd(),
+    process = list(pid = Sys.getpid())
   )
+  if (isTRUE(pkgs)) {
+    info$pkgs <- local({
+      pkgs <- installed.packages()
+      pkgs <- pkgs[, fields = c("Package", "Version", "LibPath", "Built")]
+      rownames(pkgs) <- NULL
+      as.data.frame(pkgs, stringsAsFactors = FALSE)
+    })
+  }
+  info
 }
 
 
