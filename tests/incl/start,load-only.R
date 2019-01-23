@@ -15,14 +15,18 @@ oopts <- options(
   ## they are set on the test system
   future.availableCores.system = NULL,
   future.availableCores.fallback = NULL,
-  ## To be nicer to test environments (e.g. CRAN, Travis CI, AppVeyor CI, ...),
-  ## timeout much earlier than the default 30 days.  This will also give a more
-  ## informative error message produced by R itself, rather than whatever the
-  ## test environment produces.
-  future.makeNodePSOCK.timeout = 2 * 60, ## 2 minutes
   future.wait.interval = 0.01 ## 0.01s (instead of default 0.2s)
 )
 
+## To be nicer to test environments (e.g. CRAN, Travis CI, AppVeyor CI, ...),
+## timeout much earlier than the default 30 days.  This will also give a more
+## informative error message produced by R itself, rather than whatever the
+## test environment produces.
+## NOTE: By using environment variables, instead of R options, we can make
+## sure these settings are also passed down to child processes, including
+## nested ones.
+Sys.setenv(R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT = 2 * 60)
+Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
 
 ## Reset the following during testing in case
 ## they are set on the test system

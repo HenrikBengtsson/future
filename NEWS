@@ -1,9 +1,22 @@
 Package: future
 ===============
 
-Version: 1.11.0-9000 [2019-01-21]
+Version: 1.11.0-9000 [2019-01-23]
 
- * ...
+NEW FEATURES:
+
+ * The defaults of several arguments of makeClusterPSOCK() and makeNodePSOCK()
+   can now be controlled via environment variables in addition to R options
+   that was supported in the past. An advantage of using environment variables
+   is that they will be inherited by child processes, also nested ones.
+
+SOFTWARE QUALITY:
+
+ * TESTS: Now the socket connection timeout is set to 2 minutes (instead of
+   the default 30 days) also for nested PSOCK cluster workers.  This will
+   lower the risk for more and more zombie worker processes cluttering up the
+   test machine (e.g. CRAN servers) in case a worker process is left behind
+   despite the main R processes is terminated.
  
 
 Version: 1.11.0 [2019-01-21]

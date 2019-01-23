@@ -10,14 +10,18 @@ makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
   FALSE))
 
 makeNodePSOCK(worker = "localhost", master = NULL, port,
-  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", 2 *
-  60), timeout = getOption("future.makeNodePSOCK.timeout", 30 * 24 * 60 *
-  60), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
+  connectTimeout = getOption("future.makeNodePSOCK.connectTimeout",
+  as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))),
+  timeout = getOption("future.makeNodePSOCK.timeout",
+  as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 *
+  60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
   methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
   renice = NA_integer_,
-  rshcmd = getOption("future.makeNodePSOCK.rshcmd", NULL), user = NULL,
+  rshcmd = getOption("future.makeNodePSOCK.rshcmd",
+  Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL,
   revtunnel = TRUE, rshlogfile = NULL,
-  rshopts = getOption("future.makeNodePSOCK.rshopts", NULL), rank = 1L,
+  rshopts = getOption("future.makeNodePSOCK.rshopts",
+  Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L,
   manual = FALSE, dryrun = FALSE, verbose = FALSE)
 }
 \arguments{
