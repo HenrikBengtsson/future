@@ -335,6 +335,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' trying to access the connection.
 #'
 #' @rdname makeClusterPSOCK
+#' @importFrom tools pskill
 #' @export
 makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
@@ -450,6 +451,18 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   
   if (methods) {
     rscript_args <- c("--default-packages=datasets,utils,grDevices,graphics,stats,methods", rscript_args)
+  }
+
+  ## Launching a process on the local machine?
+  if (localMachine) {
+    getPID <- isTRUE(getOption("future.makeNodePSOCK.getPID", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_GETPID", TRUE))))
+    if (getPID) {
+      pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
+      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
+      rscript_args <- c("-e", shQuote(pidcode), rscript_args)
+    }
+  } else {
+    pidfile <- NULL
   }
 
   ## Port that the Rscript should use to connect back to the master
@@ -581,7 +594,30 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       }
     }
   }
-    
+
+  ## Wait for PID file?
+  pid <- NULL
+  if (!is.null(pidfile)) {
+    if (verbose) message("Attempting to infer PID for worker process ...")
+    tries <- 0L
+    while (!file.exists(pidfile) && tries <= 5) {
+      Sys.sleep(1.0)
+      tries <- tries + 1L
+    }
+    if (file.exists(pidfile)) {
+      pid0 <- readLines(pidfile, n = 1L, warn = FALSE)
+      file.remove(pidfile)
+      if (length(pid0) > 0L) {
+        pid <- as.integer(pid0)
+        if (verbose) message(" - pid: ", pid)
+        if (is.na(pid)) {
+          warning(sprintf("Worker PID is a non-integer: %s", pid0))
+          pid <- NULL
+        }
+      }
+    }
+  }
+
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
      ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
@@ -633,6 +669,28 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
        ## Report on how the worker was launched
        msg <- c(msg, sprintf(" * Worker launch call: %s.\n", local_cmd))
+
+       ## Do we know the PID of the worker? If so, try to kill it to avoid
+       ## leaving a stray process behind
+       if (!is.null(pid)) {
+         msg <- c(msg, sprintf("* Worker PID: %d\n", pid))
+	 isAlive <- pid_exists(pid)
+         msg <- c(msg, sprintf("* Worker is alive: %s\n", isAlive))
+
+         ## Kill the worker upon exit?
+	 if (isTRUE(isAlive)) {
+	   pskill(pid)
+	   Sys.sleep(0.5)
+           isAlive <- pid_exists(pid)
+           if (isAlive) {
+             if (verbose) message(sprintf("Failed to kill worker process (PID %d)", pid))
+             msg <- c(msg, "* Failed to kill worker process\n")
+           } else {
+             if (verbose) message(sprintf("Killed worker process (PID %d)", pid))
+             msg <- c(msg, "* Worker process was killed\n")
+	   }
+	 }
+       }
 
        ## Propose further troubleshooting methods
        suggestions <- NULL
