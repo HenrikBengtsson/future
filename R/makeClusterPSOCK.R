@@ -891,6 +891,7 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
 }
 
 
+#' @importFrom utils installed.packages
 session_info <- function(pkgs = getOption("future.makeNodePSOCK.sessionInfo.pkgs", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS", FALSE)))) {
   info <- list(
     r = c(R.version, os.type = .Platform$OS.type),
@@ -911,6 +912,8 @@ session_info <- function(pkgs = getOption("future.makeNodePSOCK.sessionInfo.pkgs
 }
 
 
+#' @importFrom utils capture.output
+#' @importFrom parallel clusterCall
 add_cluster_session_info <- function(cl) {
   stop_if_not(inherits(cl, "cluster"))
   
@@ -948,14 +951,13 @@ add_cluster_session_info <- function(cl) {
 #'
 #' @return The cluster object with attribute \code{gcMe} set.
 #'
-#' @importFrom parallel stopCluster
-#' @importFrom utils capture.output
-#'
 #' @seealso
 #' The cluster is stopped using
 #' \code{\link[parallel:stopCluster]{stopCluster}(cl)}).
 #'
 #' @keywords internal
+#' @importFrom parallel stopCluster
+#' @importFrom utils capture.output
 #' @export
 autoStopCluster <- function(cl, debug = FALSE) {
   stop_if_not(inherits(cl, "cluster"))

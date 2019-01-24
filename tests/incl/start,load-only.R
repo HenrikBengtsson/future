@@ -14,8 +14,7 @@ oopts <- options(
   ## Reset the following during testing in case
   ## they are set on the test system
   future.availableCores.system = NULL,
-  future.availableCores.fallback = NULL,
-  future.wait.interval = 0.01 ## 0.01s (instead of default 0.2s)
+  future.availableCores.fallback = NULL
 )
 
 ## To be nicer to test environments (e.g. CRAN, Travis CI, AppVeyor CI, ...),
@@ -27,6 +26,8 @@ oopts <- options(
 ## nested ones.
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT = 2 * 60)
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
+Sys.setenv(R_FUTURE_WAIT_INTERVAL = 0.01) ## 0.01s (instead of default 0.2s)
+
 ## Collect more session details from workers to helps troubleshooting on
 ## remote servers, e.g. CRAN servers
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
