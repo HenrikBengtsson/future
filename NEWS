@@ -12,6 +12,10 @@ NEW FEATURES:
 
  * The session information collected by makeClusterPSOCK() for each node now
    also includes the package library folder path and the working directory.
+
+ * The printing of future plans is now less verbose when the 'workers' argument
+   is a complex object such as a PSOCK cluster object.  Previously, the output
+   would include verbose output of attributes etc.
    
 SOFTWARE QUALITY:
 

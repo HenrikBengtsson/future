@@ -190,15 +190,15 @@ plan <- local({
     ## Skip if already set?
     if (skip && equal_strategy_stacks(newStack, oldStack)) {
       if (getOption("future.debug", FALSE)) {
-        mdebug(sprintf("plan(): Skip setting new future strategy stack because it is the same as the current one:\n%s\n", 
-               paste(capture.output(print(newStack)), collapse = "\n")))
+        mdebug(paste0("plan(): Skip setting new future strategy stack because it is the same as the current one:\n", 
+               paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
       }
       return(oldStack)
     }
 
     if (getOption("future.debug", FALSE)) {
-      mdebug(sprintf("plan(): Setting new future strategy stack:\n%s\n", 
-             paste(capture.output(print(newStack)), collapse = "\n")))
+      mdebug(paste0("plan(): Setting new future strategy stack:\n", 
+             paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
     }
     
     stack <<- newStack
@@ -372,7 +372,16 @@ print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))
   s <- sprintf("%s:", class[1])
   specs <- list()
-  args <- deparse(args(x), width.cutoff = 500L)
+  args <- args(x)
+
+  ## Simplify the value on the 'workers' argument?
+  formals <- formals(args)
+  if (!is.atomic(formals$workers) && !is.language(formals$workers)) {
+    formals$workers <- sprintf("<%s>", paste(capture.output(print(formals$workers)), collapse = "; "))
+    formals(args) <- formals
+  }
+
+  args <- deparse(args, width.cutoff = 500L)
   args <- args[-length(args)]
   args <- gsub("(^[ ]+|[ ]+$)", "", args)
   args <- paste(args, collapse = " ")
@@ -401,7 +410,17 @@ print.FutureStrategyList <- function(x, ...) {
     class <- setdiff(class(x_kk), c("tweaked", "function"))
     s_kk <- sprintf("%d. %s:", kk, class[1])
     specs <- list()
-    args <- deparse(args(x_kk), width.cutoff = 500L)
+
+    args <- args(x_kk)
+
+    ## Simplify the value on the 'workers' argument?
+    formals <- formals(args)
+    if (!is.atomic(formals$workers) && !is.language(formals$workers)) {
+      formals$workers <- sprintf("<%s>", paste(capture.output(print(formals$workers)), collapse = "; "))
+      formals(args) <- formals
+    }
+
+    args <- deparse(args, width.cutoff = 500L)
     args <- args[-length(args)]
     args <- gsub("(^[ ]+|[ ]+$)", "", args)
     args <- paste(args, collapse = " ")
