@@ -1043,6 +1043,8 @@ pid_exists <- local({
     ## Does a working pid_check() exist?
     if (!is.null(pid_check)) return(pid_check(pid, debug = debug))
 
+    if (debug) message("Attempting to find a working pid_exists_*() function ...")
+    
     ## Try to find a working pid_check() function, i.e. one where
     ## pid_check(Sys.getpid()) == TRUE
     if (os == "unix") {  ## Unix, Linux, and macOS
@@ -1060,16 +1062,20 @@ pid_exists <- local({
     }
 
     if (is.null(pid_check)) {
+      if (debug) message("- failed; pid_check() will always return NA")
       ## Default to NA
       pid_check <- function(pid) NA
     } else {
       ## Sanity check
       stop_if_not(isTRUE(pid_check(Sys.getpid(), debug = debug)))
+      if (debug) message("- success")
     }
 
     ## Record
     cache$pid_check <- pid_check
-    
+
+    if (debug) message("Attempting to find a working pid_exists_*() function ... done")
+
     pid_check(pid)
   }
 })

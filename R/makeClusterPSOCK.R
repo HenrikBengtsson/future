@@ -460,7 +460,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
       pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
-      rscript_args <- c("-e", shQuote(pidcode), rscript_args)
+      ## Validate that we can actually write to this file
+      expr <- parse(text = pidcode)
+      res <- tryCatch(eval(expr), error = identity)
+      if (!inherits(res, "error")) {
+        rscript_args <- c("-e", shQuote(pidcode), rscript_args)
+      } else {
+        if (verbose) {
+          warning("Cannot write to temporary PID file, skipping: ",
+                  sQuote(pidfile))
+        }
+      }
     }
   } else {
     pidfile <- NULL
@@ -534,7 +544,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          if (!is.null(ver) && ver <= "10.0.17763.253") {
            msg <- sprintf("WARNING: You're running Windows 10 (build %s) where this 'rshcmd' (%s) may not support reverse tunneling (revtunnel = TRUE) resulting in worker failing to launch", ver, paste(sQuote(rshcmd), collapse = ", "), rshcmd_label)
            if (verbose) message(c(verbose_prefix, msg))
-	 }
+         }
       }
     }
     
@@ -677,7 +687,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## leaving a stray process behind
        if (!is.null(pid)) {
          if (verbose) message(sprintf("Killing worker process (PID %d) if still alive", pid))
-	 success <- pid_kill(pid)
+         success <- pid_kill(pid)
          if (verbose) message(sprintf("Worker (PID %d) was successfully killed: %s", pid, success))
          msg <- c(msg, sprintf("* Worker (PID %d) was successfully killed: %s\n", pid, success))
        }
