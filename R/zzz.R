@@ -22,7 +22,10 @@
     ## remote servers, e.g. CRAN servers
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
 
-    ## Label cluster works, if possible
+    ## Automatically kill stray cluster workers, if possible
+    Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE)
+
+    ## Label cluster workers, if possible
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL = TRUE)
   }
   

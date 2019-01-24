@@ -452,8 +452,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   ## Launching a process on the local machine?
   pidfile <- NULL
   if (localMachine && !dryrun) {
-    getPID <- isTRUE(getOption("future.makeNodePSOCK.getPID", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_GETPID", TRUE))))
-    if (getPID) {
+    autoKill <- isTRUE(getOption("future.makeNodePSOCK.autoKill", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE))))
+    if (autoKill) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
       pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
@@ -620,10 +620,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
 
-  ## Get worker's PID?
-  pid <- readWorkerPID(pidfile)
-
-
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
      ## NOTE: Regardless of transient = TRUE / FALSE, it still seems we need to
@@ -680,6 +676,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
        ## Do we know the PID of the worker? If so, try to kill it to avoid
        ## leaving a stray process behind
+       ## Comment: readWorkerPID() must be done *after* socketConnection()
+       ## on R 3.4.4, otherwise socketConnection() will fail. Not sure why.
+       ## /HB 2019-01-24
+       pid <- readWorkerPID(pidfile)
        if (!is.null(pid)) {
          if (verbose) message(sprintf("Killing worker process (PID %d) if still alive", pid))
          success <- pid_kill(pid)
