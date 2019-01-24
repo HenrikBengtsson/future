@@ -638,6 +638,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
          warnings <<- c(warnings, list(w))
        })
      }, error = function(ex) {
+       setTimeLimit(elapsed = Inf)
+       
        ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        ## Post-mortem analysis
        ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,23 +676,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        ## Do we know the PID of the worker? If so, try to kill it to avoid
        ## leaving a stray process behind
        if (!is.null(pid)) {
-         msg <- c(msg, sprintf("* Worker PID: %d\n", pid))
-	 isAlive <- pid_exists(pid)
-         msg <- c(msg, sprintf("* Worker is alive: %s\n", isAlive))
-
-         ## Kill the worker upon exit?
-	 if (isTRUE(isAlive)) {
-	   pskill(pid)
-	   Sys.sleep(0.5)
-           isAlive <- pid_exists(pid)
-           if (isAlive) {
-             if (verbose) message(sprintf("Failed to kill worker process (PID %d)", pid))
-             msg <- c(msg, "* Failed to kill worker process\n")
-           } else {
-             if (verbose) message(sprintf("Killed worker process (PID %d)", pid))
-             msg <- c(msg, "* Worker process was killed\n")
-	   }
-	 }
+         if (verbose) message(sprintf("Killing worker process (PID %d) if still alive", pid))
+	 success <- pid_kill(pid)
+         if (verbose) message(sprintf("Worker (PID %d) was successfully killed: %s", pid, success))
+         msg <- c(msg, sprintf("* Worker (PID %d) was successfully killed: %s\n", pid, success))
        }
 
        ## Propose further troubleshooting methods
@@ -749,6 +738,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        })
      })
   })
+  setTimeLimit(elapsed = Inf)
 
   if (verbose) {
     message(sprintf("%sConnection with worker #%s on %s established", verbose_prefix, rank, sQuote(worker)))
