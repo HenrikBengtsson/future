@@ -10,7 +10,7 @@ types <- "PSOCK"
 if (supportsMulticore()) types <- c(types, "FORK")
 
 setupClusterWithoutPkgs <- function(type = "PSOCK", withouts = c("future")) {
-  cl <- parallel::makeCluster(1L, type = type)
+  cl <- parallel::makeCluster(1L, type = type, timeout = 60)
 
   ## Emulate a worker that does not have 'future' installed.
   ## by setting a different user library path on the worker.

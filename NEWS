@@ -16,7 +16,7 @@ NEW FEATURES:
  * The printing of future plans is now less verbose when the 'workers' argument
    is a complex object such as a PSOCK cluster object.  Previously, the output
    would include verbose output of attributes etc.
-   
+
 SOFTWARE QUALITY:
 
  * TESTS: When the 'future' package is loaded, it checks whether 'R CMD check'
@@ -29,7 +29,15 @@ SOFTWARE QUALITY:
    is left behind despite the main R processes is terminated.  Note that these
    adjustments are applied automatically to the checks of any package that
    depends on, or imports, the 'future' package.
- 
+
+BUG FIXES:
+
+ * Whenever makeClusterPSOCK() would fail to connect to a worker, for instance
+   due to a port clash, then it would leave the R worker process running - also
+   after the main R process terminated.  When the worker is running on the same
+   machine, makeClusterPSOCK() will now attempt to kill such stray R processes.
+   Note that parallel::makePSOCKcluster() still has this problem.
+   
 
 Version: 1.11.0 [2019-01-21]
 

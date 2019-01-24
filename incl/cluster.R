@@ -1,7 +1,7 @@
 \donttest{
 
 ## Use cluster futures
-cl <- parallel::makeCluster(2L)
+cl <- parallel::makeCluster(2L, timeout = 60)
 plan(cluster, workers = cl)
 
 ## A global variable
