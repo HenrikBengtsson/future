@@ -893,21 +893,21 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
 
 #' @importFrom utils installed.packages
 session_info <- function(pkgs = getOption("future.makeNodePSOCK.sessionInfo.pkgs", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS", FALSE)))) {
+  libs <- .libPaths()
   info <- list(
     r = c(R.version, os.type = .Platform$OS.type),
     system = as.list(Sys.info()),
-    libs = .libPaths(),
+    libs = libs,
+    pkgs = if (isTRUE(pkgs)) {
+      structure(lapply(libs, FUN = function(lib.loc) {
+        pkgs <- installed.packages(lib.loc = lib.loc)
+        if (length(pkgs) == 0) return(NULL)
+        paste0(pkgs[, "Package"], "_", pkgs[, "Version"])
+      }), names = libs)
+    },
     pwd = getwd(),
     process = list(pid = Sys.getpid())
   )
-  if (isTRUE(pkgs)) {
-    info$pkgs <- local({
-      pkgs <- installed.packages()
-      pkgs <- pkgs[, fields = c("Package", "Version", "LibPath", "Built")]
-      rownames(pkgs) <- NULL
-      as.data.frame(pkgs, stringsAsFactors = FALSE)
-    })
-  }
   info
 }
 

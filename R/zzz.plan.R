@@ -378,7 +378,13 @@ print.future <- function(x, ...) {
   ## Simplify the value on the 'workers' argument?
   formals <- formals(args)
   if (!is.atomic(formals$workers) && !is.language(formals$workers)) {
-    formals$workers <- sprintf("<%s>", paste(capture.output(print(formals$workers)), collapse = "; "))
+    bfr <- capture.output(print(formals$workers))
+    if (length(bfr) > 6L) {
+      bfr2 <- capture.output(str(formals$workers))
+      if (length(bfr2) < length(bfr)) bfr <- bfr2
+      if (length(bfr) > 6L) bfr <- c(bfr[1:6], "...")
+    }
+    formals$workers <- paste0("<", paste(bfr, collapse = "; "), ">")
     formals(args) <- formals
   }
 
@@ -391,7 +397,7 @@ print.future <- function(x, ...) {
   specs$call <- paste(deparse(attr(x, "call", exact = TRUE), 
                               width.cutoff = 500L),
                       collapse="")
-  specs <- sprintf("- %s: %s", names(specs), unlist(specs))
+  specs <- paste0("- ", names(specs), ": ", unlist(specs))
   s <- c(s, specs)
   s <- paste(s, collapse = "\n")
   cat(s, "\n", sep = "")
@@ -418,7 +424,13 @@ print.FutureStrategyList <- function(x, ...) {
     ## Simplify the value on the 'workers' argument?
     formals <- formals(args)
     if (!is.atomic(formals$workers) && !is.language(formals$workers)) {
-      formals$workers <- sprintf("<%s>", paste(capture.output(print(formals$workers)), collapse = "; "))
+      bfr <- capture.output(print(formals$workers))
+      if (length(bfr) > 6L) {
+        bfr2 <- capture.output(str(formals$workers))
+        if (length(bfr2) < length(bfr)) bfr <- bfr2
+        if (length(bfr) > 6L) bfr <- c(bfr[1:6], "...")
+      }
+      formals$workers <- paste0("<", paste(bfr, collapse = "; "), ">")
       formals(args) <- formals
     }
 
@@ -431,7 +443,7 @@ print.FutureStrategyList <- function(x, ...) {
     specs$call <- paste(deparse(attr(x_kk, "call", exact = TRUE), 
                                 width.cutoff = 500L),
                         collapse = "")
-    specs <- sprintf("   - %s: %s", names(specs), unlist(specs))
+    specs <- paste0("   - ", names(specs), ": ", unlist(specs))
     s <- c(s, s_kk, specs)
   }
 
