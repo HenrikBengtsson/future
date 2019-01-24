@@ -467,6 +467,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       status <- attr(res, "status")
       if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
         rscript_args <- c(rscript_pid_args, rscript_args)
+	## Find working pid_exists() function already here (less debug clutter)
+	dummy <- pid_exists(Sys.getpid())
       }
       file.remove(pidfile)
     }
@@ -476,7 +478,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   ## Add Rscript "label"?
   rscript_label <- getOption("future.makeNodePSOCK.rscript_label", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL"))
-  if (!is.null(rscript_label) && nzchar(rscript_label)) {
+  if (!is.null(rscript_label) && nzchar(rscript_label) && !isFALSE(as.logical(rscript_label))) {
     if (isTRUE(as.logical(rscript_label))) {
       script <- grep("[.]R$", commandArgs(), value = TRUE)[1]
       if (is.na(script)) script <- "UNKNOWN"

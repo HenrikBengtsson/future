@@ -21,6 +21,9 @@
     ## Collect more session details from workers to helps troubleshooting on
     ## remote servers, e.g. CRAN servers
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
+
+    ## Label cluster works, if possible
+    Sys.setenv(R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL = TRUE)
   }
   
   if (debug) {
