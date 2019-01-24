@@ -1003,7 +1003,16 @@ pid_exists <- local({
           str(out)
         }
         out <- strsplit(out, split = "[ ]+", fixed = FALSE)
-        out <- lapply(out, FUN = function(x) x[2])
+	## WORKAROUND: The 'Image Name' column may contain spaces, making
+	## it hard to locate the second column.  Instead, we will identify
+	## the most common number of column (typically six) and the count
+	## how many columns we should drop at the end in order to find the
+	## second as the last
+	## 
+	n <- lengths(out)
+        n <- sort(n)[round(length(n) / 2)] ## "median" without using 'stats'
+        drop <- n - 2L
+        out <- lapply(out, FUN = function(x) rev(x)[-seq_len(drop)][1])
         out <- unlist(out, use.names = FALSE)
         if (debug) {
           cat("Extracted: ", paste(sQuote(out), collapse = ", "), "\n", sep = "")
