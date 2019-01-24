@@ -12,7 +12,3 @@ si <- future:::session_info(pkgs = TRUE)
 print(si)
 
 rm(list = "si")
-
-
-
-

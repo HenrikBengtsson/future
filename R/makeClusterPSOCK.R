@@ -474,6 +474,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     pidfile <- NULL
   }
 
+  ## Add Rscript "label"?
+  rscript_label <- getOption("future.makeNodePSOCK.rscript_label", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL"))
+  if (!is.null(rscript_label) && nzchar(rscript_label)) {
+    if (isTRUE(as.logical(rscript_label))) {
+      script <- grep("[.]R$", commandArgs(), value = TRUE)[1]
+      if (is.na(script)) script <- "UNKNOWN"
+      rscript_label <- sprintf("%s:%s:%s:%s", script, Sys.getpid(), Sys.info()[["nodename"]], Sys.info()[["user"]])
+    }
+    rscript_args <- c("-e", shQuote(paste0("#label=", rscript_label)), rscript_args)
+  }
+
   ## Port that the Rscript should use to connect back to the master
   if (!localMachine && revtunnel) {
     rscript_port <- port + (rank - 1L)
@@ -622,7 +633,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
         if (is.na(pid)) {
           warning(sprintf("Worker PID is a non-integer: %s", pid0))
           pid <- NULL
-        }
+        } else if (pid == Sys.getpid()) {
+          warning(sprintf("Hmm... worker PID and parent PID are the same: %s", pid))
+          pid <- NULL
+	}
       }
     }
   }

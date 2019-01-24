@@ -25,6 +25,12 @@ Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
 Sys.setenv(R_FUTURE_WAIT_INTERVAL = 0.01) ## 0.01s (instead of default 0.2s)
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
 
+## Label PSOCK cluster workers (to help troubleshooting)
+test_script <- grep("[.]R$", commandArgs(), value = TRUE)[1]
+if (is.na(test_script)) test_script <- "UNKNOWN"
+worker_label <- sprintf("future/tests/%s:%s:%s:%s", test_script, Sys.info()[["nodename"]], Sys.info()[["user"]], Sys.getpid())
+Sys.setenv(R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL = worker_label)
+
 ## Reset the following during testing in case
 ## they are set on the test system
 oenvs2 <- Sys.unsetenv(c(
