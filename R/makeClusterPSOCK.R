@@ -449,10 +449,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
   }
   
-  if (methods) {
-    rscript_args <- c("--default-packages=datasets,utils,grDevices,graphics,stats,methods", rscript_args)
-  }
-
   ## Launching a process on the local machine?
   pidfile <- NULL
   if (localMachine && !dryrun) {
@@ -470,8 +466,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       status <- attr(res, "status")
       if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
         rscript_args <- c(rscript_pid_args, rscript_args)
-	## Find working pid_exists() function already here (less debug clutter)
-	dummy <- pid_exists(Sys.getpid())
+        ## Find working pid_exists() function already here (less debug clutter)
+        dummy <- pid_exists(Sys.getpid())
       } else {
         pidfile <- NULL
       }
@@ -487,6 +483,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rscript_label <- sprintf("%s:%s:%s:%s", script, Sys.getpid(), Sys.info()[["nodename"]], Sys.info()[["user"]])
     }
     rscript_args <- c("-e", shQuote(paste0("#label=", rscript_label)), rscript_args)
+  }
+
+  if (methods) {
+    rscript_args <- c("--default-packages=datasets,utils,grDevices,graphics,stats,methods", rscript_args)
   }
 
   ## Port that the Rscript should use to connect back to the master
@@ -619,31 +619,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     }
   }
 
-  ## Wait for PID file?
-  pid <- NULL
-  if (!is.null(pidfile)) {
-    if (verbose) message("Attempting to infer PID for worker process ...")
-    tries <- 0L
-    while (!file.exists(pidfile) && tries <= 5) {
-      Sys.sleep(1.0)
-      tries <- tries + 1L
-    }
-    if (file.exists(pidfile)) {
-      pid0 <- readLines(pidfile, warn = FALSE)
-      file.remove(pidfile)
-      if (length(pid0) > 0L) {
-        pid <- as.integer(pid0[length(pid0)])  ## Use last if more than one ("should not happend")
-        if (verbose) message(" - pid: ", pid)
-        if (is.na(pid)) {
-          warning(sprintf("Worker PID is a non-integer: %s", pid0))
-          pid <- NULL
-        } else if (pid == Sys.getpid()) {
-          warning(sprintf("Hmm... worker PID and parent PID are the same: %s", pid))
-          pid <- NULL
-	}
-      }
-    }
-  }
+
+  ## Get worker's PID?
+  pid <- readWorkerPID(pidfile)
+
 
   con <- local({
      ## Apply connection time limit "only to the rest of the current computation".
@@ -1074,3 +1053,39 @@ windows_build_version <- local({
     }, error = function(ex) NULL)
   }
 })
+
+
+readWorkerPID <- function(pidfile, wait = 1.0, maxTries = 5L, verbose = FALSE) {
+  if (is.null(pidfile)) return(NULL)
+  
+  if (verbose) message("Attempting to infer PID for worker process ...")
+  pid <- NULL
+  
+  ## Wait for PID file
+  tries <- 0L
+  while (!file.exists(pidfile) && tries <= maxTries) {
+    Sys.sleep(wait)
+    tries <- tries + 1L
+  }
+  
+  if (file.exists(pidfile)) {
+    pid0 <- readLines(pidfile, warn = FALSE)
+    file.remove(pidfile)
+    if (length(pid0) > 0L) {
+      ## Use last one, if more than one ("should not happend")
+      pid <- as.integer(pid0[length(pid0)])
+      if (verbose) message(" - pid: ", pid)
+      if (is.na(pid)) {
+        warning(sprintf("Worker PID is a non-integer: %s", pid0))
+        pid <- NULL
+      } else if (pid == Sys.getpid()) {
+        warning(sprintf("Hmm... worker PID and parent PID are the same: %s", pid))
+        pid <- NULL
+      }	
+    }
+  }
+ 
+  if (verbose) message("Attempting to infer PID for worker process ... done")
+  
+  pid
+} ## readWorkerPID()
