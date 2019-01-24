@@ -458,6 +458,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     getPID <- isTRUE(getOption("future.makeNodePSOCK.getPID", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_GETPID", TRUE))))
     if (getPID) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
+      pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
       pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
       rscript_args <- c("-e", shQuote(pidcode), rscript_args)
     }
