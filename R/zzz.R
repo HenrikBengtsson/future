@@ -1,5 +1,35 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
+  debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
+  if (debug) options(future.debug = TRUE)
+  debug <- getOption("future.debug", debug)
+  
+  ## Automatically play nice when 'R CMD check' runs?
+  if (isTRUE(as.logical(Sys.getenv("R_FUTURE_R_CMD_CHECK_NICE", TRUE))) && inRCmdCheck()) {
+    if (debug) mdebug("Detected 'R CMD check':\n - adjusting defaults to be a good citizen")
+    ## To be nicer to test environments (e.g. CRAN, Travis CI and AppVeyor CI),
+    ## timeout much earlier than the default 30 days. This will also give a more
+    ## informative error message produced by R itself, rather than whatever the
+    ## test environment produces.
+    ## NOTE: By using environment variables, instead of R options, we can make
+    ## sure these settings are also passed down to child processes, including
+    ## nested ones.
+    Sys.setenv(R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT = 2 * 60)
+    Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
+    Sys.setenv(R_FUTURE_WAIT_INTERVAL = 0.01) ## 0.01s (instead of default 0.2s)
+    
+    ## Collect more session details from workers to helps troubleshooting on
+    ## remote servers, e.g. CRAN servers
+    Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
+  }
+  
+  if (debug) {
+    envs <- Sys.getenv()
+    envs <- envs[grep("R_FUTURE_", names(envs), fixed = TRUE)]
+    envs <- sprintf("- %s=%s", names(envs), sQuote(envs))
+    mdebug(paste(c("Future-specific environment variables:", envs), collapse = "\n"))
+  }
+
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
   if (is.na(attr(multiprocess, "init", exact = TRUE))) {
@@ -9,8 +39,6 @@
   ## Initiate the R session UUID, which will also set/update
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)
-  
-  debug <- getOption("future.debug", FALSE)
   
   ## Unless already set, set option 'future.availableCores.fallback'
   ## according to environment variable 'R_FUTURE_AVAILABLECORES_FALLBACK'.

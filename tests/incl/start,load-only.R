@@ -17,19 +17,12 @@ oopts <- options(
   future.availableCores.fallback = NULL
 )
 
-## To be nicer to test environments (e.g. CRAN, Travis CI, AppVeyor CI, ...),
-## timeout much earlier than the default 30 days.  This will also give a more
-## informative error message produced by R itself, rather than whatever the
-## test environment produces.
-## NOTE: By using environment variables, instead of R options, we can make
-## sure these settings are also passed down to child processes, including
-## nested ones.
+## Comment: The below should be set automatically whenever the future package
+## is loaded and 'R CMD check' runs.  The below is added in case R is changed
+## in the future and we fail to detect 'R CMD check'.
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT = 2 * 60)
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_TIMEOUT = 2 * 60)
 Sys.setenv(R_FUTURE_WAIT_INTERVAL = 0.01) ## 0.01s (instead of default 0.2s)
-
-## Collect more session details from workers to helps troubleshooting on
-## remote servers, e.g. CRAN servers
 Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
 
 ## Reset the following during testing in case
@@ -63,6 +56,7 @@ get_future <- future:::get_future
 geval <- future:::geval
 grmall <- future:::grmall
 hpaste <- future:::hpaste
+inRCmdCheck <- future:::inRCmdCheck
 importParallel <- future:::importParallel
 mdebug <- future:::mdebug
 myExternalIP <- future:::myExternalIP

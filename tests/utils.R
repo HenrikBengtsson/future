@@ -229,6 +229,10 @@ stopifnot(is.logical(exists), length(exists) == 1L,
 
 message("*** pid_exists() ... DONE")
 
+message("*** inRCmdCheck() ...")
+cat(sprintf("R CMD check is running: %s\n", inRCmdCheck()))
+message("*** inRCmdCheck() ... DONE")
+
 message("*** utils ... DONE")
 
 source("incl/end.R")

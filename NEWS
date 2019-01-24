@@ -19,11 +19,16 @@ NEW FEATURES:
    
 SOFTWARE QUALITY:
 
- * TESTS: Now the socket connection timeout is set to 2 minutes (instead of
-   the default 30 days) also for nested PSOCK cluster workers.  This will
-   lower the risk for more and more zombie worker processes cluttering up the
-   test machine (e.g. CRAN servers) in case a worker process is left behind
-   despite the main R processes is terminated.
+ * TESTS: When the 'future' package is loaded, it checks whether 'R CMD check'
+   is running or not.  If it is, then a few future-specific environment
+   variables are adjusted such that the tests play nices with the testing
+   environment.  For instance, it sets the socket connection timeout for
+   PSOCK cluster workers to 60 seconds (instead of the default 30 days!).
+   This will lower the risk for more and more zombie worker processes
+   cluttering up the test machine (e.g. CRAN servers) in case a worker process
+   is left behind despite the main R processes is terminated.  Note that these
+   adjustments are applied automatically to the checks of any package that
+   depends on, or imports, the 'future' package.
  
 
 Version: 1.11.0 [2019-01-21]
