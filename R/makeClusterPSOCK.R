@@ -454,6 +454,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   ## Launching a process on the local machine?
+  pidfile <- NULL
   if (localMachine && !dryrun) {
     getPID <- isTRUE(getOption("future.makeNodePSOCK.getPID", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_GETPID", TRUE))))
     if (getPID) {
@@ -464,16 +465,17 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       ## Check if this approach to infer the PID works
       test_cmd <- paste(rscript, paste(c(rscript_pid_args, "-e", 42), collapse = " "))
       res <- system(test_cmd, wait = TRUE, intern = TRUE)
+      file.remove(pidfile)
+      
       status <- attr(res, "status")
       if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
         rscript_args <- c(rscript_pid_args, rscript_args)
 	## Find working pid_exists() function already here (less debug clutter)
 	dummy <- pid_exists(Sys.getpid())
+      } else {
+        pidfile <- NULL
       }
-      file.remove(pidfile)
     }
-  } else {
-    pidfile <- NULL
   }
 
   ## Add Rscript "label"?
