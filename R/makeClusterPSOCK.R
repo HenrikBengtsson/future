@@ -1055,7 +1055,7 @@ windows_build_version <- local({
 })
 
 
-readWorkerPID <- function(pidfile, wait = 1.0, maxTries = 5L, verbose = FALSE) {
+readWorkerPID <- function(pidfile, wait = 0.5, maxTries = 8L, verbose = FALSE) {
   if (is.null(pidfile)) return(NULL)
   
   if (verbose) message("Attempting to infer PID for worker process ...")
