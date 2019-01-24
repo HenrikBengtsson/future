@@ -454,23 +454,21 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   ## Launching a process on the local machine?
-  if (localMachine) {
+  if (localMachine && !dryrun) {
     getPID <- isTRUE(getOption("future.makeNodePSOCK.getPID", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_GETPID", TRUE))))
     if (getPID) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
       pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
-      ## Validate that we can actually write to this file
-      expr <- parse(text = pidcode)
-      res <- tryCatch(eval(expr), error = identity)
-      if (!inherits(res, "error")) {
-        rscript_args <- c("-e", shQuote(pidcode), rscript_args)
-      } else {
-        if (verbose) {
-          warning("Cannot write to temporary PID file, skipping: ",
-                  sQuote(pidfile))
-        }
+      rscript_pid_args <- c("-e", shQuote(pidcode))
+      ## Check if this approach to infer the PID works
+      test_cmd <- paste(rscript, paste(c(rscript_pid_args, "-e", 42), collapse = " "))
+      res <- system(test_cmd, wait = TRUE, intern = TRUE)
+      status <- attr(res, "status")
+      if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
+        rscript_args <- c(rscript_pid_args, rscript_args)
       }
+      file.remove(pidfile)
     }
   } else {
     pidfile <- NULL
@@ -616,10 +614,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       tries <- tries + 1L
     }
     if (file.exists(pidfile)) {
-      pid0 <- readLines(pidfile, n = 1L, warn = FALSE)
+      pid0 <- readLines(pidfile, warn = FALSE)
       file.remove(pidfile)
       if (length(pid0) > 0L) {
-        pid <- as.integer(pid0)
+        pid <- as.integer(pid0[length(pid0)])  ## Use last if more than one ("should not happend")
         if (verbose) message(" - pid: ", pid)
         if (is.na(pid)) {
           warning(sprintf("Worker PID is a non-integer: %s", pid0))

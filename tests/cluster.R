@@ -7,7 +7,7 @@ message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
 message("Package path: ", sQuote(system.file(package = "future")))
 
 types <- "PSOCK"
-if (supportsMulticore() && !is_solaris) types <- c(types, "FORK")
+if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
 
 ## WORKAROUND: covr::package_coverage() -> merge_coverage() -> ... produces
 ## "Error in readRDS(x) : error reading from connection" for type = "FORK".

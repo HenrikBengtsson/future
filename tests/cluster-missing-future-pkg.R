@@ -7,7 +7,7 @@ message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
 message("Package path: ", sQuote(system.file(package = "future")))
 
 types <- "PSOCK"
-if (supportsMulticore() && !is_solaris) types <- c(types, "FORK")
+if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
 
 setupClusterWithoutPkgs <- function(type = "PSOCK", withouts = c("future")) {
   cl <- parallel::makeCluster(1L, type = type, timeout = 60)
