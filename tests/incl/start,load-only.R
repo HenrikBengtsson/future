@@ -4,8 +4,7 @@ oenvs <- oenvs0 <- Sys.getenv()
 oopts0 <- options()
 
 covr_testing <- ("covr" %in% loadedNamespaces())
-on_solaris <- (grepl("^solaris", R.version$os) || grepl("SunOS", Sys.info()[["sysname"]], ignore.case = TRUE))
-
+on_solaris <- grepl("^solaris", R.version$os)
 
 ## Default options
 oopts <- options(
