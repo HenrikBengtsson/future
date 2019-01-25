@@ -107,19 +107,21 @@ message("- futureCall() - mix of strategies, cores, lazy and globals ... DONE")
 
 message("- futureCall() - bug fixes")
 
+plan(sequential)
 plan(cluster, workers = 1L)
 
 fcn <- function() a
 v <- tryCatch(local({
-  a <- 42
-  f <- futureCall(fcn, args = list(), globals = "a")
+  abc <- 42
+  f <- futureCall(fcn, args = list(), globals = "abc")
   value(f)
 }), error = identity)
 
 ## Bug #262: the above used to return NULL
 stopifnot(!is.null(v))
 
-## Bug: Now, it instead fails, because it cannot find 'a'
+## Bug: Now, it instead fails, because it cannot find 'abc'
+print(v)
 stopifnot(inherits(v, "error"))
 
 message("*** futureCall() ... DONE")
