@@ -4,6 +4,9 @@ library("listenv")
 message("*** multisession() ...")
 
 for (cores in 1:availCores) {
+  ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
+  if (!fullTest && isWin32) next
+  
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
@@ -102,6 +105,9 @@ limit <- getOption("future.globals.maxSize")
 cat(sprintf("Max total size of globals: %g bytes\n", limit))
 
 for (workers in unique(c(1L, availableCores()))) {
+  ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
+  if (!fullTest && isWin32) next
+  
   message("Max number of sessions: ", workers)
 
   ## A large object

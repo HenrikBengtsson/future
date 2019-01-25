@@ -49,6 +49,9 @@ oplan <- future::plan()
 ## Use eager futures by default
 future::plan("sequential")
 
+fullTest <- (Sys.getenv("_R_CHECK_FULL_") != "")
+isWin32 <- (.Platform$OS.type == "windows" && .Platform$r_arch == "i386")
+
 ## Private future functions
 .onLoad <- future:::.onLoad
 .onAttach <- future:::.onAttach

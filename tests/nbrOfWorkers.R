@@ -33,6 +33,9 @@ allButOneWorker <- function() {
 }
 
 for (strategy in strategies) {
+  ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
+  if (!fullTest && isWin32) next
+
   message("Type of future: ", strategy)
 
   evaluator <- get(strategy, mode = "function")

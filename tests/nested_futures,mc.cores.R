@@ -4,9 +4,10 @@ options(future.debug = FALSE)
 
 message("*** Nested futures - mc.cores ...")
 
-strategies <- c("multisession")
+strategies <- NULL
+## Speed up CRAN checks: Skip on CRAN Windows 32-bit
+if (!isWin32) strategies <- c(strategies, "multisession")
 if (supportsMulticore()) strategies <- c(strategies, "multicore")
-
 pid <- Sys.getpid()
 cat(sprintf("Main PID: %d\n", pid))
 
@@ -15,6 +16,9 @@ cores <- availableCores()
 print(cores)
 
 for (mc in 1:2) {
+  ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
+  if (!fullTest && isWin32) next
+  
   message(sprintf("- mc.cores = %d ...", mc))
   options(mc.cores = mc)
   mc2 <- min(mc, cores)

@@ -8,7 +8,7 @@ message("*** Fibonacci demo of the 'future' package ... DONE")
 
 
 message("*** Mandelbrot demo of the 'future' package ...")
-if (getRversion() >= "3.6.0") {
+if (getRversion() >= "3.2.0" && !isWin32) {
   options(future.demo.mandelbrot.nrow = 2L)
   options(future.demo.mandelbrot.resolution = 50L)
   options(future.demo.mandelbrot.delay = FALSE)
@@ -27,7 +27,7 @@ if (getRversion() >= "3.6.0") {
     message(sprintf("Testing with %d cores ... DONE", cores))
   } ## for (cores ...)
 } else {
-  message(" - This demo requires R (>= 3.2.0). Skipping test.")
+  message(" - This demo requires R (>= 3.2.0). Skipping test. (Skipping also on Win32 i386 for speed)")
 }
 message("*** Mandelbrot demo of the 'future' package ... DONE")
 

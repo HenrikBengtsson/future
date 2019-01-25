@@ -1,11 +1,10 @@
 source("incl/start.R")
 stopCluster <- parallel::stopCluster
-test_mpi <- isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_")))
 
 message("*** MPI ...")
 
 pkg <- "Rmpi"
-if (test_mpi && requireNamespace(pkg, quietly = TRUE)) {
+if (fullTest && requireNamespace(pkg, quietly = TRUE)) {
   cl <- makeClusterMPI(availableCores())
   str(cl)
   

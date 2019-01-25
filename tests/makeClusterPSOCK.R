@@ -104,7 +104,7 @@ stopifnot(inherits(res, "error"))
 ## Comment: In future (<= 1.11.0), this would have left stray R worker process
 ## behind that would *not* terminate when the main R process terminates.  In
 ## future (> 1.11.0) we try to detect this and kill it if the setup fails.
-if (covr_testing || isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_")))) {
+if (fullTest || covr_testing) {
   ## Occupied/blocked port
   res <- tryCatch(
     cl <- future::makeClusterPSOCK("localhost", port = 80L),
