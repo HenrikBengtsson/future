@@ -299,18 +299,6 @@ print(fitA)
 print(fitB)
 print(fitC)
 
-
-## EXAMPLE: Explicit future assignments (evaluated in parallel)
-futureAssign("fitA", lm(y ~ x, weights = w))
-futureAssign("fitB", lm(y ~ x - 1, weights = w))
-futureAssign("fitC", {
-  w <- 1 + abs(x)
-  lm(y ~ x, weights = w)
-})
-print(fitA)
-print(fitB)
-print(fitC)
-
 \dontshow{
 ## Make sure to "close" an multisession workers on Windows
 plan(sequential)

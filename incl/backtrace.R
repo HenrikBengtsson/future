@@ -1,6 +1,3 @@
-## Evaluate futures in parallel
-plan(multiprocess)
-
 my_log <- function(x) log(x)
 foo <- function(...) my_log(...)
 
@@ -11,9 +8,3 @@ res <- tryCatch({
   t <- backtrace(f)
   print(t)
 })
-
-
-#\dontshow{
-## Make sure to "close" an multisession workers on Windows
-plan(sequential)
-#}

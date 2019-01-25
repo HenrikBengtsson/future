@@ -20,9 +20,6 @@ A @list with the future's call stack that led up to the error.
 Back trace the expressions evaluated when an error was caught
 }
 \examples{
-## Evaluate futures in parallel
-plan(multiprocess)
-
 my_log <- function(x) log(x)
 foo <- function(...) my_log(...)
 
@@ -33,10 +30,4 @@ res <- tryCatch({
   t <- backtrace(f)
   print(t)
 })
-
-
-#\dontshow{
-## Make sure to "close" an multisession workers on Windows
-plan(sequential)
-#}
 }
