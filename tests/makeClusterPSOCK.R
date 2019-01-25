@@ -86,6 +86,13 @@ stopifnot(inherits(res, "error"))
 
 message("- makeClusterPSOCK() - exceptions")
 
+## Non-existing hostname
+res <- tryCatch({
+  cl <- makeNodePSOCK("not.a.localhost.hostname", revtunnel = TRUE)
+}, error = identity)
+print(res)
+stopifnot(inherits(res, "error"))
+
 ## Invalid port
 res <- tryCatch({
   cl <- makeNodePSOCK("localhost", port = NA_integer_)
@@ -93,20 +100,19 @@ res <- tryCatch({
 print(res)
 stopifnot(inherits(res, "error"))
 
-## Occupied/blocked port
-res <- tryCatch(
-  cl <- future::makeClusterPSOCK("localhost", port = 80L),
-error = identity)
-print(res)
-## Skip error assertion in case this actually works on some machine.
-## But where it fails, we are testing the port-failure exception code.
-
-## Non-existing hostname
-res <- tryCatch({
-  cl <- makeNodePSOCK("not.a.localhost.hostname", revtunnel = TRUE)
-}, error = identity)
-print(res)
-stopifnot(inherits(res, "error"))
+## Don't test on CRAN
+## Comment: In future (<= 1.11.0), this would have left stray R worker process
+## behind that would *not* terminate when the main R process terminates.  In
+## future (> 1.11.0) we try to detect this and kill it if the setup fails.
+if (covr_testing || isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_")))) {
+  ## Occupied/blocked port
+  res <- tryCatch(
+    cl <- future::makeClusterPSOCK("localhost", port = 80L),
+  error = identity)
+  print(res)
+  ## Skip error assertion in case this actually works on some machine.
+  ## But where it fails, we are testing the port-failure exception code.
+}
 
 
 message("*** makeClusterPSOCK() ... DONE")

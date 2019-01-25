@@ -1,6 +1,6 @@
 source("incl/start.R")
 stopCluster <- parallel::stopCluster
-test_mpi <- isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_", "TRUE")))
+test_mpi <- isTRUE(as.logical(Sys.getenv("_R_CHECK_FULL_")))
 
 message("*** MPI ...")
 
