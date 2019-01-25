@@ -10,16 +10,16 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-01-21                   |
+|date     |2019-01-24                   |
 
 # Dependencies
 
-|package |old    |new    |Δ  |
-|:-------|:------|:------|:--|
-|future  |1.10.0 |1.11.0 |*  |
-|digest  |0.6.18 |0.6.18 |   |
-|globals |0.12.4 |0.12.4 |   |
-|listenv |0.7.0  |0.7.0  |   |
+|package |old    |new         |Δ  |
+|:-------|:------|:-----------|:--|
+|future  |1.11.0 |1.11.0-9000 |*  |
+|digest  |0.6.18 |0.6.18      |   |
+|globals |0.12.4 |0.12.4      |   |
+|listenv |0.7.0  |0.7.0       |   |
 
 # Revdeps
 
