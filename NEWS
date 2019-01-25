@@ -1,6 +1,16 @@
 Package: future
 ===============
 
+Version: 1.11.1.1 [2019-01-25]
+
+BUG FIXES:
+
+ * When makeClusterPSOCK() fails to connect to a worker, it produces an error
+   with detailed information on what could have happend.  In rare cases,
+   another error could be produced when generating the information on what
+   the workers PID is.
+ 
+
 Version: 1.11.1 [2019-01-25]
 
 NEW FEATURES:

@@ -685,7 +685,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 	 ## /HB 2019-01-24
          success <- pid_kill(pid)
          if (verbose) message(sprintf("Worker (PID %d) was successfully killed: %s", pid, success))
-         msg <- c(msg, sprintf("* Worker (PID %d) was successfully killed: %s\n", pid, success))
+         msg <- c(msg, sprintf(" * Worker (PID %d) was successfully killed: %s\n", pid, success))
+       } else if (localMachine) {
+         msg <- c(msg, sprintf(" * Failed to kill local worker because it's PID is could not be identified.\n"))
        }
 
        ## Propose further troubleshooting methods
@@ -1070,8 +1072,15 @@ readWorkerPID <- function(pidfile, wait = 0.5, maxTries = 8L, verbose = FALSE) {
   }
   
   if (file.exists(pidfile)) {
-    pid0 <- readLines(pidfile, warn = FALSE)
+    pid0 <- NULL
+    for (tries in 1:maxTries) {
+      pid0 <- tryCatch(readLines(pidfile, warn = FALSE), error = identity)
+      if (!inherits(pid0, "error")) break
+      pid0 <- NULL
+      Sys.sleep(wait)
+    }
     file.remove(pidfile)
+    
     if (length(pid0) > 0L) {
       ## Use last one, if more than one ("should not happend")
       pid <- as.integer(pid0[length(pid0)])
