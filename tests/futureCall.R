@@ -107,6 +107,8 @@ message("- futureCall() - mix of strategies, cores, lazy and globals ... DONE")
 
 message("- futureCall() - bug fixes")
 
+plan(cluster, workers = 1L)
+
 fcn <- function() a
 v <- tryCatch(local({
   a <- 42
