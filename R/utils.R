@@ -1094,15 +1094,14 @@ pid_kill <- function(pid, wait = 0.5, timeout = 30, debug = TRUE) {
   on.exit(setTimeLimit(elapsed = Inf))
 
   tryCatch({
-    ## Nothing todo?
-    isAlive <- pid_exists(pid)
-    if (!isTRUE(isAlive)) return(TRUE)
-    
+    ## Always try to kill, because pid_exists() can be very slow on Windows
     pskill(pid)
   
     ## Wait a bit before checking whether process was successfully
     ## killed or not
     Sys.sleep(wait)
+
+    ## WARNING: pid_exists() can be very slow on Windows
     !isTRUE(pid_exists(pid))
   }, error = function(ex) NA)
 }

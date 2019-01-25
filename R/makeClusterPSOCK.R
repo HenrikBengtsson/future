@@ -466,8 +466,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       status <- attr(res, "status")
       if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
         rscript_args <- c(rscript_pid_args, rscript_args)
-        ## Find working pid_exists() function already here (less debug clutter)
-        dummy <- pid_exists(Sys.getpid())
       } else {
         pidfile <- NULL
       }
@@ -682,6 +680,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        pid <- readWorkerPID(pidfile)
        if (!is.null(pid)) {
          if (verbose) message(sprintf("Killing worker process (PID %d) if still alive", pid))
+	 ## WARNING: pid_kill() calls pid_exists() [twice] and on Windows
+	 ## pid_exists() uses system('tasklist') which can be very very slow
+	 ## /HB 2019-01-24
          success <- pid_kill(pid)
          if (verbose) message(sprintf("Worker (PID %d) was successfully killed: %s", pid, success))
          msg <- c(msg, sprintf("* Worker (PID %d) was successfully killed: %s\n", pid, success))
