@@ -28,7 +28,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
     future <- message
     result <- future$result
     if (inherits(result, "FutureResult")) {
-      cond <- result$condition
+      cond <- result[["condition"]]
     } else {
       ## BACKWARD COMPATIBILITY
       cond <- future$value
@@ -76,7 +76,7 @@ print.FutureCondition <- function(x, ...) {
 
     result <- future$result
     if (inherits(result, "FutureResult")) {
-      cond <- result$condition
+      cond <- result[["condition"]]
     } else {
       ## BACKWARD COMPATIBILITY
       cond <- future$value

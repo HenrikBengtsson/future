@@ -1,6 +1,14 @@
 Package: future
 ===============
 
+Version: 1.11.1.1-9000 [2019-02-11]
+
+BUG FIXES:
+
+ * Functions no longer produce "partial match of 'condition' to 'conditions'"
+   warnings with options(warnPartialMatchDollar=TRUE).
+ 
+
 Version: 1.11.1.1 [2019-01-25]
 
 BUG FIXES:

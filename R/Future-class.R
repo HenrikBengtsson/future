@@ -237,8 +237,8 @@ print.Future <- function(x, ...) {
     if (inherits(result, "FutureResult")) {
       conditions <- result$conditions
       ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-      if (!is.list(conditions) && !is.null(result$condition)) {
-        conditions <- list(list(condition = result$condition))
+      if (!is.list(conditions) && !is.null(result[["condition"]])) {
+        conditions <- list(list(condition = result[["condition"]]))
       }
       conditionClasses <- vapply(conditions, FUN = function(c) class(c$condition)[1], FUN.VALUE = NA_character_)
       cat(sprintf("Conditions captured: [n=%d] %s\n", length(conditionClasses), hpaste(sQuote(conditionClasses))))
@@ -429,8 +429,8 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   ## Signal captured conditions?
   conditions <- result$conditions
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions) && !is.null(result$condition)) {
-    conditions <- list(list(condition = result$condition))
+  if (!is.list(conditions) && !is.null(result[["condition"]])) {
+    conditions <- list(list(condition = result[["condition"]]))
   }
   if (length(conditions) > 0) {
     if (signal) {

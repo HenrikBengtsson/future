@@ -40,16 +40,16 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., ve
       ))
     }
     ## DEPRECATED in future (>= 1.11.0)
-    if (!is.null(args$calls)) stop_if_not(is.list(args$calls))
-    if (!is.null(args$condition)) stop_if_not(inherits(args$condition, "error"))
+    if (!is.null(args[["calls"]])) stop_if_not(is.list(args[["calls"]]))
+    if (!is.null(args[["condition"]])) stop_if_not(inherits(args[["condition"]], "error"))
   }
 
   if (!is.null(stdout)) stopifnot(is.character(stdout))
   
   if (is.null(conditions)) {
     ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-    if (!is.null(args$condition)) {
-      conditions <- list(list(condition=args$condition))
+    if (!is.null(args[["condition"]])) {
+      conditions <- list(list(condition=args[["condition"]]))
     }
   } else {
     stop_if_not(is.list(conditions))
@@ -57,8 +57,8 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., ve
     ## Make sure that 'condition' is set, in case some pkgs use that
     for (kk in seq_along(conditions)) {
       c <- conditions[[kk]]
-      if (inherits(c$condition, "error")) {
-        args$condition <- c$condition
+      if (inherits(c[["condition"]], "error")) {
+        args[["condition"]] <- c[["condition"]]
 	break
       }
     }

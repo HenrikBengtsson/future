@@ -33,7 +33,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   conditions <- result$conditions
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(list(condition = result$condition))
+  if (!is.list(conditions)) conditions <- list(list(condition = result[["condition"]]))
 
   ## Find 'error' condition
   error <- NULL
