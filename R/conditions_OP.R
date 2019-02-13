@@ -18,6 +18,7 @@
   args <- getOption("future.disposable", list())
   args["conditions"] <- list(capture)
   options(future.disposable = args)
+  on.exit(options(future.disposable = NULL))
 
   eval(fassignment, envir = envir, enclos = baseenv())
 }

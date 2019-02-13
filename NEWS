@@ -1,13 +1,18 @@
 Package: future
 ===============
 
-Version: 1.11.1.1-9000 [2019-02-11]
+Version: 1.11.1.1-9000 [2019-02-13]
 
 BUG FIXES:
 
  * Functions no longer produce "partial match of 'condition' to 'conditions'"
    warnings with options(warnPartialMatchDollar=TRUE).
- 
+
+ * When future infix operators (%conditions%, %globals%, %label%, %lazy%,
+   %packages%, %seed%, and %stdout) that are intended for future assignments
+   were used in the wrong context, they would incorrectly be applied to the
+   next future created. Now they're discarded.
+   
 
 Version: 1.11.1.1 [2019-01-25]
 
