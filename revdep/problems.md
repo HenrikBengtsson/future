@@ -1,3 +1,16 @@
+# abjutils
+
+Version: 0.2.3
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘httr’ ‘progress’
+      All declared Imports should be used.
+    ```
+
 # aroma.affymetrix
 
 Version: 3.1.1
@@ -92,6 +105,19 @@ Version: 0.7.6
       Note: found 65 marked UTF-8 strings
     ```
 
+# fxtract
+
+Version: 0.9.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘utils’
+      All declared Imports should be used.
+    ```
+
 # greta
 
 Version: 0.3.0
@@ -105,13 +131,13 @@ Version: 0.3.0
 
 # lidR
 
-Version: 2.0.0
+Version: 2.0.1
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.4Mb
+      installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   7.6Mb
     ```
@@ -170,18 +196,6 @@ Version: 1.16.0
     All user-level objects in a package should have documentation entries.
     See chapter ‘Writing R documentation files’ in the ‘Writing R
     Extensions’ manual.
-    ```
-
-# reproducible
-
-Version: 0.2.5
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘devtools’
-      All declared Imports should be used.
     ```
 
 # robotstxt
