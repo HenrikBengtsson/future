@@ -62,10 +62,7 @@ print.FutureCondition <- function(x, ...) {
 
   future <- attr(x, "future", exact = TRUE)
 
-  ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
-  output <- attr(x, "output", exact = TRUE)
-  
-  if (!is.null(future) || !is.null(output)) {
+  if (!is.null(future)) {
     cat("\n\nDEBUG: BEGIN TROUBLESHOOTING HELP\n")
 
     if (!is.null(future)) {
@@ -89,13 +86,6 @@ print.FutureCondition <- function(x, ...) {
         print(fcalls)
         cat("\n")
       }
-    }
-
-    ## DEPRECATED / BACKWARD COMPATIBILITY: FutureError(..., output)
-    if (!is.null(output)) {
-      cat("Captured output:\n")
-      cat(tail(output, n = 30L), sep = "\n")
-      cat("\n\n")
     }
 
     cat("DEBUG: END TROUBLESHOOTING HELP\n")
@@ -124,21 +114,19 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 }
 
 
-#' @param output (DEPRECATED - don't use!) only for backward compatibility
+#' @param output (DEFUNCT - don't use!) only for backward compatibility
 #' 
 #' @rdname FutureCondition
 #' @export
 FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
+  if (!is.null(output)) {
+    .Defunct(msg = "Argument 'output' of FutureError is defunct")
+  }
+  
   cond <- FutureCondition(message = message, call = call, future = future)
   ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
   class(cond) <- c("FutureError", "simpleError", "error", class(cond))
 
-  ## DEPREACTED
-  if (!is.null(output)) {
-    .Deprecated(msg = "Argument 'output' of FutureError is deprecated")
-    attr(cond, "output") <- output
-  }
-  
   cond
 }
 

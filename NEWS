@@ -12,7 +12,11 @@ BUG FIXES:
    %packages%, %seed%, and %stdout) that are intended for future assignments
    were used in the wrong context, they would incorrectly be applied to the
    next future created. Now they're discarded.
-   
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'output' of FutureError() is now defunct.
+
 
 Version: 1.11.1.1 [2019-01-25]
 

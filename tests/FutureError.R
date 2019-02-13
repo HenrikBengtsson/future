@@ -17,11 +17,11 @@ print(v)
 ex <- FutureError(message = "Woops", future = f)
 print(ex)
 
-## Deprecated
+## Defunct
 res <- tryCatch({
   FutureError(message = "Woops", future = f, output = "Boom")
-}, warning = identity)
-stopifnot(inherits(res, "warning"))
+}, error = identity)
+stopifnot(inherits(res, "error"))
 
 message("*** FutureError class ... DONE")
 
