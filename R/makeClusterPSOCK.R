@@ -460,12 +460,18 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rscript_pid_args <- c("-e", shQuote(pidcode))
       
       ## Check if this approach to infer the PID works
-      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile))), "-e", shQuote("q('no')")), collapse = " ")
+      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile)))), collapse = " ")
       if (verbose) {
         message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
       }
-      res <- system(test_cmd, intern = TRUE, input = "")
+      input <- NULL
+      ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
+      ## they will be terminated because they try to read from non-existing
+      ## standard input. /HB 2019-02-14
+      if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
+      res <- system(test_cmd, intern = TRUE, input = input)
       status <- attr(res, "status")
+      suppressWarnings(file.remove(pidfile))
       if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
         if (verbose) message("- Possible to infer worker's PID: TRUE")
         rscript_args <- c(rscript_pid_args, rscript_args)
@@ -473,7 +479,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
         if (verbose) message("- Possible to infer worker's PID: FALSE")
         pidfile <- NULL
       }
-      suppressWarnings(file.remove(pidfile))
     }
   }
 
