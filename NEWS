@@ -13,7 +13,8 @@ BUG FIXES:
    were used in the wrong context, they would incorrectly be applied to the
    next future created. Now they're discarded.
 
- * makeClusterPSOCK(... rscript) produced warnings when length(rscript) > 1.
+ * makeClusterPSOCK() in future (>= 1.11.1) produced warnings when argument
+   'rscript' had length(rscript) > 1.
 
 DEPRECATED AND DEFUNCT:
 

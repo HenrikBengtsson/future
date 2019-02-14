@@ -456,16 +456,15 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (autoKill) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
+      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"), silent = TRUE)', pidfile)
       rscript_pid_args <- c("-e", shQuote(pidcode))
       
       ## Check if this approach to infer the PID works
-      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile)))), collapse = " ")
+      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile))), "-e", shQuote("q('no')")), collapse = " ")
       if (verbose) {
         message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
       }
-      res <- system(test_cmd, wait = TRUE, intern = TRUE)
-      file.remove(pidfile)
+      res <- system(test_cmd, intern = TRUE, input = "")
       status <- attr(res, "status")
       if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
         if (verbose) message("- Possible to infer worker's PID: TRUE")
@@ -474,6 +473,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
         if (verbose) message("- Possible to infer worker's PID: FALSE")
         pidfile <- NULL
       }
+      suppressWarnings(file.remove(pidfile))
     }
   }
 
