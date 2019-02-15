@@ -3,14 +3,14 @@
 |field    |value                        |
 |:--------|:----------------------------|
 |version  |R version 3.5.2 (2018-12-20) |
-|os       |Ubuntu 18.04.1 LTS           |
+|os       |Ubuntu 18.04.2 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-02-13                   |
+|date     |2019-02-14                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (50)
+## All (51)
 
 |package                                         |version    |error |warning |note |
 |:-----------------------------------------------|:----------|:-----|:-------|:----|
@@ -32,7 +32,7 @@
 |[aroma.core](problems.md#aromacore)             |3.1.3      |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.0.1      |      |        |1    |
 |batchtools                                      |0.9.11     |      |        |     |
-|[biotmle](problems.md#biotmle)                  |1.4.0      |      |        |1    |
+|biotmle                                         |1.6.0      |      |        |     |
 |[brms](problems.md#brms)                        |2.7.0      |      |        |1    |
 |civis                                           |1.6.1      |      |        |     |
 |[codebook](problems.md#codebook)                |0.7.6      |      |        |3    |
@@ -50,22 +50,23 @@
 |future.callr                                    |0.4.0      |      |        |     |
 |[fxtract](problems.md#fxtract)                  |0.9.1      |      |        |1    |
 |googleComputeEngineR                            |0.2.0      |      |        |     |
-|[greta](problems.md#greta)                      |0.3.0      |      |        |1    |
+|greta                                           |0.3.0      |      |        |     |
 |GSODR                                           |1.3.2      |      |        |     |
 |ipc                                             |0.1.2      |      |        |     |
 |jstor                                           |0.3.6      |      |        |     |
 |kernelboot                                      |0.1.5      |      |        |     |
 |[lidR](problems.md#lidr)                        |2.0.1      |      |        |2    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2      |      |        |1    |
-|methyvim                                        |1.2.0      |      |        |     |
+|methyvim                                        |1.4.0      |      |        |     |
 |ngstk                                           |0.2.3      |      |        |     |
 |origami                                         |1.0.0      |      |        |     |
 |pbmcapply                                       |1.3.1      |      |        |     |
 |penaltyLearning                                 |2018.09.04 |      |        |     |
 |[phylolm](problems.md#phylolm)                  |2.6        |      |        |1    |
 |[promises](problems.md#promises)                |1.0.1      |      |        |1    |
+|[Prostar](problems.md#prostar)                  |1.14.11    |      |1       |     |
 |PSCBS                                           |0.64.0     |      |        |     |
-|[QDNAseq](problems.md#qdnaseq)                  |1.16.0     |      |1       |     |
+|[QDNAseq](problems.md#qdnaseq)                  |1.18.0     |      |1       |     |
 |R.filesets                                      |2.12.1     |      |        |     |
 |reproducible                                    |0.2.6      |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2      |      |        |1    |
