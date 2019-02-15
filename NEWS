@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.11.1.1-9000 [2019-02-14]
+Version: 1.11.1.1-9000 [2019-02-15]
 
 NEW FEATURES:
 
@@ -24,6 +24,8 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
+ * Argument 'progress' of resolve() is now deprecated.
+ 
  * Argument 'output' of FutureError() is now defunct.
 
 
