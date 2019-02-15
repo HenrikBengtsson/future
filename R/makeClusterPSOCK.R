@@ -31,6 +31,7 @@
 #'
 #' @example incl/makeClusterPSOCK.R
 #'
+#' @importFrom parallel stopCluster
 #' @export
 makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
@@ -84,6 +85,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   n <- length(workers)
   cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
+
+  
+  ## If an error occurred, make sure to clean up before exiting, i.e.
+  ## stop each node
+  on.exit({
+    nodes <- vapply(cl, FUN = inherits, c("SOCKnode", "SOCK0node"),
+                        FUN.VALUE = FALSE)
+    stopCluster(cl[nodes])
+    cl <- NULL
+  })
+
   for (ii in seq_along(cl)) {
     if (verbose) {
       message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
@@ -106,7 +118,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   }
 
   if (autoStop) cl <- autoStopCluster(cl)
-  
+
+  ## Success, remove automatic cleanup of nodes
+  on.exit()
+
   cl
 } ## makeClusterPSOCK()
 
