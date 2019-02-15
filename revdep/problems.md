@@ -51,23 +51,6 @@ Version: 2.0.1
         libs   4.7Mb
     ```
 
-# biotmle
-
-Version: 1.4.0
-
-## In both
-
-*   checking R code for possible problems ... NOTE
-    ```
-    .biotmle: no visible global function definition for ‘new’
-    Undefined global functions or variables:
-      new
-    Consider adding
-      importFrom("methods", "new")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-    contains 'methods').
-    ```
-
 # brms
 
 Version: 2.7.0
@@ -116,17 +99,6 @@ Version: 0.9.1
     Namespaces in Imports field not imported from:
       ‘future’ ‘utils’
       All declared Imports should be used.
-    ```
-
-# greta
-
-Version: 0.3.0
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘truncdist’
     ```
 
 # lidR
@@ -183,9 +155,22 @@ Version: 1.0.1
     Package unavailable to check Rd xrefs: ‘purrr’
     ```
 
+# Prostar
+
+Version: 1.14.11
+
+## In both
+
+*   checking whether package ‘Prostar’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
+    ```
+
 # QDNAseq
 
-Version: 1.16.0
+Version: 1.18.0
 
 ## In both
 
