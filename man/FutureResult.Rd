@@ -3,12 +3,16 @@
 \name{FutureResult}
 \alias{FutureResult}
 \alias{as.character.FutureResult}
+\alias{print.FutureResult}
 \title{Results from resolving a future}
 \usage{
 FutureResult(value = NULL, stdout = NULL, conditions = NULL, ...,
+  started = .POSIXct(NA_real_), finished = Sys.time(),
   version = "1.7")
 
 \method{as.character}{FutureResult}(x, ...)
+
+\method{print}{FutureResult}(x, ...)
 }
 \arguments{
 \item{value}{The value of the future expression.
@@ -18,6 +22,9 @@ the the value is \code{NULL}.}
 \item{conditions}{A list of zero or more list elements each containing
 a captured [[base::condition]] and possibly more meta data such as the
 call stack and a timestamp.}
+
+\item{started, finished}{[base::POSIXct] timestamps when the evaluation of
+the future expression was started and finished.}
 
 \item{version}{The version format of the results.}
 

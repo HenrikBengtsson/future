@@ -10,6 +10,9 @@
 #'
 #' @param \ldots (optional) Additional named results to be returned.
 #' 
+#' @param started,finished [base::POSIXct] timestamps when the evaluation of
+#' the future expression was started and finished.
+#'
 #' @param version The version format of the results.
 #'
 #' @return An object of class FutureResult.
@@ -30,7 +33,7 @@
 #'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., version = "1.7") {
+FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.7") {
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)
@@ -69,6 +72,8 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., ve
     stdout     = stdout,
     conditions = conditions,
     ...,
+    started    = started,
+    finished   = finished,
     version    = version
   ), class = "FutureResult")
 }
@@ -91,4 +96,20 @@ as.character.FutureResult <- function(x, ...) {
   info <- sprintf("%s: %s", names(info), sQuote(info))
   info <- paste(info, collapse = "; ")
   sprintf("%s: %s", class(x)[1], info)
+}
+
+#' @rdname FutureResult
+#' @export
+#' @keywords internal
+print.FutureResult <- function(x, ...) {
+  s <- sprintf("%s:", class(x)[1])
+  s <- c(s, sprintf("value: %s", class(x[["value"]])))
+  s <- c(s, sprintf("stdout: %s", class(x[["stdout"]])))
+  conditions <- x[["conditions"]]
+  s <- c(s, sprintf("conditions: [n = %d] %s", length(conditions), paste(sapply(conditions, FUN = function(c) sQuote(class(c)[1])), collapse = ", ")))
+  t0 <- x[["started"]]
+  t1 <- x[["finished"]]
+  s <- c(s, sprintf("duration: %s (started %s)", format(t1-t0), t0))
+  s <- c(s, sprintf("version: %s", x[["version"]]))
+  cat(s, sep = "\n")
 }

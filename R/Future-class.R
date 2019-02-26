@@ -680,6 +680,9 @@ makeExpression <- local({
   
     ## Set and reset certain future.* options etc.
     enter <- bquote({
+      ## Start time for future evaluation
+      ...future.startTime <- Sys.time()
+      
       ## covr: skip=7
       ...future.oldOptions <- options(
         ## Prevent .future.R from being source():d when future is attached
@@ -759,7 +762,7 @@ makeExpression <- local({
           withCallingHandlers({
             ...future.value <- .(expr)
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value, version = "1.8")
+            future::FutureResult(value = ...future.value, started = ...future.startTime, version = "1.8")
           }, condition = local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
