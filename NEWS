@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.11.1.1-9000 [2019-02-26]
+Version: 1.11.1.1-9000 [2019-03-01]
 
 NEW FEATURES:
 
@@ -24,6 +24,9 @@ BUG FIXES:
 
  * makeClusterPSOCK() in future (>= 1.11.1) produced warnings when argument
    'rscript' had length(rscript) > 1.
+
+ * Validation of L'Ecuyer-CMRG RNG seeds failed in recent R devel.
+ 
 
 DEPRECATED AND DEFUNCT:
 

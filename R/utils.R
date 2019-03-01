@@ -1148,3 +1148,15 @@ queryRCmdCheck <- function(...) {
 }
 
 inRCmdCheck <- function() { queryRCmdCheck() != "notRunning" }
+
+
+## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
+##   .Random.seed <- c(rng.kind, n) where length(n) == 6L.
+## From R source code: check for rng.kind %% 10000L == 407L
+is_lecyer_cmrg_seed <- function(seed) {
+  is.numeric(seed) &&
+    length(seed) == 7L &&
+    all(is.finite(seed)) &&
+    (seed[1] %% 10000L == 407L)
+}
+   

@@ -78,10 +78,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
-    ## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
-    ##    .Random.seed <- c(rng.kind, n)
-    ## where rng.kind == 407L and length(n) == 6L
-    if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
+    if (!is_lecyer_cmrg_seed(seed)) {
       msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
       mdebug(msg)
       mprint(seed)
