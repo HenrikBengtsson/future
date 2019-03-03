@@ -8,9 +8,9 @@ requestCore(await, workers = availableCores(),
   timeout = getOption("future.wait.timeout",
   as.numeric(Sys.getenv("R_FUTURE_WAIT_TIMEOUT", 30 * 24 * 60 * 60))),
   delta = getOption("future.wait.interval",
-  as.numeric(Sys.getenv("R_FUTURE_WAIT_INTERVAL", 0.2))),
+  as.numeric(Sys.getenv("R_FUTURE_WAIT_INTERVAL", "0.2"))),
   alpha = getOption("future.wait.alpha",
-  as.numeric(Sys.getenv("R_FUTURE_WAIT_ALPHA", 1.01))))
+  as.numeric(Sys.getenv("R_FUTURE_WAIT_ALPHA", "1.01"))))
 }
 \arguments{
 \item{await}{A function used to try to "collect"

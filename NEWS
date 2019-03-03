@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.11.1.1-9000 [2019-03-01]
+Version: 1.11.1.1-9000 [2019-03-03]
 
 NEW FEATURES:
 
@@ -26,6 +26,10 @@ BUG FIXES:
    'rscript' had length(rscript) > 1.
 
  * Validation of L'Ecuyer-CMRG RNG seeds failed in recent R devel.
+
+ * With options(OutDec = ","), the default value of several argument would
+   resolve to NA_real_ rather than a numeric value resulting in errors such
+   as "is.finite(alpha)’ is not TRUE".
  
 
 DEPRECATED AND DEFUNCT:
