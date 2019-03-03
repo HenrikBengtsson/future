@@ -23,7 +23,7 @@ no recursion is performed.}
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
 
-\item{progress}{If TRUE textual progress summary is outputted.  If a
+\item{progress}{(DEPRECATED) If TRUE textual progress summary is outputted.  If a
 function, the it is called as \code{progress(done, total)} every time a
 future is resolved.}
 

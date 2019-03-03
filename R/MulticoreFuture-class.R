@@ -203,7 +203,7 @@ result.MulticoreFuture <- function(future, ...) {
   future$result <- result
   
   ## BACKWARD COMPATIBILITY
-  future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
+  future$state <- if (inherits(result[["condition"]], "error")) "failed" else "finished"
 
   ## Remove from registry
   reg <- sprintf("multicore-%s", session_uuid())

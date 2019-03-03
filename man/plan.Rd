@@ -99,7 +99,7 @@ the control on what backend to use to the end user.  This idea is part of
 the core philosophy of the future framework - as a developer you can never
 know what future backends the user have access to.  Moreover, by not making
 any assumptions about what backends are available, your code will also work
-automatically will any new backends developed after you wrote your code.
+automatically with any new backends developed after you wrote your code.
 
 If you think it is necessary to modify the future strategy within a
 function, then make sure to undo the changes when exiting the function.

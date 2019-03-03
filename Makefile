@@ -6,7 +6,7 @@ vignettes/future-1-overview.md.rsp: inst/vignettes-static/future-1-overview.md.r
 	$(RM) README.md
 	$(MAKE) README.md
 
-vigs: vignettes/future-1-overview.md.rsp
+vignettes: vignettes/future-1-overview.md.rsp
 
 future.tests/%:
 	$(R_SCRIPT) -e "future.tests::check" --args --test-plan=$*

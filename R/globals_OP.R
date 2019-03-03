@@ -22,6 +22,7 @@
   args <- getOption("future.disposable", list())
   args["globals"] <- list(globals)
   options(future.disposable = args)
+  on.exit(options(future.disposable = NULL))
 
   eval(fassignment, envir = envir, enclos = baseenv())
 }
@@ -35,6 +36,7 @@
   args <- getOption("future.disposable", list())
   args["packages"] <- list(packages)
   options(future.disposable = args)
+  on.exit(options(future.disposable = NULL))
 
   eval(fassignment, envir = envir, enclos = baseenv())
 }

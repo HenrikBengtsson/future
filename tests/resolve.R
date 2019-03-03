@@ -1,8 +1,6 @@
 source("incl/start.R")
 library("listenv")
 
-oopts <- c(oopts, options(future.progress = TRUE))
-
 strategies <- supportedStrategies()
 
 message("*** resolve() ...")
@@ -207,17 +205,6 @@ for (strategy in strategies) {
 
 
   message("*** resolve() for list environments ...")
-
-  options(future.progress = function(done, total) {
-    msg <- sprintf("Wohoo: %.0f%% (%d/%d)", 100 * done / total, done, total)
-    if (done < total) {
-      bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
-      message(paste(msg, bs, sep = ""), appendLF = FALSE)
-    } else {
-      message(msg)
-    }
-  })
-
 
   x <- listenv()
   y <- resolve(x)

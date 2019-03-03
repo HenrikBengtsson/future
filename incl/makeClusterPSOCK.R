@@ -43,7 +43,7 @@ cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "singularity", "run", "--net=host", "rocker/r-base",
+    "docker", "run", "--net=host", "rocker/r-base",
     "Rscript"
   ),
   ## Install future package

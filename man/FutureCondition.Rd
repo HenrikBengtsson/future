@@ -25,7 +25,7 @@ UnexpectedFutureResultError(future, hint = NULL)
 
 \item{future}{The \link{Future} involved.}
 
-\item{output}{(DEPRECATED - don't use!) only for backward compatibility}
+\item{output}{(DEFUNCT - don't use!) only for backward compatibility}
 
 \item{hint}{(optional) A string with a suggestion on what might be wrong.}
 }
