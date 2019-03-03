@@ -19,7 +19,7 @@ The \link{FutureResult} object.
 Get the results of a resolved future
 }
 \details{
-This function is only part of the _backend_ Future API.
-This function is _not_ part of the frontend Future API.
+This function is only part of the \emph{backend} Future API.
+This function is \emph{not} part of the frontend Future API.
 }
 \keyword{internal}

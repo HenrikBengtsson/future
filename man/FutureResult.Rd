@@ -20,10 +20,10 @@ If the expression was not fully resolved (e.g. an error) occurred,
 the the value is \code{NULL}.}
 
 \item{conditions}{A list of zero or more list elements each containing
-a captured [[base::condition]] and possibly more meta data such as the
+a captured \link[base:condition]{condition} and possibly more meta data such as the
 call stack and a timestamp.}
 
-\item{started, finished}{[base::POSIXct] timestamps when the evaluation of
+\item{started, finished}{\link[base:POSIXct]{POSIXct} timestamps when the evaluation of
 the future expression was started and finished.}
 
 \item{version}{The version format of the results.}
@@ -37,12 +37,12 @@ An object of class FutureResult.
 Results from resolving a future
 }
 \details{
-This function is only part of the _backend_ Future API.
-This function is _not_ part of the frontend Future API.
+This function is only part of the \emph{backend} Future API.
+This function is \emph{not} part of the frontend Future API.
 }
 \section{Note to developers}{
 
-The FutureResult structure is _under development_ and may change at anytime,
+The FutureResult structure is \emph{under development} and may change at anytime,
 e.g. elements may be renamed or removed.  Because of this, please avoid
 accessing the elements directly in code.  Feel free to reach out if you need
 to do so in your code.

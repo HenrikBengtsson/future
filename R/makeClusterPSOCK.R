@@ -162,7 +162,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' vector).  This argument can be used to customize the \R environment of the
 #' workers before they launches.  For instance, use
 #' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
-#' to set the working directory to \file{/path/to} on _all_ workers.
+#' to set the working directory to \file{/path/to} on \emph{all} workers.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 

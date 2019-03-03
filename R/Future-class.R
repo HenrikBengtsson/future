@@ -313,8 +313,8 @@ result <- function(...) UseMethod("result")
 #' @return The \link{FutureResult} object.
 #'
 #' @details
-#' This function is only part of the _backend_ Future API.
-#' This function is _not_ part of the frontend Future API.
+#' This function is only part of the \emph{backend} Future API.
+#' This function is \emph{not} part of the frontend Future API.
 #'
 #' @aliases result
 #' @rdname result
