@@ -124,8 +124,7 @@ FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
   }
   
   cond <- FutureCondition(message = message, call = call, future = future)
-  ## TODO: Remove usage of 'simpleError'. Various packages' tests use this.
-  class(cond) <- c("FutureError", "simpleError", "error", class(cond))
+  class(cond) <- c("FutureError", "error", class(cond))
 
   cond
 }
