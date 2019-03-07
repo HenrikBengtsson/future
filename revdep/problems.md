@@ -67,14 +67,14 @@ Version: 2.7.0
 
 # codebook
 
-Version: 0.7.6
+Version: 0.8.0
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘graphics’ ‘pander’
+      ‘graphics’ ‘jsonlite’ ‘pander’ ‘rlang’
       All declared Imports should be used.
     ```
 
@@ -101,9 +101,21 @@ Version: 0.9.1
       All declared Imports should be used.
     ```
 
+# lgr
+
+Version: 0.1.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘R6’
+      All declared Imports should be used.
+    ```
+
 # lidR
 
-Version: 2.0.1
+Version: 2.0.2
 
 ## In both
 

@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-02-14                   |
+|date     |2019-03-07                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (51)
+## All (52)
 
 |package                                         |version    |error |warning |note |
 |:-----------------------------------------------|:----------|:-----|:-------|:----|
@@ -35,16 +35,16 @@
 |biotmle                                         |1.6.0      |      |        |     |
 |[brms](problems.md#brms)                        |2.7.0      |      |        |1    |
 |civis                                           |1.6.1      |      |        |     |
-|[codebook](problems.md#codebook)                |0.7.6      |      |        |3    |
+|[codebook](problems.md#codebook)                |0.8.0      |      |        |3    |
 |DeclareDesign                                   |0.16.0     |      |        |     |
-|discoveR                                        |1.0.1      |      |        |     |
+|discoveR                                        |1.1.0      |      |        |     |
 |doFuture                                        |0.7.0      |      |        |     |
 |drake                                           |6.2.1      |      |        |     |
 |drtmle                                          |1.0.4      |      |        |     |
 |FAMoS                                           |0.1.0      |      |        |     |
 |fiery                                           |1.1.1      |      |        |     |
 |furrr                                           |0.1.0      |      |        |     |
-|future.apply                                    |1.1.0      |      |        |     |
+|future.apply                                    |1.2.0      |      |        |     |
 |future.BatchJobs                                |0.16.1     |      |        |     |
 |future.batchtools                               |0.7.2      |      |        |     |
 |future.callr                                    |0.4.0      |      |        |     |
@@ -55,7 +55,8 @@
 |ipc                                             |0.1.2      |      |        |     |
 |jstor                                           |0.3.6      |      |        |     |
 |kernelboot                                      |0.1.5      |      |        |     |
-|[lidR](problems.md#lidr)                        |2.0.1      |      |        |2    |
+|[lgr](problems.md#lgr)                          |0.1.1      |      |        |1    |
+|[lidR](problems.md#lidr)                        |2.0.2      |      |        |2    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2      |      |        |1    |
 |methyvim                                        |1.4.0      |      |        |     |
 |ngstk                                           |0.2.3      |      |        |     |
@@ -68,7 +69,7 @@
 |PSCBS                                           |0.64.0     |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.18.0     |      |1       |     |
 |R.filesets                                      |2.12.1     |      |        |     |
-|reproducible                                    |0.2.6      |      |        |     |
+|reproducible                                    |0.2.7      |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2      |      |        |1    |
 |RTransferEntropy                                |0.2.7      |      |        |     |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0      |      |        |1    |
