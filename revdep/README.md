@@ -14,12 +14,12 @@
 
 # Dependencies
 
-|package |old      |new           |Δ  |
-|:-------|:--------|:-------------|:--|
-|future  |1.11.1.1 |1.11.1.1-9000 |*  |
-|digest  |0.6.18   |0.6.18        |   |
-|globals |0.12.4   |0.12.4        |   |
-|listenv |0.7.0    |0.7.0         |   |
+|package |old      |new    |Δ  |
+|:-------|:--------|:------|:--|
+|future  |1.11.1.1 |1.12.0 |*  |
+|digest  |0.6.18   |0.6.18 |   |
+|globals |0.12.4   |0.12.4 |   |
+|listenv |0.7.0    |0.7.0  |   |
 
 # Revdeps
 
@@ -37,7 +37,6 @@
 |civis                                           |1.6.1      |      |        |     |
 |[codebook](problems.md#codebook)                |0.8.0      |      |        |3    |
 |DeclareDesign                                   |0.16.0     |      |        |     |
-|discoveR                                        |1.1.0      |      |        |     |
 |doFuture                                        |0.7.0      |      |        |     |
 |drake                                           |6.2.1      |      |        |     |
 |drtmle                                          |1.0.4      |      |        |     |
@@ -65,7 +64,7 @@
 |penaltyLearning                                 |2018.09.04 |      |        |     |
 |[phylolm](problems.md#phylolm)                  |2.6        |      |        |1    |
 |[promises](problems.md#promises)                |1.0.1      |      |        |1    |
-|[Prostar](problems.md#prostar)                  |1.14.11    |      |1       |     |
+|[Prostar](problems.md#prostar)                  |1.14.12    |      |1       |     |
 |PSCBS                                           |0.64.0     |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.18.0     |      |1       |     |
 |R.filesets                                      |2.12.1     |      |        |     |
@@ -77,6 +76,7 @@
 |sperrorest                                      |2.1.5      |      |        |     |
 |startR                                          |0.0.1      |      |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0      |      |        |2    |
+|[tidyqwi](problems.md#tidyqwi)                  |0.1.0      |      |        |1    |
 |tsfeatures                                      |1.0.0      |      |        |     |
 |vinereg                                         |0.5.0      |      |        |     |
 

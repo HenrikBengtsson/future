@@ -169,7 +169,7 @@ Version: 1.0.1
 
 # Prostar
 
-Version: 1.14.11
+Version: 1.14.12
 
 ## In both
 
@@ -249,5 +249,17 @@ Version: 1.1.0
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘parsedate’
+    ```
+
+# tidyqwi
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘plyr’
+      All declared Imports should be used.
     ```
 
