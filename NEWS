@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.11.1.1-9000 [2019-03-07]
+Version: 1.12.0 [2019-03-07]
 
 NEW FEATURES:
 
@@ -30,7 +30,6 @@ BUG FIXES:
  * With options(OutDec = ","), the default value of several argument would
    resolve to NA_real_ rather than a numeric value resulting in errors such
    as "is.finite(alpha)’ is not TRUE".
- 
 
 DEPRECATED AND DEFUNCT:
 
