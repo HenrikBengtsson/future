@@ -31,6 +31,7 @@
 #'
 #' @example incl/makeClusterPSOCK.R
 #'
+#' @importFrom parallel stopCluster
 #' @export
 makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
@@ -84,6 +85,17 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   n <- length(workers)
   cl <- vector("list", length = n)
   class(cl) <- c("SOCKcluster", "cluster")
+
+  
+  ## If an error occurred, make sure to clean up before exiting, i.e.
+  ## stop each node
+  on.exit({
+    nodes <- vapply(cl, FUN = inherits, c("SOCKnode", "SOCK0node"),
+                        FUN.VALUE = FALSE)
+    stopCluster(cl[nodes])
+    cl <- NULL
+  })
+
   for (ii in seq_along(cl)) {
     if (verbose) {
       message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
@@ -106,7 +118,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
   }
 
   if (autoStop) cl <- autoStopCluster(cl)
-  
+
+  ## Success, remove automatic cleanup of nodes
+  on.exit()
+
   cl
 } ## makeClusterPSOCK()
 
@@ -147,7 +162,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' vector).  This argument can be used to customize the \R environment of the
 #' workers before they launches.  For instance, use
 #' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
-#' to set the working directory to \file{/path/to} on _all_ workers.
+#' to set the working directory to \file{/path/to} on \emph{all} workers.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -456,17 +471,27 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (autoKill) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"))', pidfile)
+      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"), silent = TRUE)', pidfile)
       rscript_pid_args <- c("-e", shQuote(pidcode))
-      ## Check if this approach to infer the PID works
-      test_cmd <- paste(rscript, paste(c(rscript_pid_args, "-e", 42), collapse = " "))
-      res <- system(test_cmd, wait = TRUE, intern = TRUE)
-      file.remove(pidfile)
       
+      ## Check if this approach to infer the PID works
+      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile)))), collapse = " ")
+      if (verbose) {
+        message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
+      }
+      input <- NULL
+      ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
+      ## they will be terminated because they try to read from non-existing
+      ## standard input. /HB 2019-02-14
+      if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
+      res <- system(test_cmd, intern = TRUE, input = input)
       status <- attr(res, "status")
-      if ((is.null(status) || status == 0L) && any(grepl("42", res))) {
+      suppressWarnings(file.remove(pidfile))
+      if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
+        if (verbose) message("- Possible to infer worker's PID: TRUE")
         rscript_args <- c(rscript_pid_args, rscript_args)
       } else {
+        if (verbose) message("- Possible to infer worker's PID: FALSE")
         pidfile <- NULL
       }
     }

@@ -19,7 +19,7 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #' 
-#' @param progress If TRUE textual progress summary is outputted.  If a
+#' @param progress (DEPRECATED) If TRUE textual progress summary is outputted.  If a
 #' function, the it is called as \code{progress(done, total)} every time a
 #' future is resolved.
 #' 
@@ -42,7 +42,7 @@ resolve <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1.0, p
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
+resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -112,7 +112,10 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
   x0 <- x
 
   hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
-
+  if (hasProgress) {
+    .Deprecated(msg = "Argument 'progress' of resolve() has been deprecated.")
+  }
+  
   ## Setup default progress function?
   if (hasProgress && !is.function(progress)) {
     progress <- function(done, total) {

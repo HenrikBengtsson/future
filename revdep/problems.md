@@ -1,3 +1,16 @@
+# abjutils
+
+Version: 0.2.3
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘httr’ ‘progress’
+      All declared Imports should be used.
+    ```
+
 # aroma.affymetrix
 
 Version: 3.1.1
@@ -38,23 +51,6 @@ Version: 2.0.1
         libs   4.7Mb
     ```
 
-# biotmle
-
-Version: 1.4.0
-
-## In both
-
-*   checking R code for possible problems ... NOTE
-    ```
-    .biotmle: no visible global function definition for ‘new’
-    Undefined global functions or variables:
-      new
-    Consider adding
-      importFrom("methods", "new")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-    contains 'methods').
-    ```
-
 # brms
 
 Version: 2.7.0
@@ -71,14 +67,14 @@ Version: 2.7.0
 
 # codebook
 
-Version: 0.7.6
+Version: 0.8.0
 
 ## In both
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘graphics’ ‘pander’
+      ‘graphics’ ‘jsonlite’ ‘pander’ ‘rlang’
       All declared Imports should be used.
     ```
 
@@ -92,26 +88,40 @@ Version: 0.7.6
       Note: found 65 marked UTF-8 strings
     ```
 
-# greta
+# fxtract
 
-Version: 0.3.0
+Version: 0.9.1
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Package suggested but not available for checking: ‘truncdist’
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘utils’
+      All declared Imports should be used.
+    ```
+
+# lgr
+
+Version: 0.1.1
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘R6’
+      All declared Imports should be used.
     ```
 
 # lidR
 
-Version: 2.0.0
+Version: 2.0.2
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.4Mb
+      installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   7.6Mb
     ```
@@ -157,9 +167,22 @@ Version: 1.0.1
     Package unavailable to check Rd xrefs: ‘purrr’
     ```
 
+# Prostar
+
+Version: 1.14.12
+
+## In both
+
+*   checking whether package ‘Prostar’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
+    ```
+
 # QDNAseq
 
-Version: 1.16.0
+Version: 1.18.0
 
 ## In both
 
@@ -170,18 +193,6 @@ Version: 1.16.0
     All user-level objects in a package should have documentation entries.
     See chapter ‘Writing R documentation files’ in the ‘Writing R
     Extensions’ manual.
-    ```
-
-# reproducible
-
-Version: 0.2.5
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘devtools’
-      All declared Imports should be used.
     ```
 
 # robotstxt
@@ -238,5 +249,17 @@ Version: 1.1.0
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘parsedate’
+    ```
+
+# tidyqwi
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘plyr’
+      All declared Imports should be used.
     ```
 

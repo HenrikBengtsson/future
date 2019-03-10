@@ -18,6 +18,7 @@
   args <- getOption("future.disposable", list())
   args["stdout"] <- list(capture)
   options(future.disposable = args)
+  on.exit(options(future.disposable = NULL))
 
   eval(fassignment, envir = envir, enclos = baseenv())
 }

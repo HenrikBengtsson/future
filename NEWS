@@ -1,6 +1,45 @@
 Package: future
 ===============
 
+Version: 1.12.0 [2019-03-07]
+
+NEW FEATURES:
+
+ * If makeClusterPSOCK() fails to create one of many nodes, then it will
+   attempt to stop any nodes that were successfully created.  This lowers
+   the risk for leaving R worker processes behind.
+
+ * Future results now hold the timestamps when the evaluation of the future
+   started and finished.
+ 
+BUG FIXES:
+
+ * Functions no longer produce "partial match of 'condition' to 'conditions'"
+   warnings with options(warnPartialMatchDollar=TRUE).
+
+ * When future infix operators (%conditions%, %globals%, %label%, %lazy%,
+   %packages%, %seed%, and %stdout%) that are intended for future assignments
+   were used in the wrong context, they would incorrectly be applied to the
+   next future created. Now they're discarded.
+
+ * makeClusterPSOCK() in future (>= 1.11.1) produced warnings when argument
+   'rscript' had length(rscript) > 1.
+
+ * Validation of L'Ecuyer-CMRG RNG seeds failed in recent R devel.
+
+ * With options(OutDec = ","), the default value of several argument would
+   resolve to NA_real_ rather than a numeric value resulting in errors such
+   as "is.finite(alpha)’ is not TRUE".
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'progress' of resolve() is now deprecated.
+ 
+ * Argument 'output' of FutureError() is now defunct.
+
+ * FutureError no longer inherits simpleError.
+
+
 Version: 1.11.1.1 [2019-01-25]
 
 BUG FIXES:

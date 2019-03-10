@@ -1,3 +1,4 @@
+#!/usr/bin/env Rscript
 library("revdepcheck")
 options(warn = 1L)
 

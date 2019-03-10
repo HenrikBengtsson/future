@@ -373,7 +373,7 @@ result.ClusterFuture <- function(future, ...) {
   }
 
   ## BACKWARD COMPATIBILITY
-  future$state <- if (inherits(result$condition, "error")) "failed" else "finished"
+  future$state <- if (inherits(result[["condition"]], "error")) "failed" else "finished"
 
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
@@ -399,7 +399,7 @@ result.ClusterFuture <- function(future, ...) {
 }
 
 
-requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", as.numeric(Sys.getenv("R_FUTURE_WAIT_TIMEOUT", 30 * 24 * 60 * 60))), delta = getOption("future.wait.interval", as.numeric(Sys.getenv("R_FUTURE_WAIT_INTERVAL", 0.2))), alpha = getOption("future.wait.alpha", as.numeric(Sys.getenv("R_FUTURE_WAIT_ALPHA", 1.01)))) {
+requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", as.numeric(Sys.getenv("R_FUTURE_WAIT_TIMEOUT", 30 * 24 * 60 * 60))), delta = getOption("future.wait.interval", as.numeric(Sys.getenv("R_FUTURE_WAIT_INTERVAL", "0.2"))), alpha = getOption("future.wait.alpha", as.numeric(Sys.getenv("R_FUTURE_WAIT_ALPHA", "1.01")))) {
   debug <- getOption("future.debug", FALSE)
   
   stop_if_not(inherits(workers, "cluster"))

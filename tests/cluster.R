@@ -307,7 +307,7 @@ for (type in types) {
   res <- tryCatch(y <- x, error = identity)
   print(res)
   stopifnot(
-    inherits(res, "simpleError"),
+    inherits(res, "error"),
     inherits(res, "FutureError")
   )
 

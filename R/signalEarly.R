@@ -22,7 +22,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
   conditions <- result$conditions
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(list(condition = result$condition))
+  if (!is.list(conditions)) conditions <- list(list(condition = result[["condition"]]))
   
   ## Nothing to do?
   if (length(conditions) == 0L) {
@@ -61,8 +61,8 @@ resignalConditions <- function(future, ...) {
   conditions <- result$conditions
   
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions) && !is.null(result$condition)) {
-    conditions <- list(list(condition = result$condition))
+  if (!is.list(conditions) && !is.null(result[["condition"]])) {
+    conditions <- list(list(condition = result[["condition"]]))
   }
 
   ## Nothing to do

@@ -15,6 +15,7 @@
   args <- getOption("future.disposable", list())
   args["label"] <- list(label)
   options(future.disposable = args)
+  on.exit(options(future.disposable = NULL))
   
   eval(fassignment, envir = envir, enclos = baseenv())
 }

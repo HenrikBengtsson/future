@@ -78,10 +78,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
-    ## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
-    ##    .Random.seed <- c(rng.kind, n)
-    ## where rng.kind == 407L and length(n) == 6L
-    if (!is.integer(seed) || length(seed) != 7 || !all(is.finite(seed)) || seed[1] != 407L) {
+    if (!is_lecyer_cmrg_seed(seed)) {
       msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
       mdebug(msg)
       mprint(seed)
@@ -237,8 +234,8 @@ print.Future <- function(x, ...) {
     if (inherits(result, "FutureResult")) {
       conditions <- result$conditions
       ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-      if (!is.list(conditions) && !is.null(result$condition)) {
-        conditions <- list(list(condition = result$condition))
+      if (!is.list(conditions) && !is.null(result[["condition"]])) {
+        conditions <- list(list(condition = result[["condition"]]))
       }
       conditionClasses <- vapply(conditions, FUN = function(c) class(c$condition)[1], FUN.VALUE = NA_character_)
       cat(sprintf("Conditions captured: [n=%d] %s\n", length(conditionClasses), hpaste(sQuote(conditionClasses))))
@@ -316,8 +313,8 @@ result <- function(...) UseMethod("result")
 #' @return The \link{FutureResult} object.
 #'
 #' @details
-#' This function is only part of the _backend_ Future API.
-#' This function is _not_ part of the frontend Future API.
+#' This function is only part of the \emph{backend} Future API.
+#' This function is \emph{not} part of the frontend Future API.
 #'
 #' @aliases result
 #' @rdname result
@@ -429,8 +426,8 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   ## Signal captured conditions?
   conditions <- result$conditions
   ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions) && !is.null(result$condition)) {
-    conditions <- list(list(condition = result$condition))
+  if (!is.list(conditions) && !is.null(result[["condition"]])) {
+    conditions <- list(list(condition = result[["condition"]]))
   }
   if (length(conditions) > 0) {
     if (signal) {
@@ -680,6 +677,9 @@ makeExpression <- local({
   
     ## Set and reset certain future.* options etc.
     enter <- bquote({
+      ## Start time for future evaluation
+      ...future.startTime <- Sys.time()
+      
       ## covr: skip=7
       ...future.oldOptions <- options(
         ## Prevent .future.R from being source():d when future is attached
@@ -759,7 +759,7 @@ makeExpression <- local({
           withCallingHandlers({
             ...future.value <- .(expr)
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value, version = "1.8")
+            future::FutureResult(value = ...future.value, started = ...future.startTime, version = "1.8")
           }, condition = local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
