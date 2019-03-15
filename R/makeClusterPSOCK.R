@@ -459,6 +459,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   verbose_prefix <- "[local output] "
 
+  ## Shell quote the Rscript executable
+  rscript <- shQuote(rscript)
+
   ## .slaveRSOCK() command already specified?
   if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
     rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
@@ -519,7 +522,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_port <- port
   }
 
-  rscript <- paste(shQuote(rscript), collapse = " ")
+  rscript <- paste(rscript, collapse = " ")
   rscript_args <- paste(rscript_args, collapse = " ")
   envvars <- paste0("MASTER=", master, " PORT=", rscript_port, " OUT=", outfile, " TIMEOUT=", timeout, " XDR=", useXDR)
   
