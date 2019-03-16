@@ -112,6 +112,12 @@ mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE
   message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
+#' @importFrom utils capture.output
+mstr <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+}
+
 
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## Used by run() for ClusterFuture.
