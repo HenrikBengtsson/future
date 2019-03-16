@@ -34,7 +34,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
     conditionClasses <- vapply(conditions,
                                FUN = function(c) class(c$condition)[1],
                                FUN.VALUE = NA_character_)
-    mdebug("signalEarly(): Condition classes = [n=%s] %s",
+    mdebugf("signalEarly(): Condition classes = [n=%s] %s",
            length(conditionClasses), hpaste(sQuote(conditionClasses)))
   }
 

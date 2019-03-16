@@ -49,8 +49,8 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
       gp <- NULL
       
       if (debug) {
-        mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-        mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+        mdebugf(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+        mdebugf(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
         mdebug("Finding globals ... DONE")
       }
     } else {

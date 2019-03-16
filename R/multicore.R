@@ -152,7 +152,7 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
   stop_if_not(is.finite(alpha), alpha > 0)
 
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("requestCore(): workers = %d", workers)
+  if (debug) mdebugf("requestCore(): workers = %d", workers)
 
   ## No additional cores available?
   if (workers == 0L) {
@@ -171,7 +171,7 @@ requestCore <- function(await, workers = availableCores(), timeout = getOption("
     finished <- (used < workers)
     if (finished) break
 
-    if (debug) mdebug("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
+    if (debug) mdebugf("Poll #%d (%s): usedCores() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, workers)
 
     ## Wait
     Sys.sleep(interval)

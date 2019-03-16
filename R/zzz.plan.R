@@ -132,7 +132,7 @@ plan <- local({
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
       if (debug) {
-        mdebug("plan(): plan_init() of %s ...",
+        mdebugf("plan(): plan_init() of %s ...",
                paste(sQuote(class(evaluator)), collapse = ", "))
         mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
       }
@@ -162,7 +162,7 @@ plan <- local({
       }
       
       if (debug) {
-        mdebug("plan(): plan_init() of %s ... DONE",
+        mdebugf("plan(): plan_init() of %s ... DONE",
                paste(sQuote(class(evaluator)), collapse = ", "))
       }
     }
@@ -212,7 +212,7 @@ plan <- local({
     ## Sanity checks
     nbrOfWorkers <- nbrOfWorkers()
     if (getOption("future.debug", FALSE)) {
-      mdebug(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
+      mdebugf(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
     }
     stop_if_not(is.numeric(nbrOfWorkers), length(nbrOfWorkers) == 1L, 
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)

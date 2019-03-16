@@ -166,7 +166,7 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on list ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## NOTE: Everything is considered non-resolved by default
@@ -181,8 +181,8 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
   }
 
   if (debug) {
-    mdebug(" length: %d", nx)
-    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+    mdebugf(" length: %d", nx)
+    mdebugf(" elements: %s", hpaste(sQuote(names(x))))
   }
 
   ## Resolve all elements
@@ -205,7 +205,7 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
 
       if (hasProgress) {
@@ -272,7 +272,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on environment ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## Coerce future promises into Future objects
@@ -285,7 +285,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
   ## Everything is considered non-resolved by default
   remaining <- idxs
 
-  if (debug) mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
+  if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
   ## Resolve all elements
   while (length(remaining) > 0) {
@@ -307,7 +307,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 
@@ -377,7 +377,7 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on list environment ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## Coerce future promises into Future objects
@@ -389,8 +389,8 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
   remaining <- seq_len(nx)
 
   if (debug) {
-    mdebug(" length: %d", nx)
-    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+    mdebugf(" length: %d", nx)
+    mdebugf(" elements: %s", hpaste(sQuote(names(x))))
   }
 
   ## Resolve all elements
@@ -413,7 +413,7 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 

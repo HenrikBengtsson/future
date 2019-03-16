@@ -52,19 +52,19 @@
   if (is.null(ncores)) {
     ncores <- trim(Sys.getenv("R_FUTURE_AVAILABLECORES_FALLBACK"))
     if (nzchar(ncores)) {
-      if (debug) mdebug("R_FUTURE_AVAILABLECORES_FALLBACK=%s", sQuote(ncores))
+      if (debug) mdebugf("R_FUTURE_AVAILABLECORES_FALLBACK=%s", sQuote(ncores))
       if (is.element(ncores, c("NA_integer_", "NA"))) {
         ncores <- NA_integer_
       } else {
         ncores <- as.integer(ncores)
       }
-      if (debug) mdebug(" => options(future.availableCores.fallback = %d)", ncores)
+      if (debug) mdebugf(" => options(future.availableCores.fallback = %d)", ncores)
       options(future.availableCores.fallback = ncores)
     }
     ncores <- getOption("future.availableCores.fallback")
   }
   if (!is.null(ncores)) {
-    if (debug) mdebug("Option 'future.availableCores.fallback = %d", ncores)
+    if (debug) mdebugf("Option 'future.availableCores.fallback = %d", ncores)
   }
   
   ## Unless already set, set option 'future.availableCores.system'
@@ -73,19 +73,19 @@
   if (is.null(ncores)) {
     ncores <- trim(Sys.getenv("R_FUTURE_AVAILABLECORES_SYSTEM"))
     if (nzchar(ncores)) {
-      if (debug) mdebug("R_FUTURE_AVAILABLECORES_SYSTEM=%s", sQuote(ncores))
+      if (debug) mdebugf("R_FUTURE_AVAILABLECORES_SYSTEM=%s", sQuote(ncores))
       if (is.element(ncores, c("NA_integer_", "NA"))) {
         ncores <- NA_integer_
       } else {
         ncores <- as.integer(ncores)
       }
-      if (debug) mdebug(" => options(future.availableCores.system = %d)", ncores)
+      if (debug) mdebugf(" => options(future.availableCores.system = %d)", ncores)
       options(future.availableCores.system = ncores)
     }
     ncores <- getOption("future.availableCores.system")
   }
   if (!is.null(ncores)) {
-    if (debug) mdebug("Option 'future.availableCores.system = %d", ncores)
+    if (debug) mdebugf("Option 'future.availableCores.system = %d", ncores)
   }
 
   ## Unless already set, set option 'future.plan' according to
@@ -95,8 +95,8 @@
     strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
     if (nzchar(strategy)) {
       if (debug) {
-        mdebug("R_FUTURE_PLAN=%s", sQuote(strategy))
-        mdebug(" => options(future.plan = '%s')", strategy)
+        mdebugf("R_FUTURE_PLAN=%s", sQuote(strategy))
+        mdebugf(" => options(future.plan = '%s')", strategy)
       }
       options(future.plan = strategy)
     }
@@ -105,9 +105,9 @@
   if (!is.null(strategy)) {
     if (debug) {
       if (is.character(strategy)) {
-        mdebug("Option 'future.plan' = %s", sQuote(strategy))
+        mdebugf("Option 'future.plan' = %s", sQuote(strategy))
       } else {
-        mdebug("Option 'future.plan' of type %s", sQuote(mode(strategy)))
+        mdebugf("Option 'future.plan' of type %s", sQuote(mode(strategy)))
       }
     }
   }
@@ -115,7 +115,7 @@
   args <- parseCmdArgs()
   p <- args$p
   if (!is.null(p)) {
-    if (debug) mdebug("R command-line argument: -p %s", p)
+    if (debug) mdebugf("R command-line argument: -p %s", p)
     
     ## Apply
     options(mc.cores = p)
@@ -128,7 +128,7 @@
       if (debug) mdebug(" => options(future.plan = sequential)")
       options(future.plan = sequential)
     } else {
-      if (debug) mdebug(" => options(future.plan = tweak(multiprocess, workers = %s))", p)
+      if (debug) mdebugf(" => options(future.plan = tweak(multiprocess, workers = %s))", p)
       options(future.plan = tweak(multiprocess, workers = p))
     }
   }
@@ -137,7 +137,7 @@
   id <- session_uuid()
 
   if (debug) {
-    mdebug("R process uuid: %s", id)
+    mdebugf("R process uuid: %s", id)
     mdebug("Setting plan('default')")
   }
   
@@ -163,8 +163,8 @@
     }
     pathname <- pathnames[1]
     if (debug) {
-      mdebug("Future startup scripts identified: %s", paste(sQuote(pathnames), collapse = ", "))
-      mdebug("Future startup script to load: %s", sQuote(pathname))
+      mdebugf("Future startup scripts identified: %s", paste(sQuote(pathnames), collapse = ", "))
+      mdebugf("Future startup script to load: %s", sQuote(pathname))
     }
     tryCatch({
       source(pathname, chdir = FALSE, echo = FALSE, local = FALSE)

@@ -61,7 +61,7 @@ FutureRegistry <- local({
       idx <- indexOf(futures, future = future)
       if (!is.na(idx)) {
         msg <- sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1])
-        mdebug("ERROR: %s", msg)
+        mdebug("ERROR: ", msg)
         stop(msg)
       }
       futures[[length(futures)+1L]] <- future
@@ -70,7 +70,7 @@ FutureRegistry <- local({
       idx <- indexOf(futures, future = future)
       if (is.na(idx)) {
         msg <- sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1])
-        mdebug("ERROR: %s", msg)
+        mdebug("ERROR: ", msg)
         stop(msg)
       }
       futures[[idx]] <- NULL

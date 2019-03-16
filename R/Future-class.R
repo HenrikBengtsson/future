@@ -431,7 +431,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   }
   if (length(conditions) > 0) {
     if (signal) {
-      mdebug("Future state: %s", sQuote(future$state))
+      mdebugf("Future state: %s", sQuote(future$state))
       resignalConditions(future) ## Will signal an (eval) error, iff exists
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
@@ -539,7 +539,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
   
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
-##    mdebug("getExpression(): setting mc.cores = %d inside future", mc.cores)
+##    mdebugf("getExpression(): setting mc.cores = %d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
     enter <- bquote({
@@ -578,7 +578,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 
   ## Pass down the default or the remain set of future strategies?
   strategiesR <- strategies[-1]
-  ##  mdebug("Number of remaining strategies: %d\n", length(strategiesR))
+  ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
 
   ## Identify packages needed by the futures
   pkgs <- NULL
@@ -589,14 +589,14 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     pkgs <- unique(unlist(pkgs, use.names = FALSE))
     ## CLEANUP: Only keep those that are loaded in the current session
     pkgs <- intersect(pkgs, loadedNamespaces())
-    if (debug) mdebug("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
+    if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
   } else {
     if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
   }
 
   pkgsF <- packages(future)
   if (length(pkgsF) > 0) {
-    if (debug) mdebug("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
+    if (debug) mdebugf("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
     pkgs <- unique(c(pkgs, pkgsF))
   } else {
     if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")

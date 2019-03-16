@@ -70,7 +70,7 @@ run.UniprocessFuture <- function(future, ...) {
   future$result <- eval(expr, envir = envir, enclos = baseenv())
   future$state <- 'finished'
 
-  if (debug) mdebug("%s started (and completed)", class(future)[1])
+  if (debug) mdebugf("%s started (and completed)", class(future)[1])
   
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)

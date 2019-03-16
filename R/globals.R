@@ -54,12 +54,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (is.character(add)) {
         if (debug) mdebug("Retrieving 'add' globals ...")
         add <- globalsByName(add, envir = envir, mustExist = mustExist)
-        if (debug) mdebug("- 'add' globals retrieved: [%d] %s", length(add), hpaste(sQuote(names(add))))
+        if (debug) mdebugf("- 'add' globals retrieved: [%d] %s", length(add), hpaste(sQuote(names(add))))
         if (debug) mdebug("Retrieving 'add' globals ... DONE")
       } else if (inherits(add, "Globals")) {
-        if (debug) mdebug("- 'add' globals passed as-is: [%d] %s", length(add), hpaste(sQuote(names(add))))
+        if (debug) mdebugf("- 'add' globals passed as-is: [%d] %s", length(add), hpaste(sQuote(names(add))))
       } else if (is.list(add)) {
-        if (debug) mdebug("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
+        if (debug) mdebugf("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
       } else {
         stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
       }
@@ -88,7 +88,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
                    mustExist = mustExist,
                    recursive = TRUE
                  )
-      if (debug) mdebug("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      if (debug) mdebugf("- globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       if (debug) mdebug("Searching for globals ... DONE")
     } else {
       if (debug) mdebug("Not searching for globals")
@@ -110,12 +110,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else if (is.character(globals)) {
     if (debug) mdebug("Retrieving globals ...")
     globals <- globalsByName(globals, envir = envir, mustExist = mustExist)
-    if (debug) mdebug("- globals retrieved: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebugf("- globals retrieved: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     if (debug) mdebug("Retrieving globals ... DONE")
   } else if (inherits(globals, "Globals")) {
-    if (debug) mdebug("- globals passed as-is: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebugf("- globals passed as-is: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else if (is.list(globals)) {
-    if (debug) mdebug("- globals passed as-list: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    if (debug) mdebugf("- globals passed as-list: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else {
     stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
   }
@@ -136,9 +136,9 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   t <- attr(globals, "resolved", exact = TRUE)
   if (isTRUE(t)) {
     resolve <- FALSE
-    if (debug) mdebug("Resolving globals: %s (because already done)", resolve)
+    if (debug) mdebugf("Resolving globals: %s (because already done)", resolve)
   } else {
-    if (debug) mdebug("Resolving globals: %s", resolve)
+    if (debug) mdebugf("Resolving globals: %s", resolve)
   }
   stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
 
@@ -180,18 +180,18 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     ## Unless already resolved, perform a shallow resolve
     if (attr(globals, "resolved", exact = TRUE)) {
       idxs <- which(unlist(lapply(globals, FUN = inherits, "Future"), use.names = FALSE))
-      if (debug) mdebug("Number of global futures: %d", length(idxs))
+      if (debug) mdebugf("Number of global futures: %d", length(idxs))
       
       ## Nothing to do?
       if (length(idxs) > 0) {
-        if (debug) mdebug("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
+        if (debug) mdebugf("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
         valuesF <- values(globals[idxs])
         globals[idxs] <- lapply(valuesF, FUN = ConstantFuture)
       }
     }
 
     if (debug) {
-      mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebugf("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       mdebug("Resolving any globals that are futures ... DONE")
     }
   }
@@ -245,7 +245,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
     globals <- resolve(globals, value = TRUE, recursive = TRUE)
     if (debug) {
-      mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+      mdebugf("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       mdebug("Resolving futures part of globals (recursively) ... DONE")
     }
   }
@@ -256,12 +256,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     action <- getOption("future.globals.onReference", "ignore")
     if (action != "ignore") {
       if (debug) {
-        mdebug("Checking for globals with references (future.globals.onReference = \"%s\") ...", action, appendLF = FALSE)
+        mdebugf("Checking for globals with references (future.globals.onReference = \"%s\") ...", action, appendLF = FALSE)
       }
       t <- system.time({
         assert_no_references(globals, action = action)
       }, gcFirst = FALSE)
-      if (debug) mdebug("[%.3f s]", t[3])
+      if (debug) mdebugf("[%.3f s]", t[3])
     }
   }
   
@@ -275,7 +275,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       sizes <- unlist(sizes, use.names = TRUE)
       total_size <- sum(sizes, na.rm = TRUE)
       attr(globals, "total_size") <- total_size
-      if (debug) mdebug("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
+      if (debug) mdebugf("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
   
       if (total_size > maxSize) {
         n <- length(sizes)
@@ -326,8 +326,8 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
 
   if (debug) {
-    mdebug("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-    mdebug("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
+    mdebugf("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+    mdebugf("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
     mdebug("getGlobalsAndPackages() ... DONE")
   }
 

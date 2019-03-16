@@ -90,7 +90,11 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
+  if (debug) message(...)
+}
+
+mdebugf <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
   if (debug) message(sprintf(...), appendLF = appendLF)
 }
 
@@ -335,12 +339,12 @@ myExternalIP <- local({
     
     value <- NULL
     for (url in urls) {
-      mdebug(" - query: %s", sQuote(url))
+      mdebugf(" - query: %s", sQuote(url))
       value <- tryCatch({
         readLines(url, warn = FALSE)
       }, error = function(ex) NULL)
 
-      mdebug(" - answer: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - answer: %s", sQuote(paste(value, collapse = "\n")))
       
       ## Nothing found?
       if (is.null(value)) next
@@ -348,7 +352,7 @@ myExternalIP <- local({
       ## Keep only lines that look like they contain IP v4 numbers
       ip4_pattern <- ".*[^[:digit:]]*([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
       value <- grep(ip4_pattern, value, value = TRUE)
-      mdebug(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Extract the IP numbers
       value <- gsub(ip4_pattern, "\\1", value)
@@ -356,7 +360,7 @@ myExternalIP <- local({
       ## Trim and drop empty results (just in case)
       value <- trim(value)
       value <- value[nzchar(value)]
-      mdebug(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Nothing found?
       if (length(value) == 0) next
