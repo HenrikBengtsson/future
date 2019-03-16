@@ -90,17 +90,26 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
-  if (debug) message(...)
+now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
+  ## format(x, format = format) ## slower
+  format(as.POSIXlt(x, tz = ""), format = format)
 }
 
-mdebugf <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
-  if (debug) message(sprintf(...), appendLF = appendLF)
+mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(now(), ...)
+}
+
+mdebugf <- function(..., appendLF = TRUE,
+                    debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(now(), sprintf(...), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output
 mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
-  if (debug) message(paste(capture.output(print(...)), collapse = "\n"), appendLF = appendLF)
+  if (!debug) return()
+  message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 
@@ -1051,7 +1060,7 @@ pid_exists <- local({
     ## Does a working pid_check() exist?
     if (!is.null(pid_check)) return(pid_check(pid, debug = debug))
 
-    if (debug) message("Attempting to find a working pid_exists_*() function ...")
+    if (debug) mdebug("Attempting to find a working pid_exists_*() function ...")
     
     ## Try to find a working pid_check() function, i.e. one where
     ## pid_check(Sys.getpid()) == TRUE
@@ -1070,19 +1079,19 @@ pid_exists <- local({
     }
 
     if (is.null(pid_check)) {
-      if (debug) message("- failed; pid_check() will always return NA")
+      if (debug) mdebug("- failed; pid_check() will always return NA")
       ## Default to NA
       pid_check <- function(pid) NA
     } else {
       ## Sanity check
       stop_if_not(isTRUE(pid_check(Sys.getpid(), debug = debug)))
-      if (debug) message("- success")
+      if (debug) mdebug("- success")
     }
 
     ## Record
     cache$pid_check <- pid_check
 
-    if (debug) message("Attempting to find a working pid_exists_*() function ... done")
+    if (debug) mdebug("Attempting to find a working pid_exists_*() function ... done")
 
     pid_check(pid)
   }

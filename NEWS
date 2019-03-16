@@ -3,6 +3,10 @@ Package: future
 
 Version: 1.12.0-9000 [2019-03-15]
 
+NEW FEATURES:
+
+ * Debug messages are now prepended with a timestamp.
+ 
 BUG FIXES:
 
  * makeClusterPSOCK() did not shell quote the Rscript executable when

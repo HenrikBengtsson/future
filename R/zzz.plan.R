@@ -133,8 +133,8 @@ plan <- local({
       debug <- getOption("future.debug", FALSE)
       if (debug) {
         mdebugf("plan(): plan_init() of %s ...",
-               paste(sQuote(class(evaluator)), collapse = ", "))
-        mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+                paste(sQuote(class(evaluator)), collapse = ", "))
+        mprint(evaluator)
       }
 
       ## IMPORANT: Initiate only once.  This avoids an infinite
@@ -163,7 +163,7 @@ plan <- local({
       
       if (debug) {
         mdebugf("plan(): plan_init() of %s ... DONE",
-               paste(sQuote(class(evaluator)), collapse = ", "))
+                paste(sQuote(class(evaluator)), collapse = ", "))
       }
     }
   }
@@ -190,15 +190,15 @@ plan <- local({
     ## Skip if already set?
     if (skip && equal_strategy_stacks(newStack, oldStack)) {
       if (getOption("future.debug", FALSE)) {
-        mdebug(paste0("plan(): Skip setting new future strategy stack because it is the same as the current one:\n", 
-               paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
+        mdebug("plan(): Skip setting new future strategy stack because it is the same as the current one:")
+        mprint(newStack)
       }
       return(oldStack)
     }
 
     if (getOption("future.debug", FALSE)) {
-      mdebug(paste0("plan(): Setting new future strategy stack:\n", 
-             paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
+      mdebug("plan(): Setting new future strategy stack:")
+      mprint(newStack)
     }
     
     stack <<- newStack
