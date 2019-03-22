@@ -112,7 +112,7 @@ mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE
   message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
-#' @importFrom utils capture.output
+#' @importFrom utils capture.output str
 mstr <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
   message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
@@ -913,6 +913,7 @@ resolveMPI <- local({
 #' \code{\link[tools]{pskill}()} and \code{\link[base]{system2}()}.
 #'
 #' @importFrom tools pskill
+#' @importFrom utils str
 #' @keywords internal
 pid_exists <- local({
   os <- .Platform$OS.type

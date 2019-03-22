@@ -367,7 +367,7 @@ supportedStrategies <- function(strategies = c("sequential", "multicore",
 }
 
 
-#' @importFrom utils capture.output
+#' @importFrom utils capture.output str
 #' @export
 print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))

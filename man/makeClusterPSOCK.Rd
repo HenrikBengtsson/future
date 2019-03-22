@@ -15,8 +15,8 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   timeout = getOption("future.makeNodePSOCK.timeout",
   as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 *
   60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
-  methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_,
+  rscript_init = NULL, methods = TRUE, useXDR = TRUE,
+  outfile = "/dev/null", renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd",
   Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL,
   revtunnel = TRUE, rshlogfile = NULL,
@@ -76,6 +76,10 @@ vector).  This argument can be used to customize the \R environment of the
 workers before they launches.  For instance, use
 \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
+
+\item{rscript_init}{An \R expression or a character vector of \R code,
+or a list with a mix of these, that will be evaluated on the \R worker
+prior to launching the worker's event loop.}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
@@ -344,10 +348,8 @@ cl <- makeClusterPSOCK(
     "docker", "run", "--net=host", "rocker/r-base",
     "Rscript"
   ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Install future package (using an R code string)
+  rscript_init = "install.packages('future')",
   ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
   ## and Windows (not Linux), when the R worker tries to connect back to
   ## the default 'localhost' it will fail, because the main R session is
@@ -368,10 +370,8 @@ cl <- makeClusterPSOCK(
     "singularity", "exec", "docker://rocker/r-base",
     "Rscript"
   ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Install future package (using an R expression)
+  rscript_init = quote(install.packages("future")),
   dryrun = TRUE
 )
 
@@ -413,16 +413,14 @@ cl <- makeClusterPSOCK(
     "-o", "IdentitiesOnly=yes",
     "-i", ssh_private_key_file
   ),
-  ## Set up .libPaths() for the 'ubuntu' user and
-  ## install future package
-  rscript_args = c(
-    "-e", shQuote("local({
-      p <- Sys.getenv('R_LIBS_USER')
-      dir.create(p, recursive = TRUE, showWarnings = FALSE)
-      .libPaths(p)
-    })"),
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Set up .libPaths() for the 'ubuntu' user
+  ## and then install the future package
+  rscript_init = quote(local({
+    p <- Sys.getenv("R_LIBS_USER")
+    dir.create(p, recursive = TRUE, showWarnings = FALSE)
+    .libPaths(p)
+    install.packages("future")
+  })),
   dryrun = TRUE
 )
 
@@ -450,9 +448,7 @@ cl <- makeClusterPSOCK(
     "Rscript"
   ),
   ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  rscript_init = "install.packages('future')",
   dryrun = TRUE
 )
 

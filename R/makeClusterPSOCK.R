@@ -163,6 +163,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' workers before they launches.  For instance, use
 #' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
 #' to set the working directory to \file{/path/to} on \emph{all} workers.
+#'
+#' @param rscript_init An \R expression or a character vector of \R code,
+#' or a list with a mix of these, that will be evaluated on the \R worker
+#' prior to launching the worker's event loop.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -352,7 +356,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_init = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -443,6 +447,27 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   rscript_args <- as.character(rscript_args)
 
+  if (length(rscript_init) > 0L) {
+    if (!is.list(rscript_init)) rscript_init <- list(rscript_init)
+    rscript_init <- lapply(rscript_init, FUN = function(init) {
+      if (is.language(init)) {
+        init <- deparse(init, width.cutoff = 500L)
+	## We cannot use newline between statements because
+	## it needs to be passed as a one line string via -e <code>
+        init <- paste(init, collapse = ";")
+      }
+      init <- as.character(init)
+      if (length(init) == 0L) return(NULL)
+      tryCatch({
+        parse(text = init)
+      }, error = function(ex) {
+        stop("Syntax error in argument 'rscript_init': ", conditionMessage(ex))
+      })
+      init
+    })
+    rscript_init <- unlist(rscript_init, use.names = FALSE)
+  }
+
   useXDR <- as.logical(useXDR)
   stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
@@ -462,11 +487,6 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   ## Shell quote the Rscript executable
   rscript <- shQuote(rscript)
 
-  ## .slaveRSOCK() command already specified?
-  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
-    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
-  }
-  
   ## Launching a process on the local machine?
   pidfile <- NULL
   if (localMachine && !dryrun) {
@@ -522,6 +542,19 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_port <- port
   }
 
+  if (length(rscript_init) > 0L) {
+    rscript_init <- paste("invisible({", rscript_init, "})", sep = "")
+    rscript_init <- shQuote(rscript_init)
+    rscript_init <- lapply(rscript_init, FUN = function(value) c("-e", value))
+    rscript_init <- unlist(rscript_init, use.names = FALSE)
+    rscript_args <- c(rscript_init, rscript_args)
+  }
+
+  ## .slaveRSOCK() command already specified?
+  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
+    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
+  }
+  
   rscript <- paste(rscript, collapse = " ")
   rscript_args <- paste(rscript_args, collapse = " ")
   envvars <- paste0("MASTER=", master, " PORT=", rscript_port, " OUT=", outfile, " TIMEOUT=", timeout, " XDR=", useXDR)

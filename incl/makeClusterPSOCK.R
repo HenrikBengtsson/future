@@ -46,10 +46,8 @@ cl <- makeClusterPSOCK(
     "docker", "run", "--net=host", "rocker/r-base",
     "Rscript"
   ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Install future package (using an R code string)
+  rscript_init = "install.packages('future')",
   ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
   ## and Windows (not Linux), when the R worker tries to connect back to
   ## the default 'localhost' it will fail, because the main R session is
@@ -70,10 +68,8 @@ cl <- makeClusterPSOCK(
     "singularity", "exec", "docker://rocker/r-base",
     "Rscript"
   ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Install future package (using an R expression)
+  rscript_init = quote(install.packages("future")),
   dryrun = TRUE
 )
 
@@ -115,16 +111,14 @@ cl <- makeClusterPSOCK(
     "-o", "IdentitiesOnly=yes",
     "-i", ssh_private_key_file
   ),
-  ## Set up .libPaths() for the 'ubuntu' user and
-  ## install future package
-  rscript_args = c(
-    "-e", shQuote("local({
-      p <- Sys.getenv('R_LIBS_USER')
-      dir.create(p, recursive = TRUE, showWarnings = FALSE)
-      .libPaths(p)
-    })"),
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Set up .libPaths() for the 'ubuntu' user
+  ## and then install the future package
+  rscript_init = quote(local({
+    p <- Sys.getenv("R_LIBS_USER")
+    dir.create(p, recursive = TRUE, showWarnings = FALSE)
+    .libPaths(p)
+    install.packages("future")
+  })),
   dryrun = TRUE
 )
 
@@ -152,9 +146,7 @@ cl <- makeClusterPSOCK(
     "Rscript"
   ),
   ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
-  ),
+  rscript_init = "install.packages('future')",
   dryrun = TRUE
 )
 

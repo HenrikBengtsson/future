@@ -1,10 +1,15 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-03-15]
+Version: 1.12.0-9000 [2019-03-22]
 
 NEW FEATURES:
 
+ * makeClusterPSOCK() gained support for argument 'rscript_init' for
+   evaluating one or more R expressions in the background R worker prior
+   to the worker event loop being launched.  This provides a more convenient
+   approach than having to use, say, 'rscript_args = c("-e", sQuote(code))'.
+   
  * Debug messages are now prepended with a timestamp.
  
 BUG FIXES:
