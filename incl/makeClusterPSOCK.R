@@ -37,17 +37,14 @@ cl <- makeClusterPSOCK(
 )
 
 ## EXAMPLE: Two workers running in Docker on the local machine
-## Setup of 2 Docker workers running rocker/r-base
-## (requires installation of future package)
+## Setup of 2 Docker workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "docker", "run", "--net=host", "rocker/r-parallel",
     "Rscript"
   ),
-  ## Install future package (using an R code string)
-  rscript_init = "install.packages('future')",
   ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
   ## and Windows (not Linux), when the R worker tries to connect back to
   ## the default 'localhost' it will fail, because the main R session is
@@ -59,35 +56,30 @@ cl <- makeClusterPSOCK(
 
 
 ## EXAMPLE: Two workers running in Singularity on the local machine
-## Setup of 2 Singularity workers running rocker/r-base
-## (requires installation of future package)
+## Setup of 2 Singularity workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "singularity", "exec", "docker://rocker/r-base",
+    "singularity", "exec", "docker://rocker/r-parallel",
     "Rscript"
   ),
-  ## Install future package (using an R expression)
-  rscript_init = quote(install.packages("future")),
   dryrun = TRUE
 )
 
 
 ## EXAMPLE: One worker running in udocker on the local machine
-## Setup of a single udocker.py worker running rocker/r-base
-## (requires installation of future package and extra quoting)
+## Setup of a single udocker.py worker running rocker/r-parallel
 cl <- makeClusterPSOCK(
   "localhost",
   ## Launch Rscript inside Docker container (using udocker)
   rscript = c(
-    "udocker.py", "run", "rocker/r-base",
+    "udocker.py", "run", "rocker/r-parallel",
     "Rscript"
   ), 
-  ## Install future package and manually launch parallel workers
+  ## Manually launch parallel workers
   ## (need double shQuote():s because udocker.py drops one level)
   rscript_args = c(
-    "-e", shQuote(shQuote("install.packages('future')")),
     "-e", shQuote(shQuote("parallel:::.slaveRSOCK()"))
   ),
   dryrun = TRUE
@@ -142,11 +134,9 @@ cl <- makeClusterPSOCK(
   ),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "docker", "run", "--net=host", "rocker/r-parallel",
     "Rscript"
   ),
-  ## Install future package
-  rscript_init = "install.packages('future')",
   dryrun = TRUE
 )
 
