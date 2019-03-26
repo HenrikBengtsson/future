@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-03-22]
+Version: 1.12.0-9000 [2019-03-25]
 
 NEW FEATURES:
 
@@ -9,7 +9,12 @@ NEW FEATURES:
    evaluating one or more R expressions in the background R worker prior
    to the worker event loop being launched.  This provides a more convenient
    approach than having to use, say, 'rscript_args = c("-e", sQuote(code))'.
-   
+
+ * makeClusterPSOCK() gained support for argument 'rscript_libs' to control the
+   R package library search path on the workers.  For example, to _prepend_ the
+   folder '~/R-libs' on the workers, use 'rscript_libs = c("~/R-libs", "*")',
+   where "*" will be resolved to the current '.libPaths()' on the workers.
+
  * Debug messages are now prepended with a timestamp.
  
 BUG FIXES:
