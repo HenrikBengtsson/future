@@ -498,7 +498,7 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, strategies = plan("list"), mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -567,40 +567,37 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     })
   }
 
-  ## Reset future strategies upon exit of future
-  strategies <- plan("list")
-  stop_if_not(length(strategies) >= 1L)
-  exit <- bquote({
-    ## covr: skip=2
-    .(exit)
-    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
-  })
-
-  ## Pass down the default or the remain set of future strategies?
-  strategiesR <- strategies[-1]
-  ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
-
-  ## Identify packages needed by the futures
-  pkgs <- NULL
-  if (length(strategiesR) > 0L) {
-    ## Identify package namespaces needed for strategies
-    pkgs <- lapply(strategiesR, FUN = environment)
-    pkgs <- lapply(pkgs, FUN = environmentName)
-    pkgs <- unique(unlist(pkgs, use.names = FALSE))
-    ## CLEANUP: Only keep those that are loaded in the current session
-    pkgs <- intersect(pkgs, loadedNamespaces())
-    if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
-  } else {
-    if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
-  }
-
-  pkgsF <- packages(future)
-  if (length(pkgsF) > 0) {
-    if (debug) mdebugf("Packages needed by the future expression (n = %d): %s", length(pkgsF), paste(sQuote(pkgsF), collapse = ", "))
-    pkgs <- unique(c(pkgs, pkgsF))
+  ## Packages needed by the future
+  pkgs <- packages(future)
+  if (length(pkgs) > 0) {
+    if (debug) mdebugf("Packages needed by the future expression (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
   } else {
     if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
   }
+
+  ## Future strategies?
+  if (!is.null(strategies)) {
+    stop_if_not(length(strategies) >= 1L)
+
+    ## Pass down the default or the remain set of future strategies?
+    strategiesR <- strategies[-1]
+    ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
+  
+    ## Identify packages needed by the futures
+    if (length(strategiesR) > 0L) {
+      ## Identify package namespaces needed for strategies
+      pkgsS <- lapply(strategiesR, FUN = environment)
+      pkgsS <- lapply(pkgsS, FUN = environmentName)
+      pkgsS <- unique(unlist(pkgsS, use.names = FALSE))
+      ## CLEANUP: Only keep those that are loaded in the current session
+      pkgsS <- intersect(pkgsS, loadedNamespaces())
+      if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
+      pkgs <- unique(c(pkgs, pkgsS))
+    } else {
+      if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
+    }
+  } ## if (!is.null(strategies))
+
 
   ## Make sure to load and attach all package needed  
   if (length(pkgs) > 0L) {
@@ -629,22 +626,25 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
   }
 
   ## Make sure to set all nested future strategies needed
-  if (length(strategiesR) == 0L) {
-##    mdebug("Set plan('default') inside future")
-    ## Use default future strategy
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-      future::plan("default", .cleanup = FALSE, .init = FALSE)
-    })
-  } else {    
+  if (!is.null(strategies)) {
+    ## Use default future strategy?
+    if (length(strategiesR) == 0L) strategiesR <- "default"
+    
     ## Pass down future strategies
     enter <- bquote({
       ## covr: skip=2
       .(enter)
       future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
     })
-  } ## if (length(strategiesR) > 0L)
+
+    ## Reset future strategies when done
+    exit <- bquote({
+      ## covr: skip=2
+      .(exit)
+      future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+    })
+  } ## if (!is.null(strategies))
+
 
   expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
