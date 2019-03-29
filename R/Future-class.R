@@ -498,7 +498,7 @@ resolved.Future <- function(x, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, strategies = plan("list"), mc.cores = NULL, ...) {
+getExpression.Future <- function(future, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -575,29 +575,27 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
   }
 
-  ## Future strategies?
-  if (!is.null(strategies)) {
-    stop_if_not(length(strategies) >= 1L)
+  ## Future strategies
+  strategies <- plan("list")
+  stop_if_not(length(strategies) >= 1L)
 
-    ## Pass down the default or the remain set of future strategies?
-    strategiesR <- strategies[-1]
-    ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
-  
-    ## Identify packages needed by the futures
-    if (length(strategiesR) > 0L) {
-      ## Identify package namespaces needed for strategies
-      pkgsS <- lapply(strategiesR, FUN = environment)
-      pkgsS <- lapply(pkgsS, FUN = environmentName)
-      pkgsS <- unique(unlist(pkgsS, use.names = FALSE))
-      ## CLEANUP: Only keep those that are loaded in the current session
-      pkgsS <- intersect(pkgsS, loadedNamespaces())
-      if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
-      pkgs <- unique(c(pkgs, pkgsS))
-    } else {
-      if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
-    }
-  } ## if (!is.null(strategies))
+  ## Pass down the default or the remain set of future strategies?
+  strategiesR <- strategies[-1]
+  ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
 
+  ## Identify packages needed by the futures
+  if (length(strategiesR) > 0L) {
+    ## Identify package namespaces needed for strategies
+    pkgsS <- lapply(strategiesR, FUN = environment)
+    pkgsS <- lapply(pkgsS, FUN = environmentName)
+    pkgsS <- unique(unlist(pkgsS, use.names = FALSE))
+    ## CLEANUP: Only keep those that are loaded in the current session
+    pkgsS <- intersect(pkgsS, loadedNamespaces())
+    if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
+    pkgs <- unique(c(pkgs, pkgsS))
+  } else {
+    if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
+  }
 
   ## Make sure to load and attach all package needed  
   if (length(pkgs) > 0L) {
@@ -626,25 +624,22 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
   }
 
   ## Make sure to set all nested future strategies needed
-  if (!is.null(strategies)) {
-    ## Use default future strategy?
-    if (length(strategiesR) == 0L) strategiesR <- "default"
+  ## Use default future strategy?
+  if (length(strategiesR) == 0L) strategiesR <- "default"
     
-    ## Pass down future strategies
-    enter <- bquote({
-      ## covr: skip=2
-      .(enter)
-      future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
-    })
+  ## Pass down future strategies
+  enter <- bquote({
+    ## covr: skip=2
+    .(enter)
+    future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
+  })
 
-    ## Reset future strategies when done
-    exit <- bquote({
-      ## covr: skip=2
-      .(exit)
-      future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
-    })
-  } ## if (!is.null(strategies))
-
+  ## Reset future strategies when done
+  exit <- bquote({
+    ## covr: skip=2
+    .(exit)
+    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+  })
 
   expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
