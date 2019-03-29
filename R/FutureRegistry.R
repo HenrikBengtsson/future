@@ -62,7 +62,7 @@ FutureRegistry <- local({
       if (!is.na(idx)) {
         msg <- sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1])
         mdebug("ERROR: ", msg)
-        stop(msg)
+        stop(FutureError(msg, future = future))
       }
       futures[[length(futures)+1L]] <- future
       db[[where]] <<- futures
@@ -71,7 +71,7 @@ FutureRegistry <- local({
       if (is.na(idx)) {
         msg <- sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1])
         mdebug("ERROR: ", msg)
-        stop(msg)
+        stop(FutureError(msg, future = future))
       }
       futures[[idx]] <- NULL
       db[[where]] <<- futures
@@ -83,7 +83,7 @@ FutureRegistry <- local({
     } else {
       msg <- sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action)
       mdebug(msg)
-      stop(msg)
+      stop(FutureError(msg, future = future))
     }
 
     ## Early signaling of conditions?
