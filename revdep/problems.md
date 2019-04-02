@@ -40,29 +40,29 @@ Version: 3.1.3
 
 # BAMBI
 
-Version: 2.0.1
+Version: 2.1.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.4Mb
       sub-directories of 1Mb or more:
-        libs   4.7Mb
+        libs   4.9Mb
     ```
 
 # brms
 
-Version: 2.7.0
+Version: 2.8.0
 
 ## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
-        R     2.9Mb
-        doc   1.8Mb
+        R     3.0Mb
+        doc   2.4Mb
     ```
 
 # codebook
@@ -88,6 +88,19 @@ Version: 0.8.0
       Note: found 65 marked UTF-8 strings
     ```
 
+# datapackage.r
+
+Version: 0.1.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘iterators’ ‘readr’
+      All declared Imports should be used.
+    ```
+
 # fxtract
 
 Version: 0.9.1
@@ -101,16 +114,35 @@ Version: 0.9.1
       All declared Imports should be used.
     ```
 
-# lgr
+# grattan
 
-Version: 0.1.1
+Version: 1.7.1.0
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘R6’
-      All declared Imports should be used.
+    Packages suggested but not available for checking:
+      ‘taxstats’ ‘taxstats1516’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  7.2Mb
+      sub-directories of 1Mb or more:
+        doc    3.5Mb
+        libs   2.5Mb
+    ```
+
+# lgr
+
+Version: 0.2.1
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘RPushbullet’
     ```
 
 # lidR
@@ -207,6 +239,23 @@ Version: 0.6.2
       All declared Imports should be used.
     ```
 
+# sapfluxnetr
+
+Version: 0.0.6
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘utils’
+      All declared Imports should be used.
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 4 marked UTF-8 strings
+    ```
+
 # shinyrecap
 
 Version: 0.1.0
@@ -232,6 +281,19 @@ Version: 0.57.0
       installed size is 49.1Mb
       sub-directories of 1Mb or more:
         libs  47.6Mb
+    ```
+
+# steps
+
+Version: 0.2.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘RColorBrewer’ ‘igraph’ ‘methods’ ‘plyr’ ‘rgdal’ ‘scales’ ‘sp’
+      All declared Imports should be used.
     ```
 
 # tableschema.r

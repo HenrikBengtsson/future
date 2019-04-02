@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-03-25]
+Version: 1.12.0-9000 [2019-04-01]
 
 NEW FEATURES:
 
@@ -22,7 +22,13 @@ BUG FIXES:
  * makeClusterPSOCK() did not shell quote the Rscript executable when
    running it's pre-tests on whether localhost Rscript processes can be
    killed by their PIDs or not.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'value' of resolve() has been renamed to `result` to better reflect
+   that not only values are collected when this argument is used.  For backward
+   compatibility, argument 'value' will still work but is now deprecated.
+
 
 Version: 1.12.0 [2019-03-07]
 

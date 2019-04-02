@@ -57,4 +57,4 @@ Rplots.pdf$
 #----------------------------
 ^.ghi
 ^.issues
-
+^last.dump*
