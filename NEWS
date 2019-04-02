@@ -17,6 +17,10 @@ NEW FEATURES:
 
  * Debug messages are now prepended with a timestamp.
  
+DOCUMENTATION:
+
+ * Add vignette on 'Non-Exportable Objects'.
+
 BUG FIXES:
 
  * makeClusterPSOCK() did not shell quote the Rscript executable when
