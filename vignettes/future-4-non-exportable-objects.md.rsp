@@ -76,6 +76,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **reticulate**  | python.builtin.function, python.builtin.module
   **rJava**       | jclassName
   **rlang**       | RegisteredNativeSymbol
+  **rstan**       | stanmodel
   **udpipe**      | udpipe_model
   **xml2**        | xml_document
 
