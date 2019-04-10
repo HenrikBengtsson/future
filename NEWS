@@ -1,9 +1,11 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-04-01]
+Version: 1.12.0-9000 [2019-04-10]
 
 NEW FEATURES:
+
+ * Now availableCores() recognizes PBSPro environment variable 'NCPUS'.
 
  * makeClusterPSOCK() gained support for argument 'rscript_init' for
    evaluating one or more R expressions in the background R worker prior

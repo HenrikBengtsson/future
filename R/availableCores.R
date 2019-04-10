@@ -50,6 +50,8 @@
 #'    parameter may or may not default to one.
 #'    An example of a job submission that results in this is
 #'    \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
+#'  \item \code{"PBSPro"} -
+#'    Query PBSPro environment variable \env{NCPUS}.
 #'  \item \code{"SGE"} -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
 #'    \env{NSLOTS}.
@@ -83,7 +85,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "PBSPro", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -106,6 +108,9 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     } else if (method == "PBS") {
       ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")
+    } else if (method == "PBSPro") {
+      ## Number of cores assigned by PBSPro
+      n <- getenv("NCPUS")
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
