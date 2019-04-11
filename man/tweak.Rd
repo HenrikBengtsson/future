@@ -2,7 +2,7 @@
 % Please edit documentation in R/tweak.R
 \name{tweak}
 \alias{tweak}
-\title{Tweaks a future function by adjusting its default arguments}
+\title{Tweak a future function by adjusting its default arguments}
 \usage{
 tweak(strategy, ..., penvir = parent.frame())
 }
@@ -19,7 +19,7 @@ function by its name.}
 a future function.
 }
 \description{
-Tweaks a future function by adjusting its default arguments
+Tweak a future function by adjusting its default arguments
 }
 \seealso{
 Use \code{\link{plan}()} to set a future to become the

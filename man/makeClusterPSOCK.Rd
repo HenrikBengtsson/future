@@ -415,7 +415,7 @@ cl <- makeClusterPSOCK(
   ),
   ## Set up .libPaths() for the 'ubuntu' user
   ## and then install the future package
-  rscript_init = quote(local({
+  rscript_startup = quote(local({
     p <- Sys.getenv("R_LIBS_USER")
     dir.create(p, recursive = TRUE, showWarnings = FALSE)
     .libPaths(p)

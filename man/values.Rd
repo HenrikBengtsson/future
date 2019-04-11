@@ -2,7 +2,7 @@
 % Please edit documentation in R/values.R
 \name{values}
 \alias{values}
-\title{Gets all values in a container}
+\title{Get all values in a container}
 \usage{
 values(x, ...)
 }

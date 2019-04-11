@@ -1,4 +1,4 @@
-#' Gets the number of workers available
+#' Get the number of workers available
 #'
 #' @param evaluator A future evaluator function.
 #' If NULL (default), the current evaluator as returned
