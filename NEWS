@@ -8,9 +8,9 @@ NEW FEATURES:
  * Now availableCores() also recognizes PBS environment variable 'NCPUS',
    because the PBSPro scheduler does not set 'PBS_NUM_PPN'.
 
- * makeClusterPSOCK() gained support for argument 'rscript_init' for
+ * makeClusterPSOCK() gained support for argument 'rscript_startup' for
    evaluating one or more R expressions in the background R worker prior
-   to the worker event loop being launched.  This provides a more convenient
+   to the worker event loop launching.  This provides a more convenient
    approach than having to use, say, 'rscript_args = c("-e", sQuote(code))'.
 
  * makeClusterPSOCK() gained support for argument 'rscript_libs' to control the

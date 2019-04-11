@@ -15,7 +15,7 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   timeout = getOption("future.makeNodePSOCK.timeout",
   as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 *
   60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
-  rscript_init = NULL, rscript_libs = NULL, methods = TRUE,
+  rscript_startup = NULL, rscript_libs = NULL, methods = TRUE,
   useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd",
   Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL,
@@ -77,10 +77,10 @@ workers before they launches.
 For instance, use \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
 
-\item{rscript_init}{An \R expression or a character vector of \R code,
+\item{rscript_startup}{An \R expression or a character vector of \R code,
 or a list with a mix of these, that will be evaluated on the \R worker
 prior to launching the worker's event loop.
-For instance, use \code{rscript_init = 'setwd("/path/to")'}
+For instance, use \code{rscript_startup = 'setwd("/path/to")'}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
 
 \item{rscript_libs}{A character vector of \R library paths that will be
