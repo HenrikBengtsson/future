@@ -1,4 +1,4 @@
-#' Gets all values in an object
+#' Gets all values in a container
 #'
 #' Gets all values in an environment, a list, or a list environment
 #' and returns an object of the same class (and dimensions).
