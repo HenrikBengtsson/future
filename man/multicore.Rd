@@ -61,12 +61,14 @@ multicore futures is resolved.  For the total number of
 cores available including the current/main \R process, see
 \code{\link{availableCores}()}.
 
-Not all systems support multicore futures.  For instance,
-it is not supported on Microsoft Windows.  Trying to create
-multicore futures on non-supported systems will silently
-fall back to using \link{sequential} futures, which effectively
-corresponds to a multicore future that can handle one parallel
-process (the current one) before blocking.
+Not all operating systems support process forking and thereby not multicore
+futures.  For instance, forking is not supported on Microsoft Windows.
+Moreover, process forking may break some R environments such as RStudio.
+Because of this, the future package disables process forking also in
+such cases.  See \code{\link{supportsMulticore}()} for details.
+Trying to create multicore futures on non-supported systems or when
+forking is disabled will result in multicore futures falling back to
+becoming \link{sequential} futures.
 
 The preferred way to create an multicore future is not to call
 this function directly, but to register it via
