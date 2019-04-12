@@ -1,8 +1,16 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-04-10]
+Version: 1.12.0-9000 [2019-04-11]
 
+SIGNIFICANT CHANGES:
+
+ * Forked processing is now disabled by default when running R via RStudio
+   When disabled, 'multicore' futures fall back to a 'sequential' futures. This
+   update follows from an RStudio recommendation against using forked parallel
+   processing from within RStudio because it is likely to break the RStudio R
+   session.  See help("supportsMulticore") for more details.
+   
 NEW FEATURES:
 
  * Now availableCores() also recognizes PBS environment variable 'NCPUS',
