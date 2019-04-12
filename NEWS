@@ -1,9 +1,17 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-04-11]
+Version: 1.12.0-9000 [2019-04-12]
 
 SIGNIFICANT CHANGES:
+
+ * Forked processing can be disabled by setting R option 'future.fork.enable'
+   to FALSE (or environment variable 'R_FUTURE_R_FUTURE_FORK_ENABLE=false').
+   When disabled, 'multicore' futures fall back to a 'sequential' futures even
+   if the operating system supports process forking.  If set of TRUE,
+   'multicore' will not fall back to 'sequential'.  If NA, or not set (the
+   default), a set of best-practices rules will decide whether forking is
+   enabled or not.  See help("supportsMulticore") for more details.
 
  * Forked processing is now disabled by default when running R via RStudio
    When disabled, 'multicore' futures fall back to a 'sequential' futures. This

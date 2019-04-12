@@ -44,7 +44,7 @@ supportsMulticore <- local({
     if (!supportedByOS) return(FALSE)
 
     ## Is forked processing disabled via R settings?
-    value <- getOption("future.fork.enable", Sys.getenv("R_FUTURE_FORK_ENABLE"))
+    value <- getOption("future.fork.enable", Sys.getenv("R_FUTURE_FORK_ENABLE", "NA"))
     stop_if_not(length(value) == 1L)
     value <- as.logical(value)
     if (!is.na(value)) return(value)
