@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-04-01                   |
+|date     |2019-04-16                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (56)
+## All (60)
 
 |package                                         |version    |error |warning |note |
 |:-----------------------------------------------|:----------|:-----|:-------|:----|
@@ -31,6 +31,7 @@
 |[aroma.affymetrix](problems.md#aromaaffymetrix) |3.1.1      |      |        |1    |
 |[aroma.core](problems.md#aromacore)             |3.1.3      |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0      |      |        |1    |
+|BatchGetSymbols                                 |2.5        |      |        |     |
 |batchtools                                      |0.9.11     |      |        |     |
 |biotmle                                         |1.6.0      |      |        |     |
 |[brms](problems.md#brms)                        |2.8.0      |      |        |1    |
@@ -39,7 +40,7 @@
 |[datapackage.r](problems.md#datapackager)       |0.1.0      |      |        |1    |
 |DeclareDesign                                   |0.16.0     |      |        |     |
 |doFuture                                        |0.8.0      |      |        |     |
-|drake                                           |7.0.0      |      |        |     |
+|drake                                           |7.1.0      |      |        |     |
 |drtmle                                          |1.0.4      |      |        |     |
 |FAMoS                                           |0.1.0      |      |        |     |
 |fiery                                           |1.1.1      |      |        |     |
@@ -74,13 +75,16 @@
 |[robotstxt](problems.md#robotstxt)              |0.6.2      |      |        |1    |
 |RTransferEntropy                                |0.2.8      |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)          |0.0.6      |      |        |2    |
+|[sctransform](problems.md#sctransform)          |0.2.0      |      |        |1    |
+|[Seurat](problems.md#seurat)                    |3.0.0      |      |        |3    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0      |      |        |1    |
 |[skpr](problems.md#skpr)                        |0.57.0     |      |        |1    |
 |sperrorest                                      |2.1.5      |      |        |     |
 |startR                                          |0.0.1      |      |        |     |
-|[steps](problems.md#steps)                      |0.2.0      |      |        |1    |
+|steps                                           |0.2.1      |      |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0      |      |        |2    |
 |[tidyqwi](problems.md#tidyqwi)                  |0.1.0      |      |        |1    |
-|tsfeatures                                      |1.0.0      |      |        |     |
+|tsfeatures                                      |1.0.1      |      |        |     |
+|[TSstudio](problems.md#tsstudio)                |0.1.4      |      |        |1    |
 |vinereg                                         |0.5.0      |      |        |     |
 

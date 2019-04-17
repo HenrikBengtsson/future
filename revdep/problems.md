@@ -256,6 +256,42 @@ Version: 0.0.6
       Note: found 4 marked UTF-8 strings
     ```
 
+# sctransform
+
+Version: 0.2.0
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Rcpp’ ‘future’
+      All declared Imports should be used.
+    ```
+
+# Seurat
+
+Version: 3.0.0
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘loomR’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 10.4Mb
+      sub-directories of 1Mb or more:
+        libs   9.0Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘loomR’
+    ```
+
 # shinyrecap
 
 Version: 0.1.0
@@ -281,19 +317,6 @@ Version: 0.57.0
       installed size is 49.1Mb
       sub-directories of 1Mb or more:
         libs  47.6Mb
-    ```
-
-# steps
-
-Version: 0.2.0
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘RColorBrewer’ ‘igraph’ ‘methods’ ‘plyr’ ‘rgdal’ ‘scales’ ‘sp’
-      All declared Imports should be used.
     ```
 
 # tableschema.r
@@ -322,6 +345,18 @@ Version: 0.1.0
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘plyr’
+      All declared Imports should be used.
+    ```
+
+# TSstudio
+
+Version: 0.1.4
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘purrr’
       All declared Imports should be used.
     ```
 
