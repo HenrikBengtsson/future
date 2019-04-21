@@ -47,7 +47,7 @@ resolve.default <- function(x, ...) x
 resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
