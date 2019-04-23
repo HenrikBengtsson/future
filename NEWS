@@ -9,7 +9,8 @@ SIGNIFICANT CHANGES:
    When disabled, 'multicore' futures fall back to a 'sequential' futures. This
    update follows from an RStudio recommendation against using forked parallel
    processing from within RStudio because it is likely to break the RStudio R
-   session.  See help("supportsMulticore") for more details.
+   session.  See help("supportsMulticore") for more details, e.g. how to
+   re-enable process forking.
    
 NEW FEATURES:
 
