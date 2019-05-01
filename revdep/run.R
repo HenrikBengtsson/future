@@ -37,7 +37,7 @@ check <- function() {
 
   precheck()
   revdep_check(bioc = TRUE, num_workers = available_cores(),
-               timeout = as.difftime(10, units = "mins"), quiet = FALSE)
+               timeout = as.difftime(20, units = "mins"), quiet = FALSE)
 }
 
 todo <- function() {
