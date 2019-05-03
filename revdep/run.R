@@ -40,6 +40,7 @@ check <- function() {
                timeout = as.difftime(20, units = "mins"), quiet = FALSE)
 }
 
+
 todo <- function() {
   pkgs <- tryCatch(revdep_todo(), error = function(ex) NA)
   if (identical(pkgs, NA)) {
@@ -130,4 +131,5 @@ if ("--reset" %in% args) {
   crancache::install_packages(pkgs)
 } else {
   check()
+  revdep_report(all = TRUE)
 }
