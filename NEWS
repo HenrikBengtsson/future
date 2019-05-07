@@ -6,11 +6,14 @@ Version: 1.12.0-9000 [2019-05-07]
 SIGNIFICANT CHANGES:
 
  * Forked processing is now disabled by default when running R via RStudio
-   When disabled, 'multicore' futures fall back to a 'sequential' futures. This
-   update follows from an RStudio recommendation against using forked parallel
-   processing from within RStudio because it is likely to break the RStudio R
-   session.  See help("supportsMulticore") for more details, e.g. how to
-   re-enable process forking.
+   When disabled, 'multicore' futures fall back to a 'sequential' futures.
+   This update follows from an RStudio recommendation against using _forked_
+   parallel processing from within RStudio because it is likely to break the
+   RStudio R session.  See help("supportsMulticore") for more details, e.g.
+   how to re-enable process forking.  Note that parallelization via
+   'multisession' is unaffected and will still work as before.  Also, when
+   forked processing is disabled, or otherwise not supported, using
+   plan("multiprocess") will fall back to use 'multisession' futures.
    
 NEW FEATURES:
 
