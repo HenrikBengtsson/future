@@ -79,7 +79,7 @@ are supported:
    If option \option{future.availableCores.custom} is set and a function,
    then this function will be called (without arguments) and it's value
    will be coerced to an integer, which will be interpreted as a number
-   of cores.  If the value is NA, then it will be ignored.
+   of available cores.  If the value is NA, then it will be ignored.
 }
 For any other value of a \code{methods} element, the \R option with the
 same name is queried.  If that is not set, the system environment

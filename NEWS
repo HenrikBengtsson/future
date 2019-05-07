@@ -27,10 +27,12 @@ NEW FEATURES:
 
  * If, option 'future.availableCores.custom' is set to a function, then
    availableCores() will call that function and interpret its value as
-   number of cores.  This new option provides a mechanism for anyone to
-   customize availableCores() in case it does not recognize, say, environment
-   variables that are specific their environment or used by a HPC scheduler
-   that is yet not recognized by availableCores().
+   number of cores.  Analogously, option 'future.availableWorkers.custom'
+   can be used to specify a hostnames of a set of workers that
+   availableWorkers() sees.  These new options provide a mechanism for anyone
+   to customize availableCores() and availableWorkers() in case they do not
+   (yet) recognize, say, environment variables that are specific the user's
+   compute environment or HPC scheduler.
 
  * makeClusterPSOCK() gained support for argument 'rscript_startup' for
    evaluating one or more R expressions in the background R worker prior
