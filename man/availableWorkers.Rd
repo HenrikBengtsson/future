@@ -6,7 +6,7 @@
 \usage{
 availableWorkers(methods = getOption("future.availableWorkers.methods",
   c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
-  "fallback")), na.rm = TRUE, default = "localhost",
+  "custom", "fallback")), na.rm = TRUE, default = "localhost",
   which = c("auto", "min", "max", "all"))
 }
 \arguments{

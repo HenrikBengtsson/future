@@ -62,6 +62,11 @@
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
 #'    \code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+#'  \item \code{"custom"} -
+#'    If option \option{future.availableCores.custom} is set and a function,
+#'    then this function will be called (without arguments) and it's value
+#'    will be coerced to an integer, which will be interpreted as a number
+#'    of cores.  If the value is NA, then it will be ignored.
 #' }
 #' For any other value of a \code{methods} element, the \R option with the
 #' same name is queried.  If that is not set, the system environment
@@ -83,7 +88,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback", "custom")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -137,6 +142,17 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       ## Number of cores available according to future.availableCores.fallback
       n <- getOption("future.availableCores.fallback", NA_integer_)
       n <- as.integer(n)
+    } else if (method == "custom") {
+      fcn <- getOption("future.availableCores.custom", NULL)
+      if (is.function(fcn)) {
+        n <- fcn()
+        n <- as.integer(n)
+	if (length(n) != 1L) {
+	  stop("Function specified by option 'future.availableCores.custom' does not a single value")
+	}
+      } else {
+        n <- NA_integer_
+      }
     } else {
       ## covr: skip=3
       ## Fall back to querying option and system environment variable

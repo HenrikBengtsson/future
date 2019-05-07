@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.12.0-9000 [2019-04-12]
+Version: 1.12.0-9000 [2019-05-07]
 
 SIGNIFICANT CHANGES:
 
@@ -24,6 +24,13 @@ NEW FEATURES:
 
  * Now availableCores() also recognizes PBS environment variable 'NCPUS',
    because the PBSPro scheduler does not set 'PBS_NUM_PPN'.
+
+ * If, option 'future.availableCores.custom' is set to a function, then
+   availableCores() will call that function and interpret its value as
+   number of cores.  This new option provides a mechanism for anyone to
+   customize availableCores() in case it does not recognize, say, environment
+   variables that are specific their environment or used by a HPC scheduler
+   that is yet not recognized by availableCores().
 
  * makeClusterPSOCK() gained support for argument 'rscript_startup' for
    evaluating one or more R expressions in the background R worker prior
