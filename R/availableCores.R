@@ -144,14 +144,11 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       n <- as.integer(n)
     } else if (method == "custom") {
       fcn <- getOption("future.availableCores.custom", NULL)
-      if (is.function(fcn)) {
-        n <- fcn()
-        n <- as.integer(n)
-	if (length(n) != 1L) {
-	  stop("Function specified by option 'future.availableCores.custom' does not a single value")
-	}
-      } else {
-        n <- NA_integer_
+      if (!is.function(fcn)) next
+      n <- fcn()
+      n <- as.integer(n)
+      if (length(n) != 1L) {
+        stop("Function specified by option 'future.availableCores.custom' does not a single value")
       }
     } else {
       ## covr: skip=3

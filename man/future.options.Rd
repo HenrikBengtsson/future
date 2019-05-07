@@ -81,7 +81,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which = "system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}. This option allows you to effectively override what \code{parallel::detectCores()} reports the system has.}
 
- \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "custom", "fallback")})}
+ \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")})}
 
  \item{\option{future.availableWorkers.custom}:}{If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
 

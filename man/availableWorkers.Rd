@@ -5,8 +5,8 @@
 \title{Get set of available workers}
 \usage{
 availableWorkers(methods = getOption("future.availableWorkers.methods",
-  c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
-  "custom", "fallback")), na.rm = TRUE, default = "localhost",
+  c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom",
+  "system", "fallback")), na.rm = TRUE, default = "localhost",
   which = c("auto", "min", "max", "all"))
 }
 \arguments{
