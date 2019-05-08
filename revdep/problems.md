@@ -215,6 +215,28 @@ Run `revdep_details(,"brms")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      9: bayesplot::mcmc_pairs(samples, ...)
+      
+      ── 2. Failure: predict for categorical and related models runs without erros (@t
+      rowSums(pred) not equal to rep(1, nrow(pred)).
+      2/50 mismatches (average diff: NaN)
+      [23] NaN - 1 == NaN
+      [25] NaN - 1 == NaN
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 1305 SKIPPED: 4 WARNINGS: 0 FAILED: 2
+      1. Error: plotting functions don't throw unexpected errors (@tests.plots.R#33) 
+      2. Failure: predict for categorical and related models runs without erros (@tests.predict.R#308) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking whether package ‘brms’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -247,6 +269,28 @@ Run `revdep_details(,"civis")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
+      
+      ── 3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128)  ─────────────
+      `call_api("GET", path, path_params, query_params, body_params)` threw an error with unexpected message.
+      Expected match: "429"
+      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 952 SKIPPED: 0 WARNINGS: 21 FAILED: 3
+      1. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
+      2. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
+      3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking whether package ‘civis’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -270,6 +314,26 @@ Run `revdep_details(,"codebook")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘codebook-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: compute_reliabilities
+    > ### Title: Compute reliabilities
+    > ### Aliases: compute_reliabilities
+    > 
+    > ### ** Examples
+    > 
+    > data("bfi", package = "codebook")
+    >   bfi <- bfi %>% dplyr::select(dplyr::starts_with("BFIK_agree"))
+    > reliabilities <- compute_reliabilities(bfi)
+    Error in lavaan::inspect(fit, "coef") : object 'fit' not found
+    Calls: compute_reliabilities ... eval -> value -> value.Future -> resignalConditions
+    Execution halted
+    Error while shutting down parallel: unable to terminate some child processes
+    ```
 
 *   checking whether package ‘codebook’ can be installed ... NOTE
     ```
@@ -366,6 +430,28 @@ Run `revdep_details(,"doFuture")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/cluster-missing-doFuture-pkg.R’ failed.
+    Last 13 lines of output:
+      +     print(res)
+      +     stopifnot(inherits(res, "FutureError"))
+      +   }
+      +   
+      +   parallel::stopCluster(cl)
+      +   cl <- NULL
+      +   
+      +   plan(sequential)
+      +   
+      +   message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
+      + } ## for (type ...)
+      Test set #1 with cluster type 'PSOCK' ...
+      Error in attr(cl, "withs") && !all(attr(cl, "withouts")) : 
+        'length(x) = 3 > 1' in coercion to 'logical(1)'
+      Execution halted
+    ```
 
 *   checking whether package ‘doFuture’ can be installed ... NOTE
     ```
@@ -1051,6 +1137,49 @@ Run `revdep_details(,"penaltyLearning")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘penaltyLearning-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: featureMatrix
+    > ### Title: featureMatrix
+    > ### Aliases: featureMatrix
+    > 
+    > ### ** Examples
+    > 
+    > 
+    > data(neuroblastoma, package="neuroblastoma", envir=environment())
+    > 
+    > one <- subset(neuroblastoma$profiles, profile.id %in% c(1,2))
+    > f.mat <- featureMatrix(one, c("profile.id", "chromosome"), "logratio")
+    Error in is.character(problem.vars) && sum(is.na(problem.vars) == 0) &&  : 
+      'length(x) = 2 > 1' in coercion to 'logical(1)'
+    Calls: featureMatrix
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(testthat)
+      > test_check("penaltyLearning")
+      Loading required package: penaltyLearning
+      Loading required package: data.table
+      ── 1. Error: (unknown) (@test-features.R#29)  ──────────────────────────────────
+      'length(x) = 2 > 1' in coercion to 'logical(1)'
+      1: featureMatrix(three, c("profile.id", "chromosome"), "logratio") at testthat/test-features.R:29
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 63 SKIPPED: 0 WARNINGS: 0 FAILED: 1
+      1. Error: (unknown) (@test-features.R#29) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking whether package ‘penaltyLearning’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -1211,6 +1340,54 @@ Run `revdep_details(,"rangeMapper")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > 
+    > X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
+    > 
+    > 
+    > dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
+    New session 2019-05-07 19:24:15
+    PROJECT: test.sqlite 
+    DIRECTORY: /tmp/hb/RtmpbpbZCx
+    > global.bbox.save(con = dbcon, bbox = X)
+    Warning: call dbDisconnect() when finished working with a connection
+    [1] TRUE
+    > gridSize.save(dbcon)
+    Warning in .local(object, ...) : Default grid size used!
+    Grid size set to 0.0302818233 map units.
+    > canvas.save(dbcon)
+    Canvas uploaded.
+    > processRanges(spdf = X, con =  dbcon, ID = "nam")
+    Error in is.numeric(i) && i < 0 : 
+      'length(x) = 22 > 1' in coercion to 'logical(1)'
+    Calls: processRanges -> processRanges -> .local -> [ -> [
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+             "wrens", verbose = FALSE)[1:10, ] at testthat/test-4_save.R:3
+      2: rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), 
+             "wrens", verbose = FALSE)[1:10, ]
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 15 SKIPPED: 0 WARNINGS: 0 FAILED: 4
+      1. Error: Pipeline works forward only (@test-1_projectINI.R#75) 
+      2. Error: (unknown) (@test-2_processRanges.R#5) 
+      3. Error: (unknown) (@test-3_output.R#3) 
+      4. Error: (unknown) (@test-4_save.R#3) 
+      
+      Error: testthat unit tests failed
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
+    ```
 
 *   checking whether package ‘rangeMapper’ can be installed ... NOTE
     ```
@@ -1445,6 +1622,28 @@ Run `revdep_details(,"skpr")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      'length(x) = 2 > 1' in coercion to 'logical(1)'
+      1: expect_equal(coef(summary(fitglm))[, 4], extractPvalues(fitglm)) at testthat/testExtractPvalues.R:14
+      2: quasi_label(enquo(expected), expected.label, arg = "expected")
+      3: eval_bare(get_expr(quo), get_env(quo))
+      4: extractPvalues(fitglm)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 339 SKIPPED: 1 WARNINGS: 0 FAILED: 4
+      1. Error: eval_design_mc processes effectsize properly for glm (@testDeltaProcessing.R#132) 
+      2. Error: eval_design_mc processes effectsize properly for glm without effect power (@testDeltaProcessing.R#184) 
+      3. Error: eval_design_mc example code runs without errors (@testExampleCode.R#289) 
+      4. Error: extractPvalues works as intended (@testExtractPvalues.R#14) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
 
 *   checking whether package ‘skpr’ can be installed ... NOTE
     ```
