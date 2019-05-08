@@ -13,7 +13,7 @@ SIGNIFICANT CHANGES:
    how to re-enable process forking.  Note that parallelization via
    'multisession' is unaffected and will still work as before.  Also, when
    forked processing is disabled, or otherwise not supported, using
-   plan("multiprocess") will fall back to use 'multisession' futures.
+   plan("multiprocess") will fall back to using 'multisession' futures.
    
 NEW FEATURES:
 
@@ -51,7 +51,7 @@ NEW FEATURES:
  
 DOCUMENTATION:
 
- * Add vignette on 'Non-Exportable Objects'.
+ * Add vignette on 'Non-Exportable Objects' (extracted from another vignette).
 
 BUG FIXES:
 
