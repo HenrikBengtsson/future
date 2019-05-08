@@ -343,11 +343,6 @@ Run `revdep_details(,"DeclareDesign")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘DesignLibrary’
-    ```
-
 *   checking whether package ‘DeclareDesign’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -985,11 +980,6 @@ Run `revdep_details(,"methyvim")` for more info
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘minfiData’
-    ```
 
 *   checking whether package ‘methyvim’ can be installed ... NOTE
     ```

@@ -38,7 +38,7 @@
 |[civis](problems.md#civis)                               |1.6.1      |      |        |1    |
 |[codebook](problems.md#codebook)                         |0.8.0      |      |        |4    |
 |[datapackage.r](problems.md#datapackager)                |0.1.0      |      |        |2    |
-|[DeclareDesign](problems.md#declaredesign)               |0.18.0     |      |        |2    |
+|[DeclareDesign](problems.md#declaredesign)               |0.18.0     |      |        |1    |
 |[doFuture](problems.md#dofuture)                         |0.8.0      |      |        |1    |
 |[drake](problems.md#drake)                               |7.2.0      |      |        |1    |
 |[drtmle](problems.md#drtmle)                             |1.0.4      |      |        |1    |
@@ -62,7 +62,7 @@
 |[lgr](problems.md#lgr)                                   |0.2.1      |      |        |2    |
 |[lidR](problems.md#lidr)                                 |2.0.2      |      |        |3    |
 |[MetamapsDB](problems.md#metamapsdb)                     |0.0.2      |      |        |2    |
-|[methyvim](problems.md#methyvim)                         |1.6.0      |      |        |2    |
+|[methyvim](problems.md#methyvim)                         |1.6.0      |      |        |1    |
 |[ngstk](problems.md#ngstk)                               |0.2.3      |      |        |1    |
 |[origami](problems.md#origami)                           |1.0.1      |      |        |1    |
 |[penaltyLearning](problems.md#penaltylearning)           |2018.09.04 |      |        |1    |
