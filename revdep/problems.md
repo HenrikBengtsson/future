@@ -45,12 +45,6 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking:
-      'affyPLM', 'oligo', 'pdInfoBuilder'
-    ```
-
 *   checking whether package ‘aroma.affymetrix’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -67,9 +61,10 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
         testScripts   1.3Mb
     ```
 
-*   checking Rd cross-references ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Packages unavailable to check Rd xrefs: ‘affyPLM’, ‘oligo’
+    Error in setGeneric("getX", function(object, type) standardGeneric("getX")) : 
+      could not find function "setGeneric"
     ```
 
 # aroma.core
@@ -92,7 +87,7 @@ Run `revdep_details(,"aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'GLAD', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
 *   checking whether package ‘aroma.core’ can be installed ... NOTE
@@ -100,11 +95,6 @@ Run `revdep_details(,"aroma.core")` for more info
     Found the following notes/warnings:
       Non-staged installation was used
     See ‘/home/hb/repositories/future/revdep/checks/aroma.core/new/aroma.core.Rcheck/00install.out’ for details.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘GLAD’
     ```
 
 # BAMBI
@@ -133,7 +123,7 @@ Run `revdep_details(,"BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.4Mb
+      installed size is  5.5Mb
       sub-directories of 1Mb or more:
         libs   4.9Mb
     ```
@@ -177,11 +167,6 @@ Run `revdep_details(,"batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘doMPI’
-    ```
-
 *   checking whether package ‘batchtools’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -193,11 +178,11 @@ Run `revdep_details(,"batchtools")` for more info
 
 <details>
 
-* Version: 1.7.3
+* Version: 1.8.0
 * Source code: https://github.com/cran/biotmle
 * URL: https://code.nimahejazi.org/biotmle
 * BugReports: https://github.com/nhejazi/biotmle/issues
-* Date/Publication: 2019-04-16
+* Date/Publication: 2019-05-02
 * Number of recursive dependencies: 99
 
 Run `revdep_details(,"biotmle")` for more info
@@ -206,14 +191,9 @@ Run `revdep_details(,"biotmle")` for more info
 
 ## In both
 
-*   checking whether package ‘biotmle’ can be installed ... WARNING
+*   checking whether package ‘biotmle’ can be installed ... NOTE
     ```
-    Found the following significant warnings:
-      Warning: multiple methods tables found for ‘rowSums’
-      Warning: multiple methods tables found for ‘colSums’
-      Warning: multiple methods tables found for ‘rowMeans’
-      Warning: multiple methods tables found for ‘colMeans’
-    Found the following additional notes/warnings:
+    Found the following notes/warnings:
       Non-staged installation was used
     See ‘/home/hb/repositories/future/revdep/checks/biotmle/new/biotmle.Rcheck/00install.out’ for details.
     ```
@@ -234,33 +214,6 @@ Run `revdep_details(,"brms")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      9: bayesplot::mcmc_pairs(samples, ...)
-      
-      ── 2. Failure: predict for categorical and related models runs without erros (@t
-      rowSums(pred) not equal to rep(1, nrow(pred)).
-      2/50 mismatches (average diff: NaN)
-      [23] NaN - 1 == NaN
-      [25] NaN - 1 == NaN
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 1305 SKIPPED: 4 WARNINGS: 0 FAILED: 2
-      1. Error: plotting functions don't throw unexpected errors (@tests.plots.R#33) 
-      2. Failure: predict for categorical and related models runs without erros (@tests.predict.R#308) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘MCMCglmm’
-    ```
 
 *   checking whether package ‘brms’ can be installed ... NOTE
     ```
@@ -294,28 +247,6 @@ Run `revdep_details(,"civis")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
-      
-      ── 3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128)  ─────────────
-      `call_api("GET", path, path_params, query_params, body_params)` threw an error with unexpected message.
-      Expected match: "429"
-      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 952 SKIPPED: 0 WARNINGS: 21 FAILED: 3
-      1. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
-      2. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
-      3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking whether package ‘civis’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -339,26 +270,6 @@ Run `revdep_details(,"codebook")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘codebook-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: compute_reliabilities
-    > ### Title: Compute reliabilities
-    > ### Aliases: compute_reliabilities
-    > 
-    > ### ** Examples
-    > 
-    > data("bfi", package = "codebook")
-    >   bfi <- bfi %>% dplyr::select(dplyr::starts_with("BFIK_agree"))
-    > reliabilities <- compute_reliabilities(bfi)
-    Error in lavaan::inspect(fit, "coef") : object 'fit' not found
-    Calls: compute_reliabilities ... eval -> value -> value.Future -> resignalConditions
-    Execution halted
-    Error while shutting down parallel: unable to terminate some child processes
-    ```
 
 *   checking whether package ‘codebook’ can be installed ... NOTE
     ```
@@ -460,28 +371,6 @@ Run `revdep_details(,"doFuture")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/cluster-missing-doFuture-pkg.R’ failed.
-    Last 13 lines of output:
-      +     print(res)
-      +     stopifnot(inherits(res, "FutureError"))
-      +   }
-      +   
-      +   parallel::stopCluster(cl)
-      +   cl <- NULL
-      +   
-      +   plan(sequential)
-      +   
-      +   message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
-      + } ## for (type ...)
-      Test set #1 with cluster type 'PSOCK' ...
-      Error in attr(cl, "withs") && !all(attr(cl, "withouts")) : 
-        'length(x) = 3 > 1' in coercion to 'logical(1)'
-      Execution halted
-    ```
 
 *   checking whether package ‘doFuture’ can be installed ... NOTE
     ```
@@ -660,11 +549,11 @@ Run `revdep_details(,"future.BatchJobs")` for more info
 
 <details>
 
-* Version: 0.7.2
+* Version: 0.8.0
 * Source code: https://github.com/cran/future.batchtools
 * URL: https://github.com/HenrikBengtsson/future.batchtools
 * BugReports: https://github.com/HenrikBengtsson/future.batchtools/issues
-* Date/Publication: 2019-01-04 13:50:15 UTC
+* Date/Publication: 2019-05-05 06:10:02 UTC
 * Number of recursive dependencies: 33
 
 Run `revdep_details(,"future.batchtools")` for more info
@@ -770,12 +659,12 @@ Run `revdep_details(,"GetBCBData")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.3.0
 * Source code: https://github.com/cran/googleComputeEngineR
 * URL: https://cloudyr.github.io/googleComputeEngineR/
 * BugReports: https://github.com/cloudyr/googleComputeEngineR/issues
-* Date/Publication: 2017-09-16 16:25:37 UTC
-* Number of recursive dependencies: 66
+* Date/Publication: 2019-05-04 22:40:02 UTC
+* Number of recursive dependencies: 42
 
 Run `revdep_details(,"googleComputeEngineR")` for more info
 
@@ -794,11 +683,11 @@ Run `revdep_details(,"googleComputeEngineR")` for more info
 
 <details>
 
-* Version: 1.7.1.0
+* Version: 1.7.1.1
 * Source code: https://github.com/cran/grattan
 * URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
 * BugReports: https://github.com/HughParsonage/grattan/issues
-* Date/Publication: 2019-03-23 22:30:13 UTC
+* Date/Publication: 2019-05-02 10:00:06 UTC
 * Number of recursive dependencies: 98
 
 Run `revdep_details(,"grattan")` for more info
@@ -822,10 +711,10 @@ Run `revdep_details(,"grattan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.2Mb
+      installed size is  7.3Mb
       sub-directories of 1Mb or more:
-        doc    3.5Mb
-        libs   2.5Mb
+        doc    3.6Mb
+        libs   2.6Mb
     ```
 
 # greta
@@ -880,11 +769,11 @@ Run `revdep_details(,"GSODR")` for more info
 
 <details>
 
-* Version: 0.99.7
+* Version: 1.0.0
 * Source code: https://github.com/cran/infercnv
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
-* Date/Publication: 2019-04-25
+* Date/Publication: 2019-05-02
 * Number of recursive dependencies: 113
 
 Run `revdep_details(,"infercnv")` for more info
@@ -893,14 +782,9 @@ Run `revdep_details(,"infercnv")` for more info
 
 ## In both
 
-*   checking whether package ‘infercnv’ can be installed ... WARNING
+*   checking whether package ‘infercnv’ can be installed ... NOTE
     ```
-    Found the following significant warnings:
-      Warning: multiple methods tables found for ‘rowSums’
-      Warning: multiple methods tables found for ‘colSums’
-      Warning: multiple methods tables found for ‘rowMeans’
-      Warning: multiple methods tables found for ‘colMeans’
-    Found the following additional notes/warnings:
+    Found the following notes/warnings:
       Non-staged installation was used
     See ‘/home/hb/repositories/future/revdep/checks/infercnv/new/infercnv.Rcheck/00install.out’ for details.
     ```
@@ -1047,7 +931,7 @@ Run `revdep_details(,"lidR")` for more info
     ```
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
-        libs   7.6Mb
+        libs   7.7Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1071,14 +955,9 @@ Run `revdep_details(,"MetamapsDB")` for more info
 
 ## In both
 
-*   checking whether package ‘MetamapsDB’ can be installed ... WARNING
+*   checking whether package ‘MetamapsDB’ can be installed ... NOTE
     ```
-    Found the following significant warnings:
-      Warning: multiple methods tables found for ‘rowSums’
-      Warning: multiple methods tables found for ‘colSums’
-      Warning: multiple methods tables found for ‘rowMeans’
-      Warning: multiple methods tables found for ‘colMeans’
-    Found the following additional notes/warnings:
+    Found the following notes/warnings:
       Non-staged installation was used
     See ‘/home/hb/repositories/future/revdep/checks/MetamapsDB/new/MetamapsDB.Rcheck/00install.out’ for details.
     ```
@@ -1094,11 +973,11 @@ Run `revdep_details(,"MetamapsDB")` for more info
 
 <details>
 
-* Version: 1.5.2
+* Version: 1.6.0
 * Source code: https://github.com/cran/methyvim
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
-* Date/Publication: 2019-04-16
+* Date/Publication: 2019-05-02
 * Number of recursive dependencies: 179
 
 Run `revdep_details(,"methyvim")` for more info
@@ -1107,21 +986,16 @@ Run `revdep_details(,"methyvim")` for more info
 
 ## In both
 
-*   checking whether package ‘methyvim’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: multiple methods tables found for ‘rowSums’
-      Warning: multiple methods tables found for ‘colSums’
-      Warning: multiple methods tables found for ‘rowMeans’
-      Warning: multiple methods tables found for ‘colMeans’
-    Found the following additional notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/methyvim/new/methyvim.Rcheck/00install.out’ for details.
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘minfiData’
+    ```
+
+*   checking whether package ‘methyvim’ can be installed ... NOTE
+    ```
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/home/hb/repositories/future/revdep/checks/methyvim/new/methyvim.Rcheck/00install.out’ for details.
     ```
 
 # ngstk
@@ -1152,11 +1026,11 @@ Run `revdep_details(,"ngstk")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * Source code: https://github.com/cran/origami
-* URL: http://origami.tlverse.org
+* URL: https://tlverse.org/origami
 * BugReports: https://github.com/tlverse/origami/issues
-* Date/Publication: 2018-03-06 19:22:10 UTC
+* Date/Publication: 2019-05-01 21:50:03 UTC
 * Number of recursive dependencies: 70
 
 Run `revdep_details(,"origami")` for more info
@@ -1164,28 +1038,6 @@ Run `revdep_details(,"origami")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Version: 1.0.0
-      > library(data.table)
-      > test_check("origami")
-      ── 1. Failure: CV MSE matches previous value (@test-overall.R#36)  ─────────────
-      `cv_MSE` not equal to 13.32.
-      1/1 mismatches
-      [1] 14.1 - 13.3 == 0.791
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 26 SKIPPED: 0 WARNINGS: 8 FAILED: 1
-      1. Failure: CV MSE matches previous value (@test-overall.R#36) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-      Error while shutting down parallel: unable to terminate some child processes
-    ```
 
 *   checking whether package ‘origami’ can be installed ... NOTE
     ```
@@ -1208,49 +1060,6 @@ Run `revdep_details(,"penaltyLearning")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘penaltyLearning-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: featureMatrix
-    > ### Title: featureMatrix
-    > ### Aliases: featureMatrix
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > data(neuroblastoma, package="neuroblastoma", envir=environment())
-    > 
-    > one <- subset(neuroblastoma$profiles, profile.id %in% c(1,2))
-    > f.mat <- featureMatrix(one, c("profile.id", "chromosome"), "logratio")
-    Error in is.character(problem.vars) && sum(is.na(problem.vars) == 0) &&  : 
-      'length(x) = 2 > 1' in coercion to 'logical(1)'
-    Calls: featureMatrix
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > test_check("penaltyLearning")
-      Loading required package: penaltyLearning
-      Loading required package: data.table
-      ── 1. Error: (unknown) (@test-features.R#29)  ──────────────────────────────────
-      'length(x) = 2 > 1' in coercion to 'logical(1)'
-      1: featureMatrix(three, c("profile.id", "chromosome"), "logratio") at testthat/test-features.R:29
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 63 SKIPPED: 0 WARNINGS: 0 FAILED: 1
-      1. Error: (unknown) (@test-features.R#29) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking whether package ‘penaltyLearning’ can be installed ... NOTE
     ```
@@ -1320,9 +1129,9 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.15.17
+* Version: 1.16.0
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-04-04
+* Date/Publication: 2019-05-02
 * Number of recursive dependencies: 263
 
 Run `revdep_details(,"Prostar")` for more info
@@ -1344,11 +1153,11 @@ Run `revdep_details(,"Prostar")` for more info
 
 <details>
 
-* Version: 0.64.0
+* Version: 0.65.0
 * Source code: https://github.com/cran/PSCBS
 * URL: https://github.com/HenrikBengtsson/PSCBS
 * BugReports: https://github.com/HenrikBengtsson/PSCBS/issues
-* Date/Publication: 2018-08-12 20:50:03 UTC
+* Date/Publication: 2019-05-05 22:40:09 UTC
 * Number of recursive dependencies: 73
 
 Run `revdep_details(,"PSCBS")` for more info
@@ -1356,26 +1165,6 @@ Run `revdep_details(,"PSCBS")` for more info
 </details>
 
 ## In both
-
-*   checking running R code from vignettes ...
-    ```
-       ‘CBS.tex.rsp’ ... OK
-       ‘PairedPSCBS.tex.rsp’ ... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘PairedPSCBS.tex.rsp’
-      ...
-      4    37253  37320
-      5    37332  37449
-      Rows:
-      [1] 1 1 1 1 1
-     Total CN segment #1 ([    554484,1.20993e+08]) of 7...done
-    Segmenting paired tumor-normal signals using Paired PSCBS...done
-    
-      When sourcing ‘PairedPSCBS.R’:
-    Error: 'length(x) = 5 > 1' in coercion to 'logical(1)'
-    Execution halted
-    ```
 
 *   checking whether package ‘PSCBS’ can be installed ... NOTE
     ```
@@ -1388,11 +1177,11 @@ Run `revdep_details(,"PSCBS")` for more info
 
 <details>
 
-* Version: 1.19.0
+* Version: 1.20.0
 * Source code: https://github.com/cran/QDNAseq
 * URL: https://github.com/ccagc/QDNAseq
 * BugReports: https://github.com/ccagc/QDNAseq/issues
-* Date/Publication: 2018-10-30
+* Date/Publication: 2019-05-02
 * Number of recursive dependencies: 66
 
 Run `revdep_details(,"QDNAseq")` for more info
@@ -1432,54 +1221,6 @@ Run `revdep_details(,"rangeMapper")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > 
-    > X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
-    > 
-    > 
-    > dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
-    New session 2019-05-01 09:38:37
-    PROJECT: test.sqlite 
-    DIRECTORY: /tmp/hb/RtmpXyP8up
-    > global.bbox.save(con = dbcon, bbox = X)
-    [1] TRUE
-    > gridSize.save(dbcon)
-    Warning in .local(object, ...) : Default grid size used!
-    Grid size set to 0.0302818233 map units.
-    > canvas.save(dbcon)
-    Canvas uploaded.
-    > processRanges(spdf = X, con =  dbcon, ID = "nam")
-    Warning: call dbDisconnect() when finished working with a connection
-    Error in is.numeric(i) && i < 0 : 
-      'length(x) = 22 > 1' in coercion to 'logical(1)'
-    Calls: processRanges -> processRanges -> .local -> [ -> [
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             "wrens", verbose = FALSE)[1:10, ] at testthat/test-4_save.R:3
-      2: rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), 
-             "wrens", verbose = FALSE)[1:10, ]
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 15 SKIPPED: 0 WARNINGS: 0 FAILED: 4
-      1. Error: Pipeline works forward only (@test-1_projectINI.R#75) 
-      2. Error: (unknown) (@test-2_processRanges.R#5) 
-      3. Error: (unknown) (@test-3_output.R#3) 
-      4. Error: (unknown) (@test-4_save.R#3) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
-    ```
 
 *   checking whether package ‘rangeMapper’ can be installed ... NOTE
     ```
@@ -1657,7 +1398,7 @@ Run `revdep_details(,"Seurat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.4Mb
+      installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
     ```
@@ -1714,28 +1455,6 @@ Run `revdep_details(,"skpr")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      'length(x) = 2 > 1' in coercion to 'logical(1)'
-      1: expect_equal(coef(summary(fitglm))[, 4], extractPvalues(fitglm)) at testthat/testExtractPvalues.R:14
-      2: quasi_label(enquo(expected), expected.label, arg = "expected")
-      3: eval_bare(get_expr(quo), get_env(quo))
-      4: extractPvalues(fitglm)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 339 SKIPPED: 1 WARNINGS: 0 FAILED: 4
-      1. Error: eval_design_mc processes effectsize properly for glm (@testDeltaProcessing.R#132) 
-      2. Error: eval_design_mc processes effectsize properly for glm without effect power (@testDeltaProcessing.R#184) 
-      3. Error: eval_design_mc example code runs without errors (@testExampleCode.R#289) 
-      4. Error: extractPvalues works as intended (@testExtractPvalues.R#14) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking whether package ‘skpr’ can be installed ... NOTE
     ```
@@ -1890,6 +1609,35 @@ Run `revdep_details(,"tableschema.r")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘parsedate’
+    ```
+
+# tealeaves
+
+<details>
+
+* Version: 1.0.0
+* Source code: https://github.com/cran/tealeaves
+* Date/Publication: 2019-05-04 16:40:03 UTC
+* Number of recursive dependencies: 59
+
+Run `revdep_details(,"tealeaves")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘tealeaves’ can be installed ... NOTE
+    ```
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/home/hb/repositories/future/revdep/checks/tealeaves/new/tealeaves.Rcheck/00install.out’ for details.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘ggplot2’ ‘tidyr’
+      All declared Imports should be used.
     ```
 
 # tidyqwi
