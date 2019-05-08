@@ -41,7 +41,7 @@ oenvs2 <- Sys.unsetenv(c(
   ## Slurm
   "SLURM_CPUS_PER_TASK",
   ## TORQUE / PBS
-  "PBS_NUM_PPN", "PBS_NODEFILE", "PBS_NP", "PBS_NUM_NODES"
+  "NCPUS", "PBS_NUM_PPN", "PBS_NODEFILE", "PBS_NP", "PBS_NUM_NODES"
 ))
 
 oplan <- future::plan()
