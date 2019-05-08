@@ -98,7 +98,7 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
 resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
@@ -236,7 +236,7 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
 resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
@@ -337,7 +337,7 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
 resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
