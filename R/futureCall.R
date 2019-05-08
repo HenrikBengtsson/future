@@ -14,7 +14,6 @@
 #' the call whereas \code{futureCall()} returns a future.
 #'
 #' @rdname future
-#' @importFrom utils capture.output str
 #' @export
 futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, packages = NULL, evaluator = plan("next"), ...) {
   stop_if_not(is.function(FUN))
@@ -49,8 +48,8 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
       gp <- NULL
       
       if (debug) {
-        mdebug(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
-        mdebug(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
+        mdebugf(" - globals found: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
+        mdebugf(" - needed namespaces: [%d] %s", length(packages), hpaste(sQuote(packages)))
         mdebug("Finding globals ... DONE")
       }
     } else {
@@ -91,7 +90,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   
   if (debug) {
     mdebug("Globals to be used in the future:")
-    mdebug(paste(capture.output(str(globals)), collapse = "\n"))
+    mstr(globals)
   }
 
   f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, ..., evaluator = evaluator)

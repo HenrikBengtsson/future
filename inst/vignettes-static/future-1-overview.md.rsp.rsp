@@ -253,7 +253,7 @@ This particular result tells us that the `mc.cores` option was set such that we 
 
 
 #### Multicore Futures
-On operating systems where R supports _forking_ of processes, which is basically all operating system except Windows, an alternative to spawning R sessions in the background is to fork the existing R process.  To use multicore futures, we specify:
+On operating systems where R supports _forking_ of processes, which is basically all operating system except Windows, an alternative to spawning R sessions in the background is to fork the existing R process.  To use multicore futures, when supported, specify:
 
 ```r
 plan(multicore)
@@ -278,8 +278,9 @@ bfr
 
 Just like for multisession futures, the maximum number of parallel processes running will be decided by `availableCores()`, since in both cases the evaluation is done on the local machine.
 
-
 Forking an R process can be faster than working with a separate R session running in the background.  One reason is that the overhead of exporting large globals to the background session can be greater than when forking, and therefore shared memory, is used.  On the other hand, the shared memory is _read only_, meaning any modifications to shared objects by one of the forked processes ("workers") will cause a copy by the operating system.  This can also happen when the R garbage collector runs in one of the forked processes.
+
+On the other hand, process forking is also considered unstable in some R environments.  For instance, when running R from within RStudio process forking may resulting in crashed R sessions.  Because of this, the future package disables multicore futures by default when running from RStudio.  See `help("supportsMulticore")` for more details.
 
 
 #### Multiprocess Futures

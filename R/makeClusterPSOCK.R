@@ -160,9 +160,21 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param rscript_args Additional arguments to \command{Rscript} (as a character
 #' vector).  This argument can be used to customize the \R environment of the
-#' workers before they launches.  For instance, use
-#' \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+#' workers before they launches.
+#' For instance, use \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
 #' to set the working directory to \file{/path/to} on \emph{all} workers.
+#'
+#' @param rscript_startup An \R expression or a character vector of \R code,
+#' or a list with a mix of these, that will be evaluated on the \R worker
+#' prior to launching the worker's event loop.
+#' For instance, use \code{rscript_startup = 'setwd("/path/to")'}
+#' to set the working directory to \file{/path/to} on \emph{all} workers.
+#' 
+#' @param rscript_libs A character vector of \R library paths that will be
+#' used for the library search path of the \R workers.  An asterisk
+#' (\code{"*"}) will be resolved as the current \code{.libPaths()} on the
+#' worker. That is, to \code{prepend} a folder, instead of replacing the
+#' existing ones, use \code{rscript_libs = c("new_folder", "*")}.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -171,9 +183,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param outfile Where to direct the \link[base:stdout]{stdout} and
 #' \link[base:stderr]{stderr} connection output from the workers.
-#' If 'NULL', then no redirection of output is done, which means that the
+#' If NULL, then no redirection of output is done, which means that the
 #' output is relayed in the terminal on the local computer.  On Windows, the
-#' output is only relayed when running R from a terminal but not from a GUI.
+#' output is only relayed when running \R from a terminal but not from a GUI.
 #' 
 #' @param renice A numerical 'niceness' (priority) to set for the worker
 #' processes.
@@ -273,18 +285,18 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @section Accessing external machines that prompts for a password:
 #' \emph{IMPORTANT: With one exception, it is not possible to for these
-#' functions to log in and launch R workers on external machines that requires
+#' functions to log in and launch \R workers on external machines that requires
 #' a password to be entered manually for authentication.}
 #' The only known exception is the PuTTY client on Windows for which one can
 #' pass the password via command-line option \code{-pw}, e.g. 
 #' \code{rshopts = c("-pw", "MySecretPassword")}.
 #'
-#' Note, depending on whether you run R in a terminal or via a GUI, you might
+#' Note, depending on whether you run \R in a terminal or via a GUI, you might
 #' not even see the password prompt.  It is also likely that you cannot enter
 #' a password, because the connection is set up via a background system call.
 #'
 #' The poor man's workaround for setup that requires a password is to manually
-#' log into the each of the external machines and launch the R workers by hand.
+#' log into the each of the external machines and launch the \R workers by hand.
 #' For this approach, use \code{manual = TRUE} and follow the instructions
 #' which include cut'n'pasteable commands on how to launch the worker from the
 #' external machine.
@@ -294,7 +306,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' machine(s), as explain below.
 #'
 #' @section Accessing external machines via key-based SSH authentication:
-#' The best approach to automatically launch R workers on external machines
+#' The best approach to automatically launch \R workers on external machines
 #' over SSH is to set up key-based SSH authentication.  This will allow you
 #' to log into the external machine without have to enter a password.
 #'
@@ -352,7 +364,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -443,6 +455,32 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   rscript_args <- as.character(rscript_args)
 
+  if (length(rscript_startup) > 0L) {
+    if (!is.list(rscript_startup)) rscript_startup <- list(rscript_startup)
+    rscript_startup <- lapply(rscript_startup, FUN = function(init) {
+      if (is.language(init)) {
+        init <- deparse(init, width.cutoff = 500L)
+	## We cannot use newline between statements because
+	## it needs to be passed as a one line string via -e <code>
+        init <- paste(init, collapse = ";")
+      }
+      init <- as.character(init)
+      if (length(init) == 0L) return(NULL)
+      tryCatch({
+        parse(text = init)
+      }, error = function(ex) {
+        stop("Syntax error in argument 'rscript_startup': ", conditionMessage(ex))
+      })
+      init
+    })
+    rscript_startup <- unlist(rscript_startup, use.names = FALSE)
+  }
+
+  if (!is.null(rscript_libs)) {
+    rscript_libs <- as.character(rscript_libs)
+    stop_if_not(!anyNA(rscript_libs))
+  }
+
   useXDR <- as.logical(useXDR)
   stop_if_not(length(useXDR) == 1L, !is.na(useXDR))
 
@@ -459,11 +497,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   verbose_prefix <- "[local output] "
 
-  ## .slaveRSOCK() command already specified?
-  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
-    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
-  }
-  
+  ## Shell quote the Rscript executable
+  rscript <- shQuote(rscript)
+
   ## Launching a process on the local machine?
   pidfile <- NULL
   if (localMachine && !dryrun) {
@@ -519,7 +555,33 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_port <- port
   }
 
-  rscript <- paste(shQuote(rscript), collapse = " ")
+  if (length(rscript_startup) > 0L) {
+    rscript_startup <- paste("invisible({", rscript_startup, "})", sep = "")
+    rscript_startup <- shQuote(rscript_startup)
+    rscript_startup <- lapply(rscript_startup, FUN = function(value) c("-e", value))
+    rscript_startup <- unlist(rscript_startup, use.names = FALSE)
+    rscript_args <- c(rscript_startup, rscript_args)
+  }
+
+  if (length(rscript_libs) > 0L) {
+    code <- paste0('"', rscript_libs, '"')
+    code[rscript_libs == "*"] <- ".libPaths()"
+    code <- paste(code, collapse = ",")
+    code <- paste0('.libPaths(c(', code, '))')
+    tryCatch({
+      parse(text = code)
+    }, error = function(ex) {
+      stop("Argument 'rscript_libs' appears to contain invalid values: ", paste(sQuote(rscript_libs), collapse = ", "))
+    })
+    rscript_args <- c(rscript_args, "-e", shQuote(code))
+  }
+  
+  ## .slaveRSOCK() command already specified?
+  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
+    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
+  }
+  
+  rscript <- paste(rscript, collapse = " ")
   rscript_args <- paste(rscript_args, collapse = " ")
   envvars <- paste0("MASTER=", master, " PORT=", rscript_port, " OUT=", outfile, " TIMEOUT=", timeout, " XDR=", useXDR)
   

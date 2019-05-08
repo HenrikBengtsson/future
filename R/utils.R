@@ -90,13 +90,32 @@ asIEC <- function(size, digits = 2L) {
 } # asIEC()
 
 
-mdebug <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
-  if (debug) message(sprintf(...), appendLF = appendLF)
+now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
+  ## format(x, format = format) ## slower
+  format(as.POSIXlt(x, tz = ""), format = format)
+}
+
+mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(now(), ...)
+}
+
+mdebugf <- function(..., appendLF = TRUE,
+                    debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(now(), sprintf(...), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output
 mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
-  if (debug) message(paste(capture.output(print(...)), collapse = "\n"), appendLF = appendLF)
+  if (!debug) return()
+  message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+}
+
+#' @importFrom utils capture.output str
+mstr <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (!debug) return()
+  message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 
@@ -335,12 +354,12 @@ myExternalIP <- local({
     
     value <- NULL
     for (url in urls) {
-      mdebug(" - query: %s", sQuote(url))
+      mdebugf(" - query: %s", sQuote(url))
       value <- tryCatch({
         readLines(url, warn = FALSE)
       }, error = function(ex) NULL)
 
-      mdebug(" - answer: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - answer: %s", sQuote(paste(value, collapse = "\n")))
       
       ## Nothing found?
       if (is.null(value)) next
@@ -348,7 +367,7 @@ myExternalIP <- local({
       ## Keep only lines that look like they contain IP v4 numbers
       ip4_pattern <- ".*[^[:digit:]]*([[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+[.][[:digit:]]+).*"
       value <- grep(ip4_pattern, value, value = TRUE)
-      mdebug(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - IPv4 maybe strings: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Extract the IP numbers
       value <- gsub(ip4_pattern, "\\1", value)
@@ -356,7 +375,7 @@ myExternalIP <- local({
       ## Trim and drop empty results (just in case)
       value <- trim(value)
       value <- value[nzchar(value)]
-      mdebug(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
+      mdebugf(" - IPv4 words: %s", sQuote(paste(value, collapse = "\n")))
   
       ## Nothing found?
       if (length(value) == 0) next
@@ -802,11 +821,11 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   
   msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
   if (action == "error") {
-    stop(FutureError(msg, call = FALSE))
+    stop(FutureError(msg, call = NULL))
   } else if (action == "warning") {
-    warning(FutureWarning(msg, call = FALSE))
+    warning(FutureWarning(msg, call = NULL))
   } else if (action == "message") {
-    message(FutureMessage(msg, call = FALSE))
+    message(FutureMessage(msg, call = NULL))
   } else if (action == "string") {
     msg
   }
@@ -894,6 +913,7 @@ resolveMPI <- local({
 #' \code{\link[tools]{pskill}()} and \code{\link[base]{system2}()}.
 #'
 #' @importFrom tools pskill
+#' @importFrom utils str
 #' @keywords internal
 pid_exists <- local({
   os <- .Platform$OS.type
@@ -1047,7 +1067,7 @@ pid_exists <- local({
     ## Does a working pid_check() exist?
     if (!is.null(pid_check)) return(pid_check(pid, debug = debug))
 
-    if (debug) message("Attempting to find a working pid_exists_*() function ...")
+    if (debug) mdebug("Attempting to find a working pid_exists_*() function ...")
     
     ## Try to find a working pid_check() function, i.e. one where
     ## pid_check(Sys.getpid()) == TRUE
@@ -1066,19 +1086,19 @@ pid_exists <- local({
     }
 
     if (is.null(pid_check)) {
-      if (debug) message("- failed; pid_check() will always return NA")
+      if (debug) mdebug("- failed; pid_check() will always return NA")
       ## Default to NA
       pid_check <- function(pid) NA
     } else {
       ## Sanity check
       stop_if_not(isTRUE(pid_check(Sys.getpid(), debug = debug)))
-      if (debug) message("- success")
+      if (debug) mdebug("- success")
     }
 
     ## Record
     cache$pid_check <- pid_check
 
-    if (debug) message("Attempting to find a working pid_exists_*() function ... done")
+    if (debug) mdebug("Attempting to find a working pid_exists_*() function ... done")
 
     pid_check(pid)
   }

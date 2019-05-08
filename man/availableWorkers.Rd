@@ -5,8 +5,8 @@
 \title{Get set of available workers}
 \usage{
 availableWorkers(methods = getOption("future.availableWorkers.methods",
-  c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system",
-  "fallback")), na.rm = TRUE, default = "localhost",
+  c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom",
+  "system", "fallback")), na.rm = TRUE, default = "localhost",
   which = c("auto", "min", "max", "all"))
 }
 \arguments{
@@ -52,6 +52,11 @@ In addition, the following settings ("methods") are also acknowledged:
    An example of a job submission that results in this is
    \code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
    requests eight cores on a any number of machines.
+ \item \code{"custom"} -
+   If option \option{future.availableWorkers.custom} is set and a function,
+   then this function will be called (without arguments) and it's value
+   will be coerced to a character vector, which will be interpreted as
+   hostnames of available workers.
 }
 }
 \seealso{

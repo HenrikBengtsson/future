@@ -38,6 +38,11 @@
 #'    An example of a job submission that results in this is
 #'    \code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
 #'    requests eight cores on a any number of machines.
+#'  \item \code{"custom"} -
+#'    If option \option{future.availableWorkers.custom} is set and a function,
+#'    then this function will be called (without arguments) and it's value
+#'    will be coerced to a character vector, which will be interpreted as
+#'    hostnames of available workers.
 #' }
 #'
 #' @seealso
@@ -47,7 +52,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
+availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))
@@ -120,6 +125,11 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
       if (!identical(nslots, length(w))) {
         warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variable %s = %d", length(w), sQuote("PE_HOSTFILE"), sQuote(pathname), sQuote("NSLOTS"), nslots))
       }
+    } else if (method == "custom") {
+      fcn <- getOption("future.availableWorkers.custom", NULL)
+      if (!is.function(fcn)) next
+      w <- fcn()
+      w <- as.character(w)
     } else {
       ## Fall back to querying option and system environment variable
       ## with the given name
@@ -129,7 +139,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
       w <- split(w)
     }
 
-    ## Drop missing or empty values?
+    ## Drop missing values?
     if (na.rm) w <- w[!is.na(w)]
 
     workers[[method]] <- w

@@ -2,7 +2,7 @@
 % Please edit documentation in R/futures.R
 \name{futures}
 \alias{futures}
-\title{Gets all futures in an object}
+\title{Get all futures in a container}
 \usage{
 futures(x, ...)
 }

@@ -25,8 +25,8 @@ FutureRegistry <- local({
         tryCatch({
           value(future, stdout = FALSE, signal = FALSE)
         }, FutureError = function(ex) {
-          mdebug(sprintf("Detected a %s while FutureRegistry collecting results: %s",
-                 class(ex)[1], paste(capture.output(print(ex)), collapse = "\n")))
+          mdebugf("Detected a %s while FutureRegistry collecting results: %s", class(ex)[1])
+	  mprint(ex)
         })
 
         ## (b) Make sure future is removed from registry, unless
@@ -61,8 +61,8 @@ FutureRegistry <- local({
       idx <- indexOf(futures, future = future)
       if (!is.na(idx)) {
         msg <- sprintf("Cannot add to %s registry. %s is already registered.", sQuote(where), class(future)[1])
-        mdebug("ERROR: %s", msg)
-        stop(msg)
+        mdebug("ERROR: ", msg)
+        stop(FutureError(msg, future = future))
       }
       futures[[length(futures)+1L]] <- future
       db[[where]] <<- futures
@@ -70,8 +70,8 @@ FutureRegistry <- local({
       idx <- indexOf(futures, future = future)
       if (is.na(idx)) {
         msg <- sprintf("Cannot remove from %s registry. %s not registered.", sQuote(where), class(future)[1])
-        mdebug("ERROR: %s", msg)
-        stop(msg)
+        mdebug("ERROR: ", msg)
+        stop(FutureError(msg, future = future))
       }
       futures[[idx]] <- NULL
       db[[where]] <<- futures
@@ -83,7 +83,7 @@ FutureRegistry <- local({
     } else {
       msg <- sprintf("INTERNAL ERROR: Unknown action to %s registry: %s", sQuote(where), action)
       mdebug(msg)
-      stop(msg)
+      stop(FutureError(msg, future = future))
     }
 
     ## Early signaling of conditions?

@@ -75,7 +75,7 @@ run.MulticoreFuture <- function(future, ...) {
   future$job <- job
   future$state <- "running"
 
-  if (debug) mdebug("%s started", class(future)[1])
+  if (debug) mdebugf("%s started", class(future)[1])
   
   invisible(future)
 }

@@ -37,13 +37,19 @@
 #'
 #' @section Options for configuring low-level system behaviors:
 #' \describe{
-#'  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")})}
+#'  \item{\option{future.availableCores.methods}:}{Default lookup methods for \code{\link{availableCores}()}. (Default: \code{c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "fallback")})}
 #'
-#'  \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "system", "fallback")})}
+#'  \item{\option{future.availableCores.custom}:}{If set and a function, then this function will be called (without arguments) by \code{\link{availableCores}()} where its value, coerced to an integer, is interpreted as a number of cores.}
 #'
 #'  \item{\option{future.availableCores.fallback}:}{Number of cores to use when no core-specifying settings are detected other than \code{"system"}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_FALLBACK} when the \pkg{future} package is \emph{loaded}. This options makes it possible to set the default number of cores returned by \code{availableCores()} / \code{availableWorkers()} yet allow users and schedulers to override it. In multi-tenant environment, such as HPC clusters, it is useful to set \code{R_FUTURE_AVAILABLECORES_FALLBACK=1}.}
 #' 
 #'  \item{\option{future.availableCores.system}:}{Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which = "system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is \emph{loaded}. This option allows you to effectively override what \code{parallel::detectCores()} reports the system has.}
+#'
+#'  \item{\option{future.availableWorkers.methods}:}{Default lookup methods for \code{\link{availableWorkers}()}. (Default: \code{c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")})}
+#'
+#'  \item{\option{future.availableWorkers.custom}:}{If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
+#'
+#'  \item{\option{future.fork.enable}:}{Enable or disable \emph{forked} processing.  If \code{FALSE}, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_R_FUTURE_FORK_ENABLE}.  If \code{NA}, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
 #' }
 #'
 #' @section Options for demos:
@@ -58,6 +64,7 @@
 #' @aliases
 #' future.startup.script .future.R future.cmdargs 
 #' future.plan R_FUTURE_PLAN
+#' future.availableCores.custom
 #' future.availableCores.methods
 #' future.availableCores.fallback R_FUTURE_AVAILABLECORES_FALLBACK
 #' future.availableCores.system R_FUTURE_AVAILABLECORES_SYSTEM

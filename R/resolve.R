@@ -10,7 +10,9 @@
 #' @param idxs (optional) integer or logical index specifying the subset of
 #' elements to check.
 #' 
-#' @param value If TRUE, the values are retrieved, otherwise not.
+#' @param result If TRUE, the results are retrieved, otherwise not.
+#' 
+#' @param value (DEPRECATED) Use argument `result` instead.
 #' 
 #' @param recursive A non-negative number specifying how deep of a recursion
 #' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
@@ -36,13 +38,19 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+  ## BACKWARD COMPATIBILITY
+  if (value && missing(result)) {
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    result <- TRUE
+  }
+
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -61,31 +69,23 @@ resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep =
 
   msg <- sprintf("A %s was resolved", class(x)[1])
 
-  if (value) {
-    ## Allow for errors
-    msg <- tryCatch({
-      result <- x$result
-      if (is.null(result)) {
-        result <- result(x)
-        v <- result$value
-        
-        msg <- sprintf("%s and its value was collected", msg)
-
-        ## Recursively resolve the value?
-        if (!is.atomic(v)) {
-          v <- resolve(v, value = TRUE, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
-          msg <- sprintf("%s (and resolved itself)", msg)
-        }
-
-        msg
-      } else {
-        sprintf("%s and its value was already collected", msg)
-      }
-    }, error = function(ex) {
-      sprintf("%s but failed to collect its value", msg)
-    })
+  ## Retrieve results?
+  if (result) {
+    if (is.null(x$result)) {
+      x$result <- result(x)
+      msg <- sprintf("%s and its result was collected", msg)
+    } else {
+      sprintf("%s and its result was already collected", msg)
+    }
+    
+    ## Recursively resolve result value?
+    value <- x$result$value
+    if (!is.atomic(value)) {
+      value <- resolve(value, result = TRUE, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
+      msg <- sprintf("%s (and resolved itself)", msg)
+    }
   } else {
-    msg <- sprintf("%s (value was not collected)", msg)
+    msg <- sprintf("%s (result was not collected)", msg)
   }
 
   mdebug(msg)
@@ -95,7 +95,13 @@ resolve.Future <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep =
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
+  ## BACKWARD COMPATIBILITY
+  if (value && missing(result)) {
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    result <- TRUE
+  }
+
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -166,7 +172,7 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on list ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## NOTE: Everything is considered non-resolved by default
@@ -181,8 +187,8 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
   }
 
   if (debug) {
-    mdebug(" length: %d", nx)
-    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+    mdebugf(" length: %d", nx)
+    mdebugf(" elements: %s", hpaste(sQuote(names(x))))
   }
 
   ## Resolve all elements
@@ -200,12 +206,12 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value = value, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
 
       if (hasProgress) {
@@ -227,7 +233,13 @@ resolve.list <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+  ## BACKWARD COMPATIBILITY
+  if (value && missing(result)) {
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    result <- TRUE
+  }
+
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -272,7 +284,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on environment ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## Coerce future promises into Future objects
@@ -285,7 +297,7 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
   ## Everything is considered non-resolved by default
   remaining <- idxs
 
-  if (debug) mdebug(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
+  if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
   ## Resolve all elements
   while (length(remaining) > 0) {
@@ -302,12 +314,12 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 
@@ -322,7 +334,13 @@ resolve.environment <- function(x, idxs = NULL, value = FALSE, recursive = 0, sl
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+  ## BACKWARD COMPATIBILITY
+  if (value && missing(result)) {
+##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    result <- TRUE
+  }
+
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }
@@ -377,7 +395,7 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on list environment ...")
-    mdebug(" recursive: %s", recursive)
+    mdebugf(" recursive: %s", recursive)
   }
 
   ## Coerce future promises into Future objects
@@ -389,8 +407,8 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
   remaining <- seq_len(nx)
 
   if (debug) {
-    mdebug(" length: %d", nx)
-    mdebug(" elements: %s", hpaste(sQuote(names(x))))
+    mdebugf(" length: %d", nx)
+    mdebugf(" elements: %s", hpaste(sQuote(names(x))))
   }
 
   ## Resolve all elements
@@ -408,12 +426,12 @@ resolve.listenv <- function(x, idxs = NULL, value = FALSE, recursive = 0, sleep 
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, value = value, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
-      if (debug) mdebug(" length: %d (resolved future %s)", length(remaining), ii)
+      if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
     } # for (ii ...)
 

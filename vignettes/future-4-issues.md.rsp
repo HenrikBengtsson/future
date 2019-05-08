@@ -100,63 +100,7 @@ or equivalently
 
 ## Non-exportable objects
 
-Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  For instance, if you create a file connection,
-```r
-> con <- file("output.log", open = "wb")
-> cat("hello ", file = con)
-> flush(con)
-> readLines("output.log", warn = FALSE)
-[1] "hello "
-```
-it will not work when used in another R process(*).  If we try, the result is "unknown", e.g.
-```r
-> library("future")
-> plan(multisession)
-> f <- future({ cat("world!", file = con); flush(con) })
-> value(f)
-NULL
-> close(con)
-> readLines("output.log", warn = FALSE)
-[1] "hello "
-```
-In other words, the output `"world!"` written by the R worker is completely lost.
-
-The culprit here is that the connection uses a so called _external pointer_:
-```r
-> str(con)
-Classes 'file', 'connection'  atomic [1:1] 3
-  ..- attr(*, "conn_id")=<externalptr> 
-```
-which is bound to the main R process and makes no sense to the worker.  Ideally, the R process of the worker would detect this and produce an informative error message, but as seen here, that does not always occur.
-
-To help avoiding these mistakes, the future framework provides a mechanism (_in beta_) can help detect non-exportable objects by setting:
-```r
-> options(future.globals.onReference = "warning")
-```
-which will result in a warning in the above example:
-```r
-> f <- future({ cat("world!", file = con); flush(con) })
-Warning in FALSE :
-  Detected a non-exportable reference ('externalptr') in one of the globals
-('con' of class 'file') used in the future expression
-```
-To be more conservative, we can also tell it to produce an error:
-```r
-> options(future.globals.onReference = "error")
-> f <- future({ cat("world!", file = con); flush(con) })
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals
-('con' of class 'file') used in the future expression
-```
-
-Below are few examples of commonly used packages that produce non-exportable objects.  If you find other examples, please report back.
-
-(*) The exception _may_ be if you use _forked_ R processes, e.g. `plan(multicore)`.  However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable.  Moreover, such code will certainly fail to parallelize on other future backends.
-
-
-### Example: Non-exportable objects by the xml2 package
-
-Another example is XML objects of the xml2 package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
+Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the xml2 package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
 ```r
 > library("future")
 > plan(multisession)
@@ -166,6 +110,7 @@ Another example is XML objects of the xml2 package, which may produce evaluation
 > value(f)
 Error: external pointer is not valid
 ```
+
 The future framework can help detect this _before_ sending off the future to the worker;
 ```r
 > options(future.globals.onReference = "error")
@@ -175,178 +120,11 @@ Error in FALSE :
 ('xml' of class 'xml_document') used in the future expression
 ```
 
-
-### Example: Non-exportable objects by the DBI package
-
-A third example are DBIConnection S4 objects as defined by the DBI package.  DBI provides a unified database interface for communication between R and various database engines.  Analogously to regular connections in R, DBIConnection can _not_ safely be exported to another R process, e.g.
-```r
-> library(future)
-> options(future.globals.onReference = "error")
-> con <- dbConnect(RSQLite::SQLite(), ":memory:")
-> dummy %<-% print(con)
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals ('con' of class 'SQLiteConnection') used in the future expression
-```
-
-
-### Example: Non-exportable objects by the Rcpp package
-
-Another example is Rcpp which allow us to easily create R functions that are implemented in C++, e.g.
-```r
-Rcpp::sourceCpp(code = "
-#include <Rcpp.h>
-using namespace Rcpp;
-
-// [[Rcpp::export]]
-int my_length(NumericVector x) {
-    return x.size();
-}
-")
-```
-so that:
-```
-> x <- 1:10
-> my_length(x)
-[1] 10
-```
-However, since this function uses an external pointer internally, we cannot pass it to another R process:
-```r
-> library("future")
-> plan(multisession)
-> n %<-% my_length(x)
-> n
-Error: NULL value passed as symbol address
-```
-We can detect / protect against this using:
-```r
-> options(future.globals.onReference = "error")
-> n %<-% my_length(x)
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr' of class 'NativeSymbol')
-in one of the globals ('my_length' of class 'function') used in the future
-expression
-```
-
-
-### Example: Non-exportable objects by the rJava package
-
-Here is an example that show how rJava objects cannot be used when
-exported to external R processes.
-
-```r
-> library("future")
-> plan(multisession)
-
-> library("rJava")
-> .jinit() Initialize Java VM on master
-
-> Double <- J("java.lang.Double")
-> d0 <- new(Double, "3.14")
-> print(d0)
-[1] "Java-Object{3.14}"
-
-> f <- future({
-    .jinit() ## Initialize Java VM on worker
-    new(Double, "3.14")
-  })
-> d1 <- value(f)
-> print(d1)
-## [1] "Java-Object<null>"
-```
-
-Although no error is produced, we see that the value `d1` is a Java NULL Object.  As before, we can catch this by using:
-
-```r
-> options(future.globals.onReference = "error")
-> f <- future({
-    .jinit() ## Initialize Java VM on worker
-    new(Double, "3.14")
-> })
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals
-  ('Double' of class 'jclassName') used in the future expression
-```
-
-### Example: Non-exportable objects by the reticulate package
-
-Analogously to rJava, the reticulate package provides methods for creating and calling Python code from within R.  If one attempt to use Python-binding objects from this package, we get errors like:
-
-```r
-> library("future")
-> plan(multisession)
-
-> library("reticulate")
-> os <- import("os")
-> pwd %<-% os$getcwd()
-Error in eval(quote(os$getcwd()), new.env()) : 
-  attempt to apply non-function
-```
-and by telling the future package to validate globals further, we get:
-```r
-> options(future.globals.onReference = "error")
-> pwd %<-% os$getcwd()
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals
-  ('os' of class 'python.builtin.module') used in the future expression
-```
-
-Another reticulate example is when we try to use a Python function that we create ourselves as in:
-
-```r
-> cat("def twice(x):\n    return 2*x\n", file = "twice.py")
-> source_python("twice.py")
-> twice(1.2)
-[1] 2.4
-> y %<-% twice(1.2)
-> y
-Error in unserialize(node$con) : 
-  Failed to retrieve the value of MultisessionFuture from cluster node #1
-  (on 'localhost').  The reason reported was 'error reading from connection'
-```
-which, again, is because:
-```r
-> options(future.globals.onReference = "error")
-> y %<-% twice(1.2)
-Error in FALSE : 
-  Detected a non-exportable reference ('externalptr') in one of the globals
-  ('twice' of class 'python.builtin.function') used in the future expression
-```
-
-
-### Example: Non-exportable objects by the rlang package
-
-Yet another example comes from the rlang package.  This example is somewhat twisted - it uses `value(future(x))` which is quite meaningless by itself- but it is a minimal example of showing what can happen:
-
-```r
-> library("future")
-> plan(multisession)
-
-> library("dplyr")  ## relies on 'rlang'
-> iris <- as_tibble(iris)
-> res <- mutate(iris, mod = value(future({
-    list(lm(Species ~ Sepal.Length, data = .))
-  })))
-Error in mutate_impl(.data, dots) : 
-  Evaluation error: NULL value passed as symbol address.
-```
-
-In this case the mistake is caught by dplyr's `mutate_impl()`, but to be on the safe side, we could have used:
-
-```r
-> options(future.globals.onReference = "error")
-> res <- mutate(iris, mod = value(future({
-    list(lm(Species ~ Sepal.Length, data = .))
-  })))
-Timing stopped at: 0.004 0 0.001
-Error in mutate_impl(.data, dots) : 
-  Evaluation error: Detected a non-exportable reference ('externalptr'
-  of class 'RegisteredNativeSymbol') in one of the globals ('~' of
-  class 'function') used in the future expression.
-```
-
+For additional details on non-exportable objects and examples of other R packages that use objects that may cause problems in parallel processing, see Vignette 'Non-Exportable Objects'.
 
 
 ## Trying to pass an unresolved future to another future
+
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")

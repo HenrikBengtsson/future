@@ -1,4 +1,4 @@
-#' Tweaks a future function by adjusting its default arguments
+#' Tweak a future function by adjusting its default arguments
 #'
 #' @param strategy An existing future function or the name of one.
 #' @param \dots Named arguments to replace the defaults of existing

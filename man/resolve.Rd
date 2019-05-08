@@ -4,8 +4,9 @@
 \alias{resolve}
 \title{Resolve one or more futures synchronously}
 \usage{
-resolve(x, idxs = NULL, value = FALSE, recursive = 0, sleep = 1,
-  progress = getOption("future.progress", FALSE), ...)
+resolve(x, idxs = NULL, result = FALSE, value = result,
+  recursive = 0, sleep = 1, progress = getOption("future.progress",
+  FALSE), ...)
 }
 \arguments{
 \item{x}{a list, an environment, or a list environment holding futures
@@ -14,7 +15,9 @@ that should be resolved.  May also be a single \link{Future}.}
 \item{idxs}{(optional) integer or logical index specifying the subset of
 elements to check.}
 
-\item{value}{If TRUE, the values are retrieved, otherwise not.}
+\item{result}{If TRUE, the results are retrieved, otherwise not.}
+
+\item{value}{(DEPRECATED) Use argument `result` instead.}
 
 \item{recursive}{A non-negative number specifying how deep of a recursion
 should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,

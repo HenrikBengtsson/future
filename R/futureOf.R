@@ -80,7 +80,7 @@ get_future <- function(target, mustExist = TRUE, default = NA) {
   if (!target$exists) {
     msg <- sprintf("No such future variable: %s", target$code)
     if (mustExist) {
-      mdebug("ERROR: %s", msg)
+      mdebug("ERROR: ", msg)
       stop(msg, call. = FALSE)
     }
     attr(res, "reason") <- msg
@@ -112,7 +112,7 @@ get_future <- function(target, mustExist = TRUE, default = NA) {
   ## Not found
   msg <- sprintf("Future (%s) not found in %s %s: %s", sQuote(name), class(envir)[1], sQuote(envirName), sQuote(target$code))
   if (mustExist) {
-    mdebug("ERROR: %s", msg)
+    mdebug("ERROR: ", msg)
     stop(msg, call. = FALSE)
   }
 

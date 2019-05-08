@@ -40,14 +40,18 @@ check <- function() {
                timeout = as.difftime(20, units = "mins"), quiet = FALSE)
 }
 
+
 todo <- function() {
   pkgs <- tryCatch(revdep_todo(), error = function(ex) NA)
   if (identical(pkgs, NA)) {
     cat("Revdepcheck has not been initiated\n")
-  } else if (length(pkgs) == 0) {
+    return()
+  }
+  pkgs <- subset(pkgs, status == "todo")
+  if (nrow(pkgs) == 0) {
     cat("There are no packages on the revdepcheck todo list\n")
   } else {
-    cat(sprintf("%d. %s\n", seq_along(pkgs), pkgs))
+    cat(sprintf("%d. %s\n", seq_len(nrow(pkgs)), pkgs$package))
   }
 }
 
@@ -95,6 +99,11 @@ if ("--reset" %in% args) {
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   revdep_add(packages = pkgs)
   todo()
+} else if ("--rm" %in% args) {
+  pos <- which("--rm" == args)
+  pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
+  revdep_rm(packages = pkgs)
+  todo()
 } else if ("--add-broken" %in% args) {
   revdep_add_broken()
   todo()
@@ -122,4 +131,5 @@ if ("--reset" %in% args) {
   crancache::install_packages(pkgs)
 } else {
   check()
+  revdep_report(all = TRUE)
 }

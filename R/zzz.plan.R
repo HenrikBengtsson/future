@@ -132,9 +132,9 @@ plan <- local({
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
       if (debug) {
-        mdebug("plan(): plan_init() of %s ...",
-               paste(sQuote(class(evaluator)), collapse = ", "))
-        mdebug(paste(capture.output(print(evaluator)), collapse = "\n"))
+        mdebugf("plan(): plan_init() of %s ...",
+                paste(sQuote(class(evaluator)), collapse = ", "))
+        mprint(evaluator)
       }
 
       ## IMPORANT: Initiate only once.  This avoids an infinite
@@ -162,8 +162,8 @@ plan <- local({
       }
       
       if (debug) {
-        mdebug("plan(): plan_init() of %s ... DONE",
-               paste(sQuote(class(evaluator)), collapse = ", "))
+        mdebugf("plan(): plan_init() of %s ... DONE",
+                paste(sQuote(class(evaluator)), collapse = ", "))
       }
     }
   }
@@ -190,15 +190,15 @@ plan <- local({
     ## Skip if already set?
     if (skip && equal_strategy_stacks(newStack, oldStack)) {
       if (getOption("future.debug", FALSE)) {
-        mdebug(paste0("plan(): Skip setting new future strategy stack because it is the same as the current one:\n", 
-               paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
+        mdebug("plan(): Skip setting new future strategy stack because it is the same as the current one:")
+        mprint(newStack)
       }
       return(oldStack)
     }
 
     if (getOption("future.debug", FALSE)) {
-      mdebug(paste0("plan(): Setting new future strategy stack:\n", 
-             paste(capture.output(print(newStack)), collapse = "\n"), "\n"))
+      mdebug("plan(): Setting new future strategy stack:")
+      mprint(newStack)
     }
     
     stack <<- newStack
@@ -212,7 +212,7 @@ plan <- local({
     ## Sanity checks
     nbrOfWorkers <- nbrOfWorkers()
     if (getOption("future.debug", FALSE)) {
-      mdebug(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
+      mdebugf(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
     }
     stop_if_not(is.numeric(nbrOfWorkers), length(nbrOfWorkers) == 1L, 
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)
@@ -367,7 +367,7 @@ supportedStrategies <- function(strategies = c("sequential", "multicore",
 }
 
 
-#' @importFrom utils capture.output
+#' @importFrom utils capture.output str
 #' @export
 print.future <- function(x, ...) {
   class <- setdiff(class(x), c("FutureStrategy", "tweaked", "function"))

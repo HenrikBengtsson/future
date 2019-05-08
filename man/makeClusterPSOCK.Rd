@@ -15,8 +15,8 @@ makeNodePSOCK(worker = "localhost", master = NULL, port,
   timeout = getOption("future.makeNodePSOCK.timeout",
   as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 *
   60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
-  methods = TRUE, useXDR = TRUE, outfile = "/dev/null",
-  renice = NA_integer_,
+  rscript_startup = NULL, rscript_libs = NULL, methods = TRUE,
+  useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd",
   Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL,
   revtunnel = TRUE, rshlogfile = NULL,
@@ -73,9 +73,21 @@ machine or not.  For more details, see below.}
 
 \item{rscript_args}{Additional arguments to \command{Rscript} (as a character
 vector).  This argument can be used to customize the \R environment of the
-workers before they launches.  For instance, use
-\code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
+workers before they launches.
+For instance, use \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
+
+\item{rscript_startup}{An \R expression or a character vector of \R code,
+or a list with a mix of these, that will be evaluated on the \R worker
+prior to launching the worker's event loop.
+For instance, use \code{rscript_startup = 'setwd("/path/to")'}
+to set the working directory to \file{/path/to} on \emph{all} workers.}
+
+\item{rscript_libs}{A character vector of \R library paths that will be
+used for the library search path of the \R workers.  An asterisk
+(\code{"*"}) will be resolved as the current \code{.libPaths()} on the
+worker. That is, to \code{prepend} a folder, instead of replacing the
+existing ones, use \code{rscript_libs = c("new_folder", "*")}.}
 
 \item{methods}{If TRUE, then the \pkg{methods} package is also loaded.}
 
@@ -84,9 +96,9 @@ binary, will use big-endian (XDR).}
 
 \item{outfile}{Where to direct the \link[base:stdout]{stdout} and
 \link[base:stderr]{stderr} connection output from the workers.
-If 'NULL', then no redirection of output is done, which means that the
+If NULL, then no redirection of output is done, which means that the
 output is relayed in the terminal on the local computer.  On Windows, the
-output is only relayed when running R from a terminal but not from a GUI.}
+output is only relayed when running \R from a terminal but not from a GUI.}
 
 \item{renice}{A numerical 'niceness' (priority) to set for the worker
 processes.}
@@ -206,18 +218,18 @@ Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 \section{Accessing external machines that prompts for a password}{
 
 \emph{IMPORTANT: With one exception, it is not possible to for these
-functions to log in and launch R workers on external machines that requires
+functions to log in and launch \R workers on external machines that requires
 a password to be entered manually for authentication.}
 The only known exception is the PuTTY client on Windows for which one can
 pass the password via command-line option \code{-pw}, e.g. 
 \code{rshopts = c("-pw", "MySecretPassword")}.
 
-Note, depending on whether you run R in a terminal or via a GUI, you might
+Note, depending on whether you run \R in a terminal or via a GUI, you might
 not even see the password prompt.  It is also likely that you cannot enter
 a password, because the connection is set up via a background system call.
 
 The poor man's workaround for setup that requires a password is to manually
-log into the each of the external machines and launch the R workers by hand.
+log into the each of the external machines and launch the \R workers by hand.
 For this approach, use \code{manual = TRUE} and follow the instructions
 which include cut'n'pasteable commands on how to launch the worker from the
 external machine.
@@ -229,7 +241,7 @@ machine(s), as explain below.
 
 \section{Accessing external machines via key-based SSH authentication}{
 
-The best approach to automatically launch R workers on external machines
+The best approach to automatically launch \R workers on external machines
 over SSH is to set up key-based SSH authentication.  This will allow you
 to log into the external machine without have to enter a password.
 
@@ -335,18 +347,13 @@ cl <- makeClusterPSOCK(
 )
 
 ## EXAMPLE: Two workers running in Docker on the local machine
-## Setup of 2 Docker workers running rocker/r-base
-## (requires installation of future package)
+## Setup of 2 Docker workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "docker", "run", "--net=host", "rocker/r-parallel",
     "Rscript"
-  ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
   ),
   ## IMPORTANT: Because Docker runs inside a virtual machine (VM) on macOS
   ## and Windows (not Linux), when the R worker tries to connect back to
@@ -359,37 +366,30 @@ cl <- makeClusterPSOCK(
 
 
 ## EXAMPLE: Two workers running in Singularity on the local machine
-## Setup of 2 Singularity workers running rocker/r-base
-## (requires installation of future package)
+## Setup of 2 Singularity workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "singularity", "exec", "docker://rocker/r-base",
+    "singularity", "exec", "docker://rocker/r-parallel",
     "Rscript"
-  ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
   ),
   dryrun = TRUE
 )
 
 
 ## EXAMPLE: One worker running in udocker on the local machine
-## Setup of a single udocker.py worker running rocker/r-base
-## (requires installation of future package and extra quoting)
+## Setup of a single udocker.py worker running rocker/r-parallel
 cl <- makeClusterPSOCK(
   "localhost",
   ## Launch Rscript inside Docker container (using udocker)
   rscript = c(
-    "udocker.py", "run", "rocker/r-base",
+    "udocker.py", "run", "rocker/r-parallel",
     "Rscript"
   ), 
-  ## Install future package and manually launch parallel workers
+  ## Manually launch parallel workers
   ## (need double shQuote():s because udocker.py drops one level)
   rscript_args = c(
-    "-e", shQuote(shQuote("install.packages('future')")),
     "-e", shQuote(shQuote("parallel:::.slaveRSOCK()"))
   ),
   dryrun = TRUE
@@ -413,16 +413,14 @@ cl <- makeClusterPSOCK(
     "-o", "IdentitiesOnly=yes",
     "-i", ssh_private_key_file
   ),
-  ## Set up .libPaths() for the 'ubuntu' user and
-  ## install future package
-  rscript_args = c(
-    "-e", shQuote("local({
-      p <- Sys.getenv('R_LIBS_USER')
-      dir.create(p, recursive = TRUE, showWarnings = FALSE)
-      .libPaths(p)
-    })"),
-    "-e", shQuote("install.packages('future')")
-  ),
+  ## Set up .libPaths() for the 'ubuntu' user
+  ## and then install the future package
+  rscript_startup = quote(local({
+    p <- Sys.getenv("R_LIBS_USER")
+    dir.create(p, recursive = TRUE, showWarnings = FALSE)
+    .libPaths(p)
+    install.packages("future")
+  })),
   dryrun = TRUE
 )
 
@@ -446,12 +444,8 @@ cl <- makeClusterPSOCK(
   ),
   ## Launch Rscript inside Docker container
   rscript = c(
-    "docker", "run", "--net=host", "rocker/r-base",
+    "docker", "run", "--net=host", "rocker/r-parallel",
     "Rscript"
-  ),
-  ## Install future package
-  rscript_args = c(
-    "-e", shQuote("install.packages('future')")
   ),
   dryrun = TRUE
 )

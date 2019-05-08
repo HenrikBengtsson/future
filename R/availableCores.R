@@ -45,8 +45,8 @@
 #'    package is loaded).  The \option{mc.cores} option is used by for
 #'    instance \code{\link[parallel]{mclapply}()}.
 #'  \item \code{"PBS"} -
-#'    Query TORQUE/PBS environment variable \env{PBS_NUM_PPN}.
-#'    Depending on PBS system configuration, this \emph{resource}
+#'    Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
+#'    Depending on PBS system configuration, these \emph{resource}
 #'    parameter may or may not default to one.
 #'    An example of a job submission that results in this is
 #'    \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
@@ -62,6 +62,11 @@
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
 #'    \code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+#'  \item \code{"custom"} -
+#'    If option \option{future.availableCores.custom} is set and a function,
+#'    then this function will be called (without arguments) and it's value
+#'    will be coerced to an integer, which will be interpreted as a number
+#'    of available cores.  If the value is NA, then it will be ignored.
 #' }
 #' For any other value of a \code{methods} element, the \R option with the
 #' same name is queried.  If that is not set, the system environment
@@ -83,7 +88,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback", "custom")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -106,6 +111,10 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     } else if (method == "PBS") {
       ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")
+      if (is.na(n)) {
+        ## PBSPro sets 'NCPUS' but not 'PBS_NUM_PPN'
+        n <- getenv("NCPUS")
+      }
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
@@ -133,6 +142,14 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       ## Number of cores available according to future.availableCores.fallback
       n <- getOption("future.availableCores.fallback", NA_integer_)
       n <- as.integer(n)
+    } else if (method == "custom") {
+      fcn <- getOption("future.availableCores.custom", NULL)
+      if (!is.function(fcn)) next
+      n <- fcn()
+      n <- as.integer(n)
+      if (length(n) != 1L) {
+        stop("Function specified by option 'future.availableCores.custom' does not a single value")
+      }
     } else {
       ## covr: skip=3
       ## Fall back to querying option and system environment variable
@@ -199,28 +216,3 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
 
   ncores
 } # availableCores()
-
-
-#' Check whether multicore processing is supported or not
-#'
-#' Multicore futures are only supported on systems supporting
-#' multicore processing.  \R supports this on most systems,
-#' except on Microsoft Windows.
-#'
-#' @return TRUE if multicore processing is supported, otherwise FALSE.
-#'
-#' @seealso
-#' To use multicore futures, use \code{\link{plan}(\link{multicore})}.
-#'
-#' @export
-#' @keywords internal
-supportsMulticore <- local({
-  supported <- NA
-  function() {
-    if (is.na(supported)) {
-      ns <- getNamespace("parallel")
-      supported <<- exists("mcparallel", mode = "function", envir = ns, inherits = FALSE)
-    }
-    supported
-  }
-})

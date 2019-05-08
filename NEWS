@@ -1,6 +1,72 @@
 Package: future
 ===============
 
+Version: 1.13.0 [2019-05-08]
+
+SIGNIFICANT CHANGES:
+
+ * Forked processing is now disabled by default when running R via RStudio
+   When disabled, 'multicore' futures fall back to a 'sequential' futures.
+   This update follows from an RStudio recommendation against using _forked_
+   parallel processing from within RStudio because it is likely to break the
+   RStudio R session.  See help("supportsMulticore") for more details, e.g.
+   how to re-enable process forking.  Note that parallelization via
+   'multisession' is unaffected and will still work as before.  Also, when
+   forked processing is disabled, or otherwise not supported, using
+   plan("multiprocess") will fall back to using 'multisession' futures.
+   
+NEW FEATURES:
+
+ * Forked processing can be disabled by setting R option 'future.fork.enable'
+   to FALSE (or environment variable 'R_FUTURE_FORK_ENABLE=false').  When
+   disabled, 'multicore' futures fall back to a 'sequential' futures even if
+   the operating system supports process forking.  If set of TRUE, 'multicore'
+   will not fall back to 'sequential'.  If NA, or not set (the default), a
+   set of best-practices rules will decide whether forking is enabled or not.
+   See help("supportsMulticore") for more details.
+
+ * Now availableCores() also recognizes PBS environment variable 'NCPUS',
+   because the PBSPro scheduler does not set 'PBS_NUM_PPN'.
+
+ * If, option 'future.availableCores.custom' is set to a function, then
+   availableCores() will call that function and interpret its value as
+   number of cores.  Analogously, option 'future.availableWorkers.custom'
+   can be used to specify a hostnames of a set of workers that
+   availableWorkers() sees.  These new options provide a mechanism for anyone
+   to customize availableCores() and availableWorkers() in case they do not
+   (yet) recognize, say, environment variables that are specific the user's
+   compute environment or HPC scheduler.
+
+ * makeClusterPSOCK() gained support for argument 'rscript_startup' for
+   evaluating one or more R expressions in the background R worker prior
+   to the worker event loop launching.  This provides a more convenient
+   approach than having to use, say, 'rscript_args = c("-e", sQuote(code))'.
+
+ * makeClusterPSOCK() gained support for argument 'rscript_libs' to control the
+   R package library search path on the workers.  For example, to _prepend_ the
+   folder '~/R-libs' on the workers, use 'rscript_libs = c("~/R-libs", "*")',
+   where "*" will be resolved to the current '.libPaths()' on the workers.
+
+ * Debug messages are now prepended with a timestamp.
+ 
+DOCUMENTATION:
+
+ * Add vignette on 'Non-Exportable Objects' (extracted from another vignette).
+
+BUG FIXES:
+
+ * makeClusterPSOCK() did not shell quote the Rscript executable when
+   running it's pre-tests on whether localhost Rscript processes can be
+   killed by their PIDs or not.
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'value' of resolve() has been renamed to `result` to better reflect
+   that not only values are collected when this argument is used.  Argument
+   'value' still works for backward compatibility, but will eventually be
+   formally deprecated and then defunct.
+
+
 Version: 1.12.0 [2019-03-07]
 
 NEW FEATURES:

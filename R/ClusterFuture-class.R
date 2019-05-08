@@ -150,12 +150,12 @@ run.ClusterFuture <- function(future, ...) {
   ##      we can get the error here before launching the future.
   packages <- packages(future)
   if (future$earlySignal && length(packages) > 0) {
-    if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ...",
+    if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ...",
                       length(packages), hpaste(sQuote(packages)), node_idx)
 
     clusterCall(cl, fun = requirePackages, packages)
 
-    if (debug) mdebug("Attaching %d packages (%s) on cluster node #%d ... DONE",
+    if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ... DONE",
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
   
@@ -165,7 +165,7 @@ run.ClusterFuture <- function(future, ...) {
   if (length(globals) > 0) {
     if (debug) {
       total_size <- asIEC(objectSize(globals))
-      mdebug("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
+      mdebugf("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
     }
     for (name in names(globals)) {
       ## For instance sendData.SOCKnode(...) may generate warnings
@@ -176,15 +176,15 @@ run.ClusterFuture <- function(future, ...) {
       value <- globals[[name]]
       if (debug) {
         size <- asIEC(objectSize(value))
-        mdebug("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node_idx)
+        mdebugf("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node_idx)
       }
       suppressWarnings({
         clusterCall(cl, fun = gassign, name, value)
       })
-      if (debug) mdebug("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node_idx)
+      if (debug) mdebugf("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node_idx)
       value <- NULL
     }
-    if (debug) mdebug("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
+    if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
   }
   ## Not needed anymore
   globals <- NULL
@@ -198,7 +198,7 @@ run.ClusterFuture <- function(future, ...) {
 
   future$state <- 'running'
 
-  if (debug) mdebug("%s started", class(future)[1])
+  if (debug) mdebugf("%s started", class(future)[1])
   
   invisible(future)
 }
@@ -263,7 +263,7 @@ result.ClusterFuture <- function(future, ...) {
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
-    if (debug) mdebug("- result already collected: %s", class(result)[1])
+    if (debug) mdebugf("- result already collected: %s", class(result)[1])
     if (inherits(result, "FutureError")) stop(result)
     if (debug) mdebug("result() for ClusterFuture ... done")
     return(result)
@@ -286,7 +286,7 @@ result.ClusterFuture <- function(future, ...) {
   node <- cl[[1]]
 
   if (!is.null(con <- node$con)) {
-    if (debug) mdebug("- Validating connection of %s", class(future)[1])
+    if (debug) mdebugf("- Validating connection of %s", class(future)[1])
     isValid <- isValidConnection(con)
     if (!isValid) {
       label <- future$label
@@ -302,10 +302,10 @@ result.ClusterFuture <- function(future, ...) {
     TRUE
   }, simpleError = function(ex) ex)
 
-  if (debug) mdebug("- class(result): %s", class(result)[1])
+  if (debug) mdebugf("- class(result): %s", class(result)[1])
 
   if (inherits(ack, "simpleError")) {
-    if (debug) mdebug("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
+    if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
     label <- future$label
     if (is.null(label)) label <- "<none>"
     
@@ -432,7 +432,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
     finished <- (used < total)
     if (finished) break
 
-    if (debug) mdebug("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
+    if (debug) mdebugf("Poll #%d (%s): usedNodes() = %d, workers = %d", iter, format(round(dt, digits = 2L)), used, total)
 
     ## Wait
     Sys.sleep(interval)

@@ -1,4 +1,4 @@
-#' Gets all futures in an object
+#' Get all futures in a container
 #'
 #' Gets all futures in an environment, a list, or a list environment
 #' and returns an object of the same class (and dimensions).

@@ -5,7 +5,7 @@
 # * Travis CI: https://docs.travis-ci.com/user/languages/r
 # * covr: https://github.com/jimhester/covr
 #
-# Validate your .travis.yml file at http://lint.travis-ci.org/
+# YAML validated using http://www.yamllint.com/
 #----------------------------------------------------------------
 language: r
 sudo: false
