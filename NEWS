@@ -9,6 +9,8 @@ DEPRECATED AND DEFUNCT:
    future 1.12.0).  Option 'future.progress' is ignored.  This will make room
    for other progress-update mechanisms that are in the works.
 
+ * Removed defunct argument 'output' from FutureError().
+
 
 Version: 1.13.0 [2019-05-08]
 

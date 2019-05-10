@@ -17,12 +17,6 @@ print(v)
 ex <- FutureError(message = "Woops", future = f)
 print(ex)
 
-## Defunct
-res <- tryCatch({
-  FutureError(message = "Woops", future = f, output = "Boom")
-}, error = identity)
-stopifnot(inherits(res, "error"))
-
 message("*** FutureError class ... DONE")
 
 source("incl/end.R")
