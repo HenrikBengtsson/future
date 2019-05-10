@@ -1,9 +1,19 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-05-08]
+Version: 1.13.0-9000 [2019-05-09]
 
- * ...
+SIGNIFICANT CHANGES:
+
+ * All types of conditions are now captured and relayed.  Previously, only
+   conditions of class 'message' and 'warning' were relayed.
+
+NEW FEATURES:
+
+ * If captured condition can be "muffled", then it will be muffled.  This
+   helps preventing conditions from being handled twice by contion handlers
+   when future are evaluated in the main R session, e.g. plan(sequential).
+   Messages and warnings were already muffled in the past.
  
 
 Version: 1.13.0 [2019-05-08]

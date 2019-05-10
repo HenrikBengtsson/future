@@ -74,7 +74,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = c("message", "warning"), globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = c("conditions"), globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -787,6 +787,17 @@ makeExpression <- local({
                     invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {
                     invokeRestart("muffleWarning")
+                  } else {
+		    ## If there is a "muffle" restart for this condition,
+		    ## then invoke that restart, i.e. "muffle" the condition
+		    restarts <- computeRestarts(cond)
+		    for (restart in restarts) {
+		      name <- restart$name
+		      if (is.null(name)) next
+		      if (!grepl("^muffle", name)) next
+                      invokeRestart(restart)
+                      break
+		    }
                   }
                 }
               }
