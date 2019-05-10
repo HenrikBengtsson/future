@@ -53,7 +53,7 @@ for (cores in 1:availCores) {
     stopifnot(inherits(res, "error"))
 
 
-    message("** Future evaluation with progress bar")
+    message("** Future evaluation with a poor-man's \"progress bar\"")
     v4 %<-% {
       cat("Processing: ")
       for (ii in 1:10) { cat(".") }

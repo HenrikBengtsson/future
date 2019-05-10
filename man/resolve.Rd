@@ -5,8 +5,7 @@
 \title{Resolve one or more futures synchronously}
 \usage{
 resolve(x, idxs = NULL, result = FALSE, value = result,
-  recursive = 0, sleep = 1, progress = getOption("future.progress",
-  FALSE), ...)
+  recursive = 0, sleep = 1, progress = FALSE, ...)
 }
 \arguments{
 \item{x}{a list, an environment, or a list environment holding futures
@@ -26,9 +25,8 @@ no recursion is performed.}
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
 
-\item{progress}{(DEPRECATED) If TRUE textual progress summary is outputted.  If a
-function, the it is called as \code{progress(done, total)} every time a
-future is resolved.}
+\item{progress}{(DEFUNCT) Defunct since future 1.13.0 to make room for
+other progress-update mechanisms that are in the works.}
 
 \item{\dots}{Not used}
 }

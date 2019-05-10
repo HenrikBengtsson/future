@@ -20,11 +20,10 @@
 #' 
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
-#' 
-#' @param progress (DEPRECATED) If TRUE textual progress summary is outputted.  If a
-#' function, the it is called as \code{progress(done, total)} every time a
-#' future is resolved.
-#' 
+#'
+#' @param progress (DEFUNCT) Defunct since future 1.13.0 to make room for
+#' other progress-update mechanisms that are in the works.
+#'
 #' @param \dots Not used
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
@@ -38,13 +37,13 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 1.0, progress = FALSE, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -81,7 +80,7 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
     ## Recursively resolve result value?
     value <- x$result$value
     if (!is.atomic(value)) {
-      value <- resolve(value, result = TRUE, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
+      value <- resolve(value, result = TRUE, recursive = recursive - 1, sleep = sleep, ...)
       msg <- sprintf("%s (and resolved itself)", msg)
     }
   } else {
@@ -95,7 +94,7 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -115,26 +114,11 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
   ## Nothing to do?
   if (nx == 0) return(x)
 
+  if (!identical(progress, FALSE)) {
+    .Defunct(msg = "Argument 'progress' of resolve() is defunct.")
+  }
+
   x0 <- x
-
-  hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
-  if (hasProgress) {
-    .Deprecated(msg = "Argument 'progress' of resolve() has been deprecated.")
-  }
-  
-  ## Setup default progress function?
-  if (hasProgress && !is.function(progress)) {
-    progress <- function(done, total) {
-      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100 * done / total, done, total)
-      if (done < total) {
-        bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
-        message(paste(msg, bs, sep = ""), appendLF = FALSE)
-      } else {
-        message(msg)
-      }
-    } ## progress()
-  }
-
 
   ## Subset?
   if (!is.null(idxs)) {
@@ -181,11 +165,6 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
   total <- nx
   remaining <- seq_len(nx)
 
-  if (hasProgress) {
-    done0 <- done <- 0
-    progress(done, total)
-  }
-
   if (debug) {
     mdebugf(" length: %d", nx)
     mdebugf(" elements: %s", hpaste(sQuote(names(x))))
@@ -206,25 +185,18 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive - 1, sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
-
-      if (hasProgress) {
-        done <- total - length(remaining)
-        progress(done, total)
-      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
-
-  if (hasProgress && done != done0) progress(done, total)
 
   if (debug) mdebug("resolve() on list ... DONE")
 
@@ -233,7 +205,7 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -314,7 +286,7 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
@@ -334,7 +306,7 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -426,7 +398,7 @@ resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recu
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, ...)
       }
 
       ## Assume resolved at this point

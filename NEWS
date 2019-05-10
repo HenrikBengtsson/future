@@ -1,10 +1,14 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-05-08]
+Version: 1.13.0-9000 [2019-05-10]
 
- * ...
- 
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'progress' of resolve() is now defunct (was deprecated since
+   future 1.12.0).  Option 'future.progress' is ignored.  This will make room
+   for other progress-update mechanisms that are in the works.
+
 
 Version: 1.13.0 [2019-05-08]
 
