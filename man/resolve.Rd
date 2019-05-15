@@ -4,8 +4,9 @@
 \alias{resolve}
 \title{Resolve one or more futures synchronously}
 \usage{
-resolve(x, idxs = NULL, recursive = 0, result = FALSE, sleep = 1,
-  progress = FALSE, value = result, ...)
+resolve(x, idxs = NULL, recursive = 0, result = stdout || signal,
+  stdout = FALSE, signal = FALSE, sleep = 1, value = result,
+  progress = FALSE, ...)
 }
 \arguments{
 \item{x}{a list, an environment, or a list environment holding futures
@@ -20,13 +21,18 @@ no recursion is performed.}
 
 \item{result}{If TRUE, the results are retrieved, otherwise not.}
 
+\item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
+
+\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
+otherwise not.}
+
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
 
+\item{value}{(DEPRECATED) Use argument `result` instead.}
+
 \item{progress}{(DEFUNCT) Defunct since future 1.13.0 to make room for
 other progress-update mechanisms that are in the works.}
-
-\item{value}{(DEPRECATED) Use argument `result` instead.}
 
 \item{\dots}{Not used}
 }
