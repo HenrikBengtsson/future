@@ -96,10 +96,8 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || sig
     }
     result <- NULL     ## Not needed anymore
 
-    if (relay) {
-      ## NOTE: We don't want to signal errors here
-      tryCatch(value(x, stdout = stdout, signal = signal), error = identity)
-    }
+    if (stdout) value(x, stdout = TRUE, signal = FALSE)
+    if (signal) resignalConditions(x, exclude = "error")
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -204,9 +202,9 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay) {
-            ## NOTE: We don't want to signal errors here
-            tryCatch(value(obj, stdout = stdout && relay_ok[ii], signal = signal && relay_ok[ii]), error = identity)
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
 	  }
         }
 
@@ -241,8 +239,8 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
     for (ii in which(!relay_ok)) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
-      ## NOTE: We don't want to signal errors here
-      tryCatch(value(f, stdout = stdout, signal = signal), error = identity)
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
     }
   }
   
@@ -336,9 +334,9 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay) {
-            ## NOTE: We don't want to signal errors here
-            tryCatch(value(obj, stdout = stdout && relay_ok[ii], signal = signal && relay_ok[ii]), error = identity)
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
 	  }
         }
 
@@ -370,8 +368,8 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
     for (ii in idxs[!relay_ok]) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
-      ## NOTE: We don't want to signal errors here
-      tryCatch(value(f, stdout = stdout, signal = signal), error = identity)
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
     }
   }
   
@@ -475,9 +473,9 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay) {
-            ## NOTE: We don't want to signal errors here
-            tryCatch(value(obj, stdout = stdout && relay_ok[ii], signal = signal && relay_ok[ii]), error = identity)
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
 	  }
         }
 
@@ -509,8 +507,8 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
     for (ii in which(!relay_ok)) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
-      ## NOTE: We don't want to signal errors here
-      tryCatch(value(f, stdout = stdout, signal = signal), error = identity)
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
     }
   }
 
