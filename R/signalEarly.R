@@ -45,7 +45,7 @@ signalEarly <- function(future, collect = TRUE, ...) {
   invisible(future)
 }
 
-resignalConditions <- function(future, ...) {
+resignalConditions <- function(future, include = "condition", exclude = NULL, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
     stop(FutureError(
@@ -55,6 +55,9 @@ resignalConditions <- function(future, ...) {
       future = future))
   }
 
+  ## Nothing to do?
+  if (length(include) == 0L) return(invisible(future))
+  
   result <- result(future)
   stop_if_not(inherits(result, "FutureResult"))
   
@@ -75,6 +78,12 @@ resignalConditions <- function(future, ...) {
     cond <- conditions[[kk]]
     condition <- cond$condition
 
+    ## Don't signal condition based on 'exclude'?
+    if (length(exclude) > 0L && inherits(condition, exclude)) next
+    
+    ## Don't signal condition based on 'include'?
+    if (length(include) > 0L && !inherits(condition, include)) next
+    
     if (inherits(condition, "error")) {
       ## SPECIAL: By default, don't add 'future.info' because it
       ## modifies the error object, which may break things.
