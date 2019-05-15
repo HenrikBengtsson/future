@@ -4,9 +4,9 @@
 \alias{resolve}
 \title{Resolve one or more futures synchronously}
 \usage{
-resolve(x, idxs = NULL, result = FALSE, value = result,
-  recursive = 0, sleep = 1, progress = getOption("future.progress",
-  FALSE), ...)
+resolve(x, idxs = NULL, recursive = 0, result = stdout || signal,
+  stdout = FALSE, signal = FALSE, sleep = 1, value = result,
+  progress = FALSE, ...)
 }
 \arguments{
 \item{x}{a list, an environment, or a list environment holding futures
@@ -15,20 +15,24 @@ that should be resolved.  May also be a single \link{Future}.}
 \item{idxs}{(optional) integer or logical index specifying the subset of
 elements to check.}
 
-\item{result}{If TRUE, the results are retrieved, otherwise not.}
-
-\item{value}{(DEPRECATED) Use argument `result` instead.}
-
 \item{recursive}{A non-negative number specifying how deep of a recursion
 should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 no recursion is performed.}
 
+\item{result}{If TRUE, the results are retrieved, otherwise not.}
+
+\item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
+
+\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
+otherwise not.}
+
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
 
-\item{progress}{(DEPRECATED) If TRUE textual progress summary is outputted.  If a
-function, the it is called as \code{progress(done, total)} every time a
-future is resolved.}
+\item{value}{(DEPRECATED) Use argument `result` instead.}
+
+\item{progress}{(DEFUNCT) Defunct since future 1.13.0 to make room for
+other progress-update mechanisms that are in the works.}
 
 \item{\dots}{Not used}
 }

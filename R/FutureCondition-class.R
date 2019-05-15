@@ -114,18 +114,11 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 }
 
 
-#' @param output (DEFUNCT - don't use!) only for backward compatibility
-#' 
 #' @rdname FutureCondition
 #' @export
-FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
-  if (!is.null(output)) {
-    .Defunct(msg = "Argument 'output' of FutureError is defunct")
-  }
-  
+FutureError <- function(message, call = NULL, future = NULL) {
   cond <- FutureCondition(message = message, call = call, future = future)
   class(cond) <- c("FutureError", "error", class(cond))
-
   cond
 }
 

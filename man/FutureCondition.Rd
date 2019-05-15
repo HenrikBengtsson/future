@@ -14,7 +14,7 @@ FutureMessage(message, call = NULL, future = NULL)
 
 FutureWarning(message, call = NULL, future = NULL)
 
-FutureError(message, call = NULL, future = NULL, output = NULL)
+FutureError(message, call = NULL, future = NULL)
 
 UnexpectedFutureResultError(future, hint = NULL)
 }
@@ -24,8 +24,6 @@ UnexpectedFutureResultError(future, hint = NULL)
 \item{call}{The call stack that led up to the condition.}
 
 \item{future}{The \link{Future} involved.}
-
-\item{output}{(DEFUNCT - don't use!) only for backward compatibility}
 
 \item{hint}{(optional) A string with a suggestion on what might be wrong.}
 }

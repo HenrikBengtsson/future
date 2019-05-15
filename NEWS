@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-05-09]
+Version: 1.13.0-9000 [2019-05-14]
 
 SIGNIFICANT CHANGES:
 
@@ -10,11 +10,27 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ * values() now relays 'stdout' and 'signal' as soon as possible.
+   preserving the order of futures.
+ 
+ * resolve() gained arguments 'stdout' and 'signal' for relaying stdout and
+   conditions (except errors) as soon as possible.  When applied to a set of
+   futures, the ordering of the relayed output is the same as the ordering
+   of the futures, i.e. independent of the order they are resolved.
+
  * If captured condition can be "muffled", then it will be muffled.  This
    helps preventing conditions from being handled twice by contion handlers
    when future are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'progress' of resolve() is now defunct (was deprecated since
+   future 1.12.0).  Option 'future.progress' is ignored.  This will make room
+   for other progress-update mechanisms that are in the works.
+
+ * Removed defunct argument 'output' from FutureError().
+
 
 Version: 1.13.0 [2019-05-08]
 

@@ -10,20 +10,24 @@
 #' @param idxs (optional) integer or logical index specifying the subset of
 #' elements to check.
 #' 
-#' @param result If TRUE, the results are retrieved, otherwise not.
-#' 
-#' @param value (DEPRECATED) Use argument `result` instead.
-#' 
 #' @param recursive A non-negative number specifying how deep of a recursion
 #' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 #' no recursion is performed.
 #' 
+#' @param result If TRUE, the results are retrieved, otherwise not.
+#' 
+#' @param stdout If TRUE, captured standard output is relayed, otherwise note.
+#' 
+#' @param signal If TRUE, captured (\link[base]{conditions}) are relayed,
+#' otherwise not.
+#' 
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
-#' 
-#' @param progress (DEPRECATED) If TRUE textual progress summary is outputted.  If a
-#' function, the it is called as \code{progress(done, total)} every time a
-#' future is resolved.
+#'
+#' @param progress (DEFUNCT) Defunct since future 1.13.0 to make room for
+#' other progress-update mechanisms that are in the works.
+#'
+#' @param value (DEPRECATED) Use argument `result` instead.
 #' 
 #' @param \dots Not used
 #'
@@ -38,13 +42,13 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 1.0, progress = getOption("future.progress", FALSE), ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -58,6 +62,9 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
   
   ## Nothing to do?
   if (recursive < 0) return(x)
+
+  relay <- (stdout || signal)
+  result <- result || relay
 
   ## Lazy future that is not yet launched?
   if (x$state == 'created') x <- run(x)
@@ -79,11 +86,18 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
     }
     
     ## Recursively resolve result value?
-    value <- x$result$value
-    if (!is.atomic(value)) {
-      value <- resolve(value, result = TRUE, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
-      msg <- sprintf("%s (and resolved itself)", msg)
+    if (recursive > 0) {
+      value <- x$result$value
+      if (!is.atomic(value)) {
+        resolve(value, recursive = recursive - 1, result = TRUE, stdout = stdout, signal = signal, sleep = sleep, ...)
+        msg <- sprintf("%s (and resolved itself)", msg)
+      }
+      value <- NULL  ## Not needed anymore
     }
+    result <- NULL     ## Not needed anymore
+
+    if (stdout) value(x, stdout = TRUE, signal = FALSE)
+    if (signal) resignalConditions(x, exclude = "error")
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -95,7 +109,7 @@ resolve.Future <- function(x, idxs = NULL, result = FALSE, value = result, recur
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = getOption("future.progress", FALSE), ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -115,26 +129,14 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
   ## Nothing to do?
   if (nx == 0) return(x)
 
+  relay <- (stdout || signal)
+  result <- result || relay
+
+  if (!identical(progress, FALSE)) {
+    .Defunct(msg = "Argument 'progress' of resolve() is defunct.")
+  }
+
   x0 <- x
-
-  hasProgress <- ((is.logical(progress) && progress) || is.function(progress))
-  if (hasProgress) {
-    .Deprecated(msg = "Argument 'progress' of resolve() has been deprecated.")
-  }
-  
-  ## Setup default progress function?
-  if (hasProgress && !is.function(progress)) {
-    progress <- function(done, total) {
-      msg <- sprintf("Progress: %.0f%% (%d/%d)", 100 * done / total, done, total)
-      if (done < total) {
-        bs <- paste(rep("\b", times = nchar(msg)), collapse = "")
-        message(paste(msg, bs, sep = ""), appendLF = FALSE)
-      } else {
-        message(msg)
-      }
-    } ## progress()
-  }
-
 
   ## Subset?
   if (!is.null(idxs)) {
@@ -180,11 +182,8 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
   ## Total number of values to resolve
   total <- nx
   remaining <- seq_len(nx)
-
-  if (hasProgress) {
-    done0 <- done <- 0
-    progress(done, total)
-  }
+  relay_ok <- rep(FALSE, times = nx)
+  relay_ok[1] <- TRUE
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -203,10 +202,21 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
+	  }
         }
 
+        if (debug && relay) mdebug("Relay is OK: ", relay_ok[ii])
+
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive - 1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj,
+	        recursive = recursive - 1,
+	        result = result,
+	        stdout = stdout && relay_ok[ii],
+	        signal = signal && relay_ok[ii],
+		sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
@@ -214,9 +224,9 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
 
-      if (hasProgress) {
-        done <- total - length(remaining)
-        progress(done, total)
+      ## Next future for which we can relay ASAP without breaking the order
+      if (relay && length(remaining) > 0) {
+	relay_ok[min(remaining)] <- TRUE
       }
     } # for (ii ...)
 
@@ -224,8 +234,16 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  if (hasProgress && done != done0) progress(done, total)
-
+  if (relay) {
+    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
+    for (ii in which(!relay_ok)) {
+      f <- x[[ii]]
+      if (!inherits(f, "Future")) next
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
+    }
+  }
+  
   if (debug) mdebug("resolve() on list ... DONE")
 
   x0
@@ -233,7 +251,7 @@ resolve.list <- function(x, idxs = NULL, result = FALSE, value = result, recursi
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -281,6 +299,9 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
   nx <- length(idxs)
   if (nx == 0) return(x)
 
+  relay <- (stdout || signal)
+  result <- result || relay
+
   debug <- getOption("future.debug", FALSE)
   if (debug) {
     mdebug("resolve() on environment ...")
@@ -296,6 +317,8 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
 
   ## Everything is considered non-resolved by default
   remaining <- idxs
+  relay_ok <- rep(FALSE, times = nx)
+  relay_ok[1] <- TRUE
 
   if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
@@ -311,22 +334,45 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
+	  }
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj,
+	        recursive = recursive - 1,
+	        result = result,
+	        stdout = stdout && relay_ok[ii],
+	        signal = signal && relay_ok[ii],
+		sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
+
+      ## Next future for which we can relay ASAP without breaking the order
+      if (relay && length(remaining) > 0) {
+	relay_ok[min(remaining)] <- TRUE
+      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
+  if (relay) {
+    for (ii in idxs[!relay_ok]) {
+      f <- x[[ii]]
+      if (!inherits(f, "Future")) next
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
+    }
+  }
+  
   if (debug) mdebug("resolve() on environment ... DONE")
 
   x0
@@ -334,7 +380,7 @@ resolve.environment <- function(x, idxs = NULL, result = FALSE, value = result, 
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recursive = 0, sleep = 0.1, progress = FALSE, ...) {
+resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -391,6 +437,8 @@ resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recu
   nx <- length(idxs)
   if (nx == 0) return(x)
 
+  relay <- (stdout || signal)
+  result <- result || relay
 
   debug <- getOption("future.debug", FALSE)
   if (debug) {
@@ -405,6 +453,8 @@ resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recu
 
   ## Everything is considered non-resolved by default
   remaining <- seq_len(nx)
+  relay_ok <- rep(FALSE, times = nx)
+  relay_ok[1] <- TRUE
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -423,21 +473,44 @@ resolve.listenv <- function(x, idxs = NULL, result = FALSE, value = result, recu
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
+          if (relay && relay_ok[ii]) {
+            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+            if (signal) resignalConditions(obj, exclude = "error")
+	  }
         }
 
         ## In all other cases, try to resolve
-        resolve(obj, result = result, recursive = recursive-1, sleep = sleep, progress = FALSE, ...)
+        resolve(obj,
+	        recursive = recursive - 1,
+	        result = result,
+	        stdout = stdout && relay_ok[ii],
+	        signal = signal && relay_ok[ii],
+		sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
+
+      ## Next future for which we can relay ASAP without breaking the order
+      if (relay && length(remaining) > 0) {
+	relay_ok[min(remaining)] <- TRUE
+      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
+
+  if (relay) {
+    for (ii in which(!relay_ok)) {
+      f <- x[[ii]]
+      if (!inherits(f, "Future")) next
+      if (stdout) value(f, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(f, exclude = "error")
+    }
+  }
 
   if (debug) mdebug("resolve() on list environment ... DONE")
 
