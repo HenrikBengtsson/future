@@ -29,7 +29,7 @@ values.list <- function(x, stdout = TRUE, signal = TRUE, ...) {
     f <- y[[ii]]
     if (!inherits(f, "Future")) next
     v <- value(f, stdout = FALSE, signal = FALSE, ...)
-    if (inherits(v, "error")) stop(v)
+    if (signal && inherits(v, "error")) stop(v)
     if (is.null(v)) {
       y[ii] <- list(NULL)
     } else {
@@ -49,7 +49,7 @@ values.environment <- function(x, stdout = TRUE, signal = TRUE, ...) {
     f <- y[[key]]
     if (!inherits(f, "Future")) next
     v <- value(f, stdout = FALSE, signal = FALSE, ...)
-    if (inherits(v, "error")) stop(v)
+    if (signal && inherits(v, "error")) stop(v)
     y[[key]] <- v
   }
   y
@@ -63,7 +63,7 @@ values.listenv <- function(x, stdout = TRUE, signal = TRUE, ...) {
     f <- y[[ii]]
     if (!inherits(f, "Future")) next
     v <- value(f, stdout = FALSE, signal = FALSE, ...)
-    if (inherits(v, "error")) stop(v)
+    if (signal && inherits(v, "error")) stop(v)
     if (is.null(v)) {
       y[ii] <- list(NULL)
     } else {
