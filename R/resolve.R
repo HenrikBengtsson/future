@@ -367,7 +367,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
   } # while (...)
 
   if (relay) {
-    for (ii in which(!relay_ok)) {
+    for (ii in idxs[!relay_ok]) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       ## NOTE: We don't want to signal errors here
