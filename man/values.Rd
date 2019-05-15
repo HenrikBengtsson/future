@@ -4,10 +4,15 @@
 \alias{values}
 \title{Get all values in a container}
 \usage{
-values(x, ...)
+values(x, stdout = TRUE, signal = TRUE, ...)
 }
 \arguments{
 \item{x}{An environment, a list, or a list environment.}
+
+\item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
+
+\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
+otherwise not.}
 
 \item{\dots}{Additional arguments passed to \code{value()} of each future.}
 }

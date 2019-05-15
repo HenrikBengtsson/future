@@ -1,7 +1,17 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-05-10]
+Version: 1.13.0-9000 [2019-05-14]
+
+NEW FEATURES:
+
+ * values() now relays 'stdout' and 'signal' as soon as possible.
+   preserving the order of futures.
+ 
+ * resolve() gained arguments 'stdout' and 'signal' for relaying stdout and
+   conditions (except errors) as soon as possible.  When applied to a set of
+   futures, the ordering of the relayed output is the same as the ordering
+   of the futures, i.e. independent of the order they are resolved.
 
 DEPRECATED AND DEFUNCT:
 
