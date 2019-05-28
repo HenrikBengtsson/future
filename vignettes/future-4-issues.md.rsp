@@ -87,7 +87,7 @@ The base R function `get()` can be used to get the value of a object by its name
 
 If we attempt to call `my_sum()` via a future, we will get an error (if the future is resolved in an external R process);
 ```r
-> library(future)
+> library("future")
 > plan(multisession)
 > f <- future(my_sum("a"))
 > y <- value(f)
@@ -140,6 +140,46 @@ This will in turn allow us to perform the same calculations without having to us
  6 22 12
 ```
 
+
+#### glue::glue() - object not found
+
+The future framework will fail to identify globals that are declared via character strings.  The above section show an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the glue package to generate strings dynamically, e.g.
+
+```r
+> library("glue")
+> a <- 42
+> s <- glue("The value of a is {a}.")
+> s
+The value of a is 42.
+```
+
+Attempt to perform the same via a future that is resolved in another R session will produce an "object not found" error;
+
+```r
+> library("glue")
+> library("future")
+> plan(multisession)
+> a <- 42
+> s %<-% glue("The value of a is {a}.")
+> s
+Error in eval(parse(text = text, keep.source = FALSE), envir) : 
+  object 'a' not found
+```
+
+As examplained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
+```
+> s %<-% glue("The value of a is {a}.") %globals% structure(TRUE, add = "a")
+> s
+The value of a is 42.
+```
+
+An alternative solution is to guide the future framework by adding the missing globals as "dummy" variables, e.g.
+
+```
+> s %<-% { a; glue("The value of a is {a}.") }
+> s
+The value of a is 42.
+```
 
 
 
