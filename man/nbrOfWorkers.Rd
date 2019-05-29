@@ -12,7 +12,8 @@ If NULL (default), the current evaluator as returned
 by \code{\link{plan}()} is used.}
 }
 \value{
-A number in [1, Inf].
+A positive number in \eqn{{1, 2, 3, ...}}.
+Note, it may also be \code{+Inf} for certain types of backends.
 }
 \description{
 Get the number of workers available
