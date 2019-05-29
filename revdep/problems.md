@@ -399,6 +399,28 @@ Run `revdep_details(,"doFuture")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/foreach,nested_dopar.R’ failed.
+    Last 13 lines of output:
+      [08:37:59.860] - relaying conditions of futures
+      [08:37:59.860] Future state: 'finished'
+      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
+      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
+      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
+      [08:37:59.860] - collecting values of futures
+      [08:37:59.860] - accumulating results
+      [08:37:59.861] - processing errors (handler = 'stop')
+      [08:37:59.869] - collecting values of futures
+      [08:37:59.869] - accumulating results
+      [08:37:59.870] - processing errors (handler = 'stop')
+      Error in { : 
+        task 1 failed - "task 1 failed - "inherits(plan_list, getOption("future.default", "sequential")) is not TRUE""
+      Calls: %dopar% -> <Anonymous>
+      Execution halted
+    ```
+
 *   checking whether package ‘doFuture’ can be installed ... NOTE
     ```
     Found the following notes/warnings:
@@ -853,7 +875,7 @@ Run `revdep_details(,"ipc")` for more info
       8: stop(gettextf("no 'restart' '%s' found", as.character(r)), domain = NA)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 15 SKIPPED: 1 WARNINGS: 0 FAILED: 1
+      OK: 16 SKIPPED: 1 WARNINGS: 0 FAILED: 1
       1. Error: Main Tests With TextFileSource (@test-main.R#90) 
       
       Error: testthat unit tests failed
@@ -998,11 +1020,6 @@ Run `revdep_details(,"merTools")` for more info
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘rstanarm’
-    ```
 
 *   checking whether package ‘merTools’ can be installed ... NOTE
     ```
@@ -1149,12 +1166,17 @@ Run `revdep_details(,"photosynthesis")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking whether package ‘photosynthesis’ can be installed ... NOTE
     ```
-    Package required but not available: ‘tealeaves’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/home/hb/repositories/future/revdep/checks/photosynthesis/new/photosynthesis.Rcheck/00install.out’ for details.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘tidyr’
+      All declared Imports should be used.
     ```
 
 # phylolm
@@ -1472,6 +1494,47 @@ Run `revdep_details(,"Seurat")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘Seurat-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: FindMarkers
+    > ### Title: Gene expression markers of identity classes
+    > ### Aliases: FindMarkers FindMarkersNode FindMarkers.default
+    > ###   FindMarkers.Seurat
+    > 
+    > ### ** Examples
+    > 
+    > # Find markers for cluster 2
+    > markers <- FindMarkers(object = pbmc_small, ident.1 = 2)
+    Error in availableCores() : could not find function "availableCores"
+    Calls: FindMarkers ... WilcoxDETest -> ifelse -> PlanThreads -> eval -> eval
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+             scale.factor = scale.factor, verbose = verbose, margin = margin, ...)
+      9: NormalizeData.default(object = GetAssayData(object = object, slot = "counts"), normalization.method = normalization.method, 
+             scale.factor = scale.factor, verbose = verbose, margin = margin, ...)
+      10: PlanThreads()
+      11: eval(expr = formals(fun = plan())$workers)
+      12: eval(expr = formals(fun = plan())$workers)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 302 SKIPPED: 0 WARNINGS: 0 FAILED: 3
+      1. Error: FindConservedMarkers handles missing idents in certain groups (@test_differential_expression.R#265) 
+      2. Error: pca returns total variance (see #982) (@test_dimensional_reduction.R#37) 
+      3. Error: (unknown) (@test_preprocessing.R#58) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -1797,12 +1860,17 @@ Run `revdep_details(,"TSstudio")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking whether package ‘TSstudio’ can be installed ... NOTE
     ```
-    Package required but not available: ‘bsts’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/home/hb/repositories/future/revdep/checks/TSstudio/new/TSstudio.Rcheck/00install.out’ for details.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘purrr’
+      All declared Imports should be used.
     ```
 
 # vinereg

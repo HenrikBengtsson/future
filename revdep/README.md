@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-05-28                   |
+|date     |2019-05-29                   |
 
 # Dependencies
 
@@ -46,7 +46,7 @@
 |[codebook](problems.md#codebook)                         |0.8.1      |       |        |3    |
 |[datapackage.r](problems.md#datapackager)                |0.1.1      |       |        |2    |
 |[DeclareDesign](problems.md#declaredesign)               |0.18.0     |       |        |1    |
-|[doFuture](problems.md#dofuture)                         |0.8.0      |       |        |1    |
+|[doFuture](problems.md#dofuture)                         |0.8.0      |1      |        |1    |
 |[drake](problems.md#drake)                               |7.3.0      |       |        |1    |
 |[drtmle](problems.md#drtmle)                             |1.0.4      |       |        |1    |
 |[FAMoS](problems.md#famos)                               |0.2.0      |       |        |1    |
@@ -68,13 +68,13 @@
 |[kernelboot](problems.md#kernelboot)                     |0.1.5      |       |        |1    |
 |[lgr](problems.md#lgr)                                   |0.2.1      |       |        |2    |
 |[lidR](problems.md#lidr)                                 |2.0.3      |       |        |3    |
-|[merTools](problems.md#mertools)                         |0.5.0      |       |        |2    |
+|[merTools](problems.md#mertools)                         |0.5.0      |       |        |1    |
 |[MetamapsDB](problems.md#metamapsdb)                     |0.0.2      |       |        |2    |
 |[methyvim](problems.md#methyvim)                         |1.6.0      |       |        |1    |
 |[ngstk](problems.md#ngstk)                               |0.2.3      |       |        |1    |
 |[origami](problems.md#origami)                           |1.0.1      |       |        |1    |
 |[penaltyLearning](problems.md#penaltylearning)           |2018.09.04 |       |        |1    |
-|[photosynthesis](problems.md#photosynthesis)             |1.0.0      |1      |        |     |
+|[photosynthesis](problems.md#photosynthesis)             |1.0.0      |       |        |2    |
 |[phylolm](problems.md#phylolm)                           |2.6        |       |        |2    |
 |[promises](problems.md#promises)                         |1.0.1      |       |        |2    |
 |[Prostar](problems.md#prostar)                           |1.16.0     |       |1       |     |
@@ -86,7 +86,7 @@
 |[RTransferEntropy](problems.md#rtransferentropy)         |0.2.8      |       |        |1    |
 |[sapfluxnetr](problems.md#sapfluxnetr)                   |0.0.7      |       |        |2    |
 |[sctransform](problems.md#sctransform)                   |0.2.0      |       |        |2    |
-|[Seurat](problems.md#seurat)                             |3.0.1      |       |        |4    |
+|[Seurat](problems.md#seurat)                             |3.0.1      |2      |        |4    |
 |[shinyrecap](problems.md#shinyrecap)                     |0.1.0      |       |        |2    |
 |[skpr](problems.md#skpr)                                 |0.57.0     |       |        |2    |
 |[sperrorest](problems.md#sperrorest)                     |2.1.5      |       |        |1    |
@@ -97,6 +97,6 @@
 |[tealeaves](problems.md#tealeaves)                       |1.0.0      |       |        |2    |
 |[tidyqwi](problems.md#tidyqwi)                           |0.1.0      |       |        |2    |
 |[tsfeatures](problems.md#tsfeatures)                     |1.0.1      |       |        |1    |
-|[TSstudio](problems.md#tsstudio)                         |0.1.4      |1      |        |     |
+|[TSstudio](problems.md#tsstudio)                         |0.1.4      |       |        |2    |
 |[vinereg](problems.md#vinereg)                           |0.5.0      |       |        |1    |
 
