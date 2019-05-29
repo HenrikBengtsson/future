@@ -62,7 +62,10 @@ options(future.plan = NULL, future.cmdargs = c("-p", 1))
 .onLoad(pkgname, pkgname)
 strategy <- plan()
 print(strategy)
-stopifnot(inherits(strategy, getOption("future.plan", "sequential")))
+## future.plan can be either a string or a future function
+default <- getOption("future.plan", "sequential")
+if (is.function(default)) default <- class(default)
+stopifnot(inherits(strategy, default))
 plan("default")
 message("- .onLoad() w/ -p 1 ... DONE")
 
@@ -72,7 +75,10 @@ options(future.plan = NULL, future.cmdargs = "-parallel=1")
 .onLoad(pkgname, pkgname)
 strategy <- plan()
 print(strategy)
-stopifnot(inherits(strategy, getOption("future.plan", "sequential")))
+## future.plan can be either a string or a future function
+default <- getOption("future.plan", "sequential")
+if (is.function(default)) default <- class(default)
+stopifnot(inherits(strategy, default))
 plan("default")
 message("- .onLoad() w/ --parallel=1 ... DONE")
 
