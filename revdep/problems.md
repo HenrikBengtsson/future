@@ -853,7 +853,7 @@ Run `revdep_details(,"ipc")` for more info
       8: stop(gettextf("no 'restart' '%s' found", as.character(r)), domain = NA)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 16 SKIPPED: 1 WARNINGS: 0 FAILED: 1
+      OK: 15 SKIPPED: 1 WARNINGS: 0 FAILED: 1
       1. Error: Main Tests With TextFileSource (@test-main.R#90) 
       
       Error: testthat unit tests failed
