@@ -6,9 +6,23 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return A @list with the future's call stack that led up to the error.
+#' @return A list with the future's call stack that led up to the error.
 #'
-#' @example incl/backtrace.R
+#' @examples
+#' my_log <- function(x) log(x)
+#' foo <- function(...) my_log(...)
+#' 
+#' f <- future({ foo("a") })
+#' res <- tryCatch({
+#'   v <- value(f)
+#' }, error = function(ex) {
+#'   t <- backtrace(f)
+#'   print(t)
+#' })
+#' \dontshow{
+#' ## R CMD check: make sure any open connections are closed afterward
+#' if (!inherits(plan(), "sequential")) plan(sequential)
+#' }
 #'
 #' @export
 backtrace <- function(future, envir = parent.frame(), ...) {
