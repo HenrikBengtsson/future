@@ -10,7 +10,11 @@ names(opts) <- added
 options(opts)
 ## (b) Modified
 options(oopts)
-## (c) Assert that everything was undone
+## (c) Removed, e.g. future.plan=NULL
+removed <- setdiff(names(oopts0), names(options()))
+opts <- oopts0[removed]
+options(opts)
+## (d) Assert that everything was undone
 stopifnot(identical(options(), oopts0))
 
 
