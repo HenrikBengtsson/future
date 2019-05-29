@@ -29,6 +29,10 @@ matrix:
       env:
         - R_FUTURE_FORKS_ENABLED=false
     - os: linux
+      r: release
+      env:
+        - R_FUTURE_PLAN=multisession
+    - os: linux
       r: devel
       env:
         - R_KEEP_PKG_SOURCE=yes
