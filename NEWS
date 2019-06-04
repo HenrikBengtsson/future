@@ -10,8 +10,8 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
- * values() now relays 'stdout' and 'signal' as soon as possible.
-   preserving the order of futures.
+ * values() now relays 'stdout' and 'signal' as soon as possible as long as
+   the standard output and the conditions are relayed in their original order.
  
  * resolve() gained arguments 'stdout' and 'signal' for relaying stdout and
    conditions (except errors) as soon as possible.  When applied to a set of
@@ -19,7 +19,7 @@ NEW FEATURES:
    of the futures, i.e. independent of the order they are resolved.
 
  * If captured condition can be "muffled", then it will be muffled.  This
-   helps preventing conditions from being handled twice by contion handlers
+   helps preventing conditions from being handled twice by condition handlers
    when future are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
 
