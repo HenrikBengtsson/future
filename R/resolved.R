@@ -36,7 +36,7 @@ resolved.list <- function(x, ...) {
   res <- rep(TRUE, times = length(fs))
   for (ii in seq_along(fs)) {
     f <- fs[[ii]]
-    if (inherits(f, "Future")) res[[ii]] <- resolved(f)
+    if (inherits(f, "Future")) res[[ii]] <- resolved(f, ...)
   }
 
   dim <- dim(fs)
@@ -56,5 +56,5 @@ resolved.environment <- function(x, ...) {
   names <- names(fs)
   fs <- as.list(fs)
   names(fs) <- names
-  resolved(fs)
+  resolved(fs, ...)
 }

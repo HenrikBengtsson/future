@@ -214,14 +214,7 @@ print.Future <- function(x, ...) {
     ## for which we need to support this? /HB 2016-05-03
     cat("Resolved: FALSE\n")
   } else {
-    ## resolved() without early signalling
-    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
-    local({
-      earlySignal <- x$earlySignal
-      x$earlySignal <- FALSE
-      on.exit(x$earlySignal <- earlySignal)
-      cat(sprintf("Resolved: %s\n", tryCatch(resolved(x), error = conditionMessage)))
-    })
+    cat(sprintf("Resolved: %s\n", resolved(x, .signalEarly = FALSE)))
   }
 
   if (hasResult) {
