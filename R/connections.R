@@ -34,7 +34,7 @@ connectionInfo <- function(con) {
   }), use.names = FALSE)
   info <- sprintf("%s=%s", names(details), info)
   info <- paste(info, collapse = ", ")
-  info <- sprintf("connection: %s", info)
+  info <- sprintf("connection: index=%d, %s", index, info)
   info
 }
 
