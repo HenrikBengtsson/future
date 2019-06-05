@@ -14,13 +14,6 @@ Run `revdep_details(,"abjutils")` for more info
 
 ## In both
 
-*   checking whether package ‘abjutils’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/abjutils/new/abjutils.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -44,13 +37,6 @@ Run `revdep_details(,"adept")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘adept’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/adept/new/adept.Rcheck/00install.out’ for details.
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -81,13 +67,6 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘aroma.affymetrix’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/aroma.affymetrix/new/aroma.affymetrix.Rcheck/00install.out’ for details.
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -127,13 +106,6 @@ Run `revdep_details(,"aroma.core")` for more info
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
-*   checking whether package ‘aroma.core’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/aroma.core/new/aroma.core.Rcheck/00install.out’ for details.
-    ```
-
 # BAMBI
 
 <details>
@@ -151,88 +123,11 @@ Run `revdep_details(,"BAMBI")` for more info
 
 ## In both
 
-*   checking whether package ‘BAMBI’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/BAMBI/new/BAMBI.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
         libs   4.9Mb
-    ```
-
-# BatchGetSymbols
-
-<details>
-
-* Version: 2.5.2
-* Source code: https://github.com/cran/BatchGetSymbols
-* Date/Publication: 2019-04-24 21:30:04 UTC
-* Number of recursive dependencies: 75
-
-Run `revdep_details(,"BatchGetSymbols")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘BatchGetSymbols’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/BatchGetSymbols/new/BatchGetSymbols.Rcheck/00install.out’ for details.
-    ```
-
-# batchtools
-
-<details>
-
-* Version: 0.9.11
-* Source code: https://github.com/cran/batchtools
-* URL: https://github.com/mllg/batchtools
-* BugReports: https://github.com/mllg/batchtools/issues
-* Date/Publication: 2018-08-16 11:40:03 UTC
-* Number of recursive dependencies: 65
-
-Run `revdep_details(,"batchtools")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘batchtools’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/batchtools/new/batchtools.Rcheck/00install.out’ for details.
-    ```
-
-# biotmle
-
-<details>
-
-* Version: 1.8.0
-* Source code: https://github.com/cran/biotmle
-* URL: https://code.nimahejazi.org/biotmle
-* BugReports: https://github.com/nhejazi/biotmle/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 102
-
-Run `revdep_details(,"biotmle")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘biotmle’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/biotmle/new/biotmle.Rcheck/00install.out’ for details.
     ```
 
 # brms
@@ -252,43 +147,12 @@ Run `revdep_details(,"brms")` for more info
 
 ## In both
 
-*   checking whether package ‘brms’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/brms/new/brms.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  6.4Mb
       sub-directories of 1Mb or more:
         R     2.9Mb
         doc   2.6Mb
-    ```
-
-# civis
-
-<details>
-
-* Version: 1.6.1
-* Source code: https://github.com/cran/civis
-* URL: https://github.com/civisanalytics/civis-r
-* BugReports: https://github.com/civisanalytics/civis-r/issues
-* Date/Publication: 2019-02-12 20:30:03 UTC
-* Number of recursive dependencies: 100
-
-Run `revdep_details(,"civis")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘civis’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/civis/new/civis.Rcheck/00install.out’ for details.
     ```
 
 # codebook
@@ -307,13 +171,6 @@ Run `revdep_details(,"codebook")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘codebook’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/codebook/new/codebook.Rcheck/00install.out’ for details.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -344,302 +201,11 @@ Run `revdep_details(,"datapackage.r")` for more info
 
 ## In both
 
-*   checking whether package ‘datapackage.r’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/datapackage.r/new/datapackage.r.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
-    ```
-
-# DeclareDesign
-
-<details>
-
-* Version: 0.18.0
-* Source code: https://github.com/cran/DeclareDesign
-* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
-* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
-* Date/Publication: 2019-04-30 07:20:06 UTC
-* Number of recursive dependencies: 123
-
-Run `revdep_details(,"DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘DeclareDesign’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/DeclareDesign/new/DeclareDesign.Rcheck/00install.out’ for details.
-    ```
-
-# doFuture
-
-<details>
-
-* Version: 0.8.0
-* Source code: https://github.com/cran/doFuture
-* URL: https://github.com/HenrikBengtsson/doFuture
-* BugReports: https://github.com/HenrikBengtsson/doFuture/issues
-* Date/Publication: 2019-03-17 21:50:07 UTC
-* Number of recursive dependencies: 25
-
-Run `revdep_details(,"doFuture")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/foreach,nested_dopar.R’ failed.
-    Last 13 lines of output:
-      [08:37:59.860] - relaying conditions of futures
-      [08:37:59.860] Future state: 'finished'
-      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
-      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
-      multisession:- args: function (expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...)- tweaked: FALSE- call: future::plan("default", .cleanup = FALSE, .init = FALSE)
-      [08:37:59.860] - collecting values of futures
-      [08:37:59.860] - accumulating results
-      [08:37:59.861] - processing errors (handler = 'stop')
-      [08:37:59.869] - collecting values of futures
-      [08:37:59.869] - accumulating results
-      [08:37:59.870] - processing errors (handler = 'stop')
-      Error in { : 
-        task 1 failed - "task 1 failed - "inherits(plan_list, getOption("future.default", "sequential")) is not TRUE""
-      Calls: %dopar% -> <Anonymous>
-      Execution halted
-    ```
-
-*   checking whether package ‘doFuture’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/doFuture/new/doFuture.Rcheck/00install.out’ for details.
-    ```
-
-# drake
-
-<details>
-
-* Version: 7.3.0
-* Source code: https://github.com/cran/drake
-* URL: https://github.com/ropensci/drake
-* BugReports: https://github.com/ropensci/drake/issues
-* Date/Publication: 2019-05-19 16:00:03 UTC
-* Number of recursive dependencies: 109
-
-Run `revdep_details(,"drake")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘drake’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/drake/new/drake.Rcheck/00install.out’ for details.
-    ```
-
-# drtmle
-
-<details>
-
-* Version: 1.0.4
-* Source code: https://github.com/cran/drtmle
-* URL: https://github.com/benkeser/drtmle
-* BugReports: https://github.com/benkeser/drtmle/issues
-* Date/Publication: 2018-12-18 22:30:03 UTC
-* Number of recursive dependencies: 74
-
-Run `revdep_details(,"drtmle")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘drtmle’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/drtmle/new/drtmle.Rcheck/00install.out’ for details.
-    ```
-
-# FAMoS
-
-<details>
-
-* Version: 0.2.0
-* Source code: https://github.com/cran/FAMoS
-* Date/Publication: 2019-05-26 09:40:03 UTC
-* Number of recursive dependencies: 43
-
-Run `revdep_details(,"FAMoS")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘FAMoS’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/FAMoS/new/FAMoS.Rcheck/00install.out’ for details.
-    ```
-
-# fiery
-
-<details>
-
-* Version: 1.1.1
-* Source code: https://github.com/cran/fiery
-* URL: https://github.com/thomasp85/fiery
-* BugReports: https://github.com/thomasp85/fiery/issues
-* Date/Publication: 2018-10-22 10:00:04 UTC
-* Number of recursive dependencies: 38
-
-Run `revdep_details(,"fiery")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘fiery’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/fiery/new/fiery.Rcheck/00install.out’ for details.
-    ```
-
-# furrr
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/furrr
-* URL: https://github.com/DavisVaughan/furrr
-* BugReports: https://github.com/DavisVaughan/furrr/issues
-* Date/Publication: 2018-05-16 16:04:29 UTC
-* Number of recursive dependencies: 29
-
-Run `revdep_details(,"furrr")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘furrr’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/furrr/new/furrr.Rcheck/00install.out’ for details.
-    ```
-
-# future.apply
-
-<details>
-
-* Version: 1.2.0
-* Source code: https://github.com/cran/future.apply
-* URL: https://github.com/HenrikBengtsson/future.apply
-* BugReports: https://github.com/HenrikBengtsson/future.apply/issues
-* Date/Publication: 2019-03-07 06:52:54 UTC
-* Number of recursive dependencies: 12
-
-Run `revdep_details(,"future.apply")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘future.apply’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/future.apply/new/future.apply.Rcheck/00install.out’ for details.
-    ```
-
-# future.BatchJobs
-
-<details>
-
-* Version: 0.16.1
-* Source code: https://github.com/cran/future.BatchJobs
-* URL: https://github.com/HenrikBengtsson/future.BatchJobs
-* BugReports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
-* Date/Publication: 2019-01-04 12:00:03 UTC
-* Number of recursive dependencies: 35
-
-Run `revdep_details(,"future.BatchJobs")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘future.BatchJobs’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/future.BatchJobs/new/future.BatchJobs.Rcheck/00install.out’ for details.
-    ```
-
-# future.batchtools
-
-<details>
-
-* Version: 0.8.0
-* Source code: https://github.com/cran/future.batchtools
-* URL: https://github.com/HenrikBengtsson/future.batchtools
-* BugReports: https://github.com/HenrikBengtsson/future.batchtools/issues
-* Date/Publication: 2019-05-05 06:10:02 UTC
-* Number of recursive dependencies: 33
-
-Run `revdep_details(,"future.batchtools")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘future.batchtools’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/future.batchtools/new/future.batchtools.Rcheck/00install.out’ for details.
-    ```
-
-# future.callr
-
-<details>
-
-* Version: 0.4.0
-* Source code: https://github.com/cran/future.callr
-* URL: https://github.com/HenrikBengtsson/future.callr
-* BugReports: https://github.com/HenrikBengtsson/future.callr/issues
-* Date/Publication: 2019-01-07 18:40:09 UTC
-* Number of recursive dependencies: 17
-
-Run `revdep_details(,"future.callr")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘future.callr’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/future.callr/new/future.callr.Rcheck/00install.out’ for details.
     ```
 
 # fxtract
@@ -658,13 +224,6 @@ Run `revdep_details(,"fxtract")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘fxtract’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/fxtract/new/fxtract.Rcheck/00install.out’ for details.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -690,42 +249,11 @@ Run `revdep_details(,"GetBCBData")` for more info
 
 ## In both
 
-*   checking whether package ‘GetBCBData’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/GetBCBData/new/GetBCBData.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘RCurl’ ‘lubridate’ ‘readr’ ‘stats’
       All declared Imports should be used.
-    ```
-
-# googleComputeEngineR
-
-<details>
-
-* Version: 0.3.0
-* Source code: https://github.com/cran/googleComputeEngineR
-* URL: https://cloudyr.github.io/googleComputeEngineR/
-* BugReports: https://github.com/cloudyr/googleComputeEngineR/issues
-* Date/Publication: 2019-05-04 22:40:02 UTC
-* Number of recursive dependencies: 42
-
-Run `revdep_details(,"googleComputeEngineR")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘googleComputeEngineR’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/googleComputeEngineR/new/googleComputeEngineR.Rcheck/00install.out’ for details.
     ```
 
 # grattan
@@ -748,62 +276,7 @@ Run `revdep_details(,"grattan")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'taxstats', 'taxstats1516'
-    ```
-
-*   checking whether package ‘grattan’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/grattan/new/grattan.Rcheck/00install.out’ for details.
-    ```
-
-# greta
-
-<details>
-
-* Version: 0.3.0
-* Source code: https://github.com/cran/greta
-* URL: https://github.com/greta-dev/greta
-* BugReports: https://github.com/greta-dev/greta/issues
-* Date/Publication: 2018-10-30 10:00:03 UTC
-* Number of recursive dependencies: 127
-
-Run `revdep_details(,"greta")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘greta’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/greta/new/greta.Rcheck/00install.out’ for details.
-    ```
-
-# GSODR
-
-<details>
-
-* Version: 1.3.2
-* Source code: https://github.com/cran/GSODR
-* URL: https://github.com/ropensci/GSODR, https://ropensci.github.io/GSODR/
-* BugReports: https://github.com/ropensci/GSODR/issues
-* Date/Publication: 2019-01-18 23:10:43 UTC
-* Number of recursive dependencies: 133
-
-Run `revdep_details(,"GSODR")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘GSODR’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/GSODR/new/GSODR.Rcheck/00install.out’ for details.
+      'survey', 'taxstats', 'taxstats1516'
     ```
 
 # infercnv
@@ -822,13 +295,6 @@ Run `revdep_details(,"infercnv")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘infercnv’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/infercnv/new/infercnv.Rcheck/00install.out’ for details.
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -875,44 +341,11 @@ Run `revdep_details(,"ipc")` for more info
       8: stop(gettextf("no 'restart' '%s' found", as.character(r)), domain = NA)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 16 SKIPPED: 1 WARNINGS: 0 FAILED: 1
+      OK: 15 SKIPPED: 1 WARNINGS: 0 FAILED: 1
       1. Error: Main Tests With TextFileSource (@test-main.R#90) 
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-## In both
-
-*   checking whether package ‘ipc’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/ipc/new/ipc.Rcheck/00install.out’ for details.
-    ```
-
-# jstor
-
-<details>
-
-* Version: 0.3.6
-* Source code: https://github.com/cran/jstor
-* URL: https://github.com/ropensci/jstor, https://ropensci.github.io/jstor/
-* BugReports: https://github.com/ropensci/jstor/issues
-* Date/Publication: 2018-12-12 23:20:04 UTC
-* Number of recursive dependencies: 58
-
-Run `revdep_details(,"jstor")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘jstor’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/jstor/new/jstor.Rcheck/00install.out’ for details.
     ```
 
 # kernelboot
@@ -932,22 +365,20 @@ Run `revdep_details(,"kernelboot")` for more info
 
 ## In both
 
-*   checking whether package ‘kernelboot’ can be installed ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/kernelboot/new/kernelboot.Rcheck/00install.out’ for details.
+    Package suggested but not available for checking: ‘cramer’
     ```
 
 # lgr
 
 <details>
 
-* Version: 0.2.1
+* Version: 0.3.0
 * Source code: https://github.com/cran/lgr
-* URL: https://github.com/s-fleck/lgr
+* URL: https://s-fleck.github.io/lgr
 * BugReports: https://github.com/s-fleck/lgr/issues
-* Date/Publication: 2019-03-25 15:40:03 UTC
+* Date/Publication: 2019-05-30 11:50:03 UTC
 * Number of recursive dependencies: 67
 
 Run `revdep_details(,"lgr")` for more info
@@ -955,13 +386,6 @@ Run `revdep_details(,"lgr")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘lgr’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/lgr/new/lgr.Rcheck/00install.out’ for details.
-    ```
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -985,13 +409,6 @@ Run `revdep_details(,"lidR")` for more info
 
 ## In both
 
-*   checking whether package ‘lidR’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 10.6Mb
@@ -1003,29 +420,6 @@ Run `revdep_details(,"lidR")` for more info
     ```
     Namespace in Imports field not imported from: ‘Rcpp’
       All declared Imports should be used.
-    ```
-
-# merTools
-
-<details>
-
-* Version: 0.5.0
-* Source code: https://github.com/cran/merTools
-* BugReports: https://www.github.com/jknowles/merTools
-* Date/Publication: 2019-05-13 12:30:06 UTC
-* Number of recursive dependencies: 125
-
-Run `revdep_details(,"merTools")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘merTools’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/merTools/new/merTools.Rcheck/00install.out’ for details.
     ```
 
 # MetamapsDB
@@ -1043,112 +437,11 @@ Run `revdep_details(,"MetamapsDB")` for more info
 
 ## In both
 
-*   checking whether package ‘MetamapsDB’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/MetamapsDB/new/MetamapsDB.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘Matrix’ ‘shiny’
       All declared Imports should be used.
-    ```
-
-# methyvim
-
-<details>
-
-* Version: 1.6.0
-* Source code: https://github.com/cran/methyvim
-* URL: https://github.com/nhejazi/methyvim
-* BugReports: https://github.com/nhejazi/methyvim/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 181
-
-Run `revdep_details(,"methyvim")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘methyvim’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/methyvim/new/methyvim.Rcheck/00install.out’ for details.
-    ```
-
-# ngstk
-
-<details>
-
-* Version: 0.2.3
-* Source code: https://github.com/cran/ngstk
-* URL: https://github.com/JhuangLab/ngstk
-* BugReports: https://github.com/JhuangLab/ngstk/issues
-* Date/Publication: 2018-11-22 16:40:03 UTC
-* Number of recursive dependencies: 37
-
-Run `revdep_details(,"ngstk")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘ngstk’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/ngstk/new/ngstk.Rcheck/00install.out’ for details.
-    ```
-
-# origami
-
-<details>
-
-* Version: 1.0.1
-* Source code: https://github.com/cran/origami
-* URL: https://tlverse.org/origami
-* BugReports: https://github.com/tlverse/origami/issues
-* Date/Publication: 2019-05-01 21:50:03 UTC
-* Number of recursive dependencies: 73
-
-Run `revdep_details(,"origami")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘origami’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/origami/new/origami.Rcheck/00install.out’ for details.
-    ```
-
-# penaltyLearning
-
-<details>
-
-* Version: 2018.09.04
-* Source code: https://github.com/cran/penaltyLearning
-* Date/Publication: 2018-09-10 19:10:02 UTC
-* Number of recursive dependencies: 54
-
-Run `revdep_details(,"penaltyLearning")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘penaltyLearning’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/penaltyLearning/new/penaltyLearning.Rcheck/00install.out’ for details.
     ```
 
 # photosynthesis
@@ -1165,13 +458,6 @@ Run `revdep_details(,"photosynthesis")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘photosynthesis’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/photosynthesis/new/photosynthesis.Rcheck/00install.out’ for details.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -1195,13 +481,6 @@ Run `revdep_details(,"phylolm")` for more info
 
 ## In both
 
-*   checking whether package ‘phylolm’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/phylolm/new/phylolm.Rcheck/00install.out’ for details.
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘surface’, ‘bayou’, ‘geiger’, ‘caper’
@@ -1224,13 +503,6 @@ Run `revdep_details(,"promises")` for more info
 
 ## In both
 
-*   checking whether package ‘promises’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/promises/new/promises.Rcheck/00install.out’ for details.
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘purrr’
@@ -1240,9 +512,9 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.16.0
+* Version: 1.16.1
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-05-02
+* Date/Publication: 2019-05-29
 * Number of recursive dependencies: 254
 
 Run `revdep_details(,"Prostar")` for more info
@@ -1255,33 +527,7 @@ Run `revdep_details(,"Prostar")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    Found the following additional notes/warnings:
-      Non-staged installation was used
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
-    ```
-
-# PSCBS
-
-<details>
-
-* Version: 0.65.0
-* Source code: https://github.com/cran/PSCBS
-* URL: https://github.com/HenrikBengtsson/PSCBS
-* BugReports: https://github.com/HenrikBengtsson/PSCBS/issues
-* Date/Publication: 2019-05-05 22:40:09 UTC
-* Number of recursive dependencies: 75
-
-Run `revdep_details(,"PSCBS")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘PSCBS’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/PSCBS/new/PSCBS.Rcheck/00install.out’ for details.
     ```
 
 # QDNAseq
@@ -1310,60 +556,6 @@ Run `revdep_details(,"QDNAseq")` for more info
     Extensions’ manual.
     ```
 
-*   checking whether package ‘QDNAseq’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/QDNAseq/new/QDNAseq.Rcheck/00install.out’ for details.
-    ```
-
-# rangeMapper
-
-<details>
-
-* Version: 0.3-5
-* Source code: https://github.com/cran/rangeMapper
-* URL: https://github.com/valcu/rangeMapper
-* Date/Publication: 2019-03-26 17:00:03 UTC
-* Number of recursive dependencies: 86
-
-Run `revdep_details(,"rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘rangeMapper’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/rangeMapper/new/rangeMapper.Rcheck/00install.out’ for details.
-    ```
-
-# reproducible
-
-<details>
-
-* Version: 0.2.8
-* Source code: https://github.com/cran/reproducible
-* URL: http://reproducible.predictiveecology.org, https://github.com/PredictiveEcology/reproducible
-* BugReports: https://github.com/PredictiveEcology/reproducible/issues
-* Date/Publication: 2019-03-18 18:20:03 UTC
-* Number of recursive dependencies: 108
-
-Run `revdep_details(,"reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘reproducible’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
-    ```
-
 # robotstxt
 
 <details>
@@ -1381,41 +573,10 @@ Run `revdep_details(,"robotstxt")` for more info
 
 ## In both
 
-*   checking whether package ‘robotstxt’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/robotstxt/new/robotstxt.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
-    ```
-
-# RTransferEntropy
-
-<details>
-
-* Version: 0.2.8
-* Source code: https://github.com/cran/RTransferEntropy
-* URL: https://github.com/BZPaper/RTransferEntropy
-* BugReports: https://github.com/BZPaper/RTransferEntropy/issues
-* Date/Publication: 2019-03-12 22:56:06 UTC
-* Number of recursive dependencies: 67
-
-Run `revdep_details(,"RTransferEntropy")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘RTransferEntropy’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/RTransferEntropy/new/RTransferEntropy.Rcheck/00install.out’ for details.
     ```
 
 # sapfluxnetr
@@ -1434,13 +595,6 @@ Run `revdep_details(,"sapfluxnetr")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘sapfluxnetr’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/sapfluxnetr/new/sapfluxnetr.Rcheck/00install.out’ for details.
-    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -1463,13 +617,6 @@ Run `revdep_details(,"sctransform")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘sctransform’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/sctransform/new/sctransform.Rcheck/00install.out’ for details.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -1495,57 +642,9 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘Seurat-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: FindMarkers
-    > ### Title: Gene expression markers of identity classes
-    > ### Aliases: FindMarkers FindMarkersNode FindMarkers.default
-    > ###   FindMarkers.Seurat
-    > 
-    > ### ** Examples
-    > 
-    > # Find markers for cluster 2
-    > markers <- FindMarkers(object = pbmc_small, ident.1 = 2)
-    Error in availableCores() : could not find function "availableCores"
-    Calls: FindMarkers ... WilcoxDETest -> ifelse -> PlanThreads -> eval -> eval
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             scale.factor = scale.factor, verbose = verbose, margin = margin, ...)
-      9: NormalizeData.default(object = GetAssayData(object = object, slot = "counts"), normalization.method = normalization.method, 
-             scale.factor = scale.factor, verbose = verbose, margin = margin, ...)
-      10: PlanThreads()
-      11: eval(expr = formals(fun = plan())$workers)
-      12: eval(expr = formals(fun = plan())$workers)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 302 SKIPPED: 0 WARNINGS: 0 FAILED: 3
-      1. Error: FindConservedMarkers handles missing idents in certain groups (@test_differential_expression.R#265) 
-      2. Error: pca returns total variance (see #982) (@test_dimensional_reduction.R#37) 
-      3. Error: (unknown) (@test_preprocessing.R#58) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘loomR’
-    ```
-
-*   checking whether package ‘Seurat’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/Seurat/new/Seurat.Rcheck/00install.out’ for details.
+    Packages suggested but not available for checking: 'loomR', 'MAST'
     ```
 
 *   checking installed package size ... NOTE
@@ -1576,19 +675,41 @@ Run `revdep_details(,"shinyrecap")` for more info
 
 ## In both
 
-*   checking whether package ‘shinyrecap’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/shinyrecap/new/shinyrecap.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘CARE1’ ‘LCMCR’ ‘coda’ ‘conting’ ‘dga’ ‘future’ ‘ggplot2’ ‘ipc’
       ‘promises’ ‘reshape’ ‘shinycssloaders’ ‘testthat’
       All declared Imports should be used.
+    ```
+
+# simglm
+
+<details>
+
+* Version: 0.7.4
+* Source code: https://github.com/cran/simglm
+* Date/Publication: 2019-05-31 17:10:03 UTC
+* Number of recursive dependencies: 77
+
+Run `revdep_details(,"simglm")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... WARNING
+    ```
+    Missing link or links in documentation object 'sim_pow.Rd':
+      ‘corStruct’
+    
+    Missing link or links in documentation object 'sim_pow_nested.Rd':
+      ‘corStruct’
+    
+    Missing link or links in documentation object 'sim_pow_nested3.Rd':
+      ‘corStruct’
+    
+    See section 'Cross-references' in the 'Writing R Extensions' manual.
     ```
 
 # skpr
@@ -1608,41 +729,11 @@ Run `revdep_details(,"skpr")` for more info
 
 ## In both
 
-*   checking whether package ‘skpr’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/skpr/new/skpr.Rcheck/00install.out’ for details.
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 49.1Mb
       sub-directories of 1Mb or more:
         libs  47.6Mb
-    ```
-
-# sperrorest
-
-<details>
-
-* Version: 2.1.5
-* Source code: https://github.com/cran/sperrorest
-* BugReports: https://github.com/pat-s/sperrorest/issues
-* Date/Publication: 2018-03-27 12:20:30 UTC
-* Number of recursive dependencies: 70
-
-Run `revdep_details(,"sperrorest")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘sperrorest’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/sperrorest/new/sperrorest.Rcheck/00install.out’ for details.
     ```
 
 # stars
@@ -1662,16 +753,53 @@ Run `revdep_details(,"stars")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking examples ... ERROR
     ```
-    Packages suggested but not available for checking: 'plm', 'starsdata'
+    Running examples in ‘stars-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: read_ncdf
+    > ### Title: Read NetCDF into stars object
+    > ### Aliases: read_ncdf
+    > 
+    > ### ** Examples
+    > 
+    > f <- system.file("nc/reduced.nc", package = "stars")
+    > read_ncdf(f)
+    Error in read_ncdf(f) : package ncmeta required, please install it first
+    Execution halted
     ```
 
-*   checking whether package ‘stars’ can be installed ... NOTE
+*   checking tests ...
     ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/00install.out’ for details.
+    ...
+    > y    1 35     NA    NA +proj=longlat +datum=WGS8...    NA
+    >                         values    
+    > x [57x35] -5.59621,...,30.8488 [x]
+    > y  [57x35] 28.3605,...,51.1544 [y]
+    > curvilinear grid
+    > null device 
+    >           1 
+    6c6
+    < Reading layer `nc.gpkg' from data source `/home/hb/repositories/future/revdep/library/stars/sf/gpkg/nc.gpkg' using driver `GPKG'
+    ---
+    > Reading layer `nc.gpkg' from data source `/home/edzer/R/x86_64-pc-linux-gnu-library/3.5/sf/gpkg/nc.gpkg' using driver `GPKG'
+     ERROR
+    Running the tests in ‘tests/netcdf.R’ failed.
+    Complete output:
+      > Sys.setenv(TZ="UTC")
+      > suppressPackageStartupMessages(library(stars))
+      > # read_ncdf:
+      > f <- system.file("nc/reduced.nc", package = "stars")
+      > read_ncdf(f)
+      Error in read_ncdf(f) : package ncmeta required, please install it first
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      'ncmeta', 'plm', 'starsdata'
     ```
 
 *   checking installed package size ... NOTE
@@ -1699,33 +827,20 @@ Run `revdep_details(,"startR")` for more info
 
 ## In both
 
-*   checking whether package ‘startR’ can be installed ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/startR/new/startR.Rcheck/00install.out’ for details.
+    Package suggested but not available for checking: ‘s2dverification’
     ```
 
-# steps
-
-<details>
-
-* Version: 0.2.1
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2019-04-02 11:30:03 UTC
-* Number of recursive dependencies: 47
-
-Run `revdep_details(,"steps")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘steps’ can be installed ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/steps/new/steps.Rcheck/00install.out’ for details.
+    Unavailable namespace imported from by a ':::' call: ‘s2dverification’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘s2dverification’
     ```
 
 # tableschema.r
@@ -1744,13 +859,6 @@ Run `revdep_details(,"tableschema.r")` for more info
 </details>
 
 ## In both
-
-*   checking whether package ‘tableschema.r’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/tableschema.r/new/tableschema.r.Rcheck/00install.out’ for details.
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -1778,13 +886,6 @@ Run `revdep_details(,"tealeaves")` for more info
 
 ## In both
 
-*   checking whether package ‘tealeaves’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/tealeaves/new/tealeaves.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -1808,41 +909,32 @@ Run `revdep_details(,"tidyqwi")` for more info
 
 ## In both
 
-*   checking whether package ‘tidyqwi’ can be installed ... NOTE
+*   checking tests ...
     ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/tidyqwi/new/tidyqwi.Rcheck/00install.out’ for details.
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(tidyqwi)
+      Loading required package: future
+      > 
+      > test_check("tidyqwi")
+      ── 1. Failure: Valid API Key (@test.R#45)  ─────────────────────────────────────
+      `get_qwi(years = c(2011), states = c("01"), apikey = "A")` threw an error with unexpected message.
+      Expected match: "A valid key must be included with each data API request. You included a key with this request, however, it is not valid. Please check your key and try again.If you do not have a key you my sign up for one here. "
+      Actual message: "'Sorry, the system is currently undergoing maintenance or is busy.  Please try again later.' does not exist in current working directory ('/home/hb/repositories/future/revdep/checks/tidyqwi/new/tidyqwi.Rcheck/tests/testthat')."
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 20 SKIPPED: 0 WARNINGS: 0 FAILED: 1
+      1. Failure: Valid API Key (@test.R#45) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘plyr’
       All declared Imports should be used.
-    ```
-
-# tsfeatures
-
-<details>
-
-* Version: 1.0.1
-* Source code: https://github.com/cran/tsfeatures
-* URL: https://pkg.robjhyndman.com/tsfeatures/
-* BugReports: https://github.com/robjhyndman/tsfeatures/issues/
-* Date/Publication: 2019-04-16 13:02:47 UTC
-* Number of recursive dependencies: 86
-
-Run `revdep_details(,"tsfeatures")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘tsfeatures’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/tsfeatures/new/tsfeatures.Rcheck/00install.out’ for details.
     ```
 
 # TSstudio
@@ -1860,40 +952,9 @@ Run `revdep_details(,"TSstudio")` for more info
 
 ## In both
 
-*   checking whether package ‘TSstudio’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/TSstudio/new/TSstudio.Rcheck/00install.out’ for details.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘purrr’
       All declared Imports should be used.
-    ```
-
-# vinereg
-
-<details>
-
-* Version: 0.5.0
-* Source code: https://github.com/cran/vinereg
-* URL: https://tnagler.github.io/vinereg
-* BugReports: https://github.com/tnagler/vinereg/issues
-* Date/Publication: 2018-08-09 23:00:03 UTC
-* Number of recursive dependencies: 80
-
-Run `revdep_details(,"vinereg")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘vinereg’ can be installed ... NOTE
-    ```
-    Found the following notes/warnings:
-      Non-staged installation was used
-    See ‘/home/hb/repositories/future/revdep/checks/vinereg/new/vinereg.Rcheck/00install.out’ for details.
     ```
 
