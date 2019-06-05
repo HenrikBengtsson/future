@@ -34,6 +34,11 @@ DEPRECATED AND DEFUNCT:
  * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
    Use 'conditions' instead.
 
+BUG FIXES:
+
+ * Early signaling did not take place for resolved() for ClusterFuture and
+   MulticoreFuture.
+   
 
 Version: 1.13.0 [2019-05-08]
 
