@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-06-05]
+Version: 1.13.0-9000 [2019-06-06]
 
 SIGNIFICANT CHANGES:
 
@@ -38,7 +38,10 @@ BUG FIXES:
 
  * Early signaling did not take place for resolved() for ClusterFuture and
    MulticoreFuture.
-   
+
+ * The validation of connections failed to detect when the connection had
+   been serialized (= a NIL external pointer) on some macOS systems.
+ 
 
 Version: 1.13.0 [2019-05-08]
 
