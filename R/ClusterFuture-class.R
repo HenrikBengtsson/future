@@ -209,7 +209,11 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   if (x$state == 'created') return(FALSE)
 
   ## Is value already collected?
-  if (!is.null(x$result)) return(TRUE)
+  if (!is.null(x$result)) {
+    ## Signal conditions early?
+    signalEarly(x, ...)
+    return(TRUE)
+  }
 
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -394,6 +398,8 @@ result.ClusterFuture <- function(future, ...) {
     
     clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
   }
+
+  if (debug) mdebug("result() for ClusterFuture ... done")
 
   result
 }

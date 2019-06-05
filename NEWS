@@ -31,6 +31,11 @@ DEPRECATED AND DEFUNCT:
 
  * Removed defunct argument 'output' from FutureError().
 
+BUG FIXES:
+
+ * Early signaling did not take place for resolved() for ClusterFuture and
+   MulticoreFuture.
+   
 
 Version: 1.13.0 [2019-05-08]
 
