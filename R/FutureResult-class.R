@@ -27,10 +27,6 @@
 #' accessing the elements directly in code.  Feel free to reach out if you need
 #' to do so in your code.
 #'
-#' @section Deprecated elements:
-#' * future (>= 1.11.0): elements \code{condition} and \code{calls} are
-#'   deprecated in favor of \code{conditions}
-#'
 #' @export
 #' @keywords internal
 FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.7") {
@@ -42,30 +38,17 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., st
         "Internal error: All arguments to FutureResult() must be named"
       ))
     }
-    ## DEPRECATED in future (>= 1.11.0)
-    if (!is.null(args[["calls"]])) stop_if_not(is.list(args[["calls"]]))
-    if (!is.null(args[["condition"]])) stop_if_not(inherits(args[["condition"]], "error"))
+    ## DEPRECATED in future (>= 1.11.0), DEFUNCT IN future (>= 1.14.0)
+    if (!is.null(args[["calls"]])) {
+      .Defunct(msg = "Argument 'calls' to FutureResult is defunct")
+    } else if (!is.null(args[["condition"]])) {
+      .Defunct(msg = "Argument 'condition' to FutureResult is defunct")
+    }
   }
 
   if (!is.null(stdout)) stopifnot(is.character(stdout))
   
-  if (is.null(conditions)) {
-    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-    if (!is.null(args[["condition"]])) {
-      conditions <- list(list(condition=args[["condition"]]))
-    }
-  } else {
-    stop_if_not(is.list(conditions))
-    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-    ## Make sure that 'condition' is set, in case some pkgs use that
-    for (kk in seq_along(conditions)) {
-      c <- conditions[[kk]]
-      if (inherits(c[["condition"]], "error")) {
-        args[["condition"]] <- c[["condition"]]
-	break
-      }
-    }
-  }
+  stop_if_not(is.null(conditions) || is.list(conditions))
   
   structure(list(
     value      = value,

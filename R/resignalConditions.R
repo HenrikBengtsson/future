@@ -16,11 +16,6 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
   
   conditions <- result$conditions
   
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions) && !is.null(result[["condition"]])) {
-    conditions <- list(list(condition = result[["condition"]]))
-  }
-
   ## Nothing to do
   if (length(conditions) == 0) return(invisible(future))
   
@@ -41,8 +36,6 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
       ## SPECIAL: By default, don't add 'future.info' because it
       ## modifies the error object, which may break things.
       if (debug && !"future.info" %in% names(condition)) {
-        ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-        if (is.null(cond$calls)) cond$calls <- result$calls
         ## Recreate the full call stack
         cond$calls <- c(future$calls, cond$calls)
         condition$future.info <- cond

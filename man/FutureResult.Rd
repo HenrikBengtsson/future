@@ -48,10 +48,4 @@ accessing the elements directly in code.  Feel free to reach out if you need
 to do so in your code.
 }
 
-\section{Deprecated elements}{
-
-* future (>= 1.11.0): elements \code{condition} and \code{calls} are
-  deprecated in favor of \code{conditions}
-}
-
 \keyword{internal}

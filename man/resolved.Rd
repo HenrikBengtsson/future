@@ -7,10 +7,10 @@
 resolved(x, ...)
 }
 \arguments{
-\item{x}{A \link{Future}, a list or an environment (which also
+\item{x}{A \link{Future}, a list, or an environment (which also
 includes \link[listenv:listenv]{list environment}.}
 
-\item{\dots}{Not used}
+\item{\dots}{Not used.}
 }
 \value{
 A logical of the same length and dimensions as \code{x}.
