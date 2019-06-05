@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-04                                  |
+|date     |2019-06-05                                  |
 
 # Dependencies
 
@@ -30,7 +30,7 @@
 |:----------------------|:-------|:------|:-------|:----|
 |[ipc](problems.md#ipc) |0.1.2   |__+1__ |        |     |
 
-## All (67)
+## All (68)
 
 |package                                         |version    |error  |warning |note |
 |:-----------------------------------------------|:----------|:------|:-------|:----|
@@ -91,13 +91,14 @@
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0      |       |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4      |       |1       |     |
 |[skpr](problems.md#skpr)                        |0.57.0     |       |        |1    |
+|solitude                                        |0.1.3      |       |        |     |
 |sperrorest                                      |2.1.5      |       |        |     |
 |[stars](problems.md#stars)                      |0.3-1      |       |        |2    |
 |[startR](problems.md#startr)                    |0.0.1      |       |        |3    |
 |steps                                           |0.2.1      |       |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0      |       |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0      |       |        |1    |
-|[tidyqwi](problems.md#tidyqwi)                  |0.1.0      |1      |        |1    |
+|[tidyqwi](problems.md#tidyqwi)                  |0.1.0      |       |        |1    |
 |tsfeatures                                      |1.0.1      |       |        |     |
 |[TSstudio](problems.md#tsstudio)                |0.1.4      |       |        |1    |
 |vinereg                                         |0.5.0      |       |        |     |

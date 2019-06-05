@@ -865,28 +865,6 @@ Run `revdep_details(,"tidyqwi")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(tidyqwi)
-      Loading required package: future
-      > 
-      > test_check("tidyqwi")
-      ── 1. Failure: Valid API Key (@test.R#45)  ─────────────────────────────────────
-      `get_qwi(years = c(2011), states = c("01"), apikey = "A")` threw an error with unexpected message.
-      Expected match: "A valid key must be included with each data API request. You included a key with this request, however, it is not valid. Please check your key and try again.If you do not have a key you my sign up for one here. "
-      Actual message: "'Sorry, the system is currently undergoing maintenance or is busy.  Please try again later.' does not exist in current working directory ('/home/hb/repositories/future/revdep/checks/tidyqwi/new/tidyqwi.Rcheck/tests/testthat')."
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 20 SKIPPED: 0 WARNINGS: 0 FAILED: 1
-      1. Failure: Valid API Key (@test.R#45) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘plyr’
