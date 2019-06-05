@@ -228,7 +228,8 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
   if (!is.null(con <- node$con)) {
     ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
-    if (connectionId(con) < 0) return(FALSE)
+    connId <- connectionId(con)
+    if (!is.na(connId) && connId < 0L) return(FALSE)
 
     isValid <- isValidConnection(con)
     if (!isValid) {

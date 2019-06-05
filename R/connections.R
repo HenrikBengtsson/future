@@ -1,9 +1,9 @@
-#' @return Returns an non-negative integer or -1L.
+#' @return Returns an non-negative integer, -1L, or \code{NA_integer}.
 #' For connections stdin, stdout, and stderr, 0L, 1L, and 2L,
 #' are returned, respectively.  For all other connections,
 #' a semi-random integer greater or equal to 3L is returned.
 #' For a connection that has been serialized, value is -1L.
-#' Attribute `raw_id` returns the pointer string from which
+#' Attribute \code{raw_id} returns the pointer string from which
 #' the above is inferred.
 #'
 #' @importFrom utils capture.output
@@ -21,7 +21,7 @@ connectionId <- function(con) {
   id <- gsub("(<pointer:| |>)", "", id)
   
   ## Has the connection been serialized?
-  if (id == "(nil)>" || id == "0x0") return(-1L)
+  if (id == "(nil)" || id == "0x0") return(-1L)
   
   id <- strtoi(id, base = 16L)
 

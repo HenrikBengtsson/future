@@ -215,7 +215,9 @@ print.Future <- function(x, ...) {
     cat("Resolved: FALSE\n")
   } else {
     ## Don't signal conditions here
-    cat(sprintf("Resolved: %s\n", resolved(x, .signalEarly = FALSE)))
+    ## Note that resolved() may produce a FutureError, e.g.
+    ## due to invalid connection in a MultisessionFuture
+    cat(sprintf("Resolved: %s\n", tryCatch(resolved(x, .signalEarly = FALSE), error = function(ex) NA)))
   }
 
   if (hasResult) {
