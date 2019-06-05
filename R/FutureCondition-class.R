@@ -60,7 +60,7 @@ print.FutureCondition <- function(x, ...) {
       cat("Future involved:\n")
       print(future)
       cat("\n")
-`   }
+    }
 
     cat("DEBUG: END TROUBLESHOOTING HELP\n")
   }
