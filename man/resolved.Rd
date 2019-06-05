@@ -2,7 +2,6 @@
 % Please edit documentation in R/resolved.R
 \name{resolved}
 \alias{resolved}
-\alias{resolved.default}
 \title{Check whether a future is resolved or not}
 \usage{
 resolved(x, ...)
