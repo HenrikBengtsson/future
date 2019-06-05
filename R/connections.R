@@ -9,13 +9,15 @@ connectionId <- function(con) {
   id <- attr(con, "conn_id")
   if (is.null(id)) return(NA_integer_)
   
-  id <- capture.output(print(id))
-  
+  id <- raw_id <- capture.output(print(id))
+
   ## Has the connection been serialized?
   if (id == "<pointer: (nil)>") return(-1L)
   
   id <- gsub("(<pointer:| |>)", "", id)
   id <- strtoi(id, base = 16L)
+
+  attr(id, "raw_id") <- raw_id
   
   id
 }
@@ -28,7 +30,9 @@ connectionInfo <- function(con) {
     details <- as.list(rep(NA_character_, times = 7L))
     names(details) <- c("description", "class", "mode", "text", "opened", "can read", "can write")
   }
-  details$id <- connectionId(con)
+  id <- connectionId(con)
+  details$id <- id
+  details$raw_id <- attr(id, "raw_id")
   info <- unlist(lapply(details, FUN = function(x) {
     if (is.character(x)) paste0('"', x, '"') else x
   }), use.names = FALSE)
