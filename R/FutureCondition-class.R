@@ -25,16 +25,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   if (inherits(message, "Future")) {
-    future <- message
-    result <- future$result
-    if (inherits(result, "FutureResult")) {
-      cond <- result[["condition"]]
-    } else {
-      ## BACKWARD COMPATIBILITY
-      cond <- future$value
-    }
-    stop_if_not(inherits(cond, "condition"))
-    message <- conditionMessage(cond)
+    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
   } else if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
@@ -69,23 +60,6 @@ print.FutureCondition <- function(x, ...) {
       cat("Future involved:\n")
       print(future)
       cat("\n")
-    }
-
-    result <- future$result
-    if (inherits(result, "FutureResult")) {
-      cond <- result[["condition"]]
-    } else {
-      ## BACKWARD COMPATIBILITY
-      cond <- future$value
-    }
-    if (inherits(cond, "condition")) {
-      fcalls <- result$calls
-      if (is.null(fcalls)) fcalls <- cond$traceback ## BACKWARD COMPATIBILITY
-      if (!is.null(fcalls)) {
-        cat("Future call stack:\n")
-        print(fcalls)
-        cat("\n")
-      }
     }
 
     cat("DEBUG: END TROUBLESHOOTING HELP\n")

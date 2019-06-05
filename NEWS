@@ -31,6 +31,9 @@ DEPRECATED AND DEFUNCT:
 
  * Removed defunct argument 'output' from FutureError().
 
+ * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
+   Use 'conditions' instead.
+
 BUG FIXES:
 
  * Early signaling did not take place for resolved() for ClusterFuture and

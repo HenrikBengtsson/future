@@ -46,9 +46,6 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   result <- result(future)
   conditions <- result$conditions
   
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(list(condition = result[["condition"]]))
-
   ## Find 'error' condition
   error <- NULL
   for (kk in seq_along(conditions)) {
@@ -65,9 +62,6 @@ backtrace <- function(future, envir = parent.frame(), ...) {
 
   calls <- error$calls
 
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (is.null(calls)) calls <- result$calls
-  
   if (is.null(calls)) {
     stop("The error call stack was not recorded for this future: ", sQuote(expr))
   }

@@ -24,9 +24,6 @@ signalEarly <- function(future, collect = TRUE, .signalEarly = TRUE, ...) {
   
   conditions <- result$conditions
   
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(list(condition = result[["condition"]]))
-  
   ## Nothing to do?
   if (!.signalEarly || length(conditions) == 0L) {
     if (debug) {
