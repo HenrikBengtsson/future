@@ -92,7 +92,7 @@
 |[simglm](problems.md#simglm)                    |0.7.4      |       |1       |     |
 |[skpr](problems.md#skpr)                        |0.57.0     |       |        |1    |
 |sperrorest                                      |2.1.5      |       |        |     |
-|[stars](problems.md#stars)                      |0.3-1      |2      |        |2    |
+|[stars](problems.md#stars)                      |0.3-1      |       |        |2    |
 |[startR](problems.md#startr)                    |0.0.1      |       |        |3    |
 |steps                                           |0.2.1      |       |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0      |       |        |2    |

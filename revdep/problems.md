@@ -753,53 +753,9 @@ Run `revdep_details(,"stars")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘stars-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: read_ncdf
-    > ### Title: Read NetCDF into stars object
-    > ### Aliases: read_ncdf
-    > 
-    > ### ** Examples
-    > 
-    > f <- system.file("nc/reduced.nc", package = "stars")
-    > read_ncdf(f)
-    Error in read_ncdf(f) : package ncmeta required, please install it first
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-    > y    1 35     NA    NA +proj=longlat +datum=WGS8...    NA
-    >                         values    
-    > x [57x35] -5.59621,...,30.8488 [x]
-    > y  [57x35] 28.3605,...,51.1544 [y]
-    > curvilinear grid
-    > null device 
-    >           1 
-    6c6
-    < Reading layer `nc.gpkg' from data source `/home/hb/repositories/future/revdep/library/stars/sf/gpkg/nc.gpkg' using driver `GPKG'
-    ---
-    > Reading layer `nc.gpkg' from data source `/home/edzer/R/x86_64-pc-linux-gnu-library/3.5/sf/gpkg/nc.gpkg' using driver `GPKG'
-     ERROR
-    Running the tests in ‘tests/netcdf.R’ failed.
-    Complete output:
-      > Sys.setenv(TZ="UTC")
-      > suppressPackageStartupMessages(library(stars))
-      > # read_ncdf:
-      > f <- system.file("nc/reduced.nc", package = "stars")
-      > read_ncdf(f)
-      Error in read_ncdf(f) : package ncmeta required, please install it first
-      Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking:
-      'ncmeta', 'plm', 'starsdata'
+    Packages suggested but not available for checking: 'plm', 'starsdata'
     ```
 
 *   checking installed package size ... NOTE
