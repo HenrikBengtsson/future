@@ -1,3 +1,23 @@
+#' Signals Captured Conditions
+#'
+#' Captured conditions that meet the \code{include} and \code{exclude}
+#' requirements are signaled \emph{in the order as they were captured}.
+#'
+#' @param future A resolved \link{Future}.
+#'
+#' @param include A character string of \link[base:condition]{condition}
+#' classes to signal.
+#'
+#' @param exclude A character string of \link[base:condition]{condition}
+#' classes \emph{not} to signal.
+#'
+#' @param \ldots Not used.
+#'
+#' @return Returns the \code{future} object invisibly.
+#'
+#' @seealso
+#' Conditions are signaled by
+#' \code{\link[base:signalCondition]{signalCondition}()}.
 resignalConditions <- function(future, include = "condition", exclude = NULL, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
