@@ -83,7 +83,7 @@ plan(multicore)
 ## A global variable
 a <- 0
 
-## Create multicore future (explicitly)
+## Create future (explicitly)
 f <- future({
   b <- 3
   c <- 2

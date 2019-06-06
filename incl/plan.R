@@ -40,13 +40,12 @@ str(list(a = a, b = b, c = c)) ## All NAs
 
 
 ## Multisession futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
+## Windows (but not Linux or macOS) for unknown reasons.
 ## The same code works in package tests.
 \donttest{
 
 # A multisession future (specified via a string variable)
-strategy <- "future::multisession"
-plan(strategy)
+plan("future::multisession")
 f <- future({
   a <- 7
   b <- 3

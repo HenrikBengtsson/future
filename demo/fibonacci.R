@@ -1,10 +1,11 @@
-library("future")
+Rlibrary("future")
 library("listenv")
 
-## IMPORTANT: The below usage of lazy futures will only work when they
-##            are all evaluated in the same process.  We also need to
-##            disable the capturing of the standard output to avoid
-##            'sink stack is full' errors
+## IMPORTANT:
+## 1. The below usage of lazy futures will only work when they are
+##    all evaluated in the same process.
+## 2. We disable the capturing of standard output (stdout=NA) to avoid
+##    'sink stack is full' errors
 oplan <- plan(sequential)
 
 ## Defines the first 100 Fibonacci numbers
