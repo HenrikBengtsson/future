@@ -23,8 +23,8 @@ no recursion is performed.}
 
 \item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
 
-\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
-otherwise not.}
+\item{signal}{If TRUE, captured (\link[base]{conditions}) except errors
+are relayed, otherwise not.}
 
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
@@ -34,7 +34,7 @@ resolved since last time.}
 \item{progress}{(DEFUNCT) Defunct since future 1.13.0 to make room for
 other progress-update mechanisms that are in the works.}
 
-\item{\dots}{Not used}
+\item{\dots}{Not used.}
 }
 \value{
 Returns \code{x} (regardless of subsetting or not).

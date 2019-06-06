@@ -18,8 +18,8 @@
 #' 
 #' @param stdout If TRUE, captured standard output is relayed, otherwise note.
 #' 
-#' @param signal If TRUE, captured (\link[base]{conditions}) are relayed,
-#' otherwise not.
+#' @param signal If TRUE, captured (\link[base]{conditions}) except errors
+#' are relayed, otherwise not.
 #' 
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
@@ -29,7 +29,7 @@
 #'
 #' @param value (DEPRECATED) Use argument `result` instead.
 #' 
-#' @param \dots Not used
+#' @param \dots Not used.
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
 #'
