@@ -8,15 +8,19 @@ SIGNIFICANT CHANGES:
  * All types of conditions are now captured and relayed.  Previously, only
    conditions of class 'message' and 'warning' were relayed.
 
+ * If one of the futures in a collection produce an error, then values()
+   will signal that error as soon as it is detected.  This means that values()
+   is not guaranteed to resolve all futures before relaying the error.
+
 NEW FEATURES:
 
  * values() now relays 'stdout' and 'signal' as soon as possible as long as
    the standard output and the conditions are relayed in their original order.
  
  * resolve() gained arguments 'stdout' and 'signal' for relaying stdout and
-   conditions (except errors) as soon as possible.  When applied to a set of
-   futures, the ordering of the relayed output is the same as the ordering
-   of the futures, i.e. independent of the order they are resolved.
+   conditions as soon as possible.  When applied to a set of futures, the
+   ordering of the relayed output is the same as the ordering of the futures
+   but independently of the order the futures are resolved.
 
  * If captured condition can be "muffled", then it will be muffled.  This
    helps preventing conditions from being handled twice by condition handlers

@@ -18,8 +18,8 @@
 #' 
 #' @param stdout If TRUE, captured standard output is relayed, otherwise note.
 #' 
-#' @param signal If TRUE, captured (\link[base]{conditions}) except errors
-#' are relayed, otherwise not.
+#' @param signal If TRUE, captured (\link[base]{conditions}) are relayed,
+#' otherwise not.
 #' 
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
@@ -32,6 +32,8 @@
 #' @param \dots Not used.
 #'
 #' @return Returns \code{x} (regardless of subsetting or not).
+#' If \code{signal} is TRUE and one of the futures produces an error, then
+#' that error is produced.
 #'
 #' @details
 #' This function is resolves synchronously, i.e. it blocks until \code{x} and
@@ -97,7 +99,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || sig
     result <- NULL     ## Not needed anymore
 
     if (stdout) value(x, stdout = TRUE, signal = FALSE)
-    if (signal) resignalConditions(x, exclude = "error")
+    if (signal) resignalConditions(x)
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -204,15 +206,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            conditions <- result(obj)$conditions
-            n <- length(conditions)
-            if (n > 0L) {
-              if (signal) resignalConditions(obj, exclude = "error")
-              ## We can continue to relay conditions as long as no error has
-              ## been captured
-              relay <- !inherits(conditions[[n]]$condition, "error")
-	      if (!relay) stdout <- signal <- FALSE
-            }
+            if (signal) resignalConditions(obj)
           }
         }
 
@@ -248,14 +242,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      conditions <- result(f)$conditions
-      n <- length(conditions)
-      if (n > 0L) {
-        if (signal) resignalConditions(f, exclude = "error")
-        ## We can continue to relay conditions as long as no error has
-        ## been captured
-        if (inherits(conditions[[n]]$condition, "error")) break
-      }
+      if (signal) resignalConditions(f)
     }
   }
   
@@ -351,15 +338,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            conditions <- result(obj)$conditions
-            n <- length(conditions)
-            if (n > 0L) {
-              if (signal) resignalConditions(obj, exclude = "error")
-              ## We can continue to relay conditions as long as no error has
-              ## been captured
-              relay <- !inherits(conditions[[n]]$condition, "error")
-	      if (!relay) stdout <- signal <- FALSE
-            }
+            if (signal) resignalConditions(obj)
           }
         }
 
@@ -393,14 +372,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      conditions <- result(f)$conditions
-      n <- length(conditions)
-      if (n > 0L) {
-        if (signal) resignalConditions(f, exclude = "error")
-        ## We can continue to relay conditions as long as no error has
-        ## been captured
-        if (inherits(conditions[[n]]$condition, "error")) break
-      }
+      if (signal) resignalConditions(f)
     }
   }
   
@@ -506,15 +478,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            conditions <- result(obj)$conditions
-            n <- length(conditions)
-            if (n > 0L) {
-              if (signal) resignalConditions(obj, exclude = "error")
-              ## We can continue to relay conditions as long as no error has
-              ## been captured
-              relay <- !inherits(conditions[[n]]$condition, "error")
-	      if (!relay) stdout <- signal <- FALSE
-            }
+            if (signal) resignalConditions(obj)
           }
         }
 
@@ -548,14 +512,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      conditions <- result(f)$conditions
-      n <- length(conditions)
-      if (n > 0L) {
-        if (signal) resignalConditions(f, exclude = "error")
-        ## We can continue to relay conditions as long as no error has
-        ## been captured
-        if (inherits(conditions[[n]]$condition, "error")) break
-      }
+      if (signal) resignalConditions(f)
     }
   }
 

@@ -17,6 +17,8 @@
 #'
 #' @return An object of same type as \code{x} and with the same names
 #' and/or dimensions, if set.
+#' If \code{signal} is TRUE and one of the futures produces an error, then
+#' that error is produced.
 #'
 #' @export
 values <- function(x, stdout = TRUE, signal = TRUE, ...) UseMethod("values")

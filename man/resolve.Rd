@@ -23,8 +23,8 @@ no recursion is performed.}
 
 \item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
 
-\item{signal}{If TRUE, captured (\link[base]{conditions}) except errors
-are relayed, otherwise not.}
+\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
+otherwise not.}
 
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
@@ -38,6 +38,8 @@ other progress-update mechanisms that are in the works.}
 }
 \value{
 Returns \code{x} (regardless of subsetting or not).
+If \code{signal} is TRUE and one of the futures produces an error, then
+that error is produced.
 }
 \description{
 This function provides an efficient mechanism for waiting for multiple

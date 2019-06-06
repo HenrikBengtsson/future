@@ -19,6 +19,8 @@ otherwise not.}
 \value{
 An object of same type as \code{x} and with the same names
 and/or dimensions, if set.
+If \code{signal} is TRUE and one of the futures produces an error, then
+that error is produced.
 }
 \description{
 Gets all values in an environment, a list, or a list environment
