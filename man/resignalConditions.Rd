@@ -4,7 +4,8 @@
 \alias{resignalConditions}
 \title{Signals Captured Conditions}
 \usage{
-resignalConditions(future, include = "condition", exclude = NULL, ...)
+resignalConditions(future, include = "condition", exclude = NULL,
+  resignal = TRUE, ...)
 }
 \arguments{
 \item{future}{A resolved \link{Future}.}
@@ -15,10 +16,14 @@ classes to signal.}
 \item{exclude}{A character string of \link[base:condition]{condition}
 classes \emph{not} to signal.}
 
+\item{resignal}{If TRUE, then already signaled conditions are signaled
+again, otherwise not.}
+
 \item{\ldots}{Not used.}
 }
 \value{
-Returns the \code{future} object invisibly.
+Returns the \link{Future} where conditioned that were signaled
+have been flagged to have been signaled.
 }
 \description{
 Captured conditions that meet the \code{include} and \code{exclude}

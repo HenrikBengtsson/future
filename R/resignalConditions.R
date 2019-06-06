@@ -11,6 +11,9 @@
 #' @param exclude A character string of \link[base:condition]{condition}
 #' classes \emph{not} to signal.
 #'
+#' @param resignal If TRUE, then already signaled conditions are signaled
+#' again, otherwise not.
+#'
 #' @param \ldots Not used.
 #'
 #' @return Returns the \link{Future} where conditioned that were signaled
@@ -19,7 +22,7 @@
 #' @seealso
 #' Conditions are signaled by
 #' \code{\link[base:signalCondition]{signalCondition}()}.
-resignalConditions <- function(future, include = "condition", exclude = NULL, ...) {
+resignalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
     stop(FutureError(
@@ -40,15 +43,13 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
   ## Nothing to do
   if (length(conditions) == 0) return(invisible(future))
 
-  signaled <- attr(conditions, "signaled")
-  if (is.null(signaled)) signaled <- rep(FALSE, times = length(conditions))
-
   debug <- getOption("future.debug", FALSE)
 
   if (debug) {
     mdebug("resignalConditions() ...")
     mdebug(" - include = ", paste(sQuote(include), collapse = ", "))
     mdebug(" - exclude = ", paste(sQuote(exclude), collapse = ", "))
+    mdebug(" - resignal = ", resignal)
     mdebug(" - Number of conditions: ", length(conditions))
     on.exit(mdebug("resignalConditions() ... done"))
   }
@@ -56,7 +57,10 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
   ## Signal detected conditions one by one
   for (kk in seq_along(conditions)) {
     cond <- conditions[[kk]]
-    signaled <- cond$signaled
+
+    ## Skip already signaled conditions?
+    if (!resignal && isTRUE(cond$signaled)) next
+    
     condition <- cond$condition
 
     ## Don't signal condition based on 'exclude'?
