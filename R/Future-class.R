@@ -236,7 +236,7 @@ print.Future <- function(x, ...) {
     cat("Value: <not collected>\n")
     cat("Conditions captured: <none>\n")
   }
-  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Early signaling: %s\n", isTRUE(x$earlySignal)))
   cat(sprintf("Owner process: %s\n", x$owner))
   cat(sprintf("Class: %s\n", paste(sQuote(class), collapse = ", ")))
 } ## print()
