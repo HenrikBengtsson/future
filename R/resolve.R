@@ -186,7 +186,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
   remaining <- seq_len(nx)
 
   ## Relay?
-  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
+  resignalConditionsASAP <- make_resignalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -199,7 +199,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
       obj <- x[[ii]]
 
       if (is.atomic(obj)) {
-        if (relay) add_to_relay_queue_and_flush(ii, obj)
+        if (relay) resignalConditionsASAP(obj, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -210,7 +210,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
           if (debug) mdebugf("Future #%d", ii)
         }
 	  
-        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
+        relay_ok <- relay && resignalConditionsASAP(obj, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -233,7 +233,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    add_to_relay_queue_and_flush(0L)
+    resignalConditionsASAP(pos = 0L)
   }
   
   if (debug) mdebug("resolve() on list ... DONE")
@@ -304,24 +304,25 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
   x0 <- x
   x <- futures(x)
   nx <- .length(x)
-  idxs <- ls(envir = x, all.names = TRUE)
-  stop_if_not(length(idxs) == nx)
+  names <- ls(envir = x, all.names = TRUE)
+  stop_if_not(length(names) == nx)
 
   ## Everything is considered non-resolved by default
-  remaining <- idxs
+  remaining <- seq_len(nx)
   
   ## Relay?
-  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
+  resignalConditionsASAP <- make_resignalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
   ## Resolve all elements
   while (length(remaining) > 0) {
     for (ii in remaining) {
-      obj <- x[[ii]]
+      name <- names[ii]
+      obj <- x[[name]]
 
       if (is.atomic(obj)) {
-        if (relay) add_to_relay_queue_and_flush(ii, obj)
+        if (relay) resignalConditionsASAP(obj, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -332,7 +333,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
           if (debug) mdebugf("Future #%d", ii)
         }
 
-        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
+        relay_ok <- relay && resignalConditionsASAP(obj, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -355,7 +356,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    add_to_relay_queue_and_flush(0L)
+    resignalConditionsASAP(pos = 0L)
   }
   
   if (debug) mdebug("resolve() on environment ... DONE")
@@ -440,7 +441,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
   remaining <- seq_len(nx)
 
   ## Relay?
-  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
+  resignalConditionsASAP <- make_resignalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -453,7 +454,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
       obj <- x[[ii]]
 
       if (is.atomic(obj)) {
-        if (relay) add_to_relay_queue_and_flush(ii, obj)
+        if (relay) resignalConditionsASAP(obj, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -464,7 +465,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
           if (debug) mdebugf("Future #%d", ii)
         }
 
-        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
+        relay_ok <- relay && resignalConditionsASAP(obj, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -487,7 +488,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    add_to_relay_queue_and_flush(0L)
+    resignalConditionsASAP(pos = 0L)
   }
 
   if (debug) mdebug("resolve() on list environment ... DONE")
@@ -497,17 +498,17 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
 
 
 
-make_add_to_relay_queue_and_flush <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
+make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
   relay <- (stdout || signal)
-  if (!relay) return(function(...) NULL)
+  if (!relay) return(function(...) TRUE)
 
   relayed <- rep(FALSE, times = nx)
   queue <- vector("list", length = nx)
     
-  function(pos, obj = NULL) {
+  function(obj = NULL, pos) {
     if (debug) {
-      mdebugf("add_to_relay_queue_and_flush(pos=%d, %s) ...", pos, class(obj)[1])
-      on.exit(mdebugf("add_to_relay_queue_and_flush(pos=%d, %s) ... done", pos, class(obj)[1]))
+      mdebugf("resignalConditionsASAP(%s, pos=%d) ...", class(obj)[1], pos)
+      on.exit(mdebugf("resignalConditionsASAP(%s, pos=%d) ... done", class(obj)[1], pos))
     }
       
     ## Flush all?
