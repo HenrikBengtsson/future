@@ -204,19 +204,27 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj, exclude = "error")
-	  }
+            conditions <- result(obj)$conditions
+            n <- length(conditions)
+            if (n > 0L) {
+              if (signal) resignalConditions(obj, exclude = "error")
+              ## We can continue to relay conditions as long as no error has
+              ## been captured
+              relay <- !inherits(conditions[[n]]$condition, "error")
+	      if (!relay) stdout <- signal <- FALSE
+            }
+          }
         }
 
         if (debug && relay) mdebug("Relay is OK: ", relay_ok[ii])
 
         ## In all other cases, try to resolve
         resolve(obj,
-	        recursive = recursive - 1,
-	        result = result,
-	        stdout = stdout && relay_ok[ii],
-	        signal = signal && relay_ok[ii],
-		sleep = sleep, ...)
+                recursive = recursive - 1,
+                result = result,
+                stdout = stdout && relay_ok[ii],
+                signal = signal && relay_ok[ii],
+                sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
@@ -226,7 +234,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
 
       ## Next future for which we can relay ASAP without breaking the order
       if (relay && length(remaining) > 0) {
-	relay_ok[min(remaining)] <- TRUE
+        relay_ok[min(remaining)] <- TRUE
       }
     } # for (ii ...)
 
@@ -240,7 +248,14 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f, exclude = "error")
+      conditions <- result(f)$conditions
+      n <- length(conditions)
+      if (n > 0L) {
+        if (signal) resignalConditions(f, exclude = "error")
+        ## We can continue to relay conditions as long as no error has
+        ## been captured
+        if (inherits(conditions[[n]]$condition, "error")) break
+      }
     }
   }
   
@@ -336,17 +351,25 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj, exclude = "error")
-	  }
+            conditions <- result(obj)$conditions
+            n <- length(conditions)
+            if (n > 0L) {
+              if (signal) resignalConditions(obj, exclude = "error")
+              ## We can continue to relay conditions as long as no error has
+              ## been captured
+              relay <- !inherits(conditions[[n]]$condition, "error")
+	      if (!relay) stdout <- signal <- FALSE
+            }
+          }
         }
 
         ## In all other cases, try to resolve
         resolve(obj,
-	        recursive = recursive - 1,
-	        result = result,
-	        stdout = stdout && relay_ok[ii],
-	        signal = signal && relay_ok[ii],
-		sleep = sleep, ...)
+                recursive = recursive - 1,
+                result = result,
+                stdout = stdout && relay_ok[ii],
+                signal = signal && relay_ok[ii],
+                sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
@@ -356,7 +379,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
 
       ## Next future for which we can relay ASAP without breaking the order
       if (relay && length(remaining) > 0) {
-	relay_ok[min(remaining)] <- TRUE
+        relay_ok[min(remaining)] <- TRUE
       }
     } # for (ii ...)
 
@@ -365,11 +388,19 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
   } # while (...)
 
   if (relay) {
+    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
     for (ii in idxs[!relay_ok]) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f, exclude = "error")
+      conditions <- result(f)$conditions
+      n <- length(conditions)
+      if (n > 0L) {
+        if (signal) resignalConditions(f, exclude = "error")
+        ## We can continue to relay conditions as long as no error has
+        ## been captured
+        if (inherits(conditions[[n]]$condition, "error")) break
+      }
     }
   }
   
@@ -475,17 +506,25 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
           if (!resolved(obj)) next
           if (relay && relay_ok[ii]) {
             if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj, exclude = "error")
-	  }
+            conditions <- result(obj)$conditions
+            n <- length(conditions)
+            if (n > 0L) {
+              if (signal) resignalConditions(obj, exclude = "error")
+              ## We can continue to relay conditions as long as no error has
+              ## been captured
+              relay <- !inherits(conditions[[n]]$condition, "error")
+	      if (!relay) stdout <- signal <- FALSE
+            }
+          }
         }
 
         ## In all other cases, try to resolve
         resolve(obj,
-	        recursive = recursive - 1,
-	        result = result,
-	        stdout = stdout && relay_ok[ii],
-	        signal = signal && relay_ok[ii],
-		sleep = sleep, ...)
+                recursive = recursive - 1,
+                result = result,
+                stdout = stdout && relay_ok[ii],
+                signal = signal && relay_ok[ii],
+                sleep = sleep, ...)
       }
 
       ## Assume resolved at this point
@@ -495,7 +534,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
 
       ## Next future for which we can relay ASAP without breaking the order
       if (relay && length(remaining) > 0) {
-	relay_ok[min(remaining)] <- TRUE
+        relay_ok[min(remaining)] <- TRUE
       }
     } # for (ii ...)
 
@@ -504,11 +543,19 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
   } # while (...)
 
   if (relay) {
+    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
     for (ii in which(!relay_ok)) {
       f <- x[[ii]]
       if (!inherits(f, "Future")) next
       if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f, exclude = "error")
+      conditions <- result(f)$conditions
+      n <- length(conditions)
+      if (n > 0L) {
+        if (signal) resignalConditions(f, exclude = "error")
+        ## We can continue to relay conditions as long as no error has
+        ## been captured
+        if (inherits(conditions[[n]]$condition, "error")) break
+      }
     }
   }
 
