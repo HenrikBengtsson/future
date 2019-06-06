@@ -184,8 +184,9 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
   ## Total number of values to resolve
   total <- nx
   remaining <- seq_len(nx)
-  relay_ok <- rep(FALSE, times = nx)
-  relay_ok[1] <- TRUE
+
+  ## Relay?
+  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -197,27 +198,26 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      if (!is.atomic(obj)) {
+      if (is.atomic(obj)) {
+        if (relay) add_to_relay_queue_and_flush(ii, obj)
+      } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
         if (inherits(obj, "Future")) {
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay && relay_ok[ii]) {
-            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj)
-          }
+          if (debug) mdebugf("Future #%d", ii)
         }
-
-        if (debug && relay) mdebug("Relay is OK: ", relay_ok[ii])
+	  
+        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
 
         ## In all other cases, try to resolve
         resolve(obj,
                 recursive = recursive - 1,
                 result = result,
-                stdout = stdout && relay_ok[ii],
-                signal = signal && relay_ok[ii],
+                stdout = stdout && relay_ok,
+                signal = signal && relay_ok,
                 sleep = sleep, ...)
       }
 
@@ -225,11 +225,6 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
-
-      ## Next future for which we can relay ASAP without breaking the order
-      if (relay && length(remaining) > 0) {
-        relay_ok[min(remaining)] <- TRUE
-      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
@@ -237,13 +232,8 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
   } # while (...)
 
   if (relay) {
-    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
-    for (ii in which(!relay_ok)) {
-      f <- x[[ii]]
-      if (!inherits(f, "Future")) next
-      if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f)
-    }
+    if (debug) mdebug("Relaying remaining futures")
+    add_to_relay_queue_and_flush(0L)
   }
   
   if (debug) mdebug("resolve() on list ... DONE")
@@ -319,8 +309,9 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
 
   ## Everything is considered non-resolved by default
   remaining <- idxs
-  relay_ok <- rep(FALSE, times = nx)
-  relay_ok[1] <- TRUE
+  
+  ## Relay?
+  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
@@ -329,25 +320,26 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      if (!is.atomic(obj)) {
+      if (is.atomic(obj)) {
+        if (relay) add_to_relay_queue_and_flush(ii, obj)
+      } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
         if (inherits(obj, "Future")) {
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay && relay_ok[ii]) {
-            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj)
-          }
+          if (debug) mdebugf("Future #%d", ii)
         }
+
+        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
 
         ## In all other cases, try to resolve
         resolve(obj,
                 recursive = recursive - 1,
                 result = result,
-                stdout = stdout && relay_ok[ii],
-                signal = signal && relay_ok[ii],
+                stdout = stdout && relay_ok,
+                signal = signal && relay_ok,
                 sleep = sleep, ...)
       }
 
@@ -355,11 +347,6 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
-
-      ## Next future for which we can relay ASAP without breaking the order
-      if (relay && length(remaining) > 0) {
-        relay_ok[min(remaining)] <- TRUE
-      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
@@ -367,13 +354,8 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
   } # while (...)
 
   if (relay) {
-    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
-    for (ii in idxs[!relay_ok]) {
-      f <- x[[ii]]
-      if (!inherits(f, "Future")) next
-      if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f)
-    }
+    if (debug) mdebug("Relaying remaining futures")
+    add_to_relay_queue_and_flush(0L)
   }
   
   if (debug) mdebug("resolve() on environment ... DONE")
@@ -456,8 +438,9 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
 
   ## Everything is considered non-resolved by default
   remaining <- seq_len(nx)
-  relay_ok <- rep(FALSE, times = nx)
-  relay_ok[1] <- TRUE
+
+  ## Relay?
+  add_to_relay_queue_and_flush <- make_add_to_relay_queue_and_flush(nx, stdout = stdout, signal = signal, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -469,25 +452,26 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
     for (ii in remaining) {
       obj <- x[[ii]]
 
-      if (!is.atomic(obj)) {
+      if (is.atomic(obj)) {
+        if (relay) add_to_relay_queue_and_flush(ii, obj)
+      } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
         if (inherits(obj, "Future")) {
           ## Lazy future that is not yet launched?
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
-          if (relay && relay_ok[ii]) {
-            if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-            if (signal) resignalConditions(obj)
-          }
+          if (debug) mdebugf("Future #%d", ii)
         }
+
+        relay_ok <- relay && add_to_relay_queue_and_flush(ii, obj)
 
         ## In all other cases, try to resolve
         resolve(obj,
                 recursive = recursive - 1,
                 result = result,
-                stdout = stdout && relay_ok[ii],
-                signal = signal && relay_ok[ii],
+                stdout = stdout && relay_ok,
+                signal = signal && relay_ok,
                 sleep = sleep, ...)
       }
 
@@ -495,11 +479,6 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
       remaining <- setdiff(remaining, ii)
       if (debug) mdebugf(" length: %d (resolved future %s)", length(remaining), ii)
       stop_if_not(!anyNA(remaining))
-
-      ## Next future for which we can relay ASAP without breaking the order
-      if (relay && length(remaining) > 0) {
-        relay_ok[min(remaining)] <- TRUE
-      }
     } # for (ii ...)
 
     ## Wait a bit before checking again
@@ -507,16 +486,77 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
   } # while (...)
 
   if (relay) {
-    if (debug) mdebug(sprintf("Relaying: %d remaining futures", sum(!relay_ok)))
-    for (ii in which(!relay_ok)) {
-      f <- x[[ii]]
-      if (!inherits(f, "Future")) next
-      if (stdout) value(f, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(f)
-    }
+    if (debug) mdebug("Relaying remaining futures")
+    add_to_relay_queue_and_flush(0L)
   }
 
   if (debug) mdebug("resolve() on list environment ... DONE")
 
   x0
 } ## resolve() for list environment
+
+
+
+make_add_to_relay_queue_and_flush <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
+  relay <- (stdout || signal)
+  if (!relay) return(function(...) NULL)
+
+  relayed <- rep(FALSE, times = nx)
+  queue <- vector("list", length = nx)
+    
+  function(pos, obj = NULL) {
+    if (debug) {
+      mdebugf("add_to_relay_queue_and_flush(pos=%d, %s) ...", pos, class(obj)[1])
+      on.exit(mdebugf("add_to_relay_queue_and_flush(pos=%d, %s) ... done", pos, class(obj)[1]))
+    }
+      
+    ## Flush all?
+    if (pos == 0L) {
+      if (debug) message(" - flush all")
+      for (ii in which(!relayed)) {
+        obj <- queue[[ii]]
+        if (is.null(obj)) {
+          relayed[ii] <<- TRUE
+          next
+        }
+        stop_if_not(inherits(obj, "Future"))
+        if (debug) mdebugf(" - relaying element #%d", ii)
+        if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+        if (signal) resignalConditions(obj)
+        relayed[ii] <<- TRUE
+        queue[[ii]] <<- NULL
+      }
+      ## Assert that everything has been relayed
+      stop_if_not(all(relayed))
+      return(TRUE)
+    }
+      
+    stop_if_not(pos >= 1L, pos <= nx)
+
+    ## Add to queue?
+    if (inherits(obj, "Future")) {
+      queue[[pos]] <<- obj
+    } else {
+      relayed[pos] <<- TRUE
+    }
+    
+    ## How far may we flush the queue?
+    until <- which(relayed)
+    n <- length(until)
+    until <- if (n == 0L) 1L else min(until[n] + 1L, length(queue))
+    if (debug) mprint(relayed)
+    if (debug) mdebugf(" - until=%d", until)
+    for (ii in seq_len(until)) {
+      obj <- queue[[ii]]
+      if (is.null(obj)) next
+      if (debug) mdebugf(" - relaying element #%d", ii)
+      if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+      if (signal) resignalConditions(obj)
+      relayed[ii] <<- TRUE
+      queue[[ii]] <<- NULL
+    }
+
+    ## Was the added object relayed?
+    relayed[pos]
+  }
+}
