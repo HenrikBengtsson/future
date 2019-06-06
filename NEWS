@@ -23,6 +23,14 @@ NEW FEATURES:
    when future are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
 
+BUG FIXES:
+
+ * Early signaling did not take place for resolved() for ClusterFuture and
+   MulticoreFuture.
+
+ * The validation of connections failed to detect when the connection had
+   been serialized (= a NIL external pointer) on some macOS systems.
+
 DEPRECATED AND DEFUNCT:
 
  * Argument 'progress' of resolve() is now defunct (was deprecated since
@@ -33,14 +41,6 @@ DEPRECATED AND DEFUNCT:
 
  * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
    Use 'conditions' instead.
-
-BUG FIXES:
-
- * Early signaling did not take place for resolved() for ClusterFuture and
-   MulticoreFuture.
-
- * The validation of connections failed to detect when the connection had
-   been serialized (= a NIL external pointer) on some macOS systems.
  
 
 Version: 1.13.0 [2019-05-08]
