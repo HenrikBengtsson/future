@@ -22,7 +22,7 @@
 #' @seealso
 #' Conditions are signaled by
 #' \code{\link[base:signalCondition]{signalCondition}()}.
-resignalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
+signalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
   ## Future is not yet launched
   if (!future$state %in% c("finished", "failed")) {
     stop(FutureError(
@@ -46,12 +46,12 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, re
   debug <- getOption("future.debug", FALSE)
 
   if (debug) {
-    mdebug("resignalConditions() ...")
+    mdebug("signalConditions() ...")
     mdebug(" - include = ", paste(sQuote(include), collapse = ", "))
     mdebug(" - exclude = ", paste(sQuote(exclude), collapse = ", "))
     mdebug(" - resignal = ", resignal)
     mdebug(" - Number of conditions: ", length(conditions))
-    on.exit(mdebug("resignalConditions() ... done"))
+    on.exit(mdebug("signalConditions() ... done"))
   }
 
   ## Signal detected conditions one by one
@@ -108,7 +108,7 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, re
 }
 
 
-make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
+make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
   relay <- (stdout || signal)
   if (!relay) return(function(...) TRUE)
 
@@ -117,8 +117,8 @@ make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug 
     
   function(obj = NULL, ..., pos) {
     if (debug) {
-      mdebugf("resignalConditionsASAP(%s, pos=%d) ...", class(obj)[1], pos)
-      on.exit(mdebugf("resignalConditionsASAP(%s, pos=%d) ... done", class(obj)[1], pos))
+      mdebugf("signalConditionsASAP(%s, pos=%d) ...", class(obj)[1], pos)
+      on.exit(mdebugf("signalConditionsASAP(%s, pos=%d) ... done", class(obj)[1], pos))
     }
       
     ## Flush all?
@@ -133,7 +133,7 @@ make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug 
         stop_if_not(inherits(obj, "Future"))
         if (debug) mdebugf(" - relaying element #%d", ii)
         if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-        if (signal) resignalConditions(obj, ...)
+        if (signal) signalConditions(obj, ...)
         relayed[ii] <<- TRUE
         queue[ii] <- list(NULL)
       }
@@ -162,7 +162,7 @@ make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug 
       if (is.null(obj)) next
       if (debug) mdebugf(" - relaying element #%d", ii)
       if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-      if (signal) resignalConditions(obj, ...)
+      if (signal) signalConditions(obj, ...)
       relayed[ii] <<- TRUE
       queue[ii] <- list(NULL)
     }
@@ -170,4 +170,4 @@ make_resignalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug 
     ## Was the added object relayed?
     relayed[pos]
   }
-} ## make_resignalConditionsASAP()
+} ## make_signalConditionsASAP()
