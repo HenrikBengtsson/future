@@ -13,7 +13,8 @@
 #'
 #' @param \ldots Not used.
 #'
-#' @return Returns the \code{future} object invisibly.
+#' @return Returns the \link{Future} where conditioned that were signaled
+#' have been flagged to have been signaled.
 #'
 #' @seealso
 #' Conditions are signaled by
@@ -38,7 +39,10 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
   
   ## Nothing to do
   if (length(conditions) == 0) return(invisible(future))
-  
+
+  signaled <- attr(conditions, "signaled")
+  if (is.null(signaled)) signaled <- rep(FALSE, times = length(conditions))
+
   debug <- getOption("future.debug", FALSE)
 
   if (debug) {
@@ -48,10 +52,11 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
     mdebug(" - Number of conditions: ", length(conditions))
     on.exit(mdebug("resignalConditions() ... done"))
   }
-  
+
   ## Signal detected conditions one by one
   for (kk in seq_along(conditions)) {
     cond <- conditions[[kk]]
+    signaled <- cond$signaled
     condition <- cond$condition
 
     ## Don't signal condition based on 'exclude'?
@@ -62,7 +67,16 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
 
     mdebugf(" - Condition #%d: %s", kk, paste(sQuote(class(condition)), collapse = ", "))
 
+    ## Flag condition as signaled
+    cond$signaled <- TRUE
+    conditions[[kk]] <- cond
+    
     if (inherits(condition, "error")) {
+      ## Make sure to update 'signaled' information before we exit.
+      ## Note, 'future' is an environment.
+      result$conditions <- conditions
+      future$result <- result
+      
       ## SPECIAL: By default, don't add 'future.info' because it
       ## modifies the error object, which may break things.
       if (debug && !"future.info" %in% names(condition)) {
@@ -81,7 +95,11 @@ resignalConditions <- function(future, include = "condition", exclude = NULL, ..
       stop_if_not(inherits(condition, "condition"))
     }
   }
-  
+
+  ## Make sure to update 'signaled' information on exit
+  result$conditions <- conditions
+  future$result <- result
+
   invisible(future)
 }
 

@@ -358,7 +358,7 @@ result.Future <- function(future, ...) {
   if (future$state == "failed") {
     value <- result
     calls <- value$traceback
-    return(FutureResult(conditions = list(list(condition = value)), calls = calls, version = "1.7"))
+    return(FutureResult(conditions = list(list(condition = value, signaled = FALSE)), calls = calls, version = "1.7"))
   }
 
   FutureResult(value = result, version = "1.7")
@@ -767,10 +767,10 @@ makeExpression <- local({
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time())
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = FALSE)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = FALSE)
                   if (inherits(cond, "message")) {
                     invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {
