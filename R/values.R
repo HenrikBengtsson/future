@@ -26,7 +26,7 @@ values <- function(x, stdout = TRUE, signal = TRUE, ...) UseMethod("values")
 #' @export
 values.list <- function(x, stdout = TRUE, signal = TRUE, ...) {
   y <- futures(x)
-  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal)
+  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal, resignal = TRUE)
   for (ii in seq_along(y)) {
     f <- y[[ii]]
     if (!inherits(f, "Future")) next
@@ -45,7 +45,7 @@ values.list <- function(x, stdout = TRUE, signal = TRUE, ...) {
 #' @export
 values.environment <- function(x, stdout = TRUE, signal = TRUE, ...) {
   y <- futures(x)
-  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal)
+  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal, resignal = TRUE)
   names <- ls(envir = y, all.names = TRUE)
   for (key in names) {
     f <- y[[key]]
@@ -60,7 +60,7 @@ values.environment <- function(x, stdout = TRUE, signal = TRUE, ...) {
 #' @export
 values.listenv <- function(x, stdout = TRUE, signal = TRUE, ...) {
   y <- futures(x)
-  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal)
+  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal, resignal = TRUE)
   for (ii in seq_along(y)) {
     f <- y[[ii]]
     if (!inherits(f, "Future")) next

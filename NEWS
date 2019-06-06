@@ -35,6 +35,12 @@ BUG FIXES:
  * The validation of connections failed to detect when the connection had
    been serialized (= a NIL external pointer) on some macOS systems.
 
+ * When early signalling was enabled, functions such as resolved() and
+   resolve() would relay captured conditions multiple times.  This would
+   for instance result in the same messages and warnings being outputted
+   more than once.  Now it is only value() that will resignal conditions.
+   
+
 DEPRECATED AND DEFUNCT:
 
  * Argument 'progress' of resolve() is now defunct (was deprecated since

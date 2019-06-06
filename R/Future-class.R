@@ -420,7 +420,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (length(conditions) > 0) {
     if (signal) {
       mdebugf("Future state: %s", sQuote(future$state))
-      signalConditions(future) ## Will signal an (eval) error, iff exists
+      signalConditions(future, resignal = TRUE) ## Will signal an (eval) error, iff exists
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition

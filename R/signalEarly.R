@@ -42,7 +42,7 @@ signalEarly <- function(future, collect = TRUE, .signalEarly = TRUE, ...) {
            length(conditionClasses), hpaste(sQuote(conditionClasses)))
   }
 
-  signalConditions(future)
+  signalConditions(future, resignal = FALSE)
   
   if (debug) mdebug("signalEarly() ... DONE")
 

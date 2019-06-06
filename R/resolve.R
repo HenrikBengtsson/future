@@ -99,7 +99,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || sig
     result <- NULL     ## Not needed anymore
 
     if (stdout) value(x, stdout = TRUE, signal = FALSE)
-    if (signal) signalConditions(x)
+    if (signal) signalConditions(x, resignal = FALSE)
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -199,7 +199,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
       obj <- x[[ii]]
 
       if (is.atomic(obj)) {
-        if (relay) signalConditionsASAP(obj, pos = ii)
+        if (relay) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -210,7 +210,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
           if (debug) mdebugf("Future #%d", ii)
         }
 	  
-        relay_ok <- relay && signalConditionsASAP(obj, pos = ii)
+        relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -233,7 +233,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    signalConditionsASAP(pos = 0L)
+    signalConditionsASAP(resignal = FALSE, pos = 0L)
   }
   
   if (debug) mdebug("resolve() on list ... DONE")
@@ -322,7 +322,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
       obj <- x[[name]]
 
       if (is.atomic(obj)) {
-        if (relay) signalConditionsASAP(obj, pos = ii)
+        if (relay) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -333,7 +333,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
           if (debug) mdebugf("Future #%d", ii)
         }
 
-        relay_ok <- relay && signalConditionsASAP(obj, pos = ii)
+        relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -356,7 +356,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    signalConditionsASAP(pos = 0L)
+    signalConditionsASAP(resignal = FALSE, pos = 0L)
   }
   
   if (debug) mdebug("resolve() on environment ... DONE")
@@ -454,7 +454,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
       obj <- x[[ii]]
 
       if (is.atomic(obj)) {
-        if (relay) signalConditionsASAP(obj, pos = ii)
+        if (relay) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
       } else {
         ## If an unresolved future, move on to the next object
         ## so that future can be resolved in the asynchronously
@@ -465,7 +465,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
           if (debug) mdebugf("Future #%d", ii)
         }
 
-        relay_ok <- relay && signalConditionsASAP(obj, pos = ii)
+        relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
 
         ## In all other cases, try to resolve
         resolve(obj,
@@ -488,7 +488,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || si
 
   if (relay) {
     if (debug) mdebug("Relaying remaining futures")
-    signalConditionsASAP(pos = 0L)
+    signalConditionsASAP(resignal = FALSE, pos = 0L)
   }
 
   if (debug) mdebug("resolve() on list environment ... DONE")
