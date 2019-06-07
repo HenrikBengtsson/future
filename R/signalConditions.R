@@ -108,34 +108,44 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
 }
 
 
-make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug = getOption("future.debug", FALSE)) {
+make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = FALSE, debug = getOption("future.debug", FALSE)) {
   relay <- (stdout || signal)
-  if (!relay) return(function(...) TRUE)
+  if (!relay && !force) return(function(...) TRUE)
 
   relayed <- rep(FALSE, times = nx)
   queue <- vector("list", length = nx)
     
-  function(obj = NULL, ..., pos) {
+  function(obj = NULL, ..., resignal = FALSE, pos) {
     if (debug) {
       mdebugf("signalConditionsASAP(%s, pos=%d) ...", class(obj)[1], pos)
-      on.exit(mdebugf("signalConditionsASAP(%s, pos=%d) ... done", class(obj)[1], pos))
+      mdebugf("- nx: %d", nx)
+      mdebugf("- relay: %s", relay)
+      mdebugf("- stdout: %s", stdout)
+      mdebugf("- signal: %s", signal)
+      mdebugf("- resignal: %s", resignal)
+      mdebugf("- force: %s", force)
+      mdebugf("- relayed: [n=%d] %s", length(relayed), paste(relayed, collapse = ", "))
+      mdebugf("- queued futures: [n=%d] %s", length(queue), paste(vapply(queue, FUN = inherits, "Future", FUN.VALUE = FALSE), collapse = ", "))
+      on.exit({
+        mdebugf("- relayed: [n=%d] %s", length(relayed), paste(relayed, collapse = ", "))
+        mdebugf("- queued futures: [n=%d] %s", length(queue), paste(vapply(queue, FUN = inherits, "Future", FUN.VALUE = FALSE), collapse = ", "))
+        mdebugf("signalConditionsASAP(%s, pos=%d) ... done", class(obj)[1], pos)
+      })
     }
-      
+
+    if (force) resignal <- TRUE
+    
     ## Flush all?
     if (pos == 0L) {
       if (debug) message(" - flush all")
       for (ii in which(!relayed)) {
-        obj <- queue[[ii]]
-        if (is.null(obj)) {
-          relayed[ii] <<- TRUE
-          next
-        }
-        stop_if_not(inherits(obj, "Future"))
+        if (relayed[ii]) next
         if (debug) mdebugf(" - relaying element #%d", ii)
+        obj <- queue[[ii]]
+        stop_if_not(inherits(obj, "Future"))
         if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-        if (signal) signalConditions(obj, ...)
+        if (signal) signalConditions(obj, ..., resignal = resignal)
         relayed[ii] <<- TRUE
-        queue[ii] <- list(NULL)
       }
       ## Assert that everything has been relayed
       stop_if_not(all(relayed))
@@ -155,16 +165,16 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, debug = 
     until <- which(relayed)
     n <- length(until)
     until <- if (n == 0L) 1L else min(until[n] + 1L, length(queue))
-    if (debug) mprint(relayed)
     if (debug) mdebugf(" - until=%d", until)
     for (ii in seq_len(until)) {
-      obj <- queue[[ii]]
-      if (is.null(obj)) next
+      if (relayed[ii]) next
       if (debug) mdebugf(" - relaying element #%d", ii)
-      if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-      if (signal) signalConditions(obj, ...)
+      obj <- queue[[ii]]
+      if (inherits(obj, "Future")) {
+        if (stdout) value(obj, stdout = TRUE, signal = FALSE)
+        if (signal) signalConditions(obj, ..., resignal = resignal)
+      }
       relayed[ii] <<- TRUE
-      queue[ii] <- list(NULL)
     }
 
     ## Was the added object relayed?

@@ -5,8 +5,8 @@
 \title{Resolve one or more futures synchronously}
 \usage{
 resolve(x, idxs = NULL, recursive = 0, result = FALSE,
-  stdout = FALSE, signal = FALSE, sleep = 1, value = result,
-  progress = FALSE, ...)
+  stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1,
+  value = result, progress = FALSE, ...)
 }
 \arguments{
 \item{x}{A \link{Future} to be resolved, or a list, an environment, or a
@@ -23,8 +23,11 @@ no recursion is performed.}
 
 \item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
 
-\item{signal}{If TRUE, captured (\link[base]{conditions}) are relayed,
+\item{signal}{If TRUE, captured \link[base]{conditions} are relayed,
 otherwise not.}
+
+\item{force}{If TRUE, captured standard output and captured
+\link[base]{conditions} already relayed is relayed again, otherwise not.}
 
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
