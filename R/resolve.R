@@ -4,8 +4,8 @@
 #' futures in a container (e.g. list or environment) to be resolved while in
 #' the meanwhile retrieving values of already resolved futures.
 #' 
-#' @param x a list, an environment, or a list environment holding futures
-#' that should be resolved.  May also be a single \link{Future}.
+#' @param x A \link{Future} to be resolved, or a list, an environment, or a
+#' list environment of futures to be resolved.
 #' 
 #' @param idxs (optional) integer or logical index specifying the subset of
 #' elements to check.
@@ -44,13 +44,13 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -111,7 +111,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = stdout || sig
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -243,7 +243,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = stdout || signa
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -366,7 +366,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = stdout |
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = stdout || signal, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")

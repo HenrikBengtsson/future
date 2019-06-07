@@ -4,13 +4,13 @@
 \alias{resolve}
 \title{Resolve one or more futures synchronously}
 \usage{
-resolve(x, idxs = NULL, recursive = 0, result = stdout || signal,
+resolve(x, idxs = NULL, recursive = 0, result = FALSE,
   stdout = FALSE, signal = FALSE, sleep = 1, value = result,
   progress = FALSE, ...)
 }
 \arguments{
-\item{x}{a list, an environment, or a list environment holding futures
-that should be resolved.  May also be a single \link{Future}.}
+\item{x}{A \link{Future} to be resolved, or a list, an environment, or a
+list environment of futures to be resolved.}
 
 \item{idxs}{(optional) integer or logical index specifying the subset of
 elements to check.}
