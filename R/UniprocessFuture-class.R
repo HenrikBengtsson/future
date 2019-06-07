@@ -121,6 +121,13 @@ resolved.UniprocessFuture <- function(x, ...) {
   NextMethod()
 }
 
+#' @export
+getExpression.UniprocessFuture <- function(future, instantRelay = TRUE, ...) {
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+  NextMethod(instantRelay = instantRelay)
+}
+
 
 #' @rdname UniprocessFuture-class
 #' @export

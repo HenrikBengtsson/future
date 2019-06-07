@@ -28,7 +28,8 @@ NEW FEATURES:
    Messages and warnings were already muffled in the past.
 
  * Conditions inheriting 'instant_relay_condition' are signaled as soon as
-   they have been retrieved and they will only be signaled once per future.
+   possible. Contrary to other types of conditions, these will be signaled
+   only once per future, despite being collected.
 
 BUG FIXES:
 

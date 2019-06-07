@@ -636,7 +636,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, version = version)
+  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")
