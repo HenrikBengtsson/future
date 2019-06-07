@@ -208,6 +208,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
           if (debug) mdebugf("Future #%d", ii)
+          if (result) value(obj, stdout = FALSE, signal = FALSE)
         }
 	  
         relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
@@ -331,6 +332,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
           if (debug) mdebugf("Future #%d", ii)
+          if (result) value(obj, stdout = FALSE, signal = FALSE)
         }
 
         relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
@@ -463,6 +465,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
           if (obj$state == 'created') obj <- run(obj)
           if (!resolved(obj)) next
           if (debug) mdebugf("Future #%d", ii)
+          if (result) value(obj, stdout = FALSE, signal = FALSE)
         }
 
         relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
