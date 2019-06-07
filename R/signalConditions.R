@@ -173,8 +173,8 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = 
       if (inherits(obj, "Future")) {
         if (stdout) value(obj, stdout = TRUE, signal = FALSE)
         if (signal) signalConditions(obj, ..., resignal = resignal)
+        relayed[ii] <<- TRUE
       }
-      relayed[ii] <<- TRUE
     }
 
     ## Was the added object relayed?
