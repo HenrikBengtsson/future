@@ -99,8 +99,8 @@ for (ss in seq_along(strategies)) {
   message("- list of two futures")
   fs <- list()
   msgs <- recordMessages({
-    fs[[1]] <- future({ instantMessage("IM1"); Sys.sleep(1); message("M1"); 1L })
-    fs[[2]] <- future({ instantMessage("IM2"); Sys.sleep(1); message("M2"); 2L })
+    fs[[1]] <- future({ instantMessage("IM1"); Sys.sleep(0.1); message("M1"); 1L })
+    fs[[2]] <- future({ instantMessage("IM2"); Sys.sleep(0.1); message("M2"); 2L })
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
   if (inherits(fs[[1]], "UniprocessFuture")) {
@@ -137,14 +137,14 @@ for (ss in seq_along(strategies)) {
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("M1\n", "M2\n")))
+  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IM2\n", "M2\n")))
   
   message("- getting value again")
   msgs <- recordMessages({
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("M1\n", "M2\n")))
+  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IM2\n", "M2\n")))
 
   message("* Two futures ... DONE")
 
