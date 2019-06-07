@@ -2,15 +2,24 @@ source("incl/start.R")
 
 options(future.debug = FALSE)
 
-message("*** instantMessage() ...")
+message("*** immediateCondition:s ...")
 
-instantMessage <- function(..., domain = NULL, appendLF = TRUE) {
+immediateMessage <- function(..., domain = NULL, appendLF = TRUE) {
    msg <- .makeMessage(..., domain = domain, appendLF = appendLF)
    call <- sys.call()
    m <- simpleMessage(msg, call)
-   class(m) <- c(class(m), "instant_relay_condition")
+   class(m) <- c(class(m), "immediateCondition")
    message(m)
    invisible(m)
+}
+
+immediateWarning <- function(..., domain = NULL) {
+   msg <- .makeMessage(..., domain = domain)
+   call <- sys.call()
+   w <- simpleWarning(msg, call)
+   class(w) <- c(class(w), "immediateCondition")
+   warning(w)
+   invisible(w)
 }
 
 recordConditions <- function(expr, ...) {
@@ -30,7 +39,7 @@ strategies <- supportedStrategies()
 
 for (ss in seq_along(strategies)) {
   strategy <- strategies[[ss]]
-  message(sprintf("Instant relay w/ %s ...", names(strategies)[ss]))
+  message(sprintf("Immediate relay w/ %s ...", names(strategies)[ss]))
   plan(strategy)
 
   message("* A single future ...")
@@ -38,15 +47,16 @@ for (ss in seq_along(strategies)) {
   message("- creating future")
   msgs <- recordMessages({
     f <- future({
-      instantMessage("IM1")
+      immediateMessage("IM1")
       message("M")
-      instantMessage("IM2")
+      immediateWarning("IW")
+      immediateMessage("IM2")
       42L
     })
   })
   message("  class: ", paste(sQuote(class(f)), collapse = ", "))
   if (inherits(f, "UniprocessFuture")) {
-    stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
+    stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
   } else {
     stopifnot(length(msgs) == 0L)
   }
@@ -71,7 +81,7 @@ for (ss in seq_along(strategies)) {
   if (inherits(f, c("UniprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
-    stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
+    stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
   }
 
   message("- getting value")
@@ -82,7 +92,7 @@ for (ss in seq_along(strategies)) {
   if (inherits(f, "UniprocessFuture")) {
     stopifnot(identical(msgs, "M\n"))
   } else {
-    stopifnot(identical(msgs, c("IM1\n", "IM2\n", "M\n")))
+    stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n", "M\n")))
   }
   
   message("- getting value again")
@@ -99,12 +109,12 @@ for (ss in seq_along(strategies)) {
   message("- list of two futures")
   fs <- list()
   msgs <- recordMessages({
-    fs[[1]] <- future({ instantMessage("IM1"); Sys.sleep(0.1); message("M1"); 1L })
-    fs[[2]] <- future({ instantMessage("IM2"); Sys.sleep(0.1); message("M2"); 2L })
+    fs[[1]] <- future({ immediateMessage("IM1"); Sys.sleep(0.1); message("M1"); immediateWarning("IW1"); 1L })
+    fs[[2]] <- future({ immediateMessage("IM2"); Sys.sleep(0.1); message("M2"); immediateWarning("IW2"); 2L })
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
   if (inherits(fs[[1]], "UniprocessFuture")) {
-    stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
+    stopifnot(identical(msgs, c("IM1\n", "IW1", "IM2\n", "IW2")))
   } else {
     stopifnot(length(msgs) == 0L)
   }
@@ -129,7 +139,7 @@ for (ss in seq_along(strategies)) {
   if (inherits(fs[[1]], c("UniprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
-    stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
+    stopifnot(identical(msgs, c("IM1\n", "IW1", "IM2\n", "IW2")))
   }
 
   message("- getting value")
@@ -137,20 +147,20 @@ for (ss in seq_along(strategies)) {
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IM2\n", "M2\n")))
+  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
   
   message("- getting value again")
   msgs <- recordMessages({
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IM2\n", "M2\n")))
+  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
 
   message("* Two futures ... DONE")
 
-  message(sprintf("Instant relay w/ %s ... done", names(strategies)[ss]))
+  message(sprintf("Immediate relay w/ %s ... done", names(strategies)[ss]))
 } ## for (ss ...)
 
-message("*** instantMessage() ... DONE")
+message("*** immediateCondition:s ... DONE")
 
 source("incl/end.R")

@@ -72,9 +72,9 @@ run.UniprocessFuture <- function(future, ...) {
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
 
-  ## Always signal 'instant_relay_condition' conditions and as soon
-  ## as possible.  They will always be signaled if they exist.
-  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalConditions(future, include = "immediateCondition", resignal = FALSE)
 
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
@@ -122,10 +122,10 @@ resolved.UniprocessFuture <- function(x, ...) {
 }
 
 #' @export
-getExpression.UniprocessFuture <- function(future, instantRelay = TRUE, ...) {
+getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
-  NextMethod(instantRelay = instantRelay)
+  NextMethod(immediateConditions = immediateConditions)
 }
 
 

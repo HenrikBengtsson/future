@@ -330,9 +330,9 @@ result.Future <- function(future, ...) {
     ## all future backends to use result() to do it. /HB 2018-02-22
     value(future, stdout = FALSE, signal = FALSE)
 
-    ## Always signal 'instant_relay_condition' conditions and as soon
-    ## as possible.  They will always be signaled if they exist.
-    signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalConditions(future, include = "immediateCondition", resignal = FALSE)
   }
 
   result <- future$result
@@ -413,8 +413,9 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
 
   value <- result$value
 
-  ## Signal 'instant_relay_condition' conditions?
-  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalConditions(future, include = "immediateCondition", resignal = FALSE)
 
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
@@ -427,7 +428,8 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (length(conditions) > 0) {
     if (signal) {
       mdebugf("Future state: %s", sQuote(future$state))
-      signalConditions(future, exclude = "instant_relay_condition", resignal = TRUE) ## Will signal an (eval) error, iff exists
+      ## Will signal an (eval) error, iff exists
+      signalConditions(future, exclude = "immediateCondition", resignal = TRUE)
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition
@@ -648,10 +650,10 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, instantRelay = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
-    if (instantRelay) {
-      conditionClasses <- unique(c(conditionClasses, "instant_relay_condition"))
+    if (immediateConditions) {
+      conditionClasses <- unique(c(conditionClasses, "immediateCondition"))
     }
     
     if (is.null(skip)) {
@@ -780,10 +782,10 @@ makeExpression <- local({
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = FALSE)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
-                  ## Relay 'instant_relay_condition' conditions immediately?
+                  ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
-                  signal <- .(instantRelay) && inherits(cond, "instant_relay_condition")
+                  signal <- .(immediateConditions) && inherits(cond, "immediateCondition")
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = signal)
                   if (inherits(cond, "message")) {
                     if (!signal) invokeRestart("muffleMessage")

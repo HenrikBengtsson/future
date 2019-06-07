@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-06-06]
+Version: 1.13.0-9000 [2019-06-07]
 
 SIGNIFICANT CHANGES:
 
@@ -27,9 +27,9 @@ NEW FEATURES:
    when future are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
 
- * Conditions inheriting 'instant_relay_condition' are signaled as soon as
-   possible. Contrary to other types of conditions, these will be signaled
-   only once per future, despite being collected.
+ * Conditions inheriting 'immediateCondition' are signaled as soon as possible.
+   Contrary to other types of conditions, these will be signaled only once per
+   future, despite being collected.
 
 BUG FIXES:
 
