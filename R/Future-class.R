@@ -329,6 +329,10 @@ result.Future <- function(future, ...) {
     ## For now, it is value() that collects the results.  Later we want
     ## all future backends to use result() to do it. /HB 2018-02-22
     value(future, stdout = FALSE, signal = FALSE)
+
+    ## Always signal 'instant_relay_condition' conditions and as soon
+    ## as possible.  They will always be signaled if they exist.
+    signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
   }
 
   result <- future$result
@@ -409,6 +413,9 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
 
   value <- result$value
 
+  ## Signal 'instant_relay_condition' conditions?
+  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
       inherits(result$stdout, "character")) {
@@ -420,7 +427,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (length(conditions) > 0) {
     if (signal) {
       mdebugf("Future state: %s", sQuote(future$state))
-      signalConditions(future, resignal = TRUE) ## Will signal an (eval) error, iff exists
+      signalConditions(future, exclude = "instant_relay_condition", resignal = TRUE) ## Will signal an (eval) error, iff exists
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition

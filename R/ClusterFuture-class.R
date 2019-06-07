@@ -385,6 +385,10 @@ result.ClusterFuture <- function(future, ...) {
   ## Remove from registry
   FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
 
+  ## Always signal 'instant_relay_condition' conditions and as soon
+  ## as possible.  They will always be signaled if they exist.
+  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+
   ## Garbage collect cluster worker?
   if (future$gc) {
     ## Cleanup global environment while at it

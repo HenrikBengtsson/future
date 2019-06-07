@@ -71,7 +71,11 @@ run.UniprocessFuture <- function(future, ...) {
   future$state <- 'finished'
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
-  
+
+  ## Always signal 'instant_relay_condition' conditions and as soon
+  ## as possible.  They will always be signaled if they exist.
+  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
   

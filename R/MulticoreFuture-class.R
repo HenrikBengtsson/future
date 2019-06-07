@@ -212,6 +212,10 @@ result.MulticoreFuture <- function(future, ...) {
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
 
+  ## Always signal 'instant_relay_condition' conditions and as soon
+  ## as possible.  They will always be signaled if they exist.
+  signalConditions(future, include = "instant_relay_condition", resignal = FALSE)
+
   result
 }
 
