@@ -18,8 +18,11 @@
 #' 
 #' @param stdout If TRUE, captured standard output is relayed, otherwise note.
 #' 
-#' @param signal If TRUE, captured (\link[base]{conditions}) are relayed,
+#' @param signal If TRUE, captured \link[base]{conditions} are relayed,
 #' otherwise not.
+#' 
+#' @param force If TRUE, captured standard output and captured
+#' \link[base]{conditions} already relayed is relayed again, otherwise not.
 #' 
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
@@ -44,13 +47,13 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -99,7 +102,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
     result <- NULL     ## Not needed anymore
 
     if (stdout) value(x, stdout = TRUE, signal = FALSE)
-    if (signal) signalConditions(x, resignal = FALSE)
+    if (signal) signalConditions(x, force = FALSE)
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -111,7 +114,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -186,7 +189,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
   remaining <- seq_len(nx)
 
   ## Relay?
-  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
+  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, force = force, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -232,7 +235,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  if (relay) {
+  if (relay || force) {
     if (debug) mdebug("Relaying remaining futures")
     signalConditionsASAP(resignal = FALSE, pos = 0L)
   }
@@ -244,7 +247,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -312,7 +315,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
   remaining <- seq_len(nx)
   
   ## Relay?
-  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
+  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, force = force, debug = debug)
 
   if (debug) mdebugf(" elements: [%d] %s", nx, hpaste(sQuote(idxs)))
 
@@ -356,7 +359,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  if (relay) {
+  if (relay || force) {
     if (debug) mdebug("Relaying remaining futures")
     signalConditionsASAP(resignal = FALSE, pos = 0L)
   }
@@ -368,7 +371,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, sleep = 0.1, value = result, ...) {
+resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
 ##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -443,7 +446,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
   remaining <- seq_len(nx)
 
   ## Relay?
-  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, debug = debug)
+  signalConditionsASAP <- make_signalConditionsASAP(nx, stdout = stdout, signal = signal, force = force, debug = debug)
 
   if (debug) {
     mdebugf(" length: %d", nx)
@@ -489,7 +492,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
     if (length(remaining) > 0) Sys.sleep(sleep)
   } # while (...)
 
-  if (relay) {
+  if (relay || force) {
     if (debug) mdebug("Relaying remaining futures")
     signalConditionsASAP(resignal = FALSE, pos = 0L)
   }

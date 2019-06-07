@@ -115,8 +115,8 @@ for (ss in seq_along(strategies)) {
     fs <- resolve(fs, result = TRUE)
   })
   str(relay)
-#  stopifnot(length(relay$stdout) == 0L)
-#  stopifnot(length(relay$msgs) == 0L)
+  stopifnot(length(relay$stdout) == 0L)
+  stopifnot(length(relay$msgs) == 0L)
 
   message("- getting value")
   relay <- recordRelay({
@@ -124,8 +124,8 @@ for (ss in seq_along(strategies)) {
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
-#  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
-#  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
+  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
+  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
   
   message("- getting value again")
   relay <- recordRelay({
@@ -133,8 +133,8 @@ for (ss in seq_along(strategies)) {
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
-#  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
-#  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
+  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
+  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
 
   message("* Two futures ... DONE")
 
