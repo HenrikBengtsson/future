@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-05                                  |
+|date     |2019-06-06                                  |
 
 # Dependencies
 
@@ -23,6 +23,12 @@
 |listenv   |0.7.0  |0.7.0       |   |
 
 # Revdeps
+
+## Failed to check (1)
+
+|package                    |version |error |warning |note |
+|:--------------------------|:-------|:-----|:-------|:----|
+|[PSCBS](failures.md#pscbs) |0.65.0  |1     |        |     |
 
 ## New problems (1)
 
@@ -78,8 +84,8 @@
 |[photosynthesis](problems.md#photosynthesis)    |1.0.0      |       |        |1    |
 |[phylolm](problems.md#phylolm)                  |2.6        |       |        |1    |
 |[promises](problems.md#promises)                |1.0.1      |       |        |1    |
-|[Prostar](problems.md#prostar)                  |1.16.1     |       |1       |     |
-|PSCBS                                           |0.65.0     |       |        |     |
+|[Prostar](problems.md#prostar)                  |1.16.1     |-1     |1       |     |
+|[PSCBS](failures.md#pscbs)                      |0.65.0     |1      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.20.0     |       |1       |     |
 |rangeMapper                                     |0.3-5      |       |        |     |
 |reproducible                                    |0.2.8      |       |        |     |
