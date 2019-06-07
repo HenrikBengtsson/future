@@ -332,7 +332,7 @@ result.Future <- function(future, ...) {
 
     ## Always signal immediateCondition:s and as soon as possible.
     ## They will always be signaled if they exist.
-    signalConditions(future, include = "immediateCondition", resignal = FALSE)
+    signalConditionsImmediately(future)
   }
 
   result <- future$result
@@ -415,7 +415,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
-  signalConditions(future, include = "immediateCondition", resignal = FALSE)
+  signalConditionsImmediately(future)
 
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
@@ -429,7 +429,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     if (signal) {
       mdebugf("Future state: %s", sQuote(future$state))
       ## Will signal an (eval) error, iff exists
-      signalConditions(future, exclude = "immediateCondition", resignal = TRUE)
+      signalConditions(future, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = TRUE)
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition
@@ -653,7 +653,10 @@ makeExpression <- local({
   function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
     if (immediateConditions) {
-      conditionClasses <- unique(c(conditionClasses, "immediateCondition"))
+      immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+      conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
+    } else {
+      immediateConditionClasses <- character(0L)
     }
     
     if (is.null(skip)) {
@@ -785,7 +788,7 @@ makeExpression <- local({
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
-                  signal <- .(immediateConditions) && inherits(cond, "immediateCondition")
+                  signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = signal)
                   if (inherits(cond, "message")) {
                     if (!signal) invokeRestart("muffleMessage")

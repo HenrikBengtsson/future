@@ -214,7 +214,7 @@ result.MulticoreFuture <- function(future, ...) {
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
-  signalConditions(future, include = "immediateCondition", resignal = FALSE)
+  signalConditionsImmediately(future)
 
   result
 }

@@ -108,6 +108,12 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
 }
 
 
+signalConditionsImmediately <- function(future, include = getOption("future.relay.immediate", "immediateCondition"), resignal = FALSE, ...) {
+  if (length(include) == 0L) return(invisible(future))
+  signalConditions(future, include = include, resignal = resignal, ...)
+}
+
+
 make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = FALSE, debug = getOption("future.debug", FALSE)) {
   relay <- (stdout || signal)
   if (!relay && !force) return(function(...) TRUE)
