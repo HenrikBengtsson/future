@@ -27,6 +27,9 @@ NEW FEATURES:
    when future are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
 
+ * Conditions inheriting 'instant_relay_condition' are signaled as soon as
+   they have been retrieved and they will only be signaled once per future.
+
 BUG FIXES:
 
  * Early signaling did not take place for resolved() for ClusterFuture and
@@ -39,7 +42,6 @@ BUG FIXES:
    resolve() would relay captured conditions multiple times.  This would
    for instance result in the same messages and warnings being outputted
    more than once.  Now it is only value() that will resignal conditions.
-   
 
 DEPRECATED AND DEFUNCT:
 
