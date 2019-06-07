@@ -138,6 +138,39 @@ for (ss in seq_along(strategies)) {
 
   message("* Two futures ... DONE")
 
+
+  message("* Two futures - out of order  ... ")
+
+  message("- list of two futures")
+  fs <- list()
+  relay <- recordRelay({
+    fs[[1]] <- future({ cat("O1\n"); Sys.sleep(1); message("M1"); 1L })
+    fs[[2]] <- future({ cat("O2\n"); message("M2"); 2L })
+  })
+  message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
+  stopifnot(length(relay$stdout) == 0L)
+  stopifnot(length(relay$msgs) == 0L)
+
+  message("- getting value")
+  relay <- recordRelay({
+    vs <- values(fs)
+  })
+  message("  values: ", paste(vs, collapse = ", "))
+  str(relay)
+  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
+  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
+  
+  message("- getting value again")
+  relay <- recordRelay({
+    vs <- values(fs)
+  })
+  message("  values: ", paste(vs, collapse = ", "))
+  str(relay)
+  stopifnot(identical(relay$stdout, c("O1\n", "O2\n")))
+  stopifnot(identical(relay$msgs, c("M1\n", "M2\n")))
+
+  message("* Two futures - out of order ... DONE")
+
   message(sprintf("Relaying w/ %s ... DONE", names(strategies)[ss]))
 } ## for (ss ...)
 
