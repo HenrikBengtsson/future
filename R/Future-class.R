@@ -648,9 +648,12 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+  function(expr, local = TRUE, instantRelay = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
-  
+    if (instantRelay) {
+      conditionClasses <- unique(c(conditionClasses, "instant_relay_condition"))
+    }
+    
     if (is.null(skip)) {
       ## WORKAROUND: skip = c(7/12, 3) makes assumption about withCallingHandlers()
       ## and local().  In case this changes, provide internal options to adjust this.
@@ -777,22 +780,28 @@ makeExpression <- local({
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = FALSE)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = FALSE)
+                  ## Relay 'instant_relay_condition' conditions immediately?
+                  ## If so, then do not muffle it and flag it as signalled
+                  ## already here.
+                  signal <- .(instantRelay) && inherits(cond, "instant_relay_condition")
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = signal)
                   if (inherits(cond, "message")) {
-                    invokeRestart("muffleMessage")
+                    if (!signal) invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {
-                    invokeRestart("muffleWarning")
+                    if (!signal) invokeRestart("muffleWarning")
                   } else {
-		    ## If there is a "muffle" restart for this condition,
-		    ## then invoke that restart, i.e. "muffle" the condition
-		    restarts <- computeRestarts(cond)
-		    for (restart in restarts) {
-		      name <- restart$name
-		      if (is.null(name)) next
-		      if (!grepl("^muffle", name)) next
-                      invokeRestart(restart)
-                      break
-		    }
+                    if (!signal) {
+                      ## If there is a "muffle" restart for this condition,
+                      ## then invoke that restart, i.e. "muffle" the condition
+                      restarts <- computeRestarts(cond)
+                      for (restart in restarts) {
+                        name <- restart$name
+                        if (is.null(name)) next
+                        if (!grepl("^muffle", name)) next
+                        invokeRestart(restart)
+                        break
+                      }
+                    }
                   }
                 }
               }
