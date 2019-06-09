@@ -42,7 +42,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{...}{Reserved for internal use only.}
 }
 \value{
 A \link{SequentialFuture}.

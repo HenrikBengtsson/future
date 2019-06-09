@@ -50,6 +50,8 @@ DEPRECATED AND DEFUNCT:
 
  * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
    Use 'conditions' instead.
+
+ * Usage of internal argument 'evaluator' is now deprecated.
  
 
 Version: 1.13.0 [2019-05-08]

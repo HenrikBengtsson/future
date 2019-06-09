@@ -14,7 +14,7 @@
 #' @param resignal If TRUE, then already signaled conditions are signaled
 #' again, otherwise not.
 #'
-#' @param \ldots Not used.
+#' @param \dots Not used.
 #'
 #' @return Returns the \link{Future} where conditioned that were signaled
 #' have been flagged to have been signaled.

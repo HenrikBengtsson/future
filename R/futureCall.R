@@ -15,7 +15,7 @@
 #'
 #' @rdname future
 #' @export
-futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, packages = NULL, evaluator = plan("next"), ...) {
+futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE, seed = NULL, globals = TRUE, packages = NULL, ...) {
   stop_if_not(is.function(FUN))
   stop_if_not(is.list(args))
 
@@ -93,7 +93,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
     mstr(globals)
   }
 
-  f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, ..., evaluator = evaluator)
+  f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
 
   if (debug) mdebug("futureCall() ... DONE")
   

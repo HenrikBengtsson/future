@@ -23,12 +23,12 @@ the the value is \code{NULL}.}
 a captured \link[base:condition]{condition} and possibly more meta data such as the
 call stack and a timestamp.}
 
+\item{\dots}{(optional) Additional named results to be returned.}
+
 \item{started, finished}{\link[base:POSIXct]{POSIXct} timestamps when the evaluation of
 the future expression was started and finished.}
 
 \item{version}{The version format of the results.}
-
-\item{\ldots}{(optional) Additional named results to be returned.}
 }
 \value{
 An object of class FutureResult.
