@@ -22,9 +22,9 @@ NEW FEATURES:
    ordering of the relayed output is the same as the ordering of the futures
    but independently of the order the futures are resolved.
 
- * If captured condition can be "muffled", then it will be muffled.  This
+ * If a captured condition can be "muffled", then it will be muffled.  This
    helps preventing conditions from being handled twice by condition handlers
-   when future are evaluated in the main R session, e.g. plan(sequential).
+   when futures are evaluated in the main R session, e.g. plan(sequential).
    Messages and warnings were already muffled in the past.
 
 BUG FIXES:
@@ -32,22 +32,21 @@ BUG FIXES:
  * Early signaling did not take place for resolved() for ClusterFuture and
    MulticoreFuture.
 
- * The validation of connections failed to detect when the connection had
-   been serialized (= a NIL external pointer) on some macOS systems.
-
  * When early signalling was enabled, functions such as resolved() and
    resolve() would relay captured conditions multiple times.  This would
    for instance result in the same messages and warnings being outputted
    more than once.  Now it is only value() that will resignal conditions.
-   
+
+ * The validation of connections failed to detect when the connection had
+   been serialized (= a NIL external pointer) on some macOS systems.
 
 DEPRECATED AND DEFUNCT:
+
+ * Removed defunct argument 'output' from FutureError().
 
  * Argument 'progress' of resolve() is now defunct (was deprecated since
    future 1.12.0).  Option 'future.progress' is ignored.  This will make room
    for other progress-update mechanisms that are in the works.
-
- * Removed defunct argument 'output' from FutureError().
 
  * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
    Use 'conditions' instead.
