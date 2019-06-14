@@ -4,7 +4,7 @@
 #' processing.  Operating systems such as Unix and macOS supports forking,
 #' whereas Microsoft Windows does not.
 #'
-#' @param \ldots Internal usage only.
+#' @param \dots Internal usage only.
 #'
 #' @return TRUE if forked processing is supported and not disabled,
 #'         otherwise FALSE.

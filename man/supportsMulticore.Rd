@@ -7,7 +7,7 @@
 supportsMulticore(...)
 }
 \arguments{
-\item{\ldots}{Internal usage only.}
+\item{\dots}{Internal usage only.}
 }
 \value{
 TRUE if forked processing is supported and not disabled,
