@@ -14,12 +14,16 @@
 \alias{future.availableCores.system}
 \alias{R_FUTURE_AVAILABLECORES_SYSTEM}
 \alias{future.availableWorkers.methods}
+\alias{future.fork.enable}
+\alias{R_FUTURE_R_FUTURE_FORK_ENABLE}
 \alias{future.globals.maxSize}
 \alias{future.globals.method}
 \alias{future.globals.onMissing}
 \alias{future.globals.resolve}
 \alias{future.globals.onReference}
 \alias{future.resolve.recursive}
+\alias{future.supportsMulticore.unstable}
+\alias{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}
 \alias{future.wait.alpha}
 \alias{future.wait.interval}
 \alias{future.wait.timeout}
@@ -86,6 +90,8 @@ Below are all \R options that are currently used by the \pkg{future} package and
  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
 
  \item{\option{future.fork.enable}:}{(logical) Enable or disable \emph{forked} processing.  If \code{FALSE}, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_R_FUTURE_FORK_ENABLE}.  If \code{NA}, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
+
+ \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If \code{"warning"} (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If \code{"quiet"}, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See \code{\link{supportsMulticore}()} for more details.}
 }
 }
 
