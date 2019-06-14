@@ -238,28 +238,28 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' The default method for connecting to an external host is via SSH and the
 #' system executable for this is given by argument \code{rshcmd}.  The default
-#' is given by option \code{future.makeNodePSOCK.rshcmd}.  If that is not
+#' is given by option \option{future.makeNodePSOCK.rshcmd}.  If that is not
 #' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
-#' on the \code{PATH}.  This is also true for recent Windows 10
+#' on the \env{PATH}.  This is also true for recent Windows 10
 #' (since version 1803; April 2018) (*).
 #'
 #' For \emph{Windows systems prior to Windows 10}, it is less common to find
-#' \command{ssh} on the \code{PATH}. Instead it is more likely that such
+#' \command{ssh} on the \env{PATH}. Instead it is more likely that such
 #' systems have the \command{PuTTY} software and its SSH client
-#' \command{plink} installed.  PuTTY puts itself on the system \code{PATH}
+#' \command{plink} installed.  PuTTY puts itself on the system \env{PATH}
 #' when installed, meaning this function will find PuTTY automatically if
 #' installed.  If not, to manually set specify PuTTY as the SSH client,
 #' specify the absolute pathname of \file{plink.exe} in the first element and
 #' option \command{-ssh} in the second as in
 #' \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
 #' This is because all elements of \code{rshcmd} are individually "shell"
-#' quoted and element \code{rshcmd[1]} must be on the system \code{PATH}.
+#' quoted and element \code{rshcmd[1]} must be on the system \env{PATH}.
 #'
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 #' client that is distributed with RStudio will be also be considered.
 #' This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
-#' is search for in the folder given by the \code{RSTUDIO_MSYS_SSH} environment
+#' is search for in the folder given by the \env{RSTUDIO_MSYS_SSH} environment
 #' variable - a variable that is (only) set when running RStudio.
 #'
 #' You can override the default set of SSH clients that are searched for
@@ -276,7 +276,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' RStudio SSH client until this bug has been resolved in Windows 10.}
 #' 
 #' Additional SSH options may be specified via argument \code{rshopts}, which
-#' defaults to option \code{future.makeNodePSOCK.rshopts}. For instance, a
+#' defaults to option \option{future.makeNodePSOCK.rshopts}. For instance, a
 #' private SSH key can be provided as
 #' \code{rshopts = c("-i", "~/.ssh/my_private_key")}.  PuTTY users should
 #' specify a PuTTY PPK file, e.g.
@@ -329,7 +329,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @section Default value of argument \code{rscript}:
 #' If \code{homogeneous} is FALSE, the \code{rscript} defaults to
 #' \code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
-#' is available on the \code{PATH} of the worker.
+#' is available on the \env{PATH} of the worker.
 #' If \code{homogeneous} is TRUE, the \code{rscript} defaults to
 #' \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
 #' that the worker and the caller share the same file system and \R installation.
