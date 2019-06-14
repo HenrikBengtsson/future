@@ -61,7 +61,7 @@ multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FA
   ## Fall back to sequential futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
   ## Sequential futures best reflect how multicore futures handle globals.
-  if (workers == 1L || !supportsMulticore()) {
+  if (workers == 1L || !supportsMulticore(warn = TRUE)) {
     ## covr: skip=1
     return(sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label, ...))
   }

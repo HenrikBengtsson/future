@@ -14,7 +14,7 @@
 #' @param resignal If TRUE, then already signaled conditions are signaled
 #' again, otherwise not.
 #'
-#' @param \ldots Not used.
+#' @param \dots Not used.
 #'
 #' @return Returns the \link{Future} where conditioned that were signaled
 #' have been flagged to have been signaled.
@@ -59,7 +59,7 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
     cond <- conditions[[kk]]
 
     ## Skip already signaled conditions?
-    if (!resignal && isTRUE(cond$signaled)) next
+    if (!resignal && !is.null(cond$signaled) && cond$signaled > 0L) next
     
     condition <- cond$condition
 
@@ -72,7 +72,7 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
     mdebugf(" - Condition #%d: %s", kk, paste(sQuote(class(condition)), collapse = ", "))
 
     ## Flag condition as signaled
-    cond$signaled <- TRUE
+    cond$signaled <- cond$signaled + 1L
     conditions[[kk]] <- cond
     
     if (inherits(condition, "error")) {

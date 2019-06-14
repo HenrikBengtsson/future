@@ -8,7 +8,7 @@
 #' a captured \link[base:condition]{condition} and possibly more meta data such as the
 #' call stack and a timestamp.
 #'
-#' @param \ldots (optional) Additional named results to be returned.
+#' @param \dots (optional) Additional named results to be returned.
 #' 
 #' @param started,finished \link[base:POSIXct]{POSIXct} timestamps when the evaluation of
 #' the future expression was started and finished.

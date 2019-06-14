@@ -14,14 +14,7 @@
 #' 
 #' @param expr,value An \R \link[base]{expression}.
 #'
-#' @param evaluator,\dots (internal) The actual function that evaluates
-#' the future expression and returns a \link{Future} and additional
-#' arguments passed to it.
-#' The evaluator function should accept all of the same
-#' arguments as the ones listed here
-#' (except \code{evaluator}, \code{FUN} and \code{args}).
-#' The default evaluator function is the one that the user
-#' has specified via \code{\link{plan}()}.
+#' @param \dots Reserved for internal use only.
 #'
 #' @return
 #' \code{f <- future(expr)} creates a \link{Future} \code{f} that evaluates expression \code{expr}, the value of the future is retrieved using \code{v <- value(f)}.
@@ -83,7 +76,7 @@
 #' all globals need to be gathered when the future is created such that
 #' they are available whenever and wherever the future is resolved.
 #'
-#' The default behavior (\code{globals = TRUE}) of all evaluator functions,
+#' The default behavior (\code{globals = TRUE}),
 #' is that globals are automatically identified and gathered.
 #' More precisely, globals are identified via code inspection of the
 #' future expression \code{expr} and their values are retrieved with
@@ -189,18 +182,34 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, evaluator = plan("next"), ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (!is.function(evaluator)) {
-    stop("Argument 'evaluator' must be a function: ", typeof(evaluator))
+  ## Hidden argument 'evaluator':
+  ## The 'evaluator' is the function that creates a Future object.
+  ## The default evaluator function is given by plan().
+  makeFuture <- list(...)$evaluator
+  if (!is.null(makeFuture)) {
+    action <- get(Sys.getenv("R_CHECK_FUTURE_EVALUATOR", ".Deprecated"), mode="function")
+    action(msg = "Argument 'evaluator' of future() was an internal argument and is now deprecated. Use plan() to set the \"evaluator\".")
+  }
+  if (is.null(makeFuture)) makeFuture <- plan("next")
+  if (!is.function(makeFuture)) {
+    stop("Argument 'evaluator' must be a function: ", typeof(makeFuture))
   }
 
- future <- evaluator(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
+  ## Call 'makeFuture' without passing 'evaluator' argument part of '...'
+  .makeFuture <- function(..., evaluator = NULL) makeFuture(...)
+  future <- .makeFuture(expr, substitute = FALSE,
+                        envir = envir,
+		        globals = globals, packages = packages,
+                        seed = seed,
+		        lazy = lazy,
+		        ...)
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {
-    stop("Argument 'evaluator' specifies a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", "))
+    stop(FutureError("Argument 'evaluator' specifies a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", ")))
   }
 
   future

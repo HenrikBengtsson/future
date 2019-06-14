@@ -362,7 +362,7 @@ result.Future <- function(future, ...) {
   if (future$state == "failed") {
     value <- result
     calls <- value$traceback
-    return(FutureResult(conditions = list(list(condition = value, signaled = FALSE)), calls = calls, version = "1.7"))
+    return(FutureResult(conditions = list(list(condition = value, signaled = 0L)), calls = calls, version = "1.7"))
   }
 
   FutureResult(value = result, version = "1.7")
@@ -782,14 +782,14 @@ makeExpression <- local({
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = FALSE)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = 0L)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = signal)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = as.integer(signal))
                   if (inherits(cond, "message")) {
                     if (!signal) invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {

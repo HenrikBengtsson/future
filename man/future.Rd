@@ -10,8 +10,7 @@
 \title{Create a future}
 \usage{
 future(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL,
-  evaluator = plan("next"), ...)
+  globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, ...)
 
 futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
   lazy = FALSE, seed = NULL, globals = TRUE, ...,
@@ -20,8 +19,7 @@ futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
 x \%<-\% value
 
 futureCall(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
-  seed = NULL, globals = TRUE, packages = NULL,
-  evaluator = plan("next"), ...)
+  seed = NULL, globals = TRUE, packages = NULL, ...)
 }
 \arguments{
 \item{expr, value}{An \R \link[base]{expression}.}
@@ -45,14 +43,7 @@ eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{evaluator, \dots}{(internal) The actual function that evaluates
-the future expression and returns a \link{Future} and additional
-arguments passed to it.
-The evaluator function should accept all of the same
-arguments as the ones listed here
-(except \code{evaluator}, \code{FUN} and \code{args}).
-The default evaluator function is the one that the user
-has specified via \code{\link{plan}()}.}
+\item{\dots}{Reserved for internal use only.}
 
 \item{x}{the name of a future variable, which will hold the value
 of the future expression (as a promise).}
@@ -155,7 +146,7 @@ In order for the future to be resolved successfully (and correctly),
 all globals need to be gathered when the future is created such that
 they are available whenever and wherever the future is resolved.
 
-The default behavior (\code{globals = TRUE}) of all evaluator functions,
+The default behavior (\code{globals = TRUE}),
 is that globals are automatically identified and gathered.
 More precisely, globals are identified via code inspection of the
 future expression \code{expr} and their values are retrieved with

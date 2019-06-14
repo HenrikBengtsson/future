@@ -50,6 +50,8 @@
 #'  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
 #'
 #'  \item{\option{future.fork.enable}:}{(logical) Enable or disable \emph{forked} processing.  If \code{FALSE}, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_R_FUTURE_FORK_ENABLE}.  If \code{NA}, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
+#'
+#'  \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If \code{"warning"} (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If \code{"quiet"}, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See \code{\link{supportsMulticore}()} for more details.}
 #' }
 #'
 #' @section Options for demos:
@@ -69,9 +71,11 @@
 #' future.availableCores.fallback R_FUTURE_AVAILABLECORES_FALLBACK
 #' future.availableCores.system R_FUTURE_AVAILABLECORES_SYSTEM
 #' future.availableWorkers.methods
+#' future.fork.enable R_FUTURE_R_FUTURE_FORK_ENABLE
 #' future.globals.maxSize future.globals.method future.globals.onMissing
 #' future.globals.resolve future.globals.onReference
 #' future.resolve.recursive
+#' future.supportsMulticore.unstable R_FUTURE_SUPPORTSMULTICORE_UNSTABLE
 #' future.wait.alpha future.wait.interval future.wait.timeout
 #' future.progress
 #' future.debug

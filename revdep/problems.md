@@ -512,19 +512,14 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.16.1
+* Version: 1.16.5
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-05-29
+* Date/Publication: 2019-06-07
 * Number of recursive dependencies: 254
 
 Run `revdep_details(,"Prostar")` for more info
 
 </details>
-
-## Newly fixed
-
-*   R CMD check timed out
-    
 
 ## In both
 
@@ -534,26 +529,6 @@ Run `revdep_details(,"Prostar")` for more info
       Warning: no DISPLAY variable so Tk is not available
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
-
-# PSCBS
-
-<details>
-
-* Version: 0.65.0
-* Source code: https://github.com/cran/PSCBS
-* URL: https://github.com/HenrikBengtsson/PSCBS
-* BugReports: https://github.com/HenrikBengtsson/PSCBS/issues
-* Date/Publication: 2019-05-05 22:40:09 UTC
-* Number of recursive dependencies: 75
-
-Run `revdep_details(,"PSCBS")` for more info
-
-</details>
-
-## In both
-
-*   R CMD check timed out
-    
 
 # QDNAseq
 
@@ -667,6 +642,11 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
+*   checking Rd cross-references ... WARNING
+    ```
+    Unknown package ‘loomR’ in Rd xrefs
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking: 'loomR', 'MAST'
@@ -677,11 +657,6 @@ Run `revdep_details(,"Seurat")` for more info
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shinyrecap
@@ -808,6 +783,11 @@ Run `revdep_details(,"startR")` for more info
 
 ## In both
 
+*   checking Rd cross-references ... WARNING
+    ```
+    Unknown package ‘s2dverification’ in Rd xrefs
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘s2dverification’
@@ -817,11 +797,6 @@ Run `revdep_details(,"startR")` for more info
     ```
     Unavailable namespace imported from by a ':::' call: ‘s2dverification’
       See the note in ?`:::` about the use of this operator.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘s2dverification’
     ```
 
 # tableschema.r
