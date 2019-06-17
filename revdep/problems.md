@@ -276,7 +276,7 @@ Run `revdep_details(,"grattan")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'survey', 'taxstats', 'taxstats1516'
+      'taxstats', 'taxstats1516'
     ```
 
 # infercnv
@@ -346,50 +346,6 @@ Run `revdep_details(,"ipc")` for more info
       
       Error: testthat unit tests failed
       Execution halted
-    ```
-
-# kernelboot
-
-<details>
-
-* Version: 0.1.5
-* Source code: https://github.com/cran/kernelboot
-* URL: https://github.com/twolodzko/kernelboot
-* BugReports: https://github.com/twolodzko/kernelboot/issues
-* Date/Publication: 2018-07-04 11:30:02 UTC
-* Number of recursive dependencies: 39
-
-Run `revdep_details(,"kernelboot")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘cramer’
-    ```
-
-# lgr
-
-<details>
-
-* Version: 0.3.0
-* Source code: https://github.com/cran/lgr
-* URL: https://s-fleck.github.io/lgr
-* BugReports: https://github.com/s-fleck/lgr/issues
-* Date/Publication: 2019-05-30 11:50:03 UTC
-* Number of recursive dependencies: 67
-
-Run `revdep_details(,"lgr")` for more info
-
-</details>
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘RPushbullet’
     ```
 
 # lidR
@@ -629,12 +585,12 @@ Run `revdep_details(,"sctransform")` for more info
 
 <details>
 
-* Version: 3.0.1
+* Version: 3.0.2
 * Source code: https://github.com/cran/Seurat
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
-* Date/Publication: 2019-05-16 16:20:57 UTC
-* Number of recursive dependencies: 177
+* Date/Publication: 2019-06-14 22:22:02 UTC
+* Number of recursive dependencies: 197
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -642,14 +598,9 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
-*   checking Rd cross-references ... WARNING
-    ```
-    Unknown package ‘loomR’ in Rd xrefs
-    ```
-
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking: 'loomR', 'MAST'
+    Packages suggested but not available for checking: 'loomR', 'monocle'
     ```
 
 *   checking installed package size ... NOTE
@@ -657,6 +608,11 @@ Run `revdep_details(,"Seurat")` for more info
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shinyrecap
@@ -783,11 +739,6 @@ Run `revdep_details(,"startR")` for more info
 
 ## In both
 
-*   checking Rd cross-references ... WARNING
-    ```
-    Unknown package ‘s2dverification’ in Rd xrefs
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘s2dverification’
@@ -797,6 +748,11 @@ Run `revdep_details(,"startR")` for more info
     ```
     Unavailable namespace imported from by a ':::' call: ‘s2dverification’
       See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘s2dverification’
     ```
 
 # tableschema.r

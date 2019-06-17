@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-09                                  |
+|date     |2019-06-16                                  |
 
 # Dependencies
 
@@ -66,8 +66,8 @@
 |[infercnv](problems.md#infercnv)                |1.0.2     |       |        |2    |
 |[ipc](problems.md#ipc)                          |0.1.2     |__+1__ |        |     |
 |jstor                                           |0.3.6     |       |        |     |
-|[kernelboot](problems.md#kernelboot)            |0.1.5     |       |        |1    |
-|[lgr](problems.md#lgr)                          |0.3.0     |       |        |1    |
+|kernelboot                                      |0.1.5     |       |        |     |
+|lgr                                             |0.3.1     |       |        |     |
 |[lidR](problems.md#lidr)                        |2.0.3     |       |        |2    |
 |merTools                                        |0.5.0     |       |        |     |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |       |        |1    |
@@ -87,14 +87,14 @@
 |RTransferEntropy                                |0.2.8     |       |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)          |0.0.7     |       |        |1    |
 |[sctransform](problems.md#sctransform)          |0.2.0     |       |        |1    |
-|[Seurat](problems.md#seurat)                    |3.0.1     |       |1       |2    |
+|[Seurat](problems.md#seurat)                    |3.0.2     |       |        |3    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |       |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4     |       |1       |     |
 |[skpr](problems.md#skpr)                        |0.57.0    |       |        |1    |
 |solitude                                        |0.1.3     |       |        |     |
 |sperrorest                                      |2.1.5     |       |        |     |
 |[stars](problems.md#stars)                      |0.3-1     |       |        |2    |
-|[startR](problems.md#startr)                    |0.0.1     |       |1       |2    |
+|[startR](problems.md#startr)                    |0.0.1     |       |        |3    |
 |steps                                           |0.2.1     |       |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0     |       |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0     |       |        |1    |
