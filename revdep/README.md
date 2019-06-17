@@ -52,7 +52,7 @@
 |drtmle                                          |1.0.4     |       |        |     |
 |FAMoS                                           |0.2.0     |       |        |     |
 |fiery                                           |1.1.1     |       |        |     |
-|[furrr](problems.md#furrr)                      |0.1.0     |1      |        |     |
+|furrr                                           |0.1.0     |       |        |     |
 |future.apply                                    |1.2.0     |       |        |     |
 |future.BatchJobs                                |0.16.1    |       |        |     |
 |future.batchtools                               |0.8.0     |       |        |     |

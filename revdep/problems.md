@@ -208,44 +208,6 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
-# furrr
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/furrr
-* URL: https://github.com/DavisVaughan/furrr
-* BugReports: https://github.com/DavisVaughan/furrr/issues
-* Date/Publication: 2018-05-16 16:04:29 UTC
-* Number of recursive dependencies: 29
-
-Run `revdep_details(,"furrr")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(furrr)
-      Loading required package: future
-      > 
-      > test_check("furrr")
-      ── 1. Failure: multisession - Progress bar is emitted on long running tasks (@te
-      grepl("Progress", output[1]) isn't true.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 36 SKIPPED: 2 WARNINGS: 0 FAILED: 1
-      1. Failure: multisession - Progress bar is emitted on long running tasks (@test-progress.R#32) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # fxtract
 
 <details>
