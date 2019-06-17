@@ -10,13 +10,13 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-16                                  |
+|date     |2019-06-17                                  |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|future    |1.13.0 |1.13.0-9000 |*  |
+|future    |1.13.0 |1.13.0-9001 |*  |
 |codetools |0.2-16 |0.2-16      |   |
 |digest    |0.6.19 |0.6.19      |   |
 |globals   |0.12.4 |0.12.4      |   |
@@ -52,7 +52,7 @@
 |drtmle                                          |1.0.4     |       |        |     |
 |FAMoS                                           |0.2.0     |       |        |     |
 |fiery                                           |1.1.1     |       |        |     |
-|furrr                                           |0.1.0     |       |        |     |
+|[furrr](problems.md#furrr)                      |0.1.0     |1      |        |     |
 |future.apply                                    |1.2.0     |       |        |     |
 |future.BatchJobs                                |0.16.1    |       |        |     |
 |future.batchtools                               |0.8.0     |       |        |     |
@@ -94,7 +94,7 @@
 |solitude                                        |0.1.3     |       |        |     |
 |sperrorest                                      |2.1.5     |       |        |     |
 |[stars](problems.md#stars)                      |0.3-1     |       |        |2    |
-|[startR](problems.md#startr)                    |0.0.1     |       |        |3    |
+|startR                                          |0.0.1     |       |        |     |
 |steps                                           |0.2.1     |       |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0     |       |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0     |       |        |1    |

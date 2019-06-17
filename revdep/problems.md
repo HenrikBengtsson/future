@@ -208,6 +208,44 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
+# furrr
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/furrr
+* URL: https://github.com/DavisVaughan/furrr
+* BugReports: https://github.com/DavisVaughan/furrr/issues
+* Date/Publication: 2018-05-16 16:04:29 UTC
+* Number of recursive dependencies: 29
+
+Run `revdep_details(,"furrr")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      > library(testthat)
+      > library(furrr)
+      Loading required package: future
+      > 
+      > test_check("furrr")
+      ── 1. Failure: multisession - Progress bar is emitted on long running tasks (@te
+      grepl("Progress", output[1]) isn't true.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 36 SKIPPED: 2 WARNINGS: 0 FAILED: 1
+      1. Failure: multisession - Progress bar is emitted on long running tasks (@test-progress.R#32) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # fxtract
 
 <details>
@@ -341,7 +379,7 @@ Run `revdep_details(,"ipc")` for more info
       8: stop(gettextf("no 'restart' '%s' found", as.character(r)), domain = NA)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 15 SKIPPED: 1 WARNINGS: 0 FAILED: 1
+      OK: 16 SKIPPED: 1 WARNINGS: 0 FAILED: 1
       1. Error: Main Tests With TextFileSource (@test-main.R#90) 
       
       Error: testthat unit tests failed
@@ -600,7 +638,7 @@ Run `revdep_details(,"Seurat")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking: 'loomR', 'monocle'
+    Package suggested but not available for checking: ‘loomR’
     ```
 
 *   checking installed package size ... NOTE
@@ -711,7 +749,7 @@ Run `revdep_details(,"stars")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking: 'plm', 'starsdata'
+    Package suggested but not available for checking: ‘starsdata’
     ```
 
 *   checking installed package size ... NOTE
@@ -720,39 +758,6 @@ Run `revdep_details(,"stars")` for more info
       sub-directories of 1Mb or more:
         doc  10.5Mb
         nc    4.2Mb
-    ```
-
-# startR
-
-<details>
-
-* Version: 0.0.1
-* Source code: https://github.com/cran/startR
-* URL: https://earth.bsc.es/gitlab/es/startR/
-* BugReports: https://earth.bsc.es/gitlab/es/startR/issues
-* Date/Publication: 2017-04-22 04:26:58 UTC
-* Number of recursive dependencies: 29
-
-Run `revdep_details(,"startR")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘s2dverification’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unavailable namespace imported from by a ':::' call: ‘s2dverification’
-      See the note in ?`:::` about the use of this operator.
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘s2dverification’
     ```
 
 # tableschema.r
