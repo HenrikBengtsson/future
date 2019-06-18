@@ -24,7 +24,8 @@
 #' \code{\link[base:signalCondition]{signalCondition}()}.
 signalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
   ## Future is not yet launched
-  if (!future$state %in% c("finished", "failed")) {
+  ## FIXME: civis::CivisFuture uses 'succeeded' /HB 2019-06-18
+  if (!future$state %in% c("finished", "failed", "succeeded")) {
     stop(FutureError(
       sprintf(
         "Internal error: Cannot resignal future conditions. %s has not yet been resolved (state = %s)",
