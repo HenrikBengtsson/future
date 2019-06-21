@@ -14,14 +14,14 @@
 #' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 #' no recursion is performed.
 #' 
-#' @param result If TRUE, the results are retrieved, otherwise not.
+#' @param result (internal) If TRUE, the results are retrieved, otherwise not.
 #' 
-#' @param stdout If TRUE, captured standard output is relayed, otherwise note.
+#' @param stdout (internal) If TRUE, captured standard output is relayed, otherwise note.
 #' 
-#' @param signal If TRUE, captured \link[base]{conditions} are relayed,
+#' @param signal (internal) If TRUE, captured \link[base]{conditions} are relayed,
 #' otherwise not.
 #' 
-#' @param force If TRUE, captured standard output and captured
+#' @param force (internal) If TRUE, captured standard output and captured
 #' \link[base]{conditions} already relayed is relayed again, otherwise not.
 #' 
 #' @param sleep Number of seconds to wait before checking if futures have been

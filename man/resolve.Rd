@@ -19,14 +19,14 @@ elements to check.}
 should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 no recursion is performed.}
 
-\item{result}{If TRUE, the results are retrieved, otherwise not.}
+\item{result}{(internal) If TRUE, the results are retrieved, otherwise not.}
 
-\item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
+\item{stdout}{(internal) If TRUE, captured standard output is relayed, otherwise note.}
 
-\item{signal}{If TRUE, captured \link[base]{conditions} are relayed,
+\item{signal}{(internal) If TRUE, captured \link[base]{conditions} are relayed,
 otherwise not.}
 
-\item{force}{If TRUE, captured standard output and captured
+\item{force}{(internal) If TRUE, captured standard output and captured
 \link[base]{conditions} already relayed is relayed again, otherwise not.}
 
 \item{sleep}{Number of seconds to wait before checking if futures have been
