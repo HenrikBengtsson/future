@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-06-06]
+Version: 1.13.0-9000 [2019-06-21]
 
 SIGNIFICANT CHANGES:
 
@@ -65,6 +65,12 @@ DEPRECATED AND DEFUNCT:
    Use 'conditions' instead.
 
  * Usage of internal argument 'evaluator' is now deprecated.
+ 
+ * Future objects with internal version 1.7 are deprecated and will eventually
+   become defunct.  Future backends that implement their own Future classes
+   should update to implement a result() method instead of a value() method
+   for their Future classes.  All future backends available on CRAN and
+   Bioconductor have already been updated accordingly.
  
 
 Version: 1.13.0 [2019-05-08]

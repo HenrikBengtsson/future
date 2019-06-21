@@ -108,7 +108,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
 
   ## Version of future
   version <- args$version
-  if (is.null(version)) version <- "1.7"
+  if (is.null(version)) version <- "1.8"
   core$version <- version
   core$.callResult <- FALSE  ## Temporary until "1.7" defunct
 
@@ -353,7 +353,9 @@ result.Future <- function(future, ...) {
       stop(FutureError(msg, future = future))
     }
   }
-  
+
+  .Deprecated(msg = "Future objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+
   ## BACKWARD COMPATIBILITY
   if (future$state == "failed") {
     value <- result
@@ -641,7 +643,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+  function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
   
     if (is.null(skip)) {
@@ -697,17 +699,7 @@ makeExpression <- local({
     ## If this was mandatory, we could.  Instead we use
     ## a tryCatch() statement. /HB 2016-03-14
   
-    if (version == "1.7") {
-      expr <- bquote({
-        ## covr: skip=6
-        .(enter)
-        tryCatch({
-          .(expr)
-        }, finally = {
-          .(exit)
-        })
-      })
-    } else if (version == "1.8") {    
+    if (version == "1.8") {    
       expr <- bquote({
         ## covr: skip=6
         .(enter)
@@ -816,6 +808,16 @@ makeExpression <- local({
         ...future.result$conditions <- ...future.conditions
         
         ...future.result
+      })
+    } else if (version == "1.7") {  ## Deprecated
+      expr <- bquote({
+        ## covr: skip=6
+        .(enter)
+        tryCatch({
+          .(expr)
+        }, finally = {
+          .(exit)
+        })
       })
     } else {
       stop(FutureError("Internal error: Non-supported future expression version: ", version))

@@ -29,7 +29,7 @@
 #'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.7") {
+FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)
