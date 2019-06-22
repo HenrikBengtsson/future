@@ -25,12 +25,12 @@ Run `revdep_details(,"abjutils")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.1.2
 * Source code: https://github.com/cran/adept
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
-* Date/Publication: 2019-05-24 14:30:03 UTC
-* Number of recursive dependencies: 68
+* Date/Publication: 2019-06-18 06:50:03 UTC
+* Number of recursive dependencies: 79
 
 Run `revdep_details(,"adept")` for more info
 
@@ -40,7 +40,7 @@ Run `revdep_details(,"adept")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is  5.5Mb
       sub-directories of 1Mb or more:
         doc   4.7Mb
     ```
@@ -87,11 +87,11 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 
 <details>
 
-* Version: 3.1.3
+* Version: 3.2.0
 * Source code: https://github.com/cran/aroma.core
-* URL: https://github.com/HenrikBengtsson/aroma.core, http://www.aroma-project.org/
+* URL: https://github.com/HenrikBengtsson/aroma.core, https://www.aroma-project.org/
 * BugReports: https://github.com/HenrikBengtsson/aroma.core/issues
-* Date/Publication: 2018-05-03 13:41:54 UTC
+* Date/Publication: 2019-06-17 18:20:03 UTC
 * Number of recursive dependencies: 45
 
 Run `revdep_details(,"aroma.core")` for more info
@@ -171,6 +171,32 @@ Run `revdep_details(,"codebook")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > ### ** Examples
+    > 
+    > example("labelled", "haven")
+    
+    lablld> s1 <- labelled(c("M", "M", "F"), c(Male = "M", Female = "F"))
+    
+    lablld> s2 <- labelled(c(1, 1, 2), c(Male = 1, Female = 2))
+    
+    lablld> s3 <- labelled(c(1, 1, 2), c(Male = 1, Female = 2),
+    lablld+                label="Assigned sex at birth")
+    
+    lablld> # Unfortunately it's not possible to make as.factor work for labelled objects
+    lablld> # so instead use as_factor. This works for all types of labelled vectors.
+    lablld> as_factor(s1)
+    [1] Male   Male   Female
+    Levels: Female Male
+    
+    lablld> as_factor(s1, labels = "values")
+    Error: 1 components of `...` were not used.
+    
+    We detected these problematic arguments:
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -468,10 +494,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.16.5
+* Version: 1.16.6
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-06-07
-* Number of recursive dependencies: 254
+* Date/Publication: 2019-06-19
+* Number of recursive dependencies: 253
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -769,28 +795,6 @@ Run `revdep_details(,"tealeaves")` for more info
     ```
     Namespaces in Imports field not imported from:
       ‘ggplot2’ ‘tidyr’
-      All declared Imports should be used.
-    ```
-
-# tidyqwi
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/tidyqwi
-* BugReports: https://github.com/medewitt/tidyqwi/issues
-* Date/Publication: 2019-03-06 12:40:04 UTC
-* Number of recursive dependencies: 62
-
-Run `revdep_details(,"tidyqwi")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘plyr’
       All declared Imports should be used.
     ```
 

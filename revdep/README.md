@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-17                                  |
+|date     |2019-06-22                                  |
 
 # Dependencies
 
@@ -35,16 +35,16 @@
 |package                                         |version   |error  |warning |note |
 |:-----------------------------------------------|:---------|:------|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |       |        |1    |
-|[adept](problems.md#adept)                      |1.0.1     |       |        |2    |
+|[adept](problems.md#adept)                      |1.1.2     |       |        |2    |
 |[aroma.affymetrix](problems.md#aromaaffymetrix) |3.1.1     |       |        |2    |
-|[aroma.core](problems.md#aromacore)             |3.1.3     |       |        |1    |
+|[aroma.core](problems.md#aromacore)             |3.2.0     |       |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0     |       |        |1    |
 |BatchGetSymbols                                 |2.5.2     |       |        |     |
 |batchtools                                      |0.9.11    |       |        |     |
 |biotmle                                         |1.8.0     |       |        |     |
 |[brms](problems.md#brms)                        |2.9.0     |       |        |1    |
-|civis                                           |1.6.1     |       |        |     |
-|[codebook](problems.md#codebook)                |0.8.1     |       |        |2    |
+|civis                                           |2.0.0     |       |        |     |
+|[codebook](problems.md#codebook)                |0.8.1     |1      |        |2    |
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |       |        |1    |
 |DeclareDesign                                   |0.18.0    |       |        |     |
 |doFuture                                        |0.8.0     |       |        |     |
@@ -53,7 +53,7 @@
 |FAMoS                                           |0.2.0     |       |        |     |
 |fiery                                           |1.1.1     |       |        |     |
 |furrr                                           |0.1.0     |       |        |     |
-|future.apply                                    |1.2.0     |       |        |     |
+|future.apply                                    |1.3.0     |       |        |     |
 |future.BatchJobs                                |0.16.1    |       |        |     |
 |future.batchtools                               |0.8.0     |       |        |     |
 |future.callr                                    |0.4.0     |       |        |     |
@@ -78,7 +78,7 @@
 |[photosynthesis](problems.md#photosynthesis)    |1.0.0     |       |        |1    |
 |[phylolm](problems.md#phylolm)                  |2.6       |       |        |1    |
 |[promises](problems.md#promises)                |1.0.1     |       |        |1    |
-|[Prostar](problems.md#prostar)                  |1.16.5    |       |1       |     |
+|[Prostar](problems.md#prostar)                  |1.16.6    |       |1       |     |
 |PSCBS                                           |0.65.0    |       |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.20.0    |       |1       |     |
 |rangeMapper                                     |0.3-5     |       |        |     |
@@ -98,7 +98,7 @@
 |steps                                           |0.2.1     |       |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0     |       |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0     |       |        |1    |
-|[tidyqwi](problems.md#tidyqwi)                  |0.1.0     |       |        |1    |
+|tidyqwi                                         |0.1.1     |       |        |     |
 |tsfeatures                                      |1.0.1     |       |        |     |
 |[TSstudio](problems.md#tsstudio)                |0.1.4     |       |        |1    |
 |vinereg                                         |0.5.0     |       |        |     |

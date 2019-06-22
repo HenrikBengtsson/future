@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-06-07]
+Version: 1.13.0-9001 [2019-06-22]
 
 SIGNIFICANT CHANGES:
 
@@ -54,16 +54,23 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
- * Removed defunct argument 'output' from FutureError().
-
  * Argument 'progress' of resolve() is now defunct (was deprecated since
    future 1.12.0).  Option 'future.progress' is ignored.  This will make room
    for other progress-update mechanisms that are in the works.
 
+ * Usage of internal argument 'evaluator' is now deprecated.
+ 
+ * Removed defunct argument 'output' from FutureError().
+
  * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
    Use 'conditions' instead.
 
- * Usage of internal argument 'evaluator' is now deprecated.
+ * Future and FutureResult objects with an internal version 1.7 or older are
+   deprecated and will eventually become defunct.  Future backends that
+   implement their own Future classes should update to implement a result()
+   method instead of a value() method for their Future classes.  All future
+   backends available on CRAN and Bioconductor have already been updated
+   accordingly.
  
 
 Version: 1.13.0 [2019-05-08]
