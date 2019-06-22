@@ -109,7 +109,7 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
 }
 
 
-signalConditionsImmediately <- function(future, include = getOption("future.relay.immediate", "immediateCondition"), resignal = FALSE, ...) {
+signalImmediateConditions <- function(future, include = getOption("future.relay.immediate", "immediateCondition"), resignal = FALSE, ...) {
   if (length(include) == 0L) return(invisible(future))
   signalConditions(future, include = include, resignal = resignal, ...)
 }

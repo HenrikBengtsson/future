@@ -387,7 +387,7 @@ result.ClusterFuture <- function(future, ...) {
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
-  signalConditionsImmediately(future)
+  signalImmediateConditions(future)
 
   ## Garbage collect cluster worker?
   if (future$gc) {

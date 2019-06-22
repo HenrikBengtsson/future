@@ -74,7 +74,7 @@ run.UniprocessFuture <- function(future, ...) {
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
-  signalConditionsImmediately(future)
+  signalImmediateConditions(future)
 
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)

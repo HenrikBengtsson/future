@@ -332,7 +332,7 @@ result.Future <- function(future, ...) {
 
     ## Always signal immediateCondition:s and as soon as possible.
     ## They will always be signaled if they exist.
-    signalConditionsImmediately(future)
+    signalImmediateConditions(future)
   }
 
   result <- future$result
@@ -417,7 +417,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
-  signalConditionsImmediately(future)
+  signalImmediateConditions(future)
 
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
