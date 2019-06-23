@@ -335,45 +335,6 @@ Run `revdep_details(,"infercnv")` for more info
       See the note in ?`:::` about the use of this operator.
     ```
 
-# ipc
-
-<details>
-
-* Version: 0.1.2
-* Source code: https://github.com/cran/ipc
-* URL: https://github.com/fellstat/ipc
-* BugReports: https://github.com/fellstat/ipc/issues
-* Date/Publication: 2019-01-11 23:50:03 UTC
-* Number of recursive dependencies: 44
-
-Run `revdep_details(,"ipc")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             handled <<- TRUE
-             e$expectation_calls <- frame_calls(11, 6)
-             register_expectation(e)
-             invokeRestart("continue_test")
-         })(structure(list(message = "b == 2 isn't true.", srcref = NULL), class = c("expectation_success", 
-         "expectation", "condition")))
-      7: invokeRestart("continue_test")
-      8: stop(gettextf("no 'restart' '%s' found", as.character(r)), domain = NA)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 15 SKIPPED: 1 WARNINGS: 0 FAILED: 1
-      1. Error: Main Tests With TextFileSource (@test-main.R#90) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # lidR
 
 <details>
@@ -624,6 +585,11 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
+*   checking Rd cross-references ... WARNING
+    ```
+    Unknown package ‘loomR’ in Rd xrefs
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
@@ -634,11 +600,6 @@ Run `revdep_details(,"Seurat")` for more info
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shinyrecap
