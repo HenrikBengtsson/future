@@ -316,6 +316,10 @@ result.Future <- function(future, ...) {
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalImmediateConditions(future)
+
     if (inherits(result, "FutureError")) stop(result)
     return(result)
   }
