@@ -81,7 +81,7 @@ supportsMulticoreAndRStudio <- local({
    
    action <- getOption("future.supportsMulticore.unstable", Sys.getenv("R_FUTURE_SUPPORTSMULTICORE_UNSTABLE", "warn"))
    if (action == "warn") {
-     warning(FutureWarning("[ONE-TIME WARNING] Forked processing ('multicore') is disabled in future (>= 1.13.0) when running R from RStudio, because it is considered unstable. Because of this, plan(\"multicore\") will fall back to plan(\"sequential\"), and plan(\"multiprocess\") will fall back to plan(\"multisession\") - not plan(\"multicore\"). For more details, how to control forked processing or not, and how to silence this warning in future R sessions, see ?future::supportsMulticore"))
+     warning(FutureWarning("[ONE-TIME WARNING] Forked processing ('multicore') is disabled in future (>= 1.13.0) when running R from RStudio, because it is considered unstable. Because of this, plan(\"multicore\") will fall back to plan(\"sequential\"), and plan(\"multiprocess\") will fall back to plan(\"multisession\") - not plan(\"multicore\") as in the past. For more details, how to control forked processing or not, and how to silence this warning in future R sessions, see ?future::supportsMulticore"))
    }
 
    alreadyWarned <<- TRUE
