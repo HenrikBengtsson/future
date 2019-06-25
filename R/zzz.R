@@ -215,5 +215,5 @@ sourceFutureStartupScript <- function(default = c(".future.R", "~/.future.R"), d
     warning(msg)
   })
 
-  return(pathname)
-} ## sourceDotFuture()
+  pathname
+} ## sourceFutureStartupScript()
