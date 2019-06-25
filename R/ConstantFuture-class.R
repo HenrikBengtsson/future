@@ -20,3 +20,9 @@ ConstantFuture <- function(expr = NULL, envir = emptyenv(), substitute = FALSE, 
   structure(f, class = c("ConstantFuture", class(f)))
   f
 }
+
+
+#' @export
+result.ConstantFuture <- function(future, ...) {
+  future$result
+}
