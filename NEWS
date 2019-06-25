@@ -34,6 +34,9 @@ NEW FEATURES:
    fall back to using 'multisession' futures.  The warning can be disabled by
    setting R option 'future.supportsMulticore.unstable', or environment
    variable 'FUTURE_SUPPORTSMULTICORE_UNSTABLE' to "quiet".
+
+ * Now option 'future.startup.script' falls back to environment variable
+   'R_FUTURE_STARTUP_SCRIPT'.
    
  * Conditions inheriting 'immediateCondition' are signaled as soon as possible.
    Contrary to other types of conditions, these will be signaled only once per
