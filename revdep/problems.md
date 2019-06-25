@@ -55,11 +55,11 @@ Run `revdep_details(,"adept")` for more info
 
 <details>
 
-* Version: 3.1.1
+* Version: 3.2.0
 * Source code: https://github.com/cran/aroma.affymetrix
-* URL: http://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
+* URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
 * BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
-* Date/Publication: 2018-04-16 18:53:05 UTC
+* Date/Publication: 2019-06-23 06:00:14 UTC
 * Number of recursive dependencies: 74
 
 Run `revdep_details(,"aroma.affymetrix")` for more info
@@ -585,11 +585,6 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
-*   checking Rd cross-references ... WARNING
-    ```
-    Unknown package ‘loomR’ in Rd xrefs
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
@@ -600,6 +595,11 @@ Run `revdep_details(,"Seurat")` for more info
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shinyrecap

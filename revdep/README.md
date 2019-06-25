@@ -2,7 +2,7 @@
 
 |field    |value                                       |
 |:--------|:-------------------------------------------|
-|version  |R version 3.6.0 Patched (2019-05-31 r76629) |
+|version  |R version 3.6.0 Patched (2019-06-23 r76734) |
 |os       |Ubuntu 18.04.2 LTS                          |
 |system   |x86_64, linux-gnu                           |
 |ui       |X11                                         |
@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-23                                  |
+|date     |2019-06-25                                  |
 
 # Dependencies
 
@@ -30,7 +30,7 @@
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |      |        |1    |
 |[adept](problems.md#adept)                      |1.1.2     |      |        |2    |
-|[aroma.affymetrix](problems.md#aromaaffymetrix) |3.1.1     |      |        |2    |
+|[aroma.affymetrix](problems.md#aromaaffymetrix) |3.2.0     |      |        |2    |
 |[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0     |      |        |1    |
 |BatchGetSymbols                                 |2.5.2     |      |        |     |
@@ -81,7 +81,7 @@
 |RTransferEntropy                                |0.2.8     |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)          |0.0.7     |      |        |1    |
 |[sctransform](problems.md#sctransform)          |0.2.0     |      |        |1    |
-|[Seurat](problems.md#seurat)                    |3.0.2     |      |1       |2    |
+|[Seurat](problems.md#seurat)                    |3.0.2     |      |        |3    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |      |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4     |      |1       |     |
 |[skpr](problems.md#skpr)                        |0.57.0    |      |        |1    |
