@@ -668,7 +668,7 @@ makeExpression <- local({
       ## covr: skip=7
       ...future.oldOptions <- options(
         ## Prevent .future.R from being source():d when future is attached
-        future.startup.loadScript = FALSE,
+        future.startup.script = FALSE,
         
         ## Assert globals when future is created (or at run time)?
         future.globals.onMissing = .(globals.onMissing),
