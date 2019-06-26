@@ -234,6 +234,45 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
+# doFuture
+
+<details>
+
+* Version: 0.8.0
+* Source code: https://github.com/cran/doFuture
+* URL: https://github.com/HenrikBengtsson/doFuture
+* BugReports: https://github.com/HenrikBengtsson/doFuture/issues
+* Date/Publication: 2019-03-17 21:50:07 UTC
+* Number of recursive dependencies: 25
+
+Run `revdep_details(,"doFuture")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/foreach,nested_dopar.R’ failed.
+    Last 13 lines of output:
+      [19:52:06.451] - processing errors (handler = 'stop')
+      [19:52:06.495] signalConditions() ... done
+      [19:52:06.495] - collecting values of futures
+      [19:52:06.495] signalConditions() ...
+      [19:52:06.495]  - include = 'immediateCondition'
+      [19:52:06.495]  - exclude = 
+      [19:52:06.495]  - resignal = FALSE
+      [19:52:06.496]  - Number of conditions: 208
+      [19:52:06.496] signalConditions() ... done
+      [19:52:06.496] - accumulating results
+      [19:52:06.497] - processing errors (handler = 'stop')
+      Error in { : 
+        task 1 failed - "task 1 failed - "inherits(plan_list, getOption("future.default", "sequential")) is not TRUE""
+      Calls: %dopar% -> <Anonymous>
+      Execution halted
+    ```
+
 # fxtract
 
 <details>

@@ -41,7 +41,7 @@
 |[codebook](problems.md#codebook)                |0.8.1     |1     |        |2    |
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |      |        |1    |
 |DeclareDesign                                   |0.18.0    |      |        |     |
-|doFuture                                        |0.8.0     |      |        |     |
+|[doFuture](problems.md#dofuture)                |0.8.0     |1     |        |     |
 |drake                                           |7.4.0     |      |        |     |
 |drtmle                                          |1.0.4     |      |        |     |
 |FAMoS                                           |0.2.0     |      |        |     |
