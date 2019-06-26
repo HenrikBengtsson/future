@@ -16,7 +16,7 @@ for (strategy1 in strategies) {
     stopifnot(
       length(nested) == 2L,
       all(names(nested) == c("a", "b")),
-      inherits(plan(), strategy1)
+      inherits(plan("next"), strategy1)
     )
 
     x %<-% {
@@ -31,7 +31,7 @@ for (strategy1 in strategies) {
         length(nested_a) == 1L,
         length(plan_a) == 1L,
         inherits(plan_a[[1]], "future"),
-        inherits(future::plan(), strategy2)
+        inherits(future::plan("next"), strategy2)
       )
 
       ## Attribute 'init' is modified at run time
@@ -51,7 +51,7 @@ for (strategy1 in strategies) {
           length(nested_b) == 0L,
           length(plan_b) == 1L,
           inherits(plan_b[[1]], "future"),
-          inherits(future::plan(), getOption("future.plan", "sequential"))
+          inherits(future::plan("next"), getOption("future.plan", "sequential"))
         )
 
         list(a = a, nested_a = nested_a, plan_a = plan_a,
