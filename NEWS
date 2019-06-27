@@ -54,8 +54,8 @@ BUG FIXES:
 DEPRECATED AND DEFUNCT:
 
  * Argument 'progress' of resolve() is now defunct (was deprecated since
-   future 1.12.0).  Option 'future.progress' is ignored.  This will make room
-   for other progress-update mechanisms that are in the works.
+   future 1.12.0).  Option 'future.progress' is ignored.  This will make
+   room for other progress-update mechanisms that are in the works.
 
  * Usage of internal argument 'evaluator' is now deprecated.
  

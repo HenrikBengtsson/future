@@ -27,7 +27,7 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param progress (DEFUNCT) Defunct since future 1.13.0 to make room for
+#' @param progress (DEFUNCT) Defunct since future 1.14.0 to make room for
 #' other progress-update mechanisms that are in the works.
 #'
 #' @param value (DEPRECATED) Use argument `result` instead.

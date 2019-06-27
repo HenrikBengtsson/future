@@ -34,7 +34,7 @@ resolved since last time.}
 
 \item{value}{(DEPRECATED) Use argument `result` instead.}
 
-\item{progress}{(DEFUNCT) Defunct since future 1.13.0 to make room for
+\item{progress}{(DEFUNCT) Defunct since future 1.14.0 to make room for
 other progress-update mechanisms that are in the works.}
 
 \item{\dots}{Not used.}
