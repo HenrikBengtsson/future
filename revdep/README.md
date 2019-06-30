@@ -29,7 +29,7 @@
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |      |        |1    |
-|[adept](problems.md#adept)                      |1.1.2     |1     |        |2    |
+|[adept](problems.md#adept)                      |1.1.2     |      |        |2    |
 |[aroma.affymetrix](problems.md#aromaaffymetrix) |3.2.0     |      |        |2    |
 |[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0     |      |        |1    |
@@ -41,12 +41,12 @@
 |[codebook](problems.md#codebook)                |0.8.1     |1     |        |2    |
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |      |        |1    |
 |DeclareDesign                                   |0.18.0    |      |        |     |
-|[doFuture](problems.md#dofuture)                |0.8.0     |1     |        |     |
+|doFuture                                        |0.8.0     |      |        |     |
 |drake                                           |7.4.0     |      |        |     |
 |drtmle                                          |1.0.4     |      |        |     |
 |FAMoS                                           |0.2.0     |      |        |     |
 |fiery                                           |1.1.1     |      |        |     |
-|[furrr](problems.md#furrr)                      |0.1.0     |1     |        |     |
+|furrr                                           |0.1.0     |      |        |     |
 |future.apply                                    |1.3.0     |      |        |     |
 |future.BatchJobs                                |0.16.1    |      |        |     |
 |future.batchtools                               |0.8.0     |      |        |     |
@@ -81,7 +81,7 @@
 |RTransferEntropy                                |0.2.8     |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)          |0.0.7     |      |        |1    |
 |[sctransform](problems.md#sctransform)          |0.2.0     |      |        |1    |
-|[Seurat](problems.md#seurat)                    |3.0.2     |      |        |3    |
+|[Seurat](problems.md#seurat)                    |3.0.2     |      |1       |2    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |      |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4     |      |1       |     |
 |[skpr](problems.md#skpr)                        |0.57.0    |      |        |1    |

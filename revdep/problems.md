@@ -38,28 +38,6 @@ Run `revdep_details(,"adept")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      5: nbrOfWorkers.NULL()
-      6: nbrOfWorkers(plan("next"))
-      7: nbrOfWorkers.multiprocess(plan("next"))
-      8: stop_if_not(length(workers) == 1, is.finite(workers), workers >= 1)
-      9: stop(sprintf("%s is not TRUE", sQuote(call)), call. = FALSE, domain = NA)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 106 SKIPPED: 0 WARNINGS: 0 FAILED: 1
-      1. Error: Example 5(b). Setting: no noise in signal, all pattern occurences of the same
-                length, long signal. We check for the same behaviour with and without parallel
-                computation with maximum number of workers available. (@test-segmentPattern.R#615) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-      Error while shutting down parallel: unable to terminate some child processes
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  5.5Mb
@@ -254,83 +232,6 @@ Run `revdep_details(,"datapackage.r")` for more info
     Namespaces in Imports field not imported from:
       ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
-    ```
-
-# doFuture
-
-<details>
-
-* Version: 0.8.0
-* Source code: https://github.com/cran/doFuture
-* URL: https://github.com/HenrikBengtsson/doFuture
-* BugReports: https://github.com/HenrikBengtsson/doFuture/issues
-* Date/Publication: 2019-03-17 21:50:07 UTC
-* Number of recursive dependencies: 25
-
-Run `revdep_details(,"doFuture")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/foreach,nested_dopar.R’ failed.
-    Last 13 lines of output:
-      [23:12:52.444] - processing errors (handler = 'stop')
-      [23:12:52.486] signalConditions() ... done
-      [23:12:52.486] - collecting values of futures
-      [23:12:52.486] signalConditions() ...
-      [23:12:52.486]  - include = 'immediateCondition'
-      [23:12:52.486]  - exclude = 
-      [23:12:52.486]  - resignal = FALSE
-      [23:12:52.486]  - Number of conditions: 208
-      [23:12:52.487] signalConditions() ... done
-      [23:12:52.487] - accumulating results
-      [23:12:52.487] - processing errors (handler = 'stop')
-      Error in { : 
-        task 1 failed - "task 1 failed - "inherits(plan_list, getOption("future.default", "sequential")) is not TRUE""
-      Calls: %dopar% -> <Anonymous>
-      Execution halted
-    ```
-
-# furrr
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/furrr
-* URL: https://github.com/DavisVaughan/furrr
-* BugReports: https://github.com/DavisVaughan/furrr/issues
-* Date/Publication: 2018-05-16 16:04:29 UTC
-* Number of recursive dependencies: 29
-
-Run `revdep_details(,"furrr")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      > library(testthat)
-      > library(furrr)
-      Loading required package: future
-      > 
-      > test_check("furrr")
-      ── 1. Failure: multisession - Progress bar is emitted on long running tasks (@te
-      grepl("Progress", output[1]) isn't true.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      OK: 36 SKIPPED: 2 WARNINGS: 0 FAILED: 1
-      1. Failure: multisession - Progress bar is emitted on long running tasks (@test-progress.R#32) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # fxtract
@@ -684,6 +585,11 @@ Run `revdep_details(,"Seurat")` for more info
 
 ## In both
 
+*   checking Rd cross-references ... WARNING
+    ```
+    Unknown package ‘loomR’ in Rd xrefs
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
@@ -694,11 +600,6 @@ Run `revdep_details(,"Seurat")` for more info
       installed size is 10.5Mb
       sub-directories of 1Mb or more:
         libs   9.0Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shinyrecap
