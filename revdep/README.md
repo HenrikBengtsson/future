@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-29                                  |
+|date     |2019-06-30                                  |
 
 # Dependencies
 
@@ -29,7 +29,7 @@
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |      |        |1    |
-|[adept](problems.md#adept)                      |1.1.2     |      |        |2    |
+|[adept](problems.md#adept)                      |1.1.2     |1     |        |2    |
 |[aroma.affymetrix](problems.md#aromaaffymetrix) |3.2.0     |      |        |2    |
 |[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0     |      |        |1    |
@@ -37,7 +37,7 @@
 |batchtools                                      |0.9.11    |      |        |     |
 |biotmle                                         |1.8.0     |      |        |     |
 |[brms](problems.md#brms)                        |2.9.0     |      |        |1    |
-|[civis](problems.md#civis)                      |2.0.0     |1     |        |     |
+|civis                                           |2.0.0     |      |        |     |
 |[codebook](problems.md#codebook)                |0.8.1     |1     |        |2    |
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |      |        |1    |
 |DeclareDesign                                   |0.18.0    |      |        |     |
@@ -46,7 +46,7 @@
 |drtmle                                          |1.0.4     |      |        |     |
 |FAMoS                                           |0.2.0     |      |        |     |
 |fiery                                           |1.1.1     |      |        |     |
-|furrr                                           |0.1.0     |      |        |     |
+|[furrr](problems.md#furrr)                      |0.1.0     |1     |        |     |
 |future.apply                                    |1.3.0     |      |        |     |
 |future.BatchJobs                                |0.16.1    |      |        |     |
 |future.batchtools                               |0.8.0     |      |        |     |
@@ -75,7 +75,7 @@
 |[Prostar](problems.md#prostar)                  |1.16.6    |      |1       |     |
 |PSCBS                                           |0.65.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.20.0    |      |1       |     |
-|[rangeMapper](problems.md#rangemapper)          |0.3-5     |2     |        |     |
+|rangeMapper                                     |0.3-5     |      |        |     |
 |reproducible                                    |0.2.8     |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2     |      |        |1    |
 |RTransferEntropy                                |0.2.8     |      |        |     |
@@ -84,7 +84,7 @@
 |[Seurat](problems.md#seurat)                    |3.0.2     |      |        |3    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |      |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4     |      |1       |     |
-|[skpr](problems.md#skpr)                        |0.57.0    |1     |        |1    |
+|[skpr](problems.md#skpr)                        |0.57.0    |      |        |1    |
 |solitude                                        |0.1.3     |      |        |     |
 |sperrorest                                      |2.1.5     |      |        |     |
 |[stars](problems.md#stars)                      |0.3-1     |      |        |2    |
