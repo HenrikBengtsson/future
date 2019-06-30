@@ -155,6 +155,45 @@ Run `revdep_details(,"brms")` for more info
         doc   2.6Mb
     ```
 
+# civis
+
+<details>
+
+* Version: 2.0.0
+* Source code: https://github.com/cran/civis
+* URL: https://github.com/civisanalytics/civis-r
+* BugReports: https://github.com/civisanalytics/civis-r/issues
+* Date/Publication: 2019-06-19 22:30:03 UTC
+* Number of recursive dependencies: 80
+
+Run `revdep_details(,"civis")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
+      
+      ── 3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128)  ─────────────
+      `call_api("GET", path, path_params, query_params, body_params)` threw an error with unexpected message.
+      Expected match: "429"
+      Actual message: "'length(x) = 3 > 1' in coercion to 'logical(1)'"
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 1024 SKIPPED: 0 WARNINGS: 9 FAILED: 3
+      1. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
+      2. Failure: no retry on GET/PUT and code 403 (@test_client_base.R#117) 
+      3. Failure: retry on GET/PUT and 429 (@test_client_base.R#128) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # codebook
 
 <details>
@@ -254,22 +293,22 @@ Run `revdep_details(,"doFuture")` for more info
 *   checking tests ...
     ```
      ERROR
-    Running the tests in ‘tests/foreach,nested_dopar.R’ failed.
+    Running the tests in ‘tests/cluster-missing-doFuture-pkg.R’ failed.
     Last 13 lines of output:
-      [19:52:06.451] - processing errors (handler = 'stop')
-      [19:52:06.495] signalConditions() ... done
-      [19:52:06.495] - collecting values of futures
-      [19:52:06.495] signalConditions() ...
-      [19:52:06.495]  - include = 'immediateCondition'
-      [19:52:06.495]  - exclude = 
-      [19:52:06.495]  - resignal = FALSE
-      [19:52:06.496]  - Number of conditions: 208
-      [19:52:06.496] signalConditions() ... done
-      [19:52:06.496] - accumulating results
-      [19:52:06.497] - processing errors (handler = 'stop')
-      Error in { : 
-        task 1 failed - "task 1 failed - "inherits(plan_list, getOption("future.default", "sequential")) is not TRUE""
-      Calls: %dopar% -> <Anonymous>
+      +     print(res)
+      +     stopifnot(inherits(res, "FutureError"))
+      +   }
+      +   
+      +   parallel::stopCluster(cl)
+      +   cl <- NULL
+      +   
+      +   plan(sequential)
+      +   
+      +   message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
+      + } ## for (type ...)
+      Test set #1 with cluster type 'PSOCK' ...
+      Error in attr(cl, "withs") && !all(attr(cl, "withouts")) : 
+        'length(x) = 3 > 1' in coercion to 'logical(1)'
       Execution halted
     ```
 
@@ -538,6 +577,70 @@ Run `revdep_details(,"QDNAseq")` for more info
     Extensions’ manual.
     ```
 
+# rangeMapper
+
+<details>
+
+* Version: 0.3-5
+* Source code: https://github.com/cran/rangeMapper
+* URL: https://github.com/valcu/rangeMapper
+* Date/Publication: 2019-03-26 17:00:03 UTC
+* Number of recursive dependencies: 86
+
+Run `revdep_details(,"rangeMapper")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > 
+    > 
+    > X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
+    > 
+    > 
+    > dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
+    New session 2019-06-29 14:10:24
+    PROJECT: test.sqlite 
+    DIRECTORY: /tmp/hb/RtmpP4vRkp
+    > global.bbox.save(con = dbcon, bbox = X)
+    [1] TRUE
+    > gridSize.save(dbcon)
+    Warning in .local(object, ...) : Default grid size used!
+    Grid size set to 0.0302818233 map units.
+    > canvas.save(dbcon)
+    Canvas uploaded.
+    > processRanges(spdf = X, con =  dbcon, ID = "nam")
+    Error in is.numeric(i) && i < 0 : 
+      'length(x) = 22 > 1' in coercion to 'logical(1)'
+    Calls: processRanges -> processRanges -> .local -> [ -> [
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+             "wrens", verbose = FALSE)[1:10, ] at testthat/test-4_save.R:3
+      2: rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), 
+             "wrens", verbose = FALSE)[1:10, ]
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 15 SKIPPED: 0 WARNINGS: 0 FAILED: 4
+      1. Error: Pipeline works forward only (@test-1_projectINI.R#75) 
+      2. Error: (unknown) (@test-2_processRanges.R#5) 
+      3. Error: (unknown) (@test-3_output.R#3) 
+      4. Error: (unknown) (@test-4_save.R#3) 
+      
+      Error: testthat unit tests failed
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
+    ```
+
 # robotstxt
 
 <details>
@@ -711,6 +814,28 @@ Run `revdep_details(,"skpr")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 13 lines of output:
+      'length(x) = 2 > 1' in coercion to 'logical(1)'
+      1: expect_equal(coef(summary(fitglm))[, 4], extractPvalues(fitglm)) at testthat/testExtractPvalues.R:14
+      2: quasi_label(enquo(expected), expected.label, arg = "expected")
+      3: eval_bare(get_expr(quo), get_env(quo))
+      4: extractPvalues(fitglm)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      OK: 339 SKIPPED: 1 WARNINGS: 0 FAILED: 4
+      1. Error: eval_design_mc processes effectsize properly for glm (@testDeltaProcessing.R#132) 
+      2. Error: eval_design_mc processes effectsize properly for glm without effect power (@testDeltaProcessing.R#184) 
+      3. Error: eval_design_mc example code runs without errors (@testExampleCode.R#289) 
+      4. Error: extractPvalues works as intended (@testExtractPvalues.R#14) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is 49.1Mb
@@ -796,6 +921,28 @@ Run `revdep_details(,"tealeaves")` for more info
     Namespaces in Imports field not imported from:
       ‘ggplot2’ ‘tidyr’
       All declared Imports should be used.
+    ```
+
+# threeBrain
+
+<details>
+
+* Version: 0.1.2
+* Source code: https://github.com/cran/threeBrain
+* Date/Publication: 2019-06-28 16:40:02 UTC
+* Number of recursive dependencies: 34
+
+Run `revdep_details(,"threeBrain")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        htmlwidgets   4.7Mb
     ```
 
 # TSstudio

@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-25                                  |
+|date     |2019-06-29                                  |
 
 # Dependencies
 
@@ -24,7 +24,7 @@
 
 # Revdeps
 
-## All (68)
+## All (69)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
@@ -37,7 +37,7 @@
 |batchtools                                      |0.9.11    |      |        |     |
 |biotmle                                         |1.8.0     |      |        |     |
 |[brms](problems.md#brms)                        |2.9.0     |      |        |1    |
-|civis                                           |2.0.0     |      |        |     |
+|[civis](problems.md#civis)                      |2.0.0     |1     |        |     |
 |[codebook](problems.md#codebook)                |0.8.1     |1     |        |2    |
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |      |        |1    |
 |DeclareDesign                                   |0.18.0    |      |        |     |
@@ -75,7 +75,7 @@
 |[Prostar](problems.md#prostar)                  |1.16.6    |      |1       |     |
 |PSCBS                                           |0.65.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.20.0    |      |1       |     |
-|rangeMapper                                     |0.3-5     |      |        |     |
+|[rangeMapper](problems.md#rangemapper)          |0.3-5     |2     |        |     |
 |reproducible                                    |0.2.8     |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2     |      |        |1    |
 |RTransferEntropy                                |0.2.8     |      |        |     |
@@ -84,7 +84,7 @@
 |[Seurat](problems.md#seurat)                    |3.0.2     |      |        |3    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |      |        |1    |
 |[simglm](problems.md#simglm)                    |0.7.4     |      |1       |     |
-|[skpr](problems.md#skpr)                        |0.57.0    |      |        |1    |
+|[skpr](problems.md#skpr)                        |0.57.0    |1     |        |1    |
 |solitude                                        |0.1.3     |      |        |     |
 |sperrorest                                      |2.1.5     |      |        |     |
 |[stars](problems.md#stars)                      |0.3-1     |      |        |2    |
@@ -92,6 +92,7 @@
 |steps                                           |0.2.1     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0     |      |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0     |      |        |1    |
+|[threeBrain](problems.md#threebrain)            |0.1.2     |      |        |1    |
 |tidyqwi                                         |0.1.1     |      |        |     |
 |tsfeatures                                      |1.0.1     |      |        |     |
 |[TSstudio](problems.md#tsstudio)                |0.1.4     |      |        |1    |
