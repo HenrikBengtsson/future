@@ -20,8 +20,8 @@ recordConditions <- function(expr, ..., parse = TRUE) {
   conditions
 }
 
-recordRelay <- function(expr, ...) {
-  stdout <- capture.output(conditions <- recordConditions(expr, ...), split = TRUE)
+recordRelay <- function(...) {
+  stdout <- capture.output(conditions <- recordConditions(...), split = TRUE)
   if (length(stdout) > 0) stdout <- paste0(stdout, "\n")
   msgs <- sapply(conditions, FUN = conditionMessage)
   list(stdout = stdout, msgs = msgs)
