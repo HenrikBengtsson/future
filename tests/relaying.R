@@ -2,6 +2,13 @@ source("incl/start.R")
 
 options(future.debug = FALSE)
 
+## WORKAROUND: capture.output() gained argument 'split' in R 3.3.0
+if (getRversion() >= "3.3.0") {
+  capture.output <- utils::capture.output 
+} else {
+  capture.output <- function(..., split = FALSE) utils::capture.output(...)
+}
+
 message("*** Relaying of standard output and conditions ...")
 
 recordConditions <- function(expr, ..., parse = TRUE) {
