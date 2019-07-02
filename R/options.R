@@ -65,14 +65,15 @@
 #' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
 #'
 #' @aliases
-#' future.startup.script .future.R future.cmdargs 
+#' future.cmdargs 
+#' future.startup.script R_FUTURE_STARTUP_SCRIPT .future.R
 #' future.plan R_FUTURE_PLAN
 #' future.availableCores.custom
 #' future.availableCores.methods
 #' future.availableCores.fallback R_FUTURE_AVAILABLECORES_FALLBACK
 #' future.availableCores.system R_FUTURE_AVAILABLECORES_SYSTEM
 #' future.availableWorkers.methods
-#' future.fork.enable R_FUTURE_R_FUTURE_FORK_ENABLE
+#' future.fork.enable R_FUTURE_FORK_ENABLE
 #' future.globals.maxSize future.globals.method future.globals.onMissing
 #' future.globals.resolve future.globals.onReference
 #' future.resolve.recursive

@@ -2,9 +2,10 @@
 % Please edit documentation in R/options.R
 \name{future.options}
 \alias{future.options}
-\alias{future.startup.script}
-\alias{.future.R}
 \alias{future.cmdargs}
+\alias{future.startup.script}
+\alias{R_FUTURE_STARTUP_SCRIPT}
+\alias{.future.R}
 \alias{future.plan}
 \alias{R_FUTURE_PLAN}
 \alias{future.availableCores.custom}
@@ -15,7 +16,7 @@
 \alias{R_FUTURE_AVAILABLECORES_SYSTEM}
 \alias{future.availableWorkers.methods}
 \alias{future.fork.enable}
-\alias{R_FUTURE_R_FUTURE_FORK_ENABLE}
+\alias{R_FUTURE_FORK_ENABLE}
 \alias{future.globals.maxSize}
 \alias{future.globals.method}
 \alias{future.globals.onMissing}

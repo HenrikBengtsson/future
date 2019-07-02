@@ -55,11 +55,11 @@ Run `revdep_details(,"adept")` for more info
 
 <details>
 
-* Version: 3.1.1
+* Version: 3.2.0
 * Source code: https://github.com/cran/aroma.affymetrix
-* URL: http://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
+* URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
 * BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
-* Date/Publication: 2018-04-16 18:53:05 UTC
+* Date/Publication: 2019-06-23 06:00:14 UTC
 * Number of recursive dependencies: 74
 
 Run `revdep_details(,"aroma.affymetrix")` for more info
@@ -757,6 +757,28 @@ Run `revdep_details(,"tealeaves")` for more info
     Namespaces in Imports field not imported from:
       ‘ggplot2’ ‘tidyr’
       All declared Imports should be used.
+    ```
+
+# threeBrain
+
+<details>
+
+* Version: 0.1.2
+* Source code: https://github.com/cran/threeBrain
+* Date/Publication: 2019-06-28 16:40:02 UTC
+* Number of recursive dependencies: 34
+
+Run `revdep_details(,"threeBrain")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        htmlwidgets   4.7Mb
     ```
 
 # TSstudio

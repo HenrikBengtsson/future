@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.13.0-9000 [2019-06-21]
+Version: 1.14.0 [2019-07-01]
 
 SIGNIFICANT CHANGES:
 
@@ -38,6 +38,10 @@ NEW FEATURES:
  * Now option 'future.startup.script' falls back to environment variable
    'R_FUTURE_STARTUP_SCRIPT'.
    
+ * Conditions inheriting 'immediateCondition' are signaled as soon as possible.
+   Contrary to other types of conditions, these will be signaled only once per
+   future, despite being collected.
+
 BUG FIXES:
 
  * Early signaling did not take place for resolved() for ClusterFuture and

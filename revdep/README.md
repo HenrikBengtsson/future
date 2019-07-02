@@ -2,7 +2,7 @@
 
 |field    |value                                       |
 |:--------|:-------------------------------------------|
-|version  |R version 3.6.0 Patched (2019-05-31 r76629) |
+|version  |R version 3.6.0 Patched (2019-06-23 r76734) |
 |os       |Ubuntu 18.04.2 LTS                          |
 |system   |x86_64, linux-gnu                           |
 |ui       |X11                                         |
@@ -10,13 +10,13 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-06-23                                  |
+|date     |2019-06-30                                  |
 
 # Dependencies
 
 |package   |old    |new         |Δ  |
 |:---------|:------|:-----------|:--|
-|future    |1.13.0 |1.13.0-9000 |*  |
+|future    |1.13.0 |1.13.0-9001 |*  |
 |codetools |0.2-16 |0.2-16      |   |
 |digest    |0.6.19 |0.6.19      |   |
 |globals   |0.12.4 |0.12.4      |   |
@@ -24,13 +24,13 @@
 
 # Revdeps
 
-## All (68)
+## All (69)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |      |        |1    |
 |[adept](problems.md#adept)                      |1.1.2     |      |        |2    |
-|[aroma.affymetrix](problems.md#aromaaffymetrix) |3.1.1     |      |        |2    |
+|[aroma.affymetrix](problems.md#aromaaffymetrix) |3.2.0     |      |        |2    |
 |[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.1.0     |      |        |1    |
 |BatchGetSymbols                                 |2.5.2     |      |        |     |
@@ -92,6 +92,7 @@
 |steps                                           |0.2.1     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)       |1.1.0     |      |        |2    |
 |[tealeaves](problems.md#tealeaves)              |1.0.0     |      |        |1    |
+|[threeBrain](problems.md#threebrain)            |0.1.2     |      |        |1    |
 |tidyqwi                                         |0.1.1     |      |        |     |
 |tsfeatures                                      |1.0.1     |      |        |     |
 |[TSstudio](problems.md#tsstudio)                |0.1.4     |      |        |1    |
