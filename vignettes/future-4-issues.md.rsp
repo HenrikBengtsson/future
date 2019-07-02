@@ -44,6 +44,7 @@ _Comment:_ The goal is to in a future version of the package detect globals also
 
 
 #### do.call() - function not found
+
 When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
 ```r
 do.call(file_ext, list("foo.txt"))
@@ -68,6 +69,119 @@ It may also become a problem with futures evaluated with lazy evaluation if the 
 > unlist(res)
 [1] "haha!" "haha!" "haha!"
 ```
+
+
+#### get() - object not found
+
+The base R function `get()` can be used to get the value of a object by its name.  For example, `get("pi", envir = baseenv())` will get the value of object `pi` in the 'base' environment, i.e. it corresponds to `base::pi`.  If no other objects named `pi` exists on the search path, we could have used `get("pi")` and `pi`, respectively.  It is not unusal to see code snippets such as:
+
+```r
+> a <- 1:3
+> b <- 4:6
+> c <- 3:5
+> my_sum <- function(var) { sum(get(var)) }
+> y <- my_sum("a")
+> y
+[1] 6
+```
+
+If we attempt to call `my_sum()` via a future, we will get an error (if the future is resolved in an external R process);
+```r
+> library("future")
+> plan(multisession)
+> f <- future(my_sum("a"))
+> y <- value(f)
+Error in get(var) : object 'a' not found
+```
+
+This is because the static code inspection done on the future expression `my_sum("a")` does not reveal object `a` as a global object.  In that expression alone, there are only three objects: the function `my_sum()`, the primitive function `(`, and the string `"a"`, and none of those are object `a`.  The future framework will also scan these three objects for globals, which in this example means that it scans also `my_sum()`.  This recursive search for globals will identify three additional globals, namely, the primitive function `{`, the function `sum()`, and the function `get()`, but, as before, none of these source will identify `a` as a global object.
+In order for `a` to be identified, the future framework would need to have a built-in understanding on how `get(var)` works, which would be a daunting task, especially if it need to know it acts for different data types of `var` and various choices on arguments `envir` and `enclos`.  In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code.  In short, it is not possible to automatically identify global variables specified via a character string.
+
+The workaround is to tell the future framework what _additional_ globals are needed.  This can be done via argument `globals` using:
+```r
+> f <- future(my_sum("a"), globals = structure(TRUE, add = "a"))
+> y <- value(f)
+> y
+[1] 6
+```
+
+
+Note that, independently of the future framework, it is often a bad idea to use `get()`, and related functions `mget()` and `assign()`, in R code.  Searching the archives of R forums, such as the R-help and R-devel mailing lists, will reveal numerous suggestions against using them.  A good rule of thumb is:
+
+> If you find yourself using `get()` in your code, take a step back, and reconsider your implementation.  There is most likely better solution available.
+
+
+For example, consider this, slightly more complex, example:
+
+```r
+> a <- 1:3
+> b <- 4:7
+> c <- 3:5
+> my_sum <- function(var) { sum(get(var)) }
+> y <- sapply(c("a", "b", "c"), FUN = my_sum)
+> y
+ a  b  c
+ 6 22 12
+```
+
+Instead of using "free roaming" objects `a`, `b`, and `c`, it's better to put those values in a list (or a data frame of of the same length);
+
+```r
+> data <- list(a = 1:3, b = 4:7, c = 3:5)
+```
+
+This will in turn allow us to perform the same calculations without having to use `get()`;
+
+```r
+> my_sum <- function(x) { sum(x) }
+> y <- sapply(data, FUN = my_sum)
+> y
+ a  b  c
+ 6 22 12
+```
+
+
+#### glue::glue() - object not found
+
+The future framework will fail to identify globals that are declared via character strings.  The above section show an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the glue package to generate strings dynamically, e.g.
+
+```r
+> library("glue")
+> a <- 42
+> s <- glue("The value of a is {a}.")
+> s
+The value of a is 42.
+```
+
+Attempt to perform the same via a future that is resolved in another R session will produce an "object not found" error;
+
+```r
+> library("glue")
+> library("future")
+> plan(multisession)
+> a <- 42
+> s %<-% glue("The value of a is {a}.")
+> s
+Error in eval(parse(text = text, keep.source = FALSE), envir) : 
+  object 'a' not found
+```
+
+As examplained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
+```
+> s %<-% glue("The value of a is {a}.") %globals% structure(TRUE, add = "a")
+> s
+The value of a is 42.
+```
+
+An alternative solution is to guide the future framework by adding the missing globals as "dummy" variables, e.g.
+
+```
+> s %<-% { a; glue("The value of a is {a}.") }
+> s
+The value of a is 42.
+```
+
+
 
 ### Missing packages (false negatives)
 

@@ -1,10 +1,13 @@
 library("future")
 library("listenv")
 
-## IMPORTANT: The below usage of lazy futures will only work when they
-##            are all evaluated in the same process.  We also need to
-##            disable the capturing of the standard output to avoid
-##            'sink stack is full' errors
+## IMPORTANT:
+## 1. The below usage of lazy futures will only work when they are
+##    all evaluated in the same process.
+## 2. We disable the capturing of standard output (stdout=NA) to avoid
+##    'sink stack is full' errors
+## 3. We disable the capturing of most conditions (condition="error") to
+##    avoid stacking up too many conditions
 oplan <- plan(sequential)
 
 ## Defines the first 100 Fibonacci numbers
@@ -16,7 +19,7 @@ x <- listenv()
 x[[1]] <- 0
 x[[2]] <- 1
 for (i in 3:100) {
-  x[[i]] %<-% { x[[i - 2]] + x[[i - 1]] } %lazy% TRUE %stdout% NA
+  x[[i]] %<-% { x[[i - 2]] + x[[i - 1]] } %lazy% TRUE %stdout% NA %conditions% "error"
 }
 
 ## At this point nothing has been calculated,

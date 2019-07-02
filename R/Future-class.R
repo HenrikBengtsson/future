@@ -74,7 +74,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = c("message", "warning"), globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   if (!is.null(seed)) {
@@ -108,7 +108,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
 
   ## Version of future
   version <- args$version
-  if (is.null(version)) version <- "1.7"
+  if (is.null(version)) version <- "1.8"
   core$version <- version
   core$.callResult <- FALSE  ## Temporary until "1.7" defunct
 
@@ -214,14 +214,10 @@ print.Future <- function(x, ...) {
     ## for which we need to support this? /HB 2016-05-03
     cat("Resolved: FALSE\n")
   } else {
-    ## resolved() without early signalling
-    ## FIXME: Make it easier to achieve this. /HB 2016-05-03
-    local({
-      earlySignal <- x$earlySignal
-      x$earlySignal <- FALSE
-      on.exit(x$earlySignal <- earlySignal)
-      cat(sprintf("Resolved: %s\n", tryCatch(resolved(x), error = conditionMessage)))
-    })
+    ## Don't signal conditions here
+    ## Note that resolved() may produce a FutureError, e.g.
+    ## due to invalid connection in a MultisessionFuture
+    cat(sprintf("Resolved: %s\n", tryCatch(resolved(x, .signalEarly = FALSE), error = function(ex) NA)))
   }
 
   if (hasResult) {
@@ -233,10 +229,6 @@ print.Future <- function(x, ...) {
     cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
     if (inherits(result, "FutureResult")) {
       conditions <- result$conditions
-      ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-      if (!is.list(conditions) && !is.null(result[["condition"]])) {
-        conditions <- list(list(condition = result[["condition"]]))
-      }
       conditionClasses <- vapply(conditions, FUN = function(c) class(c$condition)[1], FUN.VALUE = NA_character_)
       cat(sprintf("Conditions captured: [n=%d] %s\n", length(conditionClasses), hpaste(sQuote(conditionClasses))))
     }
@@ -244,7 +236,7 @@ print.Future <- function(x, ...) {
     cat("Value: <not collected>\n")
     cat("Conditions captured: <none>\n")
   }
-  cat(sprintf("Early signalling: %s\n", isTRUE(x$earlySignal)))
+  cat(sprintf("Early signaling: %s\n", isTRUE(x$earlySignal)))
   cat(sprintf("Owner process: %s\n", x$owner))
   cat(sprintf("Class: %s\n", paste(sQuote(class), collapse = ", ")))
 } ## print()
@@ -324,6 +316,10 @@ result.Future <- function(future, ...) {
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalImmediateConditions(future)
+
     if (inherits(result, "FutureError")) stop(result)
     return(result)
   }
@@ -337,6 +333,10 @@ result.Future <- function(future, ...) {
     ## For now, it is value() that collects the results.  Later we want
     ## all future backends to use result() to do it. /HB 2018-02-22
     value(future, stdout = FALSE, signal = FALSE)
+
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalImmediateConditions(future)
   }
 
   result <- future$result
@@ -361,12 +361,14 @@ result.Future <- function(future, ...) {
       stop(FutureError(msg, future = future))
     }
   }
-  
+
+  .Deprecated(msg = "Future objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+
   ## BACKWARD COMPATIBILITY
   if (future$state == "failed") {
     value <- result
     calls <- value$traceback
-    return(FutureResult(conditions = list(list(condition = value)), calls = calls, version = "1.7"))
+    return(FutureResult(conditions = list(list(condition = value, signaled = 0L)), calls = calls, version = "1.7"))
   }
 
   FutureResult(value = result, version = "1.7")
@@ -417,6 +419,10 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
 
   value <- result$value
 
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalImmediateConditions(future)
+
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
       inherits(result$stdout, "character")) {
@@ -425,14 +431,11 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   
   ## Signal captured conditions?
   conditions <- result$conditions
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions) && !is.null(result[["condition"]])) {
-    conditions <- list(list(condition = result[["condition"]]))
-  }
   if (length(conditions) > 0) {
     if (signal) {
       mdebugf("Future state: %s", sQuote(future$state))
-      resignalConditions(future) ## Will signal an (eval) error, iff exists
+      ## Will signal an (eval) error, iff exists
+      signalConditions(future, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = TRUE)
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition
@@ -641,7 +644,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, version = version)
+  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")
@@ -653,9 +656,15 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.7") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
-  
+    if (immediateConditions) {
+      immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+      conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
+    } else {
+      immediateConditionClasses <- character(0L)
+    }
+    
     if (is.null(skip)) {
       ## WORKAROUND: skip = c(7/12, 3) makes assumption about withCallingHandlers()
       ## and local().  In case this changes, provide internal options to adjust this.
@@ -678,7 +687,7 @@ makeExpression <- local({
       ## covr: skip=7
       ...future.oldOptions <- options(
         ## Prevent .future.R from being source():d when future is attached
-        future.startup.loadScript = FALSE,
+        future.startup.script = FALSE,
         
         ## Assert globals when future is created (or at run time)?
         future.globals.onMissing = .(globals.onMissing),
@@ -709,17 +718,7 @@ makeExpression <- local({
     ## If this was mandatory, we could.  Instead we use
     ## a tryCatch() statement. /HB 2016-03-14
   
-    if (version == "1.7") {
-      expr <- bquote({
-        ## covr: skip=6
-        .(enter)
-        tryCatch({
-          .(expr)
-        }, finally = {
-          .(exit)
-        })
-      })
-    } else if (version == "1.8") {    
+    if (version == "1.8") {    
       expr <- bquote({
         ## covr: skip=6
         .(enter)
@@ -779,14 +778,31 @@ makeExpression <- local({
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time())
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = 0L)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond)
+                  ## Relay 'immediateCondition' conditions immediately?
+                  ## If so, then do not muffle it and flag it as signalled
+                  ## already here.
+                  signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = as.integer(signal))
                   if (inherits(cond, "message")) {
-                    invokeRestart("muffleMessage")
+                    if (!signal) invokeRestart("muffleMessage")
                   } else if (inherits(cond, "warning")) {
-                    invokeRestart("muffleWarning")
+                    if (!signal) invokeRestart("muffleWarning")
+                  } else {
+                    if (!signal) {
+                      ## If there is a "muffle" restart for this condition,
+                      ## then invoke that restart, i.e. "muffle" the condition
+                      restarts <- computeRestarts(cond)
+                      for (restart in restarts) {
+                        name <- restart$name
+                        if (is.null(name)) next
+                        if (!grepl("^muffle", name)) next
+                        invokeRestart(restart)
+                        break
+                      }
+                    }
                   }
                 }
               }
@@ -796,8 +812,6 @@ makeExpression <- local({
           structure(list(
             value = NULL,
             conditions = ...future.conditions,
-            condition = ex,      ## DEPRECATED: future (>= 1.11.0)
-            calls = sys.calls(), ## DEPRECATED: future (>= 1.11.0)
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))
@@ -819,6 +833,16 @@ makeExpression <- local({
         ...future.result$conditions <- ...future.conditions
         
         ...future.result
+      })
+    } else if (version == "1.7") {  ## Deprecated
+      expr <- bquote({
+        ## covr: skip=6
+        .(enter)
+        tryCatch({
+          .(expr)
+        }, finally = {
+          .(exit)
+        })
       })
     } else {
       stop(FutureError("Internal error: Non-supported future expression version: ", version))

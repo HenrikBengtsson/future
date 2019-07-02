@@ -6,9 +6,23 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return A @list with the future's call stack that led up to the error.
+#' @return A list with the future's call stack that led up to the error.
 #'
-#' @example incl/backtrace.R
+#' @examples
+#' my_log <- function(x) log(x)
+#' foo <- function(...) my_log(...)
+#' 
+#' f <- future({ foo("a") })
+#' res <- tryCatch({
+#'   v <- value(f)
+#' }, error = function(ex) {
+#'   t <- backtrace(f)
+#'   print(t)
+#' })
+#' \dontshow{
+#' ## R CMD check: make sure any open connections are closed afterward
+#' if (!inherits(plan("next"), "sequential")) plan(sequential)
+#' }
 #'
 #' @export
 backtrace <- function(future, envir = parent.frame(), ...) {
@@ -32,9 +46,6 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   result <- result(future)
   conditions <- result$conditions
   
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (!is.list(conditions)) conditions <- list(list(condition = result[["condition"]]))
-
   ## Find 'error' condition
   error <- NULL
   for (kk in seq_along(conditions)) {
@@ -51,9 +62,6 @@ backtrace <- function(future, envir = parent.frame(), ...) {
 
   calls <- error$calls
 
-  ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-  if (is.null(calls)) calls <- result$calls
-  
   if (is.null(calls)) {
     stop("The error call stack was not recorded for this future: ", sQuote(expr))
   }

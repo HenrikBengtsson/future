@@ -86,7 +86,11 @@ resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
   if (x$state == "created") return(FALSE)
 
   ## Is value already collected?
-  if (!is.null(x$result)) return(TRUE)
+  if (!is.null(x$result)) {
+    ## Signal conditions early?
+    signalEarly(x, ...)
+    return(TRUE)
+  }
 
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -202,12 +206,15 @@ result.MulticoreFuture <- function(future, ...) {
   
   future$result <- result
   
-  ## BACKWARD COMPATIBILITY
-  future$state <- if (inherits(result[["condition"]], "error")) "failed" else "finished"
+  future$state <- "finished"
 
   ## Remove from registry
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
+
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalImmediateConditions(future)
 
   result
 }

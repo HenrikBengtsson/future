@@ -96,7 +96,7 @@ plan(cluster, workers = cl)
 ## A global variable
 a <- 0
 
-## Create multicore future (explicitly)
+## Create future (explicitly)
 f <- future({
   b <- 3
   c <- 2
@@ -104,8 +104,8 @@ f <- future({
 })
 
 ## A cluster future is evaluated in a separate process.
-## Changing the value of a global variable will not
-## affect the result of the future.
+## Regardless, changing the value of a global variable will
+## not affect the result of the future.
 a <- 7
 print(a)
 

@@ -1,6 +1,81 @@
 Package: future
 ===============
 
+Version: 1.14.0 [2019-07-01]
+
+SIGNIFICANT CHANGES:
+
+ * All types of conditions are now captured and relayed.  Previously, only
+   conditions of class 'message' and 'warning' were relayed.
+
+ * If one of the futures in a collection produces an error, then values()
+   will signal that error as soon as it is detected.  This means that while
+   calling values() guarantees to resolve all futures, it does not guarantee
+   that the result from all futures are gathered back to the master R session
+   before the error is relayed.
+
+NEW FEATURES:
+
+ * values() now relays 'stdout' and 'signal' as soon as possible as long as
+   the standard output and the conditions are relayed in their original order.
+
+ * If a captured condition can be "muffled", then it will be muffled.  This
+   helps to prevent conditions from being handled twice by condition handlers
+   when futures are evaluated in the main R session, e.g. plan(sequential).
+   Messages and warnings were already muffled in the past.
+
+ * Forked processing is considered unstable when running R from certain
+   environments, such as the RStudio environment.  Because of this, 'multicore'
+   futures have been disabled in those cases since future 1.13.0.  This change
+   caught several RStudio users by surprise.  Starting with future 1.14.0, an
+   informative one-time-per-session warning will be produced when attempts to
+   use 'multicore' is made in non-supported environments such as RStudio.
+   This warning will also be produced when using 'multiprocess', which will
+   fall back to using 'multisession' futures.  The warning can be disabled by
+   setting R option 'future.supportsMulticore.unstable', or environment
+   variable 'FUTURE_SUPPORTSMULTICORE_UNSTABLE' to "quiet".
+
+ * Now option 'future.startup.script' falls back to environment variable
+   'R_FUTURE_STARTUP_SCRIPT'.
+   
+ * Conditions inheriting 'immediateCondition' are signaled as soon as possible.
+   Contrary to other types of conditions, these will be signaled only once per
+   future, despite being collected.
+
+BUG FIXES:
+
+ * Early signaling did not take place for resolved() for ClusterFuture and
+   MulticoreFuture.
+
+ * When early signaling was enabled, functions such as resolved() and
+   resolve() would relay captured conditions multiple times.  This would,
+   for instance, result in the same messages and warnings being outputted
+   more than once.  Now it is only value() that will resignal conditions.
+
+ * The validation of connections failed to detect when the connection had
+   been serialized (= a NIL external pointer) on some macOS systems.
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'progress' of resolve() is now defunct (was deprecated since
+   future 1.12.0).  Option 'future.progress' is ignored.  This will make
+   room for other progress-update mechanisms that are in the works.
+
+ * Usage of internal argument 'evaluator' is now deprecated.
+ 
+ * Removed defunct argument 'output' from FutureError().
+
+ * FutureResult fields/arguments 'condition' and 'calls' are now defunct.
+   Use 'conditions' instead.
+
+ * Future and FutureResult objects with an internal version 1.7 or older are
+   deprecated and will eventually become defunct.  Future backends that
+   implement their own Future classes should update to implement a result()
+   method instead of a value() method for their Future classes.  All future
+   backends available on CRAN and Bioconductor have already been updated
+   accordingly.
+ 
+
 Version: 1.13.0 [2019-05-08]
 
 SIGNIFICANT CHANGES:
@@ -55,9 +130,9 @@ DOCUMENTATION:
 
 BUG FIXES:
 
- * makeClusterPSOCK() did not shell quote the Rscript executable when
-   running it's pre-tests on whether localhost Rscript processes can be
-   killed by their PIDs or not.
+ * makeClusterPSOCK() did not shell quote the Rscript executable when running
+   its pre-tests checking whether localhost Rscript processes can be killed by
+   their PIDs or not.
 
 DEPRECATED AND DEFUNCT:
 

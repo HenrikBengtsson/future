@@ -71,7 +71,11 @@ run.UniprocessFuture <- function(future, ...) {
   future$state <- 'finished'
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
-  
+
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalImmediateConditions(future)
+
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
   
@@ -115,6 +119,13 @@ resolved.UniprocessFuture <- function(x, ...) {
     result(x)
   }
   NextMethod()
+}
+
+#' @export
+getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, ...) {
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+  NextMethod(immediateConditions = immediateConditions)
 }
 
 

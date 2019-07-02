@@ -1,8 +1,9 @@
 #' Check whether a future is resolved or not
 #'
-#' @param x A \link{Future}, a list or an environment (which also
+#' @param x A \link{Future}, a list, or an environment (which also
 #' includes \link[listenv:listenv]{list environment}.
-#' @param \dots Not used
+#'
+#' @param \dots Not used.
 #'
 #' @return A logical of the same length and dimensions as \code{x}.
 #' Each element is TRUE unless the corresponding element is a
@@ -17,11 +18,6 @@
 #' e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
 #'
 #' @export
-#' @export resolved
-#' @aliases resolved.default
-#' @aliases resolved.Future
-#' @aliases resolved.list
-#' @aliases resolved.environment
 resolved <- function(x, ...) UseMethod("resolved")
 
 #' @export
@@ -36,7 +32,7 @@ resolved.list <- function(x, ...) {
   res <- rep(TRUE, times = length(fs))
   for (ii in seq_along(fs)) {
     f <- fs[[ii]]
-    if (inherits(f, "Future")) res[[ii]] <- resolved(f)
+    if (inherits(f, "Future")) res[[ii]] <- resolved(f, ...)
   }
 
   dim <- dim(fs)
@@ -56,5 +52,5 @@ resolved.environment <- function(x, ...) {
   names <- names(fs)
   fs <- as.list(fs)
   names(fs) <- names
-  resolved(fs)
+  resolved(fs, ...)
 }

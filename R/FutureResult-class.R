@@ -8,7 +8,7 @@
 #' a captured \link[base:condition]{condition} and possibly more meta data such as the
 #' call stack and a timestamp.
 #'
-#' @param \ldots (optional) Additional named results to be returned.
+#' @param \dots (optional) Additional named results to be returned.
 #' 
 #' @param started,finished \link[base:POSIXct]{POSIXct} timestamps when the evaluation of
 #' the future expression was started and finished.
@@ -27,13 +27,9 @@
 #' accessing the elements directly in code.  Feel free to reach out if you need
 #' to do so in your code.
 #'
-#' @section Deprecated elements:
-#' * future (>= 1.11.0): elements \code{condition} and \code{calls} are
-#'   deprecated in favor of \code{conditions}
-#'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.7") {
+FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)
@@ -42,31 +38,24 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., st
         "Internal error: All arguments to FutureResult() must be named"
       ))
     }
-    ## DEPRECATED in future (>= 1.11.0)
-    if (!is.null(args[["calls"]])) stop_if_not(is.list(args[["calls"]]))
-    if (!is.null(args[["condition"]])) stop_if_not(inherits(args[["condition"]], "error"))
+    ## DEPRECATED in future (>= 1.11.0), DEFUNCT IN future (>= 1.14.0)
+    if (!is.null(args[["calls"]])) {
+      .Defunct(msg = "Argument 'calls' to FutureResult is defunct")
+    } else if (!is.null(args[["condition"]])) {
+      .Defunct(msg = "Argument 'condition' to FutureResult is defunct")
+    }
   }
 
   if (!is.null(stdout)) stopifnot(is.character(stdout))
   
-  if (is.null(conditions)) {
-    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-    if (!is.null(args[["condition"]])) {
-      conditions <- list(list(condition=args[["condition"]]))
-    }
-  } else {
-    stop_if_not(is.list(conditions))
-    ## BACKWARD COMPATIBILITY: future (< 1.11.0)
-    ## Make sure that 'condition' is set, in case some pkgs use that
-    for (kk in seq_along(conditions)) {
-      c <- conditions[[kk]]
-      if (inherits(c[["condition"]], "error")) {
-        args[["condition"]] <- c[["condition"]]
-	break
-      }
-    }
+  stop_if_not(is.null(conditions) || is.list(conditions))
+
+  stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
+
+  if (version == "1.7") {
+    .Deprecated(msg = "FutureResult objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
   }
-  
+
   structure(list(
     value      = value,
     stdout     = stdout,

@@ -209,7 +209,11 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   if (x$state == 'created') return(FALSE)
 
   ## Is value already collected?
-  if (!is.null(x$result)) return(TRUE)
+  if (!is.null(x$result)) {
+    ## Signal conditions early?
+    signalEarly(x, ...)
+    return(TRUE)
+  }
 
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
@@ -224,7 +228,8 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
   if (!is.null(con <- node$con)) {
     ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
-    if (connectionId(con) < 0) return(FALSE)
+    connId <- connectionId(con)
+    if (!is.na(connId) && connId < 0L) return(FALSE)
 
     isValid <- isValidConnection(con)
     if (!isValid) {
@@ -372,14 +377,17 @@ result.ClusterFuture <- function(future, ...) {
     stop(ex)
   }
 
-  ## BACKWARD COMPATIBILITY
-  future$state <- if (inherits(result[["condition"]], "error")) "failed" else "finished"
+  future$state <- "finished"
 
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
   ## Remove from registry
   FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
+
+  ## Always signal immediateCondition:s and as soon as possible.
+  ## They will always be signaled if they exist.
+  signalImmediateConditions(future)
 
   ## Garbage collect cluster worker?
   if (future$gc) {
@@ -394,6 +402,8 @@ result.ClusterFuture <- function(future, ...) {
     
     clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
   }
+
+  if (debug) mdebug("result() for ClusterFuture ... done")
 
   result
 }

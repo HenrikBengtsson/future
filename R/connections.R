@@ -1,3 +1,11 @@
+#' @return Returns an non-negative integer, -1L, or \code{NA_integer}.
+#' For connections stdin, stdout, and stderr, 0L, 1L, and 2L,
+#' are returned, respectively.  For all other connections,
+#' a semi-random integer greater or equal to 3L is returned.
+#' For a connection that has been serialized, value is -1L.
+#' Attribute \code{raw_id} returns the pointer string from which
+#' the above is inferred.
+#'
 #' @importFrom utils capture.output
 connectionId <- function(con) {
   stop_if_not(inherits(con, "connection"))
@@ -9,13 +17,15 @@ connectionId <- function(con) {
   id <- attr(con, "conn_id")
   if (is.null(id)) return(NA_integer_)
   
-  id <- capture.output(print(id))
+  id <- raw_id <- capture.output(print(id))
+  id <- gsub("(<pointer:| |>)", "", id)
   
   ## Has the connection been serialized?
-  if (id == "<pointer: (nil)>") return(-1L)
+  if (id == "(nil)" || id == "0x0") return(-1L)
   
-  id <- gsub("(<pointer:| |>)", "", id)
   id <- strtoi(id, base = 16L)
+
+  attr(id, "raw_id") <- raw_id
   
   id
 }
@@ -28,13 +38,15 @@ connectionInfo <- function(con) {
     details <- as.list(rep(NA_character_, times = 7L))
     names(details) <- c("description", "class", "mode", "text", "opened", "can read", "can write")
   }
-  details$id <- connectionId(con)
+  id <- connectionId(con)
+  details$id <- id
+  details$raw_id <- attr(id, "raw_id")
   info <- unlist(lapply(details, FUN = function(x) {
     if (is.character(x)) paste0('"', x, '"') else x
   }), use.names = FALSE)
   info <- sprintf("%s=%s", names(details), info)
   info <- paste(info, collapse = ", ")
-  info <- sprintf("connection: %s", info)
+  info <- sprintf("connection: index=%d, %s", index, info)
   info
 }
 

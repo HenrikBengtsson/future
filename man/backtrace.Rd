@@ -14,7 +14,7 @@ backtrace(future, envir = parent.frame(), ...)
 \item{\dots}{Not used.}
 }
 \value{
-A @list with the future's call stack that led up to the error.
+A list with the future's call stack that led up to the error.
 }
 \description{
 Back trace the expressions evaluated when an error was caught
@@ -30,4 +30,9 @@ res <- tryCatch({
   t <- backtrace(f)
   print(t)
 })
+\dontshow{
+## R CMD check: make sure any open connections are closed afterward
+if (!inherits(plan("next"), "sequential")) plan(sequential)
+}
+
 }

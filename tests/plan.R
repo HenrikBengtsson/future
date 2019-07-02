@@ -67,7 +67,7 @@ print(plan())
 message("*** plan() and overriding defaults")
 message("*** plan(sequential)")
 plan(sequential)
-fcn <- plan()
+fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$local == TRUE)
 x <- 0
@@ -77,7 +77,7 @@ stopifnot(x == 0)
 
 message("*** plan(sequential, local = FALSE)")
 plan(sequential, local = FALSE)
-fcn <- plan()
+fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 x <- 0
@@ -87,54 +87,54 @@ stopifnot(x == 1)
 
 message("*** plan(sequential, local = FALSE, abc = 1, def = TRUE)")
 plan(sequential, local = FALSE, abc = 1, def = TRUE)
-fcn <- plan()
+fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(sequential(local = FALSE))")
 plan(cluster, workers = cl)
 plan(sequential(local = FALSE))
-fcn <- plan()
+fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 message("*** plan(tweak(sequential, local = FALSE))")
 plan(cluster, workers = cl)
 plan(tweak(sequential, local = FALSE))
-fcn <- plan()
+fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$local == FALSE)
 
 
 message("*** old <- plan(new)")
-truth <- plan()
+truth <- plan("next")
 old <- plan(cluster, workers = cl, globals = FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
-curr <- plan()    ## curr == cluster(workers = cl, globals = FALSE)
-prev <- plan(old) ## prev == sequential(local = FALSE)
+curr <- plan("next") ## curr == cluster(workers = cl, globals = FALSE)
+prev <- plan(old)    ## prev == sequential(local = FALSE)
 stopifnot(identical(unclass(curr), unclass(prev)))
 
-curr <- plan()    ## curr == old
+curr <- plan("next") ## curr == old
 stopifnot(identical(unclass(curr), unclass(old)))
 stopifnot(identical(unclass(curr), unclass(truth)))
 
 message("*** %plan% 'sequential'")
 plan(cluster, workers = cl)
 x %<-% { a <- 1 } %plan% "sequential"
-stopifnot(identical(body(plan()), body(cluster)))
+stopifnot(identical(body(plan("next")), body(cluster)))
 
 message("*** %plan% sequential")
 plan(cluster, workers = cl)
 
 ## %plan% can operate on any expression, so it
 ## works just as an withPlan({ ... }, plan = ...)
-fun <- { plan() } %plan% sequential
+fun <- { plan("next") } %plan% sequential
 f <- fun(1)
 stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFuture"))
 
 x %<-% { a <- 1 } %plan% sequential
-stopifnot(identical(body(plan()), body(cluster)))
+stopifnot(identical(body(plan("next")), body(cluster)))
 
 message("*** %plan% sequential(local = FALSE) ")
 plan(cluster, workers = cl)
@@ -143,7 +143,7 @@ x %<-% { a } %plan% sequential(local = FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
-stopifnot(identical(body(plan()), body(cluster)))
+stopifnot(identical(body(plan("next")), body(cluster)))
 
 message("*** Nested futures with different plans")
 

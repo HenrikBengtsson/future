@@ -123,6 +123,8 @@ If a \file{\link{.future.R}} exists in the current directory and / or in
 the user's home directory, it is sourced when the \pkg{future} package is
 \emph{loaded}.  Because of this, the \file{.future.R} file provides a
 convenient place for users to set the \code{plan()}.
+This behavior can be controlled via an \R option - see
+\link[future:future.options]{future options} for more details.
 }
 
 \examples{
@@ -168,13 +170,12 @@ str(list(a = a, b = b, c = c)) ## All NAs
 
 
 ## Multisession futures gives an error on R CMD check on
-## Windows (but not Linux or OS X) for unknown reasons.
+## Windows (but not Linux or macOS) for unknown reasons.
 ## The same code works in package tests.
 \donttest{
 
 # A multisession future (specified via a string variable)
-strategy <- "future::multisession"
-plan(strategy)
+plan("future::multisession")
 f <- future({
   a <- 7
   b <- 3

@@ -25,16 +25,7 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   ## Support different types of input
   ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
   if (inherits(message, "Future")) {
-    future <- message
-    result <- future$result
-    if (inherits(result, "FutureResult")) {
-      cond <- result[["condition"]]
-    } else {
-      ## BACKWARD COMPATIBILITY
-      cond <- future$value
-    }
-    stop_if_not(inherits(cond, "condition"))
-    message <- conditionMessage(cond)
+    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
   } else if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
@@ -71,23 +62,6 @@ print.FutureCondition <- function(x, ...) {
       cat("\n")
     }
 
-    result <- future$result
-    if (inherits(result, "FutureResult")) {
-      cond <- result[["condition"]]
-    } else {
-      ## BACKWARD COMPATIBILITY
-      cond <- future$value
-    }
-    if (inherits(cond, "condition")) {
-      fcalls <- result$calls
-      if (is.null(fcalls)) fcalls <- cond$traceback ## BACKWARD COMPATIBILITY
-      if (!is.null(fcalls)) {
-        cat("Future call stack:\n")
-        print(fcalls)
-        cat("\n")
-      }
-    }
-
     cat("DEBUG: END TROUBLESHOOTING HELP\n")
   }
 
@@ -114,18 +88,11 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 }
 
 
-#' @param output (DEFUNCT - don't use!) only for backward compatibility
-#' 
 #' @rdname FutureCondition
 #' @export
-FutureError <- function(message, call = NULL, future = NULL, output = NULL) {
-  if (!is.null(output)) {
-    .Defunct(msg = "Argument 'output' of FutureError is defunct")
-  }
-  
+FutureError <- function(message, call = NULL, future = NULL) {
   cond <- FutureCondition(message = message, call = call, future = future)
   class(cond) <- c("FutureError", "error", class(cond))
-
   cond
 }
 

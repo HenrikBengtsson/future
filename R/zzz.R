@@ -149,29 +149,71 @@
 ## covr: skip=all
 #' @importFrom utils file_test
 .onAttach <- function(libname, pkgname) {
-  ## Load .future.R script?
-  loadDotFuture <- getOption("future.startup.loadScript", TRUE)
-  if (isTRUE(loadDotFuture)) {
-    debug <- getOption("future.debug", FALSE)
-    
-    pathnames <- c(".future.R", "~/.future.R")
-    pathnames <- pathnames[file_test("-f", pathnames)]
-  
-    if (length(pathnames) == 0) {
-      if (debug) mdebug("Future startup scripts identified: <none>")
-      return()
+  ## Source .future.R script, if one exists
+  sourceFutureStartupScript()
+}
+
+
+sourceFutureStartupScript <- function(default = c(".future.R", "~/.future.R"), debug = getOption("future.debug", FALSE)) {
+  ## Get default from env var?
+  pathnames <- Sys.getenv("R_FUTURE_STARTUP_SCRIPT")
+  if (nchar(pathnames) == 0L) {
+    pathnames <- TRUE
+  } else {
+    if (debug) mdebug("R_FUTURE_STARTUP_SCRIPT: ", sQuote(pathnames))
+    pathnames <- strsplit(pathnames, split = "[:;]", fixed = FALSE)[[1]]
+    if (identical(toupper(pathnames), "TRUE")) {
+      pathnames <- TRUE
+    } else if (identical(toupper(pathnames), "FALSE")) {
+      pathnames <- FALSE
     }
-    pathname <- pathnames[1]
-    if (debug) {
-      mdebugf("Future startup scripts identified: %s", paste(sQuote(pathnames), collapse = ", "))
-      mdebugf("Future startup script to load: %s", sQuote(pathname))
-    }
-    tryCatch({
-      source(pathname, chdir = FALSE, echo = FALSE, local = FALSE)
-    }, error = function(ex) {
-      msg <- sprintf("Failed to source %s file while attaching the future package. Will ignore this error, but please investigate. The error message was: %s", sQuote(pathname), sQuote(ex$message))
-      if (debug) mdebug(msg)
-      warning(msg)
-    })
   }
-} ## .onAttach()
+
+  ## Get default from R option?
+  pathnames <- getOption("future.startup.script", pathnames)
+  
+  ## BACKWARD COMPATIBILITY
+  if (is.logical(pathnames)) {
+    if (debug) mdebug("Option 'future.startup.script': ", paste(pathnames, collapse = ", "))
+    stop_if_not(length(pathnames) == 1L, !is.na(pathnames))
+    ## Nothing to do?
+    if (!pathnames) {
+      if (debug) mdebug("Future startup scripts disabled")
+      return(character(0L))
+    }
+    pathnames <- default
+  }
+  
+  stop_if_not(is.character(pathnames), !anyNA(pathnames))
+
+  ## Nothing to do?
+  if (length(pathnames) == 0L) {
+    if (debug) mdebug("No future startup scripts specified")
+    return(character(0L))
+  }
+  
+  if (debug) mdebug("Future startup scripts considered: ", paste(sQuote(pathnames), collapse = ", "))
+  pathnames <- pathnames[file_test("-f", pathnames)]
+
+  ## Nothing to do?
+  if (length(pathnames) == 0L) {
+    if (debug) mdebug("Future startup scripts found: <none>")
+    return(character(0L))
+  }
+  
+  pathname <- pathnames[1]
+  if (debug) {
+    mdebugf("Future startup scripts found: %s", paste(sQuote(pathnames), collapse = ", "))
+    mdebugf("Future startup script to load: %s", sQuote(pathname))
+  }
+  
+  tryCatch({
+    source(pathname, chdir = FALSE, echo = FALSE, local = FALSE)
+  }, error = function(ex) {
+    msg <- sprintf("Failed to source %s file while attaching the future package. Will ignore this error, but please investigate. The error message was: %s", sQuote(pathname), sQuote(ex$message))
+    if (debug) mdebug(msg)
+    warning(msg)
+  })
+
+  pathname
+} ## sourceFutureStartupScript()
