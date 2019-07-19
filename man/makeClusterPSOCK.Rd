@@ -188,7 +188,7 @@ This is because all elements of \code{rshcmd} are individually "shell"
 quoted and element \code{rshcmd[1]} must be on the system \env{PATH}.
 
 Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-client that is distributed with RStudio will be also be considered.
+client that is distributed with RStudio will also be considered.
 This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
 is search for in the folder given by the \env{RSTUDIO_MSYS_SSH} environment
 variable - a variable that is (only) set when running RStudio.
