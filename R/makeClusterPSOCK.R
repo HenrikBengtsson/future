@@ -361,6 +361,47 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' closed automatically.  This will eventually result in an error in code
 #' trying to access the connection.
 #'
+#' @section Troubleshooting:
+#' \emph{Failing to set up local workers:}
+#' When setting up a cluster of localhost workers, that is, workers running
+#' on the same machine as the master \R process, occasionally a connection
+#' to a worker ("cluster node") may fail to be set up.
+#' When this occurs, an informative error message with troubleshooting
+#' suggestions will be produced.
+#' The most common reason for such localhost failures is due to port
+#' clashes.  Retrying will often resolve the problem.
+#'
+#' \emph{Failing to set up remote workers:}
+#' A cluster of remote workers runs \R processes on external machines. These
+#' external \R processes are launched over, typically, SSH to the remote
+#' machine.  For this to work, each of the remote machines needs to have
+#' \R installed, which preferably is of the same version as what is on the
+#' main machine.  For this to work, it is required that one can SSH to the
+#' remote machines.  Ideally, the SSH connections use authentication based
+#' on public-private SSH keys such that the set up of the remote workers can
+#' be fully automated (see above).  If \code{makeClusterPSOCK()} fails to set
+#' up one or more remote \R workers, then an informative error message is
+#' produced.
+#' There are a few reasons for failing to set up remote workers.  If this
+#' happens, start by asserting that you can SSH to the remote machine and
+#' launch \file{Rscript} by calling something like:
+#' \preformatted{
+#' {local}$ ssh -l alice remote.server.org
+#' {remote}$ Rscript --version
+#' R scripting front-end version 3.6.1 (2019-07-05)
+#' {remote}$ logout
+#' {local}$
+#' }
+#' When you have confirmed the above to work, then confirm that you can achieve
+#' the same in a single command-line call;
+#' \preformatted{
+#' {local}$ ssh -l alice remote.server.org Rscript --version
+#' R scripting front-end version 3.6.1 (2019-07-05)
+#' {local}$
+#' }
+#' The latter will assert that you have proper startup configuration also for
+#' \emph{non-interactive} shell sessions on the remote machine.
+#'
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
