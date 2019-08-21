@@ -865,7 +865,7 @@ resolveMPI <- local({
                              inherits = FALSE)
           resolveMPI <- function(future) {
             node <- future$workers[[future$node]]
-            mpi.iprobe(source = node$rank, tag = mpi.any.tag())
+            mpi.iprobe(source = node$rank, comm = node$comm, tag = mpi.any.tag())
           }
         }
       }
