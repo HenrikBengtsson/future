@@ -1,9 +1,11 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-07-02]
+Version: 1.14.0-9000 [2019-08-21]
 
- * ...
+BUG FIXES:
+
+ * makeClusterMPI() did not work for MPI clusters with 'comm' other than '1'.
  
 
 Version: 1.14.0 [2019-07-01]
