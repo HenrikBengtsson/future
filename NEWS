@@ -1,11 +1,15 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-08-21]
+Version: 1.14.0-9000 [2019-09-06]
 
 BUG FIXES:
 
  * makeClusterMPI() did not work for MPI clusters with 'comm' other than '1'.
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'value' of resolve() is deprecated. Use 'result' instead.
  
 
 Version: 1.14.0 [2019-07-01]
