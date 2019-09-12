@@ -209,6 +209,9 @@ print.Future <- function(x, ...) {
   hasResult <- hasResult || exists("value", envir = x, inherits = FALSE)
   if (hasResult) {
     cat("Resolved: TRUE\n")
+  } else if (x$state == "created") {
+    ## Don't launch lazy futures here
+    cat("Resolved: FALSE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
     ## for which we need to support this? /HB 2016-05-03
@@ -217,6 +220,7 @@ print.Future <- function(x, ...) {
     ## Don't signal conditions here
     ## Note that resolved() may produce a FutureError, e.g.
     ## due to invalid connection in a MultisessionFuture
+    is_resolved <- FALSE
     cat(sprintf("Resolved: %s\n", tryCatch(resolved(x, .signalEarly = FALSE), error = function(ex) NA)))
   }
 
