@@ -451,11 +451,15 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
-  ## Is future even launched?
-  if (x$state == "created") return(FALSE)
+  ## A lazy future not even launched?
+  if (x$state == "created") {
+    x <- run(x)
+    return(FALSE)
+  }
 
   ## Signal conditions early, iff specified for the given future
-  signalEarly(x, ...)
+  ## Note, collect = TRUE will block here, which is intentional
+  signalEarly(x, collect = TRUE, ...)
 
   if (inherits(x$result, "FutureResult")) return(TRUE)
   

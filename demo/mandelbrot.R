@@ -1,15 +1,6 @@
 library("future")
 library("graphics")
 
-## WORKAROUND: resolved() should launch lazy future
-## https://github.com/HenrikBengtsson/future/issues/337
-if (packageVersion("future") < "1.15.0") {
-  resolved <- function(future, ...) {
-    if (future$state == "created") future <- run(future)
-    future::resolved(future, ...)
-  }
-}
-
 plot_what_is_done <- function(counts) {
   for (kk in seq_along(counts)) {
     f <- counts[[kk]]

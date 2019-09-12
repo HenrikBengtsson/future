@@ -1,8 +1,12 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-09-06]
+Version: 1.14.0-9000 [2019-09-12]
 
+SIGNIFICANT CHANGES:
+
+ * resolved() will now launch lazy futures.
+ 
 BUG FIXES:
 
  * makeClusterMPI() did not work for MPI clusters with 'comm' other than '1'.
