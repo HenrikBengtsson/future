@@ -59,27 +59,24 @@ if (interactive()) {
 }
 
 
-counts <- list()
+## Create all Mandelbrot tiles via lazy futures
 n <- length(Cs)
-for (ii in seq_len(n)) {
-  message(sprintf("Mandelbrot tile #%d of %d ...", ii, n))
+message(sprintf("Creating %d Mandelbrot tiles:", n), appendLF = FALSE)
+counts <- lapply(seq_along(Cs), FUN=function(ii) {
+  message(" ", ii, appendLF = FALSE)
   C <- Cs[[ii]]
-
-  counts[[ii]] <- future({
-    message(sprintf("Calculating tile #%d of %d ...", ii, n))
+  future({
+    message(sprintf("Calculating tile #%d of %d ...", ii, n), appendLF = FALSE)
     fit <- mandelbrot(C)
 
     ## Emulate slowness
     delay(fit)
 
-    message(sprintf("Calculating tile #%d of %d ... done", ii, n))
+    message(" done")
     fit
-  })
-
-  ## Plot tiles that are already resolved
-  counts <- plot_what_is_done(counts)
-}
-
+  }, lazy = TRUE)
+})
+message(".")
 
 ## Plot remaining tiles
 repeat {
