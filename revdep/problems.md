@@ -995,28 +995,6 @@ Run `revdep_details(,"skpr")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      7: withVisible(code)
-      8: eval_bare(get_expr(.quo), get_env(.quo))
-      9: eval_design_mc(design = designcoffee, model = ~cost + type + size, alpha = 0.05, 
-             nsim = 100, glmfamily = "gaussian")
-      10: effectpowermc(fit, type = anovatype, test = "Pr(>F)")
-      11: "Residuals" %in% effectnames
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 344 | SKIPPED: 1 | WARNINGS: 0 | FAILED: 3 ]
-      1. Error: providing anticoef and effectsize to eval_design_mc produces a warning (@testDeltaProcessing.R#12) 
-      2. Error: eval_design_mc processes effectsize properly for glm (@testDeltaProcessing.R#127) 
-      3. Error: eval_design_mc example code runs without errors (@testExampleCode.R#251) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 18.5Mb
@@ -1150,44 +1128,6 @@ Run `revdep_details(,"tealeaves")` for more info
     Namespaces in Imports field not imported from:
       ‘ggplot2’ ‘tidyr’
       All declared Imports should be used.
-    ```
-
-# tsfeatures
-
-<details>
-
-* Version: 1.0.1
-* Source code: https://github.com/cran/tsfeatures
-* URL: https://pkg.robjhyndman.com/tsfeatures/
-* BugReports: https://github.com/robjhyndman/tsfeatures/issues/
-* Date/Publication: 2019-04-16 13:02:47 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(,"tsfeatures")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tsfeatures-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: yahoo_data
-    > ### Title: Yahoo server metrics
-    > ### Aliases: yahoo_data
-    > 
-    > ### ** Examples
-    > 
-    > yahoo <- yahoo_data()
-    trying URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda'
-    Warning in utils::download.file("https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda",  :
-      URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda': status was 'Couldn't resolve host name'
-    Error in utils::download.file("https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda",  : 
-      cannot open URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda'
-    Calls: yahoo_data -> <Anonymous>
-    Execution halted
     ```
 
 # TSstudio

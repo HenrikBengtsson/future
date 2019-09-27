@@ -105,7 +105,7 @@
 |[Seurat](problems.md#seurat)                      |3.1.0     |       |1       |1    |
 |[shinyrecap](problems.md#shinyrecap)              |0.1.0     |       |        |1    |
 |simglm                                            |0.7.4     |       |        |     |
-|[skpr](problems.md#skpr)                          |0.61.3    |1      |        |1    |
+|[skpr](problems.md#skpr)                          |0.61.3    |       |        |1    |
 |[solitude](problems.md#solitude)                  |0.2.0     |       |        |1    |
 |sperrorest                                        |2.1.5     |       |        |     |
 |[stars](problems.md#stars)                        |0.3-1     |1      |        |     |
@@ -114,7 +114,7 @@
 |[tableschema.r](problems.md#tableschemar)         |1.1.0     |       |        |2    |
 |[tealeaves](problems.md#tealeaves)                |1.0.0     |       |        |1    |
 |tidyqwi                                           |0.1.1     |       |        |     |
-|[tsfeatures](problems.md#tsfeatures)              |1.0.1     |1      |        |     |
+|tsfeatures                                        |1.0.1     |       |        |     |
 |[TSstudio](problems.md#tsstudio)                  |0.1.4     |       |        |1    |
 |[vinereg](problems.md#vinereg)                    |0.5.0     |1      |        |     |
 
