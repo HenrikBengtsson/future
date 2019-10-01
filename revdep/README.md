@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-09-26                   |
+|date     |2019-09-30                   |
 
 # Dependencies
 
@@ -76,7 +76,7 @@
 |[gWQS](problems.md#gwqs)                          |2.0.0     |       |        |1    |
 |[gWQSRS](problems.md#gwqsrs)                      |1.0.0     |       |        |1    |
 |idmodelr                                          |0.3.1     |       |        |     |
-|[infercnv](problems.md#infercnv)                  |1.0.4     |1      |        |     |
+|[infercnv](problems.md#infercnv)                  |1.0.4     |       |        |1    |
 |ipc                                               |0.1.3     |       |        |     |
 |jstor                                             |0.3.7     |       |        |     |
 |kernelboot                                        |0.1.5     |       |        |     |

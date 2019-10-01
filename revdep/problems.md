@@ -517,12 +517,10 @@ Run `revdep_details(,"infercnv")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Package required but not available: ‘rjags’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
+      See the note in ?`:::` about the use of this operator.
     ```
 
 # lidR
