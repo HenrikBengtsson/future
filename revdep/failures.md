@@ -1,19 +1,19 @@
-# future.callr
+# future.batchtools
 
 <details>
 
-* Version: 0.4.0
-* Source code: https://github.com/cran/future.callr
-* URL: https://github.com/HenrikBengtsson/future.callr
-* BugReports: https://github.com/HenrikBengtsson/future.callr/issues
-* Date/Publication: 2019-01-07 18:40:09 UTC
-* Number of recursive dependencies: 18
+* Version: 0.8.1
+* Source code: https://github.com/cran/future.batchtools
+* URL: https://github.com/HenrikBengtsson/future.batchtools
+* BugReports: https://github.com/HenrikBengtsson/future.batchtools/issues
+* Date/Publication: 2019-10-01 05:10:05 UTC
+* Number of recursive dependencies: 38
 
-Run `revdep_details(,"future.callr")` for more info
+Run `revdep_details(,"future.batchtools")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
 *   R CMD check timed out
     
