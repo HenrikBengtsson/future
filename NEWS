@@ -1,14 +1,17 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-09-12]
+Version: 1.14.0-9000 [2019-10-11]
 
 SIGNIFICANT CHANGES:
 
  * resolved() will now launch lazy futures.
- 
+
 BUG FIXES:
 
+ * Now a future assignment to list environments produce more informative error
+   messages if attempting to assign to more than one element.
+   
  * makeClusterMPI() did not work for MPI clusters with 'comm' other than '1'.
 
 DEPRECATED AND DEFUNCT:

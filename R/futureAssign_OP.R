@@ -25,6 +25,12 @@ futureAssignInternal <- function(target, expr, envir = parent.frame(), substitut
 
   name <- target$name
   if (inherits(target$envir, "listenv")) {
+    n <- length(target$exists)
+    if (n == 0L) {
+      stop("Cannot future assign to an empty set")
+    } else if (n > 1L) {
+      stop("Cannot future assign to more than one element")
+    }
     if (target$exists) {
       name <- get_variable(target$envir, target$idx, mustExist = TRUE, create = FALSE)
     } else {
@@ -32,6 +38,8 @@ futureAssignInternal <- function(target, expr, envir = parent.frame(), substitut
         name <- get_variable(target$envir, name, mustExist = FALSE, create = TRUE)
       } else if (all(is.finite(target$idx))) {
         name <- get_variable(target$envir, target$idx, mustExist = FALSE, create = TRUE)
+      } else if (all(is.na(target$idx))) {
+        stop("subscript out of bounds")
       } else {
         stop("INTERNAL ERROR: Zero length variable name and unknown index.")
       }
