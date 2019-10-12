@@ -241,100 +241,22 @@ Run `revdep_details(,"DeclareDesign")` for more info
     Packages suggested but not available for checking: 'sf', 'DesignLibrary'
     ```
 
-# future.BatchJobs
-
-<details>
-
-* Version: 0.16.1
-* Source code: https://github.com/cran/future.BatchJobs
-* URL: https://github.com/HenrikBengtsson/future.BatchJobs
-* BugReports: https://github.com/HenrikBengtsson/future.BatchJobs/issues
-* Date/Publication: 2019-01-04 12:00:03 UTC
-* Number of recursive dependencies: 41
-
-Run `revdep_details(,"future.BatchJobs")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/BatchJobsFuture.R’ failed.
-    Last 13 lines of output:
-      *** BatchJobsFuture() - cleanup ... DONE
-      > 
-      > 
-      > message("*** BatchJobsFuture() - deleting exceptions ...")
-      *** BatchJobsFuture() - deleting exceptions ...
-      > 
-      > ## Deleting a non-resolved future
-      > f <- BatchJobsFuture({ x <- 1 })
-      > res <- tryCatch({
-      +   delete(f)
-      + }, warning = function(w) w)
-      Error: '!is.null(cluster.functions)' is not TRUE
-      Execution halted
-      Error in batchMap(reg, fun = geval, list(expr), more.args = list(substitute = TRUE)) : 
-        Registry is not empty!
-    ```
-
 # future.batchtools
 
 <details>
 
-* Version: 0.8.0
+* Version: 0.8.1
 * Source code: https://github.com/cran/future.batchtools
 * URL: https://github.com/HenrikBengtsson/future.batchtools
 * BugReports: https://github.com/HenrikBengtsson/future.batchtools/issues
-* Date/Publication: 2019-05-05 06:10:02 UTC
+* Date/Publication: 2019-10-01 05:10:05 UTC
 * Number of recursive dependencies: 38
 
 Run `revdep_details(,"future.batchtools")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/BatchtoolsFuture.R’ failed.
-    Last 13 lines of output:
-      > 
-      > 
-      > message("*** BatchtoolsFuture() - deleting exceptions ...")
-      *** BatchtoolsFuture() - deleting exceptions ...
-      > 
-      > ## Deleting a non-resolved future
-      > f <- BatchtoolsFuture({ x <- 1 })
-      > res <- tryCatch({
-      +   delete(f)
-      + }, warning = function(w) w)
-      > print(res)
-      [1] TRUE
-      > stopifnot(inherits(res, "warning"))
-      Error: inherits(res, "warning") is not TRUE
-      Execution halted
-    ```
-
-# future.callr
-
-<details>
-
-* Version: 0.4.0
-* Source code: https://github.com/cran/future.callr
-* URL: https://github.com/HenrikBengtsson/future.callr
-* BugReports: https://github.com/HenrikBengtsson/future.callr/issues
-* Date/Publication: 2019-01-07 18:40:09 UTC
-* Number of recursive dependencies: 18
-
-Run `revdep_details(,"future.callr")` for more info
-
-</details>
-
-## Newly broken
+## In both
 
 *   R CMD check timed out
     
@@ -346,7 +268,7 @@ Run `revdep_details(,"future.callr")` for more info
 * Version: 1.2.0
 * Source code: https://github.com/cran/genBaRcode
 * Date/Publication: 2019-07-08 16:10:03 UTC
-* Number of recursive dependencies: 120
+* Number of recursive dependencies: 121
 
 Run `revdep_details(,"genBaRcode")` for more info
 
@@ -517,12 +439,10 @@ Run `revdep_details(,"infercnv")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Package required but not available: ‘rjags’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
+      See the note in ?`:::` about the use of this operator.
     ```
 
 # lidR
