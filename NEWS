@@ -1,13 +1,22 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-11]
+Version: 1.14.0-9000 [2019-10-17]
 
 SIGNIFICANT CHANGES:
 
  * resolved() will now launch lazy futures.
 
+NEW FEATURES:
+
+ * Package no longer sets or updates the RNG state of R (.Random.seed) when
+   loaded.
+   
 BUG FIXES:
+
+ * Package could set '.Random.seed' to NULL, instead of removing it, which in
+   turn would produce a warning on "'.Random.seed' is not an integer vector but
+   of type 'NULL', so ignored" when the next random number generated.
 
  * Now a future assignment to list environments produce more informative error
    messages if attempting to assign to more than one element.

@@ -571,7 +571,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      ## NOTE: It is not needed to call eRNGkind("L'Ecuyer-CMRG") here
+      ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
       ## because the type of RNG is defined by .Random.seed, especially
       ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
       assign(".Random.seed", .(future$seed), envir = globalenv(), inherits = FALSE)
