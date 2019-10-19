@@ -7,13 +7,11 @@ SIGNIFICANT CHANGES:
 
  * resolved() will now launch lazy futures.
 
-NEW FEATURES:
-
- * Package no longer sets or updates the RNG state of R (.Random.seed) when
-   loaded.
-   
 BUG FIXES:
 
+ * Package would set or update the RNG state of R (.Random.seed) when loaded,
+   which could affect RNG reproducibility.
+   
  * Package could set '.Random.seed' to NULL, instead of removing it, which in
    turn would produce a warning on "'.Random.seed' is not an integer vector but
    of type 'NULL', so ignored" when the next random number generated.
