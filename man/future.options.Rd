@@ -53,9 +53,9 @@ Below are all \R options that are currently used by the \pkg{future} package and
    (Default: \code{"ignore"} but may change)
  }
  \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
- \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
- \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: \code{0.2} = 0.2 seconds)}
- \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: \code{1.01})}
+ \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_TIMEOUT} is used.  (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
+ \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_INTERVAL} is used.  (Default: \code{0.2} = 0.2 seconds)}
+ \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_ALPHA} is used.  (Default: \code{1.01})}
 }
 }
 
