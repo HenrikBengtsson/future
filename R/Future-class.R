@@ -422,6 +422,8 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   stop_if_not(inherits(result, "FutureResult"))
 
   value <- result$value
+  visible <- result$visible
+  if (is.null(visible)) visible <- TRUE
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
@@ -443,11 +445,14 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition
-      if (inherits(error, "error")) value <- error
+      if (inherits(error, "error")) {
+        value <- error
+	visible <- TRUE
+      }
     }
   }
 
-  value
+  if (visible) value else invisible(value)
 }
 
 value <- function(...) UseMethod("value")
@@ -759,9 +764,9 @@ makeExpression <- local({
         ...future.conditions <- list()
         ...future.result <- tryCatch({
           withCallingHandlers({
-            ...future.value <- .(expr)
+            ...future.value <- withVisible(.(expr))
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value, started = ...future.startTime, version = "1.8")
+            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, started = ...future.startTime, version = "1.8")
           }, condition = local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
@@ -819,6 +824,7 @@ makeExpression <- local({
         }, error = function(ex) {
           structure(list(
             value = NULL,
+	    visible = NULL,
             conditions = ...future.conditions,
             version = "1.8"
           ), class = "FutureResult")

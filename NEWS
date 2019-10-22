@@ -1,11 +1,15 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-17]
+Version: 1.14.0-9000 [2019-10-21]
 
 SIGNIFICANT CHANGES:
 
  * resolved() will now launch lazy futures.
+
+NEW FEATURES:
+
+ * Now the "visibility" of future values is recorded and reflected by value().
 
 BUG FIXES:
 
