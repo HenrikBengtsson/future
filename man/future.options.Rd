@@ -50,6 +50,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
    If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
    If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
    If \code{"ignore"}, no scan is performed.
+   If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} is used.  
    (Default: \code{"ignore"} but may change)
  }
  \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
