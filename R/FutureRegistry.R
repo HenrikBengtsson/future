@@ -25,8 +25,8 @@ FutureRegistry <- local({
         tryCatch({
           value(future, stdout = FALSE, signal = FALSE)
         }, FutureError = function(ex) {
-          mdebugf("Detected a %s while FutureRegistry collecting results: %s", class(ex)[1])
-	  mprint(ex)
+          mdebugf("Detected a %s while FutureRegistry collecting results:", class(ex)[1])
+          mprint(ex)
         })
 
         ## (b) Make sure future is removed from registry, unless
