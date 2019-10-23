@@ -263,11 +263,13 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
   res
 }
 
+
+
 #' @export
 result.ClusterFuture <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
   if (debug) mdebug("result() for ClusterFuture ...")
-  
+
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
@@ -277,6 +279,23 @@ result.ClusterFuture <- function(future, ...) {
     return(result)
   }
 
+  msg <- NULL
+  while (!inherits(msg, "FutureResult")) {
+    msg <- receiveMessageFromWorker(future, ...)
+  }
+
+  result <- msg
+  
+  if (debug) mdebug("result() for ClusterFuture ... done")
+
+  result
+}
+
+
+receiveMessageFromWorker <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) mdebug("receiveMessageFromWorker() for ClusterFuture ...")
+  
   if (future$state == "created") {
     if (debug) mdebug("- starting non-launched future")
     future <- run(future)
@@ -305,12 +324,11 @@ result.ClusterFuture <- function(future, ...) {
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
+  msg <- NULL
   ack <- tryCatch({
-    result <- recvResult(node)
+    msg <- recvResult(node)
     TRUE
   }, simpleError = function(ex) ex)
-
-  if (debug) mdebugf("- class(result): %s", class(result)[1])
 
   if (inherits(ack, "simpleError")) {
     if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
@@ -368,10 +386,10 @@ result.ClusterFuture <- function(future, ...) {
     stop(ex)          
   }
   stop_if_not(isTRUE(ack))
+  if (debug) mdebug("- received message: ", class(msg)[1])
 
-  future$result <- result
-  
-  if (!inherits(result, "FutureResult")) {
+  ## Non-expected message from worker?
+  if (!inherits(msg, "FutureResult") && !inherits(msg, "condition")) {
     str(list(node_idx = node_idx, node = node))
     hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
                     class(future)[1], sQuote(class(node)[1]), node_idx)
@@ -380,35 +398,45 @@ result.ClusterFuture <- function(future, ...) {
     stop(ex)
   }
 
-  future$state <- "finished"
-
-  ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
-
-  ## Remove from registry
-  FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
-
-  ## Always signal immediateCondition:s and as soon as possible.
-  ## They will always be signaled if they exist.
-  signalImmediateConditions(future)
-
-  ## Garbage collect cluster worker?
-  if (future$gc) {
-    ## Cleanup global environment while at it
-    if (!future$persistent) clusterCall(cl[1], fun = grmall)
-    
-    ## WORKAROUND: Need to clear cluster worker before garbage collection,
-    ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
-    ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
-    ## Return a value identifiable for troubleshooting purposes
-    clusterCall(cl[1], function() "future-clearing-cluster-worker")
-    
-    clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
+  if (inherits(msg, "FutureResult")) {
+    future$result <- msg
+    future$state <- "finished"
+    if (debug) mdebug("- Received FutureResult")
+  
+    ## FutureRegistry to use
+    workers <- future$workers
+    reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
+  
+    ## Remove from registry
+    FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
+    if (debug) mdebug("- Erased future from FutureRegistry")
+  
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalImmediateConditions(future)
+  
+    ## Garbage collect cluster worker?
+    if (future$gc) {
+      ## Cleanup global environment while at it
+      if (!future$persistent) clusterCall(cl[1], fun = grmall)
+      
+      ## WORKAROUND: Need to clear cluster worker before garbage collection,
+      ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+      ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
+      ## Return a value identifiable for troubleshooting purposes
+      clusterCall(cl[1], function() "future-clearing-cluster-worker")
+      
+      clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
+      if (debug) mdebug("- Garbage collected worker")
+    }
+  } else if (inherits(msg, "condition")) {
+    if (debug) mdebug("- Received condition")
+    if (debug) str(msg)
   }
 
-  if (debug) mdebug("result() for ClusterFuture ... done")
+  if (debug) mdebug("receiveMessageFromWorker() for ClusterFuture ... done")
 
-  result
+  msg
 }
 
 
