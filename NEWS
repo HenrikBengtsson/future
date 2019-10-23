@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-22]
+Version: 1.14.0-9000 [2019-10-23]
 
 SIGNIFICANT CHANGES:
 
@@ -20,6 +20,10 @@ NEW FEATURES:
 
 BUG FIXES:
 
+ * makeClusterPSOCK() could produce warnings like "cannot open file
+   '/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid': No such file",
+   e.g. when launching R workers running in Docker containers.
+   
  * Package would set or update the RNG state of R (.Random.seed) when loaded,
    which could affect RNG reproducibility.
    

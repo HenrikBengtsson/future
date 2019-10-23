@@ -800,13 +800,15 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   if (length(ref) == 0) return()
 
   action <- match.arg(action, choices = c("error", "warning", "message", "string"))
+      str(list(ref=ref, x=x))
   
   ## Identify which global object has a reference
-  global <- ""
+  global <- " (<unknown>)"
   ref <- ref[[1]]
   if (is.list(x) && !is.null(names(x))) {
     for (ii in seq_along(x)) {
       x_ii <- x[[ii]]
+      str(list(ii=ii, x_ii=x_ii))
       ref_ii <- find_references(x_ii, first_only = TRUE)
       if (length(ref_ii) > 0) {
         global <- sprintf(" (%s of class %s)",

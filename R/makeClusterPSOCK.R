@@ -548,7 +548,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (autoKill) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"), silent = TRUE)', pidfile)
+      pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
       rscript_pid_args <- c("-e", shQuote(pidcode))
       
       ## Check if this approach to infer the PID works
