@@ -248,6 +248,15 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+
+    if (res) {
+      ## It could be that the message available from the worker is something else
+      ## than a FutureResult, e.g. a condition.  Consider the future resolved,
+      ## only if a FutureResult was sent.
+      msg <- receiveMessageFromWorker(x)
+      res <- inherits(msg, "FutureResult")
+      msg <- NULL
+    }
   } else if (inherits(node, "MPInode")) {
     res <- resolveMPI(x)
   } else {
