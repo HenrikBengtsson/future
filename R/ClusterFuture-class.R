@@ -228,7 +228,7 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 
   ## Check if workers socket connection is available for reading
   node <- cl[[1]]
-
+  
   if (!is.null(con <- node$con)) {
     ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
     connId <- connectionId(con)
@@ -534,34 +534,44 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, conditionCla
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
+  ## Inject code for resignaling immediateCondition:s?
   if (length(conditionClasses) > 0L && resignalImmediateConditions) {
-    expr <- bquote({
-      ...future.find_slaveLoop_master <- local({
-        master <- NULL
-	
-        function(frame = 1L) {
-	  if (inherits(master, "SOCKnode")) return(master)
-          envir <- sys.frame(frame)
-          while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
-            if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
-              master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-              if (inherits(master, "SOCKnode")) return(master)
-            }
-            frame <- frame + 1L
+    ## Does the cluster node communicate with a connection? (if not, it's via MPI)
+    workers <- future$workers
+    ## AD HOC/FIXME: Here 'future$node' is yet not assigned, so we look at the
+    ## first worker and assume the others are the same. /HB 2019-10-23
+    cl <- workers[1L]
+    node <- cl[[1L]]
+    con <- node$con
+    if (!is.null(con)) {
+      expr <- bquote({
+        ...future.find_slaveLoop_master <- local({
+          master <- NULL
+  	
+          function(frame = 1L) {
+  	  if (inherits(master, "SOCKnode")) return(master)
             envir <- sys.frame(frame)
+            while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+              if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+                master <- get("master", mode = "list", envir = envir, inherits = FALSE)
+                if (inherits(master, "SOCKnode")) return(master)
+              }
+              frame <- frame + 1L
+              envir <- sys.frame(frame)
+            }
+            NULL
           }
-          NULL
-        }
+        })
+  	
+        withCallingHandlers({
+          .(expr)
+        }, immediateCondition = function(cond) {
+          value <- list(type = "VALUE", value = cond, success = TRUE)
+          master <- ...future.find_slaveLoop_master()
+          if (!is.null(master)) parallel:::sendData(master, value)
+        })
       })
-	
-      withCallingHandlers({
-        .(expr)
-      }, immediateCondition = function(cond) {
-        value <- list(type = "VALUE", value = cond, success = TRUE)
-        master <- ...future.find_slaveLoop_master()
-        if (!is.null(master)) parallel:::sendData(master, value)
-      })
-    })    
+    }  
   }
   
   NextMethod(expr = expr, conditionClasses = conditionClasses)
