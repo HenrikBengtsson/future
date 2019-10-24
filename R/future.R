@@ -190,7 +190,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
   ## The default evaluator function is given by plan().
   makeFuture <- list(...)$evaluator
   if (!is.null(makeFuture)) {
-    action <- get(Sys.getenv("R_CHECK_FUTURE_EVALUATOR", ".Deprecated"), mode="function")
+    action <- get(Sys.getenv("R_CHECK_FUTURE_EVALUATOR", ".Defunct"), mode="function")
     action(msg = "Argument 'evaluator' of future() was an internal argument and is now deprecated. Use plan() to set the \"evaluator\".")
   }
   if (is.null(makeFuture)) makeFuture <- plan("next")
