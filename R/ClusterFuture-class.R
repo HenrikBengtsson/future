@@ -536,14 +536,15 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, conditionCla
 
   if (length(conditionClasses) > 0L && resignalImmediateConditions) {
     expr <- bquote({
-      withCallingHandlers({
-        .(expr)
-      }, immediateCondition = function(cond) {
-        find_slaveLoop_master <- function(frame = 1L) {
+      ...future.find_slaveLoop_master <- local({
+        master <- NULL
+	
+        function(frame = 1L) {
+	  if (inherits(master, "SOCKnode")) return(master)
           envir <- sys.frame(frame)
           while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
-            if (exists("master", mode="list", envir=envir, inherits=FALSE)) {
-              master <- get("master", mode="list", envir=envir, inherits=FALSE)
+            if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+              master <- get("master", mode = "list", envir = envir, inherits = FALSE)
               if (inherits(master, "SOCKnode")) return(master)
             }
             frame <- frame + 1L
@@ -551,8 +552,13 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, conditionCla
           }
           NULL
         }
+      })
+	
+      withCallingHandlers({
+        .(expr)
+      }, immediateCondition = function(cond) {
         value <- list(type = "VALUE", value = cond, success = TRUE)
-        master <- find_slaveLoop_master()
+        master <- ...future.find_slaveLoop_master()
         if (!is.null(master)) parallel:::sendData(master, value)
       })
     })    
