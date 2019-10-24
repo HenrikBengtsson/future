@@ -188,3 +188,37 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = 
     relayed[pos]
   }
 } ## make_signalConditionsASAP()
+
+
+
+muffleCondition <- function(cond) {
+  inherits <- base::inherits
+  invokeRestart <- base::invokeRestart
+
+  muffled <- FALSE
+  if (inherits(cond, "message")) {
+    invokeRestart("muffleMessage")
+    muffled <- TRUE
+  } else if (inherits(cond, "warning")) {
+    invokeRestart("muffleWarning")
+    muffled <- TRUE
+  } else if (inherits(cond, "condition")) {
+    computeRestarts <- base::computeRestarts
+    grepl <- base::grepl
+    is.null <- base::is.null
+    
+    ## If there is a "muffle" restart for this condition,
+    ## then invoke that restart, i.e. "muffle" the condition
+    restarts <- computeRestarts(cond)
+    for (restart in restarts) {
+      name <- restart$name
+      if (is.null(name)) next
+      if (!grepl("^muffle", name)) next
+      invokeRestart(restart)
+      muffled <- TRUE
+      break
+    }
+  }
+
+  invisible(muffled)
+} ## muffleCondition()
