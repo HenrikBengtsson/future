@@ -42,7 +42,9 @@ BUG FIXES:
 DEPRECATED AND DEFUNCT:
 
  * Argument 'value' of resolve() is deprecated. Use 'result' instead.
- 
+
+ * Usage of internal argument 'evaluator' is now defunct.
+
 
 Version: 1.14.0 [2019-07-01]
 

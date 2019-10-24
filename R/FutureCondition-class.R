@@ -23,17 +23,15 @@
 #' @keywords internal
 FutureCondition <- function(message, call = NULL, future = NULL) {
   ## Support different types of input
-  ## NOTE: We could turn this into an S3 method. /HB 2016-07-01
-  if (inherits(message, "Future")) {
-    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
-  } else if (inherits(message, "condition")) {
+  if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
+  } else if (is.null(message)) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
+  } else if (inherits(message, "Future")) {
+    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
   }
   
-  if (is.null(message)) {
-    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
-  }
   message <- as.character(message)
   if (length(message) != 1L) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))

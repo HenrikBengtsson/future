@@ -27,9 +27,6 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param progress (DEFUNCT) Defunct since future 1.14.0 to make room for
-#' other progress-update mechanisms that are in the works.
-#'
 #' @param value (DEPRECATED) Use argument `result` instead.
 #' 
 #' @param \dots Not used.
@@ -47,7 +44,7 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
@@ -114,7 +111,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
     .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
@@ -137,7 +134,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
   relay <- (stdout || signal)
   result <- result || relay
 
-  if (!identical(progress, FALSE)) {
+  if (is.element("progress", names(list(...)))) {
     .Defunct(msg = "Argument 'progress' of resolve() is defunct.")
   }
 

@@ -27,7 +27,7 @@
 #' @section Options for debugging futures:
 #' \describe{
 #'  \item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
-#'  \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and will be ignored.}
+#'  \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and ignored.}
 #' }
 #'
 #' @section Options for controlling package startup:
@@ -80,7 +80,6 @@
 #' future.resolve.recursive
 #' future.supportsMulticore.unstable R_FUTURE_SUPPORTSMULTICORE_UNSTABLE
 #' future.wait.alpha future.wait.interval future.wait.timeout
-#' future.progress
 #' future.debug
 #' future.demo.mandelbrot.region future.demo.mandelbrot.nrow
 #'

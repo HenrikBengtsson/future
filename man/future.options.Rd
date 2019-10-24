@@ -28,7 +28,6 @@
 \alias{future.wait.alpha}
 \alias{future.wait.interval}
 \alias{future.wait.timeout}
-\alias{future.progress}
 \alias{future.debug}
 \alias{future.demo.mandelbrot.region}
 \alias{future.demo.mandelbrot.nrow}
@@ -64,7 +63,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
  \item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
- \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and will be ignored.}
+ \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and ignored.}
 }
 }
 
