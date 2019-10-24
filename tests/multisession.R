@@ -81,10 +81,7 @@ for (cores in 1:availCores) {
   print(f)
   v <- value(f, signal = FALSE)
   print(v)
-  stopifnot(inherits(v, "error"))
-  ## FIXME: Related to Issue #200
-  ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
-  ## stopifnot(inherits(v, "MyError"))
+  stopifnot(inherits(v, "error"), inherits(v, "MyError"))
 
   ## Make sure error is signaled
   res <- tryCatch(value(f), error = identity)

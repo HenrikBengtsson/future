@@ -82,17 +82,11 @@ for (cores in 1:availCores) {
   print(f)
   v <- value(f, signal = FALSE)
   print(v)
-  stopifnot(inherits(v, "error"))
-  ## FIXME: Related to Issue #200
-  ## stopifnot(inherits(v, "MyError"))
+  stopifnot(inherits(v, "error"), inherits(v, "MyError"))
 
   ## Make sure error is signaled
   res <- tryCatch(value(f), error = identity)
-  stopifnot(inherits(res, "error"))
-
-  ## Issue #200: Custom condition class attributes are lost 
-  ## FIXME:
-  ## stopifnot(inherits(res, "MyError"))    
+  stopifnot(inherits(res, "error"), inherits(res, "MyError"))
 
   message("*** multiprocess() - too large globals ...")
   ooptsT <- options(future.globals.maxSize = object.size(1:1014))
