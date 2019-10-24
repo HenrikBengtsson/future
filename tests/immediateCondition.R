@@ -173,12 +173,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  values: ", paste(vs, collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(fs[[1]], "ClusterFuture")) {
-    ## FIXME: Live resignaled conditions are muffled. We need to record them
-    stopifnot(identical(msgs, c("M1\n", "M2\n")))
-  } else {
-    stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
-  }
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
   
   message("- getting value again")
   msgs <- recordMessages({
@@ -186,12 +181,17 @@ for (ss in seq_along(strategies)) {
   })
   message("  values: ", paste(vs, collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(fs[[1]], "ClusterFuture")) {
-    ## FIXME: Live resignaled conditions are muffled. We need to record them
-    stopifnot(identical(msgs, c("M1\n", "M2\n")))
-  } else {
-    stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
-  }
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
+
+  message("- getting values one by one")
+  msgs <- recordMessages({
+    vs <- c(
+      value(fs[[1]]),
+      value(fs[[2]])
+    )
+  })
+  message("  values: ", paste(vs, collapse = ", "))
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
 
   message("* Two futures ... DONE")
 

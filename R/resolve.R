@@ -99,7 +99,14 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
     result <- NULL     ## Not needed anymore
 
     if (stdout) value(x, stdout = TRUE, signal = FALSE)
-    if (signal) signalConditions(x, force = FALSE)
+    if (signal) {
+      ## Always signal immediateCondition:s and as soon as possible.
+      ## They will always be signaled if they exist.
+      signalImmediateConditions(x)
+
+      ## Signal all other types of condition
+      signalConditions(x, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = TRUE, force = TRUE)
+    }
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }

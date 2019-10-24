@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-23]
+Version: 1.14.0-9000 [2019-10-24]
 
 SIGNIFICANT CHANGES:
 
@@ -22,6 +22,9 @@ NEW FEATURES:
    'R_FUTURE_GLOBALS_ONREFERENCE=error' in ~/.Renviron.
 
 BUG FIXES:
+
+ * values() would resignal immediateCondition:s despit those should only be
+   signalled at most once per future.
 
  * makeClusterPSOCK() could produce warnings like "cannot open file
    '/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid': No such file",
