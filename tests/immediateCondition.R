@@ -147,14 +147,25 @@ for (ss in seq_along(strategies)) {
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
+#  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
   
   message("- getting value again")
   msgs <- recordMessages({
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
-  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
+
+  message("- getting values one by one")
+  msgs <- recordMessages({
+    vs <- c(
+      value(fs[[1]]),
+      value(fs[[2]])
+    )
+  })
+  message("  values: ", paste(vs, collapse = ", "))
+  stopifnot(identical(msgs, c("M1\n", "M2\n")))
 
   message("* Two futures ... DONE")
 

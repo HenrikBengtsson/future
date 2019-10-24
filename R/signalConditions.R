@@ -151,7 +151,14 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = 
         obj <- queue[[ii]]
         stop_if_not(inherits(obj, "Future"))
         if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-        if (signal) signalConditions(obj, ..., resignal = resignal)
+        if (signal) {
+          ## Always signal immediateCondition:s and as soon as possible.
+          ## They will always be signaled if they exist.
+          signalImmediateConditions(obj)
+    
+          ## Signal all other types of condition
+          signalConditions(obj, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = resignal, ...)
+        }
         relayed[ii] <<- TRUE
       }
       ## Assert that everything has been relayed
@@ -179,7 +186,14 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = 
       obj <- queue[[ii]]
       if (inherits(obj, "Future")) {
         if (stdout) value(obj, stdout = TRUE, signal = FALSE)
-        if (signal) signalConditions(obj, ..., resignal = resignal)
+        if (signal) {
+          ## Always signal immediateCondition:s and as soon as possible.
+          ## They will always be signaled if they exist.
+          signalImmediateConditions(obj)
+    
+          ## Signal all other types of condition
+          signalConditions(obj, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = resignal, ...)
+        }
         relayed[ii] <<- TRUE
       }
     }
