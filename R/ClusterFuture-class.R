@@ -526,3 +526,37 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
   node_idx
 }
+
+
+
+#' @export
+getExpression.ClusterFuture <- function(future, expr = future$expr, conditionClasses = future$conditions, resignalImmediateConditions = TRUE, ...) {
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+
+  if (length(conditionClasses) > 0L && resignalImmediateConditions) {
+    expr <- bquote({
+      withCallingHandlers({
+        .(expr)
+      }, immediateCondition = function(cond) {
+        find_slaveLoop_master <- function(frame = 1L) {
+          envir <- sys.frame(frame)
+          while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+            if (exists("master", mode="list", envir=envir, inherits=FALSE)) {
+              master <- get("master", mode="list", envir=envir, inherits=FALSE)
+              if (inherits(master, "SOCKnode")) return(master)
+            }
+            frame <- frame + 1L
+            envir <- sys.frame(frame)
+          }
+          NULL
+        }
+        value <- list(type = "VALUE", value = cond, success = TRUE)
+        master <- find_slaveLoop_master()
+        if (!is.null(master)) parallel:::sendData(master, value)
+      })
+    })    
+  }
+  
+  NextMethod(expr = expr, conditionClasses = conditionClasses)
+}
