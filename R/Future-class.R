@@ -447,7 +447,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       error <- conditions[[length(conditions)]]$condition
       if (inherits(error, "error")) {
         value <- error
-	visible <- TRUE
+        visible <- TRUE
       }
     }
   }
@@ -799,23 +799,10 @@ makeExpression <- local({
                   ## already here.
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = as.integer(signal))
-                  if (inherits(cond, "message")) {
-                    if (!signal) invokeRestart("muffleMessage")
-                  } else if (inherits(cond, "warning")) {
-                    if (!signal) invokeRestart("muffleWarning")
-                  } else {
-                    if (!signal) {
-                      ## If there is a "muffle" restart for this condition,
-                      ## then invoke that restart, i.e. "muffle" the condition
-                      restarts <- computeRestarts(cond)
-                      for (restart in restarts) {
-                        name <- restart$name
-                        if (is.null(name)) next
-                        if (!grepl("^muffle", name)) next
-                        invokeRestart(restart)
-                        break
-                      }
-                    }
+                  if (!signal) {
+		    ## muffleCondition <- future:::muffleCondition()
+		    muffleCondition <- .(muffleCondition)
+                    muffleCondition(cond)
                   }
                 }
               }
@@ -824,7 +811,7 @@ makeExpression <- local({
         }, error = function(ex) {
           structure(list(
             value = NULL,
-	    visible = NULL,
+            visible = NULL,
             conditions = ...future.conditions,
             version = "1.8"
           ), class = "FutureResult")
