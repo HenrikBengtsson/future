@@ -554,30 +554,45 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, conditionCla
     con <- node$con
     if (!is.null(con)) {
       expr <- bquote({
-        ...future.find_slaveLoop_master <- local({
-          master <- NULL
+        ...future.sendCondition <- local({
+          sendCondition <- NULL
   	
           function(frame = 1L) {
-  	  if (inherits(master, "SOCKnode")) return(master)
-            envir <- sys.frame(frame)
-            while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
-              if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
-                master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-                if (inherits(master, "SOCKnode")) return(master)
-              }
-              frame <- frame + 1L
+  	    if (is.function(sendCondition)) return(sendCondition)
+
+            ns <- getNamespace("parallel")
+	    if (exists("sendData", mode = "function", envir = ns)) {
+	      parallel_sendData <- get("sendData", mode = "function", envir = ns)
+
+              ## Find the 'master' argument of the worker's slaveLoop()
               envir <- sys.frame(frame)
-            }
-            NULL
+              master <- NULL
+              while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+                if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+                  master <- get("master", mode = "list", envir = envir, inherits = FALSE)
+                  if (inherits(master, "SOCKnode")) {
+                    sendCondition <<- function(cond) {
+                      data <- list(type = "VALUE", value = cond, success = TRUE)
+                      parallel_sendData(master, data)
+                    }
+  		  return(sendCondition)
+  		}
+                }
+                frame <- frame + 1L
+                envir <- sys.frame(frame)
+              }
+	    }  
+
+            ## Failed to locate 'master' or 'parallel:::sendData()', so just ignore conditions
+	    sendCondition <<- function(cond) NULL
           }
         })
   	
         withCallingHandlers({
           .(expr)
         }, immediateCondition = function(cond) {
-          value <- list(type = "VALUE", value = cond, success = TRUE)
-          master <- ...future.find_slaveLoop_master()
-          if (!is.null(master)) parallel:::sendData(master, value)
+          sendCondition <- ...future.sendCondition()
+          sendCondition(cond)
         })
       })
     }  
