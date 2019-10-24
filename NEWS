@@ -9,6 +9,9 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
+ * ClusterFuture:s are now capable of relaying conditions back to the main
+   process prior to the future being resolved.
+
  * Now the "visibility" of future values is recorded and reflected by value().
 
  * Now environment variable 'R_FUTURE_GLOBALS_ONREFERENCE' overrides option

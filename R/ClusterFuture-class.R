@@ -268,14 +268,16 @@ resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
 #' @export
 result.ClusterFuture <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("result() for ClusterFuture ...")
+  if (debug) {
+    mdebug("result() for ClusterFuture ...")
+    on.exit(mdebug("result() for ClusterFuture ... done"))
+  }
 
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
     if (debug) mdebugf("- result already collected: %s", class(result)[1])
     if (inherits(result, "FutureError")) stop(result)
-    if (debug) mdebug("result() for ClusterFuture ... done")
     return(result)
   }
 
@@ -284,17 +286,16 @@ result.ClusterFuture <- function(future, ...) {
     msg <- receiveMessageFromWorker(future, ...)
   }
 
-  result <- msg
-  
-  if (debug) mdebug("result() for ClusterFuture ... done")
-
-  result
+  msg
 }
 
 
 receiveMessageFromWorker <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("receiveMessageFromWorker() for ClusterFuture ...")
+  if (debug) {
+    mdebug("receiveMessageFromWorker() for ClusterFuture ...")
+    on.exit(mdebug("receiveMessageFromWorker() for ClusterFuture ... done"))
+  }
   
   if (future$state == "created") {
     if (debug) mdebug("- starting non-launched future")
@@ -417,6 +418,7 @@ receiveMessageFromWorker <- function(future, ...) {
   
     ## Garbage collect cluster worker?
     if (future$gc) {
+      if (debug) mdebug("- Garbage collecting worker ...")
       ## Cleanup global environment while at it
       if (!future$persistent) clusterCall(cl[1], fun = grmall)
       
@@ -427,14 +429,32 @@ receiveMessageFromWorker <- function(future, ...) {
       clusterCall(cl[1], function() "future-clearing-cluster-worker")
       
       clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
-      if (debug) mdebug("- Garbage collected worker")
+      if (debug) mdebug("- Garbage collecting worker ... done")
     }
   } else if (inherits(msg, "condition")) {
-    if (debug) mdebug("- Received condition")
-    if (debug) str(msg)
-  }
+    condition <- msg
+    
+    if (debug) {
+      mdebug("- Received condition")
+      mstr(condition)
+    }
 
-  if (debug) mdebug("receiveMessageFromWorker() for ClusterFuture ... done")
+    ## Sanity check
+    if (inherits(condition, "error")) {
+      stop(FutureError(sprintf("Received a %s condition from the %s worker for future ('%s'), which is not possible to relay because that would break the internal state of the future-worker communication. The condition message was: %s", class(condition)[1], class(future)[1], label, sQuote(conditionMessage(condition))), future = future))
+    }
+
+    ## Resignal condition
+    if (inherits(condition, "warning")) {
+      warning(condition)
+    } else if (inherits(condition, "message")) {
+      message(condition)
+    } else if (inherits(condition, "condition")) {
+      signalCondition(condition)
+    } else {
+      stop_if_not(inherits(condition, "condition"))
+    }
+  }
 
   msg
 }
