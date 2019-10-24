@@ -409,7 +409,17 @@ receiveMessageFromWorker <- function(future, ...) {
   }
 
   if (inherits(msg, "FutureResult")) {
-    future$result <- msg
+    result <- msg
+
+    ## Add back already signaled and muffled conditions so that also
+    ## they will be resignaled each time value() is called.
+    signaled <- future$.signaledConditions
+    if (length(signaled) > 0) {
+      result$conditions <- c(future$.signaledConditions, result$conditions)
+      future$.signaledConditions <- NULL
+    }
+
+    future$result <- result
     future$state <- "finished"
     if (debug) mdebug("- Received FutureResult")
   
@@ -420,7 +430,7 @@ receiveMessageFromWorker <- function(future, ...) {
     ## Remove from registry
     FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
     if (debug) mdebug("- Erased future from FutureRegistry")
-  
+
     ## Always signal immediateCondition:s and as soon as possible.
     ## They will always be signaled if they exist.
     signalImmediateConditions(future)
@@ -458,14 +468,16 @@ receiveMessageFromWorker <- function(future, ...) {
       warning(condition)
     } else if (inherits(condition, "message")) {
       message(condition)
-    } else if (inherits(condition, "condition")) {
-      signalCondition(condition)
     } else {
-      stop_if_not(inherits(condition, "condition"))
+      signalCondition(condition)
     }
 
+    ## Increment signal count
+    signaled <- condition$signaled
+    if (is.null(signaled)) signaled <- 0L
+    condition$signaled <- signaled + 1L
+    
     ## Record condition as signaled
-    condition$signaled <- TRUE
     signaled <- future$.signaledConditions
     if (is.null(signaled)) signaled <- list()
     signaled <- c(signaled, list(condition))
@@ -596,7 +608,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
               }  
   
               ## Failed to locate 'master' or 'parallel:::sendData()',
-	      ## so just ignore conditions
+              ## so just ignore conditions
               sendCondition <<- function(cond) NULL
             }
           })
@@ -606,21 +618,11 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
           }, immediateCondition = function(cond) {
             sendCondition <- ...future.sendCondition()
             sendCondition(cond)
-	    
-            ## WORKAROUND: If the name of any of the below objects/functions
-            ## coincides with a promise (e.g. a future assignment) then we
-            ## we will end up with a recursive evaluation resulting in error:
-            ##   "promise already under evaluation: recursive default argument
-            ##    reference or earlier problems?"
-            inherits <- base::inherits
-            if (inherits(cond, .(immediateConditionClasses))) {
-              invokeRestart <- base::invokeRestart
-              if (inherits(cond, "message")) {
-                invokeRestart("muffleMessage")
-              } else if (inherits(cond, "warning")) {
-                invokeRestart("muffleWarning")
-              }
-	    }  
+
+            ## Avoid condition from being signaled more than once
+            ## muffleCondition <- future:::muffleCondition()
+            muffleCondition <- .(muffleCondition)
+            muffleCondition(cond)
           })
         })
       } ## if (!is.null(con))

@@ -9,7 +9,7 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
- * ClusterFuture:s now relay immediateCondition;s back to the main process
+ * ClusterFuture:s now relay immediateCondition:s back to the main process
    momentarily after they are signaled and before the future is resolved.
 
  * Now the "visibility" of future values is recorded and reflected by value().
