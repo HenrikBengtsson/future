@@ -463,6 +463,13 @@ receiveMessageFromWorker <- function(future, ...) {
     } else {
       stop_if_not(inherits(condition, "condition"))
     }
+
+    ## Record condition as signaled
+    condition$signaled <- TRUE
+    signaled <- future$.signaledConditions
+    if (is.null(signaled)) signaled <- list()
+    signaled <- c(signaled, list(condition))
+    future$.signaledConditions <- signaled
   }
 
   msg
@@ -539,64 +546,86 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
 
 #' @export
-getExpression.ClusterFuture <- function(future, expr = future$expr, conditionClasses = future$conditions, resignalImmediateConditions = TRUE, ...) {
+getExpression.ClusterFuture <- function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = immediateConditions, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
   ## Inject code for resignaling immediateCondition:s?
-  if (length(conditionClasses) > 0L && resignalImmediateConditions) {
-    ## Does the cluster node communicate with a connection? (if not, it's via MPI)
-    workers <- future$workers
-    ## AD HOC/FIXME: Here 'future$node' is yet not assigned, so we look at the
-    ## first worker and assume the others are the same. /HB 2019-10-23
-    cl <- workers[1L]
-    node <- cl[[1L]]
-    con <- node$con
-    if (!is.null(con)) {
-      expr <- bquote({
-        ...future.sendCondition <- local({
-          sendCondition <- NULL
-  	
-          function(frame = 1L) {
-  	    if (is.function(sendCondition)) return(sendCondition)
+  if (resignalImmediateConditions && immediateConditions) {
+    immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+    conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
 
-            ns <- getNamespace("parallel")
-	    if (exists("sendData", mode = "function", envir = ns)) {
-	      parallel_sendData <- get("sendData", mode = "function", envir = ns)
-
-              ## Find the 'master' argument of the worker's slaveLoop()
-              envir <- sys.frame(frame)
-              master <- NULL
-              while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
-                if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
-                  master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-                  if (inherits(master, "SOCKnode")) {
-                    sendCondition <<- function(cond) {
-                      data <- list(type = "VALUE", value = cond, success = TRUE)
-                      parallel_sendData(master, data)
-                    }
-  		  return(sendCondition)
-  		}
-                }
-                frame <- frame + 1L
+    if (length(conditionClasses) > 0L) {
+      ## Does the cluster node communicate with a connection?
+      ## (if not, it's via MPI)
+      workers <- future$workers
+      ## AD HOC/FIXME: Here 'future$node' is yet not assigned, so we look at
+      ## the first worker and assume the others are the same. /HB 2019-10-23
+      cl <- workers[1L]
+      node <- cl[[1L]]
+      con <- node$con
+      if (!is.null(con)) {
+        expr <- bquote({
+          ...future.sendCondition <- local({
+            sendCondition <- NULL
+  
+            function(frame = 1L) {
+              if (is.function(sendCondition)) return(sendCondition)
+  
+              ns <- getNamespace("parallel")
+              if (exists("sendData", mode = "function", envir = ns)) {
+                parallel_sendData <- get("sendData", mode = "function", envir = ns)
+  
+                ## Find the 'master' argument of the worker's slaveLoop()
                 envir <- sys.frame(frame)
+                master <- NULL
+                while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+                  if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+                    master <- get("master", mode = "list", envir = envir, inherits = FALSE)
+                    if (inherits(master, "SOCKnode")) {
+                      sendCondition <<- function(cond) {
+                        data <- list(type = "VALUE", value = cond, success = TRUE)
+                        parallel_sendData(master, data)
+                      }
+                      return(sendCondition)
+                    }
+                  }
+                  frame <- frame + 1L
+                  envir <- sys.frame(frame)
+                }
+              }  
+  
+              ## Failed to locate 'master' or 'parallel:::sendData()',
+	      ## so just ignore conditions
+              sendCondition <<- function(cond) NULL
+            }
+          })
+  
+          withCallingHandlers({
+            .(expr)
+          }, immediateCondition = function(cond) {
+            sendCondition <- ...future.sendCondition()
+            sendCondition(cond)
+	    
+            ## WORKAROUND: If the name of any of the below objects/functions
+            ## coincides with a promise (e.g. a future assignment) then we
+            ## we will end up with a recursive evaluation resulting in error:
+            ##   "promise already under evaluation: recursive default argument
+            ##    reference or earlier problems?"
+            inherits <- base::inherits
+            if (inherits(cond, .(immediateConditionClasses))) {
+              invokeRestart <- base::invokeRestart
+              if (inherits(cond, "message")) {
+                invokeRestart("muffleMessage")
+              } else if (inherits(cond, "warning")) {
+                invokeRestart("muffleWarning")
               }
 	    }  
-
-            ## Failed to locate 'master' or 'parallel:::sendData()', so just ignore conditions
-	    sendCondition <<- function(cond) NULL
-          }
+          })
         })
-  	
-        withCallingHandlers({
-          .(expr)
-        }, immediateCondition = function(cond) {
-          sendCondition <- ...future.sendCondition()
-          sendCondition(cond)
-        })
-      })
-    }  
-  }
+      } ## if (!is.null(con))
+    } ## if (length(conditionClasses) > 0)
+  } ## if (resignalImmediateConditions && immediateConditions)
   
-  NextMethod(expr = expr, conditionClasses = conditionClasses)
+  NextMethod(expr = expr, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
 }
