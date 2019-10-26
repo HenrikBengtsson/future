@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-24]
+Version: 1.14.0-9000 [2019-10-25]
 
 SIGNIFICANT CHANGES:
 
@@ -12,12 +12,8 @@ NEW FEATURES:
  * Now the "visibility" of future values is recorded and reflected by value().
 
  * Now environment variable 'R_FUTURE_GLOBALS_ONREFERENCE' overrides option
-   'future.globals.onReference'. The default is "ignore" but it might be
-   changed to "error" in a future release in order to assert that no parallel
-   code relies on non-exportable objects.  Because of this, it is recommended
-   to start using "error" already now.  An easy approach is to set
-   'R_FUTURE_GLOBALS_ONREFERENCE=error' in ~/.Renviron.
-
+   'future.globals.onReference'.
+  
 BUG FIXES:
 
  * values() would resignal immediateCondition:s despit those should only be
