@@ -11,8 +11,8 @@ NEW FEATURES:
 
  * Now the "visibility" of future values is recorded and reflected by value().
 
- * Now environment variable 'R_FUTURE_GLOBALS_ONREFERENCE' overrides option
-   'future.globals.onReference'.
+ * Now option 'future.globals.onReference' defaults to environment variable
+   'R_FUTURE_GLOBALS_ONREFERENCE'.
   
 BUG FIXES:
 
