@@ -554,45 +554,6 @@ Run `revdep_details(,"DeclareDesign")` for more info
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
-# doFuture
-
-<details>
-
-* Version: 0.8.1
-* Source code: https://github.com/cran/doFuture
-* URL: https://github.com/HenrikBengtsson/doFuture
-* BugReports: https://github.com/HenrikBengtsson/doFuture/issues
-* Date/Publication: 2019-07-20 14:50:02 UTC
-* Number of recursive dependencies: 26
-
-Run `revdep_details(,"doFuture")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/doRNG,dorng.R’ failed.
-    Last 13 lines of output:
-        .. ..$ : int [1:7] 10407 1222430165 -1386318120 1144759979 748500427 690571908 329037778
-        .. ..$ : int [1:7] 10407 215137210 -1421031558 1452323561 -2060097535 712279522 -278425444
-        .. ..$ : int [1:7] 10407 -1017432992 1583835527 1997665660 821136125 1282044776 1045008570
-       $ r2:List of 4
-        ..$ : num 0.473
-        ..$ : num 0.413
-        ..$ : num 0.622
-        ..$ : num 0.349
-        ..- attr(*, "rng")=List of 4
-        .. ..$ : int [1:7] 10407 -305777535 -1394370482 -1723143049 2071488076 1659356893 -1081051142
-        .. ..$ : int [1:7] 10407 1325398954 -1161873690 -494229462 -159563550 560770250 333672325
-        .. ..$ : int [1:7] 10407 297685860 239054748 -160895377 224208364 -348437793 -1537437949
-        .. ..$ : int [1:7] 10407 -1436965524 -782679284 2145224753 2079003111 -745179495 -788808701
-      Error: identical(r1, r2) is not TRUE
-      Execution halted
-    ```
-
 # foieGras
 
 <details>
@@ -808,22 +769,22 @@ Run `revdep_details(,"kernelboot")` for more info
 *   checking tests ...
     ```
      ERROR
-    Running the tests in ‘tests/test_parallel.R’ failed.
+    Running the tests in ‘tests/testthat.R’ failed.
     Last 13 lines of output:
-      +   set.seed(0xBEEF)
-      +   s1 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
-      +                    R = 10, parallel = TRUE)
-      + 
-      +   set.seed(0xBEEF)
-      +   s2 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
-      +                    R = 10, parallel = TRUE)
-      + 
-      +   stopifnot( all.equal(s1, s2) )
-      + 
-      + }
-      Error in kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat,  : 
-        object '.Random.seed' not found
-      Calls: stopifnot -> kernelboot
+      8: eval_bare(get_expr(.quo), get_env(.quo))
+      9: kernelboot(dat, fun1, R = 10)
+      
+      ── 3. Error: misc tests (@test_misc.R#5)  ──────────────────────────────────────
+      object '.Random.seed' not found
+      1: kernelboot(mtcars, function(data) coef(lm(mpg ~ ., data = data)), R = 10) at testthat/test_misc.R:5
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 145 | SKIPPED: 3 | WARNINGS: 0 | FAILED: 3 ]
+      1. Failure: kernelboot function (@test_kernelboot.R#13) 
+      2. Error: kernelboot function (@test_kernelboot.R#15) 
+      3. Error: misc tests (@test_misc.R#5) 
+      
+      Error: testthat unit tests failed
       Execution halted
     ```
 
@@ -1667,7 +1628,7 @@ Run `revdep_details(,"treeHMM")` for more info
 * Version: 0.1.4
 * Source code: https://github.com/cran/TSstudio
 * Date/Publication: 2019-04-13 16:22:38 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 143
 
 Run `revdep_details(,"TSstudio")` for more info
 

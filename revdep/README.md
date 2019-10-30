@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-10-26                                  |
+|date     |2019-10-30                                  |
 
 # Dependencies
 
@@ -24,11 +24,10 @@
 
 # Revdeps
 
-## New problems (2)
+## New problems (1)
 
 |package                              |version |error  |warning |note |
 |:------------------------------------|:-------|:------|:-------|:----|
-|[doFuture](problems.md#dofuture)     |0.8.1   |__+1__ |        |     |
 |[kernelboot](problems.md#kernelboot) |0.1.5   |__+1__ |        |     |
 
 ## All (81)
@@ -50,7 +49,7 @@
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |       |        |1    |
 |[DeclareDesign](problems.md#declaredesign)      |0.20.0    |       |        |1    |
 |disk.frame                                      |0.2.0     |       |        |     |
-|[doFuture](problems.md#dofuture)                |0.8.1     |__+1__ |        |     |
+|doFuture                                        |0.8.2     |       |        |     |
 |drake                                           |7.7.0     |       |        |     |
 |drtmle                                          |1.0.4     |       |        |     |
 |FAMoS                                           |0.2.0     |       |        |     |
