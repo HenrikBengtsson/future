@@ -16,7 +16,7 @@ NEW FEATURES:
   
 BUG FIXES:
 
- * values() would resignal immediateCondition:s despit those should only be
+ * values() would resignal immediateCondition:s despite those should only be
    signalled at most once per future.
 
  * makeClusterPSOCK() could produce warnings like "cannot open file
