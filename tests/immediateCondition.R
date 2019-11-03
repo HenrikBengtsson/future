@@ -35,7 +35,7 @@ recordMessages <- function(expr, ...) {
   sapply(recordConditions(expr, ...), FUN = conditionMessage)
 }
 
-strategies <- supportedStrategies()[1]
+strategies <- supportedStrategies()
 
 for (ss in seq_along(strategies)) {
   strategy <- strategies[[ss]]
