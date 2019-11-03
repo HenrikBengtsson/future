@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-10-25]
+Version: 1.14.0-9000 [2019-11-02]
 
 SIGNIFICANT CHANGES:
 
@@ -16,10 +16,15 @@ NEW FEATURES:
 
  * Now option 'future.globals.onReference' defaults to environment variable
    'R_FUTURE_GLOBALS_ONREFERENCE'.
-  
+
+DOCUMENTATION:
+
+ * Added 'Troubleshooting' section to ?makeClusterPSOCK with instructions on
+   how to troubleshoot when the setup of local and remote clusters fail.
+
 BUG FIXES:
 
- * values() would resignal immediateCondition:s despit those should only be
+ * values() would resignal immediateCondition:s despite those should only be
    signalled at most once per future.
 
  * makeClusterPSOCK() could produce warnings like "cannot open file
@@ -167,7 +172,7 @@ NEW FEATURES:
    where "*" will be resolved to the current '.libPaths()' on the workers.
 
  * Debug messages are now prepended with a timestamp.
- 
+
 DOCUMENTATION:
 
  * Add vignette on 'Non-Exportable Objects' (extracted from another vignette).

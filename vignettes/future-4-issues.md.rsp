@@ -40,6 +40,15 @@ y
 ## Error: object 'x' not found
 ```
 
+It is recommended to avoid above constructs where it is ambigious whether a variable is global or local.  To force variable `x` to always be global, insert it at the very being of the future expression, e.g.
+```r
+reset <- FALSE
+x <- 1
+y %<-% { x; if (reset) x <- 0; x + 1 }
+y
+## [1] 2
+```
+
 _Comment:_ The goal is to in a future version of the package detect globals also in expression where the local-global state of a variable is only known at run time.
 
 
@@ -104,7 +113,13 @@ The workaround is to tell the future framework what _additional_ globals are nee
 > y
 [1] 6
 ```
-
+or my injecting `a` at the beginning of the future expression, e.g.
+```r
+> f <- future({ a; my_sum("a") })
+> y <- value(f)
+> y
+[1] 6
+```
 
 Note that, independently of the future framework, it is often a bad idea to use `get()`, and related functions `mget()` and `assign()`, in R code.  Searching the archives of R forums, such as the R-help and R-devel mailing lists, will reveal numerous suggestions against using them.  A good rule of thumb is:
 
