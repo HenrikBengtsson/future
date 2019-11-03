@@ -2,7 +2,7 @@
 
 |field    |value                                       |
 |:--------|:-------------------------------------------|
-|version  |R version 3.6.1 Patched (2019-09-12 r77183) |
+|version  |R version 3.6.1 Patched (2019-10-31 r77348) |
 |os       |Ubuntu 18.04.3 LTS                          |
 |system   |x86_64, linux-gnu                           |
 |ui       |X11                                         |
@@ -10,17 +10,16 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-10-30                                  |
+|date     |2019-11-03                                  |
 
 # Dependencies
 
-|package   |old    |new         |Δ  |
-|:---------|:------|:-----------|:--|
-|future    |1.14.0 |1.14.0-9000 |*  |
-|codetools |0.2-16 |0.2-16      |   |
-|digest    |0.6.22 |0.6.22      |   |
-|globals   |0.12.4 |0.12.4      |   |
-|listenv   |0.7.0  |0.7.0       |   |
+|package |old    |new         |Δ  |
+|:-------|:------|:-----------|:--|
+|future  |1.14.0 |1.14.0-9000 |*  |
+|digest  |0.6.22 |0.6.22      |   |
+|globals |0.12.4 |0.12.4      |   |
+|listenv |0.7.0  |0.7.0       |   |
 
 # Revdeps
 
@@ -41,7 +40,7 @@
 |[BAMBI](problems.md#bambi)                      |2.1.0     |       |5       |5    |
 |BatchGetSymbols                                 |2.5.4     |       |        |     |
 |batchtools                                      |0.9.11    |       |        |     |
-|[biotmle](problems.md#biotmle)                  |1.8.0     |2      |        |     |
+|biotmle                                         |1.10.0    |       |        |     |
 |[blavaan](problems.md#blavaan)                  |0.3-7     |       |        |3    |
 |[brms](problems.md#brms)                        |2.10.0    |       |1       |2    |
 |civis                                           |2.1.0     |       |        |     |
@@ -63,7 +62,7 @@
 |future.batchtools                               |0.8.1     |       |        |     |
 |future.callr                                    |0.5.0     |       |        |     |
 |fxtract                                         |0.9.2     |       |        |     |
-|genBaRcode                                      |1.2.2     |       |        |     |
+|[genBaRcode](problems.md#genbarcode)            |1.2.2     |       |        |1    |
 |[GetBCBData](problems.md#getbcbdata)            |0.5       |       |        |1    |
 |glmmboot                                        |0.4.0     |       |        |     |
 |googleComputeEngineR                            |0.3.0     |       |        |     |
@@ -73,7 +72,7 @@
 |[gWQS](problems.md#gwqs)                        |2.0.0     |       |        |1    |
 |[gWQSRS](problems.md#gwqsrs)                    |1.0.0     |       |        |1    |
 |idmodelr                                        |0.3.1     |       |        |     |
-|[infercnv](problems.md#infercnv)                |1.0.4     |       |        |2    |
+|[infercnv](problems.md#infercnv)                |1.2.0     |1      |        |2    |
 |ipc                                             |0.1.3     |       |        |     |
 |jstor                                           |0.3.7     |       |        |     |
 |[kernelboot](problems.md#kernelboot)            |0.1.5     |__+1__ |        |     |
@@ -81,8 +80,8 @@
 |[lidR](problems.md#lidr)                        |2.1.4     |1      |        |2    |
 |[merTools](problems.md#mertools)                |0.5.0     |       |1       |2    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |       |        |1    |
-|[methyvim](problems.md#methyvim)                |1.6.0     |2      |        |     |
-|mlr3                                            |0.1.3     |       |        |     |
+|[methyvim](problems.md#methyvim)                |1.8.0     |       |5       |5    |
+|mlr3                                            |0.1.4     |       |        |     |
 |ngstk                                           |0.2.3     |       |        |     |
 |origami                                         |1.0.1     |       |        |     |
 |PeakSegDisk                                     |2019.9.10 |       |        |     |
@@ -90,9 +89,9 @@
 |[photosynthesis](problems.md#photosynthesis)    |1.0.0     |       |        |1    |
 |[phylolm](problems.md#phylolm)                  |2.6       |       |        |1    |
 |[promises](problems.md#promises)                |1.1.0     |       |        |1    |
-|[Prostar](problems.md#prostar)                  |1.16.10   |       |1       |     |
+|[Prostar](problems.md#prostar)                  |1.18.0    |       |3       |2    |
 |PSCBS                                           |0.65.0    |       |        |     |
-|[QDNAseq](problems.md#qdnaseq)                  |1.20.0    |       |1       |     |
+|[QDNAseq](problems.md#qdnaseq)                  |1.22.0    |       |        |1    |
 |[rangeMapper](problems.md#rangemapper)          |0.3-7     |2      |        |     |
 |reproducible                                    |0.2.10    |       |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2     |       |        |1    |
@@ -101,8 +100,8 @@
 |[sctransform](problems.md#sctransform)          |0.2.0     |       |        |1    |
 |[Seurat](problems.md#seurat)                    |3.1.1     |       |2       |5    |
 |[shinyrecap](problems.md#shinyrecap)            |0.1.0     |       |        |1    |
-|[simglm](problems.md#simglm)                    |0.7.4     |       |1       |1    |
-|[skpr](problems.md#skpr)                        |0.61.3    |       |        |2    |
+|[simglm](problems.md#simglm)                    |0.7.4     |       |        |1    |
+|[skpr](problems.md#skpr)                        |0.61.3    |       |        |1    |
 |[solitude](problems.md#solitude)                |0.2.0     |       |        |1    |
 |[sperrorest](problems.md#sperrorest)            |2.1.5     |       |2       |2    |
 |[stars](problems.md#stars)                      |0.4-0     |       |        |2    |
@@ -113,6 +112,6 @@
 |tidyqwi                                         |0.1.1     |       |        |     |
 |[treeHMM](problems.md#treehmm)                  |0.1.0     |       |        |1    |
 |tsfeatures                                      |1.0.1     |       |        |     |
-|[TSstudio](problems.md#tsstudio)                |0.1.4     |       |        |1    |
+|[TSstudio](problems.md#tsstudio)                |0.1.5     |       |        |1    |
 |[vinereg](problems.md#vinereg)                  |0.5.0     |1      |5       |4    |
 

@@ -80,10 +80,6 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Error in setClass("ProgressBarText", representation(steps = "integer",  : 
-      could not find function "setClass"
-    Error in setClass("ProgressBarText", representation(steps = "integer",  : 
-      could not find function "setClass"
     Error in setGeneric("getX", function(object, type) standardGeneric("getX")) : 
       could not find function "setGeneric"
     ```
@@ -332,71 +328,6 @@ Run `revdep_details(,"BAMBI")` for more info
     Extensions’ manual.
     ```
 
-# biotmle
-
-<details>
-
-* Version: 1.8.0
-* Source code: https://github.com/cran/biotmle
-* URL: https://code.nimahejazi.org/biotmle
-* BugReports: https://github.com/nhejazi/biotmle/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 104
-
-Run `revdep_details(,"biotmle")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    
-        values
-    
-    The following object is masked from ‘package:GenomicRanges’:
-    
-        values
-    
-    The following object is masked from ‘package:IRanges’:
-    
-        values
-    
-    The following object is masked from ‘package:S4Vectors’:
-    
-        values
-    
-    Loading required package: foreach
-    Loading required package: iterators
-    Error: BiocParallel errors
-      element index: 1
-      first error: task 1 failed - "group length is 0 but data length > 0"
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             family = "gaussian", g_lib = c("SL.mean", "SL.glm"), Q_lib = "SL.mean") at testthat/test-modtest_ic.R:19
-      2: BiocParallel::bplapply(Y[, seq_along(Y)], biomarkerTMLE_exposure, W = W, A = A, a = unique(A), 
-             g_lib = g_lib, Q_lib = Q_lib, family = family, subj_ids = subj_ids, ...)
-      3: BiocParallel::bplapply(Y[, seq_along(Y)], biomarkerTMLE_exposure, W = W, A = A, a = unique(A), 
-             g_lib = g_lib, Q_lib = Q_lib, family = family, subj_ids = subj_ids, ...)
-      4: bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
-      5: bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 5 | SKIPPED: 0 | WARNINGS: 2 | FAILED: 2 ]
-      1. Error: (unknown) (@test-biomarkertmle.R#20) 
-      2. Error: (unknown) (@test-modtest_ic.R#19) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # blavaan
 
 <details>
@@ -496,8 +427,8 @@ Run `revdep_details(,"codebook")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Error in globalVariables(".groups") : 
-      could not find function "globalVariables"
+    Error in setClass("lmList4", representation(call = "call", pool = "logical",  : 
+      could not find function "setClass"
     Namespaces in Imports field not imported from:
       ‘graphics’ ‘jsonlite’ ‘pander’ ‘rlang’
       All declared Imports should be used.
@@ -604,6 +535,27 @@ Run `revdep_details(,"forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘stringr’
       All declared Imports should be used.
+    ```
+
+# genBaRcode
+
+<details>
+
+* Version: 1.2.2
+* Source code: https://github.com/cran/genBaRcode
+* Date/Publication: 2019-10-25 15:10:02 UTC
+* Number of recursive dependencies: 129
+
+Run `revdep_details(,"genBaRcode")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Error in setClass("jplace", representation = representation(placements = "tbl_df"),  : 
+      could not find function "setClass"
     ```
 
 # GetBCBData
@@ -723,11 +675,11 @@ Run `revdep_details(,"gWQSRS")` for more info
 
 <details>
 
-* Version: 1.0.4
+* Version: 1.2.0
 * Source code: https://github.com/cran/infercnv
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
-* Date/Publication: 2019-09-16
+* Date/Publication: 2019-10-29
 * Number of recursive dependencies: 118
 
 Run `revdep_details(,"infercnv")` for more info
@@ -736,9 +688,35 @@ Run `revdep_details(,"infercnv")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    ...
+            }
+            flog.info("\n\n## Making the final infercnv heatmap ##")
+            invisible(gc())
+            plot_cnv(infercnv_obj, k_obs_groups = k_obs_groups, cluster_by_groups = cluster_by_groups, 
+                cluster_references = cluster_references, out_dir = out_dir, 
+                x.center = final_center_val, x.range = final_scale_limits, 
+                title = "inferCNV", output_filename = "infercnv", 
+                output_format = output_format, write_expr_matrix = TRUE, 
+                png_res = png_res, useRaster = useRaster)
+        }
+        return(infercnv_obj)
+    }
+    <bytecode: 0x55d4147109f8>
+    <environment: namespace:infercnv>
+     --- function search by body ---
+    Function run in namespace infercnv has this body.
+     ----------- END OF FAILURE REPORT -------------- 
+    Error in HMM && HMM_type == "i6" : 
+      'length(x) = 2 > 1' in coercion to 'logical(1)'
+    Calls: <Anonymous>
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.0Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         extdata   3.1Mb
     ```
@@ -769,22 +747,22 @@ Run `revdep_details(,"kernelboot")` for more info
 *   checking tests ...
     ```
      ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
+    Running the tests in ‘tests/test_parallel.R’ failed.
     Last 13 lines of output:
-      8: eval_bare(get_expr(.quo), get_env(.quo))
-      9: kernelboot(dat, fun1, R = 10)
-      
-      ── 3. Error: misc tests (@test_misc.R#5)  ──────────────────────────────────────
-      object '.Random.seed' not found
-      1: kernelboot(mtcars, function(data) coef(lm(mpg ~ ., data = data)), R = 10) at testthat/test_misc.R:5
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 145 | SKIPPED: 3 | WARNINGS: 0 | FAILED: 3 ]
-      1. Failure: kernelboot function (@test_kernelboot.R#13) 
-      2. Error: kernelboot function (@test_kernelboot.R#15) 
-      3. Error: misc tests (@test_misc.R#5) 
-      
-      Error: testthat unit tests failed
+      +   set.seed(0xBEEF)
+      +   s1 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
+      +                    R = 10, parallel = TRUE)
+      + 
+      +   set.seed(0xBEEF)
+      +   s2 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
+      +                    R = 10, parallel = TRUE)
+      + 
+      +   stopifnot( all.equal(s1, s2) )
+      + 
+      + }
+      Error in kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat,  : 
+        object '.Random.seed' not found
+      Calls: stopifnot -> kernelboot
       Execution halted
     ```
 
@@ -911,12 +889,12 @@ Run `revdep_details(,"MetamapsDB")` for more info
 
 <details>
 
-* Version: 1.6.0
+* Version: 1.8.0
 * Source code: https://github.com/cran/methyvim
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 184
+* Date/Publication: 2019-11-01
+* Number of recursive dependencies: 187
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -924,52 +902,196 @@ Run `revdep_details(,"methyvim")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
+*   checking whether the package can be unloaded cleanly ... WARNING
     ```
-    ...
-    The following object is masked from ‘package:SummarizedExperiment’:
-    
-        values
-    
-    The following object is masked from ‘package:GenomicRanges’:
-    
-        values
-    
-    The following object is masked from ‘package:IRanges’:
-    
-        values
-    
-    The following object is masked from ‘package:S4Vectors’:
-    
-        values
-    
-    Loading required package: nnls
-    > methyvolc(methyvim_out_ate)
-    Error in Math.factor(pval) : ‘log10’ not meaningful for factors
-    Calls: methyvolc ... mutate -> mutate.tbl_df -> mutate_impl -> Math.factor
+    Error in setGeneric("bumphunter", function(object, ...) { : 
+      could not find function "setGeneric"
+    Error: package or namespace load failed for ‘methyvim’:
+     unable to load R code in package ‘bumphunter’
     Execution halted
     ```
 
-*   checking tests ...
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      [2] -0.06913 - -0.07124 == 2.11e-03
-      [3]  0.00658 -  0.00379 == 2.79e-03
-      [4]  0.00149 -  0.00147 == 2.69e-05
-      [5]  0.07352 -  0.06274 == 1.08e-02
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 45 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 5 ]
-      1. Failure: Variable importance results in tolerance and of correct length (@test-methyvim.R#61) 
-      2. Failure: ATE procedure with M-values is consistent for target site (@test-tmle_classic.R#27) 
-      3. Failure: RR procedure with M-values is consistent for target site (@test-tmle_classic.R#49) 
-      4. Failure: ATE procedure with Beta-values is consistent for target site (@test-tmle_classic.R#72) 
-      5. Failure: RR procedure with Beta-values is consistent for target site (@test-tmle_classic.R#94) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+    Error in setGeneric("bumphunter", function(object, ...) { : 
+      could not find function "setGeneric"
+    Error: unable to load R code in package ‘bumphunter’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking S3 generic/method consistency ... WARNING
+    ```
+    ...
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    See section ‘Generic functions and methods’ in the ‘Writing R
+    Extensions’ manual.
+    ```
+
+*   checking replacement functions ... WARNING
+    ```
+    ...
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    The argument of a replacement function which corresponds to the right
+    hand side must be named ‘value’.
+    ```
+
+*   checking for code/documentation mismatches ... WARNING
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking foreign function calls ... NOTE
+    ```
+    ...
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
+    Extensions’ manual.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in setGeneric("bumphunter", function(object, ...) { : 
+      could not find function "setGeneric"
+    Error: unable to load R code in package ‘bumphunter’
+    Execution halted
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘tmle.npvi’
+    ```
+
+*   checking Rd \usage sections ... NOTE
+    ```
+    ...
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    The \usage entries for S3 methods should use the \method markup and not
+    their full name.
+    See chapter ‘Writing R documentation files’ in the ‘Writing R
+    Extensions’ manual.
     ```
 
 # photosynthesis
@@ -1040,10 +1162,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.16.10
+* Version: 1.18.0
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-10-09
-* Number of recursive dependencies: 260
+* Date/Publication: 2019-10-29
+* Number of recursive dependencies: 261
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -1058,16 +1180,75 @@ Run `revdep_details(,"Prostar")` for more info
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    In addition: Warning message:
+    no DISPLAY variable so Tk is not available 
+    Error: package or namespace load failed for ‘Prostar’:
+     unable to load R code in package ‘enrichplot’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    Error: unable to load R code in package ‘enrichplot’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    Error: unable to load R code in package ‘enrichplot’
+    Execution halted
+    ```
+
 # QDNAseq
 
 <details>
 
-* Version: 1.20.0
+* Version: 1.22.0
 * Source code: https://github.com/cran/QDNAseq
 * URL: https://github.com/ccagc/QDNAseq
 * BugReports: https://github.com/ccagc/QDNAseq/issues
-* Date/Publication: 2019-05-02
-* Number of recursive dependencies: 67
+* Date/Publication: 2019-10-29
+* Number of recursive dependencies: 70
 
 Run `revdep_details(,"QDNAseq")` for more info
 
@@ -1075,13 +1256,10 @@ Run `revdep_details(,"QDNAseq")` for more info
 
 ## In both
 
-*   checking for missing documentation entries ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Undocumented code objects:
-      ‘exportVCF’
-    All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
     ```
 
 # rangeMapper
@@ -1109,7 +1287,7 @@ Run `revdep_details(,"rangeMapper")` for more info
         else y@bbox = x@bbox
         y
     }
-    <bytecode: 0x55fcb2549e78>
+    <bytecode: 0x5654a0792170>
     <environment: namespace:sp>
     
     Signatures:
@@ -1226,7 +1404,7 @@ Run `revdep_details(,"sctransform")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2019-10-03 12:40:02 UTC
-* Number of recursive dependencies: 207
+* Number of recursive dependencies: 202
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -1347,20 +1525,6 @@ Run `revdep_details(,"simglm")` for more info
 
 ## In both
 
-*   checking Rd cross-references ... WARNING
-    ```
-    Missing link or links in documentation object 'sim_pow.Rd':
-      ‘corStruct’
-    
-    Missing link or links in documentation object 'sim_pow_nested.Rd':
-      ‘corStruct’
-    
-    Missing link or links in documentation object 'sim_pow_nested3.Rd':
-      ‘corStruct’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Error in setClass("lmList4", representation(call = "call", pool = "logical",  : 
@@ -1389,12 +1553,6 @@ Run `revdep_details(,"skpr")` for more info
       installed size is 49.1Mb
       sub-directories of 1Mb or more:
         libs  47.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(".groups") : 
-      could not find function "globalVariables"
     ```
 
 # solitude
@@ -1625,9 +1783,11 @@ Run `revdep_details(,"treeHMM")` for more info
 
 <details>
 
-* Version: 0.1.4
+* Version: 0.1.5
 * Source code: https://github.com/cran/TSstudio
-* Date/Publication: 2019-04-13 16:22:38 UTC
+* URL: https://github.com/RamiKrispin/TSstudio
+* BugReports: https://github.com/RamiKrispin/TSstudio/issues
+* Date/Publication: 2019-10-28 19:40:09 UTC
 * Number of recursive dependencies: 143
 
 Run `revdep_details(,"TSstudio")` for more info
@@ -1638,8 +1798,8 @@ Run `revdep_details(,"TSstudio")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘purrr’
-      All declared Imports should be used.
+    Error in globalVariables(c(".rows")) : 
+      could not find function "globalVariables"
     ```
 
 # vinereg
