@@ -1138,7 +1138,7 @@ add_cluster_session_info <- function(cl) {
 #'
 #' @seealso
 #' The cluster is stopped using
-#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}).
+#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}.
 #'
 #' @keywords internal
 #' @importFrom parallel stopCluster
