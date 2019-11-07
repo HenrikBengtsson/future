@@ -718,32 +718,6 @@ Run `revdep_details(,"infercnv")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-            }
-            flog.info("\n\n## Making the final infercnv heatmap ##")
-            invisible(gc())
-            plot_cnv(infercnv_obj, k_obs_groups = k_obs_groups, cluster_by_groups = cluster_by_groups, 
-                cluster_references = cluster_references, out_dir = out_dir, 
-                x.center = final_center_val, x.range = final_scale_limits, 
-                title = "inferCNV", output_filename = "infercnv", 
-                output_format = output_format, write_expr_matrix = TRUE, 
-                png_res = png_res, useRaster = useRaster)
-        }
-        return(infercnv_obj)
-    }
-    <bytecode: 0x55eafc6a7240>
-    <environment: namespace:infercnv>
-     --- function search by body ---
-    Function run in namespace infercnv has this body.
-     ----------- END OF FAILURE REPORT -------------- 
-    Error in HMM && HMM_type == "i6" : 
-      'length(x) = 2 > 1' in coercion to 'logical(1)'
-    Calls: <Anonymous>
-    Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  5.1Mb
@@ -773,28 +747,6 @@ Run `revdep_details(,"lidR")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      ── 3. Error: catalog_intersect extracts the tiles that contains the points of a 
-      'length(x) = 3 > 1' in coercion to 'logical(1)'
-      Backtrace:
-       1. lidR::catalog_intersect(ctg, pts)
-       3. raster::intersect(spdf, y)
-       5. x[i, ]
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 598 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 3 ]
-      1. Error: catalog_intersect extract the tiles lie in a SpatialPolygons (@test-catalog_intersect.R#72) 
-      2. Error: catalog_intersect extracts the tiles that lie in the bbox of a Raster (@test-catalog_intersect.R#79) 
-      3. Error: catalog_intersect extracts the tiles that contains the points of a SpatialPoints (@test-catalog_intersect.R#86) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -1251,70 +1203,6 @@ Run `revdep_details(,"QDNAseq")` for more info
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
-    ```
-
-# rangeMapper
-
-<details>
-
-* Version: 0.3-7
-* Source code: https://github.com/cran/rangeMapper
-* URL: https://github.com/valcu/rangeMapper
-* Date/Publication: 2019-10-25 18:20:02 UTC
-* Number of recursive dependencies: 96
-
-Run `revdep_details(,"rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-                y@plotOrder = order(match(i, x@plotOrder))
-            }
-        }
-        else y@bbox = x@bbox
-        y
-    }
-    <bytecode: 0x56089cd92160>
-    <environment: namespace:sp>
-    
-    Signatures:
-            x                          i         j          
-    target  "SpatialPolygonsDataFrame" "missing" "character"
-    defined "SpatialPolygonsDataFrame" "ANY"     "ANY"      
-     --- function search by body ---
-    S4 Method [:base defined in namespace methods with signature SpatialPolygonsDataFrame has this body.
-    S4 Method [:base defined in namespace sp with signature SpatialPolygonsDataFrame has this body.
-     ----------- END OF FAILURE REPORT -------------- 
-    Error in is.numeric(i) && i < 0 : 
-      'length(x) = 22 > 1' in coercion to 'logical(1)'
-    Calls: processRanges -> processRanges -> .local -> [ -> [
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      Backtrace:
-       1. ...[]
-       2. ...[]
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 14 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 4 ]
-      1. Error: Pipeline works forward only (@test-1_projectINI.R#76) 
-      2. Error: (unknown) (@test-2_processRanges.R#5) 
-      3. Error: (unknown) (@test-3_output.R#3) 
-      4. Error: (unknown) (@test-4_save.R#3) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
     ```
 
 # robotstxt

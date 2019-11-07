@@ -67,12 +67,12 @@
 |[gWQS](problems.md#gwqs)                        |2.0.0     |      |        |1    |
 |[gWQSRS](problems.md#gwqsrs)                    |1.0.0     |      |        |1    |
 |idmodelr                                        |0.3.1     |      |        |     |
-|[infercnv](problems.md#infercnv)                |1.2.0     |1     |        |2    |
+|[infercnv](problems.md#infercnv)                |1.2.0     |      |        |2    |
 |ipc                                             |0.1.3     |      |        |     |
 |jstor                                           |0.3.7     |      |        |     |
 |kernelboot                                      |0.1.6     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
-|[lidR](problems.md#lidr)                        |2.1.4     |1     |        |2    |
+|[lidR](problems.md#lidr)                        |2.1.4     |      |        |2    |
 |[merTools](problems.md#mertools)                |0.5.0     |      |1       |2    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |      |        |1    |
 |[methyvim](problems.md#methyvim)                |1.8.0     |      |5       |5    |
@@ -87,7 +87,7 @@
 |[Prostar](problems.md#prostar)                  |1.18.0    |      |3       |2    |
 |PSCBS                                           |0.65.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.22.0    |      |        |1    |
-|[rangeMapper](problems.md#rangemapper)          |0.3-7     |2     |        |     |
+|rangeMapper                                     |0.3-7     |      |        |     |
 |reproducible                                    |0.2.10    |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2     |      |        |1    |
 |RTransferEntropy                                |0.2.12    |      |        |     |
