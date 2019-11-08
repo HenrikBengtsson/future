@@ -31,7 +31,7 @@ Run `revdep_details(,"abjutils")` for more info
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 89
 
 Run `revdep_details(,"adept")` for more info
 
@@ -335,7 +335,7 @@ Run `revdep_details(,"BAMBI")` for more info
 * Version: 0.3-7
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2019-09-27 19:00:02 UTC
-* Number of recursive dependencies: 120
+* Number of recursive dependencies: 122
 
 Run `revdep_details(,"blavaan")` for more info
 
@@ -370,7 +370,7 @@ Run `revdep_details(,"blavaan")` for more info
 * URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
 * BugReports: https://github.com/paul-buerkner/brms/issues
 * Date/Publication: 2019-08-29 15:50:07 UTC
-* Number of recursive dependencies: 166
+* Number of recursive dependencies: 167
 
 Run `revdep_details(,"brms")` for more info
 
@@ -472,7 +472,7 @@ Run `revdep_details(,"datapackage.r")` for more info
 * URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
 * BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
 * Date/Publication: 2019-09-10 15:10:02 UTC
-* Number of recursive dependencies: 124
+* Number of recursive dependencies: 132
 
 Run `revdep_details(,"DeclareDesign")` for more info
 
@@ -485,6 +485,36 @@ Run `revdep_details(,"DeclareDesign")` for more info
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
+# dipsaus
+
+<details>
+
+* Version: 0.0.2
+* Source code: https://github.com/cran/dipsaus
+* URL: https://github.com/dipterix/dipsaus
+* BugReports: https://github.com/dipterix/dipsaus/issues
+* Date/Publication: 2019-11-05 16:50:02 UTC
+* Number of recursive dependencies: 59
+
+Run `revdep_details(,"dipsaus")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘R6’ ‘RcppRedis’ ‘base64url’ ‘data.table’ ‘digest’ ‘fastmap’
+      ‘filelock’ ‘qs’ ‘txtq’
+      All declared Imports should be used.
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
+
 # foieGras
 
 <details>
@@ -494,7 +524,7 @@ Run `revdep_details(,"DeclareDesign")` for more info
 * URL: https://cran.r-project.org/package=foieGras
 * BugReports: https://github.com/ianjonsen/foieGras/issues
 * Date/Publication: 2019-10-07 22:10:03 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 100
 
 Run `revdep_details(,"foieGras")` for more info
 
@@ -523,7 +553,7 @@ Run `revdep_details(,"foieGras")` for more info
 * Source code: https://github.com/cran/forecastML
 * URL: https://github.com/nredell/forecastML/
 * Date/Publication: 2019-10-09 15:30:05 UTC
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 96
 
 Run `revdep_details(,"forecastML")` for more info
 
@@ -544,7 +574,7 @@ Run `revdep_details(,"forecastML")` for more info
 * Version: 1.2.2
 * Source code: https://github.com/cran/genBaRcode
 * Date/Publication: 2019-10-25 15:10:02 UTC
-* Number of recursive dependencies: 129
+* Number of recursive dependencies: 138
 
 Run `revdep_details(,"genBaRcode")` for more info
 
@@ -567,7 +597,7 @@ Run `revdep_details(,"genBaRcode")` for more info
 * URL: https://github.com/msperlin/GetBCBData/
 * BugReports: https://github.com/msperlin/GetBCBData/issues
 * Date/Publication: 2019-04-23 10:10:29 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 102
 
 Run `revdep_details(,"GetBCBData")` for more info
 
@@ -591,7 +621,7 @@ Run `revdep_details(,"GetBCBData")` for more info
 * URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
 * BugReports: https://github.com/HughParsonage/grattan/issues
 * Date/Publication: 2019-05-20 18:00:03 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 111
 
 Run `revdep_details(,"grattan")` for more info
 
@@ -614,7 +644,7 @@ Run `revdep_details(,"grattan")` for more info
 * URL: https://greta-stats.org
 * BugReports: https://github.com/greta-dev/greta/issues
 * Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 135
 
 Run `revdep_details(,"greta")` for more info
 
@@ -680,7 +710,7 @@ Run `revdep_details(,"gWQSRS")` for more info
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
 * Date/Publication: 2019-10-29
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"infercnv")` for more info
 
@@ -727,45 +757,6 @@ Run `revdep_details(,"infercnv")` for more info
       See the note in ?`:::` about the use of this operator.
     ```
 
-# kernelboot
-
-<details>
-
-* Version: 0.1.5
-* Source code: https://github.com/cran/kernelboot
-* URL: https://github.com/twolodzko/kernelboot
-* BugReports: https://github.com/twolodzko/kernelboot/issues
-* Date/Publication: 2018-07-04 11:30:02 UTC
-* Number of recursive dependencies: 41
-
-Run `revdep_details(,"kernelboot")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/test_parallel.R’ failed.
-    Last 13 lines of output:
-      +   set.seed(0xBEEF)
-      +   s1 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
-      +                    R = 10, parallel = TRUE)
-      + 
-      +   set.seed(0xBEEF)
-      +   s2 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
-      +                    R = 10, parallel = TRUE)
-      + 
-      +   stopifnot( all.equal(s1, s2) )
-      + 
-      + }
-      Error in kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat,  : 
-        object '.Random.seed' not found
-      Calls: stopifnot -> kernelboot
-      Execution halted
-    ```
-
 # lidR
 
 <details>
@@ -775,35 +766,13 @@ Run `revdep_details(,"kernelboot")` for more info
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
 * Date/Publication: 2019-10-15 20:50:02 UTC
-* Number of recursive dependencies: 146
+* Number of recursive dependencies: 151
 
 Run `revdep_details(,"lidR")` for more info
 
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-      'length(x) = 3 > 1' in coercion to 'logical(1)'
-      1: catalog_intersect(ctg, pts) at testthat/test-catalog_intersect.R:86
-      2: raster::intersect(spdf, y)
-      3: raster::intersect(spdf, y)
-      4: x[i, ]
-      5: x[i, ]
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 598 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 3 ]
-      1. Error: catalog_intersect extract the tiles lie in a SpatialPolygons (@test-catalog_intersect.R#72) 
-      2. Error: catalog_intersect extracts the tiles that lie in the bbox of a Raster (@test-catalog_intersect.R#79) 
-      3. Error: catalog_intersect extracts the tiles that contains the points of a SpatialPoints (@test-catalog_intersect.R#86) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -828,7 +797,7 @@ Run `revdep_details(,"lidR")` for more info
 * Source code: https://github.com/cran/merTools
 * BugReports: https://www.github.com/jknowles/merTools
 * Date/Publication: 2019-05-13 12:30:06 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 128
 
 Run `revdep_details(,"merTools")` for more info
 
@@ -894,7 +863,7 @@ Run `revdep_details(,"MetamapsDB")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2019-11-01
-* Number of recursive dependencies: 187
+* Number of recursive dependencies: 195
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -1101,7 +1070,7 @@ Run `revdep_details(,"methyvim")` for more info
 * Version: 1.0.0
 * Source code: https://github.com/cran/photosynthesis
 * Date/Publication: 2019-05-09 15:10:03 UTC
-* Number of recursive dependencies: 66
+* Number of recursive dependencies: 75
 
 Run `revdep_details(,"photosynthesis")` for more info
 
@@ -1123,7 +1092,7 @@ Run `revdep_details(,"photosynthesis")` for more info
 * Source code: https://github.com/cran/phylolm
 * URL: https://CRAN.R-project.org/package=phylolm
 * Date/Publication: 2018-05-31 04:51:24 UTC
-* Number of recursive dependencies: 20
+* Number of recursive dependencies: 31
 
 Run `revdep_details(,"phylolm")` for more info
 
@@ -1145,7 +1114,7 @@ Run `revdep_details(,"phylolm")` for more info
 * URL: https://rstudio.github.io/promises, https://github.com/rstudio/promises
 * BugReports: https://github.com/rstudio/promises/issues
 * Date/Publication: 2019-10-04 23:00:05 UTC
-* Number of recursive dependencies: 32
+* Number of recursive dependencies: 43
 
 Run `revdep_details(,"promises")` for more info
 
@@ -1165,7 +1134,7 @@ Run `revdep_details(,"promises")` for more info
 * Version: 1.18.0
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2019-10-29
-* Number of recursive dependencies: 261
+* Number of recursive dependencies: 265
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -1262,70 +1231,6 @@ Run `revdep_details(,"QDNAseq")` for more info
       All declared Imports should be used.
     ```
 
-# rangeMapper
-
-<details>
-
-* Version: 0.3-7
-* Source code: https://github.com/cran/rangeMapper
-* URL: https://github.com/valcu/rangeMapper
-* Date/Publication: 2019-10-25 18:20:02 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(,"rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-                y@plotOrder = order(match(i, x@plotOrder))
-            }
-        }
-        else y@bbox = x@bbox
-        y
-    }
-    <bytecode: 0x5654a0792170>
-    <environment: namespace:sp>
-    
-    Signatures:
-            x                          i         j          
-    target  "SpatialPolygonsDataFrame" "missing" "character"
-    defined "SpatialPolygonsDataFrame" "ANY"     "ANY"      
-     --- function search by body ---
-    S4 Method [:base defined in namespace methods with signature SpatialPolygonsDataFrame has this body.
-    S4 Method [:base defined in namespace sp with signature SpatialPolygonsDataFrame has this body.
-     ----------- END OF FAILURE REPORT -------------- 
-    Error in is.numeric(i) && i < 0 : 
-      'length(x) = 22 > 1' in coercion to 'logical(1)'
-    Calls: processRanges -> processRanges -> .local -> [ -> [
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 13 lines of output:
-             "wrens", verbose = FALSE)[1:10, ] at testthat/test-4_save.R:3
-      2: rgdal::readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), 
-             "wrens", verbose = FALSE)[1:10, ]
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 14 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 4 ]
-      1. Error: Pipeline works forward only (@test-1_projectINI.R#76) 
-      2. Error: (unknown) (@test-2_processRanges.R#5) 
-      3. Error: (unknown) (@test-3_output.R#3) 
-      4. Error: (unknown) (@test-4_save.R#3) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
-    ```
-
 # robotstxt
 
 <details>
@@ -1335,7 +1240,7 @@ Run `revdep_details(,"rangeMapper")` for more info
 * URL: https://github.com/ropensci/robotstxt
 * BugReports: https://github.com/ropensci/robotstxt/issues
 * Date/Publication: 2018-07-18 21:30:03 UTC
-* Number of recursive dependencies: 54
+* Number of recursive dependencies: 63
 
 Run `revdep_details(,"robotstxt")` for more info
 
@@ -1358,7 +1263,7 @@ Run `revdep_details(,"robotstxt")` for more info
 * URL: https://github.com/sapfluxnet/sapfluxnetr
 * BugReports: https://github.com/sapfluxnet/sapfluxnetr/issues
 * Date/Publication: 2019-05-01 10:40:03 UTC
-* Number of recursive dependencies: 97
+* Number of recursive dependencies: 101
 
 Run `revdep_details(,"sapfluxnetr")` for more info
 
@@ -1380,7 +1285,7 @@ Run `revdep_details(,"sapfluxnetr")` for more info
 * URL: https://github.com/ChristophH/sctransform
 * BugReports: https://github.com/ChristophH/sctransform/issues
 * Date/Publication: 2019-04-12 12:32:38 UTC
-* Number of recursive dependencies: 48
+* Number of recursive dependencies: 57
 
 Run `revdep_details(,"sctransform")` for more info
 
@@ -1404,7 +1309,7 @@ Run `revdep_details(,"sctransform")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2019-10-03 12:40:02 UTC
-* Number of recursive dependencies: 202
+* Number of recursive dependencies: 209
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -1494,7 +1399,7 @@ Run `revdep_details(,"Seurat")` for more info
 * Source code: https://github.com/cran/shinyrecap
 * URL: https://fellstat.github.io/shinyrecap/
 * Date/Publication: 2019-01-19 23:40:03 UTC
-* Number of recursive dependencies: 78
+* Number of recursive dependencies: 87
 
 Run `revdep_details(,"shinyrecap")` for more info
 
@@ -1517,7 +1422,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * Version: 0.7.4
 * Source code: https://github.com/cran/simglm
 * Date/Publication: 2019-05-31 17:10:03 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 89
 
 Run `revdep_details(,"simglm")` for more info
 
@@ -1540,7 +1445,7 @@ Run `revdep_details(,"simglm")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2019-09-19 17:00:02 UTC
-* Number of recursive dependencies: 123
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"skpr")` for more info
 
@@ -1586,7 +1491,7 @@ Run `revdep_details(,"solitude")` for more info
 * Source code: https://github.com/cran/sperrorest
 * BugReports: https://github.com/pat-s/sperrorest/issues
 * Date/Publication: 2018-03-27 12:20:30 UTC
-* Number of recursive dependencies: 70
+* Number of recursive dependencies: 81
 
 Run `revdep_details(,"sperrorest")` for more info
 
@@ -1660,7 +1565,7 @@ Run `revdep_details(,"sperrorest")` for more info
 * URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
 * BugReports: https://github.com/r-spatial/stars/issues/
 * Date/Publication: 2019-10-10 13:00:02 UTC
-* Number of recursive dependencies: 115
+* Number of recursive dependencies: 124
 
 Run `revdep_details(,"stars")` for more info
 
@@ -1717,7 +1622,7 @@ Run `revdep_details(,"startR")` for more info
 * URL: https://github.com/frictionlessdata/tableschema-r
 * BugReports: https://github.com/frictionlessdata/tableschema-r/issues
 * Date/Publication: 2018-11-14 16:50:03 UTC
-* Number of recursive dependencies: 44
+* Number of recursive dependencies: 55
 
 Run `revdep_details(,"tableschema.r")` for more info
 
@@ -1743,7 +1648,7 @@ Run `revdep_details(,"tableschema.r")` for more info
 * Version: 1.0.0
 * Source code: https://github.com/cran/tealeaves
 * Date/Publication: 2019-05-04 16:40:03 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 73
 
 Run `revdep_details(,"tealeaves")` for more info
 
@@ -1811,7 +1716,7 @@ Run `revdep_details(,"TSstudio")` for more info
 * URL: https://tnagler.github.io/vinereg
 * BugReports: https://github.com/tnagler/vinereg/issues
 * Date/Publication: 2018-08-09 23:00:03 UTC
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 101
 
 Run `revdep_details(,"vinereg")` for more info
 
