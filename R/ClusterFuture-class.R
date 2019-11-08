@@ -205,8 +205,11 @@ run.ClusterFuture <- function(future, ...) {
 
 #' @export
 resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
-  ## Is future even launched?
-  if (x$state == 'created') return(FALSE)
+  ## A lazy future not even launched?
+  if (x$state == "created") {
+    x <- run(x)
+    return(FALSE)
+  }
 
   ## Is value already collected?
   if (!is.null(x$result)) {

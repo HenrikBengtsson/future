@@ -1,6 +1,52 @@
 Package: future
 ===============
 
+Version: 1.15.0 [2019-11-07]
+
+SIGNIFICANT CHANGES:
+
+ * resolved() will now launch lazy futures.
+
+NEW FEATURES:
+
+ * Now the "visibility" of future values is recorded and reflected by value().
+
+ * Now option 'future.globals.onReference' defaults to environment variable
+   'R_FUTURE_GLOBALS_ONREFERENCE'.
+
+DOCUMENTATION:
+
+ * Added 'Troubleshooting' section to ?makeClusterPSOCK with instructions on
+   how to troubleshoot when the setup of local and remote clusters fail.
+
+BUG FIXES:
+
+ * values() would resignal immediateCondition:s despite those should only be
+   signalled at most once per future.
+
+ * makeClusterPSOCK() could produce warnings like "cannot open file
+   '/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid': No such file",
+   e.g. when launching R workers running in Docker containers.
+   
+ * Package would set or update the RNG state of R (.Random.seed) when loaded,
+   which could affect RNG reproducibility.
+   
+ * Package could set '.Random.seed' to NULL, instead of removing it, which in
+   turn would produce a warning on "'.Random.seed' is not an integer vector but
+   of type 'NULL', so ignored" when the next random number generated.
+
+ * Now a future assignment to list environments produce more informative error
+   messages if attempting to assign to more than one element.
+   
+ * makeClusterMPI() did not work for MPI clusters with 'comm' other than '1'.
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'value' of resolve() is deprecated. Use 'result' instead.
+
+ * Usage of internal argument 'evaluator' is now defunct.
+
+
 Version: 1.14.0 [2019-07-01]
 
 SIGNIFICANT CHANGES:
@@ -123,7 +169,7 @@ NEW FEATURES:
    where "*" will be resolved to the current '.libPaths()' on the workers.
 
  * Debug messages are now prepended with a timestamp.
- 
+
 DOCUMENTATION:
 
  * Add vignette on 'Non-Exportable Objects' (extracted from another vignette).

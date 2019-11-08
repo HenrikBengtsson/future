@@ -27,9 +27,6 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param progress (DEFUNCT) Defunct since future 1.14.0 to make room for
-#' other progress-update mechanisms that are in the works.
-#'
 #' @param value (DEPRECATED) Use argument `result` instead.
 #' 
 #' @param \dots Not used.
@@ -47,7 +44,7 @@
 #' \code{resolve(futureOf(x))}.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, progress = FALSE, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
@@ -56,7 +53,7 @@ resolve.default <- function(x, ...) x
 resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
@@ -102,7 +99,14 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
     result <- NULL     ## Not needed anymore
 
     if (stdout) value(x, stdout = TRUE, signal = FALSE)
-    if (signal) signalConditions(x, force = FALSE)
+    if (signal) {
+      ## Always signal immediateCondition:s and as soon as possible.
+      ## They will always be signaled if they exist.
+      signalImmediateConditions(x)
+
+      ## Signal all other types of condition
+      signalConditions(x, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = TRUE, force = TRUE)
+    }
   } else {
     msg <- sprintf("%s (result was not collected)", msg)
   }
@@ -114,10 +118,10 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, progress = FALSE, ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
@@ -137,7 +141,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
   relay <- (stdout || signal)
   result <- result || relay
 
-  if (!identical(progress, FALSE)) {
+  if (is.element("progress", names(list(...)))) {
     .Defunct(msg = "Argument 'progress' of resolve() is defunct.")
   }
 
@@ -250,7 +254,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
 resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 
@@ -374,7 +378,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-##    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.")
     result <- TRUE
   }
 

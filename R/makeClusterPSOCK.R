@@ -257,10 +257,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' quoted and element \code{rshcmd[1]} must be on the system \env{PATH}.
 #'
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
-#' client that is distributed with RStudio will be also be considered.
+#' client that is distributed with RStudio will also be considered.
 #' This client, which is from \href{http://www.mingw.org/wiki/msys}{MinGW MSYS},
-#' is search for in the folder given by the \env{RSTUDIO_MSYS_SSH} environment
-#' variable - a variable that is (only) set when running RStudio.
+#' is searched for in the folder given by the \env{RSTUDIO_MSYS_SSH}
+#' environment variable - a variable that is (only) set when running RStudio.
 #'
 #' You can override the default set of SSH clients that are searched for
 #' by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
@@ -360,6 +360,47 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' \code{timeout} limit, then the corresponding socket connection will be
 #' closed automatically.  This will eventually result in an error in code
 #' trying to access the connection.
+#'
+#' @section Troubleshooting:
+#' \emph{Failing to set up local workers:}
+#' When setting up a cluster of localhost workers, that is, workers running
+#' on the same machine as the master \R process, occasionally a connection
+#' to a worker ("cluster node") may fail to be set up.
+#' When this occurs, an informative error message with troubleshooting
+#' suggestions will be produced.
+#' The most common reason for such localhost failures is due to port
+#' clashes.  Retrying will often resolve the problem.
+#'
+#' \emph{Failing to set up remote workers:}
+#' A cluster of remote workers runs \R processes on external machines. These
+#' external \R processes are launched over, typically, SSH to the remote
+#' machine.  For this to work, each of the remote machines needs to have
+#' \R installed, which preferably is of the same version as what is on the
+#' main machine.  For this to work, it is required that one can SSH to the
+#' remote machines.  Ideally, the SSH connections use authentication based
+#' on public-private SSH keys such that the set up of the remote workers can
+#' be fully automated (see above).  If \code{makeClusterPSOCK()} fails to set
+#' up one or more remote \R workers, then an informative error message is
+#' produced.
+#' There are a few reasons for failing to set up remote workers.  If this
+#' happens, start by asserting that you can SSH to the remote machine and
+#' launch \file{Rscript} by calling something like:
+#' \preformatted{
+#' {local}$ ssh -l alice remote.server.org
+#' {remote}$ Rscript --version
+#' R scripting front-end version 3.6.1 (2019-07-05)
+#' {remote}$ logout
+#' {local}$
+#' }
+#' When you have confirmed the above to work, then confirm that you can achieve
+#' the same in a single command-line call;
+#' \preformatted{
+#' {local}$ ssh -l alice remote.server.org Rscript --version
+#' R scripting front-end version 3.6.1 (2019-07-05)
+#' {local}$
+#' }
+#' The latter will assert that you have proper startup configuration also for
+#' \emph{non-interactive} shell sessions on the remote machine.
 #'
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
@@ -507,7 +548,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     if (autoKill) {
       pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
       pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(cat(Sys.getpid(),file="%s"), silent = TRUE)', pidfile)
+      pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
       rscript_pid_args <- c("-e", shQuote(pidcode))
       
       ## Check if this approach to infer the PID works
@@ -1097,7 +1138,7 @@ add_cluster_session_info <- function(cl) {
 #'
 #' @seealso
 #' The cluster is stopped using
-#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}).
+#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}.
 #'
 #' @keywords internal
 #' @importFrom parallel stopCluster

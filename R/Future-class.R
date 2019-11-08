@@ -209,6 +209,9 @@ print.Future <- function(x, ...) {
   hasResult <- hasResult || exists("value", envir = x, inherits = FALSE)
   if (hasResult) {
     cat("Resolved: TRUE\n")
+  } else if (x$state == "created") {
+    ## Don't launch lazy futures here
+    cat("Resolved: FALSE\n")
   } else if (inherits(x, "UniprocessFuture") && x$lazy) {
     ## FIXME: Special case; will there every be other cases
     ## for which we need to support this? /HB 2016-05-03
@@ -217,6 +220,7 @@ print.Future <- function(x, ...) {
     ## Don't signal conditions here
     ## Note that resolved() may produce a FutureError, e.g.
     ## due to invalid connection in a MultisessionFuture
+    is_resolved <- FALSE
     cat(sprintf("Resolved: %s\n", tryCatch(resolved(x, .signalEarly = FALSE), error = function(ex) NA)))
   }
 
@@ -418,6 +422,8 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   stop_if_not(inherits(result, "FutureResult"))
 
   value <- result$value
+  visible <- result$visible
+  if (is.null(visible)) visible <- TRUE
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
@@ -439,11 +445,14 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     } else {
       ## Return 'error' object, iff exists, otherwise NULL
       error <- conditions[[length(conditions)]]$condition
-      if (inherits(error, "error")) value <- error
+      if (inherits(error, "error")) {
+        value <- error
+        visible <- TRUE
+      }
     }
   }
 
-  value
+  if (visible) value else invisible(value)
 }
 
 value <- function(...) UseMethod("value")
@@ -451,11 +460,15 @@ value <- function(...) UseMethod("value")
 
 #' @export
 resolved.Future <- function(x, ...) {
-  ## Is future even launched?
-  if (x$state == "created") return(FALSE)
+  ## A lazy future not even launched?
+  if (x$state == "created") {
+    x <- run(x)
+    return(FALSE)
+  }
 
   ## Signal conditions early, iff specified for the given future
-  signalEarly(x, ...)
+  ## Note, collect = TRUE will block here, which is intentional
+  signalEarly(x, collect = TRUE, ...)
 
   if (inherits(x$result, "FutureResult")) return(TRUE)
   
@@ -563,7 +576,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     enter <- bquote({
       ## covr: skip=2
       .(enter)
-      ## NOTE: It is not needed to call eRNGkind("L'Ecuyer-CMRG") here
+      ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
       ## because the type of RNG is defined by .Random.seed, especially
       ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
       assign(".Random.seed", .(future$seed), envir = globalenv(), inherits = FALSE)
@@ -751,9 +764,9 @@ makeExpression <- local({
         ...future.conditions <- list()
         ...future.result <- tryCatch({
           withCallingHandlers({
-            ...future.value <- .(expr)
+            ...future.value <- withVisible(.(expr))
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value, started = ...future.startTime, version = "1.8")
+            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, started = ...future.startTime, version = "1.8")
           }, condition = local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
@@ -786,23 +799,10 @@ makeExpression <- local({
                   ## already here.
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = as.integer(signal))
-                  if (inherits(cond, "message")) {
-                    if (!signal) invokeRestart("muffleMessage")
-                  } else if (inherits(cond, "warning")) {
-                    if (!signal) invokeRestart("muffleWarning")
-                  } else {
-                    if (!signal) {
-                      ## If there is a "muffle" restart for this condition,
-                      ## then invoke that restart, i.e. "muffle" the condition
-                      restarts <- computeRestarts(cond)
-                      for (restart in restarts) {
-                        name <- restart$name
-                        if (is.null(name)) next
-                        if (!grepl("^muffle", name)) next
-                        invokeRestart(restart)
-                        break
-                      }
-                    }
+                  if (!signal) {
+		    ## muffleCondition <- future:::muffleCondition()
+		    muffleCondition <- .(muffleCondition)
+                    muffleCondition(cond)
                   }
                 }
               }
@@ -811,6 +811,7 @@ makeExpression <- local({
         }, error = function(ex) {
           structure(list(
             value = NULL,
+            visible = NULL,
             conditions = ...future.conditions,
             version = "1.8"
           ), class = "FutureResult")

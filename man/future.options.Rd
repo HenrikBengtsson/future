@@ -28,7 +28,6 @@
 \alias{future.wait.alpha}
 \alias{future.wait.interval}
 \alias{future.wait.timeout}
-\alias{future.progress}
 \alias{future.debug}
 \alias{future.demo.mandelbrot.region}
 \alias{future.demo.mandelbrot.nrow}
@@ -50,12 +49,13 @@ Below are all \R options that are currently used by the \pkg{future} package and
    If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
    If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
    If \code{"ignore"}, no scan is performed.
+   If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} is used.  
    (Default: \code{"ignore"} but may change)
  }
  \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
- \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
- \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: \code{0.2} = 0.2 seconds)}
- \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: \code{1.01})}
+ \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_TIMEOUT} is used.  (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
+ \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_INTERVAL} is used.  (Default: \code{0.2} = 0.2 seconds)}
+ \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_ALPHA} is used.  (Default: \code{1.01})}
 }
 }
 
@@ -63,7 +63,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
  \item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
- \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and will be ignored.}
+ \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and ignored.}
 }
 }
 
@@ -91,7 +91,7 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
 
- \item{\option{future.fork.enable}:}{(logical) Enable or disable \emph{forked} processing.  If \code{FALSE}, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_R_FUTURE_FORK_ENABLE}.  If \code{NA}, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
+ \item{\option{future.fork.enable}:}{(logical) Enable or disable \emph{forked} processing.  If \code{FALSE}, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_ENABLE}.  If \code{NA}, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
 
  \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If \code{"warning"} (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If \code{"quiet"}, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See \code{\link{supportsMulticore}()} for more details.}
 }

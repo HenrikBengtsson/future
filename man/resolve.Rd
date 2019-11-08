@@ -6,7 +6,7 @@
 \usage{
 resolve(x, idxs = NULL, recursive = 0, result = FALSE,
   stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1,
-  value = result, progress = FALSE, ...)
+  value = result, ...)
 }
 \arguments{
 \item{x}{A \link{Future} to be resolved, or a list, an environment, or a
@@ -33,9 +33,6 @@ otherwise not.}
 resolved since last time.}
 
 \item{value}{(DEPRECATED) Use argument `result` instead.}
-
-\item{progress}{(DEFUNCT) Defunct since future 1.14.0 to make room for
-other progress-update mechanisms that are in the works.}
 
 \item{\dots}{Not used.}
 }

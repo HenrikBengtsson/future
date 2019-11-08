@@ -318,7 +318,13 @@ parseCmdArgs <- function() {
 ## A version of base::sample() that does not change .Random.seed
 stealth_sample <- function(x, size = length(x), replace = FALSE, ...) {
   oseed <- .GlobalEnv$.Random.seed
-  on.exit(.GlobalEnv$.Random.seed <- oseed)
+  on.exit({
+    if (is.null(oseed)) {
+      rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
+    } else {
+      .GlobalEnv$.Random.seed <- oseed
+    }
+  })
   sample(x, size = size, replace = replace, ...)
 }
 
@@ -796,7 +802,7 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   action <- match.arg(action, choices = c("error", "warning", "message", "string"))
   
   ## Identify which global object has a reference
-  global <- ""
+  global <- " (<unknown>)"
   ref <- ref[[1]]
   if (is.list(x) && !is.null(names(x))) {
     for (ii in seq_along(x)) {
@@ -865,7 +871,7 @@ resolveMPI <- local({
                              inherits = FALSE)
           resolveMPI <- function(future) {
             node <- future$workers[[future$node]]
-            mpi.iprobe(source = node$rank, tag = mpi.any.tag())
+            mpi.iprobe(source = node$rank, comm = node$comm, tag = mpi.any.tag())
           }
         }
       }

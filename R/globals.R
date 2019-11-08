@@ -253,7 +253,8 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
 
   ## Protect against references?
   if (length(globals) > 0L) {
-    action <- getOption("future.globals.onReference", "ignore")
+    action <- Sys.getenv("R_FUTURE_GLOBALS_ONREFERENCE", "ignore")
+    action <- getOption("future.globals.onReference", action)
     if (action != "ignore") {
       if (debug) {
         mdebugf("Checking for globals with references (future.globals.onReference = \"%s\") ...", action, appendLF = FALSE)

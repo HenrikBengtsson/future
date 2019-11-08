@@ -75,6 +75,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **reticulate**  | python.builtin.function, python.builtin.module
   **rJava**       | jclassName
   **rstan**       | stanmodel
+  **sparklyr**    | tbl_spark
   **udpipe**      | udpipe_model
   **xml2**        | xml_document
 
@@ -220,6 +221,34 @@ f <- future({
 ```r
 library("future")
 plan(multisession)
+library("sparklyr")
+sc <- spark_connect(master = "local")
+
+file <- system.file("misc", "exDIF.csv", package = "utils")
+data <- spark_read_csv(sc, "exDIF", file)
+d %<-% dim(data)
+d
+Error in unserialize(node$con) : 
+  Failed to retrieve the value of MultisessionFuture (<none>) from cluster
+SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was
+'unknown input format'. Post-mortem diagnostic: A process with this PID
+exists, which suggests that the localhost worker is still alive.
+```
+
+To catch this as soon as possible,
+```r
+options(future.globals.onReference = "error")
+d %<-% dim(data)
+## Error: Detected a non-exportable reference ('externalptr') in one of
+the globals ('data' of class 'tbl_spark') used in the future expression
+``
+
+
+### Package: udpipe
+
+```r
+library("future")
+plan(multisession)
 library("udpipe")
 udmodel <- udpipe_download_model(language = "dutch")
 udmodel <- udpipe_load_model(file = udmodel$file_model)
@@ -236,6 +265,10 @@ x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 ## Error: Detected a non-exportable reference ('externalptr') in one of the
 ## globals ('udmodel' of class 'udpipe_model') used in the future expression
 ```
+
+Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the \pkg{udpipe} package.
+
+
 
 
 ### Package: xml2
