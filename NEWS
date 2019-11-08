@@ -1,16 +1,21 @@
 Package: future
 ===============
 
-Version: 1.14.0-9000 [2019-11-02]
+Version: 1.15.0-9000 [2019-11-08]
+
+NEW FEATURES:
+
+ * ClusterFuture:s now relay immediateCondition:s back to the main process
+   momentarily after they are signaled and before the future is resolved.
+
+
+Version: 1.15.0 [2019-11-07]
 
 SIGNIFICANT CHANGES:
 
  * resolved() will now launch lazy futures.
 
 NEW FEATURES:
-
- * ClusterFuture:s now relay immediateCondition:s back to the main process
-   momentarily after they are signaled and before the future is resolved.
 
  * Now the "visibility" of future values is recorded and reflected by value().
 
