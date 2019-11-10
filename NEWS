@@ -1,9 +1,12 @@
 Package: future
 ===============
 
-Version: 1.15.0-9000 [2019-11-08]
+Version: 1.15.0-9000 [2019-11-10]
 
- * ...
+BUG FIXES:
+
+ * The change introduced to resolved() in future 1.15.0 would cause lazy
+   futures to block if all workers were occupied.
 
 
 Version: 1.15.0 [2019-11-07]

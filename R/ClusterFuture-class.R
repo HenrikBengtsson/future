@@ -204,10 +204,26 @@ run.ClusterFuture <- function(future, ...) {
 }
 
 #' @export
-resolved.ClusterFuture <- function(x, timeout = 0.2, ...) {
+resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
+  workers <- x$workers
+  
   ## A lazy future not even launched?
   if (x$state == "created") {
-    x <- run(x)
+    if (run) {
+      ## Can we launch it?  Are there available workers?
+      reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
+
+      ## Collect one resolved future, if one exists
+      FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
+
+       ## Find which node is available
+       avail <- rep(TRUE, times = length(workers))
+       futures <- FutureRegistry(reg, action = "list", earlySignal = FALSE)
+       nodes <- unlist(lapply(futures, FUN = function(f) f$node), use.names = FALSE)
+       avail[nodes] <- FALSE
+       ## If one is available, then launch this lazy future
+       if (any(avail)) x <- run(x)
+    }
     return(FALSE)
   }
 

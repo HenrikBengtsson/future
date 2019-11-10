@@ -459,10 +459,10 @@ value <- function(...) UseMethod("value")
 
 
 #' @export
-resolved.Future <- function(x, ...) {
+resolved.Future <- function(x, run = TRUE, ...) {
   ## A lazy future not even launched?
   if (x$state == "created") {
-    x <- run(x)
+    if (run) x <- run(x)
     return(FALSE)
   }
 
