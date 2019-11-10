@@ -91,7 +91,10 @@ attachLocally <- function(x, envir = parent.frame()) {
 supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
-  if (cores > 1) {
+  if (cores == 1L) {
+    strategies <- setdiff(strategies, c("multicore", "multisession",
+                                        "multiprocess"))
+  } else {
     strategies <- setdiff(strategies,
                           c("sequential", "uniprocess", "eager", "lazy"))
   }
