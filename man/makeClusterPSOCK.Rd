@@ -34,9 +34,11 @@ of localhost workers (as a positive integer).}
 \item{port}{The port number of the master used for communicating with all
 the workers (via socket connections).  If an integer vector of ports, then a
 random one among those is chosen.  If \code{"random"}, then a random port in
-\code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
-is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
-\code{"random"} is used.
+is chosen from \code{11000:11999}, or from the range specified by
+environment variable \env{R_FUTURE_RANDOM_PORTS}.
+If \code{"auto"} (default), then the default (single) port is taken from
+environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is
+used.
 \emph{Note, do not use this argument to specify the port number used by
 \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 runs on a different port than the default 22, specify the SSH port by

@@ -515,6 +515,103 @@ Run `revdep_details(,"dipsaus")` for more info
     GNU make is a SystemRequirements.
     ```
 
+# disk.frame
+
+<details>
+
+* Version: 0.2.0
+* Source code: https://github.com/cran/disk.frame
+* URL: https://diskframe.com
+* BugReports: https://github.com/xiaodaigh/disk.frame/issues
+* Date/Publication: 2019-10-05 16:10:02 UTC
+* Number of recursive dependencies: 113
+
+Run `revdep_details(,"disk.frame")` for more info
+
+</details>
+
+## In both
+
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in globalVariables(c("a", "b", "ans")) : 
+      could not find function "globalVariables"
+    Error: package or namespace load failed for ‘disk.frame’:
+     unable to load R code in package ‘benchmarkme’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c("a", "b", "ans")) : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘benchmarkme’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c("a", "b", "ans")) : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘benchmarkme’
+    Execution halted
+    ```
+
+# drake
+
+<details>
+
+* Version: 7.7.0
+* Source code: https://github.com/cran/drake
+* URL: https://github.com/ropensci/drake, https://docs.ropensci.org/drake, https://github.com/ropenscilabs/drake-manual
+* BugReports: https://github.com/ropensci/drake/issues
+* Date/Publication: 2019-10-15 07:40:02 UTC
+* Number of recursive dependencies: 139
+
+Run `revdep_details(,"drake")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Error in globalVariables(c("a", "b", "ans")) : 
+      could not find function "globalVariables"
+    ```
+
 # foieGras
 
 <details>
@@ -553,7 +650,7 @@ Run `revdep_details(,"foieGras")` for more info
 * Source code: https://github.com/cran/forecastML
 * URL: https://github.com/nredell/forecastML/
 * Date/Publication: 2019-10-09 15:30:05 UTC
-* Number of recursive dependencies: 96
+* Number of recursive dependencies: 97
 
 Run `revdep_details(,"forecastML")` for more info
 
@@ -733,7 +830,11 @@ Run `revdep_details(,"infercnv")` for more info
         }
         return(infercnv_obj)
     }
+<<<<<<< HEAD
     <bytecode: 0x55d4147109f8>
+=======
+    <bytecode: 0x555cabb8d578>
+>>>>>>> develop
     <environment: namespace:infercnv>
      --- function search by body ---
     Function run in namespace infercnv has this body.
@@ -819,11 +920,6 @@ Run `revdep_details(,"merTools")` for more info
     Probably some imports need to be declared in the NAMESPACE file.
     ```
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘rstanarm’
-    ```
-
 *   checking R code for possible problems ... NOTE
     ```
     Error in setClass("lmList4", representation(call = "call", pool = "logical",  : 
@@ -863,7 +959,7 @@ Run `revdep_details(,"MetamapsDB")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2019-11-01
-* Number of recursive dependencies: 195
+* Number of recursive dependencies: 196
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -1134,7 +1230,7 @@ Run `revdep_details(,"promises")` for more info
 * Version: 1.18.0
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2019-10-29
-* Number of recursive dependencies: 265
+* Number of recursive dependencies: 266
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -1445,7 +1541,7 @@ Run `revdep_details(,"simglm")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2019-09-19 17:00:02 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 129
 
 Run `revdep_details(,"skpr")` for more info
 
