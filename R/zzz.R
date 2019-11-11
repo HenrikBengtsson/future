@@ -27,6 +27,11 @@
 
     ## Label cluster workers, if possible
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL = TRUE)
+
+    ## Lower the risk for port clashes by using a large pool of random ports.
+    ## The default 11000:11999 tend to fail occassionally on CRAN but also
+    ## locally.
+    Sys.setenv(R_FUTURE_RANDOM_PORTS = "20000:39999")
   }
   
   if (debug) {
