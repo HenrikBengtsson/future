@@ -10,13 +10,13 @@
 |collate  |en_US.UTF-8                                 |
 |ctype    |en_US.UTF-8                                 |
 |tz       |America/Los_Angeles                         |
-|date     |2019-11-07                                  |
+|date     |2019-11-10                                  |
 
 # Dependencies
 
 |package |old    |new         |Δ  |
 |:-------|:------|:-----------|:--|
-|future  |1.14.0 |1.14.0-9000 |*  |
+|future  |1.15.0 |1.15.0-9000 |*  |
 |digest  |0.6.22 |0.6.22      |   |
 |globals |0.12.4 |0.12.4      |   |
 |listenv |0.7.0  |0.7.0       |   |
@@ -42,9 +42,9 @@
 |[datapackage.r](problems.md#datapackager)       |0.1.1     |      |        |1    |
 |[DeclareDesign](problems.md#declaredesign)      |0.20.0    |      |        |1    |
 |[dipsaus](problems.md#dipsaus)                  |0.0.2     |      |        |2    |
-|disk.frame                                      |0.2.0     |      |        |     |
+|[disk.frame](problems.md#diskframe)             |0.2.0     |      |2       |2    |
 |doFuture                                        |0.8.2     |      |        |     |
-|drake                                           |7.7.0     |      |        |     |
+|[drake](problems.md#drake)                      |7.7.0     |      |        |1    |
 |drtmle                                          |1.0.4     |      |        |     |
 |FAMoS                                           |0.2.0     |      |        |     |
 |fiery                                           |1.1.2     |      |        |     |
@@ -67,13 +67,13 @@
 |[gWQS](problems.md#gwqs)                        |2.0.0     |      |        |1    |
 |[gWQSRS](problems.md#gwqsrs)                    |1.0.0     |      |        |1    |
 |idmodelr                                        |0.3.1     |      |        |     |
-|[infercnv](problems.md#infercnv)                |1.2.0     |      |        |2    |
+|[infercnv](problems.md#infercnv)                |1.2.0     |1     |        |2    |
 |ipc                                             |0.1.3     |      |        |     |
 |jstor                                           |0.3.7     |      |        |     |
 |kernelboot                                      |0.1.6     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
 |[lidR](problems.md#lidr)                        |2.1.4     |      |        |2    |
-|[merTools](problems.md#mertools)                |0.5.0     |      |1       |2    |
+|[merTools](problems.md#mertools)                |0.5.0     |      |1       |1    |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |      |        |1    |
 |[methyvim](problems.md#methyvim)                |1.8.0     |      |5       |5    |
 |mlr3                                            |0.1.4     |      |        |     |

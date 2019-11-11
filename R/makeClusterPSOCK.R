@@ -57,16 +57,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     if (identical(port, "auto")) {
       port0 <- Sys.getenv("R_PARALLEL_PORT", "random")
       if (identical(port0, "random")) {
-        port <- 11000:11999
+        port <- randomParallelPorts()
       } else {
         port <- suppressWarnings(as.integer(port0))
         if (is.na(port)) {
           warning("Non-numeric value of environment variable 'R_PARALLEL_PORT' coerced to NA_integer_: ", sQuote(port0))
-          port <- 11000:11999
+          port <- randomParallelPorts()
         }
       }
     } else if (identical(port, "random")) {
-      port <- 11000:11999
+      port <- randomParallelPorts()
     }
   } else {
     port <- as.integer(port)
@@ -501,8 +501,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_startup <- lapply(rscript_startup, FUN = function(init) {
       if (is.language(init)) {
         init <- deparse(init, width.cutoff = 500L)
-	## We cannot use newline between statements because
-	## it needs to be passed as a one line string via -e <code>
+        ## We cannot use newline between statements because
+        ## it needs to be passed as a one line string via -e <code>
         init <- paste(init, collapse = ";")
       }
       init <- as.character(init)
@@ -808,9 +808,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
        pid <- readWorkerPID(pidfile)
        if (!is.null(pid)) {
          if (verbose) message(sprintf("Killing worker process (PID %d) if still alive", pid))
-	 ## WARNING: pid_kill() calls pid_exists() [twice] and on Windows
-	 ## pid_exists() uses system('tasklist') which can be very very slow
-	 ## /HB 2019-01-24
+         ## WARNING: pid_kill() calls pid_exists() [twice] and on Windows
+         ## pid_exists() uses system('tasklist') which can be very very slow
+         ## /HB 2019-01-24
          success <- pid_kill(pid)
          if (verbose) message(sprintf("Worker (PID %d) was successfully killed: %s", pid, success))
          msg <- c(msg, sprintf(" * Worker (PID %d) was successfully killed: %s\n", pid, success))
@@ -1219,7 +1219,7 @@ readWorkerPID <- function(pidfile, wait = 0.5, maxTries = 8L, verbose = FALSE) {
       } else if (pid == Sys.getpid()) {
         warning(sprintf("Hmm... worker PID and parent PID are the same: %s", pid))
         pid <- NULL
-      }	
+      }
     }
   }
  
@@ -1227,3 +1227,41 @@ readWorkerPID <- function(pidfile, wait = 0.5, maxTries = 8L, verbose = FALSE) {
   
   pid
 } ## readWorkerPID()
+
+
+randomParallelPorts <- function(default = 11000:11999) {
+  random <- Sys.getenv("R_FUTURE_RANDOM_PORTS")
+  if (!nzchar(random)) return(default)
+
+  pattern <- "^([[:digit:]]+)(|:([[:digit:]]+))$"
+  if (!grepl(pattern, random)) {
+    warning(sprintf("Value of environment variable 'R_FUTURE_RANDOM_PORTS' does not match regular expression %s: %s", sQuote(pattern), sQuote(random)))
+    return(default)
+  }
+
+  from <- sub(pattern, "\\1", random)
+  from <- as.integer(from)
+  if (is.na(from)) {
+    warning("Value of environment variable 'R_FUTURE_RANDOM_PORTS' coerced to NA_integer_: ", sQuote(random))
+    return(default)
+  }
+  if (from < 0L || from > 65535L) {
+    warning("Value of environment variable 'R_FUTURE_RANDOM_PORTS' does not specify ports in [0,65535]: ", sQuote(random))
+    return(default)
+  }
+
+  to <- sub(pattern, "\\3", random)
+  if (!nzchar(to)) return(from)
+  
+  to <- as.integer(to)
+  if (is.na(to)) {
+    warning("Value of environment variable 'R_FUTURE_RANDOM_PORTS' coerced to NA_integer_: ", sQuote(random))
+    return(default)
+  }
+  if (to < 0L || to > 65535L) {
+    warning("Value of environment variable 'R_FUTURE_RANDOM_PORTS' does not specify ports in [0,65535]: ", sQuote(random))
+    return(default)
+  }
+
+  from:to
+} ## randomParallelPorts()
