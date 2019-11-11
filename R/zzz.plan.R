@@ -480,7 +480,7 @@ resetWorkers.default <- function(x, ...) invisible(x)
 
 #' @export
 resetWorkers.multicore <- function(x, ...) {
-  if (usedCores() == 0L) return()
+  if (usedCores() == 0L) return(invisible(x))
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
   stopifnot(usedCores() == 0L)
