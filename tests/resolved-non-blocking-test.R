@@ -13,6 +13,9 @@ for (cores in 1:availCores) {
   for (strategy in strategies) {
     message(sprintf("- plan('%s') with cores=%d ...", strategy, cores))
     plan(strategy)
+
+    ## This test requires that all workers are free when tests start
+    resetWorkers(plan())
   
     message("Creating lazy futures:")
     xs <- as.list(1:3)
