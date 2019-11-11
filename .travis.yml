@@ -27,7 +27,7 @@ matrix:
     - os: linux
       r: release
       env:
-        - R_FUTURE_FORKS_ENABLED=false
+        - R_FUTURE_FORK_ENABLE=false
     - os: linux
       r: release
       env:
