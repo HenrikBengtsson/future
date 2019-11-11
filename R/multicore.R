@@ -89,6 +89,10 @@ class(multicore) <- c("multicore", "multiprocess", "future", "function")
 #'
 #' @keywords internal
 usedCores <- function() {
+  ## If multicore processing is not supported, then there should be no
+  ## multicore workers in use
+  if (!supportsMulticore(warn = FALSE)) return(0L)
+  
   ## Number of unresolved multicore futures
   reg <- sprintf("multicore-%s", session_uuid())
   futures <- FutureRegistry(reg, action = "list", earlySignal = TRUE)
