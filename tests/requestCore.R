@@ -17,15 +17,19 @@ stopifnot(inherits(res, "try-error"))
 message("*** requestCore() - exceptions ... DONE")
 
 
-message("*** requestCore() - timeout ...")
-
-plan(multicore, workers = 2L)
-a %<-% { Sys.sleep(2); 1 }
-res <- try(requestCore(function() {}, workers = 1L, timeout = 0.5, delta = 0.1))
-stopifnot(inherits(res, "try-error"))
-stopifnot(a == 1)
-
-message("*** requestCore() - timeout ... DONE")
+if (supportsMulticore()) {
+  message("*** requestCore() - timeout ...")
+  
+  plan(multicore, workers = 2L)
+  a %<-% { Sys.sleep(2); 1 }
+  
+  ## Fake single-worker multicore by using workers = 1L
+  res <- try(requestCore(function() {}, workers = 1L, timeout = 0.5, delta = 0.1))
+  stopifnot(inherits(res, "try-error"))
+  stopifnot(a == 1)
+  
+  message("*** requestCore() - timeout ... DONE")
+}
 
 message("*** requestCore() ... DONE")
 
