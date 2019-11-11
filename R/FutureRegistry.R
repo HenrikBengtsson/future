@@ -47,7 +47,7 @@ FutureRegistry <- local({
   } ## collectValues()
 
 
-  function(where, action = c("add", "remove", "list", "collect-first", "reset"), future = NULL, earlySignal = TRUE, ...) {
+  function(where, action = c("add", "remove", "list", "collect-first", "collect-all", "reset"), future = NULL, earlySignal = TRUE, ...) {
     stop_if_not(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
@@ -77,6 +77,8 @@ FutureRegistry <- local({
       db[[where]] <<- futures
     } else if (action == "collect-first") {
       collectValues(where, futures = futures, firstOnly = TRUE)
+    } else if (action == "collect-all") {
+      collectValues(where, futures = futures, firstOnly = FALSE)
     } else if (action == "reset") {
       db[[where]] <<- list()
     } else if (action == "list") {
