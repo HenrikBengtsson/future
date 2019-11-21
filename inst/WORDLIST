@@ -16,8 +16,8 @@ FutureCondition
 FutureError
 FutureMessage
 FutureResult
+FutureStrategy
 FutureWarning
-gcMe
 globals
 Globals
 hostname
@@ -54,7 +54,6 @@ Pre
 PSOCK
 PuTTY
 Rmpi
-rshopts
 Rslaves
 RStudio
 se
