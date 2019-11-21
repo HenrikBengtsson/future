@@ -23,7 +23,7 @@
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS = TRUE)
 
     ## Automatically kill stray cluster workers, if possible
-    Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE)
+    Sys.setenv(R_FUTURE_MAKENODEPSOCK_AUTOKILL = TRUE)
 
     ## Label cluster workers, if possible
     Sys.setenv(R_FUTURE_MAKENODEPSOCK_RSCRIPT_LABEL = TRUE)
