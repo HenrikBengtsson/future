@@ -154,7 +154,7 @@ Run `revdep_details(,"blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 51.8Mb
+      installed size is 51.7Mb
       sub-directories of 1Mb or more:
         libs  50.0Mb
     ```
@@ -187,6 +187,12 @@ Run `revdep_details(,"brms")` for more info
       sub-directories of 1Mb or more:
         R     2.9Mb
         doc   2.6Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
     ```
 
 # codebook
@@ -269,28 +275,6 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
-# DeclareDesign
-
-<details>
-
-* Version: 0.20.0
-* Source code: https://github.com/cran/DeclareDesign
-* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
-* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
-* Date/Publication: 2019-09-10 15:10:02 UTC
-* Number of recursive dependencies: 133
-
-Run `revdep_details(,"DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘DesignLibrary’
-    ```
-
 # dipsaus
 
 <details>
@@ -322,7 +306,7 @@ Run `revdep_details(,"dipsaus")` for more info
 * URL: https://diskframe.com
 * BugReports: https://github.com/xiaodaigh/disk.frame/issues
 * Date/Publication: 2019-10-05 16:10:02 UTC
-* Number of recursive dependencies: 114
+* Number of recursive dependencies: 105
 
 Run `revdep_details(,"disk.frame")` for more info
 
@@ -396,7 +380,7 @@ Run `revdep_details(,"disk.frame")` for more info
 * URL: https://github.com/ropensci/drake, https://docs.ropensci.org/drake, https://github.com/ropenscilabs/drake-manual
 * BugReports: https://github.com/ropensci/drake/issues
 * Date/Publication: 2019-10-15 07:40:02 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 134
 
 Run `revdep_details(,"drake")` for more info
 
@@ -434,12 +418,6 @@ Run `revdep_details(,"foieGras")` for more info
         libs  34.0Mb
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in setClass(Class = "spam", slots = c(entries = "numeric", colindices = "numeric",  : 
-      could not find function "setClass"
-    ```
-
 # forecastML
 
 <details>
@@ -448,7 +426,7 @@ Run `revdep_details(,"foieGras")` for more info
 * Source code: https://github.com/cran/forecastML
 * URL: https://github.com/nredell/forecastML/
 * Date/Publication: 2019-10-09 15:30:05 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 99
 
 Run `revdep_details(,"forecastML")` for more info
 
@@ -480,8 +458,8 @@ Run `revdep_details(,"genBaRcode")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Error in eval(`_inherit`, env, NULL) : object 'Stat' not found
-    Error in setClass("jplace", representation = representation(placements = "tbl_df"),  : 
-      could not find function "setClass"
+    Error in prototype(data = data_frame(), extraInfo = data_frame(), anc_seq = ape::as.DNAbin(character(0)),  : 
+      could not find function "prototype"
     ```
 
 # GetBCBData
@@ -531,29 +509,6 @@ Run `revdep_details(,"grattan")` for more info
       'taxstats', 'taxstats1516'
     ```
 
-# greta
-
-<details>
-
-* Version: 0.3.1
-* Source code: https://github.com/cran/greta
-* URL: https://greta-stats.org
-* BugReports: https://github.com/greta-dev/greta/issues
-* Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 136
-
-Run `revdep_details(,"greta")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in setClass(Class = "spam", slots = c(entries = "numeric", colindices = "numeric",  : 
-      could not find function "setClass"
-    ```
-
 # gWQS
 
 <details>
@@ -569,10 +524,61 @@ Run `revdep_details(,"gWQS")` for more info
 
 ## In both
 
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: package or namespace load failed for ‘gWQS’:
+     unable to load R code in package ‘broom’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘dplyr’
-      All declared Imports should be used.
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
     ```
 
 # gWQSRS
@@ -590,11 +596,61 @@ Run `revdep_details(,"gWQSRS")` for more info
 
 ## In both
 
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: package or namespace load failed for ‘gWQSRS’:
+     unable to load R code in package ‘broom’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘broom’ ‘dplyr’ ‘ggrepel’ ‘kableExtra’ ‘knitr’ ‘nnet’ ‘plotROC’
-      All declared Imports should be used.
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
     ```
 
 # infercnv
@@ -657,6 +713,44 @@ Run `revdep_details(,"lidR")` for more info
       All declared Imports should be used.
     ```
 
+# merTools
+
+<details>
+
+* Version: 0.5.0
+* Source code: https://github.com/cran/merTools
+* BugReports: https://www.github.com/jknowles/merTools
+* Date/Publication: 2019-05-13 12:30:06 UTC
+* Number of recursive dependencies: 129
+
+Run `revdep_details(,"merTools")` for more info
+
+</details>
+
+## In both
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    ```
+
 # MetamapsDB
 
 <details>
@@ -696,196 +790,9 @@ Run `revdep_details(,"methyvim")` for more info
 
 ## In both
 
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in setGeneric("bumphunter", function(object, ...) { : 
-      could not find function "setGeneric"
-    Error: package or namespace load failed for ‘methyvim’:
-     unable to load R code in package ‘bumphunter’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in setGeneric("bumphunter", function(object, ...) { : 
-      could not find function "setGeneric"
-    Error: unable to load R code in package ‘bumphunter’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking replacement functions ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The argument of a replacement function which corresponds to the right
-    hand side must be named ‘value’.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking foreign function calls ... NOTE
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in setGeneric("bumphunter", function(object, ...) { : 
-      could not find function "setGeneric"
-    Error: unable to load R code in package ‘bumphunter’
-    Execution halted
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘tmle.npvi’
-    ```
-
-*   checking Rd \usage sections ... NOTE
-    ```
-    ...
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The \usage entries for S3 methods should use the \method markup and not
-    their full name.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
     ```
 
 # photosynthesis
@@ -956,10 +863,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.18.1
+* Version: 1.18.2
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-11-20
-* Number of recursive dependencies: 266
+* Date/Publication: 2019-11-21
+* Number of recursive dependencies: 259
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -967,62 +874,70 @@ Run `revdep_details(,"Prostar")` for more info
 
 ## In both
 
-*   checking whether package ‘Prostar’ can be installed ... ERROR
+*   checking whether package ‘Prostar’ can be installed ... WARNING
     ```
-    Installation failed.
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
-## Installation
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: package or namespace load failed for ‘Prostar’:
+     unable to load R code in package ‘broom’
+    Execution halted
+    ```
 
-### Devel
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
 
-```
-.Rprofile error: there is no package called ‘startup’
-* installing *source* package ‘Prostar’ ...
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error: there is no package called ‘startup’
-Creating a new generic function for ‘trimws’ in package ‘MSnbase’
-in method for ‘coerce’ with signature ‘"MSnSet","SummarizedExperiment"’: no definition for class “SummarizedExperiment”
-in method for ‘coerce’ with signature ‘"SummarizedExperiment","MSnSet"’: no definition for class “SummarizedExperiment”
-in method for ‘coerce’ with signature ‘"IBSpectra","MSnSet"’: no definition for class “IBSpectra”
-Warning in file(filename, "r", encoding = encoding) :
-  cannot open file 'R/rtmvnorm.R': No such file or directory
-Error in file(filename, "r", encoding = encoding) : 
-  cannot open the connection
-Error: unable to load R code in package ‘tmvtnorm’
-Execution halted
-ERROR: lazy loading failed for package ‘Prostar’
-* removing ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/Prostar’
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
 
-```
-### CRAN
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    ```
 
-```
-.Rprofile error: there is no package called ‘startup’
-* installing *source* package ‘Prostar’ ...
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error: there is no package called ‘startup’
-Creating a new generic function for ‘trimws’ in package ‘MSnbase’
-in method for ‘coerce’ with signature ‘"MSnSet","SummarizedExperiment"’: no definition for class “SummarizedExperiment”
-in method for ‘coerce’ with signature ‘"SummarizedExperiment","MSnSet"’: no definition for class “SummarizedExperiment”
-in method for ‘coerce’ with signature ‘"IBSpectra","MSnSet"’: no definition for class “IBSpectra”
-Warning in file(filename, "r", encoding = encoding) :
-  cannot open file 'R/rtmvnorm.R': No such file or directory
-Error in file(filename, "r", encoding = encoding) : 
-  cannot open the connection
-Error: unable to load R code in package ‘tmvtnorm’
-Execution halted
-ERROR: lazy loading failed for package ‘Prostar’
-* removing ‘/home/hb/repositories/future/revdep/checks/Prostar/old/Prostar.Rcheck/Prostar’
-
-```
 # QDNAseq
 
 <details>
@@ -1167,6 +1082,8 @@ Run `revdep_details(,"Seurat")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
+    Error in globalVariables(c("et.ref", "et.comp")) : 
+      could not find function "globalVariables"
     Error in classVersion("ExpressionSet") : 
       could not find function "classVersion"
     ```
@@ -1198,6 +1115,78 @@ Run `revdep_details(,"shinyrecap")` for more info
       ‘CARE1’ ‘LCMCR’ ‘coda’ ‘conting’ ‘dga’ ‘future’ ‘ggplot2’ ‘ipc’
       ‘promises’ ‘reshape’ ‘shinycssloaders’ ‘testthat’
       All declared Imports should be used.
+    ```
+
+# simglm
+
+<details>
+
+* Version: 0.7.4
+* Source code: https://github.com/cran/simglm
+* Date/Publication: 2019-05-31 17:10:03 UTC
+* Number of recursive dependencies: 90
+
+Run `revdep_details(,"simglm")` for more info
+
+</details>
+
+## In both
+
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: package or namespace load failed for ‘simglm’:
+     unable to load R code in package ‘broom’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
+      could not find function "globalVariables"
+    Error: unable to load R code in package ‘broom’
+    Execution halted
     ```
 
 # skpr
@@ -1296,12 +1285,30 @@ Run `revdep_details(,"startR")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Error in setClass(Class = "spam", slots = c(entries = "numeric", colindices = "numeric",  : 
-      could not find function "setClass"
-    Error in setClass(Class = "spam", slots = c(entries = "numeric", colindices = "numeric",  : 
-      could not find function "setClass"
-    Unavailable namespace imported from by a ':::' call: ‘s2dverification’
+    Unexported objects imported by ':::' calls:
+      ‘s2dverification:::.KnownLatNames’ ‘s2dverification:::.KnownLonNames’
       See the note in ?`:::` about the use of this operator.
+    ```
+
+# steps
+
+<details>
+
+* Version: 0.2.1
+* Source code: https://github.com/cran/steps
+* Date/Publication: 2019-04-02 11:30:03 UTC
+* Number of recursive dependencies: 58
+
+Run `revdep_details(,"steps")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Error in globalVariables("ind") : 
+      could not find function "globalVariables"
     ```
 
 # tableschema.r
@@ -1392,11 +1399,10 @@ Run `revdep_details(,"TSstudio")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Package required but not available: ‘bsts’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Error in prepareTimeseries(y = y) : object 'AirPassengers' not found
+    Error in globalVariables(c(".rows")) : 
+      could not find function "globalVariables"
     ```
 
