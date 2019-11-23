@@ -127,7 +127,7 @@ revdep_preinstall <- function(pkgs) {
   }
 }
 
-args <- base::commandArgs()
+args <- base::commandArgs(trailingOnly = TRUE)
 if ("--reset" %in% args) {
   revdep_reset()
 } else if ("--todo-reset" %in% args) {
@@ -197,11 +197,15 @@ if ("--reset" %in% args) {
 } else if ("--preinstall-error" %in% args) {
   res <- revdepcheck::revdep_summary()
   revdep_preinstall(revdep_pkgs_with_status("error"))
+} else if ("--preinstall-todo" %in% args) {
+  todo <- revdep_todo()
+  revdep_preinstall(todo$package)
 } else if ("--preinstall" %in% args) {
   pos <- which("--preinstall" == args)
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   revdep_preinstall(pkgs)
 } else {
+  stopifnot(length(args) == 0L)
   check()
   revdep_report(all = TRUE)
 }
