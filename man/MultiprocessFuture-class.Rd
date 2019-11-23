@@ -5,8 +5,12 @@
 \alias{MultiprocessFuture}
 \title{An multiprocess future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
-MultiprocessFuture(expr = NULL, envir = parent.frame(),
-  substitute = FALSE, ...)
+MultiprocessFuture(
+  expr = NULL,
+  envir = parent.frame(),
+  substitute = FALSE,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

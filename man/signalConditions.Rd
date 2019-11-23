@@ -4,8 +4,13 @@
 \alias{signalConditions}
 \title{Signals Captured Conditions}
 \usage{
-signalConditions(future, include = "condition", exclude = NULL,
-  resignal = TRUE, ...)
+signalConditions(
+  future,
+  include = "condition",
+  exclude = NULL,
+  resignal = TRUE,
+  ...
+)
 }
 \arguments{
 \item{future}{A resolved \link{Future}.}

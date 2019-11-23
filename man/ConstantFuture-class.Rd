@@ -5,8 +5,15 @@
 \alias{ConstantFuture}
 \title{A future with a constant value}
 \usage{
-ConstantFuture(expr = NULL, envir = emptyenv(), substitute = FALSE,
-  globals = NULL, packages = NULL, local = FALSE, ...)
+ConstantFuture(
+  expr = NULL,
+  envir = emptyenv(),
+  substitute = FALSE,
+  globals = NULL,
+  packages = NULL,
+  local = FALSE,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

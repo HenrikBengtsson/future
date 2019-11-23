@@ -5,10 +5,22 @@
 \alias{Future}
 \title{A future represents a value that will be available at some point in the future}
 \usage{
-Future(expr = NULL, envir = parent.frame(), substitute = FALSE,
-  stdout = TRUE, conditions = "condition", globals = NULL,
-  packages = NULL, seed = NULL, lazy = FALSE, local = TRUE,
-  gc = FALSE, earlySignal = FALSE, label = NULL, ...)
+Future(
+  expr = NULL,
+  envir = parent.frame(),
+  substitute = FALSE,
+  stdout = TRUE,
+  conditions = "condition",
+  globals = NULL,
+  packages = NULL,
+  seed = NULL,
+  lazy = FALSE,
+  local = TRUE,
+  gc = FALSE,
+  earlySignal = FALSE,
+  label = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

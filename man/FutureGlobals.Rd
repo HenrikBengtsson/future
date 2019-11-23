@@ -11,8 +11,7 @@
 \alias{unique.FutureGlobals}
 \title{A representation of a set of globals used with futures}
 \usage{
-FutureGlobals(object = list(), resolved = FALSE,
-  total_size = NA_real_, ...)
+FutureGlobals(object = list(), resolved = FALSE, total_size = NA_real_, ...)
 }
 \arguments{
 \item{object}{A named list.}

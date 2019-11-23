@@ -4,11 +4,16 @@
 \alias{getGlobalsAndPackages}
 \title{Retrieves global variables of an expression and their associated packages}
 \usage{
-getGlobalsAndPackages(expr, envir = parent.frame(),
-  tweak = tweakExpression, globals = TRUE,
+getGlobalsAndPackages(
+  expr,
+  envir = parent.frame(),
+  tweak = tweakExpression,
+  globals = TRUE,
   resolve = getOption("future.globals.resolve", FALSE),
-  persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500
-  * 1024^2), ...)
+  persistent = FALSE,
+  maxSize = getOption("future.globals.maxSize", 500 * 1024^2),
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R expression whose globals should be found.}

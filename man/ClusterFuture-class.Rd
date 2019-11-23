@@ -8,15 +8,33 @@
 \alias{MultisessionFuture-class}
 \title{A cluster future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
-ClusterFuture(expr = NULL, envir = parent.frame(),
-  substitute = FALSE, globals = TRUE, packages = NULL,
-  local = !persistent, gc = FALSE, persistent = FALSE,
-  workers = NULL, user = NULL, master = NULL, revtunnel = TRUE,
-  homogeneous = TRUE, ...)
+ClusterFuture(
+  expr = NULL,
+  envir = parent.frame(),
+  substitute = FALSE,
+  globals = TRUE,
+  packages = NULL,
+  local = !persistent,
+  gc = FALSE,
+  persistent = FALSE,
+  workers = NULL,
+  user = NULL,
+  master = NULL,
+  revtunnel = TRUE,
+  homogeneous = TRUE,
+  ...
+)
 
-MultisessionFuture(expr = NULL, envir = parent.frame(),
-  substitute = FALSE, globals = TRUE, persistent = FALSE,
-  local = !persistent, workers = NULL, ...)
+MultisessionFuture(
+  expr = NULL,
+  envir = parent.frame(),
+  substitute = FALSE,
+  globals = TRUE,
+  persistent = FALSE,
+  local = !persistent,
+  workers = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
