@@ -4,9 +4,18 @@
 \alias{resolve}
 \title{Resolve one or more futures synchronously}
 \usage{
-resolve(x, idxs = NULL, recursive = 0, result = FALSE,
-  stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1,
-  value = result, ...)
+resolve(
+  x,
+  idxs = NULL,
+  recursive = 0,
+  result = FALSE,
+  stdout = FALSE,
+  signal = FALSE,
+  force = FALSE,
+  sleep = 1,
+  value = result,
+  ...
+)
 }
 \arguments{
 \item{x}{A \link{Future} to be resolved, or a list, an environment, or a

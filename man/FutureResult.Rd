@@ -6,9 +6,15 @@
 \alias{print.FutureResult}
 \title{Results from resolving a future}
 \usage{
-FutureResult(value = NULL, stdout = NULL, conditions = NULL, ...,
-  started = .POSIXct(NA_real_), finished = Sys.time(),
-  version = "1.8")
+FutureResult(
+  value = NULL,
+  stdout = NULL,
+  conditions = NULL,
+  ...,
+  started = .POSIXct(NA_real_),
+  finished = Sys.time(),
+  version = "1.8"
+)
 
 \method{as.character}{FutureResult}(x, ...)
 

@@ -209,3 +209,4 @@ if ("--reset" %in% args) {
   check()
   revdep_report(all = TRUE)
 }
+

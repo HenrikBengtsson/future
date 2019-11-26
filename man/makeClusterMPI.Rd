@@ -4,8 +4,12 @@
 \alias{makeClusterMPI}
 \title{Create a Message Passing Interface (MPI) cluster of \R workers for parallel processing}
 \usage{
-makeClusterMPI(workers, ..., autoStop = FALSE,
-  verbose = getOption("future.debug", FALSE))
+makeClusterMPI(
+  workers,
+  ...,
+  autoStop = FALSE,
+  verbose = getOption("future.debug", FALSE)
+)
 }
 \arguments{
 \item{workers}{The number workers (as a positive integer).}
