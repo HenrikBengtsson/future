@@ -4,10 +4,19 @@
 \alias{multiprocess}
 \title{Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation}
 \usage{
-multiprocess(expr, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, seed = NULL, globals = TRUE,
-  workers = availableCores(), gc = FALSE, earlySignal = FALSE,
-  label = NULL, ...)
+multiprocess(
+  expr,
+  envir = parent.frame(),
+  substitute = TRUE,
+  lazy = FALSE,
+  seed = NULL,
+  globals = TRUE,
+  workers = availableCores(),
+  gc = FALSE,
+  earlySignal = FALSE,
+  label = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

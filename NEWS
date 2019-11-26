@@ -1,6 +1,21 @@
 Package: future
 ===============
 
+Version: 1.15.1 [2019-11-23]
+
+NEW FEATURES:
+
+ * The default range of ports that makeClusterPSOCK() draws a random port from
+   (when argument 'port' is not specified) can now be controlled by environment
+   variable `R_FUTURE_RANDOM_PORTS`.  The default range is still 11000:11999
+   as with the 'parallel' package.
+ 
+BUG FIXES:
+
+ * The change introduced to resolved() in future 1.15.0 would cause lazy
+   futures to block if all workers were occupied.
+
+
 Version: 1.15.0 [2019-11-07]
 
 SIGNIFICANT CHANGES:

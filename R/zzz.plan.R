@@ -453,3 +453,36 @@ print.FutureStrategyList <- function(x, ...) {
   cat(s, "\n", sep = "")
   invisible(x)
 }
+
+
+#' Free up active background workers
+#'
+#' @param x A FutureStrategy.
+#'
+#' @param \ldots Not used.
+#'
+#' @export
+#'
+#' @details
+#' This function will resolve any active futures that is currently
+#' being evaluated on background workers.
+#'
+#' @examples
+#' resetWorkers(plan())
+#'
+#' @keyword internal
+#' @export
+resetWorkers <- function(x, ...) UseMethod("resetWorkers")
+
+
+#' @export
+resetWorkers.default <- function(x, ...) invisible(x)
+
+#' @export
+resetWorkers.multicore <- function(x, ...) {
+  if (usedCores() == 0L) return(invisible(x))
+  reg <- sprintf("multicore-%s", session_uuid())
+  FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
+  stopifnot(usedCores() == 0L)
+}
+

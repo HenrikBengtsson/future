@@ -4,8 +4,15 @@
 \alias{plan}
 \title{Plan how to resolve a future}
 \usage{
-plan(strategy = NULL, ..., substitute = TRUE, .skip = FALSE,
-  .call = TRUE, .cleanup = TRUE, .init = TRUE)
+plan(
+  strategy = NULL,
+  ...,
+  substitute = TRUE,
+  .skip = FALSE,
+  .call = TRUE,
+  .cleanup = TRUE,
+  .init = TRUE
+)
 }
 \arguments{
 \item{strategy}{The evaluation function (or name of it) to use

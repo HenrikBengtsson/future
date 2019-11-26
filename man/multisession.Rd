@@ -4,10 +4,20 @@
 \alias{multisession}
 \title{Create a multisession future whose value will be resolved asynchronously in a parallel \R session}
 \usage{
-multisession(expr, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE,
-  workers = availableCores(), gc = FALSE, earlySignal = FALSE,
-  label = NULL, ...)
+multisession(
+  expr,
+  envir = parent.frame(),
+  substitute = TRUE,
+  lazy = FALSE,
+  seed = NULL,
+  globals = TRUE,
+  persistent = FALSE,
+  workers = availableCores(),
+  gc = FALSE,
+  earlySignal = FALSE,
+  label = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}

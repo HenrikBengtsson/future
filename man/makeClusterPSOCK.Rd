@@ -5,24 +5,44 @@
 \alias{makeNodePSOCK}
 \title{Create a PSOCK cluster of \R workers for parallel processing}
 \usage{
-makeClusterPSOCK(workers, makeNode = makeNodePSOCK, port = c("auto",
-  "random"), ..., autoStop = FALSE, verbose = getOption("future.debug",
-  FALSE))
+makeClusterPSOCK(
+  workers,
+  makeNode = makeNodePSOCK,
+  port = c("auto", "random"),
+  ...,
+  autoStop = FALSE,
+  verbose = getOption("future.debug", FALSE)
+)
 
-makeNodePSOCK(worker = "localhost", master = NULL, port,
+makeNodePSOCK(
+  worker = "localhost",
+  master = NULL,
+  port,
   connectTimeout = getOption("future.makeNodePSOCK.connectTimeout",
-  as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))),
+    as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))),
   timeout = getOption("future.makeNodePSOCK.timeout",
-  as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 *
-  60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL,
-  rscript_startup = NULL, rscript_libs = NULL, methods = TRUE,
-  useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_,
+    as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))),
+  rscript = NULL,
+  homogeneous = NULL,
+  rscript_args = NULL,
+  rscript_startup = NULL,
+  rscript_libs = NULL,
+  methods = TRUE,
+  useXDR = TRUE,
+  outfile = "/dev/null",
+  renice = NA_integer_,
   rshcmd = getOption("future.makeNodePSOCK.rshcmd",
-  Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL,
-  revtunnel = TRUE, rshlogfile = NULL,
+    Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")),
+  user = NULL,
+  revtunnel = TRUE,
+  rshlogfile = NULL,
   rshopts = getOption("future.makeNodePSOCK.rshopts",
-  Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L,
-  manual = FALSE, dryrun = FALSE, verbose = FALSE)
+    Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")),
+  rank = 1L,
+  manual = FALSE,
+  dryrun = FALSE,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{workers}{The hostnames of workers (as a character vector) or the number
@@ -34,9 +54,11 @@ of localhost workers (as a positive integer).}
 \item{port}{The port number of the master used for communicating with all
 the workers (via socket connections).  If an integer vector of ports, then a
 random one among those is chosen.  If \code{"random"}, then a random port in
-\code{11000:11999} is chosen.  If \code{"auto"} (default), then the default
-is taken from environment variable \env{R_PARALLEL_PORT}, otherwise
-\code{"random"} is used.
+is chosen from \code{11000:11999}, or from the range specified by
+environment variable \env{R_FUTURE_RANDOM_PORTS}.
+If \code{"auto"} (default), then the default (single) port is taken from
+environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is
+used.
 \emph{Note, do not use this argument to specify the port number used by
 \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
 runs on a different port than the default 22, specify the SSH port by

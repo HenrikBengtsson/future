@@ -81,10 +81,13 @@ run.MulticoreFuture <- function(future, ...) {
 }
 
 #' @export
-resolved.MulticoreFuture <- function(x, timeout = 0.2, ...) {
+resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   ## A lazy future not even launched?
   if (x$state == "created") {
-    x <- run(x)
+    if (run) {
+      ## If free cores are available, then launch this lazy future
+      if (x$workers > usedCores()) x <- run(x)
+    }
     return(FALSE)
   }
 
