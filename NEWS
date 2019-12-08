@@ -1,9 +1,13 @@
 Package: future
 ===============
 
-Version: 1.15.1-9000 [2019-11-25]
+Version: 1.15.1-9000 [2019-12-08]
 
- * ...
+BUG FIXES:
+
+ * Evaluation of futures could fail if the global environment contained
+   *functions* with the same names as a small set of base R functions, e.g.
+   'raw()', 'list()', and 'options()'.
 
 
 Version: 1.15.1 [2019-11-23]

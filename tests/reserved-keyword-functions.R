@@ -7,6 +7,7 @@ message("Overriding reserved keyword functions ...")
 ## Identify globals used by the expanded future expression
 ...names <- globals::findGlobals(getExpression(future(NULL)))
 ...names <- ...names[sapply(...names, FUN = exists, mode = "function")]
+print(...names)
 boom <- function(...) stop("Boom!")
 
 base_sprintf <- base::sprintf
