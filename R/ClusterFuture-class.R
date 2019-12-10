@@ -83,7 +83,6 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   gp <- NULL
 
   f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, packages = packages, local = local, gc = gc, persistent = persistent, workers = workers, node = NA_integer_, version = "1.8", ...)
-  f$.callResult <- TRUE
   structure(f, class = c("ClusterFuture", class(f)))
 }
 

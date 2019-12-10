@@ -47,7 +47,7 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., st
   stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
 
   if (version == "1.7") {
-    .Deprecated(msg = "FutureResult objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+    .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
   }
 
   structure(list(

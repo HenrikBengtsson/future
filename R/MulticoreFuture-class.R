@@ -36,7 +36,6 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   gp <- NULL
 
   f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, job = NULL, version = "1.8", ...)
-  f$.callResult <- TRUE
   structure(f, class = c("MulticoreFuture", class(f)))
 }
 

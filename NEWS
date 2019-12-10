@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.15.1-9000 [2019-12-09]
+Version: 1.15.1-9001 [2019-12-09]
 
 BUG FIXES:
 
@@ -11,6 +11,9 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
+ * Future and FutureResult objects with an internal version 1.7 or older have
+   been deprecated since 1.14.0 (July 2019) and are now defunct.
+   
  * Defunct hidden argument 'progress' of resolve(), and hidden arguments/fields
    'condition' and 'calls' of FutureResult are now gone.
 

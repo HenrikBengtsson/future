@@ -110,7 +110,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   version <- args$version
   if (is.null(version)) version <- "1.8"
   core$version <- version
-  core$.callResult <- FALSE  ## Temporary until "1.7" defunct
 
   ## Future evaluation
   core$expr <- expr
@@ -366,16 +365,7 @@ result.Future <- function(future, ...) {
     }
   }
 
-  .Deprecated(msg = "Future objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
-
-  ## BACKWARD COMPATIBILITY
-  if (future$state == "failed") {
-    value <- result
-    calls <- value$traceback
-    return(FutureResult(conditions = list(list(condition = value, signaled = 0L)), calls = calls, version = "1.7"))
-  }
-
-  FutureResult(value = result, version = "1.7")
+  .Defunct(msg = "Future objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
 }
 
 
@@ -407,15 +397,6 @@ result.Future <- function(future, ...) {
 value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (future$state == "created") {
     future <- run(future)
-  }
-
-  ## Sanity check
-  if (is.null(future$result) && !future$state %in% c("finished", "failed", "interrupted")) {
-    if (future$version == "1.7" || !future$.callResult) {
-      msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
-      mdebug(msg)
-      stop(FutureError(msg, future = future))
-    }
   }
 
   result <- result(future)
