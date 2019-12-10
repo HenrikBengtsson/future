@@ -22,3 +22,4 @@ being evaluated on background workers.
 resetWorkers(plan())
 
 }
+\keyword{internal}

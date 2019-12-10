@@ -470,7 +470,7 @@ print.FutureStrategyList <- function(x, ...) {
 #' @examples
 #' resetWorkers(plan())
 #'
-#' @keyword internal
+#' @keywords internal
 #' @export
 resetWorkers <- function(x, ...) UseMethod("resetWorkers")
 
