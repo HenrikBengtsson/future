@@ -1,13 +1,18 @@
 Package: future
 ===============
 
-Version: 1.15.1-9000 [2019-12-08]
+Version: 1.15.1-9000 [2019-12-09]
 
 BUG FIXES:
 
  * Evaluation of futures could fail if the global environment contained
    *functions* with the same names as a small set of base R functions, e.g.
    'raw()', 'list()', and 'options()'.
+
+DEPRECATED AND DEFUNCT:
+
+ * Defunct hidden argument 'progress' of resolve(), and hidden arguments/fields
+   'condition' and 'calls' of FutureResult are now gone.
 
 
 Version: 1.15.1 [2019-11-23]

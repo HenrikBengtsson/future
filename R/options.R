@@ -27,7 +27,6 @@
 #' @section Options for debugging futures:
 #' \describe{
 #'  \item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
-#'  \item{\option{future.progress}:}{(DEFUNCT) This option is now defunct and ignored.}
 #' }
 #'
 #' @section Options for controlling package startup:

@@ -38,12 +38,6 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., st
         "Internal error: All arguments to FutureResult() must be named"
       ))
     }
-    ## DEPRECATED in future (>= 1.11.0), DEFUNCT IN future (>= 1.14.0)
-    if (!is.null(args[["calls"]])) {
-      .Defunct(msg = "Argument 'calls' to FutureResult is defunct")
-    } else if (!is.null(args[["condition"]])) {
-      .Defunct(msg = "Argument 'condition' to FutureResult is defunct")
-    }
   }
 
   if (!is.null(stdout)) stopifnot(is.character(stdout))
