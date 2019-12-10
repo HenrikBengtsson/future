@@ -26,10 +26,10 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
-  } else {
-    stop("Unknown value of 'message': ", class(message)[1])
+  } else if (is.null(message)) {
+    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
   }
-  
+
   message <- as.character(message)
   if (length(message) != 1L) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
