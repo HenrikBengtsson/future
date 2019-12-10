@@ -6,7 +6,7 @@
 #' class to help distinguish them from conditions that occur due to the
 #' \emph{evaluation} of the future.
 #' 
-#' @param message A message.
+#' @param message A message condition.
 #' 
 #' @param call The call stack that led up to the condition.
 #' 
@@ -26,10 +26,8 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
-  } else if (is.null(message)) {
-    stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
-  } else if (inherits(message, "Future")) {
-    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
+  } else {
+    stop("Unknown value of 'message': ", class(message)[1])
   }
   
   message <- as.character(message)
