@@ -148,6 +148,12 @@ if ("--reset" %in% args) {
 } else if ("--add-broken" %in% args) {
   revdep_add_broken()
   todo()
+} else if ("--add-error" %in% args) {
+#  res <- revepcheck::revdep_summary()
+  pkgs <- revdep_pkgs_with_status("error")
+  str(pkgs)
+  revdep_add(packages = pkgs)
+  todo()
 } else if ("--add-all" %in% args) {
   revdep_init()
   pkgs <- revdep_children()
