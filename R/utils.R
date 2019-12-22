@@ -565,7 +565,9 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, kk)
-      if (is.list(x_kk)) {
+      if (missing(x_kk)) {
+        ## e.g. x <- alist(a=)
+      } else if (is.list(x_kk)) {
         size <- size + objectSize_list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
         if (!scanned(x_kk)) size <- size + objectSize_env(x_kk, depth = depth)

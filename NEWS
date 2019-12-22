@@ -13,6 +13,9 @@ BUG FIXES:
    *functions* with the same names as a small set of base R functions, e.g.
    'raw()', 'list()', and 'options()'.
 
+ * future(alist(a=)) would produce "Error in objectSize_list(x, depth = depth
+   - 1L) : argument "x_kk" is missing, with no default"
+
 DEPRECATED AND DEFUNCT:
 
  * Future and FutureResult objects with an internal version 1.7 or older have
