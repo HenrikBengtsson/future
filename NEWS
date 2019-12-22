@@ -1,7 +1,11 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-09]
+Version: 1.15.1-9001 [2019-12-22]
+
+NEW FEATURES:
+
+ * Add clusterExportSticky().
 
 BUG FIXES:
 
