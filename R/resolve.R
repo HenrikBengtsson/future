@@ -213,7 +213,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
           if (debug) mdebugf("Future #%d", ii)
           if (result) value(obj, stdout = FALSE, signal = FALSE)
         }
-	  
+
         relay_ok <- relay && signalConditionsASAP(obj, resignal = FALSE, pos = ii)
 
         ## In all other cases, try to resolve
