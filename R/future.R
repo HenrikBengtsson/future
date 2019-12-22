@@ -202,10 +202,10 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
   .makeFuture <- function(..., evaluator = NULL) makeFuture(...)
   future <- .makeFuture(expr, substitute = FALSE,
                         envir = envir,
-		        globals = globals, packages = packages,
+                        globals = globals, packages = packages,
                         seed = seed,
-		        lazy = lazy,
-		        ...)
+                        lazy = lazy,
+                        ...)
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {

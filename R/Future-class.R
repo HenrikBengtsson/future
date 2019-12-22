@@ -760,9 +760,9 @@ makeExpression <- local({
               length <- base::length
               list <- base::list
               seq.int <- base::seq.int
-	      signalCondition <- base::signalCondition
+              signalCondition <- base::signalCondition
               sys.calls <- base::sys.calls
-	      Sys.time <- base::Sys.time
+              Sys.time <- base::Sys.time
               `[[` <- base::`[[`
               `+` <- base::`+`
               `<<-` <- base::`<<-`
@@ -783,8 +783,8 @@ makeExpression <- local({
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
                   ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = base::as.integer(signal))
                   if (!signal) {
-		    ## muffleCondition <- future:::muffleCondition()
-		    muffleCondition <- .(muffleCondition)
+                    ## muffleCondition <- future:::muffleCondition()
+                    muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
                   }
                 }
