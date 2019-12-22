@@ -1,13 +1,16 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-09]
+Version: 1.15.1-9001 [2019-12-22]
 
 BUG FIXES:
 
  * Evaluation of futures could fail if the global environment contained
    *functions* with the same names as a small set of base R functions, e.g.
    'raw()', 'list()', and 'options()'.
+
+ * future(alist(a=)) would produce "Error in objectSize_list(x, depth = depth
+   - 1L) : argument "x_kk" is missing, with no default"
 
 DEPRECATED AND DEFUNCT:
 
