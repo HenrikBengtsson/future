@@ -32,7 +32,6 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   gp <- NULL
  
   f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, version = "1.8", ...)
-  f$.callResult <- TRUE
   structure(f, class = c("UniprocessFuture", class(f)))
 }
 

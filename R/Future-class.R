@@ -110,7 +110,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   version <- args$version
   if (is.null(version)) version <- "1.8"
   core$version <- version
-  core$.callResult <- FALSE  ## Temporary until "1.7" defunct
 
   ## Future evaluation
   core$expr <- expr
@@ -366,16 +365,7 @@ result.Future <- function(future, ...) {
     }
   }
 
-  .Deprecated(msg = "Future objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
-
-  ## BACKWARD COMPATIBILITY
-  if (future$state == "failed") {
-    value <- result
-    calls <- value$traceback
-    return(FutureResult(conditions = list(list(condition = value, signaled = 0L)), calls = calls, version = "1.7"))
-  }
-
-  FutureResult(value = result, version = "1.7")
+  .Defunct(msg = "Future objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
 }
 
 
@@ -407,15 +397,6 @@ result.Future <- function(future, ...) {
 value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (future$state == "created") {
     future <- run(future)
-  }
-
-  ## Sanity check
-  if (is.null(future$result) && !future$state %in% c("finished", "failed", "interrupted")) {
-    if (future$version == "1.7" || !future$.callResult) {
-      msg <- sprintf("Internal error: value() called on a non-finished future: %s", class(future)[1])
-      mdebug(msg)
-      stop(FutureError(msg, future = future))
-    }
   }
 
   result <- result(future)
@@ -530,25 +511,23 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     ## If 'future' is not installed on the worker, or a too old version
     ## of 'future' is used, then give an early error
     ## If future::FutureResult does not exist, give an error
-    has_future <- requireNamespace("future", quietly = TRUE)
-    version <- if (has_future) packageVersion("future") else NULL
+    has_future <- base::requireNamespace("future", quietly = TRUE)
+    version <- if (has_future) utils::packageVersion("future") else NULL
     if (!has_future || version < "1.8.0") {
-      info <- c(
-        r_version = gsub("R version ", "", R.version$version.string),
-        platform = sprintf("%s (%s-bit)",
-                           R.version$platform, 8 * .Machine$sizeof.pointer),
-        os = paste(Sys.info()[c("sysname", "release", "version")],
-                   collapse = " "),
-        hostname = Sys.info()[["nodename"]]
+      info <- base::c(
+        r_version = base::gsub("R version ", "", base::R.version$version.string),
+        platform = base::sprintf("%s (%s-bit)", base::R.version$platform, 8 * base::.Machine$sizeof.pointer),
+        os = base::paste(base::Sys.info()[base::c("sysname", "release", "version")], collapse = " "),
+        hostname = base::Sys.info()[["nodename"]]
       )
-      info <- sprintf("%s: %s", names(info), info)
-      info <- paste(info, collapse = "; ")
+      info <- base::sprintf("%s: %s", base::names(info), info)
+      info <- base::paste(info, collapse = "; ")
       if (!has_future) {
-        msg <- sprintf("Package 'future' is not installed on worker (%s)", info)
+        msg <- base::sprintf("Package 'future' is not installed on worker (%s)", info)
       } else {
-        msg <- sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
+        msg <- base::sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
       }
-      stop(msg)
+      base::stop(msg)
     }
   })
   exit <- NULL
@@ -561,13 +540,13 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     enter <- bquote({
       ## covr: skip=3
       .(enter)
-      ...future.mc.cores.old <- getOption("mc.cores")
-      options(mc.cores = .(mc.cores))
+      ...future.mc.cores.old <- base::getOption("mc.cores")
+      base::options(mc.cores = .(mc.cores))
     })
 
     exit <- bquote({
       ## covr: skip=1
-      options(mc.cores = ...future.mc.cores.old)
+      base::options(mc.cores = ...future.mc.cores.old)
     })
   }
   
@@ -579,7 +558,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
       ## because the type of RNG is defined by .Random.seed, especially
       ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
-      assign(".Random.seed", .(future$seed), envir = globalenv(), inherits = FALSE)
+      base::assign(".Random.seed", .(future$seed), envir = base::globalenv(), inherits = FALSE)
     })
   }
 
@@ -630,10 +609,10 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       ## calls library(), which attaches the package. /HB 2016-06-16
       ## NOTE: We use local() here such that 'pkg' is not assigned
       ##       to the future environment. /HB 2016-07-03
-      local({
+      base::local({
         for (pkg in .(pkgs)) {
-          loadNamespace(pkg)
-          library(pkg, character.only = TRUE)
+          base::loadNamespace(pkg)
+          base::library(pkg, character.only = TRUE)
         }
       })
     })
@@ -688,17 +667,17 @@ makeExpression <- local({
     
     ## Evaluate expression in a local() environment?
     if (local) {
-      expr <- bquote(local(.(expr)))
+      expr <- bquote(base::local(.(expr)))
       skip <- skip.local
     }
   
     ## Set and reset certain future.* options etc.
     enter <- bquote({
       ## Start time for future evaluation
-      ...future.startTime <- Sys.time()
+      ...future.startTime <- base::Sys.time()
       
       ## covr: skip=7
-      ...future.oldOptions <- options(
+      ...future.oldOptions <- base::options(
         ## Prevent .future.R from being source():d when future is attached
         future.startup.script = FALSE,
         
@@ -722,7 +701,7 @@ makeExpression <- local({
   
     exit <- bquote({
       .(exit)
-      options(...future.oldOptions)
+      base::options(...future.oldOptions)
     })
   
   
@@ -737,7 +716,7 @@ makeExpression <- local({
         .(enter)
   
         ## Capture standard output?
-        if (is.na(.(stdout))) {  ## stdout = NA
+        if (base::is.na(.(stdout))) {  ## stdout = NA
           ## Don't capture, but also don't block any output
         } else {
           if (.(stdout)) {  ## stdout = TRUE
@@ -745,29 +724,29 @@ makeExpression <- local({
             ## NOTE: Capturing to a raw connection is much more efficient
             ## than to a character connection, cf.
             ## https://www.jottr.org/2014/05/26/captureoutput/
-            ...future.stdout <- rawConnection(raw(0L), open = "w")
+            ...future.stdout <- base::rawConnection(base::raw(0L), open = "w")
           } else {  ## stdout = FALSE
             ## Silence all output by sending it to the void
-            ...future.stdout <- file(
-              switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
+            ...future.stdout <- base::file(
+              base::switch(.Platform$OS.type, windows = "NUL", "/dev/null"),
               open = "w"
             )
           }
-          sink(...future.stdout, type = "output", split = FALSE)
-          on.exit(if (!is.null(...future.stdout)) {
-            sink(type = "output", split = FALSE)
-            close(...future.stdout)
+          base::sink(...future.stdout, type = "output", split = FALSE)
+          base::on.exit(if (!base::is.null(...future.stdout)) {
+            base::sink(type = "output", split = FALSE)
+            base::close(...future.stdout)
           }, add = TRUE)
         }
   
-        ...future.frame <- sys.nframe()
-        ...future.conditions <- list()
-        ...future.result <- tryCatch({
-          withCallingHandlers({
-            ...future.value <- withVisible(.(expr))
+        ...future.frame <- base::sys.nframe()
+        ...future.conditions <- base::list()
+        ...future.result <- base::tryCatch({
+          base::withCallingHandlers({
+            ...future.value <- base::withVisible(.(expr))
             ## A FutureResult object (without requiring the future package)
             future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, started = ...future.startTime, version = "1.8")
-          }, condition = local({
+          }, condition = base::local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
               ## we will end up with a recursive evaluation resulting in error:
@@ -775,11 +754,15 @@ makeExpression <- local({
               ##    reference or earlier problems?"
               ## To avoid this, we make sure to import the functions explicitly
               ## /HB 2018-12-22
+              c <- base::c
               inherits <- base::inherits
               invokeRestart <- base::invokeRestart
               length <- base::length
+              list <- base::list
               seq.int <- base::seq.int
+	      signalCondition <- base::signalCondition
               sys.calls <- base::sys.calls
+	      Sys.time <- base::Sys.time
               `[[` <- base::`[[`
               `+` <- base::`+`
               `<<-` <- base::`<<-`
@@ -791,14 +774,14 @@ makeExpression <- local({
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = base::Sys.time(), signaled = 0L)
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = Sys.time(), signaled = 0L)
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = as.integer(signal))
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = base::as.integer(signal))
                   if (!signal) {
 		    ## muffleCondition <- future:::muffleCondition()
 		    muffleCondition <- .(muffleCondition)
@@ -809,25 +792,25 @@ makeExpression <- local({
             }) ## local()
           ) ## withCallingHandlers()
         }, error = function(ex) {
-          structure(list(
+          base::structure(base::list(
             value = NULL,
             visible = NULL,
             conditions = ...future.conditions,
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))
-        
-        if (is.na(.(stdout))) {
+        Sys.time
+        if (base::is.na(.(stdout))) {
         } else {
-          sink(type = "output", split = FALSE)
+          base::sink(type = "output", split = FALSE)
           if (.(stdout)) {
-            ...future.result$stdout <- rawToChar(
-              rawConnectionValue(...future.stdout)
+            ...future.result$stdout <- base::rawToChar(
+              base::rawConnectionValue(...future.stdout)
             )
           } else {
-            ...future.result["stdout"] <- list(NULL)
+            ...future.result["stdout"] <- base::list(NULL)
           }
-          close(...future.stdout)
+          base::close(...future.stdout)
           ...future.stdout <- NULL
         }
   
@@ -839,7 +822,7 @@ makeExpression <- local({
       expr <- bquote({
         ## covr: skip=6
         .(enter)
-        tryCatch({
+        base::tryCatch({
           .(expr)
         }, finally = {
           .(exit)

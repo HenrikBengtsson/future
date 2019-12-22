@@ -141,10 +141,6 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
   relay <- (stdout || signal)
   result <- result || relay
 
-  if (is.element("progress", names(list(...)))) {
-    .Defunct(msg = "Argument 'progress' of resolve() is defunct.")
-  }
-
   x0 <- x
 
   ## Subset?

@@ -4,8 +4,13 @@
 \alias{futureOf}
 \title{Get the future of a future variable}
 \usage{
-futureOf(var = NULL, envir = parent.frame(), mustExist = TRUE,
-  default = NA, drop = FALSE)
+futureOf(
+  var = NULL,
+  envir = parent.frame(),
+  mustExist = TRUE,
+  default = NA,
+  drop = FALSE
+)
 }
 \arguments{
 \item{var}{the variable.  If NULL, all futures in the

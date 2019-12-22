@@ -1,10 +1,10 @@
 Package: future
-Version: 1.15.0-9000
+Version: 1.15.1-9001
 Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
-    globals (>= 0.12.4),
-    listenv (>= 0.7.0),
+    globals (>= 0.12.5),
+    listenv (>= 0.8.0),
     parallel,
     utils
 Suggests:
@@ -34,4 +34,4 @@ LazyLoad: TRUE
 ByteCompile: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

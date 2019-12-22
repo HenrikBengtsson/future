@@ -9,17 +9,41 @@
 \alias{\%->\%}
 \title{Create a future}
 \usage{
-future(expr, envir = parent.frame(), substitute = TRUE,
-  globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, ...)
+future(
+  expr,
+  envir = parent.frame(),
+  substitute = TRUE,
+  globals = TRUE,
+  packages = NULL,
+  lazy = FALSE,
+  seed = NULL,
+  ...
+)
 
-futureAssign(x, value, envir = parent.frame(), substitute = TRUE,
-  lazy = FALSE, seed = NULL, globals = TRUE, ...,
-  assign.env = envir)
+futureAssign(
+  x,
+  value,
+  envir = parent.frame(),
+  substitute = TRUE,
+  lazy = FALSE,
+  seed = NULL,
+  globals = TRUE,
+  ...,
+  assign.env = envir
+)
 
 x \%<-\% value
 
-futureCall(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
-  seed = NULL, globals = TRUE, packages = NULL, ...)
+futureCall(
+  FUN,
+  args = list(),
+  envir = parent.frame(),
+  lazy = FALSE,
+  seed = NULL,
+  globals = TRUE,
+  packages = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr, value}{An \R \link[base]{expression}.}

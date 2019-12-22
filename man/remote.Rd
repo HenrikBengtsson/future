@@ -4,10 +4,23 @@
 \alias{remote}
 \title{Create a remote future whose value will be resolved asynchronously in a remote process}
 \usage{
-remote(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE,
-  seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL,
-  user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE,
-  myip = NULL, label = NULL, ...)
+remote(
+  expr,
+  envir = parent.frame(),
+  substitute = TRUE,
+  lazy = FALSE,
+  seed = NULL,
+  globals = TRUE,
+  persistent = TRUE,
+  workers = NULL,
+  user = NULL,
+  revtunnel = TRUE,
+  gc = FALSE,
+  earlySignal = FALSE,
+  myip = NULL,
+  label = NULL,
+  ...
+)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
