@@ -41,25 +41,25 @@ machine that \code{\link{availableCores}()} allows for that method.
 
 In addition, the following settings ("methods") are also acknowledged:
 \itemize{
- \item \code{"PBS"} -
-   Query TORQUE/PBS environment variable \env{PBS_NODEFILE}.
-   If this is set and specifies an existing file, then the set
-   of workers is read from that file, where one worker (node)
-   is given per line.
-   An example of a job submission that results in this is
-   \code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
-   with two cores.
- \item \code{"SGE"} -
-   Query Sun/Oracle Grid Engine (SGE) environment variable
-   \env{PE_HOSTFILE}.
-   An example of a job submission that results in this is
-   \code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
-   requests eight cores on a any number of machines.
- \item \code{"custom"} -
-   If option \option{future.availableWorkers.custom} is set and a function,
-   then this function will be called (without arguments) and it's value
-   will be coerced to a character vector, which will be interpreted as
-   hostnames of available workers.
+\item \code{"PBS"} -
+Query TORQUE/PBS environment variable \env{PBS_NODEFILE}.
+If this is set and specifies an existing file, then the set
+of workers is read from that file, where one worker (node)
+is given per line.
+An example of a job submission that results in this is
+\code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
+with two cores.
+\item \code{"SGE"} -
+Query Sun/Oracle Grid Engine (SGE) environment variable
+\env{PE_HOSTFILE}.
+An example of a job submission that results in this is
+\code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
+requests eight cores on a any number of machines.
+\item \code{"custom"} -
+If option \option{future.availableWorkers.custom} is set and a function,
+then this function will be called (without arguments) and it's value
+will be coerced to a character vector, which will be interpreted as
+hostnames of available workers.
 }
 }
 \seealso{

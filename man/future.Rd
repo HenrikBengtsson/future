@@ -248,7 +248,6 @@ or
 }
 Both are effectively the same.
 
-
 Although rarely needed, a combination of automatic identification and manual
 specification of globals is supported via attributes \code{add} (to add
 false negatives) and \code{ignore} (to ignore false positives) on value

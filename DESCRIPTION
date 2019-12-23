@@ -35,4 +35,4 @@ ByteCompile: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
 RoxygenNote: 7.0.2
-Roxygen: list(markdown = FALSE)
+Roxygen: list(markdown = TRUE)

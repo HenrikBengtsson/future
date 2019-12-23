@@ -176,9 +176,9 @@ for controlling the setup of the system calls that launch the background
 
 A hostname is considered to be \emph{localhost} if it equals:
 \itemize{
-  \item \code{"localhost"},
-  \item \code{"127.0.0.1"}, or
-  \item \code{Sys.info()[["nodename"]]}.
+\item \code{"localhost"},
+\item \code{"127.0.0.1"}, or
+\item \code{Sys.info()[["nodename"]]}.
 }
 It is also considered \emph{localhost} if it appears on the same line
 as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
@@ -243,7 +243,7 @@ Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
 functions to log in and launch \R workers on external machines that requires
 a password to be entered manually for authentication.}
 The only known exception is the PuTTY client on Windows for which one can
-pass the password via command-line option \code{-pw}, e.g. 
+pass the password via command-line option \code{-pw}, e.g.
 \code{rshopts = c("-pw", "MySecretPassword")}.
 
 Note, depending on whether you run \R in a terminal or via a GUI, you might
@@ -301,11 +301,11 @@ that the worker and the caller share the same file system and \R installation.
 The default value of \code{homogeneous} is TRUE if and only if either
 of the following is fulfilled:
 \itemize{
- \item \code{worker} is \emph{localhost}
- \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
- \item \code{worker} is neither an IP number nor a fully qualified domain
-       name (FQDN).  A hostname is considered to be a FQDN if it contains
-       one or more periods
+\item \code{worker} is \emph{localhost}
+\item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
+\item \code{worker} is neither an IP number nor a fully qualified domain
+name (FQDN).  A hostname is considered to be a FQDN if it contains
+one or more periods
 }
 In all other cases, \code{homogeneous} defaults to FALSE.
 }

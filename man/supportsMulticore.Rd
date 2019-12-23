@@ -11,7 +11,7 @@ supportsMulticore(...)
 }
 \value{
 TRUE if forked processing is supported and not disabled,
-        otherwise FALSE.
+otherwise FALSE.
 }
 \description{
 Multicore futures require an operating system that supports \emph{forked}
