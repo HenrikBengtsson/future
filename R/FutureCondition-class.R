@@ -1,10 +1,10 @@
 #' A condition (message, warning, or error) that occurred while orchestrating a future
 #'
-#' While \emph{orchestrating} (creating, launching, querying, collection)
+#' While _orchestrating_ (creating, launching, querying, collection)
 #' futures, unexpected run-time errors (and other types of conditions) may
 #' occur.  Such conditions are coerced to a corresponding FutureCondition
 #' class to help distinguish them from conditions that occur due to the
-#' \emph{evaluation} of the future.
+#' _evaluation_ of the future.
 #' 
 #' @param message A message condition.
 #' 

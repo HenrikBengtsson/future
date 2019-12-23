@@ -1,8 +1,8 @@
 #' Create a cluster future whose value will be resolved asynchronously in a parallel process
 #'
 #' A cluster future is a future that uses cluster evaluation,
-#' which means that its \emph{value is computed and resolved in
-#' parallel in another process}.
+#' which means that its _value is computed and resolved in
+#' parallel in another process_.
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
@@ -24,7 +24,7 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(cluster)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<-\%}} will create \emph{cluster futures}.
+#' and \code{\link{\%<-\%}} will create _cluster futures_.
 #'
 #' @export
 cluster <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableWorkers(), user = NULL, revtunnel = TRUE, homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {

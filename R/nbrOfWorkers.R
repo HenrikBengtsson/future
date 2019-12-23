@@ -5,7 +5,7 @@
 #' by \code{\link{plan}()} is used.
 #'
 #' @return A positive number in \eqn{{1, 2, 3, ...}}.
-#' Note, it may also be \code{+Inf} for certain types of backends.
+#' Note, it may also be `+Inf` for certain types of backends.
 #'
 #' @example incl/nbrOfWorkers.R
 #'

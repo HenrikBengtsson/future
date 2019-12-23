@@ -1,15 +1,15 @@
 #' Create a multicore future whose value will be resolved asynchronously in a forked parallel process
 #'
 #' A multicore future is a future that uses multicore evaluation,
-#' which means that its \emph{value is computed and resolved in
-#' parallel in another process}.
+#' which means that its _value is computed and resolved in
+#' parallel in another process_.
 #'
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
 #'
 #' @return A \link{MulticoreFuture}
-#' If \code{workers == 1}, then all processing using done in the
+#' If `workers == 1`, then all processing using done in the
 #' current/main \R session and we therefore fall back to using
 #' an sequential future.  This is also the case whenever multicore
 #' processing is not supported, e.g. on Windows.
@@ -36,7 +36,7 @@
 #' this function directly, but to register it via
 #' \code{\link{plan}(multicore)} such that it becomes the default
 #' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<-\%}} will create \emph{multicore futures}.
+#' and \code{\link{\%<-\%}} will create _multicore futures_.
 #'
 #' @seealso
 #' For processing in multiple background \R sessions, see

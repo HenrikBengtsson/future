@@ -27,21 +27,21 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param value (DEPRECATED) Use argument \code{result} instead.
+#' @param value (DEPRECATED) Use argument `result` instead.
 #' 
 #' @param \dots Not used.
 #'
-#' @return Returns \code{x} (regardless of subsetting or not).
-#' If \code{signal} is TRUE and one of the futures produces an error, then
+#' @return Returns `x` (regardless of subsetting or not).
+#' If `signal` is TRUE and one of the futures produces an error, then
 #' that error is produced.
 #'
 #' @details
-#' This function is resolves synchronously, i.e. it blocks until \code{x} and
+#' This function is resolves synchronously, i.e. it blocks until `x` and
 #' any containing futures are resolved.
 #' 
-#' @seealso To resolve a future \emph{variable}, first retrieve its
+#' @seealso To resolve a future _variable_, first retrieve its
 #' \link{Future} object using \code{\link{futureOf}()}, e.g.
-#' \code{resolve(futureOf(x))}.
+#' `resolve(futureOf(x))`.
 #'
 #' @export
 resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")

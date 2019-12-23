@@ -2,9 +2,9 @@
 #'
 #' @param x An object to be coerced.
 #' @param \dots Additional arguments passed to the underlying coercion method.
-#'            For \code{c(...)}, the clusters and cluster nodes to be combined.
+#'            For `c(...)`, the clusters and cluster nodes to be combined.
 #'
-#' @return An object of class \code{cluster}.
+#' @return An object of class `cluster`.
 #'
 #' @export
 #' @keywords internal
@@ -36,7 +36,7 @@ as.cluster.SOCK0node <- as.cluster.SOCKnode
 
 #' @param recursive Not used.
 #'
-#' @return \code{c(...)} combine multiple clusters and / or cluster nodes into one cluster returned as an of class \code{cluster}.
+#' @return `c(...)` combine multiple clusters and / or cluster nodes into one cluster returned as an of class `cluster`.
 #'
 #' @rdname as.cluster
 #' @export

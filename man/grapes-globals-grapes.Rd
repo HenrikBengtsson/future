@@ -10,7 +10,7 @@ fassignment \%packages\% packages
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<-\% \{ expr \}}.}
+\code{x \%<-\% { expr }}.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.

@@ -8,7 +8,7 @@ fassignment \%seed\% seed
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<-\% \{ expr \}}.}
+\code{x \%<-\% { expr }}.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 }

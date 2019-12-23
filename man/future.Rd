@@ -92,7 +92,7 @@ The future itself is returned invisibly, e.g.
 Alternatively, the future of a future variable \code{x} can be retrieved
 without blocking using \code{f <- \link{futureOf}(x)}.
 Both the future and the variable (promise) are assigned to environment
-\code{assign.env} where the name of the future is \code{.future_<name>}.
+\code{assign.env} where the name of the future is \verb{.future_<name>}.
 
 \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 }
@@ -151,7 +151,7 @@ will only be evaluated when the value of the future is requested.
 at all - it is guaranteed to be evaluated if the value is requested}.
 
 For future assignments, lazy evaluation can be controlled via the
-\code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
+\verb{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
 }
 
 \section{Globals used by future expressions}{

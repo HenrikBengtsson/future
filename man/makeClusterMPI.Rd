@@ -35,7 +35,7 @@ tweaks the cluster in an attempt to avoid
 only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
 }
 \details{
-\emph{Creating MPI clusters requires the \bold{Rmpi} package.}
+\emph{Creating MPI clusters requires the \strong{Rmpi} package.}
 }
 \references{
 \enumerate{

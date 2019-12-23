@@ -3,7 +3,7 @@
 #' Gets all values in an environment, a list, or a list environment
 #' and returns an object of the same class (and dimensions).
 #' All future elements are replaced by their corresponding
-#' \code{value()} values.  For all other elements, the existing
+#' `value()` values.  For all other elements, the existing
 #' object is kept.
 #'
 #' @param x An environment, a list, or a list environment.
@@ -13,11 +13,11 @@
 #' @param signal If TRUE, captured (\link[base]{conditions}) are relayed,
 #' otherwise not.
 #' 
-#' @param \dots Additional arguments passed to \code{value()} of each future.
+#' @param \dots Additional arguments passed to `value()` of each future.
 #'
-#' @return An object of same type as \code{x} and with the same names
+#' @return An object of same type as `x` and with the same names
 #' and/or dimensions, if set.
-#' If \code{signal} is TRUE and one of the futures produces an error, then
+#' If `signal` is TRUE and one of the futures produces an error, then
 #' that error is produced.
 #'
 #' @export

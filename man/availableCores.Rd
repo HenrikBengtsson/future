@@ -65,19 +65,19 @@ Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
 Depending on PBS system configuration, these \emph{resource}
 parameter may or may not default to one.
 An example of a job submission that results in this is
-\code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
+\verb{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
 \item \code{"SGE"} -
 Query Sun/Oracle Grid Engine (SGE) environment variable
 \env{NSLOTS}.
 An example of a job submission that results in this is
-\code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
+\verb{qsub -pe smp 2} (or \verb{qsub -pe by_node 2}), which
 requests two cores on a single machine.
 \item \code{"Slurm"} -
 Query Simple Linux Utility for Resource Management (Slurm)
 environment variable \env{SLURM_CPUS_PER_TASK}.
 This may or may not be set.  It can be set when submitting a job,
-e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
-\code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+e.g. \verb{sbatch --cpus-per-task=2 hello.sh} or by adding
+\verb{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
 \item \code{"custom"} -
 If option \option{future.availableCores.custom} is set and a function,
 then this function will be called (without arguments) and it's value

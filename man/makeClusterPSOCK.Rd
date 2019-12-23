@@ -143,7 +143,7 @@ If FALSE, then the worker will try to connect directly to port \code{port} on
 to a temporary file.  The log file name is available as an attribute
 as part of the return node object.
 \emph{Warning: This only works with SSH clients that support option
-\code{-E out.log}.}}
+\verb{-E out.log}.}}
 
 \item{rank}{A unique one-based index for each worker (automatically set).}
 
@@ -216,7 +216,7 @@ is searched for in the folder given by the \env{RSTUDIO_MSYS_SSH}
 environment variable - a variable that is (only) set when running RStudio.
 
 You can override the default set of SSH clients that are searched for
-by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
+by specifying them in \code{rshcmd} using the format \verb{<...>}, e.g.
 \code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
 below for examples.
 

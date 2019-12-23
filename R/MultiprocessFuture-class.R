@@ -4,7 +4,7 @@
 #' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
-#' @return An object of class \code{MultiprocessFuture}.
+#' @return An object of class `MultiprocessFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "multiprocess future", see function

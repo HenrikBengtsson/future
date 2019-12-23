@@ -1,6 +1,6 @@
 #' Check whether multicore/forked processing is supported or not
 #'
-#' Multicore futures require an operating system that supports \emph{forked}
+#' Multicore futures require an operating system that supports _forked_
 #' processing.  Operating systems such as Unix and macOS supports forking,
 #' whereas Microsoft Windows does not.
 #'
@@ -14,7 +14,7 @@
 #' Unix-like operating system such as Linux and macOS support forking.
 #'
 #' For some R environments it is considered unstable to perform parallel
-#' processing based on \emph{forking}. Because of this, the future ecosystem
+#' processing based on _forking_. Because of this, the future ecosystem
 #' disables forked processing by default when it detects that \R runs from
 #' environment that is known to be unstable for forked processing, despite
 #' the underlying operating system supported it.
@@ -24,16 +24,16 @@
 #' 'multicore' or 'multiprocess' futures are used in the \R session.
 #' This warning can be disabled by setting R option
 #' \option{future.supportsMulticore.unstable}, or environment variable
-#' \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE} to \code{"quiet"}.
+#' \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE} to `"quiet"`.
 #'
 #' @section Enable or disable forked processing:
 #' It is possible to disable forked processing for futures by setting \R
-#' option \option{future.fork.enable} to \code{FALSE}.  Alternatively, one can
-#' set environment variable \env{R_FUTURE_FORK_ENABLE} to \code{false}.
-#' This will cause \code{plan(multicore)} to work as \code{plan(sequential)},
-#' and \code{plan(multiprocess)} to work as \code{plan(multisession)}.
+#' option \option{future.fork.enable} to `FALSE`.  Alternatively, one can
+#' set environment variable \env{R_FUTURE_FORK_ENABLE} to `false`.
+#' This will cause `plan(multicore)` to work as `plan(sequential)`,
+#' and `plan(multiprocess)` to work as `plan(multisession)`.
 #' Analogously, it is possible to override disabled forking by setting one
-#' of these to \code{TRUE}.
+#' of these to `TRUE`.
 #'
 #' @seealso
 #' To use multicore futures, use \code{\link{plan}(\link{multicore})}.

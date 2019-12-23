@@ -1,10 +1,10 @@
 #' A future represents a value that will be available at some point in the future
 #'
-#' A \emph{future} is an abstraction for a \emph{value} that may
+#' A _future_ is an abstraction for a _value_ that may
 #' available at some point in the future.  A future can either be
-#' \code{unresolved} or \code{resolved}, a state which can be checked
-#' with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
-#' value is not available.  As soon as it is \emph{resolved}, the value
+#' `unresolved` or `resolved`, a state which can be checked
+#' with \code{\link{resolved}()}.  As long as it is _unresolved_, the
+#' value is not available.  As soon as it is _resolved_, the value
 #' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An \R \link[base]{expression}.
@@ -12,18 +12,18 @@
 #' @param envir The \link{environment} from where global objects should be
 #' identified.
 #'
-#' @param substitute If TRUE, argument \code{expr} is
+#' @param substitute If TRUE, argument `expr` is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
 #' @param stdout If TRUE (default), then the standard output is captured,
-#' and re-outputted when \code{value()} is called.
+#' and re-outputted when `value()` is called.
 #' If FALSE, any output is silenced (by sinking it to the null device as
 #' it is outputted).
-#' If NA (not recommended), output is \emph{not} intercepted.
+#' If NA (not recommended), output is _not_ intercepted.
 #' 
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
-#' To not intercept conditions, use \code{conditions = character(0L)}.
+#' To not intercept conditions, use `conditions = character(0L)`.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
@@ -36,7 +36,7 @@
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
-#' @param lazy If \code{FALSE} (default), the future is resolved
+#' @param lazy If `FALSE` (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
 #' @param local If TRUE, the expression is evaluated such that
@@ -47,9 +47,9 @@
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) only after the value of the future is collected.
 #' Exactly when the values are collected may depend on various factors such
-#' as number of free workers and whether \code{earlySignal} is TRUE (more
+#' as number of free workers and whether `earlySignal` is TRUE (more
 #' frequently) or FALSE (less frequently).
-#' \emph{Some types of futures ignore this argument.}
+#' _Some types of futures ignore this argument._
 #'
 #' @param earlySignal Specified whether conditions should be signaled as soon
 #' as possible or not.
@@ -58,7 +58,7 @@
 #'
 #' @param \dots Additional named elements of the future.
 #' 
-#' @return An object of class \code{Future}.
+#' @return An object of class `Future`.
 #'
 #' @details
 #' A Future object is itself an \link{environment}.
@@ -308,8 +308,8 @@ result <- function(...) UseMethod("result")
 #' @return The \link{FutureResult} object.
 #'
 #' @details
-#' This function is only part of the \emph{backend} Future API.
-#' This function is \emph{not} part of the frontend Future API.
+#' This function is only part of the _backend_ Future API.
+#' This function is _not_ part of the frontend Future API.
 #'
 #' @aliases result
 #' @rdname result
@@ -470,7 +470,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #' use \link{sequential} futures.  This conservative approach protects
 #' against spawning off recursive futures by mistake, especially
 #' \link{multicore} and \link{multisession} ones.
-#' The default will also set \code{options(mc.cores = 1L)} (*) so that
+#' The default will also set `options(mc.cores = 1L)` (*) so that
 #' no parallel \R processes are spawned off by functions such as
 #' \code{\link[parallel:mclapply]{mclapply}()} and friends.
 #'
@@ -480,11 +480,11 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #' See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
 #' for plans on adding support for custom nested future types.
 #'
-#' (*) Ideally we would set \code{mc.cores = 0} but that will unfortunately
-#'     cause \code{mclapply()} and friends to generate an error saying
+#' (*) Ideally we would set `mc.cores = 0` but that will unfortunately
+#'     cause `mclapply()` and friends to generate an error saying
 #'     "'mc.cores' must be >= 1".  Ideally those functions should
 #'     fall back to using the non-multicore alternative in this
-#'     case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
+#'     case, e.g. `mclapply(...)` => `lapply(...)`.
 #'     See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
 #'     for a discussion on this.
 #'

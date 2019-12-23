@@ -47,13 +47,13 @@ If this is set and specifies an existing file, then the set
 of workers is read from that file, where one worker (node)
 is given per line.
 An example of a job submission that results in this is
-\code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
+\verb{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
 with two cores.
 \item \code{"SGE"} -
 Query Sun/Oracle Grid Engine (SGE) environment variable
 \env{PE_HOSTFILE}.
 An example of a job submission that results in this is
-\code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
+\verb{qsub -pe mpi 8} (or \verb{qsub -pe ompi 8}), which
 requests eight cores on a any number of machines.
 \item \code{"custom"} -
 If option \option{future.availableWorkers.custom} is set and a function,
