@@ -690,7 +690,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 
 #' Creates a connection to the system null device
 #'
-#' @return Returns a open, binary [base::connection()].
+#' @return Returns a open, binary \code{\link[base:connection]{base::connection()}}.
 #' 
 #' @keywords internal
 nullcon <- local({

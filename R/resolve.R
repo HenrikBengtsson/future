@@ -27,7 +27,7 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param value (DEPRECATED) Use argument `result` instead.
+#' @param value (DEPRECATED) Use argument \code{result} instead.
 #' 
 #' @param \dots Not used.
 #'
