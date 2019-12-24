@@ -31,7 +31,7 @@ identified.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}

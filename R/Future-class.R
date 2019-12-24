@@ -36,7 +36,7 @@
 #'
 #' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
 #'
-#' @param lazy If `FALSE` (default), the future is resolved
+#' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
 #' @param local If TRUE, the expression is evaluated such that

@@ -52,7 +52,7 @@ to be attached in the \R environment evaluating the future.}
 
 \item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that

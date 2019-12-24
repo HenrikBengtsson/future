@@ -1,4 +1,4 @@
-#' @return Returns an non-negative integer, -1L, or `NA_integer`.
+#' @return Returns an non-negative integer, -1L, or `NA_integer_`.
 #' For connections stdin, stdout, and stderr, 0L, 1L, and 2L,
 #' are returned, respectively.  For all other connections,
 #' a semi-random integer greater or equal to 3L is returned.

@@ -44,7 +44,7 @@ in the help for \code{\link{future}()}.}
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
