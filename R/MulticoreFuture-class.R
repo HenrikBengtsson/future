@@ -7,7 +7,7 @@
 #'
 #' @seealso
 #' To evaluate an expression using "multicore future", see function
-#' \code{\link{multicore}()}.
+#' [multicore()].
 #'
 #' @export
 #' @name MulticoreFuture-class

@@ -39,7 +39,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -77,7 +77,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{\dots}{Additional named elements passed to \code{\link{ClusterFuture}()}.}
+\item{\dots}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
 }
 \value{
 A \link{ClusterFuture}.
@@ -95,7 +95,7 @@ running cluster futures is resolved.
 The preferred way to create an cluster future is not to call
 this function directly, but to register it via
 \code{\link{plan}(cluster)} such that it becomes the default
-mechanism for all futures.  After this \code{\link{future}()}
+mechanism for all futures.  After this \code{\link[=future]{future()}}
 and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 }
 \examples{

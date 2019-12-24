@@ -9,7 +9,7 @@
 #' @return a future function.
 #'
 #' @seealso
-#' Use \code{\link{plan}()} to set a future to become the
+#' Use [plan()] to set a future to become the
 #' new default strategy.
 #'
 #' @export

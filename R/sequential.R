@@ -22,7 +22,7 @@
 #' The preferred way to create a sequential future is not to call these functions
 #' directly, but to register them via \code{\link{plan}(sequential)} such that
 #' it becomes the default mechanism for all futures.  After this
-#' \code{\link{future}()} and \code{\link{\%<-\%}} will create
+#' [future()] and \code{\link{\%<-\%}} will create
 #' _sequential futures_.
 #'
 #' @section transparent futures:

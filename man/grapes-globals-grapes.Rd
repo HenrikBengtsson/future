@@ -15,7 +15,7 @@ fassignment \%packages\% packages
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}

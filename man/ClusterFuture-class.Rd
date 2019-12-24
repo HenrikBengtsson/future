@@ -48,7 +48,7 @@ identified.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
@@ -92,7 +92,7 @@ the internal / public IP address of the master \R session.}
 same path to \file{Rscript} as the main \R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
@@ -105,6 +105,6 @@ A cluster future is a future whose value will be resolved asynchronously in a pa
 }
 \seealso{
 To evaluate an expression using "cluster future", see function
-\code{\link{cluster}()}.
+\code{\link[=cluster]{cluster()}}.
 }
 \keyword{internal}

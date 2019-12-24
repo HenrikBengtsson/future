@@ -42,7 +42,7 @@ If a new strategy is chosen, then the previous one is returned
 }
 \description{
 This function allows \emph{the user} to plan the future, more specifically,
-it specifies how \code{\link{future}()}:s are resolved,
+it specifies how \code{\link[=future]{future()}}:s are resolved,
 e.g. sequentially or in parallel.
 }
 \details{

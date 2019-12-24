@@ -39,7 +39,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -76,7 +76,7 @@ If NULL, then it is inferred using an online service (default).}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{ClusterFuture}()}.}
+\item{...}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
 }
 \value{
 A \link{ClusterFuture}.

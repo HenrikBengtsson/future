@@ -6,7 +6,7 @@
 #'
 #' @section Options for controlling futures:
 #' \describe{
-#'  \item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via \code{\link{plan}()}. This will also be the future plan set when calling `plan("default")`.  If not specified, this option may be set when the \pkg{future} package is _loaded_ if command-line option `--parallel=ncores` (short `-p ncores`) is specified; if `ncores > 1`, then option \option{future.plan} is set to `multiprocess` otherwise `sequential` (in addition to option \option{mc.cores} being set to `ncores`, if `ncores >= 1`).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: `sequential`)}
+#'  \item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via [plan()]. This will also be the future plan set when calling `plan("default")`.  If not specified, this option may be set when the \pkg{future} package is _loaded_ if command-line option `--parallel=ncores` (short `-p ncores`) is specified; if `ncores > 1`, then option \option{future.plan} is set to `multiprocess` otherwise `sequential` (in addition to option \option{mc.cores} being set to `ncores`, if `ncores >= 1`).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: `sequential`)}
 #'  \item{\option{future.globals.onMissing}:}{(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If `"error"`, an error is generated immediately.  If `"ignore"`, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: `"ignore"`)}
 #'  \item{\option{future.globals.method}:}{(character string) Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: `"ordered"`)}
 #'  \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of `+Inf`, then the check for large globals is skipped. (Default: `500 * 1024 ^ 2` = 500 MiB)}
@@ -38,26 +38,26 @@
 #'
 #' @section Options for configuring low-level system behaviors:
 #' \describe{
-#'  \item{\option{future.availableCores.methods}:}{(character vector) Default lookup methods for \code{\link{availableCores}()}. (Default: `c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "fallback")`)}
+#'  \item{\option{future.availableCores.methods}:}{(character vector) Default lookup methods for [availableCores()]. (Default: `c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "fallback")`)}
 #'
-#'  \item{\option{future.availableCores.custom}:}{(function) If set and a function, then this function will be called (without arguments) by \code{\link{availableCores}()} where its value, coerced to an integer, is interpreted as a number of cores.}
+#'  \item{\option{future.availableCores.custom}:}{(function) If set and a function, then this function will be called (without arguments) by [availableCores()] where its value, coerced to an integer, is interpreted as a number of cores.}
 #'
 #'  \item{\option{future.availableCores.fallback}:}{(integer) Number of cores to use when no core-specifying settings are detected other than `"system"`. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_FALLBACK} when the \pkg{future} package is _loaded_. This options makes it possible to set the default number of cores returned by `availableCores()` / `availableWorkers()` yet allow users and schedulers to override it. In multi-tenant environment, such as HPC clusters, it is useful to set \env{R_FUTURE_AVAILABLECORES_FALLBACK} to `1`.}
 #' 
 #'  \item{\option{future.availableCores.system}:}{(integer) Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which = "system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is _loaded_. This option allows you to effectively override what `parallel::detectCores()` reports the system has.}
 #'
-#'  \item{\option{future.availableWorkers.methods}:}{(character vector) Default lookup methods for \code{\link{availableWorkers}()}. (Default: `c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")`)}
+#'  \item{\option{future.availableWorkers.methods}:}{(character vector) Default lookup methods for [availableWorkers()]. (Default: `c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")`)}
 #'
-#'  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by \code{\link{availableWorkers}()} where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
+#'  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by [availableWorkers()] where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
 #'
-#'  \item{\option{future.fork.enable}:}{(logical) Enable or disable _forked_ processing.  If `FALSE`, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_ENABLE}.  If `NA`, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See \code{\link{supportsMulticore}()} for more details.}
+#'  \item{\option{future.fork.enable}:}{(logical) Enable or disable _forked_ processing.  If `FALSE`, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_ENABLE}.  If `NA`, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See [supportsMulticore()] for more details.}
 #'
-#'  \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If `"warning"` (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If `"quiet"`, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See \code{\link{supportsMulticore}()} for more details.}
+#'  \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If `"warning"` (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If `"quiet"`, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See [supportsMulticore()] for more details.}
 #' }
 #'
 #' @section Options for demos:
 #' \describe{
-#'  \item{\option{future.demo.mandelbrot.region}:}{(integer) Either a named list of \code{\link{mandelbrot}()} arguments or an integer in \{1, 2, 3\} specifying a predefined Mandelbrot region. (Default: `1L`)}
+#'  \item{\option{future.demo.mandelbrot.region}:}{(integer) Either a named list of [mandelbrot()] arguments or an integer in \{1, 2, 3\} specifying a predefined Mandelbrot region. (Default: `1L`)}
 #'  \item{\option{future.demo.mandelbrot.nrow}:}{(integer) Number of rows and columns of tiles. (Default: `3L`)}
 #' }
 #'

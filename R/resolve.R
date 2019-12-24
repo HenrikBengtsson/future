@@ -40,7 +40,7 @@
 #' any containing futures are resolved.
 #' 
 #' @seealso To resolve a future _variable_, first retrieve its
-#' [Future] object using \code{\link{futureOf}()}, e.g.
+#' [Future] object using [futureOf()], e.g.
 #' `resolve(futureOf(x))`.
 #'
 #' @export

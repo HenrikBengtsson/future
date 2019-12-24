@@ -16,7 +16,7 @@
 #' is created_ and its value is used to configure the workers.
 #' The function should return a numeric scalar.
 #' 
-#' @param \dots Additional named elements passed to \code{\link{Future}()}.
+#' @param \dots Additional named elements passed to [Future()].
 #'
 #' @return A [MultiprocessFuture] implemented as either a
 #' [MulticoreFuture] or a \link{MultisessionFuture}.
@@ -24,7 +24,7 @@
 #' @example incl/multiprocess.R
 #'
 #' @seealso
-#' Internally \code{\link{multicore}()} and \code{\link{multisession}()}
+#' Internally [multicore()] and [multisession()]
 #' are used.
 #'
 #' @export

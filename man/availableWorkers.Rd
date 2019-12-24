@@ -37,7 +37,7 @@ Get set of available workers
 The default set of workers for each method is
 \code{rep("localhost", times = availableCores(method))}, which means
 that each will at least use as many parallel workers on the current
-machine that \code{\link{availableCores}()} allows for that method.
+machine that \code{\link[=availableCores]{availableCores()}} allows for that method.
 
 In addition, the following settings ("methods") are also acknowledged:
 \itemize{
@@ -64,6 +64,6 @@ hostnames of available workers.
 }
 \seealso{
 To get the number of available workers on the current machine,
-see \code{\link{availableCores}()}.
+see \code{\link[=availableCores]{availableCores()}}.
 }
 \keyword{internal}

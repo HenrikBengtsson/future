@@ -84,7 +84,7 @@
 #'
 #' @seealso
 #' To get the number of available workers regardless of machine,
-#' see \code{\link{availableWorkers}()}.
+#' see [availableWorkers()].
 #'
 #' @export
 #' @keywords internal

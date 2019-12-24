@@ -3,7 +3,7 @@
 #' A _future_ is an abstraction for a _value_ that may
 #' available at some point in the future.  A future can either be
 #' `unresolved` or `resolved`, a state which can be checked
-#' with \code{\link{resolved}()}.  As long as it is _unresolved_, the
+#' with [resolved()].  As long as it is _unresolved_, the
 #' value is not available.  As soon as it is _resolved_, the value
 #' is available via \code{\link[future]{value}()}.
 #'
@@ -29,7 +29,7 @@
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
 #' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' in the help for [future()].
 #' 
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.
@@ -64,7 +64,7 @@
 #' A Future object is itself an \link{environment}.
 #'
 #' @seealso
-#' One function that creates a Future is \code{\link{future}()}.
+#' One function that creates a Future is [future()].
 #' It returns a Future that evaluates an \R expression in the future.
 #' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the

@@ -61,6 +61,6 @@ any containing futures are resolved.
 }
 \seealso{
 To resolve a future \emph{variable}, first retrieve its
-\link{Future} object using \code{\link{futureOf}()}, e.g.
+\link{Future} object using \code{\link[=futureOf]{futureOf()}}, e.g.
 \code{resolve(futureOf(x))}.
 }

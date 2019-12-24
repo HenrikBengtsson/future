@@ -35,7 +35,7 @@
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function
-#' \code{\link{cluster}()}.
+#' [cluster()].
 #'
 #' @aliases MultisessionFuture MultisessionFuture-class
 #' @export

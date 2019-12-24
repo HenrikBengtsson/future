@@ -24,7 +24,7 @@
 #' 1. R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28.
 #'
 #' @seealso
-#' \code{\link{makeClusterPSOCK}()} and
+#' [makeClusterPSOCK()] and
 #' \code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
 #'
 #' @importFrom parallel makeCluster

@@ -9,7 +9,7 @@
 #' @inheritParams Future-class
 #' @inheritParams future
 #'
-#' @param \dots Additional named elements passed to \code{\link{ClusterFuture}()}.
+#' @param \dots Additional named elements passed to [ClusterFuture()].
 #'
 #' @return A \link{ClusterFuture}.
 #'
@@ -23,7 +23,7 @@
 #' The preferred way to create an cluster future is not to call
 #' this function directly, but to register it via
 #' \code{\link{plan}(cluster)} such that it becomes the default
-#' mechanism for all futures.  After this \code{\link{future}()}
+#' mechanism for all futures.  After this [future()]
 #' and \code{\link{\%<-\%}} will create _cluster futures_.
 #'
 #' @export

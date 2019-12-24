@@ -20,7 +20,7 @@
 #' The default set of workers for each method is
 #' `rep("localhost", times = availableCores(method))`, which means
 #' that each will at least use as many parallel workers on the current
-#' machine that \code{\link{availableCores}()} allows for that method.
+#' machine that [availableCores()] allows for that method.
 #'
 #' In addition, the following settings ("methods") are also acknowledged:
 #' \itemize{
@@ -47,7 +47,7 @@
 #'
 #' @seealso
 #' To get the number of available workers on the current machine,
-#' see \code{\link{availableCores}()}.
+#' see [availableCores()].
 #'
 #' @importFrom utils file_test
 #' @export

@@ -21,21 +21,21 @@
 #'
 #' @details
 #' The background \R sessions (the "workers") are created using
-#' \code{\link{makeClusterPSOCK}()}.
+#' [makeClusterPSOCK()].
 #' 
 #' The `multisession()` function will block if all available
 #' \R session are occupied
 #' and will be unblocked as soon as one of the already running
 #' multisession futures is resolved.  For the total number of
 #' \R sessions available including the current/main \R process, see
-#' \code{\link{availableCores}()}.
+#' [availableCores()].
 #'
 #' A multisession future is a special type of cluster future.
 #'
 #' The preferred way to create an multisession future is not to call
 #' this function directly, but to register it via
 #' \code{\link{plan}(multisession)} such that it becomes the default
-#' mechanism for all futures.  After this \code{\link{future}()}
+#' mechanism for all futures.  After this [future()]
 #' and \code{\link{\%<-\%}} will create _multisession futures_.
 #'
 #' @seealso
@@ -44,7 +44,7 @@
 #' For multicore processing with fallback to multisession where
 #' the former is not supported, see [multiprocess] futures.
 #'
-#' Use \code{\link{availableCores}()} to see the total number of
+#' Use [availableCores()] to see the total number of
 #' cores that are available for the current \R session.
 #'
 #' @export

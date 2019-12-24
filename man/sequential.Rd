@@ -49,7 +49,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{local}{If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
@@ -75,7 +75,7 @@ by default just as for all other types of futures in this package.
 The preferred way to create a sequential future is not to call these functions
 directly, but to register them via \code{\link{plan}(sequential)} such that
 it becomes the default mechanism for all futures.  After this
-\code{\link{future}()} and \code{\link{\%<-\%}} will create
+\code{\link[=future]{future()}} and \code{\link{\%<-\%}} will create
 \emph{sequential futures}.
 }
 \section{transparent futures}{

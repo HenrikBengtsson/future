@@ -1,7 +1,7 @@
 #' Plan how to resolve a future
 #'
 #' This function allows _the user_ to plan the future, more specifically,
-#' it specifies how \code{\link{future}()}:s are resolved,
+#' it specifies how [future()]:s are resolved,
 #' e.g. sequentially or in parallel.
 #'
 #' @param strategy The evaluation function (or name of it) to use

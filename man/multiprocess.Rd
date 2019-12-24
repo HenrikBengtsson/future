@@ -35,7 +35,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{workers}{A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
@@ -56,7 +56,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
+\item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 A \link{MultiprocessFuture} implemented as either a
@@ -97,6 +97,6 @@ stopifnot(v == 0)
 }
 }
 \seealso{
-Internally \code{\link{multicore}()} and \code{\link{multisession}()}
+Internally \code{\link[=multicore]{multicore()}} and \code{\link[=multisession]{multisession()}}
 are used.
 }

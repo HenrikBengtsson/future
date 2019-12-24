@@ -25,9 +25,9 @@ identified.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 An object of class \code{MulticoreFuture}.
@@ -37,6 +37,6 @@ An multicore future is a future whose value will be resolved asynchronously in a
 }
 \seealso{
 To evaluate an expression using "multicore future", see function
-\code{\link{multicore}()}.
+\code{\link[=multicore]{multicore()}}.
 }
 \keyword{internal}

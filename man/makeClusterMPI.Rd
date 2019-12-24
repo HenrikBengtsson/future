@@ -43,6 +43,6 @@ only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
 }
 }
 \seealso{
-\code{\link{makeClusterPSOCK}()} and
+\code{\link[=makeClusterPSOCK]{makeClusterPSOCK()}} and
 \code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
 }

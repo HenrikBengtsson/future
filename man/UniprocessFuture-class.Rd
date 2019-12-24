@@ -39,7 +39,7 @@ identified.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
@@ -52,7 +52,7 @@ all assignments are done to local temporary environment, otherwise
 the assignments are done to the global environment of the \R process
 evaluating the future.}
 
-\item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
+\item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 An object of class \code{UniprocessFuture}.
@@ -62,6 +62,6 @@ An uniprocess future is a future whose value will be resolved synchronously in t
 }
 \seealso{
 To evaluate an expression using "uniprocess future", see functions
-\code{\link{uniprocess}()}.
+\code{\link[=uniprocess]{uniprocess()}}.
 }
 \keyword{internal}

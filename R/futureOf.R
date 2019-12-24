@@ -1,7 +1,7 @@
 #' Get the future of a future variable
 #'
 #' Get the future of a future variable that has been created directly
-#' or indirectly via \code{\link{future}()}.
+#' or indirectly via [future()].
 #'
 #' @param var the variable.  If NULL, all futures in the
 #' environment are returned.

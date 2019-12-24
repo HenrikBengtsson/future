@@ -34,7 +34,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{workers}{A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
@@ -48,7 +48,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 A \link{MulticoreFuture}
@@ -67,13 +67,13 @@ This function will block if all cores are occupied and
 will be unblocked as soon as one of the already running
 multicore futures is resolved.  For the total number of
 cores available including the current/main \R process, see
-\code{\link{availableCores}()}.
+\code{\link[=availableCores]{availableCores()}}.
 
 Not all operating systems support process forking and thereby not multicore
 futures.  For instance, forking is not supported on Microsoft Windows.
 Moreover, process forking may break some R environments such as RStudio.
 Because of this, the future package disables process forking also in
-such cases.  See \code{\link{supportsMulticore}()} for details.
+such cases.  See \code{\link[=supportsMulticore]{supportsMulticore()}} for details.
 Trying to create multicore futures on non-supported systems or when
 forking is disabled will result in multicore futures falling back to
 becoming \link{sequential} futures.
@@ -81,7 +81,7 @@ becoming \link{sequential} futures.
 The preferred way to create an multicore future is not to call
 this function directly, but to register it via
 \code{\link{plan}(multicore)} such that it becomes the default
-mechanism for all futures.  After this \code{\link{future}()}
+mechanism for all futures.  After this \code{\link[=future]{future()}}
 and \code{\link{\%<-\%}} will create \emph{multicore futures}.
 }
 \examples{
@@ -114,7 +114,7 @@ For processing in multiple background \R sessions, see
 For multicore processing with fallback to multisession where
 the former is not supported, see \link{multiprocess} futures.
 
-Use \code{\link{availableCores}()} to see the total number of
+Use \code{\link[=availableCores]{availableCores()}} to see the total number of
 cores that are available for the current \R session.
 Use \code{\link{availableCores}("multicore") > 1L} to check
 whether multicore futures are supported or not on the current

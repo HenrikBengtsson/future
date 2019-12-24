@@ -36,7 +36,7 @@ eagerly (starting immediately), otherwise not.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -60,7 +60,7 @@ as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{Future}()}.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 A \link{MultisessionFuture}.
@@ -75,21 +75,21 @@ parallel in another \R session}.
 }
 \details{
 The background \R sessions (the "workers") are created using
-\code{\link{makeClusterPSOCK}()}.
+\code{\link[=makeClusterPSOCK]{makeClusterPSOCK()}}.
 
 The \code{multisession()} function will block if all available
 \R session are occupied
 and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
 \R sessions available including the current/main \R process, see
-\code{\link{availableCores}()}.
+\code{\link[=availableCores]{availableCores()}}.
 
 A multisession future is a special type of cluster future.
 
 The preferred way to create an multisession future is not to call
 this function directly, but to register it via
 \code{\link{plan}(multisession)} such that it becomes the default
-mechanism for all futures.  After this \code{\link{future}()}
+mechanism for all futures.  After this \code{\link[=future]{future()}}
 and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 }
 \examples{
@@ -126,6 +126,6 @@ For processing in multiple forked \R sessions, see
 For multicore processing with fallback to multisession where
 the former is not supported, see \link{multiprocess} futures.
 
-Use \code{\link{availableCores}()} to see the total number of
+Use \code{\link[=availableCores]{availableCores()}} to see the total number of
 cores that are available for the current \R session.
 }

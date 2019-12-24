@@ -21,13 +21,13 @@
 #' will be unblocked as soon as one of the already running
 #' multicore futures is resolved.  For the total number of
 #' cores available including the current/main \R process, see
-#' \code{\link{availableCores}()}.
+#' [availableCores()].
 #'
 #' Not all operating systems support process forking and thereby not multicore
 #' futures.  For instance, forking is not supported on Microsoft Windows.
 #' Moreover, process forking may break some R environments such as RStudio.
 #' Because of this, the future package disables process forking also in
-#' such cases.  See \code{\link{supportsMulticore}()} for details.
+#' such cases.  See [supportsMulticore()] for details.
 #' Trying to create multicore futures on non-supported systems or when
 #' forking is disabled will result in multicore futures falling back to
 #' becoming [sequential] futures.
@@ -35,7 +35,7 @@
 #' The preferred way to create an multicore future is not to call
 #' this function directly, but to register it via
 #' \code{\link{plan}(multicore)} such that it becomes the default
-#' mechanism for all futures.  After this \code{\link{future}()}
+#' mechanism for all futures.  After this [future()]
 #' and \code{\link{\%<-\%}} will create _multicore futures_.
 #'
 #' @seealso
@@ -44,7 +44,7 @@
 #' For multicore processing with fallback to multisession where
 #' the former is not supported, see [multiprocess] futures.
 #'
-#' Use \code{\link{availableCores}()} to see the total number of
+#' Use [availableCores()] to see the total number of
 #' cores that are available for the current \R session.
 #' Use \code{\link{availableCores}("multicore") > 1L} to check
 #' whether multicore futures are supported or not on the current
