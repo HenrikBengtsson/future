@@ -72,6 +72,7 @@
 #' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
+#' @importFrom parallel nextRNGStream
 #' @export
 #' @keywords internal
 #' @name Future-class
@@ -83,7 +84,8 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   } else if (is.null(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
   } else {
-    seed <- make_rng_seeds(1L, seed = seed)[[1]]
+    .seed <- as_lecyer_cmrg_seed(seed)
+    seed <- nextRNGSubStream(.seed)
   }
 
   stop_if_not(is.logical(stdout), length(stdout) == 1L)
@@ -104,13 +106,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
 
   args <- list(...)
 
-
-  ## If an RNG seed is used (given or generated), make sure to reset
-  ## the RNG state afterward
-  if (!is.null(seed)) {
-    oseed <- next_random_seed()
-    on.exit(set_random_seed(oseed))
-  }
 
   core <- new.env(parent = emptyenv())
 
