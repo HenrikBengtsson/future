@@ -496,49 +496,6 @@ Run `revdep_details(,"inlinedocs")` for more info
     Package unavailable to check Rd xrefs: ‘R.methodsS3’
     ```
 
-# ipc
-
-<details>
-
-* Version: 0.1.3
-* Source code: https://github.com/cran/ipc
-* URL: https://github.com/fellstat/ipc
-* BugReports: https://github.com/fellstat/ipc/issues
-* Date/Publication: 2019-06-23 06:00:03 UTC
-* Number of recursive dependencies: 55
-
-Run `revdep_details(,"ipc")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > 
-    > ### ** Examples
-    > 
-    > library(future)
-    > strategy <- "future::multisession"
-    > plan(strategy)
-    Warning in socketConnection("localhost", port = port, server = TRUE, blocking = TRUE,  :
-      port 37400 cannot be opened
-    Error in socketConnection("localhost", port = port, server = TRUE, blocking = TRUE,  : 
-      Failed to launch and connect to R worker on local machine ‘localhost’ from local machine ‘hb-x1’.
-     * The error produced by socketConnection() was: ‘cannot open the connection’
-     * In addition, socketConnection() produced 1 warning(s):
-       - Warning #1: ‘port 37400 cannot be opened’ (which suggests that this port is either already occupied by another process or blocked by the firewall on your local machine)
-     * The localhost socket connection that failed to connect to the R worker used port 37400 using a communication timeout of 120 seconds and a connection timeout of 120 seconds.
-     * Worker launch call: '/usr/lib/R/bin/Rscript' --default-packages=datasets,utils,grDevices,graphics,stats,methods -e '#label=UNKNOWN:30647:hb-x1:hb' -e 'try(suppressWarnings(cat(Sys.getpid(),file="/tmp/hb/RtmpD9gqlI/future.parent=30647.77b741fdd72a.pid")), silent = TRUE)' -e 'parallel:::.slaveRSOCK()' MASTER=localhost PORT=37400 OUT=/dev/null TIMEOUT=120 XDR=TRUE.
-     * Worker (PID 30793) was successfully killed: TRUE
-     * Troubleshooting suggestions:
-       - Suggestion #1: Set 'verbose=TRUE' to see more details.
-       - Suggestion #2: Set 'outfile=NULL' to see output from worker.
-    Calls: plan ... tryCatchList -> tryCatchOne -> <Anonymous> -> <Anonymous>
-    Execution halted
-    ```
-
 # lidR
 
 <details>

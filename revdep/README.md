@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-12-22                   |
+|date     |2019-12-23                   |
 
 # Dependencies
 
@@ -72,7 +72,7 @@
 |idmodelr                                        |0.3.1     |      |        |     |
 |[infercnv](problems.md#infercnv)                |1.2.1     |      |        |2    |
 |[inlinedocs](problems.md#inlinedocs)            |2019.12.5 |      |        |1    |
-|[ipc](problems.md#ipc)                          |0.1.3     |1     |        |     |
+|ipc                                             |0.1.3     |      |        |     |
 |jstor                                           |0.3.7     |      |        |     |
 |kernelboot                                      |0.1.6     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
