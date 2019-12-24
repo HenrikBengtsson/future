@@ -10,6 +10,9 @@ NEW FEATURES:
    from this seed.  If `seed = TRUE`, then a L'Ecuyer-CMRG RNG seed based on
    the current RNG state is used.
 
+ * FutureResult gained field 'rng' which indicates whether the '.Random.seed'
+   was updated or not when resolving the future.
+   
 BUG FIXES:
 
  * Evaluation of futures could fail if the global environment contained

@@ -744,11 +744,12 @@ makeExpression <- local({
   
         ...future.frame <- base::sys.nframe()
         ...future.conditions <- base::list()
+        ...future.rng <- base::globalenv()$.Random.seed
         ...future.result <- base::tryCatch({
           base::withCallingHandlers({
             ...future.value <- base::withVisible(.(expr))
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, started = ...future.startTime, version = "1.8")
+            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
           }, condition = base::local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
@@ -799,6 +800,7 @@ makeExpression <- local({
             value = NULL,
             visible = NULL,
             conditions = ...future.conditions,
+            rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))
