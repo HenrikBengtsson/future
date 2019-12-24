@@ -34,7 +34,8 @@
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.
 #'
-#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#' @param seed (optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
+#' RNG seed (a single integer), or a logical.
 #'
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
@@ -74,16 +75,15 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
-  if (!is.null(seed)) {
-    if (!is_lecyer_cmrg_seed(seed)) {
-      msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
-      mdebug(msg)
-      mprint(seed)
-      stop(msg)
-    }
+  if (isFALSE(seed)) {
+    seed <- NULL
+  } else if (is.null(seed)) {
+  } else if (is_lecyer_cmrg_seed(seed)) {
+  } else {
+    seed <- make_rng_seeds(1L, seed = seed)[[1]]
   }
 
   stop_if_not(is.logical(stdout), length(stdout) == 1L)
@@ -103,6 +103,14 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   }
 
   args <- list(...)
+
+
+  ## If an RNG seed is used (given or generated), make sure to reset
+  ## the RNG state afterward
+  if (!is.null(seed)) {
+    oseed <- next_random_seed()
+    on.exit(set_random_seed(oseed))
+  }
 
   core <- new.env(parent = emptyenv())
 

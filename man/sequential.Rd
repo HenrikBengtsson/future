@@ -44,7 +44,8 @@ identified.}
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
+RNG seed (a single integer), or a logical.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.

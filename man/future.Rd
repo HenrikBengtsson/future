@@ -16,7 +16,7 @@ future(
   globals = TRUE,
   packages = NULL,
   lazy = FALSE,
-  seed = NULL,
+  seed = FALSE,
   ...
 )
 
@@ -65,7 +65,8 @@ to be attached in the \R environment evaluating the future.}
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
+RNG seed (a single integer), or a logical.}
 
 \item{\dots}{Reserved for internal use only.}
 

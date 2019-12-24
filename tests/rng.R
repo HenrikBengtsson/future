@@ -2,10 +2,20 @@ source("incl/start.R")
 
 message("*** rng ...")
 
+## A valid regular seed
+f <- Future(42, seed = 42L)
+print(f)
+
 ## A valid L'Ecuyer-CMRG RNG seed
 seed <- c(407L, 1420090545L, 65713854L, -990249945L,
           1780737596L, -1213437427L, 1082168682L)
 f <- Future(42, seed = seed)
+print(f)
+
+f <- Future(42, seed = FALSE)
+print(f)
+
+f <- Future(42, seed = TRUE)
 print(f)
 
 ## See Section 6 on 'Random-number generation' in

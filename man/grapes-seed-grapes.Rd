@@ -10,7 +10,8 @@ fassignment \%seed\% seed
 \item{fassignment}{The future assignment, e.g.
 \code{x \%<-\% { expr }}.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
+RNG seed (a single integer), or a logical.}
 }
 \description{
 Set random seed for future assignment

@@ -13,7 +13,7 @@ Future(
   conditions = "condition",
   globals = NULL,
   packages = NULL,
-  seed = NULL,
+  seed = FALSE,
   lazy = FALSE,
   local = TRUE,
   gc = FALSE,
@@ -50,7 +50,8 @@ in the help for \code{\link[=future]{future()}}.}
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
+RNG seed (a single integer), or a logical.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}

@@ -1,7 +1,14 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-22]
+Version: 1.15.1-9001 [2019-12-23]
+
+NEW FEATURES:
+
+ * For convenience, argument 'seed' of future() may now also be an ordinary
+   single integer random seed.  If so, a L'Ecuyer-CMRG RNG seed is created
+   from this seed.  If `seed = TRUE`, then a L'Ecuyer-CMRG RNG seed based on
+   the current RNG state is used.
 
 BUG FIXES:
 

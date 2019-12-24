@@ -182,7 +182,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, seed = NULL, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, seed = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Hidden argument 'evaluator':
