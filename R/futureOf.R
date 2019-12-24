@@ -12,7 +12,7 @@
 #' @param drop if TRUE and `var` is NULL, then returned list
 #' only contains futures, otherwise also `default` values.
 #'
-#' @return A \link{Future} (or `default`).
+#' @return A [Future] (or `default`).
 #' If `var` is NULL, then a named list of Future:s are returned.
 #'
 #' @example incl/futureOf.R

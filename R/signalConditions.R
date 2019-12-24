@@ -16,7 +16,7 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return Returns the \link{Future} where conditioned that were signaled
+#' @return Returns the [Future] where conditioned that were signaled
 #' have been flagged to have been signaled.
 #'
 #' @seealso

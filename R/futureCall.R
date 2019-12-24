@@ -3,7 +3,7 @@
 #' @param args A \link[base]{list} of arguments passed to function `FUN`.
 #'
 #' @return
-#' `f <- futureCall(FUN, args)` creates a \link{Future} `f` that calls function `FUN` with arguments `args`, where the value of the future is retrieved using `x <- value(f)`.
+#' `f <- futureCall(FUN, args)` creates a [Future] `f` that calls function `FUN` with arguments `args`, where the value of the future is retrieved using `x <- value(f)`.
 #'
 #' @example incl/futureCall.R
 #'

@@ -30,7 +30,7 @@
 #' such cases.  See \code{\link{supportsMulticore}()} for details.
 #' Trying to create multicore futures on non-supported systems or when
 #' forking is disabled will result in multicore futures falling back to
-#' becoming \link{sequential} futures.
+#' becoming [sequential] futures.
 #'
 #' The preferred way to create an multicore future is not to call
 #' this function directly, but to register it via
@@ -40,9 +40,9 @@
 #'
 #' @seealso
 #' For processing in multiple background \R sessions, see
-#' \link{multisession} futures.
+#' [multisession] futures.
 #' For multicore processing with fallback to multisession where
-#' the former is not supported, see \link{multiprocess} futures.
+#' the former is not supported, see [multiprocess] futures.
 #'
 #' Use \code{\link{availableCores}()} to see the total number of
 #' cores that are available for the current \R session.

@@ -17,7 +17,7 @@
 #' @param \dots Reserved for internal use only.
 #'
 #' @return
-#' `f <- future(expr)` creates a \link{Future} `f` that evaluates expression `expr`, the value of the future is retrieved using `v <- value(f)`.
+#' `f <- future(expr)` creates a [Future] `f` that evaluates expression `expr`, the value of the future is retrieved using `v <- value(f)`.
 #'
 #' @details
 #' The state of a future is either unresolved or resolved.

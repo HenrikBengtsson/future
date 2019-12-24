@@ -40,9 +40,9 @@
 #'
 #' @seealso
 #' For processing in multiple forked \R sessions, see
-#' \link{multicore} futures.
+#' [multicore] futures.
 #' For multicore processing with fallback to multisession where
-#' the former is not supported, see \link{multiprocess} futures.
+#' the former is not supported, see [multiprocess] futures.
 #'
 #' Use \code{\link{availableCores}()} to see the total number of
 #' cores that are available for the current \R session.

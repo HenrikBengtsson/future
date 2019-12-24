@@ -6,7 +6,7 @@
 #'
 #' @return
 #' `x %<-% value` (a future assignment) and
-#' `futureAssign("x", value)` create a \link{Future} that evaluates
+#' `futureAssign("x", value)` create a [Future] that evaluates
 #' expression `expr` and binds its value (as a \link[base]{promise}) to
 #' a variable `x`.  The value of the future is automatically retrieved
 #' when the assigned variable (promise) is queried.

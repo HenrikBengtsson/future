@@ -9,7 +9,7 @@
 #'
 #' @param expr An \R \link[base]{expression}.
 #'
-#' @param envir The \link{environment} from where global objects should be
+#' @param envir The [environment] from where global objects should be
 #' identified.
 #'
 #' @param substitute If TRUE, argument `expr` is
@@ -269,7 +269,7 @@ assertOwner <- function(future, ...) {
 #' @param future A \link{Future}.
 #' @param \dots Not used.
 #'
-#' @return The \link{Future} object.
+#' @return The [Future] object.
 #'
 #' @details
 #' This function can only be called once per future.
@@ -305,7 +305,7 @@ result <- function(...) UseMethod("result")
 #' @param future A \link{Future}.
 #' @param \dots Not used.
 #'
-#' @return The \link{FutureResult} object.
+#' @return The [FutureResult] object.
 #'
 #' @details
 #' This function is only part of the _backend_ Future API.
@@ -467,9 +467,9 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #'
 #' @details
 #' If no next future strategy is specified, the default is to
-#' use \link{sequential} futures.  This conservative approach protects
+#' use [sequential] futures.  This conservative approach protects
 #' against spawning off recursive futures by mistake, especially
-#' \link{multicore} and \link{multisession} ones.
+#' [multicore] and [multisession] ones.
 #' The default will also set `options(mc.cores = 1L)` (*) so that
 #' no parallel \R processes are spawned off by functions such as
 #' \code{\link[parallel:mclapply]{mclapply}()} and friends.

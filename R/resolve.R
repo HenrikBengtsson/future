@@ -4,7 +4,7 @@
 #' futures in a container (e.g. list or environment) to be resolved while in
 #' the meanwhile retrieving values of already resolved futures.
 #' 
-#' @param x A \link{Future} to be resolved, or a list, an environment, or a
+#' @param x A [Future] to be resolved, or a list, an environment, or a
 #' list environment of futures to be resolved.
 #' 
 #' @param idxs (optional) integer or logical index specifying the subset of
@@ -40,7 +40,7 @@
 #' any containing futures are resolved.
 #' 
 #' @seealso To resolve a future _variable_, first retrieve its
-#' \link{Future} object using \code{\link{futureOf}()}, e.g.
+#' [Future] object using \code{\link{futureOf}()}, e.g.
 #' `resolve(futureOf(x))`.
 #'
 #' @export

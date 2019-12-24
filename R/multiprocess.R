@@ -1,7 +1,7 @@
 #' Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation
 #'
-#' A multiprocess future is a future that uses \link{multicore} evaluation
-#' if supported, otherwise it uses \link{multisession} evaluation.
+#' A multiprocess future is a future that uses [multicore] evaluation
+#' if supported, otherwise it uses [multisession] evaluation.
 #' Regardless, its _value is computed and resolved in
 #' parallel in another process_.
 #'
@@ -18,8 +18,8 @@
 #' 
 #' @param \dots Additional named elements passed to \code{\link{Future}()}.
 #'
-#' @return A \link{MultiprocessFuture} implemented as either a
-#' \link{MulticoreFuture} or a \link{MultisessionFuture}.
+#' @return A [MultiprocessFuture] implemented as either a
+#' [MulticoreFuture] or a \link{MultisessionFuture}.
 #'
 #' @example incl/multiprocess.R
 #'

@@ -10,7 +10,7 @@
 #' 
 #' @param call The call stack that led up to the condition.
 #' 
-#' @param future The \link{Future} involved.
+#' @param future The [Future] involved.
 #' 
 #' @return An object of class FutureCondition which inherits from class
 #' \link[base:conditions]{condition} and FutureMessage, FutureWarning,
