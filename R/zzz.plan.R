@@ -31,39 +31,39 @@
 #' @example incl/plan.R
 #'
 #' @details
-#' The default strategy is \code{\link{sequential}}, but the default can be
+#' The default strategy is [`sequential`], but the default can be
 #' configured by option \option{future.plan} and, if that is not set,
 #' system environment variable \env{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use `plan("default")`.
 #'
 #' @section Implemented evaluation strategies:
 #' \itemize{
-#'  \item{\code{\link{sequential}}:}{
+#'  \item{[`sequential`]:}{
 #'    Resolves futures sequentially in the current \R process.
 #'  }
-#'  \item{\code{\link{transparent}}:}{
+#'  \item{[`transparent`]:}{
 #'    Resolves futures sequentially in the current \R process and
 #'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
-#'  \item{\code{\link{multisession}}:}{
+#'  \item{[`multisession`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running in the background on the same machine.
 #'  }
-#'  \item{\code{\link{multicore}}:}{
+#'  \item{[`multicore`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{\code{\link{multiprocess}}:}{
+#'  \item{[`multiprocess`]:}{
 #'    If multicore evaluation is supported, that will be used,
 #'    otherwise multisession evaluation will be used.
 #'  }
-#'  \item{\code{\link{cluster}}:}{
+#'  \item{[`cluster`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running typically on one or more machines.
 #'  }
-#'  \item{\code{\link{remote}}:}{
+#'  \item{[`remote`]:}{
 #'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.

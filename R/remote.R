@@ -17,7 +17,7 @@
 #' @example incl/remote.R
 #'
 #' @section 'remote' versus 'cluster':
-#' The `remote` plan is a very similar to the \code{\link{cluster}} plan, but provides
+#' The `remote` plan is a very similar to the [`cluster`] plan, but provides
 #' more convenient default argument values when connecting to remote machines.  Specifically,
 #' `remote` uses `persistent = TRUE` by default, and it sets `homogeneous`,
 #' `revtunnel`, and `myip` "wisely" depending on the value of `workers`.
