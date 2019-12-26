@@ -30,7 +30,21 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
   orng <- RNGkind("L'Ecuyer-CMRG")[1L]
   on.exit(RNGkind(orng))
 
-  if (!is.null(seed)) {
+  if (is.null(seed)) {
+    if (what == "future") {
+      fs <- list()
+      for (ii in seq_len(size)) {
+        fs[[ii]] <- future({ sample(x, size = 1L) })
+      }
+      res <- values(fs)
+    } else {
+      res <- listenv::listenv()
+      for (ii in seq_len(size)) {
+        res[[ii]] %<-% { sample(x, size = 1L) }
+      }
+      res <- as.list(res)
+    }
+  } else {
     ## Reset state of random seed afterwards?
     on.exit({
       if (is.null(oseed)) {
@@ -41,24 +55,24 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
     }, add = TRUE)
 
     set.seed(seed)
-  }
 
-  .seed <- .Random.seed
-
-  if (what == "future") {
-    fs <- list()
-    for (ii in seq_len(size)) {
-      .seed <- parallel::nextRNGStream(.seed)
-      fs[[ii]] <- future({ sample(x, size = 1L) }, seed = .seed)
+    .seed <- .Random.seed
+  
+    if (what == "future") {
+      fs <- list()
+      for (ii in seq_len(size)) {
+        .seed <- parallel::nextRNGStream(.seed)
+        fs[[ii]] <- future({ sample(x, size = 1L) }, seed = .seed)
+      }
+      res <- values(fs)
+    } else {
+      res <- listenv::listenv()
+      for (ii in seq_len(size)) {
+        .seed <- parallel::nextRNGStream(.seed)
+        res[[ii]] %<-% { sample(x, size = 1L) } %seed% .seed
+      }
+      res <- as.list(res)
     }
-    res <- values(fs)
-  } else {
-    res <- listenv::listenv()
-    for (ii in seq_len(size)) {
-      .seed <- parallel::nextRNGStream(.seed)
-      res[[ii]] %<-% { sample(x, size = 1L) } %seed% .seed
-    }
-    res <- as.list(res)
   }
   
   res
@@ -109,12 +123,27 @@ for (cores in 1:availCores) {
       stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
   
       ## No seed
-      y3 <- fsample(0:3, what = what)
-      print(y3)
+      for (misuse in c("ignore", "warning", "error")) {
+        options(future.rng.onMisuse = misuse)
+
+        y3 <- tryCatch({
+	  fsample(0:3, what = what)
+	}, warning = identity, error = identity)
+        print(y3)
+	if (misuse %in% c("warning", "error")) {
+	  stopifnot(inherits(y3, misuse))
+	}
   
-      ## No seed
-      y4 <- fsample(0:3, what = what)
-      print(y4)
+        y4 <- tryCatch({
+	  fsample(0:3, what = what)
+	}, warning = identity, error = identity)
+        print(y4)
+	if (misuse %in% c("warning", "error")) {
+	  stopifnot(inherits(y4, misuse))
+	}
+      }
+      
+      options(future.rng.onMisuse = "ignore")
     }
 
     message(sprintf("%s ... done", strategy))
