@@ -443,9 +443,12 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (!isTRUE(future$.rng_checked) && is.null(future$seed) && isTRUE(result$rng)) {
     ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
     ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
-    if (is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]]) || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])) {
-      ## WORKAROUND/FIXME: Remove when downstream packages have been updated.
-    } else {
+    ## future.apply (<= 1.3.0) and furrr
+    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
+    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
+    ## doFuture w/ doRNG, e.g. %dorng%
+    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
+    if (!rng_ok) {
       onMisuse <- getOption("future.rng.onMisuse", "ignore")
       if (onMisuse != "ignore") {
         label <- future$label
