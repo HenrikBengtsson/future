@@ -45,7 +45,8 @@
 #' does not use random numbers.  If it does and depending on the value of
 #' option \code{\link[=future.options]{future.rng.misUse}}, the check is
 #' ignored, an informative warning, or error will be produced.
-#' If `seed` is NA (default), then this check will not be performed.
+#' If `seed` is NULL (default), then the effect is as with `seed = FALSE`
+#' but without the RNG check being performed.
 #'
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
@@ -86,12 +87,10 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NA, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (isNA(seed)) {
-  } else if (is.null(seed)) {
-    seed <- NA
+  if (is.null(seed)) {
   } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
   } else {
@@ -213,7 +212,7 @@ print.Future <- function(x, ...) {
   if (is.integer(x$seed)) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   } else {
-    cat("L'Ecuyer-CMRG RNG seed: <none> (seed = ", x$seed, ")\n", sep = "")
+    cat("L'Ecuyer-CMRG RNG seed: <none> (seed = ", deparse(x$seed), ")\n", sep = "")
   }
 
   result <- x$result

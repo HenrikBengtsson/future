@@ -13,7 +13,7 @@ Future(
   conditions = "condition",
   globals = NULL,
   packages = NULL,
-  seed = NA,
+  seed = NULL,
   lazy = FALSE,
   local = TRUE,
   gc = FALSE,
@@ -61,7 +61,8 @@ Furthermore, if FALSE, then the future will be monitored to make sure it
 does not use random numbers.  If it does and depending on the value of
 option \code{\link[=future.options]{future.rng.misUse}}, the check is
 ignored, an informative warning, or error will be produced.
-If \code{seed} is NA (default), then this check will not be performed.}
+If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+but without the RNG check being performed.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}

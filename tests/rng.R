@@ -18,7 +18,7 @@ print(f)
 f <- Future(42, seed = FALSE)
 print(f)
 
-f <- Future(42, seed = NA)
+f <- Future(42, seed = NULL)
 print(f)
 
 
@@ -97,7 +97,6 @@ stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
 
 for (cores in 1:availCores) {
-#for (cores in 2L) {
   ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
   if (!fullTest && isWin32) next
   
@@ -141,10 +140,8 @@ for (cores in 1:availCores) {
           stopifnot(inherits(y3, misuse))
         }
 
-        ## seed = NA means: "Although not sure, please don't set seed
-        ## and do not check for misuse"
-        message("------------------- seed = NA --------------------")
-        y4 <- fsample(0:3, what = what, seed = NA)
+        ## seed = NULL equals seed = FALSE but without the check of misuse
+        y4 <- fsample(0:3, what = what, seed = NULL)
         print(y4)
       }
       
