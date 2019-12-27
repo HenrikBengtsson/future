@@ -2,6 +2,10 @@ isFALSE <- function(x) {
   is.logical(x) && length(x) == 1L && !is.na(x) && !x
 }
 
+isNA <- function(x) {
+  is.logical(x) && length(x) == 1L && is.na(x)
+}
+
 assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
   ast <- as.list(call)
   if (length(ast) <= 2L) return()

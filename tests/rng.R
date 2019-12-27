@@ -12,11 +12,15 @@ seed <- c(407L, 1420090545L, 65713854L, -990249945L,
 f <- Future(42, seed = seed)
 print(f)
 
+f <- Future(42, seed = TRUE)
+print(f)
+
 f <- Future(42, seed = FALSE)
 print(f)
 
-f <- Future(42, seed = TRUE)
+f <- Future(42, seed = NA)
 print(f)
+
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package = "parallel")
@@ -30,17 +34,19 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
   orng <- RNGkind("L'Ecuyer-CMRG")[1L]
   on.exit(RNGkind(orng))
 
-  if (is.null(seed)) {
+  if (isFALSE(seed) || isNA(seed) || is.null(seed)) {
     if (what == "future") {
       fs <- list()
       for (ii in seq_len(size)) {
-        fs[[ii]] <- future({ sample(x, size = 1L) })
+        label <- sprintf("fsample_%d-%d", ii, sample.int(1e6, size=1L))
+        fs[[ii]] <- future({ sample(x, size = 1L) }, seed = seed, label = label)
       }
       res <- values(fs)
     } else {
       res <- listenv::listenv()
       for (ii in seq_len(size)) {
-        res[[ii]] %<-% { sample(x, size = 1L) }
+        label <- sprintf("fsample_%d-%d", ii, sample.int(1e6, size=1L))
+        res[[ii]] %<-% { sample(x, size = 1L) } %seed% seed %label% label
       }
       res <- as.list(res)
     }
@@ -91,6 +97,7 @@ stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
 
 
 for (cores in 1:availCores) {
+#for (cores in 2L) {
   ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
   if (!fullTest && isWin32) next
   
@@ -127,20 +134,18 @@ for (cores in 1:availCores) {
         options(future.rng.onMisuse = misuse)
 
         y3 <- tryCatch({
-	  fsample(0:3, what = what)
-	}, warning = identity, error = identity)
+          fsample(0:3, what = what, seed = FALSE)
+        }, warning = identity, error = identity)
         print(y3)
-	if (misuse %in% c("warning", "error")) {
-	  stopifnot(inherits(y3, misuse))
-	}
-  
-        y4 <- tryCatch({
-	  fsample(0:3, what = what)
-	}, warning = identity, error = identity)
+        if (misuse %in% c("warning", "error")) {
+          stopifnot(inherits(y3, misuse))
+        }
+
+        ## seed = NA means: "Although not sure, please don't set seed
+        ## and do not check for misuse"
+        message("------------------- seed = NA --------------------")
+        y4 <- fsample(0:3, what = what, seed = NA)
         print(y4)
-	if (misuse %in% c("warning", "error")) {
-	  stopifnot(inherits(y4, misuse))
-	}
       }
       
       options(future.rng.onMisuse = "ignore")
