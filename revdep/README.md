@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2019-12-23                   |
+|date     |2019-12-27                   |
 
 # Dependencies
 
@@ -44,7 +44,7 @@
 |dhReg                                           |0.1.0     |      |        |     |
 |[dipsaus](problems.md#dipsaus)                  |0.0.3     |      |        |1    |
 |[disk.frame](problems.md#diskframe)             |0.3.1     |      |        |1    |
-|[doFuture](problems.md#dofuture)                |0.8.2     |1     |        |     |
+|doFuture                                        |0.8.2     |      |        |     |
 |drake                                           |7.8.0     |      |        |     |
 |drtmle                                          |1.0.4     |      |        |     |
 |ezcox                                           |0.3.0     |      |        |     |
