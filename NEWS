@@ -10,13 +10,13 @@ NEW FEATURES:
    safe, non-statistically sound random number generation (RNG) was used.
    If option 'future.rng.onMisuse' is "warning", a warning is produced. If
    "error", an error is produced.  If "ignore" (default), the mistake is
-   ignored without a message.
+   silently ignored.
 
  * For convenience, argument 'seed' of future() may now also be an ordinary
    single integer random seed.  If so, a L'Ecuyer-CMRG RNG seed is created
-   from this seed.  If `seed = TRUE`, then a L'Ecuyer-CMRG RNG seed based on
-   the current RNG state is used.  Use `seed = FALSE` when it is known that
-   the future does not use RNG.
+   from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
+   current RNG state is used.  Use seed = FALSE when it is known that the
+   future does not use RNG.
 
  * FutureResult gained field 'rng' which indicates whether the '.Random.seed'
    was updated or not when resolving the future.
