@@ -34,8 +34,19 @@
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.
 #'
-#' @param seed (optional) A L'Ecuyer-CMRG RNG seed (seven integer), a regular
-#' RNG seed (a single integer), or a logical.
+#' @param seed (optional) If TRUE, the random seed, that is, the state of the
+#' random number generator (RNG) will be set such that statistically sound
+#' random numbers are produced (also during parallelization).
+#' If FALSE, it is assumed that the future expression does neither need nor
+#' use random numbers generation.
+#' To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
+#' or a regular RNG seed (a single integer).
+#' Furthermore, if FALSE, then the future will be monitored to make sure it
+#' does not use random numbers.  If it does and depending on the value of
+#' option \code{\link[=future.options]{future.rng.misUse}}, the check is
+#' ignored, an informative warning, or error will be produced.
+#' If `seed` is NULL (default), then the effect is as with `seed = FALSE`
+#' but without the RNG check being performed.
 #'
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
@@ -76,12 +87,11 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  
-  if (isFALSE(seed)) {
-    seed <- NULL
-  } else if (is.null(seed)) {
+
+  if (is.null(seed)) {
+  } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
   } else {
     .seed <- as_lecyer_cmrg_seed(seed)
@@ -199,10 +209,10 @@ print.Future <- function(x, ...) {
     cat("Packages: <none>\n")
   }
   
-  if (is.null(x$seed)) {
-    cat("L'Ecuyer-CMRG RNG seed: <none>\n")
-  } else {
+  if (is.integer(x$seed)) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
+  } else {
+    cat("L'Ecuyer-CMRG RNG seed: <none> (seed = ", deparse(x$seed), ")\n", sep = "")
   }
 
   result <- x$result
@@ -418,7 +428,42 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       inherits(result$stdout, "character")) {
     cat(paste(result$stdout, collapse = "\n"))
   }
-  
+
+
+
+  ## Was RNG used without requesting RNG seeds?
+  if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
+    ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
+    ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
+    ## future.apply (<= 1.3.0) and furrr
+    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
+    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
+    ## doFuture w/ doRNG, e.g. %dorng%
+    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
+    if (!rng_ok) {
+      onMisuse <- getOption("future.rng.onMisuse", "ignore")
+      if (onMisuse != "ignore") {
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        msg <- sprintf("UNRELIABLE VALUE: Detected that random numbers were generated while future (%s) was resolved. Because future argument 'seed' was set to %s, those random numbers may not be statistical sound. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. To disable this check, set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label), sQuote(future$seed))
+        if (onMisuse == "error") {
+          cond <- FutureError(msg)
+        } else if (onMisuse == "warning") {
+          cond <- FutureWarning(msg)
+	} else {
+	  cond <- NULL
+	  warning("Unknown value on option 'future.rng.onMisuse': ",
+                  sQuote(onMisuse))
+	}
+	conditions <- result$conditions
+	conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
+        result$conditions <- conditions
+	future$result <- result
+      }
+    }
+  }
+  future$.rng_checked <- TRUE
+
   ## Signal captured conditions?
   conditions <- result$conditions
   if (length(conditions) > 0) {
@@ -435,7 +480,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       }
     }
   }
-
+  
   if (visible) value else invisible(value)
 }
 
@@ -553,8 +598,8 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     })
   }
   
-  ## Seed RNG seed?
-  if (!is.null(future$seed)) {
+  ## Set RNG seed?
+  if (is.numeric(future$seed)) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
