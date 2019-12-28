@@ -40,6 +40,7 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
       for (ii in seq_len(size)) {
         label <- sprintf("fsample_%d-%d", ii, sample.int(1e6, size=1L))
         fs[[ii]] <- future({ sample(x, size = 1L) }, seed = seed, label = label)
+	print(fs[[ii]])
       }
       res <- values(fs)
     } else {
@@ -133,6 +134,12 @@ for (cores in 1:availCores) {
         options(future.rng.onMisuse = misuse)
 
         y3 <- tryCatch({
+	  ## WORKAROUND: fsample() triggers a R_FUTURE_GLOBALS_ONREFERENCE
+	  ##             warning.  Not sure why. /HB 2019-12-27
+	  ovalue <- Sys.getenv("R_FUTURE_GLOBALS_ONREFERENCE")
+	  on.exit(Sys.setenv("R_FUTURE_GLOBALS_ONREFERENCE" = ovalue))
+	  Sys.setenv("R_FUTURE_GLOBALS_ONREFERENCE" = "ignore")
+	  
           fsample(0:3, what = what, seed = FALSE)
         }, warning = identity, error = identity)
         print(y3)
