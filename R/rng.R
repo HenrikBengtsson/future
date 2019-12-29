@@ -45,15 +45,16 @@ as_lecyer_cmrg_seed <- function(seed) {
   ## Generate a L'Ecuyer-CMRG seed (existing or random)?
   if (is.logical(seed)) {
     stop_if_not(length(seed) == 1L)
-    ## seed = FALSE?    
     if (!is.na(seed) && !seed) {
       stop("Argument 'seed' must be TRUE if logical: ", seed)
     }
 
     oseed <- get_random_seed()
     
-    ## seed = TRUE and already a L'Ecuyer-CMRG seed?  Then use that as is.
-    if (!is.na(seed) && seed && is_lecyer_cmrg_seed(oseed)) return(oseed)
+    ## Already a L'Ecuyer-CMRG seed?  Then use that as is.
+    if (!is.na(seed) && seed) {
+      if (is_lecyer_cmrg_seed(oseed)) return(oseed)
+    }
     
     ## Otherwise, generate a random one.
     on.exit(set_random_seed(oseed), add = TRUE)
@@ -81,7 +82,6 @@ as_lecyer_cmrg_seed <- function(seed) {
   stop("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: ", capture.output(str(seed)))
 }
 
-
 #' Produce Reproducible Seeds for Parallel Random Number Generation
 #'
 #' @param count The number of RNG seeds to produce.
@@ -102,13 +102,10 @@ as_lecyer_cmrg_seed <- function(seed) {
 #' @keywords internal
 make_rng_seeds <- function(count, seed = FALSE,
                            debug = getOption("future.debug", FALSE)) {
-  ## Don't use RNGs? (seed = FALSE)
-  if (is.logical(seed)) {
-    if (is.na(seed)) return(NULL)
-    if (!seed) return(NULL)
-  }
+  ## Don't use RNGs? (seed = {FALSE, NULL, NA})
+  if (is.null(seed)) return(NULL)
+  if (is.logical(seed) && (is.na(seed) || !seed)) return(NULL)
 
-  stop_if_not(!is.null(seed))
   stop_if_not(is.numeric(count), length(count) == 1L, !is.na(count),
               count >= 0L)
   
