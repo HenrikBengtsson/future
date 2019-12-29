@@ -41,10 +41,15 @@ Below are all \R options that are currently used by the \pkg{future} package and
 
 \describe{
 \item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via \code{\link[=plan]{plan()}}. This will also be the future plan set when calling \code{plan("default")}.  If not specified, this option may be set when the \pkg{future} package is \emph{loaded} if command-line option \code{--parallel=ncores} (short \verb{-p ncores}) is specified; if \code{ncores > 1}, then option \option{future.plan} is set to \code{multiprocess} otherwise \code{sequential} (in addition to option \option{mc.cores} being set to \code{ncores}, if \code{ncores >= 1}).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: \code{sequential})}
+
 \item{\option{future.globals.onMissing}:}{(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"ignore"})}
+
 \item{\option{future.globals.method}:}{(character string) Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: \code{"ordered"})}
+
 \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of \code{+Inf}, then the check for large globals is skipped. (Default: \code{500 * 1024 ^ 2} = 500 MiB)}
+
 \item{\option{future.globals.resolve}:}{(logical) If \code{TRUE}, globals that are \code{\link{Future}} objects (typically created as \emph{explicit} futures) will be resolved and have their values (using \code{value()}) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: \code{FALSE})}
+
 \item{\option{future.globals.onReference}: (\emph{beta feature - may change})}{(character string) Controls whether the identified globals should be scanned for so called \emph{references} (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process - we call such objects \emph{non-exportable globals}.
 If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
 If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
@@ -52,10 +57,16 @@ If \code{"ignore"}, no scan is performed.
 If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} is used.
 (Default: \code{"ignore"} but may change)
 }
+
 \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
-\item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed. (Default: \code{"ignore"} but may change)}
+
+\item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed.
+If the option is not set, then environment variable \env{R_FUTURE_RNG_ONMISUSE} is used. (Default: \code{"ignore"} but may change)}
+
 \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_TIMEOUT} is used.  (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
+
 \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_INTERVAL} is used.  (Default: \code{0.2} = 0.2 seconds)}
+
 \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_ALPHA} is used.  (Default: \code{1.01})}
 }
 }
@@ -72,6 +83,7 @@ If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFE
 \describe{
 \item{\option{future.startup.script}:}{(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the \pkg{future} package is \emph{attached}. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced - there will be neither a warning nor an error.
 If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRIPT} is considered, where multiple scripts may be separated by either a colon (\code{:}) or a semicolon (\verb{;}). If neither is set, or either is set to \code{TRUE}, the default is to look for a \file{.future.R} script in the current directory and then in the user's home directory.  To disable future startup scripts, set the option or the environment variable to \code{FALSE}.  \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main \R process but not in future processes. (Default: \code{TRUE} in main \R process and \code{FALSE} in future processes / during future evaluation)}
+
 \item{\option{future.cmdargs}:}{(character vector) Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is \emph{loaded}.}
 }
 }
@@ -101,6 +113,7 @@ If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRI
 
 \describe{
 \item{\option{future.demo.mandelbrot.region}:}{(integer) Either a named list of \code{\link[=mandelbrot]{mandelbrot()}} arguments or an integer in \{1, 2, 3\} specifying a predefined Mandelbrot region. (Default: \code{1L})}
+
 \item{\option{future.demo.mandelbrot.nrow}:}{(integer) Number of rows and columns of tiles. (Default: \code{3L})}
 }
 }
