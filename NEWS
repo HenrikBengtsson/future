@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-27]
+Version: 1.15.1-9001 [2019-12-28]
 
 NEW FEATURES:
 
@@ -10,7 +10,8 @@ NEW FEATURES:
    safe, non-statistically sound random number generation (RNG) was used.
    If option 'future.rng.onMisuse' is "warning", a warning is produced. If
    "error", an error is produced.  If "ignore" (default), the mistake is
-   silently ignored.
+   silently ignored. Using seed = NULL is like seed = FALSE but without
+   performing the RNG validation.
 
  * For convenience, argument 'seed' of future() may now also be an ordinary
    single integer random seed.  If so, a L'Ecuyer-CMRG RNG seed is created
@@ -32,9 +33,6 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
- * Use future(..., seed=FALSE) rather than future(..., seed=NULL). The latter
-   will soon be deprecated and eventually become defunct.
- 
  * Future and FutureResult objects with an internal version 1.7 or older have
    been deprecated since 1.14.0 (July 2019) and are now defunct.
    
