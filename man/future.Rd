@@ -15,8 +15,8 @@ future(
   substitute = TRUE,
   globals = TRUE,
   packages = NULL,
+  seed = FALSE,
   lazy = FALSE,
-  seed = NULL,
   ...
 )
 
@@ -62,9 +62,6 @@ in the help for \code{\link[=future]{future()}}.}
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
-
 \item{seed}{(optional) If TRUE, the random seed, that is, the state of the
 random number generator (RNG) will be set such that statistically sound
 random numbers are produced (also during parallelization).
@@ -78,6 +75,9 @@ option \code{\link[=future.options]{future.rng.misUse}}, the check is
 ignored, an informative warning, or error will be produced.
 If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
 but without the RNG check being performed.}
+
+\item{lazy}{If FALSE (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{\dots}{Reserved for internal use only.}
 

@@ -13,7 +13,7 @@ Future(
   conditions = "condition",
   globals = NULL,
   packages = NULL,
-  seed = NULL,
+  seed = FALSE,
   lazy = FALSE,
   local = TRUE,
   gc = FALSE,
