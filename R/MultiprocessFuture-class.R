@@ -2,13 +2,13 @@
 #'
 #' @inheritParams Future-class
 #' 
-#' @param \dots Additional named elements passed to \code{\link{Future}()}.
+#' @param \dots Additional named elements passed to [Future()].
 #'
-#' @return An object of class \code{MultiprocessFuture}.
+#' @return An object of class `MultiprocessFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "multiprocess future", see function
-#' \code{\link{multiprocess}()}.
+#' [multiprocess()].
 #'
 #' @export
 #' @name MultiprocessFuture-class

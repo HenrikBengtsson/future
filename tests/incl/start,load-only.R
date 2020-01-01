@@ -78,6 +78,8 @@ requirePackages <- future:::requirePackages
 tweakExpression <- future:::tweakExpression
 whichIndex <- future:::whichIndex
 pid_exists <- future:::pid_exists
+isFALSE <- future:::isFALSE
+isNA <- future:::isNA
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))

@@ -32,7 +32,7 @@ the wait interval after each try.}
 }
 \value{
 Invisible TRUE. If no cores are available after
-        extensive waiting, then a timeout error is thrown.
+extensive waiting, then a timeout error is thrown.
 }
 \description{
 If no cores are available, the current process

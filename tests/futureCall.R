@@ -4,8 +4,8 @@ message("*** futureCall() ...")
 
 message("- futureCall() - sequential + lazy ...")
 
-f1 <- future(do.call(rnorm, args = list(n = 100)), lazy = TRUE)
-f2 <- futureCall(rnorm, args = list(n = 100), lazy = TRUE)
+f1 <- future(do.call(rnorm, args = list(n = 100)), seed = NULL, lazy = TRUE)
+f2 <- futureCall(rnorm, args = list(n = 100), seed = NULL, lazy = TRUE)
 
 set.seed(42L)
 v0 <- rnorm(n = 100)

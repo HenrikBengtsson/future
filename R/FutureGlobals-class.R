@@ -9,11 +9,11 @@
 #' 
 #' @param \dots Not used.
 #'
-#' @return An object of class \code{FutureGlobals}.
+#' @return An object of class `FutureGlobals`.
 #'
 #' @details
 #' This class extends the \link[globals]{Globals} class by add
-#' attribute \code{resolved}.
+#' attribute `resolved`.
 #'
 #' @aliases as.FutureGlobals as.FutureGlobals.FutureGlobals
 #' as.FutureGlobals.Globals as.FutureGlobals.list [.FutureGlobals

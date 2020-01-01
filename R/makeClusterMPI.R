@@ -1,14 +1,14 @@
 #' Create a Message Passing Interface (MPI) cluster of \R workers for parallel processing
 #' 
-#' The \code{makeClusterMPI()} function creates an MPI cluster of \R workers
+#' The `makeClusterMPI()` function creates an MPI cluster of \R workers
 #' for parallel processing.  This function utilizes 
-#' \code{makeCluster(..., type = "MPI")} of the \pkg{parallel} package and
+#' `makeCluster(..., type = "MPI")` of the \pkg{parallel} package and
 #' tweaks the cluster in an attempt to avoid
-#' \code{\link[parallel:stopCluster]{stopCluster()}} from hanging [1].
-#' \emph{WARNING: This function is very much in a beta version and should
-#' only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
+#' \code{\link[parallel:stopCluster]{stopCluster()}} from hanging (1).
+#' _WARNING: This function is very much in a beta version and should
+#' only be used if `parallel::makeCluster(..., type = "MPI")` fails._
 #'
-#' \emph{Creating MPI clusters requires the \bold{Rmpi} package.}
+#' _Creating MPI clusters requires the **Rmpi** package._
 #'
 #' @inheritParams makeClusterPSOCK
 #'
@@ -17,14 +17,14 @@
 #' @param \dots Optional arguments passed to
 #' \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.
 #' 
-#' @return An object of class \code{"FutureMPIcluster"} consisting
-#' of a list of \code{"MPInode"} workers.
+#' @return An object of class `"FutureMPIcluster"` consisting
+#' of a list of `"MPInode"` workers.
 #'
 #' @references
-#' [1] R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28. \cr
+#' 1. R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28.
 #'
 #' @seealso
-#' \code{\link{makeClusterPSOCK}()} and
+#' [makeClusterPSOCK()] and
 #' \code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
 #'
 #' @importFrom parallel makeCluster

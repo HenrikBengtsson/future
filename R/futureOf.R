@@ -1,7 +1,7 @@
 #' Get the future of a future variable
 #'
 #' Get the future of a future variable that has been created directly
-#' or indirectly via \code{\link{future}()}.
+#' or indirectly via [future()].
 #'
 #' @param var the variable.  If NULL, all futures in the
 #' environment are returned.
@@ -9,11 +9,11 @@
 #' @param mustExist If TRUE and the variable does not exists, then
 #' an informative error is thrown, otherwise NA is returned.
 #' @param default the default value if future was not found.
-#' @param drop if TRUE and \code{var} is NULL, then returned list
-#' only contains futures, otherwise also \code{default} values.
+#' @param drop if TRUE and `var` is NULL, then returned list
+#' only contains futures, otherwise also `default` values.
 #'
-#' @return A \link{Future} (or \code{default}).
-#' If \code{var} is NULL, then a named list of Future:s are returned.
+#' @return A [Future] (or `default`).
+#' If `var` is NULL, then a named list of Future:s are returned.
 #'
 #' @example incl/futureOf.R
 #'

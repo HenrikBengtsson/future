@@ -22,6 +22,6 @@ a future function.
 Tweak a future function by adjusting its default arguments
 }
 \seealso{
-Use \code{\link{plan}()} to set a future to become the
+Use \code{\link[=plan]{plan()}} to set a future to become the
 new default strategy.
 }

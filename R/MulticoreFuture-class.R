@@ -3,11 +3,11 @@
 #' @inheritParams MultiprocessFuture-class
 #' @inheritParams Future-class
 #'
-#' @return An object of class \code{MulticoreFuture}.
+#' @return An object of class `MulticoreFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "multicore future", see function
-#' \code{\link{multicore}()}.
+#' [multicore()].
 #'
 #' @export
 #' @name MulticoreFuture-class

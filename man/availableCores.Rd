@@ -46,43 +46,43 @@ number of cores available is always at least one.
 The following settings ("methods") for inferring the number of cores
 are supported:
 \itemize{
- \item \code{"system"} -
-   Query \code{\link[parallel]{detectCores}()}.
- \item \code{"mc.cores"} -
-   If available, returns the value of option
-   \code{\link[base:options]{mc.cores}}.
-   Note that \option{mc.cores} is defined as the number of
-   \emph{additional} \R processes that can be used in addition to the
-   main \R process.  This means that with \code{mc.cores = 0} all
-   calculations should be done in the main \R process, i.e. we have
-   exactly one core available for our calculations.
-   The \option{mc.cores} option defaults to environment variable
-   \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
-   package is loaded).  The \option{mc.cores} option is used by for
-   instance \code{\link[parallel]{mclapply}()}.
- \item \code{"PBS"} -
-   Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
-   Depending on PBS system configuration, these \emph{resource}
-   parameter may or may not default to one.
-   An example of a job submission that results in this is
-   \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
- \item \code{"SGE"} -
-   Query Sun/Oracle Grid Engine (SGE) environment variable
-   \env{NSLOTS}.
-   An example of a job submission that results in this is
-   \code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
-   requests two cores on a single machine.
- \item \code{"Slurm"} -
-   Query Simple Linux Utility for Resource Management (Slurm)
-   environment variable \env{SLURM_CPUS_PER_TASK}.
-   This may or may not be set.  It can be set when submitting a job,
-   e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
-   \code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
- \item \code{"custom"} -
-   If option \option{future.availableCores.custom} is set and a function,
-   then this function will be called (without arguments) and it's value
-   will be coerced to an integer, which will be interpreted as a number
-   of available cores.  If the value is NA, then it will be ignored.
+\item \code{"system"} -
+Query \code{\link[parallel]{detectCores}()}.
+\item \code{"mc.cores"} -
+If available, returns the value of option
+\code{\link[base:options]{mc.cores}}.
+Note that \option{mc.cores} is defined as the number of
+\emph{additional} \R processes that can be used in addition to the
+main \R process.  This means that with \code{mc.cores = 0} all
+calculations should be done in the main \R process, i.e. we have
+exactly one core available for our calculations.
+The \option{mc.cores} option defaults to environment variable
+\env{MC_CORES} (and is set accordingly when the \pkg{parallel}
+package is loaded).  The \option{mc.cores} option is used by for
+instance \code{\link[parallel]{mclapply}()}.
+\item \code{"PBS"} -
+Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
+Depending on PBS system configuration, these \emph{resource}
+parameter may or may not default to one.
+An example of a job submission that results in this is
+\verb{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
+\item \code{"SGE"} -
+Query Sun/Oracle Grid Engine (SGE) environment variable
+\env{NSLOTS}.
+An example of a job submission that results in this is
+\verb{qsub -pe smp 2} (or \verb{qsub -pe by_node 2}), which
+requests two cores on a single machine.
+\item \code{"Slurm"} -
+Query Simple Linux Utility for Resource Management (Slurm)
+environment variable \env{SLURM_CPUS_PER_TASK}.
+This may or may not be set.  It can be set when submitting a job,
+e.g. \verb{sbatch --cpus-per-task=2 hello.sh} or by adding
+\verb{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+\item \code{"custom"} -
+If option \option{future.availableCores.custom} is set and a function,
+then this function will be called (without arguments) and it's value
+will be coerced to an integer, which will be interpreted as a number
+of available cores.  If the value is NA, then it will be ignored.
 }
 For any other value of a \code{methods} element, the \R option with the
 same name is queried.  If that is not set, the system environment
@@ -102,6 +102,6 @@ e.g. \code{plan(multiprocess, workers = 8)}.
 
 \seealso{
 To get the number of available workers regardless of machine,
-see \code{\link{availableWorkers}()}.
+see \code{\link[=availableWorkers]{availableWorkers()}}.
 }
 \keyword{internal}

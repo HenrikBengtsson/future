@@ -41,7 +41,7 @@ otherwise not.}
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
 
-\item{value}{(DEPRECATED) Use argument `result` instead.}
+\item{value}{(DEPRECATED) Use argument \code{result} instead.}
 
 \item{\dots}{Not used.}
 }
@@ -61,6 +61,6 @@ any containing futures are resolved.
 }
 \seealso{
 To resolve a future \emph{variable}, first retrieve its
-\link{Future} object using \code{\link{futureOf}()}, e.g.
+\link{Future} object using \code{\link[=futureOf]{futureOf()}}, e.g.
 \code{resolve(futureOf(x))}.
 }

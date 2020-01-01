@@ -1,8 +1,8 @@
 #' Create a multisession future whose value will be resolved asynchronously in a parallel \R session
 #'
 #' A multisession future is a future that uses multisession evaluation,
-#' which means that its \emph{value is computed and resolved in
-#' parallel in another \R session}.
+#' which means that its _value is computed and resolved in
+#' parallel in another \R session_.
 #'
 #' @inheritParams multiprocess
 #' @inheritParams cluster
@@ -10,7 +10,7 @@
 #' @inheritParams future
 #'
 #' @return A \link{MultisessionFuture}.
-#' If \code{workers == 1}, then all processing using done in the
+#' If `workers == 1`, then all processing using done in the
 #' current/main \R session and we therefore fall back to using
 #' a lazy future.
 #'
@@ -21,30 +21,30 @@
 #'
 #' @details
 #' The background \R sessions (the "workers") are created using
-#' \code{\link{makeClusterPSOCK}()}.
+#' [makeClusterPSOCK()].
 #' 
-#' The \code{multisession()} function will block if all available
+#' The `multisession()` function will block if all available
 #' \R session are occupied
 #' and will be unblocked as soon as one of the already running
 #' multisession futures is resolved.  For the total number of
 #' \R sessions available including the current/main \R process, see
-#' \code{\link{availableCores}()}.
+#' [availableCores()].
 #'
 #' A multisession future is a special type of cluster future.
 #'
 #' The preferred way to create an multisession future is not to call
 #' this function directly, but to register it via
 #' \code{\link{plan}(multisession)} such that it becomes the default
-#' mechanism for all futures.  After this \code{\link{future}()}
-#' and \code{\link{\%<-\%}} will create \emph{multisession futures}.
+#' mechanism for all futures.  After this [future()]
+#' and \code{\link{\%<-\%}} will create _multisession futures_.
 #'
 #' @seealso
 #' For processing in multiple forked \R sessions, see
-#' \link{multicore} futures.
+#' [multicore] futures.
 #' For multicore processing with fallback to multisession where
-#' the former is not supported, see \link{multiprocess} futures.
+#' the former is not supported, see [multiprocess] futures.
 #'
-#' Use \code{\link{availableCores}()} to see the total number of
+#' Use [availableCores()] to see the total number of
 #' cores that are available for the current \R session.
 #'
 #' @export

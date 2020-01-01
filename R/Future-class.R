@@ -1,42 +1,54 @@
 #' A future represents a value that will be available at some point in the future
 #'
-#' A \emph{future} is an abstraction for a \emph{value} that may
+#' A _future_ is an abstraction for a _value_ that may
 #' available at some point in the future.  A future can either be
-#' \code{unresolved} or \code{resolved}, a state which can be checked
-#' with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
-#' value is not available.  As soon as it is \emph{resolved}, the value
+#' `unresolved` or `resolved`, a state which can be checked
+#' with [resolved()].  As long as it is _unresolved_, the
+#' value is not available.  As soon as it is _resolved_, the value
 #' is available via \code{\link[future]{value}()}.
 #'
 #' @param expr An \R \link[base]{expression}.
 #'
-#' @param envir The \link{environment} from where global objects should be
+#' @param envir The [environment] from where global objects should be
 #' identified.
 #'
-#' @param substitute If TRUE, argument \code{expr} is
+#' @param substitute If TRUE, argument `expr` is
 #' \code{\link[base]{substitute}()}:ed, otherwise not.
 #'
 #' @param stdout If TRUE (default), then the standard output is captured,
-#' and re-outputted when \code{value()} is called.
+#' and re-outputted when `value()` is called.
 #' If FALSE, any output is silenced (by sinking it to the null device as
 #' it is outputted).
-#' If NA (not recommended), output is \emph{not} intercepted.
+#' If NA (not recommended), output is _not_ intercepted.
 #' 
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
-#' To not intercept conditions, use \code{conditions = character(0L)}.
+#' To not intercept conditions, use `conditions = character(0L)`.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
 #' For details, see section 'Globals used by future expressions'
-#' in the help for \code{\link{future}()}.
+#' in the help for [future()].
 #' 
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.
 #'
-#' @param seed (optional) A L'Ecuyer-CMRG RNG seed.
+#' @param seed (optional) If TRUE, the random seed, that is, the state of the
+#' random number generator (RNG) will be set such that statistically sound
+#' random numbers are produced (also during parallelization).
+#' If FALSE, it is assumed that the future expression does neither need nor
+#' use random numbers generation.
+#' To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
+#' or a regular RNG seed (a single integer).
+#' Furthermore, if FALSE, then the future will be monitored to make sure it
+#' does not use random numbers.  If it does and depending on the value of
+#' option \code{\link[=future.options]{future.rng.misUse}}, the check is
+#' ignored, an informative warning, or error will be produced.
+#' If `seed` is NULL (default), then the effect is as with `seed = FALSE`
+#' but without the RNG check being performed.
 #'
-#' @param lazy If \code{FALSE} (default), the future is resolved
+#' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
 #' @param local If TRUE, the expression is evaluated such that
@@ -47,9 +59,9 @@
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) only after the value of the future is collected.
 #' Exactly when the values are collected may depend on various factors such
-#' as number of free workers and whether \code{earlySignal} is TRUE (more
+#' as number of free workers and whether `earlySignal` is TRUE (more
 #' frequently) or FALSE (less frequently).
-#' \emph{Some types of futures ignore this argument.}
+#' _Some types of futures ignore this argument._
 #'
 #' @param earlySignal Specified whether conditions should be signaled as soon
 #' as possible or not.
@@ -58,32 +70,32 @@
 #'
 #' @param \dots Additional named elements of the future.
 #' 
-#' @return An object of class \code{Future}.
+#' @return An object of class `Future`.
 #'
 #' @details
 #' A Future object is itself an \link{environment}.
 #'
 #' @seealso
-#' One function that creates a Future is \code{\link{future}()}.
+#' One function that creates a Future is [future()].
 #' It returns a Future that evaluates an \R expression in the future.
 #' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the
 #' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base]{promise}}.
 #'
+#' @importFrom parallel nextRNGStream
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = NULL, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  
-  if (!is.null(seed)) {
-    if (!is_lecyer_cmrg_seed(seed)) {
-      msg <- sprintf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed (integer vector of length seven) as returned by parallel::nextRNGStream(): %s of length %d", mode(seed), length(seed))
-      mdebug(msg)
-      mprint(seed)
-      stop(msg)
-    }
+
+  if (is.null(seed)) {
+  } else if (isFALSE(seed)) {
+  } else if (is_lecyer_cmrg_seed(seed)) {
+  } else {
+    .seed <- as_lecyer_cmrg_seed(seed)
+    seed <- nextRNGSubStream(.seed)
   }
 
   stop_if_not(is.logical(stdout), length(stdout) == 1L)
@@ -103,6 +115,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   }
 
   args <- list(...)
+
 
   core <- new.env(parent = emptyenv())
 
@@ -196,10 +209,10 @@ print.Future <- function(x, ...) {
     cat("Packages: <none>\n")
   }
   
-  if (is.null(x$seed)) {
-    cat("L'Ecuyer-CMRG RNG seed: <none>\n")
-  } else {
+  if (is.integer(x$seed)) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
+  } else {
+    cat("L'Ecuyer-CMRG RNG seed: <none> (seed = ", deparse(x$seed), ")\n", sep = "")
   }
 
   result <- x$result
@@ -269,7 +282,7 @@ assertOwner <- function(future, ...) {
 #' @param future A \link{Future}.
 #' @param \dots Not used.
 #'
-#' @return The \link{Future} object.
+#' @return The [Future] object.
 #'
 #' @details
 #' This function can only be called once per future.
@@ -305,11 +318,11 @@ result <- function(...) UseMethod("result")
 #' @param future A \link{Future}.
 #' @param \dots Not used.
 #'
-#' @return The \link{FutureResult} object.
+#' @return The [FutureResult] object.
 #'
 #' @details
-#' This function is only part of the \emph{backend} Future API.
-#' This function is \emph{not} part of the frontend Future API.
+#' This function is only part of the _backend_ Future API.
+#' This function is _not_ part of the frontend Future API.
 #'
 #' @aliases result
 #' @rdname result
@@ -415,7 +428,43 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       inherits(result$stdout, "character")) {
     cat(paste(result$stdout, collapse = "\n"))
   }
-  
+
+
+
+  ## Was RNG used without requesting RNG seeds?
+  if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
+    ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
+    ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
+    ## future.apply (<= 1.3.0) and furrr
+    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
+    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
+    ## doFuture w/ doRNG, e.g. %dorng%
+    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
+    if (!rng_ok) {
+      onMisuse <- Sys.getenv("R_FUTURE_RNG_ONMISUSE", "ignore")
+      onMisuse <- getOption("future.rng.onMisuse", onMisuse)
+      if (onMisuse != "ignore") {
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        msg <- sprintf("UNRELIABLE VALUE: Detected that random numbers were generated while future (%s) was resolved. Because future argument 'seed' was set to %s, those random numbers may not be statistical sound. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. To disable this check, set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label), sQuote(future$seed))
+        if (onMisuse == "error") {
+          cond <- FutureError(msg)
+        } else if (onMisuse == "warning") {
+          cond <- FutureWarning(msg)
+	} else {
+	  cond <- NULL
+	  warning("Unknown value on option 'future.rng.onMisuse': ",
+                  sQuote(onMisuse))
+	}
+	conditions <- result$conditions
+	conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
+        result$conditions <- conditions
+	future$result <- result
+      }
+    }
+  }
+  future$.rng_checked <- TRUE
+
   ## Signal captured conditions?
   conditions <- result$conditions
   if (length(conditions) > 0) {
@@ -432,7 +481,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       }
     }
   }
-
+  
   if (visible) value else invisible(value)
 }
 
@@ -467,10 +516,10 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #'
 #' @details
 #' If no next future strategy is specified, the default is to
-#' use \link{sequential} futures.  This conservative approach protects
+#' use [sequential] futures.  This conservative approach protects
 #' against spawning off recursive futures by mistake, especially
-#' \link{multicore} and \link{multisession} ones.
-#' The default will also set \code{options(mc.cores = 1L)} (*) so that
+#' [multicore] and [multisession] ones.
+#' The default will also set `options(mc.cores = 1L)` (*) so that
 #' no parallel \R processes are spawned off by functions such as
 #' \code{\link[parallel:mclapply]{mclapply}()} and friends.
 #'
@@ -480,11 +529,11 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #' See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
 #' for plans on adding support for custom nested future types.
 #'
-#' (*) Ideally we would set \code{mc.cores = 0} but that will unfortunately
-#'     cause \code{mclapply()} and friends to generate an error saying
+#' (*) Ideally we would set `mc.cores = 0` but that will unfortunately
+#'     cause `mclapply()` and friends to generate an error saying
 #'     "'mc.cores' must be >= 1".  Ideally those functions should
 #'     fall back to using the non-multicore alternative in this
-#'     case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
+#'     case, e.g. `mclapply(...)` => `lapply(...)`.
 #'     See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
 #'     for a discussion on this.
 #'
@@ -550,8 +599,8 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     })
   }
   
-  ## Seed RNG seed?
-  if (!is.null(future$seed)) {
+  ## Set RNG seed?
+  if (is.numeric(future$seed)) {
     enter <- bquote({
       ## covr: skip=2
       .(enter)
@@ -741,11 +790,12 @@ makeExpression <- local({
   
         ...future.frame <- base::sys.nframe()
         ...future.conditions <- base::list()
+        ...future.rng <- base::globalenv()$.Random.seed
         ...future.result <- base::tryCatch({
           base::withCallingHandlers({
             ...future.value <- base::withVisible(.(expr))
             ## A FutureResult object (without requiring the future package)
-            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, started = ...future.startTime, version = "1.8")
+            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
           }, condition = base::local({
               ## WORKAROUND: If the name of any of the below objects/functions
               ## coincides with a promise (e.g. a future assignment) then we
@@ -796,6 +846,7 @@ makeExpression <- local({
             value = NULL,
             visible = NULL,
             conditions = ...future.conditions,
+            rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))

@@ -9,10 +9,10 @@
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}} object,
 #' a character vector of host names, a positive numeric scalar,
 #' or a function.
-#' If a character vector or a numeric scalar, a \code{cluster} object
+#' If a character vector or a numeric scalar, a `cluster` object
 #' is created using \code{\link{makeClusterPSOCK}(workers)}.
-#' If a function, it is called without arguments \emph{when the future
-#' is created} and its value is used to configure the workers.
+#' If a function, it is called without arguments _when the future
+#' is created_ and its value is used to configure the workers.
 #' The function should return any of the above types.
 #' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
@@ -31,11 +31,11 @@
 #' it is assumed to be on the PATH for each node.
 #'
 #' @return
-#' \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
+#' `ClusterFuture()` returns an object of class `ClusterFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function
-#' \code{\link{cluster}()}.
+#' [cluster()].
 #'
 #' @aliases MultisessionFuture MultisessionFuture-class
 #' @export

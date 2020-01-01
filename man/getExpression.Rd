@@ -35,11 +35,11 @@ See \href{https://github.com/HenrikBengtsson/future/issues/37}{Issue #37}
 for plans on adding support for custom nested future types.
 
 (*) Ideally we would set \code{mc.cores = 0} but that will unfortunately
-    cause \code{mclapply()} and friends to generate an error saying
-    "'mc.cores' must be >= 1".  Ideally those functions should
-    fall back to using the non-multicore alternative in this
-    case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
-    See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
-    for a discussion on this.
+cause \code{mclapply()} and friends to generate an error saying
+"'mc.cores' must be >= 1".  Ideally those functions should
+fall back to using the non-multicore alternative in this
+case, e.g. \code{mclapply(...)} => \code{lapply(...)}.
+See \url{https://github.com/HenrikBengtsson/Wishlist-for-R/issues/7}
+for a discussion on this.
 }
 \keyword{internal}

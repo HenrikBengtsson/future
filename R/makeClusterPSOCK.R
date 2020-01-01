@@ -1,6 +1,6 @@
 #' Create a PSOCK cluster of \R workers for parallel processing
 #' 
-#' The \code{makeClusterPSOCK()} function creates a cluster of \R workers
+#' The `makeClusterPSOCK()` function creates a cluster of \R workers
 #' for parallel processing.  These \R workers may be background \R sessions
 #' on the current machine, \R sessions on external machines (local or remote),
 #' or a mix of such. For external workers, the default is to use SSH to connect
@@ -13,12 +13,12 @@
 #' @param workers The hostnames of workers (as a character vector) or the number
 #' of localhost workers (as a positive integer).
 #' 
-#' @param makeNode A function that creates a \code{"SOCKnode"} or
-#' \code{"SOCK0node"} object, which represents a connection to a worker.
+#' @param makeNode A function that creates a `"SOCKnode"` or
+#' `"SOCK0node"` object, which represents a connection to a worker.
 #' 
 #' @param \dots Optional arguments passed to
-#' \code{makeNode(workers[i], ..., rank = i)} where
-#' \code{i = seq_along(workers)}.
+#' `makeNode(workers[i], ..., rank = i)` where
+#' `i = seq_along(workers)`.
 #'
 #' @param autoStop If TRUE, the cluster will be automatically stopped
 #  (using \code{\link[parallel:stopCluster]{stopCluster}()}) when it is
@@ -26,8 +26,8 @@
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
-#' @return An object of class \code{c("SOCKcluster", "cluster")} consisting
-#' of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
+#' @return An object of class `c("SOCKcluster", "cluster")` consisting
+#' of a list of `"SOCKnode"` or `"SOCK0node"` workers.
 #'
 #' @example incl/makeClusterPSOCK.R
 #'
@@ -131,27 +131,27 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param master The hostname or IP number of the master / calling machine, as
 #' known to the workers.  If NULL (default), then the default is
-#' \code{Sys.info()[["nodename"]]} unless \code{worker} is \emph{localhost} or
-#' \code{revtunnel = TRUE} in case it is \code{"localhost"}.
+#' `Sys.info()[["nodename"]]` unless `worker` is _localhost_ or
+#' `revtunnel = TRUE` in case it is `"localhost"`.
 #' 
 #' @param port The port number of the master used for communicating with all
 #' the workers (via socket connections).  If an integer vector of ports, then a
-#' random one among those is chosen.  If \code{"random"}, then a random port in
-#' is chosen from \code{11000:11999}, or from the range specified by
+#' random one among those is chosen.  If `"random"`, then a random port in
+#' is chosen from `11000:11999`, or from the range specified by
 #' environment variable \env{R_FUTURE_RANDOM_PORTS}.
-#' If \code{"auto"} (default), then the default (single) port is taken from
-#' environment variable \env{R_PARALLEL_PORT}, otherwise \code{"random"} is
+#' If `"auto"` (default), then the default (single) port is taken from
+#' environment variable \env{R_PARALLEL_PORT}, otherwise `"random"` is
 #' used.
-#' \emph{Note, do not use this argument to specify the port number used by
-#' \code{rshcmd}, which typically is an SSH client.  Instead, if the SSH daemon
+#' _Note, do not use this argument to specify the port number used by
+#' `rshcmd`, which typically is an SSH client.  Instead, if the SSH daemon
 #' runs on a different port than the default 22, specify the SSH port by
-#' appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
-#' SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via
+#' SSH options `-p`, e.g. `rshopts = c("-p", "2200")`._
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
-#' 2 minutes). \emph{See note below on current lack of support on Linux and
-#' macOS systems.}
+#' 2 minutes). _See note below on current lack of support on Linux and
+#' macOS systems._
 #' 
 #' @param timeout The maximum time (in seconds) allowed to pass without the
 #' master and a worker communicate with each other (defaults to 30 days).
@@ -163,20 +163,20 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param rscript_args Additional arguments to \command{Rscript} (as a character
 #' vector).  This argument can be used to customize the \R environment of the
 #' workers before they launches.
-#' For instance, use \code{rscript_args = c("-e", shQuote('setwd("/path/to")'))}
-#' to set the working directory to \file{/path/to} on \emph{all} workers.
+#' For instance, use `rscript_args = c("-e", shQuote('setwd("/path/to")'))`
+#' to set the working directory to \file{/path/to} on _all_ workers.
 #'
 #' @param rscript_startup An \R expression or a character vector of \R code,
 #' or a list with a mix of these, that will be evaluated on the \R worker
 #' prior to launching the worker's event loop.
-#' For instance, use \code{rscript_startup = 'setwd("/path/to")'}
-#' to set the working directory to \file{/path/to} on \emph{all} workers.
+#' For instance, use `rscript_startup = 'setwd("/path/to")'`
+#' to set the working directory to \file{/path/to} on _all_ workers.
 #' 
 #' @param rscript_libs A character vector of \R library paths that will be
 #' used for the library search path of the \R workers.  An asterisk
-#' (\code{"*"}) will be resolved as the current \code{.libPaths()} on the
-#' worker. That is, to \code{prepend} a folder, instead of replacing the
-#' existing ones, use \code{rscript_libs = c("new_folder", "*")}.
+#' (`"*"`) will be resolved as the current `.libPaths()` on the
+#' worker. That is, to `prepend` a folder, instead of replacing the
+#' existing ones, use `rscript_libs = c("new_folder", "*")`.
 #' 
 #' @param methods If TRUE, then the \pkg{methods} package is also loaded.
 #' 
@@ -196,23 +196,23 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' 
 #' @param rshcmd,rshopts The command (character vector) to be run on the master
 #' to launch a process on another host and any additional arguments (character
-#' vector).  These arguments are only applied if \code{machine} is not
-#' \emph{localhost}.  For more details, see below.
+#' vector).  These arguments are only applied if `machine` is not
+#' _localhost_.  For more details, see below.
 #' 
 #' @param rshlogfile (optional) If a filename, the output produced by the
-#' \code{rshcmd} call is logged to this file, of if TRUE, then it is logged
+#' `rshcmd` call is logged to this file, of if TRUE, then it is logged
 #' to a temporary file.  The log file name is available as an attribute
 #' as part of the return node object.
-#' \emph{Warning: This only works with SSH clients that support option
-#' \code{-E out.log}.}
+#' _Warning: This only works with SSH clients that support option
+#' `-E out.log`._
 #'
 #' @param user (optional) The user name to be used when communicating with
 #' another host.
 #' 
 #' @param revtunnel If TRUE, a reverse SSH tunnel is set up for each worker such#' that the worker \R process sets up a socket connection to its local port
-#' \code{(port - rank + 1)} which then reaches the master on port \code{port}.
-#' If FALSE, then the worker will try to connect directly to port \code{port} on
-#' \code{master}.  For more details, see below.
+#' `(port - rank + 1)` which then reaches the master on port `port`.
+#' If FALSE, then the worker will try to connect directly to port `port` on
+#' `master`.  For more details, see below.
 #' 
 #' @param manual If TRUE the workers will need to be run manually. The command
 #' to run will be displayed.
@@ -221,32 +221,32 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' launch the worker from the terminal is outputted.  This is useful for
 #' troubleshooting.
 #'
-#' @return \code{makeNodePSOCK()} returns a \code{"SOCKnode"} or
-#' \code{"SOCK0node"} object representing an established connection to a worker.
+#' @return `makeNodePSOCK()` returns a `"SOCKnode"` or
+#' `"SOCK0node"` object representing an established connection to a worker.
 #'
-#' @section Definition of \emph{localhost}:
-#' A hostname is considered to be \emph{localhost} if it equals:
+#' @section Definition of _localhost_:
+#' A hostname is considered to be _localhost_ if it equals:
 #' \itemize{
-#'   \item \code{"localhost"},
-#'   \item \code{"127.0.0.1"}, or
-#'   \item \code{Sys.info()[["nodename"]]}.
+#'   \item `"localhost"`,
+#'   \item `"127.0.0.1"`, or
+#'   \item `Sys.info()[["nodename"]]`.
 #' }
-#' It is also considered \emph{localhost} if it appears on the same line
-#' as the value of \code{Sys.info()[["nodename"]]} in file \file{/etc/hosts}.
+#' It is also considered _localhost_ if it appears on the same line
+#' as the value of `Sys.info()[["nodename"]]` in file \file{/etc/hosts}.
 #' 
-#' @section Default SSH client and options (arguments \code{rshcmd} and \code{rshopts}):
-#' Arguments \code{rshcmd} and \code{rshopts} are only used when connecting
+#' @section Default SSH client and options (arguments `rshcmd` and `rshopts`):
+#' Arguments `rshcmd` and `rshopts` are only used when connecting
 #' to an external host.
 #' 
 #' The default method for connecting to an external host is via SSH and the
-#' system executable for this is given by argument \code{rshcmd}.  The default
+#' system executable for this is given by argument `rshcmd`.  The default
 #' is given by option \option{future.makeNodePSOCK.rshcmd}.  If that is not
 #' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 #' on the \env{PATH}.  This is also true for recent Windows 10
 #' (since version 1803; April 2018) (*).
 #'
-#' For \emph{Windows systems prior to Windows 10}, it is less common to find
+#' For _Windows systems prior to Windows 10_, it is less common to find
 #' \command{ssh} on the \env{PATH}. Instead it is more likely that such
 #' systems have the \command{PuTTY} software and its SSH client
 #' \command{plink} installed.  PuTTY puts itself on the system \env{PATH}
@@ -254,9 +254,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' installed.  If not, to manually set specify PuTTY as the SSH client,
 #' specify the absolute pathname of \file{plink.exe} in the first element and
 #' option \command{-ssh} in the second as in
-#' \code{rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")}.
-#' This is because all elements of \code{rshcmd} are individually "shell"
-#' quoted and element \code{rshcmd[1]} must be on the system \env{PATH}.
+#' `rshcmd = c("C:/Path/PuTTY/plink.exe", "-ssh")`.
+#' This is because all elements of `rshcmd` are individually "shell"
+#' quoted and element `rshcmd[1]` must be on the system \env{PATH}.
 #'
 #' Furthermore, when running \R from RStudio on Windows, the \command{ssh}
 #' client that is distributed with RStudio will also be considered.
@@ -265,33 +265,33 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' environment variable - a variable that is (only) set when running RStudio.
 #'
 #' You can override the default set of SSH clients that are searched for
-#' by specifying them in \code{rshcmd} using the format \code{<...>}, e.g.
-#' \code{rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")}.  See
+#' by specifying them in `rshcmd` using the format `<...>`, e.g.
+#' `rshcmd = c("<rstudio-ssh>", "<putty-plink>", "<ssh>")`.  See
 #' below for examples.
 #'
 #' If no SSH-client is found, an informative error message is produced.
 #'
-#' (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
+#' (*) _Known issue with the Windows 10 SSH client: There is a bug in the
 #' SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
 #' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
 #' Because of this, it is recommended to use the PuTTY SSH client or the
-#' RStudio SSH client until this bug has been resolved in Windows 10.}
+#' RStudio SSH client until this bug has been resolved in Windows 10._
 #' 
-#' Additional SSH options may be specified via argument \code{rshopts}, which
+#' Additional SSH options may be specified via argument `rshopts`, which
 #' defaults to option \option{future.makeNodePSOCK.rshopts}. For instance, a
 #' private SSH key can be provided as
-#' \code{rshopts = c("-i", "~/.ssh/my_private_key")}.  PuTTY users should
+#' `rshopts = c("-i", "~/.ssh/my_private_key")`.  PuTTY users should
 #' specify a PuTTY PPK file, e.g.
-#' \code{rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")}.
-#' Contrary to \code{rshcmd}, elements of \code{rshopts} are not quoted.
+#' `rshopts = c("-i", "C:/Users/joe/.ssh/my_keys.ppk")`.
+#' Contrary to `rshcmd`, elements of `rshopts` are not quoted.
 #' 
 #' @section Accessing external machines that prompts for a password:
-#' \emph{IMPORTANT: With one exception, it is not possible to for these
+#' _IMPORTANT: With one exception, it is not possible to for these
 #' functions to log in and launch \R workers on external machines that requires
-#' a password to be entered manually for authentication.}
+#' a password to be entered manually for authentication._
 #' The only known exception is the PuTTY client on Windows for which one can
-#' pass the password via command-line option \code{-pw}, e.g. 
-#' \code{rshopts = c("-pw", "MySecretPassword")}.
+#' pass the password via command-line option `-pw`, e.g. 
+#' `rshopts = c("-pw", "MySecretPassword")`.
 #'
 #' Note, depending on whether you run \R in a terminal or via a GUI, you might
 #' not even see the password prompt.  It is also likely that you cannot enter
@@ -299,7 +299,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' The poor man's workaround for setup that requires a password is to manually
 #' log into the each of the external machines and launch the \R workers by hand.
-#' For this approach, use \code{manual = TRUE} and follow the instructions
+#' For this approach, use `manual = TRUE` and follow the instructions
 #' which include cut'n'pasteable commands on how to launch the worker from the
 #' external machine.
 #'
@@ -317,7 +317,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' for "ssh key authentication".
 #'
 #' @section Reverse SSH tunneling:
-#' The default is to use reverse SSH tunneling (\code{revtunnel = TRUE}) for
+#' The default is to use reverse SSH tunneling (`revtunnel = TRUE`) for
 #' workers running on other machines.  This avoids the complication of
 #' otherwise having to configure port forwarding in firewalls, which often
 #' requires static IP address as well as privileges to edit the firewall,
@@ -328,43 +328,43 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' worker machines to the master, which may not be configured or is disabled
 #' on some systems, e.g. compute clusters.
 #'
-#' @section Default value of argument \code{rscript}:
-#' If \code{homogeneous} is FALSE, the \code{rscript} defaults to
-#' \code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
+#' @section Default value of argument `rscript`:
+#' If `homogeneous` is FALSE, the `rscript` defaults to
+#' `"Rscript"`, i.e. it is assumed that the \command{Rscript} executable
 #' is available on the \env{PATH} of the worker.
-#' If \code{homogeneous} is TRUE, the \code{rscript} defaults to
-#' \code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
+#' If `homogeneous` is TRUE, the `rscript` defaults to
+#' `file.path(R.home("bin"), "Rscript")`, i.e. it is basically assumed
 #' that the worker and the caller share the same file system and \R installation.
 #' 
-#' @section Default value of argument \code{homogeneous}:
-#' The default value of \code{homogeneous} is TRUE if and only if either
+#' @section Default value of argument `homogeneous`:
+#' The default value of `homogeneous` is TRUE if and only if either
 #' of the following is fulfilled:
 #' \itemize{
-#'  \item \code{worker} is \emph{localhost}
-#'  \item \code{revtunnel} is FALSE and \code{master} is \emph{localhost}
-#'  \item \code{worker} is neither an IP number nor a fully qualified domain
+#'  \item `worker` is _localhost_
+#'  \item `revtunnel` is FALSE and `master` is _localhost_
+#'  \item `worker` is neither an IP number nor a fully qualified domain
 #'        name (FQDN).  A hostname is considered to be a FQDN if it contains
 #'        one or more periods
 #' }
-#' In all other cases, \code{homogeneous} defaults to FALSE.
+#' In all other cases, `homogeneous` defaults to FALSE.
 #' 
 #' @section Connection time out:
-#' Argument \code{connectTimeout} does \emph{not} work properly on Unix and
+#' Argument `connectTimeout` does _not_ work properly on Unix and
 #' macOS due to limitation in \R itself.  For more details on this, please see
 #' R-devel thread 'BUG?: On Linux setTimeLimit() fails to propagate timeout
 #' error when it occurs (works on Windows)' on 2016-10-26
 #' (\url{https://stat.ethz.ch/pipermail/r-devel/2016-October/073309.html}).
 #' When used, the timeout will eventually trigger an error, but it won't happen
-#' until the socket connection timeout \code{timeout} itself happens.
+#' until the socket connection timeout `timeout` itself happens.
 #'
 #' @section Communication time out:
 #' If there is no communication between the master and a worker within the
-#' \code{timeout} limit, then the corresponding socket connection will be
+#' `timeout` limit, then the corresponding socket connection will be
 #' closed automatically.  This will eventually result in an error in code
 #' trying to access the connection.
 #'
 #' @section Troubleshooting:
-#' \emph{Failing to set up local workers:}
+#' _Failing to set up local workers:_
 #' When setting up a cluster of localhost workers, that is, workers running
 #' on the same machine as the master \R process, occasionally a connection
 #' to a worker ("cluster node") may fail to be set up.
@@ -373,7 +373,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The most common reason for such localhost failures is due to port
 #' clashes.  Retrying will often resolve the problem.
 #'
-#' \emph{Failing to set up remote workers:}
+#' _Failing to set up remote workers:_
 #' A cluster of remote workers runs \R processes on external machines. These
 #' external \R processes are launched over, typically, SSH to the remote
 #' machine.  For this to work, each of the remote machines needs to have
@@ -381,7 +381,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' main machine.  For this to work, it is required that one can SSH to the
 #' remote machines.  Ideally, the SSH connections use authentication based
 #' on public-private SSH keys such that the set up of the remote workers can
-#' be fully automated (see above).  If \code{makeClusterPSOCK()} fails to set
+#' be fully automated (see above).  If `makeClusterPSOCK()` fails to set
 #' up one or more remote \R workers, then an informative error message is
 #' produced.
 #' There are a few reasons for failing to set up remote workers.  If this
@@ -402,7 +402,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' {local}$
 #' }
 #' The latter will assert that you have proper startup configuration also for
-#' \emph{non-interactive} shell sessions on the remote machine.
+#' _non-interactive_ shell sessions on the remote machine.
 #'
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
@@ -978,9 +978,9 @@ is_fqdn <- function(worker) {
 #' is produced, otherwise only a warning.
 #'
 #' @return A named list of pathnames to all located SSH clients.
-#' If \code{first = TRUE}, only the first one is returned.
-#' Attribute \code{version} contains the output from querying the
-#' executable for its version (via command-line option \code{-V}).
+#' If `first = TRUE`, only the first one is returned.
+#' Attribute `version` contains the output from querying the
+#' executable for its version (via command-line option `-V`).
 #'
 #' @export
 #' @keywords internal
@@ -1136,7 +1136,7 @@ add_cluster_session_info <- function(cl) {
 #' @param debug If TRUE, then debug messages are produced when
 #' the cluster is garbage collected.
 #'
-#' @return The cluster object with attribute \code{gcMe} set.
+#' @return The cluster object with attribute `gcMe` set.
 #'
 #' @seealso
 #' The cluster is stopped using
