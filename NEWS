@@ -18,9 +18,6 @@ NEW FEATURES:
    from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
    current RNG state is used.  Use seed = FALSE when it is known that the
    future does not use RNG.
-
- * FutureResult gained field 'rng' which indicates whether the '.Random.seed'
-   was updated or not when resolving the future.
    
 BUG FIXES:
 
