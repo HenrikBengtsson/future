@@ -1,9 +1,12 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-28]
+Version: 1.15.1-9002 [2019-12-28]
 
 NEW FEATURES:
+
+ * ClusterFuture:s now relay immediateCondition:s back to the main process
+   momentarily after they are signaled and before the future is resolved.
 
  * Now value() detects if a future(..., seed = FALSE) call generated random
    numbers, which then might give unreliable results because non-parallel
@@ -40,9 +43,6 @@ DEPRECATED AND DEFUNCT:
 Version: 1.15.1 [2019-11-23]
 
 NEW FEATURES:
-
- * ClusterFuture:s now relay immediateCondition:s back to the main process
-   momentarily after they are signaled and before the future is resolved.
 
  * The default range of ports that makeClusterPSOCK() draws a random port from
    (when argument 'port' is not specified) can now be controlled by environment
