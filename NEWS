@@ -1,8 +1,24 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-22]
+Version: 1.15.1-9001 [2019-12-28]
 
+NEW FEATURES:
+
+ * Now value() detects if a future(..., seed = FALSE) call generated random
+   numbers, which then might give unreliable results because non-parallel
+   safe, non-statistically sound random number generation (RNG) was used.
+   If option 'future.rng.onMisuse' is "warning", a warning is produced. If
+   "error", an error is produced.  If "ignore" (default), the mistake is
+   silently ignored. Using seed = NULL is like seed = FALSE but without
+   performing the RNG validation.
+
+ * For convenience, argument 'seed' of future() may now also be an ordinary
+   single integer random seed.  If so, a L'Ecuyer-CMRG RNG seed is created
+   from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
+   current RNG state is used.  Use seed = FALSE when it is known that the
+   future does not use RNG.
+   
 BUG FIXES:
 
  * Evaluation of futures could fail if the global environment contained

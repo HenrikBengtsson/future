@@ -4,7 +4,7 @@
 #' futures in a container (e.g. list or environment) to be resolved while in
 #' the meanwhile retrieving values of already resolved futures.
 #' 
-#' @param x A \link{Future} to be resolved, or a list, an environment, or a
+#' @param x A [Future] to be resolved, or a list, an environment, or a
 #' list environment of futures to be resolved.
 #' 
 #' @param idxs (optional) integer or logical index specifying the subset of
@@ -31,17 +31,17 @@
 #' 
 #' @param \dots Not used.
 #'
-#' @return Returns \code{x} (regardless of subsetting or not).
-#' If \code{signal} is TRUE and one of the futures produces an error, then
+#' @return Returns `x` (regardless of subsetting or not).
+#' If `signal` is TRUE and one of the futures produces an error, then
 #' that error is produced.
 #'
 #' @details
-#' This function is resolves synchronously, i.e. it blocks until \code{x} and
+#' This function is resolves synchronously, i.e. it blocks until `x` and
 #' any containing futures are resolved.
 #' 
-#' @seealso To resolve a future \emph{variable}, first retrieve its
-#' \link{Future} object using \code{\link{futureOf}()}, e.g.
-#' \code{resolve(futureOf(x))}.
+#' @seealso To resolve a future _variable_, first retrieve its
+#' [Future] object using [futureOf()], e.g.
+#' `resolve(futureOf(x))`.
 #'
 #' @export
 resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")

@@ -1,9 +1,9 @@
-#' @return Returns an non-negative integer, -1L, or \code{NA_integer}.
+#' @return Returns an non-negative integer, -1L, or `NA_integer_`.
 #' For connections stdin, stdout, and stderr, 0L, 1L, and 2L,
 #' are returned, respectively.  For all other connections,
 #' a semi-random integer greater or equal to 3L is returned.
 #' For a connection that has been serialized, value is -1L.
-#' Attribute \code{raw_id} returns the pointer string from which
+#' Attribute `raw_id` returns the pointer string from which
 #' the above is inferred.
 #'
 #' @importFrom utils capture.output

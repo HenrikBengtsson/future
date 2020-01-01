@@ -3,7 +3,7 @@
 #' @usage fassignment \%label\% label
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<-\% \{ expr \}}.
+#'        `x %<-% { expr }`.
 #' @inheritParams multiprocess
 #'
 #' @export

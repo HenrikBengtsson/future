@@ -13,7 +13,7 @@ Future(
   conditions = "condition",
   globals = NULL,
   packages = NULL,
-  seed = NULL,
+  seed = FALSE,
   lazy = FALSE,
   local = TRUE,
   gc = FALSE,
@@ -45,14 +45,26 @@ Errors are always relayed.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) If TRUE, the random seed, that is, the state of the
+random number generator (RNG) will be set such that statistically sound
+random numbers are produced (also during parallelization).
+If FALSE, it is assumed that the future expression does neither need nor
+use random numbers generation.
+To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
+or a regular RNG seed (a single integer).
+Furthermore, if FALSE, then the future will be monitored to make sure it
+does not use random numbers.  If it does and depending on the value of
+option \code{\link[=future.options]{future.rng.misUse}}, the check is
+ignored, an informative warning, or error will be produced.
+If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+but without the RNG check being performed.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
 \item{local}{If TRUE, the expression is evaluated such that
@@ -81,7 +93,7 @@ An object of class \code{Future}.
 A \emph{future} is an abstraction for a \emph{value} that may
 available at some point in the future.  A future can either be
 \code{unresolved} or \code{resolved}, a state which can be checked
-with \code{\link{resolved}()}.  As long as it is \emph{unresolved}, the
+with \code{\link[=resolved]{resolved()}}.  As long as it is \emph{unresolved}, the
 value is not available.  As soon as it is \emph{resolved}, the value
 is available via \code{\link[future]{value}()}.
 }
@@ -89,7 +101,7 @@ is available via \code{\link[future]{value}()}.
 A Future object is itself an \link{environment}.
 }
 \seealso{
-One function that creates a Future is \code{\link{future}()}.
+One function that creates a Future is \code{\link[=future]{future()}}.
 It returns a Future that evaluates an \R expression in the future.
 An alternative approach is to use the \code{\link{\%<-\%}} infix
 assignment operator, which creates a future from the

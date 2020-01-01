@@ -8,14 +8,14 @@ fassignment \%plan\% strategy
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<-\% \{ expr \}}.}
+\code{x \%<-\% { expr }}.}
 
 \item{strategy}{The mechanism for how the future should be
-resolved. See \code{\link{plan}()} for further details.}
+resolved. See \code{\link[=plan]{plan()}} for further details.}
 }
 \description{
 Use a specific plan for a future assignment
 }
 \seealso{
-The \code{\link{plan}()} function sets the default plan for all futures.
+The \code{\link[=plan]{plan()}} function sets the default plan for all futures.
 }

@@ -1,8 +1,8 @@
 #' Create a remote future whose value will be resolved asynchronously in a remote process
 #'
 #' A remote future is a future that uses remote cluster evaluation,
-#' which means that its \emph{value is computed and resolved
-#' remotely in another process}.
+#' which means that its _value is computed and resolved
+#' remotely in another process_.
 #'
 #' @inheritParams cluster
 #' @inheritParams multiprocess
@@ -17,11 +17,11 @@
 #' @example incl/remote.R
 #'
 #' @section 'remote' versus 'cluster':
-#' The \code{remote} plan is a very similar to the \code{\link{cluster}} plan, but provides
+#' The `remote` plan is a very similar to the [`cluster`] plan, but provides
 #' more convenient default argument values when connecting to remote machines.  Specifically,
-#' \code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
-#' \code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
-#' See below for example on how \code{remote} and \code{cluster} are related.
+#' `remote` uses `persistent = TRUE` by default, and it sets `homogeneous`,
+#' `revtunnel`, and `myip` "wisely" depending on the value of `workers`.
+#' See below for example on how `remote` and `cluster` are related.
 #'
 #' @export
 remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...) {

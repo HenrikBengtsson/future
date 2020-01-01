@@ -22,14 +22,14 @@
 #' The preferred way to create a sequential future is not to call these functions
 #' directly, but to register them via \code{\link{plan}(sequential)} such that
 #' it becomes the default mechanism for all futures.  After this
-#' \code{\link{future}()} and \code{\link{\%<-\%}} will create
-#' \emph{sequential futures}.
+#' [future()] and \code{\link{\%<-\%}} will create
+#' _sequential futures_.
 #'
 #' @section transparent futures:
 #' Transparent futures are sequential futures configured to emulate how R
 #' evaluates expressions as far as possible.  For instance, errors and
 #' warnings are signaled immediately and assignments are done to the
-#' calling environment (without \code{local()} as default for all other
+#' calling environment (without `local()` as default for all other
 #' types of futures).  This makes transparent futures ideal for
 #' troubleshooting, especially when there are errors.
 #'

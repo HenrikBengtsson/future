@@ -35,8 +35,9 @@ matrix:
     - os: linux
       r: release
       env:
-## FIXME: Eventually udate to 'R_FUTURE_GLOBALS_ONREFERENCE=error' 
+## FIXME: Eventually update to 'R_FUTURE_GLOBALS_ONREFERENCE=error' 
         - R_FUTURE_GLOBALS_ONREFERENCE=warning
+        - R_FUTURE_RNG_ONMISUSE=error
     - os: linux
       r: devel
       env:

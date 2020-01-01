@@ -1,16 +1,16 @@
 #' A condition (message, warning, or error) that occurred while orchestrating a future
 #'
-#' While \emph{orchestrating} (creating, launching, querying, collection)
+#' While _orchestrating_ (creating, launching, querying, collection)
 #' futures, unexpected run-time errors (and other types of conditions) may
 #' occur.  Such conditions are coerced to a corresponding FutureCondition
 #' class to help distinguish them from conditions that occur due to the
-#' \emph{evaluation} of the future.
+#' _evaluation_ of the future.
 #' 
 #' @param message A message condition.
 #' 
 #' @param call The call stack that led up to the condition.
 #' 
-#' @param future The \link{Future} involved.
+#' @param future The [Future] involved.
 #' 
 #' @return An object of class FutureCondition which inherits from class
 #' \link[base:conditions]{condition} and FutureMessage, FutureWarning,

@@ -3,7 +3,7 @@
 #' @usage fassignment \%tweak\% tweaks
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<-\% \{ expr \}}.
+#'        `x %<-% { expr }`.
 #' @param tweaks A named list (or vector) with arguments that
 #' should be changed relative to the current strategy.
 #'

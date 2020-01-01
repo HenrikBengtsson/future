@@ -3,7 +3,7 @@
 #' @usage fassignment \%stdout\% capture
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<-\% \{ expr \}}.
+#'        `x %<-% { expr }`.
 #'
 #' @param capture If TRUE, the standard output will be captured, otherwise not.
 #'

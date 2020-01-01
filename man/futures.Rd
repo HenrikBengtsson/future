@@ -22,7 +22,7 @@ Non-future elements are returned as is.
 }
 \details{
 This function is useful for retrieve futures that were created via
-future assignments (\code{\%<-\%}) and therefore stored as promises.
+future assignments (\verb{\%<-\%}) and therefore stored as promises.
 This function turns such promises into standard \code{Future}
 objects.
 }

@@ -8,37 +8,37 @@
 #' @param default The default set of workers.
 #'
 #' @param which A character specifying which set / sets to return.
-#' If \code{"auto"}, the first non-empty set found.
-#' If \code{"min"}, the minimum value is returned.
-#' If \code{"max"}, the maximum value is returned (be careful!)
-#' If \code{"all"}, all values are returned.
+#' If `"auto"`, the first non-empty set found.
+#' If `"min"`, the minimum value is returned.
+#' If `"max"`, the maximum value is returned (be careful!)
+#' If `"all"`, all values are returned.
 #'
 #' @return Return a character vector of workers, which typically consists
 #' of names of machines / compute nodes, but may also be IP numbers.
 #'
 #' @details
 #' The default set of workers for each method is
-#' \code{rep("localhost", times = availableCores(method))}, which means
+#' `rep("localhost", times = availableCores(method))`, which means
 #' that each will at least use as many parallel workers on the current
-#' machine that \code{\link{availableCores}()} allows for that method.
+#' machine that [availableCores()] allows for that method.
 #'
 #' In addition, the following settings ("methods") are also acknowledged:
 #' \itemize{
-#'  \item \code{"PBS"} -
+#'  \item `"PBS"` -
 #'    Query TORQUE/PBS environment variable \env{PBS_NODEFILE}.
 #'    If this is set and specifies an existing file, then the set
 #'    of workers is read from that file, where one worker (node)
 #'    is given per line.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -l nodes = 4:ppn = 2}, which requests four nodes each
+#'    `qsub -l nodes = 4:ppn = 2`, which requests four nodes each
 #'    with two cores.
-#'  \item \code{"SGE"} -
+#'  \item `"SGE"` -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
 #'    \env{PE_HOSTFILE}.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -pe mpi 8} (or \code{qsub -pe ompi 8}), which
+#'    `qsub -pe mpi 8` (or `qsub -pe ompi 8`), which
 #'    requests eight cores on a any number of machines.
-#'  \item \code{"custom"} -
+#'  \item `"custom"` -
 #'    If option \option{future.availableWorkers.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
 #'    will be coerced to a character vector, which will be interpreted as
@@ -47,7 +47,7 @@
 #'
 #' @seealso
 #' To get the number of available workers on the current machine,
-#' see \code{\link{availableCores}()}.
+#' see [availableCores()].
 #'
 #' @importFrom utils file_test
 #' @export

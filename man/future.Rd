@@ -15,8 +15,8 @@ future(
   substitute = TRUE,
   globals = TRUE,
   packages = NULL,
+  seed = FALSE,
   lazy = FALSE,
-  seed = NULL,
   ...
 )
 
@@ -57,15 +57,27 @@ identified.}
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
+\item{seed}{(optional) If TRUE, the random seed, that is, the state of the
+random number generator (RNG) will be set such that statistically sound
+random numbers are produced (also during parallelization).
+If FALSE, it is assumed that the future expression does neither need nor
+use random numbers generation.
+To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
+or a regular RNG seed (a single integer).
+Furthermore, if FALSE, then the future will be monitored to make sure it
+does not use random numbers.  If it does and depending on the value of
+option \code{\link[=future.options]{future.rng.misUse}}, the check is
+ignored, an informative warning, or error will be produced.
+If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+but without the RNG check being performed.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{lazy}{If FALSE (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{\dots}{Reserved for internal use only.}
 
@@ -92,7 +104,7 @@ The future itself is returned invisibly, e.g.
 Alternatively, the future of a future variable \code{x} can be retrieved
 without blocking using \code{f <- \link{futureOf}(x)}.
 Both the future and the variable (promise) are assigned to environment
-\code{assign.env} where the name of the future is \code{.future_<name>}.
+\code{assign.env} where the name of the future is \verb{.future_<name>}.
 
 \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 }
@@ -100,7 +112,7 @@ Both the future and the variable (promise) are assigned to environment
 Creates a future that evaluates an \R expression or
 a future that calls an \R function with a set of arguments.
 How, when, and where these futures are evaluated can be configured
-using \code{\link{plan}()} such that it is evaluated in parallel on,
+using \code{\link[=plan]{plan()}} such that it is evaluated in parallel on,
 for instance, the current machine, on a remote machine, or via a
 job queue on a compute cluster.
 Importantly, any \R code using futures remains the same regardless
@@ -118,7 +130,7 @@ without blocking by using \code{\link{resolved}(f)}.
 For a future created via a future assignment
 (\code{x \%<-\% value} or \code{futureAssign("x", value)}), the value
 is bound to a promise, which when queried will internally call
-\code{\link{value}()}  on the future and which will then be resolved
+\code{\link[=value]{value()}}  on the future and which will then be resolved
 into a regular variable bound to that value.  For example, with future
 assignment \code{x \%<-\% value}, the first time variable \code{x} is
 queried the call blocks if (and only if) the future is not yet resolved.
@@ -151,7 +163,7 @@ will only be evaluated when the value of the future is requested.
 at all - it is guaranteed to be evaluated if the value is requested}.
 
 For future assignments, lazy evaluation can be controlled via the
-\code{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
+\verb{\%lazy\%} operator, e.g. \code{x \%<-\% { expr } \%lazy\% TRUE}.
 }
 
 \section{Globals used by future expressions}{
@@ -248,7 +260,6 @@ or
 }
 Both are effectively the same.
 
-
 Although rarely needed, a combination of automatic identification and manual
 specification of globals is supported via attributes \code{add} (to add
 false negatives) and \code{ignore} (to ignore false positives) on value
@@ -330,6 +341,6 @@ print(y1)
 \seealso{
 How, when and where futures are resolved is given by the
 \emph{future strategy}, which can be set by the end user using the
-\code{\link{plan}()} function.  The future strategy must not be
+\code{\link[=plan]{plan()}} function.  The future strategy must not be
 set by the developer, e.g. it must not be called within a package.
 }

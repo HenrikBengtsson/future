@@ -1,9 +1,9 @@
 #' Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation
 #'
-#' A multiprocess future is a future that uses \link{multicore} evaluation
-#' if supported, otherwise it uses \link{multisession} evaluation.
-#' Regardless, its \emph{value is computed and resolved in
-#' parallel in another process}.
+#' A multiprocess future is a future that uses [multicore] evaluation
+#' if supported, otherwise it uses [multisession] evaluation.
+#' Regardless, its _value is computed and resolved in
+#' parallel in another process_.
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams future
@@ -12,19 +12,19 @@
 #' @param workers A positive numeric scalar or a function specifying the
 #' maximum number of parallel futures that can be active at the same time
 #' before blocking.
-#' If a function, it is called without arguments \emph{when the future
-#' is created} and its value is used to configure the workers.
+#' If a function, it is called without arguments _when the future
+#' is created_ and its value is used to configure the workers.
 #' The function should return a numeric scalar.
 #' 
-#' @param \dots Additional named elements passed to \code{\link{Future}()}.
+#' @param \dots Additional named elements passed to [Future()].
 #'
-#' @return A \link{MultiprocessFuture} implemented as either a
-#' \link{MulticoreFuture} or a \link{MultisessionFuture}.
+#' @return A [MultiprocessFuture] implemented as either a
+#' [MulticoreFuture] or a \link{MultisessionFuture}.
 #'
 #' @example incl/multiprocess.R
 #'
 #' @seealso
-#' Internally \code{\link{multicore}()} and \code{\link{multisession}()}
+#' Internally [multicore()] and [multisession()]
 #' are used.
 #'
 #' @export

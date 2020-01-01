@@ -1,11 +1,11 @@
 #' Outputs details on the current \R session
 #'
-#' @param env If TRUE, \code{Sys.getenv()} information is returned.
+#' @param env If TRUE, `Sys.getenv()` information is returned.
 #'
 #' @return Invisibly a list of all details.
 #'
 #' @details
-#' Note that remote futures use \code{persistent = TRUE} by default.
+#' Note that remote futures use `persistent = TRUE` by default.
 #'
 #' @importFrom utils sessionInfo
 #' @export
