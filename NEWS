@@ -1,7 +1,14 @@
 Package: future
 ===============
 
-Version: 1.15.1-9001 [2019-12-28]
+Version: 1.15.1-9001 [2020-01-02]
+
+SIGNIFICANT CHANGES:
+
+ * Now oplan <- plan(new_strategy) returns the list of all nested strategies
+   previously set, instead of just the strategy on top of this stack. This
+   makes it easier to temporarily use another plan. For the old behavior,
+   use 'oplan <- plan(new_strategy)[[1]]'.
 
 NEW FEATURES:
 
