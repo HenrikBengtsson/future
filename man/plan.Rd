@@ -112,7 +112,7 @@ If you think it is necessary to modify the future strategy within a
 function, then make sure to undo the changes when exiting the function.
 This can be done using:
 \preformatted{
-  oplan <- plan()
+  oplan <- plan(new_set_of_strategies)
   on.exit(plan(oplan), add = TRUE)
   [...]
 }
@@ -157,7 +157,7 @@ f <- future({
   b <- 3
   c <- 2
   a * b * c
-}) \%lazy\% TRUE
+}, lazy = TRUE)
 y <- value(f)
 print(y)
 str(list(a = a, b = b, c = c)) ## All NAs

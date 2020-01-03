@@ -107,17 +107,17 @@ stopifnot(formals(fcn)$local == FALSE)
 
 
 message("*** old <- plan(new)")
-truth <- plan("next")
+truth <- plan("list")
 old <- plan(cluster, workers = cl, globals = FALSE)
 stopifnot(identical(unclass(old), unclass(truth)))
 
-curr <- plan("next") ## curr == cluster(workers = cl, globals = FALSE)
-prev <- plan(old)    ## prev == sequential(local = FALSE)
-stopifnot(identical(unclass(curr), unclass(prev)))
+stack <- plan("list") ## stack == cluster(workers = cl, globals = FALSE)
+prev <- plan(old)     ## prev == sequential(local = FALSE)
+stopifnot(identical(stack, prev))
 
-curr <- plan("next") ## curr == old
-stopifnot(identical(unclass(curr), unclass(old)))
-stopifnot(identical(unclass(curr), unclass(truth)))
+stack <- plan("list") ## curr == old
+stopifnot(identical(stack, old))
+stopifnot(identical(stack, truth))
 
 message("*** %plan% 'sequential'")
 plan(cluster, workers = cl)

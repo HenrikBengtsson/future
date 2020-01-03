@@ -8,7 +8,7 @@ clusterExportSticky(cl, globals)
 }
 \arguments{
 \item{cl}{(cluster) A cluster object as returned by
-[parallel::makeCluster()].}
+\code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 
 \item{globals}{(list) A named list of sticky globals to be exported.}
 }

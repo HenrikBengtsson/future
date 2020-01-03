@@ -9,11 +9,11 @@ sticky_globals(erase = FALSE, name = "future:sticky_globals", pos = 2L)
 \arguments{
 \item{erase}{(logical) If TRUE, the environment is erased, otherwise not.}
 
-\item{name}{(character) The name of the environment on the [base::search]
+\item{name}{(character) The name of the environment on the \link[base:search]{base::search}
 path.}
 
 \item{pos}{(integer) The position on the search path where the
-environment should be positioned.  If `pos == 0L`, then the environment
+environment should be positioned.  If \code{pos == 0L}, then the environment
 is detached, if it exists.}
 }
 \value{
