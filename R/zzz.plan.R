@@ -94,7 +94,7 @@
 #' function, then make sure to undo the changes when exiting the function.
 #' This can be done using:
 #' \preformatted{
-#'   oplan <- plan()
+#'   oplan <- plan(new_set_of_strategies)
 #'   on.exit(plan(oplan), add = TRUE)
 #'   [...]
 #' }
@@ -272,7 +272,7 @@ plan <- local({
 
     if (is.list(strategy)) {
       oldStack <- plan_set(strategy, skip = .skip, cleanup = .cleanup, init = .init)
-      return(invisible(oldStack[[1L]]))
+      return(invisible(oldStack))
     }
 
     ## (a) Is a (plain) list of future strategies specified?
@@ -356,7 +356,7 @@ plan <- local({
 
     ## Set new strategy for futures
     oldStack <- plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-    invisible(oldStack[[1L]])
+    invisible(oldStack)
   } # function()
 }) # plan()
 
