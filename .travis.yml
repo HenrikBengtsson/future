@@ -54,12 +54,49 @@ matrix:
       r: release
     - os: linux
       r: release
-      r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=sequential
+      env: NB='future.tests w/ sequential' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=multisession
+      env: NB='future.tests w/ multisession' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=cluster
+      env: NB='future.tests w/ cluster' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=multicore
+      env: NB='future.tests w/ multicore' ## Just a label
+    - os: linux
+      r: release
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
       r_packages:
         - covr
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
-      env: NB='w/ covr' ## Just a label
+      env: NB='covr' ## Just a label
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
