@@ -20,7 +20,7 @@ f <- future({
   b <- 3
   c <- 2
   a * b * c
-}) %lazy% TRUE
+}, lazy = TRUE)
 y <- value(f)
 print(y)
 str(list(a = a, b = b, c = c)) ## All NAs
