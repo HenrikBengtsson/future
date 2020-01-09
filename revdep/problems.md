@@ -187,12 +187,12 @@ Run `revdep_details(,"brms")` for more info
 
 <details>
 
-* Version: 0.8.1
+* Version: 0.8.2
 * Source code: https://github.com/cran/codebook
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
-* Date/Publication: 2019-05-21 12:50:03 UTC
-* Number of recursive dependencies: 176
+* Date/Publication: 2020-01-09 16:20:07 UTC
+* Number of recursive dependencies: 178
 
 Run `revdep_details(,"codebook")` for more info
 
@@ -200,38 +200,11 @@ Run `revdep_details(,"codebook")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    The error most likely occurred in:
-    
-    > ### Name: codebook
-    > ### Title: Generate rmarkdown codebook
-    > ### Aliases: codebook
-    > 
-    > ### ** Examples
-    > 
-    > # will generate figures in a temporary directory
-    > old_base_dir <- knitr::opts_knit$get("base.dir")
-    > knitr::opts_knit$set(base.dir = tempdir())
-    > on.exit(knitr::opts_knit$set(base.dir = old_base_dir))
-    > data("bfi")
-    > bfi <- bfi[, c("BFIK_open_1", "BFIK_open_1")]
-    > md <- codebook(bfi, survey_repetition = "single", metadata_table = FALSE)
-    No missing values.
-    Warning: 'skimr::skim_to_wide' is deprecated.
-    Use 'skim()' instead.
-    See help("Deprecated")
-    Error: 'skim_with_defaults' is not an exported object from 'namespace:skimr'
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘graphics’ ‘jsonlite’ ‘pander’ ‘rlang’
+      ‘graphics’ ‘jsonlite’ ‘pander’
       All declared Imports should be used.
-    Missing or unexported object: ‘skimr::skim_with_defaults’
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -263,6 +236,28 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
+# DeclareDesign
+
+<details>
+
+* Version: 0.20.0
+* Source code: https://github.com/cran/DeclareDesign
+* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
+* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
+* Date/Publication: 2019-09-10 15:10:02 UTC
+* Number of recursive dependencies: 133
+
+Run `revdep_details(,"DeclareDesign")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘DesignLibrary’
+    ```
+
 # dipsaus
 
 <details>
@@ -283,29 +278,6 @@ Run `revdep_details(,"dipsaus")` for more info
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
-    ```
-
-# disk.frame
-
-<details>
-
-* Version: 0.3.1
-* Source code: https://github.com/cran/disk.frame
-* URL: https://diskframe.com
-* BugReports: https://github.com/xiaodaigh/disk.frame/issues
-* Date/Publication: 2019-12-20 09:00:02 UTC
-* Number of recursive dependencies: 115
-
-Run `revdep_details(,"disk.frame")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(c("a", "b", "ans")) : 
-      could not find function "globalVariables"
     ```
 
 # foieGras
@@ -330,28 +302,6 @@ Run `revdep_details(,"foieGras")` for more info
       installed size is 35.2Mb
       sub-directories of 1Mb or more:
         libs  34.0Mb
-    ```
-
-# genBaRcode
-
-<details>
-
-* Version: 1.2.2
-* Source code: https://github.com/cran/genBaRcode
-* Date/Publication: 2019-10-25 15:10:02 UTC
-* Number of recursive dependencies: 140
-
-Run `revdep_details(,"genBaRcode")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in eval(`_inherit`, env, NULL) : object 'Stat' not found
-    Error in setClass("jplace", representation = representation(placements = "tbl_df"),  : 
-      could not find function "setClass"
     ```
 
 # GetBCBData
@@ -500,12 +450,12 @@ Run `revdep_details(,"inlinedocs")` for more info
 
 <details>
 
-* Version: 2.1.4
+* Version: 2.2.0
 * Source code: https://github.com/cran/lidR
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2019-10-15 20:50:02 UTC
-* Number of recursive dependencies: 154
+* Date/Publication: 2020-01-08 23:01:03 UTC
+* Number of recursive dependencies: 160
 
 Run `revdep_details(,"lidR")` for more info
 
@@ -515,14 +465,33 @@ Run `revdep_details(,"lidR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.0Mb
+      installed size is 10.3Mb
       sub-directories of 1Mb or more:
-        libs   6.0Mb
+        extdata   1.2Mb
+        libs      7.0Mb
     ```
+
+# mcp
+
+<details>
+
+* Version: 0.2.0
+* Source code: https://github.com/cran/mcp
+* URL: http://lindeloev.github.io/mcp/, https://github.com/lindeloev/mcp
+* BugReports: https://github.com/lindeloev/mcp/issues
+* Date/Publication: 2020-01-09 16:30:02 UTC
+* Number of recursive dependencies: 95
+
+Run `revdep_details(,"mcp")` for more info
+
+</details>
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘Rcpp’
+    Namespaces in Imports field not imported from:
+      ‘bayesplot’ ‘methods’ ‘purrr’
       All declared Imports should be used.
     ```
 
@@ -804,14 +773,6 @@ Run `revdep_details(,"Seurat")` for more info
         libs   8.9Mb
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(c("et.ref", "et.comp")) : 
-      could not find function "globalVariables"
-    Error in classVersion("ExpressionSet") : 
-      could not find function "classVersion"
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘loomR’
@@ -994,236 +955,6 @@ Run `revdep_details(,"tableschema.r")` for more info
     Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
-# tcensReg
-
-<details>
-
-* Version: 0.1.4
-* Source code: https://github.com/cran/tcensReg
-* URL: https://github.com/williazo/tcensReg
-* BugReports: https://github.com/williazo/tcensReg/issues
-* Date/Publication: 2019-12-18 14:50:07 UTC
-* Number of recursive dependencies: 85
-
-Run `revdep_details(,"tcensReg")` for more info
-
-</details>
-
-## In both
-
-*   checking for missing documentation entries ... ERROR
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in setOldClass(c("maxLik", "maxim")) : 
-      could not find function "setOldClass"
-    Error: package or namespace load failed for ‘tcensReg’:
-     unable to load R code in package ‘maxLik’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in setOldClass(c("maxLik", "maxim")) : 
-      could not find function "setOldClass"
-    Error: unable to load R code in package ‘maxLik’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking replacement functions ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The argument of a replacement function which corresponds to the right
-    hand side must be named ‘value’.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking foreign function calls ... NOTE
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in setOldClass(c("maxLik", "maxim")) : 
-      could not find function "setOldClass"
-    Error: unable to load R code in package ‘maxLik’
-    Execution halted
-    ```
-
-*   checking Rd \usage sections ... NOTE
-    ```
-    ...
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The \usage entries for S3 methods should use the \method markup and not
-    their full name.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
 # tealeaves
 
 <details>
@@ -1265,29 +996,5 @@ Run `revdep_details(,"treeHMM")` for more info
     ```
     Namespace in Imports field not imported from: ‘Matrix’
       All declared Imports should be used.
-    ```
-
-# TSstudio
-
-<details>
-
-* Version: 0.1.5
-* Source code: https://github.com/cran/TSstudio
-* URL: https://github.com/RamiKrispin/TSstudio
-* BugReports: https://github.com/RamiKrispin/TSstudio/issues
-* Date/Publication: 2019-10-28 19:40:09 UTC
-* Number of recursive dependencies: 144
-
-Run `revdep_details(,"TSstudio")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in prepareTimeseries(y = y) : object 'AirPassengers' not found
-    Error in globalVariables(c(".rows")) : 
-      could not find function "globalVariables"
     ```
 
