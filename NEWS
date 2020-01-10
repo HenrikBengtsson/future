@@ -35,7 +35,7 @@ BETA FEATURES:
    'RhpcBLASctl' package is installed. Parallelization via multi-threaded
    processing (done in native code by some packages and externaly library)
    while at the same time using forked (aka "multicore") parallel processing
-   is known to unstable.  Note that this is not only true when using
+   is unstable in some cases.  Note that this is not only true when using
    plan(multicore) but also when using, for instance, parallel::mclapply().
 
 BUG FIXES:
