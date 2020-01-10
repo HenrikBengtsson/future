@@ -4,6 +4,10 @@ plan(multicore)
 
 message("*** multicore() and multi-threading ...")
 
+message("supportsMulticore(): ", sQuote(supportsMulticore()))
+message("availableCores("multicore"): ", sQuote(availableCores("multicore")))
+message("supports_omp_threads(): ", sQuote(supports_omp_threads()))
+
 if (supportsMulticore() && availableCores("multicore") >=2 && supports_omp_threads()) {
   for (enable in c(TRUE, FALSE)) {
     options(future.fork.multithreading.enable = enable)
