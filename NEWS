@@ -26,6 +26,8 @@ NEW FEATURES:
    current RNG state is used.  Use seed = FALSE when it is known that the
    future does not use RNG.
 
+BETA FEATURES:
+
  * Add support for automatically disable multi-threading when using 'multicore'
    futures. For now, the default is to allow multi-threaded processing but
    this might change in the future. To disable multi-threaded, set option
