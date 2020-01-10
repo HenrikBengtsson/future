@@ -60,23 +60,23 @@ run.MulticoreFuture <- function(future, ...) {
   value <- getOption("future.fork.multithreading.enable", value)
   if (isFALSE(value)) {
     if (debug) mdebug("- Evaluate future in single-threaded mode ...")
-    if (!requireNamespace("RhpcBLASctl", quietly = TRUE)) {
-      stop(FutureError(sprintf("In order to disable multi-threading in multicore futures, the %s package must be installed", sQuote("RhpcBLASctl"))))
+    if (!supports_omp_threads(debug = debug)) {
+      warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+    } else {
+      ## Tell OpenMP to use a single thread
+      old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      if (old_omp_threads > 1L) {
+        RhpcBLASctl::omp_set_num_threads(1L)
+        on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
+        if (debug) mdebug("  - Force single-threaded processing for OpenMP")
+      }
+  
+      ## Tell BLAS to use a single thread(?)
+      ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
+      ## FIXME: How can we get the current BLAS settings?
+      ## /HB 2020-01-09
+      ## RhpcBLASctl::blas_set_num_threads(1L)
     }
-
-    ## Tell OpenMP to use a single thread
-    old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
-    if (old_omp_threads > 1L) {
-      RhpcBLASctl::omp_set_num_threads(1L)
-      on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
-      if (debug) mdebug("  - Force single-threaded processing for OpenMP")
-    }
-
-    ## Tell BLAS to use a single thread(?)
-    ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
-    ## FIXME: How can we get the current BLAS settings?
-    ## /HB 2020-01-09
-    ## RhpcBLASctl::blas_set_num_threads(1L)
     if (debug) mdebug("- Evaluate future in single-threaded mode ... DONE")
   }
   

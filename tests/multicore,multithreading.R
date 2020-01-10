@@ -4,7 +4,7 @@ plan(multicore)
 
 message("*** multicore() and multi-threading ...")
 
-if (supportsMulticore() && availableCores("multicore") >=2 && requireNamespace("RhpcBLASctl", quietly = TRUE) && RhpcBLASctl::omp_get_max_threads() > 1L) {
+if (supportsMulticore() && availableCores("multicore") >=2 && supports_omp_threads()) {
   for (enable in c(TRUE, FALSE)) {
     options(future.fork.multithreading.enable = enable)
 

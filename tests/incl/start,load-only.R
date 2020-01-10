@@ -80,6 +80,7 @@ whichIndex <- future:::whichIndex
 pid_exists <- future:::pid_exists
 isFALSE <- future:::isFALSE
 isNA <- future:::isNA
+supports_omp_threads <- future:::supports_omp_threads
 
 ## Local functions for test scripts
 printf <- function(...) cat(sprintf(...))
