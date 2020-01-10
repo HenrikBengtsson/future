@@ -55,6 +55,10 @@ sticky_globals <- function(erase = FALSE, name = "future:sticky_globals", pos = 
 #'
 #' @return (invisible; cluster) The cluster object.
 #'
+#' @details
+#' This requires that the \pkg{future} package is installed on the cluster
+#' nodes.
+#'
 #' @importFrom parallel clusterCall
 #' @keywords internals
 clusterExportSticky <- function(cl, globals) {
@@ -72,7 +76,9 @@ clusterExportSticky <- function(cl, globals) {
   stopifnot(!is.null(names(globals)))
 
   clusterCall(cl, fun = function(globals) {
-    env <- future:::sticky_globals()
+    ns <- getNamespace("future")
+    sticky_globals <- get("sticky_globals", mode = "function", envir = ns)
+    env <- sticky_globals()
     for (name in names(globals))
       env[[name]] <- globals[[name]]
     TRUE
