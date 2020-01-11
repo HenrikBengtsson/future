@@ -1181,3 +1181,24 @@ queryRCmdCheck <- function(...) {
 
 inRCmdCheck <- function() { queryRCmdCheck() != "notRunning" }
    
+
+supports_omp_threads <- function(assert = TRUE, debug = getOption("future.debug", FALSE)) {
+  if (!requireNamespace("RhpcBLASctl", quietly = TRUE)) {
+    if (assert) {
+      stop(FutureError(sprintf("In order to disable multi-threading in multicore futures, the %s package must be installed", sQuote("RhpcBLASctl"))))
+    }
+    return(FALSE)
+  }
+
+  ## Current number of OpenMP threads
+  old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+
+  ## RhpcBLASctl compiled without OpenMP support? Then it returns NULL
+  if (is.null(old_omp_threads)) old_omp_threads <- NA_integer_
+  
+  res <- !is.na(old_omp_threads)
+
+  if (debug) mdebugf("supports_omp_threads() = %s", res, debug = debug)
+
+  res
+}

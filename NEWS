@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.15.1-9003 [2020-01-02]
+Version: 1.15.1-9003 [2020-01-11]
 
 SIGNIFICANT CHANGES:
 
@@ -25,6 +25,20 @@ NEW FEATURES:
    from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
    current RNG state is used.  Use seed = FALSE when it is known that the
    future does not use RNG.
+
+BETA FEATURES:
+
+ * Add support for automatically disable multi-threading when using 'multicore'
+   futures. For now, the default is to allow multi-threaded processing but
+   this might change in the future. To disable multi-threaded, set option
+   'future.fork.multithreading.enable' or environment variable
+   'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE'. This requires that
+   'RhpcBLASctl' package is installed. Parallelization via multi-threaded
+   processing (done in native code by some packages and externaly library)
+   while at the same time using forked (aka "multicore") parallel processing
+   is unstable in some cases.  Note that this is not only true when using
+   plan(multicore) but also when using, for instance, parallel::mclapply().
+   This is in beta so the above names and options might change later.
 
 BUG FIXES:
 

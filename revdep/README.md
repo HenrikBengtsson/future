@@ -10,20 +10,20 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-01-09                   |
+|date     |2020-01-11                   |
 
 # Dependencies
 
 |package |old    |new         |Δ  |
 |:-------|:------|:-----------|:--|
-|future  |1.15.1 |1.15.1-9001 |*  |
+|future  |1.15.1 |1.15.1-9005 |*  |
 |digest  |0.6.23 |0.6.23      |   |
 |globals |0.12.5 |0.12.5      |   |
 |listenv |0.8.0  |0.8.0       |   |
 
 # Revdeps
 
-## All (91)
+## All (92)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
@@ -33,7 +33,7 @@
 |[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.2.0     |      |        |1    |
 |BatchGetSymbols                                 |2.5.4     |      |        |     |
-|batchtools                                      |0.9.11    |      |        |     |
+|batchtools                                      |0.9.12    |      |        |     |
 |biotmle                                         |1.10.0    |      |        |     |
 |[blavaan](problems.md#blavaan)                  |0.3-8     |      |        |2    |
 |[brms](problems.md#brms)                        |2.10.0    |      |        |1    |
@@ -44,10 +44,10 @@
 |dhReg                                           |0.1.0     |      |        |     |
 |[dipsaus](problems.md#dipsaus)                  |0.0.3     |      |        |1    |
 |disk.frame                                      |0.3.1     |      |        |     |
-|doFuture                                        |0.8.2     |      |        |     |
+|doFuture                                        |0.9.0     |      |        |     |
 |drake                                           |7.9.0     |      |        |     |
-|drtmle                                          |1.0.4     |      |        |     |
-|ezcox                                           |0.3.0     |      |        |     |
+|drtmle                                          |1.0.5     |      |        |     |
+|ezcox                                           |0.4.0     |      |        |     |
 |FAMoS                                           |0.2.0     |      |        |     |
 |fiery                                           |1.1.2     |      |        |     |
 |fipe                                            |0.0.1     |      |        |     |
@@ -75,6 +75,7 @@
 |ipc                                             |0.1.3     |      |        |     |
 |jstor                                           |0.3.7     |      |        |     |
 |kernelboot                                      |0.1.6     |      |        |     |
+|ldaPrototype                                    |0.1.1     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
 |[lidR](problems.md#lidr)                        |2.2.0     |      |        |1    |
 |[mcp](problems.md#mcp)                          |0.2.0     |      |        |1    |

@@ -61,7 +61,7 @@ Run `revdep_details(,"adept")` for more info
 * URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
 * BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 * Date/Publication: 2019-06-23 06:00:14 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 78
 
 Run `revdep_details(,"aroma.affymetrix")` for more info
 
