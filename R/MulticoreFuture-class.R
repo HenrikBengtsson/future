@@ -60,7 +60,7 @@ run.MulticoreFuture <- function(future, ...) {
   value <- getOption("future.fork.multithreading.enable", value)
   if (isFALSE(value)) {
     if (debug) mdebug("- Evaluate future in single-threaded mode ...")
-    if (!supports_omp_threads(debug = debug)) {
+    if (!supports_omp_threads(assert = TRUE, debug = debug)) {
       warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
     } else {
       ## Tell OpenMP to use a single thread

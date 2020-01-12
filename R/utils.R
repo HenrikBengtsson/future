@@ -1182,7 +1182,7 @@ queryRCmdCheck <- function(...) {
 inRCmdCheck <- function() { queryRCmdCheck() != "notRunning" }
    
 
-supports_omp_threads <- function(assert = TRUE, debug = getOption("future.debug", FALSE)) {
+supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug", FALSE)) {
   if (!requireNamespace("RhpcBLASctl", quietly = TRUE)) {
     if (assert) {
       stop(FutureError(sprintf("In order to disable multi-threading in multicore futures, the %s package must be installed", sQuote("RhpcBLASctl"))))
