@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.15.1-9003 [2020-01-11]
+Version: 1.15.1-9005 [2020-01-15]
 
 SIGNIFICANT CHANGES:
 
@@ -25,6 +25,9 @@ NEW FEATURES:
    from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
    current RNG state is used.  Use seed = FALSE when it is known that the
    future does not use RNG.
+
+ * ClusterFuture:s now relay immediateCondition:s back to the main process
+   momentarily after they are signaled and before the future is resolved.
 
 BETA FEATURES:
 

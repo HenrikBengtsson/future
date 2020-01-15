@@ -544,7 +544,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -685,7 +685,7 @@ getExpression.Future <- function(future, local = future$local, stdout = future$s
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-  expr <- makeExpression(expr = future$expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
+  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")

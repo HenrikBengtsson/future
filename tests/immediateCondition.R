@@ -55,6 +55,7 @@ for (ss in seq_along(strategies)) {
     })
   })
   message("  class: ", paste(sQuote(class(f)), collapse = ", "))
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
   if (inherits(f, "UniprocessFuture")) {
     stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
   } else {
@@ -66,19 +67,30 @@ for (ss in seq_along(strategies)) {
     r <- resolved(f)
   })
   message("  result: ", r)
-  stopifnot(length(msgs) == 0L)
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, "ClusterFuture")) {
+    stopifnot(identical(msgs, c("IM1\n")))
+  } else {
+    stopifnot(length(msgs) == 0L)
+  }
 
   message("- resolve w/out collecting results")
   msgs <- recordMessages({
     f <- resolve(f)
   })
-  stopifnot(length(msgs) == 0L)
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, "ClusterFuture")) {
+    stopifnot(identical(msgs, c("IW", "IM2\n")))
+  } else {
+    stopifnot(length(msgs) == 0L)
+  }
 
   message("- resolve w/ collect results")
   msgs <- recordMessages({
     f <- resolve(f, result = TRUE)
   })
-  if (inherits(f, c("UniprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, c("UniprocessFuture", "ClusterFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
@@ -89,7 +101,8 @@ for (ss in seq_along(strategies)) {
     v <- value(f)
   })
   message("  value: ", v)
-  if (inherits(f, "UniprocessFuture")) {
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, c("UniprocessFuture", "ClusterFuture"))) {
     stopifnot(identical(msgs, "M\n"))
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n", "M\n")))
@@ -113,6 +126,7 @@ for (ss in seq_along(strategies)) {
     fs[[2]] <- future({ immediateMessage("IM2"); Sys.sleep(0.1); message("M2"); immediateWarning("IW2"); 2L })
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
   if (inherits(fs[[1]], "UniprocessFuture")) {
     stopifnot(identical(msgs, c("IM1\n", "IW1", "IM2\n", "IW2")))
   } else {
@@ -124,19 +138,30 @@ for (ss in seq_along(strategies)) {
     rs <- resolved(fs)
   })
   message("  result: ", paste(rs, collapse = ", "))
-  stopifnot(length(msgs) == 0L)
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, "ClusterFuture")) {
+    stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
+  } else {
+    stopifnot(length(msgs) == 0L)
+  }  
 
   message("- resolve w/out collecting results")
   msgs <- recordMessages({
     fs <- resolve(fs)
   })
-  stopifnot(length(msgs) == 0L)
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(f, "ClusterFuture")) {
+    stopifnot(identical(msgs, c("IW1", "IW2")))
+  } else {
+    stopifnot(length(msgs) == 0L)
+  }  
 
   message("- resolve w/ collect results")
   msgs <- recordMessages({
     fs <- resolve(fs, result = TRUE)
   })
-  if (inherits(fs[[1]], c("UniprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
+  if (inherits(fs[[1]], c("UniprocessFuture", "ClusterFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW1", "IM2\n", "IW2")))
@@ -147,14 +172,15 @@ for (ss in seq_along(strategies)) {
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
   stopifnot(identical(msgs, c("M1\n", "M2\n")))
-#  stopifnot(identical(msgs, c("IM1\n", "M1\n", "IW1", "IM2\n", "M2\n", "IW2")))
   
   message("- getting value again")
   msgs <- recordMessages({
     vs <- values(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
+  message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
   stopifnot(identical(msgs, c("M1\n", "M2\n")))
 
   message("- getting values one by one")

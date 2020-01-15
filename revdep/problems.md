@@ -162,11 +162,11 @@ Run `revdep_details(,"blavaan")` for more info
 
 <details>
 
-* Version: 2.10.0
+* Version: 2.11.0
 * Source code: https://github.com/cran/brms
 * URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
 * BugReports: https://github.com/paul-buerkner/brms/issues
-* Date/Publication: 2019-08-29 15:50:07 UTC
+* Date/Publication: 2020-01-12 14:50:05 UTC
 * Number of recursive dependencies: 168
 
 Run `revdep_details(,"brms")` for more info
@@ -177,9 +177,9 @@ Run `revdep_details(,"brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.5Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        R     2.9Mb
+        R     3.2Mb
         doc   2.6Mb
     ```
 
@@ -210,6 +210,29 @@ Run `revdep_details(,"codebook")` for more info
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 65 marked UTF-8 strings
+    ```
+
+# cSEM
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/cSEM
+* URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
+* BugReports: https://github.com/M-E-Rademaker/cSEM/issues
+* Date/Publication: 2020-01-13 17:20:02 UTC
+* Number of recursive dependencies: 103
+
+Run `revdep_details(,"cSEM")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘Rdpack’
+      All declared Imports should be used.
     ```
 
 # datapackage.r

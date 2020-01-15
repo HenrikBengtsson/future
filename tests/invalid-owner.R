@@ -64,7 +64,10 @@ message("- Trying with invalid ownership ...")
 
 message("Creating future #1:")
 f1 <- future({ 42L })
-print(f1)
+## FIXME: print() calls resolved(), which triggers a result() collection,
+## and future 'f1' to become resolved.  This means future 'f2' below
+## may launch on the same worker as 'f1'.  So, don't resolve().
+# print(f1)
 cat(sprintf("Future #1 session: %d\n", f1$node))
 stopifnot(identical(f1$owner, session_uuid))
 print(usedNodes(f1))

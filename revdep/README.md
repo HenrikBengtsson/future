@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-01-11                   |
+|date     |2020-01-15                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (92)
+## All (93)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
@@ -36,9 +36,10 @@
 |batchtools                                      |0.9.12    |      |        |     |
 |biotmle                                         |1.10.0    |      |        |     |
 |[blavaan](problems.md#blavaan)                  |0.3-8     |      |        |2    |
-|[brms](problems.md#brms)                        |2.10.0    |      |        |1    |
+|[brms](problems.md#brms)                        |2.11.0    |      |        |1    |
 |civis                                           |2.1.0     |      |        |     |
 |[codebook](problems.md#codebook)                |0.8.2     |      |        |2    |
+|[cSEM](problems.md#csem)                        |0.1.0     |      |        |1    |
 |[datapackage.r](problems.md#datapackager)       |0.1.2     |      |        |1    |
 |[DeclareDesign](problems.md#declaredesign)      |0.20.0    |      |        |1    |
 |dhReg                                           |0.1.0     |      |        |     |
