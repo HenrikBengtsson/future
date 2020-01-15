@@ -18,4 +18,8 @@ clusterExportSticky(cl, globals)
 \description{
 Export globals to the sticky-globals environment of the cluster nodes
 }
+\details{
+This requires that the \pkg{future} package is installed on the cluster
+nodes.
+}
 \keyword{internals}
