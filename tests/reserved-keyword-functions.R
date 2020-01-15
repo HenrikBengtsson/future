@@ -7,6 +7,10 @@ message("Overriding reserved keyword functions ...")
 ## Identify globals used by the expanded future expression
 ...names <- globals::findGlobals(getExpression(future(NULL)))
 ...names <- ...names[sapply(...names, FUN = exists, mode = "function")]
+
+## Skip test with '<-' because it causes issues for at least R 3.2.0 & 3.3.0
+if (getRversion() < "3.4.0") ...names <- setdiff(...names, "<-")
+
 print(...names)
 boom <- function(...) stop("Boom!")
 
