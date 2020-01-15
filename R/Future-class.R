@@ -448,9 +448,9 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
         if (is.null(label)) label <- "<none>"
         msg <- sprintf("UNRELIABLE VALUE: Future (%s) unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label))
         if (onMisuse == "error") {
-          cond <- FutureError(msg)
+          cond <- simpleError(msg)
         } else if (onMisuse == "warning") {
-          cond <- FutureWarning(msg)
+          cond <- simpleWarning(msg)
 	} else {
 	  cond <- NULL
 	  warning("Unknown value on option 'future.rng.onMisuse': ",
