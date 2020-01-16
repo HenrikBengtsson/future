@@ -6,7 +6,7 @@
 #' @param constraints An optional character specifying under what
 #' constraints ("purposes") we are requesting the values.
 #' For instance, on systems where multicore processing is not supported
-#' (i.e. Windows), using \code{constrains = "multicore"} will force a
+#' (i.e. Windows), using `constrains = "multicore"` will force a
 #' single core to be reported.
 #'
 #' @param methods A character vector specifying how to infer the number
@@ -18,73 +18,73 @@
 #' settings are available.
 #'
 #' @param which A character specifying which settings to return.
-#' If \code{"min"}, the minimum value is returned.
-#' If \code{"max"}, the maximum value is returned (be careful!)
-#' If \code{"all"}, all values are returned.
+#' If `"min"`, the minimum value is returned.
+#' If `"max"`, the maximum value is returned (be careful!)
+#' If `"all"`, all values are returned.
 #'
 #' @return Return a positive (>= 1) integer.
-#' If \code{which = "all"}, then more than one value may be returned.
-#' Together with \code{na.rm = FALSE} missing values may also be returned.
+#' If `which = "all"`, then more than one value may be returned.
+#' Together with `na.rm = FALSE` missing values may also be returned.
 #'
 #' @details
 #' The following settings ("methods") for inferring the number of cores
 #' are supported:
 #' \itemize{
-#'  \item \code{"system"} -
+#'  \item `"system"` -
 #'    Query \code{\link[parallel]{detectCores}()}.
-#'  \item \code{"mc.cores"} -
+#'  \item `"mc.cores"` -
 #'    If available, returns the value of option
 #'    \code{\link[base:options]{mc.cores}}.
 #'    Note that \option{mc.cores} is defined as the number of
-#'    \emph{additional} \R processes that can be used in addition to the
-#'    main \R process.  This means that with \code{mc.cores = 0} all
+#'    _additional_ \R processes that can be used in addition to the
+#'    main \R process.  This means that with `mc.cores = 0` all
 #'    calculations should be done in the main \R process, i.e. we have
 #'    exactly one core available for our calculations.
 #'    The \option{mc.cores} option defaults to environment variable
 #'    \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
 #'    package is loaded).  The \option{mc.cores} option is used by for
 #'    instance \code{\link[parallel]{mclapply}()}.
-#'  \item \code{"PBS"} -
+#'  \item `"PBS"` -
 #'    Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
-#'    Depending on PBS system configuration, these \emph{resource}
+#'    Depending on PBS system configuration, these _resource_
 #'    parameter may or may not default to one.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -l nodes=1:ppn=2}, which requests one node with two cores.
-#'  \item \code{"SGE"} -
+#'    `qsub -l nodes=1:ppn=2`, which requests one node with two cores.
+#'  \item `"SGE"` -
 #'    Query Sun/Oracle Grid Engine (SGE) environment variable
 #'    \env{NSLOTS}.
 #'    An example of a job submission that results in this is
-#'    \code{qsub -pe smp 2} (or \code{qsub -pe by_node 2}), which
+#'    `qsub -pe smp 2` (or `qsub -pe by_node 2`), which
 #'    requests two cores on a single machine.
-#'  \item \code{"Slurm"} -
+#'  \item `"Slurm"` -
 #'    Query Simple Linux Utility for Resource Management (Slurm)
 #'    environment variable \env{SLURM_CPUS_PER_TASK}.
 #'    This may or may not be set.  It can be set when submitting a job,
-#'    e.g. \code{sbatch --cpus-per-task=2 hello.sh} or by adding
-#'    \code{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
-#'  \item \code{"custom"} -
+#'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
+#'    `#SBATCH --cpus-per-task=2` to the \file{hello.sh} script.
+#'  \item `"custom"` -
 #'    If option \option{future.availableCores.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
 #'    will be coerced to an integer, which will be interpreted as a number
 #'    of available cores.  If the value is NA, then it will be ignored.
 #' }
-#' For any other value of a \code{methods} element, the \R option with the
+#' For any other value of a `methods` element, the \R option with the
 #' same name is queried.  If that is not set, the system environment
 #' variable is queried.  If neither is set, a missing value is returned.
 #'
 #' @section Advanced usage:
 #' It is possible to override the maximum number of cores on the machine
-#' as reported by \code{availableCores(methods = "system")}.  This can be
+#' as reported by `availableCores(methods = "system")`.  This can be
 #' done by first specifying
-#' \code{options(future.availableCores.methods = "mc.cores")} and
-#' then the number of cores to use, e.g. \code{options(mc.cores = 8)}.
+#' `options(future.availableCores.methods = "mc.cores")` and
+#' then the number of cores to use, e.g. `options(mc.cores = 8)`.
 #' Having said this, it is almost always better to do this by explicitly
 #' setting the number of workers when specifying the future strategy,
-#' e.g. \code{plan(multiprocess, workers = 8)}.
+#' e.g. `plan(multiprocess, workers = 8)`.
 #'
 #' @seealso
 #' To get the number of available workers regardless of machine,
-#' see \code{\link{availableWorkers}()}.
+#' see [availableWorkers()].
 #'
 #' @export
 #' @keywords internal

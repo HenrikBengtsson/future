@@ -19,7 +19,7 @@ FutureError(message, call = NULL, future = NULL)
 UnexpectedFutureResultError(future, hint = NULL)
 }
 \arguments{
-\item{message}{A message.}
+\item{message}{A message condition.}
 
 \item{call}{The call stack that led up to the condition.}
 

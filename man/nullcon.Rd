@@ -7,7 +7,7 @@
 nullcon()
 }
 \value{
-Returns a open, binary [base::connection()].
+Returns a open, binary \code{\link[base:connection]{base::connection()}}.
 }
 \description{
 Creates a connection to the system null device

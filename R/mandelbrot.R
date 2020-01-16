@@ -3,12 +3,12 @@
 #' @param Z               A complex matrix for which convergence
 #'                        counts should be calculated.
 #' @param xmid,ymid,side,resolution Alternative specification of
-#'                        the complex plane \code{Z}, where
-#'                        \code{mean(Re(Z)) == xmid},
-#'                        \code{mean(Im(Z)) == ymid},
-#'                        \code{diff(range(Re(Z))) == side},
-#'                        \code{diff(range(Im(Z))) == side}, and
-#'                        \code{dim(Z) == c(resolution, resolution)}.
+#'                        the complex plane `Z`, where
+#'                        `mean(Re(Z)) == xmid`,
+#'                        `mean(Im(Z)) == ymid`,
+#'                        `diff(range(Re(Z))) == side`,
+#'                        `diff(range(Im(Z))) == side`, and
+#'                        `dim(Z) == c(resolution, resolution)`.
 #' @param maxIter         Maximum number of iterations per bin.
 #' @param tau             A threshold; the radius when calling
 #'                        divergence (Mod(z) > tau).
@@ -28,8 +28,8 @@
 #' }
 #'
 #' @author The internal Mandelbrot algorithm was inspired by and
-#' adopted from similar GPL code of Martin Maechler (available
-#' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
+#' adopted from similar GPL code of Martin Maechler available
+#' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 (sic!).
 #'
 #' @aliases as.raster.Mandelbrot plot.Mandelbrot mandelbrot_tiles
 #' @export

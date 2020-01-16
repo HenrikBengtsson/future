@@ -42,7 +42,7 @@ If a new strategy is chosen, then the previous one is returned
 }
 \description{
 This function allows \emph{the user} to plan the future, more specifically,
-it specifies how \code{\link{future}()}:s are resolved,
+it specifies how \code{\link[=future]{future()}}:s are resolved,
 e.g. sequentially or in parallel.
 }
 \details{
@@ -54,36 +54,36 @@ To reset the strategy back to the default, use \code{plan("default")}.
 \section{Implemented evaluation strategies}{
 
 \itemize{
- \item{\code{\link{sequential}}:}{
-   Resolves futures sequentially in the current \R process.
- }
- \item{\code{\link{transparent}}:}{
-   Resolves futures sequentially in the current \R process and
-   assignments will be done to the calling environment.
-   Early stopping is enabled by default.
- }
- \item{\code{\link{multisession}}:}{
-   Resolves futures asynchronously (in parallel) in separate
-   \R sessions running in the background on the same machine.
- }
- \item{\code{\link{multicore}}:}{
-   Resolves futures asynchronously (in parallel) in separate
-   \emph{forked} \R processes running in the background on
-   the same machine.  Not supported on Windows.
- }
- \item{\code{\link{multiprocess}}:}{
-   If multicore evaluation is supported, that will be used,
-   otherwise multisession evaluation will be used.
- }
- \item{\code{\link{cluster}}:}{
-   Resolves futures asynchronously (in parallel) in separate
-   \R sessions running typically on one or more machines.
- }
- \item{\code{\link{remote}}:}{
-   Resolves futures asynchronously in a separate \R session
-   running on a separate machine, typically on a different
-   network.
- }
+\item{\code{\link{sequential}}:}{
+Resolves futures sequentially in the current \R process.
+}
+\item{\code{\link{transparent}}:}{
+Resolves futures sequentially in the current \R process and
+assignments will be done to the calling environment.
+Early stopping is enabled by default.
+}
+\item{\code{\link{multisession}}:}{
+Resolves futures asynchronously (in parallel) in separate
+\R sessions running in the background on the same machine.
+}
+\item{\code{\link{multicore}}:}{
+Resolves futures asynchronously (in parallel) in separate
+\emph{forked} \R processes running in the background on
+the same machine.  Not supported on Windows.
+}
+\item{\code{\link{multiprocess}}:}{
+If multicore evaluation is supported, that will be used,
+otherwise multisession evaluation will be used.
+}
+\item{\code{\link{cluster}}:}{
+Resolves futures asynchronously (in parallel) in separate
+\R sessions running typically on one or more machines.
+}
+\item{\code{\link{remote}}:}{
+Resolves futures asynchronously in a separate \R session
+running on a separate machine, typically on a different
+network.
+}
 }
 
 Other package may provide additional evaluation strategies.
@@ -112,7 +112,7 @@ If you think it is necessary to modify the future strategy within a
 function, then make sure to undo the changes when exiting the function.
 This can be done using:
 \preformatted{
-  oplan <- plan()
+  oplan <- plan(new_set_of_strategies)
   on.exit(plan(oplan), add = TRUE)
   [...]
 }
@@ -121,7 +121,7 @@ This can be done using:
 \section{Using plan() in scripts and vignettes}{
 
 When writing scripts or vignettes that uses futures, try to place any
-call to \code{plan()} as far up (as early on) in the code as possible.  
+call to \code{plan()} as far up (as early on) in the code as possible.
 This will help users to quickly identify where the future plan is set up
 and allow them to modify it to their computational resources.
 Even better is to leave it to the user to set the \code{plan()} prior to
@@ -157,7 +157,7 @@ f <- future({
   b <- 3
   c <- 2
   a * b * c
-}) \%lazy\% TRUE
+}, lazy = TRUE)
 y <- value(f)
 print(y)
 str(list(a = a, b = b, c = c)) ## All NAs

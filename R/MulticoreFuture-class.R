@@ -3,11 +3,11 @@
 #' @inheritParams MultiprocessFuture-class
 #' @inheritParams Future-class
 #'
-#' @return An object of class \code{MulticoreFuture}.
+#' @return An object of class `MulticoreFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "multicore future", see function
-#' \code{\link{multicore}()}.
+#' [multicore()].
 #'
 #' @export
 #' @name MulticoreFuture-class
@@ -36,7 +36,6 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   gp <- NULL
 
   f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, job = NULL, version = "1.8", ...)
-  f$.callResult <- TRUE
   structure(f, class = c("MulticoreFuture", class(f)))
 }
 
@@ -55,6 +54,32 @@ run.MulticoreFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
+  ## Disable multi-threading in futures?
+  value <- Sys.getenv("R_FUTURE_FORK_MULTITHREADING_ENABLE", "TRUE")
+  value <- isTRUE(as.logical(value))
+  value <- getOption("future.fork.multithreading.enable", value)
+  if (isFALSE(value)) {
+    if (debug) mdebug("- Evaluate future in single-threaded mode ...")
+    if (!supports_omp_threads(assert = TRUE, debug = debug)) {
+      warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+    } else {
+      ## Tell OpenMP to use a single thread
+      old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      if (old_omp_threads > 1L) {
+        RhpcBLASctl::omp_set_num_threads(1L)
+        on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
+        if (debug) mdebug("  - Force single-threaded processing for OpenMP")
+      }
+  
+      ## Tell BLAS to use a single thread(?)
+      ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
+      ## FIXME: How can we get the current BLAS settings?
+      ## /HB 2020-01-09
+      ## RhpcBLASctl::blas_set_num_threads(1L)
+    }
+    if (debug) mdebug("- Evaluate future in single-threaded mode ... DONE")
+  }
+  
   mcparallel <- importParallel("mcparallel")
 
   expr <- getExpression(future)

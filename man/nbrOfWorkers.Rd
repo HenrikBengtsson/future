@@ -9,7 +9,7 @@ nbrOfWorkers(evaluator = NULL)
 \arguments{
 \item{evaluator}{A future evaluator function.
 If NULL (default), the current evaluator as returned
-by \code{\link{plan}()} is used.}
+by \code{\link[=plan]{plan()}} is used.}
 }
 \value{
 A positive number in \eqn{{1, 2, 3, ...}}.

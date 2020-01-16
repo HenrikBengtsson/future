@@ -8,9 +8,9 @@ fassignment \%lazy\% lazy
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<-\% \{ expr \}}.}
+\code{x \%<-\% { expr }}.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 }
 \description{

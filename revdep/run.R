@@ -137,16 +137,24 @@ if ("--reset" %in% args) {
   todo()
 } else if ("--add" %in% args) {
   pos <- which("--add" == args)
+  if (pos == length(args)) stop("Missing value for option '--add'")
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   revdep_add(packages = pkgs)
   todo()
 } else if ("--rm" %in% args) {
   pos <- which("--rm" == args)
+  if (pos == length(args)) stop("Missing value for option '--rm'")
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   revdep_rm(packages = pkgs)
   todo()
 } else if ("--add-broken" %in% args) {
   revdep_add_broken()
+  todo()
+} else if ("--add-error" %in% args) {
+#  res <- revepcheck::revdep_summary()
+  pkgs <- revdep_pkgs_with_status("error")
+  str(pkgs)
+  revdep_add(packages = pkgs)
   todo()
 } else if ("--add-all" %in% args) {
   revdep_init()
@@ -168,6 +176,7 @@ if ("--reset" %in% args) {
   todo()
 } else if ("--show-check" %in% args) {
   pos <- which("--show-check" == args)
+  if (pos == length(args)) stop("Missing value for option '--show-check")
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   for (pkg in pkgs) {
     for (dir in c("old", "new")) {
@@ -202,6 +211,7 @@ if ("--reset" %in% args) {
   revdep_preinstall(todo$package)
 } else if ("--preinstall" %in% args) {
   pos <- which("--preinstall" == args)
+  if (pos == length(args)) stop("Missing value for option '--preinstall'")
   pkgs <- parse_pkgs(args[seq(from = pos + 1L, to = length(args))])
   revdep_preinstall(pkgs)
 } else {
@@ -209,4 +219,3 @@ if ("--reset" %in% args) {
   check()
   revdep_report(all = TRUE)
 }
-

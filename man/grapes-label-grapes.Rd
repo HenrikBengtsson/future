@@ -8,7 +8,7 @@ fassignment \%label\% label
 }
 \arguments{
 \item{fassignment}{The future assignment, e.g.
-\code{x \%<-\% \{ expr \}}.}
+\code{x \%<-\% { expr }}.}
 
 \item{label}{An optional character string label attached to the future.}
 }

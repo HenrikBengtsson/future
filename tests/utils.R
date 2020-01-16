@@ -47,7 +47,7 @@ stopifnot(all(hpaste(x, collapse = NULL) == x))
 # Empty input
 stopifnot(identical(hpaste(character(0)), character(0)))
 
-message("*** hpaste() ...")
+message("*** hpaste() ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

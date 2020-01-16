@@ -2,8 +2,8 @@
 #' @inheritParams Future-class
 #'
 #' @return
-#' \code{MultisessionFuture()} returns an object of class
-#' \code{MultisessionFuture}, which inherits from \code{ClusterFuture}.
+#' `MultisessionFuture()` returns an object of class
+#' `MultisessionFuture`, which inherits from `ClusterFuture`.
 #' 
 #' @export
 #' @rdname ClusterFuture-class

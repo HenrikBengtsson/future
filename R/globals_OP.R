@@ -7,7 +7,7 @@
 #' @inheritParams future
 #'
 #' @param fassignment The future assignment, e.g.
-#'        \code{x \%<-\% \{ expr \}}.
+#'        `x %<-% { expr }`.
 #'
 #' @param packages (optional) a character vector specifying packages
 #' to be attached in the \R environment evaluating the future.

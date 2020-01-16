@@ -1,7 +1,7 @@
 #' Signals Captured Conditions
 #'
-#' Captured conditions that meet the \code{include} and \code{exclude}
-#' requirements are signaled \emph{in the order as they were captured}.
+#' Captured conditions that meet the `include` and `exclude`
+#' requirements are signaled _in the order as they were captured_.
 #'
 #' @param future A resolved \link{Future}.
 #'
@@ -9,14 +9,14 @@
 #' classes to signal.
 #'
 #' @param exclude A character string of \link[base:condition]{condition}
-#' classes \emph{not} to signal.
+#' classes _not_ to signal.
 #'
 #' @param resignal If TRUE, then already signaled conditions are signaled
 #' again, otherwise not.
 #'
 #' @param \dots Not used.
 #'
-#' @return Returns the \link{Future} where conditioned that were signaled
+#' @return Returns the [Future] where conditioned that were signaled
 #' have been flagged to have been signaled.
 #'
 #' @seealso

@@ -1,7 +1,7 @@
 #' Plan how to resolve a future
 #'
-#' This function allows \emph{the user} to plan the future, more specifically,
-#' it specifies how \code{\link{future}()}:s are resolved,
+#' This function allows _the user_ to plan the future, more specifically,
+#' it specifies how [future()]:s are resolved,
 #' e.g. sequentially or in parallel.
 #'
 #' @param strategy The evaluation function (or name of it) to use
@@ -10,15 +10,15 @@
 #' @param \dots Additional arguments overriding the default arguments
 #' of the evaluation function.  Which additional arguments are supported
 #' depends on what evaluation function is used, e.g. several support
-#' argument \code{workers} but not all.  For details, see the individual
+#' argument `workers` but not all.  For details, see the individual
 #' functions of which some are linked to below.
 #"
-#' @param substitute If TRUE, the \code{strategy} expression is
-#' \code{substitute()}:d, otherwise not.
+#' @param substitute If TRUE, the `strategy` expression is
+#' `substitute()`:d, otherwise not.
 #'
 #' @param .call (internal) Used for recording the call to this function.
 #'
-#' @param .skip (internal) If \code{TRUE}, then attempts to set a strategy
+#' @param .skip (internal) If `TRUE`, then attempts to set a strategy
 #' that is the same as what is currently in use, will skipped.
 #'
 #' @param .cleanup (internal) Used to stop implicitly started clusters.
@@ -31,39 +31,39 @@
 #' @example incl/plan.R
 #'
 #' @details
-#' The default strategy is \code{\link{sequential}}, but the default can be
+#' The default strategy is [`sequential`], but the default can be
 #' configured by option \option{future.plan} and, if that is not set,
 #' system environment variable \env{R_FUTURE_PLAN}.
-#' To reset the strategy back to the default, use \code{plan("default")}.
+#' To reset the strategy back to the default, use `plan("default")`.
 #'
 #' @section Implemented evaluation strategies:
 #' \itemize{
-#'  \item{\code{\link{sequential}}:}{
+#'  \item{[`sequential`]:}{
 #'    Resolves futures sequentially in the current \R process.
 #'  }
-#'  \item{\code{\link{transparent}}:}{
+#'  \item{[`transparent`]:}{
 #'    Resolves futures sequentially in the current \R process and
 #'    assignments will be done to the calling environment.
 #'    Early stopping is enabled by default.
 #'  }
-#'  \item{\code{\link{multisession}}:}{
+#'  \item{[`multisession`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running in the background on the same machine.
 #'  }
-#'  \item{\code{\link{multicore}}:}{
+#'  \item{[`multicore`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \emph{forked} \R processes running in the background on
+#'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{\code{\link{multiprocess}}:}{
+#'  \item{[`multiprocess`]:}{
 #'    If multicore evaluation is supported, that will be used,
 #'    otherwise multisession evaluation will be used.
 #'  }
-#'  \item{\code{\link{cluster}}:}{
+#'  \item{[`cluster`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running typically on one or more machines.
 #'  }
-#'  \item{\code{\link{remote}}:}{
+#'  \item{[`remote`]:}{
 #'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
@@ -77,13 +77,13 @@
 #' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
 #' and OpenLava.
 #'
-#' To "close" any background workers (e.g. \code{multisession}), change
-#' the plan to something different; \code{plan(sequential)} is recommended
+#' To "close" any background workers (e.g. `multisession`), change
+#' the plan to something different; `plan(sequential)` is recommended
 #' for this.
 #'
 #' @section For package developers:
 #' Please refrain from modifying the future strategy inside your packages /
-#' functions, i.e. do not call \code{plan()} in your code.  Instead, leave
+#' functions, i.e. do not call `plan()` in your code.  Instead, leave
 #' the control on what backend to use to the end user.  This idea is part of
 #' the core philosophy of the future framework - as a developer you can never
 #' know what future backends the user have access to.  Moreover, by not making
@@ -94,22 +94,22 @@
 #' function, then make sure to undo the changes when exiting the function.
 #' This can be done using:
 #' \preformatted{
-#'   oplan <- plan()
+#'   oplan <- plan(new_set_of_strategies)
 #'   on.exit(plan(oplan), add = TRUE)
 #'   [...]
 #' }
 #'
 #' @section Using plan() in scripts and vignettes:
 #' When writing scripts or vignettes that uses futures, try to place any
-#' call to \code{plan()} as far up (as early on) in the code as possible.  
+#' call to `plan()` as far up (as early on) in the code as possible.  
 #' This will help users to quickly identify where the future plan is set up
 #' and allow them to modify it to their computational resources.
-#' Even better is to leave it to the user to set the \code{plan()} prior to
-#' \code{source()}:ing the script or running the vignette.
+#' Even better is to leave it to the user to set the `plan()` prior to
+#' `source()`:ing the script or running the vignette.
 #' If a \file{\link{.future.R}} exists in the current directory and / or in
 #' the user's home directory, it is sourced when the \pkg{future} package is
-#' \emph{loaded}.  Because of this, the \file{.future.R} file provides a
-#' convenient place for users to set the \code{plan()}.
+#' _loaded_.  Because of this, the \file{.future.R} file provides a
+#' convenient place for users to set the `plan()`.
 #' This behavior can be controlled via an \R option - see
 #' \link[future:future.options]{future options} for more details.
 #'
@@ -272,7 +272,7 @@ plan <- local({
 
     if (is.list(strategy)) {
       oldStack <- plan_set(strategy, skip = .skip, cleanup = .cleanup, init = .init)
-      return(invisible(oldStack[[1L]]))
+      return(invisible(oldStack))
     }
 
     ## (a) Is a (plain) list of future strategies specified?
@@ -356,7 +356,7 @@ plan <- local({
 
     ## Set new strategy for futures
     oldStack <- plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-    invisible(oldStack[[1L]])
+    invisible(oldStack)
   } # function()
 }) # plan()
 
@@ -470,7 +470,7 @@ print.FutureStrategyList <- function(x, ...) {
 #' @examples
 #' resetWorkers(plan())
 #'
-#' @keyword internal
+#' @keywords internal
 #' @export
 resetWorkers <- function(x, ...) UseMethod("resetWorkers")
 

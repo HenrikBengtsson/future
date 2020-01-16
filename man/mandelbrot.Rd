@@ -47,7 +47,7 @@ demo("mandelbrot", package = "future", ask = FALSE)
 }
 \author{
 The internal Mandelbrot algorithm was inspired by and
-adopted from similar GPL code of Martin Maechler (available
-from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 [sic!]).
+adopted from similar GPL code of Martin Maechler available
+from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 (sic!).
 }
 \keyword{internal}

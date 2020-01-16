@@ -31,15 +31,27 @@ identified.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{lazy}{If \code{FALSE} (default), the future is resolved
+\item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
-\item{seed}{(optional) A L'Ecuyer-CMRG RNG seed.}
+\item{seed}{(optional) If TRUE, the random seed, that is, the state of the
+random number generator (RNG) will be set such that statistically sound
+random numbers are produced (also during parallelization).
+If FALSE, it is assumed that the future expression does neither need nor
+use random numbers generation.
+To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
+or a regular RNG seed (a single integer).
+Furthermore, if FALSE, then the future will be monitored to make sure it
+does not use random numbers.  If it does and depending on the value of
+option \code{\link[=future.options]{future.rng.misUse}}, the check is
+ignored, an informative warning, or error will be produced.
+If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+but without the RNG check being performed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
-in the help for \code{\link{future}()}.}
+in the help for \code{\link[=future]{future()}}.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
@@ -76,7 +88,7 @@ If NULL, then it is inferred using an online service (default).}
 
 \item{label}{An optional character string label attached to the future.}
 
-\item{...}{Additional named elements passed to \code{\link{ClusterFuture}()}.}
+\item{...}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
 }
 \value{
 A \link{ClusterFuture}.

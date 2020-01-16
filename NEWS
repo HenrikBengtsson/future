@@ -1,6 +1,66 @@
 Package: future
 ===============
 
+Version: 1.16.0 [2020-01-15]
+
+SIGNIFICANT CHANGES:
+
+ * Now oplan <- plan(new_strategy) returns the list of all nested strategies
+   previously set, instead of just the strategy on top of this stack. This
+   makes it easier to temporarily use another plan. For the old behavior,
+   use 'oplan <- plan(new_strategy)[[1]]'.
+
+NEW FEATURES:
+
+ * Now value() detects if a future(..., seed = FALSE) call generated random
+   numbers, which then might give unreliable results because non-parallel
+   safe, non-statistically sound random number generation (RNG) was used.
+   If option 'future.rng.onMisuse' is "warning", a warning is produced. If
+   "error", an error is produced.  If "ignore" (default), the mistake is
+   silently ignored. Using seed = NULL is like seed = FALSE but without
+   performing the RNG validation.
+
+ * For convenience, argument 'seed' of future() may now also be an ordinary
+   single integer random seed.  If so, a L'Ecuyer-CMRG RNG seed is created
+   from this seed.  If seed = TRUE, then a L'Ecuyer-CMRG RNG seed based on the
+   current RNG state is used.  Use seed = FALSE when it is known that the
+   future does not use RNG.
+
+ * ClusterFuture:s now relay immediateCondition:s back to the main process
+   momentarily after they are signaled and before the future is resolved.
+
+BETA FEATURES:
+
+ * Add support for automatically disable multi-threading when using 'multicore'
+   futures. For now, the default is to allow multi-threaded processing but
+   this might change in the future. To disable multi-threaded, set option
+   'future.fork.multithreading.enable' or environment variable
+   'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE'. This requires that
+   'RhpcBLASctl' package is installed. Parallelization via multi-threaded
+   processing (done in native code by some packages and externaly library)
+   while at the same time using forked (aka "multicore") parallel processing
+   is unstable in some cases.  Note that this is not only true when using
+   plan(multicore) but also when using, for instance, parallel::mclapply().
+   This is in beta so the above names and options might change later.
+
+BUG FIXES:
+
+ * Evaluation of futures could fail if the global environment contained
+   *functions* with the same names as a small set of base R functions, e.g.
+   'raw()', 'list()', and 'options()'.
+
+ * future(alist(a=)) would produce "Error in objectSize_list(x, depth = depth
+   - 1L) : argument "x_kk" is missing, with no default"
+
+DEPRECATED AND DEFUNCT:
+
+ * Future and FutureResult objects with an internal version 1.7 or older have
+   been deprecated since 1.14.0 (July 2019) and are now defunct.
+   
+ * Defunct hidden argument 'progress' of resolve(), and hidden arguments/fields
+   'condition' and 'calls' of FutureResult are now gone.
+
+
 Version: 1.15.1 [2019-11-23]
 
 NEW FEATURES:

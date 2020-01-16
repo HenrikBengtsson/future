@@ -2,11 +2,16 @@
 #'
 #' @param value The value of the future expression.
 #' If the expression was not fully resolved (e.g. an error) occurred,
-#' the the value is \code{NULL}.
+#' the the value is `NULL`.
+#'
+#' @param visible If TRUE, the value was visible, otherwise invisible.
 #' 
 #' @param conditions A list of zero or more list elements each containing
 #' a captured \link[base:condition]{condition} and possibly more meta data such as the
 #' call stack and a timestamp.
+#'
+#' @param rng If TRUE, the `.Random.seed` was updated from resolving the
+#' future, otherwise not.
 #'
 #' @param \dots (optional) Additional named results to be returned.
 #' 
@@ -18,18 +23,18 @@
 #' @return An object of class FutureResult.
 #'
 #' @details
-#' This function is only part of the \emph{backend} Future API.
-#' This function is \emph{not} part of the frontend Future API.
+#' This function is only part of the _backend_ Future API.
+#' This function is _not_ part of the frontend Future API.
 #'
 #' @section Note to developers:
-#' The FutureResult structure is \emph{under development} and may change at anytime,
+#' The FutureResult structure is _under development_ and may change at anytime,
 #' e.g. elements may be renamed or removed.  Because of this, please avoid
 #' accessing the elements directly in code.  Feel free to reach out if you need
 #' to do so in your code.
 #'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
+FutureResult <- function(value = NULL, visible = TRUE, stdout = NULL, conditions = NULL, rng = FALSE, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
   args <- list(...)
   if (length(args) > 0) {
     names <- names(args)
@@ -38,28 +43,28 @@ FutureResult <- function(value = NULL, stdout = NULL, conditions = NULL, ..., st
         "Internal error: All arguments to FutureResult() must be named"
       ))
     }
-    ## DEPRECATED in future (>= 1.11.0), DEFUNCT IN future (>= 1.14.0)
-    if (!is.null(args[["calls"]])) {
-      .Defunct(msg = "Argument 'calls' to FutureResult is defunct")
-    } else if (!is.null(args[["condition"]])) {
-      .Defunct(msg = "Argument 'condition' to FutureResult is defunct")
-    }
   }
 
+  stop_if_not(is.logical(visible), length(visible) == 1L, !is.na(visible))
+
   if (!is.null(stdout)) stopifnot(is.character(stdout))
-  
+
   stop_if_not(is.null(conditions) || is.list(conditions))
+
+  stop_if_not(is.logical(rng), length(rng) == 1L, !is.na(rng))
 
   stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
 
   if (version == "1.7") {
-    .Deprecated(msg = "FutureResult objects with an internal version of 1.7 or earlier are deprecated and will soon become defunct, i.e. non-functional.  This likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+    .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
   }
 
   structure(list(
     value      = value,
+    visible    = visible,
     stdout     = stdout,
     conditions = conditions,
+    rng        = rng,
     ...,
     started    = started,
     finished   = finished,
@@ -93,9 +98,11 @@ as.character.FutureResult <- function(x, ...) {
 print.FutureResult <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
   s <- c(s, sprintf("value: %s", class(x[["value"]])))
+  if (!is.null(v <- x$visible)) s <- c(s, sprintf("visible: %s", v))
   s <- c(s, sprintf("stdout: %s", class(x[["stdout"]])))
   conditions <- x[["conditions"]]
   s <- c(s, sprintf("conditions: [n = %d] %s", length(conditions), paste(sapply(conditions, FUN = function(c) sQuote(class(c)[1])), collapse = ", ")))
+  if (!is.null(v <- x$rng)) s <- c(s, sprintf("RNG used: %s", v))
   t0 <- x[["started"]]
   t1 <- x[["finished"]]
   s <- c(s, sprintf("duration: %s (started %s)", format(t1-t0), t0))

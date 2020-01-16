@@ -35,8 +35,9 @@ matrix:
     - os: linux
       r: release
       env:
-## FIXME: Eventually udate to 'R_FUTURE_GLOBALS_ONREFERENCE=error' 
+## FIXME: Eventually update to 'R_FUTURE_GLOBALS_ONREFERENCE=error' 
         - R_FUTURE_GLOBALS_ONREFERENCE=warning
+        - R_FUTURE_RNG_ONMISUSE=error
     - os: linux
       r: devel
       env:
@@ -46,18 +47,56 @@ matrix:
         - _R_CHECK_CONNECTIONS_LEFT_OPEN_=true
         - _R_CHECK_LENGTH_1_CONDITION_=true
         - _R_CHECK_LENGTH_1_LOGIC2_=true
+        - _R_CLASS_MATRIX_ARRAY_=true
     - os: osx
       r: oldrel
     - os: osx
       r: release
     - os: linux
       r: release
-      r_check_args: --no-build-vignettes --no-codoc --no-examples --no-tests --no-manual --ignore-vignettes
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=sequential
+      env: NB='future.tests w/ sequential' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=multisession
+      env: NB='future.tests w/ multisession' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=cluster
+      env: NB='future.tests w/ cluster' ## Just a label
+    - os: linux
+      r: release
+      r_github_packages:
+        - HenrikBengtsson/future.tests
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
+        - R CMD INSTALL *.tar.gz
+        - Rscript -e future.tests::check --args --test-plan=multicore
+      env: NB='future.tests w/ multicore' ## Just a label
+    - os: linux
+      r: release
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
       r_packages:
         - covr
       after_success:
         - Rscript -e 'covr::codecov(quiet=FALSE)'
-      env: NB='w/ covr' ## Just a label
+      env: NB='covr' ## Just a label
 
 before_install:
   - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'

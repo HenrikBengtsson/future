@@ -1,16 +1,16 @@
 #' A condition (message, warning, or error) that occurred while orchestrating a future
 #'
-#' While \emph{orchestrating} (creating, launching, querying, collection)
+#' While _orchestrating_ (creating, launching, querying, collection)
 #' futures, unexpected run-time errors (and other types of conditions) may
 #' occur.  Such conditions are coerced to a corresponding FutureCondition
 #' class to help distinguish them from conditions that occur due to the
-#' \emph{evaluation} of the future.
+#' _evaluation_ of the future.
 #' 
-#' @param message A message.
+#' @param message A message condition.
 #' 
 #' @param call The call stack that led up to the condition.
 #' 
-#' @param future The \link{Future} involved.
+#' @param future The [Future] involved.
 #' 
 #' @return An object of class FutureCondition which inherits from class
 #' \link[base:conditions]{condition} and FutureMessage, FutureWarning,
@@ -28,10 +28,8 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
     message <- conditionMessage(cond)
   } else if (is.null(message)) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
-  } else if (inherits(message, "Future")) {
-    .Defunct(msg = "FutureCondition(<Future>) is no longer supported")
   }
-  
+
   message <- as.character(message)
   if (length(message) != 1L) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))

@@ -2,6 +2,10 @@ isFALSE <- function(x) {
   is.logical(x) && length(x) == 1L && !is.na(x) && !x
 }
 
+isNA <- function(x) {
+  is.logical(x) && length(x) == 1L && is.na(x)
+}
+
 assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
   ast <- as.list(call)
   if (length(ast) <= 2L) return()
@@ -565,7 +569,9 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
       ## NOTE: Use non-class dispatching subsetting to avoid infinite loop,
       ## e.g. x <- packageVersion("future") gives x[[1]] == x.
       x_kk <- .subset2(x, kk)
-      if (is.list(x_kk)) {
+      if (missing(x_kk)) {
+        ## e.g. x <- alist(a=)
+      } else if (is.list(x_kk)) {
         size <- size + objectSize_list(x_kk, depth = depth)
       } else if (is.environment(x_kk)) {
         if (!scanned(x_kk)) size <- size + objectSize_env(x_kk, depth = depth)
@@ -657,8 +663,8 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 #' @return A non-negative integer.
 #'
 #' @details
-#' This function returns \code{length(unclass(x))}, but tries to avoid
-#' calling \code{unclass(x)} unless necessary.
+#' This function returns `length(unclass(x))`, but tries to avoid
+#' calling `unclass(x)` unless necessary.
 #' 
 #' @seealso \code{\link{.subset}()} and \code{\link{.subset2}()}.
 #' 
@@ -688,7 +694,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
 
 #' Creates a connection to the system null device
 #'
-#' @return Returns a open, binary [base::connection()].
+#' @return Returns a open, binary \code{\link[base:connection]{base::connection()}}.
 #' 
 #' @keywords internal
 nullcon <- local({
@@ -745,10 +751,10 @@ reference_filters <- local({
 #'
 #' @param x The \R object to be checked.
 #' 
-#' @param first_only If \code{TRUE}, only the first reference is returned,
+#' @param first_only If `TRUE`, only the first reference is returned,
 #' otherwise all references.
 #'
-#' @return \code{find_references()} returns a list of one or more references
+#' @return `find_references()` returns a list of one or more references
 #' identified.
 #' 
 #' @keywords internal
@@ -789,7 +795,7 @@ find_references <- function(x, first_only = FALSE) {
 #' @param action Type of action to take if a reference is found.
 #' 
 #' @return If a reference is detected, an informative error, warning, message,
-#' or a character string is produced, otherwise \code{NULL} is returned
+#' or a character string is produced, otherwise `NULL` is returned
 #' invisibly.
 #'
 #' @rdname find_references
@@ -887,21 +893,21 @@ resolveMPI <- local({
 #'
 #' @param pid A positive integer.
 #'
-#' @return Returns \code{TRUE} if a process with the given PID exists,
-#' \code{FALSE} if a process with the given PID does not exists, and
-#' \code{NA} if it is not possible to check PIDs on the current system.
+#' @return Returns `TRUE` if a process with the given PID exists,
+#' `FALSE` if a process with the given PID does not exists, and
+#' `NA` if it is not possible to check PIDs on the current system.
 #'
 #' @details
 #' There is no single go-to function in \R for testing whether a PID exists
 #' or not.  Instead, this function tries to identify a working one among
 #' multiple possible alternatives.  A method is considered working if the
 #' PID of the current process is successfully identified as being existing
-#' such that \code{pid_exists(Sys.getpid())} is \code{TRUE}.  If no working
-#' approach is found, \code{pid_exists()} will always return \code{NA}
+#' such that `pid_exists(Sys.getpid())` is `TRUE`.  If no working
+#' approach is found, `pid_exists()` will always return `NA`
 #' regardless of PID tested.
-#' On Unix, including macOS, alternatives \code{tools::pskill(pid, signal = 0L)}
-#' and \code{system2("ps", args = pid)} are used.
-#' On Windows, various alternatives of \code{system2("tasklist", ...)} are used.
+#' On Unix, including macOS, alternatives `tools::pskill(pid, signal = 0L)`
+#' and `system2("ps", args = pid)` are used.
+#' On Windows, various alternatives of `system2("tasklist", ...)` are used.
 #'
 #' @references
 #' 1. The Open Group Base Specifications Issue 7, 2018 edition,
@@ -1033,13 +1039,13 @@ pid_exists <- local({
           str(out)
         }
         out <- strsplit(out, split = "[ ]+", fixed = FALSE)
-	## WORKAROUND: The 'Image Name' column may contain spaces, making
-	## it hard to locate the second column.  Instead, we will identify
-	## the most common number of column (typically six) and the count
-	## how many columns we should drop at the end in order to find the
-	## second as the last
-	## 
-	n <- lengths(out)
+        ## WORKAROUND: The 'Image Name' column may contain spaces, making
+        ## it hard to locate the second column.  Instead, we will identify
+        ## the most common number of column (typically six) and the count
+        ## how many columns we should drop at the end in order to find the
+        ## second as the last
+        ## 
+        n <- lengths(out)
         n <- sort(n)[round(length(n) / 2)] ## "median" without using 'stats'
         drop <- n - 2L
         out <- lapply(out, FUN = function(x) rev(x)[-seq_len(drop)][1])
@@ -1174,15 +1180,25 @@ queryRCmdCheck <- function(...) {
 }
 
 inRCmdCheck <- function() { queryRCmdCheck() != "notRunning" }
-
-
-## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
-##   .Random.seed <- c(rng.kind, n) where length(n) == 6L.
-## From R source code: check for rng.kind %% 10000L == 407L
-is_lecyer_cmrg_seed <- function(seed) {
-  is.numeric(seed) &&
-    length(seed) == 7L &&
-    all(is.finite(seed)) &&
-    (seed[1] %% 10000L == 407L)
-}
    
+
+supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug", FALSE)) {
+  if (!requireNamespace("RhpcBLASctl", quietly = TRUE)) {
+    if (assert) {
+      stop(FutureError(sprintf("In order to disable multi-threading in multicore futures, the %s package must be installed", sQuote("RhpcBLASctl"))))
+    }
+    return(FALSE)
+  }
+
+  ## Current number of OpenMP threads
+  old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+
+  ## RhpcBLASctl compiled without OpenMP support? Then it returns NULL
+  if (is.null(old_omp_threads)) old_omp_threads <- NA_integer_
+  
+  res <- !is.na(old_omp_threads)
+
+  if (debug) mdebugf("supports_omp_threads() = %s", res, debug = debug)
+
+  res
+}

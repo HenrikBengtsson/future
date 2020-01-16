@@ -7,7 +7,7 @@
 #' 
 #' @param \dots Not used.
 #'
-#' @return An object of class \code{ConstantFuture}.
+#' @return An object of class `ConstantFuture`.
 #'
 #' @export
 #' @name ConstantFuture-class

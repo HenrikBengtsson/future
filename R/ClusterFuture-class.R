@@ -9,10 +9,10 @@
 #' @param workers A \code{\link[parallel:makeCluster]{cluster}} object,
 #' a character vector of host names, a positive numeric scalar,
 #' or a function.
-#' If a character vector or a numeric scalar, a \code{cluster} object
+#' If a character vector or a numeric scalar, a `cluster` object
 #' is created using \code{\link{makeClusterPSOCK}(workers)}.
-#' If a function, it is called without arguments \emph{when the future
-#' is created} and its value is used to configure the workers.
+#' If a function, it is called without arguments _when the future
+#' is created_ and its value is used to configure the workers.
 #' The function should return any of the above types.
 #' 
 #' @param revtunnel If TRUE, reverse SSH tunneling is used for the
@@ -31,11 +31,11 @@
 #' it is assumed to be on the PATH for each node.
 #'
 #' @return
-#' \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
+#' `ClusterFuture()` returns an object of class `ClusterFuture`.
 #'
 #' @seealso
 #' To evaluate an expression using "cluster future", see function
-#' \code{\link{cluster}()}.
+#' [cluster()].
 #'
 #' @aliases MultisessionFuture MultisessionFuture-class
 #' @export
@@ -83,7 +83,6 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
   gp <- NULL
 
   f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, packages = packages, local = local, gc = gc, persistent = persistent, workers = workers, node = NA_integer_, version = "1.8", ...)
-  f$.callResult <- TRUE
   structure(f, class = c("ClusterFuture", class(f)))
 }
 
@@ -244,7 +243,7 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
 
   ## Check if workers socket connection is available for reading
   node <- cl[[1]]
-
+  
   if (!is.null(con <- node$con)) {
     ## AD HOC/SPECIAL CASE: Skip if connection has been serialized and lacks internal representation. /HB 2018-10-27
     connId <- connectionId(con)
@@ -264,6 +263,15 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
       timeout <- round(timeout, digits = 0L)
     }
     res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+
+    if (res) {
+      ## It could be that the message available from the worker is something else
+      ## than a FutureResult, e.g. a condition.  Consider the future resolved,
+      ## only if a FutureResult was sent.
+      msg <- receiveMessageFromWorker(x)
+      res <- inherits(msg, "FutureResult")
+      msg <- NULL
+    }
   } else if (inherits(node, "MPInode")) {
     res <- resolveMPI(x)
   } else {
@@ -279,20 +287,40 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   res
 }
 
+
+
 #' @export
 result.ClusterFuture <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
-  if (debug) mdebug("result() for ClusterFuture ...")
-  
+  if (debug) {
+    mdebug("result() for ClusterFuture ...")
+    on.exit(mdebug("result() for ClusterFuture ... done"))
+  }
+
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
     if (debug) mdebugf("- result already collected: %s", class(result)[1])
     if (inherits(result, "FutureError")) stop(result)
-    if (debug) mdebug("result() for ClusterFuture ... done")
     return(result)
   }
 
+  msg <- NULL
+  while (!inherits(msg, "FutureResult")) {
+    msg <- receiveMessageFromWorker(future, ...)
+  }
+
+  msg
+}
+
+
+receiveMessageFromWorker <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("receiveMessageFromWorker() for ClusterFuture ...")
+    on.exit(mdebug("receiveMessageFromWorker() for ClusterFuture ... done"))
+  }
+  
   if (future$state == "created") {
     if (debug) mdebug("- starting non-launched future")
     future <- run(future)
@@ -321,12 +349,11 @@ result.ClusterFuture <- function(future, ...) {
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
+  msg <- NULL
   ack <- tryCatch({
-    result <- recvResult(node)
+    msg <- recvResult(node)
     TRUE
   }, simpleError = function(ex) ex)
-
-  if (debug) mdebugf("- class(result): %s", class(result)[1])
 
   if (inherits(ack, "simpleError")) {
     if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
@@ -384,10 +411,10 @@ result.ClusterFuture <- function(future, ...) {
     stop(ex)          
   }
   stop_if_not(isTRUE(ack))
+  if (debug) mdebug("- received message: ", class(msg)[1])
 
-  future$result <- result
-  
-  if (!inherits(result, "FutureResult")) {
+  ## Non-expected message from worker?
+  if (!inherits(msg, "FutureResult") && !inherits(msg, "condition")) {
     str(list(node_idx = node_idx, node = node))
     hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
                     class(future)[1], sQuote(class(node)[1]), node_idx)
@@ -396,35 +423,83 @@ result.ClusterFuture <- function(future, ...) {
     stop(ex)
   }
 
-  future$state <- "finished"
+  if (inherits(msg, "FutureResult")) {
+    result <- msg
 
-  ## FutureRegistry to use
-  reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
+    ## Add back already signaled and muffled conditions so that also
+    ## they will be resignaled each time value() is called.
+    signaled <- future$.signaledConditions
+    if (length(signaled) > 0) {
+      result$conditions <- c(future$.signaledConditions, result$conditions)
+      future$.signaledConditions <- NULL
+    }
 
-  ## Remove from registry
-  FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
+    future$result <- result
+    future$state <- "finished"
+    if (debug) mdebug("- Received FutureResult")
+  
+    ## FutureRegistry to use
+    workers <- future$workers
+    reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
+  
+    ## Remove from registry
+    FutureRegistry(reg, action = "remove", future = future, earlySignal = FALSE)
+    if (debug) mdebug("- Erased future from FutureRegistry")
 
-  ## Always signal immediateCondition:s and as soon as possible.
-  ## They will always be signaled if they exist.
-  signalImmediateConditions(future)
-
-  ## Garbage collect cluster worker?
-  if (future$gc) {
-    ## Cleanup global environment while at it
-    if (!future$persistent) clusterCall(cl[1], fun = grmall)
+    ## Always signal immediateCondition:s and as soon as possible.
+    ## They will always be signaled if they exist.
+    signalImmediateConditions(future)
+  
+    ## Garbage collect cluster worker?
+    if (future$gc) {
+      if (debug) mdebug("- Garbage collecting worker ...")
+      ## Cleanup global environment while at it
+      if (!future$persistent) clusterCall(cl[1], fun = grmall)
+      
+      ## WORKAROUND: Need to clear cluster worker before garbage collection,
+      ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
+      ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
+      ## Return a value identifiable for troubleshooting purposes
+      clusterCall(cl[1], function() "future-clearing-cluster-worker")
+      
+      clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
+      if (debug) mdebug("- Garbage collecting worker ... done")
+    }
+  } else if (inherits(msg, "condition")) {
+    condition <- msg
     
-    ## WORKAROUND: Need to clear cluster worker before garbage collection,
-    ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
-    ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
-    ## Return a value identifiable for troubleshooting purposes
-    clusterCall(cl[1], function() "future-clearing-cluster-worker")
+    if (debug) {
+      mdebug("- Received condition")
+      mstr(condition)
+    }
+
+    ## Sanity check
+    if (inherits(condition, "error")) {
+      stop(FutureError(sprintf("Received a %s condition from the %s worker for future ('%s'), which is not possible to relay because that would break the internal state of the future-worker communication. The condition message was: %s", class(condition)[1], class(future)[1], label, sQuote(conditionMessage(condition))), future = future))
+    }
+
+    ## Resignal condition
+    if (inherits(condition, "warning")) {
+      warning(condition)
+    } else if (inherits(condition, "message")) {
+      message(condition)
+    } else {
+      signalCondition(condition)
+    }
+
+    ## Increment signal count
+    signaled <- condition$signaled
+    if (is.null(signaled)) signaled <- 0L
+    condition$signaled <- signaled + 1L
     
-    clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
+    ## Record condition as signaled
+    signaled <- future$.signaledConditions
+    if (is.null(signaled)) signaled <- list()
+    signaled <- c(signaled, list(condition))
+    future$.signaledConditions <- signaled
   }
 
-  if (debug) mdebug("result() for ClusterFuture ... done")
-
-  result
+  msg
 }
 
 
@@ -493,4 +568,81 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   stop_if_not(is.numeric(node_idx), is.finite(node_idx), node_idx >= 1)
 
   node_idx
+}
+
+
+
+#' @export
+getExpression.ClusterFuture <- function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = immediateConditions, ...) {
+  ## Assert that no arguments but the first is passed by position
+  assert_no_positional_args_but_first()
+
+  ## Inject code for resignaling immediateCondition:s?
+  if (resignalImmediateConditions && immediateConditions) {
+    immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+    conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
+
+    if (length(conditionClasses) > 0L) {
+      ## Does the cluster node communicate with a connection?
+      ## (if not, it's via MPI)
+      workers <- future$workers
+      ## AD HOC/FIXME: Here 'future$node' is yet not assigned, so we look at
+      ## the first worker and assume the others are the same. /HB 2019-10-23
+      cl <- workers[1L]
+      node <- cl[[1L]]
+      con <- node$con
+      if (!is.null(con)) {
+        expr <- bquote({
+          ...future.sendCondition <- local({
+            sendCondition <- NULL
+  
+            function(frame = 1L) {
+              if (is.function(sendCondition)) return(sendCondition)
+  
+              ns <- getNamespace("parallel")
+              if (exists("sendData", mode = "function", envir = ns)) {
+                parallel_sendData <- get("sendData", mode = "function", envir = ns)
+  
+                ## Find the 'master' argument of the worker's slaveLoop()
+                envir <- sys.frame(frame)
+                master <- NULL
+                while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+                  if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+                    master <- get("master", mode = "list", envir = envir, inherits = FALSE)
+                    if (inherits(master, "SOCKnode")) {
+                      sendCondition <<- function(cond) {
+                        data <- list(type = "VALUE", value = cond, success = TRUE)
+                        parallel_sendData(master, data)
+                      }
+                      return(sendCondition)
+                    }
+                  }
+                  frame <- frame + 1L
+                  envir <- sys.frame(frame)
+                }
+              }  
+  
+              ## Failed to locate 'master' or 'parallel:::sendData()',
+              ## so just ignore conditions
+              sendCondition <<- function(cond) NULL
+            }
+          })
+  
+          withCallingHandlers({
+            .(expr)
+          }, immediateCondition = function(cond) {
+            sendCondition <- ...future.sendCondition()
+            sendCondition(cond)
+
+            ## Avoid condition from being signaled more than once
+            ## muffleCondition <- future:::muffleCondition()
+            muffleCondition <- .(muffleCondition)
+            muffleCondition(cond)
+          })
+        })
+      } ## if (!is.null(con))
+    } ## if (length(conditionClasses) > 0)
+  } ## if (resignalImmediateConditions && immediateConditions)
+  
+  NextMethod(expr = expr, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
 }

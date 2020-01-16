@@ -2,11 +2,25 @@ source("incl/start.R")
 
 message("*** rng ...")
 
+## A valid regular seed
+f <- Future(42, seed = 42L)
+print(f)
+
 ## A valid L'Ecuyer-CMRG RNG seed
 seed <- c(407L, 1420090545L, 65713854L, -990249945L,
           1780737596L, -1213437427L, 1082168682L)
 f <- Future(42, seed = seed)
 print(f)
+
+f <- Future(42, seed = TRUE)
+print(f)
+
+f <- Future(42, seed = FALSE)
+print(f)
+
+f <- Future(42, seed = NULL)
+print(f)
+
 
 ## See Section 6 on 'Random-number generation' in
 ## vignette("parallel", package = "parallel")
@@ -20,7 +34,24 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
   orng <- RNGkind("L'Ecuyer-CMRG")[1L]
   on.exit(RNGkind(orng))
 
-  if (!is.null(seed)) {
+  if (isFALSE(seed) || isNA(seed) || is.null(seed)) {
+    if (what == "future") {
+      fs <- list()
+      for (ii in seq_len(size)) {
+        label <- sprintf("fsample_%d-%d", ii, sample.int(1e6, size=1L))
+        fs[[ii]] <- future({ sample(x, size = 1L) }, seed = seed, label = label)
+	print(fs[[ii]])
+      }
+      res <- values(fs)
+    } else {
+      res <- listenv::listenv()
+      for (ii in seq_len(size)) {
+        label <- sprintf("fsample_%d-%d", ii, sample.int(1e6, size=1L))
+        res[[ii]] %<-% { sample(x, size = 1L) } %seed% seed %label% label
+      }
+      res <- as.list(res)
+    }
+  } else {
     ## Reset state of random seed afterwards?
     on.exit({
       if (is.null(oseed)) {
@@ -31,24 +62,24 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
     }, add = TRUE)
 
     set.seed(seed)
-  }
 
-  .seed <- .Random.seed
-
-  if (what == "future") {
-    fs <- list()
-    for (ii in seq_len(size)) {
-      .seed <- parallel::nextRNGStream(.seed)
-      fs[[ii]] <- future({ sample(x, size = 1L) }, seed = .seed)
+    .seed <- .Random.seed
+  
+    if (what == "future") {
+      fs <- list()
+      for (ii in seq_len(size)) {
+        .seed <- parallel::nextRNGStream(.seed)
+        fs[[ii]] <- future({ sample(x, size = 1L) }, seed = .seed)
+      }
+      res <- values(fs)
+    } else {
+      res <- listenv::listenv()
+      for (ii in seq_len(size)) {
+        .seed <- parallel::nextRNGStream(.seed)
+        res[[ii]] %<-% { sample(x, size = 1L) } %seed% .seed
+      }
+      res <- as.list(res)
     }
-    res <- values(fs)
-  } else {
-    res <- listenv::listenv()
-    for (ii in seq_len(size)) {
-      .seed <- parallel::nextRNGStream(.seed)
-      res[[ii]] %<-% { sample(x, size = 1L) } %seed% .seed
-    }
-    res <- as.list(res)
   }
   
   res
@@ -99,12 +130,29 @@ for (cores in 1:availCores) {
       stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
   
       ## No seed
-      y3 <- fsample(0:3, what = what)
-      print(y3)
-  
-      ## No seed
-      y4 <- fsample(0:3, what = what)
-      print(y4)
+      for (misuse in c("ignore", "warning", "error")) {
+        options(future.rng.onMisuse = misuse)
+
+        y3 <- tryCatch({
+	  ## WORKAROUND: fsample() triggers a R_FUTURE_GLOBALS_ONREFERENCE
+	  ##             warning.  Not sure why. /HB 2019-12-27
+	  ovalue <- Sys.getenv("R_FUTURE_GLOBALS_ONREFERENCE")
+	  on.exit(Sys.setenv("R_FUTURE_GLOBALS_ONREFERENCE" = ovalue))
+	  Sys.setenv("R_FUTURE_GLOBALS_ONREFERENCE" = "ignore")
+	  
+          fsample(0:3, what = what, seed = FALSE)
+        }, warning = identity, error = identity)
+        print(y3)
+        if (misuse %in% c("warning", "error")) {
+          stopifnot(inherits(y3, misuse))
+        }
+
+        ## seed = NULL equals seed = FALSE but without the check of misuse
+        y4 <- fsample(0:3, what = what, seed = NULL)
+        print(y4)
+      }
+      
+      options(future.rng.onMisuse = "ignore")
     }
 
     message(sprintf("%s ... done", strategy))

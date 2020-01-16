@@ -21,7 +21,7 @@ identified.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{\dots}{Additional named elements passed to \code{\link{Future}()}.}
+\item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
 An object of class \code{MultiprocessFuture}.
@@ -31,6 +31,6 @@ An multiprocess future is a future whose value will be resolved asynchronously i
 }
 \seealso{
 To evaluate an expression using "multiprocess future", see function
-\code{\link{multiprocess}()}.
+\code{\link[=multiprocess]{multiprocess()}}.
 }
 \keyword{internal}

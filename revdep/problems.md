@@ -31,7 +31,7 @@ Run `revdep_details(,"abjutils")` for more info
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"adept")` for more info
 
@@ -61,7 +61,7 @@ Run `revdep_details(,"adept")` for more info
 * URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
 * BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 * Date/Publication: 2019-06-23 06:00:14 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 78
 
 Run `revdep_details(,"aroma.affymetrix")` for more info
 
@@ -107,21 +107,15 @@ Run `revdep_details(,"aroma.core")` for more info
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in setGeneric("image", function(x, ...) standardGeneric("image")) : 
-      could not find function "setGeneric"
-    ```
-
 # BAMBI
 
 <details>
 
-* Version: 2.1.0
+* Version: 2.2.0
 * Source code: https://github.com/cran/BAMBI
 * URL: https://arxiv.org/abs/1708.07804
 * BugReports: https://github.com/c7rishi/BAMBI/issues
-* Date/Publication: 2019-03-16 20:43:42 UTC
+* Date/Publication: 2019-12-18 16:40:02 UTC
 * Number of recursive dependencies: 51
 
 Run `revdep_details(,"BAMBI")` for more info
@@ -154,7 +148,7 @@ Run `revdep_details(,"blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 51.7Mb
+      installed size is 51.8Mb
       sub-directories of 1Mb or more:
         libs  50.0Mb
     ```
@@ -168,11 +162,11 @@ Run `revdep_details(,"blavaan")` for more info
 
 <details>
 
-* Version: 2.10.0
+* Version: 2.11.0
 * Source code: https://github.com/cran/brms
 * URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
 * BugReports: https://github.com/paul-buerkner/brms/issues
-* Date/Publication: 2019-08-29 15:50:07 UTC
+* Date/Publication: 2020-01-12 14:50:05 UTC
 * Number of recursive dependencies: 168
 
 Run `revdep_details(,"brms")` for more info
@@ -183,28 +177,22 @@ Run `revdep_details(,"brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.5Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        R     2.9Mb
+        R     3.2Mb
         doc   2.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
     ```
 
 # codebook
 
 <details>
 
-* Version: 0.8.1
+* Version: 0.8.2
 * Source code: https://github.com/cran/codebook
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
-* Date/Publication: 2019-05-21 12:50:03 UTC
-* Number of recursive dependencies: 176
+* Date/Publication: 2020-01-09 16:20:07 UTC
+* Number of recursive dependencies: 178
 
 Run `revdep_details(,"codebook")` for more info
 
@@ -212,38 +200,11 @@ Run `revdep_details(,"codebook")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    The error most likely occurred in:
-    
-    > ### Name: codebook
-    > ### Title: Generate rmarkdown codebook
-    > ### Aliases: codebook
-    > 
-    > ### ** Examples
-    > 
-    > # will generate figures in a temporary directory
-    > old_base_dir <- knitr::opts_knit$get("base.dir")
-    > knitr::opts_knit$set(base.dir = tempdir())
-    > on.exit(knitr::opts_knit$set(base.dir = old_base_dir))
-    > data("bfi")
-    > bfi <- bfi[, c("BFIK_open_1", "BFIK_open_1")]
-    > md <- codebook(bfi, survey_repetition = "single", metadata_table = FALSE)
-    No missing values.
-    Warning: 'skimr::skim_to_wide' is deprecated.
-    Use 'skim()' instead.
-    See help("Deprecated")
-    Error: 'skim_with_defaults' is not an exported object from 'namespace:skimr'
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘graphics’ ‘jsonlite’ ‘pander’ ‘rlang’
+      ‘graphics’ ‘jsonlite’ ‘pander’
       All declared Imports should be used.
-    Missing or unexported object: ‘skimr::skim_with_defaults’
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -251,15 +212,38 @@ Run `revdep_details(,"codebook")` for more info
       Note: found 65 marked UTF-8 strings
     ```
 
+# cSEM
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/cSEM
+* URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
+* BugReports: https://github.com/M-E-Rademaker/cSEM/issues
+* Date/Publication: 2020-01-13 17:20:02 UTC
+* Number of recursive dependencies: 103
+
+Run `revdep_details(,"cSEM")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘Rdpack’
+      All declared Imports should be used.
+    ```
+
 # datapackage.r
 
 <details>
 
-* Version: 0.1.1
+* Version: 0.1.2
 * Source code: https://github.com/cran/datapackage.r
 * URL: https://github.com/frictionlessdata/datapackage-r
 * BugReports: https://github.com/frictionlessdata/datapackage-r/issues
-* Date/Publication: 2019-05-20 16:40:03 UTC
+* Date/Publication: 2019-11-25 11:40:03 UTC
 * Number of recursive dependencies: 130
 
 Run `revdep_details(,"datapackage.r")` for more info
@@ -275,6 +259,28 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
+# DeclareDesign
+
+<details>
+
+* Version: 0.20.0
+* Source code: https://github.com/cran/DeclareDesign
+* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
+* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
+* Date/Publication: 2019-09-10 15:10:02 UTC
+* Number of recursive dependencies: 133
+
+Run `revdep_details(,"DeclareDesign")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘DesignLibrary’
+    ```
+
 # dipsaus
 
 <details>
@@ -284,7 +290,7 @@ Run `revdep_details(,"datapackage.r")` for more info
 * URL: https://github.com/dipterix/dipsaus
 * BugReports: https://github.com/dipterix/dipsaus/issues
 * Date/Publication: 2019-11-18 05:40:02 UTC
-* Number of recursive dependencies: 59
+* Number of recursive dependencies: 60
 
 Run `revdep_details(,"dipsaus")` for more info
 
@@ -295,103 +301,6 @@ Run `revdep_details(,"dipsaus")` for more info
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
-    ```
-
-# disk.frame
-
-<details>
-
-* Version: 0.2.0
-* Source code: https://github.com/cran/disk.frame
-* URL: https://diskframe.com
-* BugReports: https://github.com/xiaodaigh/disk.frame/issues
-* Date/Publication: 2019-10-05 16:10:02 UTC
-* Number of recursive dependencies: 105
-
-Run `revdep_details(,"disk.frame")` for more info
-
-</details>
-
-## In both
-
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in globalVariables(c("a", "b", "ans")) : 
-      could not find function "globalVariables"
-    Error: package or namespace load failed for ‘disk.frame’:
-     unable to load R code in package ‘benchmarkme’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in globalVariables(c("a", "b", "ans")) : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘benchmarkme’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c("a", "b", "ans")) : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘benchmarkme’
-    Execution halted
-    ```
-
-# drake
-
-<details>
-
-* Version: 7.7.0
-* Source code: https://github.com/cran/drake
-* URL: https://github.com/ropensci/drake, https://docs.ropensci.org/drake, https://github.com/ropenscilabs/drake-manual
-* BugReports: https://github.com/ropensci/drake/issues
-* Date/Publication: 2019-10-15 07:40:02 UTC
-* Number of recursive dependencies: 134
-
-Run `revdep_details(,"drake")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(c("a", "b", "ans")) : 
-      could not find function "globalVariables"
     ```
 
 # foieGras
@@ -416,50 +325,6 @@ Run `revdep_details(,"foieGras")` for more info
       installed size is 35.2Mb
       sub-directories of 1Mb or more:
         libs  34.0Mb
-    ```
-
-# forecastML
-
-<details>
-
-* Version: 0.5.0
-* Source code: https://github.com/cran/forecastML
-* URL: https://github.com/nredell/forecastML/
-* Date/Publication: 2019-10-09 15:30:05 UTC
-* Number of recursive dependencies: 99
-
-Run `revdep_details(,"forecastML")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘stringr’
-      All declared Imports should be used.
-    ```
-
-# genBaRcode
-
-<details>
-
-* Version: 1.2.2
-* Source code: https://github.com/cran/genBaRcode
-* Date/Publication: 2019-10-25 15:10:02 UTC
-* Number of recursive dependencies: 138
-
-Run `revdep_details(,"genBaRcode")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in eval(`_inherit`, env, NULL) : object 'Stat' not found
-    Error in prototype(data = data_frame(), extraInfo = data_frame(), anc_seq = ape::as.DNAbin(character(0)),  : 
-      could not find function "prototype"
     ```
 
 # GetBCBData
@@ -524,61 +389,10 @@ Run `revdep_details(,"gWQS")` for more info
 
 ## In both
 
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: package or namespace load failed for ‘gWQS’:
-     unable to load R code in package ‘broom’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
+    Namespace in Imports field not imported from: ‘dplyr’
+      All declared Imports should be used.
     ```
 
 # gWQSRS
@@ -596,61 +410,11 @@ Run `revdep_details(,"gWQSRS")` for more info
 
 ## In both
 
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: package or namespace load failed for ‘gWQSRS’:
-     unable to load R code in package ‘broom’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘broom’ ‘dplyr’ ‘ggrepel’ ‘kableExtra’ ‘knitr’ ‘nnet’ ‘plotROC’
+      All declared Imports should be used.
     ```
 
 # infercnv
@@ -683,16 +447,38 @@ Run `revdep_details(,"infercnv")` for more info
       See the note in ?`:::` about the use of this operator.
     ```
 
+# inlinedocs
+
+<details>
+
+* Version: 2019.12.5
+* Source code: https://github.com/cran/inlinedocs
+* URL: http://github.com/tdhock/inlinedocs
+* BugReports: http://github.com/tdhock/inlinedocs/issues
+* Date/Publication: 2019-12-05 23:30:07 UTC
+* Number of recursive dependencies: 6
+
+Run `revdep_details(,"inlinedocs")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘R.methodsS3’
+    ```
+
 # lidR
 
 <details>
 
-* Version: 2.1.4
+* Version: 2.2.0
 * Source code: https://github.com/cran/lidR
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2019-10-15 20:50:02 UTC
-* Number of recursive dependencies: 154
+* Date/Publication: 2020-01-08 23:01:03 UTC
+* Number of recursive dependencies: 160
 
 Run `revdep_details(,"lidR")` for more info
 
@@ -702,53 +488,34 @@ Run `revdep_details(,"lidR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.0Mb
+      installed size is 10.3Mb
       sub-directories of 1Mb or more:
-        libs   6.0Mb
+        extdata   1.2Mb
+        libs      7.0Mb
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘Rcpp’
-      All declared Imports should be used.
-    ```
-
-# merTools
+# mcp
 
 <details>
 
-* Version: 0.5.0
-* Source code: https://github.com/cran/merTools
-* BugReports: https://www.github.com/jknowles/merTools
-* Date/Publication: 2019-05-13 12:30:06 UTC
-* Number of recursive dependencies: 129
+* Version: 0.2.0
+* Source code: https://github.com/cran/mcp
+* URL: http://lindeloev.github.io/mcp/, https://github.com/lindeloev/mcp
+* BugReports: https://github.com/lindeloev/mcp/issues
+* Date/Publication: 2020-01-09 16:30:02 UTC
+* Number of recursive dependencies: 95
 
-Run `revdep_details(,"merTools")` for more info
+Run `revdep_details(,"mcp")` for more info
 
 </details>
 
 ## In both
 
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
+    Namespaces in Imports field not imported from:
+      ‘bayesplot’ ‘methods’ ‘purrr’
+      All declared Imports should be used.
     ```
 
 # MetamapsDB
@@ -758,7 +525,7 @@ Run `revdep_details(,"merTools")` for more info
 * Version: 0.0.2
 * Source code: https://github.com/cran/MetamapsDB
 * Date/Publication: 2017-12-06 09:51:00 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 113
 
 Run `revdep_details(,"MetamapsDB")` for more info
 
@@ -824,7 +591,7 @@ Run `revdep_details(,"photosynthesis")` for more info
 * Source code: https://github.com/cran/phylolm
 * URL: https://CRAN.R-project.org/package=phylolm
 * Date/Publication: 2018-05-31 04:51:24 UTC
-* Number of recursive dependencies: 31
+* Number of recursive dependencies: 33
 
 Run `revdep_details(,"phylolm")` for more info
 
@@ -846,7 +613,7 @@ Run `revdep_details(,"phylolm")` for more info
 * URL: https://rstudio.github.io/promises, https://github.com/rstudio/promises
 * BugReports: https://github.com/rstudio/promises/issues
 * Date/Publication: 2019-10-04 23:00:05 UTC
-* Number of recursive dependencies: 43
+* Number of recursive dependencies: 44
 
 Run `revdep_details(,"promises")` for more info
 
@@ -863,10 +630,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.18.2
+* Version: 1.18.4
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-11-21
-* Number of recursive dependencies: 259
+* Date/Publication: 2019-12-16
+* Number of recursive dependencies: 260
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -881,61 +648,12 @@ Run `revdep_details(,"Prostar")` for more info
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
-*   checking whether the package can be unloaded cleanly ... WARNING
+*   checking for hidden files and directories ... NOTE
     ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: package or namespace load failed for ‘Prostar’:
-     unable to load R code in package ‘broom’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
+    Found the following hidden files and directories:
+      inst/.RData
+    These were most likely included in error. See section ‘Package
+    structure’ in the ‘Writing R Extensions’ manual.
     ```
 
 # QDNAseq
@@ -965,9 +683,9 @@ Run `revdep_details(,"QDNAseq")` for more info
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.3.0
 * Source code: https://github.com/cran/qgcomp
-* Date/Publication: 2019-11-12 06:20:03 UTC
+* Date/Publication: 2019-12-11 18:20:03 UTC
 * Number of recursive dependencies: 61
 
 Run `revdep_details(,"qgcomp")` for more info
@@ -1027,40 +745,37 @@ Run `revdep_details(,"sapfluxnetr")` for more info
       Note: found 4 marked UTF-8 strings
     ```
 
-# sctransform
+# SCtools
 
 <details>
 
-* Version: 0.2.0
-* Source code: https://github.com/cran/sctransform
-* URL: https://github.com/ChristophH/sctransform
-* BugReports: https://github.com/ChristophH/sctransform/issues
-* Date/Publication: 2019-04-12 12:32:38 UTC
-* Number of recursive dependencies: 59
+* Version: 0.3.0
+* Source code: https://github.com/cran/SCtools
+* BugReports: https://github.com/bcastanho/SCtools/issues
+* Date/Publication: 2019-12-12 13:40:02 UTC
+* Number of recursive dependencies: 87
 
-Run `revdep_details(,"sctransform")` for more info
+Run `revdep_details(,"SCtools")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking data for non-ASCII characters ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘Rcpp’ ‘future’
-      All declared Imports should be used.
+      Note: found 27 marked UTF-8 strings
     ```
 
 # Seurat
 
 <details>
 
-* Version: 3.1.1
+* Version: 3.1.2
 * Source code: https://github.com/cran/Seurat
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
-* Date/Publication: 2019-10-03 12:40:02 UTC
-* Number of recursive dependencies: 210
+* Date/Publication: 2019-12-12 22:20:06 UTC
+* Number of recursive dependencies: 223
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -1075,17 +790,10 @@ Run `revdep_details(,"Seurat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.5Mb
+      installed size is 10.6Mb
       sub-directories of 1Mb or more:
+        R      1.0Mb
         libs   8.9Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables(c("et.ref", "et.comp")) : 
-      could not find function "globalVariables"
-    Error in classVersion("ExpressionSet") : 
-      could not find function "classVersion"
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -1117,87 +825,15 @@ Run `revdep_details(,"shinyrecap")` for more info
       All declared Imports should be used.
     ```
 
-# simglm
-
-<details>
-
-* Version: 0.7.4
-* Source code: https://github.com/cran/simglm
-* Date/Publication: 2019-05-31 17:10:03 UTC
-* Number of recursive dependencies: 90
-
-Run `revdep_details(,"simglm")` for more info
-
-</details>
-
-## In both
-
-*   checking whether the package can be unloaded cleanly ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: package or namespace load failed for ‘simglm’:
-     unable to load R code in package ‘broom’
-    Execution halted
-    ```
-
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in globalVariables(c(".", ".id", ".rownames", "ci.lower", "ci.upper",  : 
-      could not find function "globalVariables"
-    Error: unable to load R code in package ‘broom’
-    Execution halted
-    ```
-
 # skpr
 
 <details>
 
-* Version: 0.61.3
+* Version: 0.62.0
 * Source code: https://github.com/cran/skpr
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
-* Date/Publication: 2019-09-19 17:00:02 UTC
+* Date/Publication: 2019-12-02 20:00:02 UTC
 * Number of recursive dependencies: 131
 
 Run `revdep_details(,"skpr")` for more info
@@ -1208,20 +844,20 @@ Run `revdep_details(,"skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 50.6Mb
+      installed size is 39.2Mb
       sub-directories of 1Mb or more:
-        libs  49.1Mb
+        libs  37.7Mb
     ```
 
 # solitude
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.2.1
 * Source code: https://github.com/cran/solitude
 * URL: https://github.com/talegari/solitude
 * BugReports: https://github.com/talegari/solitude/issues
-* Date/Publication: 2019-08-24 20:00:02 UTC
+* Date/Publication: 2019-12-07 09:00:02 UTC
 * Number of recursive dependencies: 40
 
 Run `revdep_details(,"solitude")` for more info
@@ -1234,6 +870,30 @@ Run `revdep_details(,"solitude")` for more info
     ```
     Namespace in Imports field not imported from: ‘R6’
       All declared Imports should be used.
+    ```
+
+# SpaDES.core
+
+<details>
+
+* Version: 0.2.7
+* Source code: https://github.com/cran/SpaDES.core
+* URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
+* BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
+* Date/Publication: 2019-11-25 17:00:06 UTC
+* Number of recursive dependencies: 170
+
+Run `revdep_details(,"SpaDES.core")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘SpaDES.core’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/home/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
     ```
 
 # stars
@@ -1290,27 +950,6 @@ Run `revdep_details(,"startR")` for more info
       See the note in ?`:::` about the use of this operator.
     ```
 
-# steps
-
-<details>
-
-* Version: 0.2.1
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2019-04-02 11:30:03 UTC
-* Number of recursive dependencies: 58
-
-Run `revdep_details(,"steps")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in globalVariables("ind") : 
-      could not find function "globalVariables"
-    ```
-
 # tableschema.r
 
 <details>
@@ -1320,7 +959,7 @@ Run `revdep_details(,"steps")` for more info
 * URL: https://github.com/frictionlessdata/tableschema-r
 * BugReports: https://github.com/frictionlessdata/tableschema-r/issues
 * Date/Publication: 2018-11-14 16:50:03 UTC
-* Number of recursive dependencies: 55
+* Number of recursive dependencies: 56
 
 Run `revdep_details(,"tableschema.r")` for more info
 
@@ -1365,9 +1004,9 @@ Run `revdep_details(,"tealeaves")` for more info
 
 <details>
 
-* Version: 0.1.0
+* Version: 0.1.1
 * Source code: https://github.com/cran/treeHMM
-* Date/Publication: 2019-10-13 11:10:02 UTC
+* Date/Publication: 2019-12-12 17:10:02 UTC
 * Number of recursive dependencies: 10
 
 Run `revdep_details(,"treeHMM")` for more info
@@ -1380,29 +1019,5 @@ Run `revdep_details(,"treeHMM")` for more info
     ```
     Namespace in Imports field not imported from: ‘Matrix’
       All declared Imports should be used.
-    ```
-
-# TSstudio
-
-<details>
-
-* Version: 0.1.5
-* Source code: https://github.com/cran/TSstudio
-* URL: https://github.com/RamiKrispin/TSstudio
-* BugReports: https://github.com/RamiKrispin/TSstudio/issues
-* Date/Publication: 2019-10-28 19:40:09 UTC
-* Number of recursive dependencies: 144
-
-Run `revdep_details(,"TSstudio")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in prepareTimeseries(y = y) : object 'AirPassengers' not found
-    Error in globalVariables(c(".rows")) : 
-      could not find function "globalVariables"
     ```
 

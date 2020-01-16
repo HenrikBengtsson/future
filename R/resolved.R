@@ -5,7 +5,7 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return A logical of the same length and dimensions as \code{x}.
+#' @return A logical of the same length and dimensions as `x`.
 #' Each element is TRUE unless the corresponding element is a
 #' non-resolved future in case it is FALSE.
 #'
@@ -15,7 +15,7 @@
 #' but only return either TRUE or FALSE.
 #' It should also be possible to use the method for polling the
 #' future until it is resolved (without having to wait infinitely long),
-#' e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
+#' e.g. `while (!resolved(future)) Sys.sleep(5)`.
 #'
 #' @export
 resolved <- function(x, ...) UseMethod("resolved")
