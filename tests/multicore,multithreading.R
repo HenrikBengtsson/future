@@ -8,7 +8,7 @@ message("supportsMulticore(): ", sQuote(supportsMulticore()))
 message("availableCores('multicore'): ", sQuote(availableCores("multicore")))
 message("supports_omp_threads(): ", sQuote(supports_omp_threads()))
 
-if (supportsMulticore() && availableCores("multicore") >=2 && supports_omp_threads()) {
+if (supportsMulticore() && availableCores("multicore") >= 2L && supports_omp_threads()) {
   for (enable in c(TRUE, FALSE)) {
     options(future.fork.multithreading.enable = enable)
 
@@ -22,6 +22,9 @@ if (supportsMulticore() && availableCores("multicore") >=2 && supports_omp_threa
     if (enable) {
       stopifnot(enable && nthreads > 1L)
     } else {
+      ## FIXME: On CRAN r-devel-linux-x86_64-fedora-clang (2020-01-17):
+      ## Number of OpenMP threads in 'MulticoreFuture' future: 24
+      ## Error: !enable && nthreads == 1L is not TRUE
       stopifnot(!enable && nthreads == 1L)
     }
       

@@ -65,9 +65,12 @@ run.MulticoreFuture <- function(future, ...) {
     } else {
       ## Tell OpenMP to use a single thread
       old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      if (debug) mdebugf("  - Old number of OpenMP threads: %s", old_omp_threads)
       if (old_omp_threads > 1L) {
         RhpcBLASctl::omp_set_num_threads(1L)
         on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
+        new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+        if (debug) mdebugf("  - New number of OpenMP threads: %s", new_omp_threads)
         if (debug) mdebug("  - Force single-threaded processing for OpenMP")
       }
   
