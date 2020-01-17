@@ -1193,7 +1193,8 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   ## Current number of OpenMP threads
   old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
 
-  ## RhpcBLASctl compiled without OpenMP support? Then it returns NULL
+  ## RhpcBLASctl compiled without OpenMP support?
+  ## Then it returns NULL in RhpcBLASctl (< 0.20-17) otherwise NA_integer_
   if (is.null(old_omp_threads)) old_omp_threads <- NA_integer_
   
   res <- !is.na(old_omp_threads)
