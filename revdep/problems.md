@@ -6,7 +6,7 @@
 * Source code: https://github.com/cran/abjutils
 * URL: https://github.com/abjur/abjutils
 * Date/Publication: 2019-02-07 21:43:35 UTC
-* Number of recursive dependencies: 105
+* Number of recursive dependencies: 104
 
 Run `revdep_details(,"abjutils")` for more info
 
@@ -31,7 +31,7 @@ Run `revdep_details(,"abjutils")` for more info
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 93
 
 Run `revdep_details(,"adept")` for more info
 
@@ -61,7 +61,7 @@ Run `revdep_details(,"adept")` for more info
 * URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
 * BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 * Date/Publication: 2019-06-23 06:00:14 UTC
-* Number of recursive dependencies: 78
+* Number of recursive dependencies: 75
 
 Run `revdep_details(,"aroma.affymetrix")` for more info
 
@@ -116,7 +116,7 @@ Run `revdep_details(,"aroma.core")` for more info
 * URL: https://arxiv.org/abs/1708.07804
 * BugReports: https://github.com/c7rishi/BAMBI/issues
 * Date/Publication: 2019-12-18 16:40:02 UTC
-* Number of recursive dependencies: 51
+* Number of recursive dependencies: 49
 
 Run `revdep_details(,"BAMBI")` for more info
 
@@ -138,7 +138,7 @@ Run `revdep_details(,"BAMBI")` for more info
 * Version: 0.3-8
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2019-11-19 19:20:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 102
 
 Run `revdep_details(,"blavaan")` for more info
 
@@ -148,9 +148,9 @@ Run `revdep_details(,"blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 51.8Mb
+      installed size is 58.4Mb
       sub-directories of 1Mb or more:
-        libs  50.0Mb
+        libs  56.6Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -162,12 +162,12 @@ Run `revdep_details(,"blavaan")` for more info
 
 <details>
 
-* Version: 2.11.0
+* Version: 2.11.1
 * Source code: https://github.com/cran/brms
 * URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
 * BugReports: https://github.com/paul-buerkner/brms/issues
-* Date/Publication: 2020-01-12 14:50:05 UTC
-* Number of recursive dependencies: 168
+* Date/Publication: 2020-01-19 20:00:21 UTC
+* Number of recursive dependencies: 166
 
 Run `revdep_details(,"brms")` for more info
 
@@ -192,7 +192,7 @@ Run `revdep_details(,"brms")` for more info
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
 * Date/Publication: 2020-01-09 16:20:07 UTC
-* Number of recursive dependencies: 178
+* Number of recursive dependencies: 175
 
 Run `revdep_details(,"codebook")` for more info
 
@@ -221,7 +221,7 @@ Run `revdep_details(,"codebook")` for more info
 * URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
 * BugReports: https://github.com/M-E-Rademaker/cSEM/issues
 * Date/Publication: 2020-01-13 17:20:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 102
 
 Run `revdep_details(,"cSEM")` for more info
 
@@ -244,7 +244,7 @@ Run `revdep_details(,"cSEM")` for more info
 * URL: https://github.com/frictionlessdata/datapackage-r
 * BugReports: https://github.com/frictionlessdata/datapackage-r/issues
 * Date/Publication: 2019-11-25 11:40:03 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 129
 
 Run `revdep_details(,"datapackage.r")` for more info
 
@@ -268,7 +268,7 @@ Run `revdep_details(,"datapackage.r")` for more info
 * URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
 * BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
 * Date/Publication: 2019-09-10 15:10:02 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 132
 
 Run `revdep_details(,"DeclareDesign")` for more info
 
@@ -281,28 +281,6 @@ Run `revdep_details(,"DeclareDesign")` for more info
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
-# dipsaus
-
-<details>
-
-* Version: 0.0.3
-* Source code: https://github.com/cran/dipsaus
-* URL: https://github.com/dipterix/dipsaus
-* BugReports: https://github.com/dipterix/dipsaus/issues
-* Date/Publication: 2019-11-18 05:40:02 UTC
-* Number of recursive dependencies: 60
-
-Run `revdep_details(,"dipsaus")` for more info
-
-</details>
-
-## In both
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
 # foieGras
 
 <details>
@@ -312,7 +290,7 @@ Run `revdep_details(,"dipsaus")` for more info
 * URL: https://cran.r-project.org/package=foieGras
 * BugReports: https://github.com/ianjonsen/foieGras/issues
 * Date/Publication: 2019-10-07 22:10:03 UTC
-* Number of recursive dependencies: 101
+* Number of recursive dependencies: 100
 
 Run `revdep_details(,"foieGras")` for more info
 
@@ -336,7 +314,7 @@ Run `revdep_details(,"foieGras")` for more info
 * URL: https://github.com/msperlin/GetBCBData/
 * BugReports: https://github.com/msperlin/GetBCBData/issues
 * Date/Publication: 2019-04-23 10:10:29 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 102
 
 Run `revdep_details(,"GetBCBData")` for more info
 
@@ -360,7 +338,7 @@ Run `revdep_details(,"GetBCBData")` for more info
 * URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
 * BugReports: https://github.com/HughParsonage/grattan/issues
 * Date/Publication: 2019-11-15 18:50:09 UTC
-* Number of recursive dependencies: 114
+* Number of recursive dependencies: 113
 
 Run `revdep_details(,"grattan")` for more info
 
@@ -381,7 +359,7 @@ Run `revdep_details(,"grattan")` for more info
 * Version: 2.0.0
 * Source code: https://github.com/cran/gWQS
 * Date/Publication: 2019-08-27 12:40:02 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 130
 
 Run `revdep_details(,"gWQS")` for more info
 
@@ -399,10 +377,10 @@ Run `revdep_details(,"gWQS")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.0
 * Source code: https://github.com/cran/gWQSRS
-* Date/Publication: 2019-08-30 09:00:09 UTC
-* Number of recursive dependencies: 99
+* Date/Publication: 2020-01-24 14:30:10 UTC
+* Number of recursive dependencies: 104
 
 Run `revdep_details(,"gWQSRS")` for more info
 
@@ -426,7 +404,7 @@ Run `revdep_details(,"gWQSRS")` for more info
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
 * Date/Publication: 2019-11-15
-* Number of recursive dependencies: 128
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"infercnv")` for more info
 
@@ -473,12 +451,12 @@ Run `revdep_details(,"inlinedocs")` for more info
 
 <details>
 
-* Version: 2.2.0
+* Version: 2.2.1
 * Source code: https://github.com/cran/lidR
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2020-01-08 23:01:03 UTC
-* Number of recursive dependencies: 160
+* Date/Publication: 2020-01-21 09:30:05 UTC
+* Number of recursive dependencies: 153
 
 Run `revdep_details(,"lidR")` for more info
 
@@ -488,10 +466,10 @@ Run `revdep_details(,"lidR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.3Mb
+      installed size is 10.4Mb
       sub-directories of 1Mb or more:
         extdata   1.2Mb
-        libs      7.0Mb
+        libs      7.1Mb
     ```
 
 # mcp
@@ -503,7 +481,7 @@ Run `revdep_details(,"lidR")` for more info
 * URL: http://lindeloev.github.io/mcp/, https://github.com/lindeloev/mcp
 * BugReports: https://github.com/lindeloev/mcp/issues
 * Date/Publication: 2020-01-09 16:30:02 UTC
-* Number of recursive dependencies: 95
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"mcp")` for more info
 
@@ -525,7 +503,7 @@ Run `revdep_details(,"mcp")` for more info
 * Version: 0.0.2
 * Source code: https://github.com/cran/MetamapsDB
 * Date/Publication: 2017-12-06 09:51:00 UTC
-* Number of recursive dependencies: 113
+* Number of recursive dependencies: 110
 
 Run `revdep_details(,"MetamapsDB")` for more info
 
@@ -549,7 +527,7 @@ Run `revdep_details(,"MetamapsDB")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2019-11-01
-* Number of recursive dependencies: 197
+* Number of recursive dependencies: 196
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -562,6 +540,28 @@ Run `revdep_details(,"methyvim")` for more info
     Package unavailable to check Rd xrefs: ‘tmle.npvi’
     ```
 
+# origami
+
+<details>
+
+* Version: 1.0.3
+* Source code: https://github.com/cran/origami
+* URL: https://tlverse.org/origami
+* BugReports: https://github.com/tlverse/origami/issues
+* Date/Publication: 2020-01-16 22:40:02 UTC
+* Number of recursive dependencies: 84
+
+Run `revdep_details(,"origami")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘glmnet’
+    ```
+
 # photosynthesis
 
 <details>
@@ -569,7 +569,7 @@ Run `revdep_details(,"methyvim")` for more info
 * Version: 1.0.0
 * Source code: https://github.com/cran/photosynthesis
 * Date/Publication: 2019-05-09 15:10:03 UTC
-* Number of recursive dependencies: 76
+* Number of recursive dependencies: 75
 
 Run `revdep_details(,"photosynthesis")` for more info
 
@@ -630,10 +630,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.18.4
+* Version: 1.18.5
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2019-12-16
-* Number of recursive dependencies: 260
+* Date/Publication: 2020-01-16
+* Number of recursive dependencies: 258
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -646,14 +646,6 @@ Run `revdep_details(,"Prostar")` for more info
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/home/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
-    ```
-
-*   checking for hidden files and directories ... NOTE
-    ```
-    Found the following hidden files and directories:
-      inst/.RData
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
     ```
 
 # QDNAseq
@@ -679,27 +671,6 @@ Run `revdep_details(,"QDNAseq")` for more info
       All declared Imports should be used.
     ```
 
-# qgcomp
-
-<details>
-
-* Version: 1.3.0
-* Source code: https://github.com/cran/qgcomp
-* Date/Publication: 2019-12-11 18:20:03 UTC
-* Number of recursive dependencies: 61
-
-Run `revdep_details(,"qgcomp")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘parallel’
-      All declared Imports should be used.
-    ```
-
 # robotstxt
 
 <details>
@@ -709,7 +680,7 @@ Run `revdep_details(,"qgcomp")` for more info
 * URL: https://github.com/ropensci/robotstxt
 * BugReports: https://github.com/ropensci/robotstxt/issues
 * Date/Publication: 2018-07-18 21:30:03 UTC
-* Number of recursive dependencies: 63
+* Number of recursive dependencies: 62
 
 Run `revdep_details(,"robotstxt")` for more info
 
@@ -732,7 +703,7 @@ Run `revdep_details(,"robotstxt")` for more info
 * URL: https://github.com/sapfluxnet/sapfluxnetr
 * BugReports: https://github.com/sapfluxnet/sapfluxnetr/issues
 * Date/Publication: 2019-05-01 10:40:03 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 101
 
 Run `revdep_details(,"sapfluxnetr")` for more info
 
@@ -753,7 +724,7 @@ Run `revdep_details(,"sapfluxnetr")` for more info
 * Source code: https://github.com/cran/SCtools
 * BugReports: https://github.com/bcastanho/SCtools/issues
 * Date/Publication: 2019-12-12 13:40:02 UTC
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 86
 
 Run `revdep_details(,"SCtools")` for more info
 
@@ -775,7 +746,7 @@ Run `revdep_details(,"SCtools")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2019-12-12 22:20:06 UTC
-* Number of recursive dependencies: 223
+* Number of recursive dependencies: 222
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -809,7 +780,7 @@ Run `revdep_details(,"Seurat")` for more info
 * Source code: https://github.com/cran/shinyrecap
 * URL: https://fellstat.github.io/shinyrecap/
 * Date/Publication: 2019-01-19 23:40:03 UTC
-* Number of recursive dependencies: 89
+* Number of recursive dependencies: 88
 
 Run `revdep_details(,"shinyrecap")` for more info
 
@@ -834,7 +805,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2019-12-02 20:00:02 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 130
 
 Run `revdep_details(,"skpr")` for more info
 
@@ -858,7 +829,7 @@ Run `revdep_details(,"skpr")` for more info
 * URL: https://github.com/talegari/solitude
 * BugReports: https://github.com/talegari/solitude/issues
 * Date/Publication: 2019-12-07 09:00:02 UTC
-* Number of recursive dependencies: 40
+* Number of recursive dependencies: 38
 
 Run `revdep_details(,"solitude")` for more info
 
@@ -881,7 +852,7 @@ Run `revdep_details(,"solitude")` for more info
 * URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
 * BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
 * Date/Publication: 2019-11-25 17:00:06 UTC
-* Number of recursive dependencies: 170
+* Number of recursive dependencies: 166
 
 Run `revdep_details(,"SpaDES.core")` for more info
 
@@ -905,7 +876,7 @@ Run `revdep_details(,"SpaDES.core")` for more info
 * URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
 * BugReports: https://github.com/r-spatial/stars/issues/
 * Date/Publication: 2019-10-10 13:00:02 UTC
-* Number of recursive dependencies: 124
+* Number of recursive dependencies: 123
 
 Run `revdep_details(,"stars")` for more info
 
@@ -985,7 +956,7 @@ Run `revdep_details(,"tableschema.r")` for more info
 * Version: 1.0.0
 * Source code: https://github.com/cran/tealeaves
 * Date/Publication: 2019-05-04 16:40:03 UTC
-* Number of recursive dependencies: 74
+* Number of recursive dependencies: 73
 
 Run `revdep_details(,"tealeaves")` for more info
 
@@ -1018,6 +989,29 @@ Run `revdep_details(,"treeHMM")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘Matrix’
+      All declared Imports should be used.
+    ```
+
+# TSstudio
+
+<details>
+
+* Version: 0.1.6
+* Source code: https://github.com/cran/TSstudio
+* URL: https://github.com/RamiKrispin/TSstudio
+* BugReports: https://github.com/RamiKrispin/TSstudio/issues
+* Date/Publication: 2020-01-21 05:30:02 UTC
+* Number of recursive dependencies: 139
+
+Run `revdep_details(,"TSstudio")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘forecastHybrid’
       All declared Imports should be used.
     ```
 
