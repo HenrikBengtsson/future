@@ -13,12 +13,25 @@ if (requireNamespace("RhpcBLASctl", quietly = TRUE)) {
   nthreads_0 <- RhpcBLASctl::omp_get_max_threads()
   utils::str(list(nthreads_0 = nthreads_0))
   message("- Number of OpenMP threads: ", sQuote(nthreads_0))
+  
   message("- Trying to set number of OpenMP threads to one")
   try(RhpcBLASctl::omp_set_num_threads(1L))
   nthreads_1 <- RhpcBLASctl::omp_get_max_threads()
   utils::str(list(nthreads_1 = nthreads_1))
   message("  - Number of OpenMP threads: ", sQuote(nthreads_1))
   try(RhpcBLASctl::omp_set_num_threads(nthreads_0))
+
+  f <- future(RhpcBLASctl::omp_get_max_threads())
+  nthreads_child <- value(f)
+  utils::str(list(nthreads_child = nthreads_child))
+  message(sprintf("  - Number of OpenMP threads in %s future: %s", sQuote(class(f)[1]), sQuote(nthreads_child)))
+
+  nthreads_children <- parallel::mclapply(1:2, FUN = function(x) {
+    RhpcBLASctl::omp_get_max_threads()
+  })
+  utils::str(list(nthreads_children = nthreads_children))
+  message("  - Number of OpenMP threads in mclapply(): ", sQuote(nthreads_children[[1]]))
+
   message("- Trying to reset number of OpenMP threads")
   nthreads_2 <- RhpcBLASctl::omp_get_max_threads()
   utils::str(list(nthreads_2 = nthreads_2))
