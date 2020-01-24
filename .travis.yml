@@ -99,6 +99,9 @@ matrix:
       env: NB='covr' ## Just a label
 
 before_install:
+  - Rscript --version
+
+before_script:
   - R --vanilla -e "sessionInfo()" -e "capabilities()" -e "sapply(c(physical_cores = FALSE, logical_cores = TRUE), parallel::detectCores)" -e "if (require(RhpcBLASctl, quietly=TRUE)) utils::str(list(get_num_procs = get_num_procs(), get_num_cores = get_num_cores(), blas_get_num_procs = blas_get_num_procs(), omp_get_num_procs = omp_get_num_procs(), omp_get_max_threads = omp_get_max_threads()))"
   - export _R_CHECK_TIMINGS_=0
 
