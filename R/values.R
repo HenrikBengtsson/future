@@ -6,7 +6,7 @@
 #' `value()` values.  For all other elements, the existing
 #' object is kept.
 #'
-#' @param x An environment, a list, or a list environment.
+#' @param x A [Future], an environment, a list, or a list environment.
 #'
 #' @param stdout If TRUE, captured standard output is relayed, otherwise note.
 #' 
@@ -20,6 +20,7 @@
 #' If `signal` is TRUE and one of the futures produces an error, then
 #' that error is produced.
 #'
+#' @aliases value.list value.environment value.listenv
 #' @export
 values <- function(x, stdout = TRUE, signal = TRUE, ...) UseMethod("values")
 
@@ -80,3 +81,13 @@ values.listenv <- function(x, stdout = TRUE, signal = TRUE, ...) {
 values.Future <- function(x, ...) {
   value(x, ...)
 }
+
+
+#' @export
+value.list <- values.list
+
+#' @export
+value.environment <- values.environment
+
+#' @export
+value.listenv <- values.listenv

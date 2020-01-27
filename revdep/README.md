@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-01-24                   |
+|date     |2020-01-27                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (94)
+## All (95)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
@@ -79,6 +79,7 @@
 |ldaPrototype                                    |0.1.1     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
 |[lidR](problems.md#lidr)                        |2.2.1     |      |        |1    |
+|lightr                                          |1.0       |      |        |     |
 |[mcp](problems.md#mcp)                          |0.2.0     |      |        |1    |
 |merTools                                        |0.5.0     |      |        |     |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |      |        |1    |
@@ -93,7 +94,7 @@
 |[phylolm](problems.md#phylolm)                  |2.6       |      |        |1    |
 |progressr                                       |0.4.0     |      |        |     |
 |[promises](problems.md#promises)                |1.1.0     |      |        |1    |
-|[Prostar](problems.md#prostar)                  |1.18.5    |      |1       |     |
+|[Prostar](problems.md#prostar)                  |1.18.6    |      |1       |     |
 |PSCBS                                           |0.65.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.22.0    |      |        |1    |
 |qgcomp                                          |2.0.0     |      |        |     |

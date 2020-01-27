@@ -527,7 +527,7 @@ Run `revdep_details(,"MetamapsDB")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2019-11-01
-* Number of recursive dependencies: 196
+* Number of recursive dependencies: 193
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -630,9 +630,9 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.18.5
+* Version: 1.18.6
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2020-01-16
+* Date/Publication: 2020-01-23
 * Number of recursive dependencies: 258
 
 Run `revdep_details(,"Prostar")` for more info
@@ -805,7 +805,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2019-12-02 20:00:02 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"skpr")` for more info
 
