@@ -700,7 +700,7 @@ makeNodePSOCK <- function(worker = "localhost", master = getOption("future.makeN
     rshopts <- paste(rshopts, collapse = " ")
     
     ## Local commands  
-    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker, rshpostops)
+    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker, rshpostopts)
     local_cmd <- paste(rsh_call, shQuote(cmd))
   } else {
     local_cmd <- cmd
