@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-01-27                   |
+|date     |2020-02-02                   |
 
 # Dependencies
 
@@ -23,7 +23,7 @@
 
 # Revdeps
 
-## All (95)
+## All (96)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
@@ -40,15 +40,16 @@
 |civis                                           |2.1.0     |      |        |     |
 |[codebook](problems.md#codebook)                |0.8.2     |      |        |2    |
 |[cSEM](problems.md#csem)                        |0.1.0     |      |        |1    |
-|[datapackage.r](problems.md#datapackager)       |0.1.2     |      |        |1    |
+|[datapackage.r](problems.md#datapackager)       |0.1.2     |1     |        |1    |
 |[DeclareDesign](problems.md#declaredesign)      |0.20.0    |      |        |1    |
 |dhReg                                           |0.1.0     |      |        |     |
 |dipsaus                                         |0.0.4     |      |        |     |
 |disk.frame                                      |0.3.3     |      |        |     |
 |doFuture                                        |0.9.0     |      |        |     |
-|drake                                           |7.9.0     |      |        |     |
+|drake                                           |7.10.0    |      |        |     |
 |drtmle                                          |1.0.5     |      |        |     |
 |ezcox                                           |0.4.0     |      |        |     |
+|[fabletools](problems.md#fabletools)            |0.1.2     |      |        |1    |
 |FAMoS                                           |0.2.0     |      |        |     |
 |fiery                                           |1.1.2     |      |        |     |
 |fipe                                            |0.0.1     |      |        |     |
@@ -78,7 +79,7 @@
 |kernelboot                                      |0.1.6     |      |        |     |
 |ldaPrototype                                    |0.1.1     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
-|[lidR](problems.md#lidr)                        |2.2.1     |      |        |1    |
+|[lidR](problems.md#lidr)                        |2.2.2     |      |        |1    |
 |lightr                                          |1.0       |      |        |     |
 |[mcp](problems.md#mcp)                          |0.2.0     |      |        |1    |
 |merTools                                        |0.5.0     |      |        |     |
@@ -97,7 +98,7 @@
 |[Prostar](problems.md#prostar)                  |1.18.6    |      |1       |     |
 |PSCBS                                           |0.65.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                  |1.22.0    |      |        |1    |
-|qgcomp                                          |2.0.0     |      |        |     |
+|qgcomp                                          |2.1.2     |      |        |     |
 |rangeMapper                                     |0.3-7     |      |        |     |
 |reproducible                                    |0.2.11    |      |        |     |
 |[robotstxt](problems.md#robotstxt)              |0.6.2     |      |        |1    |

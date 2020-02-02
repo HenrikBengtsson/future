@@ -252,6 +252,32 @@ Run `revdep_details(,"datapackage.r")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+    ...
+       6. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       7. value[[3L]](cond)
+      
+      ── 2. Error: remote  ───────────────────────────────────────────────────────────
+      Not resolved Remote URI "http://example.com/schema" for descriptor[[schema]]
+      Backtrace:
+       1. base::eval.parent(Resource.load(descriptor))
+       3. datapackage.r::Resource.load(descriptor)
+       4. datapackage.r::dereferenceResourceDescriptor(descriptor, basePath)
+       5. base::tryCatch(...)
+       6. base:::tryCatchList(expr, classes, parentenv, handlers)
+       7. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       8. value[[3L]](cond)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 247 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 2 ]
+      1. Error: remote 
+      2. Error: remote 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -279,6 +305,28 @@ Run `revdep_details(,"DeclareDesign")` for more info
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘DesignLibrary’
+    ```
+
+# fabletools
+
+<details>
+
+* Version: 0.1.2
+* Source code: https://github.com/cran/fabletools
+* URL: http://fabletools.tidyverts.org/
+* BugReports: https://github.com/tidyverts/fabletools/issues
+* Date/Publication: 2020-01-29 09:00:02 UTC
+* Number of recursive dependencies: 91
+
+Run `revdep_details(,"fabletools")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking: 'fable', 'feasts'
     ```
 
 # foieGras
@@ -451,11 +499,11 @@ Run `revdep_details(,"inlinedocs")` for more info
 
 <details>
 
-* Version: 2.2.1
+* Version: 2.2.2
 * Source code: https://github.com/cran/lidR
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2020-01-21 09:30:05 UTC
+* Date/Publication: 2020-01-28 09:40:06 UTC
 * Number of recursive dependencies: 153
 
 Run `revdep_details(,"lidR")` for more info
@@ -481,7 +529,7 @@ Run `revdep_details(,"lidR")` for more info
 * URL: http://lindeloev.github.io/mcp/, https://github.com/lindeloev/mcp
 * BugReports: https://github.com/lindeloev/mcp/issues
 * Date/Publication: 2020-01-09 16:30:02 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 93
 
 Run `revdep_details(,"mcp")` for more info
 
