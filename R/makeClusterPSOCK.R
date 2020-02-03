@@ -407,7 +407,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = getOption("future.makeNodePSOCK.master", Sys.getenv("R_FUTURE_MAKENODEPSOCK_MASTER")), port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rshpostopts = getOption("future.makeNodePSOCK.rshpostopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHPOSTOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rshpostopts = getOption("future.makeNodePSOCK.rshpostopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHPOSTOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -434,9 +434,6 @@ makeNodePSOCK <- function(worker = "localhost", master = getOption("future.makeN
   if (identical(rshopts, "")) rshopts <- NULL
   rshopts <- as.character(rshopts)
   
-  if (identical(master, "")) master <- NULL
-  master <- as.character(master)
-
   user <- as.character(user)
   stop_if_not(length(user) <= 1L)
   
@@ -466,7 +463,10 @@ makeNodePSOCK <- function(worker = "localhost", master = getOption("future.makeN
     if (localMachine || revtunnel) {
       master <- "localhost"
     } else {
-      master <- Sys.info()[["nodename"]]
+        ## Check for user having set master.
+        master <- getOption("future.makeNodePSOCK.master", Sys.getenv("R_FUTURE_MAKENODEPSOCK_MASTER"))
+        if (identical(master, ""))
+            master <- Sys.info()[["nodename"]]
     }
   }
   stop_if_not(!is.null(master))
