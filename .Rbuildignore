@@ -6,7 +6,7 @@
 ^.make
 ^INSTALL[.]md$
 ^OVERVIEW[.]md$
-^README[.]md$
+^README.*[.]md$
 ^CONDUCT[.]md$
 ^docs/
 
