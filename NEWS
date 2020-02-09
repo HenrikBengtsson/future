@@ -1,11 +1,19 @@
 Package: future
 ===============
 
-Version: 1.16.0-9000 [2020-01-27]
+Version: 1.16.0-9000 [2020-02-09]
 
 SIGNIFICANT CHANGES:
 
  * Renamed values() to value() to cleanup and simplify the API.
+
+MISCELLANEOUS:
+
+ * Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set.  To better emulate
+   CRAN submission checks, the future package will, when loaded, set this
+   environment variable to 'TRUE' if unset and if 'R CMD check' is running.
+   Note that future::availableCores() respects _R_CHECK_LIMIT_CORES_ and
+   returns 2L (two cores) if detected.
 
 DEPRECATED AND DEFUNCT:
 
