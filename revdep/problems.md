@@ -88,12 +88,12 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 
 <details>
 
-* Version: 3.2.0
+* Version: 3.2.1
 * Source code: https://github.com/cran/aroma.core
 * URL: https://github.com/HenrikBengtsson/aroma.core, https://www.aroma-project.org/
 * BugReports: https://github.com/HenrikBengtsson/aroma.core/issues
-* Date/Publication: 2019-06-17 18:20:03 UTC
-* Number of recursive dependencies: 46
+* Date/Publication: 2020-02-04 15:20:21 UTC
+* Number of recursive dependencies: 47
 
 Run `revdep_details(,"aroma.core")` for more info
 
@@ -183,6 +183,29 @@ Run `revdep_details(,"brms")` for more info
         doc   2.6Mb
     ```
 
+# ck37r
+
+<details>
+
+* Version: 1.0.3
+* Source code: https://github.com/cran/ck37r
+* URL: https://github.com/ck37/ck37r
+* BugReports: https://github.com/ck37/ck37r/issues
+* Date/Publication: 2020-02-06 10:50:11 UTC
+* Number of recursive dependencies: 162
+
+Run `revdep_details(,"ck37r")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘checkmate’
+      All declared Imports should be used.
+    ```
+
 # codebook
 
 <details>
@@ -255,10 +278,7 @@ Run `revdep_details(,"datapackage.r")` for more info
 *   checking tests ...
     ```
     ...
-       6. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       7. value[[3L]](cond)
-      
-      ── 2. Error: remote  ───────────────────────────────────────────────────────────
+      ── 5. Error: remote  ───────────────────────────────────────────────────────────
       Not resolved Remote URI "http://example.com/schema" for descriptor[[schema]]
       Backtrace:
        1. base::eval.parent(Resource.load(descriptor))
@@ -270,9 +290,12 @@ Run `revdep_details(,"datapackage.r")` for more info
        8. value[[3L]](cond)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 247 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 2 ]
+      [ OK: 244 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 5 ]
       1. Error: remote 
-      2. Error: remote 
+      2. Failure: profile tabular-data-package should be up-to-date (@test-profile.R#106) 
+      3. Failure: profile fiscal-data-package should be up-to-date (@test-profile.R#106) 
+      4. Failure: profile tabular-data-resource should be up-to-date (@test-profile.R#106) 
+      5. Error: remote 
       
       Error: testthat unit tests failed
       Execution halted
@@ -518,6 +541,33 @@ Run `revdep_details(,"lidR")` for more info
       sub-directories of 1Mb or more:
         extdata   1.2Mb
         libs      7.1Mb
+    ```
+
+# lightr
+
+<details>
+
+* Version: 1.0
+* Source code: https://github.com/cran/lightr
+* URL: https://docs.ropensci.org/lightr, https://github.com/ropensci/lightr
+* BugReports: https://github.com/ropensci/lightr/issues
+* Date/Publication: 2020-01-27 13:00:02 UTC
+* Number of recursive dependencies: 63
+
+Run `revdep_details(,"lightr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘pavo’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘pavo’
     ```
 
 # mcp

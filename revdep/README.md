@@ -3,14 +3,14 @@
 |field    |value                        |
 |:--------|:----------------------------|
 |version  |R version 3.6.2 (2019-12-12) |
-|os       |Ubuntu 18.04.3 LTS           |
+|os       |Ubuntu 18.04.4 LTS           |
 |system   |x86_64, linux-gnu            |
 |ui       |X11                          |
 |language |en                           |
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-02-02                   |
+|date     |2020-02-09                   |
 
 # Dependencies
 
@@ -23,14 +23,14 @@
 
 # Revdeps
 
-## All (96)
+## All (100)
 
 |package                                         |version   |error |warning |note |
 |:-----------------------------------------------|:---------|:-----|:-------|:----|
 |[abjutils](problems.md#abjutils)                |0.2.3     |      |        |1    |
 |[adept](problems.md#adept)                      |1.1.2     |      |        |2    |
 |[aroma.affymetrix](problems.md#aromaaffymetrix) |3.2.0     |      |        |2    |
-|[aroma.core](problems.md#aromacore)             |3.2.0     |      |        |1    |
+|[aroma.core](problems.md#aromacore)             |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                      |2.2.0     |      |        |1    |
 |BatchGetSymbols                                 |2.5.4     |      |        |     |
 |batchtools                                      |0.9.12    |      |        |     |
@@ -38,6 +38,7 @@
 |[blavaan](problems.md#blavaan)                  |0.3-8     |      |        |2    |
 |[brms](problems.md#brms)                        |2.11.1    |      |        |1    |
 |civis                                           |2.1.0     |      |        |     |
+|[ck37r](problems.md#ck37r)                      |1.0.3     |      |        |1    |
 |[codebook](problems.md#codebook)                |0.8.2     |      |        |2    |
 |[cSEM](problems.md#csem)                        |0.1.0     |      |        |1    |
 |[datapackage.r](problems.md#datapackager)       |0.1.2     |1     |        |1    |
@@ -80,14 +81,17 @@
 |ldaPrototype                                    |0.1.1     |      |        |     |
 |lgr                                             |0.3.3     |      |        |     |
 |[lidR](problems.md#lidr)                        |2.2.2     |      |        |1    |
-|lightr                                          |1.0       |      |        |     |
+|[lightr](problems.md#lightr)                    |1.0       |      |        |2    |
 |[mcp](problems.md#mcp)                          |0.2.0     |      |        |1    |
 |merTools                                        |0.5.0     |      |        |     |
 |[MetamapsDB](problems.md#metamapsdb)            |0.0.2     |      |        |1    |
 |[methyvim](problems.md#methyvim)                |1.8.0     |      |        |1    |
 |mlr3                                            |0.1.6     |      |        |     |
+|mlr3db                                          |0.1.4     |      |        |     |
 |ngstk                                           |0.2.3     |      |        |     |
+|onemapsgapi                                     |1.0.0     |      |        |     |
 |[origami](problems.md#origami)                  |1.0.3     |      |        |1    |
+|pavo                                            |2.4.0     |      |        |     |
 |PCRedux                                         |1.0-4     |      |        |     |
 |PeakSegDisk                                     |2019.9.27 |      |        |     |
 |penaltyLearning                                 |2019.5.29 |      |        |     |
