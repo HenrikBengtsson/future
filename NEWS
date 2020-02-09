@@ -13,7 +13,7 @@ MISCELLANEOUS:
    CRAN submission checks, the future package will, when loaded, set this
    environment variable to 'TRUE' if unset and if 'R CMD check' is running.
    Note that future::availableCores() respects _R_CHECK_LIMIT_CORES_ and
-   returns 2L (two cores) if detected.
+   returns at most 2L (two cores) if detected.
 
 DEPRECATED AND DEFUNCT:
 
