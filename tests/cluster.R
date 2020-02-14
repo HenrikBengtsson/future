@@ -316,7 +316,7 @@ for (type in types) {
   stopifnot(x == 43L)
   
   message("*** cluster() - crashed worker ... DONE")
-  } ## if (type != "FORK" || getRversion() >= "3.2.0")
+  } ## if (type != "FORK" || getRversion() >= "3.3.0")
 
   ## Sanity checks
   pid2 <- Sys.getpid()
