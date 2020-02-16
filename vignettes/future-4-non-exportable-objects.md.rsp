@@ -216,7 +216,7 @@ f <- future({
 ```
 
 
-### Package: udpipe
+### Package: sparklyr
 
 ```r
 library("future")
@@ -241,7 +241,7 @@ options(future.globals.onReference = "error")
 d %<-% dim(data)
 ## Error: Detected a non-exportable reference ('externalptr') in one of
 the globals ('data' of class 'tbl_spark') used in the future expression
-``
+```
 
 
 ### Package: udpipe
