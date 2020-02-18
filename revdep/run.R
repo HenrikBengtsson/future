@@ -133,7 +133,7 @@ revdep_preinstall <- function(pkgs) {
     pkg <- pkgs[kk]
     message(sprintf("Pre-installing package %d of %d: %s",
                     kk, length(pkgs), pkg))
-    crancache::install_packages(pkg)
+    crancache::install_packages(pkg, dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"))
   }
 }
 
