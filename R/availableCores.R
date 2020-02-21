@@ -62,6 +62,13 @@
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
 #'    `#SBATCH --cpus-per-task=2` to the \file{hello.sh} script.
+#'  \item `"LSF"` - 
+#'    Query Platform Load Sharing Facility (LSF) environment variable
+#'    \env{LSB_DJOB_NUMPROC}.
+#'    Jobs with multiple (cpu) slots can be submitted on LSF using
+#'    `bsub -n 2 -R "span[hosts=1]" < hello.sh`.
+#'  \Item `"OpenLava"` - 
+#'    This is an alias for LSF.
 #'  \item `"custom"` -
 #'    If option \option{future.availableCores.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
@@ -118,6 +125,9 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
+    } else if (method == "LSF" || method == "OpenLava") {
+      ## Number of slots assigned by LSF or OpenLava
+      n <- getenv("LSB_DJOB_NUMPROC")
     } else if (method == "mc.cores") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores")
