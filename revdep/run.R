@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+if (!requireNamespace("revdepcheck")) {
+  stop('Install revdepcheck: remotes::install_github("r-lib/revdepcheck")')
+}
 library("revdepcheck")
 options(warn = 1L)
 
@@ -120,8 +123,12 @@ revdep_preinstall_libs <- function() {
 }
 
 revdep_preinstall <- function(pkgs) {
+  oopts <- options(Ncpus = available_cores())
   lib_paths_org <- .libPaths()
-  on.exit(.libPaths(lib_paths_org))
+  on.exit({
+    .libPaths(lib_paths_org)
+    options(oopts)
+  })
   .libPaths(revdep_preinstall_libs())
   
   pkgs <- unique(pkgs)
@@ -131,20 +138,25 @@ revdep_preinstall <- function(pkgs) {
   ## Install one-by-one to update cache sooner
   for (kk in seq_along(pkgs)) {
     pkg <- pkgs[kk]
-    message(sprintf("Pre-installing package %d of %d: %s",
-                    kk, length(pkgs), pkg))
+    message(sprintf("Pre-installing package %d of %d: %s (Ncpus = %d)",
+                    kk, length(pkgs), pkg, getOption("Ncpus", 1L)))
     crancache::install_packages(pkg, dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"))
   }
 }
 
 revdep_preinstall_update <- function() {
+  oopts <- options(Ncpus = available_cores())
   lib_paths_org <- .libPaths()
-  on.exit(.libPaths(lib_paths_org))
+  on.exit({
+    .libPaths(lib_paths_org)
+    options(oopts)
+  })
   .libPaths(revdep_preinstall_libs())
   
   message("Update crancache for all pre-installing packages:")
   message(".libPaths():")
   message(paste(paste0(" - ", .libPaths()), collapse = "\n"))
+  message(sprintf("Ncpus=%d", getOption("Ncpus", 1L)))
   crancache::update_packages(ask = FALSE)
 }
 
