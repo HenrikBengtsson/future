@@ -26,6 +26,7 @@ makeNodePSOCK(
   homogeneous = NULL,
   rscript_args = NULL,
   rscript_startup = NULL,
+  rscript_envs = NULL,
   rscript_libs = NULL,
   methods = TRUE,
   useXDR = TRUE,
@@ -104,6 +105,14 @@ or a list with a mix of these, that will be evaluated on the \R worker
 prior to launching the worker's event loop.
 For instance, use \code{rscript_startup = 'setwd("/path/to")'}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
+
+\item{rscript_envs}{A named character vector environment variables to
+set on worker at startup, e.g.
+\code{rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")}.
+If an element is not named, then the value of that variable will used as
+the name and the value will be the value of \code{Sys.getenv()} for that
+variable.  Non-existing environment variables will be dropped.
+These variables are set using \code{Sys.setenv()}.}
 
 \item{rscript_libs}{A character vector of \R library paths that will be
 used for the library search path of the \R workers.  An asterisk

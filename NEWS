@@ -7,6 +7,11 @@ SIGNIFICANT CHANGES:
 
  * Renamed values() to value() to cleanup and simplify the API.
 
+NEW FEATURES:
+
+ * makeClusterPSOCK() gained argument 'rscript_envs' for setting environment
+   variables in workers on startup, e.g. rscript_envs = c(FOO = "3.14", "BAR").
+
 MISCELLANEOUS:
 
  * Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set.  To better emulate
