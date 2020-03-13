@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.16.0-9000 [2020-03-03]
+Version: 1.16.0-9000 [2020-03-13]
 
 SIGNIFICANT CHANGES:
 
@@ -28,8 +28,8 @@ BUG FIXES:
 DEPRECATED AND DEFUNCT:
 
  * All values() S3 methods have been renamed to value() since they are closely
-   related to the original purpose value().  The values() methods will still
-   work but will soon be formally deprecated and later be made defunct and
+   related to the original purpose value().  The values() methods will continue
+   to work but will soon be formally deprecated and later be made defunct and
    finally be removed.  Please replace all values() with value() calls.
  
 
