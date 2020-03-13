@@ -407,7 +407,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rshpostopts = getOption("future.makeNodePSOCK.rshpostopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHPOSTOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -700,7 +700,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rshopts <- paste(rshopts, collapse = " ")
     
     ## Local commands  
-    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker, rshpostopts)
+    rsh_call <- paste(paste(shQuote(rshcmd), collapse = " "), rshopts, worker)
     local_cmd <- paste(rsh_call, shQuote(cmd))
   } else {
     local_cmd <- cmd
@@ -730,7 +730,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       message(sprintf("%sStarting worker #%s on %s: %s", verbose_prefix, rank, sQuote(worker), local_cmd))
     }
     input <- if (.Platform$OS.type == "windows") "" else NULL
-    res <- system(local_cmd, wait = FALSE, input = input)
+    ## Workers will be started externally when using Kubernetes.
+    ## Clean up how it is determined that we're running under Kubernetes. /CP 2020-03-12
+    if(!is.null(Sys.getenv('KUBERNETES_SERVICE_HOST')))
+        res <- system(local_cmd, wait = FALSE, input = input)
+  
     if (verbose) {
       message(sprintf("%s- Exit code of system() call: %s", verbose_prefix, res))
     }
