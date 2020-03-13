@@ -731,10 +731,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     }
     input <- if (.Platform$OS.type == "windows") "" else NULL
     ## Workers will be started externally when using Kubernetes.
-    ## Clean up how it is determined that we're running under Kubernetes. /CP 2020-03-12
-    if(!is.null(Sys.getenv('KUBERNETES_SERVICE_HOST')))
-        res <- system(local_cmd, wait = FALSE, input = input)
-  
+    ## This is a hack so this works under the 'cluster' strategy. /CP 2020-03-13
+    if(is.na(Sys.getenv('USE_KUBERNETES', unset = NA)))
+        res <- system(local_cmd, wait = FALSE, input = input) else res <- 0
     if (verbose) {
       message(sprintf("%s- Exit code of system() call: %s", verbose_prefix, res))
     }
