@@ -57,7 +57,23 @@
   ## Initiate the R session UUID, which will also set/update
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)
-  
+
+  ## Unless already set, set option 'future.psock.relay.immediate'
+  ## according to environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE'.
+  relay <- getOption("future.psock.relay.immediate")
+  if (is.null(relay)) {
+    relay <- trim(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE"))
+    if (debug) mdebugf("R_FUTURE_PSOCK_RELAY_IMMEDIATE=%s", sQuote(relay))
+    if (nzchar(relay)) {
+      relay <- as.logical(toupper(relay))
+      if (is.na(relay)) {
+        stop("Environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE")))
+      }
+      if (debug) mdebugf(" => options(future.psock.relay.immediate = %s)", relay)
+      options(future.psock.relay.immediate = relay)
+    }
+  }
+
   ## Unless already set, set option 'future.availableCores.fallback'
   ## according to environment variable 'R_FUTURE_AVAILABLECORES_FALLBACK'.
   ncores <- getOption("future.availableCores.fallback")

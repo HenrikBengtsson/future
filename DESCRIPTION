@@ -35,5 +35,5 @@ LazyLoad: TRUE
 ByteCompile: TRUE
 URL: https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Roxygen: list(markdown = TRUE)
