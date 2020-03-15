@@ -31,6 +31,10 @@ matrix:
     - os: linux
       r: release
       env:
+        - R_FUTURE_PSOCK_RELAY_IMMEDIATE=false
+    - os: linux
+      r: release
+      env:
         - R_FUTURE_PLAN=multisession
     - os: linux
       r: release
