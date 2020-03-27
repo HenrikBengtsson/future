@@ -252,7 +252,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 #' on the \env{PATH}.  This is also true for recent Windows 10
-#' (since version 1803; April 2018) (*).
+#' (since version 1803, April 2018) (*).
 #'
 #' For _Windows systems prior to Windows 10_, it is less common to find
 #' \command{ssh} on the \env{PATH}. Instead it is more likely that such
@@ -282,6 +282,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' (*) _Known issue with the Windows 10 SSH client: There is a bug in the
 #' SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
 #' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+#' The most recent version that we tested and that did _not_ work was
+#' OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5 (`ssh -V`) on
+#' Windows 10 (version 1909, OS build 18363.720) (`ver`).
 #' Because of this, it is recommended to use the PuTTY SSH client or the
 #' RStudio SSH client until this bug has been resolved in Windows 10._
 #' 
@@ -1075,10 +1078,14 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
   if (is.null(which)) {
     if (.Platform$OS.type == "windows") {
       which <- c("putty-plink", "rstudio-ssh")
-      ## Reverse tunnelling on SSH is not supported on Windows 10:
-      ## - version 1803 (= build 17134.523, 2018-07-10)
-      ## - version 1809 (= build 17763.253, 2018-11-13)
-      ## So unlikely this will work out of the box.
+      ## Reverse tunnelling on SSH is not supported on Windows 10 with:
+      ## * OpenSSH_for_Windows_???, LibreSSL ???
+      ##   - Windows 10 version 1803 build 17134.523
+      ## * OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5
+      ##   - Windows 10 version 1809 build 17763.253
+      ##   - Windows 10 version 1903 build 18362.720
+      ##   - Windows 10 version 1909 build 18363.720
+      ## So it's unlikely that this will work out of the box.
       ver <- windows_build_version()
       if (!is.null(ver) && ver > "10.0.17763.253") {
         which <- c("ssh", which)

@@ -204,7 +204,7 @@ is given by option \option{future.makeNodePSOCK.rshcmd}.  If that is not
 set, then the default is to use \command{ssh}.
 Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 on the \env{PATH}.  This is also true for recent Windows 10
-(since version 1803; April 2018) (*).
+(since version 1803, April 2018) (*).
 
 For \emph{Windows systems prior to Windows 10}, it is less common to find
 \command{ssh} on the \env{PATH}. Instead it is more likely that such
@@ -234,6 +234,9 @@ If no SSH-client is found, an informative error message is produced.
 (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
 SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
 (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+The most recent version that we tested and that did \emph{not} work was
+OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5 (\code{ssh -V}) on
+Windows 10 (version 1909, OS build 18363.720) (\code{ver}).
 Because of this, it is recommended to use the PuTTY SSH client or the
 RStudio SSH client until this bug has been resolved in Windows 10.}
 
