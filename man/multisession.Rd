@@ -130,6 +130,8 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
+## Explicitly close multisession workers by switching plan
+plan(sequential)
 }
 }
 \seealso{
