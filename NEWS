@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.16.0-9000 [2020-03-13]
+Version: 1.16.0-9000 [2020-03-31]
 
 SIGNIFICANT CHANGES:
 
@@ -11,6 +11,9 @@ NEW FEATURES:
 
  * makeClusterPSOCK() gained argument 'rscript_envs' for setting environment
    variables in workers on startup, e.g. rscript_envs = c(FOO = "3.14", "BAR").
+
+ * Now the result of a future holds session details in case an error occurred
+   while evaluating the future.
 
 MISCELLANEOUS:
 

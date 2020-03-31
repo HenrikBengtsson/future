@@ -451,15 +451,15 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
           cond <- simpleError(msg)
         } else if (onMisuse == "warning") {
           cond <- simpleWarning(msg)
-	} else {
-	  cond <- NULL
-	  warning("Unknown value on option 'future.rng.onMisuse': ",
+        } else {
+          cond <- NULL
+          warning("Unknown value on option 'future.rng.onMisuse': ",
                   sQuote(onMisuse))
-	}
-	conditions <- result$conditions
-	conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
+        }
+        conditions <- result$conditions
+        conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
         result$conditions <- conditions
-	future$result <- result
+        future$result <- result
       }
     }
   }
@@ -820,18 +820,40 @@ makeExpression <- local({
               sysCalls <- function(calls = sys.calls(), from = 1L) {
                 calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
               }
-  
               function(cond) {
                 ## Handle error:s specially
                 if (inherits(cond, "error")) {
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, calls = c(sysCalls(from = ...future.frame), cond$call), timestamp = Sys.time(), signaled = 0L)
+                  sessionInformation <- function() {
+                    list(
+                      r          = base::R.Version(),
+                      locale     = base::Sys.getlocale(),
+		      rngkind    = base::RNGkind(),
+		      namespaces = base::loadedNamespaces(),
+		      search     = base::search(),
+		      system     = base::Sys.info()
+		    )
+                  }
+
+                  ## Record condition
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
+                    condition = cond,
+                    calls     = c(sysCalls(from = ...future.frame), cond$call),
+                    session   = sessionInformation(),
+                    timestamp = Sys.time(),
+                    signaled  = 0L
+                  )
+		  
                   signalCondition(cond)
                 } else if (inherits(cond, .(conditionClasses))) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
                   signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(condition = cond, signaled = base::as.integer(signal))
+                  ## Record condition
+                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
+		    condition = cond,
+		    signaled = base::as.integer(signal)
+		  )
                   if (!signal) {
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)
@@ -850,7 +872,9 @@ makeExpression <- local({
             version = "1.8"
           ), class = "FutureResult")
         }, finally = .(exit))
+	
         Sys.time
+	
         if (base::is.na(.(stdout))) {
         } else {
           base::sink(type = "output", split = FALSE)
