@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-if (!requireNamespace("revdepcheck")) {
+if (!requireNamespace("revdepcheck", quietly = TRUE)) {
   stop('Install revdepcheck: remotes::install_github("r-lib/revdepcheck")')
 }
 library("revdepcheck")
