@@ -6,7 +6,7 @@
 * Source code: https://github.com/cran/abjutils
 * URL: https://github.com/abjur/abjutils
 * Date/Publication: 2019-02-07 21:43:35 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"abjutils")` for more info
 
@@ -31,7 +31,7 @@ Run `revdep_details(,"abjutils")` for more info
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"adept")` for more info
 
@@ -43,6 +43,29 @@ Run `revdep_details(,"adept")` for more info
     ```
     Namespace in Imports field not imported from: ‘tibble’
       All declared Imports should be used.
+    ```
+
+# alookr
+
+<details>
+
+* Version: 0.3.0
+* Source code: https://github.com/cran/alookr
+* BugReports: https://github.com/choonghyunryu/alookr/issues
+* Date/Publication: 2020-03-20 09:50:08 UTC
+* Number of recursive dependencies: 202
+
+Run `revdep_details(,"alookr")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘alookr’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/alookr/new/alookr.Rcheck/00install.out’ for details.
     ```
 
 # aroma.affymetrix
@@ -88,7 +111,7 @@ Run `revdep_details(,"aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+      'Cairo', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
 # BatchGetSymbols
@@ -98,7 +121,7 @@ Run `revdep_details(,"aroma.core")` for more info
 * Version: 2.5.6
 * Source code: https://github.com/cran/BatchGetSymbols
 * Date/Publication: 2020-02-25 15:20:02 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 85
 
 Run `revdep_details(,"BatchGetSymbols")` for more info
 
@@ -160,12 +183,12 @@ Run `revdep_details(,"BatchGetSymbols")` for more info
 
 <details>
 
-* Version: 0.9.12
+* Version: 0.9.13
 * Source code: https://github.com/cran/batchtools
 * URL: https://github.com/mllg/batchtools
 * BugReports: https://github.com/mllg/batchtools/issues
-* Date/Publication: 2020-01-10 16:30:07 UTC
-* Number of recursive dependencies: 73
+* Date/Publication: 2020-03-19 23:00:02 UTC
+* Number of recursive dependencies: 74
 
 Run `revdep_details(,"batchtools")` for more info
 
@@ -187,9 +210,9 @@ Run `revdep_details(,"batchtools")` for more info
 
 <details>
 
-* Version: 0.3-8
+* Version: 0.3-9
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2019-11-19 19:20:02 UTC
+* Date/Publication: 2020-03-09 17:20:02 UTC
 * Number of recursive dependencies: 102
 
 Run `revdep_details(,"blavaan")` for more info
@@ -204,11 +227,6 @@ Run `revdep_details(,"blavaan")` for more info
     See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/blavaan/new/blavaan.Rcheck/00install.out’ for details.
     ```
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘runjags’
-    ```
-
 ## Installation
 
 ### Devel
@@ -221,114 +239,114 @@ Run `revdep_details(,"blavaan")` for more info
 "/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" -e "source(file.path('..', 'tools', 'make_cc.R')); make_cc(commandArgs(TRUE))" stan_files/stanmarg.stan
 .Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/blavaan/new/blavaan.Rcheck/00_pkg_src/blavaan/src: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --slave --no-restore -e source(file.path('..',~+~'tools',~+~'make_cc.R'));~+~make_cc(commandArgs(TRUE)) --args stan_files/stanmarg.stan]: there is no package called ‘startup’
 Wrote C++ file "stan_files/stanmarg.cc"
-g++ -std=c++1y -fPIC  -I"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/include" -DNDEBUG -I"../inst/include" -I"`"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" --vanilla -e "cat(system.file('include', 'src', package = 'StanHeaders'))"`" -DBOOST_RESULT_OF_USE_TR1 -DBOOST_NO_DECLTYPE -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/Rcpp/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/RcppEigen/include" -I/usr/local/include    -Wno-unused-variable -Wno-unused-function -c stan_files/stanmarg.cc -o stan_files/stanmarg.o
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+g++ -std=c++1y -fPIC  -I"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/include" -DNDEBUG -I"../inst/include" -I"`"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" --vanilla -e "cat(system.file('include', 'src', package = 'StanHeaders'))"`" -DBOOST_RESULT_OF_USE_TR1 -DBOOST_NO_DECLTYPE -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/Rcpp/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/RcppEigen/include" -I/usr/local/include    -Wno-unused-variable -Wno-unused-function -c stan_files/stanmarg.cc -o stan_files/stanmarg.o
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:32: error: ‘std::index_sequence’ has not been declared
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:32: error: ‘std::index_sequence’ has not been declared
                            std::index_sequence<I...> i) {
                                 ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:46: error: expected ‘,’ or ‘...’ before ‘<’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:46: error: expected ‘,’ or ‘...’ before ‘<’ token
                            std::index_sequence<I...> i) {
                                               ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In function ‘constexpr auto stan::math::internal::apply(const F&, const Tuple&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: error: ‘make_index_sequence’ is not a member of ‘std’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In function ‘constexpr auto stan::math::internal::apply(const F&, const Tuple&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: error: ‘make_index_sequence’ is not a member of ‘std’
    return apply_impl(f, t, std::make_index_sequence<std::tuple_size<Tuple>{}>{});
                            ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: note: suggested alternative:
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/container/vector/vector.hpp:28:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/container/vector/vector10.hpp:25,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/transform_view/transform_view.hpp:22,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/algorithm/transformation/transform.hpp:11,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view/detail/begin_impl.hpp:14,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view/zip_view.hpp:16,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view.hpp:12,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/include/zip_view.hpp:11,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/resize.hpp:26,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/state_wrapper.hpp:26,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/ublas_wrapper.hpp:33,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint.hpp:25,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/arr/functor/integrate_ode_rk45.hpp:17,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/arr.hpp:46,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/mat.hpp:344,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:12,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: note: suggested alternative:
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/container/vector/vector.hpp:28:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/container/vector/vector10.hpp:25,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/transform_view/transform_view.hpp:22,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/algorithm/transformation/transform.hpp:11,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view/detail/begin_impl.hpp:14,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view/zip_view.hpp:16,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view.hpp:12,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/include/zip_view.hpp:11,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/resize.hpp:26,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/state_wrapper.hpp:26,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/ublas_wrapper.hpp:33,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint.hpp:25,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/arr/functor/integrate_ode_rk45.hpp:17,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/arr.hpp:46,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/mat.hpp:344,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:12,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/support/detail/index_sequence.hpp:59:12: note:   ‘boost::fusion::detail::make_index_sequence’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/support/detail/index_sequence.hpp:59:12: note:   ‘boost::fusion::detail::make_index_sequence’
      struct make_index_sequence
             ^
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected primary-expression before ‘{’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected primary-expression before ‘{’ token
    return apply_impl(f, t, std::make_index_sequence<std::tuple_size<Tuple>{}>{});
                                                                              ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected ‘)’ before ‘{’ token
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: At global scope:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:151:9: error: expected type-specifier
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected ‘)’ before ‘{’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: At global scope:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:151:9: error: expected type-specifier
        = std::result_of_t<F(decltype(is_var_), decltype(value_of(Targs()))...)>;
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:42: error: ‘FReturnType’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:42: error: ‘FReturnType’ was not declared in this scope
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                           ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:53: error: template argument 1 is invalid
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:53: error: template argument 1 is invalid
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                                      ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:61: error: template argument 2 is invalid
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:61: error: template argument 2 is invalid
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                                              ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘std::vector<stan::math::var> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const std::vector<double>&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:349:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘std::vector<stan::math::var> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const std::vector<double>&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:349:9: error: invalid types ‘int[int]’ for array subscript
      M_[0] = val_y.size();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:350:32: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:350:32: error: invalid types ‘int[int]’ for array subscript
      std::vector<var> var_y(M_[0]);
                                 ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘Eigen::Matrix<stan::math::var, R, C> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const Eigen::Matrix<double, R, C>&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:375:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘Eigen::Matrix<stan::math::var, R, C> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const Eigen::Matrix<double, R, C>&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:375:9: error: invalid types ‘int[int]’ for array subscript
      M_[0] = val_y.rows();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:376:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:376:9: error: invalid types ‘int[int]’ for array subscript
      M_[1] = val_y.cols();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:40: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:40: error: invalid types ‘int[int]’ for array subscript
      Eigen::Matrix<var, R, C> var_y(M_[0], M_[1]);
                                         ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:47: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:47: error: invalid types ‘int[int]’ for array subscript
      Eigen::Matrix<var, R, C> var_y(M_[0], M_[1]);
                                                ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘void stan::math::adj_jac_vari<F, Targs>::chain()’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:5: error: ‘FReturnType’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘void stan::math::adj_jac_vari<F, Targs>::chain()’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:5: error: ‘FReturnType’ was not declared in this scope
      FReturnType y_adj;
      ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:17: error: expected ‘;’ before ‘y_adj’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:17: error: expected ‘;’ before ‘y_adj’
      FReturnType y_adj;
                  ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:532:38: error: ‘y_adj’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:532:38: error: ‘y_adj’ was not declared in this scope
      internal::build_y_adj(y_vi_, M_, y_adj);
                                       ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:26: error: expansion pattern ‘auto&&’ contains no argument packs
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:26: error: expansion pattern ‘auto&&’ contains no argument packs
          [this](auto&&... args) { this->accumulate_adjoints(args...); },
                           ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In lambda function:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:60: error: ‘args’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In lambda function:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:60: error: ‘args’ was not declared in this scope
          [this](auto&&... args) { this->accumulate_adjoints(args...); },
                                                             ^
 make: *** [stan_files/stanmarg.o] Error 1
@@ -347,114 +365,114 @@ ERROR: compilation failed for package ‘blavaan’
 "/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" -e "source(file.path('..', 'tools', 'make_cc.R')); make_cc(commandArgs(TRUE))" stan_files/stanmarg.stan
 .Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/blavaan/old/blavaan.Rcheck/00_pkg_src/blavaan/src: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --slave --no-restore -e source(file.path('..',~+~'tools',~+~'make_cc.R'));~+~make_cc(commandArgs(TRUE)) --args stan_files/stanmarg.stan]: there is no package called ‘startup’
 Wrote C++ file "stan_files/stanmarg.cc"
-g++ -std=c++1y -fPIC  -I"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/include" -DNDEBUG -I"../inst/include" -I"`"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" --vanilla -e "cat(system.file('include', 'src', package = 'StanHeaders'))"`" -DBOOST_RESULT_OF_USE_TR1 -DBOOST_NO_DECLTYPE -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/Rcpp/include" -I"/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/RcppEigen/include" -I/usr/local/include    -Wno-unused-variable -Wno-unused-function -c stan_files/stanmarg.cc -o stan_files/stanmarg.o
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+g++ -std=c++1y -fPIC  -I"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/include" -DNDEBUG -I"../inst/include" -I"`"/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript" --vanilla -e "cat(system.file('include', 'src', package = 'StanHeaders'))"`" -DBOOST_RESULT_OF_USE_TR1 -DBOOST_NO_DECLTYPE -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/Rcpp/include" -I"/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/RcppEigen/include" -I/usr/local/include    -Wno-unused-variable -Wno-unused-function -c stan_files/stanmarg.cc -o stan_files/stanmarg.o
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:32: error: ‘std::index_sequence’ has not been declared
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:32: error: ‘std::index_sequence’ has not been declared
                            std::index_sequence<I...> i) {
                                 ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:46: error: expected ‘,’ or ‘...’ before ‘<’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:31:46: error: expected ‘,’ or ‘...’ before ‘<’ token
                            std::index_sequence<I...> i) {
                                               ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In function ‘constexpr auto stan::math::internal::apply(const F&, const Tuple&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: error: ‘make_index_sequence’ is not a member of ‘std’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In function ‘constexpr auto stan::math::internal::apply(const F&, const Tuple&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: error: ‘make_index_sequence’ is not a member of ‘std’
    return apply_impl(f, t, std::make_index_sequence<std::tuple_size<Tuple>{}>{});
                            ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: note: suggested alternative:
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/container/vector/vector.hpp:28:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/container/vector/vector10.hpp:25,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/transform_view/transform_view.hpp:22,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/algorithm/transformation/transform.hpp:11,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view/detail/begin_impl.hpp:14,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view/zip_view.hpp:16,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/view/zip_view.hpp:12,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/include/zip_view.hpp:11,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/resize.hpp:26,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/state_wrapper.hpp:26,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint/util/ublas_wrapper.hpp:33,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/numeric/odeint.hpp:25,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/arr/functor/integrate_ode_rk45.hpp:17,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/arr.hpp:46,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/prim/mat.hpp:344,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:12,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:27: note: suggested alternative:
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/container/vector/vector.hpp:28:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/container/vector/vector10.hpp:25,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/transform_view/transform_view.hpp:22,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/algorithm/transformation/transform.hpp:11,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view/detail/begin_impl.hpp:14,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view/zip_view.hpp:16,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/view/zip_view.hpp:12,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/include/zip_view.hpp:11,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/resize.hpp:26,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/state_wrapper.hpp:26,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint/util/ublas_wrapper.hpp:33,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/numeric/odeint.hpp:25,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/arr/functor/integrate_ode_rk45.hpp:17,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/arr.hpp:46,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/prim/mat.hpp:344,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:12,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/BH/include/boost/fusion/support/detail/index_sequence.hpp:59:12: note:   ‘boost::fusion::detail::make_index_sequence’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/BH/include/boost/fusion/support/detail/index_sequence.hpp:59:12: note:   ‘boost::fusion::detail::make_index_sequence’
      struct make_index_sequence
             ^
-In file included from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/stan_fit.hpp:35,
-                 from /scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/rstan/include/rstan/rstaninc.hpp:3,
+In file included from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/fun/ordered_constrain.hpp:6:0,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat.hpp:41,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/log_prob_grad.hpp:4,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/model/test_gradients.hpp:7,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/src/stan/services/diagnose/diagnose.hpp:10,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/stan_fit.hpp:35,
+                 from /wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/rstan/include/rstan/rstaninc.hpp:3,
                  from stan_files/stanmarg.hpp:18,
                  from stan_files/stanmarg.cc:3:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected primary-expression before ‘{’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected primary-expression before ‘{’ token
    return apply_impl(f, t, std::make_index_sequence<std::tuple_size<Tuple>{}>{});
                                                                              ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected ‘)’ before ‘{’ token
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: At global scope:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:151:9: error: expected type-specifier
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:49:77: error: expected ‘)’ before ‘{’ token
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: At global scope:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:151:9: error: expected type-specifier
        = std::result_of_t<F(decltype(is_var_), decltype(value_of(Targs()))...)>;
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:42: error: ‘FReturnType’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:42: error: ‘FReturnType’ was not declared in this scope
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                           ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:53: error: template argument 1 is invalid
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:53: error: template argument 1 is invalid
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                                      ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:61: error: template argument 2 is invalid
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:156:61: error: template argument 2 is invalid
    std::array<int, internal::compute_dims<FReturnType>::value> M_;
                                                              ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘std::vector<stan::math::var> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const std::vector<double>&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:349:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘std::vector<stan::math::var> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const std::vector<double>&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:349:9: error: invalid types ‘int[int]’ for array subscript
      M_[0] = val_y.size();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:350:32: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:350:32: error: invalid types ‘int[int]’ for array subscript
      std::vector<var> var_y(M_[0]);
                                 ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘Eigen::Matrix<stan::math::var, R, C> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const Eigen::Matrix<double, R, C>&)’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:375:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘Eigen::Matrix<stan::math::var, R, C> stan::math::adj_jac_vari<F, Targs>::build_return_varis_and_vars(const Eigen::Matrix<double, R, C>&)’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:375:9: error: invalid types ‘int[int]’ for array subscript
      M_[0] = val_y.rows();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:376:9: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:376:9: error: invalid types ‘int[int]’ for array subscript
      M_[1] = val_y.cols();
          ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:40: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:40: error: invalid types ‘int[int]’ for array subscript
      Eigen::Matrix<var, R, C> var_y(M_[0], M_[1]);
                                         ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:47: error: invalid types ‘int[int]’ for array subscript
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:377:47: error: invalid types ‘int[int]’ for array subscript
      Eigen::Matrix<var, R, C> var_y(M_[0], M_[1]);
                                                ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘void stan::math::adj_jac_vari<F, Targs>::chain()’:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:5: error: ‘FReturnType’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In member function ‘void stan::math::adj_jac_vari<F, Targs>::chain()’:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:5: error: ‘FReturnType’ was not declared in this scope
      FReturnType y_adj;
      ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:17: error: expected ‘;’ before ‘y_adj’
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:530:17: error: expected ‘;’ before ‘y_adj’
      FReturnType y_adj;
                  ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:532:38: error: ‘y_adj’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:532:38: error: ‘y_adj’ was not declared in this scope
      internal::build_y_adj(y_vi_, M_, y_adj);
                                       ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:26: error: expansion pattern ‘auto&&’ contains no argument packs
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:26: error: expansion pattern ‘auto&&’ contains no argument packs
          [this](auto&&... args) { this->accumulate_adjoints(args...); },
                           ^
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In lambda function:
-/scratch/678242.1.long.q/tmp.pLrWv5vzw7/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:60: error: ‘args’ was not declared in this scope
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp: In lambda function:
+/wynton/home/cbi/hb/repositories/future/revdep/library/blavaan/StanHeaders/include/stan/math/rev/mat/functor/adj_jac_apply.hpp:536:60: error: ‘args’ was not declared in this scope
          [this](auto&&... args) { this->accumulate_adjoints(args...); },
                                                             ^
 make: *** [stan_files/stanmarg.o] Error 1
@@ -490,10 +508,10 @@ Run `revdep_details(,"blockCV")` for more info
        18. ggplot2:::f(..., self = self)
        19. sf::st_graticule(...)
        21. sf:::st_transform.sfc(box, datum, partial = TRUE)
-       23. sf:::CPL_transform(x, crs$proj4string)
+       23. sf:::CPL_transform(x, crs, aoi, pipeline, reverse)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 127 | SKIPPED: 8 | WARNINGS: 5 | FAILED: 6 ]
+      [ OK: 127 | SKIPPED: 8 | WARNINGS: 7 | FAILED: 6 ]
       1. Error: test spatialAutoRange function with multi-layer raster in parallel (@testSpatialAutoRange.R#19) 
       2. Error: test spatialAutoRange for low-resolution rasters (@testSpatialAutoRange.R#71) 
       3. Error: test spatiaBlock function with systematic assingment and no raster file (@testSpatialBlock.R#65) 
@@ -519,7 +537,7 @@ Run `revdep_details(,"blockCV")` for more info
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
 * Date/Publication: 2020-01-09 16:20:07 UTC
-* Number of recursive dependencies: 176
+* Number of recursive dependencies: 178
 
 Run `revdep_details(,"codebook")` for more info
 
@@ -543,12 +561,12 @@ Run `revdep_details(,"codebook")` for more info
 
 <details>
 
-* Version: 0.1.0
+* Version: 0.2.0
 * Source code: https://github.com/cran/cSEM
 * URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
 * BugReports: https://github.com/M-E-Rademaker/cSEM/issues
-* Date/Publication: 2020-01-13 17:20:02 UTC
-* Number of recursive dependencies: 100
+* Date/Publication: 2020-03-29 11:00:20 UTC
+* Number of recursive dependencies: 110
 
 Run `revdep_details(,"cSEM")` for more info
 
@@ -566,12 +584,12 @@ Run `revdep_details(,"cSEM")` for more info
 
 <details>
 
-* Version: 0.1.1
+* Version: 1.3.0
 * Source code: https://github.com/cran/datapackage.r
 * URL: https://github.com/frictionlessdata/datapackage-r
 * BugReports: https://github.com/frictionlessdata/datapackage-r/issues
-* Date/Publication: 2019-05-20 16:40:03 UTC
-* Number of recursive dependencies: 128
+* Date/Publication: 2020-03-11 13:20:02 UTC
+* Number of recursive dependencies: 109
 
 Run `revdep_details(,"datapackage.r")` for more info
 
@@ -582,14 +600,14 @@ Run `revdep_details(,"datapackage.r")` for more info
 *   checking tests ...
     ```
     ...
-       4. datapackage.r::dereferenceResourceDescriptor(descriptor, basePath)
-       5. base::tryCatch(...)
-       6. base:::tryCatchList(expr, classes, parentenv, handlers)
-       7. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       8. value[[3L]](cond)
+       1. httptest::fake_response(...)
+       2. httr::GET(descriptor$schema)
+       3. httr:::request_perform(req, hu$handle$handle)
+       5. httr:::request_fetch.write_memory(req$output, req$url, handle)
+       6. curl::curl_fetch_memory(url, handle = handle)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 179 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 17 ]
+      [ OK: 183 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 17 ]
       1. Error: initializes with URL descriptor (@test-package.R#23) 
       2. Error: loads relative resource (@test-package.R#48) 
       3. Error: loads resource from absolute URL (@test-package.R#60) 
@@ -639,12 +657,12 @@ Run `revdep_details(,"delayed")` for more info
 
 <details>
 
-* Version: 0.1.2
+* Version: 0.1.3
 * Source code: https://github.com/cran/fabletools
-* URL: http://fabletools.tidyverts.org/
+* URL: http://fabletools.tidyverts.org/, https://github.com/tidyverts/fabletools
 * BugReports: https://github.com/tidyverts/fabletools/issues
-* Date/Publication: 2020-01-29 09:00:02 UTC
-* Number of recursive dependencies: 90
+* Date/Publication: 2020-03-24 07:10:02 UTC
+* Number of recursive dependencies: 92
 
 Run `revdep_details(,"fabletools")` for more info
 
@@ -694,6 +712,11 @@ Run `revdep_details(,"fabletools")` for more info
       running command 'timedatectl' had status 1
     ```
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘feasts’
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Failed to query server: Connection timed out
@@ -720,44 +743,6 @@ Run `revdep_details(,"fabletools")` for more info
     Extensions’ manual.
     ```
 
-# fiery
-
-<details>
-
-* Version: 1.1.2
-* Source code: https://github.com/cran/fiery
-* URL: https://fiery.data-imaginist.com, https://github.com/thomasp85/fiery
-* BugReports: https://github.com/thomasp85/fiery/issues
-* Date/Publication: 2019-09-27 06:50:03 UTC
-* Number of recursive dependencies: 61
-
-Run `revdep_details(,"fiery")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(fiery)
-      > 
-      > test_check("fiery")
-      
-      ── 1. Failure: TimeStack works (@test-FutureStack.R#84)  ───────────────────────
-      `time$eval()` produced messages.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 258 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Failure: TimeStack works (@test-FutureStack.R#84) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # foieGras
 
 <details>
@@ -767,7 +752,7 @@ Run `revdep_details(,"fiery")` for more info
 * URL: https://cran.r-project.org/package=foieGras
 * BugReports: https://github.com/ianjonsen/foieGras/issues
 * Date/Publication: 2019-10-07 22:10:03 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 100
 
 Run `revdep_details(,"foieGras")` for more info
 
@@ -789,9 +774,9 @@ Run `revdep_details(,"foieGras")` for more info
     > ## fit jmpm to two southern elephant seals
     > data(fssm)
     > dmp <- grab(fssm, "predicted", as_sf=FALSE)
-    Warning in CPL_transform(x, crs$proj4string) :
+    Warning in CPL_transform(x, crs, aoi, pipeline, reverse) :
       GDAL Error 6: Unable to load PROJ.4 library (libproj.so), creation of OGRCoordinateTransformation failed.
-    Error in CPL_transform(x, crs$proj4string) : 
+    Error in CPL_transform(x, crs, aoi, pipeline, reverse) : 
       OGRCreateCoordinateTransformation() returned NULL: PROJ available?
     Calls: grab ... st_transform -> st_transform.sfc -> structure -> CPL_transform
     Execution halted
@@ -807,7 +792,7 @@ Run `revdep_details(,"foieGras")` for more info
        1. sf::st_transform(ellie_sf, crs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=km +no_defs")
        2. sf:::st_transform.sf(ellie_sf, crs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=km +no_defs")
        4. sf:::st_transform.sfc(st_geometry(x), crs, ...)
-       6. sf:::CPL_transform(x, crs$proj4string)
+       6. sf:::CPL_transform(x, crs, aoi, pipeline, reverse)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
       [ OK: 10 | SKIPPED: 12 | WARNINGS: 7 | FAILED: 7 ]
@@ -830,25 +815,26 @@ Run `revdep_details(,"foieGras")` for more info
         libs  11.0Mb
     ```
 
-# future.batchtools
+# forecastML
 
 <details>
 
-* Version: 0.8.1
-* Source code: https://github.com/cran/future.batchtools
-* URL: https://github.com/HenrikBengtsson/future.batchtools
-* BugReports: https://github.com/HenrikBengtsson/future.batchtools/issues
-* Date/Publication: 2019-10-01 05:10:05 UTC
-* Number of recursive dependencies: 35
+* Version: 0.8.0
+* Source code: https://github.com/cran/forecastML
+* URL: https://github.com/nredell/forecastML/
+* Date/Publication: 2020-02-28 22:40:12 UTC
+* Number of recursive dependencies: 93
 
-Run `revdep_details(,"future.batchtools")` for more info
+Run `revdep_details(,"forecastML")` for more info
 
 </details>
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘xgboost’
+    ```
 
 # GetBCBData
 
@@ -895,11 +881,11 @@ Run `revdep_details(,"GetBCBData")` for more info
 
 <details>
 
-* Version: 1.8.0.0
+* Version: 1.8.0.1
 * Source code: https://github.com/cran/grattan
 * URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
 * BugReports: https://github.com/HughParsonage/grattan/issues
-* Date/Publication: 2019-11-15 18:50:09 UTC
+* Date/Publication: 2020-03-16 16:40:09 UTC
 * Number of recursive dependencies: 113
 
 Run `revdep_details(,"grattan")` for more info
@@ -957,6 +943,74 @@ Run `revdep_details(,"GSODR")` for more info
       Execution halted
     ```
 
+# gstat
+
+<details>
+
+* Version: 2.0-5
+* Source code: https://github.com/cran/gstat
+* URL: https://github.com/r-spatial/gstat/
+* BugReports: https://github.com/r-spatial/gstat/issues/
+* Date/Publication: 2020-04-04 14:20:02 UTC
+* Number of recursive dependencies: 37
+
+Run `revdep_details(,"gstat")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      
+      > meuse.riv <- SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)),"meuse.riv")))
+      
+      > proj4string(meuse.riv) <- crs
+      
+      > data("meuse.area")
+      
+      > meuse.area = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "area")))
+      
+      > proj4string(meuse.area) <- crs
+      > 
+      > v = variogram(log(zinc)~1, meuse_sf)
+      > (v.fit = fit.variogram(v, vgm(1, "Sph", 900, 1)))
+        model      psill    range
+      1   Nug 0.05066243   0.0000
+      2   Sph 0.59060780 897.0209
+      > k_sf = krige(log(zinc)~1, meuse_sf[-(1:5),], meuse_sf[1:5,], v.fit)
+      Error in .local(formula, locations, ...) : 
+        stars required: install that first
+      Calls: krige -> krige -> .local
+      Execution halted
+    ```
+
+# gtfs2gps
+
+<details>
+
+* Version: 1.1-0
+* Source code: https://github.com/cran/gtfs2gps
+* URL: https://github.com/ipeaGIT/gtfs2gps
+* BugReports: https://github.com/ipeaGIT/gtfs2gps/issues
+* Date/Publication: 2020-04-12 05:20:02 UTC
+* Number of recursive dependencies: 70
+
+Run `revdep_details(,"gtfs2gps")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘lwgeom’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # gWQS
 
 <details>
@@ -964,7 +1018,7 @@ Run `revdep_details(,"GSODR")` for more info
 * Version: 2.0.1
 * Source code: https://github.com/cran/gWQS
 * Date/Publication: 2020-03-03 12:20:02 UTC
-* Number of recursive dependencies: 159
+* Number of recursive dependencies: 160
 
 Run `revdep_details(,"gWQS")` for more info
 
@@ -985,7 +1039,7 @@ Run `revdep_details(,"gWQS")` for more info
 * Version: 1.1.1
 * Source code: https://github.com/cran/gWQSRS
 * Date/Publication: 2020-03-03 11:40:02 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 112
 
 Run `revdep_details(,"gWQSRS")` for more info
 
@@ -1009,7 +1063,7 @@ Run `revdep_details(,"gWQSRS")` for more info
 * URL: https://github.com/szymanskir/hackeRnews
 * BugReports: https://github.com/szymanskir/hackeRnews/issues
 * Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 61
+* Number of recursive dependencies: 62
 
 Run `revdep_details(,"hackeRnews")` for more info
 
@@ -1034,6 +1088,51 @@ Run `revdep_details(,"hackeRnews")` for more info
       Could not resolve host: hacker-news.firebaseio.com; Name or service not known
     Calls: get_best_stories ... request_fetch -> request_fetch.write_memory -> <Anonymous>
     Execution halted
+    ```
+
+# iml
+
+<details>
+
+* Version: 0.10.0
+* Source code: https://github.com/cran/iml
+* URL: https://github.com/christophM/iml
+* BugReports: https://github.com/christophM/iml/issues
+* Date/Publication: 2020-03-26 10:20:03 UTC
+* Number of recursive dependencies: 155
+
+Run `revdep_details(,"iml")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(checkmate)
+      > library(iml)
+      > 
+      > test_check("iml")
+      Error in download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  : 
+        cannot open URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5'
+      In addition: Warning message:
+      In download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  :
+        URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5': status was 'Couldn't resolve host name'
+      Error: package or namespace load failed for 'h2o':
+       unable to load R code in package 'h2o'
+      Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Error in download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  : 
+      cannot open URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5'
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
     ```
 
 # infercnv
@@ -1081,92 +1180,6 @@ Run `revdep_details(,"inlinedocs")` for more info
     Unknown package ‘R.methodsS3’ in Rd xrefs
     ```
 
-# ipc
-
-<details>
-
-* Version: 0.1.3
-* Source code: https://github.com/cran/ipc
-* URL: https://github.com/fellstat/ipc
-* BugReports: https://github.com/fellstat/ipc/issues
-* Date/Publication: 2019-06-23 06:00:03 UTC
-* Number of recursive dependencies: 55
-
-Run `revdep_details(,"ipc")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > 
-    > ### ** Examples
-    > 
-    > library(future)
-    > strategy <- "future::multisession"
-    > plan(strategy)
-    Warning in socketConnection("localhost", port = port, server = TRUE, blocking = TRUE,  :
-      port 37400 cannot be opened
-    Error in socketConnection("localhost", port = port, server = TRUE, blocking = TRUE,  : 
-      Failed to launch and connect to R worker on local machine ‘localhost’ from local machine ‘qb3-id134’.
-     * The error produced by socketConnection() was: ‘cannot open the connection’
-     * In addition, socketConnection() produced 1 warning(s):
-       - Warning #1: ‘port 37400 cannot be opened’ (which suggests that this port is either already occupied by another process or blocked by the firewall on your local machine)
-     * The localhost socket connection that failed to connect to the R worker used port 37400 using a communication timeout of 120 seconds and a connection timeout of 120 seconds.
-     * Worker launch call: '/wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/Rscript' --default-packages=datasets,utils,grDevices,graphics,stats,methods -e '#label=UNKNOWN:12852:qb3-id134:hb' -e 'try(suppressWarnings(cat(Sys.getpid(),file="/scratch/678242.1.long.q/RtmpbFCxuf/future.parent=12852.323450bd0e70.pid")), silent = TRUE)' -e 'parallel:::.slaveRSOCK()' MASTER=localhost PORT=37400 OUT=/dev/null TIMEOUT=120 XDR=TRUE.
-     * Worker (PID 13024) was successfully killed: TRUE
-     * Troubleshooting suggestions:
-       - Suggestion #1: Set 'verbose=TRUE' to see more details.
-       - Suggestion #2: Set 'outfile=NULL' to see output from worker.
-    Calls: plan ... tryCatchList -> tryCatchOne -> <Anonymous> -> <Anonymous>
-    Execution halted
-    ```
-
-# ldaPrototype
-
-<details>
-
-* Version: 0.1.1
-* Source code: https://github.com/cran/ldaPrototype
-* URL: https://github.com/JonasRieger/ldaPrototype, https://doi.org/10.5281/zenodo.3597978
-* BugReports: https://github.com/JonasRieger/ldaPrototype/issues
-* Date/Publication: 2020-01-10 17:40:09 UTC
-* Number of recursive dependencies: 100
-
-Run `revdep_details(,"ldaPrototype")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      The following object is masked from 'package:stats':
-      
-          cutree
-      
-      > 
-      > test_check("ldaPrototype")
-      ── 1. Error: (unknown) (@test_jaccardTopics.R#8)  ──────────────────────────────
-      wrong sign in 'by' argument
-      Backtrace:
-       1. ldaPrototype::jaccardTopics(mtopics, pm.backend = "socket")
-       2. ldaPrototype:::jaccardTopics.parallel(...)
-       3. base::lapply(...)
-       4. ldaPrototype:::FUN(X[[i]], ...)
-       6. base::seq.default(x, N - 2, max(ncpus, 2))
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 241 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Error: (unknown) (@test_jaccardTopics.R#8) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # lidR
 
 <details>
@@ -1176,7 +1189,7 @@ Run `revdep_details(,"ldaPrototype")` for more info
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
 * Date/Publication: 2020-03-02 19:10:02 UTC
-* Number of recursive dependencies: 153
+* Number of recursive dependencies: 161
 
 Run `revdep_details(,"lidR")` for more info
 
@@ -1184,12 +1197,30 @@ Run `revdep_details(,"lidR")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking tests ...
     ```
-    Package required but not available: ‘rgl’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    ...
+       31. base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
+       34. base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+       35. base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       36. base:::withOneRestart(expr, restarts[[1L]])
+       37. base:::doWithOneRestart(return(expr), restart)
+      
+      ── 2. Failure: catalog_apply automerge works with in memory POINTS (@test-catalo
+      projection(req2) not equal to "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clrk66 +units=m +no_defs".
+      1/1 mismatches
+      x[1]: "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clr
+      x[1]: k66 +units=m +no_defs "
+      y[1]: "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clr
+      y[1]: k66 +units=m +no_defs"
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 970 | SKIPPED: 0 | WARNINGS: 2 | FAILED: 2 ]
+      1. Failure: Plot LAScatalog object works (@test-LAScatalog.R#20) 
+      2. Failure: catalog_apply automerge works with in memory POINTS (@test-catalog_apply-automerge.R#171) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # mcp
@@ -1224,7 +1255,7 @@ Run `revdep_details(,"mcp")` for more info
 * Source code: https://github.com/cran/merTools
 * BugReports: https://www.github.com/jknowles/merTools
 * Date/Publication: 2019-05-13 12:30:06 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 131
 
 Run `revdep_details(,"merTools")` for more info
 
@@ -1246,11 +1277,6 @@ Run `revdep_details(,"merTools")` for more info
     Probably some imports need to be declared in the NAMESPACE file.
     ```
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘rstanarm’
-    ```
-
 *   checking R code for possible problems ... NOTE
     ```
     Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
@@ -1268,7 +1294,7 @@ Run `revdep_details(,"merTools")` for more info
 * URL: https://lifebrain.github.io/metagam/, https://github.com/Lifebrain/metagam
 * BugReports: https://github.com/Lifebrain/metagam/issues
 * Date/Publication: 2020-02-20 10:20:02 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 138
 
 Run `revdep_details(,"metagam")` for more info
 
@@ -1289,7 +1315,7 @@ Run `revdep_details(,"metagam")` for more info
 * Version: 0.0.2
 * Source code: https://github.com/cran/MetamapsDB
 * Date/Publication: 2017-12-06 09:51:00 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(,"MetamapsDB")` for more info
 
@@ -1313,7 +1339,7 @@ Run `revdep_details(,"MetamapsDB")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2019-11-01
-* Number of recursive dependencies: 192
+* Number of recursive dependencies: 193
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -1377,43 +1403,16 @@ Run `revdep_details(,"origami")` for more info
     Unknown package ‘glmnet’ in Rd xrefs
     ```
 
-# pavo
-
-<details>
-
-* Version: 2.4.0
-* Source code: https://github.com/cran/pavo
-* URL: http://pavo.colrverse.com, https://github.com/rmaia/pavo/
-* BugReports: https://github.com/rmaia/pavo/issues
-* Date/Publication: 2020-02-08 16:20:08 UTC
-* Number of recursive dependencies: 106
-
-Run `revdep_details(,"pavo")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘rgl’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Unknown package ‘rgl’ in Rd xrefs
-    ```
-
 # PCRedux
 
 <details>
 
-* Version: 1.0-4
+* Version: 1.0-6
 * Source code: https://github.com/cran/PCRedux
 * URL: https://CRAN.R-project.org/package=PCRedux
 * BugReports: https://github.com/PCRuniversum/PCRedux/issues
-* Date/Publication: 2020-01-07 22:40:02 UTC
-* Number of recursive dependencies: 164
+* Date/Publication: 2020-03-06 08:10:02 UTC
+* Number of recursive dependencies: 115
 
 Run `revdep_details(,"PCRedux")` for more info
 
@@ -1421,54 +1420,11 @@ Run `revdep_details(,"PCRedux")` for more info
 
 ## In both
 
-*   checking whether package ‘PCRedux’ can be installed ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/PCRedux/new/PCRedux.Rcheck/00install.out’ for details.
+    Package suggested but not available for checking: ‘FFTrees’
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘PCRedux’ ...
-** package ‘PCRedux’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/PCRedux/new/PCRedux.Rcheck/00_pkg_src/PCRedux: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘rgl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘PCRedux’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/PCRedux/new/PCRedux.Rcheck/PCRedux’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘PCRedux’ ...
-** package ‘PCRedux’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/PCRedux/old/PCRedux.Rcheck/00_pkg_src/PCRedux: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘rgl’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘PCRedux’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/PCRedux/old/PCRedux.Rcheck/PCRedux’
-
-```
 # photosynthesis
 
 <details>
@@ -1515,12 +1471,12 @@ Run `revdep_details(,"phylolm")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.0
 * Source code: https://github.com/cran/prewas
 * URL: http://github.com/Snitkin-Lab-Umich/prewas
 * BugReports: http://github.com/Snitkin-Lab-Umich/prewas/issues
-* Date/Publication: 2020-02-25 14:50:03 UTC
-* Number of recursive dependencies: 70
+* Date/Publication: 2020-03-21 17:10:06 UTC
+* Number of recursive dependencies: 71
 
 Run `revdep_details(,"prewas")` for more info
 
@@ -1571,13 +1527,50 @@ Run `revdep_details(,"Prostar")` for more info
 
 ## In both
 
-*   checking whether package ‘Prostar’ can be installed ... WARNING
+*   checking whether package ‘Prostar’ can be installed ... ERROR
     ```
-    Found the following significant warnings:
-      Warning: no DISPLAY variable so Tk is not available
+    Installation failed.
     See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘Prostar’ ...
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00_pkg_src/Prostar: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
+Warning: no DISPLAY variable so Tk is not available
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘imp4p’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘Prostar’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/Prostar’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘Prostar’ ...
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/old/Prostar.Rcheck/00_pkg_src/Prostar: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
+Warning: no DISPLAY variable so Tk is not available
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘imp4p’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘Prostar’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/old/Prostar.Rcheck/Prostar’
+
+```
 # QDNAseq
 
 <details>
@@ -1605,10 +1598,10 @@ Run `revdep_details(,"QDNAseq")` for more info
 
 <details>
 
-* Version: 2.2.2
+* Version: 2.3.0
 * Source code: https://github.com/cran/qgcomp
-* Date/Publication: 2020-03-01 23:00:02 UTC
-* Number of recursive dependencies: 81
+* Date/Publication: 2020-04-08 05:50:02 UTC
+* Number of recursive dependencies: 116
 
 Run `revdep_details(,"qgcomp")` for more info
 
@@ -1838,7 +1831,7 @@ Run `revdep_details(,"qgcomp")` for more info
 * URL: https://reproducible.predictiveecology.org, https://github.com/PredictiveEcology/reproducible
 * BugReports: https://github.com/PredictiveEcology/reproducible/issues
 * Date/Publication: 2020-02-20 17:30:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(,"reproducible")` for more info
 
@@ -1851,17 +1844,17 @@ Run `revdep_details(,"reproducible")` for more info
     ...
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
         functionName        component  elapsedTime units
-      1      readRDS          Hashing 0.0015921593  secs
-      2      readRDS  Running readRDS 0.0006744862  secs
-      3      readRDS   Saving to repo 1.8572595119  secs
-      4      readRDS Whole Cache call 1.8833503723  secs
+      1      readRDS          Hashing 0.0019097328  secs
+      2      readRDS  Running readRDS 0.0008618832  secs
+      3      readRDS   Saving to repo 0.7786722183  secs
+      4      readRDS Whole Cache call 0.8108460903  secs
         objectNames hashElements             hash objSize
       1        file         file 3b7b314e89d64c2b   24120
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
-        functionName         component  elapsedTime units
-      1      readRDS           Hashing 0.0011324883  secs
-      2      readRDS Loading from repo 0.0006251335  secs
-      3      readRDS  Whole Cache call 0.2205529213  secs
+        functionName         component elapsedTime units
+      1      readRDS           Hashing 0.002178192  secs
+      2      readRDS Loading from repo 0.001045942  secs
+      3      readRDS  Whole Cache call 0.109942913  secs
       ══ testthat results  ═══════════════════════════════════════════════════════════
       [ OK: 310 | SKIPPED: 67 | WARNINGS: 5 | FAILED: 3 ]
       1. Error: testing prepInputs with deauthorized googledrive 
@@ -1881,7 +1874,7 @@ Run `revdep_details(,"reproducible")` for more info
 * URL: https://github.com/ropensci/robotstxt
 * BugReports: https://github.com/ropensci/robotstxt/issues
 * Date/Publication: 2018-07-18 21:30:03 UTC
-* Number of recursive dependencies: 62
+* Number of recursive dependencies: 63
 
 Run `revdep_details(,"robotstxt")` for more info
 
@@ -1969,7 +1962,7 @@ Run `revdep_details(,"seer")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-02-26 19:00:06 UTC
-* Number of recursive dependencies: 221
+* Number of recursive dependencies: 219
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -2011,6 +2004,30 @@ Run `revdep_details(,"shinyrecap")` for more info
       All declared Imports should be used.
     ```
 
+# simhelpers
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/simhelpers
+* URL: https://meghapsimatrix.github.io/simhelpers/index.html
+* BugReports: https://github.com/meghapsimatrix/simhelpers/issues
+* Date/Publication: 2020-03-31 15:00:06 UTC
+* Number of recursive dependencies: 99
+
+Run `revdep_details(,"simhelpers")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘magrittr’ ‘purrr’ ‘rlang’ ‘utils’
+      All declared Imports should be used.
+    ```
+
 # skpr
 
 <details>
@@ -2020,7 +2037,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2020-03-04 20:20:02 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"skpr")` for more info
 
@@ -2030,9 +2047,9 @@ Run `revdep_details(,"skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.4Mb
+      installed size is 13.5Mb
       sub-directories of 1Mb or more:
-        libs  12.9Mb
+        libs  13.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -2068,11 +2085,11 @@ Run `revdep_details(,"solitude")` for more info
 
 <details>
 
-* Version: 0.1.0
+* Version: 0.1.1
 * Source code: https://github.com/cran/spacey
 * URL: https://github.com/mikemahoney218/spacey, https://mikemahoney218.github.io/spacey/
 * BugReports: https://github.com/mikemahoney218/spacey/issues
-* Date/Publication: 2020-02-28 12:30:03 UTC
+* Date/Publication: 2020-03-14 18:50:02 UTC
 * Number of recursive dependencies: 99
 
 Run `revdep_details(,"spacey")` for more info
@@ -2081,28 +2098,32 @@ Run `revdep_details(,"spacey")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘spacey-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: get_texture
-    > ### Title: Get color textures for a map
-    > ### Aliases: get_texture
-    > ### Keywords: internal
-    > 
-    > ### ** Examples
-    > 
-    > get_texture("spacey1")
-    Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-      there is no package called ‘rgl’
-    Calls: get_texture ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘rgdal’
+      All declared Imports should be used.
+    ```
+
+# sperrorest
+
+<details>
+
+* Version: 3.0.0
+* Source code: https://github.com/cran/sperrorest
+* URL: https://giscience-fsu.github.io/sperrorest, https://github.com/giscience-fsu/sperrorest
+* BugReports: https://github.com/giscience-fsu/sperrorest/issues
+* Date/Publication: 2020-04-13 08:10:02 UTC
+* Number of recursive dependencies: 57
+
+Run `revdep_details(,"sperrorest")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
     ```
 
@@ -2110,12 +2131,12 @@ Run `revdep_details(,"spacey")` for more info
 
 <details>
 
-* Version: 0.4-0
+* Version: 0.4-1
 * Source code: https://github.com/cran/stars
 * URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
 * BugReports: https://github.com/r-spatial/stars/issues/
-* Date/Publication: 2019-10-10 13:00:02 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2020-04-07 10:00:02 UTC
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"stars")` for more info
 
@@ -2123,59 +2144,16 @@ Run `revdep_details(,"stars")` for more info
 
 ## In both
 
-*   checking whether package ‘stars’ can be installed ... ERROR
+*   checking package dependencies ... ERROR
     ```
-    Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
+    Package required but not available: ‘lwgeom’
+    
     Package suggested but not available for checking: ‘starsdata’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘stars’ ...
-** package ‘stars’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** demo
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/00_pkg_src/stars: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/scratch/678242.1.long.q/tmp.pLrWv5vzw7/stars/lwgeom/libs/lwgeom.so':
-  /scratch/678242.1.long.q/tmp.pLrWv5vzw7/stars/lwgeom/libs/lwgeom.so: undefined symbol: GEOSClipByRect
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘stars’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/stars’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘stars’ ...
-** package ‘stars’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** demo
-** inst
-** byte-compile and prepare package for lazy loading
-.Rprofile error [/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/old/stars.Rcheck/00_pkg_src/stars: /wynton/home/cbi/shared/software/CBI/R-3.6.3/lib64/R/bin/exec/R --no-save --slave]: there is no package called ‘startup’
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/scratch/678242.1.long.q/tmp.pLrWv5vzw7/stars/lwgeom/libs/lwgeom.so':
-  /scratch/678242.1.long.q/tmp.pLrWv5vzw7/stars/lwgeom/libs/lwgeom.so: undefined symbol: GEOSClipByRect
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘stars’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/old/stars.Rcheck/stars’
-
-```
 # startR
 
 <details>
@@ -2185,7 +2163,7 @@ ERROR: lazy loading failed for package ‘stars’
 * URL: https://earth.bsc.es/gitlab/es/startR/
 * BugReports: https://earth.bsc.es/gitlab/es/startR/issues
 * Date/Publication: 2017-04-22 04:26:58 UTC
-* Number of recursive dependencies: 29
+* Number of recursive dependencies: 35
 
 Run `revdep_details(,"startR")` for more info
 
@@ -2204,12 +2182,12 @@ Run `revdep_details(,"startR")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * Source code: https://github.com/cran/tableschema.r
 * URL: https://github.com/frictionlessdata/tableschema-r
 * BugReports: https://github.com/frictionlessdata/tableschema-r/issues
-* Date/Publication: 2018-11-14 16:50:03 UTC
-* Number of recursive dependencies: 56
+* Date/Publication: 2020-03-12 12:40:02 UTC
+* Number of recursive dependencies: 57
 
 Run `revdep_details(,"tableschema.r")` for more info
 
@@ -2220,6 +2198,8 @@ Run `revdep_details(,"tableschema.r")` for more info
 *   checking tests ...
     ```
     ...
+      cannot open the connection to 'https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/latin1.csv'
+      Backtrace:
        1. table$read(limit = 2)
        2. self$iter(keyed = keyed, extended = extended, cast = cast, relations = relations)
        3. con$iterable()
@@ -2227,7 +2207,7 @@ Run `revdep_details(,"tableschema.r")` for more info
       
       Failed to query server: Connection timed out
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 513 | SKIPPED: 0 | WARNINGS: 4 | FAILED: 5 ]
+      [ OK: 517 | SKIPPED: 0 | WARNINGS: 4 | FAILED: 5 ]
       1. Error: test (@test-helpers.R#19) 
       2. Error: test (@test-helpers.R#24) 
       3. Error: table-schema is up-to-date (@test-profile.R#13) 
@@ -2236,10 +2216,8 @@ Run `revdep_details(,"tableschema.r")` for more info
       
       Error: testthat unit tests failed
       In addition: Warning messages:
-      1: In is.data.frame(x) :
-        closing unused connection 99 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/latin1.csv)
-      2: In is.data.frame(x) :
-        closing unused connection 5 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/data_infer.csv)
+      1: closing unused connection 85 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/latin1.csv) 
+      2: closing unused connection 5 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/data_infer.csv) 
       Execution halted
     ```
 
@@ -2344,7 +2322,7 @@ Run `revdep_details(,"tsfeatures")` for more info
 * URL: https://github.com/RamiKrispin/TSstudio
 * BugReports: https://github.com/RamiKrispin/TSstudio/issues
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 136
 
 Run `revdep_details(,"TSstudio")` for more info
 

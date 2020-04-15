@@ -14,15 +14,27 @@
 
 ## SPECIAL: On Wynton HPC
 if [[ $SGE_CLUSTER_NAME == *wynton* ]]; then
-    module load CBI r
+    module load CBI
+    module load r
+#    module load r/4.0.0-alpha
 
+    ## Some packages need a more modern version of gcc, e.g. 'balvaan'
+    module load CBI-testing
+    module load scl-devtoolset/4
+
+    ## Some packages require non-default system libraries
+    module load gdal geos gsl hdf5 jags
+
+    ## Report on what modules are in use
+    module list
+    
     ## Install all packages to toward $TMPDIR, if revdep/library doesn't already exist.
     ## This will avoid some of the slowness on the global file system
-    if [[ ! -d revdep/library ]]; then
-        tmpdir=$(mktemp -d)
-        ln -fs "$tmpdir" revdep/library
-        [[ -d revdep/library ]] || { >&2 echo "ERROR: Failed to link revdep/library/ to $tmpdir"; exit 1; }
-    fi
+    #if [[ ! -d revdep/library ]]; then
+    #    tmpdir=$(mktemp -d)
+    #    ln -fs "$tmpdir" revdep/library
+    #    [[ -d revdep/library ]] || { >&2 echo "ERROR: Failed to link revdep/library/ to $tmpdir"; exit 1; }
+    #fi
 
     ## To check in on revdep/library/ on the running host (see below), submit a job like:
     ##   echo "ls -lR revdep/library/" | qsub -cwd -j yes -l hostname=<hostname>
