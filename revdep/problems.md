@@ -114,71 +114,6 @@ Run `revdep_details(,"aroma.core")` for more info
       'Cairo', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
-# BatchGetSymbols
-
-<details>
-
-* Version: 2.5.6
-* Source code: https://github.com/cran/BatchGetSymbols
-* Date/Publication: 2020-02-25 15:20:02 UTC
-* Number of recursive dependencies: 85
-
-Run `revdep_details(,"BatchGetSymbols")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘BatchGetSymbols-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: BatchGetSymbols
-    > ### Title: Function to download financial data
-    > ### Aliases: BatchGetSymbols
-    > 
-    > ### ** Examples
-    > 
-    > tickers <- c('FB','MMM')
-    > 
-    > first.date <- Sys.Date()-30
-    > last.date <- Sys.Date()
-    > 
-    > l.out <- BatchGetSymbols(tickers = tickers,
-    +                          first.date = first.date,
-    +                         last.date = last.date, do.cache=FALSE)
-    Error in BatchGetSymbols(tickers = tickers, first.date = first.date, last.date = last.date,  : 
-      No internet connection found...
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-      
-          filter, lag
-      
-      The following objects are masked from 'package:base':
-      
-          intersect, setdiff, setequal, union
-      
-      
-      > 
-      > test_check("BatchGetSymbols")
-      ── 1. Error: (unknown) (@test_BatchGetSymbols.R#12)  ───────────────────────────
-      No internet connection found...
-      Backtrace:
-       1. BatchGetSymbols::BatchGetSymbols(...)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 0 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Error: (unknown) (@test_BatchGetSymbols.R#12) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # batchtools
 
 <details>
@@ -497,35 +432,9 @@ Run `revdep_details(,"blockCV")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-       12. layout$setup_panel_params()
-       13. ggplot2:::f(..., self = self)
-       14. base::Map(setup_panel_params, scales_x, scales_y)
-       15. base::mapply(FUN = f, ..., SIMPLIFY = FALSE)
-       17. self$coord$setup_panel_params(scale_x, scale_y, params = self$coord_params)
-       18. ggplot2:::f(..., self = self)
-       19. sf::st_graticule(...)
-       21. sf:::st_transform.sfc(box, datum, partial = TRUE)
-       23. sf:::CPL_transform(x, crs, aoi, pipeline, reverse)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 127 | SKIPPED: 8 | WARNINGS: 7 | FAILED: 6 ]
-      1. Error: test spatialAutoRange function with multi-layer raster in parallel (@testSpatialAutoRange.R#19) 
-      2. Error: test spatialAutoRange for low-resolution rasters (@testSpatialAutoRange.R#71) 
-      3. Error: test spatiaBlock function with systematic assingment and no raster file (@testSpatialBlock.R#65) 
-      4. Error: test spatiaBlock function with non-numeric iteration (@testSpatialBlock.R#98) 
-      5. Error: test spatiaBlock with checkerboard assingment and only row blocks (@testSpatialBlock.R#132) 
-      6. Error: test spatialBlock with no speceis column match (@testSpatialBlock.R#269) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
-    Unknown package ‘biomod2’ in Rd xrefs
+    Package unavailable to check Rd xrefs: ‘biomod2’
     ```
 
 # codebook
@@ -596,32 +505,6 @@ Run `revdep_details(,"datapackage.r")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-    ...
-       1. httptest::fake_response(...)
-       2. httr::GET(descriptor$schema)
-       3. httr:::request_perform(req, hu$handle$handle)
-       5. httr:::request_fetch.write_memory(req$output, req$url, handle)
-       6. curl::curl_fetch_memory(url, handle = handle)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 183 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 17 ]
-      1. Error: initializes with URL descriptor (@test-package.R#23) 
-      2. Error: loads relative resource (@test-package.R#48) 
-      3. Error: loads resource from absolute URL (@test-package.R#60) 
-      4. Error: loads resource from absolute URL disregarding basePath (@test-package.R#72) 
-      5. Error: loads remote resource with basePath (@test-package.R#85) 
-      6. Error: remote 
-      7. Error: profile data-package should be up-to-date (@test-profile.R#105) 
-      8. Error: profile tabular-data-package should be up-to-date (@test-profile.R#105) 
-      9. Error: profile fiscal-data-package should be up-to-date (@test-profile.R#105) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -760,54 +643,6 @@ Run `revdep_details(,"foieGras")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘foieGras-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: fit_mpm
-    > ### Title: fit a a Move Persistence Model (mpm)
-    > ### Aliases: fit_mpm
-    > 
-    > ### ** Examples
-    > 
-    > ## fit jmpm to two southern elephant seals
-    > data(fssm)
-    > dmp <- grab(fssm, "predicted", as_sf=FALSE)
-    Warning in CPL_transform(x, crs, aoi, pipeline, reverse) :
-      GDAL Error 6: Unable to load PROJ.4 library (libproj.so), creation of OGRCoordinateTransformation failed.
-    Error in CPL_transform(x, crs, aoi, pipeline, reverse) : 
-      OGRCreateCoordinateTransformation() returned NULL: PROJ available?
-    Calls: grab ... st_transform -> st_transform.sfc -> structure -> CPL_transform
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-      
-      ── 7. Error: (unknown) (@test-prefilter.R#15)  ─────────────────────────────────
-      OGRCreateCoordinateTransformation() returned NULL: PROJ available?
-      Backtrace:
-       1. sf::st_transform(ellie_sf, crs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=km +no_defs")
-       2. sf:::st_transform.sf(ellie_sf, crs = "+proj=stere +lat_0=-90 +lat_ts=-71 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=km +no_defs")
-       4. sf:::st_transform.sfc(st_geometry(x), crs, ...)
-       6. sf:::CPL_transform(x, crs, aoi, pipeline, reverse)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 10 | SKIPPED: 12 | WARNINGS: 7 | FAILED: 7 ]
-      1. Error: (unknown) (@test-fit_mpm.R#7) 
-      2. Error: fit_ssm defaults + crw + KF return foieGras list w 15 elements (@test-fit_ssm.R#34) 
-      3. Error: (unknown) (@test-fmap.R#6) 
-      4. Error: (unknown) (@test-grab.R#6) 
-      5. Error: (unknown) (@test-join.R#7) 
-      6. Error: (unknown) (@test-plot.R#7) 
-      7. Error: (unknown) (@test-prefilter.R#15) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 11.1Mb
@@ -853,23 +688,6 @@ Run `revdep_details(,"GetBCBData")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘GetBCBData-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: gbcbd_test_internet
-    > ### Title: Tests for an internet conection
-    > ### Aliases: gbcbd_test_internet
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > inet.flag <- gbcbd_test_internet()
-    Error in gbcbd_test_internet() : No internet connection found...
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -898,49 +716,6 @@ Run `revdep_details(,"grattan")` for more info
     ```
     Packages suggested but not available for checking:
       'taxstats', 'taxstats1516'
-    ```
-
-# GSODR
-
-<details>
-
-* Version: 2.0.1
-* Source code: https://github.com/cran/GSODR
-* URL: https://docs.ropensci.org/GSODR/
-* BugReports: https://github.com/ropensci/GSODR/issues
-* Date/Publication: 2020-01-24 07:50:02 UTC
-* Number of recursive dependencies: 122
-
-Run `revdep_details(,"GSODR")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-       11. value[[3L]](cond)
-      
-      ── 2. Error: when year is selected for a station not providing it, error (@test-
-      
-      The file downloads have failed. Please restart.
-      Backtrace:
-        1. testthat::expect_message(...)
-        6. GSODR::get_GSOD(years = 1950, station = "959360-99999")
-        7. GSODR:::.download_files(station, years)
-        8. base::tryCatch(...)
-        9. base:::tryCatchList(expr, classes, parentenv, handlers)
-       10. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       11. value[[3L]](cond)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 31 | SKIPPED: 9 | WARNINGS: 0 | FAILED: 2 ]
-      1. Failure: The 'max_missing' parameter filters out improper stations (@test-get_GSOD.R#128) 
-      2. Error: when year is selected for a station not providing it, error (@test-get_GSOD.R#249) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # gstat
@@ -1054,42 +829,6 @@ Run `revdep_details(,"gWQSRS")` for more info
       All declared Imports should be used.
     ```
 
-# hackeRnews
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/hackeRnews
-* URL: https://github.com/szymanskir/hackeRnews
-* BugReports: https://github.com/szymanskir/hackeRnews/issues
-* Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 62
-
-Run `revdep_details(,"hackeRnews")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘hackeRnews-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: get_best_stories
-    > ### Title: Hacker News best stories
-    > ### Aliases: get_best_stories
-    > 
-    > ### ** Examples
-    > 
-    > # get the best story on Hacker News
-    > best_story <- get_best_stories(max_items = 1)
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Could not resolve host: hacker-news.firebaseio.com; Name or service not known
-    Calls: get_best_stories ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
-
 # iml
 
 <details>
@@ -1107,30 +846,8 @@ Run `revdep_details(,"iml")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(checkmate)
-      > library(iml)
-      > 
-      > test_check("iml")
-      Error in download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  : 
-        cannot open URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5'
-      In addition: Warning message:
-      In download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  :
-        URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5': status was 'Couldn't resolve host name'
-      Error: package or namespace load failed for 'h2o':
-       unable to load R code in package 'h2o'
-      Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    Error in download.file(md5_url, destfile = md5_file, mode = "w", cacheOK = FALSE,  : 
-      cannot open URL 'http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar.md5'
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
     ```
@@ -1200,13 +917,14 @@ Run `revdep_details(,"lidR")` for more info
 *   checking tests ...
     ```
     ...
-       31. base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
-       34. base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-       35. base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       36. base:::withOneRestart(expr, restarts[[1L]])
-       37. base:::doWithOneRestart(return(expr), restart)
-      
-      ── 2. Failure: catalog_apply automerge works with in memory POINTS (@test-catalo
+      > library(lidR)
+      Loading required package: raster
+      Loading required package: sp
+      > 
+      > options(lidR.progress = FALSE)
+      > 
+      > test_check("lidR")
+      ── 1. Failure: catalog_apply automerge works with in memory POINTS (@test-catalo
       projection(req2) not equal to "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clrk66 +units=m +no_defs".
       1/1 mismatches
       x[1]: "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clr
@@ -1215,9 +933,8 @@ Run `revdep_details(,"lidR")` for more info
       y[1]: k66 +units=m +no_defs"
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 970 | SKIPPED: 0 | WARNINGS: 2 | FAILED: 2 ]
-      1. Failure: Plot LAScatalog object works (@test-LAScatalog.R#20) 
-      2. Failure: catalog_apply automerge works with in memory POINTS (@test-catalog_apply-automerge.R#171) 
+      [ OK: 971 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
+      1. Failure: catalog_apply automerge works with in memory POINTS (@test-catalog_apply-automerge.R#171) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -1842,24 +1559,24 @@ Run `revdep_details(,"reproducible")` for more info
 *   checking tests ...
     ```
     ...
+      1        file         file 51da4e6a77e9a9a6     152
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
         functionName        component  elapsedTime units
-      1      readRDS          Hashing 0.0019097328  secs
-      2      readRDS  Running readRDS 0.0008618832  secs
-      3      readRDS   Saving to repo 0.7786722183  secs
-      4      readRDS Whole Cache call 0.8108460903  secs
+      1      readRDS          Hashing 0.0012297630  secs
+      2      readRDS  Running readRDS 0.0005888939  secs
+      3      readRDS   Saving to repo 0.5330145359  secs
+      4      readRDS Whole Cache call 0.5559754372  secs
         objectNames hashElements             hash objSize
-      1        file         file 3b7b314e89d64c2b   24120
+      1        file         file 51da4e6a77e9a9a6   24102
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
         functionName         component elapsedTime units
-      1      readRDS           Hashing 0.002178192  secs
-      2      readRDS Loading from repo 0.001045942  secs
-      3      readRDS  Whole Cache call 0.109942913  secs
+      1      readRDS           Hashing 0.002010107  secs
+      2      readRDS Loading from repo 0.001060009  secs
+      3      readRDS  Whole Cache call 0.089134932  secs
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 310 | SKIPPED: 67 | WARNINGS: 5 | FAILED: 3 ]
-      1. Error: testing prepInputs with deauthorized googledrive 
-      2. Error: git-related functions work (@test-git.R#15) 
-      3. Error: prepInputs doesn't work (part 3) (@test-postProcess.R#27) 
+      [ OK: 314 | SKIPPED: 67 | WARNINGS: 5 | FAILED: 2 ]
+      1. Error: git-related functions work (@test-git.R#15) 
+      2. Error: prepInputs doesn't work (part 3) (@test-postProcess.R#40) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -2195,32 +1912,6 @@ Run `revdep_details(,"tableschema.r")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-      cannot open the connection to 'https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/latin1.csv'
-      Backtrace:
-       1. table$read(limit = 2)
-       2. self$iter(keyed = keyed, extended = extended, cast = cast, relations = relations)
-       3. con$iterable()
-       5. base::open.connection(private$connection_)
-      
-      Failed to query server: Connection timed out
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 517 | SKIPPED: 0 | WARNINGS: 4 | FAILED: 5 ]
-      1. Error: test (@test-helpers.R#19) 
-      2. Error: test (@test-helpers.R#24) 
-      3. Error: table-schema is up-to-date (@test-profile.R#13) 
-      4. Error: should use utf-8 by default for remote resource (@test-table-general.R#186) 
-      5. Error: should support user-defined encoding for remote resource (@test-table-general.R#207) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning messages:
-      1: closing unused connection 85 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/latin1.csv) 
-      2: closing unused connection 5 (https://raw.githubusercontent.com/frictionlessdata/tableschema-js/master/data/data_infer.csv) 
-      Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘iterators’
@@ -2229,7 +1920,7 @@ Run `revdep_details(,"tableschema.r")` for more info
 
 *   checking Rd cross-references ... NOTE
     ```
-    Unknown package ‘parsedate’ in Rd xrefs
+    Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
 # tealeaves
@@ -2273,44 +1964,6 @@ Run `revdep_details(,"treeHMM")` for more info
     ```
     Namespace in Imports field not imported from: ‘Matrix’
       All declared Imports should be used.
-    ```
-
-# tsfeatures
-
-<details>
-
-* Version: 1.0.1
-* Source code: https://github.com/cran/tsfeatures
-* URL: https://pkg.robjhyndman.com/tsfeatures/
-* BugReports: https://github.com/robjhyndman/tsfeatures/issues/
-* Date/Publication: 2019-04-16 13:02:47 UTC
-* Number of recursive dependencies: 96
-
-Run `revdep_details(,"tsfeatures")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tsfeatures-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: yahoo_data
-    > ### Title: Yahoo server metrics
-    > ### Aliases: yahoo_data
-    > 
-    > ### ** Examples
-    > 
-    > yahoo <- yahoo_data()
-    trying URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda'
-    Warning in utils::download.file("https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda",  :
-      URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda': status was 'Couldn't resolve host name'
-    Error in utils::download.file("https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda",  : 
-      cannot open URL 'https://github.com/robjhyndman/tsfeatures/raw/master/extra-data/yahoo.rda'
-    Calls: yahoo_data -> <Anonymous>
-    Execution halted
     ```
 
 # TSstudio
