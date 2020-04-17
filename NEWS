@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.16.0-9000 [2020-03-31]
+Version: 1.16.0-9000 [2020-04-17]
 
 SIGNIFICANT CHANGES:
 
@@ -24,6 +24,9 @@ MISCELLANEOUS:
    returns at most 2L (two cores) if detected.
 
 BUG FIXES:
+
+ * Any globals named 'version' and 'has_future' would be overritten with
+   "garbage" values internally.
 
  * Disabling of multi-threading when using 'multicore' futures did not work
    on all platforms.

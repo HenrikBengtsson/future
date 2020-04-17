@@ -556,28 +556,30 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 
 
   enter <- bquote({
-    ## covr: skip=4
-    ## If 'future' is not installed on the worker, or a too old version
-    ## of 'future' is used, then give an early error
-    ## If future::FutureResult does not exist, give an error
-    has_future <- base::requireNamespace("future", quietly = TRUE)
-    version <- if (has_future) utils::packageVersion("future") else NULL
-    if (!has_future || version < "1.8.0") {
-      info <- base::c(
-        r_version = base::gsub("R version ", "", base::R.version$version.string),
-        platform = base::sprintf("%s (%s-bit)", base::R.version$platform, 8 * base::.Machine$sizeof.pointer),
-        os = base::paste(base::Sys.info()[base::c("sysname", "release", "version")], collapse = " "),
-        hostname = base::Sys.info()[["nodename"]]
-      )
-      info <- base::sprintf("%s: %s", base::names(info), info)
-      info <- base::paste(info, collapse = "; ")
-      if (!has_future) {
-        msg <- base::sprintf("Package 'future' is not installed on worker (%s)", info)
-      } else {
-        msg <- base::sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
+    base::local({
+      ## covr: skip=4
+      ## If 'future' is not installed on the worker, or a too old version
+      ## of 'future' is used, then give an early error
+      ## If future::FutureResult does not exist, give an error
+      has_future <- base::requireNamespace("future", quietly = TRUE)
+      version <- if (has_future) utils::packageVersion("future") else NULL
+      if (!has_future || version < "1.8.0") {
+        info <- base::c(
+          r_version = base::gsub("R version ", "", base::R.version$version.string),
+          platform = base::sprintf("%s (%s-bit)", base::R.version$platform, 8 * base::.Machine$sizeof.pointer),
+          os = base::paste(base::Sys.info()[base::c("sysname", "release", "version")], collapse = " "),
+          hostname = base::Sys.info()[["nodename"]]
+        )
+        info <- base::sprintf("%s: %s", base::names(info), info)
+        info <- base::paste(info, collapse = "; ")
+        if (!has_future) {
+          msg <- base::sprintf("Package 'future' is not installed on worker (%s)", info)
+        } else {
+          msg <- base::sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
+        }
+        base::stop(msg)
       }
-      base::stop(msg)
-    }
+    })
   })
   exit <- NULL
   
