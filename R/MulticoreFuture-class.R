@@ -54,32 +54,6 @@ run.MulticoreFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  ## Disable multi-threading in futures?
-  value <- Sys.getenv("R_FUTURE_FORK_MULTITHREADING_ENABLE", "TRUE")
-  value <- isTRUE(as.logical(value))
-  value <- getOption("future.fork.multithreading.enable", value)
-  if (isFALSE(value)) {
-    if (debug) mdebug("- Evaluate future in single-threaded mode ...")
-    if (!supports_omp_threads(assert = TRUE, debug = debug)) {
-      warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
-    } else {
-      ## Tell OpenMP to use a single thread
-      old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
-      if (old_omp_threads > 1L) {
-        RhpcBLASctl::omp_set_num_threads(1L)
-        on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
-        if (debug) mdebug("  - Force single-threaded processing for OpenMP")
-      }
-  
-      ## Tell BLAS to use a single thread(?)
-      ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
-      ## FIXME: How can we get the current BLAS settings?
-      ## /HB 2020-01-09
-      ## RhpcBLASctl::blas_set_num_threads(1L)
-    }
-    if (debug) mdebug("- Evaluate future in single-threaded mode ... DONE")
-  }
-  
   mcparallel <- importParallel("mcparallel")
 
   expr <- getExpression(future)
@@ -252,8 +226,42 @@ result.MulticoreFuture <- function(future, ...) {
 
 
 #' @export
-getExpression.MulticoreFuture <- function(future, mc.cores = 1L, ...) {
+getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
-  NextMethod(mc.cores = mc.cores)
+
+  debug <- getOption("future.debug", FALSE)
+
+  ## Disable multithreading?
+  ## Disable multi-threading in futures?
+  multithreading <- Sys.getenv("R_FUTURE_FORK_MULTITHREADING_ENABLE", "TRUE")
+  multithreading <- isTRUE(as.logical(multithreading))
+  multithreading <- getOption("future.fork.multithreading.enable", multithreading)
+  if (isFALSE(multithreading) &&
+      !supports_omp_threads(assert = TRUE, debug = debug)) {
+    warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+    multithreading <- TRUE
+  }
+  
+  if (isFALSE(multithreading)) {
+    expr <- bquote({
+      ## Force single-threaded OpenMP, iff needed
+      old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      if (old_omp_threads > 1L) {
+        RhpcBLASctl::omp_set_num_threads(1L)
+        base::on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
+        new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      }
+
+      ## Tell BLAS to use a single thread(?)
+      ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
+      ## FIXME: How can we get the current BLAS settings?
+      ## /HB 2020-01-09
+      ## RhpcBLASctl::blas_set_num_threads(1L)
+    })
+    
+    if (debug) mdebug("- Updated expression to force single-threaded mode")
+  }
+
+  NextMethod(expr = expr, mc.cores = mc.cores)
 }

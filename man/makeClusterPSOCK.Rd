@@ -26,6 +26,7 @@ makeNodePSOCK(
   homogeneous = NULL,
   rscript_args = NULL,
   rscript_startup = NULL,
+  rscript_envs = NULL,
   rscript_libs = NULL,
   methods = TRUE,
   useXDR = TRUE,
@@ -104,6 +105,14 @@ or a list with a mix of these, that will be evaluated on the \R worker
 prior to launching the worker's event loop.
 For instance, use \code{rscript_startup = 'setwd("/path/to")'}
 to set the working directory to \file{/path/to} on \emph{all} workers.}
+
+\item{rscript_envs}{A named character vector environment variables to
+set on worker at startup, e.g.
+\code{rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")}.
+If an element is not named, then the value of that variable will used as
+the name and the value will be the value of \code{Sys.getenv()} for that
+variable.  Non-existing environment variables will be dropped.
+These variables are set using \code{Sys.setenv()}.}
 
 \item{rscript_libs}{A character vector of \R library paths that will be
 used for the library search path of the \R workers.  An asterisk
@@ -195,7 +204,7 @@ is given by option \option{future.makeNodePSOCK.rshcmd}.  If that is not
 set, then the default is to use \command{ssh}.
 Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 on the \env{PATH}.  This is also true for recent Windows 10
-(since version 1803; April 2018) (*).
+(since version 1803, April 2018) (*).
 
 For \emph{Windows systems prior to Windows 10}, it is less common to find
 \command{ssh} on the \env{PATH}. Instead it is more likely that such
@@ -225,6 +234,9 @@ If no SSH-client is found, an informative error message is produced.
 (*) \emph{Known issue with the Windows 10 SSH client: There is a bug in the
 SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
 (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+The most recent version that we tested and that did \emph{not} work was
+OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5 (\code{ssh -V}) on
+Windows 10 (version 1909, OS build 18363.720) (\code{ver}).
 Because of this, it is recommended to use the PuTTY SSH client or the
 RStudio SSH client until this bug has been resolved in Windows 10.}
 
@@ -434,7 +446,7 @@ cl <- makeClusterPSOCK(
 ## Setup of 2 Singularity workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
-  ## Launch Rscript inside Docker container
+  ## Launch Rscript inside Linux container
   rscript = c(
     "singularity", "exec", "docker://rocker/r-parallel",
     "Rscript"

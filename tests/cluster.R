@@ -35,7 +35,16 @@ for (type in types) {
     print(cl)
     
     plan(cluster, workers = cl)
-  
+
+    ## Assert that the worker's global environment is "empty"
+    f <- future(ls(envir=globalenv(), all.names=TRUE))
+    v <- value(f)
+    v <- grep("^[.][.][.]future[.]", v, invert = TRUE, value = TRUE)
+    if (length(v) > 0) {
+      stop(sprintf("Stray variables in the global environment of %s: %s",
+           class(f)[1], paste(sQuote(v), collapse = ", ")))
+    }
+
     ## No global variables
     f <- try(cluster({
       42L
@@ -185,7 +194,16 @@ for (type in types) {
     message(v)
     stopifnot(v == hpaste(1:100))
     message("*** cluster() - assert covr workaround ... DONE")
-  
+
+    ## Assert that the worker's global environment is "empty"
+    f <- future(ls(envir=globalenv(), all.names=TRUE))
+    v <- value(f)
+    v <- grep("^[.][.][.]future[.]", v, invert = TRUE, value = TRUE)
+    if (length(v) > 0) {
+      stop(sprintf("Stray variables in the global environment of %s: %s",
+           class(f)[1], paste(sQuote(v), collapse = ", ")))
+    }
+
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
   } ## for (cores ...)
@@ -316,7 +334,7 @@ for (type in types) {
   stopifnot(x == 43L)
   
   message("*** cluster() - crashed worker ... DONE")
-  } ## if (type != "FORK" || getRversion() >= "3.2.0")
+  } ## if (type != "FORK" || getRversion() >= "3.3.0")
 
   ## Sanity checks
   pid2 <- Sys.getpid()

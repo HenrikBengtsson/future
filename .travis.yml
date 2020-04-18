@@ -8,7 +8,6 @@
 # YAML validated using http://www.yamllint.com/
 #----------------------------------------------------------------
 language: r
-sudo: false
 cache: packages
 warnings_are_errors: false
 r_check_args: --as-cran
@@ -18,7 +17,7 @@ env:
   global:
     - _R_CHECK_FORCE_SUGGESTS_=FALSE  ## Because of Rmpi
 
-matrix:
+jobs:
   include:
     - os: linux
       r: oldrel
@@ -28,6 +27,10 @@ matrix:
       r: release
       env:
         - R_FUTURE_FORK_ENABLE=false
+    - os: linux
+      r: release
+      env:
+        - R_FUTURE_PSOCK_RELAY_IMMEDIATE=false
     - os: linux
       r: release
       env:
@@ -99,7 +102,10 @@ matrix:
       env: NB='covr' ## Just a label
 
 before_install:
-  - Rscript -e 'c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())'
+  - Rscript --version
+
+before_script:
+  - R --vanilla -e "sessionInfo()" -e "capabilities()" -e "sapply(c(physical_cores = FALSE, logical_cores = TRUE), parallel::detectCores)" -e "if (require(RhpcBLASctl, quietly=TRUE)) utils::str(list(get_num_procs = get_num_procs(), get_num_cores = get_num_cores(), blas_get_num_procs = blas_get_num_procs(), omp_get_num_procs = omp_get_num_procs(), omp_get_max_threads = omp_get_max_threads()))"
   - export _R_CHECK_TIMINGS_=0
 
 

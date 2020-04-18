@@ -57,3 +57,6 @@ print(y)
 str(list(a = a, b = b, c = c)) ## All NAs
 
 }
+
+## Explicitly close multisession workers by switching plan
+plan(sequential)

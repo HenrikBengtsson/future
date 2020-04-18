@@ -172,6 +172,14 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' For instance, use `rscript_startup = 'setwd("/path/to")'`
 #' to set the working directory to \file{/path/to} on _all_ workers.
 #' 
+#' @param rscript_envs A named character vector environment variables to
+#' set on worker at startup, e.g.
+#' `rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")`.
+#' If an element is not named, then the value of that variable will used as
+#' the name and the value will be the value of `Sys.getenv()` for that
+#' variable.  Non-existing environment variables will be dropped.
+#' These variables are set using `Sys.setenv()`.
+#' 
 #' @param rscript_libs A character vector of \R library paths that will be
 #' used for the library search path of the \R workers.  An asterisk
 #' (`"*"`) will be resolved as the current `.libPaths()` on the
@@ -244,7 +252,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' set, then the default is to use \command{ssh}.
 #' Most Unix-like systems, including macOS, have \command{ssh} preinstalled
 #' on the \env{PATH}.  This is also true for recent Windows 10
-#' (since version 1803; April 2018) (*).
+#' (since version 1803, April 2018) (*).
 #'
 #' For _Windows systems prior to Windows 10_, it is less common to find
 #' \command{ssh} on the \env{PATH}. Instead it is more likely that such
@@ -274,6 +282,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' (*) _Known issue with the Windows 10 SSH client: There is a bug in the
 #' SSH client of Windows 10 that prevents it to work with reverse SSH tunneling
 #' (\url{https://github.com/PowerShell/Win32-OpenSSH/issues/1265}; Oct 2018).
+#' The most recent version that we tested and that did _not_ work was
+#' OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5 (`ssh -V`) on
+#' Windows 10 (version 1909, OS build 18363.720) (`ver`).
 #' Because of this, it is recommended to use the PuTTY SSH client or the
 #' RStudio SSH client until this bug has been resolved in Windows 10._
 #' 
@@ -407,7 +418,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_envs = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -604,6 +615,37 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_startup <- lapply(rscript_startup, FUN = function(value) c("-e", value))
     rscript_startup <- unlist(rscript_startup, use.names = FALSE)
     rscript_args <- c(rscript_startup, rscript_args)
+  }
+
+  if (length(rscript_envs) > 0L) {
+    names <- names(rscript_envs)
+    if (is.null(names)) {
+      copy <- seq_along(rscript_envs)
+    } else {
+      copy <- which(nchar(names) == 0L)
+    }
+    if (length(copy) > 0L) {
+      for (idx in copy) {
+        name <- rscript_envs[idx]
+        value <- Sys.getenv(name, NA_character_)
+        if (!is.na(value)) {
+          rscript_envs[idx] <- value
+          names(rscript_envs)[idx] <- name
+        }
+      }
+      names <- names(rscript_envs)
+      rscript_envs <- rscript_envs[nzchar(names)]
+      names <- names(rscript_envs)
+    }
+    code <- paste0(names, "=", dQuote(rscript_envs))
+    code <- paste(code, collapse = ", ")
+    code <- paste0("Sys.setenv(", code, ")")
+    tryCatch({
+      parse(text = code)
+    }, error = function(ex) {
+      stop("Argument 'rscript_envs' appears to contain invalid values: ", paste(sQuote(rscript_libs), collapse = ", "))
+    })
+    rscript_args <- c(rscript_args, "-e", shQuote(code))
   }
 
   if (length(rscript_libs) > 0L) {
@@ -1036,10 +1078,14 @@ find_rshcmd <- function(which = NULL, first = FALSE, must_work = TRUE) {
   if (is.null(which)) {
     if (.Platform$OS.type == "windows") {
       which <- c("putty-plink", "rstudio-ssh")
-      ## Reverse tunnelling on SSH is not supported on Windows 10:
-      ## - version 1803 (= build 17134.523, 2018-07-10)
-      ## - version 1809 (= build 17763.253, 2018-11-13)
-      ## So unlikely this will work out of the box.
+      ## Reverse tunnelling on SSH is not supported on Windows 10 with:
+      ## * OpenSSH_for_Windows_???, LibreSSL ???
+      ##   - Windows 10 version 1803 build 17134.523
+      ## * OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.5
+      ##   - Windows 10 version 1809 build 17763.253
+      ##   - Windows 10 version 1903 build 18362.720
+      ##   - Windows 10 version 1909 build 18363.720
+      ## So it's unlikely that this will work out of the box.
       ver <- windows_build_version()
       if (!is.null(ver) && ver > "10.0.17763.253") {
         which <- c("ssh", which)

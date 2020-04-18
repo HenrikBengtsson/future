@@ -1,4 +1,7 @@
 #!/usr/bin/env Rscript
+if (!requireNamespace("revdepcheck", quietly = TRUE)) {
+  stop('Install revdepcheck: remotes::install_github("r-lib/revdepcheck")')
+}
 library("revdepcheck")
 options(warn = 1L)
 
@@ -39,7 +42,7 @@ check <- function() {
 
   precheck()
   revdep_check(bioc = TRUE, num_workers = available_cores(),
-               timeout = as.difftime(30, units = "mins"), quiet = FALSE)
+               timeout = as.difftime(120, units = "mins"), quiet = FALSE)
 }
 
 
@@ -96,36 +99,67 @@ revdep_children <- local({
   }
 })
 
-revdep_pkgs_with_status <- function(status = "error") {
+revdep_pkgs_with_status <- function(status = c("error", "failure")) {
   status <- match.arg(status)
   res <- revdepcheck::revdep_summary()
-  field <- switch(status, error = "errors")
-  has_status <- vapply(res, FUN = function(x) {
-    z <- x[["new"]][[field]]
-    is.character(z) && any(nchar(z) > 0)
-  }, FUN.VALUE = NA, USE.NAMES = TRUE)
-  has_status <- !is.na(has_status) & has_status
-  names(has_status)[has_status]
+  if (status == "failure") {
+    names(which(sapply(res, FUN = .subset2, "status") == "E"))
+  } else if (status == "error") {
+    field <- switch(status, error = "errors")
+    has_status <- vapply(res, FUN = function(x) {
+      z <- x[["new"]][[field]]
+      is.character(z) && any(nchar(z) > 0)
+    }, FUN.VALUE = NA, USE.NAMES = TRUE)
+    has_status <- !is.na(has_status) & has_status
+    names(has_status)[has_status]
+  }
+}
+
+revdep_preinstall_libs <- function() {
+  lib_paths <- .libPaths()
+  lib_paths[1] <- sprintf("%s-revdepcheck", lib_paths[1])
+  dir.create(lib_paths[1], recursive = TRUE, showWarnings = FALSE)
+  lib_paths
 }
 
 revdep_preinstall <- function(pkgs) {
+  oopts <- options(Ncpus = available_cores())
+  lib_paths_org <- .libPaths()
+  on.exit({
+    .libPaths(lib_paths_org)
+    options(oopts)
+  })
+  .libPaths(revdep_preinstall_libs())
+  
   pkgs <- unique(pkgs)
-  lib_paths_org <- lib_paths <- .libPaths()
-  on.exit(.libPaths(lib_paths_org))
-  lib_paths[1] <- sprintf("%s-revdepcheck", lib_paths[1])
-  dir.create(lib_paths[1], recursive = TRUE, showWarnings = FALSE)
-  .libPaths(lib_paths)
   message(sprintf("Triggering crancache builds by pre-installing %d packages: %s", length(pkgs), paste(sQuote(pkgs), collapse = ", ")))
   message(".libPaths():")
   message(paste(paste0(" - ", .libPaths()), collapse = "\n"))
   ## Install one-by-one to update cache sooner
   for (kk in seq_along(pkgs)) {
     pkg <- pkgs[kk]
-    message(sprintf("Pre-installing package %d of %d: %s",
-                    kk, length(pkgs), pkg))
-    crancache::install_packages(pkg)
+    message(sprintf("Pre-installing package %d of %d: %s (Ncpus = %d)",
+                    kk, length(pkgs), pkg, getOption("Ncpus", 1L)))
+    crancache::install_packages(pkg, dependencies = c("Depends", "Imports", "LinkingTo", "Suggests"))
   }
 }
+
+revdep_preinstall_update <- function() {
+  oopts <- options(Ncpus = available_cores())
+  lib_paths_org <- .libPaths()
+  on.exit({
+    .libPaths(lib_paths_org)
+    options(oopts)
+  })
+  .libPaths(revdep_preinstall_libs())
+  
+  message("Update crancache for all pre-installing packages:")
+  message(".libPaths():")
+  message(paste(paste0(" - ", .libPaths()), collapse = "\n"))
+  message(sprintf("Ncpus=%d", getOption("Ncpus", 1L)))
+  crancache::update_packages(ask = FALSE)
+}
+
 
 args <- base::commandArgs(trailingOnly = TRUE)
 if ("--reset" %in% args) {
@@ -197,8 +231,14 @@ if ("--reset" %in% args) {
   cat(sprintf("[n=%d] %s\n", length(pkgs), paste(pkgs, collapse = " ")))
 } else if ("--list-error" %in% args) {
   cat(paste(revdep_pkgs_with_status("error"), collapse = " "), "\n", sep="")
+} else if ("--list-failure" %in% args) {
+  cat(paste(revdep_pkgs_with_status("failure"), collapse = " "), "\n", sep="")
 } else if ("--add-error" %in% args) {
   revdepcheck::revdep_add(packages = revdep_pkgs_with_status("error"))
+} else if ("--add-failure" %in% args) {
+  revdepcheck::revdep_add(packages = revdep_pkgs_with_status("failure"))
+} else if ("--preinstall-update" %in% args) {
+  revdep_preinstall_update()
 } else if ("--preinstall-children" %in% args) {
   pkg <- revdep_this_package()
   pkgs <- revdepcheck:::cran_revdeps(pkg)
@@ -206,6 +246,9 @@ if ("--reset" %in% args) {
 } else if ("--preinstall-error" %in% args) {
   res <- revdepcheck::revdep_summary()
   revdep_preinstall(revdep_pkgs_with_status("error"))
+} else if ("--preinstall-failure" %in% args) {
+  res <- revdepcheck::revdep_summary()
+  revdep_preinstall(revdep_pkgs_with_status("failure"))
 } else if ("--preinstall-todo" %in% args) {
   todo <- revdep_todo()
   revdep_preinstall(todo$package)

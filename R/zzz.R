@@ -32,6 +32,13 @@
     ## The default 11000:11999 tend to fail occassionally on CRAN but also
     ## locally.
     Sys.setenv(R_FUTURE_RANDOM_PORTS = "20000:39999")
+
+    ## Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set [REF?]. Setting it
+    ## to 'TRUE' when unset, will better emulate CRAN submission checks.
+    if (!nzchar(Sys.getenv("_R_CHECK_LIMIT_CORES_", ""))) {
+      ## Possible values: 'TRUE' 'false', 'warn', 'error'
+      Sys.setenv("_R_CHECK_LIMIT_CORES_" = "TRUE")
+    }
   }
   
   if (debug) {
@@ -50,7 +57,23 @@
   ## Initiate the R session UUID, which will also set/update
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)
-  
+
+  ## Unless already set, set option 'future.psock.relay.immediate'
+  ## according to environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE'.
+  relay <- getOption("future.psock.relay.immediate")
+  if (is.null(relay)) {
+    relay <- trim(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE"))
+    if (debug) mdebugf("R_FUTURE_PSOCK_RELAY_IMMEDIATE=%s", sQuote(relay))
+    if (nzchar(relay)) {
+      relay <- as.logical(toupper(relay))
+      if (is.na(relay)) {
+        stop("Environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE")))
+      }
+      if (debug) mdebugf(" => options(future.psock.relay.immediate = %s)", relay)
+      options(future.psock.relay.immediate = relay)
+    }
+  }
+
   ## Unless already set, set option 'future.availableCores.fallback'
   ## according to environment variable 'R_FUTURE_AVAILABLECORES_FALLBACK'.
   ncores <- getOption("future.availableCores.fallback")

@@ -2,12 +2,15 @@
 % Please edit documentation in R/values.R
 \name{values}
 \alias{values}
+\alias{value.list}
+\alias{value.environment}
+\alias{value.listenv}
 \title{Get all values in a container}
 \usage{
 values(x, stdout = TRUE, signal = TRUE, ...)
 }
 \arguments{
-\item{x}{An environment, a list, or a list environment.}
+\item{x}{A \link{Future}, an environment, a list, or a list environment.}
 
 \item{stdout}{If TRUE, captured standard output is relayed, otherwise note.}
 

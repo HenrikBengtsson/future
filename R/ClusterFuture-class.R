@@ -573,7 +573,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
 
 #' @export
-getExpression.ClusterFuture <- function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = immediateConditions, ...) {
+getExpression.ClusterFuture <- function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.psock.relay.immediate", immediateConditions), ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 

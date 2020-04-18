@@ -1145,6 +1145,7 @@ queryRCmdCheck <- function(...) {
 
   # Command line arguments
   args <- commandArgs()
+
   evidences[["vanilla"]] <- is.element("--vanilla", args)
 
   # Check the working directory
@@ -1155,16 +1156,28 @@ queryRCmdCheck <- function(...) {
 
   # Is 'R CMD check' checking tests?
   evidences[["tests"]] <- (
-    (regexpr(pattern, parent) != -1) && 
-    (regexpr("^tests(|_.*)$", dirname) != -1)
+    grepl(pattern, parent) && grepl("^tests(|_.*)$", dirname)
   )
 
   # Is the current working directory as expected?
-  evidences[["pwd"]] <- (evidences[["tests"]] || (regexpr(pattern, dirname) != -1))
+  evidences[["pwd"]] <- (evidences[["tests"]] || grepl(pattern, dirname))
 
   # Is 'R CMD check' checking examples?
   evidences[["examples"]] <- is.element("CheckExEnv", search())
+  
+  # SPECIAL: win-builder?
+  evidences[["win-builder"]] <- (.Platform$OS.type == "windows" && grepl("Rterm[.]exe$", args[1]))
 
+  if (evidences[["win-builder"]]) {
+    n <- length(args)
+    if (all(c("--no-save", "--no-restore", "--no-site-file", "--no-init-file") %in% args)) {
+      evidences[["vanilla"]] <- TRUE
+    }
+
+    if (grepl(pattern, parent)) {
+      evidences[["pwd"]] <- TRUE
+    }
+  }
 
   if (!evidences$vanilla || !evidences$pwd) {
     res <- "notRunning"
@@ -1176,6 +1189,8 @@ queryRCmdCheck <- function(...) {
     res <- "notRunning"
   }
 
+  attr(res, "evidences") <- evidences
+  
   res
 }
 
@@ -1193,7 +1208,8 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   ## Current number of OpenMP threads
   old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
 
-  ## RhpcBLASctl compiled without OpenMP support? Then it returns NULL
+  ## RhpcBLASctl compiled without OpenMP support?
+  ## Then it returns NULL in RhpcBLASctl (< 0.20-17) otherwise NA_integer_
   if (is.null(old_omp_threads)) old_omp_threads <- NA_integer_
   
   res <- !is.na(old_omp_threads)

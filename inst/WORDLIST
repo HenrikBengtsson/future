@@ -26,6 +26,7 @@ hpc
 HPC
 ing
 L'Ecuyer
+LibreSSL
 listenv
 LSF
 macOS
@@ -44,6 +45,7 @@ MultisessionFuture
 nitty
 NSE
 OpenLava
+OpenSSH
 parallelization
 Parallelization
 pid

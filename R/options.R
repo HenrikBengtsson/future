@@ -1,6 +1,7 @@
 #' Options used for futures
 #'
-#' Below are all \R options that are currently used by the \pkg{future} package and packages enhancing it.\cr
+#' Below are the \R options and environment variables that are used by the
+#' \pkg{future} package and packages enhancing it.\cr
 #' \cr
 #' _WARNING: Note that the names and the default values of these options may change in future versions of the package.  Please use with care until further notice._
 #'

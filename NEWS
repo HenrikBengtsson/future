@@ -1,6 +1,44 @@
 Package: future
 ===============
 
+Version: 1.17.0 [2020-04-17]
+
+SIGNIFICANT CHANGES:
+
+ * Renamed values() to value() to cleanup and simplify the API.
+
+NEW FEATURES:
+
+ * makeClusterPSOCK() gained argument 'rscript_envs' for setting environment
+   variables in workers on startup, e.g. rscript_envs = c(FOO = "3.14", "BAR").
+
+ * Now the result of a future holds session details in case an error occurred
+   while evaluating the future.
+
+MISCELLANEOUS:
+
+ * Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set.  To better emulate
+   CRAN submission checks, the future package will, when loaded, set this
+   environment variable to 'TRUE' if unset and if 'R CMD check' is running.
+   Note that future::availableCores() respects _R_CHECK_LIMIT_CORES_ and
+   returns at most 2L (two cores) if detected.
+
+BUG FIXES:
+
+ * Any globals named 'version' and 'has_future' would be overritten with
+   "garbage" values internally.
+
+ * Disabling of multi-threading when using 'multicore' futures did not work
+   on all platforms.
+
+DEPRECATED AND DEFUNCT:
+
+ * All values() S3 methods have been renamed to value() since they are closely
+   related to the original purpose value().  The values() methods will continue
+   to work but will soon be formally deprecated and later be made defunct and
+   finally be removed.  Please replace all values() with value() calls.
+ 
+
 Version: 1.16.0 [2020-01-15]
 
 SIGNIFICANT CHANGES:
