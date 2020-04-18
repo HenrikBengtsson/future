@@ -47,7 +47,7 @@
 |[delayed](problems.md#delayed)                  |0.3.0     |      |        |1    |
 |dhReg                                           |0.1.0     |      |        |     |
 |dipsaus                                         |0.0.6     |      |        |     |
-|disk.frame                                      |0.3.4     |-1    |        |     |
+|disk.frame                                      |0.3.4     |      |        |     |
 |doFuture                                        |0.9.0     |      |        |     |
 |drake                                           |7.12.0    |      |        |     |
 |drtmle                                          |1.0.5     |      |        |     |
@@ -82,7 +82,7 @@
 |[iml](problems.md#iml)                          |0.10.0    |      |        |1    |
 |[infercnv](problems.md#infercnv)                |1.2.1     |      |        |1    |
 |[inlinedocs](problems.md#inlinedocs)            |2019.12.5 |      |        |1    |
-|ipc                                             |0.1.3     |-1    |        |     |
+|ipc                                             |0.1.3     |      |        |     |
 |jstor                                           |0.3.8     |      |        |     |
 |kernelboot                                      |0.1.7     |      |        |     |
 |ldaPrototype                                    |0.1.1     |      |        |     |
