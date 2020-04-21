@@ -85,14 +85,21 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
       all_calls <- c(future$calls, cond$calls)
 
       ## Modify recorded traceback information?
-      traceback_method <- getOption("future.traceback", {
+      traceback <- getOption("future.traceback", {
         Sys.getenv("R_FUTURE_TRACEBACK", "full")
       })
-      if (traceback_method == "full") {
+      mdebug(" - future.traceback/R_FUTURE_TRACEBACK: ", sQuote(traceback))
+      if (traceback == "full") {
+        old_error <- old_error_org <- getOption("error", NULL)
+        on.exit(options(error = old_error_org), add = TRUE)
         tb <- rev(all_calls)[-1]
-        on.exit({
-          assign(".Traceback", tb, envir = baseenv())
-        }, add = TRUE)
+        error <- expression()
+        error <- c(error, bquote(assign(".Traceback", .(tb), envir = baseenv())))
+        if (!is.null(old_error)) {
+          if (is.function(old_error)) old_error <- bquote(.(old_error)())
+          error <- c(error, old_error)
+        }
+        options(error = error)
       }
 
       ## SPECIAL: By default, don't add 'future.info' because it

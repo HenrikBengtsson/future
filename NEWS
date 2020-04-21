@@ -6,9 +6,10 @@ Version: 1.17.0-9000 [2020-04-20]
 EXPERIMENTAL:
 
  * Setting option 'future.traceback', or environment variable
-   'R_FUTURE_TRACEBACK' to "full" will cause traceback() on a resignaled error
-   to includes also the calls used for creating the future, launching it, and
-   collecting the value.
+   'R_FUTURE_TRACEBACK' to "full" causes value() to override '.Traceback' in
+   the base environment with the full callstack of the future before it
+   resignals the future error.  traceback() and .traceback() will then report
+   on this tweaked callstack as long as argument 'x' is NULL (default).
  
 
 Version: 1.17.0 [2020-04-17]
