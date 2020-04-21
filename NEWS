@@ -1,9 +1,14 @@
 Package: future
 ===============
 
-Version: 1.17.0-9000 [2020-04-18]
+Version: 1.17.0-9000 [2020-04-20]
 
- * ...
+EXPERIMENTAL:
+
+ * Setting option 'future.traceback', or environment variable
+   'R_FUTURE_TRACEBACK' to "full" will cause traceback() on a resignaled error
+   to includes also the calls used for creating the future, launching it, and
+   collecting the value.
  
 
 Version: 1.17.0 [2020-04-17]

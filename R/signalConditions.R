@@ -81,12 +81,25 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
       ## Note, 'future' is an environment.
       result$conditions <- conditions
       future$result <- result
-      
+
+      all_calls <- c(future$calls, cond$calls)
+
+      ## Modify recorded traceback information?
+      traceback_method <- getOption("future.traceback", {
+        Sys.getenv("R_FUTURE_TRACEBACK", "full")
+      })
+      if (traceback_method == "full") {
+        tb <- rev(all_calls)[-1]
+        on.exit({
+          assign(".Traceback", tb, envir = baseenv())
+        }, add = TRUE)
+      }
+
       ## SPECIAL: By default, don't add 'future.info' because it
       ## modifies the error object, which may break things.
       if (debug && !"future.info" %in% names(condition)) {
         ## Recreate the full call stack
-        cond$calls <- c(future$calls, cond$calls)
+        cond$calls <- all_calls
         condition$future.info <- cond
       }
       stop(condition)
