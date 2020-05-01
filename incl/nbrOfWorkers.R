@@ -1,4 +1,4 @@
-plan(multiprocess)
+plan(multisession)
 nbrOfWorkers()  ## == availableCores()
 
 plan(sequential)
