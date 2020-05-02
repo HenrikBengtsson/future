@@ -24,7 +24,7 @@ For simplicitly, lets start with an illustration on how standard output ("stdout
 
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 
 > fa <- future({ cat("Hello world!\n"); print(1:3); 42L })
 > fb <- future({ str(iris); summary(iris) })
@@ -67,7 +67,7 @@ Output is relayed the same way when using future assignments (`%<-%`).  For exam
 
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 
 > a %<-% { cat("Hello world!\n"); print(1:3); 42L }
 > b %<-% { str(iris); summary(iris) }
@@ -104,7 +104,7 @@ Next, lets see what happens if we use `message()` to produce output:
 
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > fa <- future({ message("Hello world!"); 42L })
 > value(fa)
 Hello world!
@@ -116,7 +116,7 @@ Note that contrary to the captured stdout, which is captured as one single block
 
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > fa <- future({ message("Hello"); print(1:3); message("world!"); cat("ping\n"); 42L })
 > value(fa)
 [1] 1 2 3   ## <= stdout as a single ...
@@ -192,7 +192,7 @@ To capture the output produced by futures, use `capture.output()` as you would d
 
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > fa <- future({ message("Hello"); print(1:3); message("world!"); cat("ping\n"); 42L })
 > suppressMessages(a <- value(fa))
 [1] 1 2 3
@@ -215,4 +215,4 @@ It is only the standard output that is relayed.  It is _not possible_ to relay o
 [listenv]: https://cran.r-project.org/package=listenv
 
 ---
-Copyright Henrik Bengtsson, 2018-2019
+Copyright Henrik Bengtsson, 2018-2020

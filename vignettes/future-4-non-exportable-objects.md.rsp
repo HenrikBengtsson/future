@@ -325,4 +325,4 @@ res <- mutate(iris, mod = value(future({
 
 
 ---
-Copyright Henrik Bengtsson, 2019
+Copyright Henrik Bengtsson, 2020
