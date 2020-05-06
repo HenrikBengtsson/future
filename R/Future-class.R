@@ -114,6 +114,10 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
     stop_if_not(!anyNA(packages), all(nzchar(packages)))
   }
 
+  if (!is.null(label)) {
+    stop_if_not(is.character(label))
+  }
+  
   args <- list(...)
 
 
