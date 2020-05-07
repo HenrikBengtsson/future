@@ -10,7 +10,7 @@ Version: 1.17.0 [2020-04-17]
 
 SIGNIFICANT CHANGES:
 
- * Renamed values() to value() to cleanup and simplify the API.
+ * Renamed values() to value() to clean up and simplify the API.
 
 NEW FEATURES:
 
