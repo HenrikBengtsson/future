@@ -12,19 +12,15 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, ...) {
+MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-
-  args <- list(...)
-  lazy <- args$lazy
-  if (is.null(lazy)) lazy <- FALSE
 
   ## Global objects
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
 
   ## Assign?
-   if (length(gp) > 0 && (lazy || assignToTarget)) {
+   if (length(gp) > 0L && (lazy || assignToTarget)) {
     target <- new.env(parent = envir)
     globalsT <- gp$globals
     for (name in names(globalsT)) {
@@ -35,8 +31,20 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   }
   gp <- NULL
 
-  f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, job = NULL, version = "1.8", ...)
-  structure(f, class = c("MulticoreFuture", class(f)))
+  future <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, ...)
+
+  future <- as_MulticoreFuture(future, ...)
+
+  future
+}
+
+
+as_MulticoreFuture <- function(future, ...) {
+  future$job <- NULL
+  
+  future <- structure(future, class = c("MulticoreFuture", class(future)))
+  
+  future
 }
 
 
