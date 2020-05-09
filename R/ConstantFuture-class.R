@@ -14,11 +14,11 @@
 #' @keywords internal
 ConstantFuture <- function(expr = NULL, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...) {
   expr <- force(expr)
-  f <- Future(expr = expr, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...)
-  f$result <- FutureResult(value = expr)
-  f$state <- "finished"
-  structure(f, class = c("ConstantFuture", class(f)))
-  f
+  future <- Future(expr = expr, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...)
+  future$result <- FutureResult(value = expr)
+  future$state <- "finished"
+  future <- structure(future, class = c("ConstantFuture", class(future)))
+  future
 }
 
 
