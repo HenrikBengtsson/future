@@ -46,6 +46,20 @@
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
+  ## Global objects
+  gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
+
+  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, persistent = persistent, node = NA_integer_, ...)
+
+  future <- as_ClusterFuture(future, workers = workers, user = user,
+                             master = master, revtunnel = revtunnel,
+                             homogeneous = homogeneous)
+
+  future
+}
+
+
+as_ClusterFuture <- function(future, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE) {
   if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
@@ -75,17 +89,12 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
     attr(workers, "name") <- name
   }
 
-  ## Global objects
-  gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
-  globals <- gp$globals
-  packages <- unique(c(packages, gp$packages))
-  expr <- gp$expr
-  gp <- NULL
+  future$workers <- workers
 
-  f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, packages = packages, local = local, gc = gc, persistent = persistent, workers = workers, node = NA_integer_, version = "1.8", ...)
-  structure(f, class = c("ClusterFuture", class(f)))
+  future <- structure(future, class = c("ClusterFuture", class(future)))
+
+  future
 }
-
 
 
 #' @importFrom parallel clusterCall clusterExport
