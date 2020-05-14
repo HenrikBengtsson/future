@@ -13,6 +13,8 @@ BUG FIXES:
    UseMethod("tweak") : no applicable method for 'tweak' applied to an object
    of class "c('FutureStrategyList', 'list')"'.
 
+ * TESTS: 'R_FUTURE_FORK_ENABLE=false R CMD check ...' would produce 'Error: 
+   connections left open: ...' when checking the 'multiprocess' example.
 
 DEPRECATED AND DEFUNCT:
 

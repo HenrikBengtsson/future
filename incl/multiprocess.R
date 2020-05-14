@@ -23,4 +23,6 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
+## Explicitly close multisession workers, if they were used
+plan(sequential)
 }
