@@ -10,7 +10,7 @@
 #' 
 #' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 #'
-#' @param persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \option{future.globals.onMissing} in `"error"`.
+#' @param persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignore, but may also trigger an informative error if option \option{future.globals.onMissing} in `"error"` (should only be used for troubleshooting).
 #'
 #' @param maxSize The maximum allowed total size (in bytes) of globals - for
 #' the purpose of preventing too large exports / transfers happening by
@@ -28,7 +28,14 @@
 #' @export
 #'
 #' @keywords internal
-getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", FALSE), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
+getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", NULL), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
+  if (is.null(resolve)) {
+    resolve <- FALSE
+  } else {
+    stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
+    .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.resolve"), sQuote(resolve)))
+  }
+  
   debug <- getOption("future.debug", FALSE)
   if (debug) mdebug("getGlobalsAndPackages() ...")
   
@@ -46,9 +53,9 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       globals.onMissing <- "ignore"
       mustExist <- FALSE
     } else {
-      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)))
       globals.onMissing <- match.arg(globals.onMissing,
                                      choices = c("error", "ignore"))
+      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)))
       mustExist <- is.element(globals.onMissing, "error")
     }
   }
