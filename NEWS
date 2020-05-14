@@ -11,7 +11,10 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
- * Option 'future.globals.method' is deprecated and produces warnings if set.
+ * Options 'future.globals.method' and 'future.globals.onMissing' are
+   deprecated and produces warnings if set.  They may only be used for
+   troubleshooting purposes because they may affect how futures are evaluated,
+   which means that reproducibility cannot be guaranteed elsewhere.
  
 
 Version: 1.17.0 [2020-04-17]

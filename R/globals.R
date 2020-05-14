@@ -41,9 +41,16 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     ## Default for 'future.globals.onMissing':
     ## Note: It's possible to switch between 'ignore' and 'error'
     ##       at any time. Tests handle both cases. /HB 2016-06-18
-    globals.onMissing <- getOption("future.globals.onMissing", "ignore")
-    globals.onMissing <- match.arg(globals.onMissing, choices = c("error", "ignore"))
-    mustExist <- is.element(globals.onMissing, "error")
+    globals.onMissing <- getOption("future.globals.onMissing", NULL)
+    if (is.null(globals.onMissing)) {
+      globals.onMissing <- "ignore"
+      mustExist <- FALSE
+    } else {
+      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)))
+      globals.onMissing <- match.arg(globals.onMissing,
+                                     choices = c("error", "ignore"))
+      mustExist <- is.element(globals.onMissing, "error")
+    }
   }
 
   if (is.logical(globals)) {
@@ -81,11 +88,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (is.null(globals.method)) {
         globals.method <- "ordered"
       } else {
-        if (identical(globals.method, "ordered")) {
-          .Deprecated(msg = "R option 'future.globals.method' is deprecated")
-        } else {
-          .Deprecated(msg = sprintf("R option 'future.globals.method' is deprecated and using value than \"ordered\" is risky since it affects how futures are evaluated and might not be reproducible elsewhere: %s", sQuote(globals.method)))
-        }
+        .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.method"), sQuote(globals.method)))
       }
       
       globals <- globalsOf(

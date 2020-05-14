@@ -703,7 +703,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
     if (immediateConditions) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
