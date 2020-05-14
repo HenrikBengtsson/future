@@ -298,22 +298,29 @@ plan <- local({
           return(invisible(res))
         }
 
-        ## Example: plan(list(sequential, multicore))
-        if (is.function(first) && identical(first, list)) {
-          ## Specified explicitly using plan(list(...))?
+        if (is.function(first) && !inherits(first, "future")) {
           strategies <- eval(strategy, envir = parent.frame(), enclos = baseenv())
-          stop_if_not(is.list(strategies), length(strategies) >= 1L)
-          ## Coerce strings to functions, e.g.
-          ## plan(list("sequential", multicore))
-          for (kk in seq_along(strategies)) {
-            strategy_kk <- strategies[[kk]]
-            if (is.character(strategy_kk)) {
-              strategy_kk <- tweak(strategy_kk, penvir = parent.frame())
-              strategies[[kk]] <- strategy_kk
+
+          ## Specified explicitly using plan(list(...))?
+          ## Example: plan(list(sequential, multicore))
+          if (is.list(strategies)) {
+            ## Coerce strings to functions, e.g.
+            ## plan(list("sequential", multicore))
+            for (kk in seq_along(strategies)) {
+              strategy_kk <- strategies[[kk]]
+              if (is.character(strategy_kk)) {
+                strategy_kk <- tweak(strategy_kk, penvir = parent.frame())
+                strategies[[kk]] <- strategy_kk
+              }
             }
+            newStack <- strategies
+            stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
+          } else if (is.function(strategies) && !inherits(strategies, "future")) {
+            ## Example: plan(x$abc)
+            strategies <- list(strategies)
+            newStack <- strategies
+            stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
           }
-          newStack <- strategies
-          stop_if_not(!is.null(newStack), is.list(newStack), length(newStack) >= 1L)
         }
       }
     }

@@ -5,9 +5,14 @@ Version: 1.17.0-9000 [2020-05-14]
 
 BUG FIXES:
 
- * plan(list(...)) would throw 'Error in UseMethod("tweak") : no applicable
+ * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable
    method for 'tweak' applied to an object of class "list"' if a non-function
    object named 'list' was on the search path.
+
+ * plan(x$abc) with x <- list(abc = sequential) would produce 'Error in
+   UseMethod("tweak") : no applicable method for 'tweak' applied to an object
+   of class "c('FutureStrategyList', 'list')"'.
+
 
 DEPRECATED AND DEFUNCT:
 
