@@ -77,7 +77,17 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     if (globals) {
       if (debug) mdebug("Searching for globals...")
       ## Algorithm for identifying globals
-      globals.method <- getOption("future.globals.method", "ordered")
+      globals.method <- getOption("future.globals.method", NULL)
+      if (is.null(globals.method)) {
+        globals.method <- "ordered"
+      } else {
+        if (identical(globals.method, "ordered")) {
+          .Deprecated(msg = "R option 'future.globals.method' is deprecated")
+        } else {
+          .Deprecated(msg = sprintf("R option 'future.globals.method' is deprecated and using value than \"ordered\" is risky since it affects how futures are evaluated and might not be reproducible elsewhere: %s", sQuote(globals.method)))
+        }
+      }
+      
       globals <- globalsOf(
                    ## Passed to globals::findGlobals()
                    expr, envir = envir, substitute = FALSE, tweak = tweak,
