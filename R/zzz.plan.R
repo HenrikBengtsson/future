@@ -276,13 +276,20 @@ plan <- local({
     }
 
     ## (a) Is a (plain) list of future strategies specified?
-    ## FIXME: Test for is.call(strategy) instead and look up *function*
-    ## strategy[[1]], e.g. get(as.character(strategy[[1]]), mode="function")
-    ## https://github.com/HenrikBengtsson/future/issues/381 /2020-05-14
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
-        first <- eval(first, envir = parent.frame(), enclos = baseenv())
+        ## If a function call, e.g. list(...), then make sure to look up
+        ## a function to be used as 'first'.  This makes sure that base::list()
+        ## is used with plan(list(...)) even when there is a non-function 
+        ## 'list' on the search() path, e.g. gsubfn::list.
+        if (is.call(strategy)) {
+          first <- get(as.character(first), mode="function", 
+                       envir = parent.frame(), inherits = TRUE)
+        } else {
+          first <- eval(first, envir = parent.frame(), enclos = baseenv())
+        }
+
         ## A list object, e.g. plan(oplan)?
         if (is.list(first)) {
           strategies <- first
