@@ -3,7 +3,13 @@
 #' A multiprocess future is a future that uses [multicore] evaluation
 #' if supported, otherwise it uses [multisession] evaluation.
 #' Regardless, its _value is computed and resolved in
-#' parallel in another process_.
+#' parallel in another process_.\cr
+#' \cr
+#' _WARNING: Consider the 'multiprocess' future plan deprecated.
+#' Instead, explicitly specify 'multisession' or 'multicore'.  The former works
+#' everywhere and is the recommended one between the two. _Forked processing_,
+#' which 'multicore' uses, is unstable in various environment and setups.
+#' The 'multiprocess' alias is therefore being phased out._
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams future
@@ -26,6 +32,8 @@
 #' @seealso
 #' Internally [multicore()] and [multisession()]
 #' are used.
+#'
+#' @keywords internal
 #'
 #' @export
 multiprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
