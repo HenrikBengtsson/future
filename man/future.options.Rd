@@ -117,9 +117,11 @@ If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRI
 \section{Deprecated of for internal prototyping}{
 
 
-The following options exists only for legacy reasons or because they are
-used for internal prototyping.
-\emph{WARNING: Consider them to be deprecated or not for external use}.
+The following options exists only for troubleshooting purposes and must not
+be used in production.  If used, there is a risk that the results are
+non-reproducible if processed elsewhere.  To lower the risk of them being
+used by mistake, they are marked as deprecated and will produce warnings
+if set.
 
 \itemize{
 \item{\option{future.globals.onMissing}:}{(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"ignore"})}
