@@ -276,6 +276,9 @@ plan <- local({
     }
 
     ## (a) Is a (plain) list of future strategies specified?
+    ## FIXME: Test for is.call(strategy) instead and look up *function*
+    ## strategy[[1]], e.g. get(as.character(strategy[[1]]), mode="function")
+    ## https://github.com/HenrikBengtsson/future/issues/381 /2020-05-14
     if (is.language(strategy)) {
       first <- as.list(strategy)[[1]]
       if (is.symbol(first)) {
