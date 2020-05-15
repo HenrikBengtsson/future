@@ -46,7 +46,7 @@ DEPRECATED AND DEFUNCT:
  * Support for 'persistent = TRUE' with multisession futures is deprecated.
  
  * Options 'future.globals.method', 'future.globals.onMissing', and
-   'future.globals.resolve' are deprecated and produces warnings if set. They
+   'future.globals.resolve' are deprecated and produce warnings if set. They
    may only be used for troubleshooting purposes because they may affect how
    futures are evaluated, which means that reproducibility cannot be guaranteed
    elsewhere.
