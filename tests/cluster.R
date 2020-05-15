@@ -354,10 +354,21 @@ for (type in types) {
   print(cl)
   str(cl)
   parallel::stopCluster(cl)
-    
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
+
   message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
+## Sanity checks
+pid2 <- Sys.getpid()
+message("Main PID (original): ", pid)
+message("Main PID: ", pid2)
+stopifnot(pid2 == pid)
 
 message("*** cluster() - exception when re-creating workers ...")
 ## https://github.com/HenrikBengtsson/future/issues/261
