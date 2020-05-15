@@ -1,7 +1,11 @@
 Package: future
 ===============
 
-Version: 1.17.0-9000 [2020-05-14]
+Version: 1.17.0-9000 [2020-05-15]
+
+SIGNIFICANT CHANGES:
+
+ * Support for 'persistent = TRUE' with multisession futures is deprecated.
 
 NEW FEATURES:
 
@@ -39,6 +43,8 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
+ * Support for 'persistent = TRUE' with multisession futures is deprecated.
+ 
  * Options 'future.globals.method', 'future.globals.onMissing', and
    'future.globals.resolve' are deprecated and produces warnings if set. They
    may only be used for troubleshooting purposes because they may affect how
