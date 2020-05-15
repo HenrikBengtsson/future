@@ -11,6 +11,7 @@ multisession(
   lazy = FALSE,
   seed = NULL,
   globals = TRUE,
+  persistent = FALSE,
   workers = availableCores(),
   gc = FALSE,
   earlySignal = FALSE,
@@ -48,6 +49,9 @@ but without the RNG check being performed.}
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for \code{\link[=future]{future()}}.}
+
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
 
 \item{workers}{A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
