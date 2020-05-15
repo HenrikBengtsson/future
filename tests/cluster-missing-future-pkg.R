@@ -46,8 +46,7 @@ for (type in types) {
       plan(cluster, workers = cl)
     }, error = identity)
     print(res)
-    stopifnot(inherits(res, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+    stopifnot(inherits(res, "FutureError"))
   }
   parallel::stopCluster(cl)
 
@@ -66,15 +65,13 @@ for (type in types) {
       result(f)
     }, error = identity)
     print(res)
-    stopifnot(inherits(res, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+    stopifnot(inherits(res, "FutureError"))
 
     ## Assert that the "result" was recorded for future use and
     ## it was recorded as a FutureError.
     str(f$result)
     stopifnot(!is.null(f$result),
-              inherits(f$result, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+              inherits(f$result, "FutureError"))
 
     ## Any attempts to re-request the result / value for this future
     ## should from now on re-throw that recorded FutureError.
@@ -87,15 +84,13 @@ for (type in types) {
     res <- tryCatch({
        result(f)
     }, error = identity)
-    stopifnot(inherits(res, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+    stopifnot(inherits(res, "FutureError"))
 
     ## ... and obviously the same for value().
     res <- tryCatch({
        value(f)
     }, error = identity)
-    stopifnot(inherits(res, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+    stopifnot(inherits(res, "FutureError"))
     
     ## Retrying with a new future should give the same failure as above.
     f <- future(42L)
@@ -103,8 +98,7 @@ for (type in types) {
       result(f)
     }, error = identity)
     print(res)
-    stopifnot(inherits(res, "FutureError"),
-              inherits(res, "UnexpectedFutureResultError"))
+    stopifnot(inherits(res, "FutureError"))
   }
   
   parallel::stopCluster(cl)

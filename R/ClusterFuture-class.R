@@ -424,6 +424,15 @@ receiveMessageFromWorker <- function(future, ...) {
 
   ## Non-expected message from worker?
   if (!inherits(msg, "FutureResult") && !inherits(msg, "condition")) {
+    ## If parallel:::slaveLoop() ends up capturing the error, which should
+    ## not happen unless there is a critical error, then it'll be of captured
+    ## by try().
+    if (inherits(msg, "try-error")) {
+      ex <- FutureError(msg, future = future)
+      future$result <- ex
+      stop(ex)
+    }
+    
     node_info <- sprintf("%s #%d", sQuote(class(node)[1]), node_idx)
     if (inherits(node, "FutureSOCKnode")) {
       specs <- summary(node)
@@ -431,7 +440,8 @@ receiveMessageFromWorker <- function(future, ...) {
                            node_info, sQuote(specs[["host"]]),
                            specs[["r_version"]], specs[["platform"]])
     }
-    hint <- sprintf("This suggests that the communication with %s worker (%s) is out of sync.", class(future)[1], node_info)
+    
+    hint <- sprintf("This suggests that the communication with %s is out of sync.", node_info)
     ex <- UnexpectedFutureResultError(future, hint = hint)
     future$result <- ex
     stop(ex)
