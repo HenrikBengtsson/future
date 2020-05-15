@@ -3,6 +3,16 @@ Package: future
 
 Version: 1.17.0-9000 [2020-05-14]
 
+NEW FEATURES:
+
+ * print() on FutureSOCKcluster gives information not only on the name of the
+   host but also on the version of R and the platform of each node ("worker"),
+   e.g. "Socket cluster with 3 nodes where 2 nodes are on host 'localhost' (R
+   version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host
+   'n3' (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)".
+
+ * makeClusterPSOCK() now returns a cluster of class 'FutureSOCKcluster'.
+
 BUG FIXES:
 
  * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable

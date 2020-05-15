@@ -84,7 +84,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 
   n <- length(workers)
   cl <- vector("list", length = n)
-  class(cl) <- c("SOCKcluster", "cluster")
+  class(cl) <- c("FutureSOCKcluster", "SOCKcluster", "cluster")
 
   
   ## If an error occurred, make sure to clean up before exiting, i.e.
@@ -925,7 +925,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   structure(list(con = con, host = worker, rank = rank, rshlogfile = rshlogfile),
-            class = if (useXDR) "SOCKnode" else "SOCK0node")
+            class = c("FutureSOCKnode", if (useXDR) "SOCKnode" else "SOCK0node"))
 } ## makeNodePSOCK()
 
 
@@ -1313,3 +1313,55 @@ randomParallelPorts <- function(default = 11000:11999) {
 
   from:to
 } ## randomParallelPorts()
+
+
+
+
+#' @export
+summary.SOCKnode <- function(object, ...) {
+  res <- list(
+    host      = NA_character_,
+    r_version = NA_character_,
+    platform  = NA_character_,
+    pwd       = NA_character_,
+    pid       = NA_integer_
+  )
+  host <- object[["host"]]
+  if (!is.null(host)) res$host <- host
+  session_info <- object[["session_info"]]
+  if (!is.null(session_info)) {
+    res$r_version <- session_info[["r"]][["version.string"]]
+    res$platform <- session_info[["r"]][["platform"]]
+    res$pwd <- session_info[["pwd"]]
+    res$pid <- session_info[["process"]][["pid"]]
+  }
+  as.data.frame(res, stringsAsFactors = FALSE)
+}
+
+#' @export
+summary.SOCKcluster <- function(object, ...) {
+  res <- lapply(object, FUN = function(node) {
+    if (is.null(node)) return(summary.SOCKnode(node))
+    summary(node)
+  })
+  res <- do.call(rbind, res)
+  rownames(res) <- NULL
+  res
+}
+
+#' @export
+print.FutureSOCKcluster <- function (x, ...) {
+  info <- summary(x)
+  txt <- sprintf("host %s", sQuote(info[["host"]]))
+  specs <- sprintf("(%s, platform %s)", info[["r_version"]], info[["platform"]])
+  specs[is.na(info[["r_version"]])] <- "(R version and platform not queried)"
+  txt <- paste(txt, specs, sep = " ")
+  t <- table(txt)
+  t <- t[order(t, decreasing = TRUE)]
+  w <- ifelse(t == 1L, "node is", "nodes are")
+  txt <- sprintf("%d %s on %s", t, w, names(t))
+  txt <- paste(txt, collapse = ", ")
+  txt <- sprintf("Socket cluster with %d nodes where %s", length(x), txt)
+  cat(txt, "\n", sep = "")
+  invisible(x)
+}
