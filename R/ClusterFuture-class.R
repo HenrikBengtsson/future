@@ -424,9 +424,14 @@ receiveMessageFromWorker <- function(future, ...) {
 
   ## Non-expected message from worker?
   if (!inherits(msg, "FutureResult") && !inherits(msg, "condition")) {
-    str(list(node_idx = node_idx, node = node))
-    hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
-                    class(future)[1], sQuote(class(node)[1]), node_idx)
+    node_info <- sprintf("%s #%d", sQuote(class(node)[1]), node_idx)
+    if (inherits(node, "FutureSOCKnode")) {
+      specs <- summary(node)
+      node_info <- sprintf("%s on host %s (%s, platform %s)",
+                           node_info, sQuote(specs[["host"]]),
+                           specs[["r_version"]], specs[["platform"]])
+    }
+    hint <- sprintf("This suggests that the communication with %s worker (%s) is out of sync.", class(future)[1], node_info)
     ex <- UnexpectedFutureResultError(future, hint = hint)
     future$result <- ex
     stop(ex)

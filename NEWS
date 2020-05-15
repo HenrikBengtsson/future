@@ -11,6 +11,13 @@ NEW FEATURES:
    version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host
    'n3' (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)".
 
+ * If PSOCK cluster future fails critically, then the error produced give extra
+   information on node where it failed, e.g. "Error: Unexpected result (of
+   class 'NULL' != 'FutureResult') retrieved for ClusterFuture future (label =
+   '<none>', expression = '...'): . This suggests that the communication with 
+   ClusterFuture worker ('FutureSOCKnode' #1 on host 'n3' (R version 3.6.3 
+   (2020-02-29), platform x86_64-pc-linux-gnu)) is out of sync."
+
  * makeClusterPSOCK() now returns a cluster of class 'FutureSOCKcluster'.
 
 BUG FIXES:

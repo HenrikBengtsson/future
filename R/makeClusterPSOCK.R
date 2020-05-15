@@ -1318,7 +1318,7 @@ randomParallelPorts <- function(default = 11000:11999) {
 
 
 #' @export
-summary.SOCKnode <- function(object, ...) {
+summary.FutureSOCKnode <- function(object, ...) {
   res <- list(
     host      = NA_character_,
     r_version = NA_character_,
@@ -1339,9 +1339,9 @@ summary.SOCKnode <- function(object, ...) {
 }
 
 #' @export
-summary.SOCKcluster <- function(object, ...) {
+summary.FutureSOCKcluster <- function(object, ...) {
   res <- lapply(object, FUN = function(node) {
-    if (is.null(node)) return(summary.SOCKnode(node))
+    if (is.null(node)) return(summary.FutureSOCKnode(node))
     summary(node)
   })
   res <- do.call(rbind, res)
