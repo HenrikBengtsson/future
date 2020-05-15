@@ -25,6 +25,8 @@ cl <- NULL
 for (type in types) {
   message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
 
+  message("Main PID (original): ", pid)
+
   for (cores in 1:availCores) {
     message(sprintf("Testing with %d cores on type = %s ...",
                     cores, sQuote(type)))
@@ -203,6 +205,12 @@ for (type in types) {
       stop(sprintf("Stray variables in the global environment of %s: %s",
            class(f)[1], paste(sQuote(v), collapse = ", ")))
     }
+
+    ## Sanity checks
+    pid2 <- Sys.getpid()
+    message("Main PID (original): ", pid)
+    message("Main PID: ", pid2)
+    stopifnot(pid2 == pid)
 
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
