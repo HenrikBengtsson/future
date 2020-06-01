@@ -501,9 +501,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   } else {
     rscript <- as.character(rscript)
     stop_if_not(length(rscript) >= 1L)
-    
-    bin <- Sys.which(rscript[1])
-    if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+    bin <- rscript[1]
+    if (homogeneous) {
+      bin <- Sys.which(bin)
+      if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+    }
     rscript[1] <- bin
   }
 

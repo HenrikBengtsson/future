@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.17.0-9000 [2020-05-15]
+Version: 1.17.0-9000 [2020-06-01]
 
 SIGNIFICANT CHANGES:
 
@@ -30,6 +30,9 @@ NEW FEATURES:
 
 BUG FIXES:
 
+ * makeClusterPSOCK(..., rscript) will not try to locate rscript[1] if
+   argument 'homogeneous' is FALSE (or inferred to be FALSE).
+ 
  * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable
    method for 'tweak' applied to an object of class "list"' if a non-function
    object named 'list' was on the search path.
