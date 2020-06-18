@@ -26,7 +26,8 @@ NEW FEATURES:
    ('FutureSOCKnode' #1 on host 'n3' (R version 3.6.3 (2020-02-29), platform
    x86_64-pc-linux-gnu)) is out of sync."
 
- * makeClusterPSOCK() now returns a cluster of class 'FutureSOCKcluster'.
+ * makeClusterPSOCK() now returns a cluster that in addition to inheriting
+   from' SOCKcluster' it will also inherit from 'FutureSOCKcluster'.
 
 BUG FIXES:
 
