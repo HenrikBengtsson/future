@@ -175,7 +175,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param rscript_envs A named character vector environment variables to
 #' set on worker at startup, e.g.
 #' `rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")`.
-#' If an element is not named, then the value of that variable will used as
+#' If an element is not named, then the value of that variable will be used as
 #' the name and the value will be the value of `Sys.getenv()` for that
 #' variable.  Non-existing environment variables will be dropped.
 #' These variables are set using `Sys.setenv()`.
@@ -554,7 +554,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   verbose_prefix <- "[local output] "
 
   ## Shell quote the Rscript executable
-  rscript <- shQuote(rscript)
+  idxs <- grep("^[[:alpha:]][[:alnum:]]*=.*", rscript, invert = TRUE)
+  rscript[idxs] <- shQuote(rscript[idxs])
 
   ## Launching a process on the local machine?
   pidfile <- NULL

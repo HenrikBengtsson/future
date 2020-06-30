@@ -109,7 +109,7 @@ to set the working directory to \file{/path/to} on \emph{all} workers.}
 \item{rscript_envs}{A named character vector environment variables to
 set on worker at startup, e.g.
 \code{rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")}.
-If an element is not named, then the value of that variable will used as
+If an element is not named, then the value of that variable will be used as
 the name and the value will be the value of \code{Sys.getenv()} for that
 variable.  Non-existing environment variables will be dropped.
 These variables are set using \code{Sys.setenv()}.}
