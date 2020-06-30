@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.17.0-9000 [2020-06-01]
+Version: 1.17.0-9000 [2020-06-30]
 
 SIGNIFICANT CHANGES:
 
@@ -33,7 +33,11 @@ BUG FIXES:
 
  * makeClusterPSOCK(..., rscript) will not try to locate rscript[1] if
    argument 'homogeneous' is FALSE (or inferred to be FALSE).
- 
+
+ * makeClusterPSOCK(..., rscript_envs) would result in a syntax when starting
+   the workers due to non-ASCII quotation marks if option 'useFancyQuotes' was
+   not set to FALSE.
+
  * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable
    method for 'tweak' applied to an object of class "list"' if a non-function
    object named 'list' was on the search path.

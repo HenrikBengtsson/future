@@ -639,7 +639,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rscript_envs <- rscript_envs[nzchar(names)]
       names <- names(rscript_envs)
     }
-    code <- paste0(names, "=", dQuote(rscript_envs))
+    code <- paste0(names, "=", dQuote(rscript_envs, q = FALSE))
     code <- paste(code, collapse = ", ")
     code <- paste0("Sys.setenv(", code, ")")
     tryCatch({
