@@ -374,8 +374,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' closed automatically.  This will eventually result in an error in code
 #' trying to access the connection.
 #'
-#' @section Troubleshooting:
-#' _Failing to set up local workers:_
+#' @section Failing to set up local workers:
 #' When setting up a cluster of localhost workers, that is, workers running
 #' on the same machine as the master \R process, occasionally a connection
 #' to a worker ("cluster node") may fail to be set up.
@@ -384,7 +383,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The most common reason for such localhost failures is due to port
 #' clashes.  Retrying will often resolve the problem.
 #'
-#' _Failing to set up remote workers:_
+#' @section Failing to set up remote workers:
 #' A cluster of remote workers runs \R processes on external machines. These
 #' external \R processes are launched over, typically, SSH to the remote
 #' machine.  For this to work, each of the remote machines needs to have
@@ -414,6 +413,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' }
 #' The latter will assert that you have proper startup configuration also for
 #' _non-interactive_ shell sessions on the remote machine.
+#'
+#' Another reason for failing to setup remote workers could be that they are
+#' running an \R version that is not compatible with the version that your main
+#' \R session is running.  For instance, if we run R (>= 3.6.0) locally and the
+#' workers run R (< 3.5.0), we will get:
+#' `Error in unserialize(node$con) : error reading from connection`.
+#' This is because R (>= 3.6.0) uses serialization format version 3 whereas
+#' R (< 3.5.0) only supports version 2.  We can see the version of the \R
+#' workers by adding `rscript_args = c("-e", shQuote("getRversion()"))` when
+#' calling `makeClusterPSOCK()`.
 #'
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
