@@ -41,9 +41,9 @@ BUG FIXES:
  * makeClusterPSOCK(..., rscript) will not try to locate rscript[1] if
    argument 'homogeneous' is FALSE (or inferred to be FALSE).
 
- * makeClusterPSOCK(..., rscript_envs) would result in a syntax when starting
-   the workers due to non-ASCII quotation marks if option 'useFancyQuotes' was
-   not set to FALSE.
+ * makeClusterPSOCK(..., rscript_envs) would result in a syntax error when
+   starting the workers due to non-ASCII quotation marks if option
+   'useFancyQuotes' was not set to FALSE.
 
  * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable
    method for 'tweak' applied to an object of class "list"' if a non-function
@@ -59,6 +59,9 @@ BUG FIXES:
 DEPRECATED AND DEFUNCT:
 
  * Support for 'persistent = TRUE' with multisession futures is deprecated.
+   If still needed, a temporary workaround is to use cluster futures. However,
+   it is likely that support for 'persistent' will eventually be deprecated
+   for all future backends.
  
  * Options 'future.globals.method', 'future.globals.onMissing', and
    'future.globals.resolve' are deprecated and produce warnings if set. They
