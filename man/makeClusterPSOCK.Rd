@@ -164,8 +164,9 @@ launch the worker from the terminal is outputted.  This is useful for
 troubleshooting.}
 }
 \value{
-An object of class \code{c("SOCKcluster", "cluster")} consisting
-of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
+An object of class \code{c("RichSOCKcluster", "SOCKcluster", "cluster")}
+consisting of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers (that also
+inherit from \code{RichSOCKnode}).
 
 \code{makeNodePSOCK()} returns a \code{"SOCKnode"} or
 \code{"SOCK0node"} object representing an established connection to a worker.

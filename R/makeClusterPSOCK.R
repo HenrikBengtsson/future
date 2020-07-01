@@ -26,8 +26,9 @@
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
-#' @return An object of class `c("SOCKcluster", "cluster")` consisting
-#' of a list of `"SOCKnode"` or `"SOCK0node"` workers.
+#' @return An object of class `c("RichSOCKcluster", "SOCKcluster", "cluster")`
+#' consisting of a list of `"SOCKnode"` or `"SOCK0node"` workers (that also
+#' inherit from `RichSOCKnode`).
 #'
 #' @example incl/makeClusterPSOCK.R
 #'
@@ -84,7 +85,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 
   n <- length(workers)
   cl <- vector("list", length = n)
-  class(cl) <- c("FutureSOCKcluster", "SOCKcluster", "cluster")
+  class(cl) <- c("RichSOCKcluster", "SOCKcluster", "cluster")
 
   
   ## If an error occurred, make sure to clean up before exiting, i.e.
@@ -937,7 +938,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   structure(list(con = con, host = worker, rank = rank, rshlogfile = rshlogfile),
-            class = c("FutureSOCKnode", if (useXDR) "SOCKnode" else "SOCK0node"))
+            class = c("RichSOCKnode", if (useXDR) "SOCKnode" else "SOCK0node"))
 } ## makeNodePSOCK()
 
 
@@ -1330,7 +1331,7 @@ randomParallelPorts <- function(default = 11000:11999) {
 
 
 #' @export
-summary.FutureSOCKnode <- function(object, ...) {
+summary.RichSOCKnode <- function(object, ...) {
   res <- list(
     host      = NA_character_,
     r_version = NA_character_,
@@ -1351,9 +1352,9 @@ summary.FutureSOCKnode <- function(object, ...) {
 }
 
 #' @export
-summary.FutureSOCKcluster <- function(object, ...) {
+summary.RichSOCKcluster <- function(object, ...) {
   res <- lapply(object, FUN = function(node) {
-    if (is.null(node)) return(summary.FutureSOCKnode(node))
+    if (is.null(node)) return(summary.RichSOCKnode(node))
     summary(node)
   })
   res <- do.call(rbind, res)
@@ -1362,7 +1363,7 @@ summary.FutureSOCKcluster <- function(object, ...) {
 }
 
 #' @export
-print.FutureSOCKcluster <- function (x, ...) {
+print.RichSOCKcluster <- function (x, ...) {
   info <- summary(x)
   txt <- sprintf("host %s", sQuote(info[["host"]]))
   specs <- sprintf("(%s, platform %s)", info[["r_version"]], info[["platform"]])
