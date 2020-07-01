@@ -21,7 +21,7 @@
 #' `i = seq_along(workers)`.
 #'
 #' @param autoStop If TRUE, the cluster will be automatically stopped
-#  (using \code{\link[parallel:stopCluster]{stopCluster}()}) when it is
+#  (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
 #  garbage collected, unless already stopped.
 #'
 #' @param verbose If TRUE, informative messages are outputted.
@@ -191,8 +191,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param useXDR If TRUE, the communication between master and workers, which is
 #' binary, will use big-endian (XDR).
 #' 
-#' @param outfile Where to direct the \link[base:stdout]{stdout} and
-#' \link[base:stderr]{stderr} connection output from the workers.
+#' @param outfile Where to direct the \link[base:showConnections]{stdout} and
+#' \link[base:showConnections]{stderr} connection output from the workers.
 #' If NULL, then no redirection of output is done, which means that the
 #' output is relayed in the terminal on the local computer.  On Windows, the
 #' output is only relayed when running \R from a terminal but not from a GUI.

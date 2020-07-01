@@ -5,10 +5,10 @@
 #'
 #' @param future A resolved \link{Future}.
 #'
-#' @param include A character string of \link[base:condition]{condition}
+#' @param include A character string of \link[base:conditions]{condition}
 #' classes to signal.
 #'
-#' @param exclude A character string of \link[base:condition]{condition}
+#' @param exclude A character string of \link[base:conditions]{condition}
 #' classes _not_ to signal.
 #'
 #' @param resignal If TRUE, then already signaled conditions are signaled
@@ -21,7 +21,7 @@
 #'
 #' @seealso
 #' Conditions are signaled by
-#' \code{\link[base:signalCondition]{signalCondition}()}.
+#' \code{\link[base:conditions]{signalCondition}()}.
 signalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
   ## Future is not yet launched
   ## FIXME: civis::CivisFuture uses 'succeeded' /HB 2019-06-18

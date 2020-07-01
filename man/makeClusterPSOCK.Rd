@@ -125,8 +125,8 @@ existing ones, use \code{rscript_libs = c("new_folder", "*")}.}
 \item{useXDR}{If TRUE, the communication between master and workers, which is
 binary, will use big-endian (XDR).}
 
-\item{outfile}{Where to direct the \link[base:stdout]{stdout} and
-\link[base:stderr]{stderr} connection output from the workers.
+\item{outfile}{Where to direct the \link[base:showConnections]{stdout} and
+\link[base:showConnections]{stderr} connection output from the workers.
 If NULL, then no redirection of output is done, which means that the
 output is relayed in the terminal on the local computer.  On Windows, the
 output is only relayed when running \R from a terminal but not from a GUI.}

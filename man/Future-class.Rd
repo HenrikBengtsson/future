@@ -106,6 +106,6 @@ It returns a Future that evaluates an \R expression in the future.
 An alternative approach is to use the \code{\link{\%<-\%}} infix
 assignment operator, which creates a future from the
 right-hand-side (RHS) \R expression and assigns its future value
-to a variable as a \emph{\link[base]{promise}}.
+to a variable as a \emph{\link[base:delayedAssign]{promise}}.
 }
 \keyword{internal}
