@@ -17,7 +17,7 @@
 #' @param \dots Optional arguments passed to
 #' \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.
 #' 
-#' @return An object of class `"FutureMPIcluster"` consisting
+#' @return An object of class `c("RichMPIcluster", "MPIcluster", "cluster")` consisting
 #' of a list of `"MPInode"` workers.
 #'
 #' @references
@@ -66,9 +66,9 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
   ## which may stall R.  Because of this, we drop 'spawnedMPIcluster' from
   ## the class attribute to avoid calling that method.  Similarly, calling
   ## Rmpi::mpi.finalize() and Rmpi::mpi.exit() may also hang R.
-  ## See also below stopCluster.FutureMPIcluster() implementation.
+  ## See also below stopCluster.RichMPIcluster() implementation.
   ## REFERENCE: https://stackoverflow.com/a/44317647/1072091
-  class(cl) <- c("FutureMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
+  class(cl) <- c("RichMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
 
   if (autoStop) cl <- autoStopCluster(cl)
   
@@ -78,7 +78,7 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
 
 #' @export
 #' @keywords internal
-stopCluster.FutureMPIcluster <- function(cl) {
+stopCluster.RichMPIcluster <- function(cl) {
   NextMethod()
 
   if (!requireNamespace(pkg <- "Rmpi", quietly = TRUE)) return(invisible(cl))

@@ -22,7 +22,7 @@ makeClusterMPI(
 \item{verbose}{If TRUE, informative messages are outputted.}
 }
 \value{
-An object of class \code{"FutureMPIcluster"} consisting
+An object of class \code{c("RichMPIcluster", "MPIcluster", "cluster")} consisting
 of a list of \code{"MPInode"} workers.
 }
 \description{
