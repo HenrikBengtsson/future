@@ -30,7 +30,7 @@ NEW FEATURES:
    launched by makeClusterPSOCK() by specify them as as "<name>=<value>"
    as part of the 'rscript' vector argument, e.g. rscript=c("ABC=123",
    "DEF='hello world'", "Rscript"). This works because elements in 'rscript'
-   that match regular expression '^[[:alpha:]][[:alnum:]]*=.*' are no longer
+   that match regular expression '^[[:alpha:]_][[:alnum:]_]*=.*' are no longer
    shell quoted.
 
  * makeClusterPSOCK() now returns a cluster that in addition to inheriting
