@@ -564,7 +564,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   verbose_prefix <- "[local output] "
 
   ## Shell quote the Rscript executable
-  idxs <- grep("^[[:alpha:]][[:alnum:]]*=.*", rscript, invert = TRUE)
+  idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
   rscript[idxs] <- shQuote(rscript[idxs])
 
   ## Launching a process on the local machine?
