@@ -36,6 +36,9 @@ NEW FEATURES:
  * makeClusterPSOCK() now returns a cluster that in addition to inheriting
    from' SOCKcluster' it will also inherit from 'RichSOCKcluster'.
 
+ * Made makeClusterPSOCK() and makeNodePSOCK() agile to the name change from
+   parallel:::.slaveRSOCK() to parallel:::.workRSOCK() in R (>= 4.1.0).
+
 BUG FIXES:
 
  * makeClusterPSOCK(..., rscript) will not try to locate rscript[1] if

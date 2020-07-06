@@ -674,9 +674,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_args <- c(rscript_args, "-e", shQuote(code))
   }
   
-  ## .slaveRSOCK() command already specified?
-  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
-    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
+  ## .{slave,work}RSOCK() command already specified?
+  if (!any(grepl("parallel:::[.](slave|work)RSOCK[(][)]", rscript_args))) {
+    ## In R (>= 4.1., parallel:::.slaveRSOCK() was renamed .workRSOCK()
+    cmd <- "workRSOCK <- tryCatch(parallel:::.slaveRSOCK, error=function(e) parallel:::.workRSOCK); workRSOCK()"
+    rscript_args <- c(rscript_args, "-e", shQuote(cmd))
   }
   
   rscript <- paste(rscript, collapse = " ")

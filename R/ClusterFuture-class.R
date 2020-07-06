@@ -631,7 +631,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
               if (exists("sendData", mode = "function", envir = ns)) {
                 parallel_sendData <- get("sendData", mode = "function", envir = ns)
   
-                ## Find the 'master' argument of the worker's slaveLoop()
+                ## Find the 'master' argument of the worker's {slave,work}Loop()
                 envir <- sys.frame(frame)
                 master <- NULL
                 while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
