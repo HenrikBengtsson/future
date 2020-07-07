@@ -275,16 +275,27 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
     if (.Platform$OS.type != "windows" && getRversion() < "3.4.3") {
       timeout <- round(timeout, digits = 0L)
     }
-    res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+    maxCount <- 100L
+    count <- 0L
+    while (count < maxCount) {
+      ## Is there a message from the worker waiting?
+      res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+      if (!res) break
 
-    if (res) {
-      ## It could be that the message available from the worker is something else
-      ## than a FutureResult, e.g. a condition.  Consider the future resolved,
-      ## only if a FutureResult was sent.
+      ## Receive it
       msg <- receiveMessageFromWorker(x)
+
+      ## If the message contains a FutureResult, then the future is resolved
+      ## and we are done here
       res <- inherits(msg, "FutureResult")
       msg <- NULL
-    }
+      if (res) break
+
+      ## If not, we received a condition that has already been signaled
+      ## by receiveMessageFromWorker().  However, it could be that there is
+      ## another condition messages available, so lets check again
+      count <- count + 1L
+    } ## while()
   } else if (inherits(node, "MPInode")) {
     res <- resolveMPI(x)
   } else {
