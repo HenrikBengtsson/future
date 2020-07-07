@@ -4,7 +4,7 @@
 #' for parallel processing.  This function utilizes 
 #' `makeCluster(..., type = "MPI")` of the \pkg{parallel} package and
 #' tweaks the cluster in an attempt to avoid
-#' \code{\link[parallel:stopCluster]{stopCluster()}} from hanging (1).
+#' \code{\link[parallel:makeCluster]{stopCluster()}} from hanging (1).
 #' _WARNING: This function is very much in a beta version and should
 #' only be used if `parallel::makeCluster(..., type = "MPI")` fails._
 #'
@@ -24,8 +24,7 @@
 #' 1. R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28.
 #'
 #' @seealso
-#' [makeClusterPSOCK()] and
-#' \code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
+#' [makeClusterPSOCK()] and [parallel::makeCluster()].
 #'
 #' @importFrom parallel makeCluster
 #' @export
