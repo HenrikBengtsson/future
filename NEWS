@@ -97,7 +97,7 @@ MISCELLANEOUS:
 
 BUG FIXES:
 
- * Any globals named 'version' and 'has_future' would be overritten with
+ * Any globals named 'version' and 'has_future' would be overwritten with
    "garbage" values internally.
 
  * Disabling of multi-threading when using 'multicore' futures did not work
@@ -147,7 +147,7 @@ BETA FEATURES:
    'future.fork.multithreading.enable' or environment variable
    'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE'. This requires that
    'RhpcBLASctl' package is installed. Parallelization via multi-threaded
-   processing (done in native code by some packages and externaly library)
+   processing (done in native code by some packages and externally library)
    while at the same time using forked (aka "multicore") parallel processing
    is unstable in some cases.  Note that this is not only true when using
    plan(multicore) but also when using, for instance, parallel::mclapply().
@@ -207,7 +207,7 @@ DOCUMENTATION:
 BUG FIXES:
 
  * values() would resignal immediateCondition:s despite those should only be
-   signalled at most once per future.
+   signaled at most once per future.
 
  * makeClusterPSOCK() could produce warnings like "cannot open file
    '/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid': No such file",
@@ -401,7 +401,7 @@ BUG FIXES:
 
  * With options(OutDec = ","), the default value of several argument would
    resolve to NA_real_ rather than a numeric value resulting in errors such
-   as "is.finite(alpha)’ is not TRUE".
+   as "is.finite(alpha) is not TRUE".
 
 DEPRECATED AND DEFUNCT:
 
@@ -417,7 +417,7 @@ Version: 1.11.1.1 [2019-01-25]
 BUG FIXES:
 
  * When makeClusterPSOCK() fails to connect to a worker, it produces an error
-   with detailed information on what could have happend.  In rare cases,
+   with detailed information on what could have happened.  In rare cases,
    another error could be produced when generating the information on what
    the workers PID is.
  
@@ -439,7 +439,7 @@ SOFTWARE QUALITY:
 
  * TESTS: When the 'future' package is loaded, it checks whether 'R CMD check'
    is running or not.  If it is, then a few future-specific environment
-   variables are adjusted such that the tests play nices with the testing
+   variables are adjusted such that the tests play nice with the testing
    environment.  For instance, it sets the socket connection timeout for
    PSOCK cluster workers to 120 seconds (instead of the default 30 days!).
    This will lower the risk for more and more zombie worker processes
@@ -472,7 +472,7 @@ NEW FEATURES:
    functions that do not take arguments, e.g. futureCall(function() 42).
 
  * plan() gained argument '.skip = FALSE'.  When TRUE, setting the same future
-   trategy as already set will be skipped, e.g. calling plan(multisession)
+   strategy as already set will be skipped, e.g. calling plan(multisession)
    consecutively will have the same effect as calling it just once.
 
  * makeClusterPSOCK() produces more informative error messages whenever the
@@ -617,7 +617,7 @@ NEW FEATURES:
  * Now plan() gives a more informative error message in case it fails, e.g.
    when the internal future validation fails and why.
 
- * Added UnexpectedFutureResultError to be used by backends for signalling
+ * Added UnexpectedFutureResultError to be used by backends for signaling
    in a standard way that an unexpected result was retrieved from a worker.
 
 BUG FIXES:
@@ -625,7 +625,7 @@ BUG FIXES:
  * When the communication between an asynchronous future and a background R
    process failed, further querying of the future state/results could end up
    in an infinite waiting loop.  Now the failed communication error is
-   recorded and re-signalled if any further querying attempts.
+   recorded and re-signaled if any further querying attempts.
  
  * Internal, seldom used myExternalIP() failed to recognize IPv4 answers
    from some of the lookup servers. This could in turn produce another error.
