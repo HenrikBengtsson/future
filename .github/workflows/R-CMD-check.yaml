@@ -66,7 +66,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          install.packages("future")  ## needed by parallel workers
+          install.packages(".", repos=NULL)  ## needed by parallel workers
         shell: Rscript {0}
 
       - name: Session info
