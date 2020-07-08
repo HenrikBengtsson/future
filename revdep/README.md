@@ -38,7 +38,7 @@
 |[bcmaps](problems.md#bcmaps)                   |0.18.1    |      |        |1    |
 |biotmle                                        |1.12.0    |      |        |     |
 |[blavaan](problems.md#blavaan)                 |0.3-9     |      |        |2    |
-|[blockCV](problems.md#blockcv)                 |2.1.1     |1     |        |1    |
+|[blockCV](problems.md#blockcv)                 |2.1.1     |      |        |1    |
 |brms                                           |2.13.0    |      |        |     |
 |ceRNAnetsim                                    |1.0.0     |      |        |     |
 |civis                                          |3.0.0     |      |        |     |

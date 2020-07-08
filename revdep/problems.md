@@ -201,32 +201,6 @@ Run `revdep_details(,"blockCV")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-      1     107     101     31     15
-      2     106      77     32     39
-      3     113     108     25      8
-      4     120     108     18      8
-      5     106      70     32     46
-      The best folds was in iteration 1:
-        train test
-      1   211   43
-      2   207   47
-      3   173   81
-      4   209   45
-      5   216   38
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 179 | SKIPPED: 8 | WARNINGS: 0 | FAILED: 4 ]
-      1. Error: helper function with no species data (@testHelper_function.R#26) 
-      2. Error: test spatialAutoRange function with multi-layer raster in parallel (@testSpatialAutoRange.R#19) 
-      3. Error: test spatialAutoRange function with multi-layer raster without parallel processing (@testSpatialAutoRange.R#55) 
-      4. Error: test spatialAutoRange for low-resolution rasters (@testSpatialAutoRange.R#71) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘biomod2’
