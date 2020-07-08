@@ -62,7 +62,7 @@
 |FAMoS                                          |0.3.0     |      |        |     |
 |fiery                                          |1.1.2     |      |        |     |
 |fipe                                           |0.0.1     |      |        |     |
-|[foieGras](problems.md#foiegras)               |0.6-7     |1     |        |1    |
+|[foieGras](problems.md#foiegras)               |0.6-7     |      |        |1    |
 |[forecastML](problems.md#forecastml)           |0.9.0     |      |        |1    |
 |funGp                                          |0.1.0     |      |        |     |
 |furrr                                          |0.1.0     |      |        |     |

@@ -441,32 +441,6 @@ Run `revdep_details(,"foieGras")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-      > test_check("foieGras")
-      
-      
-      fitting jmpm...
-      
-      fitting mpm...
-      
-      ── 1. Error: (unknown) (@test-fmap.R#6)  ───────────────────────────────────────
-      package rgeos required for finding out which hole belongs to which exterior ring
-      Backtrace:
-       1. foieGras::fmap(fssm, what = "fitted")
-       6. sf:::st_as_sf.Spatial(rworldmap::countriesLow)
-       8. sf:::st_as_sfc.SpatialPolygons(sp::geometry(x), ...)
-      
-      rm: cannot remove ‘Rplots.pdf’: No such file or directory
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 33 | SKIPPED: 13 | WARNINGS: 0 | FAILED: 1 ]
-      1. Error: (unknown) (@test-fmap.R#6) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 12.9Mb
@@ -589,26 +563,26 @@ Run `revdep_details(,"gstat")` for more info
 *   checking tests ...
     ```
     ...
-      
-      > meuse.riv <- SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)),"meuse.riv")))
-      
-      > proj4string(meuse.riv) <- crs
-      
-      > data("meuse.area")
-      
-      > meuse.area = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "area")))
-      
-      > proj4string(meuse.area) <- crs
-      > 
-      > v = variogram(log(zinc)~1, meuse_sf)
-      > (v.fit = fit.variogram(v, vgm(1, "Sph", 900, 1)))
-        model      psill    range
-      1   Nug 0.05066243   0.0000
-      2   Sph 0.59060780 897.0209
-      > k_sf = krige(log(zinc)~1, meuse_sf[-(1:5),], meuse_sf[1:5,], v.fit)
-      Error in .local(formula, locations, ...) : 
-        stars required: install that first
-      Calls: krige -> krige -> .local
+      > k_sp_grd$cls = cut(k_sp_grd$var1.pred, c(0, 5, 6, 7, 8, 9))
+      > st_as_stars(k_sp_grd)
+      stars object with 2 dimensions and 3 attributes
+      attribute(s):
+         var1.pred       var1.var         cls      
+       Min.   :4.777   Min.   :0.085   (0,5]: 316  
+       1st Qu.:5.238   1st Qu.:0.137   (5,6]:1778  
+       Median :5.573   Median :0.162   (6,7]: 962  
+       Mean   :5.707   Mean   :0.185   (7,8]:  47  
+       3rd Qu.:6.172   3rd Qu.:0.212   (8,9]:   0  
+       Max.   :7.440   Max.   :0.500   NA's :5009  
+       NA's   :5009    NA's   :5009                
+      dimension(s):
+        from  to offset delta                       refsys point values    
+      x    1  78 178440    40 +proj=sterea +lat_0=52.15...    NA   NULL [x]
+      y    1 104 333760   -40 +proj=sterea +lat_0=52.15...    NA   NULL [y]
+      > st_as_stars(raster::stack(k_sp_grd)) # check
+      Error in st_as_stars.Raster(raster::stack(k_sp_grd)) : 
+        no slot of name "file" for this object of class "RasterStack"
+      Calls: st_as_stars -> st_as_stars.Raster
       Execution halted
     ```
 
