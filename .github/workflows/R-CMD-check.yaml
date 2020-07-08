@@ -14,6 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
+          - {os: windows-latest, r: 'devel'}
+          - {os: windows-latest, r: 'release'}
           - {os: macOS-latest,   r: 'devel'}
           - {os: macOS-latest,   r: 'release'}
           - {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
@@ -74,9 +76,18 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
+      - name: Check (non-Windows)
+        if: runner.os != 'Windows'
         env:
           _R_CHECK_CRAN_INCOMING_: false
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Check (Windows)
+        if: runner.os == 'Windows'
+        env:
+          _R_CHECK_CRAN_INCOMING_: false
+          R_FUTURE_AVAILABLECORES_SYSTEM: 1
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
