@@ -23,13 +23,6 @@
 
 # Revdeps
 
-## Failed to check (2)
-
-|package                                  |version |error |warning |note |
-|:----------------------------------------|:-------|:-----|:-------|:----|
-|[reproducible](failures.md#reproducible) |1.1.1   |1     |        |     |
-|[stars](failures.md#stars)               |0.4-2   |1     |        |1    |
-
 ## All (126)
 
 |package                                        |version   |error |warning |note |
@@ -103,7 +96,7 @@
 |ldaPrototype                                   |0.1.1     |      |        |     |
 |ldsr                                           |0.0.2     |      |        |     |
 |[lgr](problems.md#lgr)                         |0.3.4     |      |        |1    |
-|[lidR](problems.md#lidr)                       |3.0.2     |2     |        |1    |
+|[lidR](problems.md#lidr)                       |3.0.2     |      |        |1    |
 |lightr                                         |1.3       |      |        |     |
 |merTools                                       |0.5.2     |      |        |     |
 |metagam                                        |0.1.2     |      |        |     |
@@ -131,7 +124,7 @@
 |rainette                                       |0.1.1     |      |        |     |
 |rangeMapper                                    |0.3-7     |      |        |     |
 |[regmedint](problems.md#regmedint)             |0.1.0     |      |        |1    |
-|[reproducible](failures.md#reproducible)       |1.1.1     |1     |        |     |
+|[reproducible](problems.md#reproducible)       |1.1.1     |1     |        |1    |
 |[robotstxt](problems.md#robotstxt)             |0.7.7     |      |        |1    |
 |RTransferEntropy                               |0.2.12    |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)         |0.1.0     |      |        |1    |
@@ -150,7 +143,7 @@
 |[spacey](problems.md#spacey)                   |0.1.1     |      |        |1    |
 |[spatialwarnings](problems.md#spatialwarnings) |2.0.0     |      |        |1    |
 |sperrorest                                     |3.0.1     |      |        |     |
-|[stars](failures.md#stars)                     |0.4-2     |1     |        |1    |
+|[stars](problems.md#stars)                     |0.4-2     |      |        |2    |
 |[startR](problems.md#startr)                   |0.0.1     |      |        |1    |
 |steps                                          |1.1.0     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)      |1.1.1     |      |        |2    |

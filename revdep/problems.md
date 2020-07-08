@@ -774,61 +774,9 @@ Run `revdep_details(,"lidR")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    + 
-    +   # Find the tree tops using a user-developed method (here simply a LMF).
-    +   ttops <- tree_detection(las, lmf(ws))
-    + 
-    +   # ttops is a SpatialPointsDataFrame that contains the tree tops in our region of interest
-    +   # plus the trees tops in the buffered area. We need to remove the buffer otherwise we will get
-    +   # some trees more than once.
-    +   bbox  <- raster::extent(cluster)
-    +   ttops <- raster::crop(ttops, bbox)
-    + 
-    +   return(ttops)
-    + }
-    > 
-    > # 2. Build a project (here, a single file catalog for the purposes of this dummmy example).
-    > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
-    > project <- readLAScatalog(LASfile)
-    Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-      unable to load shared object '/wynton/home/cbi/hb/repositories/future/revdep/library/lidR/rgeos/libs/rgeos.so':
-      /wynton/home/cbi/hb/repositories/future/revdep/library/lidR/rgeos/libs/rgeos.so: undefined symbol: GEOSMakeValid_r
-    Calls: readLAScatalog ... getNamespace -> loadNamespace -> library.dynam -> dyn.load
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-        6. base::asNamespace(ns)
-        7. base::getNamespace(ns)
-        8. base::loadNamespace(name)
-        9. base::library.dynam(lib, package, package.lib)
-       10. base::dyn.load(file, DLLpath = DLLpath, ...)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 530 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 45 ]
-      1. Error: (unknown) (@test-LAScatalog.R#4) 
-      2. Error: (unknown) (@test-catalog_apply-automerge.R#3) 
-      3. Error: (unknown) (@test-catalog_apply-discontinuous.R#3) 
-      4. Error: (unknown) (@test-catalog_apply-generic.R#3) 
-      5. Error: (unknown) (@test-catalog_apply-ondisk.R#3) 
-      6. Error: (unknown) (@test-catalog_apply_autoread.R#3) 
-      7. Error: (unknown) (@test-catalog_errors.R#4) 
-      8. Error: catalog_intersect extract the tiles lie in a SpatialPolygons (@test-catalog_intersect.R#72) 
-      9. Error: catalog_intersect extracts the tiles that lie in the bbox of a Raster (@test-catalog_intersect.R#79) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
         libs   4.1Mb
     ```
@@ -1318,50 +1266,38 @@ Run `revdep_details(,"reproducible")` for more info
 
 ## In both
 
-*   checking whether package ‘reproducible’ can be installed ... ERROR
+*   checking tests ...
     ```
-    Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
+    ...
+        objectNames hashElements             hash objSize
+      1        file         file fc0a3b61a65f0bf1     168
+      2        .FUN         .FUN 7a8f2865ef4bc06d    1256
+        functionName        component  elapsedTime units
+      1      readRDS          Hashing 0.0016028881  secs
+      2      readRDS  Running readRDS 0.0007123947  secs
+      3      readRDS   Saving to repo 0.8564739227  secs
+      4      readRDS Whole Cache call 0.8824622631  secs
+        objectNames hashElements             hash objSize
+      1        file         file fc0a3b61a65f0bf1   24122
+      2        .FUN         .FUN 7a8f2865ef4bc06d    1256
+        functionName         component elapsedTime units
+      1      readRDS           Hashing 0.002789259  secs
+      2      readRDS Loading from repo 0.001166344  secs
+      3      readRDS  Whole Cache call 0.096973658  secs
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 380 | SKIPPED: 71 | WARNINGS: 3 | FAILED: 1 ]
+      1. Error: git-related functions work (@test-git.R#15) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
-## Installation
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘usethis’
+      All declared Imports should be used.
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/wynton/home/cbi/hb/repositories/future/revdep/library/reproducible/rgeos/libs/rgeos.so':
-  /wynton/home/cbi/hb/repositories/future/revdep/library/reproducible/rgeos/libs/rgeos.so: undefined symbol: GEOSMakeValid_r
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/reproducible’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/wynton/home/cbi/hb/repositories/future/revdep/library/reproducible/rgeos/libs/rgeos.so':
-  /wynton/home/cbi/hb/repositories/future/revdep/library/reproducible/rgeos/libs/rgeos.so: undefined symbol: GEOSMakeValid_r
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/reproducible’
-
-```
 # robotstxt
 
 <details>
@@ -1667,58 +1603,17 @@ Run `revdep_details(,"stars")` for more info
 
 ## In both
 
-*   checking whether package ‘stars’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/00install.out’ for details.
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
       'exactextractr', 'starsdata'
     ```
 
-## Installation
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘exactextractr’
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘stars’ ...
-** package ‘stars’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** demo
-** inst
-** byte-compile and prepare package for lazy loading
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/wynton/home/cbi/hb/repositories/future/revdep/library/stars/lwgeom/libs/lwgeom.so':
-  /wynton/home/cbi/hb/repositories/future/revdep/library/stars/lwgeom/libs/lwgeom.so: undefined symbol: GEOSClipByRect
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘stars’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/new/stars.Rcheck/stars’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘stars’ ...
-** package ‘stars’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** demo
-** inst
-** byte-compile and prepare package for lazy loading
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/wynton/home/cbi/hb/repositories/future/revdep/library/stars/lwgeom/libs/lwgeom.so':
-  /wynton/home/cbi/hb/repositories/future/revdep/library/stars/lwgeom/libs/lwgeom.so: undefined symbol: GEOSClipByRect
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘stars’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stars/old/stars.Rcheck/stars’
-
-```
 # startR
 
 <details>
