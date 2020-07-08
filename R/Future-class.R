@@ -525,7 +525,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #' [multicore] and [multisession] ones.
 #' The default will also set `options(mc.cores = 1L)` (*) so that
 #' no parallel \R processes are spawned off by functions such as
-#' \code{\link[parallel:mclapply]{mclapply}()} and friends.
+#' \code{parallel::mclapply()} and friends.
 #'
 #' Currently it is not possible to specify what type of nested
 #' futures to be used, meaning the above default will always be

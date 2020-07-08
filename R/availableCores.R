@@ -43,7 +43,8 @@
 #'    The \option{mc.cores} option defaults to environment variable
 #'    \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
 #'    package is loaded).  The \option{mc.cores} option is used by for
-#'    instance \code{\link[parallel]{mclapply}()}.
+#'    instance \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel}
+#'    package.
 #'  \item `"PBS"` -
 #'    Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
 #'    Depending on PBS system configuration, these _resource_
