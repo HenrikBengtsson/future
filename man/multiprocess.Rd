@@ -78,7 +78,13 @@ A \link{MultiprocessFuture} implemented as either a
 A multiprocess future is a future that uses \link{multicore} evaluation
 if supported, otherwise it uses \link{multisession} evaluation.
 Regardless, its \emph{value is computed and resolved in
-parallel in another process}.
+parallel in another process}.\cr
+\cr
+\emph{WARNING: Consider the 'multiprocess' future plan deprecated.
+Instead, explicitly specify 'multisession' or 'multicore'.  The former works
+everywhere and is the recommended one between the two. \emph{Forked processing},
+which 'multicore' uses, is unstable in various environment and setups.
+The 'multiprocess' alias is therefore being phased out.}
 }
 \examples{
 \donttest{
@@ -106,9 +112,12 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
+## Explicitly close multisession workers, if they were used
+plan(sequential)
 }
 }
 \seealso{
 Internally \code{\link[=multicore]{multicore()}} and \code{\link[=multisession]{multisession()}}
 are used.
 }
+\keyword{internal}

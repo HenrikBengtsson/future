@@ -5,7 +5,7 @@
 #' on the current machine, \R sessions on external machines (local or remote),
 #' or a mix of such. For external workers, the default is to use SSH to connect
 #' to those external machines.  This function works similarly to
-#' \code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}()} of the
+#' \code{\link[parallel:makeCluster]{makePSOCKcluster}()} of the
 #' \pkg{parallel} package, but provides additional and more flexibility options
 #' for controlling the setup of the system calls that launch the background
 #' \R workers, and how to connect to external machines.
@@ -21,13 +21,14 @@
 #' `i = seq_along(workers)`.
 #'
 #' @param autoStop If TRUE, the cluster will be automatically stopped
-#  (using \code{\link[parallel:stopCluster]{stopCluster}()}) when it is
+#  (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
 #  garbage collected, unless already stopped.
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
-#' @return An object of class `c("SOCKcluster", "cluster")` consisting
-#' of a list of `"SOCKnode"` or `"SOCK0node"` workers.
+#' @return An object of class `c("RichSOCKcluster", "SOCKcluster", "cluster")`
+#' consisting of a list of `"SOCKnode"` or `"SOCK0node"` workers (that also
+#' inherit from `RichSOCKnode`).
 #'
 #' @example incl/makeClusterPSOCK.R
 #'
@@ -84,7 +85,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 
   n <- length(workers)
   cl <- vector("list", length = n)
-  class(cl) <- c("SOCKcluster", "cluster")
+  class(cl) <- c("RichSOCKcluster", "SOCKcluster", "cluster")
 
   
   ## If an error occurred, make sure to clean up before exiting, i.e.
@@ -175,7 +176,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param rscript_envs A named character vector environment variables to
 #' set on worker at startup, e.g.
 #' `rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")`.
-#' If an element is not named, then the value of that variable will used as
+#' If an element is not named, then the value of that variable will be used as
 #' the name and the value will be the value of `Sys.getenv()` for that
 #' variable.  Non-existing environment variables will be dropped.
 #' These variables are set using `Sys.setenv()`.
@@ -191,8 +192,8 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param useXDR If TRUE, the communication between master and workers, which is
 #' binary, will use big-endian (XDR).
 #' 
-#' @param outfile Where to direct the \link[base:stdout]{stdout} and
-#' \link[base:stderr]{stderr} connection output from the workers.
+#' @param outfile Where to direct the \link[base:showConnections]{stdout} and
+#' \link[base:showConnections]{stderr} connection output from the workers.
 #' If NULL, then no redirection of output is done, which means that the
 #' output is relayed in the terminal on the local computer.  On Windows, the
 #' output is only relayed when running \R from a terminal but not from a GUI.
@@ -374,8 +375,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' closed automatically.  This will eventually result in an error in code
 #' trying to access the connection.
 #'
-#' @section Troubleshooting:
-#' _Failing to set up local workers:_
+#' @section Failing to set up local workers:
 #' When setting up a cluster of localhost workers, that is, workers running
 #' on the same machine as the master \R process, occasionally a connection
 #' to a worker ("cluster node") may fail to be set up.
@@ -384,7 +384,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' The most common reason for such localhost failures is due to port
 #' clashes.  Retrying will often resolve the problem.
 #'
-#' _Failing to set up remote workers:_
+#' @section Failing to set up remote workers:
 #' A cluster of remote workers runs \R processes on external machines. These
 #' external \R processes are launched over, typically, SSH to the remote
 #' machine.  For this to work, each of the remote machines needs to have
@@ -414,6 +414,16 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' }
 #' The latter will assert that you have proper startup configuration also for
 #' _non-interactive_ shell sessions on the remote machine.
+#'
+#' Another reason for failing to setup remote workers could be that they are
+#' running an \R version that is not compatible with the version that your main
+#' \R session is running.  For instance, if we run R (>= 3.6.0) locally and the
+#' workers run R (< 3.5.0), we will get:
+#' `Error in unserialize(node$con) : error reading from connection`.
+#' This is because R (>= 3.6.0) uses serialization format version 3 whereas
+#' R (< 3.5.0) only supports version 2.  We can see the version of the \R
+#' workers by adding `rscript_args = c("-e", shQuote("getRversion()"))` when
+#' calling `makeClusterPSOCK()`.
 #'
 #' @rdname makeClusterPSOCK
 #' @importFrom tools pskill
@@ -501,9 +511,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   } else {
     rscript <- as.character(rscript)
     stop_if_not(length(rscript) >= 1L)
-    
-    bin <- Sys.which(rscript[1])
-    if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+    bin <- rscript[1]
+    if (homogeneous) {
+      bin <- Sys.which(bin)
+      if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+    }
     rscript[1] <- bin
   }
 
@@ -552,7 +564,8 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   verbose_prefix <- "[local output] "
 
   ## Shell quote the Rscript executable
-  rscript <- shQuote(rscript)
+  idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
+  rscript[idxs] <- shQuote(rscript[idxs])
 
   ## Launching a process on the local machine?
   pidfile <- NULL
@@ -637,7 +650,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
       rscript_envs <- rscript_envs[nzchar(names)]
       names <- names(rscript_envs)
     }
-    code <- paste0(names, "=", dQuote(rscript_envs))
+    code <- sprintf('%s="%s"', names, rscript_envs)
     code <- paste(code, collapse = ", ")
     code <- paste0("Sys.setenv(", code, ")")
     tryCatch({
@@ -661,9 +674,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript_args <- c(rscript_args, "-e", shQuote(code))
   }
   
-  ## .slaveRSOCK() command already specified?
-  if (!any(grepl("parallel:::.slaveRSOCK()", rscript_args, fixed = TRUE))) {
-    rscript_args <- c(rscript_args, "-e", shQuote("parallel:::.slaveRSOCK()"))
+  ## .{slave,work}RSOCK() command already specified?
+  if (!any(grepl("parallel:::[.](slave|work)RSOCK[(][)]", rscript_args))) {
+    ## In R (>= 4.1., parallel:::.slaveRSOCK() was renamed .workRSOCK()
+    cmd <- "workRSOCK <- tryCatch(parallel:::.slaveRSOCK, error=function(e) parallel:::.workRSOCK); workRSOCK()"
+    rscript_args <- c(rscript_args, "-e", shQuote(cmd))
   }
   
   rscript <- paste(rscript, collapse = " ")
@@ -925,7 +940,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   }
 
   structure(list(con = con, host = worker, rank = rank, rshlogfile = rshlogfile),
-            class = if (useXDR) "SOCKnode" else "SOCK0node")
+            class = c("RichSOCKnode", if (useXDR) "SOCKnode" else "SOCK0node"))
 } ## makeNodePSOCK()
 
 
@@ -1186,7 +1201,7 @@ add_cluster_session_info <- function(cl) {
 #'
 #' @seealso
 #' The cluster is stopped using
-#' \code{\link[parallel:stopCluster]{stopCluster}(cl)}.
+#' \code{\link[parallel:makeCluster]{stopCluster}(cl)}.
 #'
 #' @keywords internal
 #' @importFrom parallel stopCluster
@@ -1313,3 +1328,55 @@ randomParallelPorts <- function(default = 11000:11999) {
 
   from:to
 } ## randomParallelPorts()
+
+
+
+
+#' @export
+summary.RichSOCKnode <- function(object, ...) {
+  res <- list(
+    host      = NA_character_,
+    r_version = NA_character_,
+    platform  = NA_character_,
+    pwd       = NA_character_,
+    pid       = NA_integer_
+  )
+  host <- object[["host"]]
+  if (!is.null(host)) res$host <- host
+  session_info <- object[["session_info"]]
+  if (!is.null(session_info)) {
+    res$r_version <- session_info[["r"]][["version.string"]]
+    res$platform <- session_info[["r"]][["platform"]]
+    res$pwd <- session_info[["pwd"]]
+    res$pid <- session_info[["process"]][["pid"]]
+  }
+  as.data.frame(res, stringsAsFactors = FALSE)
+}
+
+#' @export
+summary.RichSOCKcluster <- function(object, ...) {
+  res <- lapply(object, FUN = function(node) {
+    if (is.null(node)) return(summary.RichSOCKnode(node))
+    summary(node)
+  })
+  res <- do.call(rbind, res)
+  rownames(res) <- NULL
+  res
+}
+
+#' @export
+print.RichSOCKcluster <- function (x, ...) {
+  info <- summary(x)
+  txt <- sprintf("host %s", sQuote(info[["host"]]))
+  specs <- sprintf("(%s, platform %s)", info[["r_version"]], info[["platform"]])
+  specs[is.na(info[["r_version"]])] <- "(R version and platform not queried)"
+  txt <- paste(txt, specs, sep = " ")
+  t <- table(txt)
+  t <- t[order(t, decreasing = TRUE)]
+  w <- ifelse(t == 1L, "node is", "nodes are")
+  txt <- sprintf("%d %s on %s", t, w, names(t))
+  txt <- paste(txt, collapse = ", ")
+  txt <- sprintf("Socket cluster with %d nodes where %s", length(x), txt)
+  cat(txt, "\n", sep = "")
+  invisible(x)
+}

@@ -10,6 +10,7 @@ MulticoreFuture(
   envir = parent.frame(),
   substitute = FALSE,
   globals = TRUE,
+  lazy = FALSE,
   ...
 )
 }
@@ -26,6 +27,9 @@ identified.}
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for \code{\link[=future]{future()}}.}
+
+\item{lazy}{If FALSE (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }

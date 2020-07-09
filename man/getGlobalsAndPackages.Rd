@@ -9,7 +9,7 @@ getGlobalsAndPackages(
   envir = parent.frame(),
   tweak = tweakExpression,
   globals = TRUE,
-  resolve = getOption("future.globals.resolve", FALSE),
+  resolve = getOption("future.globals.resolve", NULL),
   persistent = FALSE,
   maxSize = getOption("future.globals.maxSize", 500 * 1024^2),
   ...
@@ -24,8 +24,9 @@ getGlobalsAndPackages(
 
 \item{globals}{(optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on \code{expr} and \code{tweak} searching from environment \code{envir}.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names \code{globals} searching from environment \code{envir}.  If a named list or a Globals object, the globals are used as is.}
 
-\item{resolve}{If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
-persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignored, but may also trigger an informative error if option \option{future.globals.onMissing} in \code{"error"}.}
+\item{resolve}{If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.}
+
+\item{persistent}{If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignore, but may also trigger an informative error if option \option{future.globals.onMissing} in \code{"error"} (should only be used for troubleshooting).}
 
 \item{maxSize}{The maximum allowed total size (in bytes) of globals - for
 the purpose of preventing too large exports / transfers happening by

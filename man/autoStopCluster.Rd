@@ -21,6 +21,6 @@ be stopped when garbage collected
 }
 \seealso{
 The cluster is stopped using
-\code{\link[parallel:stopCluster]{stopCluster}(cl)}.
+\code{\link[parallel:makeCluster]{stopCluster}(cl)}.
 }
 \keyword{internal}

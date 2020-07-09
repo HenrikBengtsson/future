@@ -6,7 +6,7 @@
 * Source code: https://github.com/cran/abjutils
 * URL: https://github.com/abjur/abjutils
 * Date/Publication: 2019-02-07 21:43:35 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 95
 
 Run `revdep_details(,"abjutils")` for more info
 
@@ -31,7 +31,7 @@ Run `revdep_details(,"abjutils")` for more info
 * URL: https://github.com/martakarass/adept
 * BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 92
 
 Run `revdep_details(,"adept")` for more info
 
@@ -49,10 +49,10 @@ Run `revdep_details(,"adept")` for more info
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.3.2
 * Source code: https://github.com/cran/alookr
 * BugReports: https://github.com/choonghyunryu/alookr/issues
-* Date/Publication: 2020-03-20 09:50:08 UTC
+* Date/Publication: 2020-06-07 16:50:07 UTC
 * Number of recursive dependencies: 202
 
 Run `revdep_details(,"alookr")` for more info
@@ -68,29 +68,6 @@ Run `revdep_details(,"alookr")` for more info
     See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/alookr/new/alookr.Rcheck/00install.out’ for details.
     ```
 
-# aroma.affymetrix
-
-<details>
-
-* Version: 3.2.0
-* Source code: https://github.com/cran/aroma.affymetrix
-* URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
-* BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
-* Date/Publication: 2019-06-23 06:00:14 UTC
-* Number of recursive dependencies: 75
-
-Run `revdep_details(,"aroma.affymetrix")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Error in setGeneric("getX", function(object, type) standardGeneric("getX")) : 
-      could not find function "setGeneric"
-    ```
-
 # aroma.core
 
 <details>
@@ -100,7 +77,7 @@ Run `revdep_details(,"aroma.affymetrix")` for more info
 * URL: https://github.com/HenrikBengtsson/aroma.core, https://www.aroma-project.org/
 * BugReports: https://github.com/HenrikBengtsson/aroma.core/issues
 * Date/Publication: 2020-02-04 15:20:21 UTC
-* Number of recursive dependencies: 47
+* Number of recursive dependencies: 46
 
 Run `revdep_details(,"aroma.core")` for more info
 
@@ -111,7 +88,30 @@ Run `revdep_details(,"aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+      'Cairo', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+    ```
+
+# BAMBI
+
+<details>
+
+* Version: 2.3.0
+* Source code: https://github.com/cran/BAMBI
+* URL: https://arxiv.org/abs/1708.07804
+* BugReports: https://github.com/c7rishi/BAMBI/issues
+* Date/Publication: 2020-06-19 13:50:07 UTC
+* Number of recursive dependencies: 48
+
+Run `revdep_details(,"BAMBI")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘stats4’
+      All declared Imports should be used.
     ```
 
 # batchtools
@@ -131,14 +131,31 @@ Run `revdep_details(,"batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Package suggested but not available for checking: ‘doMPI’
+    libmpi.so: cannot open shared object file: No such file or directory
     ```
 
-*   checking Rd cross-references ... NOTE
+# bcmaps
+
+<details>
+
+* Version: 0.18.1
+* Source code: https://github.com/cran/bcmaps
+* URL: https://github.com/bcgov/bcmaps
+* BugReports: https://github.com/bcgov/bcmaps/issues
+* Date/Publication: 2020-04-29 10:30:10 UTC
+* Number of recursive dependencies: 83
+
+Run `revdep_details(,"bcmaps")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
     ```
-    Unknown package ‘Rmpi’ in Rd xrefs
+    Package suggested but not available for checking: ‘bcmapsdata’
     ```
 
 # blavaan
@@ -148,7 +165,7 @@ Run `revdep_details(,"batchtools")` for more info
 * Version: 0.3-9
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2020-03-09 17:20:02 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 104
 
 Run `revdep_details(,"blavaan")` for more info
 
@@ -160,7 +177,7 @@ Run `revdep_details(,"blavaan")` for more info
     ```
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
-        libs   4.7Mb
+        libs   4.6Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -176,7 +193,7 @@ Run `revdep_details(,"blavaan")` for more info
 * Source code: https://github.com/cran/blockCV
 * URL: https://github.com/rvalavi/blockCV
 * Date/Publication: 2020-02-23 20:00:02 UTC
-* Number of recursive dependencies: 104
+* Number of recursive dependencies: 105
 
 Run `revdep_details(,"blockCV")` for more info
 
@@ -189,15 +206,39 @@ Run `revdep_details(,"blockCV")` for more info
     Package unavailable to check Rd xrefs: ‘biomod2’
     ```
 
+# CLVTools
+
+<details>
+
+* Version: 0.6.0
+* Source code: https://github.com/cran/CLVTools
+* URL: https://github.com/bachmannpatrick/CLVTools
+* BugReports: https://github.com/bachmannpatrick/CLVTools/issues
+* Date/Publication: 2020-06-24 22:10:02 UTC
+* Number of recursive dependencies: 87
+
+Run `revdep_details(,"CLVTools")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.8Mb
+      sub-directories of 1Mb or more:
+        libs   5.2Mb
+    ```
+
 # codebook
 
 <details>
 
-* Version: 0.8.2
+* Version: 0.9.2
 * Source code: https://github.com/cran/codebook
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
-* Date/Publication: 2020-01-09 16:20:07 UTC
+* Date/Publication: 2020-06-06 23:40:03 UTC
 * Number of recursive dependencies: 178
 
 Run `revdep_details(,"codebook")` for more info
@@ -206,10 +247,15 @@ Run `revdep_details(,"codebook")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘userfriendlyscience’
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘graphics’ ‘jsonlite’ ‘pander’
+      ‘graphics’ ‘jsonlite’ ‘rlang’ ‘tidyselect’ ‘vctrs’
       All declared Imports should be used.
     ```
 
@@ -227,7 +273,7 @@ Run `revdep_details(,"codebook")` for more info
 * URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
 * BugReports: https://github.com/M-E-Rademaker/cSEM/issues
 * Date/Publication: 2020-03-29 11:00:20 UTC
-* Number of recursive dependencies: 110
+* Number of recursive dependencies: 112
 
 Run `revdep_details(,"cSEM")` for more info
 
@@ -245,11 +291,11 @@ Run `revdep_details(,"cSEM")` for more info
 
 <details>
 
-* Version: 1.3.0
+* Version: 1.3.1
 * Source code: https://github.com/cran/datapackage.r
 * URL: https://github.com/frictionlessdata/datapackage-r
 * BugReports: https://github.com/frictionlessdata/datapackage-r/issues
-* Date/Publication: 2020-03-11 13:20:02 UTC
+* Date/Publication: 2020-05-06 22:10:09 UTC
 * Number of recursive dependencies: 109
 
 Run `revdep_details(,"datapackage.r")` for more info
@@ -274,7 +320,7 @@ Run `revdep_details(,"datapackage.r")` for more info
 * URL: https://tlverse.org/delayed
 * BugReports: https://github.com/tlverse/delayed/issues
 * Date/Publication: 2020-02-28 11:40:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 65
 
 Run `revdep_details(,"delayed")` for more info
 
@@ -288,16 +334,83 @@ Run `revdep_details(,"delayed")` for more info
       All declared Imports should be used.
     ```
 
+# dipsaus
+
+<details>
+
+* Version: 0.0.8
+* Source code: https://github.com/cran/dipsaus
+* URL: https://github.com/dipterix/dipsaus
+* BugReports: https://github.com/dipterix/dipsaus/issues
+* Date/Publication: 2020-06-23 05:30:17 UTC
+* Number of recursive dependencies: 65
+
+Run `revdep_details(,"dipsaus")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘yaml’
+      All declared Imports should be used.
+    ```
+
+# drake
+
+<details>
+
+* Version: 7.12.4
+* Source code: https://github.com/cran/drake
+* URL: https://github.com/ropensci/drake, https://docs.ropensci.org/drake, https://books.ropensci.org/drake/
+* BugReports: https://github.com/ropensci/drake/issues
+* Date/Publication: 2020-06-29 17:20:03 UTC
+* Number of recursive dependencies: 141
+
+Run `revdep_details(,"drake")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘clustermq’
+    ```
+
+# EFAtools
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/EFAtools
+* Date/Publication: 2020-07-07 11:10:02 UTC
+* Number of recursive dependencies: 93
+
+Run `revdep_details(,"EFAtools")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘microbenchmark’ ‘parallel’ ‘plotly’
+      All declared Imports should be used.
+    ```
+
 # fabletools
 
 <details>
 
-* Version: 0.1.3
+* Version: 0.2.0
 * Source code: https://github.com/cran/fabletools
 * URL: http://fabletools.tidyverts.org/, https://github.com/tidyverts/fabletools
 * BugReports: https://github.com/tidyverts/fabletools/issues
-* Date/Publication: 2020-03-24 07:10:02 UTC
-* Number of recursive dependencies: 92
+* Date/Publication: 2020-06-15 23:40:08 UTC
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"fabletools")` for more info
 
@@ -305,89 +418,22 @@ Run `revdep_details(,"fabletools")` for more info
 
 ## In both
 
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking replacement functions ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    The argument of a replacement function which corresponds to the right
-    hand side must be named ‘value’.
-    ```
-
-*   checking Rd files ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    prepare_Rd: running command 'timedatectl' had status 1
-    ```
-
-*   checking for missing documentation entries ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    Failed to query server: Connection timed out
-    Failed to query server: Connection timed out
-    ```
-
-*   checking for unstated dependencies in examples ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    Warning in system("timedatectl", intern = TRUE) :
-      running command 'timedatectl' had status 1
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘feasts’
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    Failed to query server: Connection timed out
-    ```
-
-*   checking foreign function calls ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    ```
-
-*   checking Rd \usage sections ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    The \usage entries for S3 methods should use the \method markup and not
-    their full name.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
+    Namespace in Imports field not imported from: ‘lifecycle’
+      All declared Imports should be used.
     ```
 
 # foieGras
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.6-7
 * Source code: https://github.com/cran/foieGras
-* URL: https://cran.r-project.org/package=foieGras
+* URL: <https://cran.r-project.org/package=foieGras>
 * BugReports: https://github.com/ianjonsen/foieGras/issues
-* Date/Publication: 2019-10-07 22:10:03 UTC
-* Number of recursive dependencies: 100
+* Date/Publication: 2020-06-18 10:50:02 UTC
+* Number of recursive dependencies: 116
 
 Run `revdep_details(,"foieGras")` for more info
 
@@ -397,19 +443,19 @@ Run `revdep_details(,"foieGras")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.1Mb
+      installed size is 12.9Mb
       sub-directories of 1Mb or more:
-        libs  11.0Mb
+        libs  12.7Mb
     ```
 
 # forecastML
 
 <details>
 
-* Version: 0.8.0
+* Version: 0.9.0
 * Source code: https://github.com/cran/forecastML
 * URL: https://github.com/nredell/forecastML/
-* Date/Publication: 2020-02-28 22:40:12 UTC
+* Date/Publication: 2020-05-07 15:10:17 UTC
 * Number of recursive dependencies: 93
 
 Run `revdep_details(,"forecastML")` for more info
@@ -418,9 +464,10 @@ Run `revdep_details(,"forecastML")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Package suggested but not available for checking: ‘xgboost’
+    Namespace in Imports field not imported from: ‘dtplyr’
+      All declared Imports should be used.
     ```
 
 # GetBCBData
@@ -456,13 +503,39 @@ Run `revdep_details(,"GetBCBData")` for more info
 * URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
 * BugReports: https://github.com/HughParsonage/grattan/issues
 * Date/Publication: 2020-03-16 16:40:09 UTC
-* Number of recursive dependencies: 113
+* Number of recursive dependencies: 112
 
 Run `revdep_details(,"grattan")` for more info
 
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+    ...
+      1/1 mismatches
+      [1] 0 - 6 == -6
+      
+      ── 4. Failure: Partners (standard) (@test_youth_allowance.R#251)  ──────────────
+      ...[] not equal to youth_allowance(...).
+      Lengths differ: 1 is not 0
+      
+      ── 5. Failure: Partners (standard) (@test_youth_allowance.R#261)  ──────────────
+      ...[] not equal to youth_allowance(...).
+      Lengths differ: 1 is not 0
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 818 | SKIPPED: 107 | WARNINGS: 0 | FAILED: 5 ]
+      1. Error: income tax checks (@test_incometax_single.R#6) 
+      2. Failure: Partners (standard) (@test_youth_allowance.R#240) 
+      3. Failure: Partners (standard) (@test_youth_allowance.R#245) 
+      4. Failure: Partners (standard) (@test_youth_allowance.R#251) 
+      5. Failure: Partners (standard) (@test_youth_allowance.R#261) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -474,11 +547,11 @@ Run `revdep_details(,"grattan")` for more info
 
 <details>
 
-* Version: 2.0-5
+* Version: 2.0-6
 * Source code: https://github.com/cran/gstat
 * URL: https://github.com/r-spatial/gstat/
 * BugReports: https://github.com/r-spatial/gstat/issues/
-* Date/Publication: 2020-04-04 14:20:02 UTC
+* Date/Publication: 2020-05-18 12:30:02 UTC
 * Number of recursive dependencies: 37
 
 Run `revdep_details(,"gstat")` for more info
@@ -490,62 +563,37 @@ Run `revdep_details(,"gstat")` for more info
 *   checking tests ...
     ```
     ...
-      
-      > meuse.riv <- SpatialPolygons(list(Polygons(list(Polygon(meuse.riv)),"meuse.riv")))
-      
-      > proj4string(meuse.riv) <- crs
-      
-      > data("meuse.area")
-      
-      > meuse.area = SpatialPolygons(list(Polygons(list(Polygon(meuse.area)), "area")))
-      
-      > proj4string(meuse.area) <- crs
-      > 
-      > v = variogram(log(zinc)~1, meuse_sf)
-      > (v.fit = fit.variogram(v, vgm(1, "Sph", 900, 1)))
-        model      psill    range
-      1   Nug 0.05066243   0.0000
-      2   Sph 0.59060780 897.0209
-      > k_sf = krige(log(zinc)~1, meuse_sf[-(1:5),], meuse_sf[1:5,], v.fit)
-      Error in .local(formula, locations, ...) : 
-        stars required: install that first
-      Calls: krige -> krige -> .local
+      > k_sp_grd$cls = cut(k_sp_grd$var1.pred, c(0, 5, 6, 7, 8, 9))
+      > st_as_stars(k_sp_grd)
+      stars object with 2 dimensions and 3 attributes
+      attribute(s):
+         var1.pred       var1.var         cls      
+       Min.   :4.777   Min.   :0.085   (0,5]: 316  
+       1st Qu.:5.238   1st Qu.:0.137   (5,6]:1778  
+       Median :5.573   Median :0.162   (6,7]: 962  
+       Mean   :5.707   Mean   :0.185   (7,8]:  47  
+       3rd Qu.:6.172   3rd Qu.:0.212   (8,9]:   0  
+       Max.   :7.440   Max.   :0.500   NA's :5009  
+       NA's   :5009    NA's   :5009                
+      dimension(s):
+        from  to offset delta                       refsys point values    
+      x    1  78 178440    40 +proj=sterea +lat_0=52.15...    NA   NULL [x]
+      y    1 104 333760   -40 +proj=sterea +lat_0=52.15...    NA   NULL [y]
+      > st_as_stars(raster::stack(k_sp_grd)) # check
+      Error in st_as_stars.Raster(raster::stack(k_sp_grd)) : 
+        no slot of name "file" for this object of class "RasterStack"
+      Calls: st_as_stars -> st_as_stars.Raster
       Execution halted
-    ```
-
-# gtfs2gps
-
-<details>
-
-* Version: 1.1-0
-* Source code: https://github.com/cran/gtfs2gps
-* URL: https://github.com/ipeaGIT/gtfs2gps
-* BugReports: https://github.com/ipeaGIT/gtfs2gps/issues
-* Date/Publication: 2020-04-12 05:20:02 UTC
-* Number of recursive dependencies: 70
-
-Run `revdep_details(,"gtfs2gps")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘lwgeom’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
 # gWQS
 
 <details>
 
-* Version: 2.0.1
+* Version: 3.0.0
 * Source code: https://github.com/cran/gWQS
-* Date/Publication: 2020-03-03 12:20:02 UTC
-* Number of recursive dependencies: 160
+* Date/Publication: 2020-06-23 13:00:03 UTC
+* Number of recursive dependencies: 103
 
 Run `revdep_details(,"gWQS")` for more info
 
@@ -559,28 +607,6 @@ Run `revdep_details(,"gWQS")` for more info
       All declared Imports should be used.
     ```
 
-# gWQSRS
-
-<details>
-
-* Version: 1.1.1
-* Source code: https://github.com/cran/gWQSRS
-* Date/Publication: 2020-03-03 11:40:02 UTC
-* Number of recursive dependencies: 112
-
-Run `revdep_details(,"gWQSRS")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘broom’ ‘dplyr’ ‘ggrepel’ ‘kableExtra’ ‘knitr’ ‘nnet’ ‘plotROC’
-      All declared Imports should be used.
-    ```
-
 # iml
 
 <details>
@@ -590,7 +616,7 @@ Run `revdep_details(,"gWQSRS")` for more info
 * URL: https://github.com/christophM/iml
 * BugReports: https://github.com/christophM/iml/issues
 * Date/Publication: 2020-03-26 10:20:03 UTC
-* Number of recursive dependencies: 155
+* Number of recursive dependencies: 153
 
 Run `revdep_details(,"iml")` for more info
 
@@ -600,9 +626,6 @@ Run `revdep_details(,"iml")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Performing one-time download of h2o.jar from
-         http://s3.amazonaws.com/h2o-release/h2o/rel-zahradnik/1/Rjar/h2o.jar 
-    (This could take a few minutes, please be patient...)
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
     ```
@@ -611,12 +634,12 @@ Run `revdep_details(,"iml")` for more info
 
 <details>
 
-* Version: 1.2.1
+* Version: 1.4.0
 * Source code: https://github.com/cran/infercnv
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
-* Date/Publication: 2019-11-15
-* Number of recursive dependencies: 126
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 121
 
 Run `revdep_details(,"infercnv")` for more info
 
@@ -628,6 +651,14 @@ Run `revdep_details(,"infercnv")` for more info
     ```
     Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
       See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    .plot_cnv_references: no visible binding for global variable
+      ‘infercnv_obj’
+    Undefined global functions or variables:
+      infercnv_obj
     ```
 
 # inlinedocs
@@ -652,18 +683,64 @@ Run `revdep_details(,"inlinedocs")` for more info
     Unknown package ‘R.methodsS3’ in Rd xrefs
     ```
 
+# lgr
+
+<details>
+
+* Version: 0.3.4
+* Source code: https://github.com/cran/lgr
+* URL: https://s-fleck.github.io/lgr
+* BugReports: https://github.com/s-fleck/lgr/issues
+* Date/Publication: 2020-03-20 11:50:02 UTC
+* Number of recursive dependencies: 79
+
+Run `revdep_details(,"lgr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘RMariaDB’
+    ```
+
 # lidR
 
 <details>
 
-* Version: 2.2.3
+* Version: 3.0.2
 * Source code: https://github.com/cran/lidR
 * URL: https://github.com/Jean-Romain/lidR
 * BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2020-03-02 19:10:02 UTC
-* Number of recursive dependencies: 161
+* Date/Publication: 2020-07-05 04:50:29 UTC
+* Number of recursive dependencies: 162
 
 Run `revdep_details(,"lidR")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.3Mb
+      sub-directories of 1Mb or more:
+        libs   4.1Mb
+    ```
+
+# methyvim
+
+<details>
+
+* Version: 1.10.0
+* Source code: https://github.com/cran/methyvim
+* URL: https://github.com/nhejazi/methyvim
+* BugReports: https://github.com/nhejazi/methyvim/issues
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 194
+
+Run `revdep_details(,"methyvim")` for more info
 
 </details>
 
@@ -672,75 +749,86 @@ Run `revdep_details(,"lidR")` for more info
 *   checking tests ...
     ```
     ...
-      > library(lidR)
-      Loading required package: raster
-      Loading required package: sp
+      > library(testthat)
+      > library(methyvim)
+      Setting options('download.file.method.GEOquery'='auto')
+      Setting options('GEOquery.inmemory.gpl'=FALSE)
+      methyvim v1.10.0: Targeted, Robust, and Model-free Differential Methylation Analysis
       > 
-      > options(lidR.progress = FALSE)
-      > 
-      > test_check("lidR")
-      ── 1. Failure: catalog_apply automerge works with in memory POINTS (@test-catalo
-      projection(req2) not equal to "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clrk66 +units=m +no_defs".
-      1/1 mismatches
-      x[1]: "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clr
-      x[1]: k66 +units=m +no_defs "
-      y[1]: "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clr
-      y[1]: k66 +units=m +no_defs"
+      > set.seed(43719)
+      > test_check("methyvim")
+      ── 1. Error: (unknown) (@test-methyvim.R#22)  ──────────────────────────────────
+      'names' attribute [8] must be the same length as the vector [1]
+      Backtrace:
+       1. base::suppressWarnings(...)
+       3. methyvim::methyvim(...)
+       5. base::`colnames<-`(...)
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 971 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Failure: catalog_apply automerge works with in memory POINTS (@test-catalog_apply-automerge.R#171) 
+      [ OK: 34 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
+      1. Error: (unknown) (@test-methyvim.R#22) 
       
       Error: testthat unit tests failed
       Execution halted
     ```
 
-# mcp
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘tmle.npvi’
+    ```
+
+# MineICA
 
 <details>
 
-* Version: 0.2.0
-* Source code: https://github.com/cran/mcp
-* URL: http://lindeloev.github.io/mcp/, https://github.com/lindeloev/mcp
-* BugReports: https://github.com/lindeloev/mcp/issues
-* Date/Publication: 2020-01-09 16:30:02 UTC
-* Number of recursive dependencies: 94
+* Version: 1.28.0
+* Source code: https://github.com/cran/MineICA
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 202
 
-Run `revdep_details(,"mcp")` for more info
+Run `revdep_details(,"MineICA")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking running R code from vignettes ...
     ```
-    Namespaces in Imports field not imported from:
-      ‘bayesplot’ ‘methods’ ‘purrr’
-      All declared Imports should be used.
+      ‘MineICA.Rnw’... failed
+     ERROR
+    Errors in running code in vignettes:
+    when running code in ‘MineICA.Rnw’
+      ...
+    
+    > resPath(params)
+    [1] "mainz/"
+    
+    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
+    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
+    
+      When sourcing ‘MineICA.R’:
+    Error: task 1 failed - "Multiple cache results found"
+    Execution halted
     ```
-
-# merTools
-
-<details>
-
-* Version: 0.5.0
-* Source code: https://github.com/cran/merTools
-* BugReports: https://www.github.com/jknowles/merTools
-* Date/Publication: 2019-05-13 12:30:06 UTC
-* Number of recursive dependencies: 131
-
-Run `revdep_details(,"merTools")` for more info
-
-</details>
-
-## In both
 
 *   checking whether the namespace can be loaded with stated dependencies ... WARNING
     ```
-    Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
+    ...
       could not find function "setClass"
-    Error: unable to load R code in package ‘arm’
-    Execution halted
+    Warning: namespace ‘genefilter’ is not available and has been replaced
+    by .GlobalEnv when processing object ‘<unknown>’
+    Error in setMethod("orgPackageName", "character", function(x) { : 
+      could not find function "setMethod"
+    Warning: namespace ‘GSEABase’ is not available and has been replaced
+    by .GlobalEnv when processing object ‘<unknown>’
+    Error in setMethod("orgPackageName", "character", function(x) { : 
+      could not find function "setMethod"
+    Warning: namespace ‘Category’ is not available and has been replaced
+    by .GlobalEnv when processing object ‘<unknown>’
+    Error in setClass("rowROC", representation(data = "matrix", ranks = "matrix",  : 
+      could not find function "setClass"
+    Warning: namespace ‘genefilter’ is not available and has been replaced
+    by .GlobalEnv when processing object ‘<unknown>’
     
     A namespace must be able to be loaded with just the base namespace
     loaded: otherwise if the namespace gets loaded by a saved object, the
@@ -749,108 +837,101 @@ Run `revdep_details(,"merTools")` for more info
     Probably some imports need to be declared in the NAMESPACE file.
     ```
 
-*   checking R code for possible problems ... NOTE
+*   checking Rd cross-references ... WARNING
     ```
-    Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
-      could not find function "setClass"
-    Error: unable to load R code in package ‘arm’
-    Execution halted
-    ```
-
-# metagam
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/metagam
-* URL: https://lifebrain.github.io/metagam/, https://github.com/Lifebrain/metagam
-* BugReports: https://github.com/Lifebrain/metagam/issues
-* Date/Publication: 2020-02-20 10:20:02 UTC
-* Number of recursive dependencies: 138
-
-Run `revdep_details(,"metagam")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tibble’
-      All declared Imports should be used.
-    ```
-
-# MetamapsDB
-
-<details>
-
-* Version: 0.0.2
-* Source code: https://github.com/cran/MetamapsDB
-* Date/Publication: 2017-12-06 09:51:00 UTC
-* Number of recursive dependencies: 122
-
-Run `revdep_details(,"MetamapsDB")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘Matrix’ ‘shiny’
-      All declared Imports should be used.
-    ```
-
-# methyvim
-
-<details>
-
-* Version: 1.8.0
-* Source code: https://github.com/cran/methyvim
-* URL: https://github.com/nhejazi/methyvim
-* BugReports: https://github.com/nhejazi/methyvim/issues
-* Date/Publication: 2019-11-01
-* Number of recursive dependencies: 193
-
-Run `revdep_details(,"methyvim")` for more info
-
-</details>
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Unknown package ‘tmle.npvi’ in Rd xrefs
-    ```
-
-# ngstk
-
-<details>
-
-* Version: 0.2.3
-* Source code: https://github.com/cran/ngstk
-* URL: https://github.com/JhuangLab/ngstk
-* BugReports: https://github.com/JhuangLab/ngstk/issues
-* Date/Publication: 2018-11-22 16:40:03 UTC
-* Number of recursive dependencies: 49
-
-Run `revdep_details(,"ngstk")` for more info
-
-</details>
-
-## In both
-
-*   checking Rd \usage sections ... WARNING
-    ```
-    Documented arguments not in \usage in documentation object 'rbin':
-      ‘...’
+    Missing link or links in documentation object 'Alist.Rd':
+      ‘class-IcaSet’
     
-    Functions with \usage entries need to have the appropriate \alias
-    entries, and all their arguments documented.
-    The \usage entries must correspond to syntactically valid R code.
+    Missing link or links in documentation object 'Slist.Rd':
+      ‘class-IcaSet’
+    
+    Missing link or links in documentation object 'class-IcaSet.Rd':
+      ‘class-IcaSet’
+    
+    Missing link or links in documentation object 'getComp.Rd':
+      ‘class-IcaSet’
+    
+    Missing link or links in documentation object 'runAn.Rd':
+      ‘[Category:class-GOHyperGParams]{GOHyperGParams}’
+    
+    See section 'Cross-references' in the 'Writing R Extensions' manual.
+    ```
+
+*   checking for missing documentation entries ... WARNING
+    ```
+    Undocumented S4 classes:
+      ‘MineICAParams’
+    All user-level objects in a package (including S4 classes and methods)
+    should have documentation entries.
     See chapter ‘Writing R documentation files’ in the ‘Writing R
     Extensions’ manual.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package which this enhances but not available for checking: ‘doMC’
+    
+    Depends: includes the non-default packages:
+      'BiocGenerics', 'Biobase', 'plyr', 'ggplot2', 'scales', 'foreach',
+      'xtable', 'biomaRt', 'gtools', 'GOstats', 'cluster', 'marray',
+      'mclust', 'RColorBrewer', 'colorspace', 'igraph', 'Rgraphviz',
+      'graph', 'annotate', 'Hmisc', 'fastICA', 'JADE'
+    Adding so many packages to the search path is excessive and importing
+    selectively is preferable.
+    ```
+
+*   checking DESCRIPTION meta-information ... NOTE
+    ```
+    Packages listed in more than one of Depends, Imports, Suggests, Enhances:
+      ‘biomaRt’ ‘GOstats’ ‘cluster’ ‘mclust’ ‘igraph’
+    A package should be listed in only one of these fields.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    'library' or 'require' call to ‘GOstats’ which was already attached by Depends.
+      Please remove these calls from your code.
+    Namespace in Imports field not imported from: ‘lumiHumanAll.db’
+      All declared Imports should be used.
+    Packages in Depends field not imported from:
+      ‘GOstats’ ‘Hmisc’ ‘JADE’ ‘RColorBrewer’ ‘Rgraphviz’ ‘annotate’
+      ‘biomaRt’ ‘cluster’ ‘colorspace’ ‘fastICA’ ‘foreach’ ‘ggplot2’
+      ‘graph’ ‘gtools’ ‘igraph’ ‘marray’ ‘mclust’ ‘methods’ ‘plyr’ ‘scales’
+      ‘xtable’
+      These packages need to be imported from (in the NAMESPACE file)
+      for when this namespace is loaded but not attached.
+    ':::' calls which should be '::':
+      ‘Biobase:::annotation<-’ ‘Biobase:::validMsg’ ‘fpc:::pamk’
+      ‘lumi:::getChipInfo’ ‘mclust:::adjustedRandIndex’
+      See the note in ?`:::` about the use of this operator.
+    Unexported object imported by a ':::' call: ‘Biobase:::isValidVersion’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    ...
+      position_jitter pushViewport quantile rainbow_hcl rcorr read.table
+      reorder scale_colour_gradientn scale_colour_manual scale_fill_manual
+      scale_linetype_manual scale_shape_manual scale_x_continuous
+      scale_x_discrete scale_y_continuous shapiro.test sigCategories
+      terrain_hcl theme theme_bw title tkplot.fit.to.screen unit useMart
+      validObject vcount viewport wilcox.test write.table xlab xtable
+    Consider adding
+      importFrom("grDevices", "cm.colors", "dev.off", "graphics.off",
+                 "heat.colors", "pdf")
+      importFrom("graphics", "abline", "axis", "frame", "hist", "layout",
+                 "legend", "mtext", "par", "plot.new", "points", "title")
+      importFrom("methods", "callNextMethod", "new", "validObject")
+      importFrom("stats", "aggregate", "as.dendrogram", "as.dist",
+                 "as.hclust", "chisq.test", "cor", "cor.test", "cutree",
+                 "dist", "hclust", "kmeans", "kruskal.test", "lm", "median",
+                 "na.omit", "order.dendrogram", "p.adjust", "quantile",
+                 "reorder", "shapiro.test", "wilcox.test")
+      importFrom("utils", "capture.output", "combn", "read.table",
+                 "write.table")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
     ```
 
 # origami
@@ -875,57 +956,15 @@ Run `revdep_details(,"origami")` for more info
     Unknown package ‘glmnet’ in Rd xrefs
     ```
 
-# PCRedux
-
-<details>
-
-* Version: 1.0-6
-* Source code: https://github.com/cran/PCRedux
-* URL: https://CRAN.R-project.org/package=PCRedux
-* BugReports: https://github.com/PCRuniversum/PCRedux/issues
-* Date/Publication: 2020-03-06 08:10:02 UTC
-* Number of recursive dependencies: 115
-
-Run `revdep_details(,"PCRedux")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘FFTrees’
-    ```
-
-# photosynthesis
-
-<details>
-
-* Version: 1.0.0
-* Source code: https://github.com/cran/photosynthesis
-* Date/Publication: 2019-05-09 15:10:03 UTC
-* Number of recursive dependencies: 73
-
-Run `revdep_details(,"photosynthesis")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tidyr’
-      All declared Imports should be used.
-    ```
-
 # phylolm
 
 <details>
 
-* Version: 2.6
+* Version: 2.6.2
 * Source code: https://github.com/cran/phylolm
-* URL: https://CRAN.R-project.org/package=phylolm
-* Date/Publication: 2018-05-31 04:51:24 UTC
+* URL: https://github.com/lamho86/phylolm
+* BugReports: https://github.com/lamho86/phylolm/issues
+* Date/Publication: 2020-06-22 05:10:08 UTC
 * Number of recursive dependencies: 33
 
 Run `revdep_details(,"phylolm")` for more info
@@ -936,7 +975,7 @@ Run `revdep_details(,"phylolm")` for more info
 
 *   checking Rd cross-references ... NOTE
     ```
-    Unknown packages ‘surface’, ‘bayou’, ‘geiger’, ‘caper’ in Rd xrefs
+    Unknown packages ‘geiger’, ‘caper’ in Rd xrefs
     ```
 
 # prewas
@@ -948,7 +987,7 @@ Run `revdep_details(,"phylolm")` for more info
 * URL: http://github.com/Snitkin-Lab-Umich/prewas
 * BugReports: http://github.com/Snitkin-Lab-Umich/prewas/issues
 * Date/Publication: 2020-03-21 17:10:06 UTC
-* Number of recursive dependencies: 71
+* Number of recursive dependencies: 53
 
 Run `revdep_details(,"prewas")` for more info
 
@@ -956,21 +995,23 @@ Run `revdep_details(,"prewas")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘stats’
-      All declared Imports should be used.
+    Package required but not available: ‘vcfR’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # promises
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * Source code: https://github.com/cran/promises
 * URL: https://rstudio.github.io/promises, https://github.com/rstudio/promises
 * BugReports: https://github.com/rstudio/promises/issues
-* Date/Publication: 2019-10-04 23:00:05 UTC
+* Date/Publication: 2020-06-09 21:50:02 UTC
 * Number of recursive dependencies: 44
 
 Run `revdep_details(,"promises")` for more info
@@ -988,10 +1029,10 @@ Run `revdep_details(,"promises")` for more info
 
 <details>
 
-* Version: 1.18.6
+* Version: 1.20.0
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2020-01-23
-* Number of recursive dependencies: 266
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 278
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -1006,15 +1047,74 @@ Run `revdep_details(,"Prostar")` for more info
     See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
+*   checking whether the package can be unloaded cleanly ... WARNING
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    In addition: Warning message:
+    no DISPLAY variable so Tk is not available 
+    Error: package or namespace load failed for ‘Prostar’:
+     unable to load R code in package ‘enrichplot’
+    Execution halted
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... WARNING
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    Error: unable to load R code in package ‘enrichplot’
+    Execution halted
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    ...
+    Call sequence:
+    6: stop(msg, call. = FALSE, domain = NA)
+    5: value[[3L]](cond)
+    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    3: tryCatchList(expr, classes, parentenv, handlers)
+    2: tryCatch({
+           attr(package, "LibPath") <- which.lib.loc
+           ns <- loadNamespace(package, lib.loc)
+           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
+       }, error = function(e) {
+           P <- if (!is.null(cc <- conditionCall(e))) 
+               paste(" in", deparse(cc)[1L])
+           else ""
+           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
+               sQuote(package), P, conditionMessage(e))
+           if (logical.return) 
+               message(paste("Error:", msg), domain = NA)
+           else stop(msg, call. = FALSE, domain = NA)
+       })
+    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
+    Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    Error in getFromNamespace(".initial", "GOSemSim") : 
+      could not find function "getFromNamespace"
+    Error: unable to load R code in package ‘enrichplot’
+    Execution halted
+    ```
+
 # QDNAseq
 
 <details>
 
-* Version: 1.22.0
+* Version: 1.24.0
 * Source code: https://github.com/cran/QDNAseq
 * URL: https://github.com/ccagc/QDNAseq
 * BugReports: https://github.com/ccagc/QDNAseq/issues
-* Date/Publication: 2019-10-29
+* Date/Publication: 2020-04-27
 * Number of recursive dependencies: 70
 
 Run `revdep_details(,"QDNAseq")` for more info
@@ -1033,9 +1133,9 @@ Run `revdep_details(,"QDNAseq")` for more info
 
 <details>
 
-* Version: 2.3.0
+* Version: 2.4.0
 * Source code: https://github.com/cran/qgcomp
-* Date/Publication: 2020-04-08 05:50:02 UTC
+* Date/Publication: 2020-07-01 12:00:02 UTC
 * Number of recursive dependencies: 116
 
 Run `revdep_details(,"qgcomp")` for more info
@@ -1044,229 +1144,69 @@ Run `revdep_details(,"qgcomp")` for more info
 
 ## In both
 
-*   checking for missing documentation entries ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
+    Namespace in Imports field not imported from: ‘markdown’
+      All declared Imports should be used.
     ```
 
-*   checking whether the package can be unloaded cleanly ... WARNING
+# qtl2pleio
+
+<details>
+
+* Version: 1.3.0
+* Source code: https://github.com/cran/qtl2pleio
+* URL: https://github.com/fboehm/qtl2pleio
+* BugReports: https://github.com/fboehm/qtl2pleio/issues
+* Date/Publication: 2020-06-30 19:00:02 UTC
+* Number of recursive dependencies: 116
+
+Run `revdep_details(,"qtl2pleio")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
     ```
-    Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
-      could not find function "setClass"
-    Error: package or namespace load failed for ‘qgcomp’:
-     unable to load R code in package ‘arm’
-    Execution halted
+      installed size is  7.5Mb
+      sub-directories of 1Mb or more:
+        libs   7.4Mb
     ```
 
-*   checking whether the namespace can be loaded with stated dependencies ... WARNING
-    ```
-    Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
-      could not find function "setClass"
-    Error: unable to load R code in package ‘arm’
-    Execution halted
-    
-    A namespace must be able to be loaded with just the base namespace
-    loaded: otherwise if the namespace gets loaded by a saved object, the
-    session will be unable to start.
-    
-    Probably some imports need to be declared in the NAMESPACE file.
-    ```
+# regmedint
 
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
+<details>
 
-*   checking replacement functions ... WARNING
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The argument of a replacement function which corresponds to the right
-    hand side must be named ‘value’.
-    ```
+* Version: 0.1.0
+* Source code: https://github.com/cran/regmedint
+* URL: https://kaz-yos.github.io/regmedint/
+* BugReports: https://github.com/kaz-yos/regmedint/issues
+* Date/Publication: 2020-05-11 11:00:02 UTC
+* Number of recursive dependencies: 107
 
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
+Run `revdep_details(,"regmedint")` for more info
+
+</details>
+
+## In both
 
 *   checking dependencies in R code ... NOTE
     ```
-    ...
-    Call sequence:
-    6: stop(msg, call. = FALSE, domain = NA)
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    ```
-
-*   checking foreign function calls ... NOTE
-    ```
-    ...
-    5: value[[3L]](cond)
-    4: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Error in setClass("balance", representation(rawdata = "data.frame", matched = "data.frame",  : 
-      could not find function "setClass"
-    Error: unable to load R code in package ‘arm’
-    Execution halted
-    ```
-
-*   checking Rd \usage sections ... NOTE
-    ```
-    ...
-    3: tryCatchList(expr, classes, parentenv, handlers)
-    2: tryCatch({
-           attr(package, "LibPath") <- which.lib.loc
-           ns <- loadNamespace(package, lib.loc)
-           env <- attachNamespace(ns, pos = pos, deps, exclude, include.only)
-       }, error = function(e) {
-           P <- if (!is.null(cc <- conditionCall(e))) 
-               paste(" in", deparse(cc)[1L])
-           else ""
-           msg <- gettextf("package or namespace load failed for %s%s:\n %s", 
-               sQuote(package), P, conditionMessage(e))
-           if (logical.return) 
-               message(paste("Error:", msg), domain = NA)
-           else stop(msg, call. = FALSE, domain = NA)
-       })
-    1: library(package, lib.loc = lib.loc, character.only = TRUE, verbose = FALSE)
-    Execution halted
-    The \usage entries for S3 methods should use the \method markup and not
-    their full name.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
+    Namespace in Imports field not imported from: ‘Deriv’
+      All declared Imports should be used.
     ```
 
 # reproducible
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.1
 * Source code: https://github.com/cran/reproducible
 * URL: https://reproducible.predictiveecology.org, https://github.com/PredictiveEcology/reproducible
 * BugReports: https://github.com/PredictiveEcology/reproducible/issues
-* Date/Publication: 2020-02-20 17:30:02 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2020-05-20 05:10:05 UTC
+* Number of recursive dependencies: 123
 
 Run `revdep_details(,"reproducible")` for more info
 
@@ -1277,39 +1217,45 @@ Run `revdep_details(,"reproducible")` for more info
 *   checking tests ...
     ```
     ...
-      1        file         file 51da4e6a77e9a9a6     152
+        objectNames hashElements             hash objSize
+      1        file         file fc0a3b61a65f0bf1     168
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
         functionName        component  elapsedTime units
-      1      readRDS          Hashing 0.0017223358  secs
-      2      readRDS  Running readRDS 0.0007550716  secs
-      3      readRDS   Saving to repo 0.6572270393  secs
-      4      readRDS Whole Cache call 0.6856470108  secs
+      1      readRDS          Hashing 0.0016028881  secs
+      2      readRDS  Running readRDS 0.0007123947  secs
+      3      readRDS   Saving to repo 0.8564739227  secs
+      4      readRDS Whole Cache call 0.8824622631  secs
         objectNames hashElements             hash objSize
-      1        file         file 51da4e6a77e9a9a6   24102
+      1        file         file fc0a3b61a65f0bf1   24122
       2        .FUN         .FUN 7a8f2865ef4bc06d    1256
-        functionName         component  elapsedTime units
-      1      readRDS           Hashing 0.0020027161  secs
-      2      readRDS Loading from repo 0.0009679794  secs
-      3      readRDS  Whole Cache call 0.0947968960  secs
+        functionName         component elapsedTime units
+      1      readRDS           Hashing 0.002789259  secs
+      2      readRDS Loading from repo 0.001166344  secs
+      3      readRDS  Whole Cache call 0.096973658  secs
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 314 | SKIPPED: 67 | WARNINGS: 5 | FAILED: 2 ]
+      [ OK: 380 | SKIPPED: 71 | WARNINGS: 3 | FAILED: 1 ]
       1. Error: git-related functions work (@test-git.R#15) 
-      2. Error: prepInputs doesn't work (part 3) (@test-postProcess.R#40) 
       
       Error: testthat unit tests failed
       Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘usethis’
+      All declared Imports should be used.
     ```
 
 # robotstxt
 
 <details>
 
-* Version: 0.6.2
+* Version: 0.7.7
 * Source code: https://github.com/cran/robotstxt
-* URL: https://github.com/ropensci/robotstxt
+* URL: https://docs.ropensci.org/robotstxt, https://github.com/ropensci/robotstxt
 * BugReports: https://github.com/ropensci/robotstxt/issues
-* Date/Publication: 2018-07-18 21:30:03 UTC
-* Number of recursive dependencies: 63
+* Date/Publication: 2020-06-27 07:00:02 UTC
+* Number of recursive dependencies: 62
 
 Run `revdep_details(,"robotstxt")` for more info
 
@@ -1327,12 +1273,12 @@ Run `revdep_details(,"robotstxt")` for more info
 
 <details>
 
-* Version: 0.0.7
+* Version: 0.1.0
 * Source code: https://github.com/cran/sapfluxnetr
 * URL: https://github.com/sapfluxnet/sapfluxnetr
 * BugReports: https://github.com/sapfluxnet/sapfluxnetr/issues
-* Date/Publication: 2019-05-01 10:40:03 UTC
-* Number of recursive dependencies: 101
+* Date/Publication: 2020-05-11 12:50:07 UTC
+* Number of recursive dependencies: 72
 
 Run `revdep_details(,"sapfluxnetr")` for more info
 
@@ -1353,7 +1299,7 @@ Run `revdep_details(,"sapfluxnetr")` for more info
 * Source code: https://github.com/cran/SCtools
 * BugReports: https://github.com/bcastanho/SCtools/issues
 * Date/Publication: 2019-12-12 13:40:02 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 84
 
 Run `revdep_details(,"SCtools")` for more info
 
@@ -1370,10 +1316,10 @@ Run `revdep_details(,"SCtools")` for more info
 
 <details>
 
-* Version: 1.1.4
+* Version: 1.1.5
 * Source code: https://github.com/cran/seer
-* Date/Publication: 2020-02-21 17:20:03 UTC
-* Number of recursive dependencies: 99
+* Date/Publication: 2020-06-08 05:00:02 UTC
+* Number of recursive dependencies: 106
 
 Run `revdep_details(,"seer")` for more info
 
@@ -1383,8 +1329,7 @@ Run `revdep_details(,"seer")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘ForeCA’ ‘Mcomp’ ‘repmis’
+    Namespace in Imports field not imported from: ‘MASS’
       All declared Imports should be used.
     ```
 
@@ -1397,7 +1342,7 @@ Run `revdep_details(,"seer")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-04-16 11:50:08 UTC
-* Number of recursive dependencies: 219
+* Number of recursive dependencies: 205
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -1415,6 +1360,33 @@ Run `revdep_details(,"Seurat")` for more info
     Unknown packages ‘SDMTools’, ‘loomR’ in Rd xrefs
     ```
 
+# shiny
+
+<details>
+
+* Version: 1.5.0
+* Source code: https://github.com/cran/shiny
+* URL: http://shiny.rstudio.com
+* BugReports: https://github.com/rstudio/shiny/issues
+* Date/Publication: 2020-06-23 13:30:03 UTC
+* Number of recursive dependencies: 96
+
+Run `revdep_details(,"shiny")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking: 'Cairo', 'ragg'
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Unknown package ‘Cairo’ in Rd xrefs
+    ```
+
 # shinyrecap
 
 <details>
@@ -1423,7 +1395,7 @@ Run `revdep_details(,"Seurat")` for more info
 * Source code: https://github.com/cran/shinyrecap
 * URL: https://fellstat.github.io/shinyrecap/
 * Date/Publication: 2019-01-19 23:40:03 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 87
 
 Run `revdep_details(,"shinyrecap")` for more info
 
@@ -1448,7 +1420,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * URL: https://meghapsimatrix.github.io/simhelpers/index.html
 * BugReports: https://github.com/meghapsimatrix/simhelpers/issues
 * Date/Publication: 2020-03-31 15:00:06 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 98
 
 Run `revdep_details(,"simhelpers")` for more info
 
@@ -1472,7 +1444,7 @@ Run `revdep_details(,"simhelpers")` for more info
 * URL: https://github.com/tylermorganwall/skpr
 * BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2020-03-04 20:20:02 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 128
 
 Run `revdep_details(,"skpr")` for more info
 
@@ -1497,12 +1469,12 @@ Run `revdep_details(,"skpr")` for more info
 
 <details>
 
-* Version: 0.2.1
+* Version: 1.0.1
 * Source code: https://github.com/cran/solitude
 * URL: https://github.com/talegari/solitude
 * BugReports: https://github.com/talegari/solitude/issues
-* Date/Publication: 2019-12-07 09:00:02 UTC
-* Number of recursive dependencies: 38
+* Date/Publication: 2020-07-07 09:20:02 UTC
+* Number of recursive dependencies: 127
 
 Run `revdep_details(,"solitude")` for more info
 
@@ -1512,7 +1484,8 @@ Run `revdep_details(,"solitude")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘R6’
+    Namespaces in Imports field not imported from:
+      ‘R6’ ‘lgr’
       All declared Imports should be used.
     ```
 
@@ -1525,7 +1498,7 @@ Run `revdep_details(,"solitude")` for more info
 * URL: https://github.com/mikemahoney218/spacey, https://mikemahoney218.github.io/spacey/
 * BugReports: https://github.com/mikemahoney218/spacey/issues
 * Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 87
 
 Run `revdep_details(,"spacey")` for more info
 
@@ -1539,18 +1512,17 @@ Run `revdep_details(,"spacey")` for more info
       All declared Imports should be used.
     ```
 
-# sperrorest
+# spatialwarnings
 
 <details>
 
-* Version: 3.0.0
-* Source code: https://github.com/cran/sperrorest
-* URL: https://giscience-fsu.github.io/sperrorest, https://github.com/giscience-fsu/sperrorest
-* BugReports: https://github.com/giscience-fsu/sperrorest/issues
-* Date/Publication: 2020-04-13 08:10:02 UTC
-* Number of recursive dependencies: 57
+* Version: 2.0.0
+* Source code: https://github.com/cran/spatialwarnings
+* URL: https://github.com/spatial-ews/spatialwarnings
+* Date/Publication: 2020-05-14 17:10:06 UTC
+* Number of recursive dependencies: 77
 
-Run `revdep_details(,"sperrorest")` for more info
+Run `revdep_details(,"spatialwarnings")` for more info
 
 </details>
 
@@ -1558,7 +1530,7 @@ Run `revdep_details(,"sperrorest")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘future’
+    Namespace in Imports field not imported from: ‘tidyr’
       All declared Imports should be used.
     ```
 
@@ -1566,11 +1538,11 @@ Run `revdep_details(,"sperrorest")` for more info
 
 <details>
 
-* Version: 0.4-1
+* Version: 0.4-2
 * Source code: https://github.com/cran/stars
 * URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
 * BugReports: https://github.com/r-spatial/stars/issues/
-* Date/Publication: 2020-04-07 10:00:02 UTC
+* Date/Publication: 2020-07-01 12:10:02 UTC
 * Number of recursive dependencies: 127
 
 Run `revdep_details(,"stars")` for more info
@@ -1579,14 +1551,15 @@ Run `revdep_details(,"stars")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘lwgeom’
-    
-    Package suggested but not available for checking: ‘starsdata’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Packages suggested but not available for checking:
+      'exactextractr', 'starsdata'
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘exactextractr’
     ```
 
 # startR
@@ -1608,8 +1581,7 @@ Run `revdep_details(,"startR")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Unexported objects imported by ':::' calls:
-      ‘s2dverification:::.KnownLatNames’ ‘s2dverification:::.KnownLonNames’
+    Unavailable namespace imported from by a ':::' call: ‘s2dverification’
       See the note in ?`:::` about the use of this operator.
     ```
 
@@ -1639,28 +1611,6 @@ Run `revdep_details(,"tableschema.r")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘parsedate’
-    ```
-
-# tealeaves
-
-<details>
-
-* Version: 1.0.0
-* Source code: https://github.com/cran/tealeaves
-* Date/Publication: 2019-05-04 16:40:03 UTC
-* Number of recursive dependencies: 71
-
-Run `revdep_details(,"tealeaves")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘ggplot2’ ‘tidyr’
-      All declared Imports should be used.
     ```
 
 # treeHMM
@@ -1693,7 +1643,7 @@ Run `revdep_details(,"treeHMM")` for more info
 * URL: https://github.com/RamiKrispin/TSstudio
 * BugReports: https://github.com/RamiKrispin/TSstudio/issues
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 136
+* Number of recursive dependencies: 135
 
 Run `revdep_details(,"TSstudio")` for more info
 
@@ -1703,7 +1653,6 @@ Run `revdep_details(,"TSstudio")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Failed to query server: Connection timed out
     Namespace in Imports field not imported from: ‘forecastHybrid’
       All declared Imports should be used.
     ```

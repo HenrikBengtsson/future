@@ -257,7 +257,7 @@ For additional details on non-exportable objects and examples of other R package
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > f1 <- future({ Sys.getpid() })
 > f2 <- future({ value(f1) })
 > v1 <- value(f1)
@@ -426,4 +426,4 @@ foo <- function() {
 [listenv]: https://cran.r-project.org/package=listenv
 
 ---
-Copyright Henrik Bengtsson, 2015-2019
+Copyright Henrik Bengtsson, 2015-2020

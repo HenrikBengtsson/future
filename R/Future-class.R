@@ -81,7 +81,7 @@
 #' An alternative approach is to use the \code{\link{\%<-\%}} infix
 #' assignment operator, which creates a future from the
 #' right-hand-side (RHS) \R expression and assigns its future value
-#' to a variable as a \emph{\link[base]{promise}}.
+#' to a variable as a \emph{\link[base:delayedAssign]{promise}}.
 #'
 #' @importFrom parallel nextRNGStream
 #' @export
@@ -114,6 +114,10 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
     stop_if_not(!anyNA(packages), all(nzchar(packages)))
   }
 
+  if (!is.null(label)) {
+    stop_if_not(is.character(label))
+  }
+  
   args <- list(...)
 
 
@@ -521,7 +525,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 #' [multicore] and [multisession] ones.
 #' The default will also set `options(mc.cores = 1L)` (*) so that
 #' no parallel \R processes are spawned off by functions such as
-#' \code{\link[parallel:mclapply]{mclapply}()} and friends.
+#' \code{parallel::mclapply()} and friends.
 #'
 #' Currently it is not possible to specify what type of nested
 #' futures to be used, meaning the above default will always be
@@ -699,7 +703,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", "ignore"), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
     if (immediateConditions) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")

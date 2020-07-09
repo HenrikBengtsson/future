@@ -109,7 +109,7 @@ to set the working directory to \file{/path/to} on \emph{all} workers.}
 \item{rscript_envs}{A named character vector environment variables to
 set on worker at startup, e.g.
 \code{rscript_envs = c(FOO = "3.14", "HOME", "UNKNOWN")}.
-If an element is not named, then the value of that variable will used as
+If an element is not named, then the value of that variable will be used as
 the name and the value will be the value of \code{Sys.getenv()} for that
 variable.  Non-existing environment variables will be dropped.
 These variables are set using \code{Sys.setenv()}.}
@@ -125,8 +125,8 @@ existing ones, use \code{rscript_libs = c("new_folder", "*")}.}
 \item{useXDR}{If TRUE, the communication between master and workers, which is
 binary, will use big-endian (XDR).}
 
-\item{outfile}{Where to direct the \link[base:stdout]{stdout} and
-\link[base:stderr]{stderr} connection output from the workers.
+\item{outfile}{Where to direct the \link[base:showConnections]{stdout} and
+\link[base:showConnections]{stderr} connection output from the workers.
 If NULL, then no redirection of output is done, which means that the
 output is relayed in the terminal on the local computer.  On Windows, the
 output is only relayed when running \R from a terminal but not from a GUI.}
@@ -164,8 +164,9 @@ launch the worker from the terminal is outputted.  This is useful for
 troubleshooting.}
 }
 \value{
-An object of class \code{c("SOCKcluster", "cluster")} consisting
-of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers.
+An object of class \code{c("RichSOCKcluster", "SOCKcluster", "cluster")}
+consisting of a list of \code{"SOCKnode"} or \code{"SOCK0node"} workers (that also
+inherit from \code{RichSOCKnode}).
 
 \code{makeNodePSOCK()} returns a \code{"SOCKnode"} or
 \code{"SOCK0node"} object representing an established connection to a worker.
@@ -176,7 +177,7 @@ for parallel processing.  These \R workers may be background \R sessions
 on the current machine, \R sessions on external machines (local or remote),
 or a mix of such. For external workers, the default is to use SSH to connect
 to those external machines.  This function works similarly to
-\code{\link[parallel:makePSOCKcluster]{makePSOCKcluster}()} of the
+\code{\link[parallel:makeCluster]{makePSOCKcluster}()} of the
 \pkg{parallel} package, but provides additional and more flexibility options
 for controlling the setup of the system calls that launch the background
 \R workers, and how to connect to external machines.
@@ -341,9 +342,8 @@ closed automatically.  This will eventually result in an error in code
 trying to access the connection.
 }
 
-\section{Troubleshooting}{
+\section{Failing to set up local workers}{
 
-\emph{Failing to set up local workers:}
 When setting up a cluster of localhost workers, that is, workers running
 on the same machine as the master \R process, occasionally a connection
 to a worker ("cluster node") may fail to be set up.
@@ -351,8 +351,10 @@ When this occurs, an informative error message with troubleshooting
 suggestions will be produced.
 The most common reason for such localhost failures is due to port
 clashes.  Retrying will often resolve the problem.
+}
 
-\emph{Failing to set up remote workers:}
+\section{Failing to set up remote workers}{
+
 A cluster of remote workers runs \R processes on external machines. These
 external \R processes are launched over, typically, SSH to the remote
 machine.  For this to work, each of the remote machines needs to have
@@ -382,6 +384,16 @@ R scripting front-end version 3.6.1 (2019-07-05)
 }
 The latter will assert that you have proper startup configuration also for
 \emph{non-interactive} shell sessions on the remote machine.
+
+Another reason for failing to setup remote workers could be that they are
+running an \R version that is not compatible with the version that your main
+\R session is running.  For instance, if we run R (>= 3.6.0) locally and the
+workers run R (< 3.5.0), we will get:
+\verb{Error in unserialize(node$con) : error reading from connection}.
+This is because R (>= 3.6.0) uses serialization format version 3 whereas
+R (< 3.5.0) only supports version 2.  We can see the version of the \R
+workers by adding \code{rscript_args = c("-e", shQuote("getRversion()"))} when
+calling \code{makeClusterPSOCK()}.
 }
 
 \examples{

@@ -1,11 +1,83 @@
 Package: future
 ===============
 
+Version: 1.18.0 [2020-07-08]
+
+SIGNIFICANT CHANGES:
+
+ * Support for 'persistent = TRUE' with multisession futures is deprecated.
+
+NEW FEATURES:
+
+ * print() on RichSOCKcluster gives information not only on the name of the
+   host but also on the version of R and the platform of each node ("worker"),
+   e.g. "Socket cluster with 3 nodes where 2 nodes are on host 'localhost' (R
+   version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host
+   'n3' (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)".
+
+ * Error messages from cluster future failures are now more informative than
+   "Unexpected result (of class 'NULL' != 'FutureResult')".  For example, if
+   the 'future' package is not installed on the worker, then the error message
+   clearly says so.  Even, if there is an unexpected result error from a PSOCK
+   cluster future, then the error produced give extra information on node where
+   it failed, e.g. "Unexpected result (of class 'NULL' != 'FutureResult') 
+   retrieved for ClusterFuture future (label = '<none>', expression = '...'): 
+   This suggests that the communication with ClusterFuture worker 
+   ('RichSOCKnode' #1 on host 'n3' (R version 3.6.3 (2020-02-29), platform
+   x86_64-pc-linux-gnu)) is out of sync."
+
+ * It is now possible to set enviroment variables on workers before they are
+   launched by makeClusterPSOCK() by specify them as as "<name>=<value>"
+   as part of the 'rscript' vector argument, e.g. rscript=c("ABC=123",
+   "DEF='hello world'", "Rscript"). This works because elements in 'rscript'
+   that match regular expression '^[[:alpha:]_][[:alnum:]_]*=.*' are no longer
+   shell quoted.
+
+ * makeClusterPSOCK() now returns a cluster that in addition to inheriting
+   from' SOCKcluster' it will also inherit from 'RichSOCKcluster'.
+
+BUG FIXES:
+
+ * Made makeClusterPSOCK() and makeNodePSOCK() agile to the name change from
+   parallel:::.slaveRSOCK() to parallel:::.workRSOCK() in R (>= 4.1.0).
+
+ * makeClusterPSOCK(..., rscript) will not try to locate rscript[1] if
+   argument 'homogeneous' is FALSE (or inferred to be FALSE).
+
+ * makeClusterPSOCK(..., rscript_envs) would result in a syntax error when
+   starting the workers due to non-ASCII quotation marks if option
+   'useFancyQuotes' was not set to FALSE.
+
+ * plan(list(...)) would produce 'Error in UseMethod("tweak") : no applicable
+   method for 'tweak' applied to an object of class "list"' if a non-function
+   object named 'list' was on the search path.
+
+ * plan(x$abc) with x <- list(abc = sequential) would produce 'Error in
+   UseMethod("tweak") : no applicable method for 'tweak' applied to an object
+   of class "c('FutureStrategyList', 'list')"'.
+
+ * TESTS: 'R_FUTURE_FORK_ENABLE=false R CMD check ...' would produce 'Error: 
+   connections left open: ...' when checking the 'multiprocess' example.
+
+DEPRECATED AND DEFUNCT:
+
+ * Support for 'persistent = TRUE' with multisession futures is deprecated.
+   If still needed, a temporary workaround is to use cluster futures. However,
+   it is likely that support for 'persistent' will eventually be deprecated
+   for all future backends.
+ 
+ * Options 'future.globals.method', 'future.globals.onMissing', and
+   'future.globals.resolve' are deprecated and produce warnings if set. They
+   may only be used for troubleshooting purposes because they may affect how
+   futures are evaluated, which means that reproducibility cannot be guaranteed
+   elsewhere.
+ 
+
 Version: 1.17.0 [2020-04-17]
 
 SIGNIFICANT CHANGES:
 
- * Renamed values() to value() to cleanup and simplify the API.
+ * Renamed values() to value() to clean up and simplify the API.
 
 NEW FEATURES:
 
@@ -25,7 +97,7 @@ MISCELLANEOUS:
 
 BUG FIXES:
 
- * Any globals named 'version' and 'has_future' would be overritten with
+ * Any globals named 'version' and 'has_future' would be overwritten with
    "garbage" values internally.
 
  * Disabling of multi-threading when using 'multicore' futures did not work
@@ -75,7 +147,7 @@ BETA FEATURES:
    'future.fork.multithreading.enable' or environment variable
    'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE'. This requires that
    'RhpcBLASctl' package is installed. Parallelization via multi-threaded
-   processing (done in native code by some packages and externaly library)
+   processing (done in native code by some packages and externally library)
    while at the same time using forked (aka "multicore") parallel processing
    is unstable in some cases.  Note that this is not only true when using
    plan(multicore) but also when using, for instance, parallel::mclapply().
@@ -135,7 +207,7 @@ DOCUMENTATION:
 BUG FIXES:
 
  * values() would resignal immediateCondition:s despite those should only be
-   signalled at most once per future.
+   signaled at most once per future.
 
  * makeClusterPSOCK() could produce warnings like "cannot open file
    '/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid': No such file",
@@ -157,7 +229,7 @@ DEPRECATED AND DEFUNCT:
 
  * Argument 'value' of resolve() is deprecated. Use 'result' instead.
 
- * Usage of internal argument 'evaluator' is now defunct.
+ * Use of internal argument 'evaluator' is now defunct.
 
 
 Version: 1.14.0 [2019-07-01]
@@ -329,7 +401,7 @@ BUG FIXES:
 
  * With options(OutDec = ","), the default value of several argument would
    resolve to NA_real_ rather than a numeric value resulting in errors such
-   as "is.finite(alpha)’ is not TRUE".
+   as "is.finite(alpha) is not TRUE".
 
 DEPRECATED AND DEFUNCT:
 
@@ -345,7 +417,7 @@ Version: 1.11.1.1 [2019-01-25]
 BUG FIXES:
 
  * When makeClusterPSOCK() fails to connect to a worker, it produces an error
-   with detailed information on what could have happend.  In rare cases,
+   with detailed information on what could have happened.  In rare cases,
    another error could be produced when generating the information on what
    the workers PID is.
  
@@ -367,7 +439,7 @@ SOFTWARE QUALITY:
 
  * TESTS: When the 'future' package is loaded, it checks whether 'R CMD check'
    is running or not.  If it is, then a few future-specific environment
-   variables are adjusted such that the tests play nices with the testing
+   variables are adjusted such that the tests play nice with the testing
    environment.  For instance, it sets the socket connection timeout for
    PSOCK cluster workers to 120 seconds (instead of the default 30 days!).
    This will lower the risk for more and more zombie worker processes
@@ -400,7 +472,7 @@ NEW FEATURES:
    functions that do not take arguments, e.g. futureCall(function() 42).
 
  * plan() gained argument '.skip = FALSE'.  When TRUE, setting the same future
-   trategy as already set will be skipped, e.g. calling plan(multisession)
+   strategy as already set will be skipped, e.g. calling plan(multisession)
    consecutively will have the same effect as calling it just once.
 
  * makeClusterPSOCK() produces more informative error messages whenever the
@@ -545,7 +617,7 @@ NEW FEATURES:
  * Now plan() gives a more informative error message in case it fails, e.g.
    when the internal future validation fails and why.
 
- * Added UnexpectedFutureResultError to be used by backends for signalling
+ * Added UnexpectedFutureResultError to be used by backends for signaling
    in a standard way that an unexpected result was retrieved from a worker.
 
 BUG FIXES:
@@ -553,7 +625,7 @@ BUG FIXES:
  * When the communication between an asynchronous future and a background R
    process failed, further querying of the future state/results could end up
    in an infinite waiting loop.  Now the failed communication error is
-   recorded and re-signalled if any further querying attempts.
+   recorded and re-signaled if any further querying attempts.
  
  * Internal, seldom used myExternalIP() failed to recognize IPv4 answers
    from some of the lookup servers. This could in turn produce another error.

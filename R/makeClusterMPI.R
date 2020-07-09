@@ -4,7 +4,7 @@
 #' for parallel processing.  This function utilizes 
 #' `makeCluster(..., type = "MPI")` of the \pkg{parallel} package and
 #' tweaks the cluster in an attempt to avoid
-#' \code{\link[parallel:stopCluster]{stopCluster()}} from hanging (1).
+#' \code{\link[parallel:makeCluster]{stopCluster()}} from hanging (1).
 #' _WARNING: This function is very much in a beta version and should
 #' only be used if `parallel::makeCluster(..., type = "MPI")` fails._
 #'
@@ -17,15 +17,14 @@
 #' @param \dots Optional arguments passed to
 #' \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.
 #' 
-#' @return An object of class `"FutureMPIcluster"` consisting
+#' @return An object of class `c("RichMPIcluster", "MPIcluster", "cluster")` consisting
 #' of a list of `"MPInode"` workers.
 #'
 #' @references
 #' 1. R-sig-hpc thread \href{https://stat.ethz.ch/pipermail/r-sig-hpc/2017-September/002065.html}{Rmpi: mpi.close.Rslaves() 'hangs'} on 2017-09-28.
 #'
 #' @seealso
-#' [makeClusterPSOCK()] and
-#' \code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
+#' [makeClusterPSOCK()] and [parallel::makeCluster()].
 #'
 #' @importFrom parallel makeCluster
 #' @export
@@ -66,9 +65,9 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
   ## which may stall R.  Because of this, we drop 'spawnedMPIcluster' from
   ## the class attribute to avoid calling that method.  Similarly, calling
   ## Rmpi::mpi.finalize() and Rmpi::mpi.exit() may also hang R.
-  ## See also below stopCluster.FutureMPIcluster() implementation.
+  ## See also below stopCluster.RichMPIcluster() implementation.
   ## REFERENCE: https://stackoverflow.com/a/44317647/1072091
-  class(cl) <- c("FutureMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
+  class(cl) <- c("RichMPIcluster", setdiff(class(cl), "spawnedMPIcluster"))
 
   if (autoStop) cl <- autoStopCluster(cl)
   
@@ -78,7 +77,7 @@ makeClusterMPI <- function(workers, ..., autoStop = FALSE, verbose = getOption("
 
 #' @export
 #' @keywords internal
-stopCluster.FutureMPIcluster <- function(cl) {
+stopCluster.RichMPIcluster <- function(cl) {
   NextMethod()
 
   if (!requireNamespace(pkg <- "Rmpi", quietly = TRUE)) return(invisible(cl))

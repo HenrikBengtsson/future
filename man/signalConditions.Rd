@@ -15,10 +15,10 @@ signalConditions(
 \arguments{
 \item{future}{A resolved \link{Future}.}
 
-\item{include}{A character string of \link[base:condition]{condition}
+\item{include}{A character string of \link[base:conditions]{condition}
 classes to signal.}
 
-\item{exclude}{A character string of \link[base:condition]{condition}
+\item{exclude}{A character string of \link[base:conditions]{condition}
 classes \emph{not} to signal.}
 
 \item{resignal}{If TRUE, then already signaled conditions are signaled
@@ -36,5 +36,5 @@ requirements are signaled \emph{in the order as they were captured}.
 }
 \seealso{
 Conditions are signaled by
-\code{\link[base:signalCondition]{signalCondition}()}.
+\code{\link[base:conditions]{signalCondition}()}.
 }

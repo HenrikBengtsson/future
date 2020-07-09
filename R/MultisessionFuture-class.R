@@ -9,8 +9,16 @@
 #' @rdname ClusterFuture-class
 MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, persistent = FALSE, local = !persistent, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, persistent = persistent, local = local, workers = workers, ...)
-  structure(f, class = c("MultisessionFuture", class(f)))
+
+  stop_if_not(is.logical(persistent), length(persistent) == 1L,
+              !is.na(persistent))
+  if (persistent) {
+    .Deprecated(msg = "Support for 'persistent = TRUE' with multisession futures is deprecated.")
+  }
+  
+  future <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, persistent = persistent, local = local, workers = workers, ...)
+  future <- structure(future, class = c("MultisessionFuture", class(future)))
+  future
 }
 
 

@@ -46,6 +46,24 @@
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
+  ## Global objects
+  gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
+
+  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, node = NA_integer_, ...)
+
+  future <- as_ClusterFuture(future, workers = workers, user = user,
+                             master = master, revtunnel = revtunnel,
+                             homogeneous = homogeneous)
+
+  stop_if_not(is.logical(persistent), length(persistent) == 1L,
+              !is.na(persistent))
+  future$persistent <- persistent
+  
+  future
+}
+
+
+as_ClusterFuture <- function(future, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE) {
   if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
@@ -75,17 +93,12 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALS
     attr(workers, "name") <- name
   }
 
-  ## Global objects
-  gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
-  globals <- gp$globals
-  packages <- unique(c(packages, gp$packages))
-  expr <- gp$expr
-  gp <- NULL
+  future$workers <- workers
 
-  f <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, packages = packages, local = local, gc = gc, persistent = persistent, workers = workers, node = NA_integer_, version = "1.8", ...)
-  structure(f, class = c("ClusterFuture", class(f)))
+  future <- structure(future, class = c("ClusterFuture", class(future)))
+
+  future
 }
-
 
 
 #' @importFrom parallel clusterCall clusterExport
@@ -262,16 +275,27 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
     if (.Platform$OS.type != "windows" && getRversion() < "3.4.3") {
       timeout <- round(timeout, digits = 0L)
     }
-    res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+    maxCount <- 100L
+    count <- 0L
+    while (count < maxCount) {
+      ## Is there a message from the worker waiting?
+      res <- socketSelect(list(con), write = FALSE, timeout = timeout)
+      if (!res) break
 
-    if (res) {
-      ## It could be that the message available from the worker is something else
-      ## than a FutureResult, e.g. a condition.  Consider the future resolved,
-      ## only if a FutureResult was sent.
+      ## Receive it
       msg <- receiveMessageFromWorker(x)
+
+      ## If the message contains a FutureResult, then the future is resolved
+      ## and we are done here
       res <- inherits(msg, "FutureResult")
       msg <- NULL
-    }
+      if (res) break
+
+      ## If not, we received a condition that has already been signaled
+      ## by receiveMessageFromWorker().  However, it could be that there is
+      ## another condition messages available, so lets check again
+      count <- count + 1L
+    } ## while()
   } else if (inherits(node, "MPInode")) {
     res <- resolveMPI(x)
   } else {
@@ -415,9 +439,24 @@ receiveMessageFromWorker <- function(future, ...) {
 
   ## Non-expected message from worker?
   if (!inherits(msg, "FutureResult") && !inherits(msg, "condition")) {
-    str(list(node_idx = node_idx, node = node))
-    hint <- sprintf("This suggests that the communication with %s worker (%s #%d) is out of sync.",
-                    class(future)[1], sQuote(class(node)[1]), node_idx)
+    ## If parallel:::slaveLoop() ends up capturing the error, which should
+    ## not happen unless there is a critical error, then it'll be of captured
+    ## by try().
+    if (inherits(msg, "try-error")) {
+      ex <- FutureError(msg, future = future)
+      future$result <- ex
+      stop(ex)
+    }
+    
+    node_info <- sprintf("%s #%d", sQuote(class(node)[1]), node_idx)
+    if (inherits(node, "FutureSOCKnode")) {
+      specs <- summary(node)
+      node_info <- sprintf("%s on host %s (%s, platform %s)",
+                           node_info, sQuote(specs[["host"]]),
+                           specs[["r_version"]], specs[["platform"]])
+    }
+    
+    hint <- sprintf("This suggests that the communication with %s is out of sync.", node_info)
     ex <- UnexpectedFutureResultError(future, hint = hint)
     future$result <- ex
     stop(ex)
@@ -603,7 +642,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
               if (exists("sendData", mode = "function", envir = ns)) {
                 parallel_sendData <- get("sendData", mode = "function", envir = ns)
   
-                ## Find the 'master' argument of the worker's slaveLoop()
+                ## Find the 'master' argument of the worker's {slave,work}Loop()
                 envir <- sys.frame(frame)
                 master <- NULL
                 while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {

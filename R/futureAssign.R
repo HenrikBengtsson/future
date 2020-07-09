@@ -7,7 +7,8 @@
 #' @return
 #' `x %<-% value` (a future assignment) and
 #' `futureAssign("x", value)` create a [Future] that evaluates
-#' expression `expr` and binds its value (as a \link[base]{promise}) to
+#' expression `expr` and binds its value (as a
+#' \link[base:delayedAssign]{promise}) to
 #' a variable `x`.  The value of the future is automatically retrieved
 #' when the assigned variable (promise) is queried.
 #' The future itself is returned invisibly, e.g.

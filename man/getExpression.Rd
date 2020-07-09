@@ -26,7 +26,7 @@ against spawning off recursive futures by mistake, especially
 \link{multicore} and \link{multisession} ones.
 The default will also set \code{options(mc.cores = 1L)} (*) so that
 no parallel \R processes are spawned off by functions such as
-\code{\link[parallel:mclapply]{mclapply}()} and friends.
+\code{parallel::mclapply()} and friends.
 
 Currently it is not possible to specify what type of nested
 futures to be used, meaning the above default will always be

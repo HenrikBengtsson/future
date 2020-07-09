@@ -96,7 +96,8 @@ should be assigned.}
 
 \code{x \%<-\% value} (a future assignment) and
 \code{futureAssign("x", value)} create a \link{Future} that evaluates
-expression \code{expr} and binds its value (as a \link[base]{promise}) to
+expression \code{expr} and binds its value (as a
+\link[base:delayedAssign]{promise}) to
 a variable \code{x}.  The value of the future is automatically retrieved
 when the assigned variable (promise) is queried.
 The future itself is returned invisibly, e.g.
@@ -278,7 +279,7 @@ using the \code{\link{\%globals\%}} operator, e.g.
 
 \examples{
 ## Evaluate futures in parallel
-plan(multiprocess)
+plan(multisession)
 
 ## Data
 x <- rnorm(100)

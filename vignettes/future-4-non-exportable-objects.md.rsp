@@ -71,6 +71,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   ----------------|-------------------------------------------
   **base**        | connection
   **DBI**         | DBIConnection
+  **magick**      | magick-image
   **Rcpp**        | NativeSymbol
   **reticulate**  | python.builtin.function, python.builtin.module
   **rJava**       | jclassName
@@ -93,6 +94,34 @@ con <- dbConnect(RSQLite::SQLite(), ":memory:")
 dummy %<-% print(con)
 ## Error: Detected a non-exportable reference ('externalptr') in one of the globals
 ## ('con' of class 'SQLiteConnection') used in the future expression
+```
+
+
+
+### Package: magic
+
+[magick](https://cran.r-project.org/package=magick) provides an R-level API for ImageMagick to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
+```r
+library("future")
+plan(multisession)
+library("magick")
+frink <- magick::image_read("https://jeroen.github.io/images/frink.png")
+f <- future(image_fill(frink, "orange", "+100+200", 20))
+v <- value(f)
+## Error: Image pointer is dead. You cannot save or cache image objects
+## between R sessions.
+```
+
+If we set:
+```r
+options(future.globals.onReference = "error")
+```
+we'll see that this is caught even before attempting to run this in parallel;
+```r
+> f <- future(image_fill(frink, "orange", "+100+200", 20))
+## Error: Detected a non-exportable reference ('externalptr' of class
+## 'magick-image') in one of the globals ('frink' of class 'magick-image')
+## used in the future expression
 ```
 
 
@@ -325,4 +354,4 @@ res <- mutate(iris, mod = value(future({
 
 
 ---
-Copyright Henrik Bengtsson, 2019
+Copyright Henrik Bengtsson, 2020

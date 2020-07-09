@@ -57,7 +57,6 @@ multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
   ## Fall back to lazy sequential futures if only a single R session can be used,
   ## that is, then use the current main R process.
   if (workers == 1L) {
-    ## FIXME: How to handle argument 'persistent'? /HB 2016-03-19
     return(sequential(expr, envir = envir, substitute = FALSE, lazy = TRUE, seed = seed, globals = globals, local = TRUE, label = label, ...))
   }
 

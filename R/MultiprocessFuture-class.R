@@ -16,6 +16,7 @@
 MultiprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, ...)
-  structure(f, class = c("MultiprocessFuture", class(f)))
+  future <- Future(expr = expr, envir = envir, substitute = FALSE, ...)
+  future <- structure(future, class = c("MultiprocessFuture", class(future)))
+  future
 }

@@ -17,13 +17,19 @@ if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
 ## "Error in readRDS(x) : error reading from connection" for type = "FORK".
 ## Is this related to mcparallel() comments in help("package_coverage")?
 ## /HB 2017-05-20
-if (covr_testing) types <- setdiff(types, "FORK")
+if (covr_testing || on_githubactions) types <- setdiff(types, "FORK")
+
+## WORKAROUND: FORK:ed processing gives really odd results on macOS when
+## running on GitHub Actions. /HB 2020-06-07
+if (on_githubactions && on_macos) types <- setdiff(types, "FORK")
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
 cl <- NULL
 for (type in types) {
   message(sprintf("Test set #1 with cluster type %s ...", sQuote(type)))
+
+  message("Main PID (original): ", pid)
 
   for (cores in 1:availCores) {
     message(sprintf("Testing with %d cores on type = %s ...",
@@ -204,6 +210,12 @@ for (type in types) {
            class(f)[1], paste(sQuote(v), collapse = ", ")))
     }
 
+    ## Sanity checks
+    pid2 <- Sys.getpid()
+    message("Main PID (original): ", pid)
+    message("Main PID: ", pid2)
+    stopifnot(pid2 == pid)
+
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
   } ## for (cores ...)
@@ -346,10 +358,21 @@ for (type in types) {
   print(cl)
   str(cl)
   parallel::stopCluster(cl)
-    
+
+  ## Sanity checks
+  pid2 <- Sys.getpid()
+  message("Main PID (original): ", pid)
+  message("Main PID: ", pid2)
+  stopifnot(pid2 == pid)
+
   message(sprintf("Test set #3 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
 
+## Sanity checks
+pid2 <- Sys.getpid()
+message("Main PID (original): ", pid)
+message("Main PID: ", pid2)
+stopifnot(pid2 == pid)
 
 message("*** cluster() - exception when re-creating workers ...")
 ## https://github.com/HenrikBengtsson/future/issues/261
