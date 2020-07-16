@@ -1,9 +1,17 @@
 Package: future
 ===============
 
-Version: 1.18.0 [2020-07-09]
+Version: 1.18.0-9000 [2020-07-16]
 
- * ...
+SIGNIFICANT CHANGES:
+
+ * Futures detect when random number generation (RNG) was used to resolve them.
+   If a future uses RNG without parallel RNG was requested, then an informative
+   warning is produced. To request parallel RNG, specify argument 'seed', e.g.
+   'f <- future(rnorm(3), seed=TRUE)' or 'y %<-% { rnorm(3) } %seed% TRUE'.
+   Higher-level map-reduce APIs provide similarly named "seed" arguments to
+   achieve the same.  To, escalate these warning to errors, set option
+   'future.rng.onMisuse' to "error".  To silence them, set it to "ignore".
 
 
 Version: 1.18.0 [2020-07-08]

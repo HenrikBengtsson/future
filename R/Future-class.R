@@ -445,7 +445,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     ## doFuture w/ doRNG, e.g. %dorng%
     rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
     if (!rng_ok) {
-      onMisuse <- Sys.getenv("R_FUTURE_RNG_ONMISUSE", "ignore")
+      onMisuse <- Sys.getenv("R_FUTURE_RNG_ONMISUSE", "warning")
       onMisuse <- getOption("future.rng.onMisuse", onMisuse)
       if (onMisuse != "ignore") {
         label <- future$label
