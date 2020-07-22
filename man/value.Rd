@@ -5,8 +5,8 @@
 \alias{values}
 \alias{value.Future}
 \alias{value.list}
-\alias{value.environment}
 \alias{value.listenv}
+\alias{value.environment}
 \title{The value of a future or the values of all elements in a container}
 \usage{
 value(...)
@@ -15,9 +15,9 @@ value(...)
 
 \method{value}{list}(x, stdout = TRUE, signal = TRUE, ...)
 
-\method{value}{environment}(x, stdout = TRUE, signal = TRUE, ...)
-
 \method{value}{listenv}(x, stdout = TRUE, signal = TRUE, ...)
+
+\method{value}{environment}(x, stdout = TRUE, signal = TRUE, ...)
 }
 \arguments{
 \item{\dots}{All arguments used by the S3 methods.}

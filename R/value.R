@@ -33,6 +33,7 @@
 #' @export
 value <- function(...) UseMethod("value")
 
+
 #' @rdname value
 #' @export
 value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
@@ -134,6 +135,12 @@ value.list <- function(x, stdout = TRUE, signal = TRUE, ...) {
   y
 }
 
+
+#' @rdname value
+#' @export
+value.listenv <- value.list
+
+
 #' @rdname value
 #' @export
 value.environment <- function(x, stdout = TRUE, signal = TRUE, ...) {
@@ -146,26 +153,6 @@ value.environment <- function(x, stdout = TRUE, signal = TRUE, ...) {
     v <- value(f, stdout = FALSE, signal = FALSE, ...)
     if (signal && inherits(v, "error")) stop(v)
     y[[key]] <- v
-  }
-  y
-}
-
-#' @rdname value
-#' @export
-value.listenv <- function(x, stdout = TRUE, signal = TRUE, ...) {
-  y <- futures(x)
-  y <- resolve(y, result = TRUE, stdout = stdout, signal = signal, force = TRUE)
-  for (ii in seq_along(y)) {
-    f <- y[[ii]]
-    if (!inherits(f, "Future")) next
-    v <- value(f, stdout = FALSE, signal = FALSE, ...)
-    if (signal && inherits(v, "error")) stop(v)
-    if (is.null(v)) {
-      y[ii] <- list(NULL)
-    } else {
-      y[[ii]] <- v
-      v <- NULL
-    }
   }
   y
 }
