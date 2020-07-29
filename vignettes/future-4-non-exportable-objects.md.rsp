@@ -350,38 +350,5 @@ f <- future(xml_children(xml))
 ## globals ('xml' of class 'xml_document') used in the future expression
 ```
 
-
-<%---
-
-### Package: rlang
-
-Yet another example comes from the [rlang](https://cran.r-project.org/package=rlang) package.  This example is somewhat twisted - it uses `value(future(x))` which is quite meaningless by itself - but it is a minimal example that illustrates what can happen:
-
-```r
-library("future")
-plan(multisession)
-library("dplyr")  ## relies on 'rlang'
-iris <- as_tibble(iris)
-res <- mutate(iris, mod = value(future({
-    list(lm(Species ~ Sepal.Length, data = iris))
-})))
-dim(res)
-## [1] 150   6
-```
-
-This seems to work.  However, there is indeed an external pointer involved;
-
-```r
-options(future.globals.onReference = "error")
-res <- mutate(iris, mod = value(future({
-  list(lm(Species ~ Sepal.Length, data = iris))
-})))
-## Error: Detected a non-exportable reference ('externalptr' of class
-## 'RegisteredNativeSymbol') in one of the globals ('rlang_tilde_eval' of
-## class 'CallRoutine') used in the future expression
-```
----%>
-
-
 ---
 Copyright Henrik Bengtsson, 2020
