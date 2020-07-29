@@ -71,6 +71,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   ----------------|-------------------------------------------
   **base**        | connection
   **DBI**         | DBIConnection
+  **keras**       | keras.engine.sequential.Sequential, ...
   **magick**      | magick-image
   **Rcpp**        | NativeSymbol
   **reticulate**  | python.builtin.function, python.builtin.module
@@ -96,6 +97,35 @@ dummy %<-% print(con)
 ## ('con' of class 'SQLiteConnection') used in the future expression
 ```
 
+
+
+## Package: keras
+
+The [keras](https://cran.r-project.org/package=DBI) package provides an R interface to [Keras](https://keras.io/), which "is a high-level neural networks API developed with a focus on enabling fast experimentation".  The R implementation accesses the Keras Python API via [reticulate](https://cran.r-project.org/package=reticulate).  However, Keras model instances in R make use of R connections and external pointers, which prevents them from being exported to external R processes.  For example, if the attempt to use a Keras model in a multisession workers, the worker will produce a run-time error:
+
+```r
+library(keras)
+
+library(future)
+plan(multisession)
+
+model <- keras_model_sequential()
+f <- future(model %>% 
+       layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+       layer_dropout(rate = 0.4) %>% 
+       layer_dense(units = 128, activation = 'relu') %>%
+       layer_dropout(rate = 0.3) %>%
+       layer_dense(units = 10, activation = 'softmax'))
+model2 <- value(f)
+Error in object$add(layer) : attempt to apply non-function
+```
+
+If we turn on `options(future.globals.onReference = "error")`, we will catch this already when we create the future:
+```r
+Error: Detected a non-exportable reference ('externalptr') in one of the
+globals ('model' of class 'keras.engine.sequential.Sequential') used in
+the future expression
+```
 
 
 ### Package: magic
