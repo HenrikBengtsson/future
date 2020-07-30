@@ -11,6 +11,7 @@ makeClusterPSOCK(
   port = c("auto", "random"),
   ...,
   autoStop = FALSE,
+  tries = 5L,
   verbose = getOption("future.debug", FALSE)
 )
 
@@ -67,10 +68,15 @@ appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
 SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 
 \item{\dots}{Optional arguments passed to
-\code{makeNode(workers[i], ..., rank = i)} where
-\code{i = seq_along(workers)}.}
+\code{makeNode(workers[i], ..., rank = i)} where \code{i = seq_along(workers)}.}
 
-\item{autoStop}{If TRUE, the cluster will be automatically stopped}
+\item{autoStop}{If TRUE, the cluster will be automatically stopped
+(using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
+garbage collected, unless already stopped.}
+
+\item{tries}{Maximum number of attempts done to find a random port that can be
+opened on the current machine.  This is only applicable if argument \code{port}
+specify one or more ports directly or indirectly, e.g. \code{port = "random"}.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 

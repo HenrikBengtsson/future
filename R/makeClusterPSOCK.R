@@ -16,13 +16,30 @@
 #' @param makeNode A function that creates a `"SOCKnode"` or
 #' `"SOCK0node"` object, which represents a connection to a worker.
 #' 
+#' @param port The port number of the master used for communicating with all
+#' the workers (via socket connections).  If an integer vector of ports, then a
+#' random one among those is chosen.  If `"random"`, then a random port in
+#' is chosen from `11000:11999`, or from the range specified by
+#' environment variable \env{R_FUTURE_RANDOM_PORTS}.
+#' If `"auto"` (default), then the default (single) port is taken from
+#' environment variable \env{R_PARALLEL_PORT}, otherwise `"random"` is
+#' used.
+#' _Note, do not use this argument to specify the port number used by
+#' `rshcmd`, which typically is an SSH client.  Instead, if the SSH daemon
+#' runs on a different port than the default 22, specify the SSH port by
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via
+#' SSH options `-p`, e.g. `rshopts = c("-p", "2200")`._
+#' 
 #' @param \dots Optional arguments passed to
-#' `makeNode(workers[i], ..., rank = i)` where
-#' `i = seq_along(workers)`.
+#' `makeNode(workers[i], ..., rank = i)` where `i = seq_along(workers)`.
 #'
 #' @param autoStop If TRUE, the cluster will be automatically stopped
-#  (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
-#  garbage collected, unless already stopped.
+#' (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
+#' garbage collected, unless already stopped.
+#'
+#' @param tries Maximum number of attempts done to find a random port that can be
+#' opened on the current machine.  This is only applicable if argument `port`
+#' specify one or more ports directly or indirectly, e.g. `port = "random"`.
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
@@ -34,7 +51,7 @@
 #'
 #' @importFrom parallel stopCluster
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = 5L, verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -45,6 +62,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+
+  tries <- as.integer(tries)
+  stop_if_not(length(tries), is.integer(tries), !is.na(tries), tries >= 1L)
 
   verbose_prefix <- "[local output] "
 
@@ -76,7 +96,25 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     stop("Argument 'post' must be of length one or more: 0")
   }
   if (length(port) > 1L) {
-    port <- stealth_sample(port, size = 1L)
+    ports <- port
+    ## Get a random port and test if it can be opened, iff possible.
+    ## If so, try five times before giving up.
+    ns <- asNamespace("parallel")
+    if (exists("serverSocket", envir = ns, mode = "function")) {
+      ## Available in R (>= 4.0.0)
+      serverSocket <- get("serverSocket", envir = ns, mode = "function")
+      for (kk in 1:tries) {
+        port <- stealth_sample(ports, size = 1L)
+        con <- tryCatch(serverSocket(port), error = identity)
+        ## Success?
+        if (inherits(con, "connection")) {
+          close(con)
+          break
+        }
+      }
+    } else {
+      port <- stealth_sample(ports, size = 1L)
+    }
   }
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
@@ -134,20 +172,6 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' known to the workers.  If NULL (default), then the default is
 #' `Sys.info()[["nodename"]]` unless `worker` is _localhost_ or
 #' `revtunnel = TRUE` in case it is `"localhost"`.
-#' 
-#' @param port The port number of the master used for communicating with all
-#' the workers (via socket connections).  If an integer vector of ports, then a
-#' random one among those is chosen.  If `"random"`, then a random port in
-#' is chosen from `11000:11999`, or from the range specified by
-#' environment variable \env{R_FUTURE_RANDOM_PORTS}.
-#' If `"auto"` (default), then the default (single) port is taken from
-#' environment variable \env{R_PARALLEL_PORT}, otherwise `"random"` is
-#' used.
-#' _Note, do not use this argument to specify the port number used by
-#' `rshcmd`, which typically is an SSH client.  Instead, if the SSH daemon
-#' runs on a different port than the default 22, specify the SSH port by
-#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via
-#' SSH options `-p`, e.g. `rshopts = c("-p", "2200")`._
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
