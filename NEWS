@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-07-29]
+Version: 1.18.0-9000 [2020-07-30]
 
 SIGNIFICANT CHANGES:
 
@@ -20,7 +20,19 @@ NEW FEATURES:
    using it.  If not, it will try with another random port until it succeeds.
    It will try up to 'tries' times.  This argument and try-before-use approach
    is ignored in R (< 4.0.0).
-   
+
+ * If multithreading is disabled but multicore futures fail to acknowledged
+   the setting on the current system, then an informative FutureWarning is
+   produced by such futures.
+
+BUG FIXES:
+
+ * Disabling multithreading in forked processes by setting R option
+   'future.fork.multithreading.enable' or environment variable
+   'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE' would cause multicore
+   futures to always return value 1L.  This bug was introduced in
+   future 1.17.0 (2020-04-17).
+
 
 Version: 1.18.0 [2020-07-08]
 
