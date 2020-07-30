@@ -21,6 +21,10 @@ NEW FEATURES:
    It will try up to 'tries' times.  This argument and try-before-use approach
    is ignored in R (< 4.0.0).
 
+ * If multithreading is disabled but multicore futures fail to acknowledged
+   the setting on the current system, then an informative FutureWarning is
+   produced by such futures.
+
 BUG FIXES:
 
  * Disabling multithreading in forked processes by setting R option

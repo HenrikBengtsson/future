@@ -247,7 +247,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
   multithreading <- getOption("future.fork.multithreading.enable", multithreading)
   if (isFALSE(multithreading) &&
       !supports_omp_threads(assert = TRUE, debug = debug)) {
-    warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+    warning(future::FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
     multithreading <- TRUE
   }
   
@@ -259,6 +259,11 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
         RhpcBLASctl::omp_set_num_threads(1L)
         base::on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
         new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+        if (!is.numeric(new_omp_threads) || is.na(new_omp_threads) || new_omp_threads != 1L) {
+          label <- future$label
+          if (is.null(label)) label <- "<none>"
+          warning(future::FutureWarning(sprintf("Failed to force a single OMP thread on this system. Number of threads used: %s", new_omp_threads), future = future))
+        }
       }
 
       ## Tell BLAS to use a single thread(?)
