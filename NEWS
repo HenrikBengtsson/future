@@ -26,7 +26,8 @@ BUG FIXES:
  * Disabling multithreading in forked processes by setting R option
    'future.fork.multithreading.enable' or environment variable
    'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE' would cause multicore
-   futures to always return value 1L.
+   futures to always return value 1L.  This bug was introduced in
+   future 1.17.0 (2020-04-17).
 
 
 Version: 1.18.0 [2020-07-08]
