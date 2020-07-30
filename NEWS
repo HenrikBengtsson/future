@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-07-16]
+Version: 1.18.0-9000 [2020-07-29]
 
 SIGNIFICANT CHANGES:
 
@@ -13,6 +13,14 @@ SIGNIFICANT CHANGES:
    achieve the same.  To, escalate these warning to errors, set option
    'future.rng.onMisuse' to "error".  To silence them, set it to "ignore".
 
+NEW FEATURES:
+
+ * Unless argument 'port' specifies a unique port, makeClusterPSOCK() will
+   now test if the randomized port can be open on the local machine before
+   using it.  If not, it will try with another random port until it succeeds.
+   It will try up to 'tries' times.  This argument and try-before-use approach
+   is ignored in R (< 4.0.0).
+   
 
 Version: 1.18.0 [2020-07-08]
 
