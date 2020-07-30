@@ -46,8 +46,8 @@ if (supportsMulticore() && availableCores("multicore") >= 2L && supports_omp_thr
 
     message(sprintf("'future.fork.multithreading.enable' = %s ...", enable))
 
-    f <- future(RhpcBLASctl::omp_get_max_threads())
-    nthreads <- value(f)
+    f <- future(list(nthreads = RhpcBLASctl::omp_get_max_threads()))
+    nthreads <- value(f)$nthreads
     cat(sprintf("Number of OpenMP threads in %s future: %d\n", sQuote(class(f)[1]), nthreads))
 
     ## Assert that single-threading was set?
