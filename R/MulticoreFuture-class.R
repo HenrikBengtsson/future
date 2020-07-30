@@ -266,6 +266,8 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
       ## FIXME: How can we get the current BLAS settings?
       ## /HB 2020-01-09
       ## RhpcBLASctl::blas_set_num_threads(1L)
+
+      .(expr)
     })
     
     if (debug) mdebug("- Updated expression to force single-threaded mode")
