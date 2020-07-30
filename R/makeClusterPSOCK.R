@@ -96,15 +96,15 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     stop("Argument 'post' must be of length one or more: 0")
   }
   if (length(port) > 1L) {
-    ports <- port
+    ports <- stealth_sample(ports, size = tries)
     ## Get a random port and test if it can be opened, iff possible.
-    ## If so, try five times before giving up.
+    ## If so, try 'tries' times before giving up.
     ns <- asNamespace("parallel")
     if (exists("serverSocket", envir = ns, mode = "function")) {
       ## Available in R (>= 4.0.0)
       serverSocket <- get("serverSocket", envir = ns, mode = "function")
       for (kk in 1:tries) {
-        port <- stealth_sample(ports, size = 1L)
+        port <- ports[kk]
         con <- tryCatch(serverSocket(port), error = identity)
         ## Success?
         if (inherits(con, "connection")) {
@@ -113,7 +113,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
         }
       }
     } else {
-      port <- stealth_sample(ports, size = 1L)
+      port <- ports[1]
     }
   }
   if (is.na(port) || port < 0L || port > 65535L) {
