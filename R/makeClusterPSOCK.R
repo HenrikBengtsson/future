@@ -96,7 +96,7 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     stop("Argument 'post' must be of length one or more: 0")
   }
   if (length(port) > 1L) {
-    ports <- stealth_sample(ports, size = tries)
+    ports <- stealth_sample(port, size = tries)
     ## Get a random port and test if it can be opened, iff possible.
     ## If so, try 'tries' times before giving up.
     ns <- asNamespace("parallel")
