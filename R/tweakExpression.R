@@ -9,19 +9,20 @@
 ##   tweaked expression: rhs; lhs ~ rhs
 tweakFormulaCall <- function(expr) {
   if (!is.call(expr)) return(expr)
+  expr <- unclass(expr)  
   op <- expr[[1]]
   if (!is.symbol(op)) return(expr)
   op <- as.character(op)
   if (op != "~") return(expr)
   n <- length(expr)
-  if (n != 2 && n != 3) return(expr)
-  
   if (n == 2) {
     lhs <- NULL
     rhs <- expr[[2]]
   } else if (n == 3) {
     lhs <- expr[[2]]
     rhs <- expr[[3]]
+  } else {
+    return(expr)
   }
   
   substitute(
@@ -59,6 +60,7 @@ tweakFormulaCall <- function(expr) {
 ##   tweaked expression: x; x[1, 2, 3] <- value
 tweakSubassignmentCall <- function(expr) {
   if (!is.call(expr)) return(expr)
+  expr <- unclass(expr)  
   op <- expr[[1]]
   if (!is.symbol(op)) return(expr)
   op <- as.character(op)
@@ -93,6 +95,7 @@ tweakSubassignmentCall <- function(expr) {
 ##   tweaked expression: lhs <- rhs; lhs %<-% rhs
 tweakFutureAssignmentCall <- function(expr) {
   if (!is.call(expr)) return(expr)
+  expr <- unclass(expr)  
   op <- expr[[1]]
   if (!is.symbol(op)) return(expr)
   n <- length(expr)
@@ -114,6 +117,7 @@ tweakFutureAssignmentCall <- function(expr) {
       list(a = lhs, b = rhs, e = expr)
     )
   }
+  
   expr
 } ## tweakFutureAssignmentCall()
 

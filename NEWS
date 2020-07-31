@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-07-30]
+Version: 1.18.0-9000 [2020-07-31]
 
 SIGNIFICANT CHANGES:
 
@@ -33,6 +33,9 @@ BUG FIXES:
    futures to always return value 1L.  This bug was introduced in
    future 1.17.0 (2020-04-17).
 
+ * getGlobalsAndPackages(Formula::Formula(~ x)) would produce "the condition
+   has length > 1" warnings (which will become errors in future R versions).
+   
 
 Version: 1.18.0 [2020-07-08]
 

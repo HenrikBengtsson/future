@@ -120,6 +120,23 @@ stopifnot(inherits(res, "warning"))
 message("*** tweak() - gc = TRUE ... DONE")
 
 
+message("*** tweak() - odds and ends ...")
+
+## BUG: getGlobalsAndPackages(Formula::Formula(~ x)) would produce
+## "the condition has length > 1" warnings.
+## https://github.com/HenrikBengtsson/future/issues/395
+length.Formula <- function(x) c(1L, 1L)
+expr <- structure(y ~ x, class = "Formula")
+stopifnot(length(length(expr)) == 2L)
+gp <- future::getGlobalsAndPackages(expr)
+stopifnot(
+  !inherits(gp, "error"),
+  is.list(gp),
+  all(c("expr", "globals", "packages") %in% names(gp))
+)
+
+message("*** tweak() - odds and ends ... DONE")
+
 
 message("*** tweak() - exceptions ...")
 
