@@ -24,6 +24,7 @@ makeNodePSOCK(
   timeout = getOption("future.makeNodePSOCK.timeout",
     as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))),
   rscript = NULL,
+  rscript_transform = NULL,
   homogeneous = NULL,
   rscript_args = NULL,
   rscript_startup = NULL,
@@ -99,6 +100,9 @@ master and a worker communicate with each other (defaults to 30 days).}
 \item{rscript, homogeneous}{The system command for launching \command{Rscript}
 on the worker and whether it is installed in the same path as the calling
 machine or not.  For more details, see below.}
+
+\item{rscript_transform}{A function that takes the Rscript call generated and alters
+it; e.g. if it needs to be piped to a new shell prior to running.}
 
 \item{rscript_args}{Additional arguments to \command{Rscript} (as a character
 vector).  This argument can be used to customize the \R environment of the
