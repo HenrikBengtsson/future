@@ -1,0 +1,6 @@
+Package: dummy
+Version: 0.1
+Title: A Dummy Package
+Description: A package placeholder to trick 'usethis' to stop at the folder where this DESCRIPTION file lives rather than traversing higher up in the directory structure. This protects against bugs such as the one described in https://github.com/r-lib/lifecycle/issues/52.
+Authors@R: person("Dummy", "Dummyson", role="aut", email = "dummy@dummy.org")
+License: GPL (>= 3)
