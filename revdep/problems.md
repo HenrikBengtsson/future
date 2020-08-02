@@ -6,7 +6,7 @@
 * Source code: https://github.com/cran/abjutils
 * URL: https://github.com/abjur/abjutils
 * Date/Publication: 2019-02-07 21:43:35 UTC
-* Number of recursive dependencies: 95
+* Number of recursive dependencies: 96
 
 Run `revdep_details(,"abjutils")` for more info
 
@@ -53,7 +53,7 @@ Run `revdep_details(,"adept")` for more info
 * Source code: https://github.com/cran/alookr
 * BugReports: https://github.com/choonghyunryu/alookr/issues
 * Date/Publication: 2020-06-07 16:50:07 UTC
-* Number of recursive dependencies: 203
+* Number of recursive dependencies: 204
 
 Run `revdep_details(,"alookr")` for more info
 
@@ -336,6 +336,32 @@ Run `revdep_details(,"blavaan")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+    ...
+      blavaan NOTE: fa priors are not available with stan. srs priors will be used. 
+      DIAGNOSTIC(S) FROM PARSER:
+      Info:
+      Left-hand side of sampling statement (~) may contain a non-linear transform of a parameter or local variable.
+      If it does, you need to include a target += statement with the log absolute determinant of the Jacobian of the transform.
+      Left-hand-side of sampling statement:
+          eta ~ sem_lv_lpdf(...)
+      
+      ── 1. Error: blavaan object methods work (@tests.blavaanobject-methods.R#89)  ──
+      lavaan ERROR: data= argument is not a data.fame, but of class 'character'
+      Backtrace:
+       1. testthat::expect_true(...)
+       6. lavaan::lavPredict(fitlav, "lv")
+       7. lavaan:::lavData(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 46 | SKIPPED: 0 | WARNINGS: 6 | FAILED: 1 ]
+      1. Error: blavaan object methods work (@tests.blavaanobject-methods.R#89) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is  5.6Mb
@@ -373,12 +399,12 @@ Run `revdep_details(,"blockCV")` for more info
 
 <details>
 
-* Version: 2.13.3
+* Version: 2.13.5
 * Source code: https://github.com/cran/brms
 * URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
 * BugReports: https://github.com/paul-buerkner/brms/issues
-* Date/Publication: 2020-07-13 13:10:06 UTC
-* Number of recursive dependencies: 180
+* Date/Publication: 2020-07-31 08:40:03 UTC
+* Number of recursive dependencies: 181
 
 Run `revdep_details(,"brms")` for more info
 
@@ -410,7 +436,7 @@ Run `revdep_details(,"CLVTools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.8Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
         libs   5.2Mb
     ```
@@ -424,7 +450,7 @@ Run `revdep_details(,"CLVTools")` for more info
 * URL: https://github.com/rubenarslan/codebook
 * BugReports: https://github.com/rubenarslan/codebook/issues
 * Date/Publication: 2020-06-06 23:40:03 UTC
-* Number of recursive dependencies: 191
+* Number of recursive dependencies: 192
 
 Run `revdep_details(,"codebook")` for more info
 
@@ -458,7 +484,7 @@ Run `revdep_details(,"codebook")` for more info
 * URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
 * BugReports: https://github.com/M-E-Rademaker/cSEM/issues
 * Date/Publication: 2020-03-29 11:00:20 UTC
-* Number of recursive dependencies: 112
+* Number of recursive dependencies: 113
 
 Run `revdep_details(,"cSEM")` for more info
 
@@ -496,28 +522,6 @@ Run `revdep_details(,"datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
-# DeclareDesign
-
-<details>
-
-* Version: 0.22.0
-* Source code: https://github.com/cran/DeclareDesign
-* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
-* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
-* Date/Publication: 2020-03-24 07:40:10 UTC
-* Number of recursive dependencies: 135
-
-Run `revdep_details(,"DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
 # delayed
 
 <details>
@@ -550,7 +554,7 @@ Run `revdep_details(,"delayed")` for more info
 * URL: https://github.com/sjspielman/dragon
 * BugReports: https://github.com/sjspielman/dragon/issues
 * Date/Publication: 2020-07-19 00:10:03 UTC
-* Number of recursive dependencies: 123
+* Number of recursive dependencies: 124
 
 Run `revdep_details(,"dragon")` for more info
 
@@ -574,7 +578,7 @@ Run `revdep_details(,"dragon")` for more info
 * URL: https://github.com/ropensci/drake, https://docs.ropensci.org/drake, https://books.ropensci.org/drake/
 * BugReports: https://github.com/ropensci/drake/issues
 * Date/Publication: 2020-06-29 17:20:03 UTC
-* Number of recursive dependencies: 141
+* Number of recursive dependencies: 142
 
 Run `revdep_details(,"drake")` for more info
 
@@ -596,7 +600,7 @@ Run `revdep_details(,"drake")` for more info
 * URL: http://fabletools.tidyverts.org/, https://github.com/tidyverts/fabletools
 * BugReports: https://github.com/tidyverts/fabletools/issues
 * Date/Publication: 2020-06-15 23:40:08 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 95
 
 Run `revdep_details(,"fabletools")` for more info
 
@@ -604,74 +608,10 @@ Run `revdep_details(,"fabletools")` for more info
 
 ## In both
 
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking replacement functions ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    The argument of a replacement function which corresponds to the right
-    hand side must be named ‘value’.
-    ```
-
-*   checking Rd files ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    prepare_Rd: running command 'timedatectl' had status 1
-    ```
-
-*   checking for missing documentation entries ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    All user-level objects in a package should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    Failed to query server: Connection timed out
-    Failed to query server: Connection timed out
-    ```
-
-*   checking for unstated dependencies in examples ... WARNING
-    ```
-    Failed to query server: Connection timed out
-    Warning in system("timedatectl", intern = TRUE) :
-      running command 'timedatectl' had status 1
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
-    Failed to query server: Connection timed out
     Namespace in Imports field not imported from: ‘lifecycle’
       All declared Imports should be used.
-    ```
-
-*   checking foreign function calls ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    See chapter ‘System and foreign language interfaces’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    ```
-
-*   checking Rd \usage sections ... NOTE
-    ```
-    Failed to query server: Connection timed out
-    The \usage entries for S3 methods should use the \method markup and not
-    their full name.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
     ```
 
 # foieGras
@@ -683,7 +623,7 @@ Run `revdep_details(,"fabletools")` for more info
 * URL: <https://cran.r-project.org/package=foieGras>
 * BugReports: https://github.com/ianjonsen/foieGras/issues
 * Date/Publication: 2020-07-22 21:50:02 UTC
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 119
 
 Run `revdep_details(,"foieGras")` for more info
 
@@ -706,7 +646,7 @@ Run `revdep_details(,"foieGras")` for more info
 * Source code: https://github.com/cran/forecastML
 * URL: https://github.com/nredell/forecastML/
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 94
 
 Run `revdep_details(,"forecastML")` for more info
 
@@ -729,7 +669,7 @@ Run `revdep_details(,"forecastML")` for more info
 * URL: https://github.com/msperlin/GetBCBData/
 * BugReports: https://github.com/msperlin/GetBCBData/issues
 * Date/Publication: 2019-04-23 10:10:29 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 101
 
 Run `revdep_details(,"GetBCBData")` for more info
 
@@ -796,7 +736,7 @@ Run `revdep_details(,"gstat")` for more info
 * Version: 3.0.0
 * Source code: https://github.com/cran/gWQS
 * Date/Publication: 2020-06-23 13:00:03 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 104
 
 Run `revdep_details(,"gWQS")` for more info
 
@@ -819,7 +759,7 @@ Run `revdep_details(,"gWQS")` for more info
 * URL: https://github.com/christophM/iml
 * BugReports: https://github.com/christophM/iml/issues
 * Date/Publication: 2020-03-26 10:20:03 UTC
-* Number of recursive dependencies: 153
+* Number of recursive dependencies: 154
 
 Run `revdep_details(,"iml")` for more info
 
@@ -842,7 +782,7 @@ Run `revdep_details(,"iml")` for more info
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(,"infercnv")` for more info
 
@@ -886,30 +826,6 @@ Run `revdep_details(,"inlinedocs")` for more info
     Unknown package ‘R.methodsS3’ in Rd xrefs
     ```
 
-# lidR
-
-<details>
-
-* Version: 3.0.2
-* Source code: https://github.com/cran/lidR
-* URL: https://github.com/Jean-Romain/lidR
-* BugReports: https://github.com/Jean-Romain/lidR/issues
-* Date/Publication: 2020-07-05 04:50:29 UTC
-* Number of recursive dependencies: 154
-
-Run `revdep_details(,"lidR")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.2Mb
-      sub-directories of 1Mb or more:
-        libs   4.1Mb
-    ```
-
 # lmtp
 
 <details>
@@ -937,27 +853,6 @@ Run `revdep_details(,"lmtp")` for more info
       All declared Imports should be used.
     ```
 
-# merTools
-
-<details>
-
-* Version: 0.5.2
-* Source code: https://github.com/cran/merTools
-* BugReports: https://www.github.com/jknowles/merTools
-* Date/Publication: 2020-06-23 10:30:12 UTC
-* Number of recursive dependencies: 147
-
-Run `revdep_details(,"merTools")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘rstanarm’
-    ```
-
 # methyvim
 
 <details>
@@ -967,7 +862,7 @@ Run `revdep_details(,"merTools")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 204
+* Number of recursive dependencies: 205
 
 Run `revdep_details(,"methyvim")` for more info
 
@@ -1013,7 +908,7 @@ Run `revdep_details(,"methyvim")` for more info
 * Version: 1.28.0
 * Source code: https://github.com/cran/MineICA
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 202
+* Number of recursive dependencies: 203
 
 Run `revdep_details(,"MineICA")` for more info
 
@@ -1163,26 +1058,6 @@ Run `revdep_details(,"MineICA")` for more info
     contains 'methods').
     ```
 
-# onemapsgapi
-
-<details>
-
-* Version: 1.0.0
-* Source code: https://github.com/cran/onemapsgapi
-* Date/Publication: 2020-02-06 11:00:02 UTC
-* Number of recursive dependencies: 57
-
-Run `revdep_details(,"onemapsgapi")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
 # origami
 
 <details>
@@ -1303,7 +1178,7 @@ Run `revdep_details(,"promises")` for more info
 * Version: 1.20.0
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 281
+* Number of recursive dependencies: 282
 
 Run `revdep_details(,"Prostar")` for more info
 
@@ -1407,7 +1282,7 @@ Run `revdep_details(,"QDNAseq")` for more info
 * Version: 2.4.0
 * Source code: https://github.com/cran/qgcomp
 * Date/Publication: 2020-07-01 12:00:02 UTC
-* Number of recursive dependencies: 128
+* Number of recursive dependencies: 129
 
 Run `revdep_details(,"qgcomp")` for more info
 
@@ -1454,7 +1329,7 @@ Run `revdep_details(,"qtl2pleio")` for more info
 * URL: https://kaz-yos.github.io/regmedint/
 * BugReports: https://github.com/kaz-yos/regmedint/issues
 * Date/Publication: 2020-05-11 11:00:02 UTC
-* Number of recursive dependencies: 105
+* Number of recursive dependencies: 106
 
 Run `revdep_details(,"regmedint")` for more info
 
@@ -1485,38 +1360,53 @@ Run `revdep_details(,"reproducible")` for more info
 
 ## In both
 
-*   checking tests ...
+*   checking whether package ‘reproducible’ can be installed ... ERROR
     ```
-    ...
-        objectNames hashElements             hash objSize
-      1        file         file fc0a3b61a65f0bf1     168
-      2        .FUN         .FUN 7a8f2865ef4bc06d    1256
-        functionName        component elapsedTime units
-      1      readRDS          Hashing 0.002385616  secs
-      2      readRDS  Running readRDS 0.001090288  secs
-      3      readRDS   Saving to repo 0.517618179  secs
-      4      readRDS Whole Cache call 0.554520607  secs
-        objectNames hashElements             hash objSize
-      1        file         file fc0a3b61a65f0bf1   24122
-      2        .FUN         .FUN 7a8f2865ef4bc06d    1256
-        functionName         component elapsedTime units
-      1      readRDS           Hashing 0.002856731  secs
-      2      readRDS Loading from repo 0.001125813  secs
-      3      readRDS  Whole Cache call 0.078192234  secs
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 380 | SKIPPED: 71 | WARNINGS: 3 | FAILED: 1 ]
-      1. Error: git-related functions work (@test-git.R#15) 
-      
-      Error: testthat unit tests failed
-      Execution halted
+    Installation failed.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
     ```
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘usethis’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘git2r’
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘reproducible’ ...
+** package ‘reproducible’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00_pkg_src/reproducible'
+Error in loadNamespace(name) : there is no package called ‘git2r’
+Error: unable to load R code in package ‘reproducible’
+Execution halted
+ERROR: lazy loading failed for package ‘reproducible’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/reproducible’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘reproducible’ ...
+** package ‘reproducible’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/00_pkg_src/reproducible'
+Error in loadNamespace(name) : there is no package called ‘git2r’
+Error: unable to load R code in package ‘reproducible’
+Execution halted
+ERROR: lazy loading failed for package ‘reproducible’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/reproducible’
+
+```
 # robotstxt
 
 <details>
@@ -1549,7 +1439,7 @@ Run `revdep_details(,"robotstxt")` for more info
 * URL: https://github.com/sapfluxnet/sapfluxnetr
 * BugReports: https://github.com/sapfluxnet/sapfluxnetr/issues
 * Date/Publication: 2020-05-11 12:50:07 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 73
 
 Run `revdep_details(,"sapfluxnetr")` for more info
 
@@ -1590,7 +1480,7 @@ Run `revdep_details(,"SCtools")` for more info
 * Version: 1.1.5
 * Source code: https://github.com/cran/seer
 * Date/Publication: 2020-06-08 05:00:02 UTC
-* Number of recursive dependencies: 106
+* Number of recursive dependencies: 107
 
 Run `revdep_details(,"seer")` for more info
 
@@ -1613,7 +1503,7 @@ Run `revdep_details(,"seer")` for more info
 * URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-07-16 04:30:12 UTC
-* Number of recursive dependencies: 223
+* Number of recursive dependencies: 224
 
 Run `revdep_details(,"Seurat")` for more info
 
@@ -1624,6 +1514,14 @@ Run `revdep_details(,"Seurat")` for more info
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘loomR’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        R      1.2Mb
+        libs   3.4Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -1664,7 +1562,7 @@ Run `revdep_details(,"shinyrecap")` for more info
 * URL: https://meghapsimatrix.github.io/simhelpers/index.html
 * BugReports: https://github.com/meghapsimatrix/simhelpers/issues
 * Date/Publication: 2020-03-31 15:00:06 UTC
-* Number of recursive dependencies: 97
+* Number of recursive dependencies: 98
 
 Run `revdep_details(,"simhelpers")` for more info
 
@@ -1698,7 +1596,7 @@ Run `revdep_details(,"skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.5Mb
+      installed size is 13.6Mb
       sub-directories of 1Mb or more:
         libs  13.0Mb
     ```
@@ -1718,7 +1616,7 @@ Run `revdep_details(,"skpr")` for more info
 * URL: https://github.com/talegari/solitude
 * BugReports: https://github.com/talegari/solitude/issues
 * Date/Publication: 2020-07-07 09:20:02 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 131
 
 Run `revdep_details(,"solitude")` for more info
 
@@ -1765,7 +1663,7 @@ Run `revdep_details(,"spacey")` for more info
 * URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
 * BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
 * Date/Publication: 2020-05-15 17:10:06 UTC
-* Number of recursive dependencies: 156
+* Number of recursive dependencies: 157
 
 Run `revdep_details(,"SpaDES.core")` for more info
 
@@ -1807,7 +1705,7 @@ Run `revdep_details(,"spatialwarnings")` for more info
 * URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
 * BugReports: https://github.com/r-spatial/stars/issues/
 * Date/Publication: 2020-07-08 11:20:03 UTC
-* Number of recursive dependencies: 129
+* Number of recursive dependencies: 130
 
 Run `revdep_details(,"stars")` for more info
 
@@ -1908,7 +1806,7 @@ Run `revdep_details(,"treeHMM")` for more info
 * URL: https://github.com/RamiKrispin/TSstudio
 * BugReports: https://github.com/RamiKrispin/TSstudio/issues
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 135
+* Number of recursive dependencies: 136
 
 Run `revdep_details(,"TSstudio")` for more info
 
@@ -1918,7 +1816,6 @@ Run `revdep_details(,"TSstudio")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Failed to query server: Connection timed out
     Namespace in Imports field not imported from: ‘forecastHybrid’
       All declared Imports should be used.
     ```

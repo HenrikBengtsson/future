@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-07-30                   |
+|date     |2020-08-01                   |
 
 # Dependencies
 
@@ -23,11 +23,12 @@
 
 # Revdeps
 
-## Failed to check (1)
+## Failed to check (2)
 
-|package                               |version |error |warning |note |
-|:-------------------------------------|:-------|:-----|:-------|:----|
-|[SpaDES.core](failures.md#spadescore) |1.0.1   |1     |        |     |
+|package                                  |version |error |warning |note |
+|:----------------------------------------|:-------|:-----|:-------|:----|
+|[reproducible](failures.md#reproducible) |1.1.1   |1     |        |1    |
+|[SpaDES.core](failures.md#spadescore)    |1.0.1   |1     |        |     |
 
 ## All (129)
 
@@ -43,9 +44,9 @@
 |batchtools                                     |0.9.13    |      |        |     |
 |[bcmaps](problems.md#bcmaps)                   |0.18.1    |      |        |1    |
 |biotmle                                        |1.12.0    |      |        |     |
-|[blavaan](problems.md#blavaan)                 |0.3-9     |      |        |2    |
+|[blavaan](problems.md#blavaan)                 |0.3-9     |1     |        |2    |
 |[blockCV](problems.md#blockcv)                 |2.1.1     |      |        |1    |
-|[brms](problems.md#brms)                       |2.13.3    |      |        |1    |
+|[brms](problems.md#brms)                       |2.13.5    |      |        |1    |
 |ceRNAnetsim                                    |1.0.0     |      |        |     |
 |civis                                          |3.0.0     |      |        |     |
 |[CLVTools](problems.md#clvtools)               |0.6.0     |      |        |1    |
@@ -53,7 +54,7 @@
 |[codebook](problems.md#codebook)               |0.9.2     |      |        |3    |
 |[cSEM](problems.md#csem)                       |0.2.0     |      |        |1    |
 |[datapackage.r](problems.md#datapackager)      |1.3.1     |      |        |1    |
-|[DeclareDesign](problems.md#declaredesign)     |0.22.0    |      |        |1    |
+|DeclareDesign                                  |0.22.0    |      |        |     |
 |[delayed](problems.md#delayed)                 |0.3.0     |      |        |1    |
 |dhReg                                          |0.1.0     |      |        |     |
 |dipsaus                                        |0.0.9     |      |        |     |
@@ -65,7 +66,7 @@
 |EFAtools                                       |0.1.1     |      |        |     |
 |epwshiftr                                      |0.1.0     |      |        |     |
 |ezcox                                          |0.7.0     |      |        |     |
-|[fabletools](problems.md#fabletools)           |0.2.0     |      |6       |4    |
+|[fabletools](problems.md#fabletools)           |0.2.0     |      |        |1    |
 |FAMoS                                          |0.3.0     |      |        |     |
 |fiery                                          |1.1.2     |      |        |     |
 |fipe                                           |0.0.1     |      |        |     |
@@ -96,24 +97,24 @@
 |[iml](problems.md#iml)                         |0.10.0    |      |        |1    |
 |[infercnv](problems.md#infercnv)               |1.4.0     |      |        |2    |
 |[inlinedocs](problems.md#inlinedocs)           |2019.12.5 |      |        |1    |
-|ipc                                            |0.1.3     |-1    |        |     |
+|ipc                                            |0.1.3     |      |        |     |
 |ItemResponseTrees                              |0.2.5     |      |        |     |
 |jstor                                          |0.3.9     |      |        |     |
 |kernelboot                                     |0.1.7     |      |        |     |
 |ldaPrototype                                   |0.2.0     |      |        |     |
 |ldsr                                           |0.0.2     |      |        |     |
 |lgr                                            |0.3.4     |      |        |     |
-|[lidR](problems.md#lidr)                       |3.0.2     |      |        |1    |
+|lidR                                           |3.0.2     |      |        |-1   |
 |lightr                                         |1.3       |      |        |     |
 |[lmtp](problems.md#lmtp)                       |0.0.5     |      |        |2    |
-|[merTools](problems.md#mertools)               |0.5.2     |      |        |1    |
+|merTools                                       |0.5.2     |      |        |     |
 |metagam                                        |0.1.2     |      |        |     |
 |[methyvim](problems.md#methyvim)               |1.10.0    |1     |        |1    |
 |[MineICA](problems.md#mineica)                 |1.28.0    |1     |3       |4    |
 |mlr3                                           |0.4.0     |      |        |     |
 |mlr3db                                         |0.1.5     |      |        |     |
 |mrgsim.parallel                                |0.1.1     |      |        |     |
-|[onemapsgapi](problems.md#onemapsgapi)         |1.0.0     |      |        |1    |
+|onemapsgapi                                    |1.0.0     |      |        |     |
 |[origami](problems.md#origami)                 |1.0.3     |      |        |1    |
 |pavo                                           |2.4.0     |      |        |     |
 |[PCRedux](problems.md#pcredux)                 |1.0-6     |      |        |1    |
@@ -132,14 +133,14 @@
 |rainette                                       |0.1.1     |      |        |     |
 |rangeMapper                                    |0.3-7     |      |        |     |
 |[regmedint](problems.md#regmedint)             |0.1.0     |      |        |1    |
-|[reproducible](problems.md#reproducible)       |1.1.1     |1     |        |1    |
+|[reproducible](failures.md#reproducible)       |1.1.1     |1     |        |1    |
 |[robotstxt](problems.md#robotstxt)             |0.7.8     |      |        |1    |
 |RTransferEntropy                               |0.2.12    |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)         |0.1.0     |      |        |1    |
 |[SCtools](problems.md#sctools)                 |0.3.0     |      |        |1    |
 |sctransform                                    |0.2.1     |      |        |     |
 |[seer](problems.md#seer)                       |1.1.5     |      |        |1    |
-|[Seurat](problems.md#seurat)                   |3.2.0     |      |        |2    |
+|[Seurat](problems.md#seurat)                   |3.2.0     |      |        |3    |
 |shiny                                          |1.5.0     |      |        |     |
 |[shinyrecap](problems.md#shinyrecap)           |0.1.0     |      |        |1    |
 |sigminer                                       |1.0.7     |      |        |     |
