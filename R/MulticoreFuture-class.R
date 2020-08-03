@@ -18,7 +18,8 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   ## Global objects
   assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-
+  expr <- gp$expr
+  
   ## Assign?
    if (length(gp) > 0L && (lazy || assignToTarget)) {
     target <- new.env(parent = envir)
