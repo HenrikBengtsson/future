@@ -145,7 +145,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
       message(sprintf("%s- setting up node", verbose_prefix))
     }
     for (kk in 1:tries) {
-      if (verbose) message(sprintf("%s- attempt #%d", verbose_prefix, kk))
+      if (verbose) {
+        message(sprintf("%s- attempt #%d of %d", verbose_prefix, kk, tries))
+      }
       node <- tryCatch({
         makeNode(workers[[ii]], port = port, ..., rank = ii, verbose = verbose)
       }, error = identity)
