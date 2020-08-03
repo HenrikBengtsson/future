@@ -52,7 +52,7 @@
 #'
 #' @importFrom parallel stopCluster
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = getOption("future.makeNodePSOCK.tries", as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))), delay = getOption("future.makeNodePSOCK.tries.delay", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 5))), verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = getOption("future.makeNodePSOCK.tries", as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))), delay = getOption("future.makeNodePSOCK.tries.delay", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 15.0))), verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -153,13 +153,26 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
       }, error = identity)
       ## Success?
       if (!inherits(node, "error")) break
-      if (verbose) {
-        message(sprintf("%s  failed, because: %s", verbose_prefix,
-                conditionMessage(node)))
-      }
-      Sys.sleep(delay)
+      if (kk < tries) {
+        if (verbose) {
+          message(conditionMessage(node))
+          message(sprintf("%s- waiting %g seconds before trying again",
+                  verbose_prefix, delay))
+        }
+        Sys.sleep(delay)
+      }  
     }
-    if (inherits(node, "error")) stop(node)
+    if (inherits(node, "error")) {
+      ex <- node
+      if (verbose) {
+        message(sprintf("%s  Failed %d attempts with %g seconds delay",
+                verbose_prefix, tries, delay))
+      }
+      ex$message <- sprintf("%s\n * Number of attempts: %d (%gs delay)",
+                            conditionMessage(ex), tries, delay)
+                        
+      stop(ex)
+    }
     cl[[ii]] <- node
     
     ## Attaching session information for each worker.  This is done to assert
