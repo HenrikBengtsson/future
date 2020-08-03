@@ -37,9 +37,10 @@
 #' (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
 #' garbage collected, unless already stopped.
 #'
-#' @param tries Maximum number of attempts done to find a random port that can be
-#' opened on the current machine.  This is only applicable if argument `port`
-#' specify one or more ports directly or indirectly, e.g. `port = "random"`.
+#' @param tries,delay Maximum number of attempts done to launch each node
+#' with `makeNode()` and the delay (in seconds) inbetween attempts.
+#' If argument `port` specifies more than one port, e.g. `port = "random"`
+#' then a random port will be drawn and validated at most `tries` times.
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
@@ -51,7 +52,7 @@
 #'
 #' @importFrom parallel stopCluster
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = 5L, verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = getOption("future.makeNodePSOCK.tries", as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))), delay = getOption("future.makeNodePSOCK.tries.delay", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 5))), verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -65,6 +66,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 
   tries <- as.integer(tries)
   stop_if_not(length(tries), is.integer(tries), !is.na(tries), tries >= 1L)
+
+  delay <- as.numeric(delay)
+  stop_if_not(length(delay), is.numeric(delay), !is.na(delay), delay >= 0)
 
   verbose_prefix <- "[local output] "
 
@@ -140,8 +144,21 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
       message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
       message(sprintf("%s- setting up node", verbose_prefix))
     }
-    cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
-                         verbose = verbose)
+    for (kk in 1:tries) {
+      if (verbose) message(sprintf("%s- attempt #%d", verbose_prefix, kk))
+      node <- tryCatch({
+        makeNode(workers[[ii]], port = port, ..., rank = ii, verbose = verbose)
+      }, error = identity)
+      ## Success?
+      if (!inherits(node, "error")) break
+      if (verbose) {
+        message(sprintf("%s  failed, because: %s", verbose_prefix,
+                conditionMessage(node)))
+      }
+      Sys.sleep(delay)
+    }
+    if (inherits(node, "error")) stop(node)
+    cl[[ii]] <- node
     
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect

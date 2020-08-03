@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-07-31]
+Version: 1.18.0-9000 [2020-08-02]
 
 SIGNIFICANT CHANGES:
 
@@ -15,11 +15,11 @@ SIGNIFICANT CHANGES:
 
 NEW FEATURES:
 
- * Unless argument 'port' specifies a unique port, makeClusterPSOCK() will
-   now test if the randomized port can be open on the local machine before
-   using it.  If not, it will try with another random port until it succeeds.
-   It will try up to 'tries' times.  This argument and try-before-use approach
-   is ignored in R (< 4.0.0).
+ * makeClusterPSOCK() will now retry to create a cluster node up to 'tries'
+   (default: 3) times before giving up.  If argument 'port' species more than
+   one port (e.g. port = "random") then it will also attempt find a valid
+   random port up to 'tries' times before giving up.  The pre-validation of
+   the random port is only supported in R (>= 4.0.0) and skipped otherwise.
 
  * If multithreading is disabled but multicore futures fail to acknowledged
    the setting on the current system, then an informative FutureWarning is

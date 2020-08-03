@@ -11,7 +11,10 @@ makeClusterPSOCK(
   port = c("auto", "random"),
   ...,
   autoStop = FALSE,
-  tries = 5L,
+  tries = getOption("future.makeNodePSOCK.tries",
+    as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 5))),
+  delay = getOption("future.makeNodePSOCK.tries.delay",
+    as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 5))),
   verbose = getOption("future.debug", FALSE)
 )
 
@@ -74,9 +77,10 @@ SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
 garbage collected, unless already stopped.}
 
-\item{tries}{Maximum number of attempts done to find a random port that can be
-opened on the current machine.  This is only applicable if argument \code{port}
-specify one or more ports directly or indirectly, e.g. \code{port = "random"}.}
+\item{tries, delay}{Maximum number of attempts done to launch each node
+with \code{makeNode()} and the delay (in seconds) inbetween attempts.
+If argument \code{port} specifies more than one port, e.g. \code{port = "random"}
+then a random port will be drawn and validated at most \code{tries} times.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
