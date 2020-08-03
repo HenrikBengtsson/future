@@ -79,6 +79,51 @@ Run `revdep_details(,"SpaDES.core")` for more info
 
 ## In both
 
-*   R CMD check timed out
-    
+*   checking whether package ‘SpaDES.core’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
+    ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00_pkg_src/SpaDES.core'
+✔ Adding 'lifecycle' to Imports field in DESCRIPTION
+Error in loadNamespace(name) : there is no package called ‘git2r’
+Error: package or namespace load failed for ‘reproducible’:
+ unable to load R code in package ‘reproducible’
+Error: package ‘reproducible’ could not be loaded
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/SpaDES.core’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/00_pkg_src/SpaDES.core'
+✔ Adding 'lifecycle' to Imports field in DESCRIPTION
+Error in loadNamespace(name) : there is no package called ‘git2r’
+Error: package or namespace load failed for ‘reproducible’:
+ unable to load R code in package ‘reproducible’
+Error: package ‘reproducible’ could not be loaded
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/SpaDES.core’
+
+```

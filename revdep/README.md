@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-08-01                   |
+|date     |2020-08-02                   |
 
 # Dependencies
 
@@ -58,7 +58,7 @@
 |[delayed](problems.md#delayed)                 |0.3.0     |      |        |1    |
 |dhReg                                          |0.1.0     |      |        |     |
 |dipsaus                                        |0.0.9     |      |        |     |
-|disk.frame                                     |0.3.7     |      |        |     |
+|disk.frame                                     |0.3.7     |-1    |        |     |
 |doFuture                                       |0.9.0     |      |        |     |
 |[dragon](problems.md#dragon)                   |1.0.1     |      |        |1    |
 |[drake](problems.md#drake)                     |7.12.4    |      |        |1    |
@@ -104,7 +104,7 @@
 |ldaPrototype                                   |0.2.0     |      |        |     |
 |ldsr                                           |0.0.2     |      |        |     |
 |lgr                                            |0.3.4     |      |        |     |
-|lidR                                           |3.0.2     |      |        |-1   |
+|[lidR](problems.md#lidr)                       |3.0.2     |      |        |1    |
 |lightr                                         |1.3       |      |        |     |
 |[lmtp](problems.md#lmtp)                       |0.0.5     |      |        |2    |
 |merTools                                       |0.5.2     |      |        |     |
@@ -140,7 +140,7 @@
 |[SCtools](problems.md#sctools)                 |0.3.0     |      |        |1    |
 |sctransform                                    |0.2.1     |      |        |     |
 |[seer](problems.md#seer)                       |1.1.5     |      |        |1    |
-|[Seurat](problems.md#seurat)                   |3.2.0     |      |        |3    |
+|[Seurat](problems.md#seurat)                   |3.2.0     |      |        |2 -1 |
 |shiny                                          |1.5.0     |      |        |     |
 |[shinyrecap](problems.md#shinyrecap)           |0.1.0     |      |        |1    |
 |sigminer                                       |1.0.7     |      |        |     |
