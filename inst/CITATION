@@ -1,0 +1,26 @@
+citHeader("Please cite 'future' and the future framework using the following references:")
+
+citEntry(
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # BibTeX entry:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  entry = "Misc",
+  author = "Henrik Bengtsson",
+  title = "A Unifying Framework for Parallel and Distributed Processing in R using Futures",
+  year = "2020",
+  month = "aug",
+  eprint = "2008.00553",
+  archivePrefix = "arXiv",
+  primaryClass = "cs.DC",
+  url = "https://arxiv.org/abs/2008.00553",
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # Plain-text citation:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  textVersion = paste(sep="",
+    "H. Bengtsson, ",
+    "A Unifying Framework for Parallel and Distributed Processing in R using Futures, ",
+    "arXiv:2008.00553, ",
+    "2020"
+  )
+)
