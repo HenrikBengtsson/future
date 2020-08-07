@@ -626,34 +626,9 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   ## Launching a process on the local machine?
   pidfile <- NULL
   if (localMachine && !dryrun) {
-    autoKill <- isTRUE(getOption("future.makeNodePSOCK.autoKill", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE))))
-    if (autoKill) {
-      pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
-      pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
-      rscript_pid_args <- c("-e", shQuote(pidcode))
-      
-      ## Check if this approach to infer the PID works
-      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile)))), collapse = " ")
-      if (verbose) {
-        message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
-      }
-      input <- NULL
-      ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
-      ## they will be terminated because they try to read from non-existing
-      ## standard input. /HB 2019-02-14
-      if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
-      res <- system(test_cmd, intern = TRUE, input = input)
-      status <- attr(res, "status")
-      suppressWarnings(file.remove(pidfile))
-      if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
-        if (verbose) message("- Possible to infer worker's PID: TRUE")
-        rscript_args <- c(rscript_pid_args, rscript_args)
-      } else {
-        if (verbose) message("- Possible to infer worker's PID: FALSE")
-        pidfile <- NULL
-      }
-    }
+    res <- useWorkerPID(rscript, verbose = verbose)
+    pidfile <- res$pidfile
+    rscript_args <- c(res$rscript_pid_args, rscript_args)
   }
 
   ## Add Rscript "label"?
@@ -1302,6 +1277,55 @@ windows_build_version <- local({
       numeric_version(res)
     }, error = function(ex) NULL)
   }
+})
+
+
+useWorkerPID <- local({
+  .cache <- NA
+  
+  function(rscript, force = FALSE, verbose = FALSE) {
+    autoKill <- getOption("future.makeNodePSOCK.autoKill",
+              as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE)))
+    if (!isTRUE(as.logical(autoKill))) return(NULL)
+
+    ## Already cached?
+    if (!force && !identical(.cache, NA)) return(.cache)
+    
+    ## Generate PID file for this session
+    tf <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
+    tf <- normalizePath(tf, winslash = "/", mustWork = FALSE)
+
+    ## Check if it is possible infer a worker's PID
+    pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', tf)
+    rscript_pid_args <- c("-e", shQuote(pidcode))
+    test_cmd <- paste(c(rscript, rscript_pid_args, "-e",
+                        shQuote(sprintf("file.exists(%s)", shQuote(tf)))),
+                        collapse = " ")
+    if (verbose) {
+      message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
+    }
+    
+    input <- NULL
+    
+    ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
+    ## they will be terminated because they try to read from non-existing
+    ## standard input. /HB 2019-02-14
+    if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
+    
+    res <- system(test_cmd, intern = TRUE, input = input)
+    status <- attr(res, "status")
+    suppressWarnings(file.remove(tf))
+    
+    if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
+      if (verbose) message("- Possible to infer worker's PID: TRUE")
+      .cache <<- list(pidfile = tf, rscript_pid_args = rscript_pid_args)
+    } else {
+      if (verbose) message("- Possible to infer worker's PID: FALSE")
+      .cache <<- NULL
+    }
+    
+    .cache
+  }  
 })
 
 
