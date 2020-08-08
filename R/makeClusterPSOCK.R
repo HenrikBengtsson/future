@@ -629,12 +629,13 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
   rscript[idxs] <- shQuote(rscript[idxs])
 
-  ## Launching a process on the local machine?
-  pidfile <- NULL
+  ## Can we get the worker's PID during launch?
   if (localMachine && !dryrun) {
     res <- useWorkerPID(rscript, verbose = verbose)
     pidfile <- res$pidfile
     rscript_args <- c(res$rscript_pid_args, rscript_args)
+  } else {
+    pidfile <- NULL
   }
 
   ## Add Rscript "label"?
@@ -1287,7 +1288,7 @@ windows_build_version <- local({
 
 
 useWorkerPID <- local({
-  .cache <- NA
+  .cache <- list()
   
   function(rscript, force = FALSE, verbose = FALSE) {
     autoKill <- getOption("future.makeNodePSOCK.autoKill",
@@ -1295,7 +1296,9 @@ useWorkerPID <- local({
     if (!isTRUE(as.logical(autoKill))) return(NULL)
 
     ## Already cached?
-    if (!force && !identical(.cache, NA)) return(.cache)
+    key <- paste(rscript, collapse = "\t")
+    res <- .cache[[key]]
+    if (!force && !is.null(res)) return(res)
     
     ## Generate PID file for this session
     tf <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
@@ -1324,13 +1327,15 @@ useWorkerPID <- local({
     
     if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
       if (verbose) message("- Possible to infer worker's PID: TRUE")
-      .cache <<- list(pidfile = tf, rscript_pid_args = rscript_pid_args)
+      res <- list(pidfile = tf, rscript_pid_args = rscript_pid_args)
     } else {
       if (verbose) message("- Possible to infer worker's PID: FALSE")
-      .cache <<- NULL
+      res <- list()
     }
+
+    .cache[[key]] <<- res
     
-    .cache
+    res
   }  
 })
 
