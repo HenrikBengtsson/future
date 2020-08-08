@@ -631,7 +631,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   ## Can we get the worker's PID during launch?
   if (localMachine && !dryrun) {
-    res <- useWorkerPID(rscript, verbose = verbose)
+    res <- useWorkerPID(rscript, rank = rank, verbose = verbose)
     pidfile <- res$pidfile
     rscript_args <- c(res$rscript_pid_args, rscript_args)
   } else {
@@ -1288,28 +1288,35 @@ windows_build_version <- local({
 
 
 useWorkerPID <- local({
+  parent_pid <- NULL
   .cache <- list()
+
+  makeResult <- function(rank) {
+    if (is.null(parent_pid)) parent_pid <<- Sys.getpid()
+    pidfile <- tempfile(pattern = sprintf("worker.rank=%d.future.parent=%d.",
+                   rank, parent_pid), fileext = ".pid")
+    pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
+    pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
+    rscript_pid_args <- c("-e", shQuote(pidcode))
+    list(pidfile = pidfile, rscript_pid_args = rscript_pid_args)
+  }
   
-  function(rscript, force = FALSE, verbose = FALSE) {
+  function(rscript, rank, force = FALSE, verbose = FALSE) {
     autoKill <- getOption("future.makeNodePSOCK.autoKill",
               as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE)))
-    if (!isTRUE(as.logical(autoKill))) return(NULL)
+    if (!isTRUE(as.logical(autoKill))) return(list())
 
+    result <- makeResult(rank)
+    
     ## Already cached?
     key <- paste(rscript, collapse = "\t")
-    res <- .cache[[key]]
-    if (!force && !is.null(res)) return(res)
-    
-    ## Generate PID file for this session
-    tf <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
-    tf <- normalizePath(tf, winslash = "/", mustWork = FALSE)
+    if (!force && isTRUE(.cache[[key]])) return(result)
 
-    ## Check if it is possible infer a worker's PID
-    pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', tf)
-    rscript_pid_args <- c("-e", shQuote(pidcode))
-    test_cmd <- paste(c(rscript, rscript_pid_args, "-e",
-                        shQuote(sprintf("file.exists(%s)", shQuote(tf)))),
-                        collapse = " ")
+    test_cmd <- paste(c(
+      rscript,
+      result$rscript_pid_args,
+      "-e", shQuote(sprintf("file.exists(%s)", shQuote(result$pidfile)))
+    ), collapse = " ")
     if (verbose) {
       message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
     }
@@ -1323,19 +1330,12 @@ useWorkerPID <- local({
     
     res <- system(test_cmd, intern = TRUE, input = input)
     status <- attr(res, "status")
-    suppressWarnings(file.remove(tf))
+    suppressWarnings(file.remove(result$pidfile))
     
-    if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
-      if (verbose) message("- Possible to infer worker's PID: TRUE")
-      res <- list(pidfile = tf, rscript_pid_args = rscript_pid_args)
-    } else {
-      if (verbose) message("- Possible to infer worker's PID: FALSE")
-      res <- list()
-    }
-
-    .cache[[key]] <<- res
+    .cache[[key]] <<- (is.null(status) || status == 0L) && any(grepl("TRUE", res))
+    if (verbose) message("- Possible to infer worker's PID: ", .cache[[key]])
     
-    res
+    result
   }  
 })
 
