@@ -27,7 +27,13 @@ NEW FEATURES:
 
 PERFORMANCE:
 
- * makeClusterPSOCK() is now twice as faster when setting up localhost workers.
+ * Now plan(multisession), plan(cluster, workers = <number>), and
+   makeClusterPSOCK() which they both use internally, sets up localhost
+   workers twice as fast compared to versions since future 1.12.0, which
+   brings it back to par with a bare-bone parallel::makeCluster() setup.
+   The slowdown was introduced in future 1.12.0 (2019-03-07) when protection
+   against leaving stray R processes behind from failed worker startup was
+   implemented.  This protection now makes use of memoization for speedup.
 
 BUG FIXES:
 
@@ -66,7 +72,7 @@ NEW FEATURES:
    ('RichSOCKnode' #1 on host 'n3' (R version 3.6.3 (2020-02-29), platform
    x86_64-pc-linux-gnu)) is out of sync."
 
- * It is now possible to set enviroment variables on workers before they are
+ * It is now possible to set environment variables on workers before they are
    launched by makeClusterPSOCK() by specify them as as "<name>=<value>"
    as part of the 'rscript' vector argument, e.g. rscript=c("ABC=123",
    "DEF='hello world'", "Rscript"). This works because elements in 'rscript'
@@ -577,7 +583,7 @@ NEW FEATURES:
    process is still alive or not.
 
  * Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
-   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
+   parallel::makeCluster(n, type = "MPI") but that also attempts to workaround
    issues where parallel::stopCluster() causes R to stall.
    
  * makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for

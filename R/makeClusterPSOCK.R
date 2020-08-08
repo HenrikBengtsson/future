@@ -38,7 +38,7 @@
 #' garbage collected, unless already stopped.
 #'
 #' @param tries,delay Maximum number of attempts done to launch each node
-#' with `makeNode()` and the delay (in seconds) inbetween attempts.
+#' with `makeNode()` and the delay (in seconds) in-between attempts.
 #' If argument `port` specifies more than one port, e.g. `port = "random"`
 #' then a random port will be drawn and validated at most `tries` times.
 #'
