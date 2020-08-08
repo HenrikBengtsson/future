@@ -78,7 +78,7 @@ SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 garbage collected, unless already stopped.}
 
 \item{tries, delay}{Maximum number of attempts done to launch each node
-with \code{makeNode()} and the delay (in seconds) inbetween attempts.
+with \code{makeNode()} and the delay (in seconds) in-between attempts.
 If argument \code{port} specifies more than one port, e.g. \code{port = "random"}
 then a random port will be drawn and validated at most \code{tries} times.}
 
