@@ -372,16 +372,16 @@ Package [ncdf4](https://cran.r-project.org/package=ncdf4) provides an R API to w
 ```r
 library(ncdf4)
 x <- ncvar_def("x", units="count", dim=list())
-ncdf <- nc_create("example.nc", x)
-ncvar_put(ncdf, x, 42)
-nc_close(ncdf)
+file <- nc_create("example.nc", x)
+ncvar_put(file, x, 42)
+nc_close(file)
 ```
 
 We can now use this netCDF file next time we start R, e.g.
 ```r
 library(ncdf4)
-ncdf <- nc_open("example.nc")
-y <- ncvar_get(ncdf)
+file <- nc_open("example.nc")
+y <- ncvar_get(file)
 y
 ## [1] 42
 ```
@@ -392,8 +392,8 @@ However, it would fail if we attempt to use `ncdf`, which is an object of class 
 library(future)
 plan(multisession)
 library(ncdf4)
-ncdf <- nc_open("example.nc")
-f <- future(ncvar_get(ncdf))
+file <- nc_open("example.nc")
+f <- future(ncvar_get(file))
 y <- value(f)
 ## Error in R_nc4_inq_varndims: NetCDF: Not a valid ID
 ## Error in ncvar_ndims(ncid, varid) : error returned from C call
@@ -408,9 +408,9 @@ library(future)
 plan(multisession)
 library(ncdf4)
 f <- future({
-  ncdf <- nc_open("example.nc")
-  value <- ncvar_get(ncdf)
-  nc_close(ncdf)
+  file <- nc_open("example.nc")
+  value <- ncvar_get(file)
+  nc_close(file)
   value
 })
 y <- value(f)
