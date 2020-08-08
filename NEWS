@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-08-07]
+Version: 1.18.0-9000 [2020-08-08]
 
 SIGNIFICANT CHANGES:
 
@@ -12,6 +12,10 @@ SIGNIFICANT CHANGES:
    Higher-level map-reduce APIs provide similarly named "seed" arguments to
    achieve the same.  To, escalate these warning to errors, set option
    'future.rng.onMisuse' to "error".  To silence them, set it to "ignore".
+
+ * Now, all non-captured conditions are muffled, if possible.  For instance,
+   future(warning("boom"), conditions = c("message")) will truly muffle the
+   warning regardless of backend used.  This was needed to fix below bug.
 
 NEW FEATURES:
 
@@ -36,6 +40,11 @@ PERFORMANCE:
    implemented.  This protection now makes use of memoization for speedup.
 
 BUG FIXES:
+
+ * Contrary to other future backends, any conditions produced while resolving
+   a sequential future using future(..., conditions = character()) would be
+   signaled, although the most reasonable expectation would be that they are
+   silences. Now, all non-captured conditions are muffled, if possible.
 
  * Disabling multithreading in forked processes by setting R option
    'future.fork.multithreading.enable' or environment variable

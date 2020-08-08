@@ -759,6 +759,11 @@ makeExpression <- local({
                     muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
                   }
+                } else {
+                  ## Muffle all non-captured conditions
+                  ## muffleCondition <- future:::muffleCondition()
+                  muffleCondition <- .(muffleCondition)
+                  muffleCondition(cond)
                 }
               }
             }) ## local()
