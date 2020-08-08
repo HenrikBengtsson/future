@@ -309,14 +309,20 @@ worker machines to the master, which may not be configured or is disabled
 on some systems, e.g. compute clusters.
 }
 
-\section{Default value of argument \code{rscript}}{
+\section{Argument \code{rscript}}{
 
-If \code{homogeneous} is FALSE, the \code{rscript} defaults to
-\code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
-is available on the \env{PATH} of the worker.
+If \code{homogeneous} is FALSE, the \code{rscript} defaults to \code{"Rscript"}, i.e. it
+is assumed that the \command{Rscript} executable is available on the
+\env{PATH} of the worker.
 If \code{homogeneous} is TRUE, the \code{rscript} defaults to
-\code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-that the worker and the caller share the same file system and \R installation.
+\code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed that
+the worker and the caller share the same file system and \R installation.
+
+If specified, argument \code{rscript} should be a character vector with one more
+more elements.
+All elements are automatically shell quoted using \code{\link[base:shQuote]{base::shQuote()}}, except
+those that are of format \verb{<ENVVAR>=<VALUE>}, that is, the ones matching the
+regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
 }
 
 \section{Default value of argument \code{homogeneous}}{

@@ -396,13 +396,19 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' worker machines to the master, which may not be configured or is disabled
 #' on some systems, e.g. compute clusters.
 #'
-#' @section Default value of argument `rscript`:
-#' If `homogeneous` is FALSE, the `rscript` defaults to
-#' `"Rscript"`, i.e. it is assumed that the \command{Rscript} executable
-#' is available on the \env{PATH} of the worker.
+#' @section Argument `rscript`:
+#' If `homogeneous` is FALSE, the `rscript` defaults to `"Rscript"`, i.e. it
+#' is assumed that the \command{Rscript} executable is available on the
+#' \env{PATH} of the worker.
 #' If `homogeneous` is TRUE, the `rscript` defaults to
-#' `file.path(R.home("bin"), "Rscript")`, i.e. it is basically assumed
-#' that the worker and the caller share the same file system and \R installation.
+#' `file.path(R.home("bin"), "Rscript")`, i.e. it is basically assumed that
+#' the worker and the caller share the same file system and \R installation.
+#'
+#' If specified, argument `rscript` should be a character vector with one more
+#' more elements.
+#' All elements are automatically shell quoted using [base::shQuote()], except
+#' those that are of format `<ENVVAR>=<VALUE>`, that is, the ones matching the
+#' regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
 #' 
 #' @section Default value of argument `homogeneous`:
 #' The default value of `homogeneous` is TRUE if and only if either
