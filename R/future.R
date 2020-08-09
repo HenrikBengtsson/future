@@ -174,6 +174,8 @@
 #'
 #' @example incl/future.R
 #'
+#' @author
+#' The future logo was designed by Dan LaBar and tweaked by Henrik Bengtsson.
 #'
 #' @seealso
 #' How, when and where futures are resolved is given by the

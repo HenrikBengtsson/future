@@ -346,3 +346,6 @@ How, when and where futures are resolved is given by the
 \code{\link[=plan]{plan()}} function.  The future strategy must not be
 set by the developer, e.g. it must not be called within a package.
 }
+\author{
+The future logo was designed by Dan LaBar and tweaked by Henrik Bengtsson.
+}
