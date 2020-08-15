@@ -25,7 +25,7 @@ NEW FEATURES:
    random port up to 'tries' times before giving up.  The pre-validation of
    the random port is only supported in R (>= 4.0.0) and skipped otherwise.
 
- * If multithreading is disabled but multicore futures fail to acknowledged
+ * If multithreading is disabled but multicore futures fail to acknowledge
    the setting on the current system, then an informative FutureWarning is
    produced by such futures.
 
