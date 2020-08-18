@@ -41,6 +41,8 @@ if (requireNamespace("RhpcBLASctl", quietly = TRUE)) {
 }
 
 if (supportsMulticore() && availableCores("multicore") >= 2L && supports_omp_threads()) {
+  nthreads_0 <- RhpcBLASctl::omp_get_max_threads()
+  
   for (enable in c(TRUE, FALSE)) {
     options(future.fork.multithreading.enable = enable)
 
@@ -52,7 +54,7 @@ if (supportsMulticore() && availableCores("multicore") >= 2L && supports_omp_thr
 
     ## Assert that single-threading was set?
     if (enable) {
-      stopifnot(enable && nthreads > 1L)
+      stopifnot(enable && nthreads >= nthreads_0)
     } else {
       ## FIXME: On CRAN r-devel-linux-x86_64-fedora-clang (2020-01-17):
       ## Number of OpenMP threads in 'MulticoreFuture' future: 24
