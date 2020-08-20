@@ -114,6 +114,9 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       if (is.na(n)) {
         n <- getenv("SLURM_CPUS_ON_NODE")
        }
+      ## TODO need to handle cases like: user specified -n but not node count
+      ## SLURM_JOB_CPUS_PER_NODE=16,1
+      ## SLURM_JOB_CPUS_PER_NODE=3(x2)
     } else if (method == "PBS") {
       ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")
