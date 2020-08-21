@@ -79,8 +79,7 @@
 #'
 #' @section Advanced usage:
 #' It is possible to override the maximum number of cores on the machine
-#' as reported by `availableCores(
-"system")`.  This can be
+#' as reported by `availableCores("system")`.  This can be
 #' done by first specifying
 #' `options(future.availableCores.methods = "mc.cores")` and
 #' then the number of cores to use, e.g. `options(mc.cores = 8)`.
