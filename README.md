@@ -1,3 +1,6 @@
+
+<img src="man/figures/logo.png" align="right" />
+
 # future: Unified Parallel and Distributed Processing in R for Everyone
 
 ## Introduction
