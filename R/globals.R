@@ -20,7 +20,7 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return A named list with elements `expr` (the tweaked expression), `globals` (a named list) and `packages` (a character string).
+#' @return A named list with elements `expr` (the tweaked expression), `globals` (a named list of class [FutureGlobals]) and `packages` (a character string).
 #'
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
@@ -150,7 +150,9 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       mdebug("- globals: [0] <none>")
       mdebug("getGlobalsAndPackages() ... DONE")
     }
-    return(list(expr = expr, globals = list(), packages = character(0)))
+    attr(globals, "resolved") <- TRUE
+    attr(globals, "total_size") <- 0
+    return(list(expr = expr, globals = globals, packages = character(0)))
   }
 
   ## Are globals already resolved?

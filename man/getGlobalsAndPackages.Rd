@@ -37,7 +37,7 @@ limit, an informative error message is produced. If
 \item{\dots}{Not used.}
 }
 \value{
-A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list) and \code{packages} (a character string).
+A named list with elements \code{expr} (the tweaked expression), \code{globals} (a named list of class \link{FutureGlobals}) and \code{packages} (a character string).
 }
 \description{
 Retrieves global variables of an expression and their associated packages

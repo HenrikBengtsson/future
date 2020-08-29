@@ -30,7 +30,7 @@ An object of class \code{FutureGlobals}.
 A representation of a set of globals used with futures
 }
 \details{
-This class extends the \link[globals]{Globals} class by add
-attribute \code{resolved}.
+This class extends the \link[globals]{Globals} class by adding
+attributes \code{resolved} and \code{total_size}.
 }
 \keyword{internal}
