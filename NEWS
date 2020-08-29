@@ -55,6 +55,9 @@ BUG FIXES:
  * getGlobalsAndPackages() did not always return a 'globals' element that was
    of class FutureGlobals.
    
+ * getGlobalsAndPackages(..., globals) would recalculate 'total_size' even
+   when it was already calculated.
+   
  * getGlobalsAndPackages(Formula::Formula(~ x)) would produce "the condition
    has length > 1" warnings (which will become errors in future R versions).
 

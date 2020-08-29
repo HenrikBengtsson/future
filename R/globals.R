@@ -290,10 +290,10 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   }
   
   ## Protect against user error exporting too large objects?
-  if (length(globals) > 0L) {
+  total_size <- attr(globals, "total_size")
+  if (length(globals) > 0L  && (is.null(total_size) || is.na(total_size))) {
     maxSize <- as.numeric(maxSize)
     stop_if_not(!is.na(maxSize), maxSize > 0)
-    
     if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
       sizes <- unlist(sizes, use.names = TRUE)
