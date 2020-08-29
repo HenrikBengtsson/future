@@ -320,9 +320,10 @@ the worker and the caller share the same file system and \R installation.
 
 If specified, argument \code{rscript} should be a character vector with one more
 more elements.
-All elements are automatically shell quoted using \code{\link[base:shQuote]{base::shQuote()}}, except
+all elements are automatically shell quoted using \code{\link[base:shQuote]{base::shQuote()}}, except
 those that are of format \verb{<ENVVAR>=<VALUE>}, that is, the ones matching the
 regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
+Another exception is when \code{rscript} inherits from 'AsIs'.
 }
 
 \section{Default value of argument \code{homogeneous}}{

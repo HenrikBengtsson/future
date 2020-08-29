@@ -406,9 +406,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #'
 #' If specified, argument `rscript` should be a character vector with one more
 #' more elements.
-#' All elements are automatically shell quoted using [base::shQuote()], except
+#' all elements are automatically shell quoted using [base::shQuote()], except
 #' those that are of format `<ENVVAR>=<VALUE>`, that is, the ones matching the
 #' regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
+#' Another exception is when `rscript` inherits from 'AsIs'.
 #' 
 #' @section Default value of argument `homogeneous`:
 #' The default value of `homogeneous` is TRUE if and only if either
@@ -571,14 +572,14 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript <- "Rscript"
     if (homogeneous) rscript <- file.path(R.home("bin"), rscript)
   } else {
-    rscript <- as.character(rscript)
+    if (!is.character(rscript)) rscript <- as.character(rscript)
     stop_if_not(length(rscript) >= 1L)
     bin <- rscript[1]
-    if (homogeneous) {
+    if (homogeneous && !inherits(bin, "AsIs")) {
       bin <- Sys.which(bin)
       if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+      rscript[1] <- bin
     }
-    rscript[1] <- bin
   }
 
   rscript_args <- as.character(rscript_args)
@@ -625,9 +626,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   verbose_prefix <- "[local output] "
 
-  ## Shell quote the Rscript executable
-  idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
-  rscript[idxs] <- shQuote(rscript[idxs])
+  ## Shell quote the Rscript executable?
+  if (!inherits(rscript, "AsIs")) {
+    idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
+    rscript[idxs] <- shQuote(rscript[idxs])
+  }
 
   ## Can we get the worker's PID during launch?
   if (localMachine && !dryrun) {
@@ -718,7 +721,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     cmd <- "workRSOCK <- tryCatch(parallel:::.slaveRSOCK, error=function(e) parallel:::.workRSOCK); workRSOCK()"
     rscript_args <- c(rscript_args, "-e", shQuote(cmd))
   }
-  
+
   rscript <- paste(rscript, collapse = " ")
   rscript_args <- paste(rscript_args, collapse = " ")
   envvars <- paste0("MASTER=", master, " PORT=", rscript_port, " OUT=", outfile, " TIMEOUT=", timeout, " XDR=", useXDR)
