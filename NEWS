@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-08-29]
+Version: 1.18.0-9000 [2020-09-02]
 
 SIGNIFICANT CHANGES:
 
@@ -59,7 +59,7 @@ BUG FIXES:
    of class FutureGlobals.
    
  * getGlobalsAndPackages(..., globals) would recalculate 'total_size' even
-   when it was already calculated.
+   when it was already calculated or known to be zero.
    
  * getGlobalsAndPackages(Formula::Formula(~ x)) would produce "the condition
    has length > 1" warnings (which will become errors in future R versions).

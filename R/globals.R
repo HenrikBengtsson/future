@@ -257,6 +257,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     globals <- cleanup(globals)
   }
 
+  ## Can we skip some of the tasks below?
+  if (length(globals) == 0) {
+    resolve <- FALSE
+    attr(globals, "resolved") <- TRUE
+    attr(globals, "total_size") <- 0
+  }
 
   ## Resolve all remaing globals
   ## FIXME: Should we resolve package names spaces too? Should
@@ -288,10 +294,11 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (debug) mdebugf("[%.3f s]", t[3])
     }
   }
-  
+
+
   ## Protect against user error exporting too large objects?
   total_size <- attr(globals, "total_size")
-  if (length(globals) > 0L  && (is.null(total_size) || is.na(total_size))) {
+  if (length(globals) > 0L && (is.null(total_size) || is.na(total_size))) {
     maxSize <- as.numeric(maxSize)
     stop_if_not(!is.na(maxSize), maxSize > 0)
     if (is.finite(maxSize)) {
