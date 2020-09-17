@@ -19,7 +19,7 @@ To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
 or a regular RNG seed (a single integer).
 Furthermore, if FALSE, then the future will be monitored to make sure it
 does not use random numbers.  If it does and depending on the value of
-option \code{\link[=future.options]{future.rng.onMisUse}}, the check is
+option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
 ignored, an informative warning, or error will be produced.
 If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
 but without the RNG check being performed.}

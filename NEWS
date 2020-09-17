@@ -50,6 +50,8 @@ BUG FIXES:
    signaled, although the most reasonable expectation would be that they are
    silences. Now, all non-captured conditions are muffled, if possible.
 
+ * Option 'future.rng.onMisuse' was not passed down to nested futures.
+ 
  * Disabling multithreading in forked processes by setting R option
    'future.fork.multithreading.enable' or environment variable
    'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE' would cause multicore
