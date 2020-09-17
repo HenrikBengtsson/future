@@ -68,6 +68,11 @@ Run `revdep_details(, "aroma.affymetrix")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘affxparser’
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is  5.4Mb
@@ -75,6 +80,11 @@ Run `revdep_details(, "aroma.affymetrix")` for more info
         R             2.3Mb
         help          1.1Mb
         testScripts   1.1Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘affxparser’
     ```
 
 # aroma.core
@@ -147,14 +157,18 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Package suggested but not available for checking: ‘doMPI’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘Rmpi’
+    --------------------------------------------------------------------------
+    [[18694,1],0]: A high-performance Open MPI point-to-point messaging module
+    was unable to find any relevant network interfaces:
+    
+    Module: OpenFabrics (openib)
+      Host: c4-dev1
+    
+    Another transport will be used instead, although this may result in
+    lower performance.
+    --------------------------------------------------------------------------
     ```
 
 # bcmaps
@@ -407,9 +421,11 @@ Run `revdep_details(, "dragon")` for more info
 
 <details>
 
-* Version: 0.1.1
+* Version: 0.2.0
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2020-07-13 15:50:18 UTC
+* URL: https://github.com/mdsteiner/EFAtools
+* BugReports: https://github.com/mdsteiner/EFAtools/issues
+* Date/Publication: 2020-09-17 07:20:03 UTC
 * Number of recursive dependencies: 78
 
 Run `revdep_details(, "EFAtools")` for more info
@@ -420,7 +436,7 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.4Mb
+      installed size is  7.0Mb
       sub-directories of 1Mb or more:
         libs   5.4Mb
     ```
@@ -531,6 +547,28 @@ Run `revdep_details(, "GetBCBData")` for more info
     ```
     Namespaces in Imports field not imported from:
       ‘RCurl’ ‘lubridate’ ‘readr’ ‘stats’
+      All declared Imports should be used.
+    ```
+
+# googleTagManageR
+
+<details>
+
+* Version: 0.1.5
+* Source code: https://github.com/cran/googleTagManageR
+* Date/Publication: 2020-09-09 08:40:08 UTC
+* Number of recursive dependencies: 63
+
+Run `revdep_details(, "googleTagManageR")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘assertthat’ ‘future’ ‘httr’ ‘jsonlite’
       All declared Imports should be used.
     ```
 
@@ -656,10 +694,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-09-05 12:01:41] ::plot_cnv:Start
-    INFO [2020-09-05 12:01:41] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-09-05 12:01:41] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-09-05 12:01:41] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-09-17 11:25:51] ::plot_cnv:Start
+    INFO [2020-09-17 11:25:51] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-09-17 11:25:51] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-09-17 11:25:51] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1014,6 +1052,30 @@ Run `revdep_details(, "origami")` for more info
     Package unavailable to check Rd xrefs: ‘glmnet’
     ```
 
+# pavo
+
+<details>
+
+* Version: 2.4.0
+* Source code: https://github.com/cran/pavo
+* URL: http://pavo.colrverse.com, https://github.com/rmaia/pavo/
+* BugReports: https://github.com/rmaia/pavo/issues
+* Date/Publication: 2020-02-08 16:20:08 UTC
+* Number of recursive dependencies: 90
+
+Run `revdep_details(, "pavo")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘pavo’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/home/henrik/c4/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    ```
+
 # PCRedux
 
 <details>
@@ -1056,6 +1118,49 @@ Run `revdep_details(, "phylolm")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘geiger’, ‘caper’
+    ```
+
+# plumber
+
+<details>
+
+* Version: 1.0.0
+* Source code: https://github.com/cran/plumber
+* URL: https://www.rplumber.io, https://github.com/rstudio/plumber
+* BugReports: https://github.com/rstudio/plumber/issues
+* Date/Publication: 2020-09-14 21:40:02 UTC
+* Number of recursive dependencies: 62
+
+Run `revdep_details(, "plumber")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      grepl("device output file is missing", result$body$message) isn't true.
+      
+      ── 12. Failure: Includes work (@test-zzzz-include.R#30)  ───────────────────────
+      val\$body does not match "<html.*<img src=\"data:image/png;base64.*</html>\\s*$".
+      Actual value: "<!DOCTYPE html>\\n\\n<html>\\n\\n<head>\\n\\n<meta charset="utf-8" />\\n<meta name="generator" content="pandoc" />\\n<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />\\n\\n\\n<meta name="author" content="Jeff Allen" />\\n\\n<meta name="date" content="2015-06-14" />\\n\\n<title>test</title>\\n\\n<script>// Pandoc 2\.9 adds attributes on both header and div\. We remove the former \(to\\n// be compatible with the behavior of Pandoc < 2\.8\)\.\\n ...
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 1842 | SKIPPED: 12 | WARNINGS: 4 | FAILED: 12 ]
+      1. Failure: accessing two images created using promises does not create an error (@test-async.R#356) 
+      2. Failure: accessing two images created using promises does not create an error (@test-async.R#361) 
+      3. Failure: accessing two images created using promises does not create an error (@test-async.R#393) 
+      4. Failure: accessing two images created using promises does not create an error (@test-async.R#395) 
+      5. Failure: accessing two images created using promises does not create an error (@test-async.R#396) 
+      6. Failure: accessing two images created using promises does not create an error (@test-async.R#398) 
+      7. Failure: accessing two images created using promises does not create an error (@test-async.R#400) 
+      8. Failure: accessing two images created using promises does not create an error (@test-async.R#401) 
+      9. Failure: accessing two images created using promises does not create an error (@test-async.R#404) 
+      1. ...
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # promises
@@ -1187,27 +1292,6 @@ Run `revdep_details(, "QDNAseq")` for more info
       All declared Imports should be used.
     ```
 
-# qgcomp
-
-<details>
-
-* Version: 2.4.0
-* Source code: https://github.com/cran/qgcomp
-* Date/Publication: 2020-07-01 12:00:02 UTC
-* Number of recursive dependencies: 128
-
-Run `revdep_details(, "qgcomp")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘markdown’
-      All declared Imports should be used.
-    ```
-
 # qtl2pleio
 
 <details>
@@ -1325,11 +1409,11 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 3.2.0
+* Version: 3.2.1
 * Source code: https://github.com/cran/Seurat
-* URL: http://www.satijalab.org/seurat, https://github.com/satijalab/seurat
+* URL: https://satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
-* Date/Publication: 2020-07-16 04:30:12 UTC
+* Date/Publication: 2020-09-07 10:20:15 UTC
 * Number of recursive dependencies: 224
 
 Run `revdep_details(, "Seurat")` for more info
@@ -1338,14 +1422,22 @@ Run `revdep_details(, "Seurat")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘sctransform’
-    
-    Packages suggested but not available for checking: 'loomR', 'hdf5r'
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Package suggested but not available for checking: ‘loomR’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 11.2Mb
+      sub-directories of 1Mb or more:
+        R      1.2Mb
+        libs   9.1Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘loomR’
     ```
 
 # shiny
@@ -1427,11 +1519,11 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 1.0.13
+* Version: 1.0.16
 * Source code: https://github.com/cran/sigminer
 * URL: https://github.com/ShixiangWang/sigminer
 * BugReports: https://github.com/ShixiangWang/sigminer/issues
-* Date/Publication: 2020-08-27 11:30:03 UTC
+* Date/Publication: 2020-09-12 14:30:02 UTC
 * Number of recursive dependencies: 191
 
 Run `revdep_details(, "sigminer")` for more info
@@ -1456,7 +1548,7 @@ Run `revdep_details(, "sigminer")` for more info
 * URL: https://github.com/timoast/signac, https://satijalab.org/signac
 * BugReports: https://github.com/timoast/signac/issues
 * Date/Publication: 2020-08-16 15:50:03 UTC
-* Number of recursive dependencies: 227
+* Number of recursive dependencies: 226
 
 Run `revdep_details(, "Signac")` for more info
 
@@ -1464,66 +1556,18 @@ Run `revdep_details(, "Signac")` for more info
 
 ## In both
 
-*   checking whether package ‘Signac’ can be installed ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Installation failed.
-    See ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/00install.out’ for details.
+    Namespaces in Imports field not imported from:
+      'Biobase' 'Rcpp' 'grid'
+      All declared Imports should be used.
     ```
 
-## Installation
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘cicero’
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘Signac’ ...
-** package ‘Signac’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c filter.cpp -o filter.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c group.cpp -o group.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c validate.cpp -o validate.o
-g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -L/usr/local/lib64 -o Signac.so RcppExports.o filter.o group.o validate.o -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -lR
-installing to /home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/00LOCK-Signac/00new/Signac/libs
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sctransform’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘Signac’
-* removing ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/Signac’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘Signac’ ...
-** package ‘Signac’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c filter.cpp -o filter.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c group.cpp -o group.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c validate.cpp -o validate.o
-g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -L/usr/local/lib64 -o Signac.so RcppExports.o filter.o group.o validate.o -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -lR
-installing to /home/henrik/c4/repositories/future/revdep/checks/Signac/old/Signac.Rcheck/00LOCK-Signac/00new/Signac/libs
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sctransform’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘Signac’
-* removing ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/old/Signac.Rcheck/Signac’
-
-```
 # simhelpers
 
 <details>
@@ -1533,7 +1577,7 @@ ERROR: lazy loading failed for package ‘Signac’
 * URL: https://meghapsimatrix.github.io/simhelpers/index.html
 * BugReports: https://github.com/meghapsimatrix/simhelpers/issues
 * Date/Publication: 2020-03-31 15:00:06 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "simhelpers")` for more info
 
@@ -1582,11 +1626,11 @@ Run `revdep_details(, "skpr")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.1.1
 * Source code: https://github.com/cran/solitude
 * URL: https://github.com/talegari/solitude
 * BugReports: https://github.com/talegari/solitude/issues
-* Date/Publication: 2020-07-07 09:20:02 UTC
+* Date/Publication: 2020-09-17 10:10:07 UTC
 * Number of recursive dependencies: 131
 
 Run `revdep_details(, "solitude")` for more info
@@ -1622,29 +1666,6 @@ Run `revdep_details(, "spacey")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘rgdal’
-      All declared Imports should be used.
-    ```
-
-# SpaDES.core
-
-<details>
-
-* Version: 1.0.2
-* Source code: https://github.com/cran/SpaDES.core
-* URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
-* BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
-* Date/Publication: 2020-08-28 08:00:02 UTC
-* Number of recursive dependencies: 158
-
-Run `revdep_details(, "SpaDES.core")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘RCurl’
       All declared Imports should be used.
     ```
 
