@@ -912,7 +912,7 @@ resolveMPI <- local({
 #' @references
 #' 1. The Open Group Base Specifications Issue 7, 2018 edition,
 #'    IEEE Std 1003.1-2017 (Revision of IEEE Std 1003.1-2008)
-#'    \url{http://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html}
+#'    \url{https://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html}
 #'
 #' 2. Microsoft, tasklist, 2018-08-30,
 #'    \url{https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist}
