@@ -40,6 +40,23 @@ for (cores in 1:availCores) {
     y
   }
 
+  ## Issue/PR #400: Emulate how '...' may be used by the 'rlang' package
+  sum_fcns$E <- function(...) {
+    message("Arguments '...' exists: ", exists("...", inherits = TRUE))
+
+    ## Grab '...' into a Globals object
+    globals <- globals::globalsByName("...", envir=environment())
+
+    ## Evaluate an expression with '...' in an environment that does not
+    ## have an '...' object - hence the parent.frame().  This will produce
+    ## an error unless we pass 'globals' which contains '...'
+    f <- future({
+      fcn <- function() sum(...)
+      fcn()
+    }, envir = parent.frame(), globals = globals)
+    y <- value(f)
+    y
+  }
 
   for (strategy in supportedStrategies(cores)) {
     message(sprintf("- plan('%s') ...", strategy))
