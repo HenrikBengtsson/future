@@ -20,14 +20,17 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
 
   ## Assign?
-   if (length(gp) > 0L && (lazy || assignToTarget)) {
-    target <- new.env(parent = envir)
-    globalsT <- gp$globals
-    for (name in names(globalsT)) {
-      target[[name]] <- globalsT[[name]]
+  if (length(gp) > 0L) {
+    if (lazy || assignToTarget || !identical(expr, gp$expr)) {
+      expr <- gp$expr
+      target <- new.env(parent = envir)
+      globalsT <- gp$globals
+      for (name in names(globalsT)) {
+        target[[name]] <- globalsT[[name]]
+      }
+      globalsT <- NULL
+      envir <- target
     }
-    globalsT <- NULL
-    envir <- target
   }
   gp <- NULL
 

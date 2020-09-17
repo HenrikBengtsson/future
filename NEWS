@@ -45,6 +45,10 @@ PERFORMANCE:
 
 BUG FIXES:
 
+ * Sequential and multicore backends, but not multisession, would produce
+   errors on "'...' used in an incorrect context" in cases where '...' was
+   part of argument 'globals' and not the evaluation environment.
+
  * Contrary to other future backends, any conditions produced while resolving
    a sequential future using future(..., conditions = character()) would be
    signaled, although the most reasonable expectation would be that they are
