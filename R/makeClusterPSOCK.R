@@ -998,6 +998,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 ##
 ## References:
 ## * https://en.wikipedia.org/wiki/Hostname
+#' @importFrom utils file_test
 is_localhost <- local({
   localhosts <- c("localhost", "127.0.0.1")
   non_localhosts <- character(0L)

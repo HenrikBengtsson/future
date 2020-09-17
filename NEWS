@@ -37,10 +37,11 @@ PERFORMANCE:
  * Now plan(multisession), plan(cluster, workers = <number>), and
    makeClusterPSOCK() which they both use internally, sets up localhost
    workers twice as fast compared to versions since future 1.12.0, which
-   brings it back to par with a bare-bone parallel::makeCluster() setup.
-   The slowdown was introduced in future 1.12.0 (2019-03-07) when protection
-   against leaving stray R processes behind from failed worker startup was
-   implemented.  This protection now makes use of memoization for speedup.
+   brings it back to par with a bare-bone parallel::makeCluster(...,
+   setup_strategy = "sequential") setup.  The slowdown was introduced in
+   future 1.12.0 (2019-03-07) when protection against leaving stray R
+   processes behind from failed worker startup was implemented.  This
+   protection now makes use of memoization for speedup.
 
 BUG FIXES:
 
