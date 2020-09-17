@@ -1,29 +1,24 @@
-# reproducible
+# Signac
 
 <details>
 
-* Version: 1.1.1
-* Source code: https://github.com/cran/reproducible
-* URL: https://reproducible.predictiveecology.org, https://github.com/PredictiveEcology/reproducible
-* BugReports: https://github.com/PredictiveEcology/reproducible/issues
-* Date/Publication: 2020-05-20 05:10:05 UTC
-* Number of recursive dependencies: 123
+* Version: 1.0.0
+* Source code: https://github.com/cran/Signac
+* URL: https://github.com/timoast/signac, https://satijalab.org/signac
+* BugReports: https://github.com/timoast/signac/issues
+* Date/Publication: 2020-08-16 15:50:03 UTC
+* Number of recursive dependencies: 227
 
-Run `revdep_details(,"reproducible")` for more info
+Run `revdep_details(, "Signac")` for more info
 
 </details>
 
 ## In both
 
-*   checking whether package ‘reproducible’ can be installed ... ERROR
+*   checking whether package ‘Signac’ can be installed ... ERROR
     ```
     Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘git2r’
+    See ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/00install.out’ for details.
     ```
 
 ## Installation
@@ -31,99 +26,52 @@ Run `revdep_details(,"reproducible")` for more info
 ### Devel
 
 ```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
+* installing *source* package ‘Signac’ ...
+** package ‘Signac’ successfully unpacked and MD5 sums checked
 ** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c filter.cpp -o filter.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c group.cpp -o group.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c validate.cpp -o validate.o
+g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -L/usr/local/lib64 -o Signac.so RcppExports.o filter.o group.o validate.o -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -lR
+installing to /home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/00LOCK-Signac/00new/Signac/libs
 ** R
+** data
+*** moving datasets to lazyload DB
 ** inst
 ** byte-compile and prepare package for lazy loading
-✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00_pkg_src/reproducible'
-Error in loadNamespace(name) : there is no package called ‘git2r’
-Error: unable to load R code in package ‘reproducible’
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sctransform’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
 Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/reproducible’
+ERROR: lazy loading failed for package ‘Signac’
+* removing ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/new/Signac.Rcheck/Signac’
 
 ```
 ### CRAN
 
 ```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
+* installing *source* package ‘Signac’ ...
+** package ‘Signac’ successfully unpacked and MD5 sums checked
 ** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c filter.cpp -o filter.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c group.cpp -o group.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/Signac/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c validate.cpp -o validate.o
+g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -L/usr/local/lib64 -o Signac.so RcppExports.o filter.o group.o validate.o -L/software/c4/cbi/software/R-4.0.2/lib64/R/lib -lR
+installing to /home/henrik/c4/repositories/future/revdep/checks/Signac/old/Signac.Rcheck/00LOCK-Signac/00new/Signac/libs
 ** R
+** data
+*** moving datasets to lazyload DB
 ** inst
 ** byte-compile and prepare package for lazy loading
-✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/00_pkg_src/reproducible'
-Error in loadNamespace(name) : there is no package called ‘git2r’
-Error: unable to load R code in package ‘reproducible’
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sctransform’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
 Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/reproducible’
-
-```
-# SpaDES.core
-
-<details>
-
-* Version: 1.0.1
-* Source code: https://github.com/cran/SpaDES.core
-* URL: https://spades-core.predictiveecology.org/, https://github.com/PredictiveEcology/SpaDES.core
-* BugReports: https://github.com/PredictiveEcology/SpaDES.core/issues
-* Date/Publication: 2020-05-15 17:10:06 UTC
-* Number of recursive dependencies: 157
-
-Run `revdep_details(,"SpaDES.core")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘SpaDES.core’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘SpaDES.core’ ...
-** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00_pkg_src/SpaDES.core'
-✔ Adding 'lifecycle' to Imports field in DESCRIPTION
-Error in loadNamespace(name) : there is no package called ‘git2r’
-Error: package or namespace load failed for ‘reproducible’:
- unable to load R code in package ‘reproducible’
-Error: package ‘reproducible’ could not be loaded
-Execution halted
-ERROR: lazy loading failed for package ‘SpaDES.core’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/SpaDES.core’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘SpaDES.core’ ...
-** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-✔ Setting active project to '/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/00_pkg_src/SpaDES.core'
-✔ Adding 'lifecycle' to Imports field in DESCRIPTION
-Error in loadNamespace(name) : there is no package called ‘git2r’
-Error: package or namespace load failed for ‘reproducible’:
- unable to load R code in package ‘reproducible’
-Error: package ‘reproducible’ could not be loaded
-Execution halted
-ERROR: lazy loading failed for package ‘SpaDES.core’
-* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/SpaDES.core’
+ERROR: lazy loading failed for package ‘Signac’
+* removing ‘/home/henrik/c4/repositories/future/revdep/checks/Signac/old/Signac.Rcheck/Signac’
 
 ```
