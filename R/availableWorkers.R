@@ -134,6 +134,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
 
       ## TODO: Parse 'data' into a hostnames /HB 2020-09-18
       ## ...
+      next
     } else if (method == "custom") {
       fcn <- getOption("future.availableWorkers.custom", NULL)
       if (!is.function(fcn)) next
