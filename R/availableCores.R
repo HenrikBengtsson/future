@@ -108,7 +108,38 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     method <- methods[kk]
     if (method == "Slurm") {
       ## Number of cores assigned by Slurm
+
+      ## The assumption is that the following works regardless of
+      ## number of nodes requested /HB 2020-09-18
+      ## Example: --cpus-per-task={n}
       n <- getenv("SLURM_CPUS_PER_TASK")
+      if (is.na(n)) {
+         ## Example: --nodes=1 --ntasks={n} (short: -n {n})
+         ## IMPORTANT: 'SLURM_CPUS_ON_NODE' appears to be rounded up if
+ 	 ## --cpu-per-task is specified, e.g. --nodes=2 --cpus-per-task=3 gives
+	 ## SLURM_CPUS_ON_NODE=4 and SLURM_CPUS_PER_TASK=3. /HB 2020-09-18
+         n <- getenv("SLURM_CPUS_ON_NODE")
+      }
+
+      ## TODO?: Can we validate above assumptions/results? /HB 2020-09-18
+      if (FALSE && !is.na(n)) {
+        ## Is any of the following useful?
+	
+        ## Example: --nodes={nnodes} (defaults to 1, short: -N {nnodes})
+        ## From 'man sbatch':
+        ## SLURM_JOB_NUM_NODES (and SLURM_NNODES for backwards compatibility)
+        ## Total number of nodes in the job's resource allocation.
+        nnodes <- getenv("SLURM_JOB_NUM_NODES")
+        if (is.na(nnodes)) nnodes <- getenv("SLURM_NNODES")
+        if (is.na(nnodes)) nnodes <- 1L  ## Can this happen? /HB 2020-09-18
+
+        ## Example: --ntasks={ntasks} (no default, short: -n {ntasks})
+        ## From 'man sbatch':
+        ## SLURM_NTASKS (and SLURM_NPROCS for backwards compatibility)
+        ## Same as -n, --ntasks
+        ntasks <- getenv("SLURM_NTASKS")
+        if (is.na(ntasks)) ntasks <- getenv("SLURM_NPROCS")
+      }
     } else if (method == "PBS") {
       ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")

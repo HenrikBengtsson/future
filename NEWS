@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-09-02]
+Version: 1.18.0-9000 [2020-09-18]
 
 SIGNIFICANT CHANGES:
 
@@ -31,6 +31,11 @@ NEW FEATURES:
  * If multithreading is disabled but multicore futures fail to acknowledge
    the setting on the current system, then an informative FutureWarning is
    produced by such futures.
+
+ * Now availableCores() better supports Slurm.  Specifically, if environment
+   variable 'SLURM_CPUS_PER_TASK' is not set, which requires that option
+   --slurm-cpus-per-task=n' is specified, then it falls back to using
+   'SLURM_CPUS_ON_NODE', which is set when using '--ntasks=n'.
 
 PERFORMANCE:
 

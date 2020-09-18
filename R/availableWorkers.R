@@ -125,6 +125,15 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
       if (!identical(nslots, length(w))) {
         warning(sprintf("Identified %d workers from the %s file (%s), which does not match environment variable %s = %d", length(w), sQuote("PE_HOSTFILE"), sQuote(pathname), sQuote("NSLOTS"), nslots))
       }
+    } else if (method == "Slurm") {
+      ## From 'man sbatch':
+      ## SLURM_JOB_NODELIST (and SLURM_NODELIST for backwards compatibility)
+      #  List of nodes allocated to the job.
+      data <- getenv("SLURM_JOB_NODELIST")
+      if (is.na(data)) data <- getenv("SLURM_NODELIST")
+
+      ## TODO: Parse 'data' into a hostnames /HB 2020-09-18
+      ## ...
     } else if (method == "custom") {
       fcn <- getOption("future.availableWorkers.custom", NULL)
       if (!is.function(fcn)) next
