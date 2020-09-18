@@ -63,6 +63,9 @@
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
 #'    `#SBATCH --cpus-per-task=2` to the \file{hello.sh} script.
+#'    If \env{SLURM_CPUS_PER_TASK} is not set, then it will fall back to
+#'    use \env{SLURM_CPUS_ON_NODE} if the job is a single-node job
+#'    (\env{SLURM_JOB_NUM_NODES} is 1), e.g. `sbatch --ntasks=2 hello.sh`.
 #'  \item `"custom"` -
 #'    If option \option{future.availableCores.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
