@@ -12,8 +12,8 @@
 #' @return An object of class `FutureGlobals`.
 #'
 #' @details
-#' This class extends the \link[globals]{Globals} class by add
-#' attribute `resolved`.
+#' This class extends the \link[globals]{Globals} class by adding
+#' attributes `resolved` and `total_size`.
 #'
 #' @aliases as.FutureGlobals as.FutureGlobals.FutureGlobals
 #' as.FutureGlobals.Globals as.FutureGlobals.list [.FutureGlobals

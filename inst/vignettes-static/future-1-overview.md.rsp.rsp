@@ -83,7 +83,7 @@ The difference is in how `v` is constructed; with plain R we use `<-` whereas wi
 So why are futures useful?  Because we can choose to evaluate the future expression in a separate R process asynchronously by simply switching settings as:
 ```r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > v %<-% {
 +   cat("Hello world!\n")
 +   3.14
@@ -145,7 +145,7 @@ The future package implements the following types of futures:
 | _asynchronous:_ |             | _parallel_:
 | `multiprocess`  | all         | multicore, if supported, otherwise multisession
 | `multisession`  | all         | background R sessions (on current machine)
-| `multicore`     | not Windows | forked R processes (on current machine)
+| `multicore`     | not Windows/not RStudio | forked R processes (on current machine)
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
 | `remote`        | all         | Simple access to remote R sessions
 
@@ -333,14 +333,14 @@ plan(sequential)
 pid <- Sys.getpid()
 pid
 a %<-% { Sys.getpid() }
-b %<-% { Sys.getpid() } %plan% multiprocess
-c %<-% { Sys.getpid() } %plan% multiprocess
+b %<-% { Sys.getpid() } %plan% multisession
+c %<-% { Sys.getpid() } %plan% multisession
 a
 b
 c
 })%>
 ```
-As seen by the different process IDs, future `a` is evaluated sequentially using the same process as the calling environment whereas the other two are evaluated using multiprocess futures.
+As seen by the different process IDs, future `a` is evaluated sequentially using the same process as the calling environment whereas the other two are evaluated using multisession futures.
 
 <%
 ## Sanity checks
@@ -362,10 +362,10 @@ However, using different plans to individual futures this way has the drawback o
 ### Nested Futures and Evaluation Topologies
 This far we have discussed what can be referred to as "flat topology" of futures, that is, all futures are created in and assigned to the same environment.  However, there is nothing stopping us from using a "nested topology" of futures, where one set of futures may, in turn, create another set of futures internally and so on.
 
-For instance, here is an example of two "top" futures (`a` and `b`) that uses multiprocess evaluation and where the second future (`b`) in turn uses two internal futures:
+For instance, here is an example of two "top" futures (`a` and `b`) that uses multisession evaluation and where the second future (`b`) in turn uses two internal futures:
 ```r
 <%=withCapture({
-plan(multiprocess)
+plan(multisession)
 <%@include file="incl/future-1-overview-example3.R"%>
 pid
 a
@@ -392,14 +392,14 @@ if (availableCores() == 1L) {
 %>
 
 
-To specify a different type of _evaluation topology_, other than the first level of futures being resolved by multiprocess evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to `plan()`.  First, the same evaluation strategies as above can be explicitly specified as:
+To specify a different type of _evaluation topology_, other than the first level of futures being resolved by multisession evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to `plan()`.  First, the same evaluation strategies as above can be explicitly specified as:
 ```r
-plan(list(multiprocess, sequential))
+plan(list(multisession, sequential))
 ```
-We would actually get the same behavior if we try with multiple levels of multiprocess evaluations;
+We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 ```r
 <%=withCapture({
-plan(list(multiprocess, multiprocess))
+plan(list(multisession, multisession))
 })%>
 [...]
 <%
@@ -424,10 +424,10 @@ if (availableCores() == 1L) {
 }
 %>
 
-Continuing, if we start off by sequential evaluation and then use multiprocess evaluation for any nested futures, we get:
+Continuing, if we start off by sequential evaluation and then use multisession evaluation for any nested futures, we get:
 ```r
 <%=withCapture({
-plan(list(sequential, multiprocess))
+plan(list(sequential, multisession))
 })%>
 [...]
 <%
@@ -457,14 +457,13 @@ if (availableCores() == 1L) {
 %>
 
 
-Having said this, it is indeed possible to use nested multiprocess evaluation strategies, if we explicitly specify (read _force_) the number of cores available at each level.  In order to do this we need to "tweak" the default settings, which can be done as follows:
+Having said this, it is indeed possible to use nested multisession evaluation strategies, if we explicitly specify (read _force_) the number of cores available at each level.  In order to do this we need to "tweak" the default settings, which can be done as follows:
 ```r
 <%=withCapture({
 plan(list(
-  tweak(multiprocess, workers = 2L),
-  tweak(multiprocess, workers = 2L)
-))
-})%>
+  tweak(multisession, workers = 2L),
+  tweak(multisession, workers = 2L)
+))})%>
 [...]
 <%
 <%@include file="incl/future-1-overview-example3.R"%>
@@ -498,7 +497,7 @@ For more details on working with nested futures and different evaluation strateg
 It is possible to check whether a future has been resolved or not without blocking.  This can be done using the `resolved(f)` function, which takes an explicit future `f` as input.  If we work with implicit futures (as in all the examples above), we can use the `f <- futureOf(a)` function to retrieve the explicit future from an implicit one.  For example,
 ```r
 <%=withCapture({
-plan(multiprocess)
+plan(multisession)
 a %<-% {
   cat("Future 'a' ...")
   Sys.sleep(2)
@@ -592,7 +591,7 @@ Finally, it should be clarified that identifying globals from static code inspec
 There is one limitation with implicit futures that does not exist for explicit ones.  Because an explicit future is just like any other object in R it can be assigned anywhere/to anything.  For instance, we can create several of them in a loop and assign them to a list, e.g.
 ```r
 <%=withCapture({
-plan(multiprocess)
+plan(multisession)
 f <- list()
 for (ii in 1:3) {
   f[[ii]] <- future({ Sys.getpid() })
@@ -604,7 +603,7 @@ str(v)
 This is _not_ possible to do when using implicit futures.  This is because the `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  It can only be used to assign future values to _environments_ (including the calling environment) much like how `assign(name, value, envir)` works.  However, we can assign implicit futures to environments using _named indices_, e.g.
 ```r
 <%=withCapture({
-plan(multiprocess)
+plan(multisession)
 v <- new.env()
 for (name in c("a", "b", "c")) {
   v[[name]] %<-% { Sys.getpid() }
@@ -619,7 +618,7 @@ If _numeric indices_ are required, then _list environments_ can be used.  List e
 ```r
 <%=withCapture({
 library("listenv")
-plan(multiprocess)
+plan(multisession)
 v <- listenv()
 for (ii in 1:3) {
   v[[ii]] %<-% { Sys.getpid() }
@@ -639,9 +638,9 @@ library("future")
 plan(sequential)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
-which resembles how the script would run if futures were not used.  Then, try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
+which resembles how the script would run if futures were not used.  Then, try multisession evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background.  Try,
 ```r
-plan(multiprocess)
+plan(multisession)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
 Finally, if you have access to multiple machines you can try to set up a cluster of workers and use them, e.g.
@@ -668,4 +667,4 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Common Issues with Solutions]: future-4-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2019
+Copyright Henrik Bengtsson, 2015-2020

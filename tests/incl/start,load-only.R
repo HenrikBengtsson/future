@@ -5,6 +5,8 @@ oopts0 <- options()
 
 covr_testing <- ("covr" %in% loadedNamespaces())
 on_solaris <- grepl("^solaris", R.version$os)
+on_macos <- grepl("^darwin", R.version$os)
+on_githubactions <- as.logical(Sys.getenv("GITHUB_ACTIONS", "FALSE"))
 
 ## Default options
 oopts <- options(

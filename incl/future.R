@@ -1,5 +1,5 @@
 ## Evaluate futures in parallel
-plan(multiprocess)
+plan(multisession)
 
 ## Data
 x <- rnorm(100)

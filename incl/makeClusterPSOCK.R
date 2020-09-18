@@ -59,7 +59,7 @@ cl <- makeClusterPSOCK(
 ## Setup of 2 Singularity workers running rocker/r-parallel
 cl <- makeClusterPSOCK(
   rep("localhost", times = 2L),
-  ## Launch Rscript inside Docker container
+  ## Launch Rscript inside Linux container
   rscript = c(
     "singularity", "exec", "docker://rocker/r-parallel",
     "Rscript"

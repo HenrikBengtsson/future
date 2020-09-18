@@ -1,10 +1,54 @@
 #!/bin/bash
-## Example: qsub -pe smp 24 revdep/run.sge
+## Example: qsub -pe smp 24 -l h_rt=08:00:00 revdep/run.sge
 #$ -S /bin/bash
 #$ -R yes         # SGE host reservation, highly recommended
 #$ -cwd           # Current working directory
 #$ -j y           # Join STDERR and STDOUT
-#$ -l mem_free=3G # 3 GiB RAM per slot
+#$ -l mem_free=3G # On average 4 GiB of RAM per core (=a package check)
+#$ -m bea         # email when job (b)egins, (e)nds, or (a)borts
+#
+# Pass on R-specific environment variables, iff set:
+##$ -v _R_CHECK_LENGTH_1_CONDITION_
+##$ -v _R_CHECK_LENGTH_1_LOGIC2_
+##$ -v R_STARTUP_DEBUG
 
-module load r
+## SPECIAL: On Wynton HPC
+if [[ $SGE_CLUSTER_NAME == *wynton* ]]; then
+    module load CBI
+    module load r
+#    module load r/4.0.0-alpha
+
+    ## Some packages need a more modern version of gcc, e.g. 'balvaan'
+    module load CBI-testing
+    module load scl-devtoolset/4
+
+    ## Some packages require non-default system libraries
+    module load gdal geos gsl hdf5 jags
+
+    ## Report on what modules are in use
+    module list
+    
+    ## Install all packages to toward $TMPDIR, if revdep/library doesn't already exist.
+    ## This will avoid some of the slowness on the global file system
+    #if [[ ! -d revdep/library ]]; then
+    #    tmpdir=$(mktemp -d)
+    #    ln -fs "$tmpdir" revdep/library
+    #    [[ -d revdep/library ]] || { >&2 echo "ERROR: Failed to link revdep/library/ to $tmpdir"; exit 1; }
+    #fi
+
+    ## To check in on revdep/library/ on the running host (see below), submit a job like:
+    ##   echo "ls -lR revdep/library/" | qsub -cwd -j yes -l hostname=<hostname>
+    
+    ## Assert that revdep/library is on $TMPDIR
+    #if [[ ! "$(readlink revdep/library)" = $TMPDIR* ]]; then
+    #    >&2 echo "ERROR: revdep/library/ already exists but is not on $TMPDIR"
+    #    exit 1
+    #fi
+fi
+
+echo "HOSTNAME: $HOSTNAME"
+ls -l revdep/
+
+Rscript --version
+Rscript -e ".libPaths()"
 Rscript revdep/run.R

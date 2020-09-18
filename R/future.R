@@ -1,5 +1,7 @@
 #' Create a future
 #'
+## Rescaled to 120x138: convert -geometry 28.7% future-logo.png logo.png
+#' \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 #' Creates a future that evaluates an \R expression or
 #' a future that calls an \R function with a set of arguments.
 #' How, when, and where these futures are evaluated can be configured
@@ -172,6 +174,8 @@
 #'
 #' @example incl/future.R
 #'
+#' @author
+#' The future logo was designed by Dan LaBar and tweaked by Henrik Bengtsson.
 #'
 #' @seealso
 #' How, when and where futures are resolved is given by the
@@ -185,31 +189,24 @@
 future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, seed = FALSE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## Hidden argument 'evaluator':
-  ## The 'evaluator' is the function that creates a Future object.
-  ## The default evaluator function is given by plan().
-  makeFuture <- list(...)$evaluator
-  if (!is.null(makeFuture)) {
-    action <- get(Sys.getenv("R_CHECK_FUTURE_EVALUATOR", ".Defunct"), mode="function")
-    action(msg = "Argument 'evaluator' of future() was an internal argument and is now deprecated. Use plan() to set the \"evaluator\".")
+  ## Argument 'evaluator' is defunct
+  if (!is.null(list(...)$evaluator)) {
+    .Defunct(msg = "Argument 'evaluator' of future() was an internal argument and is now defunct. Use plan() to set the \"evaluator\".")
   }
-  if (is.null(makeFuture)) makeFuture <- plan("next")
-  if (!is.function(makeFuture)) {
-    stop("Argument 'evaluator' must be a function: ", typeof(makeFuture))
-  }
+  makeFuture <- plan("next")
+  ## Sanity check
+  stopifnot(is.function(makeFuture))
 
-  ## Call 'makeFuture' without passing 'evaluator' argument part of '...'
-  .makeFuture <- function(..., evaluator = NULL) makeFuture(...)
-  future <- .makeFuture(expr, substitute = FALSE,
-                        envir = envir,
-                        globals = globals, packages = packages,
-                        seed = seed,
-                        lazy = lazy,
-                        ...)
+  future <- makeFuture(expr, substitute = FALSE,
+                       envir = envir,
+                       globals = globals, packages = packages,
+                       seed = seed,
+                       lazy = lazy,
+                       ...)
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {
-    stop(FutureError("Argument 'evaluator' specifies a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", ")))
+    stop(FutureError("plan(\"next\") returned a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", ")))
   }
 
   future

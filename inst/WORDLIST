@@ -1,4 +1,5 @@
 AppVeyor
+AsIs
 BatchJobs
 batchtools
 callr
@@ -14,6 +15,7 @@ FQDN
 frontend
 FutureCondition
 FutureError
+FutureGlobals
 FutureMessage
 FutureResult
 FutureStrategy
@@ -26,6 +28,8 @@ hpc
 HPC
 ing
 L'Ecuyer
+LaBar
+LibreSSL
 listenv
 LSF
 macOS
@@ -44,6 +48,7 @@ MultisessionFuture
 nitty
 NSE
 OpenLava
+OpenSSH
 parallelization
 Parallelization
 pid

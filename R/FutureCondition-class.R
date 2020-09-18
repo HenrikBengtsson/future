@@ -108,11 +108,17 @@ UnexpectedFutureResultError <- function(future, hint = NULL) {
   else if (nchar(result_string) > 512L)
     result_string <- paste(substr(result_string, start = 1L, stop = 512L),
                            "...")
+  if (!is.null(hint)) {
+    result_string <- if (nzchar(result_string)) {
+      sprintf("%s. %s", result_string, hint)
+    } else {
+      hint
+    }
+  }
   msg <- sprintf("Unexpected result (of class %s != %s) retrieved for %s future (label = %s, expression = %s): %s",
                  sQuote(class(result)[1]), sQuote("FutureResult"),
                  class(future)[1], sQuote(label), sQuote(expr),
                  result_string)
-  if (!is.null(hint)) msg <- sprintf("%s. %s", msg, hint)
   cond <- FutureError(msg, future = future)
   class(cond) <- c("UnexpectedFutureResultError", class(cond))
   cond

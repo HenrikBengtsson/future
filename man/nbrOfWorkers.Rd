@@ -19,7 +19,7 @@ Note, it may also be \code{+Inf} for certain types of backends.
 Get the number of workers available
 }
 \examples{
-plan(multiprocess)
+plan(multisession)
 nbrOfWorkers()  ## == availableCores()
 
 plan(sequential)

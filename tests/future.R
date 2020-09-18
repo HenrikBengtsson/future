@@ -48,17 +48,19 @@ message("*** future() w/ gc = TRUE ... DONE")
 
 message("*** future() - exceptions ...")
 
-res <- tryCatch(future(42L, evaluator = TRUE, lazy = TRUE), error = identity)
-stopifnot(inherits(res, "error"))
-
-res <- tryCatch(future(42L, evaluator = function(...) TRUE, lazy = TRUE), error = identity)
-stopifnot(inherits(res, "error"))
-
 target <- list(name = "<unknown>", envir = new.env(), code = "Yo!", exists = TRUE)
 res <- tryCatch(get_future(target, mustExist = TRUE), error = identity)
 stopifnot(inherits(res, "error"))
 
 message("*** future() - exceptions ... DONE")
+
+
+message("*** future() - defunct ...")
+
+res <- tryCatch(future(42L, evaluator = TRUE, lazy = TRUE), error = identity)
+stopifnot(inherits(res, "error"))
+
+message("*** future() - defunct ... DONE")
 
 
 message("*** future() ... DONE")

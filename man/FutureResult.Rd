@@ -30,7 +30,7 @@ the the value is \code{NULL}.}
 \item{visible}{If TRUE, the value was visible, otherwise invisible.}
 
 \item{conditions}{A list of zero or more list elements each containing
-a captured \link[base:condition]{condition} and possibly more meta data such as the
+a captured \link[base:conditions]{condition} and possibly more meta data such as the
 call stack and a timestamp.}
 
 \item{rng}{If TRUE, the \code{.Random.seed} was updated from resolving the
@@ -38,8 +38,8 @@ future, otherwise not.}
 
 \item{\dots}{(optional) Additional named results to be returned.}
 
-\item{started, finished}{\link[base:POSIXct]{POSIXct} timestamps when the evaluation of
-the future expression was started and finished.}
+\item{started, finished}{\link[base:DateTimeClasses]{POSIXct} timestamps
+when the evaluation of the future expression was started and finished.}
 
 \item{version}{The version format of the results.}
 }

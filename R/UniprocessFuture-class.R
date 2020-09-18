@@ -23,7 +23,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   ## Global objects?
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
   globals <- gp$globals
-
+  expr <- gp$expr
+  
   ## Record packages?
   if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
     packages <- unique(c(gp$packages, packages))
@@ -31,8 +32,9 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   
   gp <- NULL
  
-  f <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, version = "1.8", ...)
-  structure(f, class = c("UniprocessFuture", class(f)))
+  future <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
+  future <- structure(future, class = c("UniprocessFuture", class(future)))
+  future
 }
 
 

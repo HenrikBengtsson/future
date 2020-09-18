@@ -17,12 +17,14 @@ makeClusterMPI(
 \item{\dots}{Optional arguments passed to
 \code{\link[parallel:makeCluster]{makeCluster}(workers, type = "MPI", ...)}.}
 
-\item{autoStop}{If TRUE, the cluster will be automatically stopped}
+\item{autoStop}{If TRUE, the cluster will be automatically stopped
+(using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
+garbage collected, unless already stopped.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 }
 \value{
-An object of class \code{"FutureMPIcluster"} consisting
+An object of class \code{c("RichMPIcluster", "MPIcluster", "cluster")} consisting
 of a list of \code{"MPInode"} workers.
 }
 \description{
@@ -30,7 +32,7 @@ The \code{makeClusterMPI()} function creates an MPI cluster of \R workers
 for parallel processing.  This function utilizes
 \code{makeCluster(..., type = "MPI")} of the \pkg{parallel} package and
 tweaks the cluster in an attempt to avoid
-\code{\link[parallel:stopCluster]{stopCluster()}} from hanging (1).
+\code{\link[parallel:makeCluster]{stopCluster()}} from hanging (1).
 \emph{WARNING: This function is very much in a beta version and should
 only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
 }
@@ -43,6 +45,5 @@ only be used if \code{parallel::makeCluster(..., type = "MPI")} fails.}
 }
 }
 \seealso{
-\code{\link[=makeClusterPSOCK]{makeClusterPSOCK()}} and
-\code{\link[parallel:makeCluster]{parallel::makeCluster}()}.
+\code{\link[=makeClusterPSOCK]{makeClusterPSOCK()}} and \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.
 }

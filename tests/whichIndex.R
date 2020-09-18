@@ -68,7 +68,7 @@ D <- data.frame(a = c(1, 1), b = c(2, 4))
 res <- try(idxs <- whichIndex(D, dim = dim, dimnames = dimnames), silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 
-D <- data.frame(a = c("a", "q"), b = c(1, 2))
+D <- data.frame(a = c("a", "q"), b = c(1, 2), stringsAsFactors = FALSE)
 res <- try(idxs <- whichIndex(D, dim = dim, dimnames = dimnames), silent = TRUE)
 stopifnot(inherits(res, "try-error"))
 

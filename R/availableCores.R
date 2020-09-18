@@ -43,7 +43,8 @@
 #'    The \option{mc.cores} option defaults to environment variable
 #'    \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
 #'    package is loaded).  The \option{mc.cores} option is used by for
-#'    instance \code{\link[parallel]{mclapply}()}.
+#'    instance \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel}
+#'    package.
 #'  \item `"PBS"` -
 #'    Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
 #'    Depending on PBS system configuration, these _resource_
@@ -62,6 +63,9 @@
 #'    This may or may not be set.  It can be set when submitting a job,
 #'    e.g. `sbatch --cpus-per-task=2 hello.sh` or by adding
 #'    `#SBATCH --cpus-per-task=2` to the \file{hello.sh} script.
+#'    If \env{SLURM_CPUS_PER_TASK} is not set, then it will fall back to
+#'    use \env{SLURM_CPUS_ON_NODE} if the job is a single-node job
+#'    (\env{SLURM_JOB_NUM_NODES} is 1), e.g. `sbatch --ntasks=2 hello.sh`.
 #'  \item `"LSF"` - 
 #'    Query Platform Load Sharing Facility (LSF) environment variable
 #'    \env{LSB_DJOB_NUMPROC}.
@@ -112,7 +116,55 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     method <- methods[kk]
     if (method == "Slurm") {
       ## Number of cores assigned by Slurm
+
+      ## The assumption is that the following works regardless of
+      ## number of nodes requested /HB 2020-09-18
+      ## Example: --cpus-per-task={n}
       n <- getenv("SLURM_CPUS_PER_TASK")
+      if (is.na(n)) {
+        ## Example: --nodes={nnodes} (defaults to 1, short: -N {nnodes})
+        ## From 'man sbatch':
+        ## SLURM_JOB_NUM_NODES (and SLURM_NNODES for backwards compatibility)
+        ## Total number of nodes in the job's resource allocation.
+        nnodes <- getenv("SLURM_JOB_NUM_NODES")
+        if (is.na(nnodes)) nnodes <- getenv("SLURM_NNODES")
+        if (is.na(nnodes)) nnodes <- 1L  ## Can this happen? /HB 2020-09-18
+
+        if (nnodes == 1L) {
+          ## Example: --nodes=1 --ntasks={n} (short: -n {n})
+          ## IMPORTANT: 'SLURM_CPUS_ON_NODE' appears to be rounded up when nodes > 1.
+          ## Example 1: With --nodes=2 --cpus-per-task=3 we see SLURM_CPUS_ON_NODE=4
+          ## although SLURM_CPUS_PER_TASK=3. 
+          ## Example 2: With --nodes=2 --ntasks=7, we see SLURM_CPUS_ON_NODE=6,
+          ## SLURM_JOB_CPUS_PER_NODE=6,2, no SLURM_CPUS_PER_TASK, and
+          ## SLURM_TASKS_PER_NODE=5,2.
+          ## Conclusions: We can only use 'SLURM_CPUS_ON_NODE' for nnodes = 1.
+          n <- getenv("SLURM_CPUS_ON_NODE")
+        } else {
+          ## Parse `SLURM_TASKS_PER_NODE`
+          ntasks_per_node <- Sys.getenv("SLURM_TASKS_PER_NODE", NA_character_)
+          if (!is.na(ntasks_per_node)) {
+            ## Examples:
+            ## SLURM_TASKS_PER_NODE=5,2
+            ## SLURM_TASKS_PER_NODE=2(x2),1(x3)
+            ntasks_per_node <- strsplit(ntasks_per_node, split = ",", fixed = TRUE)[[1]]
+            ## TODO: Parse ... /HB 2020-09-16
+            ## TODO: How do we infer which component to use on this host? /HB 2020-09-16
+          }
+        }
+      }
+
+      ## TODO?: Can we validate above assumptions/results? /HB 2020-09-18
+      if (FALSE && !is.na(n)) {
+        ## Is any of the following useful?
+
+        ## Example: --ntasks={ntasks} (no default, short: -n {ntasks})
+        ## From 'man sbatch':
+        ## SLURM_NTASKS (and SLURM_NPROCS for backwards compatibility)
+        ## Same as -n, --ntasks
+        ntasks <- getenv("SLURM_NTASKS")
+        if (is.na(ntasks)) ntasks <- getenv("SLURM_NPROCS")
+      }
     } else if (method == "PBS") {
       ## Number of cores assigned by TORQUE/PBS
       n <- getenv("PBS_NUM_PPN")

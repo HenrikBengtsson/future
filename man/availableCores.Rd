@@ -59,7 +59,8 @@ exactly one core available for our calculations.
 The \option{mc.cores} option defaults to environment variable
 \env{MC_CORES} (and is set accordingly when the \pkg{parallel}
 package is loaded).  The \option{mc.cores} option is used by for
-instance \code{\link[parallel]{mclapply}()}.
+instance \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel}
+package.
 \item \code{"PBS"} -
 Query TORQUE/PBS environment variables \env{PBS_NUM_PPN} and \env{NCPUS}.
 Depending on PBS system configuration, these \emph{resource}
@@ -78,6 +79,9 @@ environment variable \env{SLURM_CPUS_PER_TASK}.
 This may or may not be set.  It can be set when submitting a job,
 e.g. \verb{sbatch --cpus-per-task=2 hello.sh} or by adding
 \verb{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+If \env{SLURM_CPUS_PER_TASK} is not set, then it will fall back to
+use \env{SLURM_CPUS_ON_NODE} if the job is a single-node job
+(\env{SLURM_JOB_NUM_NODES} is 1), e.g. \verb{sbatch --ntasks=2 hello.sh}.
 \item \code{"custom"} -
 If option \option{future.availableCores.custom} is set and a function,
 then this function will be called (without arguments) and it's value

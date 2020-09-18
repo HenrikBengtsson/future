@@ -33,15 +33,15 @@ eagerly (starting immediately), otherwise not.}
 \item{seed}{(optional) If TRUE, the random seed, that is, the state of the
 random number generator (RNG) will be set such that statistically sound
 random numbers are produced (also during parallelization).
-If FALSE, it is assumed that the future expression does neither need nor
-use random numbers generation.
+If FALSE (default), it is assumed that the future expression does neither
+need nor use random numbers generation.
 To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
 or a regular RNG seed (a single integer).
 Furthermore, if FALSE, then the future will be monitored to make sure it
 does not use random numbers.  If it does and depending on the value of
-option \code{\link[=future.options]{future.rng.misUse}}, the check is
+option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
 ignored, an informative warning, or error will be produced.
-If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
 but without the RNG check being performed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
@@ -78,7 +78,13 @@ A \link{MultiprocessFuture} implemented as either a
 A multiprocess future is a future that uses \link{multicore} evaluation
 if supported, otherwise it uses \link{multisession} evaluation.
 Regardless, its \emph{value is computed and resolved in
-parallel in another process}.
+parallel in another process}.\cr
+\cr
+\emph{WARNING: Consider the 'multiprocess' future plan deprecated.
+Instead, explicitly specify 'multisession' or 'multicore'.  The former works
+everywhere and is the recommended one between the two. \emph{Forked processing},
+which 'multicore' uses, is unstable in various environment and setups.
+The 'multiprocess' alias is therefore being phased out.}
 }
 \examples{
 \donttest{
@@ -106,9 +112,12 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
+## Explicitly close multisession workers, if they were used
+plan(sequential)
 }
 }
 \seealso{
 Internally \code{\link[=multicore]{multicore()}} and \code{\link[=multisession]{multisession()}}
 are used.
 }
+\keyword{internal}
