@@ -25,6 +25,7 @@ stopifnot(is.character(w), length(w) >= 1)
 print(availableWorkers(methods = "PBS"))
 print(availableWorkers(methods = "SGE"))
 print(availableWorkers(methods = "Slurm"))
+print(availableWorkers(methods = "LSF"))
 
 
 
@@ -38,6 +39,18 @@ workers0 <- c("n1", "n2", "n3", "n1", "n6", "n3", "n3", "n5")
 data0 <- as.data.frame(table(workers0), stringsAsFactors = FALSE)
 colnames(data0) <- c("node", "count")
 data0 <- data0[order(data0$node, data0$count), ]
+
+
+message("*** LSF ...")
+
+Sys.setenv(LSB_HOSTS = paste(workers0, collapse = " "))
+workers <- availableWorkers(methods = "LSF")
+print(workers)
+stopifnot(length(workers) == length(workers0))
+
+message("*** LSF ... done")
+
+
 
 message("*** read_pbs_nodefile() ...")
 
@@ -88,7 +101,6 @@ res <- tryCatch({
   workers <- availableWorkers(methods = "PBS")
 }, warning = identity)
 stopifnot(inherits(res, "warning"))
-
 
 message("*** read_pbs_nodefile() ... DONE")
 

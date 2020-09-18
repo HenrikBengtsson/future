@@ -38,6 +38,8 @@
 #'    An example of a job submission that results in this is
 #'    `qsub -pe mpi 8` (or `qsub -pe ompi 8`), which
 #'    requests eight cores on a any number of machines.
+#'  \item `"LSF"` -
+#'    Query LSF/OpenLava environment variable \env{LSB_HOSTS}.
 #'  \item `"custom"` -
 #'    If option \option{future.availableWorkers.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
@@ -52,7 +54,7 @@
 #' @importFrom utils file_test
 #' @export
 #' @keywords internal
-availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
+availableWorkers <- function(methods = getOption("future.availableWorkers.methods", c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "custom", "system", "fallback")), na.rm = TRUE, default = "localhost", which = c("auto", "min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.character(trim(Sys.getenv(name, NA_character_)))
@@ -135,6 +137,12 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
       ## TODO: Parse 'data' into a hostnames /HB 2020-09-18
       ## ...
       next
+    } else if (method == "LSF") {
+      data <- getenv("LSB_HOSTS")
+      if (is.na(data)) next
+      w <- strsplit(data, split = " ", fixed = TRUE)[[1]]
+      w <- w[nzchar(w)]
+      if (length(w) == 0L) next
     } else if (method == "custom") {
       fcn <- getOption("future.availableWorkers.custom", NULL)
       if (!is.function(fcn)) next
