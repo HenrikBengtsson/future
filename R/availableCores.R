@@ -114,17 +114,6 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
       ## Example: --cpus-per-task={n}
       n <- getenv("SLURM_CPUS_PER_TASK")
       if (is.na(n)) {
-         ## Example: --nodes=1 --ntasks={n} (short: -n {n})
-         ## IMPORTANT: 'SLURM_CPUS_ON_NODE' appears to be rounded up if
- 	 ## --cpu-per-task is specified, e.g. --nodes=2 --cpus-per-task=3 gives
-	 ## SLURM_CPUS_ON_NODE=4 and SLURM_CPUS_PER_TASK=3. /HB 2020-09-18
-         n <- getenv("SLURM_CPUS_ON_NODE")
-      }
-
-      ## TODO?: Can we validate above assumptions/results? /HB 2020-09-18
-      if (FALSE && !is.na(n)) {
-        ## Is any of the following useful?
-	
         ## Example: --nodes={nnodes} (defaults to 1, short: -N {nnodes})
         ## From 'man sbatch':
         ## SLURM_JOB_NUM_NODES (and SLURM_NNODES for backwards compatibility)
@@ -132,6 +121,23 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
         nnodes <- getenv("SLURM_JOB_NUM_NODES")
         if (is.na(nnodes)) nnodes <- getenv("SLURM_NNODES")
         if (is.na(nnodes)) nnodes <- 1L  ## Can this happen? /HB 2020-09-18
+
+        if (nnodes == 1L) {
+          ## Example: --nodes=1 --ntasks={n} (short: -n {n})
+          ## IMPORTANT: 'SLURM_CPUS_ON_NODE' appears to be rounded up when nodes > 1.
+	  ## Example 1: With --nodes=2 --cpus-per-task=3 we see SLURM_CPUS_ON_NODE=4
+	  ## although SLURM_CPUS_PER_TASK=3. 
+          ## Example 2: With --nodes=2 --ntasks=7, we see SLURM_CPUS_ON_NODE=4, 
+	  ## no SLURM_CPUS_PER_TASK, and SLURM_TASKS_PER_NODE=5,2.
+	  ## Conclusions: We can only use 'SLURM_CPUS_ON_NODE' for nnodes = 1.
+          n <- getenv("SLURM_CPUS_ON_NODE")
+	}
+      }
+
+      ## TODO?: Can we validate above assumptions/results? /HB 2020-09-18
+      if (FALSE && !is.na(n)) {
+        ## Is any of the following useful?
+	
 
         ## Example: --ntasks={ntasks} (no default, short: -n {ntasks})
         ## From 'man sbatch':

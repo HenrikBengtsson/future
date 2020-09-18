@@ -34,8 +34,8 @@ NEW FEATURES:
 
  * Now availableCores() better supports Slurm.  Specifically, if environment
    variable 'SLURM_CPUS_PER_TASK' is not set, which requires that option
-   --slurm-cpus-per-task=n' is specified, then it falls back to using
-   'SLURM_CPUS_ON_NODE', which is set when using '--ntasks=n'.
+   --slurm-cpus-per-task=n' is specified and SLURM_JOB_NUM_NODES=1, then it
+   falls back to using 'SLURM_CPUS_ON_NODE', e.g. when using '--ntasks=n'.
 
 PERFORMANCE:
 
