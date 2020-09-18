@@ -22,8 +22,9 @@ Check whether a future is resolved or not
 }
 \details{
 This method needs to be implemented by the class that implement
-the Future API.  The implementation must never throw an error,
-but only return either TRUE or FALSE.
+the Future API.  The implementation should return either TRUE or FALSE
+and must never throw an error (except for \link{FutureError}:s which indicate
+significant, often unrecoverable infrastructure problems).
 It should also be possible to use the method for polling the
 future until it is resolved (without having to wait infinitely long),
 e.g. \code{while (!resolved(future)) Sys.sleep(5)}.
