@@ -18,7 +18,7 @@
 |:-------|:------|:-----------|:--|
 |future  |1.18.0 |1.18.0-9000 |*  |
 |digest  |0.6.25 |0.6.25      |   |
-|globals |0.12.5 |0.13.0      |*  |
+|globals |0.13.0 |0.13.0      |   |
 |listenv |0.8.0  |0.8.0       |   |
 
 # Revdeps
@@ -29,7 +29,7 @@
 |:------------------------------------------------|:---------|:-----|:-------|:----|
 |[adept](problems.md#adept)                       |1.1.2     |      |        |2    |
 |[alookr](problems.md#alookr)                     |0.3.2     |      |1       |     |
-|[aroma.affymetrix](problems.md#aromaaffymetrix)  |3.2.0     |      |        |3    |
+|[aroma.affymetrix](problems.md#aromaaffymetrix)  |3.2.0     |      |        |1    |
 |[aroma.core](problems.md#aromacore)              |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                       |2.3.0     |      |        |2    |
 |BatchGetSymbols                                  |2.5.7     |      |        |     |
