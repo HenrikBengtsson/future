@@ -46,7 +46,7 @@
 #'
 #' @section Options for configuring low-level system behaviors:
 #' \describe{
-#'  \item{\option{future.availableCores.methods}:}{(character vector) Default lookup methods for [availableCores()]. (Default: `c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "fallback")`)}
+#'  \item{\option{future.availableCores.methods}:}{(character vector) Default lookup methods for [availableCores()]. (Default: `c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "custom", "fallback")`)}
 #'
 #'  \item{\option{future.availableCores.custom}:}{(function) If set and a function, then this function will be called (without arguments) by [availableCores()] where its value, coerced to an integer, is interpreted as a number of cores.}
 #'

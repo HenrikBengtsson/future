@@ -66,6 +66,11 @@
 #'    If \env{SLURM_CPUS_PER_TASK} is not set, then it will fall back to
 #'    use \env{SLURM_CPUS_ON_NODE} if the job is a single-node job
 #'    (\env{SLURM_JOB_NUM_NODES} is 1), e.g. `sbatch --ntasks=2 hello.sh`.
+#'  \item `"LSF"` - 
+#'    Query Platform Load Sharing Facility (LSF) environment variable
+#'    \env{LSB_DJOB_NUMPROC}.
+#'    Jobs with multiple (cpu) slots can be submitted on LSF using
+#'    `bsub -n 2 -R "span[hosts=1]" < hello.sh`.
 #'  \item `"custom"` -
 #'    If option \option{future.availableCores.custom} is set and a function,
 #'    then this function will be called (without arguments) and it's value
@@ -92,7 +97,7 @@
 #'
 #' @export
 #' @keywords internal
-availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback", "custom")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
+availableCores <- function(constraints = NULL, methods = getOption("future.availableCores.methods", c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "fallback", "custom")), na.rm = TRUE, default = c(current = 1L), which = c("min", "max", "all")) {
   ## Local functions
   getenv <- function(name) {
     as.integer(trim(Sys.getenv(name, NA_character_)))
@@ -170,6 +175,9 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
     } else if (method == "SGE") {
       ## Number of cores assigned by Sun/Oracle Grid Engine (SGE)
       n <- getenv("NSLOTS")
+    } else if (method == "LSF") {
+      ## Number of slots assigned by LSF
+      n <- getenv("LSB_DJOB_NUMPROC")
     } else if (method == "mc.cores") {
       ## Number of cores by option defined by 'parallel' package
       n <- getopt("mc.cores")
