@@ -65,7 +65,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
   }
  
   split <- function(s) {
-    x <- unlist(strsplit(s, split = "[,]", fixed = FALSE), use.names = FALSE)
+    x <- unlist(strsplit(s, split = "[, ]", fixed = FALSE), use.names = FALSE)
     x <- trim(x)
     x <- x[nzchar(x)]
     x
@@ -140,9 +140,7 @@ availableWorkers <- function(methods = getOption("future.availableWorkers.method
     } else if (method == "LSF") {
       data <- getenv("LSB_HOSTS")
       if (is.na(data)) next
-      w <- strsplit(data, split = " ", fixed = TRUE)[[1]]
-      w <- w[nzchar(w)]
-      if (length(w) == 0L) next
+      w <- split(data)
     } else if (method == "custom") {
       fcn <- getOption("future.availableWorkers.custom", NULL)
       if (!is.function(fcn)) next
