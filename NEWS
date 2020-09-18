@@ -37,6 +37,9 @@ NEW FEATURES:
    --slurm-cpus-per-task=n' is specified and SLURM_JOB_NUM_NODES=1, then it
    falls back to using 'SLURM_CPUS_ON_NODE', e.g. when using '--ntasks=n'.
 
+ * Now availableCores() supports LSF/OpenLava.  Specifically, environment
+   variable 'LSB_DJOB_NUMPROC' is acknowledged.
+
 PERFORMANCE:
 
  * Now plan(multisession), plan(cluster, workers = <number>), and

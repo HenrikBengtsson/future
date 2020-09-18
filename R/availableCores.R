@@ -69,7 +69,7 @@
 #'  \item `"LSF"` - 
 #'    Query Platform Load Sharing Facility (LSF) environment variable
 #'    \env{LSB_DJOB_NUMPROC}.
-#'    Jobs with multiple (cpu) slots can be submitted on LSF using
+#'    Jobs with multiple (CPU) slots can be submitted on LSF using
 #'    `bsub -n 2 -R "span[hosts=1]" < hello.sh`.
 #'  \item `"custom"` -
 #'    If option \option{future.availableCores.custom} is set and a function,
