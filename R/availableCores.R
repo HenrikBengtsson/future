@@ -128,8 +128,8 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
           ## Example 1: With --nodes=2 --cpus-per-task=3 we see SLURM_CPUS_ON_NODE=4
           ## although SLURM_CPUS_PER_TASK=3. 
           ## Example 2: With --nodes=2 --ntasks=7, we see SLURM_CPUS_ON_NODE=6,
-	  ## SLURM_JOB_CPUS_PER_NODE=6,2, no SLURM_CPUS_PER_TASK, and
-	  ## SLURM_TASKS_PER_NODE=5,2.
+          ## SLURM_JOB_CPUS_PER_NODE=6,2, no SLURM_CPUS_PER_TASK, and
+          ## SLURM_TASKS_PER_NODE=5,2.
           ## Conclusions: We can only use 'SLURM_CPUS_ON_NODE' for nnodes = 1.
           n <- getenv("SLURM_CPUS_ON_NODE")
         } else {
@@ -137,12 +137,12 @@ availableCores <- function(constraints = NULL, methods = getOption("future.avail
           ntasks_per_node <- Sys.getenv("SLURM_TASKS_PER_NODE", NA_character_)
           if (!is.na(ntasks_per_node)) {
             ## Examples:
-	    ## SLURM_TASKS_PER_NODE=5,2
-	    ## SLURM_TASKS_PER_NODE=2(x2),1(x3)
+            ## SLURM_TASKS_PER_NODE=5,2
+            ## SLURM_TASKS_PER_NODE=2(x2),1(x3)
             ntasks_per_node <- strsplit(ntasks_per_node, split = ",", fixed = TRUE)[[1]]
-	    ## TODO: Parse ... /HB 2020-09-16
-	    ## TODO: How do we infer which component to use on this host? /HB 2020-09-16
-	  }
+            ## TODO: Parse ... /HB 2020-09-16
+            ## TODO: How do we infer which component to use on this host? /HB 2020-09-16
+          }
         }
       }
 
