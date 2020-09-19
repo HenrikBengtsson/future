@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.18.0-9000 [2020-09-18]
+Version: 1.19.0 [2020-09-19]
 
 SIGNIFICANT CHANGES:
 
@@ -64,7 +64,7 @@ BUG FIXES:
  * Contrary to other future backends, any conditions produced while resolving
    a sequential future using future(..., conditions = character()) would be
    signaled, although the most reasonable expectation would be that they are
-   silences. Now, all non-captured conditions are muffled, if possible.
+   silenced. Now, all non-captured conditions are muffled, if possible.
 
  * Option 'future.rng.onMisuse' was not passed down to nested futures.
  
