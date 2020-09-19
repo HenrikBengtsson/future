@@ -6,6 +6,7 @@ Imports:
     globals (>= 0.12.5),
     listenv (>= 0.8.0),
     parallel,
+    tools,
     utils
 Suggests:
     RhpcBLASctl,
