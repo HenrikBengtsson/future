@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-09-18                   |
+|date     |2020-09-19                   |
 
 # Dependencies
 
@@ -23,6 +23,14 @@
 
 # Revdeps
 
+## Failed to check (3)
+
+|package                      |version |error |warning |note |
+|:----------------------------|:-------|:-----|:-------|:----|
+|[bcmaps](failures.md#bcmaps) |0.18.1  |1     |        |1    |
+|[lidR](failures.md#lidr)     |3.0.3   |1     |        |     |
+|[mlr3](failures.md#mlr3)     |0.6.0   |1     |        |     |
+
 ## All (136)
 
 |package                                          |version   |error |warning |note |
@@ -30,11 +38,11 @@
 |[adept](problems.md#adept)                       |1.1.2     |      |        |2    |
 |[alookr](problems.md#alookr)                     |0.3.2     |      |1       |     |
 |[aroma.affymetrix](problems.md#aromaaffymetrix)  |3.2.0     |      |        |1    |
-|[aroma.core](problems.md#aromacore)              |3.2.1     |      |        |2    |
+|[aroma.core](problems.md#aromacore)              |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                       |2.3.0     |      |        |2    |
 |BatchGetSymbols                                  |2.5.7     |      |        |     |
 |[batchtools](problems.md#batchtools)             |0.9.13    |      |        |1    |
-|[bcmaps](problems.md#bcmaps)                     |0.18.1    |      |        |1    |
+|[bcmaps](failures.md#bcmaps)                     |0.18.1    |1     |        |1    |
 |biotmle                                          |1.12.0    |      |        |     |
 |bkmrhat                                          |0.1.16    |      |        |     |
 |[blavaan](problems.md#blavaan)                   |0.3-10    |      |        |2    |
@@ -43,15 +51,15 @@
 |ceRNAnetsim                                      |1.0.0     |      |        |     |
 |civis                                            |3.0.0     |      |        |     |
 |[CLVTools](problems.md#clvtools)                 |0.7.0     |      |        |1    |
-|codalm                                           |0.1.0     |      |        |     |
+|[codalm](problems.md#codalm)                     |0.1.0     |1     |        |     |
 |[codebook](problems.md#codebook)                 |0.9.2     |      |        |2    |
 |crossmap                                         |0.1.0     |      |        |     |
 |[cSEM](problems.md#csem)                         |0.2.0     |      |        |1    |
 |[datapackage.r](problems.md#datapackager)        |1.3.1     |      |        |1    |
-|DeclareDesign                                    |0.22.0    |      |        |     |
+|[DeclareDesign](problems.md#declaredesign)       |0.22.0    |1     |        |     |
 |[delayed](problems.md#delayed)                   |0.3.0     |      |        |1    |
 |dhReg                                            |0.1.0     |      |        |     |
-|[dipsaus](problems.md#dipsaus)                   |0.1.0     |      |        |1    |
+|dipsaus                                          |0.1.0     |      |        |     |
 |disk.frame                                       |0.3.7     |      |        |     |
 |doFuture                                         |0.9.0     |      |        |     |
 |[dragon](problems.md#dragon)                     |1.0.2     |      |        |1    |
@@ -74,7 +82,7 @@
 |future.BatchJobs                                 |0.16.2    |      |        |     |
 |future.batchtools                                |0.9.0     |      |        |     |
 |future.callr                                     |0.5.0     |      |        |     |
-|future.tests                                     |0.2.1     |      |        |     |
+|[future.tests](problems.md#futuretests)          |0.2.1     |1     |        |     |
 |fxtract                                          |0.9.4     |      |        |     |
 |genBaRcode                                       |1.2.3     |      |        |     |
 |[GetBCBData](problems.md#getbcbdata)             |0.5       |      |        |1    |
@@ -87,31 +95,31 @@
 |gstat                                            |2.0-6     |      |        |     |
 |gtfs2gps                                         |1.3-0     |      |        |     |
 |[gWQS](problems.md#gwqs)                         |3.0.0     |      |        |1    |
-|hackeRnews                                       |0.1.0     |      |        |     |
+|[hackeRnews](problems.md#hackernews)             |0.1.0     |1     |        |     |
 |[hal9001](problems.md#hal9001)                   |0.2.6     |      |        |1    |
 |haldensify                                       |0.0.6     |      |        |     |
 |idmodelr                                         |0.3.2     |      |        |     |
-|[iml](problems.md#iml)                           |0.10.0    |      |        |1    |
+|[iml](problems.md#iml)                           |0.10.0    |1     |        |1    |
 |[infercnv](problems.md#infercnv)                 |1.4.0     |1     |        |3    |
-|[inlinedocs](problems.md#inlinedocs)             |2019.12.5 |      |        |2    |
+|[inlinedocs](problems.md#inlinedocs)             |2019.12.5 |      |        |1    |
 |ipc                                              |0.1.3     |      |        |     |
 |ItemResponseTrees                                |0.2.5     |      |        |     |
-|[JointAI](problems.md#jointai)                   |1.0.0     |      |        |1    |
+|[JointAI](problems.md#jointai)                   |1.0.0     |1     |        |1    |
 |jstor                                            |0.3.9     |      |        |     |
 |kernelboot                                       |0.1.7     |      |        |     |
 |ldaPrototype                                     |0.2.0     |      |        |     |
 |ldsr                                             |0.0.2     |      |        |     |
 |lgr                                              |0.3.4     |      |        |     |
-|[lidR](problems.md#lidr)                         |3.0.3     |      |        |1    |
+|[lidR](failures.md#lidr)                         |3.0.3     |1     |        |     |
 |lightr                                           |1.3       |      |        |     |
 |[lmtp](problems.md#lmtp)                         |0.0.5     |1     |        |2    |
 |mcp                                              |0.3.0     |      |        |     |
 |merTools                                         |0.5.2     |      |        |     |
-|metagam                                          |0.1.2     |      |        |     |
+|[metagam](problems.md#metagam)                   |0.1.2     |2     |        |     |
 |[methyvim](problems.md#methyvim)                 |1.10.0    |1     |        |1    |
 |[MineICA](problems.md#mineica)                   |1.28.0    |1     |2       |4    |
-|mlr3                                             |0.6.0     |      |        |     |
-|mlr3db                                           |0.1.5     |      |        |     |
+|[mlr3](failures.md#mlr3)                         |0.6.0     |1     |        |     |
+|[mlr3db](problems.md#mlr3db)                     |0.1.5     |1     |        |     |
 |mrgsim.parallel                                  |0.1.1     |      |        |     |
 |nflfastR                                         |2.2.1     |      |        |     |
 |onemapsgapi                                      |1.0.0     |      |        |     |
@@ -140,7 +148,7 @@
 |SCtools                                          |0.3.1     |      |        |     |
 |sctransform                                      |0.2.1     |      |        |     |
 |[seer](problems.md#seer)                         |1.1.5     |      |        |1    |
-|[Seurat](problems.md#seurat)                     |3.2.1     |      |        |3    |
+|[Seurat](problems.md#seurat)                     |3.2.1     |1     |        |3    |
 |[shiny](problems.md#shiny)                       |1.5.0     |1     |        |1    |
 |[shinyrecap](problems.md#shinyrecap)             |0.1.0     |      |        |1    |
 |[sigminer](problems.md#sigminer)                 |1.0.16    |      |        |1    |
@@ -155,7 +163,7 @@
 |sperrorest                                       |3.0.1     |      |        |     |
 |[stars](problems.md#stars)                       |0.4-3     |      |        |2    |
 |startR                                           |2.0.1     |      |        |     |
-|steps                                            |1.1.0     |      |        |     |
+|[steps](problems.md#steps)                       |1.1.0     |1     |        |     |
 |[tableschema.r](problems.md#tableschemar)        |1.1.1     |      |        |2    |
 |tcensReg                                         |0.1.7     |      |        |     |
 |tealeaves                                        |1.0.5     |      |        |     |

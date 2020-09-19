@@ -97,12 +97,7 @@ Run `revdep_details(, "aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'GLAD', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘GLAD’
+      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
 # BAMBI
@@ -124,9 +119,9 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
-        libs   5.1Mb
+        libs   5.5Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -154,7 +149,16 @@ Run `revdep_details(, "batchtools")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    libmpi.so: cannot open shared object file: No such file or directory
+    --------------------------------------------------------------------------
+    [[40735,1],0]: A high-performance Open MPI point-to-point messaging module
+    was unable to find any relevant network interfaces:
+    
+    Module: OpenFabrics (openib)
+      Host: c4-dev1
+    
+    Another transport will be used instead, although this may result in
+    lower performance.
+    --------------------------------------------------------------------------
     ```
 
 # bcmaps
@@ -173,6 +177,9 @@ Run `revdep_details(, "bcmaps")` for more info
 </details>
 
 ## In both
+
+*   R CMD check timed out
+    
 
 *   checking package dependencies ... NOTE
     ```
@@ -251,7 +258,7 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.7Mb
       sub-directories of 1Mb or more:
         R     3.1Mb
         doc   2.6Mb
@@ -279,6 +286,49 @@ Run `revdep_details(, "CLVTools")` for more info
       installed size is 12.6Mb
       sub-directories of 1Mb or more:
         libs  11.4Mb
+    ```
+
+# codalm
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/codalm
+* URL: https://github.com/jfiksel/codalm
+* BugReports: https://github.com/jfiksel/codalm/issues
+* Date/Publication: 2020-06-25 16:00:06 UTC
+* Number of recursive dependencies: 74
+
+Run `revdep_details(, "codalm")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      ── 1. Failure: bootstrap CI works with sequential evaluation (@test-codalm_ci.R#
+      inherits(plan(), "sequential") isn't true.
+      
+      ── 2. Failure: bootstrap CI works with multisession evaluation (@test-codalm_ci.
+      inherits(plan(), "sequential") isn't true.
+      
+      ── 3. Failure: independence test works with sequential evaluation (@test-indepen
+      inherits(plan(), "sequential") isn't true.
+      
+      ── 4. Failure: independence test works with multisession evaluation (@test-indep
+      inherits(plan(), "sequential") isn't true.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 22 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 4 ]
+      1. Failure: bootstrap CI works with sequential evaluation (@test-codalm_ci.R#20) 
+      2. Failure: bootstrap CI works with multisession evaluation (@test-codalm_ci.R#42) 
+      3. Failure: independence test works with sequential evaluation (@test-independence_test.R#9) 
+      4. Failure: independence test works with multisession evaluation (@test-independence_test.R#19) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # codebook
@@ -357,6 +407,49 @@ Run `revdep_details(, "datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
+# DeclareDesign
+
+<details>
+
+* Version: 0.22.0
+* Source code: https://github.com/cran/DeclareDesign
+* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
+* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
+* Date/Publication: 2020-03-24 07:40:10 UTC
+* Number of recursive dependencies: 136
+
+Run `revdep_details(, "DeclareDesign")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      [11] 1 - 2 == -1
+      [12] 1 - 4 == -3
+      [14] 1 - 3 == -2
+      [15] 1 - 5 == -4
+      [17] 1 - 3 == -2
+      [18] 1 - 6 == -5
+      ...
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 482 | SKIPPED: 5 | WARNINGS: 0 | FAILED: 8 ]
+      1. Error: merge_by_estimator working in compare_diagnoses (@test-compare-diagnoses.R#28) 
+      2. Error: more term (@test-diagnose-design.R#227) 
+      3. Error: diagnose_design works when simulations_df lacking parameters attr (@test-diagnose-design.R#285) 
+      4. Error: Factorial (@test-factorial.R#39) 
+      5. Failure: correct fan out (@test-fanout.R#164) 
+      6. Error: Two estimators, Two estimands (crossed) (@test-multiple-estimators.R#52) 
+      7. Error: designs with factors in diagnosands_df do not produce warnings (@test-reshape-diagnosis.R#92) 
+      8. Failure: Simulate Design works x2 (@test-simulate-design.R#44) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # delayed
 
 <details>
@@ -378,31 +471,6 @@ Run `revdep_details(, "delayed")` for more info
     ```
     Namespace in Imports field not imported from: ‘assertthat’
       All declared Imports should be used.
-    ```
-
-# dipsaus
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/dipsaus
-* URL: https://github.com/dipterix/dipsaus
-* BugReports: https://github.com/dipterix/dipsaus/issues
-* Date/Publication: 2020-08-12 10:00:20 UTC
-* Number of recursive dependencies: 66
-
-Run `revdep_details(, "dipsaus")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        doc    1.1Mb
-        libs   2.7Mb
     ```
 
 # dragon
@@ -537,6 +605,49 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
+# future.tests
+
+<details>
+
+* Version: 0.2.1
+* Source code: https://github.com/cran/future.tests
+* URL: https://github.com/HenrikBengtsson/future.tests
+* BugReports: https://github.com/HenrikBengtsson/future.tests/issues
+* Date/Publication: 2020-03-20 12:40:05 UTC
+* Number of recursive dependencies: 13
+
+Run `revdep_details(, "future.tests")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      72 resolve,....  TRUE          NA      NA    NA        NA     NA
+      73 resolve,....    NA          NA      NA    NA        NA     NA
+      74 resolved....    NA          NA      NA    NA        NA     NA
+      75    rng, seed    NA          NA      NA    NA        NA     NA
+      76 rng, see.... FALSE          NA      NA    NA        NA     NA
+      77 rng, see....  TRUE          NA      NA    NA        NA     NA
+      78 rng, see.... FALSE          NA      NA    NA        NA     NA
+      79 rng, see....  TRUE          NA      NA    NA        NA     NA
+      80 future, ....    NA          NA      NA    NA        NA  FALSE
+      81 future, ....    NA          NA      NA    NA        NA   TRUE
+      82 %<-%, stdout    NA          NA      NA    NA        NA  FALSE
+      83 %<-%, stdout    NA          NA      NA    NA        NA   TRUE
+      84 value, v....    NA          NA      NA    NA        NA     NA
+      > 
+      > message("Run first three tests ...")
+      Run first three tests ...
+      > 
+      > library(future)
+      > results <- run_tests(head(tests, 3L))
+      Error: 'identical(plan("list"), state$plan)' is not TRUE
+      Execution halted
+    ```
+
 # GetBCBData
 
 <details>
@@ -627,6 +738,49 @@ Run `revdep_details(, "gWQS")` for more info
       All declared Imports should be used.
     ```
 
+# hackeRnews
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/hackeRnews
+* URL: https://github.com/szymanskir/hackeRnews
+* BugReports: https://github.com/szymanskir/hackeRnews/issues
+* Date/Publication: 2019-12-13 13:20:05 UTC
+* Number of recursive dependencies: 62
+
+Run `revdep_details(, "hackeRnews")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      ── 10. Failure: Empty responses are handled correctly when retrieving comments (
+      `result <- get_comments(get_item_by_id(1000))` did not produce any warnings.
+      
+      ── 11. Failure: Empty responses are handled correctly when retrieving comments (
+      all.equal(result, expected) isn't true.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 16 | SKIPPED: 0 | WARNINGS: 1 | FAILED: 11 ]
+      1. Failure: Retrieve top stories function is working correctly (@test-api.R#84) 
+      2. Failure: Retrieve top stories function is working correctly (@test-api.R#127) 
+      3. Failure: Retrieve best stories function is working correctly (@test-api.R#168) 
+      4. Failure: Retrieve latest ask stories function is working correctly (@test-api.R#195) 
+      5. Failure: Retrieve latest show stories function is working correctly (@test-api.R#222) 
+      6. Failure: Retrieve latest job stories function is working correctly (@test-api.R#249) 
+      7. Failure: Retrieve comments function is working correctly (@test-api.R#314) 
+      8. Failure: Empty responses are handled correctly when retrieving items (@test-api.R#320) 
+      9. Failure: Empty responses are handled correctly when retrieving items (@test-api.R#326) 
+      1. ...
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # hal9001
 
 <details>
@@ -646,9 +800,9 @@ Run `revdep_details(, "hal9001")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
-        libs   5.1Mb
+        libs   5.5Mb
     ```
 
 # iml
@@ -667,6 +821,32 @@ Run `revdep_details(, "iml")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+    ...
+       14. future.apply:::future_xapply(...)
+       15. future::future(...)
+       16. future:::makeFuture(...)
+       17. future:::ClusterRegistry("start", workers = workers)
+       18. future:::makeCluster(workers, ...)
+       19. future::makeClusterPSOCK(workers, ...)
+       21. parallel:::stopCluster.default(cl[nodes])
+       22. parallel:::stopNode(n)
+       23. parallel:::postNode(n, "DONE")
+       25. parallel:::sendData.SOCKnode(...)
+       26. base::serialize(data, node$con)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 504 | SKIPPED: 11 | WARNINGS: 17 | FAILED: 2 ]
+      1. Error: FeatureEffect is Partial (@test-FeatureEffect.R#46) 
+      2. Error: FeatureEffect is Partial (@test-FeatureEffect.R#46) 
+      
+      Error: testthat unit tests failed
+      In addition: Warning message:
+      In pvp$name : closing unused connection 8 (<-localhost:11334)
+      Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -705,10 +885,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-09-18 17:03:55] ::plot_cnv:Start
-    INFO [2020-09-18 17:03:55] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-09-18 17:03:55] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-09-18 17:03:55] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-09-18 21:07:27] ::plot_cnv:Start
+    INFO [2020-09-18 21:07:27] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-09-18 21:07:27] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-09-18 21:07:27] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -755,11 +935,6 @@ Run `revdep_details(, "inlinedocs")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘future.apply’
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘R.methodsS3’
@@ -781,6 +956,32 @@ Run `revdep_details(, "JointAI")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    
+    $ordinal
+       mu_reg_ordinal   tau_reg_ordinal  mu_delta_ordinal tau_delta_ordinal 
+                0e+00             1e-04             0e+00             1e-04 
+    
+    $ranef
+    shape_diag_RinvD  rate_diag_RinvD       KinvD_expr 
+              "0.01"          "0.001"   "nranef + 1.0" 
+    
+    $surv
+     mu_reg_surv tau_reg_surv 
+           0.000        0.001 
+    
+    > 
+    > # To change the hyper-parameters:
+    > hyp <- default_hyperpars()
+    > hyp$norm['rate_tau_norm'] <- 1e-3
+    > mod <- lm_imp(y ~ C1 + C2 + B1, data = wideDF, hyperpars = hyp, mess = FALSE)
+    Error in { : task 1 failed - "n.iter must be a positive integer"
+    Calls: lm_imp ... <Anonymous> -> run_jags -> <Anonymous> -> <Anonymous>
+    Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -805,15 +1006,66 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking whether package ‘lidR’ can be installed ... ERROR
     ```
-      installed size is 12.6Mb
-      sub-directories of 1Mb or more:
-        doc       1.2Mb
-        extdata   1.1Mb
-        libs      8.7Mb
+    Installation failed.
+    See ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘lidR’ ...
+** package ‘lidR’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c BoundingBox.cpp -o BoundingBox.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_Gatziolis2019.cpp -o C_Gatziolis2019.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_dalponte2016.cpp -o C_dalponte2016.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_delaunay.cpp -o C_delaunay.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c GridPartition.cpp -o GridPartition.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c LAS.cpp -o LAS.o
+In file included from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadilloForward.h:49,
+                 from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from LAS.h:5,
+                 from LAS.cpp:1:
+/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/armadillo:52:10: fatal error: armadillo_bits/compiler_extra.hpp: No such file or directory
+ #include "armadillo_bits/compiler_extra.hpp"
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [/software/c4/cbi/software/R-4.0.2/lib64/R/etc/Makeconf:176: LAS.o] Error 1
+ERROR: compilation failed for package ‘lidR’
+* removing ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/lidR’
+
+```
+### CRAN
+
+```
+* installing *source* package ‘lidR’ ...
+** package ‘lidR’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c BoundingBox.cpp -o BoundingBox.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_Gatziolis2019.cpp -o C_Gatziolis2019.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_dalponte2016.cpp -o C_dalponte2016.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_delaunay.cpp -o C_delaunay.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c GridPartition.cpp -o GridPartition.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c LAS.cpp -o LAS.o
+In file included from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadilloForward.h:49,
+                 from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadillo.h:31,
+                 from LAS.h:5,
+                 from LAS.cpp:1:
+/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/armadillo:52:10: fatal error: armadillo_bits/compiler_extra.hpp: No such file or directory
+ #include "armadillo_bits/compiler_extra.hpp"
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [/software/c4/cbi/software/R-4.0.2/lib64/R/etc/Makeconf:176: LAS.o] Error 1
+ERROR: compilation failed for package ‘lidR’
+* removing ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/old/lidR.Rcheck/lidR’
+
+```
 # lmtp
 
 <details>
@@ -865,6 +1117,75 @@ Run `revdep_details(, "lmtp")` for more info
     Namespaces in Imports field not imported from:
       ‘R6’ ‘nnls’ ‘utils’
       All declared Imports should be used.
+    ```
+
+# metagam
+
+<details>
+
+* Version: 0.1.2
+* Source code: https://github.com/cran/metagam
+* URL: https://lifebrain.github.io/metagam/, https://github.com/Lifebrain/metagam
+* BugReports: https://github.com/Lifebrain/metagam/issues
+* Date/Publication: 2020-06-22 18:30:03 UTC
+* Number of recursive dependencies: 144
+
+Run `revdep_details(, "metagam")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > 
+    > ## Create 5 datasets
+    > set.seed(1234)
+    > datasets <- lapply(1:5, function(x) gamSim(scale = 5, verbose = FALSE))
+    > 
+    > ## Fit a GAM in each dataset, then use strip_rawdata() to remove
+    > ## individual participant data
+    > models <- lapply(datasets, function(dat){
+    +   ## This uses the gam() function from mgcv
+    +   model <- gam(y ~ s(x0, bs = "cr") + s(x1, bs = "cr") + s(x2, bs = "cr"), data = dat)
+    +   ## This uses strip_rawdata() from metagam
+    +   strip_rawdata(model)
+    + })
+    > 
+    > ## Next, we meta-analyze the models.
+    > ## It is often most convenient to analyze a single term at a time. We focus on s(x1).
+    > meta_analysis <- metagam(models, terms = "s(x1)", grid_size = 30)
+    Error in match.arg(type) : 
+      'arg' should be one of “link”, “response”, “terms”
+    Calls: metagam ... resolve.list -> signalConditionsASAP -> signalConditions
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+    ...
+      > 
+      > test_check("metagam")
+      ── 1. Error: metagam works (@test-metagam.R#15)  ───────────────────────────────
+      'arg' should be one of “link”, “response”, “terms”
+      Backtrace:
+        1. metagam::metagam(fits, grid_size = 10)
+        2. furrr::future_map_dfr(...)
+        3. furrr::future_map(.x, .f, ..., .progress = .progress, .options = .options)
+        4. furrr:::future_map_template(...)
+        5. furrr:::multi_resolve(fs, names(.x))
+        7. future:::values.list(fs)
+        9. future:::resolve.list(...)
+       10. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       11. future:::signalConditions(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 48 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
+      1. Error: metagam works (@test-metagam.R#15) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # methyvim
@@ -1044,6 +1365,69 @@ Run `revdep_details(, "MineICA")` for more info
                  "write.table")
     to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
     contains 'methods').
+    ```
+
+# mlr3
+
+<details>
+
+* Version: 0.6.0
+* Source code: https://github.com/cran/mlr3
+* URL: https://mlr3.mlr-org.com, https://github.com/mlr-org/mlr3
+* BugReports: https://github.com/mlr-org/mlr3/issues
+* Date/Publication: 2020-09-13 13:30:02 UTC
+* Number of recursive dependencies: 50
+
+Run `revdep_details(, "mlr3")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
+
+# mlr3db
+
+<details>
+
+* Version: 0.1.5
+* Source code: https://github.com/cran/mlr3db
+* URL: https:///mlr3db.mlr-org.com, https://github.com/mlr-org/mlr3db
+* BugReports: https://github.com/mlr-org/mlr3db/issues
+* Date/Publication: 2020-02-19 12:40:12 UTC
+* Number of recursive dependencies: 59
+
+Run `revdep_details(, "mlr3db")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      +   test_check("mlr3db")
+      + }
+      ── 1. Error: resample work (@test_train_predict.R#16)  ─────────────────────────
+      Invalid connection. Provide a connector during construction to automatically reconnect
+      Backtrace:
+       1. mlr3::resample(task, learner, mlr3::rsmp("cv", folds = 3))
+       2. future.apply::future_lapply(...)
+       3. future.apply:::future_xapply(...)
+       5. future:::value.list(fs)
+       7. future:::resolve.list(...)
+       8. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       9. future:::signalConditions(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 604 | SKIPPED: 0 | WARNINGS: 1 | FAILED: 1 ]
+      1. Error: resample work (@test_train_predict.R#16) 
+      
+      Error: testthat unit tests failed
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
     ```
 
 # origami
@@ -1327,9 +1711,9 @@ Run `revdep_details(, "qtl2pleio")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 20.7Mb
+      installed size is 23.8Mb
       sub-directories of 1Mb or more:
-        libs  20.4Mb
+        libs  23.6Mb
     ```
 
 # regmedint
@@ -1437,6 +1821,32 @@ Run `revdep_details(, "Seurat")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+    ...
+      > 
+      > test_check("Seurat")
+      ── 1. Error: (unknown) (@test_objects.R#235)  ──────────────────────────────────
+      external pointer is not valid
+      Backtrace:
+        1. Seurat:::NNHelper(...)
+        3. Seurat:::AnnoyNN(...)
+        4. Seurat:::AnnoySearch(...)
+        5. future.apply::future_lapply(...)
+        6. future.apply:::future_xapply(...)
+        8. future:::value.list(fs)
+       10. future:::resolve.list(...)
+       11. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       12. future:::signalConditions(...)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 428 | SKIPPED: 0 | WARNINGS: 14 | FAILED: 1 ]
+      1. Error: (unknown) (@test_objects.R#235) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -1627,9 +2037,9 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 36.8Mb
+      installed size is 41.5Mb
       sub-directories of 1Mb or more:
-        libs  35.2Mb
+        libs  39.9Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1703,9 +2113,9 @@ Run `revdep_details(, "spatialwarnings")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  5.7Mb
       sub-directories of 1Mb or more:
-        libs   4.6Mb
+        libs   4.7Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1742,6 +2152,47 @@ Run `revdep_details(, "stars")` for more info
       sub-directories of 1Mb or more:
         doc   1.9Mb
         nc    4.5Mb
+    ```
+
+# steps
+
+<details>
+
+* Version: 1.1.0
+* Source code: https://github.com/cran/steps
+* Date/Publication: 2020-03-23 16:40:02 UTC
+* Number of recursive dependencies: 61
+
+Run `revdep_details(, "steps")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      > 
+      > test_check("steps")
+      [1] "Kernel-based dispersal utilising available RAM to speed up operations"
+      ── 1. Error: simulation_results classes work (@test_simulation_results_class.R#3
+      could not find function "calc" 
+      
+      it looks like the future package can't find an object or function you are using, you can pass it in via the future.globals argument to steps::simulation
+      Backtrace:
+       1. testthat::expect_true(...)
+       5. steps::simulation(...)
+       6. base::tryCatch(...)
+       7. base:::tryCatchList(expr, classes, parentenv, handlers)
+       8. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
+       9. value[[3L]](cond)
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 15 | SKIPPED: 0 | WARNINGS: 4 | FAILED: 1 ]
+      1. Error: simulation_results classes work (@test_simulation_results_class.R#302) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # tableschema.r
