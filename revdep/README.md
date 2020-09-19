@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-09-17                   |
+|date     |2020-09-18                   |
 
 # Dependencies
 
@@ -30,7 +30,7 @@
 |[adept](problems.md#adept)                       |1.1.2     |      |        |2    |
 |[alookr](problems.md#alookr)                     |0.3.2     |      |1       |     |
 |[aroma.affymetrix](problems.md#aromaaffymetrix)  |3.2.0     |      |        |1    |
-|[aroma.core](problems.md#aromacore)              |3.2.1     |      |        |1    |
+|[aroma.core](problems.md#aromacore)              |3.2.1     |      |        |2    |
 |[BAMBI](problems.md#bambi)                       |2.3.0     |      |        |2    |
 |BatchGetSymbols                                  |2.5.7     |      |        |     |
 |[batchtools](problems.md#batchtools)             |0.9.13    |      |        |1    |
@@ -51,7 +51,7 @@
 |DeclareDesign                                    |0.22.0    |      |        |     |
 |[delayed](problems.md#delayed)                   |0.3.0     |      |        |1    |
 |dhReg                                            |0.1.0     |      |        |     |
-|dipsaus                                          |0.1.0     |      |        |     |
+|[dipsaus](problems.md#dipsaus)                   |0.1.0     |      |        |1    |
 |disk.frame                                       |0.3.7     |      |        |     |
 |doFuture                                         |0.9.0     |      |        |     |
 |[dragon](problems.md#dragon)                     |1.0.2     |      |        |1    |
@@ -93,7 +93,7 @@
 |idmodelr                                         |0.3.2     |      |        |     |
 |[iml](problems.md#iml)                           |0.10.0    |      |        |1    |
 |[infercnv](problems.md#infercnv)                 |1.4.0     |1     |        |3    |
-|[inlinedocs](problems.md#inlinedocs)             |2019.12.5 |      |        |1    |
+|[inlinedocs](problems.md#inlinedocs)             |2019.12.5 |      |        |2    |
 |ipc                                              |0.1.3     |      |        |     |
 |ItemResponseTrees                                |0.2.5     |      |        |     |
 |[JointAI](problems.md#jointai)                   |1.0.0     |      |        |1    |

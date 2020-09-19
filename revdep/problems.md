@@ -36,7 +36,7 @@ Run `revdep_details(, "adept")` for more info
 * Source code: https://github.com/cran/alookr
 * BugReports: https://github.com/choonghyunryu/alookr/issues
 * Date/Publication: 2020-06-07 16:50:07 UTC
-* Number of recursive dependencies: 203
+* Number of recursive dependencies: 202
 
 Run `revdep_details(, "alookr")` for more info
 
@@ -97,7 +97,12 @@ Run `revdep_details(, "aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+      'GLAD', 'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘GLAD’
     ```
 
 # BAMBI
@@ -149,16 +154,7 @@ Run `revdep_details(, "batchtools")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    --------------------------------------------------------------------------
-    [[17175,1],0]: A high-performance Open MPI point-to-point messaging module
-    was unable to find any relevant network interfaces:
-    
-    Module: OpenFabrics (openib)
-      Host: c4-dev1
-    
-    Another transport will be used instead, although this may result in
-    lower performance.
-    --------------------------------------------------------------------------
+    libmpi.so: cannot open shared object file: No such file or directory
     ```
 
 # bcmaps
@@ -382,6 +378,31 @@ Run `revdep_details(, "delayed")` for more info
     ```
     Namespace in Imports field not imported from: ‘assertthat’
       All declared Imports should be used.
+    ```
+
+# dipsaus
+
+<details>
+
+* Version: 0.1.0
+* Source code: https://github.com/cran/dipsaus
+* URL: https://github.com/dipterix/dipsaus
+* BugReports: https://github.com/dipterix/dipsaus/issues
+* Date/Publication: 2020-08-12 10:00:20 UTC
+* Number of recursive dependencies: 66
+
+Run `revdep_details(, "dipsaus")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        doc    1.1Mb
+        libs   2.7Mb
     ```
 
 # dragon
@@ -615,7 +636,7 @@ Run `revdep_details(, "gWQS")` for more info
 * URL: https://github.com/tlverse/hal9001
 * BugReports: https://github.com/tlverse/hal9001/issues
 * Date/Publication: 2020-06-27 04:50:07 UTC
-* Number of recursive dependencies: 90
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "hal9001")` for more info
 
@@ -662,7 +683,7 @@ Run `revdep_details(, "iml")` for more info
 * URL: https://github.com/broadinstitute/inferCNV/wiki
 * BugReports: https://github.com/broadinstitute/inferCNV/issues
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 122
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -684,10 +705,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-09-17 17:32:03] ::plot_cnv:Start
-    INFO [2020-09-17 17:32:03] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-09-17 17:32:03] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-09-17 17:32:03] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-09-18 17:03:55] ::plot_cnv:Start
+    INFO [2020-09-18 17:03:55] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-09-18 17:03:55] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-09-18 17:03:55] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -733,6 +754,11 @@ Run `revdep_details(, "inlinedocs")` for more info
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘future.apply’
+    ```
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -850,7 +876,7 @@ Run `revdep_details(, "lmtp")` for more info
 * URL: https://github.com/nhejazi/methyvim
 * BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 204
+* Number of recursive dependencies: 203
 
 Run `revdep_details(, "methyvim")` for more info
 
@@ -1182,7 +1208,7 @@ Run `revdep_details(, "promises")` for more info
 * Version: 1.20.0
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 282
+* Number of recursive dependencies: 281
 
 Run `revdep_details(, "Prostar")` for more info
 
@@ -1404,7 +1430,7 @@ Run `revdep_details(, "seer")` for more info
 * URL: https://satijalab.org/seurat, https://github.com/satijalab/seurat
 * BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-09-07 10:20:15 UTC
-* Number of recursive dependencies: 224
+* Number of recursive dependencies: 223
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -1538,7 +1564,7 @@ Run `revdep_details(, "sigminer")` for more info
 * URL: https://github.com/timoast/signac, https://satijalab.org/signac
 * BugReports: https://github.com/timoast/signac/issues
 * Date/Publication: 2020-08-16 15:50:03 UTC
-* Number of recursive dependencies: 226
+* Number of recursive dependencies: 225
 
 Run `revdep_details(, "Signac")` for more info
 
