@@ -53,15 +53,15 @@ to be attached in the \R environment evaluating the future.}
 \item{seed}{(optional) If TRUE, the random seed, that is, the state of the
 random number generator (RNG) will be set such that statistically sound
 random numbers are produced (also during parallelization).
-If FALSE, it is assumed that the future expression does neither need nor
-use random numbers generation.
+If FALSE (default), it is assumed that the future expression does neither
+need nor use random numbers generation.
 To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
 or a regular RNG seed (a single integer).
 Furthermore, if FALSE, then the future will be monitored to make sure it
 does not use random numbers.  If it does and depending on the value of
-option \code{\link[=future.options]{future.rng.misUse}}, the check is
+option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
 ignored, an informative warning, or error will be produced.
-If \code{seed} is NULL (default), then the effect is as with \code{seed = FALSE}
+If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
 but without the RNG check being performed.}
 
 \item{lazy}{If FALSE (default), the future is resolved

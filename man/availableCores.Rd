@@ -7,7 +7,7 @@
 availableCores(
   constraints = NULL,
   methods = getOption("future.availableCores.methods", c("system", "mc.cores",
-    "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "fallback", "custom")),
+    "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "fallback", "custom")),
   na.rm = TRUE,
   default = c(current = 1L),
   which = c("min", "max", "all")
@@ -79,6 +79,14 @@ environment variable \env{SLURM_CPUS_PER_TASK}.
 This may or may not be set.  It can be set when submitting a job,
 e.g. \verb{sbatch --cpus-per-task=2 hello.sh} or by adding
 \verb{#SBATCH --cpus-per-task=2} to the \file{hello.sh} script.
+If \env{SLURM_CPUS_PER_TASK} is not set, then it will fall back to
+use \env{SLURM_CPUS_ON_NODE} if the job is a single-node job
+(\env{SLURM_JOB_NUM_NODES} is 1), e.g. \verb{sbatch --ntasks=2 hello.sh}.
+\item \code{"LSF"} -
+Query Platform Load Sharing Facility (LSF) environment variable
+\env{LSB_DJOB_NUMPROC}.
+Jobs with multiple (CPU) slots can be submitted on LSF using
+\verb{bsub -n 2 -R "span[hosts=1]" < hello.sh}.
 \item \code{"custom"} -
 If option \option{future.availableCores.custom} is set and a function,
 then this function will be called (without arguments) and it's value

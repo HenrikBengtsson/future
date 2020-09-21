@@ -37,15 +37,15 @@
 #' @param seed (optional) If TRUE, the random seed, that is, the state of the
 #' random number generator (RNG) will be set such that statistically sound
 #' random numbers are produced (also during parallelization).
-#' If FALSE, it is assumed that the future expression does neither need nor
-#' use random numbers generation.
+#' If FALSE (default), it is assumed that the future expression does neither
+#' need nor use random numbers generation.
 #' To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
 #' or a regular RNG seed (a single integer).
 #' Furthermore, if FALSE, then the future will be monitored to make sure it
 #' does not use random numbers.  If it does and depending on the value of
-#' option \code{\link[=future.options]{future.rng.misUse}}, the check is
+#' option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
 #' ignored, an informative warning, or error will be produced.
-#' If `seed` is NULL (default), then the effect is as with `seed = FALSE`
+#' If `seed` is NULL, then the effect is as with `seed = FALSE`
 #' but without the RNG check being performed.
 #'
 #' @param lazy If FALSE (default), the future is resolved
@@ -386,112 +386,6 @@ result.Future <- function(future, ...) {
 }
 
 
-#' The value of a future
-#'
-#' Gets the value of a future.  If the future is unresolved, then
-#' the evaluation blocks until the future is resolved.
-#'
-#' @param future A \link{Future}.
-#' 
-#' @param stdout If TRUE, any captured standard output is outputted,
-#' otherwise not.
-#' 
-#' @param signal A logical specifying whether (\link[base]{conditions})
-#' should signaled or be returned as values.
-#' 
-#' @param \dots Not used.
-#'
-#' @return An \R object of any data type.
-#'
-#' @details
-#' This method needs to be implemented by the class that implement
-#' the Future API.
-#'
-#' @aliases value
-#' @rdname value
-#' @export
-#' @export value
-value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
-  if (future$state == "created") {
-    future <- run(future)
-  }
-
-  result <- result(future)
-  stop_if_not(inherits(result, "FutureResult"))
-
-  value <- result$value
-  visible <- result$visible
-  if (is.null(visible)) visible <- TRUE
-
-  ## Always signal immediateCondition:s and as soon as possible.
-  ## They will always be signaled if they exist.
-  signalImmediateConditions(future)
-
-  ## Output captured standard output?
-  if (stdout && length(result$stdout) > 0 &&
-      inherits(result$stdout, "character")) {
-    cat(paste(result$stdout, collapse = "\n"))
-  }
-
-
-
-  ## Was RNG used without requesting RNG seeds?
-  if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
-    ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
-    ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
-    ## future.apply (<= 1.3.0) and furrr
-    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
-    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
-    ## doFuture w/ doRNG, e.g. %dorng%
-    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
-    if (!rng_ok) {
-      onMisuse <- Sys.getenv("R_FUTURE_RNG_ONMISUSE", "ignore")
-      onMisuse <- getOption("future.rng.onMisuse", onMisuse)
-      if (onMisuse != "ignore") {
-        label <- future$label
-        if (is.null(label)) label <- "<none>"
-        msg <- sprintf("UNRELIABLE VALUE: Future (%s) unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label))
-        if (onMisuse == "error") {
-          cond <- simpleError(msg)
-        } else if (onMisuse == "warning") {
-          cond <- simpleWarning(msg)
-        } else {
-          cond <- NULL
-          warning("Unknown value on option 'future.rng.onMisuse': ",
-                  sQuote(onMisuse))
-        }
-        conditions <- result$conditions
-        conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
-        result$conditions <- conditions
-        future$result <- result
-      }
-    }
-  }
-  future$.rng_checked <- TRUE
-
-  ## Signal captured conditions?
-  conditions <- result$conditions
-  if (length(conditions) > 0) {
-    if (signal) {
-      mdebugf("Future state: %s", sQuote(future$state))
-      ## Will signal an (eval) error, iff exists
-      signalConditions(future, exclude = getOption("future.relay.immediate", "immediateCondition"), resignal = TRUE)
-    } else {
-      ## Return 'error' object, iff exists, otherwise NULL
-      error <- conditions[[length(conditions)]]$condition
-      if (inherits(error, "error")) {
-        value <- error
-        visible <- TRUE
-      }
-    }
-  }
-  
-  if (visible) value else invisible(value)
-}
-
-value <- function(...) UseMethod("value")
-
-
 #' @export
 resolved.Future <- function(x, run = TRUE, ...) {
   ## A lazy future not even launched?
@@ -746,6 +640,7 @@ makeExpression <- local({
         future.globals.onReference = .(getOption("future.globals.onReference")),
         future.globals.resolve     = .(getOption("future.globals.resolve")),
         future.resolve.recursive   = .(getOption("future.resolve.recursive")),
+        future.rng.onMisuse        = .(getOption("future.rng.onMisuse")),
         
         ## Other options relevant to making futures behave consistently
         ## across backends
@@ -865,6 +760,11 @@ makeExpression <- local({
                     muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
                   }
+                } else {
+                  ## Muffle all non-captured conditions
+                  ## muffleCondition <- future:::muffleCondition()
+                  muffleCondition <- .(muffleCondition)
+                  muffleCondition(cond)
                 }
               }
             }) ## local()

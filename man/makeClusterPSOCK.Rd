@@ -11,6 +11,10 @@ makeClusterPSOCK(
   port = c("auto", "random"),
   ...,
   autoStop = FALSE,
+  tries = getOption("future.makeNodePSOCK.tries",
+    as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))),
+  delay = getOption("future.makeNodePSOCK.tries.delay",
+    as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 15))),
   verbose = getOption("future.debug", FALSE)
 )
 
@@ -42,6 +46,7 @@ makeNodePSOCK(
   rank = 1L,
   manual = FALSE,
   dryrun = FALSE,
+  quiet = FALSE,
   verbose = FALSE
 )
 }
@@ -67,10 +72,16 @@ appending it to the hostname, e.g. \code{"remote.server.org:2200"} or via
 SSH options \code{-p}, e.g. \code{rshopts = c("-p", "2200")}.}}
 
 \item{\dots}{Optional arguments passed to
-\code{makeNode(workers[i], ..., rank = i)} where
-\code{i = seq_along(workers)}.}
+\code{makeNode(workers[i], ..., rank = i)} where \code{i = seq_along(workers)}.}
 
-\item{autoStop}{If TRUE, the cluster will be automatically stopped}
+\item{autoStop}{If TRUE, the cluster will be automatically stopped
+(using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
+garbage collected, unless already stopped.}
+
+\item{tries, delay}{Maximum number of attempts done to launch each node
+with \code{makeNode()} and the delay (in seconds) in-between attempts.
+If argument \code{port} specifies more than one port, e.g. \code{port = "random"}
+then a random port will be drawn and validated at most \code{tries} times.}
 
 \item{verbose}{If TRUE, informative messages are outputted.}
 
@@ -162,6 +173,9 @@ to run will be displayed.}
 \item{dryrun}{If TRUE, nothing is set up, but a message suggesting how to
 launch the worker from the terminal is outputted.  This is useful for
 troubleshooting.}
+
+\item{quiet}{If TRUE, then no output will be produced other than that from
+using \code{verbose = TRUE}.}
 }
 \value{
 An object of class \code{c("RichSOCKcluster", "SOCKcluster", "cluster")}
@@ -299,14 +313,21 @@ worker machines to the master, which may not be configured or is disabled
 on some systems, e.g. compute clusters.
 }
 
-\section{Default value of argument \code{rscript}}{
+\section{Argument \code{rscript}}{
 
-If \code{homogeneous} is FALSE, the \code{rscript} defaults to
-\code{"Rscript"}, i.e. it is assumed that the \command{Rscript} executable
-is available on the \env{PATH} of the worker.
+If \code{homogeneous} is FALSE, the \code{rscript} defaults to \code{"Rscript"}, i.e. it
+is assumed that the \command{Rscript} executable is available on the
+\env{PATH} of the worker.
 If \code{homogeneous} is TRUE, the \code{rscript} defaults to
-\code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed
-that the worker and the caller share the same file system and \R installation.
+\code{file.path(R.home("bin"), "Rscript")}, i.e. it is basically assumed that
+the worker and the caller share the same file system and \R installation.
+
+If specified, argument \code{rscript} should be a character vector with one more
+more elements.
+all elements are automatically shell quoted using \code{\link[base:shQuote]{base::shQuote()}}, except
+those that are of format \verb{<ENVVAR>=<VALUE>}, that is, the ones matching the
+regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
+Another exception is when \code{rscript} inherits from 'AsIs'.
 }
 
 \section{Default value of argument \code{homogeneous}}{

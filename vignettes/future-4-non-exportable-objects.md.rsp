@@ -13,7 +13,7 @@
 
 Certain types of objects are tied to a given R session.  Such objects cannot be saved to file by one R process and then later be reloaded in another R process and expected to work correctly.  If attempted, we will often get an informative error but not always.  For the same reason, these type of objects cannot be exported to another R processes(*) for parallel processing.  We refer to these type of objects as "non-exportable objects".
 
-(*) The exception is when _forked_ processes are used, i.e. `plan(multicore)`.  However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable.  Moreover, such code will fail to parallelize when using other future backends.
+(*) The exception _might be_ when _forked_ processes are used, i.e. `plan(multicore)`.  However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable.  Moreover, such code will fail to parallelize when using other future backends.
 
 
 ## A first example - file connections
@@ -28,7 +28,7 @@ readLines("output.log", warn = FALSE)
 ```
 it will not work when used in another R process.  If we try, the result is "unknown", e.g.
 ```r
-library("future")
+library(future)
 plan(multisession)
 f <- future({ cat("world!", file = con); flush(con) })
 value(f)
@@ -67,29 +67,42 @@ The below table and sections provide a few examples of non-exportable R objects 
 _If you identify other cases, please consider [reporting](https://github.com/HenrikBengtsson/future/issues/) them so they can be documented here and possibly even be fixed._
 
 
-  Package         | Example of non-exportable types or classes
-  ----------------|-------------------------------------------
-  **base**        | connection
-  **DBI**         | DBIConnection
-  **magick**      | magick-image
-  **Rcpp**        | NativeSymbol
-  **reticulate**  | python.builtin.function, python.builtin.module
-  **rJava**       | jclassName
-  **rstan**       | stanmodel
-  **sparklyr**    | tbl_spark
-  **udpipe**      | udpipe_model
-  **xml2**        | xml_document
+  Package         | Examples of non-exportable types or classes
+  :---------------|:-------------------------------------------
+  **base**        | connection (`externalptr`)
+  **DBI**         | DBIConnection (`externalptr`)
+  **keras**       | keras.engine.sequential.Sequential (`externalptr`)
+  **magick**      | magick-image (`externalptr`)
+  **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
+  **Rcpp**        | NativeSymbol (`externalptr`)
+  **reticulate**  | python.builtin.function (`externalptr`), python.builtin.module (`externalptr`)
+  **rJava**       | jclassName (`externalptr`)
+  **rstan**       | stanmodel (`externalptr`)
+  **sparklyr**    | tbl_spark (`externalptr`)
+  **udpipe**      | udpipe_model (`externalptr`)
+  **xml2**        | xml_document (`externalptr`)
 
 
+These are illustrated in sections 'Packages that rely on external pointers' and 'Packages with other types of non-external objects' below.
 
-### Package: DBI
+
+### Packages that rely on external pointers
+
+If an object carries an _external pointer_, it is likely that it can only be used in the R session where it was created.  If it is exported to and used in a parallel process, it will likely cause an error there.  As shown above, and in below examples, setting option `future.globals.onReference` to `"error"` will make **future** to scan for _external pointer_:s before launching the future on a parallel worker, and throw an error if one is detected.
+
+However, there are objects with _external pointer_:s that can be exported, e.g. `data.table` objects of the [data.table](https://cran.r-project.org/package=data.table) package is one such example.  In other words, the existence of a _external pointer_ is just a suggestion for an object being non-exportable - it is not a sufficient condition.
+
+Below are some examples of packages who produce non-exportable objects with _external pointer_:s.
+
+
+#### Package: DBI
 
 [DBI](https://cran.r-project.org/package=DBI) provides a unified database interface for communication between R and various database engines.  Analogously to regular connections in R, DBIConnection objects can _not_ safely be exported to another R process, e.g.
 ```r
-library("future")
+library(future)
 options(future.globals.onReference = "error")
 plan(multisession)
-library("DBI")
+library(DBI)
 con <- dbConnect(RSQLite::SQLite(), ":memory:")
 dummy %<-% print(con)
 ## Error: Detected a non-exportable reference ('externalptr') in one of the globals
@@ -98,13 +111,42 @@ dummy %<-% print(con)
 
 
 
-### Package: magic
+#### Package: keras
+
+The [keras](https://cran.r-project.org/package=DBI) package provides an R interface to [Keras](https://keras.io/), which "is a high-level neural networks API developed with a focus on enabling fast experimentation".  The R implementation accesses the Keras Python API via [reticulate](https://cran.r-project.org/package=reticulate).  However, Keras model instances in R make use of R connections and external pointers, which prevents them from being exported to external R processes.  For example, if the attempt to use a Keras model in a multisession workers, the worker will produce a run-time error:
+
+```r
+library(keras)
+
+library(future)
+plan(multisession)
+
+model <- keras_model_sequential()
+f <- future(model %>% 
+       layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
+       layer_dropout(rate = 0.4) %>% 
+       layer_dense(units = 128, activation = 'relu') %>%
+       layer_dropout(rate = 0.3) %>%
+       layer_dense(units = 10, activation = 'softmax'))
+model2 <- value(f)
+Error in object$add(layer) : attempt to apply non-function
+```
+
+If we turn on `options(future.globals.onReference = "error")`, we will catch this already when we create the future:
+```r
+Error: Detected a non-exportable reference ('externalptr') in one of the
+globals ('model' of class 'keras.engine.sequential.Sequential') used in
+the future expression
+```
+
+
+#### Package: magic
 
 [magick](https://cran.r-project.org/package=magick) provides an R-level API for ImageMagick to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("magick")
+library(magick)
 frink <- magick::image_read("https://jeroen.github.io/images/frink.png")
 f <- future(image_fill(frink, "orange", "+100+200", 20))
 v <- value(f)
@@ -125,7 +167,7 @@ we'll see that this is caught even before attempting to run this in parallel;
 ```
 
 
-### Package: Rcpp
+#### Package: Rcpp
 
 Another example is [Rcpp](https://cran.r-project.org/package=Rcpp) , which allow us to easily create R functions that are implemented in C++, e.g.
 ```r
@@ -147,7 +189,7 @@ my_length(x)
 ```
 However, since this function uses an external pointer internally, we cannot pass it to another R process:
 ```r
-library("future")
+library(future)
 plan(multisession)
 n %<-% my_length(x)
 n
@@ -163,14 +205,14 @@ n %<-% my_length(x)
 ```
 
 
-### Package: reticulate
+#### Package: reticulate
 
 The [reticulate](https://cran.r-project.org/package=reticulate) package provides methods for creating and calling Python code from within R.  If one attempt to use Python-binding objects from this package, we get errors like:
 
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("reticulate")
+library(reticulate)
 os <- import("os")
 pwd %<-% os$getcwd()
 pwd
@@ -208,14 +250,14 @@ y %<-% twice(1.2)
 
 
 
-### Package: rJava
+#### Package: rJava
 
 Here is an example that shows how [rJava](https://cran.r-project.org/package=rJava) objects cannot be exported to external R processes.
 
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("rJava")
+library(rJava)
 .jinit() ## Initialize Java VM on master
 
 Double <- J("java.lang.Double")
@@ -245,12 +287,12 @@ f <- future({
 ```
 
 
-### Package: sparklyr
+#### Package: sparklyr
 
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("sparklyr")
+library(sparklyr)
 sc <- spark_connect(master = "local")
 
 file <- system.file("misc", "exDIF.csv", package = "utils")
@@ -273,12 +315,12 @@ the globals ('data' of class 'tbl_spark') used in the future expression
 ```
 
 
-### Package: udpipe
+#### Package: udpipe
 
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("udpipe")
+library(udpipe)
 udmodel <- udpipe_download_model(language = "dutch")
 udmodel <- udpipe_load_model(file = udmodel$file_model)
 x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
@@ -300,13 +342,13 @@ Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on h
 
 
 
-### Package: xml2
+#### Package: xml2
 
 Another example is XML objects of the [xml2](https://cran.r-project.org/package=xml2) package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
 ```r
-library("future")
+library(future)
 plan(multisession)
-library("xml2")
+library(xml2)
 xml <- read_xml("<body></body>")
 f <- future(xml_children(xml))
 value(f)
@@ -321,37 +363,62 @@ f <- future(xml_children(xml))
 ```
 
 
-<%---
+### Packages with other types of non-external objects
 
-### Package: rlang
+#### Package: ncdf4
 
-Yet another example comes from the [rlang](https://cran.r-project.org/package=rlang) package.  This example is somewhat twisted - it uses `value(future(x))` which is quite meaningless by itself - but it is a minimal example that illustrates what can happen:
+Package [ncdf4](https://cran.r-project.org/package=ncdf4) provides an R API to work with data that live in netCDF files.  For example, we can create a simple netCDF file that holds a variable 'x':
 
 ```r
-library("future")
+library(ncdf4)
+x <- ncvar_def("x", units="count", dim=list())
+file <- nc_create("example.nc", x)
+ncvar_put(file, x, 42)
+nc_close(file)
+```
+
+We can now use this netCDF file next time we start R, e.g.
+```r
+library(ncdf4)
+file <- nc_open("example.nc")
+y <- ncvar_get(file)
+y
+## [1] 42
+```
+
+However, it would fail if we attempt to use `ncdf`, which is an object of class 'ncdf4', in a parallel worker, we will get an error:
+
+```r
+library(future)
 plan(multisession)
-library("dplyr")  ## relies on 'rlang'
-iris <- as_tibble(iris)
-res <- mutate(iris, mod = value(future({
-    list(lm(Species ~ Sepal.Length, data = iris))
-})))
-dim(res)
-## [1] 150   6
+library(ncdf4)
+file <- nc_open("example.nc")
+f <- future(ncvar_get(file))
+y <- value(f)
+## Error in R_nc4_inq_varndims: NetCDF: Not a valid ID
+## Error in ncvar_ndims(ncid, varid) : error returned from C call
 ```
 
-This seems to work.  However, there is indeed an external pointer involved;
+This is because ncdf4 objects make use of internal references that are unique to the R session where they were created.  However, these are _not_ formal _external pointer_:s, meaning the future framework cannot detect them.  That is, using `options(future.globals.onReference = "error")` is of no help here.
+
+A workaround is to open the netCDF in each worker, e.g.
 
 ```r
-options(future.globals.onReference = "error")
-res <- mutate(iris, mod = value(future({
-  list(lm(Species ~ Sepal.Length, data = iris))
-})))
-## Error: Detected a non-exportable reference ('externalptr' of class
-## 'RegisteredNativeSymbol') in one of the globals ('rlang_tilde_eval' of
-## class 'CallRoutine') used in the future expression
+library(future)
+plan(multisession)
+library(ncdf4)
+f <- future({
+  file <- nc_open("example.nc")
+  value <- ncvar_get(file)
+  nc_close(file)
+  value
+})
+y <- value(f)
+y
+## [1] 42
 ```
----%>
 
 
 ---
+
 Copyright Henrik Bengtsson, 2020

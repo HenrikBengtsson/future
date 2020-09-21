@@ -20,14 +20,17 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
 
   ## Assign?
-   if (length(gp) > 0L && (lazy || assignToTarget)) {
-    target <- new.env(parent = envir)
-    globalsT <- gp$globals
-    for (name in names(globalsT)) {
-      target[[name]] <- globalsT[[name]]
+  if (length(gp) > 0L) {
+    if (lazy || assignToTarget || !identical(expr, gp$expr)) {
+      expr <- gp$expr
+      target <- new.env(parent = envir)
+      globalsT <- gp$globals
+      for (name in names(globalsT)) {
+        target[[name]] <- globalsT[[name]]
+      }
+      globalsT <- NULL
+      envir <- target
     }
-    globalsT <- NULL
-    envir <- target
   }
   gp <- NULL
 
@@ -247,7 +250,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
   multithreading <- getOption("future.fork.multithreading.enable", multithreading)
   if (isFALSE(multithreading) &&
       !supports_omp_threads(assert = TRUE, debug = debug)) {
-    warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+    warning(future::FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
     multithreading <- TRUE
   }
   
@@ -259,6 +262,11 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
         RhpcBLASctl::omp_set_num_threads(1L)
         base::on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
         new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+        if (!is.numeric(new_omp_threads) || is.na(new_omp_threads) || new_omp_threads != 1L) {
+          label <- future$label
+          if (is.null(label)) label <- "<none>"
+          warning(future::FutureWarning(sprintf("Failed to force a single OMP thread on this system. Number of threads used: %s", new_omp_threads), future = future))
+        }
       }
 
       ## Tell BLAS to use a single thread(?)
@@ -266,6 +274,8 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
       ## FIXME: How can we get the current BLAS settings?
       ## /HB 2020-01-09
       ## RhpcBLASctl::blas_set_num_threads(1L)
+
+      .(expr)
     })
     
     if (debug) mdebug("- Updated expression to force single-threaded mode")

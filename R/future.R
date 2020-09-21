@@ -1,5 +1,7 @@
 #' Create a future
 #'
+## Rescaled to 120x138: convert -geometry 28.7% future-logo.png logo.png
+#' \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 #' Creates a future that evaluates an \R expression or
 #' a future that calls an \R function with a set of arguments.
 #' How, when, and where these futures are evaluated can be configured
@@ -172,6 +174,8 @@
 #'
 #' @example incl/future.R
 #'
+#' @author
+#' The future logo was designed by Dan LaBar and tweaked by Henrik Bengtsson.
 #'
 #' @seealso
 #' How, when and where futures are resolved is given by the

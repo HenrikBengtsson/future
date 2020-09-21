@@ -1,11 +1,12 @@
 Package: future
-Version: 1.18.0
+Version: 1.19.0
 Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
     globals (>= 0.12.5),
     listenv (>= 0.8.0),
     parallel,
+    tools,
     utils
 Suggests:
     RhpcBLASctl,

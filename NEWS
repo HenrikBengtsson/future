@@ -1,6 +1,89 @@
 Package: future
 ===============
 
+Version: 1.19.0 [2020-09-19]
+
+SIGNIFICANT CHANGES:
+
+ * Futures detect when random number generation (RNG) was used to resolve them.
+   If a future uses RNG without parallel RNG was requested, then an informative
+   warning is produced. To request parallel RNG, specify argument 'seed', e.g.
+   'f <- future(rnorm(3), seed=TRUE)' or 'y %<-% { rnorm(3) } %seed% TRUE'.
+   Higher-level map-reduce APIs provide similarly named "seed" arguments to
+   achieve the same.  To, escalate these warning to errors, set option
+   'future.rng.onMisuse' to "error".  To silence them, set it to "ignore".
+
+ * Now, all non-captured conditions are muffled, if possible.  For instance,
+   future(warning("boom"), conditions = c("message")) will truly muffle the
+   warning regardless of backend used.  This was needed to fix below bug.
+
+NEW FEATURES:
+
+ * makeClusterPSOCK() will now retry to create a cluster node up to 'tries'
+   (default: 3) times before giving up.  If argument 'port' species more than
+   one port (e.g. port = "random") then it will also attempt find a valid
+   random port up to 'tries' times before giving up.  The pre-validation of
+   the random port is only supported in R (>= 4.0.0) and skipped otherwise.
+
+ * makeClusterPSOCK() skips shell quoting of the elements in 'rscript' if it
+   inherits from 'AsIs'.
+
+ * makeClusterPSOCK(), or actually makeNodePSOCK(), gained argument 'quiet',
+   which can be used to silence output produced by 'manual = TRUE'.
+
+ * If multithreading is disabled but multicore futures fail to acknowledge
+   the setting on the current system, then an informative FutureWarning is
+   produced by such futures.
+
+ * Now availableCores() better supports Slurm.  Specifically, if environment
+   variable 'SLURM_CPUS_PER_TASK' is not set, which requires that option
+   --slurm-cpus-per-task=n' is specified and SLURM_JOB_NUM_NODES=1, then it
+   falls back to using 'SLURM_CPUS_ON_NODE', e.g. when using '--ntasks=n'.
+
+ * Now availableCores() and availableWorkers() supports LSF/OpenLava.
+   Specifically, they acknowledge environment variable 'LSB_DJOB_NUMPROC'
+   and 'LSB_HOSTS', respectively.
+
+PERFORMANCE:
+
+ * Now plan(multisession), plan(cluster, workers = <number>), and
+   makeClusterPSOCK() which they both use internally, sets up localhost
+   workers twice as fast compared to versions since future 1.12.0, which
+   brings it back to par with a bare-bone parallel::makeCluster(...,
+   setup_strategy = "sequential") setup.  The slowdown was introduced in
+   future 1.12.0 (2019-03-07) when protection against leaving stray R
+   processes behind from failed worker startup was implemented.  This
+   protection now makes use of memoization for speedup.
+
+BUG FIXES:
+
+ * Sequential and multicore backends, but not multisession, would produce
+   errors on "'...' used in an incorrect context" in cases where '...' was
+   part of argument 'globals' and not the evaluation environment.
+
+ * Contrary to other future backends, any conditions produced while resolving
+   a sequential future using future(..., conditions = character()) would be
+   signaled, although the most reasonable expectation would be that they are
+   silenced. Now, all non-captured conditions are muffled, if possible.
+
+ * Option 'future.rng.onMisuse' was not passed down to nested futures.
+ 
+ * Disabling multithreading in forked processes by setting R option
+   'future.fork.multithreading.enable' or environment variable
+   'R_FUTURE_FORK_MULTITHREADING_ENABLE' to 'FALSE' would cause multicore
+   futures to always return value 1L.  This bug was introduced in
+   future 1.17.0 (2020-04-17).
+
+ * getGlobalsAndPackages() did not always return a 'globals' element that was
+   of class FutureGlobals.
+   
+ * getGlobalsAndPackages(..., globals) would recalculate 'total_size' even
+   when it was already calculated or known to be zero.
+   
+ * getGlobalsAndPackages(Formula::Formula(~ x)) would produce "the condition
+   has length > 1" warnings (which will become errors in future R versions).
+
+
 Version: 1.18.0 [2020-07-08]
 
 SIGNIFICANT CHANGES:
@@ -26,7 +109,7 @@ NEW FEATURES:
    ('RichSOCKnode' #1 on host 'n3' (R version 3.6.3 (2020-02-29), platform
    x86_64-pc-linux-gnu)) is out of sync."
 
- * It is now possible to set enviroment variables on workers before they are
+ * It is now possible to set environment variables on workers before they are
    launched by makeClusterPSOCK() by specify them as as "<name>=<value>"
    as part of the 'rscript' vector argument, e.g. rscript=c("ABC=123",
    "DEF='hello world'", "Rscript"). This works because elements in 'rscript'
@@ -537,7 +620,7 @@ NEW FEATURES:
    process is still alive or not.
 
  * Add makeClusterMPI(n) for creating MPI-based clusters of a similar kind as
-   parallel::makeCluster(n, type = "MPI") but that also attempts to workaound
+   parallel::makeCluster(n, type = "MPI") but that also attempts to workaround
    issues where parallel::stopCluster() causes R to stall.
    
  * makeClusterPSOCK() and makeClusterMPI() gained argument 'autoStop' for

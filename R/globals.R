@@ -20,7 +20,7 @@
 #'
 #' @param \dots Not used.
 #'
-#' @return A named list with elements `expr` (the tweaked expression), `globals` (a named list) and `packages` (a character string).
+#' @return A named list with elements `expr` (the tweaked expression), `globals` (a named list of class [FutureGlobals]) and `packages` (a character string).
 #'
 #' @seealso Internally, \code{\link[globals]{globalsOf}()} is used to identify globals and associated packages from the expression.
 #'
@@ -150,7 +150,9 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       mdebug("- globals: [0] <none>")
       mdebug("getGlobalsAndPackages() ... DONE")
     }
-    return(list(expr = expr, globals = list(), packages = character(0)))
+    attr(globals, "resolved") <- TRUE
+    attr(globals, "total_size") <- 0
+    return(list(expr = expr, globals = globals, packages = character(0)))
   }
 
   ## Are globals already resolved?
@@ -255,6 +257,12 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     globals <- cleanup(globals)
   }
 
+  ## Can we skip some of the tasks below?
+  if (length(globals) == 0) {
+    resolve <- FALSE
+    attr(globals, "resolved") <- TRUE
+    attr(globals, "total_size") <- 0
+  }
 
   ## Resolve all remaing globals
   ## FIXME: Should we resolve package names spaces too? Should
@@ -286,12 +294,13 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (debug) mdebugf("[%.3f s]", t[3])
     }
   }
-  
+
+
   ## Protect against user error exporting too large objects?
-  if (length(globals) > 0L) {
+  total_size <- attr(globals, "total_size")
+  if (length(globals) > 0L && (is.null(total_size) || is.na(total_size))) {
     maxSize <- as.numeric(maxSize)
     stop_if_not(!is.na(maxSize), maxSize > 0)
-    
     if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
       sizes <- unlist(sizes, use.names = TRUE)

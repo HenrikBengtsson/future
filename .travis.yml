@@ -35,6 +35,7 @@ jobs:
       r: release
       env:
         - R_FUTURE_PLAN=multisession
+        - R_FUTURE_FORK_MULTITHREADING_ENABLE=false
     - os: linux
       r: release
       env:

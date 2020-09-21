@@ -6,7 +6,8 @@
 \usage{
 availableWorkers(
   methods = getOption("future.availableWorkers.methods", c("mc.cores",
-    "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "custom", "system", "fallback")),
+    "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "custom", "system",
+    "fallback")),
   na.rm = TRUE,
   default = "localhost",
   which = c("auto", "min", "max", "all")
@@ -55,6 +56,8 @@ Query Sun/Oracle Grid Engine (SGE) environment variable
 An example of a job submission that results in this is
 \verb{qsub -pe mpi 8} (or \verb{qsub -pe ompi 8}), which
 requests eight cores on a any number of machines.
+\item \code{"LSF"} -
+Query LSF/OpenLava environment variable \env{LSB_HOSTS}.
 \item \code{"custom"} -
 If option \option{future.availableWorkers.custom} is set and a function,
 then this function will be called (without arguments) and it's value

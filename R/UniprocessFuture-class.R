@@ -23,7 +23,8 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = F
   ## Global objects?
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
   globals <- gp$globals
-
+  expr <- gp$expr
+  
   ## Record packages?
   if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
     packages <- unique(c(gp$packages, packages))

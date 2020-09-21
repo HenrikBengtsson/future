@@ -16,13 +16,31 @@
 #' @param makeNode A function that creates a `"SOCKnode"` or
 #' `"SOCK0node"` object, which represents a connection to a worker.
 #' 
+#' @param port The port number of the master used for communicating with all
+#' the workers (via socket connections).  If an integer vector of ports, then a
+#' random one among those is chosen.  If `"random"`, then a random port in
+#' is chosen from `11000:11999`, or from the range specified by
+#' environment variable \env{R_FUTURE_RANDOM_PORTS}.
+#' If `"auto"` (default), then the default (single) port is taken from
+#' environment variable \env{R_PARALLEL_PORT}, otherwise `"random"` is
+#' used.
+#' _Note, do not use this argument to specify the port number used by
+#' `rshcmd`, which typically is an SSH client.  Instead, if the SSH daemon
+#' runs on a different port than the default 22, specify the SSH port by
+#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via
+#' SSH options `-p`, e.g. `rshopts = c("-p", "2200")`._
+#' 
 #' @param \dots Optional arguments passed to
-#' `makeNode(workers[i], ..., rank = i)` where
-#' `i = seq_along(workers)`.
+#' `makeNode(workers[i], ..., rank = i)` where `i = seq_along(workers)`.
 #'
 #' @param autoStop If TRUE, the cluster will be automatically stopped
-#  (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
-#  garbage collected, unless already stopped.
+#' (using \code{\link[parallel:makeCluster]{stopCluster}()}) when it is
+#' garbage collected, unless already stopped.
+#'
+#' @param tries,delay Maximum number of attempts done to launch each node
+#' with `makeNode()` and the delay (in seconds) in-between attempts.
+#' If argument `port` specifies more than one port, e.g. `port = "random"`
+#' then a random port will be drawn and validated at most `tries` times.
 #'
 #' @param verbose If TRUE, informative messages are outputted.
 #'
@@ -34,7 +52,7 @@
 #'
 #' @importFrom parallel stopCluster
 #' @export
-makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, verbose = getOption("future.debug", FALSE)) {
+makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto", "random"), ..., autoStop = FALSE, tries = getOption("future.makeNodePSOCK.tries", as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))), delay = getOption("future.makeNodePSOCK.tries.delay", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 15.0))), verbose = getOption("future.debug", FALSE)) {
   if (is.numeric(workers)) {
     if (length(workers) != 1L) {
       stop("When numeric, argument 'workers' must be a single value: ", length(workers))
@@ -45,6 +63,12 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     }
     workers <- rep("localhost", times = workers)
   }
+
+  tries <- as.integer(tries)
+  stop_if_not(length(tries), is.integer(tries), !is.na(tries), tries >= 1L)
+
+  delay <- as.numeric(delay)
+  stop_if_not(length(delay), is.numeric(delay), !is.na(delay), delay >= 0)
 
   verbose_prefix <- "[local output] "
 
@@ -76,7 +100,25 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
     stop("Argument 'post' must be of length one or more: 0")
   }
   if (length(port) > 1L) {
-    port <- stealth_sample(port, size = 1L)
+    ports <- stealth_sample(port, size = tries)
+    ## Get a random port and test if it can be opened, iff possible.
+    ## If so, try 'tries' times before giving up.
+    ns <- asNamespace("parallel")
+    if (exists("serverSocket", envir = ns, mode = "function")) {
+      ## Available in R (>= 4.0.0)
+      serverSocket <- get("serverSocket", envir = ns, mode = "function")
+      for (kk in 1:tries) {
+        port <- ports[kk]
+        con <- tryCatch(serverSocket(port), error = identity)
+        ## Success?
+        if (inherits(con, "connection")) {
+          close(con)
+          break
+        }
+      }
+    } else {
+      port <- ports[1]
+    }
   }
   if (is.na(port) || port < 0L || port > 65535L) {
     stop("Invalid port: ", port)
@@ -102,8 +144,36 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
       message(sprintf("%sCreating node %d of %d ...", verbose_prefix, ii, n))
       message(sprintf("%s- setting up node", verbose_prefix))
     }
-    cl[[ii]] <- makeNode(workers[[ii]], port = port, ..., rank = ii,
-                         verbose = verbose)
+    for (kk in 1:tries) {
+      if (verbose) {
+        message(sprintf("%s- attempt #%d of %d", verbose_prefix, kk, tries))
+      }
+      node <- tryCatch({
+        makeNode(workers[[ii]], port = port, ..., rank = ii, verbose = verbose)
+      }, error = identity)
+      ## Success?
+      if (!inherits(node, "error")) break
+      if (kk < tries) {
+        if (verbose) {
+          message(conditionMessage(node))
+          message(sprintf("%s- waiting %g seconds before trying again",
+                  verbose_prefix, delay))
+        }
+        Sys.sleep(delay)
+      }  
+    }
+    if (inherits(node, "error")) {
+      ex <- node
+      if (verbose) {
+        message(sprintf("%s  Failed %d attempts with %g seconds delay",
+                verbose_prefix, tries, delay))
+      }
+      ex$message <- sprintf("%s\n * Number of attempts: %d (%gs delay)",
+                            conditionMessage(ex), tries, delay)
+                        
+      stop(ex)
+    }
+    cl[[ii]] <- node
     
     ## Attaching session information for each worker.  This is done to assert
     ## that we have a working cluster already here.  It will also collect
@@ -134,20 +204,6 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' known to the workers.  If NULL (default), then the default is
 #' `Sys.info()[["nodename"]]` unless `worker` is _localhost_ or
 #' `revtunnel = TRUE` in case it is `"localhost"`.
-#' 
-#' @param port The port number of the master used for communicating with all
-#' the workers (via socket connections).  If an integer vector of ports, then a
-#' random one among those is chosen.  If `"random"`, then a random port in
-#' is chosen from `11000:11999`, or from the range specified by
-#' environment variable \env{R_FUTURE_RANDOM_PORTS}.
-#' If `"auto"` (default), then the default (single) port is taken from
-#' environment variable \env{R_PARALLEL_PORT}, otherwise `"random"` is
-#' used.
-#' _Note, do not use this argument to specify the port number used by
-#' `rshcmd`, which typically is an SSH client.  Instead, if the SSH daemon
-#' runs on a different port than the default 22, specify the SSH port by
-#' appending it to the hostname, e.g. `"remote.server.org:2200"` or via
-#' SSH options `-p`, e.g. `rshopts = c("-p", "2200")`._
 #' 
 #' @param connectTimeout The maximum time (in seconds) allowed for each socket
 #' connection between the master and a worker to be established (defaults to
@@ -229,6 +285,9 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' @param dryrun If TRUE, nothing is set up, but a message suggesting how to
 #' launch the worker from the terminal is outputted.  This is useful for
 #' troubleshooting.
+#'
+#' @param quiet If TRUE, then no output will be produced other than that from
+#' using `verbose = TRUE`.
 #'
 #' @return `makeNodePSOCK()` returns a `"SOCKnode"` or
 #' `"SOCK0node"` object representing an established connection to a worker.
@@ -340,13 +399,20 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' worker machines to the master, which may not be configured or is disabled
 #' on some systems, e.g. compute clusters.
 #'
-#' @section Default value of argument `rscript`:
-#' If `homogeneous` is FALSE, the `rscript` defaults to
-#' `"Rscript"`, i.e. it is assumed that the \command{Rscript} executable
-#' is available on the \env{PATH} of the worker.
+#' @section Argument `rscript`:
+#' If `homogeneous` is FALSE, the `rscript` defaults to `"Rscript"`, i.e. it
+#' is assumed that the \command{Rscript} executable is available on the
+#' \env{PATH} of the worker.
 #' If `homogeneous` is TRUE, the `rscript` defaults to
-#' `file.path(R.home("bin"), "Rscript")`, i.e. it is basically assumed
-#' that the worker and the caller share the same file system and \R installation.
+#' `file.path(R.home("bin"), "Rscript")`, i.e. it is basically assumed that
+#' the worker and the caller share the same file system and \R installation.
+#'
+#' If specified, argument `rscript` should be a character vector with one more
+#' more elements.
+#' all elements are automatically shell quoted using [base::shQuote()], except
+#' those that are of format `<ENVVAR>=<VALUE>`, that is, the ones matching the
+#' regular expression '\samp{^[[:alpha:]_][[:alnum:]_]*=.*}'.
+#' Another exception is when `rscript` inherits from 'AsIs'.
 #' 
 #' @section Default value of argument `homogeneous`:
 #' The default value of `homogeneous` is TRUE if and only if either
@@ -426,9 +492,10 @@ makeClusterPSOCK <- function(workers, makeNode = makeNodePSOCK, port = c("auto",
 #' calling `makeClusterPSOCK()`.
 #'
 #' @rdname makeClusterPSOCK
+#' @importFrom utils flush.console
 #' @importFrom tools pskill
 #' @export
-makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_envs = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, verbose = FALSE) {
+makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTimeout = getOption("future.makeNodePSOCK.connectTimeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_CONNECTTIMEOUT", 2 * 60))), timeout = getOption("future.makeNodePSOCK.timeout", as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TIMEOUT", 30 * 24 * 60 * 60))), rscript = NULL, homogeneous = NULL, rscript_args = NULL, rscript_startup = NULL, rscript_envs = NULL, rscript_libs = NULL, methods = TRUE, useXDR = TRUE, outfile = "/dev/null", renice = NA_integer_, rshcmd = getOption("future.makeNodePSOCK.rshcmd", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHCMD")), user = NULL, revtunnel = TRUE, rshlogfile = NULL, rshopts = getOption("future.makeNodePSOCK.rshopts", Sys.getenv("R_FUTURE_MAKENODEPSOCK_RSHOPTS")), rank = 1L, manual = FALSE, dryrun = FALSE, quiet = FALSE, verbose = FALSE) {
   localMachine <- is.element(worker, c("localhost", "127.0.0.1"))
 
   ## Could it be that the worker specifies the name of the localhost?
@@ -444,7 +511,10 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   dryrun <- as.logical(dryrun)
   stop_if_not(length(dryrun) == 1L, !is.na(dryrun))
-  
+
+  quiet <- as.logical(quiet)
+  stop_if_not(length(quiet) == 1L, !is.na(quiet))
+
   ## Locate a default SSH client?
   if (identical(rshcmd, "")) rshcmd <- NULL
   if (!is.null(rshcmd)) {
@@ -509,14 +579,14 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
     rscript <- "Rscript"
     if (homogeneous) rscript <- file.path(R.home("bin"), rscript)
   } else {
-    rscript <- as.character(rscript)
+    if (!is.character(rscript)) rscript <- as.character(rscript)
     stop_if_not(length(rscript) >= 1L)
     bin <- rscript[1]
-    if (homogeneous) {
+    if (homogeneous && !inherits(bin, "AsIs")) {
       bin <- Sys.which(bin)
       if (bin == "") bin <- normalizePath(rscript[1], mustWork = FALSE)
+      rscript[1] <- bin
     }
-    rscript[1] <- bin
   }
 
   rscript_args <- as.character(rscript_args)
@@ -563,41 +633,19 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 
   verbose_prefix <- "[local output] "
 
-  ## Shell quote the Rscript executable
-  idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
-  rscript[idxs] <- shQuote(rscript[idxs])
+  ## Shell quote the Rscript executable?
+  if (!inherits(rscript, "AsIs")) {
+    idxs <- grep("^[[:alpha:]_][[:alnum:]_]*=.*", rscript, invert = TRUE)
+    rscript[idxs] <- shQuote(rscript[idxs])
+  }
 
-  ## Launching a process on the local machine?
-  pidfile <- NULL
+  ## Can we get the worker's PID during launch?
   if (localMachine && !dryrun) {
-    autoKill <- isTRUE(getOption("future.makeNodePSOCK.autoKill", as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE))))
-    if (autoKill) {
-      pidfile <- tempfile(pattern = sprintf("future.parent=%d.", Sys.getpid()), fileext = ".pid")
-      pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
-      pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")), silent = TRUE)', pidfile)
-      rscript_pid_args <- c("-e", shQuote(pidcode))
-      
-      ## Check if this approach to infer the PID works
-      test_cmd <- paste(c(rscript, rscript_pid_args, "-e", shQuote(sprintf("file.exists(%s)", shQuote(pidfile)))), collapse = " ")
-      if (verbose) {
-        message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
-      }
-      input <- NULL
-      ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
-      ## they will be terminated because they try to read from non-existing
-      ## standard input. /HB 2019-02-14
-      if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
-      res <- system(test_cmd, intern = TRUE, input = input)
-      status <- attr(res, "status")
-      suppressWarnings(file.remove(pidfile))
-      if ((is.null(status) || status == 0L) && any(grepl("TRUE", res))) {
-        if (verbose) message("- Possible to infer worker's PID: TRUE")
-        rscript_args <- c(rscript_pid_args, rscript_args)
-      } else {
-        if (verbose) message("- Possible to infer worker's PID: FALSE")
-        pidfile <- NULL
-      }
-    }
+    res <- useWorkerPID(rscript, rank = rank, verbose = verbose)
+    pidfile <- res$pidfile
+    rscript_args <- c(res$rscript_pid_args, rscript_args)
+  } else {
+    pidfile <- NULL
   }
 
   ## Add Rscript "label"?
@@ -676,11 +724,11 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   
   ## .{slave,work}RSOCK() command already specified?
   if (!any(grepl("parallel:::[.](slave|work)RSOCK[(][)]", rscript_args))) {
-    ## In R (>= 4.1., parallel:::.slaveRSOCK() was renamed .workRSOCK()
-    cmd <- "workRSOCK <- tryCatch(parallel:::.slaveRSOCK, error=function(e) parallel:::.workRSOCK); workRSOCK()"
+    ## In R (>= 4.1.0), parallel:::.slaveRSOCK() was renamed .workRSOCK()
+    cmd <- "tryCatch(parallel:::.slaveRSOCK,error=function(e)parallel:::.workRSOCK)()"
     rscript_args <- c(rscript_args, "-e", shQuote(cmd))
   }
-  
+
   rscript <- paste(rscript, collapse = " ")
   rscript_args <- paste(rscript_args, collapse = " ")
   envvars <- paste0("MASTER=", master, " PORT=", rscript_port, " OUT=", outfile, " TIMEOUT=", timeout, " XDR=", useXDR)
@@ -762,22 +810,24 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
   stop_if_not(length(local_cmd) == 1L)
 
   is_worker_output_visible <- is.null(outfile)
-
+ 
   if (manual || dryrun) {
-    msg <- c("----------------------------------------------------------------------")
-    if (localMachine) {
-      msg <- c(msg, sprintf("Manually, start worker #%s on local machine %s with:", rank, sQuote(worker)), sprintf("\n  %s\n", cmd))
-    } else {
-      msg <- c(msg, sprintf("Manually, (i) login into external machine %s:", sQuote(worker)),
-               sprintf("\n  %s\n", rsh_call))
-      msg <- c(msg, sprintf("and (ii) start worker #%s from there:", rank),
-               sprintf("\n  %s\n", cmd))
-      msg <- c(msg, sprintf("Alternatively, start worker #%s from the local machine by combining both step in a single call:", rank),
-               sprintf("\n  %s\n", local_cmd))
+    if (!quiet) {
+      msg <- c("----------------------------------------------------------------------")
+      if (localMachine) {
+        msg <- c(msg, sprintf("Manually, start worker #%s on local machine %s with:", rank, sQuote(worker)), sprintf("\n  %s\n", cmd))
+      } else {
+        msg <- c(msg, sprintf("Manually, (i) login into external machine %s:", sQuote(worker)),
+                 sprintf("\n  %s\n", rsh_call))
+        msg <- c(msg, sprintf("and (ii) start worker #%s from there:", rank),
+                 sprintf("\n  %s\n", cmd))
+        msg <- c(msg, sprintf("Alternatively, start worker #%s from the local machine by combining both step in a single call:", rank),
+                 sprintf("\n  %s\n", local_cmd))
+      }
+      msg <- paste(c(msg, ""), collapse = "\n")
+      cat(msg)
+      flush.console()
     }
-    msg <- paste(c(msg, ""), collapse = "\n")
-    cat(msg)
-    utils::flush.console()
     if (dryrun) return(NULL)
   } else {
     if (verbose) {
@@ -957,6 +1007,7 @@ makeNodePSOCK <- function(worker = "localhost", master = NULL, port, connectTime
 ##
 ## References:
 ## * https://en.wikipedia.org/wiki/Hostname
+#' @importFrom utils file_test
 is_localhost <- local({
   localhosts <- c("localhost", "127.0.0.1")
   non_localhosts <- character(0L)
@@ -1246,6 +1297,59 @@ windows_build_version <- local({
       numeric_version(res)
     }, error = function(ex) NULL)
   }
+})
+
+
+useWorkerPID <- local({
+  parent_pid <- NULL
+  .cache <- list()
+
+  makeResult <- function(rank) {
+    if (is.null(parent_pid)) parent_pid <<- Sys.getpid()
+    pidfile <- tempfile(pattern = sprintf("worker.rank=%d.future.parent=%d.",
+                   rank, parent_pid), fileext = ".pid")
+    pidfile <- normalizePath(pidfile, winslash = "/", mustWork = FALSE)
+    pidcode <- sprintf('try(suppressWarnings(cat(Sys.getpid(),file="%s")),silent=TRUE)', pidfile)
+    rscript_pid_args <- c("-e", shQuote(pidcode))
+    list(pidfile = pidfile, rscript_pid_args = rscript_pid_args)
+  }
+  
+  function(rscript, rank, force = FALSE, verbose = FALSE) {
+    autoKill <- getOption("future.makeNodePSOCK.autoKill",
+              as.logical(Sys.getenv("R_FUTURE_MAKENODEPSOCK_AUTOKILL", TRUE)))
+    if (!isTRUE(as.logical(autoKill))) return(list())
+
+    result <- makeResult(rank)
+    
+    ## Already cached?
+    key <- paste(rscript, collapse = "\t")
+    if (!force && isTRUE(.cache[[key]])) return(result)
+
+    test_cmd <- paste(c(
+      rscript,
+      result$rscript_pid_args,
+      "-e", shQuote(sprintf("file.exists(%s)", shQuote(result$pidfile)))
+    ), collapse = " ")
+    if (verbose) {
+      message("Testing if worker's PID can be inferred: ", sQuote(test_cmd))
+    }
+    
+    input <- NULL
+    
+    ## AD HOC: 'singularity exec ... Rscript' requires input="".  If not,
+    ## they will be terminated because they try to read from non-existing
+    ## standard input. /HB 2019-02-14
+    if (any(grepl("singularity", rscript, ignore.case = TRUE))) input <- ""
+    
+    res <- system(test_cmd, intern = TRUE, input = input)
+    status <- attr(res, "status")
+    suppressWarnings(file.remove(result$pidfile))
+    
+    .cache[[key]] <<- (is.null(status) || status == 0L) && any(grepl("TRUE", res))
+    if (verbose) message("- Possible to infer worker's PID: ", .cache[[key]])
+    
+    result
+  }  
 })
 
 
