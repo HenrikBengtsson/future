@@ -1,10 +1,18 @@
-# CRAN submission future 1.19.0
+# CRAN submission future 1.19.1
 
-on 2020-09-19
+I've verified that this submission does not cause issues for the 136 reverse package dependencies available on CRAN and Bioconductor.  This time, all these checks did also validate the vignettes.  I've also verified manually that 'R CMD check' on rangeMapper works.
+
+Thank you
+
+
+## Submission of future 1.19.0
 
 I've verified that this submission does not cause issues for the 136 reverse package dependencies available on CRAN and Bioconductor.
 
 Thanks in advance
+
+Result: The submission of future 1.19.0 on 2020-09-19 failed reverse dependencies checks on CRAN.  This was due to a bug (https://github.com/HenrikBengtsson/future/issues/417) that was exposed due to recent updated in the develop version of future.  It was missed locally because revdepcheck does not run the checks on vignettes.  It was thanks to the vignette of rangeMapper that the bug was discovered.
+
 
 
 ## Notes not sent to CRAN
