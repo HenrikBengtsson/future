@@ -3,9 +3,8 @@
 <details>
 
 * Version: 1.1.2
+* GitHub: https://github.com/martakarass/adept
 * Source code: https://github.com/cran/adept
-* URL: https://github.com/martakarass/adept
-* BugReports: https://github.com/martakarass/adept/issues
 * Date/Publication: 2019-06-18 06:50:03 UTC
 * Number of recursive dependencies: 92
 
@@ -14,6 +13,32 @@ Run `revdep_details(, "adept")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Warning: UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
+    Could not fetch https://imgur.com/VcK6o7o.jpg
+    InvalidUrlException "c4-yum1:3128" "Invalid scheme"
+    Error: processing vignette 'adept-strides-segmentation.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 61
+    --- failed re-building ‘adept-strides-segmentation.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘adept-strides-segmentation.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -33,8 +58,8 @@ Run `revdep_details(, "adept")` for more info
 <details>
 
 * Version: 0.3.2
+* GitHub: https://github.com/choonghyunryu/alookr
 * Source code: https://github.com/cran/alookr
-* BugReports: https://github.com/choonghyunryu/alookr/issues
 * Date/Publication: 2020-06-07 16:50:07 UTC
 * Number of recursive dependencies: 202
 
@@ -56,9 +81,8 @@ Run `revdep_details(, "alookr")` for more info
 <details>
 
 * Version: 3.2.0
+* GitHub: https://github.com/HenrikBengtsson/aroma.affymetrix
 * Source code: https://github.com/cran/aroma.affymetrix
-* URL: https://www.aroma-project.org/, https://github.com/HenrikBengtsson/aroma.affymetrix
-* BugReports: https://github.com/HenrikBengtsson/aroma.affymetrix/issues
 * Date/Publication: 2019-06-23 06:00:14 UTC
 * Number of recursive dependencies: 70
 
@@ -82,9 +106,8 @@ Run `revdep_details(, "aroma.affymetrix")` for more info
 <details>
 
 * Version: 3.2.1
+* GitHub: https://github.com/HenrikBengtsson/aroma.core
 * Source code: https://github.com/cran/aroma.core
-* URL: https://github.com/HenrikBengtsson/aroma.core, https://www.aroma-project.org/
-* BugReports: https://github.com/HenrikBengtsson/aroma.core/issues
 * Date/Publication: 2020-02-04 15:20:21 UTC
 * Number of recursive dependencies: 46
 
@@ -105,9 +128,8 @@ Run `revdep_details(, "aroma.core")` for more info
 <details>
 
 * Version: 2.3.0
+* GitHub: https://github.com/c7rishi/BAMBI
 * Source code: https://github.com/cran/BAMBI
-* URL: https://arxiv.org/abs/1708.07804
-* BugReports: https://github.com/c7rishi/BAMBI/issues
 * Date/Publication: 2020-06-19 13:50:07 UTC
 * Number of recursive dependencies: 48
 
@@ -135,9 +157,8 @@ Run `revdep_details(, "BAMBI")` for more info
 <details>
 
 * Version: 0.9.13
+* GitHub: https://github.com/mllg/batchtools
 * Source code: https://github.com/cran/batchtools
-* URL: https://github.com/mllg/batchtools
-* BugReports: https://github.com/mllg/batchtools/issues
 * Date/Publication: 2020-03-19 23:00:02 UTC
 * Number of recursive dependencies: 74
 
@@ -147,10 +168,36 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e625ae3af' using cluster functions 'Interactive'
+    No readable configuration file found
+    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e58916ce6' using cluster functions 'Interactive'
+    No readable configuration file found
+    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e12edb53d' using cluster functions 'Interactive'
+    No readable configuration file found
+    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e2ddf10a2' using cluster functions 'Interactive'
+    ! LaTeX Error: File `framed.sty' not found.
+    
+    ! Emergency stop.
+    <read *> 
+    
+    Error: processing vignette 'batchtools.Rmd' failed with diagnostics:
+    LaTeX failed to compile /home/henrik/c4/repositories/future/revdep/checks/batchtools/new/batchtools.Rcheck/vign_test/batchtools/vignettes/batchtools.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See batchtools.log for more info.
+    --- failed re-building ‘batchtools.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘batchtools.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[40735,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[52266,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -166,9 +213,8 @@ Run `revdep_details(, "batchtools")` for more info
 <details>
 
 * Version: 0.18.1
+* GitHub: https://github.com/bcgov/bcmaps
 * Source code: https://github.com/cran/bcmaps
-* URL: https://github.com/bcgov/bcmaps
-* BugReports: https://github.com/bcgov/bcmaps/issues
 * Date/Publication: 2020-04-29 10:30:10 UTC
 * Number of recursive dependencies: 83
 
@@ -177,9 +223,6 @@ Run `revdep_details(, "bcmaps")` for more info
 </details>
 
 ## In both
-
-*   R CMD check timed out
-    
 
 *   checking package dependencies ... NOTE
     ```
@@ -191,6 +234,7 @@ Run `revdep_details(, "bcmaps")` for more info
 <details>
 
 * Version: 0.3-10
+* GitHub: NA
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2020-08-03 06:40:02 UTC
 * Number of recursive dependencies: 109
@@ -218,8 +262,8 @@ Run `revdep_details(, "blavaan")` for more info
 <details>
 
 * Version: 2.1.1
+* GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
-* URL: https://github.com/rvalavi/blockCV
 * Date/Publication: 2020-02-23 20:00:02 UTC
 * Number of recursive dependencies: 105
 
@@ -239,9 +283,8 @@ Run `revdep_details(, "blockCV")` for more info
 <details>
 
 * Version: 2.13.5
+* GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
-* URL: https://github.com/paul-buerkner/brms, http://discourse.mc-stan.org
-* BugReports: https://github.com/paul-buerkner/brms/issues
 * Date/Publication: 2020-07-31 08:40:03 UTC
 * Number of recursive dependencies: 180
 
@@ -251,6 +294,32 @@ Run `revdep_details(, "brms")` for more info
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+      unable to open connection to X11 display ''
+    Warning in (function (filename = "Rplot%03d.png", width = 480, height = 480,  :
+      unable to open connection to X11 display ''
+    Quitting from lines 57-63 (brms_phylogenetics.Rmd) 
+    Error: processing vignette 'brms_phylogenetics.Rmd' failed with diagnostics:
+    unable to start device PNG
+    --- failed re-building ‘brms_phylogenetics.Rmd’
+    
+    --- re-building ‘brms_multilevel.ltx’ using tex
+    --- finished re-building ‘brms_multilevel.ltx’
+    
+    --- re-building ‘brms_overview.ltx’ using tex
+    --- finished re-building ‘brms_overview.ltx’
+    
+    SUMMARY: processing the following files failed:
+      ‘brms_customfamilies.Rmd’ ‘brms_distreg.Rmd’ ‘brms_missings.Rmd’
+      ‘brms_monotonic.Rmd’ ‘brms_multivariate.Rmd’ ‘brms_nonlinear.Rmd’
+      ‘brms_phylogenetics.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘cmdstanr’
@@ -258,7 +327,7 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
         R     3.1Mb
         doc   2.6Mb
@@ -269,9 +338,8 @@ Run `revdep_details(, "brms")` for more info
 <details>
 
 * Version: 0.7.0
+* GitHub: https://github.com/bachmannpatrick/CLVTools
 * Source code: https://github.com/cran/CLVTools
-* URL: https://github.com/bachmannpatrick/CLVTools
-* BugReports: https://github.com/bachmannpatrick/CLVTools/issues
 * Date/Publication: 2020-08-26 20:10:02 UTC
 * Number of recursive dependencies: 82
 
@@ -281,6 +349,28 @@ Run `revdep_details(, "CLVTools")` for more info
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘CLVTools.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    Warning in system2(..., stdout = if (use_file_stdout()) f1 else FALSE, stderr = f2) :
+      error in running command
+    ! sh: xelatex: command not found
+    
+    Error: processing vignette 'CLVTools.Rmd' failed with diagnostics:
+    LaTeX failed to compile /home/henrik/c4/repositories/future/revdep/checks/CLVTools/new/CLVTools.Rcheck/vign_test/CLVTools/vignettes/CLVTools.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See CLVTools.log for more info.
+    --- failed re-building ‘CLVTools.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘CLVTools.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is 12.6Mb
@@ -288,57 +378,13 @@ Run `revdep_details(, "CLVTools")` for more info
         libs  11.4Mb
     ```
 
-# codalm
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/codalm
-* URL: https://github.com/jfiksel/codalm
-* BugReports: https://github.com/jfiksel/codalm/issues
-* Date/Publication: 2020-06-25 16:00:06 UTC
-* Number of recursive dependencies: 74
-
-Run `revdep_details(, "codalm")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      ── 1. Failure: bootstrap CI works with sequential evaluation (@test-codalm_ci.R#
-      inherits(plan(), "sequential") isn't true.
-      
-      ── 2. Failure: bootstrap CI works with multisession evaluation (@test-codalm_ci.
-      inherits(plan(), "sequential") isn't true.
-      
-      ── 3. Failure: independence test works with sequential evaluation (@test-indepen
-      inherits(plan(), "sequential") isn't true.
-      
-      ── 4. Failure: independence test works with multisession evaluation (@test-indep
-      inherits(plan(), "sequential") isn't true.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 22 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 4 ]
-      1. Failure: bootstrap CI works with sequential evaluation (@test-codalm_ci.R#20) 
-      2. Failure: bootstrap CI works with multisession evaluation (@test-codalm_ci.R#42) 
-      3. Failure: independence test works with sequential evaluation (@test-independence_test.R#9) 
-      4. Failure: independence test works with multisession evaluation (@test-independence_test.R#19) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # codebook
 
 <details>
 
 * Version: 0.9.2
+* GitHub: https://github.com/rubenarslan/codebook
 * Source code: https://github.com/cran/codebook
-* URL: https://github.com/rubenarslan/codebook
-* BugReports: https://github.com/rubenarslan/codebook/issues
 * Date/Publication: 2020-06-06 23:40:03 UTC
 * Number of recursive dependencies: 191
 
@@ -365,9 +411,8 @@ Run `revdep_details(, "codebook")` for more info
 <details>
 
 * Version: 0.2.0
+* GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
-* URL: https://github.com/M-E-Rademaker/cSEM, https://m-e-rademaker.github.io/cSEM/
-* BugReports: https://github.com/M-E-Rademaker/cSEM/issues
 * Date/Publication: 2020-03-29 11:00:20 UTC
 * Number of recursive dependencies: 113
 
@@ -388,9 +433,8 @@ Run `revdep_details(, "cSEM")` for more info
 <details>
 
 * Version: 1.3.1
+* GitHub: https://github.com/frictionlessdata/datapackage-r
 * Source code: https://github.com/cran/datapackage.r
-* URL: https://github.com/frictionlessdata/datapackage-r
-* BugReports: https://github.com/frictionlessdata/datapackage-r/issues
 * Date/Publication: 2020-05-06 22:10:09 UTC
 * Number of recursive dependencies: 109
 
@@ -407,57 +451,13 @@ Run `revdep_details(, "datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
-# DeclareDesign
-
-<details>
-
-* Version: 0.22.0
-* Source code: https://github.com/cran/DeclareDesign
-* URL: https://declaredesign.org, https://github.com/DeclareDesign/DeclareDesign
-* BugReports: https://github.com/DeclareDesign/DeclareDesign/issues
-* Date/Publication: 2020-03-24 07:40:10 UTC
-* Number of recursive dependencies: 136
-
-Run `revdep_details(, "DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      [11] 1 - 2 == -1
-      [12] 1 - 4 == -3
-      [14] 1 - 3 == -2
-      [15] 1 - 5 == -4
-      [17] 1 - 3 == -2
-      [18] 1 - 6 == -5
-      ...
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 482 | SKIPPED: 5 | WARNINGS: 0 | FAILED: 8 ]
-      1. Error: merge_by_estimator working in compare_diagnoses (@test-compare-diagnoses.R#28) 
-      2. Error: more term (@test-diagnose-design.R#227) 
-      3. Error: diagnose_design works when simulations_df lacking parameters attr (@test-diagnose-design.R#285) 
-      4. Error: Factorial (@test-factorial.R#39) 
-      5. Failure: correct fan out (@test-fanout.R#164) 
-      6. Error: Two estimators, Two estimands (crossed) (@test-multiple-estimators.R#52) 
-      7. Error: designs with factors in diagnosands_df do not produce warnings (@test-reshape-diagnosis.R#92) 
-      8. Failure: Simulate Design works x2 (@test-simulate-design.R#44) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # delayed
 
 <details>
 
 * Version: 0.3.0
+* GitHub: https://github.com/tlverse/delayed
 * Source code: https://github.com/cran/delayed
-* URL: https://tlverse.org/delayed
-* BugReports: https://github.com/tlverse/delayed/issues
 * Date/Publication: 2020-02-28 11:40:02 UTC
 * Number of recursive dependencies: 65
 
@@ -478,9 +478,8 @@ Run `revdep_details(, "delayed")` for more info
 <details>
 
 * Version: 1.0.2
+* GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
-* URL: https://github.com/sjspielman/dragon
-* BugReports: https://github.com/sjspielman/dragon/issues
 * Date/Publication: 2020-08-31 14:00:03 UTC
 * Number of recursive dependencies: 124
 
@@ -501,9 +500,8 @@ Run `revdep_details(, "dragon")` for more info
 <details>
 
 * Version: 0.2.0
+* GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* URL: https://github.com/mdsteiner/EFAtools
-* BugReports: https://github.com/mdsteiner/EFAtools/issues
 * Date/Publication: 2020-09-17 07:20:03 UTC
 * Number of recursive dependencies: 78
 
@@ -525,6 +523,7 @@ Run `revdep_details(, "EFAtools")` for more info
 <details>
 
 * Version: 1.1.0
+* GitHub: NA
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-09-01 16:10:03 UTC
 * Number of recursive dependencies: 138
@@ -564,9 +563,8 @@ Run `revdep_details(, "EpiNow2")` for more info
 <details>
 
 * Version: 0.6-9
+* GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
-* URL: <https://cran.r-project.org/package=foieGras>
-* BugReports: https://github.com/ianjonsen/foieGras/issues
 * Date/Publication: 2020-07-22 21:50:02 UTC
 * Number of recursive dependencies: 120
 
@@ -588,8 +586,8 @@ Run `revdep_details(, "foieGras")` for more info
 <details>
 
 * Version: 0.9.0
+* GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
-* URL: https://github.com/nredell/forecastML/
 * Date/Publication: 2020-05-07 15:10:17 UTC
 * Number of recursive dependencies: 94
 
@@ -605,47 +603,46 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
-# future.tests
+# genBaRcode
 
 <details>
 
-* Version: 0.2.1
-* Source code: https://github.com/cran/future.tests
-* URL: https://github.com/HenrikBengtsson/future.tests
-* BugReports: https://github.com/HenrikBengtsson/future.tests/issues
-* Date/Publication: 2020-03-20 12:40:05 UTC
-* Number of recursive dependencies: 13
+* Version: 1.2.3
+* GitHub: NA
+* Source code: https://github.com/cran/genBaRcode
+* Date/Publication: 2020-05-08 16:50:02 UTC
+* Number of recursive dependencies: 144
 
-Run `revdep_details(, "future.tests")` for more info
+Run `revdep_details(, "genBaRcode")` for more info
 
 </details>
 
 ## In both
 
-*   checking tests ...
+*   checking re-building of vignette outputs ... WARNING
     ```
     ...
-      72 resolve,....  TRUE          NA      NA    NA        NA     NA
-      73 resolve,....    NA          NA      NA    NA        NA     NA
-      74 resolved....    NA          NA      NA    NA        NA     NA
-      75    rng, seed    NA          NA      NA    NA        NA     NA
-      76 rng, see.... FALSE          NA      NA    NA        NA     NA
-      77 rng, see....  TRUE          NA      NA    NA        NA     NA
-      78 rng, see.... FALSE          NA      NA    NA        NA     NA
-      79 rng, see....  TRUE          NA      NA    NA        NA     NA
-      80 future, ....    NA          NA      NA    NA        NA  FALSE
-      81 future, ....    NA          NA      NA    NA        NA   TRUE
-      82 %<-%, stdout    NA          NA      NA    NA        NA  FALSE
-      83 %<-%, stdout    NA          NA      NA    NA        NA   TRUE
-      84 value, v....    NA          NA      NA    NA        NA     NA
-      > 
-      > message("Run first three tests ...")
-      Run first three tests ...
-      > 
-      > library(future)
-      > results <- run_tests(head(tests, 3L))
-      Error: 'identical(plan("list"), state$plan)' is not TRUE
-      Execution halted
+    Error: processing vignette 'genBaRcode_GUI_Vignette.Rmd' failed with diagnostics:
+    LaTeX failed to compile /home/henrik/c4/repositories/future/revdep/checks/genBaRcode/new/genBaRcode.Rcheck/vign_test/genBaRcode/vignettes/genBaRcode_GUI_Vignette.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See genBaRcode_GUI_Vignette.log for more info.
+    --- failed re-building ‘genBaRcode_GUI_Vignette.Rmd’
+    
+    --- re-building ‘genBaRcode_Vignette.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    ! LaTeX Error: File `framed.sty' not found.
+    
+    ! Emergency stop.
+    <read *> 
+    
+    Error: processing vignette 'genBaRcode_Vignette.Rmd' failed with diagnostics:
+    LaTeX failed to compile /home/henrik/c4/repositories/future/revdep/checks/genBaRcode/new/genBaRcode.Rcheck/vign_test/genBaRcode/vignettes/genBaRcode_Vignette.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See genBaRcode_Vignette.log for more info.
+    --- failed re-building ‘genBaRcode_Vignette.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘genBaRcode_GUI_Vignette.Rmd’ ‘genBaRcode_Vignette.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # GetBCBData
@@ -653,9 +650,8 @@ Run `revdep_details(, "future.tests")` for more info
 <details>
 
 * Version: 0.5
+* GitHub: https://github.com/msperlin/GetBCBData
 * Source code: https://github.com/cran/GetBCBData
-* URL: https://github.com/msperlin/GetBCBData/
-* BugReports: https://github.com/msperlin/GetBCBData/issues
 * Date/Publication: 2019-04-23 10:10:29 UTC
 * Number of recursive dependencies: 101
 
@@ -672,11 +668,54 @@ Run `revdep_details(, "GetBCBData")` for more info
       All declared Imports should be used.
     ```
 
+# googleComputeEngineR
+
+<details>
+
+* Version: 0.3.0
+* GitHub: https://github.com/cloudyr/googleComputeEngineR
+* Source code: https://github.com/cran/googleComputeEngineR
+* Date/Publication: 2019-05-04 22:40:02 UTC
+* Number of recursive dependencies: 55
+
+Run `revdep_details(, "googleComputeEngineR")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    
+    --- re-building ‘shiny-app.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘shiny-app.Rmd’
+    
+    --- re-building ‘single-scheduler.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘single-scheduler.Rmd’
+    
+    --- re-building ‘troubleshooting.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘troubleshooting.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘massive-parallel.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # googleTagManageR
 
 <details>
 
 * Version: 0.1.5
+* GitHub: NA
 * Source code: https://github.com/cran/googleTagManageR
 * Date/Publication: 2020-09-09 08:40:08 UTC
 * Number of recursive dependencies: 63
@@ -699,9 +738,8 @@ Run `revdep_details(, "googleTagManageR")` for more info
 <details>
 
 * Version: 1.9.0.0
+* GitHub: https://github.com/HughParsonage/grattan
 * Source code: https://github.com/cran/grattan
-* URL: https://github.com/HughParsonage/grattan, https://hughparsonage.github.io/grattan/
-* BugReports: https://github.com/HughParsonage/grattan/issues
 * Date/Publication: 2020-07-13 14:20:06 UTC
 * Number of recursive dependencies: 113
 
@@ -717,11 +755,96 @@ Run `revdep_details(, "grattan")` for more info
       'taxstats', 'taxstats1516'
     ```
 
+# gstat
+
+<details>
+
+* Version: 2.0-6
+* GitHub: https://github.com/r-spatial/gstat
+* Source code: https://github.com/cran/gstat
+* Date/Publication: 2020-05-18 12:30:02 UTC
+* Number of recursive dependencies: 37
+
+Run `revdep_details(, "gstat")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    ...
+    ! LaTeX Error: File `multirow.sty' not found.
+    
+    Type X to quit or <RETURN> to proceed,
+    or enter new name. (Default extension: sty)
+    
+    ! Emergency stop.
+    <read *> 
+             
+    l.8 \usepackage
+                   {natbib}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘spatio-temporal-kriging.Rnw’
+    
+    --- re-building ‘st.Rnw’ using Sweave
+    --- finished re-building ‘st.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘spatio-temporal-kriging.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+# gtfs2gps
+
+<details>
+
+* Version: 1.3-0
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2020-09-15 19:50:02 UTC
+* Number of recursive dependencies: 71
+
+Run `revdep_details(, "gtfs2gps")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Linking to GEOS 3.5.2, GDAL 2.4.4, PROJ 4.8.0
+    Unzipping and reading sao_small.zip
+    Converting shapes to sf objects
+    Using 1 CPU core
+    Processing the data
+    Unzipping and reading poa.zip
+    Converting shapes to sf objects
+    Using 1 CPU core
+    Processing the data
+    [WARNING] Could not convert TeX math 'Large Speed_i = \frac{S_{i+1}-S_i}{t_{i+1}-t_i}', rendering as TeX
+    Could not fetch https://github.com/ipeaGIT/gtfs2gps/blob/master/man/figures/speed.PNG
+    InvalidUrlException "c4-yum1:3128" "Invalid scheme"
+    Error: processing vignette 'intro_to_gtfs2gps.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 61
+    --- failed re-building ‘intro_to_gtfs2gps.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘intro_to_gtfs2gps.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # gWQS
 
 <details>
 
 * Version: 3.0.0
+* GitHub: NA
 * Source code: https://github.com/cran/gWQS
 * Date/Publication: 2020-06-23 13:00:03 UTC
 * Number of recursive dependencies: 101
@@ -738,57 +861,13 @@ Run `revdep_details(, "gWQS")` for more info
       All declared Imports should be used.
     ```
 
-# hackeRnews
-
-<details>
-
-* Version: 0.1.0
-* Source code: https://github.com/cran/hackeRnews
-* URL: https://github.com/szymanskir/hackeRnews
-* BugReports: https://github.com/szymanskir/hackeRnews/issues
-* Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 62
-
-Run `revdep_details(, "hackeRnews")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      ── 10. Failure: Empty responses are handled correctly when retrieving comments (
-      `result <- get_comments(get_item_by_id(1000))` did not produce any warnings.
-      
-      ── 11. Failure: Empty responses are handled correctly when retrieving comments (
-      all.equal(result, expected) isn't true.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 16 | SKIPPED: 0 | WARNINGS: 1 | FAILED: 11 ]
-      1. Failure: Retrieve top stories function is working correctly (@test-api.R#84) 
-      2. Failure: Retrieve top stories function is working correctly (@test-api.R#127) 
-      3. Failure: Retrieve best stories function is working correctly (@test-api.R#168) 
-      4. Failure: Retrieve latest ask stories function is working correctly (@test-api.R#195) 
-      5. Failure: Retrieve latest show stories function is working correctly (@test-api.R#222) 
-      6. Failure: Retrieve latest job stories function is working correctly (@test-api.R#249) 
-      7. Failure: Retrieve comments function is working correctly (@test-api.R#314) 
-      8. Failure: Empty responses are handled correctly when retrieving items (@test-api.R#320) 
-      9. Failure: Empty responses are handled correctly when retrieving items (@test-api.R#326) 
-      1. ...
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # hal9001
 
 <details>
 
 * Version: 0.2.6
+* GitHub: https://github.com/tlverse/hal9001
 * Source code: https://github.com/cran/hal9001
-* URL: https://github.com/tlverse/hal9001
-* BugReports: https://github.com/tlverse/hal9001/issues
 * Date/Publication: 2020-06-27 04:50:07 UTC
 * Number of recursive dependencies: 89
 
@@ -810,9 +889,8 @@ Run `revdep_details(, "hal9001")` for more info
 <details>
 
 * Version: 0.10.0
+* GitHub: https://github.com/christophM/iml
 * Source code: https://github.com/cran/iml
-* URL: https://github.com/christophM/iml
-* BugReports: https://github.com/christophM/iml/issues
 * Date/Publication: 2020-03-26 10:20:03 UTC
 * Number of recursive dependencies: 154
 
@@ -821,32 +899,6 @@ Run `revdep_details(, "iml")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-    ...
-       14. future.apply:::future_xapply(...)
-       15. future::future(...)
-       16. future:::makeFuture(...)
-       17. future:::ClusterRegistry("start", workers = workers)
-       18. future:::makeCluster(workers, ...)
-       19. future::makeClusterPSOCK(workers, ...)
-       21. parallel:::stopCluster.default(cl[nodes])
-       22. parallel:::stopNode(n)
-       23. parallel:::postNode(n, "DONE")
-       25. parallel:::sendData.SOCKnode(...)
-       26. base::serialize(data, node$con)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 504 | SKIPPED: 11 | WARNINGS: 17 | FAILED: 2 ]
-      1. Error: FeatureEffect is Partial (@test-FeatureEffect.R#46) 
-      2. Error: FeatureEffect is Partial (@test-FeatureEffect.R#46) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      In pvp$name : closing unused connection 8 (<-localhost:11334)
-      Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -859,9 +911,8 @@ Run `revdep_details(, "iml")` for more info
 <details>
 
 * Version: 1.4.0
+* GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* URL: https://github.com/broadinstitute/inferCNV/wiki
-* BugReports: https://github.com/broadinstitute/inferCNV/issues
 * Date/Publication: 2020-04-27
 * Number of recursive dependencies: 121
 
@@ -885,15 +936,34 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-09-18 21:07:27] ::plot_cnv:Start
-    INFO [2020-09-18 21:07:27] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-09-18 21:07:27] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-09-18 21:07:27] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-09-21 18:23:17] ::plot_cnv:Start
+    INFO [2020-09-21 18:23:17] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-09-21 18:23:17] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-09-21 18:23:17] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
       unable to start device PNG
     Calls: plot_cnv -> png
+    Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘inferCNV.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    Quitting from lines 121-134 (inferCNV.Rmd) 
+    Error: processing vignette 'inferCNV.Rmd' failed with diagnostics:
+    unable to start device PNG
+    --- failed re-building ‘inferCNV.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘inferCNV.Rmd’
+    
+    Error: Vignette re-building failed.
     Execution halted
     ```
 
@@ -923,9 +993,8 @@ Run `revdep_details(, "infercnv")` for more info
 <details>
 
 * Version: 2019.12.5
+* GitHub: https://github.com/tdhock/inlinedocs
 * Source code: https://github.com/cran/inlinedocs
-* URL: http://github.com/tdhock/inlinedocs
-* BugReports: http://github.com/tdhock/inlinedocs/issues
 * Date/Publication: 2019-12-05 23:30:07 UTC
 * Number of recursive dependencies: 6
 
@@ -945,9 +1014,8 @@ Run `revdep_details(, "inlinedocs")` for more info
 <details>
 
 * Version: 1.0.0
+* GitHub: https://github.com/nerler/JointAI
 * Source code: https://github.com/cran/JointAI
-* URL: https://nerler.github.io/JointAI/
-* BugReports: https://github.com/nerler/JointAI/issues/
 * Date/Publication: 2020-08-31 06:40:09 UTC
 * Number of recursive dependencies: 131
 
@@ -957,36 +1025,52 @@ Run `revdep_details(, "JointAI")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    
-    $ordinal
-       mu_reg_ordinal   tau_reg_ordinal  mu_delta_ordinal tau_delta_ordinal 
-                0e+00             1e-04             0e+00             1e-04 
-    
-    $ranef
-    shape_diag_RinvD  rate_diag_RinvD       KinvD_expr 
-              "0.01"          "0.001"   "nranef + 1.0" 
-    
-    $surv
-     mu_reg_surv tau_reg_surv 
-           0.000        0.001 
-    
-    > 
-    > # To change the hyper-parameters:
-    > hyp <- default_hyperpars()
-    > hyp$norm['rate_tau_norm'] <- 1e-3
-    > mod <- lm_imp(y ~ C1 + C2 + B1, data = wideDF, hyperpars = hyp, mess = FALSE)
-    Error in { : task 1 failed - "n.iter must be a positive integer"
-    Calls: lm_imp ... <Anonymous> -> run_jags -> <Anonymous> -> <Anonymous>
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘mathjaxr’
       All declared Imports should be used.
+    ```
+
+# ldaPrototype
+
+<details>
+
+* Version: 0.2.0
+* GitHub: https://github.com/JonasRieger/ldaPrototype
+* Source code: https://github.com/cran/ldaPrototype
+* Date/Publication: 2020-07-16 11:10:02 UTC
+* Number of recursive dependencies: 110
+
+Run `revdep_details(, "ldaPrototype")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      The following object is masked from 'package:stats':
+      
+          cutree
+      
+      > 
+      > test_check("ldaPrototype")
+      ── 1. Error: (unknown) (@test_jaccardTopics.R#8)  ──────────────────────────────
+      wrong sign in 'by' argument
+      Backtrace:
+       1. ldaPrototype::jaccardTopics(mtopics, pm.backend = "socket")
+       2. ldaPrototype:::jaccardTopics.parallel(...)
+       3. base::lapply(...)
+       4. ldaPrototype:::FUN(X[[i]], ...)
+       6. base::seq.default(x, N - 2, max(ncpus, 2))
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 243 | SKIPPED: 0 | WARNINGS: 2 | FAILED: 1 ]
+      1. Error: (unknown) (@test_jaccardTopics.R#8) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # lidR
@@ -994,9 +1078,8 @@ Run `revdep_details(, "JointAI")` for more info
 <details>
 
 * Version: 3.0.3
+* GitHub: https://github.com/Jean-Romain/lidR
 * Source code: https://github.com/cran/lidR
-* URL: https://github.com/Jean-Romain/lidR
-* BugReports: https://github.com/Jean-Romain/lidR/issues
 * Date/Publication: 2020-08-03 06:30:10 UTC
 * Number of recursive dependencies: 155
 
@@ -1006,71 +1089,47 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking whether package ‘lidR’ can be installed ... ERROR
+*   checking re-building of vignette outputs ... WARNING
     ```
-    Installation failed.
-    See ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/00install.out’ for details.
+    ...
+    Quitting from lines 218-227 (lidR-LAScatalog-engine.Rmd) 
+    Error: processing vignette 'lidR-LAScatalog-engine.Rmd' failed with diagnostics:
+    unable to start device PNG
+    --- failed re-building ‘lidR-LAScatalog-engine.Rmd’
+    
+    --- re-building ‘lidR-catalog-apply-examples.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘lidR-catalog-apply-examples.Rmd’
+    
+    --- re-building ‘lidR-computation-speed-LAScatalog.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘lidR-computation-speed-LAScatalog.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘lidR-LAS-class.Rmd’ ‘lidR-LAScatalog-class.Rmd’
+      ‘lidR-LAScatalog-engine.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
-## Installation
+*   checking installed package size ... NOTE
+    ```
+      installed size is 12.6Mb
+      sub-directories of 1Mb or more:
+        doc       1.2Mb
+        extdata   1.1Mb
+        libs      8.7Mb
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘lidR’ ...
-** package ‘lidR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c BoundingBox.cpp -o BoundingBox.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_Gatziolis2019.cpp -o C_Gatziolis2019.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_dalponte2016.cpp -o C_dalponte2016.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_delaunay.cpp -o C_delaunay.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c GridPartition.cpp -o GridPartition.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c LAS.cpp -o LAS.o
-In file included from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadilloForward.h:49,
-                 from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadillo.h:31,
-                 from LAS.h:5,
-                 from LAS.cpp:1:
-/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/armadillo:52:10: fatal error: armadillo_bits/compiler_extra.hpp: No such file or directory
- #include "armadillo_bits/compiler_extra.hpp"
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make: *** [/software/c4/cbi/software/R-4.0.2/lib64/R/etc/Makeconf:176: LAS.o] Error 1
-ERROR: compilation failed for package ‘lidR’
-* removing ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/lidR’
-
-```
-### CRAN
-
-```
-* installing *source* package ‘lidR’ ...
-** package ‘lidR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c BoundingBox.cpp -o BoundingBox.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_Gatziolis2019.cpp -o C_Gatziolis2019.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_dalponte2016.cpp -o C_dalponte2016.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c C_delaunay.cpp -o C_delaunay.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c GridPartition.cpp -o GridPartition.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.0.2/lib64/R/include" -DNDEBUG  -I'/home/henrik/c4/repositories/future/revdep/library/lidR/BH/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/Rcpp/include' -I'/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include' -I/usr/local/include  -fopenmp -I../inst/include/ -DRCPP_NO_MODULES -fpic  -g -O2  -c LAS.cpp -o LAS.o
-In file included from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadilloForward.h:49,
-                 from /home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/RcppArmadillo.h:31,
-                 from LAS.h:5,
-                 from LAS.cpp:1:
-/home/henrik/c4/repositories/future/revdep/library/lidR/RcppArmadillo/include/armadillo:52:10: fatal error: armadillo_bits/compiler_extra.hpp: No such file or directory
- #include "armadillo_bits/compiler_extra.hpp"
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-compilation terminated.
-make: *** [/software/c4/cbi/software/R-4.0.2/lib64/R/etc/Makeconf:176: LAS.o] Error 1
-ERROR: compilation failed for package ‘lidR’
-* removing ‘/home/henrik/c4/repositories/future/revdep/checks/lidR/old/lidR.Rcheck/lidR’
-
-```
 # lmtp
 
 <details>
 
 * Version: 0.0.5
+* GitHub: NA
 * Source code: https://github.com/cran/lmtp
 * Date/Publication: 2020-07-18 09:10:02 UTC
 * Number of recursive dependencies: 77
@@ -1119,83 +1178,13 @@ Run `revdep_details(, "lmtp")` for more info
       All declared Imports should be used.
     ```
 
-# metagam
-
-<details>
-
-* Version: 0.1.2
-* Source code: https://github.com/cran/metagam
-* URL: https://lifebrain.github.io/metagam/, https://github.com/Lifebrain/metagam
-* BugReports: https://github.com/Lifebrain/metagam/issues
-* Date/Publication: 2020-06-22 18:30:03 UTC
-* Number of recursive dependencies: 144
-
-Run `revdep_details(, "metagam")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > 
-    > ## Create 5 datasets
-    > set.seed(1234)
-    > datasets <- lapply(1:5, function(x) gamSim(scale = 5, verbose = FALSE))
-    > 
-    > ## Fit a GAM in each dataset, then use strip_rawdata() to remove
-    > ## individual participant data
-    > models <- lapply(datasets, function(dat){
-    +   ## This uses the gam() function from mgcv
-    +   model <- gam(y ~ s(x0, bs = "cr") + s(x1, bs = "cr") + s(x2, bs = "cr"), data = dat)
-    +   ## This uses strip_rawdata() from metagam
-    +   strip_rawdata(model)
-    + })
-    > 
-    > ## Next, we meta-analyze the models.
-    > ## It is often most convenient to analyze a single term at a time. We focus on s(x1).
-    > meta_analysis <- metagam(models, terms = "s(x1)", grid_size = 30)
-    Error in match.arg(type) : 
-      'arg' should be one of “link”, “response”, “terms”
-    Calls: metagam ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-      > 
-      > test_check("metagam")
-      ── 1. Error: metagam works (@test-metagam.R#15)  ───────────────────────────────
-      'arg' should be one of “link”, “response”, “terms”
-      Backtrace:
-        1. metagam::metagam(fits, grid_size = 10)
-        2. furrr::future_map_dfr(...)
-        3. furrr::future_map(.x, .f, ..., .progress = .progress, .options = .options)
-        4. furrr:::future_map_template(...)
-        5. furrr:::multi_resolve(fs, names(.x))
-        7. future:::values.list(fs)
-        9. future:::resolve.list(...)
-       10. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       11. future:::signalConditions(...)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 48 | SKIPPED: 0 | WARNINGS: 0 | FAILED: 1 ]
-      1. Error: metagam works (@test-metagam.R#15) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # methyvim
 
 <details>
 
 * Version: 1.10.0
+* GitHub: https://github.com/nhejazi/methyvim
 * Source code: https://github.com/cran/methyvim
-* URL: https://github.com/nhejazi/methyvim
-* BugReports: https://github.com/nhejazi/methyvim/issues
 * Date/Publication: 2020-04-27
 * Number of recursive dependencies: 203
 
@@ -1231,6 +1220,25 @@ Run `revdep_details(, "methyvim")` for more info
       Execution halted
     ```
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘using_methyvim.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    Quitting from lines 359-364 (using_methyvim.Rmd) 
+    Error: processing vignette 'using_methyvim.Rmd' failed with diagnostics:
+    'names' attribute [8] must be the same length as the vector [1]
+    --- failed re-building ‘using_methyvim.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘using_methyvim.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘tmle.npvi’
@@ -1241,6 +1249,7 @@ Run `revdep_details(, "methyvim")` for more info
 <details>
 
 * Version: 1.28.0
+* GitHub: NA
 * Source code: https://github.com/cran/MineICA
 * Date/Publication: 2020-04-27
 * Number of recursive dependencies: 202
@@ -1367,67 +1376,30 @@ Run `revdep_details(, "MineICA")` for more info
     contains 'methods').
     ```
 
-# mlr3
-
-<details>
-
-* Version: 0.6.0
-* Source code: https://github.com/cran/mlr3
-* URL: https://mlr3.mlr-org.com, https://github.com/mlr-org/mlr3
-* BugReports: https://github.com/mlr-org/mlr3/issues
-* Date/Publication: 2020-09-13 13:30:02 UTC
-* Number of recursive dependencies: 50
-
-Run `revdep_details(, "mlr3")` for more info
-
-</details>
-
-## In both
-
-*   R CMD check timed out
-    
-
-# mlr3db
-
-<details>
-
-* Version: 0.1.5
-* Source code: https://github.com/cran/mlr3db
-* URL: https:///mlr3db.mlr-org.com, https://github.com/mlr-org/mlr3db
-* BugReports: https://github.com/mlr-org/mlr3db/issues
-* Date/Publication: 2020-02-19 12:40:12 UTC
-* Number of recursive dependencies: 59
-
-Run `revdep_details(, "mlr3db")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
+*   checking re-building of vignette outputs ... NOTE
     ```
     ...
-      +   test_check("mlr3db")
-      + }
-      ── 1. Error: resample work (@test_train_predict.R#16)  ─────────────────────────
-      Invalid connection. Provide a connector during construction to automatically reconnect
-      Backtrace:
-       1. mlr3::resample(task, learner, mlr3::rsmp("cv", folds = 3))
-       2. future.apply::future_lapply(...)
-       3. future.apply:::future_xapply(...)
-       5. future:::value.list(fs)
-       7. future:::resolve.list(...)
-       8. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       9. future:::signalConditions(...)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 604 | SKIPPED: 0 | WARNINGS: 1 | FAILED: 1 ]
-      1. Error: resample work (@test_train_predict.R#16) 
-      
-      Error: testthat unit tests failed
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
+    
+    ..Features annotation with package hgu133a.db..
+    
+    ...Annotation into SYMBOL..
+    
+    The number of probe sets not associated with a SYMBOL ID is 1422
+    The remaining number of probe sets is 8578
+    The number of genes annotated by several features is 1531 
+    
+    
+    Error: processing vignette 'MineICA.Rnw' failed with diagnostics:
+     chunk 31 (label = writeProj) 
+    Error in { : task 5 failed - "Multiple cache results found"
+    
+    --- failed re-building ‘MineICA.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘MineICA.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # origami
@@ -1435,9 +1407,8 @@ Run `revdep_details(, "mlr3db")` for more info
 <details>
 
 * Version: 1.0.3
+* GitHub: https://github.com/tlverse/origami
 * Source code: https://github.com/cran/origami
-* URL: https://tlverse.org/origami
-* BugReports: https://github.com/tlverse/origami/issues
 * Date/Publication: 2020-01-16 22:40:02 UTC
 * Number of recursive dependencies: 82
 
@@ -1457,9 +1428,8 @@ Run `revdep_details(, "origami")` for more info
 <details>
 
 * Version: 2.4.0
+* GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* URL: http://pavo.colrverse.com, https://github.com/rmaia/pavo/
-* BugReports: https://github.com/rmaia/pavo/issues
 * Date/Publication: 2020-02-08 16:20:08 UTC
 * Number of recursive dependencies: 90
 
@@ -1476,14 +1446,39 @@ Run `revdep_details(, "pavo")` for more info
     See ‘/home/henrik/c4/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
     ```
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Calculating noise-weighted Euclidean distances
+    Warning in hook_png(before, options, envir, "pngquant", function(x) { :
+      cannot find pngquant; please install and put it in PATH
+    One or more image matrices are not of class 'rimg'; attempting to coerce.
+    --- finished re-building ‘pavo-3-analysing.Rmd’
+    
+    --- re-building ‘pavo-4-spectraldesc.Rmd’ using rmarkdown
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    pandoc-citeproc: PandocHttpError "http://www.zotero.org/styles/proceedings-of-the-royal-society-b" (InvalidUrlException "c4-yum1:3128" "Invalid scheme")
+    Error running filter /software/c4/cbi/software/pandoc-2.10.1/bin/pandoc-citeproc:
+    Filter returned error status 1
+    Error: processing vignette 'pavo-4-spectraldesc.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 83
+    --- failed re-building ‘pavo-4-spectraldesc.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘pavo-4-spectraldesc.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # PCRedux
 
 <details>
 
 * Version: 1.0-6
+* GitHub: https://github.com/PCRuniversum/PCRedux
 * Source code: https://github.com/cran/PCRedux
-* URL: https://CRAN.R-project.org/package=PCRedux
-* BugReports: https://github.com/PCRuniversum/PCRedux/issues
 * Date/Publication: 2020-03-06 08:10:02 UTC
 * Number of recursive dependencies: 117
 
@@ -1493,9 +1488,77 @@ Run `revdep_details(, "PCRedux")` for more info
 
 ## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    pandoc-citeproc: reference Ritz2008 not found
+    pandoc-citeproc: reference spiess_highly_2008 not found
+    pandoc-citeproc: reference roediger2015chippcr not found
+    pandoc-citeproc: reference Ritz2008 not found
+    pandoc-citeproc: reference spiess_highly_2008 not found
+    pandoc-citeproc: reference brenner_variation_1997 not found
+    pandoc-citeproc: reference kuhn_building_2008 not found
+    ! LaTeX Error: File `framed.sty' not found.
+    
+    ! Emergency stop.
+    <read *> 
+    
+    Error: processing vignette 'SI1.Rmd' failed with diagnostics:
+    LaTeX failed to compile /home/henrik/c4/repositories/future/revdep/checks/PCRedux/new/PCRedux.Rcheck/vign_test/PCRedux/vignettes/SI1.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See SI1.log for more info.
+    --- failed re-building ‘SI1.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘SI1.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘FFTrees’
+    ```
+
+# PeakSegDisk
+
+<details>
+
+* Version: 2020.8.13
+* GitHub: https://github.com/tdhock/PeakSegDisk
+* Source code: https://github.com/cran/PeakSegDisk
+* Date/Publication: 2020-08-14 04:40:06 UTC
+* Number of recursive dependencies: 59
+
+Run `revdep_details(, "PeakSegDisk")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+             
+    l.29 \makeatletter
+                      ^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘Examples.Rnw’
+    
+    --- re-building ‘Spatial_correlation.Rmd’ using knitr
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘Spatial_correlation.Rmd’
+    
+    --- re-building ‘Worst_case.Rmd’ using knitr
+    Warning in grDevices::png(f) :
+      unable to open connection to X11 display ''
+    --- finished re-building ‘Worst_case.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘Examples.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # phylolm
@@ -1503,9 +1566,8 @@ Run `revdep_details(, "PCRedux")` for more info
 <details>
 
 * Version: 2.6.2
+* GitHub: https://github.com/lamho86/phylolm
 * Source code: https://github.com/cran/phylolm
-* URL: https://github.com/lamho86/phylolm
-* BugReports: https://github.com/lamho86/phylolm/issues
 * Date/Publication: 2020-06-22 05:10:08 UTC
 * Number of recursive dependencies: 33
 
@@ -1525,9 +1587,8 @@ Run `revdep_details(, "phylolm")` for more info
 <details>
 
 * Version: 1.0.0
+* GitHub: https://github.com/rstudio/plumber
 * Source code: https://github.com/cran/plumber
-* URL: https://www.rplumber.io, https://github.com/rstudio/plumber
-* BugReports: https://github.com/rstudio/plumber/issues
 * Date/Publication: 2020-09-14 21:40:02 UTC
 * Number of recursive dependencies: 62
 
@@ -1568,9 +1629,8 @@ Run `revdep_details(, "plumber")` for more info
 <details>
 
 * Version: 1.1.1
+* GitHub: https://github.com/rstudio/promises
 * Source code: https://github.com/cran/promises
-* URL: https://rstudio.github.io/promises, https://github.com/rstudio/promises
-* BugReports: https://github.com/rstudio/promises/issues
 * Date/Publication: 2020-06-09 21:50:02 UTC
 * Number of recursive dependencies: 44
 
@@ -1590,6 +1650,7 @@ Run `revdep_details(, "promises")` for more info
 <details>
 
 * Version: 1.20.0
+* GitHub: NA
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2020-04-27
 * Number of recursive dependencies: 281
@@ -1607,14 +1668,39 @@ Run `revdep_details(, "Prostar")` for more info
     See ‘/home/henrik/c4/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    ...
+    Error: processing vignette 'Prostar_UserManual.Rnw' failed with diagnostics:
+    Running 'texi2dvi' on 'Prostar_UserManual.tex' failed.
+    LaTeX errors:
+    ! LaTeX Error: File `titlesec.sty' not found.
+    
+    Type X to quit or <RETURN> to proceed,
+    or enter new name. (Default extension: sty)
+    
+    ! Emergency stop.
+    <read *> 
+             
+    l.92 \def
+             \mdhelvet{\fontfamily{phv}\selectfont\mdseries}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘Prostar_UserManual.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘Prostar_UserManual.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # PSCBS
 
 <details>
 
 * Version: 0.65.0
+* GitHub: https://github.com/HenrikBengtsson/PSCBS
 * Source code: https://github.com/cran/PSCBS
-* URL: https://github.com/HenrikBengtsson/PSCBS
-* BugReports: https://github.com/HenrikBengtsson/PSCBS/issues
 * Date/Publication: 2019-05-05 22:40:09 UTC
 * Number of recursive dependencies: 85
 
@@ -1650,14 +1736,39 @@ Run `revdep_details(, "PSCBS")` for more info
     Execution halted
     ```
 
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    ...
+    9           1     5    1 1.99e+08 2.07e+08         2755    2.59          784
+    10          1     6    1 2.07e+08 2.07e+08           14    3.87            9
+    11          1     7    1 2.07e+08 2.47e+08        15581    2.64         4492
+       tcnNbrOfHets  dhStart    dhEnd dhNbrOfLoci dhMean c1Mean c2Mean
+    6             0       NA       NA          NA     NA     NA     NA
+    7          3770 1.42e+08 1.86e+08        3770 0.0943  0.935   1.13
+    8          1271 1.86e+08 1.99e+08        1271 0.2563  1.007   1.70
+    9           784 1.99e+08 2.07e+08         784 0.2197  1.009   1.58
+    10            9 2.07e+08 2.07e+08           9 0.2769  1.400   2.47
+    11         4492 2.07e+08 2.47e+08        4492 0.2290  1.017   1.62
+    Warning in png("figures/PairedPSCBS,exData,chr01,PairedPSCBS,tracks.png",  :
+      unable to open connection to X11 display ''
+    Error: processing vignette 'PairedPSCBS.tex.rsp' failed with diagnostics:
+    unable to start device PNG
+    --- failed re-building ‘PairedPSCBS.tex.rsp’
+    
+    SUMMARY: processing the following files failed:
+      ‘CBS.tex.rsp’ ‘PairedPSCBS.tex.rsp’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # QDNAseq
 
 <details>
 
 * Version: 1.24.0
+* GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
-* URL: https://github.com/ccagc/QDNAseq
-* BugReports: https://github.com/ccagc/QDNAseq/issues
 * Date/Publication: 2020-04-27
 * Number of recursive dependencies: 70
 
@@ -1692,14 +1803,37 @@ Run `revdep_details(, "QDNAseq")` for more info
       All declared Imports should be used.
     ```
 
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘QDNAseq.Rnw’ using Sweave
+    Warning in png("rawprofile.png") :
+      unable to open connection to X11 display ''
+    
+    Error: processing vignette 'QDNAseq.Rnw' failed with diagnostics:
+     chunk 6 
+    Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
+      unable to start device PNG
+    
+    --- failed re-building ‘QDNAseq.Rnw’
+    
+    Warning in file.remove(f) :
+      cannot remove file '.nfs0000001b9928dc1b00000099', reason 'Device or resource busy'
+    SUMMARY: processing the following file failed:
+      ‘QDNAseq.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # qtl2pleio
 
 <details>
 
 * Version: 1.3.0
+* GitHub: https://github.com/fboehm/qtl2pleio
 * Source code: https://github.com/cran/qtl2pleio
-* URL: https://github.com/fboehm/qtl2pleio
-* BugReports: https://github.com/fboehm/qtl2pleio/issues
 * Date/Publication: 2020-06-30 19:00:02 UTC
 * Number of recursive dependencies: 116
 
@@ -1721,9 +1855,8 @@ Run `revdep_details(, "qtl2pleio")` for more info
 <details>
 
 * Version: 0.1.0
+* GitHub: https://github.com/kaz-yos/regmedint
 * Source code: https://github.com/cran/regmedint
-* URL: https://kaz-yos.github.io/regmedint/
-* BugReports: https://github.com/kaz-yos/regmedint/issues
 * Date/Publication: 2020-05-11 11:00:02 UTC
 * Number of recursive dependencies: 106
 
@@ -1744,9 +1877,8 @@ Run `revdep_details(, "regmedint")` for more info
 <details>
 
 * Version: 0.7.13
+* GitHub: https://github.com/ropensci/robotstxt
 * Source code: https://github.com/cran/robotstxt
-* URL: https://docs.ropensci.org/robotstxt/, https://github.com/ropensci/robotstxt
-* BugReports: https://github.com/ropensci/robotstxt/issues
 * Date/Publication: 2020-09-03 19:30:02 UTC
 * Number of recursive dependencies: 62
 
@@ -1767,9 +1899,8 @@ Run `revdep_details(, "robotstxt")` for more info
 <details>
 
 * Version: 0.1.1
+* GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
-* URL: https://github.com/sapfluxnet/sapfluxnetr
-* BugReports: https://github.com/sapfluxnet/sapfluxnetr/issues
 * Date/Publication: 2020-08-27 12:50:02 UTC
 * Number of recursive dependencies: 73
 
@@ -1784,11 +1915,34 @@ Run `revdep_details(, "sapfluxnetr")` for more info
       Note: found 4 marked UTF-8 strings
     ```
 
+# sctransform
+
+<details>
+
+* Version: 0.3
+* GitHub: https://github.com/ChristophH/sctransform
+* Source code: https://github.com/cran/sctransform
+* Date/Publication: 2020-09-20 14:40:02 UTC
+* Number of recursive dependencies: 64
+
+Run `revdep_details(, "sctransform")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages which this enhances but not available for checking:
+      'speedglm', 'glmGamPoi'
+    ```
+
 # seer
 
 <details>
 
 * Version: 1.1.5
+* GitHub: NA
 * Source code: https://github.com/cran/seer
 * Date/Publication: 2020-06-08 05:00:02 UTC
 * Number of recursive dependencies: 107
@@ -1810,9 +1964,8 @@ Run `revdep_details(, "seer")` for more info
 <details>
 
 * Version: 3.2.1
+* GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* URL: https://satijalab.org/seurat, https://github.com/satijalab/seurat
-* BugReports: https://github.com/satijalab/seurat/issues
 * Date/Publication: 2020-09-07 10:20:15 UTC
 * Number of recursive dependencies: 223
 
@@ -1825,24 +1978,24 @@ Run `revdep_details(, "Seurat")` for more info
 *   checking tests ...
     ```
     ...
-      > 
-      > test_check("Seurat")
-      ── 1. Error: (unknown) (@test_objects.R#235)  ──────────────────────────────────
-      external pointer is not valid
-      Backtrace:
-        1. Seurat:::NNHelper(...)
-        3. Seurat:::AnnoyNN(...)
-        4. Seurat:::AnnoySearch(...)
-        5. future.apply::future_lapply(...)
-        6. future.apply:::future_xapply(...)
-        8. future:::value.list(fs)
-       10. future:::resolve.list(...)
-       11. future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       12. future:::signalConditions(...)
+      
+      ── 4. Failure: SCTransform ncells param works (@test_preprocessing.R#316)  ─────
+      as.numeric(colSums(GetAssayData(object = object[["SCT"]], slot = "counts"))[1]) not equal to 121.
+      1/1 mismatches
+      [1] 119 - 121 == -2
+      
+      ── 5. Failure: SCTransform ncells param works (@test_preprocessing.R#317)  ─────
+      as.numeric(rowSums(GetAssayData(object = object[["SCT"]], slot = "counts"))[5]) not equal to 25.
+      1/1 mismatches
+      [1] 26 - 25 == 1
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 428 | SKIPPED: 0 | WARNINGS: 14 | FAILED: 1 ]
-      1. Error: (unknown) (@test_objects.R#235) 
+      [ OK: 458 | SKIPPED: 0 | WARNINGS: 3 | FAILED: 5 ]
+      1. Failure: SCTransform wrapper works as expected (@test_preprocessing.R#295) 
+      2. Failure: SCTransform wrapper works as expected (@test_preprocessing.R#299) 
+      3. Failure: SCTransform ncells param works (@test_preprocessing.R#312) 
+      4. Failure: SCTransform ncells param works (@test_preprocessing.R#316) 
+      5. Failure: SCTransform ncells param works (@test_preprocessing.R#317) 
       
       Error: testthat unit tests failed
       Execution halted
@@ -1871,9 +2024,8 @@ Run `revdep_details(, "Seurat")` for more info
 <details>
 
 * Version: 1.5.0
+* GitHub: https://github.com/rstudio/shiny
 * Source code: https://github.com/cran/shiny
-* URL: http://shiny.rstudio.com
-* BugReports: https://github.com/rstudio/shiny/issues
 * Date/Publication: 2020-06-23 13:30:03 UTC
 * Number of recursive dependencies: 97
 
@@ -1922,8 +2074,8 @@ Run `revdep_details(, "shiny")` for more info
 <details>
 
 * Version: 0.1.0
+* GitHub: NA
 * Source code: https://github.com/cran/shinyrecap
-* URL: https://fellstat.github.io/shinyrecap/
 * Date/Publication: 2019-01-19 23:40:03 UTC
 * Number of recursive dependencies: 87
 
@@ -1946,9 +2098,8 @@ Run `revdep_details(, "shinyrecap")` for more info
 <details>
 
 * Version: 1.0.16
+* GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* URL: https://github.com/ShixiangWang/sigminer
-* BugReports: https://github.com/ShixiangWang/sigminer/issues
 * Date/Publication: 2020-09-12 14:30:02 UTC
 * Number of recursive dependencies: 191
 
@@ -1970,9 +2121,8 @@ Run `revdep_details(, "sigminer")` for more info
 <details>
 
 * Version: 1.0.0
+* GitHub: https://github.com/timoast/signac
 * Source code: https://github.com/cran/Signac
-* URL: https://github.com/timoast/signac, https://satijalab.org/signac
-* BugReports: https://github.com/timoast/signac/issues
 * Date/Publication: 2020-08-16 15:50:03 UTC
 * Number of recursive dependencies: 225
 
@@ -1999,15 +2149,42 @@ Run `revdep_details(, "Signac")` for more info
 <details>
 
 * Version: 0.1.0
+* GitHub: https://github.com/meghapsimatrix/simhelpers
 * Source code: https://github.com/cran/simhelpers
-* URL: https://meghapsimatrix.github.io/simhelpers/index.html
-* BugReports: https://github.com/meghapsimatrix/simhelpers/issues
 * Date/Publication: 2020-03-31 15:00:06 UTC
 * Number of recursive dependencies: 97
 
 Run `revdep_details(, "simhelpers")` for more info
 
 </details>
+
+## Newly fixed
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    
+    Attaching package: 'kableExtra'
+    
+    The following object is masked from 'package:dplyr':
+    
+        group_rows
+    
+    --- finished re-building ‘visualization.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘simulation_workflow.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 ## In both
 
@@ -2023,9 +2200,8 @@ Run `revdep_details(, "simhelpers")` for more info
 <details>
 
 * Version: 0.64.2
+* GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
-* URL: https://github.com/tylermorganwall/skpr
-* BugReports: https://github.com/tylermorganwall/skpr/issues
 * Date/Publication: 2020-03-04 20:20:02 UTC
 * Number of recursive dependencies: 131
 
@@ -2053,9 +2229,8 @@ Run `revdep_details(, "skpr")` for more info
 <details>
 
 * Version: 1.1.1
+* GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
-* URL: https://github.com/talegari/solitude
-* BugReports: https://github.com/talegari/solitude/issues
 * Date/Publication: 2020-09-17 10:10:07 UTC
 * Number of recursive dependencies: 131
 
@@ -2077,9 +2252,8 @@ Run `revdep_details(, "solitude")` for more info
 <details>
 
 * Version: 0.1.1
+* GitHub: https://github.com/mikemahoney218/spacey
 * Source code: https://github.com/cran/spacey
-* URL: https://github.com/mikemahoney218/spacey, https://mikemahoney218.github.io/spacey/
-* BugReports: https://github.com/mikemahoney218/spacey/issues
 * Date/Publication: 2020-03-14 18:50:02 UTC
 * Number of recursive dependencies: 90
 
@@ -2100,8 +2274,8 @@ Run `revdep_details(, "spacey")` for more info
 <details>
 
 * Version: 2.0.0
+* GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
-* URL: https://github.com/spatial-ews/spatialwarnings
 * Date/Publication: 2020-05-14 17:10:06 UTC
 * Number of recursive dependencies: 77
 
@@ -2129,9 +2303,8 @@ Run `revdep_details(, "spatialwarnings")` for more info
 <details>
 
 * Version: 0.4-3
+* GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* URL: https://r-spatial.github.io/stars/, https://github.com/r-spatial/stars/
-* BugReports: https://github.com/r-spatial/stars/issues/
 * Date/Publication: 2020-07-08 11:20:03 UTC
 * Number of recursive dependencies: 130
 
@@ -2154,55 +2327,13 @@ Run `revdep_details(, "stars")` for more info
         nc    4.5Mb
     ```
 
-# steps
-
-<details>
-
-* Version: 1.1.0
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2020-03-23 16:40:02 UTC
-* Number of recursive dependencies: 61
-
-Run `revdep_details(, "steps")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      > 
-      > test_check("steps")
-      [1] "Kernel-based dispersal utilising available RAM to speed up operations"
-      ── 1. Error: simulation_results classes work (@test_simulation_results_class.R#3
-      could not find function "calc" 
-      
-      it looks like the future package can't find an object or function you are using, you can pass it in via the future.globals argument to steps::simulation
-      Backtrace:
-       1. testthat::expect_true(...)
-       5. steps::simulation(...)
-       6. base::tryCatch(...)
-       7. base:::tryCatchList(expr, classes, parentenv, handlers)
-       8. base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       9. value[[3L]](cond)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 15 | SKIPPED: 0 | WARNINGS: 4 | FAILED: 1 ]
-      1. Error: simulation_results classes work (@test_simulation_results_class.R#302) 
-      
-      Error: testthat unit tests failed
-      Execution halted
-    ```
-
 # tableschema.r
 
 <details>
 
 * Version: 1.1.1
+* GitHub: https://github.com/frictionlessdata/tableschema-r
 * Source code: https://github.com/cran/tableschema.r
-* URL: https://github.com/frictionlessdata/tableschema-r
-* BugReports: https://github.com/frictionlessdata/tableschema-r/issues
 * Date/Publication: 2020-03-12 12:40:02 UTC
 * Number of recursive dependencies: 57
 
@@ -2228,6 +2359,7 @@ Run `revdep_details(, "tableschema.r")` for more info
 <details>
 
 * Version: 0.1.1
+* GitHub: NA
 * Source code: https://github.com/cran/treeHMM
 * Date/Publication: 2019-12-12 17:10:02 UTC
 * Number of recursive dependencies: 10
@@ -2249,9 +2381,8 @@ Run `revdep_details(, "treeHMM")` for more info
 <details>
 
 * Version: 0.1.6
+* GitHub: https://github.com/RamiKrispin/TSstudio
 * Source code: https://github.com/cran/TSstudio
-* URL: https://github.com/RamiKrispin/TSstudio
-* BugReports: https://github.com/RamiKrispin/TSstudio/issues
 * Date/Publication: 2020-01-21 05:30:02 UTC
 * Number of recursive dependencies: 136
 
