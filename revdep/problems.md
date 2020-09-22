@@ -171,13 +171,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e625ae3af' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp55Nmef/registrybaf07fc08780' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e58916ce6' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp55Nmef/registrybaf04f33aa2e' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e12edb53d' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp55Nmef/registrybaf062e50aab' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpfOHr6O/registry797e2ddf10a2' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp55Nmef/registrybaf021842af9' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -197,7 +197,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[52266,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[48717,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -327,7 +327,7 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.7Mb
       sub-directories of 1Mb or more:
         R     3.1Mb
         doc   2.6Mb
@@ -936,10 +936,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-09-21 18:23:17] ::plot_cnv:Start
-    INFO [2020-09-21 18:23:17] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-09-21 18:23:17] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-09-21 18:23:17] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-09-21 21:31:02] ::plot_cnv:Start
+    INFO [2020-09-21 21:31:02] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-09-21 21:31:02] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-09-21 21:31:02] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1819,7 +1819,7 @@ Run `revdep_details(, "QDNAseq")` for more info
     --- failed re-building ‘QDNAseq.Rnw’
     
     Warning in file.remove(f) :
-      cannot remove file '.nfs0000001b9928dc1b00000099', reason 'Device or resource busy'
+      cannot remove file '.nfs00000030aec7de06000000a0', reason 'Device or resource busy'
     SUMMARY: processing the following file failed:
       ‘QDNAseq.Rnw’
     
