@@ -1,12 +1,12 @@
 Package: future
 ===============
 
-Version: 1.19.0-9000 [2020-09-21]
+Version: 1.19.1 [2020-09-21]
 
 BUG FIXES:
 
  * When passing '...' as a globals, rather than via arguments, in higher-level
-   map-reduce APIs such as future.apply and furrr, any such arguments could
+   map-reduce APIs such as future.apply and furrr, arguments in '...' could
    produce an error on "unused argument".
    
  
