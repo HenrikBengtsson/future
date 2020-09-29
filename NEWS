@@ -1,9 +1,11 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-09-22]
+Version: 1.19.1-9000 [2020-09-28]
 
- * ...
+BUG FIXES:
+
+ * The Mandelbrot demo would produce random numbers without declaring so.
  
 
 Version: 1.19.1 [2020-09-21]
