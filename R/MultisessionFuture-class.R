@@ -13,7 +13,7 @@ MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute =
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
               !is.na(persistent))
   if (persistent) {
-    .Deprecated(msg = "Support for 'persistent = TRUE' with multisession futures is deprecated.")
+    .Deprecated(msg = "Support for 'persistent = TRUE' with multisession futures is deprecated.", package = .packageName)
   }
   
   future <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, globals = globals, persistent = persistent, local = local, workers = workers, ...)
