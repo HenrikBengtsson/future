@@ -1,7 +1,15 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-09-28]
+Version: 1.19.1-9000 [2020-09-30]
+
+SIGNIFICANT CHANGES:
+
+ * Support for 'local = FALSE' is deprecated.  For the time being, it remains
+   supported for cluster futures that use 'persistent = TRUE'.  However, note
+   that 'persistent = TRUE' will also deprecated at some point in the future.
+   These deprecations are required in order to further standardize the
+   Future API across various types of parallel backends.
 
 BUG FIXES:
 

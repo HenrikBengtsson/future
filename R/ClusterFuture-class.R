@@ -46,19 +46,18 @@
 ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
+  stop_if_not(is.logical(persistent), length(persistent) == 1L,
+              !is.na(persistent))
+
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
 
-  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, node = NA_integer_, ...)
+  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, node = NA_integer_, persistent = persistent, ...)
 
   future <- as_ClusterFuture(future, workers = workers, user = user,
                              master = master, revtunnel = revtunnel,
                              homogeneous = homogeneous)
 
-  stop_if_not(is.logical(persistent), length(persistent) == 1L,
-              !is.na(persistent))
-  future$persistent <- persistent
-  
   future
 }
 
