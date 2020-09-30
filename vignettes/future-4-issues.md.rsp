@@ -113,7 +113,7 @@ The workaround is to tell the future framework what _additional_ globals are nee
 > y
 [1] 6
 ```
-or my injecting `a` at the beginning of the future expression, e.g.
+or ny injecting variable `a` at the beginning of the future expression, e.g.
 ```r
 > f <- future({ a; my_sum("a") })
 > y <- value(f)
@@ -181,7 +181,7 @@ Error in eval(parse(text = text, keep.source = FALSE), envir) :
   object 'a' not found
 ```
 
-As examplained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
+As explained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
 ```
 > s %<-% glue("The value of a is {a}.") %globals% structure(TRUE, add = "a")
 > s
