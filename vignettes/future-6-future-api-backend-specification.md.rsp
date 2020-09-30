@@ -64,7 +64,7 @@ This section describes in detail what the requirements of the above four compone
 
 The constructor function `myparallel()` for creating a `Future` object must inherits from class `future` such that `inherits(myparallel, "future")` is true.
 
-The constructor function should have explicit arguments `expr`, `substitute`, `envir`, and `...`, where argument `expr` is an expression, argument `substitute` is a logical (`TRUE` or `FALSE`), and `envir` is an environment.  All or parts of the `...` arguments should be passed along to the `Future()` function.  If `subtitute` is `TRUE` (default), then `expr` should be re-evaluated as `expr <- substitute(expr)`.  Environment `envir` should default to `parent.frame()` as it is used to identify global variables.
+The constructor function should have explicit arguments `expr`, `substitute`, `envir`, and `...`, where argument `expr` is an expression, argument `substitute` is a logical (`TRUE` or `FALSE`), and `envir` is an environment.  All or parts of the `...` arguments should be passed along to the `Future()` function.  If `substitute` is `TRUE` (default), then `expr` should be re-evaluated as `expr <- substitute(expr)`.  Environment `envir` should default to `parent.frame()` as it is used to identify global variables.
 
 If the backend supports more than one worker, then it should also have an explicit `workers` argument.
 
@@ -85,7 +85,7 @@ The `run()` method is responsible for not launching the same future twice.  If `
 
 The `run()` method is responsible for evaluation the expression returned by `getExpression()` with the `Future` object as the first argument.  The evaluation of this expression should respect any global variables in the `FutureGlobals` object returned by `globals()` with the `Future` object as the first argument.  The evaluation should also respect any package names returned by `packages()` with the `Future` object as the first argument.
 
-If the backend provides parallel processing, then `run()` should return the future as soon as possible and without waiting for it to be resolved.  If all workers are occupied, then `run()` is responsible for waiting until a worker becomes available and then launch the future on that worker and immediated return the future.
+If the backend provides parallel processing, then `run()` should return the future as soon as possible and without waiting for it to be resolved.  If all workers are occupied, then `run()` is responsible for waiting until a worker becomes available and then launch the future on that worker and immediatedly return the future.
 
 The `run()` method may produce `FutureError` error as created by `FutureError()` in case it fails to launch the future on the worker or the worker has terminated unexpectedly.
 

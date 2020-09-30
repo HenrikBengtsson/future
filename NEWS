@@ -1690,7 +1690,7 @@ NEW FEATURES:
 
  * Eager and lazy futures now records the result internally
    such that the expression is only evaluated once, even if
-   their errored values are requested multiple times.
+   their error values are requested multiple times.
 
  * Eager futures are always created regardless of error or not.
 
