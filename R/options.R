@@ -88,6 +88,13 @@
 #'  \item{\option{future.globals.resolve}:}{(logical) If `TRUE`, globals that are [`Future`] objects (typically created as _explicit_ futures) will be resolved and have their values (using `value()`) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: `FALSE`)}
 #' }
 #'
+#' @examples
+#' # Set an R option:
+#' options(future.rng.onMisuse = "ignore")
+#'
+#' # Set an environment variable:
+#' Sys.setenv(R_FUTURE_RNG_ONMISUSE = "ignore")
+#' 
 #'
 #' @seealso
 #' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.

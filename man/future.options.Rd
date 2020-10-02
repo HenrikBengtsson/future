@@ -132,6 +132,15 @@ if set.
 }
 }
 
+\examples{
+# Set an R option:
+options(future.rng.onMisuse = "ignore")
+
+# Set an environment variable:
+Sys.setenv(R_FUTURE_RNG_ONMISUSE = "ignore")
+
+
+}
 \seealso{
 To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
 }
