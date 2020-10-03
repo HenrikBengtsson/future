@@ -71,7 +71,7 @@ Resolves futures asynchronously (in parallel) in separate
 \emph{forked} \R processes running in the background on
 the same machine.  Not supported on Windows.
 }
-\item{\code{\link{multiprocess}}:}{
+\item{\code{\link{multiprocess}}:}{(DEPRECATED)
 If multicore evaluation is supported, that will be used,
 otherwise multisession evaluation will be used.
 }

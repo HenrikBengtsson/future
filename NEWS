@@ -11,12 +11,22 @@ SIGNIFICANT CHANGES:
    These deprecations are required in order to further standardize the
    Future API across various types of parallel backends.
 
+ * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
+   'multicore', depending on operating system and R setup.  The plan() function
+   will give an informative deprecation warning when 'multiprocess' is used.
+   This warning is given only once per R session.
+
 BUG FIXES:
 
  * The Mandelbrot demo would produce random numbers without declaring so.
 
  * print() for Future would also print any attributes of its environment.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
+   'multicore', depending on operating system and R setup.
+
 
 Version: 1.19.1 [2020-09-21]
 

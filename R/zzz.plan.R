@@ -55,7 +55,7 @@
 #'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{[`multiprocess`]:}{
+#'  \item{[`multiprocess`]:}{(DEPRECATED)
 #'    If multicore evaluation is supported, that will be used,
 #'    otherwise multisession evaluation will be used.
 #'  }
@@ -123,6 +123,28 @@ plan <- local({
 
   ## Stack of type of futures to use
   stack <- defaultStack
+
+  warn_about_multiprocess <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is deprecated 'multiprocess' used?    
+      for (kk in seq_along(stack)) {
+        evaluator <- stack[[kk]]
+        if (inherits(evaluator, "multiprocess") && 
+            class(evaluator)[1] == "multiprocess") {
+          ## Warn only once
+          .warn <<- FALSE
+
+          .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
+
+          break
+        }
+      }
+    }
+  })
 
   plan_cleanup <- function() {
     ClusterRegistry(action = "stop")
@@ -202,7 +224,9 @@ plan <- local({
       mdebug("plan(): Setting new future strategy stack:")
       mprint(newStack)
     }
-    
+
+    warn_about_multiprocess(newStack)
+
     stack <<- newStack
 
     ## Stop any (implicitly started) clusters?
