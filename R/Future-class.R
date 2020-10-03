@@ -182,7 +182,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("Lazy evaluation: %s\n", x$lazy))
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
-  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  cat(sprintf("Environment: %s\n", envname(x$envir)))
   cat(sprintf("Capture standard output: %s\n", x$stdout))
   if (length(x$conditions) > 0) {
     cat(sprintf("Capture condition classes: %s\n",

@@ -93,6 +93,34 @@ asIEC <- function(size, digits = 2L) {
   sprintf(fmt, size)
 } # asIEC()
 
+#' @importFrom utils capture.output
+envname <- function(env) {
+  if (!is.environment(env)) return(NA_character_)
+  name <- environmentName(env)
+  if (name == "") {
+    class <- class(env)
+    if (identical(class, "environment")) {
+      ## e.g. new.env()
+      name <- capture.output(print(env))
+    } else {
+      ## It might be that 'env' is on a class that extends 'environment',
+      ## e.g. R.oo::Object() or R6::R6Class().
+      ## IMPORTANT: The unset class must be temporary, because changing
+      ## the class of an environment will
+      name <- local({
+        on.exit(class(env) <- class)
+        class(env) <- NULL
+        capture.output(print(env))
+      })	
+    }
+    if (length(name) > 1L) name <- name[1]
+    name <- gsub("(.*: |>)", "", name)
+  } else {
+    ## e.g. globals:::where("plan")
+    name <- gsub("package:", "", name, fixed = TRUE)
+  }
+  name
+}
 
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   ## format(x, format = format) ## slower
