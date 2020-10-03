@@ -106,7 +106,7 @@ done by first specifying
 then the number of cores to use, e.g. \code{options(mc.cores = 8)}.
 Having said this, it is almost always better to do this by explicitly
 setting the number of workers when specifying the future strategy,
-e.g. \code{plan(multiprocess, workers = 8)}.
+e.g. \code{plan(multisession, workers = 8)}.
 }
 
 \seealso{

@@ -137,8 +137,6 @@ plan(sequential)
 \seealso{
 For processing in multiple forked \R sessions, see
 \link{multicore} futures.
-For multicore processing with fallback to multisession where
-the former is not supported, see \link{multiprocess} futures.
 
 Use \code{\link[=availableCores]{availableCores()}} to see the total number of
 cores that are available for the current \R session.

@@ -89,7 +89,7 @@
 #' then the number of cores to use, e.g. `options(mc.cores = 8)`.
 #' Having said this, it is almost always better to do this by explicitly
 #' setting the number of workers when specifying the future strategy,
-#' e.g. `plan(multiprocess, workers = 8)`.
+#' e.g. `plan(multisession, workers = 8)`.
 #'
 #' @seealso
 #' To get the number of available workers regardless of machine,

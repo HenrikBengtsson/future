@@ -41,8 +41,6 @@
 #' @seealso
 #' For processing in multiple background \R sessions, see
 #' [multisession] futures.
-#' For multicore processing with fallback to multisession where
-#' the former is not supported, see [multiprocess] futures.
 #'
 #' Use [availableCores()] to see the total number of
 #' cores that are available for the current \R session.

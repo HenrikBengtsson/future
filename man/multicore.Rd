@@ -123,8 +123,6 @@ stopifnot(v == 0)
 \seealso{
 For processing in multiple background \R sessions, see
 \link{multisession} futures.
-For multicore processing with fallback to multisession where
-the former is not supported, see \link{multiprocess} futures.
 
 Use \code{\link[=availableCores]{availableCores()}} to see the total number of
 cores that are available for the current \R session.
