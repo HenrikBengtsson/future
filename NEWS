@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-03]
+Version: 1.19.1-9000 [2020-10-04]
 
 SIGNIFICANT CHANGES:
 
@@ -16,6 +16,12 @@ SIGNIFICANT CHANGES:
    'multicore', depending on operating system and R setup.  The plan() function
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
+
+ * Several functions for managing 'parallel'-style clusters have been moved to
+   a new 'parallelly' package.  For backward compatibility, they remain in this
+   package as re-exports.  Specifically, functions as.cluster(),
+   autoStopCluster(), makeClusterMPI(), makeClusterPSOCK(), and makeNodePSOCK()
+   have been moved.
 
 BUG FIXES:
 

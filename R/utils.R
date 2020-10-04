@@ -1145,28 +1145,6 @@ pid_exists <- local({
 })
 
 
-#' @importFrom tools pskill
-pid_kill <- function(pid, wait = 0.5, timeout = 30, debug = TRUE) {
-  pid <- as.integer(pid)
-  stop_if_not(length(pid), !is.na(pid), pid >= 0L)
-
-  setTimeLimit(elapsed = timeout)
-  on.exit(setTimeLimit(elapsed = Inf))
-
-  tryCatch({
-    ## Always try to kill, because pid_exists() can be very slow on Windows
-    pskill(pid)
-  
-    ## Wait a bit before checking whether process was successfully
-    ## killed or not
-    Sys.sleep(wait)
-
-    ## WARNING: pid_exists() can be very slow on Windows
-    !isTRUE(pid_exists(pid))
-  }, error = function(ex) NA)
-}
-
-
 ## From R.utils 2.7.0 (2018-08-26)
 queryRCmdCheck <- function(...) {
   evidences <- list()
