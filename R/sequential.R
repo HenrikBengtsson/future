@@ -49,6 +49,6 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 #' @export
 transparent <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-  sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, ...)
+  sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, persistent = TRUE, ...)
 }
 class(transparent) <- c("transparent", "sequential", "uniprocess", "future", "function")
