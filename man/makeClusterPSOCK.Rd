@@ -12,7 +12,7 @@ makeClusterPSOCK(
   ...,
   autoStop = FALSE,
   tries = getOption("future.makeNodePSOCK.tries",
-    as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_tries", 3))),
+    as.integer(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES", 3))),
   delay = getOption("future.makeNodePSOCK.tries.delay",
     as.numeric(Sys.getenv("R_FUTURE_MAKENODEPSOCK_TRIES_DELAY", 15))),
   verbose = getOption("future.debug", FALSE)
