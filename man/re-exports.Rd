@@ -7,6 +7,7 @@
 \alias{makeClusterMPI}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
+\alias{supportsMulticore}
 \title{Functions Moved to 'parallelly'}
 \description{
 The following function used to be part of \pkg{future} but has since
@@ -17,10 +18,11 @@ are also useful outside of the the \pkg{future} framework.
 \details{
 \itemize{
 \item \code{\link[parallelly:as.cluster]{parallelly::as.cluster()}}
+\item \code{\link[parallelly:autoStopCluster]{parallelly::autoStopCluster()}}
 \item \code{\link[parallelly:makeClusterMPI]{parallelly::makeClusterMPI()}}
 \item \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}}
 \item \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeNodePSOCK()}}
-\item \code{\link[parallelly:autoStopCluster]{parallelly::autoStopCluster()}}
+\item \code{\link[parallelly:supportsMulticore]{parallelly::supportsMulticore()}}
 }
 
 For backward-compatible reasons, these functions remain available as

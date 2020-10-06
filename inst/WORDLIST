@@ -363,3 +363,5 @@ varndims
 VM
 wb
 deprecations
+autoStopCluster
+parallelly

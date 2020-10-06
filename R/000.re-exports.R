@@ -6,10 +6,11 @@
 #' are also useful outside of the the \pkg{future} framework.
 #'
 #' * [parallelly::as.cluster()]
+#' * [parallelly::autoStopCluster()]
 #' * [parallelly::makeClusterMPI()]
 #' * [parallelly::makeClusterPSOCK()]
 #' * [parallelly::makeNodePSOCK()]
-#' * [parallelly::autoStopCluster()]
+#' * [parallelly::supportsMulticore()]
 #' 
 #' For backward-compatible reasons, these functions remain available as
 #' exact copies also from this package (as re-exports).  For example,
@@ -43,6 +44,10 @@
 #' @importFrom parallelly makeNodePSOCK
 #' @export makeNodePSOCK
 #' @aliases makeNodePSOCK
+#'
+#' @importFrom parallelly supportsMulticore
+#' @export supportsMulticore
+#' @aliases supportsMulticore
 #'
 #' @name re-exports
 NULL
