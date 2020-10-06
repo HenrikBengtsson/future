@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-04]
+Version: 1.19.1-9000 [2020-10-05]
 
 SIGNIFICANT CHANGES:
 
@@ -18,13 +18,13 @@ SIGNIFICANT CHANGES:
    This warning is given only once per R session.
 
  * Several functions for managing 'parallel'-style processing have been moved
-   to a new 'parallelly' package.  Specifically, functions as.cluster(),
-   autoStopCluster(), makeClusterMPI(), makeClusterPSOCK(), makeNodePSOCK(),
-   and supportsMulticore() have been moved.  None of them are specific to
-   futures per se and are likely useful elsewhere too.  Also, having them in
-   a separate, standalone package will speed up the release process of any
-   updates to these functions.  For backward compatibility, the migrated
-   functions remain in this package as re-exports.
+   to a new 'parallelly' package.  Specifically, functions availableCores(),
+   availableWorkers(), supportsMulticore(), as.cluster(), autoStopCluster(),
+   makeClusterMPI(), makeClusterPSOCK(), and makeNodePSOCK() have been moved.
+   None of them are specific to futures per se and are likely useful elsewhere
+   too.  Also, having them in a separate, standalone package will speed up the
+   process of releasing any updates to these functions.  For backward
+   compatibility, the migrated functions remain in this package as re-exports.
 
 BUG FIXES:
 

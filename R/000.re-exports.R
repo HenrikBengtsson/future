@@ -7,6 +7,8 @@
 #'
 #' * [parallelly::as.cluster()]
 #' * [parallelly::autoStopCluster()]
+#' * [parallelly::availableCores()]
+#' * [parallelly::availableWorkers()]
 #' * [parallelly::makeClusterMPI()]
 #' * [parallelly::makeClusterPSOCK()]
 #' * [parallelly::makeNodePSOCK()]
@@ -32,6 +34,14 @@
 #' @importFrom parallelly autoStopCluster
 #' @export autoStopCluster
 #' @aliases autoStopCluster
+#'
+#' @importFrom parallelly availableCores
+#' @export availableCores
+#' @aliases availableCores
+#'
+#' @importFrom parallelly availableWorkers
+#' @export availableWorkers
+#' @aliases availableWorkers
 #'
 #' @importFrom parallelly makeClusterMPI
 #' @export makeClusterMPI

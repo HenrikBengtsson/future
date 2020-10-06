@@ -4,6 +4,8 @@
 \alias{re-exports}
 \alias{as.cluster}
 \alias{autoStopCluster}
+\alias{availableCores}
+\alias{availableWorkers}
 \alias{makeClusterMPI}
 \alias{makeClusterPSOCK}
 \alias{makeNodePSOCK}
@@ -19,6 +21,8 @@ are also useful outside of the the \pkg{future} framework.
 \itemize{
 \item \code{\link[parallelly:as.cluster]{parallelly::as.cluster()}}
 \item \code{\link[parallelly:autoStopCluster]{parallelly::autoStopCluster()}}
+\item \code{\link[parallelly:availableCores]{parallelly::availableCores()}}
+\item \code{\link[parallelly:availableWorkers]{parallelly::availableWorkers()}}
 \item \code{\link[parallelly:makeClusterMPI]{parallelly::makeClusterMPI()}}
 \item \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}}
 \item \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeNodePSOCK()}}
