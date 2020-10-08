@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-03]
+Version: 1.19.1-9000 [2020-10-07]
 
 SIGNIFICANT CHANGES:
 
@@ -16,6 +16,14 @@ SIGNIFICANT CHANGES:
    'multicore', depending on operating system and R setup.  The plan() function
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
+
+BETA FEATURES:
+
+ * Added experimental support for hook functions that are called when entering
+   and exiting any S3 methods for a Future class.  To enable it, set options
+   'future.hooks' or environment variable 'R_FUTURE_HOOKS' to TRUE *prior* to
+   loading the 'future' package.  It is not possible to enable them afterward.
+   When not set, the hook function framework will cause no overhead.
 
 BUG FIXES:
 

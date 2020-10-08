@@ -3,7 +3,13 @@
   debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
   if (debug) options(future.debug = TRUE)
   debug <- getOption("future.debug", debug)
-  
+
+  ## Enable hook functions throughout the future ecosystem?
+  hooks <- isTRUE(as.logical(Sys.getenv("R_FUTURE_HOOKS", FALSE)))
+  if (hooks) options(future.hooks = TRUE)
+  hooks <- getOption("future.hooks", hooks)
+  if (hooks) injectFutureHooks()
+
   ## Automatically play nice when 'R CMD check' runs?
   if (isTRUE(as.logical(Sys.getenv("R_FUTURE_R_CMD_CHECK_NICE", TRUE))) && inRCmdCheck()) {
     if (debug) mdebug("Detected 'R CMD check':\n - adjusting defaults to be a good citizen")
