@@ -12,12 +12,12 @@ getFutureHooks <- function(generic, class, event) {
 
 
 callFutureHook <- function(future, generic, class, event, package) {
-  debug <- getOption("future.debug", TRUE)
+  debug <- getOption("future.debug", FALSE)
   hooks <- getFutureHooks(generic = generic, class = class, event = event)
   
+  t <- Sys.time()
   if (debug) {
     msg <- sprintf("Calling %d hook functions for event %s in generic %s for class %s of package = %s ...", length(hooks), sQuote(event), sQuote(generic), sQuote(class), sQuote(package))
-    t <- Sys.time()
     message(sprintf("[%s] %s", format(t, format = "%FT%T%z"), msg))
     on.exit({
       t <- Sys.time()
@@ -28,12 +28,12 @@ callFutureHook <- function(future, generic, class, event, package) {
   for (kk in seq_along(hooks)) {
     hook <- hooks[[kk]]
     stop_if_not(is.function(hook))
-    hook(future, time = t)
+    hook(future, generic = generic, class = class, event = event, package = package, time = t)
   }
 }
 
 
-injectFutureHooks <- function(envir = topenv(), package = environmentName(envir), debug = getOption("future.debug", TRUE)) {
+injectFutureHooks <- function(envir = topenv(), package = environmentName(envir), debug = getOption("future.debug", FALSE)) {
   if (debug) {
     mdebug("Adding hook functions to future methods ...")
     on.exit(mdebug("Adding hook functions to future methods ... done"))
