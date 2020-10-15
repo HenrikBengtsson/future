@@ -1,17 +1,8 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## DEMOTED (to be DEPRECATED)
+## DEPRECATED
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @export
-values <- function(...) UseMethod("values")
-
-#' @export
-values.Future <- value.Future
-
-#' @export
-values.list <- value.list
-
-#' @export
-values.environment <- value.environment
-
-#' @export
-values.listenv <- value.listenv
+values <- function(...) {
+  .Deprecated(new = "value()", old = "values()", package = .packageName)
+  value(...)
+}
