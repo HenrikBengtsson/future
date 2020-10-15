@@ -6,12 +6,9 @@ message("*** Future class - exception ...")
 
 f <- Future()
 print(f)
+
 res <- tryCatch(value(f), error = identity)
 print(res)
-stopifnot(inherits(res, "error"))
-
-## values() is an alias for value() for Future
-res <- tryCatch(values(f), error = identity)
 stopifnot(inherits(res, "error"))
 
 ## Invalid seed

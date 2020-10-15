@@ -72,7 +72,7 @@ for (cores in 1:availCores) {
     stopifnot(all(ss == "finished"))
     
     message("Collecting values:")
-    vs <- values(fs)
+    vs <- value(fs)
     str(vs)
     stopifnot(identical(vs, xs))
   

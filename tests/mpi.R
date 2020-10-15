@@ -17,7 +17,7 @@ if (fullTest && requireNamespace(pkg, quietly = TRUE)) {
     x^2
   }))
   print(fs)
-  vs <- values(fs)
+  vs <- value(fs)
   print(vs)
   stopifnot(all(unlist(vs) == c(1, 4)))
 

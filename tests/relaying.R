@@ -127,7 +127,7 @@ for (ss in seq_along(strategies)) {
 
   message("- getting value")
   relay <- recordRelay({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
@@ -136,7 +136,7 @@ for (ss in seq_along(strategies)) {
   
   message("- getting value again")
   relay <- recordRelay({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
@@ -160,7 +160,7 @@ for (ss in seq_along(strategies)) {
 
   message("- getting value")
   relay <- recordRelay({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
@@ -169,7 +169,7 @@ for (ss in seq_along(strategies)) {
   
   message("- getting value again")
   relay <- recordRelay({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   str(relay)
