@@ -26,6 +26,8 @@ BUG FIXES:
  * Renamed environment variable 'R_FUTURE_MAKENODEPSOCK_tries' used by
    makeClusterPSOCK() to 'R_FUTURE_MAKENODEPSOCK_TRIES'.
 
+ * The error message produced by nbrOfWorkers() was incomplete.
+
 DEPRECATED AND DEFUNCT:
 
  * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
