@@ -96,7 +96,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   args2 <- args
   for (kk in seq_along(args)) {
     name <- names[kk]
-    formals(strategy2)[[name]] <- args[[name]]
+    formals(strategy2)[name] <- list(args[[name]])
     args2[[name]] <- as.symbol(name)
   }
   body(strategy2) <- bquote(strategy(..., ..(args2)), splice = TRUE)
