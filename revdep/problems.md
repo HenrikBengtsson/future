@@ -2161,32 +2161,6 @@ Run `revdep_details(, "simhelpers")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'kableExtra'
-    
-    The following object is masked from 'package:dplyr':
-    
-        group_rows
-    
-    --- finished re-building ‘visualization.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘simulation_workflow.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:

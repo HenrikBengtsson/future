@@ -156,7 +156,7 @@
 |[Signac](problems.md#signac)                       |1.0.0     |      |        |2    |
 |simfinapi                                          |0.1.0     |      |        |     |
 |simglm                                             |0.8.0     |      |        |     |
-|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |1       |1    |
+|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |        |1    |
 |[skpr](problems.md#skpr)                           |0.64.2    |      |        |2    |
 |[solitude](problems.md#solitude)                   |1.1.1     |      |        |1    |
 |[spacey](problems.md#spacey)                       |0.1.1     |      |        |1    |
