@@ -101,6 +101,12 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   }
   body(strategy2) <- bquote(strategy(..., ..(args2)), splice = TRUE)
 
+  ## Avoid strategy2() depending on the calling frame, which would cause it
+  ## to pick up package dependencies from there, which then are attached on
+  ## the future worker.
+  environment(strategy2) <- new.env(parent = environment(strategy))
+  environment(strategy2)$strategy <- strategy
+
   ## Restore attributes including class
   attributes(strategy2) <- attrs
 
