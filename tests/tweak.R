@@ -55,6 +55,32 @@ stopifnot(inherits(sequential2, "tweaked"))
 stopifnot(identical(formals(sequential2)$local, FALSE))
 
 
+message("*** plan() - tweak without introducting package dependencies ...")
+
+## Requires a auxillary package that is available and not already loaded
+if (requireNamespace("grid")) {
+  local({
+    cl <- makeClusterPSOCK(1L)
+    on.exit(parallel:::stopCluster(cl))
+    ns0 <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
+    if (!is.element("grid", ns0)) {
+      ## Assert that a global copy from a package does not trigger
+      ## that package from being loaded on the worker
+      dummy <- grid::depth
+      oplan <- future::plan(future::cluster, workers = cl, globals = FALSE)
+      on.exit(future::plan(oplan), add = TRUE)
+      ns <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
+      diff <- setdiff(ns, ns0)
+      if (length(diff) > 0) {
+        stop("plan() with a tweak() causes new packages to be loaded: ", sQuote(paste(diff, collapse = ", ")))
+      }
+    }
+  })
+}
+
+message("*** plan() - tweak without introducting package dependencies ... DONE")
+
+
 message("*** y %<-% { expr } %tweak% tweaks ...")
 
 plan(sequential)
