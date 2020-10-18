@@ -807,16 +807,6 @@ makeExpression <- local({
         
         ...future.result
       })
-    } else if (version == "1.7") {  ## Deprecated
-      expr <- bquote({
-        ## covr: skip=6
-        .(enter)
-        base::tryCatch({
-          .(expr)
-        }, finally = {
-          .(exit)
-        })
-      })
     } else {
       stop(FutureError("Internal error: Non-supported future expression version: ", version))
     }
