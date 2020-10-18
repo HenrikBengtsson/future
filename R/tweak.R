@@ -65,7 +65,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   forbidden <- c(
     "asynchronous",
     "envir",
-    ## "globals",  ## To be added; it might be that someone uses this
+    "globals",
     "lazy",
     "packages",
     "seed",

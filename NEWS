@@ -19,9 +19,8 @@ SIGNIFICANT CHANGES:
 
  * plan() and tweak() checks for even more arguments that must not be set by
    either of them.  Specifically, attemps to adjust the following arguments of
-   future() will result in an error: 'envir', 'packages', and 'substitute' in
-   addition to already validated 'lazy' and 'seed'.  Later, 'globals' will also
-   be protected from being adjusted.
+   future() will result in an error: 'envir', 'globals', 'packages', and
+   'substitute' in addition to already validated 'lazy' and 'seed'.
  
  * tweak() now returns a wrapper function that calls the original future
    strategy function with the modified defaults.  Previously, it would make a
