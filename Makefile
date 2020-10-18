@@ -9,6 +9,7 @@ vignettes/future-1-overview.md.rsp: inst/vignettes-static/future-1-overview.md.r
 vignettes: vignettes/future-1-overview.md.rsp
 
 spelling:
+	$(R_SCRIPT) -e "spelling::spell_check_package()"
 	$(R_SCRIPT) -e "spelling::spell_check_files(c('NEWS', 'inst/vignettes-static/future-1-overview.md.rsp.rsp', dir('vignettes', pattern='[.]rsp', full.names=TRUE)), ignore=readLines('inst/WORDLIST', warn=FALSE))"
 
 future.tests/%:
