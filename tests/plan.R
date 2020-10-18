@@ -122,7 +122,7 @@ stopifnot(identical(stack, truth))
 message("*** %plan% 'sequential'")
 plan(cluster, workers = cl)
 x %<-% { a <- 1 } %plan% "sequential"
-stopifnot(identical(body(plan("next")), body(cluster)))
+stopifnot(inherits(plan("next"), "cluster"))
 
 message("*** %plan% sequential")
 plan(cluster, workers = cl)
@@ -134,7 +134,7 @@ f <- fun(1)
 stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFuture"))
 
 x %<-% { a <- 1 } %plan% sequential
-stopifnot(identical(body(plan("next")), body(cluster)))
+stopifnot(inherits(plan("next"), "cluster"))
 
 message("*** %plan% sequential(local = FALSE) ")
 plan(cluster, workers = cl)
@@ -143,7 +143,7 @@ x %<-% { a } %plan% sequential(local = FALSE)
 a <- 42
 print(x)
 stopifnot(x == 0)
-stopifnot(identical(body(plan("next")), body(cluster)))
+stopifnot(inherits(plan("next"), "cluster"))
 
 message("*** Nested futures with different plans")
 

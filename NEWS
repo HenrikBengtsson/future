@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-15]
+Version: 1.19.1-9000 [2020-10-17]
 
 SIGNIFICANT CHANGES:
 
@@ -17,6 +17,13 @@ SIGNIFICANT CHANGES:
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
 
+ * tweak() now returns a wrapper function that calls the original future
+   strategy function with the modified defaults.  Previously, it would make a
+   copy of the original function with modified argument defaults.  This new
+   approach will make it possible to introduce new future arguments that can
+   be modified by tweak() and plan() without having to update every future
+   backend package.
+ 
 BUG FIXES:
 
  * The Mandelbrot demo would produce random numbers without declaring so.

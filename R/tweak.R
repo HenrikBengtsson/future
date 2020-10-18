@@ -77,26 +77,43 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  unknown <- NULL
-  for (kk in seq_along(args)) {
-    name <- names[kk]
-    if (is.element(name, formals)) {
-      formals(strategy)[[name]] <- args[[name]]
-    } else {
-      unknown <- c(unknown, name)
-    }
-  }
+  known <- c(formals)
+  unknown <- setdiff(names, known)
   if (length(unknown) > 0L) {
     warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
   }
 
+  ## Arguments 'envir' and 'workers' must exist in the wrapper, if
+  ## they exist in the "future" function
+  for (name in c("envir", "workers")) {
+    if (is.element(name, formals) && !is.element(name, names)) {
+      args <- c(formals(strategy)[name], args)
+      names <- c(name, names)
+    }
+  }
+  
+  strategy2 <- function(...) NULL
+  args2 <- args
+  for (kk in seq_along(args)) {
+    name <- names[kk]
+    formals(strategy2)[name] <- list(args[[name]])
+    args2[[name]] <- as.symbol(name)
+  }
+  body(strategy2) <- bquote(strategy(..., ..(args2)), splice = TRUE)
+
+  ## Avoid strategy2() depending on the calling frame, which would cause it
+  ## to pick up package dependencies from there, which then are attached on
+  ## the future worker.
+  environment(strategy2) <- new.env(parent = environment(strategy))
+  environment(strategy2)$strategy <- strategy
+
   ## Restore attributes including class
-  attributes(strategy) <- attrs
+  attributes(strategy2) <- attrs
 
   ## Flag that it is tweaked
-  class(strategy) <- c("tweaked", class)
+  class(strategy2) <- c("tweaked", class)
 
-  strategy
+  strategy2
 } ## tweak()
 
 

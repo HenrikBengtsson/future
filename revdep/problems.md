@@ -120,13 +120,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/RtmpM8Jm9a/registry278040378cc8' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c34194c6c' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpM8Jm9a/registry27806fb82ff1' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c3a2e5673' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpM8Jm9a/registry27806fb92027' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7cd67aabc' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpM8Jm9a/registry27802ad8f599' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c2aa3cb4d' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -552,6 +552,55 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
+# future.apply
+
+<details>
+
+* Version: 1.6.0
+* GitHub: https://github.com/HenrikBengtsson/future.apply
+* Source code: https://github.com/cran/future.apply
+* Date/Publication: 2020-07-01 07:50:02 UTC
+* Number of recursive dependencies: 13
+
+Run `revdep_details(, "future.apply")` for more info
+
+</details>
+
+## In both
+
+*   checking R code for possible problems ... NOTE
+    ```
+    future_lapply: no visible global function definition for
+      ‘...future.FUN’
+    future_mapply: no visible global function definition for
+      ‘...future.FUN’
+    Undefined global functions or variables:
+      ...future.FUN
+    ```
+
+# future.callr
+
+<details>
+
+* Version: 0.5.0
+* GitHub: https://github.com/HenrikBengtsson/future.callr
+* Source code: https://github.com/cran/future.callr
+* Date/Publication: 2019-09-28 04:40:07 UTC
+* Number of recursive dependencies: 18
+
+Run `revdep_details(, "future.callr")` for more info
+
+</details>
+
+## In both
+
+*   checking R code for possible problems ... NOTE
+    ```
+    run.CallrFuture: no visible global function definition for ‘fasten’
+    Undefined global functions or variables:
+      fasten
+    ```
+
 # genBaRcode
 
 <details>
@@ -615,48 +664,6 @@ Run `revdep_details(, "GetBCBData")` for more info
     Namespaces in Imports field not imported from:
       ‘RCurl’ ‘lubridate’ ‘readr’ ‘stats’
       All declared Imports should be used.
-    ```
-
-# googleComputeEngineR
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/cloudyr/googleComputeEngineR
-* Source code: https://github.com/cran/googleComputeEngineR
-* Date/Publication: 2019-05-04 22:40:02 UTC
-* Number of recursive dependencies: 55
-
-Run `revdep_details(, "googleComputeEngineR")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-    --- re-building ‘shiny-app.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    --- finished re-building ‘shiny-app.Rmd’
-    
-    --- re-building ‘single-scheduler.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    --- finished re-building ‘single-scheduler.Rmd’
-    
-    --- re-building ‘troubleshooting.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    --- finished re-building ‘troubleshooting.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘massive-parallel.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # googleTagManageR
@@ -843,10 +850,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-16 09:40:19] ::plot_cnv:Start
-    INFO [2020-10-16 09:40:19] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-16 09:40:19] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-16 09:40:19] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-17 11:29:54] ::plot_cnv:Start
+    INFO [2020-10-17 11:29:54] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-17 11:29:54] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-17 11:29:54] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -962,6 +969,48 @@ Run `revdep_details(, "JointAI")` for more info
       All declared Imports should be used.
     ```
 
+# lgr
+
+<details>
+
+* Version: 0.3.4
+* GitHub: https://github.com/s-fleck/lgr
+* Source code: https://github.com/cran/lgr
+* Date/Publication: 2020-03-20 11:50:02 UTC
+* Number of recursive dependencies: 79
+
+Run `revdep_details(, "lgr")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      > library(lgr)
+      > 
+      > test_check("lgr")
+      cat: /var/log/syslog: No such file or directory
+      ── 1. Failure: AppenderFileRotating: works with different backup_dir (@test_Appe
+      `app <- AppenderFileRotating$new(file = tf, backup_dir = bu_dir)` did not throw an error.
+      
+      ── 2. Failure: AppenderFileRotatingDate: works with different backup_dir (@test_
+      `app <- AppenderFileRotatingDate$new(file = tf, backup_dir = bu_dir)` did not throw an error.
+      
+      ── 3. Failure: AppenderFileRotatingTime: works with different backup_dir (@test_
+      `app <- AppenderFileRotatingTime$new(file = tf, backup_dir = bu_dir)` did not throw an error.
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 538 | SKIPPED: 7 | WARNINGS: 136 | FAILED: 3 ]
+      1. Failure: AppenderFileRotating: works with different backup_dir (@test_AppenderFileRotating.R#79) 
+      2. Failure: AppenderFileRotatingDate: works with different backup_dir (@test_AppenderFileRotating.R#220) 
+      3. Failure: AppenderFileRotatingTime: works with different backup_dir (@test_AppenderFileRotating.R#345) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+    ```
+
 # lidR
 
 <details>
@@ -981,6 +1030,7 @@ Run `revdep_details(, "lidR")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
+      unable to open connection to X11 display ''
     Quitting from lines 223-232 (lidR-LAScatalog-engine.Rmd) 
     Error: processing vignette 'lidR-LAScatalog-engine.Rmd' failed with diagnostics:
     unable to start device PNG
@@ -997,8 +1047,7 @@ Run `revdep_details(, "lidR")` for more info
     --- finished re-building ‘lidR-computation-speed-LAScatalog.Rmd’
     
     SUMMARY: processing the following files failed:
-      ‘lidR-LAS-class.Rmd’ ‘lidR-LAScatalog-class.Rmd’
-      ‘lidR-LAScatalog-engine.Rmd’
+      ‘lidR-LAS-class.Rmd’ ‘lidR-LAScatalog-engine.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -1768,7 +1817,7 @@ Run `revdep_details(, "rBiasCorrection")` for more info
        4. grDevices::png(..., res = dpi, units = "in")
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 181 | SKIPPED: 2 | WARNINGS: 85 | FAILED: 4 ]
+      [ OK: 181 | SKIPPED: 2 | WARNINGS: 165 | FAILED: 4 ]
       1. Error: correct functioning of BiasCorrection, data type 1 (@test-biascorrection.R#15) 
       2. Error: plotting_utility (@test-plotting.R#63) 
       3. Error: createbarerrorplots (@test-plotting.R#178) 
@@ -1781,14 +1830,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201016_100856]: Entered 'cubic_regression'-Function
-    [20201016_100856]: 'cubic_regression': minmax = FALSE
+    [20201017_122029]: Entered 'cubic_regression'-Function
+    [20201017_122029]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201016_100859]: ### Starting with plotting ###
-    [20201016_100859]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpxgqQhu/png/CDH1_CpG1.png
-    [20201016_100859]: # CpG-site: CpG#1
+    [20201017_122032]: ### Starting with plotting ###
+    [20201017_122032]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmp4Jdfzb/png/CDH1_CpG1.png
+    [20201017_122032]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201016_100859]: # CpG-site: CpG#1
+    [20201017_122032]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
@@ -1802,6 +1851,13 @@ Run `revdep_details(, "rBiasCorrection")` for more info
     
     Error: Vignette re-building failed.
     Execution halted
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    regression_type1: no visible global function definition for ‘italic’
+    Undefined global functions or variables:
+      italic
     ```
 
 # regmedint
@@ -1824,6 +1880,24 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    fit_mreg: no visible global function definition for ‘lm’
+    fit_mreg: no visible global function definition for ‘as.formula’
+    fit_mreg: no visible global function definition for ‘glm’
+    fit_mreg: no visible global function definition for ‘binomial’
+    fit_yreg: no visible global function definition for ‘lm’
+    fit_yreg: no visible global function definition for ‘as.formula’
+    fit_yreg: no visible global function definition for ‘glm’
+    fit_yreg: no visible global function definition for ‘binomial’
+    fit_yreg: no visible global function definition for ‘poisson’
+    Undefined global functions or variables:
+      as.formula binomial glm lm poisson
+    Consider adding
+      importFrom("stats", "as.formula", "binomial", "glm", "lm", "poisson")
+    to your NAMESPACE file.
     ```
 
 # robotstxt
