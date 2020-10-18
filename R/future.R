@@ -211,3 +211,21 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
 
   future
 }
+
+## Argument to 'future' strategies that must not be tweaked
+## by tweak() or plan()
+attr(future, "untweakable") <- c(
+  "asynchronous",  ## reserved
+  "conditions",
+  "envir",
+  "expr",
+  "globals",
+  "lazy",
+  "local",
+  "packages",
+  "seed",
+  "stdout",
+  "substitute",
+  "version"        ## for internal backend use
+)
+

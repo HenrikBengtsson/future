@@ -61,28 +61,28 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
     stop("Additional arguments to tweak() must be named.")
   }
 
-  ## Any arguments that must not be tweaked?
-  forbidden <- c(
-    "asynchronous",  ## reserved
-    "conditions",
-    "envir",
-    "globals",
-    "lazy",
-    "local",
-    "packages",
-    "seed",
-    "stdout",
-    "substitute",
-    "version"        ## for internal backend use
-  )
+  ## Identify arguments that must not be tweaked
+  
+  ## (i) All future strategies inherits from the 'future' class
+  untweakable <- attr(future, "untweakable")
+
+  ## (ii) Others that are specific to this future strategy, if any
+  for (class in class(strategy)) {
+    if (class == "future") break
+    if (!exists(class, mode = "function")) next
+    fcn <- get(class, mode = "function")
+    if (!inherits(fcn, "future")) next
+    untweakable <- c(attr(fcn, "untweakable"), untweakable)
+  }
+  
   ## Add temporary, secret option for disabling these checks in case to
   ## give users some time to sort out legacy mistakes
-  forbidden <- getOption("future.tweak.forbidden", forbidden)
-  if (any(names %in% forbidden)) {
-    forbidden <- intersect(names, forbidden)
-    forbidden <- paste(sQuote(forbidden), collapse = ", ")
+  untweakable <- getOption("future.tweak.untweakable", untweakable)
+  if (any(names %in% untweakable)) {
+    untweakable <- intersect(names, untweakable)
+    untweakable <- paste(sQuote(untweakable), collapse = ", ")
     stop("Detected arguments that must not be set via plan() or tweak(): ",
-         forbidden)
+         untweakable)
   }
   
   ## formals()<- drops any attributes including class
