@@ -67,7 +67,7 @@ if (requireNamespace("grid")) {
       ## Assert that a global copy from a package does not trigger
       ## that package from being loaded on the worker
       dummy <- grid::depth
-      oplan <- future::plan(future::cluster, workers = cl, globals = FALSE)
+      oplan <- future::plan(future::cluster, workers = cl)
       on.exit(future::plan(oplan), add = TRUE)
       ns <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
       diff <- setdiff(ns, ns0)
