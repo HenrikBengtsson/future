@@ -61,13 +61,21 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
     stop("Additional arguments to tweak() must be named.")
   }
 
-  ## Arguments that must not be tweaked
-  if (is.element("lazy", names)) {
-    stop("Future argument 'lazy' must not be tweaked / set via plan()")
-  } else if (is.element("asynchronous", names)) {
-    stop("Future argument 'asynchronous' must not be tweaked / set via plan()")
-  } else if (is.element("seed", names)) {
-    stop("Future argument 'seed' must not be tweaked / set via plan()")
+  ## Any arguments that must not be tweaked?
+  forbidden <- c(
+    "asynchronous",
+    "envir",
+    ## "globals",  ## To be added; it might be that someone uses this
+    "lazy",
+    "packages",
+    "seed",
+    "substitute"
+  )
+  if (any(names %in% forbidden)) {
+    forbidden <- intersect(names, forbidden)
+    forbidden <- paste(sQuote(forbidden), collapse = ", ")
+    stop("Detected arguments that must not be set via plan() or tweak(): ",
+         forbidden)
   }
   
   ## formals()<- drops any attributes including class

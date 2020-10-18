@@ -17,13 +17,19 @@ SIGNIFICANT CHANGES:
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
 
+ * plan() and tweak() checks for even more arguments that must not be set by
+   either of them.  Specifically, attemps to adjust the following arguments of
+   future() will result in an error: 'envir', 'packages', and 'substitute' in
+   addition to already validated 'lazy' and 'seed'.  Later, 'globals' will also
+   be protected from being adjusted.
+ 
  * tweak() now returns a wrapper function that calls the original future
    strategy function with the modified defaults.  Previously, it would make a
    copy of the original function with modified argument defaults.  This new
    approach will make it possible to introduce new future arguments that can
    be modified by tweak() and plan() without having to update every future
    backend package.
- 
+
 BUG FIXES:
 
  * The Mandelbrot demo would produce random numbers without declaring so.
