@@ -17,10 +17,11 @@ SIGNIFICANT CHANGES:
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
 
- * plan() and tweak() checks for even more arguments that must not be set by
-   either of them.  Specifically, attemps to adjust the following arguments of
-   future() will result in an error: 'envir', 'globals', 'packages', and
-   'substitute' in addition to already validated 'lazy' and 'seed'.
+ * plan() and tweak() check for even more arguments that must not be set by
+   either of them.  Specifically, attemps to adjust the following arguments
+   of future() will result in an error: 'conditions', 'envir', 'globals',
+   'packages', 'stdout', and 'substitute' in addition to already validated
+   'lazy' and 'seed'.
  
  * tweak() now returns a wrapper function that calls the original future
    strategy function with the modified defaults.  Previously, it would make a

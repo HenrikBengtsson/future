@@ -75,35 +75,25 @@ f <- future({ x <- 1 })
 print(value(f))
 stopifnot(x == 0)
 
-message("*** plan(sequential, local = FALSE)")
-plan(sequential, local = FALSE)
+message("*** plan(sequential, abc = 1)")
+plan(sequential, abc = 1, def = TRUE)
 fcn <- plan("next")
 print(fcn)
-stopifnot(formals(fcn)$local == FALSE)
-x <- 0
-f <- future({ x <- 1 })
-print(value(f))
-stopifnot(x == 1)
+stopifnot(formals(fcn)$abc == 1)
 
-message("*** plan(sequential, local = FALSE, abc = 1, def = TRUE)")
-plan(sequential, local = FALSE, abc = 1, def = TRUE)
-fcn <- plan("next")
-print(fcn)
-stopifnot(formals(fcn)$local == FALSE)
-
-message("*** plan(sequential(local = FALSE))")
+message("*** plan(sequential(abc = 1))")
 plan(cluster, workers = cl)
-plan(sequential(local = FALSE))
+plan(sequential(abc = 1))
 fcn <- plan("next")
 print(fcn)
-stopifnot(formals(fcn)$local == FALSE)
+stopifnot(formals(fcn)$abc == 1)
 
-message("*** plan(tweak(sequential, local = FALSE))")
+message("*** plan(tweak(sequential, abc = 1))")
 plan(cluster, workers = cl)
-plan(tweak(sequential, local = FALSE))
+plan(tweak(sequential, abc = 1))
 fcn <- plan("next")
 print(fcn)
-stopifnot(formals(fcn)$local == FALSE)
+stopifnot(formals(fcn)$abc == 1)
 
 
 message("*** old <- plan(new)")
@@ -112,7 +102,7 @@ old <- plan(cluster, workers = cl)
 stopifnot(identical(unclass(old), unclass(truth)))
 
 stack <- plan("list") ## stack == cluster(workers = cl)
-prev <- plan(old)     ## prev == sequential(local = FALSE)
+prev <- plan(old)     ## prev == sequential(abc = 1)
 stopifnot(identical(stack, prev))
 
 stack <- plan("list") ## curr == old
@@ -136,14 +126,6 @@ stopifnot(inherits(f, "SequentialFuture"), !f$lazy, inherits(f, "SequentialFutur
 x %<-% { a <- 1 } %plan% sequential
 stopifnot(inherits(plan("next"), "cluster"))
 
-message("*** %plan% sequential(local = FALSE) ")
-plan(cluster, workers = cl)
-a <- 0
-x %<-% { a } %plan% sequential(local = FALSE)
-a <- 42
-print(x)
-stopifnot(x == 0)
-stopifnot(inherits(plan("next"), "cluster"))
 
 message("*** Nested futures with different plans")
 

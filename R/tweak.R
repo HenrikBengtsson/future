@@ -63,14 +63,21 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
 
   ## Any arguments that must not be tweaked?
   forbidden <- c(
-    "asynchronous",
+    "asynchronous",  ## reserved
+    "conditions",
     "envir",
     "globals",
     "lazy",
+    "local",
     "packages",
     "seed",
-    "substitute"
+    "stdout",
+    "substitute",
+    "version"        ## for internal backend use
   )
+  ## Add temporary, secret option for disabling these checks in case to
+  ## give users some time to sort out legacy mistakes
+  forbidden <- getOption("future.tweak.forbidden", forbidden)
   if (any(names %in% forbidden)) {
     forbidden <- intersect(names, forbidden)
     forbidden <- paste(sQuote(forbidden), collapse = ", ")
