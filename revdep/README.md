@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-17                   |
+|date     |2020-10-18                   |
 
 # Dependencies
 
 |package |old    |new         |Δ  |
 |:-------|:------|:-----------|:--|
 |future  |1.19.1 |1.19.1-9000 |*  |
-|digest  |0.6.25 |0.6.26      |*  |
+|digest  |0.6.26 |0.6.26      |   |
 |globals |0.13.1 |0.13.1      |   |
 |listenv |0.8.0  |0.8.0       |   |
 

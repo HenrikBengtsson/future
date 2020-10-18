@@ -120,13 +120,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c34194c6c' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpnP6gV5/registry2db526e2f81d' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c3a2e5673' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpnP6gV5/registry2db57e01fdd9' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7cd67aabc' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpnP6gV5/registry2db5679c59af' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/Rtmp7LyyTn/registry8c7c2aa3cb4d' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpnP6gV5/registry2db517ec70c4' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -850,10 +850,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-17 11:29:54] ::plot_cnv:Start
-    INFO [2020-10-17 11:29:54] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-17 11:29:54] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-17 11:29:54] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-17 22:31:07] ::plot_cnv:Start
+    INFO [2020-10-17 22:31:07] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-17 22:31:07] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-17 22:31:07] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1830,14 +1830,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201017_122029]: Entered 'cubic_regression'-Function
-    [20201017_122029]: 'cubic_regression': minmax = FALSE
+    [20201017_230936]: Entered 'cubic_regression'-Function
+    [20201017_230936]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201017_122032]: ### Starting with plotting ###
-    [20201017_122032]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmp4Jdfzb/png/CDH1_CpG1.png
-    [20201017_122032]: # CpG-site: CpG#1
+    [20201017_230938]: ### Starting with plotting ###
+    [20201017_230938]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpgurHhh/png/CDH1_CpG1.png
+    [20201017_230938]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201017_122032]: # CpG-site: CpG#1
+    [20201017_230938]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
