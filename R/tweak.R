@@ -85,7 +85,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  known <- c(formals)
+  known <- c(formals, "split")
   unknown <- setdiff(names, known)
   if (length(unknown) > 0L) {
     warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))

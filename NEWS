@@ -29,6 +29,14 @@ SIGNIFICANT CHANGES:
    be modified by tweak() and plan() without having to update every future
    backend package.
 
+NEW FEATURES:
+
+ * Setting up a future strategy with argument 'split = TRUE' will cause the
+   standard output and non-error conditions to be split ("tee:d") on the
+   worker's end, while still relaying back to the main R session as before.
+   This can be useful when debugging with browse() or debug(), e.g.
+   plan(sequential, split = TRUE).  Without it, debug output is not displayed.
+   
 BUG FIXES:
 
  * The Mandelbrot demo would produce random numbers without declaring so.

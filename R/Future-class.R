@@ -445,10 +445,13 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
+  if (is.null(split)) split <- FALSE
+  stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
+ 
   version <- future$version
   if (is.null(version)) {
     warning(FutureWarning("Future version was not set. Using default %s",
@@ -588,7 +591,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
+  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")
@@ -600,7 +603,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
     if (is.null(conditionClasses)) conditionClasses <- character(0L)
     if (immediateConditions) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
@@ -685,9 +688,9 @@ makeExpression <- local({
               open = "w"
             )
           }
-          base::sink(...future.stdout, type = "output", split = FALSE)
+          base::sink(...future.stdout, type = "output", split = .(split))
           base::on.exit(if (!base::is.null(...future.stdout)) {
-            base::sink(type = "output", split = FALSE)
+            base::sink(type = "output", split = .(split))
             base::close(...future.stdout)
           }, add = TRUE)
         }
@@ -758,16 +761,18 @@ makeExpression <- local({
 		    condition = cond,
 		    signaled = base::as.integer(signal)
 		  )
-                  if (!signal) {
+                  if (.(!split) && !signal) {
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
                   }
                 } else {
-                  ## Muffle all non-captured conditions
-                  ## muffleCondition <- future:::muffleCondition()
-                  muffleCondition <- .(muffleCondition)
-                  muffleCondition(cond)
+                  if (.(!split)) {
+                    ## Muffle all non-captured conditions
+                    ## muffleCondition <- future:::muffleCondition()
+                    muffleCondition <- .(muffleCondition)
+                    muffleCondition(cond)
+                  }
                 }
               }
             }) ## local()
