@@ -13,10 +13,12 @@ future(
   expr,
   envir = parent.frame(),
   substitute = TRUE,
+  lazy = FALSE,
+  seed = FALSE,
   globals = TRUE,
   packages = NULL,
-  seed = FALSE,
-  lazy = FALSE,
+  label = NULL,
+  gc = FALSE,
   ...
 )
 
@@ -54,13 +56,8 @@ identified.}
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
 
-\item{globals}{(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link[=future]{future()}}.}
-
-\item{packages}{(optional) a character vector specifying packages
-to be attached in the \R environment evaluating the future.}
+\item{lazy}{If FALSE (default), the future is resolved
+eagerly (starting immediately), otherwise not.}
 
 \item{seed}{(optional) If TRUE, the random seed, that is, the state of the
 random number generator (RNG) will be set such that statistically sound
@@ -76,10 +73,24 @@ ignored, an informative warning, or error will be produced.
 If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
 but without the RNG check being performed.}
 
-\item{lazy}{If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link[=future]{future()}}.}
 
-\item{\dots}{Reserved for internal use only.}
+\item{packages}{(optional) a character vector specifying packages
+to be attached in the \R environment evaluating the future.}
+
+\item{label}{An optional character string label attached to the future.}
+
+\item{gc}{If TRUE, the garbage collector run (in the process that
+evaluated the future) only after the value of the future is collected.
+Exactly when the values are collected may depend on various factors such
+as number of free workers and whether \code{earlySignal} is TRUE (more
+frequently) or FALSE (less frequently).
+\emph{Some types of futures ignore this argument.}}
+
+\item{\dots}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
 \item{x}{the name of a future variable, which will hold the value
 of the future expression (as a promise).}

@@ -16,7 +16,7 @@
 #' 
 #' @param expr,value An \R \link[base]{expression}.
 #'
-#' @param \dots Reserved for internal use only.
+#' @param \dots Additional arguments passed to [Future()].
 #'
 #' @return
 #' `f <- future(expr)` creates a [Future] `f` that evaluates expression `expr`, the value of the future is retrieved using `v <- value(f)`.
@@ -186,7 +186,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, seed = FALSE, lazy = FALSE, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Argument 'evaluator' is defunct
@@ -199,9 +199,12 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
 
   future <- makeFuture(expr, substitute = FALSE,
                        envir = envir,
-                       globals = globals, packages = packages,
-                       seed = seed,
                        lazy = lazy,
+                       seed = seed,
+                       globals = globals,
+                       packages = packages,
+                       label = label,
+                       gc = gc,
                        ...)
 
   ## Assert that a future was returned

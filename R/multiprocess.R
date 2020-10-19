@@ -22,7 +22,7 @@
 #' is created_ and its value is used to configure the workers.
 #' The function should return a numeric scalar.
 #' 
-#' @param \dots Additional named elements passed to [Future()].
+#' @param \dots Additional arguments passed to [Future()].
 #'
 #' @return A [MultiprocessFuture] implemented as either a
 #' [MulticoreFuture] or a \link{MultisessionFuture}.
@@ -36,10 +36,9 @@
 #' @keywords internal
 #'
 #' @export
-multiprocess <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
+multiprocess <- function(..., workers = availableCores(), envir = parent.frame()) {
   fun <- if (supportsMulticore(warn = TRUE)) multicore else multisession
-  fun(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, gc = gc, earlySignal = earlySignal, label = label, ...)
+  fun(..., workers = workers, envir = envir)
 }
 class(multiprocess) <- c("multiprocess", "future", "function")
 attr(multiprocess, "init") <- NA ## Set to FALSE/TRUE in .onLoad()
