@@ -145,11 +145,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
 
   ## Result
   core$result <- NULL
-  ## IMPORTANT: Do *not* set 'value', because there are, checks for a future
-  ## being resolved or not that checks for its existance, e.g.
-  ## exists("value", envir = future).
-  ## UPDATE: 'value' is being replaced by 'result$value' /HB 2018-02-25
-  ## core$value <- NULL
 
   ## Future miscellaneous
   core$label <- label
@@ -163,8 +158,17 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$state <- "created"
 
   ## Additional named arguments
-  for (key in names(args)) core[[key]] <- args[[key]]
-  
+  names <- names(args)
+  for (key in names) core[[key]] <- args[[key]]
+
+  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
+  ## there might still be legacy code out there that rely on it.  By
+  ## assert it is not set here, it is more likely to be caught.  This
+  ## check will eventually be removed
+  if ("value" %in% names) {
+    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
+  }
+
   structure(core, class = c("Future", class(core)))
 }
 
@@ -246,8 +250,10 @@ print.Future <- function(x, ...) {
   if (hasResult) {
     if (inherits(result, "FutureResult")) {
       value <- result$value
+    } else if ("value" %in% names(x)) {
+      .Defunct(msg = sprintf("Detected a %s object that rely on the defunct 'value' field of format version 1.7 or before.", class(x)[1]), package = .packageName)
     } else {
-      value <- x$value
+      stop(FutureError(sprintf("The %s object does not have a 'results' field", class(x)[1]), future = future))
     }
     cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
     if (inherits(result, "FutureResult")) {

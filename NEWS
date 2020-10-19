@@ -63,6 +63,9 @@ DEPRECATED AND DEFUNCT:
    'multicore', depending on operating system and R setup.
 
  * values() is deprecated. Use value() instead.
+
+ * All backward compatible code for the legacy, defunct, internal Future
+   element 'value' is now removed.  Using or relying on it is an error.
  
 
 Version: 1.19.1 [2020-09-21]
