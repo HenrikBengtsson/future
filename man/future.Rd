@@ -17,6 +17,7 @@ future(
   packages = NULL,
   seed = FALSE,
   lazy = FALSE,
+  label = NULL,
   ...
 )
 
@@ -78,6 +79,8 @@ but without the RNG check being performed.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
+
+\item{label}{An optional character string label attached to the future.}
 
 \item{\dots}{Reserved for internal use only.}
 

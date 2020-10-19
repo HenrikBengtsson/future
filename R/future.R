@@ -186,7 +186,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, seed = FALSE, lazy = FALSE, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, seed = FALSE, lazy = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Argument 'evaluator' is defunct
@@ -202,6 +202,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
                        globals = globals, packages = packages,
                        seed = seed,
                        lazy = lazy,
+                       label = label,
                        ...)
 
   ## Assert that a future was returned
