@@ -4,7 +4,7 @@
 #' which means that its _value is computed and resolved
 #' remotely in another process_.
 #'
-#' @inheritParams cluster
+#' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future

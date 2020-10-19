@@ -4,15 +4,7 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
-cluster(
-  ...,
-  workers = availableWorkers(),
-  persistent = FALSE,
-  user = NULL,
-  revtunnel = TRUE,
-  homogeneous = TRUE,
-  envir = parent.frame()
-)
+cluster(..., workers = availableWorkers(), envir = parent.frame())
 }
 \arguments{
 \item{\dots}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
@@ -25,21 +17,6 @@ is created using \code{\link{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
-
-\item{persistent}{If FALSE, the evaluation environment is cleared
-from objects prior to the evaluation of the future.}
-
-\item{user}{(optional) The user name to be used when communicating
-with another host.}
-
-\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master \R process.  This
-avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master \R session.}
-
-\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
-same path to \file{Rscript} as the main \R session.  If FALSE, the
-it is assumed to be on the PATH for each node.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

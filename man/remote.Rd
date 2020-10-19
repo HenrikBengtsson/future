@@ -14,7 +14,7 @@ remote(
 )
 }
 \arguments{
-\item{...}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
 a character vector of host names, a positive numeric scalar,
