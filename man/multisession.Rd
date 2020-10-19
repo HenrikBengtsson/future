@@ -8,7 +8,6 @@ multisession(
   ...,
   workers = availableCores(),
   lazy = FALSE,
-  substitute = TRUE,
   envir = parent.frame()
 )
 }
@@ -24,9 +23,6 @@ The function should return a numeric scalar.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

@@ -6,15 +6,12 @@
 \alias{transparent}
 \title{Create a sequential future whose value will be in the current \R session}
 \usage{
-sequential(..., substitute = TRUE, envir = parent.frame())
+sequential(..., envir = parent.frame())
 
 transparent(..., envir = parent.frame())
 }
 \arguments{
 \item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

@@ -27,8 +27,8 @@
 #' and \code{\link{\%<-\%}} will create _cluster futures_.
 #'
 #' @export
-cluster <- function(..., workers = availableWorkers(), persistent = FALSE, user = NULL, revtunnel = TRUE, homogeneous = TRUE, substitute = TRUE, envir = parent.frame()) {
-  future <- ClusterFuture(..., workers = workers, persistent = persistent, user = user, revtunnel = revtunnel, homogeneous = homogeneous, substitute = substitute, envir = envir)
+cluster <- function(..., workers = availableWorkers(), persistent = FALSE, user = NULL, revtunnel = TRUE, homogeneous = TRUE, envir = parent.frame()) {
+  future <- ClusterFuture(..., workers = workers, persistent = persistent, user = user, revtunnel = revtunnel, homogeneous = homogeneous, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

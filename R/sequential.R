@@ -31,8 +31,8 @@
 #'
 #' @aliases uniprocess
 #' @export
-sequential <- function(..., substitute = TRUE, envir = parent.frame()) {
-  future <- SequentialFuture(..., substitute = substitute, envir = envir)
+sequential <- function(..., envir = parent.frame()) {
+  future <- SequentialFuture(..., envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

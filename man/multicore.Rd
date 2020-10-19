@@ -7,7 +7,6 @@
 multicore(
   ...,
   workers = availableCores(constraints = "multicore"),
-  substitute = TRUE,
   envir = parent.frame()
 )
 }
@@ -20,9 +19,6 @@ before blocking.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return a numeric scalar.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

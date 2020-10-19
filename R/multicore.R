@@ -49,7 +49,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(..., workers = availableCores(constraints = "multicore"), substitute = TRUE, envir = parent.frame()) {
+multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(is.finite(workers), workers >= 1L)
@@ -59,13 +59,13 @@ multicore <- function(..., workers = availableCores(constraints = "multicore"), 
   ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore(warn = TRUE)) {
     ## covr: skip=1
-    return(sequential(..., substitute = substitute, envir = envir))
+    return(sequential(..., envir = envir))
   }
 
   oopts <- options(mc.cores = workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(..., workers = workers, substitute = substitute, envir = envir)
+  future <- MulticoreFuture(..., workers = workers, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

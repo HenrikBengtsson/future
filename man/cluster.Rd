@@ -11,7 +11,6 @@ cluster(
   user = NULL,
   revtunnel = TRUE,
   homogeneous = TRUE,
-  substitute = TRUE,
   envir = parent.frame()
 )
 }
@@ -41,9 +40,6 @@ the internal / public IP address of the master \R session.}
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
 same path to \file{Rscript} as the main \R session.  If FALSE, the
 it is assumed to be on the PATH for each node.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
