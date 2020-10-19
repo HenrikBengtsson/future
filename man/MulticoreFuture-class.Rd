@@ -8,7 +8,7 @@
 MulticoreFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   globals = TRUE,
   lazy = FALSE,
   ...

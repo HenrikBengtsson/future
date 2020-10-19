@@ -13,7 +13,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
+UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy && !local && (!is.logical(globals) || globals)) {
@@ -132,7 +132,7 @@ getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, .
 
 #' @rdname UniprocessFuture-class
 #' @export
-SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
+SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
   structure(f, class = c("SequentialFuture", class(f)))

@@ -12,7 +12,7 @@
 #' @export
 #' @name ConstantFuture-class
 #' @keywords internal
-ConstantFuture <- function(expr = NULL, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...) {
+ConstantFuture <- function(expr = NULL, envir = emptyenv(), substitute = TRUE, globals = NULL, packages = NULL, local = FALSE, ...) {
   expr <- force(expr)
   future <- Future(expr = expr, envir = emptyenv(), substitute = FALSE, globals = NULL, packages = NULL, local = FALSE, ...)
   future$result <- FutureResult(value = expr)

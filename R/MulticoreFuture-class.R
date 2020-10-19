@@ -12,7 +12,7 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, lazy = FALSE, ...) {
+MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Global objects

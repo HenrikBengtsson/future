@@ -8,7 +8,7 @@
 ConstantFuture(
   expr = NULL,
   envir = emptyenv(),
-  substitute = FALSE,
+  substitute = TRUE,
   globals = NULL,
   packages = NULL,
   local = FALSE,

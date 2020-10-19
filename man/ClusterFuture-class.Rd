@@ -11,7 +11,7 @@
 ClusterFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   globals = TRUE,
   packages = NULL,
   local = !persistent,
@@ -28,7 +28,7 @@ ClusterFuture(
 MultisessionFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   globals = TRUE,
   persistent = FALSE,
   local = !persistent,

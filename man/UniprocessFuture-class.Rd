@@ -9,7 +9,7 @@
 UniprocessFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   globals = TRUE,
   packages = NULL,
   lazy = FALSE,
@@ -20,7 +20,7 @@ UniprocessFuture(
 SequentialFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   lazy = FALSE,
   globals = TRUE,
   local = TRUE,

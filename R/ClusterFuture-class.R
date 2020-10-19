@@ -43,7 +43,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
+ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   stop_if_not(is.logical(persistent), length(persistent) == 1L,

@@ -8,7 +8,7 @@
 Future(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   stdout = TRUE,
   conditions = "condition",
   globals = NULL,

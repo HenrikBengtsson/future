@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-17]
+Version: 1.19.1-9000 [2020-10-19]
 
 SIGNIFICANT CHANGES:
 
@@ -37,7 +37,11 @@ NEW FEATURES:
    worker's end, while still relaying back to the main R session as before.
    This can be useful when debugging with browse() or debug(), e.g.
    plan(sequential, split = TRUE).  Without it, debug output is not displayed.
-   
+
+MISCELLANEOUS:
+
+ * Harmonizing Future constructor functions to also use 'substitute = TRUE'.
+
 BUG FIXES:
 
  * The Mandelbrot demo would produce random numbers without declaring so.

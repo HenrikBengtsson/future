@@ -7,7 +7,7 @@
 #' 
 #' @export
 #' @rdname ClusterFuture-class
-MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, persistent = FALSE, local = !persistent, workers = NULL, ...) {
+MultisessionFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, persistent = FALSE, local = !persistent, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
