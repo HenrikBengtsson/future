@@ -119,19 +119,19 @@ stopifnot(a == 0, x == 1)
 message("*** y %<-% { expr } %tweak% tweaks ... DONE")
 
 
-message("*** tweak() - gc = TRUE ...")
+message("*** tweak() - abc = TRUE ...")
 
 res <- tryCatch(tweak(multisession, gc = TRUE), condition = identity)
 stopifnot(inherits(res, "tweaked"))
 
 ## Argument 'gc' is unknown
-res <- tryCatch(tweak(sequential, gc = TRUE), condition = identity)
+res <- tryCatch(tweak(sequential, abc = TRUE), condition = identity)
 stopifnot(inherits(res, "warning"))
 
-res <- tryCatch(tweak(multicore, gc = TRUE), condition = identity)
+res <- tryCatch(tweak(multicore, abc = TRUE), condition = identity)
 stopifnot(inherits(res, "warning"))
 
-message("*** tweak() - gc = TRUE ... DONE")
+message("*** tweak() - abc = TRUE ... DONE")
 
 
 message("*** tweak() - odds and ends ...")

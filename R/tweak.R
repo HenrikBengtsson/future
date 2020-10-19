@@ -92,10 +92,10 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  known <- c(formals, "split")
+  known <- c(formals, names(formals(future)), "split")
   unknown <- setdiff(names, known)
   if (length(unknown) > 0L) {
-    warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
+    warning(sprintf("Detected %d unknown future arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
   }
 
   ## Arguments 'envir' and 'workers' must exist in the wrapper, if
