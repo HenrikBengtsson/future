@@ -38,6 +38,13 @@ NEW FEATURES:
    This can be useful when debugging with browse() or debug(), e.g.
    plan(sequential, split = TRUE).  Without it, debug output is not displayed.
 
+ * It is how possible to pass any arguments that makeClusterPSOCK() accepts in
+   the call to plan(cluster, ...) and plan(multisession, ...).  For instance,
+   to set the working directory of the cluster workers to a temporary folder,
+   pass argument 'rscript_startup = "setwd(tempdir())"'.  Another example is
+   'rscript_libs = c(libs, "*")' to prepend the library path on the worker
+   with the paths in 'libs'.
+
 MISCELLANEOUS:
 
  * Harmonizing Future constructor functions to also use 'substitute = TRUE'.

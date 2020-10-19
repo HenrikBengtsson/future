@@ -363,3 +363,5 @@ varndims
 VM
 wb
 deprecations
+setwd
+tempdir

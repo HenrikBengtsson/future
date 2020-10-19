@@ -215,8 +215,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   future
 }
 
-## Argument to 'future' strategies that must not be tweaked
-## by tweak() or plan()
+## Arguments to 'future' strategies that must not be tweaked
 attr(future, "untweakable") <- c(
   "asynchronous",  ## reserved
   "conditions",
@@ -232,3 +231,5 @@ attr(future, "untweakable") <- c(
   "version"        ## for internal backend use
 )
 
+## Hidden arguments to 'future' strategy that my also be tweaked
+attr(future, "tweakable") <- c("split")

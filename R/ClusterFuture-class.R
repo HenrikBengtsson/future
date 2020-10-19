@@ -45,30 +45,34 @@
 #' @keywords internal
 ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-
+  
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
               !is.na(persistent))
 
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
 
-  future <- MultiprocessFuture(expr = gp$expr, substitute = FALSE, envir = envir, globals = gp$globals, packages = c(packages, gp$packages), local = local, node = NA_integer_, persistent = persistent, ...)
+  args <- list(...)
 
-  future <- as_ClusterFuture(future, workers = workers, user = user,
-                             master = master, revtunnel = revtunnel,
-                             homogeneous = homogeneous)
+  ## Which '...' arguments should be passed to Future() and 
+  ## which should be passed to makeClusterPSOCK()?
+  future_args <- !is.element(names(args), makeClusterPSOCK_args())
+  
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(gp$expr), substitute = FALSE, envir = envir, globals = gp$globals, packages = c(packages, gp$packages), local = local, node = NA_integer_, persistent = persistent), args[future_args]))
+
+  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]))
 
   future
 }
 
 
-as_ClusterFuture <- function(future, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE) {
+as_ClusterFuture <- function(future, workers = NULL, ...) {
   if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
     workers <- getDefaultCluster()
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous)
+    workers <- ClusterRegistry("start", workers = workers, ...)
   } else {
     workers <- as.cluster(workers)
   }
