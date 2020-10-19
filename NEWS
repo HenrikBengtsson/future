@@ -18,7 +18,7 @@ SIGNIFICANT CHANGES:
    This warning is given only once per R session.
 
  * plan() and tweak() check for even more arguments that must not be set by
-   either of them.  Specifically, attemps to adjust the following arguments
+   either of them.  Specifically, attempts to adjust the following arguments
    of future() will result in an error: 'conditions', 'envir', 'globals',
    'packages', 'stdout', and 'substitute' in addition to already validated
    'lazy' and 'seed'.
@@ -48,6 +48,10 @@ BUG FIXES:
    makeClusterPSOCK() to 'R_FUTURE_MAKENODEPSOCK_TRIES'.
 
  * The error message produced by nbrOfWorkers() was incomplete.
+
+ * future(..., 'conditions = character(0L)') no longer let conditions alone;
+   since future 1.19.1, it muffles all conditions.  Instead, to not intercept
+   conditions at all, use 'conditions = NULL'.
 
 DEPRECATED AND DEFUNCT:
 

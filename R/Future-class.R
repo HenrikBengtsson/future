@@ -23,7 +23,7 @@
 #' 
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
-#' To not intercept conditions, use `conditions = character(0L)`.
+#' To not intercept any types of conditions, use `conditions = NULL`.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
@@ -604,8 +604,7 @@ makeExpression <- local({
   skip <- skip.local <- NULL
   
   function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
-    if (is.null(conditionClasses)) conditionClasses <- character(0L)
-    if (immediateConditions) {
+    if (immediateConditions && !is.null(conditionClasses)) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
     } else {
@@ -751,7 +750,8 @@ makeExpression <- local({
                   )
 		  
                   signalCondition(cond)
-                } else if (inherits(cond, .(conditionClasses))) {
+                } else if (.(!is.null(conditionClasses)) &&
+                           inherits(cond, .(conditionClasses))) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
@@ -767,7 +767,7 @@ makeExpression <- local({
                     muffleCondition(cond)
                   }
                 } else {
-                  if (.(!split)) {
+                  if (.(!split) && .(!is.null(conditionClasses))) {
                     ## Muffle all non-captured conditions
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)

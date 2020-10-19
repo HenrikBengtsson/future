@@ -39,7 +39,7 @@ If NA (not recommended), output is \emph{not} intercepted.}
 
 \item{conditions}{A character string of conditions classes to be captured
 and relayed.  The default is to relay messages and warnings.
-To not intercept conditions, use \code{conditions = character(0L)}.
+To not intercept any types of conditions, use \code{conditions = NULL}.
 Errors are always relayed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
