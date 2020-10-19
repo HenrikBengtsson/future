@@ -43,7 +43,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
@@ -52,7 +52,7 @@ ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
 
-  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, node = NA_integer_, persistent = persistent, ...)
+  future <- MultiprocessFuture(expr = gp$expr, substitute = FALSE, envir = envir, globals = gp$globals, packages = c(packages, gp$packages), local = local, node = NA_integer_, persistent = persistent, ...)
 
   future <- as_ClusterFuture(future, workers = workers, user = user,
                              master = master, revtunnel = revtunnel,

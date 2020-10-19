@@ -10,10 +10,9 @@
 #' @export
 #' @name ConstantFuture-class
 #' @keywords internal
-ConstantFuture <- function(expr = NULL, ..., envir = emptyenv()) {
-  expr <- force(expr)
-  future <- Future(expr = expr, ..., envir = emptyenv())
-  future$result <- FutureResult(value = expr)
+ConstantFuture <- function(..., globals = TRUE, envir = emptyenv()) {
+  future <- Future(..., globals = list(), envir = envir)
+  future$result <- FutureResult(value = eval(future$expr, envir = envir))
   future$state <- "finished"
   future <- structure(future, class = c("ConstantFuture", class(future)))
   future

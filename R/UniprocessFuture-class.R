@@ -13,7 +13,7 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
+UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (lazy && !local && (!is.logical(globals) || globals)) {
@@ -32,7 +32,7 @@ UniprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = T
   
   gp <- NULL
  
-  future <- Future(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
+  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
   future <- structure(future, class = c("UniprocessFuture", class(future)))
   future
 }
