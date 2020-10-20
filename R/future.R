@@ -190,8 +190,6 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   if (substitute) expr <- substitute(expr)
 
   makeFuture <- plan("next")
-  stopifnot(is.function(makeFuture))
-
   future <- makeFuture(expr, substitute = FALSE,
                        envir = envir,
                        lazy = lazy,

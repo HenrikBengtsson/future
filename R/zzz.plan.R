@@ -261,6 +261,7 @@ plan <- local({
       if (!inherits(strategy, "FutureStrategy")) {
         class(strategy) <- c("FutureStrategy", class(strategy))
       }
+      stop_if_not(is.function(strategy))
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
