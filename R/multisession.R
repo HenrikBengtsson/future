@@ -57,8 +57,6 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, envir = 
     return(sequential(..., lazy = TRUE, envir = envir))
   }
 
-  workers <- ClusterRegistry("start", workers = workers)
-
   future <- MultisessionFuture(..., workers = workers, lazy = lazy, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
