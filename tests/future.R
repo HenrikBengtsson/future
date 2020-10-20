@@ -54,15 +54,6 @@ stopifnot(inherits(res, "error"))
 
 message("*** future() - exceptions ... DONE")
 
-
-message("*** future() - defunct ...")
-
-res <- tryCatch(future(42L, evaluator = TRUE, lazy = TRUE), error = identity)
-stopifnot(inherits(res, "error"))
-
-message("*** future() - defunct ... DONE")
-
-
 message("*** future() ... DONE")
 
 source("incl/end.R")

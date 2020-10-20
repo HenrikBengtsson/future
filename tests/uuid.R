@@ -23,7 +23,7 @@ if (supportsMulticore()) {
       session_uuid()
     })
   })
-  ids <- unlist(values(fs))
+  ids <- unlist(value(fs))
   print(ids)
   stopifnot(all(ids != id), length(unique(ids)) == 2L)
 }

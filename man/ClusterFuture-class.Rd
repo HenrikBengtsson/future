@@ -10,12 +10,11 @@
 \usage{
 ClusterFuture(
   expr = NULL,
+  substitute = TRUE,
   envir = parent.frame(),
-  substitute = FALSE,
   globals = TRUE,
   packages = NULL,
   local = !persistent,
-  gc = FALSE,
   persistent = FALSE,
   workers = NULL,
   user = NULL,
@@ -27,11 +26,9 @@ ClusterFuture(
 
 MultisessionFuture(
   expr = NULL,
+  substitute = TRUE,
   envir = parent.frame(),
-  substitute = FALSE,
-  globals = TRUE,
   persistent = FALSE,
-  local = !persistent,
   workers = NULL,
   ...
 )
@@ -39,11 +36,11 @@ MultisessionFuture(
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global objects should be
-identified.}
-
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
@@ -57,13 +54,6 @@ to be attached in the \R environment evaluating the future.}
 all assignments are done to local temporary environment, otherwise
 the assignments are done to the global environment of the \R process
 evaluating the future.}
-
-\item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) only after the value of the future is collected.
-Exactly when the values are collected may depend on various factors such
-as number of free workers and whether \code{earlySignal} is TRUE (more
-frequently) or FALSE (less frequently).
-\emph{Some types of futures ignore this argument.}}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

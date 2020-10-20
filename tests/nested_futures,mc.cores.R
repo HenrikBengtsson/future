@@ -97,7 +97,7 @@ for (mc in 1:2) {
     ## nested strategies, particularly 'multicore'.
     ## https://github.com/HenrikBengtsson/future/issues/231
     fs <- lapply(1:2, FUN = function(i) future( value(future(TRUE)) ))
-    v <- values(fs)
+    v <- value(fs)
   } ## for (strategy ...)
 
   message(sprintf(" - mc.cores = %d ... DONE", mc))

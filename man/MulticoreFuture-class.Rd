@@ -7,8 +7,8 @@
 \usage{
 MulticoreFuture(
   expr = NULL,
+  substitute = TRUE,
   envir = parent.frame(),
-  substitute = FALSE,
   globals = TRUE,
   lazy = FALSE,
   ...
@@ -17,11 +17,11 @@ MulticoreFuture(
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global objects should be
-identified.}
-
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.

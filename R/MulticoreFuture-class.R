@@ -12,7 +12,7 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, lazy = FALSE, ...) {
+MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Global objects
@@ -34,7 +34,7 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   }
   gp <- NULL
 
-  future <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, ...)
+  future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, ...)
 
   future <- as_MulticoreFuture(future, ...)
 

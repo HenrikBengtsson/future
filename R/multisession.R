@@ -46,8 +46,7 @@
 #' cores that are available for the current \R session.
 #'
 #' @export
-multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableCores(), gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
+multisession <- function(..., workers = availableCores(), lazy = FALSE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(length(workers) == 1, is.finite(workers), workers >= 1)
@@ -55,12 +54,10 @@ multisession <- function(expr, envir = parent.frame(), substitute = TRUE, lazy =
   ## Fall back to lazy sequential futures if only a single R session can be used,
   ## that is, then use the current main R process.
   if (workers == 1L) {
-    return(sequential(expr, envir = envir, substitute = FALSE, lazy = TRUE, seed = seed, globals = globals, local = TRUE, label = label, ...))
+    return(sequential(..., lazy = TRUE, envir = envir))
   }
 
-  workers <- ClusterRegistry("start", workers = workers)
-
-  future <- MultisessionFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, persistent = persistent, workers = workers, gc = gc, earlySignal = earlySignal, label = label, ...)
+  future <- MultisessionFuture(..., workers = workers, lazy = lazy, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

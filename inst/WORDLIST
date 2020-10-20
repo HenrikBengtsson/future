@@ -365,3 +365,5 @@ wb
 deprecations
 autoStopCluster
 parallelly
+setwd
+tempdir

@@ -4,7 +4,7 @@
 #' which means that its _value is computed and resolved
 #' remotely in another process_.
 #'
-#' @inheritParams cluster
+#' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
@@ -24,9 +24,7 @@
 #' See below for example on how `remote` and `cluster` are related.
 #'
 #' @export
-remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = TRUE, workers = NULL, user = NULL, revtunnel = TRUE, gc = FALSE, earlySignal = FALSE, myip = NULL, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-
+remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   stop_if_not(length(workers) >= 1L, !anyNA(workers))
 
@@ -71,7 +69,7 @@ remote <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
     stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
   }
 
-  future <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, persistent = persistent, workers = workers, user = user, master = myip, revtunnel = revtunnel, homogeneous = homogeneous, gc = gc, earlySignal = earlySignal, label = label, ...)
+  future <- ClusterFuture(..., workers = workers, master = myip, revtunnel = revtunnel, homogeneous = homogeneous, persistent = persistent, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

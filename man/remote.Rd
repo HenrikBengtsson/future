@@ -5,56 +5,16 @@
 \title{Create a remote future whose value will be resolved asynchronously in a remote process}
 \usage{
 remote(
-  expr,
-  envir = parent.frame(),
-  substitute = TRUE,
-  lazy = FALSE,
-  seed = NULL,
-  globals = TRUE,
-  persistent = TRUE,
+  ...,
   workers = NULL,
-  user = NULL,
   revtunnel = TRUE,
-  gc = FALSE,
-  earlySignal = FALSE,
   myip = NULL,
-  label = NULL,
-  ...
+  persistent = TRUE,
+  envir = parent.frame()
 )
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
-
-\item{envir}{The \link{environment} from where global objects should be
-identified.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
-
-\item{lazy}{If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
-
-\item{seed}{(optional) If TRUE, the random seed, that is, the state of the
-random number generator (RNG) will be set such that statistically sound
-random numbers are produced (also during parallelization).
-If FALSE (default), it is assumed that the future expression does neither
-need nor use random numbers generation.
-To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
-or a regular RNG seed (a single integer).
-Furthermore, if FALSE, then the future will be monitored to make sure it
-does not use random numbers.  If it does and depending on the value of
-option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
-ignored, an informative warning, or error will be produced.
-If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
-but without the RNG check being performed.}
-
-\item{globals}{(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link[=future]{future()}}.}
-
-\item{persistent}{If FALSE, the evaluation environment is cleared
-from objects prior to the evaluation of the future.}
+\item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
 a character vector of host names, a positive numeric scalar,
@@ -65,30 +25,19 @@ If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
 
-\item{user}{(optional) The user name to be used when communicating
-with another host.}
-
 \item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
 PSOCK cluster nodes to connect back to the master \R process.  This
 avoids the hassle of firewalls, port forwarding and having to know
 the internal / public IP address of the master \R session.}
 
-\item{gc}{If TRUE, the garbage collector run (in the process that
-evaluated the future) only after the value of the future is collected.
-Exactly when the values are collected may depend on various factors such
-as number of free workers and whether \code{earlySignal} is TRUE (more
-frequently) or FALSE (less frequently).
-\emph{Some types of futures ignore this argument.}}
-
-\item{earlySignal}{Specified whether conditions should be signaled as soon
-as possible or not.}
-
 \item{myip}{The external IP address of this machine.
 If NULL, then it is inferred using an online service (default).}
 
-\item{label}{An optional character string label attached to the future.}
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
 
-\item{...}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 }
 \value{
 A \link{ClusterFuture}.

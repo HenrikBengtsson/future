@@ -222,7 +222,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       ## Nothing to do?
       if (length(idxs) > 0) {
         if (debug) mdebugf("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
-        valuesF <- values(globals[idxs])
+        valuesF <- value(globals[idxs])
         globals[idxs] <- lapply(valuesF, FUN = ConstantFuture)
       }
     }

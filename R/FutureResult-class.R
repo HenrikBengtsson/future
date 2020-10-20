@@ -47,7 +47,7 @@ FutureResult <- function(value = NULL, visible = TRUE, stdout = NULL, conditions
 
   stop_if_not(is.logical(visible), length(visible) == 1L, !is.na(visible))
 
-  if (!is.null(stdout)) stopifnot(is.character(stdout))
+  if (!is.null(stdout)) stop_if_not(is.character(stdout))
 
   stop_if_not(is.null(conditions) || is.list(conditions))
 

@@ -42,7 +42,7 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
         fs[[ii]] <- future({ sample(x, size = 1L) }, seed = seed, label = label)
 	print(fs[[ii]])
       }
-      res <- values(fs)
+      res <- value(fs)
     } else {
       res <- listenv::listenv()
       for (ii in seq_len(size)) {
@@ -71,7 +71,7 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
         .seed <- parallel::nextRNGStream(.seed)
         fs[[ii]] <- future({ sample(x, size = 1L) }, seed = .seed)
       }
-      res <- values(fs)
+      res <- value(fs)
     } else {
       res <- listenv::listenv()
       for (ii in seq_len(size)) {

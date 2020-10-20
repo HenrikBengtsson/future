@@ -8,8 +8,8 @@
 \usage{
 UniprocessFuture(
   expr = NULL,
+  substitute = TRUE,
   envir = parent.frame(),
-  substitute = FALSE,
   globals = TRUE,
   packages = NULL,
   lazy = FALSE,
@@ -20,7 +20,7 @@ UniprocessFuture(
 SequentialFuture(
   expr = NULL,
   envir = parent.frame(),
-  substitute = FALSE,
+  substitute = TRUE,
   lazy = FALSE,
   globals = TRUE,
   local = TRUE,
@@ -30,11 +30,11 @@ SequentialFuture(
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global objects should be
-identified.}
-
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.

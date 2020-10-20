@@ -13,7 +13,7 @@
 #' @export
 #' @name MultiprocessFuture-class
 #' @keywords internal
-MultiprocessFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, ...) {
+MultiprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), ...) {
   if (substitute) expr <- substitute(expr)
 
   future <- Future(expr = expr, envir = envir, substitute = FALSE, ...)

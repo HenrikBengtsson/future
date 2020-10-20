@@ -5,21 +5,16 @@
 \alias{MultiprocessFuture}
 \title{An multiprocess future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
-MultiprocessFuture(
-  expr = NULL,
-  envir = parent.frame(),
-  substitute = FALSE,
-  ...
-)
+MultiprocessFuture(expr = NULL, substitute = TRUE, envir = parent.frame(), ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
 
-\item{envir}{The \link{environment} from where global objects should be
-identified.}
-
 \item{substitute}{If TRUE, argument \code{expr} is
 \code{\link[base]{substitute}()}:ed, otherwise not.}
+
+\item{envir}{The \link{environment} from where global objects should be
+identified.}
 
 \item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }

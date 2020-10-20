@@ -261,6 +261,7 @@ plan <- local({
       if (!inherits(strategy, "FutureStrategy")) {
         class(strategy) <- c("FutureStrategy", class(strategy))
       }
+      stop_if_not(is.function(strategy))
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
@@ -524,6 +525,6 @@ resetWorkers.multicore <- function(x, ...) {
   if (usedCores() == 0L) return(invisible(x))
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
-  stopifnot(usedCores() == 0L)
+  stop_if_not(usedCores() == 0L)
 }
 

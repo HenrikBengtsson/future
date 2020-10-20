@@ -5,10 +5,14 @@
 #'
 #' @param var the variable.  If NULL, all futures in the
 #' environment are returned.
+#'
 #' @param envir the environment where to search from.
+#'
 #' @param mustExist If TRUE and the variable does not exists, then
 #' an informative error is thrown, otherwise NA is returned.
+#'
 #' @param default the default value if future was not found.
+#'
 #' @param drop if TRUE and `var` is NULL, then returned list
 #' only contains futures, otherwise also `default` values.
 #'
