@@ -28,7 +28,7 @@
 #' and will be unblocked as soon as one of the already running
 #' multisession futures is resolved.  For the total number of
 #' \R sessions available including the current/main \R process, see
-#' [availableCores()].
+#' [parallelly::availableCores()].
 #'
 #' A multisession future is a special type of cluster future.
 #'
@@ -42,7 +42,7 @@
 #' For processing in multiple forked \R sessions, see
 #' [multicore] futures.
 #'
-#' Use [availableCores()] to see the total number of
+#' Use [parallelly::availableCores()] to see the total number of
 #' cores that are available for the current \R session.
 #'
 #' @export
