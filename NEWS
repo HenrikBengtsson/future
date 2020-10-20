@@ -28,7 +28,7 @@ SIGNIFICANT CHANGES:
    copy of the original function with modified argument defaults.  This new
    approach will make it possible to introduce new future arguments that can
    be modified by tweak() and plan() without having to update every future
-   backend package.
+   backend package, e.g. the new 'split = TRUE' argument.
 
 NEW FEATURES:
 
