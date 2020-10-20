@@ -189,12 +189,7 @@
 future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## Argument 'evaluator' is defunct
-  if (!is.null(list(...)$evaluator)) {
-    .Defunct(msg = "Argument 'evaluator' of future() was an internal argument and is now defunct. Use plan() to set the \"evaluator\".", package = .packageName)
-  }
   makeFuture <- plan("next")
-  ## Sanity check
   stopifnot(is.function(makeFuture))
 
   future <- makeFuture(expr, substitute = FALSE,
