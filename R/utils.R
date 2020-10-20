@@ -909,7 +909,7 @@ resolveMPI <- local({
           }
         }
       }
-      stopifnot(is.function(resolveMPI))
+      stop_if_not(is.function(resolveMPI))
       cache$resolveMPI <<- resolveMPI
     }
 
