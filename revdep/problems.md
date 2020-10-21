@@ -1503,48 +1503,6 @@ Run `revdep_details(, "PeakSegDisk")` for more info
     Execution halted
     ```
 
-# photosynthesis
-
-<details>
-
-* Version: 2.0.0
-* GitHub: NA
-* Source code: https://github.com/cran/photosynthesis
-* Date/Publication: 2020-09-12 05:40:03 UTC
-* Number of recursive dependencies: 97
-
-Run `revdep_details(, "photosynthesis")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Loading required package: ggplot2
-    Loading required package: minpack.lm
-    Loading required package: units
-    udunits system database from /usr/share/udunits
-    
-    Attaching package: 'purrr'
-    
-    The following object is masked from 'package:magrittr':
-    
-        set_names
-    
-    Quitting from lines 136-166 (photosynthesis-introduction.Rmd) 
-    Error: processing vignette 'photosynthesis-introduction.Rmd' failed with diagnostics:
-    one node produced an error: could not find function "getOptionOrEnvVar"
-    --- failed re-building ‘photosynthesis-introduction.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘photosynthesis-introduction.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # phylolm
 
 <details>

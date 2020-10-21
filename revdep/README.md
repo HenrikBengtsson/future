@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-20                   |
+|date     |2020-10-21                   |
 
 # Dependencies
 
@@ -24,14 +24,13 @@
 
 # Revdeps
 
-## New problems (4)
+## New problems (3)
 
-|package                                      |version |error  |warning |note |
-|:--------------------------------------------|:-------|:------|:-------|:----|
-|[dragon](problems.md#dragon)                 |1.0.3   |       |__+1__  |1    |
-|[furrr](problems.md#furrr)                   |0.2.0   |__+1__ |        |     |
-|[photosynthesis](problems.md#photosynthesis) |2.0.0   |       |__+1__  |     |
-|[treeHMM](problems.md#treehmm)               |0.1.1   |       |__+1__  |1    |
+|package                        |version |error  |warning |note |
+|:------------------------------|:-------|:------|:-------|:----|
+|[dragon](problems.md#dragon)   |1.0.3   |       |__+1__  |1    |
+|[furrr](problems.md#furrr)     |0.2.0   |__+1__ |        |     |
+|[treeHMM](problems.md#treehmm) |0.1.1   |       |__+1__  |1    |
 
 ## All (140)
 
@@ -131,7 +130,7 @@
 |[PCRedux](problems.md#pcredux)                     |1.0-6     |       |1       |1    |
 |[PeakSegDisk](problems.md#peaksegdisk)             |2020.8.13 |       |1       |     |
 |penaltyLearning                                    |2020.5.13 |       |        |     |
-|[photosynthesis](problems.md#photosynthesis)       |2.0.0     |       |__+1__  |     |
+|photosynthesis                                     |2.0.0     |       |        |     |
 |[phylolm](problems.md#phylolm)                     |2.6.2     |       |        |1    |
 |[plumber](problems.md#plumber)                     |1.0.0     |1      |        |     |
 |progressr                                          |0.6.0     |       |        |     |
