@@ -68,7 +68,7 @@
 #'
 #' @section Options for configuring low-level system behaviors:
 #'
-#' \itemize{
+#' \describe{
 #'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the \pkg{RhpcBLASctl} package is installed.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_MULTITHREADING_ENABLE}.  If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package.}
 #' }
 #'
