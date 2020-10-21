@@ -111,11 +111,20 @@ automatically with any new backends developed after you wrote your code.
 If you think it is necessary to modify the future strategy within a
 function, then make sure to undo the changes when exiting the function.
 This can be done using:
+
 \preformatted{
   oplan <- plan(new_set_of_strategies)
   on.exit(plan(oplan), add = TRUE)
   [...]
 }
+
+This is important because the end-user might have already set the future
+strategy elsewhere for other purposes and will most likely not known that
+calling your function will break their setup.
+\emph{Remember, your package and its functions might be used in a greater
+context where multiple packages and functions are involved and those might
+also rely on the future framework, so it is important to avoid stepping on
+others' toes.}
 }
 
 \section{Using plan() in scripts and vignettes}{
