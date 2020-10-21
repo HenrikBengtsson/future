@@ -125,7 +125,7 @@ non-reproducible if processed elsewhere.  To lower the risk of them being
 used by mistake, they are marked as deprecated and will produce warnings
 if set.
 
-\itemize{
+\describe{
 \item{\option{future.globals.onMissing}:}{(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If \code{"error"}, an error is generated immediately.  If \code{"ignore"}, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: \code{"ignore"})}
 
 \item{\option{future.globals.method}:}{(character string) Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: \code{"ordered"})}
