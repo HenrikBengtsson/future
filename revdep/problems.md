@@ -90,9 +90,9 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
-        libs   5.5Mb
+        libs   5.6Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -120,13 +120,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/RtmpSYm4gN/registry622e63653f1d' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmppGQtc3/registry593133f53b56' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpSYm4gN/registry622e11b50d99' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmppGQtc3/registry5931657d9758' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpSYm4gN/registry622e73a5517e' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmppGQtc3/registry59315873441a' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpSYm4gN/registry622e3af5f86c' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmppGQtc3/registry593127ce4d94' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -313,7 +313,7 @@ Run `revdep_details(, "CLVTools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.6Mb
+      installed size is 12.5Mb
       sub-directories of 1Mb or more:
         libs  11.4Mb
     ```
@@ -464,17 +464,17 @@ Run `revdep_details(, "EFAtools")` for more info
     ```
       installed size is  7.0Mb
       sub-directories of 1Mb or more:
-        libs   5.3Mb
+        libs   5.4Mb
     ```
 
 # EpiNow2
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.2.1
 * GitHub: NA
 * Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2020-09-01 16:10:03 UTC
+* Date/Publication: 2020-10-20 14:50:09 UTC
 * Number of recursive dependencies: 141
 
 Run `revdep_details(, "EpiNow2")` for more info
@@ -490,21 +490,10 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 83.6Mb
+      installed size is 107.4Mb
       sub-directories of 1Mb or more:
-        help   1.2Mb
-        libs  82.0Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rstantools’
-      All declared Imports should be used.
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
+        help    2.3Mb
+        libs  104.8Mb
     ```
 
 # foieGras
@@ -550,6 +539,48 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
+    ```
+
+# furrr
+
+<details>
+
+* Version: 0.2.0
+* GitHub: https://github.com/DavisVaughan/furrr
+* Source code: https://github.com/cran/furrr
+* Date/Publication: 2020-10-12 21:40:02 UTC
+* Number of recursive dependencies: 63
+
+Run `revdep_details(, "furrr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+    ...
+      No such 'future' function: supportsMulticore()
+      Backtrace:
+       1. furrr:::furrr_test_that(...)
+       2. furrr:::supported_strategies() checks/furrr/new/furrr.Rcheck/tests/testthat/helper-furrr-test-that.R:8:2
+       3. furrr:::import_future("supportsMulticore") checks/furrr/new/furrr.Rcheck/tests/testthat/helper-furrr-test-that.R:27:2
+       4. furrr:::import_from(name, default = default, package = "future")
+      
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 44 | SKIPPED: 1 | WARNINGS: 0 | FAILED: 9 ]
+      1. Error: (unknown) (@test-chunks.R#138) 
+      2. Error: (unknown) (@test-furrr-options.R#91) 
+      3. Error: (unknown) (@test-future-imap.R#1) 
+      4. Error: (unknown) (@test-future-invoke-map.R#4) 
+      5. Error: (unknown) (@test-future-map.R#4) 
+      6. Error: (unknown) (@test-future-map2.R#4) 
+      7. Error: (unknown) (@test-future-modify.R#4) 
+      8. Error: (unknown) (@test-future-pmap.R#4) 
+      9. Error: (unknown) (@test-future-walk.R#1) 
+      
+      Error: testthat unit tests failed
+      Execution halted
     ```
 
 # future.apply
@@ -850,10 +881,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-19 19:46:26] ::plot_cnv:Start
-    INFO [2020-10-19 19:46:26] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-19 19:46:26] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-19 19:46:26] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-20 16:49:00] ::plot_cnv:Start
+    INFO [2020-10-20 16:49:00] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-20 16:49:00] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-20 16:49:00] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -967,48 +998,6 @@ Run `revdep_details(, "JointAI")` for more info
     ```
     Namespace in Imports field not imported from: ‘mathjaxr’
       All declared Imports should be used.
-    ```
-
-# lgr
-
-<details>
-
-* Version: 0.3.4
-* GitHub: https://github.com/s-fleck/lgr
-* Source code: https://github.com/cran/lgr
-* Date/Publication: 2020-03-20 11:50:02 UTC
-* Number of recursive dependencies: 60
-
-Run `revdep_details(, "lgr")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      > library(lgr)
-      > 
-      > test_check("lgr")
-      cat: /var/log/syslog: No such file or directory
-      ── 1. Failure: AppenderFileRotating: works with different backup_dir (@test_Appe
-      `app <- AppenderFileRotating$new(file = tf, backup_dir = bu_dir)` did not throw an error.
-      
-      ── 2. Failure: AppenderFileRotatingDate: works with different backup_dir (@test_
-      `app <- AppenderFileRotatingDate$new(file = tf, backup_dir = bu_dir)` did not throw an error.
-      
-      ── 3. Failure: AppenderFileRotatingTime: works with different backup_dir (@test_
-      `app <- AppenderFileRotatingTime$new(file = tf, backup_dir = bu_dir)` did not throw an error.
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 538 | SKIPPED: 7 | WARNINGS: 140 | FAILED: 3 ]
-      1. Failure: AppenderFileRotating: works with different backup_dir (@test_AppenderFileRotating.R#79) 
-      2. Failure: AppenderFileRotatingDate: works with different backup_dir (@test_AppenderFileRotating.R#220) 
-      3. Failure: AppenderFileRotatingTime: works with different backup_dir (@test_AppenderFileRotating.R#345) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # lidR
@@ -1316,19 +1305,19 @@ Run `revdep_details(, "MineICA")` for more info
 *   checking re-building of vignette outputs ... NOTE
     ```
     ...
-    replace the existing scale.
-    Warning: `axis.ticks.margin` is deprecated. Please set `margin` property of `axis.text` instead
-    Warning in grDevices::png(..., res = dpi, units = "in") :
-      unable to open connection to X11 display ''
-    Scale for 'x' is already present. Adding another scale for 'x', which will
-    replace the existing scale.
-    Warning: `axis.ticks.margin` is deprecated. Please set `margin` property of `axis.text` instead
-    Warning in grDevices::png(..., res = dpi, units = "in") :
-      unable to open connection to X11 display ''
+    Number of selected genes is 10000
+    
+    Max IQR is 0.89
+    
+    Loading required package: org.Hs.eg.db
+    
+    
+    Ensembl site unresponsive, trying asia mirror
     
     Error: processing vignette 'MineICA.Rnw' failed with diagnostics:
-     chunk 41 (label = varAn) 
-    Error in { : task 1 failed - "unable to start device PNG"
+     chunk 10 (label = mart) 
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Peer's Certificate issuer is not recognized.
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -1337,6 +1326,48 @@ Run `revdep_details(, "MineICA")` for more info
     
     Error: Vignette re-building failed.
     Execution halted
+    ```
+
+# mlr3
+
+<details>
+
+* Version: 0.7.0
+* GitHub: https://github.com/mlr-org/mlr3
+* Source code: https://github.com/cran/mlr3
+* Date/Publication: 2020-10-07 12:00:06 UTC
+* Number of recursive dependencies: 48
+
+Run `revdep_details(, "mlr3")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+    ...
+      DEBUG [16:58:42.246] Subsetting task 'iris' to 50 rows {task: <TaskClassif/TaskSupervised/Task/R6>, row_ids: [3, 6, 33, 35, 36, 42, 45, 48, 49, 50, 51, 53, 54, 62, 63, 65, 67, 68, 69, 73, 74, 75, 79, 80, 81, 88, 89, 91, 92, 97, 99, 104, 109, 110, 111, 114, 117, 118, 125, 126, 129, 131, 136, 137, 143, 144, 145, 146, 147, 150]}
+      DEBUG [16:58:42.255] Calling predict method of Learner 'classif.rpart' on task 'iris' with 50 observations {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>}
+      DEBUG [16:58:42.275] Learner 'classif.rpart' returned an object of class 'PredictionDataClassif' {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>, prediction: <PredictionDataClassif/PredictionData>, messages: }
+      DEBUG [16:58:42.280] Erasing stored model for learner 'classif.rpart' 
+      INFO  [16:58:42.249] Applying learner 'classif.rpart' on task 'iris' (iter 1/1) 
+      DEBUG [16:58:42.275] Subsetting task 'iris' to 100 rows {task: <TaskClassif/TaskSupervised/Task/R6>, row_ids: [83, 27, 25, 34, 96, 85, 61, 107, 31, 21, 120, 76, 15, 19, 46, 112, 56, 40, 9, 52, 78, 86, 127, 12, 8, 1, 55, 123, 43, 105, 37, 16, 71, 41, 87, 13, 133, 57, 95, 70, 29, 124, 138, 47, 14, 121, 84, 18, 90, 39, 140, 66, 11, 22, 132, 32, 7, 58, 1..]}
+      DEBUG [16:58:42.286] Calling train method of Learner 'classif.rpart' on task 'iris' with 100 observations {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>}
+      DEBUG [16:58:42.315] Learner 'classif.rpart' on task 'iris' succeeded to fit a model {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>, result: <rpart>, messages: }
+      DEBUG [16:58:42.321] Creating Prediction for predict set 'test' 
+      DEBUG [16:58:42.329] Subsetting task 'iris' to 50 rows {task: <TaskClassif/TaskSupervised/Task/R6>, row_ids: [3, 6, 33, 35, 36, 42, 45, 48, 49, 50, 51, 53, 54, 62, 63, 65, 67, 68, 69, 73, 74, 75, 79, 80, 81, 88, 89, 91, 92, 97, 99, 104, 109, 110, 111, 114, 117, 118, 125, 126, 129, 131, 136, 137, 143, 144, 145, 146, 147, 150]}
+      DEBUG [16:58:42.339] Calling predict method of Learner 'classif.rpart' on task 'iris' with 50 observations {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>}
+      DEBUG [16:58:42.360] Learner 'classif.rpart' returned an object of class 'PredictionDataClassif' {learner: <LearnerClassifRpart/LearnerClassif/Learner/R6>, prediction: <PredictionDataClassif/PredictionData>, messages: }
+      DEBUG [16:58:42.365] Erasing stored model for learner 'classif.rpart' 
+      INFO  [16:58:42.379] Finished benchmark 
+      ══ testthat results  ═══════════════════════════════════════════════════════════
+      [ OK: 9363 | SKIPPED: 0 | WARNINGS: 1 | FAILED: 1 ]
+      1. Error: log to text file (@test_lgr.R#10) 
+      
+      Error: testthat unit tests failed
+      Execution halted
+      Error while shutting down parallel: unable to terminate some child processes
     ```
 
 # origami
@@ -1467,6 +1498,48 @@ Run `revdep_details(, "PeakSegDisk")` for more info
     
     SUMMARY: processing the following file failed:
       ‘Examples.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+# photosynthesis
+
+<details>
+
+* Version: 2.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/photosynthesis
+* Date/Publication: 2020-09-12 05:40:03 UTC
+* Number of recursive dependencies: 97
+
+Run `revdep_details(, "photosynthesis")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    Loading required package: ggplot2
+    Loading required package: minpack.lm
+    Loading required package: units
+    udunits system database from /usr/share/udunits
+    
+    Attaching package: 'purrr'
+    
+    The following object is masked from 'package:magrittr':
+    
+        set_names
+    
+    Quitting from lines 136-166 (photosynthesis-introduction.Rmd) 
+    Error: processing vignette 'photosynthesis-introduction.Rmd' failed with diagnostics:
+    one node produced an error: could not find function "getOptionOrEnvVar"
+    --- failed re-building ‘photosynthesis-introduction.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘photosynthesis-introduction.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -1830,14 +1903,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201019_202702]: Entered 'cubic_regression'-Function
-    [20201019_202702]: 'cubic_regression': minmax = FALSE
+    [20201020_172728]: Entered 'cubic_regression'-Function
+    [20201020_172728]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201019_202705]: ### Starting with plotting ###
-    [20201019_202705]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpUwy5mO/png/CDH1_CpG1.png
-    [20201019_202705]: # CpG-site: CpG#1
+    [20201020_172731]: ### Starting with plotting ###
+    [20201020_172731]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpOVnBNx/png/CDH1_CpG1.png
+    [20201020_172731]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201019_202705]: # CpG-site: CpG#1
+    [20201020_172731]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
@@ -2102,7 +2175,7 @@ Run `revdep_details(, "shinyrecap")` for more info
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
 * Date/Publication: 2020-09-28 07:30:03 UTC
-* Number of recursive dependencies: 192
+* Number of recursive dependencies: 191
 
 Run `revdep_details(, "sigminer")` for more info
 
