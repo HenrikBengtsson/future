@@ -212,6 +212,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
 attr(future, "untweakable") <- c(
   "asynchronous",  ## reserved
   "conditions",
+  "earlySignal",
   "envir",
   "expr",
   "globals",
