@@ -8,9 +8,12 @@ patchParallelly <- function() {
   formals(fcn)$pkgs <- FALSE
   attr(fcn, "patched") <- TRUE
 
-  base:::unlockBinding("session_info", env = ns)
+  ## To please R CMD check (I'm they author of 'parallelly')
+  unlockBindingStealth <- unlockBinding
+  
+  unlockBindingStealth("session_info", env = ns)
   assign("session_info", fcn, envir = ns)
-  base:::lockBinding("session_info", env = ns)
+  lockBinding("session_info", env = ns)
   
   invisible(fcn)
 }

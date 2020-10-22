@@ -212,7 +212,6 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
 attr(future, "untweakable") <- c(
   "asynchronous",  ## reserved
   "conditions",
-  "earlySignal",
   "envir",
   "expr",
   "globals",
@@ -226,4 +225,4 @@ attr(future, "untweakable") <- c(
 )
 
 ## Hidden arguments to 'future' strategy that my also be tweaked
-attr(future, "tweakable") <- c("split")
+attr(future, "tweakable") <- c("earlySignal", "split")
