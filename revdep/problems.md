@@ -120,13 +120,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/RtmpiDefjE/registry4e522aff303' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f676b8534cf' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpiDefjE/registry4e539e47c6a' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f6718f4b0c7' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpiDefjE/registry4e5bf94d2' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f674a66de28' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpiDefjE/registry4e565e72577' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f674aeb5c73' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -501,43 +501,6 @@ Run `revdep_details(, "EpiNow2")` for more info
         libs  104.8Mb
     ```
 
-# fastpos
-
-<details>
-
-* Version: 0.4.1
-* GitHub: https://github.com/johannes-titz/fastpos
-* Source code: https://github.com/cran/fastpos
-* Date/Publication: 2020-09-29 08:50:08 UTC
-* Number of recursive dependencies: 55
-
-Run `revdep_details(, "fastpos")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘fastpos.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    Warning in socketConnection("localhost", port = port, server = TRUE, blocking = TRUE,  :
-      port 11296 cannot be opened
-    Quitting from lines 76-79 (fastpos.Rmd) 
-    Error: processing vignette 'fastpos.Rmd' failed with diagnostics:
-    one node produced an error: could not find function "getOptionOrEnvVar"
-    --- failed re-building ‘fastpos.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘fastpos.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # foieGras
 
 <details>
@@ -581,48 +544,6 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
-    ```
-
-# furrr
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/DavisVaughan/furrr
-* Source code: https://github.com/cran/furrr
-* Date/Publication: 2020-10-21 18:00:06 UTC
-* Number of recursive dependencies: 63
-
-Run `revdep_details(, "furrr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-    ...
-        6. future:::strategy(..., envir = envir, workers = workers)
-        7. future::MultisessionFuture(...)
-        8. future::ClusterFuture(...)
-       11. future:::ClusterRegistry("start", workers = workers, ...)
-       12. future:::makeCluster(workers, ...)
-       13. parallelly::makeClusterPSOCK(workers, ...)
-       14. parallelly:::add_cluster_session_info(cl[ii])
-       15. parallel::clusterCall(cl[ii], fun = session_info)
-       16. parallel:::checkForRemoteErrors(lapply(cl, recvResult))
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      [ OK: 287 | SKIPPED: 1 | WARNINGS: 1 | FAILED: 6 ]
-      1. Error: (unknown) (@test-future-invoke-map.R#11) 
-      2. Error: (unknown) (@test-future-map.R#60) 
-      3. Error: (unknown) (@test-future-map2.R#17) 
-      4. Error: (unknown) (@test-future-modify.R#11) 
-      5. Error: (unknown) (@test-future-pmap.R#4) 
-      6. Error: (unknown) (@test-future-walk.R#1) 
-      
-      Error: testthat unit tests failed
-      Execution halted
     ```
 
 # future.apply
@@ -923,10 +844,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-21 17:25:58] ::plot_cnv:Start
-    INFO [2020-10-21 17:25:58] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-21 17:25:58] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-21 17:25:58] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-22 13:06:39] ::plot_cnv:Start
+    INFO [2020-10-22 13:06:39] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-22 13:06:39] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-22 13:06:39] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1861,14 +1782,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201021_181844]: Entered 'cubic_regression'-Function
-    [20201021_181844]: 'cubic_regression': minmax = FALSE
+    [20201022_145722]: Entered 'cubic_regression'-Function
+    [20201022_145722]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201021_181846]: ### Starting with plotting ###
-    [20201021_181846]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmpi028If/png/CDH1_CpG1.png
-    [20201021_181846]: # CpG-site: CpG#1
+    [20201022_145724]: ### Starting with plotting ###
+    [20201022_145724]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmp4x5zBK/png/CDH1_CpG1.png
+    [20201022_145724]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201021_181846]: # CpG-site: CpG#1
+    [20201022_145724]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
