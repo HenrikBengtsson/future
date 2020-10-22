@@ -29,7 +29,7 @@
 |package                        |version |error  |warning |note |
 |:------------------------------|:-------|:------|:-------|:----|
 |[dragon](problems.md#dragon)   |1.0.3   |       |__+1__  |1    |
-|[furrr](problems.md#furrr)     |0.2.0   |__+1__ |        |     |
+|[furrr](problems.md#furrr)     |0.2.1   |__+1__ |        |     |
 |[treeHMM](problems.md#treehmm) |0.1.1   |       |__+1__  |1    |
 
 ## All (140)
@@ -42,7 +42,7 @@
 |[aroma.core](problems.md#aromacore)                |3.2.1     |       |        |1    |
 |[BAMBI](problems.md#bambi)                         |2.3.0     |       |        |2    |
 |BatchGetSymbols                                    |2.5.7     |       |        |     |
-|[batchtools](problems.md#batchtools)               |0.9.13    |       |1       |1    |
+|[batchtools](problems.md#batchtools)               |0.9.14    |       |1       |2    |
 |bayesmove                                          |0.1.0     |       |        |     |
 |[bcmaps](problems.md#bcmaps)                       |0.18.1    |       |        |1    |
 |biotmle                                            |1.12.0    |       |        |     |
@@ -73,13 +73,13 @@
 |ezcox                                              |0.8.0     |       |        |     |
 |fabletools                                         |0.2.1     |       |        |     |
 |FAMoS                                              |0.3.0     |       |        |     |
-|fastpos                                            |0.4.1     |       |        |     |
+|[fastpos](problems.md#fastpos)                     |0.4.1     |       |1       |     |
 |fiery                                              |1.1.2     |       |        |     |
 |fipe                                               |0.0.1     |       |        |     |
 |[foieGras](problems.md#foiegras)                   |0.6-9     |       |        |1    |
 |[forecastML](problems.md#forecastml)               |0.9.0     |       |        |1    |
 |funGp                                              |0.1.0     |       |        |     |
-|[furrr](problems.md#furrr)                         |0.2.0     |__+1__ |        |     |
+|[furrr](problems.md#furrr)                         |0.2.1     |__+1__ |        |     |
 |[future.apply](problems.md#futureapply)            |1.6.0     |       |        |1    |
 |future.BatchJobs                                   |0.16.2    |       |        |     |
 |future.batchtools                                  |0.9.0     |       |        |     |
@@ -120,7 +120,7 @@
 |metagam                                            |0.1.2     |       |        |     |
 |[methyvim](problems.md#methyvim)                   |1.10.0    |1      |1       |1    |
 |[MineICA](problems.md#mineica)                     |1.28.0    |1      |2       |5    |
-|[mlr3](problems.md#mlr3)                           |0.7.0     |1      |        |     |
+|mlr3                                               |0.8.0     |       |        |     |
 |mlr3db                                             |0.2.0     |       |        |     |
 |mrgsim.parallel                                    |0.1.1     |       |        |     |
 |nflfastR                                           |3.0.0     |       |        |     |
