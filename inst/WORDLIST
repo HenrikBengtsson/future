@@ -363,5 +363,7 @@ varndims
 VM
 wb
 deprecations
+autoStopCluster
+parallelly
 setwd
 tempdir

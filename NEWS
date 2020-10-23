@@ -30,6 +30,16 @@ SIGNIFICANT CHANGES:
    be modified by tweak() and plan() without having to update every future
    backend package, e.g. the new 'split = TRUE' argument.
 
+ * Several functions for managing 'parallel'-style processing have been moved
+   to a new 'parallelly' package.  Specifically, functions availableCores(),
+   availableWorkers(), supportsMulticore(), as.cluster(), autoStopCluster(),
+   makeClusterMPI(), makeClusterPSOCK(), and makeNodePSOCK() have been moved.
+   None of them are specific to futures per se and are likely useful elsewhere
+   too.  Also, having them in a separate, standalone package will speed up the
+   process of releasing any updates to these functions.  The code base of the
+   'future' package shrunk about 10-15% from this migration.  For backward
+   compatibility, the migrated functions remain in this package as re-exports.
+
 NEW FEATURES:
 
  * Setting up a future strategy with argument 'split = TRUE' will cause the

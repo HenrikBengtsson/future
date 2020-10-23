@@ -225,4 +225,4 @@ attr(future, "untweakable") <- c(
 )
 
 ## Hidden arguments to 'future' strategy that my also be tweaked
-attr(future, "tweakable") <- c("split")
+attr(future, "tweakable") <- c("earlySignal", "split")

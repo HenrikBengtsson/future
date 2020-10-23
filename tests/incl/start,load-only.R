@@ -60,7 +60,6 @@ isWin32 <- (.Platform$OS.type == "windows" && .Platform$r_arch == "i386")
 asIEC <- future:::asIEC
 ClusterRegistry <- future:::ClusterRegistry
 constant <- future:::constant
-detectCores <- future:::detectCores
 FutureRegistry <- future:::FutureRegistry
 gassign <- future:::gassign
 get_future <- future:::get_future

@@ -10,16 +10,17 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-19                   |
+|date     |2020-10-22                   |
 
 # Dependencies
 
-|package |old    |new         |Δ  |
-|:-------|:------|:-----------|:--|
-|future  |1.19.1 |1.19.1-9000 |*  |
-|digest  |0.6.26 |0.6.26      |   |
-|globals |0.13.1 |0.13.1      |   |
-|listenv |0.8.0  |0.8.0       |   |
+|package    |old    |new         |Δ  |
+|:----------|:------|:-----------|:--|
+|future     |1.19.1 |1.19.1-9000 |*  |
+|digest     |0.6.26 |0.6.26      |   |
+|globals    |0.13.1 |0.13.1      |   |
+|listenv    |0.8.0  |0.8.0       |   |
+|parallelly |NA     |1.20.0      |*  |
 
 # Revdeps
 
@@ -40,7 +41,7 @@
 |[aroma.core](problems.md#aromacore)                |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                         |2.3.0     |      |        |2    |
 |BatchGetSymbols                                    |2.5.7     |      |        |     |
-|[batchtools](problems.md#batchtools)               |0.9.13    |      |1       |1    |
+|[batchtools](problems.md#batchtools)               |0.9.14    |      |1       |2    |
 |bayesmove                                          |0.1.0     |      |        |     |
 |[bcmaps](problems.md#bcmaps)                       |0.18.1    |      |        |1    |
 |biotmle                                            |1.12.0    |      |        |     |
@@ -66,7 +67,7 @@
 |drake                                              |7.12.6    |      |        |     |
 |drtmle                                             |1.0.5     |      |        |     |
 |[EFAtools](problems.md#efatools)                   |0.2.0     |      |        |1    |
-|[EpiNow2](problems.md#epinow2)                     |1.1.0     |      |        |4    |
+|[EpiNow2](problems.md#epinow2)                     |1.2.1     |      |        |2    |
 |epwshiftr                                          |0.1.1     |      |        |     |
 |ezcox                                              |0.8.0     |      |        |     |
 |fabletools                                         |0.2.1     |      |        |     |
@@ -77,7 +78,7 @@
 |[foieGras](problems.md#foiegras)                   |0.6-9     |      |        |1    |
 |[forecastML](problems.md#forecastml)               |0.9.0     |      |        |1    |
 |funGp                                              |0.1.0     |      |        |     |
-|furrr                                              |0.2.0     |      |        |     |
+|furrr                                              |0.2.1     |      |        |     |
 |[future.apply](problems.md#futureapply)            |1.6.0     |      |        |1    |
 |future.BatchJobs                                   |0.16.2    |      |        |     |
 |future.batchtools                                  |0.9.0     |      |        |     |
@@ -109,7 +110,7 @@
 |kernelboot                                         |0.1.7     |      |        |     |
 |ldaPrototype                                       |0.2.0     |      |        |     |
 |ldsr                                               |0.0.2     |      |        |     |
-|[lgr](problems.md#lgr)                             |0.3.4     |1     |        |     |
+|lgr                                                |0.4.1     |      |        |     |
 |[lidR](problems.md#lidr)                           |3.0.4     |      |1       |1    |
 |lightr                                             |1.3       |      |        |     |
 |[lmtp](problems.md#lmtp)                           |0.0.5     |1     |        |2    |
@@ -118,10 +119,10 @@
 |metagam                                            |0.1.2     |      |        |     |
 |[methyvim](problems.md#methyvim)                   |1.10.0    |1     |1       |1    |
 |[MineICA](problems.md#mineica)                     |1.28.0    |1     |2       |5    |
-|mlr3                                               |0.7.0     |      |        |     |
+|mlr3                                               |0.8.0     |      |        |     |
 |mlr3db                                             |0.2.0     |      |        |     |
 |mrgsim.parallel                                    |0.1.1     |      |        |     |
-|nflfastR                                           |3.0.0     |      |        |     |
+|nflfastR                                           |3.1.1     |      |        |     |
 |onemapsgapi                                        |1.0.0     |      |        |     |
 |[origami](problems.md#origami)                     |1.0.3     |      |        |1    |
 |[pavo](problems.md#pavo)                           |2.4.0     |      |1       |     |

@@ -218,6 +218,7 @@ run.ClusterFuture <- function(future, ...) {
   invisible(future)
 }
 
+#' @importFrom parallelly connectionId isConnectionValid
 #' @export
 resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   workers <- x$workers
@@ -265,7 +266,7 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
     connId <- connectionId(con)
     if (!is.na(connId) && connId < 0L) return(FALSE)
 
-    isValid <- isValidConnection(con)
+    isValid <- isConnectionValid(con)
     if (!isValid) {
       label <- x$label
       if (is.null(label)) label <- "<none>"
@@ -341,6 +342,7 @@ result.ClusterFuture <- function(future, ...) {
 }
 
 
+#' @importFrom parallelly isConnectionValid
 receiveMessageFromWorker <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
   if (debug) {
@@ -366,7 +368,7 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (!is.null(con <- node$con)) {
     if (debug) mdebugf("- Validating connection of %s", class(future)[1])
-    isValid <- isValidConnection(con)
+    isValid <- isConnectionValid(con)
     if (!isValid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"

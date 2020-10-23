@@ -63,6 +63,13 @@ if (requireNamespace("grid")) {
     cl <- makeClusterPSOCK(1L)
     on.exit(parallel:::stopCluster(cl))
     ns0 <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
+
+    ## After the migration to 'parallelly', makeClusterPSOCK() only loads
+    ## that package on the workers.  Previously, it would load 'future'
+    ## and all of its dependencies.  The latter are loaded my the below
+    ## plan() call.
+    ns0 <- c(ns0, "listenv", "codetools", "digest", "globals", "future")
+    
     if (!is.element("grid", ns0)) {
       ## Assert that a global copy from a package does not trigger
       ## that package from being loaded on the worker

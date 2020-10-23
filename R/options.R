@@ -3,7 +3,29 @@
 #' Below are the \R options and environment variables that are used by the
 #' \pkg{future} package and packages enhancing it.\cr
 #' \cr
-#' _WARNING: Note that the names and the default values of these options may change in future versions of the package.  Please use with care until further notice._
+#' _WARNING: Note that the names and the default values of these options may
+#'  change in future versions of the package.  Please use with care until
+#'  further notice._
+#'
+#' @section Settings moved to the 'parallelly' package:
+#' Several functions have been moved to the \pkg{parallelly} package:
+#'
+#' * [parallelly::availableCores()]
+#' * [parallelly::availableWorkers()]
+#' * [parallelly::makeClusterMPI()]
+#' * [parallelly::makeClusterPSOCK()]
+#' * [parallelly::makeNodePSOCK()]
+#' * [parallelly::supportsMulticore()]
+#'
+#' The options and environment variables controlling those have been adjusted
+#' accordingly to have different prefixes.
+#' For example, option \option{future.fork.enable} has been renamed to
+#' \option{parallelly.fork.enable} and the corresponding environment variable
+#' \env{R_FUTURE_FORK_ENABLE} has been renamed to
+#' \env{R_PARALLELLY_FORK_ENABLE}.
+#' For backward compatibility reasons, the \pkg{parallelly} package will
+#' support both versions for a long forseeable time.
+#' See the [parallelly::parallelly.options] page for the settings.
 #'
 #' @section Options for controlling futures:
 #' \describe{
@@ -45,24 +67,13 @@
 #' }
 #'
 #' @section Options for configuring low-level system behaviors:
+#'
 #' \describe{
-#'  \item{\option{future.availableCores.methods}:}{(character vector) Default lookup methods for [availableCores()]. (Default: `c("system", "mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "custom", "fallback")`)}
-#'
-#'  \item{\option{future.availableCores.custom}:}{(function) If set and a function, then this function will be called (without arguments) by [availableCores()] where its value, coerced to an integer, is interpreted as a number of cores.}
-#'
-#'  \item{\option{future.availableCores.fallback}:}{(integer) Number of cores to use when no core-specifying settings are detected other than `"system"`. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_FALLBACK} when the \pkg{future} package is _loaded_. This options makes it possible to set the default number of cores returned by `availableCores()` / `availableWorkers()` yet allow users and schedulers to override it. In multi-tenant environment, such as HPC clusters, it is useful to set \env{R_FUTURE_AVAILABLECORES_FALLBACK} to `1`.}
-#' 
-#'  \item{\option{future.availableCores.system}:}{(integer) Number of "system" cores used instead of what is reported by \code{\link{availableCores}(which = "system")}. If not specified, this option is set according to system environment variable \env{R_FUTURE_AVAILABLECORES_SYSTEM} when the \pkg{future} package is _loaded_. This option allows you to effectively override what `parallel::detectCores()` reports the system has.}
-#'
-#'  \item{\option{future.availableWorkers.methods}:}{(character vector) Default lookup methods for [availableWorkers()]. (Default: `c("mc.cores", "_R_CHECK_LIMIT_CORES_", "PBS", "SGE", "Slurm", "LSF", "custom", "system", "fallback")`)}
-#'
-#'  \item{\option{future.availableWorkers.custom}:}{(function) If set and a function, then this function will be called (without arguments) by [availableWorkers()] where its value, coerced to a character vector, is interpreted as hostnames of available workers.}
-#'
-#'  \item{\option{future.fork.enable}:}{(logical) Enable or disable _forked_ processing.  If `FALSE`, multicore futures becomes sequential futures.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_ENABLE}.  If `NA`, or not set (the default), the a set of best-practices rules decide whether should be supported or not.  See [supportsMulticore()] for more details.}
 #'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the \pkg{RhpcBLASctl} package is installed.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_MULTITHREADING_ENABLE}.  If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package.}
-#'
-#'  \item{\option{future.supportsMulticore.unstable}:}{(character) Controls whether a warning should be produced or not whenever multicore processing is automatically disabled because the environment in which R runs is considered unstable for forked processing, e.g. in the RStudio environment.  If `"warning"` (default), then an informative warning is produces the first time 'multicore' or 'multiprocess' futures are used.  If `"quiet"`, no warning is produced.  If not specified, this option is set according to environment variable \env{R_FUTURE_SUPPORTSMULTICORE_UNSTABLE}.  See [supportsMulticore()] for more details.}
 #' }
+#'
+#' See also [parallelly::parallelly.options].
+#'
 #'
 #' @section Options for demos:
 #' \describe{
@@ -103,16 +114,9 @@
 #' future.cmdargs 
 #' future.startup.script R_FUTURE_STARTUP_SCRIPT .future.R
 #' future.plan R_FUTURE_PLAN
-#' future.availableCores.custom
-#' future.availableCores.methods
-#' future.availableCores.fallback R_FUTURE_AVAILABLECORES_FALLBACK
-#' future.availableCores.system R_FUTURE_AVAILABLECORES_SYSTEM
-#' future.availableWorkers.methods
-#' future.fork.enable R_FUTURE_FORK_ENABLE
 #' future.globals.maxSize future.globals.method future.globals.onMissing
 #' future.globals.resolve future.globals.onReference
 #' future.resolve.recursive
-#' future.supportsMulticore.unstable R_FUTURE_SUPPORTSMULTICORE_UNSTABLE
 #' future.wait.alpha future.wait.interval future.wait.timeout
 #' future.debug
 #' future.demo.mandelbrot.region future.demo.mandelbrot.nrow

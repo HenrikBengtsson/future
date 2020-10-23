@@ -47,7 +47,7 @@ The \code{multisession()} function will block if all available
 and will be unblocked as soon as one of the already running
 multisession futures is resolved.  For the total number of
 \R sessions available including the current/main \R process, see
-\code{\link[=availableCores]{availableCores()}}.
+\code{\link[parallelly:availableCores]{parallelly::availableCores()}}.
 
 A multisession future is a special type of cluster future.
 
@@ -91,6 +91,6 @@ plan(sequential)
 For processing in multiple forked \R sessions, see
 \link{multicore} futures.
 
-Use \code{\link[=availableCores]{availableCores()}} to see the total number of
+Use \code{\link[parallelly:availableCores]{parallelly::availableCores()}} to see the total number of
 cores that are available for the current \R session.
 }
