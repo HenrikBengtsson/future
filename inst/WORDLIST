@@ -367,3 +367,4 @@ autoStopCluster
 parallelly
 setwd
 tempdir
+useXDR

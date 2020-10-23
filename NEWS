@@ -5,30 +5,17 @@ Version: 1.19.1-9000 [2020-10-22]
 
 SIGNIFICANT CHANGES:
 
+ * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
+   'multicore', depending on operating system and R setup.  The plan() function
+   will give an informative deprecation warning when 'multiprocess' is used.
+   This warning is given only once per R session.
+
  * Support for 'local = FALSE' is deprecated.  For the time being, it remains
    supported for 'transparent' futures and 'cluster' futures that use
    'persistent = TRUE'.  However, note that 'persistent = TRUE' will also
    deprecated at some point in the future.  These deprecations are required in
    order to further standardize the Future API across various types of parallel
    backends.
-
- * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
-   'multicore', depending on operating system and R setup.  The plan() function
-   will give an informative deprecation warning when 'multiprocess' is used.
-   This warning is given only once per R session.
-
- * plan() and tweak() check for even more arguments that must not be set by
-   either of them.  Specifically, attempts to adjust the following arguments
-   of future() will result in an error: 'conditions', 'envir', 'globals',
-   'packages', 'stdout', and 'substitute' in addition to already validated
-   'lazy' and 'seed'.
- 
- * tweak() now returns a wrapper function that calls the original future
-   strategy function with the modified defaults.  Previously, it would make a
-   copy of the original function with modified argument defaults.  This new
-   approach will make it possible to introduce new future arguments that can
-   be modified by tweak() and plan() without having to update every future
-   backend package, e.g. the new 'split = TRUE' argument.
 
  * Several functions for managing 'parallel'-style processing have been moved
    to a new 'parallelly' package.  Specifically, functions availableCores(),
@@ -55,27 +42,40 @@ NEW FEATURES:
    'rscript_libs = c(libs, "*")' to prepend the library path on the worker
    with the paths in 'libs'.
 
+ * plan() and tweak() check for even more arguments that must not be set by
+   either of them.  Specifically, attempts to adjust the following arguments
+   of future() will result in an error: 'conditions', 'envir', 'globals',
+   'packages', 'stdout', and 'substitute' in addition to already validated
+   'lazy' and 'seed'.
+ 
+ * tweak() now returns a wrapper function that calls the original future
+   strategy function with the modified defaults.  Previously, it would make a
+   copy of the original function with modified argument defaults.  This new
+   approach will make it possible to introduce new future arguments that can
+   be modified by tweak() and plan() without having to update every future
+   backend package, e.g. the new 'split = TRUE' argument.
+
 MISCELLANEOUS:
 
  * Harmonizing Future constructor functions to also use 'substitute = TRUE'.
 
 BUG FIXES:
 
- * The Mandelbrot demo would produce random numbers without declaring so.
-
- * print() for Future would also print any attributes of its environment.
-
- * Renamed environment variable 'R_FUTURE_MAKENODEPSOCK_tries' used by
-   makeClusterPSOCK() to 'R_FUTURE_MAKENODEPSOCK_TRIES'.
-
- * The error message produced by nbrOfWorkers() was incomplete.
-
- * future(..., 'conditions = character(0L)') no longer let conditions alone;
+ * future(..., conditions = character(0L)) no longer let conditions alone;
    since future 1.19.1, it muffles all conditions.  Instead, to not intercept
    conditions at all, use 'conditions = NULL'.
 
  * Relaying of immediateCondition:s was not near-live for multisession and
    cluster if the underlying PSOCK cluster used useXDR=FALSE for communication.
+
+ * print() for Future would also print any attributes of its environment.
+
+ * The error message produced by nbrOfWorkers() was incomplete.
+ 
+ * Renamed environment variable 'R_FUTURE_MAKENODEPSOCK_tries' used by
+   makeClusterPSOCK() to 'R_FUTURE_MAKENODEPSOCK_TRIES'.
+
+ * The Mandelbrot demo would produce random numbers without declaring so.
 
 DEPRECATED AND DEFUNCT:
 
