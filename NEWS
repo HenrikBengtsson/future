@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-19]
+Version: 1.19.1-9000 [2020-10-22]
 
 SIGNIFICANT CHANGES:
 
@@ -73,6 +73,9 @@ BUG FIXES:
  * future(..., 'conditions = character(0L)') no longer let conditions alone;
    since future 1.19.1, it muffles all conditions.  Instead, to not intercept
    conditions at all, use 'conditions = NULL'.
+
+ * Relaying of immediateCondition:s was not near-live for multisession and
+   cluster if the underlying PSOCK cluster used useXDR=FALSE for communication.
 
 DEPRECATED AND DEFUNCT:
 

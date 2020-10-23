@@ -454,7 +454,7 @@ receiveMessageFromWorker <- function(future, ...) {
     }
     
     node_info <- sprintf("%s #%d", sQuote(class(node)[1]), node_idx)
-    if (inherits(node, "FutureSOCKnode")) {
+    if (inherits(node, "RichSOCKnode")) {
       specs <- summary(node)
       node_info <- sprintf("%s on host %s (%s, platform %s)",
                            node_info, sQuote(specs[["host"]]),
@@ -653,7 +653,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
                 while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
                   if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
                     master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-                    if (inherits(master, "SOCKnode")) {
+                    if (inherits(master, c("SOCKnode", "SOCK0node"))) {
                       sendCondition <<- function(cond) {
                         data <- list(type = "VALUE", value = cond, success = TRUE)
                         parallel_sendData(master, data)
