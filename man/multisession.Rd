@@ -8,6 +8,7 @@ multisession(
   ...,
   workers = availableCores(),
   lazy = FALSE,
+  rscript_libs = .libPaths(),
   envir = parent.frame()
 )
 }
@@ -23,6 +24,16 @@ The function should return a numeric scalar.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
+
+\item{rscript_libs}{A character vector of \R package library folders that
+the workers should use.  The default is \code{.libPaths()} so that multisession
+workers inherits the same library path as the main \R session.
+To avoid this, use \code{plan(multisession, ..., rscript_libs = NULL)}.
+\emph{Important: Note that the library path is set on the workers when they are
+created, i.e. when \code{plan(multisession)} is called.  Any changes to
+\code{.libPaths()} in the main R session after the workers have been created
+will have no effect.}
+This is passed down as-is to \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

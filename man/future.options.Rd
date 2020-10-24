@@ -48,7 +48,7 @@ For example, option \option{future.fork.enable} has been renamed to
 \env{R_FUTURE_FORK_ENABLE} has been renamed to
 \env{R_PARALLELLY_FORK_ENABLE}.
 For backward compatibility reasons, the \pkg{parallelly} package will
-support both versions for a long forseeable time.
+support both versions for a long foreseeable time.
 See the \link[parallelly:parallelly.options]{parallelly::parallelly.options} page for the settings.
 }
 

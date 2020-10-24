@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-22]
+Version: 1.19.1-9000 [2020-10-23]
 
 SIGNIFICANT CHANGES:
 
@@ -16,6 +16,11 @@ SIGNIFICANT CHANGES:
    deprecated at some point in the future.  These deprecations are required in
    order to further standardize the Future API across various types of parallel
    backends.
+
+ * Now multisession workers inherit the package library path from the main R
+   session *when they are created*, that is, when calling plan(multisession).
+   To avoid this, use plan(multisession, rscript_libs = NULL), which is an
+   argument passed down to makeClusterPSOCK().
 
  * Several functions for managing 'parallel'-style processing have been moved
    to a new 'parallelly' package.  Specifically, functions availableCores(),

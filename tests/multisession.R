@@ -54,6 +54,15 @@ for (cores in 1:availCores) {
   stopifnot(all(v == 1:2))
 
 
+  message("*** multisession() - workers inherit .libPaths()")
+
+  libs <- value(future(.libPaths()))
+  str(list(
+    main = .libPaths(),
+    workers = libs
+  ))
+  stopifnot(identical(libs, .libPaths()))
+
   message("*** multisession() and errors")
   f <- multisession({
     stop("Whoops!")

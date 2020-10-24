@@ -9,6 +9,16 @@
 #' @inheritParams Future-class
 #' @inheritParams future
 #'
+#' @param rscript_libs A character vector of \R package library folders that
+#' the workers should use.  The default is `.libPaths()` so that multisession
+#' workers inherits the same library path as the main \R session.
+#' To avoid this, use `plan(multisession, ..., rscript_libs = NULL)`.
+#' _Important: Note that the library path is set on the workers when they are
+#' created, i.e. when `plan(multisession)` is called.  Any changes to
+#' `.libPaths()` in the main R session after the workers have been created
+#' will have no effect._
+#' This is passed down as-is to [parallelly::makeClusterPSOCK()].
+#'
 #' @return A \link{MultisessionFuture}.
 #' If `workers == 1`, then all processing using done in the
 #' current/main \R session and we therefore fall back to using
@@ -46,7 +56,7 @@
 #' cores that are available for the current \R session.
 #'
 #' @export
-multisession <- function(..., workers = availableCores(), lazy = FALSE, envir = parent.frame()) {
+multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_libs = .libPaths(), envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(length(workers) == 1, is.finite(workers), workers >= 1)
@@ -57,7 +67,7 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, envir = 
     return(sequential(..., lazy = TRUE, envir = envir))
   }
 
-  future <- MultisessionFuture(..., workers = workers, lazy = lazy, envir = envir)
+  future <- MultisessionFuture(..., workers = workers, lazy = lazy, rscript_libs = rscript_libs, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
