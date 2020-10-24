@@ -69,6 +69,7 @@ if (requireNamespace("grid")) {
     ## and all of its dependencies.  The latter are loaded my the below
     ## plan() call.
     ns0 <- c(ns0, "listenv", "codetools", "digest", "globals", "future")
+    ns0 <- c(ns0, "parallelly", "tools")
     
     if (!is.element("grid", ns0)) {
       ## Assert that a global copy from a package does not trigger
