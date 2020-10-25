@@ -65,6 +65,8 @@ DOCUMENTATION:
 
  * Add a 'Best Practices for Package Developers' vignette.
 
+ * Add a 'How the Future Framework is Validated' vignette.
+
 MISCELLANEOUS:
 
  * Harmonizing Future constructor functions to also use 'substitute = TRUE'.
