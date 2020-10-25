@@ -120,13 +120,13 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f676b8534cf' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmpyy8TAI/registry63d15c44b423' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f6718f4b0c7' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmpyy8TAI/registry63d150e6756d' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f674a66de28' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmpyy8TAI/registry63d1709bc086' using cluster functions 'Interactive'
     No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpFevUd6/registry3f674aeb5c73' using cluster functions 'Interactive'
+    Created registry in '/scratch/henrik/Rtmpyy8TAI/registry63d1584d6271' using cluster functions 'Interactive'
     ! LaTeX Error: File `framed.sty' not found.
     
     ! Emergency stop.
@@ -844,10 +844,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-22 13:06:39] ::plot_cnv:Start
-    INFO [2020-10-22 13:06:39] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-22 13:06:39] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-22 13:06:39] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-23 21:15:03] ::plot_cnv:Start
+    INFO [2020-10-23 21:15:03] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-23 21:15:03] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-23 21:15:03] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1156,15 +1156,15 @@ Run `revdep_details(, "MineICA")` for more info
     Errors in running code in vignettes:
     when running code in ‘MineICA.Rnw’
       ...
-    [1] "Comp 1"
-    Scale for 'x' is already present. Adding another scale for 'x', which will
-    replace the existing scale.
-    Warning: `axis.ticks.margin` is deprecated. Please set `margin` property of `axis.text` instead
-    Warning in grDevices::png(..., res = dpi, units = "in") :
-      unable to open connection to X11 display ''
+    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
+    [31] "hgu133aUNIGENE"       "hgu133aUNIPROT"       "hgu133a_dbInfo"      
+    [34] "hgu133a_dbconn"       "hgu133a_dbfile"       "hgu133a_dbschema"    
+    
+    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+    Ensembl site unresponsive, trying asia mirror
     
       When sourcing ‘MineICA.R’:
-    Error: task 1 failed - "unable to start device PNG"
+    Error: Peer's Certificate issuer is not recognized.
     Execution halted
     ```
 
@@ -1268,19 +1268,19 @@ Run `revdep_details(, "MineICA")` for more info
 *   checking re-building of vignette outputs ... NOTE
     ```
     ...
-    replace the existing scale.
-    Warning: `axis.ticks.margin` is deprecated. Please set `margin` property of `axis.text` instead
-    Warning in grDevices::png(..., res = dpi, units = "in") :
-      unable to open connection to X11 display ''
-    Scale for 'x' is already present. Adding another scale for 'x', which will
-    replace the existing scale.
-    Warning: `axis.ticks.margin` is deprecated. Please set `margin` property of `axis.text` instead
-    Warning in grDevices::png(..., res = dpi, units = "in") :
-      unable to open connection to X11 display ''
+    Number of selected genes is 10000
+    
+    Max IQR is 0.89
+    
+    Loading required package: org.Hs.eg.db
+    
+    
+    Ensembl site unresponsive, trying useast mirror
     
     Error: processing vignette 'MineICA.Rnw' failed with diagnostics:
-     chunk 41 (label = varAn) 
-    Error in { : task 1 failed - "unable to start device PNG"
+     chunk 10 (label = mart) 
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Peer's Certificate issuer is not recognized.
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -1782,14 +1782,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201022_145722]: Entered 'cubic_regression'-Function
-    [20201022_145722]: 'cubic_regression': minmax = FALSE
+    [20201023_193534]: Entered 'cubic_regression'-Function
+    [20201023_193534]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201022_145724]: ### Starting with plotting ###
-    [20201022_145724]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmp4x5zBK/png/CDH1_CpG1.png
-    [20201022_145724]: # CpG-site: CpG#1
+    [20201023_193536]: ### Starting with plotting ###
+    [20201023_193536]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpdDvXbR/png/CDH1_CpG1.png
+    [20201023_193536]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201022_145724]: # CpG-site: CpG#1
+    [20201023_193536]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
