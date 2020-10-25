@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-23]
+Version: 1.19.1-9000 [2020-10-24]
 
 SIGNIFICANT CHANGES:
 
@@ -60,6 +60,10 @@ NEW FEATURES:
    approach will make it possible to introduce new future arguments that can
    be modified by tweak() and plan() without having to update every future
    backend package, e.g. the new 'split = TRUE' argument.
+
+DOCUMENTATION:
+
+ * Add a 'Best Practices for Package Developers' vignette.
 
 MISCELLANEOUS:
 

@@ -368,3 +368,11 @@ parallelly
 setwd
 tempdir
 useXDR
+cleanEx
+dontshow
+fcn
+gz
+mypkg
+preprocess
+sockconn
+tsv
