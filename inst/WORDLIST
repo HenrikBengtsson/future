@@ -376,3 +376,15 @@ mypkg
 preprocess
 sockconn
 tsv
+adaptor
+appveyor
+ci
+dfn
+doMC
+doSEQ
+glmnet
+NMF
+plyr
+revdepcheck
+travis
+www 

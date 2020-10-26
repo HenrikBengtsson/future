@@ -73,9 +73,9 @@ MISCELLANEOUS:
 
 BUG FIXES:
 
- * future(..., conditions = character(0L)) no longer let conditions alone;
-   since future 1.19.1, it muffles all conditions.  Instead, to not intercept
-   conditions at all, use 'conditions = NULL'.
+ * Since last version, future 1.19.1, future(..., conditions = character(0L)) 
+   would no longer avoid intercepting conditions as intended; instead, it
+   muffles all conditions.  From now on, use 'conditions = NULL'.
 
  * Relaying of immediateCondition:s was not near-live for multisession and
    cluster if the underlying PSOCK cluster used useXDR=FALSE for communication.
