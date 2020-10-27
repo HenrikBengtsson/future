@@ -472,7 +472,15 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       ## of 'future' is used, then give an early error
       ## If future::FutureResult does not exist, give an error
       has_future <- base::requireNamespace("future", quietly = TRUE)
-      version <- if (has_future) future:::.packageVersion else NULL
+      if (has_future) {
+        ## future (>= 1.20.0)
+        ns <- base::getNamespace("future")
+        version <- ns[[".package"]][["version"]]
+        ## future (< 1.20.0)
+        if (is.null(version)) version <- utils::packageVersion("future")
+      } else {
+        version <- NULL
+      }
       if (!has_future || version < "1.8.0") {
         info <- base::c(
           r_version = base::gsub("R version ", "", base::R.version$version.string),
