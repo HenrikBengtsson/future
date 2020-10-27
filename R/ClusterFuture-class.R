@@ -71,15 +71,18 @@ as_ClusterFuture <- function(future, workers = NULL, ...) {
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
     workers <- getDefaultCluster()
+    workers <- addCovrLibPath(workers)
   } else if (is.character(workers) || is.numeric(workers)) {
     workers <- ClusterRegistry("start", workers = workers, ...)
   } else {
     workers <- as.cluster(workers)
+    workers <- addCovrLibPath(workers)
   }
   if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
   stop_if_not(length(workers) > 0)
+
 
   ## Attached workers' session information, unless already done.
   ## FIXME: We cannot do this here, because it introduces a race condition
@@ -136,18 +139,6 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Cluster node to use
   cl <- workers[node_idx]
-
-
-  ## WORKAROUND: When running covr::package_coverage(), the
-  ## package being tested may actually not be installed in
-  ## library path used by covr.  We here add that path iff
-  ## covr is being used. /HB 2016-01-15
-  if (is.element("covr", loadedNamespaces())) {
-    if (debug) mdebug("covr::package_coverage() workaround ...")
-    libPath <- .libPaths()[1]
-    clusterCall(cl, fun = function() .libPaths(c(libPath, .libPaths())))
-    if (debug) mdebug("covr::package_coverage() workaround ... DONE")
-  }
 
 
   ## (i) Reset global environment of cluster node such that
