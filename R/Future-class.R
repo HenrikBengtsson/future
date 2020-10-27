@@ -732,7 +732,6 @@ makeExpression <- local({
               seq.int <- base::seq.int
               signalCondition <- base::signalCondition
               sys.calls <- base::sys.calls
-              Sys.time <- base::Sys.time
               `[[` <- base::`[[`
               `+` <- base::`+`
               `<<-` <- base::`<<-`
@@ -759,7 +758,7 @@ makeExpression <- local({
                     condition = cond,
                     calls     = c(sysCalls(from = ...future.frame), cond$call),
                     session   = sessionInformation(),
-                    timestamp = Sys.time(),
+                    timestamp = base::Sys.time(),
                     signaled  = 0L
                   )
 		  
@@ -775,7 +774,7 @@ makeExpression <- local({
 		    condition = cond,
 		    signaled = base::as.integer(signal)
 		  )
-                  if (.(!split) && !signal) {
+                  if (.(immediateConditions && !split) && !signal) {
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
@@ -801,10 +800,7 @@ makeExpression <- local({
           ), class = "FutureResult")
         }, finally = .(exit))
 	
-        Sys.time
-	
-        if (.(base::is.na(stdout))) {
-        } else {
+        if (.(!base::is.na(stdout))) {
           base::sink(type = "output", split = FALSE)
           if (.(stdout)) {
             ...future.result$stdout <- base::rawToChar(
