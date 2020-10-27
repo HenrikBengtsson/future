@@ -28,7 +28,7 @@ and [AppVeyor CI]), an on [R-hub].
 
 Second, for each new release, these packages undergo full reverse-package
 dependency checks using **[revdepcheck]**.
-As of October 2020, the **future** package is tested against 140
+As of October 2020, the **future** package is tested against 140+
 direct reverse-package dependencies available on CRAN and Bioconductor.
 These checks are performed on Linux with both the default settings and
 when forcing tests to use multisession workers (SOCK clusters), which further
