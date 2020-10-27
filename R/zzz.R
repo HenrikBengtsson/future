@@ -1,5 +1,7 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
+  .packageVersion <<- utils::packageVersion(pkgname)
+
   debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
   if (debug) options(future.debug = TRUE)
   debug <- getOption("future.debug", debug)
@@ -8,7 +10,7 @@
     patchParallelly()
     if (debug) mdebug("Patched a bug in parallelly 1.20.0")
   }
-  
+
   if (debug) {
     envs <- Sys.getenv()
     envs <- envs[grep("R_FUTURE_", names(envs), fixed = TRUE)]

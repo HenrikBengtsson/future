@@ -472,7 +472,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       ## of 'future' is used, then give an early error
       ## If future::FutureResult does not exist, give an error
       has_future <- base::requireNamespace("future", quietly = TRUE)
-      version <- if (has_future) utils::packageVersion("future") else NULL
+      version <- if (has_future) future:::.packageVersion else NULL
       if (!has_future || version < "1.8.0") {
         info <- base::c(
           r_version = base::gsub("R version ", "", base::R.version$version.string),
@@ -677,7 +677,7 @@ makeExpression <- local({
         .(enter)
   
         ## Capture standard output?
-        if (base::is.na(.(stdout))) {  ## stdout = NA
+        if (.(base::is.na(stdout))) {  ## stdout = NA
           ## Don't capture, but also don't block any output
         } else {
           if (.(stdout)) {  ## stdout = TRUE
@@ -773,7 +773,7 @@ makeExpression <- local({
                     muffleCondition(cond)
                   }
                 } else {
-                  if (.(!split) && .(!is.null(conditionClasses))) {
+                  if (.(!split && !is.null(conditionClasses))) {
                     ## Muffle all non-captured conditions
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)
@@ -795,7 +795,7 @@ makeExpression <- local({
 	
         Sys.time
 	
-        if (base::is.na(.(stdout))) {
+        if (.(base::is.na(stdout))) {
         } else {
           base::sink(type = "output", split = FALSE)
           if (.(stdout)) {
