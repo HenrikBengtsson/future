@@ -10,17 +10,17 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-23                   |
+|date     |2020-10-27                   |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
 |future     |1.19.1 |1.19.1-9000 |*  |
-|digest     |0.6.26 |0.6.26      |   |
+|digest     |0.6.27 |0.6.27      |   |
 |globals    |0.13.1 |0.13.1      |   |
 |listenv    |0.8.0  |0.8.0       |   |
-|parallelly |NA     |1.20.0      |*  |
+|parallelly |NA     |1.21.0      |*  |
 
 # Revdeps
 
@@ -28,10 +28,10 @@
 
 |package                        |version |error |warning |note |
 |:------------------------------|:-------|:-----|:-------|:----|
-|[dragon](problems.md#dragon)   |1.0.3   |      |__+1__  |1    |
+|[dragon](problems.md#dragon)   |1.0.4   |      |__+1__  |1    |
 |[treeHMM](problems.md#treehmm) |0.1.1   |      |__+1__  |1    |
 
-## All (140)
+## All (141)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
@@ -51,6 +51,7 @@
 |[brms](problems.md#brms)                           |2.14.0    |      |1       |2    |
 |ceRNAnetsim                                        |1.0.0     |      |        |     |
 |civis                                              |3.0.0     |      |        |     |
+|Clustering                                         |1.7       |      |        |     |
 |[CLVTools](problems.md#clvtools)                   |0.7.0     |      |1       |1    |
 |codalm                                             |0.1.0     |      |        |     |
 |[codebook](problems.md#codebook)                   |0.9.2     |      |        |2    |
@@ -63,7 +64,7 @@
 |dipsaus                                            |0.1.1     |      |        |     |
 |disk.frame                                         |0.3.7     |      |        |     |
 |doFuture                                           |0.10.0    |      |        |     |
-|[dragon](problems.md#dragon)                       |1.0.3     |      |__+1__  |1    |
+|[dragon](problems.md#dragon)                       |1.0.4     |      |__+1__  |1    |
 |drake                                              |7.12.6    |      |        |     |
 |drtmle                                             |1.0.5     |      |        |     |
 |[EFAtools](problems.md#efatools)                   |0.2.0     |      |        |1    |
