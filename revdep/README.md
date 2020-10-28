@@ -65,7 +65,7 @@
 |disk.frame                                         |0.3.7     |      |        |     |
 |doFuture                                           |0.10.0    |      |        |     |
 |[dragon](problems.md#dragon)                       |1.0.4     |      |__+1__  |1    |
-|drake                                              |7.12.6    |      |        |     |
+|drake                                              |7.12.7    |      |        |     |
 |drtmle                                             |1.0.5     |      |        |     |
 |[EFAtools](problems.md#efatools)                   |0.2.0     |      |        |1    |
 |[EpiNow2](problems.md#epinow2)                     |1.2.1     |      |        |2    |
