@@ -125,9 +125,8 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   pid <- selectChildren(children = job, timeout = timeout)
   res <- (is.integer(pid) || is.null(pid))
 
-  ## Collect immediateCondition if they exists
+  ## Collect and relay immediateCondition if they exists
   conditions <- readImmediateConditions()
-
   ## Record conditions as signaled
   signaled <- c(x$.signaledConditions, conditions)
   x$.signaledConditions <- signaled
@@ -227,9 +226,8 @@ result.MulticoreFuture <- function(future, ...) {
     stop(ex)
   }
 
-  ## Collect immediateCondition if they exists
+  ## Collect and relay immediateCondition if they exists
   conditions <- readImmediateConditions()
-
   ## Record conditions as signaled
   signaled <- c(future$.signaledConditions, conditions)
   future$.signaledConditions <- signaled
