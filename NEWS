@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.19.1-9000 [2020-10-24]
+Version: 1.19.1-9000 [2020-10-29]
 
 SIGNIFICANT CHANGES:
 
@@ -9,6 +9,10 @@ SIGNIFICANT CHANGES:
    'multicore', depending on operating system and R setup.  The plan() function
    will give an informative deprecation warning when 'multiprocess' is used.
    This warning is given only once per R session.
+
+ * Launching R or Rscript with command-line option --parallel=n, where n > 1,
+   will now use 'multisession' as future strategy.  Previously, it would use
+   'multiprocess', which is now deprecated.
 
  * Support for 'local = FALSE' is deprecated.  For the time being, it remains
    supported for 'transparent' futures and 'cluster' futures that use

@@ -87,8 +87,8 @@
       if (debug) mdebug(" => options(future.plan = sequential)")
       options(future.plan = sequential)
     } else {
-      if (debug) mdebugf(" => options(future.plan = tweak(multiprocess, workers = %s))", p)
-      options(future.plan = tweak(multiprocess, workers = p))
+      if (debug) mdebugf(" => options(future.plan = tweak(multisession, workers = %s))", p)
+      options(future.plan = tweak(multisession, workers = p))
     }
   }
 
