@@ -128,16 +128,6 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   ## Collect immediateCondition if they exists
   conditions <- readImmediateConditions()
 
-  ## Resignal conditions
-  conditions <- lapply(conditions, FUN = function(condition) {
-    signalCondition(condition)
-    ## Increment signal count
-    signaled <- condition$signaled
-    if (is.null(signaled)) signaled <- 0L
-    condition$signaled <- signaled + 1L
-    condition
-  })
-
   ## Record conditions as signaled
   signaled <- c(x$.signaledConditions, conditions)
   x$.signaledConditions <- signaled
@@ -239,16 +229,6 @@ result.MulticoreFuture <- function(future, ...) {
 
   ## Collect immediateCondition if they exists
   conditions <- readImmediateConditions()
-
-  ## Resignal conditions
-  conditions <- lapply(conditions, FUN = function(condition) {
-    signalCondition(condition)
-    ## Increment signal count
-    signaled <- condition$signaled
-    if (is.null(signaled)) signaled <- 0L
-    condition$signaled <- signaled + 1L
-    condition
-  })
 
   ## Record conditions as signaled
   signaled <- c(future$.signaledConditions, conditions)

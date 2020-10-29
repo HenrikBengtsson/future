@@ -25,10 +25,14 @@ immediateConditionsPath <- local({
 #' @param include (character vector) The class or classes of the objects
 #' to be kept.
 #'
+#' @param signal (logical) If TRUE, the condition read are signaled.
+#'
+#' @param remove (logical) If TRUE, the RDS files used are removed on exit.
+#'
 #' @return Returns a [base::list] of immediateCondition objects.
 #'
 #' @keywords internal
-readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), remove = TRUE) {
+readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = TRUE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))
   stop_if_not(is.logical(remove), length(remove) == 1L, !is.na(remove))
   
@@ -69,7 +73,17 @@ readImmediateConditions <- function(path = immediateConditionsPath(), pattern = 
   ## Get conditions
   conds <- lapply(objs, FUN = .subset2, "condition")
   objs <- NULL
-  
+
+  ## Resignal conditions
+  conds <- lapply(conds, FUN = function(condition) {
+    signalCondition(condition)
+    ## Increment signal count
+    signaled <- condition$signaled
+    if (is.null(signaled)) signaled <- 0L
+    condition$signaled <- signaled + 1L
+    condition
+  })
+
   ## Remove files?
   if (remove && length(files) > 0L) file.remove(files)
 

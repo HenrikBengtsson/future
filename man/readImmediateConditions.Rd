@@ -8,6 +8,7 @@ readImmediateConditions(
   path = immediateConditionsPath(),
   pattern = "[.]rds$",
   include = getOption("future.relay.immediate", "immediateCondition"),
+  signal = TRUE,
   remove = TRUE
 )
 }
@@ -19,6 +20,10 @@ the RDS files to be read.}
 
 \item{include}{(character vector) The class or classes of the objects
 to be kept.}
+
+\item{signal}{(logical) If TRUE, the condition read are signaled.}
+
+\item{remove}{(logical) If TRUE, the RDS files used are removed on exit.}
 }
 \value{
 Returns a \link[base:list]{base::list} of immediateCondition objects.
