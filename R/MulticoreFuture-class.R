@@ -126,7 +126,7 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   res <- (is.integer(pid) || is.null(pid))
 
   ## Collect and relay immediateCondition if they exists
-  conditions <- readImmediateConditions()
+  conditions <- readImmediateConditions(signal = TRUE)
   ## Record conditions as signaled
   signaled <- c(x$.signaledConditions, conditions)
   x$.signaledConditions <- signaled
