@@ -31,7 +31,7 @@ cache:
 build_script:
   - Rscript -e "c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())"
   - echo Current directory=%CD%
-  - travis-tool.sh install_r digest globals listenv markdown R.rsp
+  - travis-tool.sh install_r parallelly digest globals listenv markdown R.rsp
   
 test_script:
   - travis-tool.sh run_tests
