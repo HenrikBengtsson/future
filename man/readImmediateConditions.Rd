@@ -8,7 +8,7 @@ readImmediateConditions(
   path = immediateConditionsPath(),
   pattern = "[.]rds$",
   include = getOption("future.relay.immediate", "immediateCondition"),
-  signal = TRUE,
+  signal = FALSE,
   remove = TRUE
 )
 }

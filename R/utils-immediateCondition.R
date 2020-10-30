@@ -32,7 +32,7 @@ immediateConditionsPath <- local({
 #' @return Returns a [base::list] of immediateCondition objects.
 #'
 #' @keywords internal
-readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = TRUE, remove = TRUE) {
+readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))
   stop_if_not(is.logical(remove), length(remove) == 1L, !is.na(remove))
   
