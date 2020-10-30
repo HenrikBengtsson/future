@@ -44,7 +44,9 @@ for (cores in 1:availCores) {
           if (nbrOfWorkers() + ff - 1L >= kk) {
             stopifnot(ss[[kk]] == "running")
           } else {
-            stopifnot(ss[[kk]] == "created")
+            ## Most commonly, we get 'created' here, but it might already be
+            ## 'running' (observed once on win-builder on 2020-10-30)
+            stopifnot(ss[[kk]] %in% c("created", "running"))
           }
           stopifnot(!rs[[kk]])
         }
