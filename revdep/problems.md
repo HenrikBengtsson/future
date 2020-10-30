@@ -712,10 +712,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-29 18:48:06] ::plot_cnv:Start
-    INFO [2020-10-29 18:48:06] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-29 18:48:06] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-29 18:48:06] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-30 12:32:07] ::plot_cnv:Start
+    INFO [2020-10-30 12:32:07] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-30 12:32:07] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-30 12:32:07] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -850,7 +850,6 @@ Run `revdep_details(, "lidR")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-      unable to open connection to X11 display ''
     Quitting from lines 223-232 (lidR-LAScatalog-engine.Rmd) 
     Error: processing vignette 'lidR-LAScatalog-engine.Rmd' failed with diagnostics:
     unable to start device PNG
@@ -867,7 +866,8 @@ Run `revdep_details(, "lidR")` for more info
     --- finished re-building ‘lidR-computation-speed-LAScatalog.Rmd’
     
     SUMMARY: processing the following files failed:
-      ‘lidR-LAS-class.Rmd’ ‘lidR-LAScatalog-engine.Rmd’
+      ‘lidR-LAS-class.Rmd’ ‘lidR-LAScatalog-class.Rmd’
+      ‘lidR-LAScatalog-engine.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -1488,29 +1488,6 @@ Run `revdep_details(, "QDNAseq")` for more info
     Execution halted
     ```
 
-# qtl2pleio
-
-<details>
-
-* Version: 1.4.1
-* GitHub: https://github.com/fboehm/qtl2pleio
-* Source code: https://github.com/cran/qtl2pleio
-* Date/Publication: 2020-10-29 16:50:03 UTC
-* Number of recursive dependencies: 110
-
-Run `revdep_details(, "qtl2pleio")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 24.0Mb
-      sub-directories of 1Mb or more:
-        libs  23.8Mb
-    ```
-
 # rBiasCorrection
 
 <details>
@@ -1582,14 +1559,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201029_192210]: Entered 'cubic_regression'-Function
-    [20201029_192210]: 'cubic_regression': minmax = FALSE
+    [20201030_130117]: Entered 'cubic_regression'-Function
+    [20201030_130117]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201029_192213]: ### Starting with plotting ###
-    [20201029_192213]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpSPfYbX/png/CDH1_CpG1.png
-    [20201029_192213]: # CpG-site: CpG#1
+    [20201030_130119]: ### Starting with plotting ###
+    [20201030_130120]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpjK3Zfm/png/CDH1_CpG1.png
+    [20201030_130120]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201029_192213]: # CpG-site: CpG#1
+    [20201030_130120]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
@@ -1912,32 +1889,6 @@ Run `revdep_details(, "simhelpers")` for more info
 </details>
 
 ## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    
-        filter, lag
-    
-    The following objects are masked from 'package:base':
-    
-        intersect, setdiff, setequal, union
-    
-    
-    Attaching package: 'kableExtra'
-    
-    The following object is masked from 'package:dplyr':
-    
-        group_rows
-    
-    --- finished re-building ‘visualization.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘simulation_workflow.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```

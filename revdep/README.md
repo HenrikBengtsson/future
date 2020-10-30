@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-29                   |
+|date     |2020-10-30                   |
 
 # Dependencies
 
@@ -31,7 +31,7 @@
 |[dragon](problems.md#dragon)   |1.0.4   |      |__+1__  |1    |
 |[treeHMM](problems.md#treehmm) |0.1.1   |      |__+1__  |1    |
 
-## All (141)
+## All (140)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
@@ -139,7 +139,6 @@
 |[PSCBS](problems.md#pscbs)                         |0.65.0    |1     |        |1    |
 |[QDNAseq](problems.md#qdnaseq)                     |1.24.0    |1     |        |2    |
 |qgcomp                                             |2.6.0     |      |        |     |
-|[qtl2pleio](problems.md#qtl2pleio)                 |1.4.1     |      |        |1    |
 |rainette                                           |0.1.1     |      |        |     |
 |rangeMapper                                        |0.3-7     |      |        |     |
 |[rBiasCorrection](problems.md#rbiascorrection)     |0.2.3     |2     |1       |1    |
@@ -158,7 +157,7 @@
 |[Signac](problems.md#signac)                       |1.0.0     |      |        |2    |
 |simfinapi                                          |0.1.0     |      |        |     |
 |simglm                                             |0.8.0     |      |        |     |
-|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |1       |1    |
+|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |        |1    |
 |[skpr](problems.md#skpr)                           |0.64.2    |      |        |2    |
 |[solitude](problems.md#solitude)                   |1.1.1     |      |        |1    |
 |[spacey](problems.md#spacey)                       |0.1.1     |      |        |1    |
