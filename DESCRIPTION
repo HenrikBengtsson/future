@@ -3,7 +3,7 @@ Version: 1.19.1-9000
 Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
-    globals (>= 0.12.5),
+    globals (>= 0.13.1),
     listenv (>= 0.8.0),
     parallel,
     parallelly,
