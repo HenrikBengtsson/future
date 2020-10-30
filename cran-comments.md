@@ -1,18 +1,10 @@
-# CRAN submission future 1.19.1
+# CRAN submission future 1.20.0
 
-I've verified that this submission does not cause issues for the 136 reverse package dependencies available on CRAN and Bioconductor.  This time, all these checks did also validate the vignettes.  I've also verified manually that 'R CMD check' on rangeMapper works.
+I've verified that this submission against the 140 reverse package dependencies available on CRAN and Bioconductor.
+
+This release introduces 'R CMD check' WARNINGs for two CRAN packages due to a deprecation: 'dragon' and 'treeHMM'.  The maintainers of these packages were contacted four weeks ago to fix a simple mistake in their packages.  The mistake is that they incorrectly call future::plan() at the top-level of their package code where it has no effect.  I've reached out to them to instead call it inside a function, e.g. in .onLoad(), if at all.  This call is what now triggers a .Deprecated() warning during their package install (sic!).  This warning is harmless and does not break anything.
 
 Thank you
-
-
-## Submission of future 1.19.0
-
-I've verified that this submission does not cause issues for the 136 reverse package dependencies available on CRAN and Bioconductor.
-
-Thanks in advance
-
-Result: The submission of future 1.19.0 on 2020-09-19 failed reverse dependencies checks on CRAN.  This was due to a bug (https://github.com/HenrikBengtsson/future/issues/417) that was exposed due to recent updated in the develop version of future.  It was missed locally because revdepcheck does not run the checks on vignettes.  It was thanks to the vignette of rangeMapper that the bug was discovered.
-
 
 
 ## Notes not sent to CRAN
@@ -27,7 +19,7 @@ The package has been verified using `R CMD check --as-cran` on:
 | 3.4.x     | L              |           |             |           |             |
 | 3.5.x     | L              |           |             |           |             |
 | 3.6.x     | L              | L, M      |             | L         |             |
-| 4.0.x     | L, M, W        | L, M      | W           |        S  | W           |
+| 4.0.x     | L, M, W        | L, M      |             |        S  | W           |
 | devel     |       W        | L         | W (32 & 64) | L,   W    | W           |
 
-*Legend: OS: L = Linux, S = Solaris, M = macOS, W = Windows.  Architecture: 32 = 32-bit, 64 = 64-bit*
+*Legend: OS: L = Linux, S = Solaris, M = macOS, W = Windows*
