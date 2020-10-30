@@ -144,10 +144,11 @@ plan <- local({
         evaluator <- stack[[kk]]
         if (inherits(evaluator, "multiprocess") && 
             class(evaluator)[1] == "multiprocess") {
-          ## Warn only once
-          .warn <<- FALSE
-
-          .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
+          if (!"multiprocess" %in% getOption("future.deprecated.ignore", Sys.getenv("R_FUTURE_DEPRECATED_IGNORE", ""))) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
+          }
 
           break
         }
