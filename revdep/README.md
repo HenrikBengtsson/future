@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-10-27                   |
+|date     |2020-10-29                   |
 
 # Dependencies
 
@@ -41,7 +41,7 @@
 |[aroma.core](problems.md#aromacore)                |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                         |2.3.0     |      |        |2    |
 |BatchGetSymbols                                    |2.5.7     |      |        |     |
-|[batchtools](problems.md#batchtools)               |0.9.14    |      |1       |2    |
+|[batchtools](problems.md#batchtools)               |0.9.14    |      |        |2    |
 |bayesmove                                          |0.1.0     |      |        |     |
 |[bcmaps](problems.md#bcmaps)                       |0.18.1    |      |        |1    |
 |biotmle                                            |1.12.0    |      |        |     |
@@ -52,7 +52,7 @@
 |ceRNAnetsim                                        |1.0.0     |      |        |     |
 |civis                                              |3.0.0     |      |        |     |
 |Clustering                                         |1.7       |      |        |     |
-|[CLVTools](problems.md#clvtools)                   |0.7.0     |      |1       |1    |
+|[CLVTools](problems.md#clvtools)                   |0.7.0     |      |        |1    |
 |codalm                                             |0.1.0     |      |        |     |
 |[codebook](problems.md#codebook)                   |0.9.2     |      |        |2    |
 |crossmap                                           |0.2.0     |      |        |     |
@@ -86,7 +86,7 @@
 |[future.callr](problems.md#futurecallr)            |0.5.0     |      |        |1    |
 |future.tests                                       |0.2.1     |      |        |     |
 |fxtract                                            |0.9.4     |      |        |     |
-|[genBaRcode](problems.md#genbarcode)               |1.2.3     |      |1       |     |
+|genBaRcode                                         |1.2.3     |      |        |     |
 |[GetBCBData](problems.md#getbcbdata)               |0.5       |      |        |1    |
 |glmmboot                                           |0.5.1     |      |        |     |
 |googleComputeEngineR                               |0.3.0     |      |        |     |
@@ -94,7 +94,7 @@
 |[grattan](problems.md#grattan)                     |1.9.0.0   |      |        |1    |
 |greta                                              |0.3.1     |      |        |     |
 |GSODR                                              |2.1.2     |      |        |     |
-|[gstat](problems.md#gstat)                         |2.0-6     |      |        |1    |
+|gstat                                              |2.0-6     |      |        |     |
 |gtfs2gps                                           |1.3-0     |      |        |     |
 |[gWQS](problems.md#gwqs)                           |3.0.0     |      |        |1    |
 |hackeRnews                                         |0.1.0     |      |        |     |
@@ -127,8 +127,8 @@
 |onemapsgapi                                        |1.0.0     |      |        |     |
 |[origami](problems.md#origami)                     |1.0.3     |      |        |1    |
 |[pavo](problems.md#pavo)                           |2.4.0     |      |1       |     |
-|[PCRedux](problems.md#pcredux)                     |1.0-6     |      |1       |1    |
-|[PeakSegDisk](problems.md#peaksegdisk)             |2020.8.13 |      |1       |     |
+|[PCRedux](problems.md#pcredux)                     |1.0-6     |      |        |1    |
+|PeakSegDisk                                        |2020.8.13 |      |        |     |
 |penaltyLearning                                    |2020.5.13 |      |        |     |
 |photosynthesis                                     |2.0.0     |      |        |     |
 |[phylolm](problems.md#phylolm)                     |2.6.2     |      |        |1    |
@@ -139,7 +139,7 @@
 |[PSCBS](problems.md#pscbs)                         |0.65.0    |1     |        |1    |
 |[QDNAseq](problems.md#qdnaseq)                     |1.24.0    |1     |        |2    |
 |qgcomp                                             |2.6.0     |      |        |     |
-|[qtl2pleio](problems.md#qtl2pleio)                 |1.3.0     |      |        |1    |
+|[qtl2pleio](problems.md#qtl2pleio)                 |1.4.1     |      |        |1    |
 |rainette                                           |0.1.1     |      |        |     |
 |rangeMapper                                        |0.3-7     |      |        |     |
 |[rBiasCorrection](problems.md#rbiascorrection)     |0.2.3     |2     |1       |1    |
@@ -158,7 +158,7 @@
 |[Signac](problems.md#signac)                       |1.0.0     |      |        |2    |
 |simfinapi                                          |0.1.0     |      |        |     |
 |simglm                                             |0.8.0     |      |        |     |
-|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |        |1    |
+|[simhelpers](problems.md#simhelpers)               |0.1.0     |      |1       |1    |
 |[skpr](problems.md#skpr)                           |0.64.2    |      |        |2    |
 |[solitude](problems.md#solitude)                   |1.1.1     |      |        |1    |
 |[spacey](problems.md#spacey)                       |0.1.1     |      |        |1    |
@@ -166,7 +166,7 @@
 |[spatialwarnings](problems.md#spatialwarnings)     |2.0.0     |      |        |2    |
 |sperrorest                                         |3.0.1     |      |        |     |
 |[stars](problems.md#stars)                         |0.4-3     |      |        |2    |
-|startR                                             |2.0.1     |      |        |     |
+|startR                                             |2.1.0     |      |        |     |
 |steps                                              |1.1.0     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)          |1.1.1     |      |        |2    |
 |tcensReg                                           |0.1.7     |      |        |     |

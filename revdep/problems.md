@@ -117,32 +117,6 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Created registry in '/scratch/henrik/RtmpJlt0Xj/registry903f13c7fddb' using cluster functions 'Interactive'
-    No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpJlt0Xj/registry903f7cb9c348' using cluster functions 'Interactive'
-    No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpJlt0Xj/registry903f4a7df0c2' using cluster functions 'Interactive'
-    No readable configuration file found
-    Created registry in '/scratch/henrik/RtmpJlt0Xj/registry903f7c4565d0' using cluster functions 'Interactive'
-    ! LaTeX Error: File `framed.sty' not found.
-    
-    ! Emergency stop.
-    <read *> 
-    
-    Error: processing vignette 'batchtools.Rmd' failed with diagnostics:
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/batchtools/new/batchtools.Rcheck/vign_test/batchtools/vignettes/batchtools.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See batchtools.log for more info.
-    --- failed re-building ‘batchtools.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘batchtools.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘Rmpi’
@@ -293,28 +267,6 @@ Run `revdep_details(, "CLVTools")` for more info
 </details>
 
 ## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘CLVTools.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    Warning in system2(..., stdout = if (use_file_stdout()) f1 else FALSE, stderr = f2) :
-      error in running command
-    ! sh: xelatex: command not found
-    
-    Error: processing vignette 'CLVTools.Rmd' failed with diagnostics:
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/CLVTools/new/CLVTools.Rcheck/vign_test/CLVTools/vignettes/CLVTools.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See CLVTools.log for more info.
-    --- failed re-building ‘CLVTools.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘CLVTools.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -595,48 +547,6 @@ Run `revdep_details(, "future.callr")` for more info
       fasten
     ```
 
-# genBaRcode
-
-<details>
-
-* Version: 1.2.3
-* GitHub: NA
-* Source code: https://github.com/cran/genBaRcode
-* Date/Publication: 2020-05-08 16:50:02 UTC
-* Number of recursive dependencies: 145
-
-Run `revdep_details(, "genBaRcode")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    Error: processing vignette 'genBaRcode_GUI_Vignette.Rmd' failed with diagnostics:
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/genBaRcode/new/genBaRcode.Rcheck/vign_test/genBaRcode/vignettes/genBaRcode_GUI_Vignette.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See genBaRcode_GUI_Vignette.log for more info.
-    --- failed re-building ‘genBaRcode_GUI_Vignette.Rmd’
-    
-    --- re-building ‘genBaRcode_Vignette.Rmd’ using rmarkdown
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    ! LaTeX Error: File `framed.sty' not found.
-    
-    ! Emergency stop.
-    <read *> 
-    
-    Error: processing vignette 'genBaRcode_Vignette.Rmd' failed with diagnostics:
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/genBaRcode/new/genBaRcode.Rcheck/vign_test/genBaRcode/vignettes/genBaRcode_Vignette.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See genBaRcode_Vignette.log for more info.
-    --- failed re-building ‘genBaRcode_Vignette.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘genBaRcode_GUI_Vignette.Rmd’ ‘genBaRcode_Vignette.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # GetBCBData
 
 <details>
@@ -703,48 +613,6 @@ Run `revdep_details(, "grattan")` for more info
     ```
     Packages suggested but not available for checking:
       'taxstats', 'taxstats1516'
-    ```
-
-# gstat
-
-<details>
-
-* Version: 2.0-6
-* GitHub: https://github.com/r-spatial/gstat
-* Source code: https://github.com/cran/gstat
-* Date/Publication: 2020-05-18 12:30:02 UTC
-* Number of recursive dependencies: 37
-
-Run `revdep_details(, "gstat")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... NOTE
-    ```
-    ...
-    ! LaTeX Error: File `multirow.sty' not found.
-    
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    
-    ! Emergency stop.
-    <read *> 
-             
-    l.8 \usepackage
-                   {natbib}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘spatio-temporal-kriging.Rnw’
-    
-    --- re-building ‘st.Rnw’ using Sweave
-    --- finished re-building ‘st.Rnw’
-    
-    SUMMARY: processing the following file failed:
-      ‘spatio-temporal-kriging.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # gWQS
@@ -844,10 +712,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-10-27 18:44:35] ::plot_cnv:Start
-    INFO [2020-10-27 18:44:35] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-10-27 18:44:35] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-10-27 18:44:35] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-10-29 18:48:06] ::plot_cnv:Start
+    INFO [2020-10-29 18:48:06] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-10-29 18:48:06] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-10-29 18:48:06] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1351,77 +1219,9 @@ Run `revdep_details(, "PCRedux")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-    pandoc-citeproc: reference Ritz2008 not found
-    pandoc-citeproc: reference spiess_highly_2008 not found
-    pandoc-citeproc: reference roediger2015chippcr not found
-    pandoc-citeproc: reference Ritz2008 not found
-    pandoc-citeproc: reference spiess_highly_2008 not found
-    pandoc-citeproc: reference brenner_variation_1997 not found
-    pandoc-citeproc: reference kuhn_building_2008 not found
-    ! LaTeX Error: File `framed.sty' not found.
-    
-    ! Emergency stop.
-    <read *> 
-    
-    Error: processing vignette 'SI1.Rmd' failed with diagnostics:
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/PCRedux/new/PCRedux.Rcheck/vign_test/PCRedux/vignettes/SI1.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See SI1.log for more info.
-    --- failed re-building ‘SI1.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘SI1.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘FFTrees’
-    ```
-
-# PeakSegDisk
-
-<details>
-
-* Version: 2020.8.13
-* GitHub: https://github.com/tdhock/PeakSegDisk
-* Source code: https://github.com/cran/PeakSegDisk
-* Date/Publication: 2020-08-14 04:40:06 UTC
-* Number of recursive dependencies: 59
-
-Run `revdep_details(, "PeakSegDisk")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    ...
-             
-    l.29 \makeatletter
-                      ^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘Examples.Rnw’
-    
-    --- re-building ‘Spatial_correlation.Rmd’ using knitr
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    --- finished re-building ‘Spatial_correlation.Rmd’
-    
-    --- re-building ‘Worst_case.Rmd’ using knitr
-    Warning in grDevices::png(f) :
-      unable to open connection to X11 display ''
-    --- finished re-building ‘Worst_case.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘Examples.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 # phylolm
@@ -1537,7 +1337,7 @@ Run `revdep_details(, "Prostar")` for more info
     Error: processing vignette 'Prostar_UserManual.Rnw' failed with diagnostics:
     Running 'texi2dvi' on 'Prostar_UserManual.tex' failed.
     LaTeX errors:
-    ! LaTeX Error: File `titlesec.sty' not found.
+    ! LaTeX Error: File `nowidow.sty' not found.
     
     Type X to quit or <RETURN> to proceed,
     or enter new name. (Default extension: sty)
@@ -1545,8 +1345,8 @@ Run `revdep_details(, "Prostar")` for more info
     ! Emergency stop.
     <read *> 
              
-    l.92 \def
-             \mdhelvet{\fontfamily{phv}\selectfont\mdseries}^^M
+    l.189 \RequirePackage
+                         {parnotes}^^M
     !  ==> Fatal error occurred, no output PDF file produced!
     --- failed re-building ‘Prostar_UserManual.Rnw’
     
@@ -1692,11 +1492,11 @@ Run `revdep_details(, "QDNAseq")` for more info
 
 <details>
 
-* Version: 1.3.0
+* Version: 1.4.1
 * GitHub: https://github.com/fboehm/qtl2pleio
 * Source code: https://github.com/cran/qtl2pleio
-* Date/Publication: 2020-06-30 19:00:02 UTC
-* Number of recursive dependencies: 114
+* Date/Publication: 2020-10-29 16:50:03 UTC
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "qtl2pleio")` for more info
 
@@ -1706,9 +1506,9 @@ Run `revdep_details(, "qtl2pleio")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.8Mb
+      installed size is 24.0Mb
       sub-directories of 1Mb or more:
-        libs  23.6Mb
+        libs  23.8Mb
     ```
 
 # rBiasCorrection
@@ -1782,14 +1582,14 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 *   checking re-building of vignette outputs ... WARNING
     ```
     ...
-    [20201027_193319]: Entered 'cubic_regression'-Function
-    [20201027_193319]: 'cubic_regression': minmax = FALSE
+    [20201029_192210]: Entered 'cubic_regression'-Function
+    [20201029_192210]: 'cubic_regression': minmax = FALSE
     Warning: UNRELIABLE VALUE: Future ('future_sapply-1') unexpectedly generated random numbers without specifying argument '[future.]seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify argument '[future.]seed', e.g. 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use [future].seed=NULL, or set option 'future.rng.onMisuse' to "ignore".
-    [20201027_193321]: ### Starting with plotting ###
-    [20201027_193321]: Creating  plot No. 1 - filename: /scratch/henrik/Rtmp6fPM7H/png/CDH1_CpG1.png
-    [20201027_193321]: # CpG-site: CpG#1
+    [20201029_192213]: ### Starting with plotting ###
+    [20201029_192213]: Creating  plot No. 1 - filename: /scratch/henrik/RtmpSPfYbX/png/CDH1_CpG1.png
+    [20201029_192213]: # CpG-site: CpG#1
     Hyperbolic: Using bias_weight = -937.71907950138 , a = -108.568032237737 , b = -937.71907950138 , d = -232.057189220457
-    [20201027_193321]: # CpG-site: CpG#1
+    [20201029_192213]: # CpG-site: CpG#1
     Cubic: Using a = 6.53413423120091e-05 , b = -0.0055806968734969 , c = 0.784061853455188 , d = 1.93182659932656
     Warning in grDevices::png(..., res = dpi, units = "in") :
       unable to open connection to X11 display ''
@@ -2112,6 +1912,32 @@ Run `revdep_details(, "simhelpers")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    ...
+    
+        filter, lag
+    
+    The following objects are masked from 'package:base':
+    
+        intersect, setdiff, setequal, union
+    
+    
+    Attaching package: 'kableExtra'
+    
+    The following object is masked from 'package:dplyr':
+    
+        group_rows
+    
+    --- finished re-building ‘visualization.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘simulation_workflow.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
