@@ -58,7 +58,7 @@ stopifnot(identical(formals(sequential2)$abc, FALSE))
 message("*** plan() - tweak without introducting package dependencies ...")
 
 ## Requires a auxillary package that is available and not already loaded
-if (requireNamespace("grid")) {
+if (!covr_testing && requireNamespace("grid")) {
   local({
     cl <- makeClusterPSOCK(1L)
     on.exit(parallel:::stopCluster(cl))
