@@ -94,11 +94,10 @@ jobs:
       env: NB='future.tests w/ multicore' ## Just a label
     - os: linux
       r: release
-      script:
-        - R CMD build --no-build-vignettes --no-manual .
       r_packages:
         - covr
-      after_success:
+      script:
+        - R CMD build --no-build-vignettes --no-manual .
         - Rscript -e 'covr::codecov(quiet=FALSE)'
       env: NB='covr' ## Just a label
 
