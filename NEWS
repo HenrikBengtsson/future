@@ -1,6 +1,15 @@
 Package: future
 ===============
 
+Version: 1.20.1 [2020-10-30]
+
+BUG FIXES:
+
+ * future::plan("multisession") would produce 'Error in if (debug)
+   mdebug("covr::package_coverage() workaround ...") : argument is not
+   interpretable as logical' if and only if the 'covr' package was loaded.
+
+
 Version: 1.20.0 [2020-10-30]
 
 SIGNIFICANT CHANGES:
