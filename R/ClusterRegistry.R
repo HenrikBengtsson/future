@@ -52,6 +52,7 @@ ClusterRegistry <- local({
 
 addCovrLibPath <- function(cl) {
   if (!is.element("covr", loadedNamespaces())) return(cl)
+  debug <- getOption("future.debug", FALSE)
   
   ## WORKAROUND: When running covr::package_coverage(), the
   ## package being tested may actually not be installed in

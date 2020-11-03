@@ -9,11 +9,6 @@
   if (debug) options(future.debug = TRUE)
   debug <- getOption("future.debug", debug)
 
-  if (packageVersion("parallelly") <= "1.20.0") {
-    patchParallelly()
-    if (debug) mdebug("Patched a bug in parallelly 1.20.0")
-  }
-
   if (debug) {
     envs <- Sys.getenv()
     envs <- envs[grep("R_FUTURE_", names(envs), fixed = TRUE)]
