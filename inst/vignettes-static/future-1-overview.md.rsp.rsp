@@ -143,11 +143,12 @@ The future package implements the following types of futures:
 | `sequential`    | all         | sequentially and in the current R process
 | `transparent`   | all         | as sequential w/ early signaling and w/out local (for debugging)
 | _asynchronous:_ |             | _parallel_:
-| `multiprocess`  | all         | multicore, if supported, otherwise multisession
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows/not RStudio | forked R processes (on current machine)
 | `cluster`       | all         | external R sessions on current, local, and/or remote machines
 | `remote`        | all         | Simple access to remote R sessions
+
+_Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
 
 The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  (_Comment_: The [future.BatchJobs] package provides analogue backends based on the [BatchJobs] package; however the BatchJobs developers have deprecated it in favor of batchtools.)
 
@@ -249,7 +250,7 @@ When multisession evaluation is used, the package launches a set of R sessions i
 availableCores()
 })%>
 ```
-This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total two (2) processes including the main process.  In other words, with these settings, there will be two (2) background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "future")`.
+This particular result tells us that the `mc.cores` option was set such that we are allowed to use in total two (2) processes including the main process.  In other words, with these settings, there will be two (2) background processes serving the multisession futures.  The `availableCores()` is also agile to different options and system environment variables.  For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; `availableCores()` acknowledges these as well.  If nothing else is specified, all available cores on the machine will be utilized, cf. `parallel::detectCores()`.  For more details, please see `help("availableCores", package = "parallelly")`.
 
 
 #### Multicore Futures
@@ -281,14 +282,6 @@ Just like for multisession futures, the maximum number of parallel processes run
 Forking an R process can be faster than working with a separate R session running in the background.  One reason is that the overhead of exporting large globals to the background session can be greater than when forking, and therefore shared memory, is used.  On the other hand, the shared memory is _read only_, meaning any modifications to shared objects by one of the forked processes ("workers") will cause a copy by the operating system.  This can also happen when the R garbage collector runs in one of the forked processes.
 
 On the other hand, process forking is also considered unstable in some R environments.  For instance, when running R from within RStudio process forking may resulting in crashed R sessions.  Because of this, the future package disables multicore futures by default when running from RStudio.  See `help("supportsMulticore")` for more details.
-
-
-#### Multiprocess Futures
-Sometimes we do not know whether multicore futures are supported or not, but it might still be that we would like to write platform-independent scripts or instructions that work everywhere.  In such cases we can specify that we want to use "multiprocess" futures as in:
-```r
-plan(multiprocess)
-```
-A multiprocess future is not a formal class of futures by itself, but rather a convenient alias for either of the two.  When this is specified, multisession evaluation will be used unless multicore evaluation is supported.
 
 
 #### Cluster Futures

@@ -73,7 +73,7 @@ clusterExportSticky <- function(cl, globals) {
   }
   
   if (length(globals) == 0L) return(invisible(cl))
-  stopifnot(!is.null(names(globals)))
+  stop_if_not(!is.null(names(globals)))
 
   clusterCall(cl, fun = function(globals) {
     ns <- getNamespace("future")

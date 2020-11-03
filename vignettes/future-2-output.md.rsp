@@ -92,7 +92,7 @@ Hello world!
  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500                  
 ```
 
-Note how the captured output is relayed followed by the printing of the value.  Also, since the future value is only queried once when using future assignments, or more specifically when using promises, the output is only relaid once.  For example, querying `a` again will only print its value, because it is now a regular R object:
+Note how the captured output is relayed followed by the printing of the value.  Also, since the future value is only queried once when using future assignments, or more specifically when using promises, the output is only relayed once.  For example, querying `a` again will only print its value, because it is now a regular R object:
 ```r
 > a
 [1] 42
@@ -188,7 +188,7 @@ To capture the output produced by futures, use `capture.output()` as you would d
 ```
 
 
-## Supressing messages
+## Suppressing messages
 
 ```r
 > library("future")
@@ -204,7 +204,7 @@ ping
 
 ## Known limitations
 
-It is only the standard output that is relayed.  It is _not possible_ to relay output send to the standard error (stderr), e.g. output by `cat(..., file = stderr())` will be lost.  This is due to a [limitation in R](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/55), preventing us from capturing stderr in a reliable way, particularity across all backends.  However, note that the captured messages by `message()` are outputted to stderr (as expected) when resignalled/relayed.
+It is only the standard output that is relayed.  It is _not possible_ to relay output send to the standard error (stderr), e.g. output by `cat(..., file = stderr())` will be lost.  This is due to a [limitation in R](https://github.com/HenrikBengtsson/Wishlist-for-R/issues/55), preventing us from capturing stderr in a reliable way, particularity across all backends.  However, note that the captured messages by `message()` are outputted to stderr (as expected) when resignaled/relayed.
 
 
 [foreach]: https://cran.r-project.org/package=foreach

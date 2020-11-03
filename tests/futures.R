@@ -21,7 +21,7 @@ dims <- list(
 )
 
 
-message("*** futures() / resolved() / values() ...")
+message("*** futures() / resolved() / value() ...")
 
 for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
@@ -79,7 +79,7 @@ for (cores in 1:availCores) {
         stopifnot(identical(dim(r), dim(x)))
         stopifnot(identical(dimnames(r), dimnames(x)))
 
-        v <- values(x)
+        v <- value(x)
         str(v)
         if (type != "environment") {
           stopifnot(length(v) == length(x))
@@ -96,6 +96,6 @@ for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
-message("*** futures() / resolved() / values() ... DONE")
+message("*** futures() / resolved() / value() ... DONE")
 
 source("incl/end.R")

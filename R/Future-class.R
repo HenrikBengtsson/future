@@ -23,7 +23,7 @@
 #' 
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
-#' To not intercept conditions, use `conditions = character(0L)`.
+#' To not intercept any types of conditions, use `conditions = NULL`.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
@@ -87,7 +87,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (is.null(seed)) {
@@ -120,6 +120,9 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   
   args <- list(...)
 
+  if (!local && !isTRUE(args[["persistent"]])) {
+    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated and will soon be defunct and produce an error.", package = .packageName)
+  }
 
   core <- new.env(parent = emptyenv())
 
@@ -142,11 +145,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
 
   ## Result
   core$result <- NULL
-  ## IMPORTANT: Do *not* set 'value', because there are, checks for a future
-  ## being resolved or not that checks for its existance, e.g.
-  ## exists("value", envir = future).
-  ## UPDATE: 'value' is being replaced by 'result$value' /HB 2018-02-25
-  ## core$value <- NULL
 
   ## Future miscellaneous
   core$label <- label
@@ -160,8 +158,17 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, stdo
   core$state <- "created"
 
   ## Additional named arguments
-  for (key in names(args)) core[[key]] <- args[[key]]
-  
+  names <- names(args)
+  for (key in names) core[[key]] <- args[[key]]
+
+  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
+  ## there might still be legacy code out there that rely on it.  By
+  ## assert it is not set here, it is more likely to be caught.  This
+  ## check will eventually be removed
+  if ("value" %in% names) {
+    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
+  }
+
   structure(core, class = c("Future", class(core)))
 }
 
@@ -179,7 +186,7 @@ print.Future <- function(x, ...) {
   cat(sprintf("Lazy evaluation: %s\n", x$lazy))
   cat(sprintf("Asynchronous evaluation: %s\n", x$asynchronous))
   cat(sprintf("Local evaluation: %s\n", x$local))
-  cat(sprintf("Environment: %s\n", capture.output(x$envir)))
+  cat(sprintf("Environment: %s\n", envname(x$envir)))
   cat(sprintf("Capture standard output: %s\n", x$stdout))
   if (length(x$conditions) > 0) {
     cat(sprintf("Capture condition classes: %s\n",
@@ -243,8 +250,10 @@ print.Future <- function(x, ...) {
   if (hasResult) {
     if (inherits(result, "FutureResult")) {
       value <- result$value
+    } else if ("value" %in% names(x)) {
+      .Defunct(msg = sprintf("Detected a %s object that rely on the defunct 'value' field of format version 1.7 or before.", class(x)[1]), package = .packageName)
     } else {
-      value <- x$value
+      stop(FutureError(sprintf("The %s object does not have a 'results' field", class(x)[1]), future = future))
     }
     cat(sprintf("Value: %s of class %s\n", asIEC(objectSize(value)), sQuote(class(value)[1])))
     if (inherits(result, "FutureResult")) {
@@ -382,7 +391,7 @@ result.Future <- function(future, ...) {
     }
   }
 
-  .Defunct(msg = "Future objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+  .Defunct(msg = "Future objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.", package = .packageName)
 }
 
 
@@ -442,10 +451,13 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
+  if (is.null(split)) split <- FALSE
+  stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
+ 
   version <- future$version
   if (is.null(version)) {
     warning(FutureWarning("Future version was not set. Using default %s",
@@ -460,7 +472,15 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       ## of 'future' is used, then give an early error
       ## If future::FutureResult does not exist, give an error
       has_future <- base::requireNamespace("future", quietly = TRUE)
-      version <- if (has_future) utils::packageVersion("future") else NULL
+      if (has_future) {
+        ## future (>= 1.20.0)
+        ns <- base::getNamespace("future")
+        version <- ns[[".package"]][["version"]]
+        ## future (< 1.20.0)
+        if (is.null(version)) version <- utils::packageVersion("future")
+      } else {
+        version <- NULL
+      }
       if (!has_future || version < "1.8.0") {
         info <- base::c(
           r_version = base::gsub("R version ", "", base::R.version$version.string),
@@ -585,7 +605,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, enter = enter, exit = exit, ..., version = version)
+  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
 
 ##  mdebug("getExpression() ... DONE")
@@ -597,9 +617,8 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 makeExpression <- local({
   skip <- skip.local <- NULL
   
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
-    if (is.null(conditionClasses)) conditionClasses <- character(0L)
-    if (immediateConditions) {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
+    if (immediateConditions && !is.null(conditionClasses)) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
     } else {
@@ -666,7 +685,7 @@ makeExpression <- local({
         .(enter)
   
         ## Capture standard output?
-        if (base::is.na(.(stdout))) {  ## stdout = NA
+        if (.(base::is.na(stdout))) {  ## stdout = NA
           ## Don't capture, but also don't block any output
         } else {
           if (.(stdout)) {  ## stdout = TRUE
@@ -682,9 +701,9 @@ makeExpression <- local({
               open = "w"
             )
           }
-          base::sink(...future.stdout, type = "output", split = FALSE)
+          base::sink(...future.stdout, type = "output", split = .(split))
           base::on.exit(if (!base::is.null(...future.stdout)) {
-            base::sink(type = "output", split = FALSE)
+            base::sink(type = "output", split = .(split))
             base::close(...future.stdout)
           }, add = TRUE)
         }
@@ -713,7 +732,6 @@ makeExpression <- local({
               seq.int <- base::seq.int
               signalCondition <- base::signalCondition
               sys.calls <- base::sys.calls
-              Sys.time <- base::Sys.time
               `[[` <- base::`[[`
               `+` <- base::`+`
               `<<-` <- base::`<<-`
@@ -740,12 +758,13 @@ makeExpression <- local({
                     condition = cond,
                     calls     = c(sysCalls(from = ...future.frame), cond$call),
                     session   = sessionInformation(),
-                    timestamp = Sys.time(),
+                    timestamp = base::Sys.time(),
                     signaled  = 0L
                   )
 		  
                   signalCondition(cond)
-                } else if (inherits(cond, .(conditionClasses))) {
+                } else if (.(!is.null(conditionClasses)) &&
+                           inherits(cond, .(conditionClasses))) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
@@ -755,16 +774,18 @@ makeExpression <- local({
 		    condition = cond,
 		    signaled = base::as.integer(signal)
 		  )
-                  if (!signal) {
+                  if (.(immediateConditions && !split) && !signal) {
                     ## muffleCondition <- future:::muffleCondition()
                     muffleCondition <- .(muffleCondition)
                     muffleCondition(cond)
                   }
                 } else {
-                  ## Muffle all non-captured conditions
-                  ## muffleCondition <- future:::muffleCondition()
-                  muffleCondition <- .(muffleCondition)
-                  muffleCondition(cond)
+                  if (.(!split && !is.null(conditionClasses))) {
+                    ## Muffle all non-captured conditions
+                    ## muffleCondition <- future:::muffleCondition()
+                    muffleCondition <- .(muffleCondition)
+                    muffleCondition(cond)
+                  }
                 }
               }
             }) ## local()
@@ -779,10 +800,7 @@ makeExpression <- local({
           ), class = "FutureResult")
         }, finally = .(exit))
 	
-        Sys.time
-	
-        if (base::is.na(.(stdout))) {
-        } else {
+        if (.(!base::is.na(stdout))) {
           base::sink(type = "output", split = FALSE)
           if (.(stdout)) {
             ...future.result$stdout <- base::rawToChar(
@@ -798,16 +816,6 @@ makeExpression <- local({
         ...future.result$conditions <- ...future.conditions
         
         ...future.result
-      })
-    } else if (version == "1.7") {  ## Deprecated
-      expr <- bquote({
-        ## covr: skip=6
-        .(enter)
-        base::tryCatch({
-          .(expr)
-        }, finally = {
-          .(exit)
-        })
       })
     } else {
       stop(FutureError("Internal error: Non-supported future expression version: ", version))

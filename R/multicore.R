@@ -41,8 +41,6 @@
 #' @seealso
 #' For processing in multiple background \R sessions, see
 #' [multisession] futures.
-#' For multicore processing with fallback to multisession where
-#' the former is not supported, see [multiprocess] futures.
 #'
 #' Use [availableCores()] to see the total number of
 #' cores that are available for the current \R session.
@@ -51,9 +49,7 @@
 #' system.
 #'
 #' @export
-multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, workers = availableCores(constraints = "multicore"), earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-
+multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(is.finite(workers), workers >= 1L)
@@ -63,13 +59,13 @@ multicore <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FA
   ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore(warn = TRUE)) {
     ## covr: skip=1
-    return(sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = TRUE, label = label, ...))
+    return(sequential(..., envir = envir))
   }
 
   oopts <- options(mc.cores = workers)
   on.exit(options(oopts))
 
-  future <- MulticoreFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, workers = workers, earlySignal = earlySignal, label = label, ...)
+  future <- MulticoreFuture(..., workers = workers, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

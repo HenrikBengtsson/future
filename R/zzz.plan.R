@@ -55,7 +55,7 @@
 #'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{[`multiprocess`]:}{
+#'  \item{[`multiprocess`]:}{(DEPRECATED)
 #'    If multicore evaluation is supported, that will be used,
 #'    otherwise multisession evaluation will be used.
 #'  }
@@ -93,11 +93,20 @@
 #' If you think it is necessary to modify the future strategy within a
 #' function, then make sure to undo the changes when exiting the function.
 #' This can be done using:
+#'
 #' \preformatted{
 #'   oplan <- plan(new_set_of_strategies)
 #'   on.exit(plan(oplan), add = TRUE)
 #'   [...]
 #' }
+#'
+#' This is important because the end-user might have already set the future
+#' strategy elsewhere for other purposes and will most likely not known that
+#' calling your function will break their setup.
+#' _Remember, your package and its functions might be used in a greater
+#' context where multiple packages and functions are involved and those might
+#' also rely on the future framework, so it is important to avoid stepping on 
+#' others' toes._
 #'
 #' @section Using plan() in scripts and vignettes:
 #' When writing scripts or vignettes that uses futures, try to place any
@@ -123,6 +132,32 @@ plan <- local({
 
   ## Stack of type of futures to use
   stack <- defaultStack
+
+  warn_about_multiprocess <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is deprecated 'multiprocess' used?    
+      for (kk in seq_along(stack)) {
+        evaluator <- stack[[kk]]
+        if (inherits(evaluator, "multiprocess") && 
+            class(evaluator)[1] == "multiprocess") {  ## <== sic!
+          ignore <- Sys.getenv("R_FUTURE_DEPRECATED_IGNORE", "")
+          ignore <- getOption("future.deprecated.ignore", ignore)
+          ignore <- unlist(strsplit(ignore, split="[, ]", fixed = FALSE))
+          if (!is.element("multiprocess", ignore)) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
+          }
+
+          break
+        }
+      }
+    }
+  })
 
   plan_cleanup <- function() {
     ClusterRegistry(action = "stop")
@@ -202,7 +237,9 @@ plan <- local({
       mdebug("plan(): Setting new future strategy stack:")
       mprint(newStack)
     }
-    
+
+    warn_about_multiprocess(newStack)
+
     stack <<- newStack
 
     ## Stop any (implicitly started) clusters?
@@ -237,6 +274,7 @@ plan <- local({
       if (!inherits(strategy, "FutureStrategy")) {
         class(strategy) <- c("FutureStrategy", class(strategy))
       }
+      stop_if_not(is.function(strategy))
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
@@ -500,6 +538,6 @@ resetWorkers.multicore <- function(x, ...) {
   if (usedCores() == 0L) return(invisible(x))
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
-  stopifnot(usedCores() == 0L)
+  stop_if_not(usedCores() == 0L)
 }
 

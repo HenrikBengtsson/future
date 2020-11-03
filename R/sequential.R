@@ -10,10 +10,6 @@
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' 
-#' @param local If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done in the calling environment.
-#'
 #' @return A \link{SequentialFuture}.
 #'
 #' @example incl/sequential.R
@@ -35,11 +31,8 @@
 #'
 #' @aliases uniprocess
 #' @export
-sequential <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, local = TRUE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-  local <- as.logical(local)
-
-  future <- SequentialFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, ...)
+sequential <- function(..., envir = parent.frame()) {
+  future <- SequentialFuture(..., envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
@@ -47,8 +40,7 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 #' @rdname sequential
 #' @export
-transparent <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = FALSE, local = FALSE, earlySignal = TRUE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-  sequential(expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, local = local, earlySignal = earlySignal, label = label, ...)
+transparent <- function(..., envir = parent.frame()) {
+  sequential(..., local = FALSE, envir = envir)
 }
 class(transparent) <- c("transparent", "sequential", "uniprocess", "future", "function")

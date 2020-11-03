@@ -27,12 +27,11 @@
 #' and \code{\link{\%<-\%}} will create _cluster futures_.
 #'
 #' @export
-cluster <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = NULL, globals = TRUE, persistent = FALSE, workers = availableWorkers(), user = NULL, revtunnel = TRUE, homogeneous = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
-  if (substitute) expr <- substitute(expr)
-
-  future <- ClusterFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, seed = seed, globals = globals, persistent = persistent, workers = workers, user = user, revtunnel = revtunnel, homogeneous = homogeneous, gc = gc, earlySignal = earlySignal, label = label, ...)
+cluster <- function(..., workers = availableWorkers(), envir = parent.frame()) {
+  future <- ClusterFuture(..., workers = workers, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
+attr(cluster, "tweakable") <- quote(makeClusterPSOCK_args())

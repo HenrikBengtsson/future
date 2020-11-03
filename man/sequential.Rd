@@ -6,73 +6,15 @@
 \alias{transparent}
 \title{Create a sequential future whose value will be in the current \R session}
 \usage{
-sequential(
-  expr,
-  envir = parent.frame(),
-  substitute = TRUE,
-  lazy = FALSE,
-  seed = NULL,
-  globals = TRUE,
-  local = TRUE,
-  earlySignal = FALSE,
-  label = NULL,
-  ...
-)
+sequential(..., envir = parent.frame())
 
-transparent(
-  expr,
-  envir = parent.frame(),
-  substitute = TRUE,
-  lazy = FALSE,
-  seed = NULL,
-  globals = FALSE,
-  local = FALSE,
-  earlySignal = TRUE,
-  label = NULL,
-  ...
-)
+transparent(..., envir = parent.frame())
 }
 \arguments{
-\item{expr}{An \R \link[base]{expression}.}
+\item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
-
-\item{substitute}{If TRUE, argument \code{expr} is
-\code{\link[base]{substitute}()}:ed, otherwise not.}
-
-\item{lazy}{If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
-
-\item{seed}{(optional) If TRUE, the random seed, that is, the state of the
-random number generator (RNG) will be set such that statistically sound
-random numbers are produced (also during parallelization).
-If FALSE (default), it is assumed that the future expression does neither
-need nor use random numbers generation.
-To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
-or a regular RNG seed (a single integer).
-Furthermore, if FALSE, then the future will be monitored to make sure it
-does not use random numbers.  If it does and depending on the value of
-option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
-ignored, an informative warning, or error will be produced.
-If \code{seed} is NULL, then the effect is as with \code{seed = FALSE}
-but without the RNG check being performed.}
-
-\item{globals}{(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link[=future]{future()}}.}
-
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done in the calling environment.}
-
-\item{earlySignal}{Specified whether conditions should be signaled as soon
-as possible or not.}
-
-\item{label}{An optional character string label attached to the future.}
-
-\item{...}{Reserved for internal use only.}
 }
 \value{
 A \link{SequentialFuture}.

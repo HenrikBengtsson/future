@@ -33,7 +33,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     resolve <- FALSE
   } else {
     stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
-    .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.resolve"), sQuote(resolve)))
+    .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.resolve"), sQuote(resolve)), package = .packageName)
   }
   
   debug <- getOption("future.debug", FALSE)
@@ -55,7 +55,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     } else {
       globals.onMissing <- match.arg(globals.onMissing,
                                      choices = c("error", "ignore"))
-      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)))
+      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)), package = .packageName)
       mustExist <- is.element(globals.onMissing, "error")
     }
   }
@@ -95,7 +95,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (is.null(globals.method)) {
         globals.method <- "ordered"
       } else {
-        .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.method"), sQuote(globals.method)))
+        .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.method"), sQuote(globals.method)), package = .packageName)
       }
       
       globals <- globalsOf(
@@ -222,7 +222,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       ## Nothing to do?
       if (length(idxs) > 0) {
         if (debug) mdebugf("Global futures (not constant): %s", hpaste(sQuote(names(globals[idxs]))))
-        valuesF <- values(globals[idxs])
+        valuesF <- value(globals[idxs])
         globals[idxs] <- lapply(valuesF, FUN = ConstantFuture)
       }
     }

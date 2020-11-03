@@ -9,80 +9,110 @@ stopifnot(identical(sequential2, future::sequential))
 stopifnot(!inherits(sequential2, "tweaked"))
 
 
-message("*** y <- tweak(future::sequential, local = FALSE) ...")
-sequential2 <- future::tweak(future::sequential, local = FALSE)
+message("*** y <- tweak(future::sequential, abc = FALSE) ...")
+sequential2 <- future::tweak(future::sequential, abc = FALSE)
 print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
-stopifnot(identical(formals(sequential2)$local, FALSE))
+stopifnot(identical(formals(sequential2)$abc, FALSE))
 
 
-message("*** y <- tweak('sequential', local = FALSE) ...")
-sequential2 <- future::tweak("sequential", local = FALSE)
+message("*** y <- tweak('sequential', abc = FALSE) ...")
+sequential2 <- future::tweak("sequential", abc = FALSE)
 print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
-stopifnot(identical(formals(sequential2)$local, FALSE))
+stopifnot(identical(formals(sequential2)$abc, FALSE))
 
 
 library("future")
 
-message("*** y <- tweak(sequential, local = FALSE) ...")
-sequential2 <- future::tweak(sequential, local = FALSE)
+message("*** y <- tweak(sequential, abc = FALSE) ...")
+sequential2 <- future::tweak(sequential, abc = FALSE)
 print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
-stopifnot(identical(formals(sequential2)$local, FALSE))
+stopifnot(identical(formals(sequential2)$abc, FALSE))
 
-message("*** y <- tweak('sequential', local = FALSE) ...")
-sequential2 <- future::tweak('sequential', local = FALSE)
+message("*** y <- tweak('sequential', abc = FALSE) ...")
+sequential2 <- future::tweak('sequential', abc = FALSE)
 print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
-stopifnot(identical(formals(sequential2)$local, FALSE))
+stopifnot(identical(formals(sequential2)$abc, FALSE))
 
-message("*** y <- tweak('sequential', local = FALSE, abc = 1, def = TRUE) ...")
+message("*** y <- tweak('sequential', abc = FALSE, abc = 1, def = TRUE) ...")
 res <- tryCatch({
-  sequential2 <- future::tweak('sequential', local = FALSE, abc = 1, def = TRUE)
+  sequential2 <- future::tweak('sequential', abc = FALSE, abc = 1, def = TRUE)
 }, warning = function(w) {
   w
 })
 stopifnot(inherits(res, "warning"))
-sequential2 <- future::tweak('sequential', local = FALSE, abc = 1, def = TRUE)
+sequential2 <- future::tweak('sequential', abc = FALSE, abc = 1, def = TRUE)
 print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
-stopifnot(identical(formals(sequential2)$local, FALSE))
+stopifnot(identical(formals(sequential2)$abc, FALSE))
+
+
+message("*** plan() - tweak without introducting package dependencies ...")
+
+## Requires a auxillary package that is available and not already loaded
+if (requireNamespace("grid")) {
+  local({
+    cl <- makeClusterPSOCK(1L)
+    on.exit(parallel:::stopCluster(cl))
+    ns0 <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
+
+    ## After the migration to 'parallelly', makeClusterPSOCK() only loads
+    ## that package on the workers.  Previously, it would load 'future'
+    ## and all of its dependencies.  The latter are loaded my the below
+    ## plan() call.
+    ns0 <- c(ns0, "listenv", "codetools", "digest", "globals", "future")
+    ns0 <- c(ns0, "parallelly", "tools")
+    
+    if (!is.element("grid", ns0)) {
+      ## Assert that a global copy from a package does not trigger
+      ## that package from being loaded on the worker
+      dummy <- grid::depth
+      oplan <- future::plan(future::cluster, workers = cl)
+      on.exit(future::plan(oplan), add = TRUE)
+      ns <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
+      diff <- setdiff(ns, ns0)
+      if (length(diff) > 0) {
+        stop("plan() with a tweak() causes new packages to be loaded: ", sQuote(paste(diff, collapse = ", ")))
+      }
+    }
+  })
+}
+
+message("*** plan() - tweak without introducting package dependencies ... DONE")
 
 
 message("*** y %<-% { expr } %tweak% tweaks ...")
 
 plan(sequential)
-a <- 0
 
+a <- 0
 x %<-% { a <- 1; a }
 print(x)
 stopifnot(a == 0, x == 1)
 
-x %<-% { a <- 2; a } %tweak% list(local = FALSE)
-print(x)
-stopifnot(a == 2, x == 2)
 
+plan(sequential, abc = FALSE)
 
-plan(sequential, local = FALSE)
 a <- 0
-
 x %<-% { a <- 1; a }
 print(x)
-stopifnot(a == 1, x == 1)
+stopifnot(a == 0, x == 1)
 
-x %<-% { a <- 2; a } %tweak% list(local = TRUE)
+x %<-% { a <- 2; a } %tweak% list(abc = TRUE)
 print(x)
-stopifnot(a == 1, x == 2)
+stopifnot(a == 0, x == 2)
 
 
 # Preserve nested futures
-plan(list(A = sequential, B = tweak(sequential, local = FALSE)))
+plan(list(A = sequential, B = tweak(sequential, abc = FALSE)))
 a <- 0
 
 x %<-% {
@@ -93,31 +123,23 @@ x %<-% {
 print(x)
 stopifnot(a == 0, x == 1)
 
-x %<-% {
-  stopifnot(identical(names(plan("list")), "B"))
-  a <- 2
-  a
-} %tweak% list(local = FALSE)
-print(x)
-stopifnot(a == 2, x == 2)
-
 
 message("*** y %<-% { expr } %tweak% tweaks ... DONE")
 
 
-message("*** tweak() - gc = TRUE ...")
+message("*** tweak() - abc = TRUE ...")
 
 res <- tryCatch(tweak(multisession, gc = TRUE), condition = identity)
 stopifnot(inherits(res, "tweaked"))
 
 ## Argument 'gc' is unknown
-res <- tryCatch(tweak(sequential, gc = TRUE), condition = identity)
+res <- tryCatch(tweak(sequential, abc = TRUE), condition = identity)
 stopifnot(inherits(res, "warning"))
 
-res <- tryCatch(tweak(multicore, gc = TRUE), condition = identity)
+res <- tryCatch(tweak(multicore, abc = TRUE), condition = identity)
 stopifnot(inherits(res, "warning"))
 
-message("*** tweak() - gc = TRUE ... DONE")
+message("*** tweak() - abc = TRUE ... DONE")
 
 
 message("*** tweak() - odds and ends ...")

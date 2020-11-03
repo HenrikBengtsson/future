@@ -40,7 +40,7 @@ y
 ## Error: object 'x' not found
 ```
 
-It is recommended to avoid above constructs where it is ambigious whether a variable is global or local.  To force variable `x` to always be global, insert it at the very being of the future expression, e.g.
+It is recommended to avoid above constructs where it is ambiguous whether a variable is global or local.  To force variable `x` to always be global, insert it at the very being of the future expression, e.g.
 ```r
 reset <- FALSE
 x <- 1
@@ -82,7 +82,7 @@ It may also become a problem with futures evaluated with lazy evaluation if the 
 
 #### get() - object not found
 
-The base R function `get()` can be used to get the value of a object by its name.  For example, `get("pi", envir = baseenv())` will get the value of object `pi` in the 'base' environment, i.e. it corresponds to `base::pi`.  If no other objects named `pi` exists on the search path, we could have used `get("pi")` and `pi`, respectively.  It is not unusal to see code snippets such as:
+The base R function `get()` can be used to get the value of a object by its name.  For example, `get("pi", envir = baseenv())` will get the value of object `pi` in the 'base' environment, i.e. it corresponds to `base::pi`.  If no other objects named `pi` exists on the search path, we could have used `get("pi")` and `pi`, respectively.  It is not unusual to see code snippets such as:
 
 ```r
 > a <- 1:3
@@ -113,7 +113,7 @@ The workaround is to tell the future framework what _additional_ globals are nee
 > y
 [1] 6
 ```
-or my injecting `a` at the beginning of the future expression, e.g.
+or ny injecting variable `a` at the beginning of the future expression, e.g.
 ```r
 > f <- future({ a; my_sum("a") })
 > y <- value(f)
@@ -181,7 +181,7 @@ Error in eval(parse(text = text, keep.source = FALSE), envir) :
   object 'a' not found
 ```
 
-As examplained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
+As explained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
 ```
 > s %<-% glue("The value of a is {a}.") %globals% structure(TRUE, add = "a")
 > s
@@ -200,7 +200,7 @@ The value of a is 42.
 
 ### Missing packages (false negatives)
 
-Occassionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
+Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
 ```r
 > library("future")
 > plan(multisession)

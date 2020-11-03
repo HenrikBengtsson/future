@@ -4,7 +4,7 @@
 #'
 #' @param fassignment The future assignment, e.g.
 #'        `x %<-% { expr }`.
-#' @inheritParams multiprocess
+#' @inheritParams future
 #'
 #' @export
 `%label%` <- function(fassignment, label) {

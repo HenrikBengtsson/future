@@ -1,6 +1,120 @@
 Package: future
 ===============
 
+Version: 1.20.1 [2020-10-30]
+
+BUG FIXES:
+
+ * future::plan("multisession") would produce 'Error in if (debug)
+   mdebug("covr::package_coverage() workaround ...") : argument is not
+   interpretable as logical' if and only if the 'covr' package was loaded.
+
+
+Version: 1.20.0 [2020-10-30]
+
+SIGNIFICANT CHANGES:
+
+ * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
+   'multicore', depending on operating system and R setup.  The plan() function
+   will give an informative deprecation warning when 'multiprocess' is used.
+   This warning is given only once per R session.
+
+ * Launching R or Rscript with command-line option --parallel=n, where n > 1,
+   will now use 'multisession' as future strategy.  Previously, it would use
+   'multiprocess', which is now deprecated.
+
+ * Support for 'local = FALSE' is deprecated.  For the time being, it remains
+   supported for 'transparent' futures and 'cluster' futures that use
+   'persistent = TRUE'.  However, note that 'persistent = TRUE' will also
+   deprecated at some point in the future.  These deprecations are required in
+   order to further standardize the Future API across various types of parallel
+   backends.
+
+ * Now multisession workers inherit the package library path from the main R
+   session *when they are created*, that is, when calling plan(multisession).
+   To avoid this, use plan(multisession, rscript_libs = NULL), which is an
+   argument passed down to makeClusterPSOCK().  With this update, 'sequential',
+   'multisession', and 'multicore' futures see the exact same library path.
+
+ * Several functions for managing 'parallel'-style processing have been moved
+   to a new 'parallelly' package.  Specifically, functions availableCores(),
+   availableWorkers(), supportsMulticore(), as.cluster(), autoStopCluster(),
+   makeClusterMPI(), makeClusterPSOCK(), and makeNodePSOCK() have been moved.
+   None of them are specific to futures per se and are likely useful elsewhere
+   too.  Also, having them in a separate, standalone package will speed up the
+   process of releasing any updates to these functions.  The code base of the
+   'future' package shrunk about 10-15% from this migration.  For backward
+   compatibility, the migrated functions remain in this package as re-exports.
+
+NEW FEATURES:
+
+ * Setting up a future strategy with argument 'split = TRUE' will cause the
+   standard output and non-error conditions to be split ("tee:d") on the
+   worker's end, while still relaying back to the main R session as before.
+   This can be useful when debugging with browse() or debug(), e.g.
+   plan(sequential, split = TRUE).  Without it, debug output is not displayed.
+
+ * Now multicore futures relay immediateCondition:s in a near-live fashion.
+
+ * It is now possible to pass any arguments that makeClusterPSOCK() accepts in
+   the call to plan(cluster, ...) and plan(multisession, ...).  For instance,
+   to set the working directory of the cluster workers to a temporary folder,
+   pass argument 'rscript_startup = "setwd(tempdir())"'.  Another example is
+   'rscript_libs = c(libs, "*")' to prepend the library path on the worker
+   with the paths in 'libs'.
+
+ * plan() and tweak() check for even more arguments that must not be set by
+   either of them.  Specifically, attempts to adjust the following arguments
+   of future() will result in an error: 'conditions', 'envir', 'globals',
+   'packages', 'stdout', and 'substitute' in addition to already validated
+   'lazy' and 'seed'.
+ 
+ * tweak() now returns a wrapper function that calls the original future
+   strategy function with the modified defaults.  Previously, it would make a
+   copy of the original function with modified argument defaults.  This new
+   approach will make it possible to introduce new future arguments that can
+   be modified by tweak() and plan() without having to update every future
+   backend package, e.g. the new 'split = TRUE' argument.
+
+DOCUMENTATION:
+
+ * Add a 'Best Practices for Package Developers' vignette.
+
+ * Add a 'How the Future Framework is Validated' vignette.
+
+MISCELLANEOUS:
+
+ * Harmonizing Future constructor functions to also use 'substitute = TRUE'.
+
+BUG FIXES:
+
+ * Since last version, future 1.19.1, future(..., conditions = character(0L)) 
+   would no longer avoid intercepting conditions as intended; instead, it
+   muffles all conditions.  From now on, use 'conditions = NULL'.
+
+ * Relaying of immediateCondition:s was not near-live for multisession and
+   cluster if the underlying PSOCK cluster used useXDR=FALSE for communication.
+
+ * print() for Future would also print any attributes of its environment.
+
+ * The error message produced by nbrOfWorkers() was incomplete.
+ 
+ * Renamed environment variable 'R_FUTURE_MAKENODEPSOCK_tries' used by
+   makeClusterPSOCK() to 'R_FUTURE_MAKENODEPSOCK_TRIES'.
+
+ * The Mandelbrot demo would produce random numbers without declaring so.
+
+DEPRECATED AND DEFUNCT:
+
+ * Strategy 'multiprocess' is deprecated in favor of either 'multisession' or
+   'multicore', depending on operating system and R setup.
+
+ * values() is deprecated. Use value() instead.
+
+ * All backward compatible code for the legacy, defunct, internal Future
+   element 'value' is now removed.  Using or relying on it is an error.
+ 
+
 Version: 1.19.1 [2020-09-21]
 
 BUG FIXES:
@@ -1683,7 +1797,7 @@ NEW FEATURES:
 
  * Eager and lazy futures now records the result internally
    such that the expression is only evaluated once, even if
-   their errored values are requested multiple times.
+   their error values are requested multiple times.
 
  * Eager futures are always created regardless of error or not.
 

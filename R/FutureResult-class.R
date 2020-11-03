@@ -47,7 +47,7 @@ FutureResult <- function(value = NULL, visible = TRUE, stdout = NULL, conditions
 
   stop_if_not(is.logical(visible), length(visible) == 1L, !is.na(visible))
 
-  if (!is.null(stdout)) stopifnot(is.character(stdout))
+  if (!is.null(stdout)) stop_if_not(is.character(stdout))
 
   stop_if_not(is.null(conditions) || is.list(conditions))
 
@@ -56,7 +56,7 @@ FutureResult <- function(value = NULL, visible = TRUE, stdout = NULL, conditions
   stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
 
   if (version == "1.7") {
-    .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.")
+    .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.", package = .packageName)
   }
 
   structure(list(

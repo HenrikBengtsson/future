@@ -169,7 +169,7 @@ for (ss in seq_along(strategies)) {
 
   message("- getting value")
   msgs <- recordMessages({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
@@ -177,7 +177,7 @@ for (ss in seq_along(strategies)) {
   
   message("- getting value again")
   msgs <- recordMessages({
-    vs <- values(fs)
+    vs <- value(fs)
   })
   message("  values: ", paste(vs, collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))

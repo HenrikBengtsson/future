@@ -93,6 +93,34 @@ asIEC <- function(size, digits = 2L) {
   sprintf(fmt, size)
 } # asIEC()
 
+#' @importFrom utils capture.output
+envname <- function(env) {
+  if (!is.environment(env)) return(NA_character_)
+  name <- environmentName(env)
+  if (name == "") {
+    class <- class(env)
+    if (identical(class, "environment")) {
+      ## e.g. new.env()
+      name <- capture.output(print(env))
+    } else {
+      ## It might be that 'env' is on a class that extends 'environment',
+      ## e.g. R.oo::Object() or R6::R6Class().
+      ## IMPORTANT: The unset class must be temporary, because changing
+      ## the class of an environment will
+      name <- local({
+        on.exit(class(env) <- class)
+        class(env) <- NULL
+        capture.output(print(env))
+      })	
+    }
+    if (length(name) > 1L) name <- name[1]
+    name <- gsub("(.*: |>)", "", name)
+  } else {
+    ## e.g. globals:::where("plan")
+    name <- gsub("package:", "", name, fixed = TRUE)
+  }
+  name
+}
 
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   ## format(x, format = format) ## slower
@@ -881,7 +909,7 @@ resolveMPI <- local({
           }
         }
       }
-      stopifnot(is.function(resolveMPI))
+      stop_if_not(is.function(resolveMPI))
       cache$resolveMPI <<- resolveMPI
     }
 
@@ -1117,28 +1145,6 @@ pid_exists <- local({
 })
 
 
-#' @importFrom tools pskill
-pid_kill <- function(pid, wait = 0.5, timeout = 30, debug = TRUE) {
-  pid <- as.integer(pid)
-  stop_if_not(length(pid), !is.na(pid), pid >= 0L)
-
-  setTimeLimit(elapsed = timeout)
-  on.exit(setTimeLimit(elapsed = Inf))
-
-  tryCatch({
-    ## Always try to kill, because pid_exists() can be very slow on Windows
-    pskill(pid)
-  
-    ## Wait a bit before checking whether process was successfully
-    ## killed or not
-    Sys.sleep(wait)
-
-    ## WARNING: pid_exists() can be very slow on Windows
-    !isTRUE(pid_exists(pid))
-  }, error = function(ex) NA)
-}
-
-
 ## From R.utils 2.7.0 (2018-08-26)
 queryRCmdCheck <- function(...) {
   evidences <- list()
@@ -1217,4 +1223,53 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   if (debug) mdebugf("supports_omp_threads() = %s", res, debug = debug)
 
   res
+}
+
+
+
+## base::bquote() gained argument 'splice' in R 4.0.0 (April 2020)
+## Below is a verbatim copy of bquote() in R 4.0.3
+if (getRversion() < "4.0.0") {
+  bquote <- function(expr, where = parent.frame(), splice = FALSE) {
+      if (!is.environment(where)) 
+          where <- as.environment(where)
+      unquote <- function(e) {
+          if (is.pairlist(e)) 
+              as.pairlist(lapply(e, unquote))
+          else if (is.call(e)) {
+              if (is.name(e[[1L]]) && as.character(e[[1]]) == ".") 
+                  eval(e[[2L]], where)
+              else if (splice) {
+                  if (is.name(e[[1L]]) && as.character(e[[1L]]) == 
+                    "..") 
+                    stop("can only splice inside a call", call. = FALSE)
+                  else as.call(unquote.list(e))
+              }
+              else as.call(lapply(e, unquote))
+          }
+          else e
+      }
+      is.splice.macro <- function(e) is.call(e) && is.name(e[[1L]]) && 
+          as.character(e[[1L]]) == ".."
+      unquote.list <- function(e) {
+          p <- Position(is.splice.macro, e, nomatch = NULL)
+          if (is.null(p)) 
+              lapply(e, unquote)
+          else {
+              n <- length(e)
+              head <- if (p == 1) 
+                  NULL
+              else e[1:(p - 1)]
+              tail <- if (p == n) 
+                  NULL
+              else e[(p + 1):n]
+              macro <- e[[p]]
+              mexp <- eval(macro[[2L]], where)
+              if (!is.vector(mexp)) 
+                  stop("can only splice vectors")
+              c(lapply(head, unquote), mexp, as.list(unquote.list(tail)))
+          }
+      }
+      unquote(substitute(expr))
+  }
 }

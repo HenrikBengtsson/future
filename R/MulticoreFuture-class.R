@@ -12,7 +12,7 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, lazy = FALSE, ...) {
+MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## Global objects
@@ -34,7 +34,7 @@ MulticoreFuture <- function(expr = NULL, envir = parent.frame(), substitute = FA
   }
   gp <- NULL
 
-  future <- MultiprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, ...)
+  future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, ...)
 
   future <- as_MulticoreFuture(future, ...)
 
@@ -124,6 +124,12 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   ## FIXME: Can we use result() instead? /HB 2018-07-16
   pid <- selectChildren(children = job, timeout = timeout)
   res <- (is.integer(pid) || is.null(pid))
+
+  ## Collect and relay immediateCondition if they exists
+  conditions <- readImmediateConditions(signal = TRUE)
+  ## Record conditions as signaled
+  signaled <- c(x$.signaledConditions, conditions)
+  x$.signaledConditions <- signaled
 
   ## Signal conditions early? (happens only iff requested)
   if (res) signalEarly(x, ...)
@@ -219,15 +225,25 @@ result.MulticoreFuture <- function(future, ...) {
     future$result <- ex
     stop(ex)
   }
+
+  ## Collect and relay immediateCondition if they exists
+  conditions <- readImmediateConditions()
+  ## Record conditions as signaled
+  signaled <- c(future$.signaledConditions, conditions)
+  future$.signaledConditions <- signaled
+
+  ## Record conditions
+  result$conditions <- c(result$conditions, signaled)
+  signaled <- NULL
   
   future$result <- result
-  
+
   future$state <- "finished"
 
   ## Remove from registry
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
-
+  
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
   signalImmediateConditions(future)
@@ -237,7 +253,7 @@ result.MulticoreFuture <- function(future, ...) {
 
 
 #' @export
-getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, ...) {
+getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.psock.relay.immediate", immediateConditions), ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
@@ -281,5 +297,37 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
     if (debug) mdebug("- Updated expression to force single-threaded mode")
   }
 
-  NextMethod(expr = expr, mc.cores = mc.cores)
+
+  ## Inject code for resignaling immediateCondition:s?
+  if (resignalImmediateConditions && immediateConditions) {
+    immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+    conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
+
+    if (length(conditionClasses) > 0L) {
+      ## Communicate via the local file system
+      expr <- bquote({
+        withCallingHandlers({
+          .(expr)
+        }, immediateCondition = function(cond) {
+          ## Send condition wrapped in an object with a timestamp
+          obj <- list(time = Sys.time(), condition = cond)
+          file <- tempfile(
+            class(cond)[1],
+            tmpdir = .(immediateConditionsPath()),
+            fileext = ".rds"
+          )
+          ## save_rds <- future:::save_rds
+          save_rds <- .(save_rds)
+          save_rds(obj, file)
+
+          ## Avoid condition from being signaled more than once
+          ## muffleCondition <- future:::muffleCondition
+          muffleCondition <- .(muffleCondition)
+          muffleCondition(cond)
+        })
+      })
+    } ## if (length(conditionClasses) > 0)
+  } ## if (resignalImmediateConditions && immediateConditions)
+
+  NextMethod(expr = expr, mc.cores = mc.cores, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
 }

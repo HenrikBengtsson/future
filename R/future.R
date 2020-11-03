@@ -16,7 +16,7 @@
 #' 
 #' @param expr,value An \R \link[base]{expression}.
 #'
-#' @param \dots Reserved for internal use only.
+#' @param \dots Additional arguments passed to [Future()].
 #'
 #' @return
 #' `f <- future(expr)` creates a [Future] `f` that evaluates expression `expr`, the value of the future is retrieved using `v <- value(f)`.
@@ -186,22 +186,18 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TRUE, packages = NULL, seed = FALSE, lazy = FALSE, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## Argument 'evaluator' is defunct
-  if (!is.null(list(...)$evaluator)) {
-    .Defunct(msg = "Argument 'evaluator' of future() was an internal argument and is now defunct. Use plan() to set the \"evaluator\".")
-  }
   makeFuture <- plan("next")
-  ## Sanity check
-  stopifnot(is.function(makeFuture))
-
   future <- makeFuture(expr, substitute = FALSE,
                        envir = envir,
-                       globals = globals, packages = packages,
-                       seed = seed,
                        lazy = lazy,
+                       seed = seed,
+                       globals = globals,
+                       packages = packages,
+                       label = label,
+                       gc = gc,
                        ...)
 
   ## Assert that a future was returned
@@ -211,3 +207,22 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, globals = TR
 
   future
 }
+
+## Arguments to 'future' strategies that must not be tweaked
+attr(future, "untweakable") <- c(
+  "asynchronous",  ## reserved
+  "conditions",
+  "envir",
+  "expr",
+  "globals",
+  "lazy",
+  "local",
+  "packages",
+  "seed",
+  "stdout",
+  "substitute",
+  "version"        ## for internal backend use
+)
+
+## Hidden arguments to 'future' strategy that my also be tweaked
+attr(future, "tweakable") <- c("earlySignal", "split")

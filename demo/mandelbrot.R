@@ -36,7 +36,7 @@ nrow <- getOption("future.demo.mandelbrot.nrow", 3L)
 resolution <- getOption("future.demo.mandelbrot.resolution", 400L)
 delay <- getOption("future.demo.mandelbrot.delay", interactive())
 if (isTRUE(delay)) {
-  delay <- function(counts) Sys.sleep(rexp(1, rate = 2))
+  delay <- function(counts) Sys.sleep(1.0)
 } else if (!is.function(delay)) {
   delay <- function(counts) {}
 }

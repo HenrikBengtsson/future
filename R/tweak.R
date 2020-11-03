@@ -61,13 +61,30 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
     stop("Additional arguments to tweak() must be named.")
   }
 
-  ## Arguments that must not be tweaked
-  if (is.element("lazy", names)) {
-    stop("Future argument 'lazy' must not be tweaked / set via plan()")
-  } else if (is.element("asynchronous", names)) {
-    stop("Future argument 'asynchronous' must not be tweaked / set via plan()")
-  } else if (is.element("seed", names)) {
-    stop("Future argument 'seed' must not be tweaked / set via plan()")
+  ## Identify arguments that must not be tweaked
+  
+  ## (i) All future strategies inherits from the 'future' class
+  untweakable <- attr(future, "untweakable")
+  tweakable <- eval(attr(future, "tweakable"))
+
+  ## (ii) Others that are specific to this future strategy, if any
+  for (class in class(strategy)) {
+    if (class == "future") break
+    if (!exists(class, mode = "function")) next
+    fcn <- get(class, mode = "function")
+    if (!inherits(fcn, "future")) next
+    untweakable <- c(attr(fcn, "untweakable"), untweakable)
+    tweakable <- c(eval(attr(fcn, "tweakable")), tweakable)
+  }
+  
+  ## Add temporary, secret option for disabling these checks in case to
+  ## give users some time to sort out legacy mistakes
+  untweakable <- getOption("future.tweak.untweakable", untweakable)
+  if (any(names %in% untweakable)) {
+    untweakable <- intersect(names, untweakable)
+    untweakable <- paste(sQuote(untweakable), collapse = ", ")
+    stop("Detected arguments that must not be set via plan() or tweak(): ",
+         untweakable)
   }
   
   ## formals()<- drops any attributes including class
@@ -77,26 +94,43 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Tweak arguments
   formals <- names(formals(strategy))
 
-  unknown <- NULL
-  for (kk in seq_along(args)) {
-    name <- names[kk]
-    if (is.element(name, formals)) {
-      formals(strategy)[[name]] <- args[[name]]
-    } else {
-      unknown <- c(unknown, name)
+  known <- c(formals, names(formals(future)), tweakable)
+  unknown <- setdiff(names, known)
+  if (length(unknown) > 0L) {
+    warning(sprintf("Detected %d unknown future arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
+  }
+
+  ## Arguments 'envir' and 'workers' must exist in the wrapper, if
+  ## they exist in the "future" function
+  for (name in c("envir", "workers")) {
+    if (is.element(name, formals) && !is.element(name, names)) {
+      args <- c(formals(strategy)[name], args)
+      names <- c(name, names)
     }
   }
-  if (length(unknown) > 0L) {
-    warning(sprintf("Ignored %d unknown arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", ")))
+  
+  strategy2 <- function(...) NULL
+  args2 <- args
+  for (kk in seq_along(args)) {
+    name <- names[kk]
+    formals(strategy2)[name] <- list(args[[name]])
+    args2[[name]] <- as.symbol(name)
   }
+  body(strategy2) <- bquote(strategy(..., ..(args2)), splice = TRUE)
+
+  ## Avoid strategy2() depending on the calling frame, which would cause it
+  ## to pick up package dependencies from there, which then are attached on
+  ## the future worker.
+  environment(strategy2) <- new.env(parent = environment(strategy))
+  environment(strategy2)$strategy <- strategy
 
   ## Restore attributes including class
-  attributes(strategy) <- attrs
+  attributes(strategy2) <- attrs
 
   ## Flag that it is tweaked
-  class(strategy) <- c("tweaked", class)
+  class(strategy2) <- c("tweaked", class)
 
-  strategy
+  strategy2
 } ## tweak()
 
 

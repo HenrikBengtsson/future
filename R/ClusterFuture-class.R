@@ -43,40 +43,46 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, envir = parent.frame(), substitute = FALSE, globals = TRUE, packages = NULL, local = !persistent, gc = FALSE, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
+  
+  stop_if_not(is.logical(persistent), length(persistent) == 1L,
+              !is.na(persistent))
 
   ## Global objects
   gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
 
-  future <- MultiprocessFuture(expr = gp$expr, envir = envir, substitute = FALSE, globals = gp$globals, packages = c(packages, gp$packages), local = local, gc = gc, node = NA_integer_, ...)
+  args <- list(...)
 
-  future <- as_ClusterFuture(future, workers = workers, user = user,
-                             master = master, revtunnel = revtunnel,
-                             homogeneous = homogeneous)
-
-  stop_if_not(is.logical(persistent), length(persistent) == 1L,
-              !is.na(persistent))
-  future$persistent <- persistent
+  ## Which '...' arguments should be passed to Future() and 
+  ## which should be passed to makeClusterPSOCK()?
+  future_args <- !is.element(names(args), makeClusterPSOCK_args())
   
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(gp$expr), substitute = FALSE, envir = envir, globals = gp$globals, packages = c(packages, gp$packages), local = local, node = NA_integer_, persistent = persistent), args[future_args]))
+
+  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]))
+
   future
 }
 
 
-as_ClusterFuture <- function(future, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE) {
+as_ClusterFuture <- function(future, workers = NULL, ...) {
   if (is.function(workers)) workers <- workers()
   if (is.null(workers)) {
     getDefaultCluster <- importParallel("getDefaultCluster")
     workers <- getDefaultCluster()
+    workers <- addCovrLibPath(workers)
   } else if (is.character(workers) || is.numeric(workers)) {
-    workers <- ClusterRegistry("start", workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous)
+    workers <- ClusterRegistry("start", workers = workers, ...)
   } else {
     workers <- as.cluster(workers)
+    workers <- addCovrLibPath(workers)
   }
   if (!inherits(workers, "cluster")) {
     stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
   }
   stop_if_not(length(workers) > 0)
+
 
   ## Attached workers' session information, unless already done.
   ## FIXME: We cannot do this here, because it introduces a race condition
@@ -133,18 +139,6 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Cluster node to use
   cl <- workers[node_idx]
-
-
-  ## WORKAROUND: When running covr::package_coverage(), the
-  ## package being tested may actually not be installed in
-  ## library path used by covr.  We here add that path iff
-  ## covr is being used. /HB 2016-01-15
-  if (is.element("covr", loadedNamespaces())) {
-    if (debug) mdebug("covr::package_coverage() workaround ...")
-    libPath <- .libPaths()[1]
-    clusterCall(cl, fun = function() .libPaths(c(libPath, .libPaths())))
-    if (debug) mdebug("covr::package_coverage() workaround ... DONE")
-  }
 
 
   ## (i) Reset global environment of cluster node such that
@@ -215,6 +209,7 @@ run.ClusterFuture <- function(future, ...) {
   invisible(future)
 }
 
+#' @importFrom parallelly connectionId isConnectionValid
 #' @export
 resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
   workers <- x$workers
@@ -262,7 +257,7 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
     connId <- connectionId(con)
     if (!is.na(connId) && connId < 0L) return(FALSE)
 
-    isValid <- isValidConnection(con)
+    isValid <- isConnectionValid(con)
     if (!isValid) {
       label <- x$label
       if (is.null(label)) label <- "<none>"
@@ -338,6 +333,7 @@ result.ClusterFuture <- function(future, ...) {
 }
 
 
+#' @importFrom parallelly isConnectionValid
 receiveMessageFromWorker <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
   if (debug) {
@@ -363,7 +359,7 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (!is.null(con <- node$con)) {
     if (debug) mdebugf("- Validating connection of %s", class(future)[1])
-    isValid <- isValidConnection(con)
+    isValid <- isConnectionValid(con)
     if (!isValid) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
@@ -449,7 +445,7 @@ receiveMessageFromWorker <- function(future, ...) {
     }
     
     node_info <- sprintf("%s #%d", sQuote(class(node)[1]), node_idx)
-    if (inherits(node, "FutureSOCKnode")) {
+    if (inherits(node, "RichSOCKnode")) {
       specs <- summary(node)
       node_info <- sprintf("%s on host %s (%s, platform %s)",
                            node_info, sQuote(specs[["host"]]),
@@ -648,7 +644,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
                 while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
                   if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
                     master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-                    if (inherits(master, "SOCKnode")) {
+                    if (inherits(master, c("SOCKnode", "SOCK0node"))) {
                       sendCondition <<- function(cond) {
                         data <- list(type = "VALUE", value = cond, success = TRUE)
                         parallel_sendData(master, data)

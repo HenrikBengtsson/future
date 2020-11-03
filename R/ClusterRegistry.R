@@ -44,5 +44,24 @@ ClusterRegistry <- local({
 
 .makeCluster <- function(workers, ...) {
   if (length(workers) == 0L) return(NULL)
-  makeClusterPSOCK(workers, ...)
+  cl <- makeClusterPSOCK(workers, ...)
+  cl <- addCovrLibPath(cl)
+  cl
 } ## .makeCluster()
+
+
+addCovrLibPath <- function(cl) {
+  if (!is.element("covr", loadedNamespaces())) return(cl)
+  debug <- getOption("future.debug", FALSE)
+  
+  ## WORKAROUND: When running covr::package_coverage(), the
+  ## package being tested may actually not be installed in
+  ## library path used by covr.  We here add that path iff
+  ## covr is being used. /HB 2016-01-15
+  if (debug) mdebug("covr::package_coverage() workaround ...")
+  libPath <- .libPaths()[1]
+  clusterCall(cl, fun = function() .libPaths(c(libPath, .libPaths())))
+  if (debug) mdebug("covr::package_coverage() workaround ... DONE")
+
+  cl
+}
