@@ -71,8 +71,8 @@ host
 ## The following setups are equivalent:
 plan(remote, workers = "localhost")
 plan(cluster, workers = "localhost", persistent = TRUE)
-plan(cluster, workers = 1L, persistent = TRUE)
-plan(multisession, workers = 1L, persistent = TRUE)
+plan(cluster, workers = 1, persistent = TRUE)
+plan(multisession, workers = 1, persistent = TRUE)
 
 ## The following setups are equivalent:
 plan(remote, workers = "remote.server.org")

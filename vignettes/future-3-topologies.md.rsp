@@ -99,8 +99,8 @@ When using this approach, there is a risk of setting up too many concurrent work
 
 ```r
 plan(list(
-  tweak(multisession, workers = availableCores() %/% 4L),
-  tweak(multisession, workers = 4L)
+  tweak(multisession, workers = availableCores() %/% 4),
+  tweak(multisession, workers = 4)
 ))
 ```
 

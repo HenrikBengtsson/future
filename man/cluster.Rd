@@ -44,7 +44,7 @@ and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 \donttest{
 
 ## Use cluster futures
-cl <- parallel::makeCluster(2L, timeout = 60)
+cl <- parallel::makeCluster(2, timeout = 60)
 plan(cluster, workers = cl)
 
 ## A global variable

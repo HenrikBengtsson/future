@@ -68,7 +68,7 @@ The constructor function should have explicit arguments `expr`, `substitute`, `e
 
 If the backend supports more than one worker, then it should also have an explicit `workers` argument.
 
-Any currying arguments that can be specified when setting the future plan must be explicit arguments of the constructor function such that they appear as named elements in `formals(myparallel)`.  Currying arguments are arguments that can be "tweaked" by the end-user, e.g. `plan(myparallel, workers = 2L)`.
+Any currying arguments that can be specified when setting the future plan must be explicit arguments of the constructor function such that they appear as named elements in `formals(myparallel)`.  Currying arguments are arguments that can be "tweaked" by the end-user, e.g. `plan(myparallel, workers = 2)`.
 
 The value of the constructor function should be invisible and a `MyParallelFuture` object that inherits from `Future`.  This is achieved by calling `Future()`, with all matching arguments passed along and then prepending `"MyParallelFuture"` to the class attribute of the returned `Future` object.
 
