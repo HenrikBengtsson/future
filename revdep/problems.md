@@ -142,7 +142,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[55787,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[65491,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -661,8 +661,8 @@ Run `revdep_details(, "iml")` for more info
 * Version: 1.6.0
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* Date/Publication: 2020-10-27
-* Number of recursive dependencies: 127
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -684,10 +684,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-11-07 11:59:21] ::plot_cnv:Start
-    INFO [2020-11-07 11:59:21] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-11-07 11:59:21] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-11-07 11:59:21] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-11-05 21:15:16] ::plot_cnv:Start
+    INFO [2020-11-05 21:15:16] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-11-05 21:15:16] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-11-05 21:15:16] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -836,7 +836,7 @@ Run `revdep_details(, "lmtp")` for more info
 * GitHub: https://github.com/nhejazi/methyvim
 * Source code: https://github.com/cran/methyvim
 * Date/Publication: 2020-04-27
-* Number of recursive dependencies: 211
+* Number of recursive dependencies: 208
 
 Run `revdep_details(, "methyvim")` for more info
 
@@ -847,6 +847,7 @@ Run `revdep_details(, "methyvim")` for more info
 *   checking tests ...
     ```
     ...
+      > test_check("methyvim")
       ── ERROR (test-methyvim.R:22:1): (code run outside of `test_that()`) ───────────
       Error: 'names' attribute [8] must be the same length as the vector [1]
       Backtrace:
@@ -861,11 +862,10 @@ Run `revdep_details(, "methyvim")` for more info
       Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
       
       ══ testthat results  ═══════════════════════════════════════════════════════════
-      Warning (test-cluster_sites.R:4:1): (code run outside of `test_that()`)
       ERROR (test-methyvim.R:22:1): (code run outside of `test_that()`)
       Warning (test-set_parallel.R:9:3): registers BiocParallel::DoparParam by default for parallel=TRUE
       
-      [ FAIL 1 | WARN 2 | SKIP 0 | PASS 34 ]
+      [ FAIL 1 | WARN 1 | SKIP 0 | PASS 34 ]
       Error: Test failures
       Execution halted
     ```
@@ -882,8 +882,8 @@ Run `revdep_details(, "methyvim")` for more info
 * Version: 1.30.0
 * GitHub: NA
 * Source code: https://github.com/cran/MineICA
-* Date/Publication: 2020-10-27
-* Number of recursive dependencies: 210
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 207
 
 Run `revdep_details(, "MineICA")` for more info
 
@@ -1163,8 +1163,8 @@ Run `revdep_details(, "promises")` for more info
 * Version: 1.22.0
 * GitHub: NA
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2020-10-27
-* Number of recursive dependencies: 281
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 286
 
 Run `revdep_details(, "Prostar")` for more info
 
@@ -1172,12 +1172,11 @@ Run `revdep_details(, "Prostar")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking whether package ‘Prostar’ can be installed ... WARNING
     ```
-    Package required and available but unsuitable version: ‘DAPAR’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
     ```
 
 # PSCBS
@@ -1229,8 +1228,8 @@ Run `revdep_details(, "PSCBS")` for more info
 * Version: 1.26.0
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
-* Date/Publication: 2020-10-27
-* Number of recursive dependencies: 72
+* Date/Publication: 2020-04-27
+* Number of recursive dependencies: 71
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -1458,7 +1457,7 @@ Run `revdep_details(, "seer")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2020-09-26 04:30:12 UTC
-* Number of recursive dependencies: 230
+* Number of recursive dependencies: 229
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -1566,7 +1565,7 @@ Run `revdep_details(, "shinyrecap")` for more info
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
 * Date/Publication: 2020-09-28 07:30:03 UTC
-* Number of recursive dependencies: 197
+* Number of recursive dependencies: 196
 
 Run `revdep_details(, "sigminer")` for more info
 
@@ -1579,6 +1578,34 @@ Run `revdep_details(, "sigminer")` for more info
       installed size is  6.5Mb
       sub-directories of 1Mb or more:
         extdata   3.7Mb
+    ```
+
+# Signac
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/timoast/signac
+* Source code: https://github.com/cran/Signac
+* Date/Publication: 2020-08-16 15:50:03 UTC
+* Number of recursive dependencies: 231
+
+Run `revdep_details(, "Signac")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      'Biobase' 'Rcpp' 'grid'
+      All declared Imports should be used.
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘cicero’
     ```
 
 # simhelpers

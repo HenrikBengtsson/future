@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-11-07                   |
+|date     |2020-11-06                   |
 
 # Dependencies
 
@@ -24,7 +24,7 @@
 
 # Revdeps
 
-## All (143)
+## All (142)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
@@ -43,7 +43,7 @@
 |[blavaan](problems.md#blavaan)                     |0.3-10    |      |        |2    |
 |[blockCV](problems.md#blockcv)                     |2.1.1     |      |        |1    |
 |[brms](problems.md#brms)                           |2.14.4    |      |        |2    |
-|ceRNAnetsim                                        |1.2.0     |      |        |     |
+|ceRNAnetsim                                        |1.0.0     |      |        |     |
 |civis                                              |3.0.0     |      |        |     |
 |Clustering                                         |1.7       |      |        |     |
 |[CLVTools](problems.md#clvtools)                   |0.7.0     |      |        |1    |
@@ -97,7 +97,7 @@
 |idmodelr                                           |0.3.2     |      |        |     |
 |[IFAA](problems.md#ifaa)                           |1.0.0     |      |        |1    |
 |[iml](problems.md#iml)                             |0.10.1    |      |        |1    |
-|[infercnv](problems.md#infercnv)                   |1.6.0     |1     |        |2    |
+|[infercnv](problems.md#infercnv)                   |1.4.0     |1     |        |3    |
 |[inlinedocs](problems.md#inlinedocs)               |2019.12.5 |      |        |1    |
 |ipc                                                |0.1.3     |      |        |     |
 |isoreader                                          |1.2.7     |      |        |     |
@@ -114,8 +114,8 @@
 |mcp                                                |0.3.0     |      |        |     |
 |merTools                                           |0.5.2     |      |        |     |
 |metagam                                            |0.1.2     |      |        |     |
-|[methyvim](problems.md#methyvim)                   |1.11.0    |1     |        |1    |
-|[MineICA](problems.md#mineica)                     |1.30.0    |1     |2       |4    |
+|[methyvim](problems.md#methyvim)                   |1.10.0    |1     |        |1    |
+|[MineICA](problems.md#mineica)                     |1.28.0    |1     |2       |4    |
 |mlr3                                               |0.8.0     |      |        |     |
 |mlr3db                                             |0.2.0     |      |        |     |
 |mrgsim.parallel                                    |0.1.1     |      |        |     |
@@ -131,9 +131,9 @@
 |[plumber](problems.md#plumber)                     |1.0.0     |1     |        |     |
 |progressr                                          |0.6.0     |      |        |     |
 |[promises](problems.md#promises)                   |1.1.1     |      |        |1    |
-|[Prostar](problems.md#prostar)                     |1.22.0    |1     |        |     |
+|[Prostar](problems.md#prostar)                     |1.20.0    |      |1       |     |
 |[PSCBS](problems.md#pscbs)                         |0.65.0    |1     |        |     |
-|[QDNAseq](problems.md#qdnaseq)                     |1.26.0    |1     |        |1    |
+|[QDNAseq](problems.md#qdnaseq)                     |1.24.0    |1     |        |1    |
 |qgcomp                                             |2.6.0     |      |        |     |
 |rainette                                           |0.1.1     |      |        |     |
 |rangeMapper                                        |0.3-7     |      |        |     |
