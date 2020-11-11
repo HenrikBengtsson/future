@@ -62,6 +62,10 @@ for (ss in seq_along(strategies)) {
       message("M")
       immediateWarning("IW")
       immediateMessage("IM2")
+      ## RACE CONDITION IN ASSERTION:
+      ## Add some leeway for the immediateCondition files written by
+      ## multicore futures to "settle" on the file system
+      Sys.sleep(1.0)
       42L
     }, label = "single-future")
   })
@@ -142,8 +146,28 @@ for (ss in seq_along(strategies)) {
   message("- list of two futures")
   fs <- list()
   msgs <- recordMessages({
-    fs[[1]] <- future({ immediateMessage("IM1"); Sys.sleep(0.1); message("M1"); immediateWarning("IW1"); 1L }, label = "future-1")
-    fs[[2]] <- future({ immediateMessage("IM2"); Sys.sleep(0.1); message("M2"); immediateWarning("IW2"); 2L }, label = "future-2")
+    fs[[1]] <- future({
+      immediateMessage("IM1")
+      Sys.sleep(0.1)
+      message("M1")
+      immediateWarning("IW1")
+      ## RACE CONDITION IN ASSERTION:
+      ## Add some leeway for the immediateCondition files written by
+      ## multicore futures to "settle" on the file system
+      Sys.sleep(1.0)
+      1L
+    }, label = "future-1")
+    fs[[2]] <- future({
+      immediateMessage("IM2")
+      Sys.sleep(0.1)
+      message("M2")
+      immediateWarning("IW2")
+      ## RACE CONDITION IN ASSERTION:
+      ## Add some leeway for the immediateCondition files written by
+      ## multicore futures to "settle" on the file system
+      Sys.sleep(1.0)
+      2L
+    }, label = "future-2")
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
