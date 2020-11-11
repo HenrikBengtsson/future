@@ -47,11 +47,14 @@ recordMessages <- function(expr, ...) {
 
 ## FIXME: Make sure to set also with cores = 2L /HB 2020-11-10
 
-excl <- "cluster"
-if (getRversion() < "3.4.0") excl <- c(excl, "multisession")
-
-strategies <- supportedStrategies(cores = 2L, excl = excl)
-strategies <- c(strategies, "sequential")
+if (isTRUE(getOption("future.psock.relay.immediate"))) {
+  excl <- "cluster"
+  if (getRversion() < "3.4.0") excl <- c(excl, "multisession")
+  strategies <- supportedStrategies(cores = 2L, excl = excl)
+  strategies <- c(strategies, "sequential")
+} else {
+  strategies <- "sequential"
+}
 print(strategies)
 
 for (ss in seq_along(strategies)) {
