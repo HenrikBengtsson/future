@@ -46,7 +46,13 @@ recordMessages <- function(expr, ...) {
 }
 
 ## FIXME: Make sure to set also with cores = 2L /HB 2020-11-10
-strategies <- supportedStrategies(cores = 2L)
+
+excl <- "cluster"
+if (getRversion() < "3.4.0") excl <- c(excl, "multisession")
+
+strategies <- supportedStrategies(cores = 2L, excl = excl)
+strategies <- c(strategies, "sequential")
+print(strategies)
 
 for (ss in seq_along(strategies)) {
   strategy <- strategies[[ss]]
@@ -108,7 +114,7 @@ for (ss in seq_along(strategies)) {
   })
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
   f_try(f, {
-    if (inherits(f, c("UniprocessFuture", "MultiprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
+    if (inherits(f, c("UniprocessFuture", "MultiprocessFuture"))) {
       stopifnot(length(msgs) == 0L)
     } else {
       stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
