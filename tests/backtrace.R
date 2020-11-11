@@ -63,7 +63,7 @@ v <- value(f, signal = FALSE)
 
 if (availableCores() >= 2L) {
   message("- Non-resolved future ...")
-  plan(multiprocess, workers = 2L)
+  plan(multisession, workers = 2L)
   f <- future({ Sys.sleep(3); 42L; stop("Woops") })
   res <- tryCatch(backtrace(f), error = identity)
   print(res)

@@ -3,9 +3,9 @@
 immediateConditionsPath <- local({
   path <- NULL
   
-  function(path = tempdir()) {
+  function() {
     if (is.null(path)) {
-      tpath <- file.path(path, ".future", "immediateConditions")
+      tpath <- file.path(tempdir(), ".future", "immediateConditions")
       dir.create(tpath, recursive = TRUE, showWarnings = FALSE)
       stop_if_not(file_test("-d", tpath))
       path <<- tpath
