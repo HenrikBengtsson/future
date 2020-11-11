@@ -35,7 +35,8 @@ recordMessages <- function(expr, ...) {
   sapply(recordConditions(expr, ...), FUN = conditionMessage)
 }
 
-strategies <- supportedStrategies()
+## FIXME: Make sure to set also with cores = 2L /HB 2020-11-10
+strategies <- supportedStrategies(cores = 1L)
 
 for (ss in seq_along(strategies)) {
   strategy <- strategies[[ss]]
@@ -68,7 +69,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  result: ", r)
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, "ClusterFuture")) {
+  if (inherits(f, "MultiprocessFuture")) {
     stopifnot(identical(msgs, c("IM1\n")))
   } else {
     stopifnot(length(msgs) == 0L)
@@ -79,7 +80,7 @@ for (ss in seq_along(strategies)) {
     f <- resolve(f)
   })
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, "ClusterFuture")) {
+  if (inherits(f, "MultiprocessFuture")) {
     stopifnot(identical(msgs, c("IW", "IM2\n")))
   } else {
     stopifnot(length(msgs) == 0L)
@@ -90,7 +91,7 @@ for (ss in seq_along(strategies)) {
     f <- resolve(f, result = TRUE)
   })
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, c("UniprocessFuture", "ClusterFuture", "CallrFuture", "BatchtoolsFuture"))) {
+  if (inherits(f, c("UniprocessFuture", "MultiprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n")))
@@ -102,7 +103,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  value: ", v)
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, c("UniprocessFuture", "ClusterFuture"))) {
+  if (inherits(f, c("UniprocessFuture", "MultiprocessFuture"))) {
     stopifnot(identical(msgs, "M\n"))
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW", "IM2\n", "M\n")))
@@ -139,7 +140,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  result: ", paste(rs, collapse = ", "))
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, "ClusterFuture")) {
+  if (inherits(f, "MultiprocessFuture")) {
     stopifnot(identical(msgs, c("IM1\n", "IM2\n")))
   } else {
     stopifnot(length(msgs) == 0L)
@@ -150,7 +151,7 @@ for (ss in seq_along(strategies)) {
     fs <- resolve(fs)
   })
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(f, "ClusterFuture")) {
+  if (inherits(f, "MultiprocessFuture")) {
     stopifnot(identical(msgs, c("IW1", "IW2")))
   } else {
     stopifnot(length(msgs) == 0L)
@@ -161,7 +162,7 @@ for (ss in seq_along(strategies)) {
     fs <- resolve(fs, result = TRUE)
   })
   message(sprintf("  msgs [n=%d]: %s", length(msgs), paste(sQuote(msgs), collapse = ", ")))
-  if (inherits(fs[[1]], c("UniprocessFuture", "ClusterFuture", "CallrFuture", "BatchtoolsFuture"))) {
+  if (inherits(fs[[1]], c("UniprocessFuture", "MultiprocessFuture", "CallrFuture", "BatchtoolsFuture"))) {
     stopifnot(length(msgs) == 0L)
   } else {
     stopifnot(identical(msgs, c("IM1\n", "IW1", "IM2\n", "IW2")))
