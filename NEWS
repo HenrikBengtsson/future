@@ -1,9 +1,18 @@
 Package: future
 ===============
 
-Version: 1.20.1-9000 [2020-11-03]
+Version: 1.20.1-9000 [2020-11-10]
 
- * ...
+BUG FIXES:
+
+ * Signaling immediateCondition:s with 'multicore' could result in "Error in
+   save_rds(obj, file) : save_rds() failed to rename temporary save file 
+   '/tmp/RtmpxNyIyK/progression21f3f31eadc.rds.tmp' (NA bytes; last modified
+   on NA) to '/tmp/RtmpxNyIyK/progression21f3f31eadc.rds' (NA bytes; last 
+   modified on NA)".  There was an assertion at the end of the internal
+   save_rds() function that incorrectly assumed that the target file should
+   exist.  However, the file might have already been processed and removed
+   by the future in the main R session.     
 
 
 Version: 1.20.1 [2020-10-30]
