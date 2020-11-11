@@ -92,16 +92,19 @@ attachLocally <- function(x, envir = parent.frame()) {
   }
 }
 
-supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
+supportedStrategies <- function(cores = 1L, excl = "cluster", ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
   if (cores == 1L) {
-    strategies <- setdiff(strategies, c("multicore", "multisession",
-                                        "multiprocess"))
+    strategies <- setdiff(strategies, c("multicore", "multisession"))
   } else {
     strategies <- setdiff(strategies,
                           c("sequential", "uniprocess", "eager", "lazy"))
   }
+  
+  ## Don't test deprecated 'multiprocess'
+  strategies <- setdiff(strategies, "multiprocess")
+  
   strategies
 }
 

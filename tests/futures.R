@@ -30,7 +30,7 @@ for (cores in 1:availCores) {
   for (type in c("list", "environment", "listenv")) {
     message(sprintf("Type of object: %s", type))
 
-    for (strategy in supportedStrategies(cores, excl = "multiprocess")) {
+    for (strategy in supportedStrategies(cores)) {
       message("Type of future: ", strategy)
       plan(strategy)
 

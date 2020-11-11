@@ -18,7 +18,7 @@ for (strategy in strategies) {
 } ## for (strategy ...)
 
 
-strategies <- c("cluster", "multiprocess", "multisession", "multicore")
+strategies <- c("cluster", "multisession", "multicore")
 strategies <- intersect(strategies, supportedStrategies())
 cores <- availableCores()
 message("Number of available cores: ", cores)
