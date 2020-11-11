@@ -58,7 +58,7 @@ stopifnot(identical(formals(sequential2)$abc, FALSE))
 message("*** plan() - tweak without introducting package dependencies ...")
 
 ## Requires a auxillary package that is available and not already loaded
-if (!"covr" %in% loadedNamespaces() && requireNamespace("grid")) {
+if (!covr_testing && requireNamespace("grid")) {
   local({
     cl <- makeClusterPSOCK(1L)
     on.exit(parallel:::stopCluster(cl))
@@ -75,6 +75,7 @@ if (!"covr" %in% loadedNamespaces() && requireNamespace("grid")) {
       on.exit(future::plan(oplan), add = TRUE)
       ns <- unlist(parallel::clusterEvalQ(cl, loadedNamespaces()))
       diff <- setdiff(ns, ns0)
+      if ("covr" %in% diff) diff <- setdiff(diff, c("lazyeval", "rex", "covr"))
       if (length(diff) > 0) {
         print(loadedNamespaces())
         stop("plan() with a tweak() causes new packages to be loaded: ", sQuote(paste(diff, collapse = ", ")))
