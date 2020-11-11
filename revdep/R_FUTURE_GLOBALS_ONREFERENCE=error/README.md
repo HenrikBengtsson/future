@@ -24,19 +24,13 @@
 
 # Revdeps
 
-## Failed to check (1)
-
-|package                      |version |error |warning |note |
-|:----------------------------|:-------|:-----|:-------|:----|
-|[Signac](failures.md#signac) |1.1.0   |1     |        |     |
-
 ## All (143)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
 |[adept](problems.md#adept)                         |1.1.2     |      |        |2    |
 |[alookr](problems.md#alookr)                       |0.3.2     |      |1       |     |
-|[AlpsNMR](problems.md#alpsnmr)                     |3.0.3     |1     |        |1    |
+|[AlpsNMR](problems.md#alpsnmr)                     |3.0.3     |      |        |1    |
 |aroma.affymetrix                                   |3.2.0     |      |        |     |
 |[aroma.core](problems.md#aromacore)                |3.2.1     |      |        |1    |
 |[BAMBI](problems.md#bambi)                         |2.3.0     |      |        |2    |
@@ -53,12 +47,12 @@
 |civis                                              |3.0.0     |      |        |     |
 |Clustering                                         |1.7       |      |        |     |
 |[CLVTools](problems.md#clvtools)                   |0.7.0     |      |        |1    |
-|[codalm](problems.md#codalm)                       |0.1.0     |1     |        |     |
+|codalm                                             |0.1.0     |      |        |     |
 |[codebook](problems.md#codebook)                   |0.9.2     |      |        |2    |
 |[crossmap](problems.md#crossmap)                   |0.2.0     |1     |        |     |
 |[cSEM](problems.md#csem)                           |0.3.0     |      |        |1    |
 |[datapackage.r](problems.md#datapackager)          |1.3.1     |      |        |1    |
-|[DeclareDesign](problems.md#declaredesign)         |0.22.0    |1     |        |     |
+|DeclareDesign                                      |0.22.0    |      |        |     |
 |[delayed](problems.md#delayed)                     |0.3.0     |      |        |1    |
 |[dhReg](problems.md#dhreg)                         |0.1.0     |1     |        |     |
 |dipsaus                                            |0.1.1     |      |        |     |
@@ -114,7 +108,7 @@
 |ldaPrototype                                       |0.2.0     |      |        |     |
 |ldsr                                               |0.0.2     |      |        |     |
 |lgr                                                |0.4.1     |      |        |     |
-|[lidR](problems.md#lidr)                           |3.0.4     |1     |        |1    |
+|[lidR](problems.md#lidr)                           |3.0.4     |      |        |1    |
 |lightr                                             |1.3       |      |        |     |
 |[lmtp](problems.md#lmtp)                           |0.0.5     |      |        |2    |
 |mcp                                                |0.3.0     |      |        |     |
@@ -156,7 +150,7 @@
 |[shiny](problems.md#shiny)                         |1.5.0     |1     |        |1    |
 |[shinyrecap](problems.md#shinyrecap)               |0.1.0     |      |        |1    |
 |[sigminer](problems.md#sigminer)                   |1.0.19    |      |        |1    |
-|[Signac](failures.md#signac)                       |1.1.0     |1     |        |     |
+|Signac                                             |1.1.0     |      |        |     |
 |simfinapi                                          |0.1.0     |      |        |     |
 |simglm                                             |0.8.0     |      |        |     |
 |[simhelpers](problems.md#simhelpers)               |0.1.0     |      |        |1    |
@@ -168,7 +162,7 @@
 |[sperrorest](problems.md#sperrorest)               |3.0.1     |2     |        |     |
 |[stars](problems.md#stars)                         |0.4-3     |      |        |2    |
 |startR                                             |2.1.0     |      |        |     |
-|[steps](problems.md#steps)                         |1.1.0     |1     |        |     |
+|steps                                              |1.1.0     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)          |1.1.1     |      |        |2    |
 |tcensReg                                           |0.1.7     |      |        |     |
 |tealeaves                                          |1.0.5     |      |        |     |

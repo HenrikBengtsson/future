@@ -66,32 +66,6 @@ Run `revdep_details(, "AlpsNMR")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    ...
-    > peak_table <- new_nmr_dataset_peak_table(
-    +     peak_table = peak_matrix,
-    +     metadata = list(external = metadata)
-    + )
-    > 
-    > ## We will use a double cross validation, splitting the samples with random
-    > ## subsampling both in the external and internal validation.
-    > ## The classification model will be a PLSDA, exploring at maximum 3 latent
-    > ## variables.
-    > ## The best model will be selected based on the area under the ROC curve
-    > methodology <- plsda_auroc_vip_method(ncomp = 3)
-    > model <- nmr_data_analysis(
-    +     peak_table,
-    +     y_column = "Condition",
-    +     identity_column = NULL,
-    +     external_val = list(iterations = 1, test_size = 0.25),
-    +     internal_val = list(iterations = 3, test_size = 0.25),
-    +     data_analysis_method = methodology
-    + )
-    Error: there is no package called ‘AlpsNMR’
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘zip’
@@ -194,32 +168,6 @@ Run `revdep_details(, "bcmaps")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-    ...
-      
-      
-      ── Skip (test-utils.R:24:3): bc_bbox works with all classes ────────────────────
-      Reason: On CRAN
-      
-      ── Skip (test-utils.R:33:3): bc_bbox works with all classes and numeric crs ────
-      Reason: On CRAN
-      
-      ── Skip (test-utils.R:41:3): bc_bbox works with all classes and character crs ──
-      Reason: On CRAN
-      
-      ── Skipped tests  ──────────────────────────────────────────────────────────────
-      ● On CRAN (5)
-      ● bcmapsdata cannot be loaded (6)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      FAILURE (test-raster_by_poly.R:66:3): setup_future works
-      
-      [ FAIL 1 | WARN 0 | SKIP 11 | PASS 85 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -447,48 +395,6 @@ Run `revdep_details(, "CLVTools")` for more info
         libs  11.4Mb
     ```
 
-# codalm
-
-<details>
-
-* Version: 0.1.0
-* GitHub: https://github.com/jfiksel/codalm
-* Source code: https://github.com/cran/codalm
-* Date/Publication: 2020-06-25 16:00:06 UTC
-* Number of recursive dependencies: 80
-
-Run `revdep_details(, "codalm")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      ── FAILURE (test-independence_test.R:9:5): independence test works with sequenti
-      inherits(plan(), "sequential") is not TRUE
-      
-      `actual`:   FALSE
-      `expected`: TRUE 
-      
-      ── FAILURE (test-independence_test.R:19:5): independence test works with multise
-      inherits(plan(), "sequential") is not TRUE
-      
-      `actual`:   FALSE
-      `expected`: TRUE 
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      FAILURE (test-codalm_ci.R:20:5): bootstrap CI works with sequential evaluation
-      FAILURE (test-codalm_ci.R:42:5): bootstrap CI works with multisession evaluation
-      FAILURE (test-independence_test.R:9:5): independence test works with sequential evaluation
-      FAILURE (test-independence_test.R:19:5): independence test works with multisession evaluation
-      
-      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 22 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # codebook
 
 <details>
@@ -602,48 +508,6 @@ Run `revdep_details(, "datapackage.r")` for more info
     Namespaces in Imports field not imported from:
       ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
-    ```
-
-# DeclareDesign
-
-<details>
-
-* Version: 0.22.0
-* GitHub: https://github.com/DeclareDesign/DeclareDesign
-* Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2020-03-24 07:40:10 UTC
-* Number of recursive dependencies: 140
-
-Run `revdep_details(, "DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      [26] 3 - 5 == -2
-      ...
-      
-      ── Skipped tests  ──────────────────────────────────────────────────────────────
-      ● On CRAN (4)
-      ● Skipped bootstrap SE test for speed (1)
-      ● empty test (1)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      ERROR (test-compare-diagnoses.R:28:3): merge_by_estimator working in compare_diagnoses
-      ERROR (test-diagnose-design.R:227:3): more term
-      ERROR (test-diagnose-design.R:285:3): diagnose_design works when simulations_df lacking parameters attr
-      ERROR (test-factorial.R:39:3): Factorial
-      FAILURE (test-fanout.R:164:3): correct fan out
-      ERROR (test-multiple-estimators.R:52:3): Two estimators, Two estimands (crossed)
-      ERROR (test-reshape-diagnosis.R:92:3): designs with factors in diagnosands_df do not produce warnings
-      FAILURE (test-simulate-design.R:44:3): Simulate Design works x2
-      
-      [ FAIL 8 | WARN 0 | SKIP 6 | PASS 482 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # delayed
@@ -1375,48 +1239,6 @@ Run `revdep_details(, "gWQS")` for more info
       All declared Imports should be used.
     ```
 
-# hackeRnews
-
-<details>
-
-* Version: 0.1.0
-* GitHub: https://github.com/szymanskir/hackeRnews
-* Source code: https://github.com/cran/hackeRnews
-* Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 67
-
-Run `revdep_details(, "hackeRnews")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-      
-      `actual` is a character vector ('Component "by": 1 string mismatch', 'Component "time": Mean absolute difference: 400488278', 'Component "text": 1 string mismatch', 'Component "parent": Mean relative difference: 0.4845361')
-      `expected` is a logical vector (TRUE)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      FAILURE (test-api.R:84:5): Retrieve top stories function is working correctly
-      FAILURE (test-api.R:127:5): Retrieve top stories function is working correctly
-      FAILURE (test-api.R:168:5): Retrieve best stories function is working correctly
-      FAILURE (test-api.R:195:5): Retrieve latest ask stories function is working correctly
-      FAILURE (test-api.R:222:5): Retrieve latest show stories function is working correctly
-      FAILURE (test-api.R:249:5): Retrieve latest job stories function is working correctly
-      Warning (test-api.R:303:5): Retrieve comments function is working correctly
-      FAILURE (test-api.R:314:5): Retrieve comments function is working correctly
-      FAILURE (test-api.R:320:5): Empty responses are handled correctly when retrieving items
-      FAILURE (test-api.R:326:5): Empty responses are handled correctly when retrieving items
-      FAILURE (test-api.R:333:5): Empty responses are handled correctly when retrieving comments
-      FAILURE (test-api.R:346:5): Empty responses are handled correctly when retrieving comments
-      
-      [ FAIL 11 | WARN 1 | SKIP 0 | PASS 16 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # hal9001
 
 <details>
@@ -1895,74 +1717,6 @@ Run `revdep_details(, "lmtp")` for more info
       All declared Imports should be used.
     ```
 
-# metagam
-
-<details>
-
-* Version: 0.1.2
-* GitHub: https://github.com/Lifebrain/metagam
-* Source code: https://github.com/cran/metagam
-* Date/Publication: 2020-06-22 18:30:03 UTC
-* Number of recursive dependencies: 148
-
-Run `revdep_details(, "metagam")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > 
-    > ## Create 5 datasets
-    > set.seed(1234)
-    > datasets <- lapply(1:5, function(x) gamSim(scale = 5, verbose = FALSE))
-    > 
-    > ## Fit a GAM in each dataset, then use strip_rawdata() to remove
-    > ## individual participant data
-    > models <- lapply(datasets, function(dat){
-    +   ## This uses the gam() function from mgcv
-    +   model <- gam(y ~ s(x0, bs = "cr") + s(x1, bs = "cr") + s(x2, bs = "cr"), data = dat)
-    +   ## This uses strip_rawdata() from metagam
-    +   strip_rawdata(model)
-    + })
-    > 
-    > ## Next, we meta-analyze the models.
-    > ## It is often most convenient to analyze a single term at a time. We focus on s(x1).
-    > meta_analysis <- metagam(models, terms = "s(x1)", grid_size = 30)
-    Error in UseMethod("predict") : 
-      no applicable method for 'predict' applied to an object of class "c('rma.uni', 'rma')"
-    Calls: metagam ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-           █
-        1. └─metagam::metagam(fits, grid_size = 10) test-metagam.R:15:2
-        2.   ├─dplyr::bind_cols(...)
-        3.   │ └─rlang::list2(...)
-        4.   └─furrr::future_map_dfr(...)
-        5.     └─furrr::future_map(...)
-        6.       └─furrr:::furrr_map_template(...)
-        7.         └─furrr:::furrr_template(...)
-        8.           ├─future::value(futures)
-        9.           └─future:::value.list(futures)
-       10.             ├─future::resolve(...)
-       11.             └─future:::resolve.list(...)
-       12.               └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       13.                 └─future:::signalConditions(...)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      ERROR (test-metagam.R:15:3): metagam works
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 48 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # methyvim
 
 <details>
@@ -2367,32 +2121,6 @@ Run `revdep_details(, "pavo")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-    ...
-      FAILURE (test-images.R:104:3): classify
-      Warning (test-images.R:123:3): classify
-      Warning (test-images.R:123:3): classify
-      Warning (test-images.R:151:3): classify
-      Warning (test-images.R:151:3): classify
-      Warning (test-images.R:196:3): adjacency
-      Warning (test-images.R:197:3): adjacency
-      Warning (test-images.R:216:3): adjacency
-      Warning (test-images.R:216:3): adjacency
-      Warning (test-images.R:227:3): adjacency
-      Warning (test-images.R:252:3): adjacency
-      Warning (test-images.R:274:3): adjacency
-      Warning (test-images.R:288:3): summary
-      Warning (test-images.R:290:3): summary
-      Warning (test-images.R:290:3): summary
-      FAILURE (test-images.R:293:3): summary
-      Warning (test-processing.R:58:3): Aggregation
-      
-      [ FAIL 2 | WARN 1054 | SKIP 5 | PASS 344 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 *   checking whether package ‘pavo’ can be installed ... WARNING
     ```
     Found the following significant warnings:
@@ -2742,9 +2470,6 @@ Run `revdep_details(, "PSCBS")` for more info
       When sourcing ‘CBS.R’:
     Error: Detected a non-exportable reference (‘externalptr’) in one of the globals (<unknown>) used in the future expression
     Execution halted
-    Error in unserialize(node$con) : error reading from connection
-    Calls: workRSOCK ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
-    Execution halted
     when running code in ‘PairedPSCBS.tex.rsp’
       ...
         Number of segments: 3
@@ -2756,9 +2481,6 @@ Run `revdep_details(, "PSCBS")` for more info
     
       When sourcing ‘PairedPSCBS.R’:
     Error: Detected a non-exportable reference (‘externalptr’) in one of the globals (<unknown>) used in the future expression
-    Execution halted
-    Error in unserialize(node$con) : error reading from connection
-    Calls: workRSOCK ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
     Execution halted
     ```
 
@@ -3334,25 +3056,6 @@ Run `revdep_details(, "sigminer")` for more info
       sub-directories of 1Mb or more:
         extdata   3.7Mb
     ```
-
-# Signac
-
-<details>
-
-* Version: 1.1.0
-* GitHub: https://github.com/timoast/signac
-* Source code: https://github.com/cran/Signac
-* Date/Publication: 2020-11-07 00:20:14 UTC
-* Number of recursive dependencies: 233
-
-Run `revdep_details(, "Signac")` for more info
-
-</details>
-
-## In both
-
-*   R CMD check timed out
-    
 
 # simhelpers
 
