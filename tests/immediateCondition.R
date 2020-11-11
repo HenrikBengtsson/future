@@ -1,5 +1,4 @@
 source("incl/start.R")
-plan(sequential)
 options(future.debug = FALSE)
 
 f_try <- function(f, ...) {
