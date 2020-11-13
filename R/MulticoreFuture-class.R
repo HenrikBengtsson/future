@@ -253,7 +253,7 @@ result.MulticoreFuture <- function(future, ...) {
 
 
 #' @export
-getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.psock.relay.immediate", immediateConditions), ...) {
+getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
