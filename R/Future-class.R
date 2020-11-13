@@ -801,7 +801,7 @@ makeExpression <- local({
         }, finally = .(exit))
 	
         if (.(!base::is.na(stdout))) {
-          base::sink(type = "output", split = FALSE)
+          base::sink(type = "output", split = .(split))
           if (.(stdout)) {
             ...future.result$stdout <- base::rawToChar(
               base::rawConnectionValue(...future.stdout)
