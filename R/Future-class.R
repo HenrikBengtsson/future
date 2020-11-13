@@ -714,7 +714,6 @@ makeExpression <- local({
         ...future.result <- base::tryCatch({
           base::withCallingHandlers({
             ...future.value <- base::withVisible(.(expr))
-            ## A FutureResult object (without requiring the future package)
             future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
           }, condition = base::local({
               ## WORKAROUND: If the name of any of the below objects/functions
