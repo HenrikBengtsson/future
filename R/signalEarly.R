@@ -27,7 +27,7 @@ signalEarly <- function(future, collect = TRUE, .signalEarly = TRUE, ...) {
   ## Nothing to do?
   if (!.signalEarly || length(conditions) == 0L) {
     if (debug) {
-      if (.signalEarly) mdebug("- Skipping because .signalEarly = FALSE")
+      if (!.signalEarly) mdebug("- Skipping because .signalEarly = FALSE")
       if (length(conditions) == 0L) mdebug("- No conditions to signal.")
       mdebug("signalEarly() ... DONE")
     }
