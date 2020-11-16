@@ -466,39 +466,44 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 
 
   enter <- bquote({
-    base::local({
-      ## covr: skip=4
-      ## If 'future' is not installed on the worker, or a too old version
-      ## of 'future' is used, then give an early error
-      ## If future::FutureResult does not exist, give an error
-      has_future <- base::requireNamespace("future", quietly = TRUE)
-      if (has_future) {
-        ## future (>= 1.20.0)
-        ns <- base::getNamespace("future")
-        version <- ns[[".package"]][["version"]]
-        ## future (< 1.20.0)
-        if (is.null(version)) version <- utils::packageVersion("future")
+    ## FIXME/PERFORMANCE: It's sufficient to do this once per worker session.
+    ## Now we do these checks once per future.
+    
+    has_future <- base::requireNamespace("future", quietly = TRUE)
+    if (has_future) {
+      ...future.namespace <- base::getNamespace("future")
+      
+      ## future (>= 1.20.0)
+      ...future.version <- ...future.namespace[[".package"]][["version"]]
+      ## future (< 1.20.0)
+      if (is.null(...future.version))
+         ...future.version <- utils::packageVersion("future")
+    } else {
+      ...future.version <- NULL
+    }
+
+    ## If 'future' is not installed on the worker, or a too old version
+    ## of 'future' is used, then give an early error
+    if (!has_future || ...future.version < "1.8.0") {
+      info <- base::c(
+        r_version = base::gsub("R version ", "", base::R.version$version.string),
+        platform = base::sprintf("%s (%s-bit)", base::R.version$platform, 8 * base::.Machine$sizeof.pointer),
+        os = base::paste(base::Sys.info()[base::c("sysname", "release", "version")], collapse = " "),
+        hostname = base::Sys.info()[["nodename"]]
+      )
+      info <- base::sprintf("%s: %s", base::names(info), info)
+      info <- base::paste(info, collapse = "; ")
+      if (!has_future) {
+        msg <- base::sprintf("Package 'future' is not installed on worker (%s)", info)
       } else {
-        version <- NULL
+        msg <- base::sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, ...future.version)
       }
-      if (!has_future || version < "1.8.0") {
-        info <- base::c(
-          r_version = base::gsub("R version ", "", base::R.version$version.string),
-          platform = base::sprintf("%s (%s-bit)", base::R.version$platform, 8 * base::.Machine$sizeof.pointer),
-          os = base::paste(base::Sys.info()[base::c("sysname", "release", "version")], collapse = " "),
-          hostname = base::Sys.info()[["nodename"]]
-        )
-        info <- base::sprintf("%s: %s", base::names(info), info)
-        info <- base::paste(info, collapse = "; ")
-        if (!has_future) {
-          msg <- base::sprintf("Package 'future' is not installed on worker (%s)", info)
-        } else {
-          msg <- base::sprintf("Package 'future' on worker (%s) must be of version >= 1.8.0: %s", info, version)
-        }
-        base::stop(msg)
-      }
-    })
+      base::stop(msg)
+    }
+
+    rm(list = "has_future", envir = environment())
   })
+  
   exit <- NULL
   
   ## Should 'mc.cores' be set?
@@ -615,8 +620,6 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 
 
 makeExpression <- local({
-  skip <- skip.local <- NULL
-  
   function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
     if (immediateConditions && !is.null(conditionClasses)) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
@@ -625,18 +628,9 @@ makeExpression <- local({
       immediateConditionClasses <- character(0L)
     }
     
-    if (is.null(skip)) {
-      ## WORKAROUND: skip = c(7/12, 3) makes assumption about withCallingHandlers()
-      ## and local().  In case this changes, provide internal options to adjust this.
-      ## /HB 2018-12-28
-      skip <<- getOption("future.makeExpression.skip", c(6L, 3L))
-      skip.local <<- getOption("future.makeExpression.skip.local", c(12L, 3L))
-    }
-    
     ## Evaluate expression in a local() environment?
     if (local) {
       expr <- bquote(base::local(.(expr)))
-      skip <- skip.local
     }
   
     ## Set and reset certain future.* options etc.
@@ -711,92 +705,73 @@ makeExpression <- local({
         ...future.frame <- base::sys.nframe()
         ...future.conditions <- base::list()
         ...future.rng <- base::globalenv()$.Random.seed
+
+        if (...future.version > "1.20.1") {
+          ...future.handleFutureCondition <- get("handleFutureCondition", mode = "function", envir = ...future.namespace)
+          ...future.muffleCondition <- get("muffleCondition", mode = "function", envir = ...future.namespace)
+        } else {
+          ## BACKWARD COMPATIBILITY
+          ...future.handleFutureCondition <- .(handleFutureCondition)
+          ...future.muffleCondition <- .(muffleCondition)
+        }
+        
         ...future.result <- base::tryCatch({
           base::withCallingHandlers({
             ...future.value <- base::withVisible(.(expr))
-            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
-          }, condition = base::local({
-              ## WORKAROUND: If the name of any of the below objects/functions
-              ## coincides with a promise (e.g. a future assignment) then we
-              ## we will end up with a recursive evaluation resulting in error:
-              ##   "promise already under evaluation: recursive default argument
-              ##    reference or earlier problems?"
-              ## To avoid this, we make sure to import the functions explicitly
-              ## /HB 2018-12-22
-              c <- base::c
-              inherits <- base::inherits
-              invokeRestart <- base::invokeRestart
-              length <- base::length
-              list <- base::list
-              seq.int <- base::seq.int
-              signalCondition <- base::signalCondition
-              sys.calls <- base::sys.calls
-              `[[` <- base::`[[`
-              `+` <- base::`+`
-              `<<-` <- base::`<<-`
-              
-              sysCalls <- function(calls = sys.calls(), from = 1L) {
-                calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
-              }
-              function(cond) {
-                ## Handle error:s specially
-                if (inherits(cond, "error")) {
-                  sessionInformation <- function() {
-                    list(
-                      r          = base::R.Version(),
-                      locale     = base::Sys.getlocale(),
-		      rngkind    = base::RNGkind(),
-		      namespaces = base::loadedNamespaces(),
-		      search     = base::search(),
-		      system     = base::Sys.info()
-		    )
-                  }
+            future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, conditions = ...future.conditions, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
+          }, error = function(e) {
+            ## WORKAROUND: If the name of any of the below objects/functions
+            ## coincides with a promise (e.g. a future assignment) then we
+            ## we will end up with a recursive evaluation resulting in error:
+            ##   "promise already under evaluation: recursive default argument
+            ##    reference or earlier problems?"
+            ## To avoid this, we make sure to import the functions explicitly
+            ## /HB 2018-12-22
+            length <- base::length
+            signalCondition <- base::signalCondition
+            `[[` <- base::`[[`
+            `+` <- base::`+`
+            `<<-` <- base::`<<-`
+            ## Record condition
+            ...future.conditions[[length(...future.conditions) + 1L]] <<- ...future.handleFutureCondition(e, frame = ...future.frame, local = .(local))
+            signalCondition(e)
+          }, condition = function(cond) {
+            `<-` <- base::`<-`
 
-                  ## Record condition
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
-                    condition = cond,
-                    calls     = c(sysCalls(from = ...future.frame), cond$call),
-                    session   = sessionInformation(),
-                    timestamp = base::Sys.time(),
-                    signaled  = 0L
-                  )
-		  
-                  signalCondition(cond)
-                } else if (.(!is.null(conditionClasses)) &&
-                           inherits(cond, .(conditionClasses))) {
-                  ## Relay 'immediateCondition' conditions immediately?
-                  ## If so, then do not muffle it and flag it as signalled
-                  ## already here.
-                  signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
-                  ## Record condition
-                  ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
-		    condition = cond,
-		    signaled = base::as.integer(signal)
-		  )
-                  if (.(immediateConditions && !split) && !signal) {
-                    ## muffleCondition <- future:::muffleCondition()
-                    muffleCondition <- .(muffleCondition)
-                    muffleCondition(cond)
-                  }
-                } else {
-                  if (.(!split && !is.null(conditionClasses))) {
-                    ## Muffle all non-captured conditions
-                    ## muffleCondition <- future:::muffleCondition()
-                    muffleCondition <- .(muffleCondition)
-                    muffleCondition(cond)
-                  }
-                }
+            res <- ...future.handleFutureCondition(cond, conditionClasses = .(conditionClasses), immediateConditionClasses = .(immediateConditionClasses))
+            
+            ## Nothing todo?
+            if (base::is.null(res)) return()
+
+            ## WORKAROUND: If the name of any of the below objects/functions
+            ## coincides with a promise (e.g. a future assignment) then we
+            ## we will end up with a recursive evaluation resulting in error:
+            ##   "promise already under evaluation: recursive default argument
+            ##    reference or earlier problems?"
+            ## To avoid this, we make sure to import the functions explicitly
+            ## /HB 2018-12-22
+            length <- base::length
+            `[[` <- base::`[[`
+            `+` <- base::`+`
+            `<<-` <- base::`<<-`
+
+            ## Record condition
+            ...future.conditions[[length(...future.conditions) + 1L]] <<- res
+
+            ## Nothing more to do?
+            if (.(split)) return()
+
+            if (.(immediateConditions)) {
+              if (res[["signaled"]] == 0L) {
+                ...future.muffleCondition(cond)
               }
-            }) ## local()
-          ) ## withCallingHandlers()
+            } else {
+              ## Muffle all non-captured conditions
+              ...future.muffleCondition(cond)
+            }
+          }) ## withCallingHandlers()
         }, error = function(ex) {
-          base::structure(base::list(
-            value = NULL,
-            visible = NULL,
-            conditions = ...future.conditions,
-            rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
-            version = "1.8"
-          ), class = "FutureResult")
+          future::FutureResult(conditions = ...future.conditions, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
         }, finally = .(exit))
 	
         if (.(!base::is.na(stdout))) {
@@ -812,8 +787,6 @@ makeExpression <- local({
           ...future.stdout <- NULL
         }
   
-        ...future.result$conditions <- ...future.conditions
-        
         ...future.result
       })
     } else {
@@ -823,6 +796,53 @@ makeExpression <- local({
     expr
   }
 }) ## makeExpression()
+
+
+handleFutureCondition <- local({
+  ## WORKAROUND: skip = c(7/12, 3) makes assumption about withCallingHandlers()
+  ## and local().  In case this changes, provide internal options to adjust
+  ## this. /HB 2018-12-28
+  skip <- getOption("future.makeExpression.skip", c(6L, 3L))
+  skip.local <- getOption("future.makeExpression.skip.local", c(12L, 3L))
+    
+  sysCalls <- function(calls = sys.calls(), from = 1L, local = TRUE) {
+    if (!local) skip <- skip.local
+    calls[seq.int(from = from + skip[1L], to = length(calls) - skip[2L])]
+  }
+
+  sessionInformation <- function() {
+    list(
+      r          = R.Version(),
+      locale     = Sys.getlocale(),
+      rngkind    = RNGkind(),
+      namespaces = loadedNamespaces(),
+      search     = search(),
+      system     = Sys.info()
+    )
+  }
+
+  function(cond, conditionClasses = NULL, immediateConditionClasses = NULL, frame, local = TRUE) {
+    ## Always handle errors
+    if (inherits(cond, "error")) {
+      return(list(
+        condition = cond,
+        signaled  = 0L,
+        calls     = c(sysCalls(from = frame, local = local), cond$call),
+        session   = sessionInformation(),
+        timestamp = Sys.time()
+      ))
+    }
+
+    ## Ignore this type of condition?
+    if (is.null(conditionClasses)) return(NULL)
+    if (!inherits(cond, conditionClasses)) return(NULL)
+
+    list(
+      condition = cond,
+      signaled = if (inherits(cond, immediateConditionClasses)) 1L else 0L
+    )
+  }
+}) ## handleFutureCondition()
 
 
 globals <- function(future, ...) UseMethod("globals")

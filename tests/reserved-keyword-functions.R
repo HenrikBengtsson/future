@@ -5,7 +5,7 @@ plan(sequential)
 message("Overriding reserved keyword functions ...")
 
 ## Identify globals used by the expanded future expression
-...names <- globals::findGlobals(getExpression(future(NULL)))
+...names <- sort(globals::findGlobals(getExpression(future(NULL))))
 ...names <- ...names[sapply(...names, FUN = exists, mode = "function")]
 
 ## Skip test with '<-' because it causes issues for at least R 3.2.0 & 3.3.0
@@ -14,20 +14,23 @@ if (getRversion() < "3.4.0") ...names <- setdiff(...names, "<-")
 print(...names)
 boom <- function(...) stop("Boom!")
 
-base_sprintf <- base::sprintf
 base_tryCatch <- base::tryCatch
 
 fails <- logical(length(...names))
 names(fails) <- ...names
 for (kk in seq_along(...names)) {
   name <- ...names[kk]
-  message(base_sprintf(" - %s: ", sQuote(name)), appendLF = FALSE)
-  assign(name, boom)
-  res <- base_tryCatch(suppressWarnings({
-    future(NULL)
-  }), error = identity)
-  rm(list = name)
+  message(sprintf(" - %s: ", sQuote(name)), appendLF = FALSE)
+  
+  res <- local({
+    assign(name, boom)
+    base_tryCatch(suppressWarnings({
+      future(NULL)
+    }), error = identity)
+  })
+  
   if (inherits(res, "error")) {
+    stopifnot(conditionMessage(res) == "Boom!")
     fails[kk] <- TRUE
     message("FAIL")
   } else {
