@@ -5,6 +5,9 @@
 \alias{FutureMessage}
 \alias{FutureWarning}
 \alias{FutureError}
+\alias{RngFutureCondition}
+\alias{RngFutureWarning}
+\alias{RngFutureError}
 \alias{UnexpectedFutureResultError}
 \title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
@@ -15,6 +18,12 @@ FutureMessage(message, call = NULL, future = NULL)
 FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL)
+
+RngFutureCondition(message = NULL, call = NULL, future)
+
+RngFutureWarning(...)
+
+RngFutureError(...)
 
 UnexpectedFutureResultError(future, hint = NULL)
 }

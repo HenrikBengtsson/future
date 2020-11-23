@@ -144,7 +144,14 @@ for (cores in 1:availCores) {
         }, warning = identity, error = identity)
         print(y3)
         if (misuse %in% c("warning", "error")) {
-          stopifnot(inherits(y3, misuse))
+          stopifnot(
+            inherits(y3, misuse),
+            inherits(y3, "RngFutureCondition"),
+            inherits(y3, switch(misuse,
+              warning = "RngFutureWarning",
+              error   = "RngFutureError"
+            ))
+          )
         }
 
         ## seed = NULL equals seed = FALSE but without the check of misuse

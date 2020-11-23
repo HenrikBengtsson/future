@@ -1,8 +1,17 @@
 Package: future
 ===============
 
-Version: 1.20.1-9000 [2020-11-10]
+Version: 1.20.1-9000 [2020-11-23]
 
+NEW FEATURES:
+
+ * In order to handle them conditionally higher up in the call chain, warnings
+   and errors produced from using the random number generator (RNG) in a future
+   without declaring the intention to use one are now of class RngFutureWarning
+   and RngFutureError, respectively.  Both of these classes inherits from
+   RngFutureCondition.
+   
+   
 BUG FIXES:
 
  * Signaling immediateCondition:s with 'multicore' could result in "Error in
