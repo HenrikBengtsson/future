@@ -168,6 +168,23 @@ for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
+message("- Assert that RNG mistakes does not muffle run-time errors")
+
+options(
+  future.debug = FALSE,
+  future.rng.onMisuse = "warning"
+)
+for (signal in c(TRUE, FALSE)) {
+  message("signal=", signal)
+  f <- future({ sample.int(2L); log("a") }, seed = FALSE)
+  r <- result(f)
+  print(r)
+  res <- tryCatch(value(f, signal = signal), error = identity)
+  print(res)
+  stopifnot(inherits(res, "error"))
+}
+
+
 message("*** rng ... DONE")
 
 source("incl/end.R")

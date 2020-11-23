@@ -82,8 +82,20 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
           warning("Unknown value on option 'future.rng.onMisuse': ",
                   sQuote(onMisuse))
         }
+
+        ## RngFutureCondition to stack of captured conditions
+        new <- list(condition = cond, signaled = FALSE)
         conditions <- result$conditions
-        conditions[[length(conditions) + 1L]] <- list(condition = cond, signaled = FALSE)
+        n <- length(conditions)
+        
+        ## An existing run-time error takes precedence
+        if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
+          conditions[[n + 1L]] <- conditions[[n]]
+          conditions[[n]] <- new
+        } else {
+          conditions[[n + 1L]] <- new
+        }
+        
         result$conditions <- conditions
         future$result <- result
       }
