@@ -12,7 +12,7 @@ NEW FEATURES:
    RngFutureCondition.
 
  * Now run-time errors from resolving a future take precendence over
-   RunFutureError:s. That is, future({ rnorm(1); log("a") }, seed = FALSE)
+   RngFutureError:s. That is, future({ rnorm(1); log("a") }, seed = FALSE)
    will signal an error 'log("a")' instead of an RNG error when option
    'future.rng.onMisuse' is set to "error".
    
