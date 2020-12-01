@@ -452,7 +452,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -500,7 +500,6 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       }
     })
   })
-  exit <- NULL
   
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
@@ -515,7 +514,8 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     })
 
     exit <- bquote({
-      ## covr: skip=1
+      ## covr: skip=2
+      .(exit)
       base::options(mc.cores = ...future.mc.cores.old)
     })
   }

@@ -2,24 +2,31 @@ source("incl/start.R")
 
 message("*** rng ...")
 
+okind <- RNGkind()
+
 ## A valid regular seed
 f <- Future(42, seed = 42L)
 print(f)
+stopifnot(identical(RNGkind(), okind))
 
 ## A valid L'Ecuyer-CMRG RNG seed
 seed <- c(407L, 1420090545L, 65713854L, -990249945L,
           1780737596L, -1213437427L, 1082168682L)
 f <- Future(42, seed = seed)
 print(f)
+stopifnot(identical(RNGkind(), okind))
 
 f <- Future(42, seed = TRUE)
 print(f)
+stopifnot(identical(RNGkind(), okind))
 
 f <- Future(42, seed = FALSE)
 print(f)
+stopifnot(identical(RNGkind(), okind))
 
 f <- Future(42, seed = NULL)
 print(f)
+stopifnot(identical(RNGkind(), okind))
 
 
 ## See Section 6 on 'Random-number generation' in
@@ -88,13 +95,17 @@ fsample <- function(x, size = 4L, seed = NULL, what = c("future", "%<-%")) {
 
 dummy <- sample(0:3, size = 1L)
 seed0 <- .Random.seed
+stopifnot(identical(RNGkind(), okind))
 
 ## Reference sample with fixed random seed
 plan("sequential")
 y0 <- fsample(0:3, seed = 42L)
 
 ## Assert that random seed is reset
-stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+stopifnot(
+  identical(.GlobalEnv$.Random.seed, seed0),
+  identical(RNGkind(), okind)
+)
 
 
 for (cores in 1:availCores) {
@@ -118,7 +129,10 @@ for (cores in 1:availCores) {
       stopifnot(identical(y1, y0))
   
       ## Assert that random seed is reset
-      stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+      stopifnot(
+        identical(.GlobalEnv$.Random.seed, seed0),
+        identical(RNGkind(), okind)
+      )
   
       ## Fixed random seed
       y2 <- fsample(0:3, seed = 42L, what = what)
@@ -127,7 +141,10 @@ for (cores in 1:availCores) {
       stopifnot(identical(y2, y0))
   
       ## Assert that random seed is reset
-      stopifnot(identical(.GlobalEnv$.Random.seed, seed0))
+      stopifnot(
+        identical(.GlobalEnv$.Random.seed, seed0),
+        identical(RNGkind(), okind)
+      )
   
       ## No seed
       for (misuse in c("ignore", "warning", "error")) {
@@ -184,6 +201,7 @@ for (signal in c(TRUE, FALSE)) {
   stopifnot(inherits(res, "error"))
 }
 
+stopifnot(identical(RNGkind(), okind))
 
 message("*** rng ... DONE")
 

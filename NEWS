@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.20.1-9000 [2020-11-23]
+Version: 1.20.1-9000 [2020-11-30]
 
 NEW FEATURES:
 
@@ -17,6 +17,9 @@ NEW FEATURES:
    'future.rng.onMisuse' is set to "error".
    
 BUG FIXES:
+
+ * future(..., seed = TRUE) with 'sequential' futures would set the RNG kind of
+   the parent process.  Now it behaves the same regardless of future backend.
 
  * Signaling immediateCondition:s with 'multicore' could result in "Error in
    save_rds(obj, file) : save_rds() failed to rename temporary save file 

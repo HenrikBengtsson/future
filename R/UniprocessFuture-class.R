@@ -123,10 +123,27 @@ resolved.UniprocessFuture <- function(x, ...) {
 }
 
 #' @export
-getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, ...) {
+getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, exit = NULL, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
-  NextMethod(immediateConditions = immediateConditions)
+
+  ## Preserve RNG state?
+  oseed <- get_random_seed()
+  if (is.null(oseed)) {
+    okind <- RNGkind()[1]
+    exit <- bquote({
+      .(exit)
+      RNGkind(.(okind))
+      base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
+    })
+  } else {
+    exit <- bquote({
+      .(exit)
+      base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
+    })
+  }
+
+  NextMethod(immediateConditions = immediateConditions, exit = exit)
 }
 
 
