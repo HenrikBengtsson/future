@@ -3,9 +3,10 @@ get_random_seed <- function() {
   env$.Random.seed
 }
 
-set_random_seed <- function(seed) {
+set_random_seed <- function(seed, kind = NULL) {
   env <- globalenv()
   if (is.null(seed)) {
+    if (!is.null(kind)) RNGkind(kind)
     rm(list = ".Random.seed", envir = env, inherits = FALSE)
   } else {
     env$.Random.seed <- seed
@@ -72,11 +73,13 @@ as_lecyer_cmrg_seed <- function(seed) {
       if (is_lecyer_cmrg_seed(oseed)) return(oseed)
     }
     
-    ## Make sure to not forward the RNG state
-    on.exit(set_random_seed(oseed), add = TRUE)
     
     ## Generate a random L'Ecuyer-CMRG seed from the current RNG state
-    RNGkind("L'Ecuyer-CMRG")
+    okind <- RNGkind("L'Ecuyer-CMRG")[1]
+    
+    ## Make sure to not forward the RNG state or the RNG kind
+    on.exit(set_random_seed(oseed, kind = okind), add = TRUE)
+    
     return(get_random_seed())
   }
 
@@ -94,8 +97,13 @@ as_lecyer_cmrg_seed <- function(seed) {
     oseed <- get_random_seed()    
     on.exit(set_random_seed(oseed), add = TRUE)
     
-    ## Generate a random L'Ecuyer-CMRG seed based on 'seed'
-    RNGkind("L'Ecuyer-CMRG")
+    ## Generate a random L'Ecuyer-CMRG seed ...
+    okind <- RNGkind("L'Ecuyer-CMRG")[1]
+    
+    ## Make sure to not forward the RNG state or the RNG kind
+    on.exit(set_random_seed(oseed, kind = okind), add = TRUE)
+
+    ## ... based on 'seed'
     set.seed(seed)
     return(get_random_seed())
   }
