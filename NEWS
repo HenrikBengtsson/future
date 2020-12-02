@@ -16,6 +16,8 @@ NEW FEATURES:
    will signal an error 'log("a")' instead of an RNG error when option
    'future.rng.onMisuse' is set to "error".
 
+BETA FEATURES:
+
  * Add support nbrOfWorkers(free = TRUE) to query how many workers are free
    to take on futures immediately.  Until all third-party future backends have
    implemented support for this, some backends might produce an error saying
