@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[63858,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[9057,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -521,6 +521,65 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
+# future.BatchJobs
+
+<details>
+
+* Version: 0.16.2
+* GitHub: https://github.com/HenrikBengtsson/future.BatchJobs
+* Source code: https://github.com/cran/future.BatchJobs
+* Date/Publication: 2019-09-29 12:40:02 UTC
+* Number of recursive dependencies: 38
+
+Run `revdep_details(, "future.BatchJobs")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking S3 generic/method consistency ... WARNING
+    ```
+    nbrOfWorkers:
+      function(evaluator, free)
+    nbrOfWorkers.batchjobs:
+      function(evaluator)
+    
+    nbrOfWorkers:
+      function(evaluator, free)
+    nbrOfWorkers.batchjobs_multicore:
+      function(evaluator)
+    
+    See section ‘Generic functions and methods’ in the ‘Writing R
+    Extensions’ manual.
+    ```
+
+# future.batchtools
+
+<details>
+
+* Version: 0.9.0
+* GitHub: https://github.com/HenrikBengtsson/future.batchtools
+* Source code: https://github.com/cran/future.batchtools
+* Date/Publication: 2020-04-14 18:40:03 UTC
+* Number of recursive dependencies: 35
+
+Run `revdep_details(, "future.batchtools")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking S3 generic/method consistency ... WARNING
+    ```
+    nbrOfWorkers:
+      function(evaluator, free)
+    nbrOfWorkers.batchtools:
+      function(evaluator)
+    
+    See section ‘Generic functions and methods’ in the ‘Writing R
+    Extensions’ manual.
+    ```
+
 # GetBCBData
 
 <details>
@@ -709,10 +768,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-12-01 00:02:24] ::plot_cnv:Start
-    INFO [2020-12-01 00:02:24] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-12-01 00:02:24] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-12-01 00:02:24] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-12-01 21:03:43] ::plot_cnv:Start
+    INFO [2020-12-01 21:03:43] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-12-01 21:03:43] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-12-01 21:03:43] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1691,6 +1750,25 @@ Run `revdep_details(, "sigminer")` for more info
       sub-directories of 1Mb or more:
         extdata   3.9Mb
     ```
+
+# Signac
+
+<details>
+
+* Version: 1.1.0
+* GitHub: https://github.com/timoast/signac
+* Source code: https://github.com/cran/Signac
+* Date/Publication: 2020-11-07 00:20:14 UTC
+* Number of recursive dependencies: 233
+
+Run `revdep_details(, "Signac")` for more info
+
+</details>
+
+## In both
+
+*   R CMD check timed out
+    
 
 # simhelpers
 
