@@ -27,6 +27,8 @@ nbrOfWorkers <- function(evaluator = NULL, free = FALSE) {
 
 #' @export
 nbrOfWorkers.cluster <- function(evaluator, free = FALSE) {
+  assert_no_positional_args_but_first()
+  
   expr <- formals(evaluator)$workers
   workers <- eval(expr, enclos = baseenv())
   if (is.function(workers)) workers <- workers()
@@ -58,11 +60,15 @@ nbrOfWorkers.cluster <- function(evaluator, free = FALSE) {
 
 #' @export
 nbrOfWorkers.uniprocess <- function(evaluator, free = FALSE) {
+  assert_no_positional_args_but_first()
+  
   1L
 }
 
 #' @export
 nbrOfWorkers.multicore <- function(evaluator, free = FALSE) {
+  assert_no_positional_args_but_first()
+  
   workers <- NextMethod(free = FALSE)
   if (isTRUE(free)) {
     workers <- workers - usedCores()
@@ -73,6 +79,8 @@ nbrOfWorkers.multicore <- function(evaluator, free = FALSE) {
 
 #' @export
 nbrOfWorkers.multiprocess <- function(evaluator, free = FALSE) {
+  assert_no_positional_args_but_first()
+  
   if (isTRUE(free)) {
     stop("nbrOfWorkers(free = TRUE) is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
   }
@@ -91,6 +99,8 @@ nbrOfWorkers.multiprocess <- function(evaluator, free = FALSE) {
 
 #' @export
 nbrOfWorkers.future <- function(evaluator, free = FALSE) {
+  assert_no_positional_args_but_first()
+  
   if (isTRUE(free)) {
     stop("nbrOfWorkers(free = TRUE) is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
   }
@@ -105,17 +115,34 @@ nbrOfWorkers.future <- function(evaluator, free = FALSE) {
     stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L)
+
+  if (isTRUE(free)) {
+    ## If we reach this point, we have failed to infer how many free workers
+    ## there are.  Unless there is an infinite number of workers available,
+    ## we have no option but producing an error here.
+    if (is.finite(workers)) {
+      stop("nbrOfWorkers(free = TRUE) is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
+    }
+  }
+  
   workers
 }
 
 #' @export
 nbrOfWorkers.NULL <- function(evaluator, free = FALSE) {
-  nbrOfWorkers(plan("next"), free = free)
+  assert_no_positional_args_but_first()
+  
+  free <- force(free)
+  if (!isTRUE(free)) return(nbrOfWorkers(plan("next")))
+
+  ## This will produce an error on "unused argument (free = TRUE)"
+  ## for backends that does not yet support a 'free' argument
+  nbrOfWorkers(plan("next"), free = TRUE)
 }
 
 
 #' @export
 nbrOfWorkers.logical <- function(evaluator, free = FALSE) {
-  if (missing(free) && isTRUE(evaluator)) free <- TRUE
-  nbrOfWorkers(plan("next"), free = free)
+  assert_no_positional_args_but_first()
+  nbrOfWorkers(NULL, free = force(free))
 }
