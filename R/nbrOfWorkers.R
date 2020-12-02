@@ -58,7 +58,7 @@ nbrOfWorkers.cluster <- function(evaluator, free = FALSE) {
 
 #' @export
 nbrOfWorkers.uniprocess <- function(evaluator, free = FALSE) {
-  if (isTRUE(free)) 0L else 1L
+  1L
 }
 
 #' @export
