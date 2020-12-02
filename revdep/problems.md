@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[30521,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[63858,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -709,10 +709,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-11-30 15:19:21] ::plot_cnv:Start
-    INFO [2020-11-30 15:19:21] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-11-30 15:19:21] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-11-30 15:19:21] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-12-01 00:02:24] ::plot_cnv:Start
+    INFO [2020-12-01 00:02:24] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-12-01 00:02:24] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-12-01 00:02:24] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -1067,6 +1067,34 @@ Run `revdep_details(, "origami")` for more info
 Run `revdep_details(, "pavo")` for more info
 
 </details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+    ...
+      Warning (test-images.R:97:3): classify
+      Warning (test-images.R:102:3): classify
+      Warning (test-images.R:121:3): classify
+      Warning (test-images.R:149:3): classify
+      Warning (test-images.R:194:3): adjacency
+      Warning (test-images.R:195:3): adjacency
+      Warning (test-images.R:214:3): adjacency
+      Warning (test-images.R:225:3): adjacency
+      Warning (test-images.R:250:3): adjacency
+      Warning (test-images.R:272:3): adjacency
+      Warning (test-images.R:286:3): summary
+      Warning (test-images.R:288:3): summary
+      FAILURE (test-images.R:291:3): summary
+      Warning (test-processing.R:12:3): Procspec
+      Warning (test-processing.R:56:3): Aggregation
+      Warning (test-vismodel.R:12:3): Warnings
+      Warning (test-vismodel.R:67:3): sensdata()
+      
+      [ FAIL 1 | WARN 1069 | SKIP 6 | PASS 377 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 ## In both
 
