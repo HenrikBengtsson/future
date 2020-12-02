@@ -4,15 +4,25 @@
 \alias{nbrOfWorkers}
 \title{Get the number of workers available}
 \usage{
-nbrOfWorkers(evaluator = NULL)
+nbrOfWorkers(evaluator = NULL, free = FALSE)
 }
 \arguments{
 \item{evaluator}{A future evaluator function.
 If NULL (default), the current evaluator as returned
 by \code{\link[=plan]{plan()}} is used.}
+
+\item{free}{If FALSE (default), the total number of workers available
+to resolve futures is returned.  If TRUE, then the number of \emph{free}
+workers are returned.  Note that \code{free = TRUE} will \emph{not} attempt to
+collect results from active futures, which means that, in order to free up
+workers, functions such as \code{value()} must be called on active futures.
+Importantly, since \code{free = FALSE} was introduced in \pkg{future} 1.21.0, it
+will take some time before all future backends support it.  A backend that
+supports it should ideally declare that it depends on \verb{future (>= 1.21.0)}.}
 }
 \value{
 A positive number in \eqn{{1, 2, 3, ...}}.
+If \code{free = TRUE}, then it \eqn{0} (zero) may also be returned.
 Note, it may also be \code{+Inf} for certain types of backends.
 }
 \description{
