@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.20.1-9000 [2020-12-01]
+Version: 1.20.1-9000 [2020-12-02]
 
 NEW FEATURES:
 
@@ -18,10 +18,9 @@ NEW FEATURES:
 
 BETA FEATURES:
 
- * Add support nbrOfWorkers(free = TRUE) to query how many workers are free
-   to take on futures immediately.  Until all third-party future backends have
-   implemented support for this, some backends might produce an error saying
-   'free = TRUE' is not yet supported.
+ * Add nbrOfFreeWorkers() to query how many workers are free to take on futures
+   immediately.  Until all third-party future backends have implemented this,
+   some backends might produce an error saying it is not yet supported.
    
 BUG FIXES:
 
