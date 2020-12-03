@@ -88,6 +88,10 @@ nbrOfWorkers.NULL <- function(evaluator) {
 
 
 
+#' @param background If TRUE, only workers that can be process a future in the
+#' background are considered.  If FALSE, also workers running in the main \R
+#' process are considered, e.g. when using the 'sequential' backend.
+#'
 #' @param \dots Not used; reserved for future use.
 #'
 #' @return
@@ -96,13 +100,13 @@ nbrOfWorkers.NULL <- function(evaluator) {
 #'
 #' @rdname nbrOfWorkers
 #' @export
-nbrOfFreeWorkers <- function(evaluator = NULL, ...) {
+nbrOfFreeWorkers <- function(evaluator = NULL, background = FALSE, ...) {
   UseMethod("nbrOfFreeWorkers")
 }
 
 
 #' @export
-nbrOfFreeWorkers.cluster <- function(evaluator, ...) {
+nbrOfFreeWorkers.cluster <- function(evaluator, background = FALSE, ...) {
   assert_no_positional_args_but_first()
   
   workers <- nbrOfWorkers(evaluator)
@@ -123,14 +127,14 @@ nbrOfFreeWorkers.cluster <- function(evaluator, ...) {
 
 
 #' @export
-nbrOfFreeWorkers.uniprocess <- function(evaluator, ...) {
+nbrOfFreeWorkers.uniprocess <- function(evaluator, background = FALSE, ...) {
   assert_no_positional_args_but_first()
-  
-  1L
+
+  if (isTRUE(background)) 0L else 1L
 }
 
 #' @export
-nbrOfFreeWorkers.multicore <- function(evaluator, ...) {
+nbrOfFreeWorkers.multicore <- function(evaluator, background = FALSE, ...) {
   assert_no_positional_args_but_first()
   
   workers <- nbrOfWorkers(evaluator)
@@ -142,12 +146,12 @@ nbrOfFreeWorkers.multicore <- function(evaluator, ...) {
 }
 
 #' @export
-nbrOfFreeWorkers.multiprocess <- function(evaluator, ...) {
+nbrOfFreeWorkers.multiprocess <- function(evaluator, background = FALSE, ...) {
   stop("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
 }
 
 #' @export
-nbrOfFreeWorkers.future <- function(evaluator, ...) {
+nbrOfFreeWorkers.future <- function(evaluator, background = FALSE, ...) {
   assert_no_positional_args_but_first()
 
   workers <- nbrOfWorkers(evaluator)
@@ -158,8 +162,18 @@ nbrOfFreeWorkers.future <- function(evaluator, ...) {
 
 
 #' @export
-nbrOfFreeWorkers.NULL <- function(evaluator, ...) {
+nbrOfFreeWorkers.NULL <- function(evaluator, background = FALSE, ...) {
   assert_no_positional_args_but_first()
   
-  nbrOfFreeWorkers(plan("next"))
+  nbrOfFreeWorkers(plan("next"), background = background, ...)
+}
+
+
+#' @export
+nbrOfFreeWorkers.logical <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+  if (missing(background)) {
+    stop("Arguments 'background' of nbrOfFreeWorkers() must be named, if used")
+  }
+  nbrOfFreeWorkers(NULL, background = force(background), ...)
 }

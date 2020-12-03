@@ -7,12 +7,16 @@
 \usage{
 nbrOfWorkers(evaluator = NULL)
 
-nbrOfFreeWorkers(evaluator = NULL, ...)
+nbrOfFreeWorkers(evaluator = NULL, background = FALSE, ...)
 }
 \arguments{
 \item{evaluator}{A future evaluator function.
 If NULL (default), the current evaluator as returned
 by \code{\link[=plan]{plan()}} is used.}
+
+\item{background}{If TRUE, only workers that can be process a future in the
+background are considered.  If FALSE, also workers running in the main \R
+process are considered, e.g. when using the 'sequential' backend.}
 
 \item{\dots}{Not used; reserved for future use.}
 }
