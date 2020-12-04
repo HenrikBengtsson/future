@@ -34,6 +34,9 @@ BUG FIXES:
    warning instead of the run-time error when the for-internal-use-only
    argument 'signal' was set to FALSE.
 
+ * Due to a mistake introduced in future 1.20.0, the package would end up
+   assigning a '.packageVersion' object to the global environment when loaded.
+ 
 
 Version: 1.20.1 [2020-10-30]
 
