@@ -2,18 +2,30 @@
 % Please edit documentation in R/nbrOfWorkers.R
 \name{nbrOfWorkers}
 \alias{nbrOfWorkers}
+\alias{nbrOfFreeWorkers}
 \title{Get the number of workers available}
 \usage{
 nbrOfWorkers(evaluator = NULL)
+
+nbrOfFreeWorkers(evaluator = NULL, background = FALSE, ...)
 }
 \arguments{
 \item{evaluator}{A future evaluator function.
 If NULL (default), the current evaluator as returned
 by \code{\link[=plan]{plan()}} is used.}
+
+\item{background}{If TRUE, only workers that can process a future in the
+background are considered.  If FALSE, also workers running in the main \R
+process are considered, e.g. when using the 'sequential' backend.}
+
+\item{\dots}{Not used; reserved for future use.}
 }
 \value{
-A positive number in \eqn{{1, 2, 3, ...}}.
-Note, it may also be \code{+Inf} for certain types of backends.
+\code{nbrOfWorkers()} returns a positive number in \eqn{{1, 2, 3, ...}}, which
+for some future backends may also be \code{+Inf}.
+
+\code{nbrOfFreeWorkers()} returns a non-negative number in
+\eqn{{0, 1, 2, 3, ...}} which is less than or equal to \code{nbrOfWorkers()}.
 }
 \description{
 Get the number of workers available

@@ -24,11 +24,19 @@
 
 # Revdeps
 
-## New problems (1)
+## Failed to check (1)
 
-|package                  |version |error  |warning |note |
-|:------------------------|:-------|:------|:-------|:----|
-|[pavo](problems.md#pavo) |2.5.0   |__+1__ |1       |     |
+|package                      |version |error |warning |note |
+|:----------------------------|:-------|:-----|:-------|:----|
+|[Signac](failures.md#signac) |1.1.0   |1     |        |     |
+
+## New problems (3)
+
+|package                                           |version |error  |warning |note |
+|:-------------------------------------------------|:-------|:------|:-------|:----|
+|[future.BatchJobs](problems.md#futurebatchjobs)   |0.16.2  |       |__+1__  |     |
+|[future.batchtools](problems.md#futurebatchtools) |0.9.0   |       |__+1__  |     |
+|[pavo](problems.md#pavo)                          |2.5.0   |__+1__ |1       |     |
 
 ## All (145)
 
@@ -79,10 +87,10 @@
 |[foieGras](problems.md#foiegras)                   |0.6-9     |       |        |1    |
 |[forecastML](problems.md#forecastml)               |0.9.0     |       |        |1    |
 |funGp                                              |0.2.1     |       |        |     |
-|furrr                                              |0.2.1     |       |        |     |
+|furrr                                              |0.2.1     |-1     |        |     |
 |future.apply                                       |1.6.0     |       |        |     |
-|future.BatchJobs                                   |0.16.2    |       |        |     |
-|future.batchtools                                  |0.9.0     |       |        |     |
+|[future.BatchJobs](problems.md#futurebatchjobs)    |0.16.2    |       |__+1__  |     |
+|[future.batchtools](problems.md#futurebatchtools)  |0.9.0     |       |__+1__  |     |
 |future.callr                                       |0.5.0     |       |        |     |
 |future.tests                                       |0.2.1     |       |        |     |
 |fxtract                                            |0.9.4     |       |        |     |
@@ -157,7 +165,7 @@
 |[shiny](problems.md#shiny)                         |1.5.0     |1      |        |1    |
 |[shinyrecap](problems.md#shinyrecap)               |0.1.0     |       |        |1    |
 |[sigminer](problems.md#sigminer)                   |1.1.0     |       |        |1    |
-|Signac                                             |1.1.0     |       |        |     |
+|[Signac](failures.md#signac)                       |1.1.0     |1      |        |     |
 |simfinapi                                          |0.1.0     |       |        |     |
 |simglm                                             |0.8.0     |       |        |     |
 |[simhelpers](problems.md#simhelpers)               |0.1.0     |       |        |1    |
@@ -166,7 +174,7 @@
 |[spacey](problems.md#spacey)                       |0.1.1     |       |        |1    |
 |SpaDES.core                                        |1.0.3     |       |        |     |
 |[spatialwarnings](problems.md#spatialwarnings)     |2.0.0     |       |        |2    |
-|sperrorest                                         |3.0.1     |       |        |     |
+|sperrorest                                         |3.0.1     |-1     |        |     |
 |[stars](problems.md#stars)                         |0.4-3     |       |        |2    |
 |startR                                             |2.1.0     |       |        |     |
 |steps                                              |1.1.0     |       |        |     |
