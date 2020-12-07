@@ -81,6 +81,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **rstan**       | stanmodel (`externalptr`)
   **sparklyr**    | tbl_spark (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
+  **xgboost**     | xgb.DMatrix (`externalptr`)
   **xml2**        | xml_document (`externalptr`)
 
 
@@ -365,6 +366,42 @@ x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the \pkg{udpipe} package.
 
 
+#### Package: xgboost
+
+The [xgboost](https://cran.r-project.org/package=xgboost) package provides fast gradient-boosting methods.  Some of its data structures use external pointers.  For example,
+
+```r
+library(future)
+plan(multisession)
+
+library(xgboost)
+data(agaricus.train, package = "xgboost")
+train <- xgb.DMatrix(agaricus.train$data, label = agaricus.train$label)
+print(class(train))
+## [1] "xgb.DMatrix"
+
+d <- dim(dtrain)
+print(d)
+## [1] 6513  126
+```
+
+works just fine but if we attempt to pass on the 'xgb.DMatrix' object `train` to an external worker, we silently get a incorrect value:
+
+```r
+f <- future(dim(dtrain))
+d <- value(f)
+print(d)
+## NULL
+```
+
+This is unfortunate, but we can at least detect this by:
+
+```r
+options(future.globals.onReference = "error")
+f <- future(dim(dtrain))
+## Error: Detected a non-exportable reference ('externalptr' of class 'xgb.DMatrix')
+## in one of the globals ('dtrain' of class 'xgb.DMatrix') used in the future expression
+```
 
 
 #### Package: xml2
