@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-12-01                   |
+|date     |2020-12-09                   |
 
 # Dependencies
 
@@ -24,21 +24,7 @@
 
 # Revdeps
 
-## Failed to check (1)
-
-|package                      |version |error |warning |note |
-|:----------------------------|:-------|:-----|:-------|:----|
-|[Signac](failures.md#signac) |1.1.0   |1     |        |     |
-
-## New problems (3)
-
-|package                                           |version |error  |warning |note |
-|:-------------------------------------------------|:-------|:------|:-------|:----|
-|[future.BatchJobs](problems.md#futurebatchjobs)   |0.16.2  |       |__+1__  |     |
-|[future.batchtools](problems.md#futurebatchtools) |0.9.0   |       |__+1__  |     |
-|[pavo](problems.md#pavo)                          |2.5.0   |__+1__ |1       |     |
-
-## All (145)
+## All (144)
 
 |package                                            |version   |error  |warning |note |
 |:--------------------------------------------------|:---------|:------|:-------|:----|
@@ -59,7 +45,7 @@
 |[brms](problems.md#brms)                           |2.14.4    |       |        |2    |
 |ceRNAnetsim                                        |1.2.1     |       |        |     |
 |civis                                              |3.0.0     |       |        |     |
-|Clustering                                         |1.7       |       |        |     |
+|Clustering                                         |1.7.1     |       |        |     |
 |[CLVTools](problems.md#clvtools)                   |0.7.0     |       |        |1    |
 |codalm                                             |0.1.0     |       |        |     |
 |[codebook](problems.md#codebook)                   |0.9.2     |       |        |2    |
@@ -72,7 +58,7 @@
 |dipsaus                                            |0.1.1     |       |        |     |
 |disk.frame                                         |0.3.7     |       |        |     |
 |doFuture                                           |0.10.0    |       |        |     |
-|[dragon](problems.md#dragon)                       |1.0.5     |       |        |1    |
+|[dragon](problems.md#dragon)                       |1.1.0     |       |        |1    |
 |drake                                              |7.12.7    |       |        |     |
 |drtmle                                             |1.0.5     |       |        |     |
 |[EFAtools](problems.md#efatools)                   |0.3.0     |       |        |2    |
@@ -87,14 +73,14 @@
 |[foieGras](problems.md#foiegras)                   |0.6-9     |       |        |1    |
 |[forecastML](problems.md#forecastml)               |0.9.0     |       |        |1    |
 |funGp                                              |0.2.1     |       |        |     |
-|furrr                                              |0.2.1     |-1     |        |     |
+|furrr                                              |0.2.1     |       |        |     |
 |future.apply                                       |1.6.0     |       |        |     |
-|[future.BatchJobs](problems.md#futurebatchjobs)    |0.16.2    |       |__+1__  |     |
-|[future.batchtools](problems.md#futurebatchtools)  |0.9.0     |       |__+1__  |     |
+|future.BatchJobs                                   |0.16.2    |       |        |     |
+|future.batchtools                                  |0.9.0     |       |        |     |
 |future.callr                                       |0.5.0     |       |        |     |
 |future.tests                                       |0.2.1     |       |        |     |
 |fxtract                                            |0.9.4     |       |        |     |
-|genBaRcode                                         |1.2.3     |       |        |     |
+|genBaRcode                                         |1.2.4     |       |        |     |
 |[GetBCBData](problems.md#getbcbdata)               |0.5       |       |        |1    |
 |glmmboot                                           |0.5.1     |       |        |     |
 |googleComputeEngineR                               |0.3.0     |       |        |     |
@@ -119,7 +105,7 @@
 |JointAI                                            |1.0.1     |       |        |     |
 |jstor                                              |0.3.9     |       |        |     |
 |kernelboot                                         |0.1.7     |       |        |     |
-|ldaPrototype                                       |0.2.0     |       |        |     |
+|ldaPrototype                                       |0.3.0     |       |        |     |
 |ldsr                                               |0.0.2     |       |        |     |
 |lgr                                                |0.4.1     |       |        |     |
 |[lidR](problems.md#lidr)                           |3.0.4     |       |        |1    |
@@ -129,15 +115,14 @@
 |merTools                                           |0.5.2     |       |        |     |
 |metagam                                            |0.2.0     |       |        |     |
 |[methyvim](problems.md#methyvim)                   |1.11.0    |1      |        |1    |
-|[mikropml](problems.md#mikropml)                   |0.0.1     |       |        |1    |
+|mikropml                                           |0.0.2     |       |        |     |
 |[MineICA](problems.md#mineica)                     |1.30.0    |1      |2       |4    |
-|mlr3                                               |0.8.0     |       |        |     |
+|mlr3                                               |0.9.0     |       |        |     |
 |mlr3db                                             |0.2.0     |       |        |     |
 |mrgsim.parallel                                    |0.1.1     |       |        |     |
 |nflfastR                                           |3.2.0     |       |        |     |
 |onemapsgapi                                        |1.0.0     |       |        |     |
 |[origami](problems.md#origami)                     |1.0.3     |       |        |1    |
-|[pavo](problems.md#pavo)                           |2.5.0     |__+1__ |1       |     |
 |[PCRedux](problems.md#pcredux)                     |1.0-6     |       |        |1    |
 |PeakSegDisk                                        |2020.8.13 |       |        |     |
 |penaltyLearning                                    |2020.5.13 |       |        |     |
@@ -154,7 +139,7 @@
 |rangeMapper                                        |0.3-7     |       |        |     |
 |[rBiasCorrection](problems.md#rbiascorrection)     |0.2.4     |2      |        |     |
 |[regmedint](problems.md#regmedint)                 |0.2.0     |       |        |1    |
-|[reproducible](problems.md#reproducible)           |1.2.1     |2      |        |     |
+|reproducible                                       |1.2.4     |       |        |     |
 |[robotstxt](problems.md#robotstxt)                 |0.7.13    |       |        |1    |
 |RTransferEntropy                                   |0.2.12    |       |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)             |0.1.1     |       |        |1    |
@@ -165,7 +150,7 @@
 |[shiny](problems.md#shiny)                         |1.5.0     |1      |        |1    |
 |[shinyrecap](problems.md#shinyrecap)               |0.1.0     |       |        |1    |
 |[sigminer](problems.md#sigminer)                   |1.1.0     |       |        |1    |
-|[Signac](failures.md#signac)                       |1.1.0     |1      |        |     |
+|Signac                                             |1.1.0     |-1     |        |     |
 |simfinapi                                          |0.1.0     |       |        |     |
 |simglm                                             |0.8.0     |       |        |     |
 |[simhelpers](problems.md#simhelpers)               |0.1.0     |       |        |1    |
@@ -174,7 +159,7 @@
 |[spacey](problems.md#spacey)                       |0.1.1     |       |        |1    |
 |SpaDES.core                                        |1.0.3     |       |        |     |
 |[spatialwarnings](problems.md#spatialwarnings)     |2.0.0     |       |        |2    |
-|sperrorest                                         |3.0.1     |-1     |        |     |
+|sperrorest                                         |3.0.1     |       |        |     |
 |[stars](problems.md#stars)                         |0.4-3     |       |        |2    |
 |startR                                             |2.1.0     |       |        |     |
 |steps                                              |1.1.0     |       |        |     |
