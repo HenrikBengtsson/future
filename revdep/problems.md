@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[9057,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[58525,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -400,10 +400,10 @@ Run `revdep_details(, "delayed")` for more info
 
 <details>
 
-* Version: 1.0.5
+* Version: 1.1.0
 * GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
-* Date/Publication: 2020-11-05 17:30:18 UTC
+* Date/Publication: 2020-12-08 08:10:15 UTC
 * Number of recursive dependencies: 129
 
 Run `revdep_details(, "dragon")` for more info
@@ -519,65 +519,6 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
-    ```
-
-# future.BatchJobs
-
-<details>
-
-* Version: 0.16.2
-* GitHub: https://github.com/HenrikBengtsson/future.BatchJobs
-* Source code: https://github.com/cran/future.BatchJobs
-* Date/Publication: 2019-09-29 12:40:02 UTC
-* Number of recursive dependencies: 38
-
-Run `revdep_details(, "future.BatchJobs")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    nbrOfWorkers:
-      function(evaluator, free)
-    nbrOfWorkers.batchjobs:
-      function(evaluator)
-    
-    nbrOfWorkers:
-      function(evaluator, free)
-    nbrOfWorkers.batchjobs_multicore:
-      function(evaluator)
-    
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-# future.batchtools
-
-<details>
-
-* Version: 0.9.0
-* GitHub: https://github.com/HenrikBengtsson/future.batchtools
-* Source code: https://github.com/cran/future.batchtools
-* Date/Publication: 2020-04-14 18:40:03 UTC
-* Number of recursive dependencies: 35
-
-Run `revdep_details(, "future.batchtools")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking S3 generic/method consistency ... WARNING
-    ```
-    nbrOfWorkers:
-      function(evaluator, free)
-    nbrOfWorkers.batchtools:
-      function(evaluator)
-    
-    See section ‘Generic functions and methods’ in the ‘Writing R
-    Extensions’ manual.
     ```
 
 # GetBCBData
@@ -768,10 +709,10 @@ Run `revdep_details(, "infercnv")` for more info
     +          png_res=300,
     +          dynamic_resize=0
     +          )
-    INFO [2020-12-01 21:03:43] ::plot_cnv:Start
-    INFO [2020-12-01 21:03:43] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
-    INFO [2020-12-01 21:03:43] ::plot_cnv:Depending on the size of the matrix this may take a moment.
-    INFO [2020-12-01 21:03:43] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
+    INFO [2020-12-09 15:31:52] ::plot_cnv:Start
+    INFO [2020-12-09 15:31:52] ::plot_cnv:Current data dimensions (r,c)=4613,20 Total=94613.7345076583 Min=0.459691019720342 Max=2.53323815685956.
+    INFO [2020-12-09 15:31:52] ::plot_cnv:Depending on the size of the matrix this may take a moment.
+    INFO [2020-12-09 15:31:52] plot_cnv(): auto thresholding at: (0.510779 , 1.489221)
     Warning in png(paste(out_dir, paste(output_filename, ".png", sep = ""),  :
       unable to open connection to X11 display ''
     Error in .External2(C_X11, paste0("png::", filename), g$width, g$height,  : 
@@ -937,29 +878,6 @@ Run `revdep_details(, "methyvim")` for more info
     Package unavailable to check Rd xrefs: ‘tmle.npvi’
     ```
 
-# mikropml
-
-<details>
-
-* Version: 0.0.1
-* GitHub: https://github.com/SchlossLab/mikropml
-* Source code: https://github.com/cran/mikropml
-* Date/Publication: 2020-11-23 09:40:11 UTC
-* Number of recursive dependencies: 109
-
-Run `revdep_details(, "mikropml")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘MLmetrics’ ‘e1071’ ‘glmnet’ ‘kernlab’ ‘randomForest’ ‘xgboost’
-      All declared Imports should be used.
-    ```
-
 # MineICA
 
 <details>
@@ -1111,57 +1029,6 @@ Run `revdep_details(, "origami")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘glmnet’
-    ```
-
-# pavo
-
-<details>
-
-* Version: 2.5.0
-* GitHub: https://github.com/rmaia/pavo
-* Source code: https://github.com/cran/pavo
-* Date/Publication: 2020-11-12 09:00:02 UTC
-* Number of recursive dependencies: 101
-
-Run `revdep_details(, "pavo")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-    ...
-      Warning (test-images.R:97:3): classify
-      Warning (test-images.R:102:3): classify
-      Warning (test-images.R:121:3): classify
-      Warning (test-images.R:149:3): classify
-      Warning (test-images.R:194:3): adjacency
-      Warning (test-images.R:195:3): adjacency
-      Warning (test-images.R:214:3): adjacency
-      Warning (test-images.R:225:3): adjacency
-      Warning (test-images.R:250:3): adjacency
-      Warning (test-images.R:272:3): adjacency
-      Warning (test-images.R:286:3): summary
-      Warning (test-images.R:288:3): summary
-      FAILURE (test-images.R:291:3): summary
-      Warning (test-processing.R:12:3): Procspec
-      Warning (test-processing.R:56:3): Aggregation
-      Warning (test-vismodel.R:12:3): Warnings
-      Warning (test-vismodel.R:67:3): sensdata()
-      
-      [ FAIL 1 | WARN 1069 | SKIP 6 | PASS 377 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-## In both
-
-*   checking whether package ‘pavo’ can be installed ... WARNING
-    ```
-    Found the following significant warnings:
-      Warning: no DISPLAY variable so Tk is not available
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
     ```
 
 # PCRedux
@@ -1466,74 +1333,6 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
-# reproducible
-
-<details>
-
-* Version: 1.2.1
-* GitHub: https://github.com/PredictiveEcology/reproducible
-* Source code: https://github.com/cran/reproducible
-* Date/Publication: 2020-08-18 07:20:36 UTC
-* Number of recursive dependencies: 105
-
-Run `revdep_details(, "reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    ...
-    > ### Name: Cache
-    > ### Title: Cache method that accommodates environments, S4 methods,
-    > ###   Rasters, & nested caching
-    > ### Aliases: Cache Cache,ANY-method
-    > 
-    > ### ** Examples
-    > 
-    > tmpDir <- file.path(tempdir())
-    > 
-    > # Basic use
-    > ranNumsA <- Cache(rnorm, 10, 16, cacheRepo = tmpDir)
-    > 
-    > # All same
-    > ranNumsB <- Cache(rnorm, 10, 16, cacheRepo = tmpDir) # recovers cached copy
-      ...(Object to retrieve (f11fb1a2880f8060.rds))
-         loaded cached result from previous rnorm call, 
-    > ranNumsC <- Cache(cacheRepo = tmpDir) %C% rnorm(10, 16)  # recovers cached copy
-    Error in get(x, envir = ns, inherits = FALSE) : 
-      object 'split_chain' not found
-    Calls: %C% -> getFromNamespace -> get
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-      
-      ── Skip (test-prepInputsInNestedArchives.R:149:3): prepInputs in a two files dou
-      Reason: On CRAN
-      
-      ── Skip (test-prepInputsInNestedArchives.R:175:3): prepInputs works with nested 
-      Reason: On CRAN
-      
-      ── Skipped tests  ──────────────────────────────────────────────────────────────
-      ● No Drive token is not TRUE (5)
-      ● On CRAN (58)
-      ● empty test (6)
-      ● test cloudCache inside Cache -- Not fully written test (1)
-      
-      ══ testthat results  ═══════════════════════════════════════════════════════════
-      ERROR (test-cache.R:550:3): test pipe for Cache
-      Warning (test-prepInputs.R:1803:3): rasters aren't properly resampled
-      Warning (test-prepInputs.R:1818:3): rasters aren't properly resampled
-      
-      [ FAIL 1 | WARN 2 | SKIP 70 | PASS 353 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # robotstxt
 
 <details>
@@ -1750,25 +1549,6 @@ Run `revdep_details(, "sigminer")` for more info
       sub-directories of 1Mb or more:
         extdata   3.9Mb
     ```
-
-# Signac
-
-<details>
-
-* Version: 1.1.0
-* GitHub: https://github.com/timoast/signac
-* Source code: https://github.com/cran/Signac
-* Date/Publication: 2020-11-07 00:20:14 UTC
-* Number of recursive dependencies: 233
-
-Run `revdep_details(, "Signac")` for more info
-
-</details>
-
-## In both
-
-*   R CMD check timed out
-    
 
 # simhelpers
 
