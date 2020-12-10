@@ -5,14 +5,14 @@
 %\VignetteKeyword{package}
 %\VignetteKeyword{vignette}
 %\VignetteKeyword{future}
-%\VignetteKeyword{promise}
+%\VignetteKeyword{Future API}
 %\VignetteKeyword{backend}
 %\VignetteEngine{R.rsp::rsp}
 %\VignetteTangle{FALSE}
 --------------------------------------------------------------------"%>
 # Future API Backend Specification
 
-Version 0.1.0
+Version 0.1.0-1
 
 ## Introduction
 
@@ -46,12 +46,12 @@ The Future API has three fundamental functions at its core:
 
 The implementation of a future backend for these involves several steps.  For simplicity, lets say we call our future backend 'myparallel'.  In summary, a future backend needs to implement four API components:
 
-* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture`.  The default should be that this function calls `run()` on the `Future` object before returning.
+* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture`.  The default should be that this function calls `run()` on the `Future` object before returning, unless a _lazy_ is created.
 * An S3 method of `run()` for  `MyParallelFuture` that starts the evaluation of the future R expression part of the `Future` object.  This method is often non-blocking for parallel backends, but may be blocking if all compute resources are exhausted.  It is typically blocking for sequential backends.
 * An S3 method of `resolved()` for `MyParallelFuture` that, in a non-blocking fashion, returns `TRUE` if the future is resolved and `FALSE` if not.
-* An S3 method of `results()` for `MyParallelFuture` that returns a `FutureResults` object (as defined by the [future] package) when the future is resolved or otherwise fails to resolve.  If the future is not yet resolved, this method should block until the future is resolved.  
+* An S3 method of `result()` for `MyParallelFuture` that returns a `FutureResult` object (as defined by the [future] package) when the future is resolved or otherwise fails to resolve.  If the future is not yet resolved, this method should block until the future is resolved.  
 
-With this in place, the selection of using this backend as the future plan, will be done as `plan(myparallel)` with the option of specifying certain arguments to be passed to `myparallel()`.  With the plan set, a call to `f <- future(expr)` will then correspond to a `f <- myparallel(expr)` call.  With the defaults, `myparallel()` will then launch the evaluation of `expr` asynchronously before returning the `MyParallelFuture` object.  When calling `resolved(f)` to query whether the future expression is resolved or not, the underlying S3 method for this class will then check in with the parallel worker whether the expression is resolved or not.  When calling `value(f)`, the S3 method for the `Future` class calls `results(f)`, which will return the `FutureResults` object for this future.  If the future is not yet resolved, this call will block until it is.  If no errors occurred while resolving the future expression, then `value(f)` will return the value of the expression, which is recorded by the backend in the `FutureResults` object.  If there was an evaluation error, then `value(f)` will resignal ("relayed") that error.  Any captured conditions or standard output will also be relayed at this point.
+With this in place, the selection of using this backend as the future plan, will be done as `plan(myparallel)` with the option of specifying certain arguments to be passed to `myparallel()`.  With the plan set, a call to `f <- future(expr)` will then correspond to a `f <- myparallel(expr)` call.  With the defaults, `myparallel()` will then launch the evaluation of `expr` asynchronously before returning the `MyParallelFuture` object.  When calling `resolved(f)` to query whether the future expression is resolved or not, the underlying S3 method for this class will then check in with the parallel worker whether the expression is resolved or not.  When calling `value(f)`, the S3 method for the `Future` class calls `result(f)`, which will return the `FutureResult` object for this future.  If the future is not yet resolved, this call will block until it is.  If no errors occurred while resolving the future expression, then `value(f)` will return the value of the expression, which is recorded by the backend in the `FutureResult` object.  If there was an evaluation error, then `value(f)` will resignal ("relayed") that error.  Any captured conditions or standard output will also be relayed at this point.
 
 
 
@@ -68,7 +68,7 @@ The constructor function should have explicit arguments `expr`, `substitute`, `e
 
 If the backend supports more than one worker, then it should also have an explicit `workers` argument.
 
-Any currying arguments that can be specified when setting the future plan must be explicit arguments of the constructor function such that they appear as named elements in `formals(myparallel)`.  Currying arguments are arguments that can be "tweaked" by the end-user, e.g. `plan(myparallel, workers = 2L)`.
+Any currying arguments that can be specified when setting the future plan must be explicit arguments of the constructor function such that they appear as named elements in `formals(myparallel)`.  Currying arguments are arguments that can be "tweaked" by the end-user, e.g. `plan(myparallel, workers = 2)`.
 
 The value of the constructor function should be invisible and a `MyParallelFuture` object that inherits from `Future`.  This is achieved by calling `Future()`, with all matching arguments passed along and then prepending `"MyParallelFuture"` to the class attribute of the returned `Future` object.
 
@@ -106,7 +106,7 @@ The `resolved()` method may produce `FutureError` error as created by `FutureErr
 
 ### result() method
 
-An S3 method `result()` for `MyParallelFuture` that takes a `Future` object as its first argument and return a `FutureResults` object is required.  It should accept additional arguments via `...`, which are currently not used.
+An S3 method `result()` for `MyParallelFuture` that takes a `Future` object as its first argument and return a `FutureResult` object is required.  It should accept additional arguments via `...`, which are currently not used.
 
 The method may be called zero or more times.
 

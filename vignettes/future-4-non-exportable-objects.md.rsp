@@ -74,12 +74,14 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **keras**       | keras.engine.sequential.Sequential (`externalptr`)
   **magick**      | magick-image (`externalptr`)
   **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
+  **raster**      | RasterLayer (`externalptr`; _not all_)
   **Rcpp**        | NativeSymbol (`externalptr`)
   **reticulate**  | python.builtin.function (`externalptr`), python.builtin.module (`externalptr`)
   **rJava**       | jclassName (`externalptr`)
   **rstan**       | stanmodel (`externalptr`)
   **sparklyr**    | tbl_spark (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
+  **xgboost**     | xgb.DMatrix (`externalptr`)
   **xml2**        | xml_document (`externalptr`)
 
 
@@ -142,7 +144,7 @@ the future expression
 
 #### Package: magic
 
-[magick](https://cran.r-project.org/package=magick) provides an R-level API for ImageMagick to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
+The [magick](https://cran.r-project.org/package=magick) package provides an R-level API for ImageMagick to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
 ```r
 library(future)
 plan(multisession)
@@ -165,6 +167,30 @@ we'll see that this is caught even before attempting to run this in parallel;
 ## 'magick-image') in one of the globals ('frink' of class 'magick-image')
 ## used in the future expression
 ```
+
+
+#### Package: raster
+
+The [raster](https://cran.r-project.org/package=raster) package provides methods for working with spatial data, which are held in 'RasterLayer' objects.  Not all but some of these objects use an external pointer.  For example,
+
+```r
+library(future)
+plan(multisession)
+
+library(raster)
+r <- raster(system.file("external/test.grd", package = "raster"))
+tf <- tempfile(fileext = ".grd")
+s <- writeStart(r, filename = tf,  overwrite = TRUE)
+
+f <- future({
+  print(dim(r))
+  print(dim(s))
+})
+Error: Detected a non-exportable reference ('externalptr') in one of the
+globals ('s' of class 'RasterLayer') used in the future expression
+```
+
+Note that it is only the RasterLayer object `s` that carries an external pointer and cannot be passed on to an external worker.  In constract, RasterLayer object `r` does not have this problem and would be fine to pass on to a worker.
 
 
 #### Package: Rcpp
@@ -340,6 +366,42 @@ x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the \pkg{udpipe} package.
 
 
+#### Package: xgboost
+
+The [xgboost](https://cran.r-project.org/package=xgboost) package provides fast gradient-boosting methods.  Some of its data structures use external pointers.  For example,
+
+```r
+library(future)
+plan(multisession)
+
+library(xgboost)
+data(agaricus.train, package = "xgboost")
+train <- xgb.DMatrix(agaricus.train$data, label = agaricus.train$label)
+print(class(train))
+## [1] "xgb.DMatrix"
+
+d <- dim(dtrain)
+print(d)
+## [1] 6513  126
+```
+
+works just fine but if we attempt to pass on the 'xgb.DMatrix' object `train` to an external worker, we silently get a incorrect value:
+
+```r
+f <- future(dim(dtrain))
+d <- value(f)
+print(d)
+## NULL
+```
+
+This is unfortunate, but we can at least detect this by:
+
+```r
+options(future.globals.onReference = "error")
+f <- future(dim(dtrain))
+## Error: Detected a non-exportable reference ('externalptr' of class 'xgb.DMatrix')
+## in one of the globals ('dtrain' of class 'xgb.DMatrix') used in the future expression
+```
 
 
 #### Package: xml2

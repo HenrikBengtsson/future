@@ -40,7 +40,8 @@
 #' If FALSE (default), it is assumed that the future expression does neither
 #' need nor use random numbers generation.
 #' To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
-#' or a regular RNG seed (a single integer).
+#' or a regular RNG seed (a single integer).  If the latter, then a
+#' L'Ecuyer-CMRG seed will be automatically created based on the given seed.
 #' Furthermore, if FALSE, then the future will be monitored to make sure it
 #' does not use random numbers.  If it does and depending on the value of
 #' option \code{\link[=future.options]{future.rng.onMisuse}}, the check is
@@ -451,7 +452,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, ...) {
+getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
   debug <- getOption("future.debug", FALSE)
   ##  mdebug("getExpression() ...")
 
@@ -499,7 +500,6 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       }
     })
   })
-  exit <- NULL
   
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
@@ -514,7 +514,8 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     })
 
     exit <- bquote({
-      ## covr: skip=1
+      ## covr: skip=2
+      .(exit)
       base::options(mc.cores = ...future.mc.cores.old)
     })
   }
@@ -714,7 +715,6 @@ makeExpression <- local({
         ...future.result <- base::tryCatch({
           base::withCallingHandlers({
             ...future.value <- base::withVisible(.(expr))
-            ## A FutureResult object (without requiring the future package)
             future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
           }, condition = base::local({
               ## WORKAROUND: If the name of any of the below objects/functions
@@ -801,7 +801,7 @@ makeExpression <- local({
         }, finally = .(exit))
 	
         if (.(!base::is.na(stdout))) {
-          base::sink(type = "output", split = FALSE)
+          base::sink(type = "output", split = .(split))
           if (.(stdout)) {
             ...future.result$stdout <- base::rawToChar(
               base::rawConnectionValue(...future.stdout)

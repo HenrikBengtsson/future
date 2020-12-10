@@ -9,8 +9,12 @@ isNA <- function(x) {
 assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
   ast <- as.list(call)
   if (length(ast) <= 2L) return()
-  names <- names(ast[-(1:2)])
-  if (is.null(names) || any(names == "")) {
+  ast <- ast[-(1:2)]
+  dots <- vapply(ast, FUN = identical, as.symbol("..."), FUN.VALUE = FALSE)
+  ast <- ast[!dots]
+  if (length(ast) == 0L) return()
+  names <- names(ast)
+  if (is.null(names) || any(names == "")) {    
     stop(sprintf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L)))
   }
 }
@@ -219,36 +223,6 @@ getOption <- local({
     if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
   }
 }) ## getOption()
-
-
-detectCores <- local({
-  res <- NULL
-  function() {
-    if (is.null(res)) {
-      ## Get number of system cores from option, system environment,
-      ## and finally detectCores().  This also designed such that
-      ## it is indeed possible to return NA_integer_.
-      value <- getOption("future.availableCores.system")
-      if (!is.null(value)) {
-        value <- as.integer(value)
-        return(value)
-      }
-      
-      value <- parallel::detectCores()
-      
-      ## If unknown, set default to 1L
-      if (is.na(value)) value <- 1L
-      value <- as.integer(value)
-      
-      ## Assert positive integer
-      stop_if_not(length(value) == 1L, is.numeric(value),
-                is.finite(value), value >= 1L)
-
-      res <<- value
-    }
-    res
-  }
-})
 
 
 ## We are currently importing the following non-exported functions:

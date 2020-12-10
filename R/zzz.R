@@ -3,7 +3,6 @@
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
   .package[["version"]] <- utils::packageVersion(pkgname)
-  .packageVersion <<- utils::packageVersion(pkgname)
 
   debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
   if (debug) options(future.debug = TRUE)

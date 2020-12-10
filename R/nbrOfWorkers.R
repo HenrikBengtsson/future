@@ -4,8 +4,9 @@
 #' If NULL (default), the current evaluator as returned
 #' by [plan()] is used.
 #'
-#' @return A positive number in \eqn{{1, 2, 3, ...}}.
-#' Note, it may also be `+Inf` for certain types of backends.
+#' @return
+#' `nbrOfWorkers()` returns a positive number in \eqn{{1, 2, 3, ...}}, which
+#' for some future backends may also be `+Inf`.
 #'
 #' @example incl/nbrOfWorkers.R
 #'
@@ -17,6 +18,8 @@ nbrOfWorkers <- function(evaluator = NULL) {
 
 #' @export
 nbrOfWorkers.cluster <- function(evaluator) {
+  assert_no_positional_args_but_first()
+  
   expr <- formals(evaluator)$workers
   workers <- eval(expr, enclos = baseenv())
   if (is.function(workers)) workers <- workers()
@@ -30,14 +33,22 @@ nbrOfWorkers.cluster <- function(evaluator) {
     stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L, is.finite(workers))
+
   workers
 }
 
 #' @export
-nbrOfWorkers.uniprocess <- function(evaluator) 1L
+nbrOfWorkers.uniprocess <- function(evaluator) {
+  assert_no_positional_args_but_first()
+  
+  1L
+}
+
 
 #' @export
 nbrOfWorkers.multiprocess <- function(evaluator) {
+  assert_no_positional_args_but_first()
+  
   expr <- formals(evaluator)$workers
   workers <- eval(expr, enclos = baseenv())
   if (is.function(workers)) workers <- workers()
@@ -46,11 +57,14 @@ nbrOfWorkers.multiprocess <- function(evaluator) {
     stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L, is.finite(workers))
+
   workers
 }
 
 #' @export
 nbrOfWorkers.future <- function(evaluator) {
+  assert_no_positional_args_but_first()
+  
   expr <- formals(evaluator)$workers
   workers <- eval(expr, enclos = baseenv())
   if (is.function(workers)) workers <- workers()
@@ -61,10 +75,105 @@ nbrOfWorkers.future <- function(evaluator) {
     stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L)
+
   workers
 }
 
 #' @export
 nbrOfWorkers.NULL <- function(evaluator) {
+  assert_no_positional_args_but_first()
+  
   nbrOfWorkers(plan("next"))
+}
+
+
+
+#' @param background If TRUE, only workers that can process a future in the
+#' background are considered.  If FALSE, also workers running in the main \R
+#' process are considered, e.g. when using the 'sequential' backend.
+#'
+#' @param \dots Not used; reserved for future use.
+#'
+#' @return
+#' `nbrOfFreeWorkers()` returns a non-negative number in
+#' \eqn{{0, 1, 2, 3, ...}} which is less than or equal to `nbrOfWorkers()`.
+#'
+#' @rdname nbrOfWorkers
+#' @export
+nbrOfFreeWorkers <- function(evaluator = NULL, background = FALSE, ...) {
+  UseMethod("nbrOfFreeWorkers")
+}
+
+
+#' @export
+nbrOfFreeWorkers.cluster <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+  
+  workers <- nbrOfWorkers(evaluator)
+  
+  ## Create a dummy, lazy future
+  f <- future(NULL, lazy = TRUE)
+  name <- attr(f$workers, "name", exact = TRUE)
+  stop_if_not(is.character(name), length(name) == 1L)
+  reg <- sprintf("workers-%s", name)
+  ## Number of unresolved cluster futures
+  usedNodes <- length(FutureRegistry(reg, action = "list", earlySignal = FALSE))
+  
+  workers <- workers - usedNodes
+  stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 0L, is.finite(workers))
+  
+  workers
+}
+
+
+#' @export
+nbrOfFreeWorkers.uniprocess <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+
+  if (isTRUE(background)) 0L else 1L
+}
+
+#' @export
+nbrOfFreeWorkers.multicore <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+  
+  workers <- nbrOfWorkers(evaluator)
+  
+  workers <- workers - usedCores()
+  stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 0L, is.finite(workers))
+
+  workers
+}
+
+#' @export
+nbrOfFreeWorkers.multiprocess <- function(evaluator, background = FALSE, ...) {
+  stop("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
+}
+
+#' @export
+nbrOfFreeWorkers.future <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+
+  workers <- nbrOfWorkers(evaluator)
+  if (is.infinite(workers)) return(workers)
+
+  stop("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
+}
+
+
+#' @export
+nbrOfFreeWorkers.NULL <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+  
+  nbrOfFreeWorkers(plan("next"), background = background, ...)
+}
+
+
+#' @export
+nbrOfFreeWorkers.logical <- function(evaluator, background = FALSE, ...) {
+  assert_no_positional_args_but_first()
+  if (missing(background)) {
+    stop("Arguments 'background' of nbrOfFreeWorkers() must be named, if used")
+  }
+  nbrOfFreeWorkers(NULL, background = force(background), ...)
 }

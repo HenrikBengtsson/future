@@ -454,8 +454,8 @@ Having said this, it is indeed possible to use nested multisession evaluation st
 ```r
 <%=withCapture({
 plan(list(
-  tweak(multisession, workers = 2L),
-  tweak(multisession, workers = 2L)
+  tweak(multisession, workers = 2),
+  tweak(multisession, workers = 2)
 ))})%>
 [...]
 <%

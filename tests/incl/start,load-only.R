@@ -92,16 +92,22 @@ attachLocally <- function(x, envir = parent.frame()) {
   }
 }
 
-supportedStrategies <- function(cores = 1L, excl = c("multiprocess", "cluster"), ...) {
+supportedStrategies <- function(cores = NA_integer_, excl = "cluster", ...) {
   strategies <- future:::supportedStrategies(...)
   strategies <- setdiff(strategies, excl)
-  if (cores == 1L) {
-    strategies <- setdiff(strategies, c("multicore", "multisession",
-                                        "multiprocess"))
-  } else {
-    strategies <- setdiff(strategies,
-                          c("sequential", "uniprocess", "eager", "lazy"))
+  
+  if (!is.na(cores)) {
+    if (cores == 1L) {
+      strategies <- setdiff(strategies, c("multicore", "multisession"))
+    } else if (cores > 1L) {
+      strategies <- setdiff(strategies,
+                            c("sequential", "uniprocess", "eager", "lazy"))
+    }
   }
+  
+  ## Don't test deprecated 'multiprocess'
+  strategies <- setdiff(strategies, "multiprocess")
+  
   strategies
 }
 

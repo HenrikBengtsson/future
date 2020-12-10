@@ -61,16 +61,3 @@
 #'
 #' @name re-exports
 NULL
-
-
-## Workaround for bug https://github.com/HenrikBengtsson/parallelly/issues/23
-if (packageVersion("parallelly") < "1.21.0") {
-  makeClusterPSOCK <- function(..., rscript_startup = NULL) {
-    pkgs <- Sys.getenv("R_FUTURE_MAKENODEPSOCK_SESSIONINFO_PKGS", "FALSE")
-    pkgs <- as.logical(pkgs)
-    pkgs <- getOption("future.makeNodePSOCK.sessionInfo.pkgs", pkgs)
-    parallelly_patch <- paste("getOptionOrEnvVar <- function(...)", pkgs)
-    rscript_startup <- c(rscript_startup, parallelly_patch)
-    parallelly::makeClusterPSOCK(..., rscript_startup = rscript_startup)
-  }
-}

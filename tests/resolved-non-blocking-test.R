@@ -7,7 +7,7 @@ for (cores in 1:availCores) {
   message(sprintf("Testing with %d cores ...", cores))
   options(mc.cores = cores)
 
-  strategies <- supportedStrategies(cores, excl = c("multiprocess"))
+  strategies <- supportedStrategies(cores)
   print(strategies)
   
   for (strategy in strategies) {

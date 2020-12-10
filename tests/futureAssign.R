@@ -67,7 +67,7 @@ for (cores in 1:availCores) {
       f <- futureAssign("b", { 2 * a }, lazy = lazy)
       a <- 2
       stopifnot(b == 2)
-      stopifnot(f$lazy == lazy || (strategy %in% c("multisession", "multiprocess") && cores == 1L))
+      stopifnot(f$lazy == lazy || (strategy %in% c("multisession", "multicore") && cores == 1L))
       
       ## Set 'lazy' via disposable option
       options(future.disposable = list(lazy = lazy))
@@ -75,7 +75,7 @@ for (cores in 1:availCores) {
       f <- futureAssign("b", { 2 * a })
       a <- 2
       stopifnot(b == 2)
-      stopifnot(f$lazy == lazy || (strategy %in% c("multisession", "multiprocess") && cores == 1L))
+      stopifnot(f$lazy == lazy || (strategy %in% c("multisession", "multicore") && cores == 1L))
     }
 
     message(sprintf("*** futureAssign() with %s futures ... DONE", sQuote(strategy)))

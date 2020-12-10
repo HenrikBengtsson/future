@@ -3,9 +3,9 @@
 immediateConditionsPath <- local({
   path <- NULL
   
-  function(path = tempdir()) {
+  function() {
     if (is.null(path)) {
-      tpath <- file.path(path, ".future", "immediateConditions")
+      tpath <- file.path(tempdir(), ".future", "immediateConditions")
       dir.create(tpath, recursive = TRUE, showWarnings = FALSE)
       stop_if_not(file_test("-d", tpath))
       path <<- tpath
@@ -126,13 +126,18 @@ save_rds <- function(object, pathname, ...) {
   })
   stopifnot(file_test("-f", pathname_tmp))
 
-  file.rename(from = pathname_tmp, to = pathname)
-  if (file_test("-f", pathname_tmp) || !file_test("-f", pathname)) {
+  res <- file.rename(from = pathname_tmp, to = pathname)
+
+  ## IMPORTANT: Although, it is valid to also check that the 'pathname_tmp'
+  ## file no longer exists, we cannot assume that 'pathname' will still exist
+  ## here; it could be that another file already picked it up and moved,
+  ## renamed, or deleted it.
+  if (!res || file_test("-f", pathname_tmp)) {
     fi_tmp <- file.info(pathname_tmp)
     fi <- file.info(pathname)
     msg <- sprintf("save_rds() failed to rename temporary save file %s (%0.f bytes; last modified on %s) to %s (%0.f bytes; last modified on %s)", sQuote(pathname_tmp), fi_tmp[["size"]], fi_tmp[["mtime"]], sQuote(pathname), fi[["size"]], fi[["mtime"]])
     stop(msg)
   }
-  
+
   invisible(pathname)
 }

@@ -89,11 +89,22 @@ plan(list(multisession, multisession))
 ```
 Although this does not give an error, we will find that the inner layer of futures will be processed sequentially just as if we would use `plan(list(multisession, sequential))`.  This behavior is due to the built-in protection against nested parallelism.  If both layers would run in parallel, each using the 8 cores available on the machine, we would be running 8 * 8 = 64 parallel processes - that would for sure overload our computer.  What happens internally is that for the outer layer, `availableCores()` equals eight (8), whereas for the inner layer it equals one (1).
 
-Now, we could imagine that we process the outer layer with, say, two parallel futures, and then the inner layer with four parallel futures.  In that case, we would end up running on at most eight cores (= 2 * 4).  This can be achieved by forcing a fixed number of workers at each layer (not recommended):
+Now, we could imagine that we process the outer layer with, say, two parallel futures, and then the inner layer with four parallel futures.  In that case, we would end up running on at most eight cores (= 2 * 4).  This can be achieved by forcing a fixed number of workers at each layer:
+
 ```r
 plan(list(tweak(multisession, workers = 2), tweak(multisession, workers = 4)))
 ```
 
+When using this approach, there is a risk of setting up too many concurrent workers.  To make sure the setup respects `availableCores()`, use something like:
+
+```r
+plan(list(
+  tweak(multisession, workers = availableCores() %/% 4),
+  tweak(multisession, workers = 4)
+))
+```
+
+However, before using nested parallelization on a single machine, make sure it is actually more efficient than using parallelization in only one of the layers.
 
 
 ### An ad-hoc compute cluster

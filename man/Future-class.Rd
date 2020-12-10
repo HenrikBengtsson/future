@@ -56,7 +56,8 @@ random numbers are produced (also during parallelization).
 If FALSE (default), it is assumed that the future expression does neither
 need nor use random numbers generation.
 To use a fixed random seed, specify a L'Ecuyer-CMRG seed (seven integer)
-or a regular RNG seed (a single integer).
+or a regular RNG seed (a single integer).  If the latter, then a
+L'Ecuyer-CMRG seed will be automatically created based on the given seed.
 Furthermore, if FALSE, then the future will be monitored to make sure it
 does not use random numbers.  If it does and depending on the value of
 option \code{\link[=future.options]{future.rng.onMisuse}}, the check is

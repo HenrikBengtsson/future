@@ -26,8 +26,11 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   if (inherits(message, "condition")) {
     cond <- message
     message <- conditionMessage(cond)
+    class <- class(cond)
   } else if (is.null(message)) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with message = NULL")
+  } else {
+    class <- "condition"
   }
 
   message <- as.character(message)
@@ -36,8 +39,9 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   }
   
   ## Create a condition object
+  class <- c("FutureCondition", class)
   structure(list(message = message, call = call), 
-            class = c("FutureCondition", "condition"),
+            class = class[!duplicated(class, fromLast = TRUE)],
             future = future)
 }
 
@@ -70,7 +74,8 @@ print.FutureCondition <- function(x, ...) {
 #' @export
 FutureMessage <- function(message, call = NULL, future = NULL) {
   cond <- FutureCondition(message = message, call = call, future = future)
-  class(cond) <- c("FutureMessage", "message", class(cond))
+  class <- c("FutureMessage", "message", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
 }
 
@@ -79,7 +84,8 @@ FutureMessage <- function(message, call = NULL, future = NULL) {
 #' @export
 FutureWarning <- function(message, call = NULL, future = NULL) {
   cond <- FutureCondition(message = message, call = call, future = future)
-  class(cond) <- c("FutureWarning", "warning", class(cond))
+  class <- c("FutureWarning", "warning", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
 }
 
@@ -88,7 +94,41 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 #' @export
 FutureError <- function(message, call = NULL, future = NULL) {
   cond <- FutureCondition(message = message, call = call, future = future)
-  class(cond) <- c("FutureError", "error", class(cond))
+  class <- c("FutureError", "error", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+
+#' @rdname FutureCondition
+#' @export
+RngFutureCondition <- function(message = NULL, call = NULL, future) {
+  if (is.null(message)) {
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    message <- sprintf("UNRELIABLE VALUE: Future (%s) unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label))
+  }
+  cond <- FutureCondition(message = message, call = call, future = future)
+  class <- c("RngFutureCondition", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+RngFutureWarning <- function(...) {
+  cond <- RngFutureCondition(...)
+  class <- c("RngFutureWarning", "FutureWarning", "warning", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+RngFutureError <- function(...) {
+  cond <- RngFutureCondition(...)
+  class <- c("RngFutureError", "FutureError", "error", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
 }
 
@@ -120,6 +160,7 @@ UnexpectedFutureResultError <- function(future, hint = NULL) {
                  class(future)[1], sQuote(label), sQuote(expr),
                  result_string)
   cond <- FutureError(msg, future = future)
-  class(cond) <- c("UnexpectedFutureResultError", class(cond))
+  class <- c("UnexpectedFutureResultError", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
 }

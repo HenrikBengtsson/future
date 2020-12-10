@@ -3,9 +3,10 @@ get_random_seed <- function() {
   env$.Random.seed
 }
 
-set_random_seed <- function(seed) {
+set_random_seed <- function(seed, kind = NULL) {
   env <- globalenv()
   if (is.null(seed)) {
+    if (!is.null(kind)) RNGkind(kind)
     rm(list = ".Random.seed", envir = env, inherits = FALSE)
   } else {
     env$.Random.seed <- seed
@@ -30,17 +31,33 @@ is_valid_random_seed <- function(seed) {
   !inherits(res, "simpleWarning")
 }
 
-## For RNGkind("L'Ecuyer-CMRG") we should have (see help('RNGkind')):
-##   .Random.seed <- c(rng.kind, n) where length(n) == 6L.
-## From R source code: check for rng.kind %% 10000L == 407L
-is_lecyer_cmrg_seed <- function(seed) {
-  is.numeric(seed) &&
-    length(seed) == 7L &&
-    all(is.finite(seed)) &&
-    (seed[1] %% 10000L == 407L)
-}
 
-# @importFrom utils capture.output
+#' Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state
+#'
+#' @param seed TRUE or NA, or a numeric vector of length one or seven.
+#'
+#' @return
+#' `as_lecyer_cmrg_seed(seed)` returns a L'Ecuyer-CMRG seed, which is a
+#' 7-digit integer vector, based on the input `seed`.
+#' If already a L'Ecuyer-CMRG seed, then `seed` is return as-is.
+#' If a scalar integer, then a random L'Ecuyer-CMRG seed is created based
+#' on this seed as the current RNG state.
+#' If `seed = TRUE` and the current seed is already a L'Ecuyer-CMRG seed,
+#' then then current seed (`.Random.seed`) is return as-is.
+#' If `seed = TRUE` and the current seed is _not_ of the 'L'Ecuyer-CMRG' kind,
+#' or `seed = NA`, then a random one is created (based on the current RNG
+#' state).
+#' Any other values, including FALSE, is an error.
+#'
+#' @details
+#' The `as_lecyer_cmrg_seed()` function preserves the current RNG state, that
+#' is, it leaves `globalenv()$.Random.seed` intact, which means it also leaved
+#' the RNG kind (`RNGkind()`) intact.
+#'
+#' @example incl/as_lecyer_cmrg_seed.R
+#'
+#' @importFrom utils capture.output str
+#' @keywords internal
 as_lecyer_cmrg_seed <- function(seed) {
   ## Generate a L'Ecuyer-CMRG seed (existing or random)?
   if (is.logical(seed)) {
@@ -56,9 +73,13 @@ as_lecyer_cmrg_seed <- function(seed) {
       if (is_lecyer_cmrg_seed(oseed)) return(oseed)
     }
     
-    ## Otherwise, generate a random one.
-    on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
+    
+    ## Generate a random L'Ecuyer-CMRG seed from the current RNG state
+    okind <- RNGkind("L'Ecuyer-CMRG")[1]
+    
+    ## Make sure to not forward the RNG state or the RNG kind
+    on.exit(set_random_seed(oseed, kind = okind), add = TRUE)
+    
     return(get_random_seed())
   }
 
@@ -72,15 +93,42 @@ as_lecyer_cmrg_seed <- function(seed) {
 
   ## Generate a new L'Ecuyer-CMRG seed?
   if (length(seed) == 1L) {
-    oseed <- get_random_seed()
+    ## Make sure to not forward the RNG state
+    oseed <- get_random_seed()    
     on.exit(set_random_seed(oseed), add = TRUE)
-    RNGkind("L'Ecuyer-CMRG")
+    
+    ## Generate a random L'Ecuyer-CMRG seed ...
+    okind <- RNGkind("L'Ecuyer-CMRG")[1]
+    
+    ## Make sure to not forward the RNG state or the RNG kind
+    on.exit(set_random_seed(oseed, kind = okind), add = TRUE)
+
+    ## ... based on 'seed'
     set.seed(seed)
     return(get_random_seed())
   }
   
   stop("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: ", capture.output(str(seed)))
 }
+
+
+#' @details
+#' Per [base::RNGkind()], a L'Ecuyer-CMRG seed comprise a length-seven integer
+#' vector of format `.Random.seed <- c(rng.kind, n)` where `length(n) == 6L` and `rng.kind` fulfills `rng.kind %% 10000L == 407L`.
+#'
+#' @return
+#' `is_lecyer_cmrg_seed(seed)` returns TRUE if `seed` is L'Ecuyer-CMRG seed,
+#' otherwise FALSE.
+#'
+#' @rdname as_lecyer_cmrg_seed
+#' @keywords internal
+is_lecyer_cmrg_seed <- function(seed) {
+  is.numeric(seed) &&
+    length(seed) == 7L &&
+    all(is.finite(seed)) &&
+    (seed[1] %% 10000L == 407L)
+}
+
 
 #' Produce Reproducible Seeds for Parallel Random Number Generation
 #'

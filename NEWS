@@ -1,6 +1,49 @@
 Package: future
 ===============
 
+Version: 1.21.0 [2020-12-09]
+
+NEW FEATURES:
+
+ * In order to handle them conditionally higher up in the call chain, warnings
+   and errors produced from using the random number generator (RNG) in a future
+   without declaring the intention to use one are now of class RngFutureWarning
+   and RngFutureError, respectively.  Both of these classes inherits from
+   RngFutureCondition.
+
+ * Now run-time errors from resolving a future take precendence over
+   RngFutureError:s. That is, future({ rnorm(1); log("a") }, seed = FALSE)
+   will signal an error 'log("a")' instead of an RNG error when option
+   'future.rng.onMisuse' is set to "error".
+
+BETA FEATURES:
+
+ * Add nbrOfFreeWorkers() to query how many workers are free to take on futures
+   immediately.  Until all third-party future backends have implemented this,
+   some backends might produce an error saying it is not yet supported.
+   
+BUG FIXES:
+
+ * future(..., seed = TRUE) with 'sequential' futures would set the RNG kind of
+   the parent process.  Now it behaves the same regardless of future backend.
+
+ * Signaling immediateCondition:s with 'multicore' could result in "Error in
+   save_rds(obj, file) : save_rds() failed to rename temporary save file 
+   '/tmp/RtmpxNyIyK/progression21f3f31eadc.rds.tmp' (NA bytes; last modified
+   on NA) to '/tmp/RtmpxNyIyK/progression21f3f31eadc.rds' (NA bytes; last 
+   modified on NA)".  There was an assertion at the end of the internal
+   save_rds() function that incorrectly assumed that the target file should
+   exist.  However, the file might have already been processed and removed
+   by the future in the main R session.     
+
+ * value() with both a run-time error and an RNG mistake would signal the RNG
+   warning instead of the run-time error when the for-internal-use-only
+   argument 'signal' was set to FALSE.
+
+ * Due to a mistake introduced in future 1.20.0, the package would end up
+   assigning a '.packageVersion' object to the global environment when loaded.
+ 
+
 Version: 1.20.1 [2020-10-30]
 
 BUG FIXES:

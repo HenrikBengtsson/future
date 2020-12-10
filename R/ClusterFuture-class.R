@@ -491,10 +491,12 @@ receiveMessageFromWorker <- function(future, ...) {
       ## Cleanup global environment while at it
       if (!future$persistent) clusterCall(cl[1], fun = grmall)
       
-      ## WORKAROUND: Need to clear cluster worker before garbage collection,
-      ## cf. https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27
-      ## UPDATE: This has been fixed in R (>= 3.3.2) /HB 2016-10-13
-      ## Return a value identifiable for troubleshooting purposes
+      ## WORKAROUND: Need to clear cluster worker before garbage collection.
+      ## This is needed for workers running R (<= 3.3.1). It will create
+      ## another teeny, dummy object on the worker allowing any previous
+      ## objects to be garbage collected.  For more details, see
+      ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27.
+      ## (We return a value identifiable for troubleshooting purposes)
       clusterCall(cl[1], function() "future-clearing-cluster-worker")
       
       clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
