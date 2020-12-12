@@ -54,13 +54,11 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
+  if (future$local) envir <- new.env(parent = envir)
 
   ## Assign globals to separate "globals" enclosure environment?
   globals <- future$globals
   if (length(globals) > 0) {
-    if (future$local) {
-      envir <- new.env(parent = envir)
-    }
     for (name in names(globals)) {
       envir[[name]] <- globals[[name]]
     }

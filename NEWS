@@ -1,10 +1,14 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2020-12-10]
+Version: 1.21.0-9000 [2020-12-11]
 
- * ...
- 
+BUG FIXES:
+
+ * Resolving a 'sequential' future without globals would result in internal
+   several '...future.*' objects being written to the calling environment,
+   which might be the global environment.
+
 
 Version: 1.21.0 [2020-12-09]
 
