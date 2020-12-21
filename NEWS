@@ -1,8 +1,13 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2020-12-11]
+Version: 1.21.0-9000 [2020-12-21]
 
+SIGNIFICANT CHANGES:
+
+ * A lazy future remains a generic future until it is launched, which means
+   it is not assigned a future backend class until launched.
+ 
 BUG FIXES:
 
  * Resolving a 'sequential' future without globals would result in internal

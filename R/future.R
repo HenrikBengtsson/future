@@ -189,16 +189,36 @@
 future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  makeFuture <- plan("next")
-  future <- makeFuture(expr, substitute = FALSE,
-                       envir = envir,
-                       lazy = lazy,
-                       seed = seed,
-                       globals = globals,
-                       packages = packages,
-                       label = label,
-                       gc = gc,
-                       ...)
+  if (lazy) {
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+    expr <- gp$expr
+    globals <- gp$globals
+    ## Record packages?
+    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
+      packages <- unique(c(gp$packages, packages))
+    }
+    gp <- NULL
+    future <- Future(expr, substitute = FALSE,
+                     envir = envir,
+                     lazy = TRUE,
+                     seed = seed,
+                     globals = globals,
+                     packages = packages,
+                     label = label,
+                     gc = gc,
+                     ...)
+  } else {
+    makeFuture <- plan("next")
+    future <- makeFuture(expr, substitute = FALSE,
+                         envir = envir,
+                         lazy = lazy,
+                         seed = seed,
+                         globals = globals,
+                         packages = packages,
+                         label = label,
+                         gc = gc,
+                         ...)
+  }
 
   ## Assert that a future was returned
   if (!inherits(future, "Future")) {

@@ -316,8 +316,53 @@ run.Future <- function(future, ...) {
     msg <- sprintf("A future ('%s') can only be launched once.", label)
     stop(FutureError(msg, future = future))
   }
+
+  stop_if_not(future$lazy)
+
+  ## Be conservative for now; don't allow lazy futures created in another R
+  ## session to be launched. This will hopefully change later, but we won't
+  ## open this door until we understand the ramifications. /HB 2020-12-21
+  stop_if_not(future$owner == session_uuid())
+
+  ## Create temporary future for a specific backend, but don't launch it
+  makeFuture <- plan("next")
+  tmpFuture <- makeFuture(
+    future$expr, substitute = FALSE,
+    envir = future$envir,
+    lazy = TRUE,
+    stdout = future$stdout,
+    conditions = future$conditions,
+    globals = future$globals,
+    packages = future$packages,
+    seed = future$seed,
+    label = future$label,
+    calls = future$calls
+  )
+  ## AD HOC/SPECIAL:
+  ## If 'earlySignal=TRUE' was set explicitly when creating the future,
+  ## then override the plan, otherwise use what the plan() says
+  if (isTRUE(future$earlySignal)) tmpFuture$earlySignal <- future$earlySignal
+
+  ## If 'gc=TRUE' was set explicitly when creating the future,
+  ## then override the plan, otherwise use what the plan() says
+  if (isTRUE(future$gc)) tmpFuture$gc <- future$gc
+
+  ## Copy the full state of this temporary future into the main one
+  ## This can be done because Future:s are environments and we can even
+  ## assign attributes such as the class to existing environments
   
-  future
+  ## (a) Copy all elements
+  for (name in names(tmpFuture)) {
+    future[[name]] <- tmpFuture[[name]]
+  }
+  ## (b) Copy all attributes
+  attributes(future) <- attributes(tmpFuture)
+
+  ## (c) Temporary future no longer needed
+  tmpFuture <- NULL
+
+  ## Launch the future
+  run(future)
 }
 
 run <- function(...) UseMethod("run")
