@@ -310,7 +310,7 @@ assertOwner <- function(future, ...) {
 #' @export run
 #' @keywords internal
 run.Future <- function(future, ...) {
-  if (future$state != 'created') {
+  if (future$state != "created") {
     label <- future$label
     if (is.null(label)) label <- "<none>"
     msg <- sprintf("A future ('%s') can only be launched once.", label)
@@ -329,7 +329,8 @@ run.Future <- function(future, ...) {
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    lazy = TRUE,
+    ## FIXME: Change to lazy=TRUE when future.batchtools supports it
+    lazy = FALSE,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = future$globals,
@@ -361,8 +362,12 @@ run.Future <- function(future, ...) {
   ## (c) Temporary future no longer needed
   tmpFuture <- NULL
 
-  ## Launch the future
-  run(future)
+  ## Launch the future?
+  if (future$lazy) future <- run(future)
+
+  stop_if_not(future$state != "created")
+
+  future
 }
 
 run <- function(...) UseMethod("run")
