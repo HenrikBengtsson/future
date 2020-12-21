@@ -400,8 +400,9 @@ result.Future <- function(future, ...) {
 resolved.Future <- function(x, run = TRUE, ...) {
   ## A lazy future not even launched?
   if (x$state == "created") {
-    if (run) x <- run(x)
-    return(FALSE)
+    if (!run) return(FALSE)
+    x <- run(x)
+    return(resolved(x, ...))
   }
 
   ## Signal conditions early, iff specified for the given future
