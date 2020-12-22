@@ -310,6 +310,13 @@ assertOwner <- function(future, ...) {
 #' @export run
 #' @keywords internal
 run.Future <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("run() for ", sQuote(class(future)[1]), " ...")
+    mdebug("- state: ", sQuote(future$state))
+    on.exit(mdebug("run() for ", sQuote(class(future)[1]), " ... done"), add = TRUE)
+  }
+
   if (future$state != "created") {
     label <- future$label
     if (is.null(label)) label <- "<none>"
@@ -326,11 +333,13 @@ run.Future <- function(future, ...) {
 
   ## Create temporary future for a specific backend, but don't launch it
   makeFuture <- plan("next")
+  if (debug) mdebug("- Future backend: ", paste(sQuote(class(makeFuture)), collapse = ", "))
+  
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
     ## FIXME: Change to lazy=TRUE when future.batchtools supports it
-    lazy = FALSE,
+    lazy = if (inherits(makeFuture, c("batchtools", "batchjobs"))) FALSE else TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = future$globals,
@@ -339,14 +348,17 @@ run.Future <- function(future, ...) {
     label = future$label,
     calls = future$calls
   )
+
+  if (debug) mdebug("- Future class: ", paste(sQuote(class(tmpFuture)), collapse = ", "))
+
   ## AD HOC/SPECIAL:
   ## If 'earlySignal=TRUE' was set explicitly when creating the future,
   ## then override the plan, otherwise use what the plan() says
-  if (isTRUE(future$earlySignal)) tmpFuture$earlySignal <- future$earlySignal
+  if (isTRUE(future$earlySignal)) tmpFuture$earlySignal <- TRUE
 
   ## If 'gc=TRUE' was set explicitly when creating the future,
   ## then override the plan, otherwise use what the plan() says
-  if (isTRUE(future$gc)) tmpFuture$gc <- future$gc
+  if (isTRUE(future$gc)) tmpFuture$gc <- TRUE
 
   ## Copy the full state of this temporary future into the main one
   ## This can be done because Future:s are environments and we can even
@@ -359,13 +371,27 @@ run.Future <- function(future, ...) {
   ## (b) Copy all attributes
   attributes(future) <- attributes(tmpFuture)
 
-  ## (c) Temporary future no longer needed
+  ## (c) WORKAROUND:
+  ##     Preserve the environment of the temporary future in the original
+  ##     future to prevent it's registered finalizer from running
+  ##     immediately. /HB 2020-12-21
+  ##     This calls for a standard addFinalizer() for Future objects.
+  if (inherits(tmpFuture, c("BatchtoolsFuture", "BatchJobsFuture"))) {
+    for (name in names(tmpFuture)) tmpFuture[[name]] <- NULL
+    future$...adhoc.original.future <- tmpFuture
+  }
+  
+  ## (d) Temporary future no longer needed
   tmpFuture <- NULL
 
   ## Launch the future?
-  if (future$lazy) future <- run(future)
+  if (future$lazy) {
+    if (debug) mdebug("- Launch lazy future ...")
+    future <- run(future)
+    if (debug) mdebug("- Launch lazy future ... done")
+  }
 
-  stop_if_not(future$state != "created")
+  stop_if_not(future$state != "created", future$lazy)
 
   future
 }
@@ -448,20 +474,41 @@ result.Future <- function(future, ...) {
 
 #' @export
 resolved.Future <- function(x, run = TRUE, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebug("resolved() for ", sQuote(class(x)[1]), " ...")
+    on.exit(mdebug("resolved() for ", sQuote(class(x)[1]), " ... done"), add = TRUE)
+    mdebug("- state: ", sQuote(x$state))
+    mdebug("- run: ", sQuote(run))
+  }
+  
   ## A lazy future not even launched?
   if (x$state == "created") {
     if (!run) return(FALSE)
+    if (debug) mdebug("- run() ...")
     x <- run(x)
-    return(resolved(x, ...))
+    if (debug) mdebug("- run() ... done")
+    if (debug) mdebug("- resolved() ...")
+    res <- resolved(x, ...)
+    if (debug) {
+      mdebug("- resolved: ", res)
+      mdebug("- resolved() ... done")
+    }
+    return(res)
   }
 
   ## Signal conditions early, iff specified for the given future
   ## Note, collect = TRUE will block here, which is intentional
   signalEarly(x, collect = TRUE, ...)
 
+  if (debug) mdebug("- result: ", sQuote(class(x$result)[1]))
   if (inherits(x$result, "FutureResult")) return(TRUE)
   
-  x$state %in% c("finished", "failed", "interrupted")
+  res <- (x$state %in% c("finished", "failed", "interrupted"))
+
+  if (debug) mdebug("- resolved: ", res)
+
+  res
 }
 
 
