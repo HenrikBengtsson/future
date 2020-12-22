@@ -338,7 +338,7 @@ run.Future <- function(future, ...) {
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    ## FIXME: Change to lazy=TRUE when future.batchtools supports it
+    ## WORKAROUND: Launch batchtools/batchjobs futures here /HB 2020-12-21
     lazy = if (inherits(makeFuture, c("batchtools", "batchjobs"))) FALSE else TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
@@ -389,6 +389,12 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ...")
     future <- run(future)
     if (debug) mdebug("- Launch lazy future ... done")
+  }
+
+  ## WORKAROUND: Make sure batchtools/batchjobs futures are marked
+  ## as being lazy /HB 2020-12-21
+  if (inherits(future, c("BatchtoolsFuture", "BatchJobsFuture"))) {
+    future$lazy <- TRUE
   }
 
   stop_if_not(future$state != "created", future$lazy)

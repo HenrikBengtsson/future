@@ -207,6 +207,15 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
                      label = label,
                      gc = gc,
                      ...)
+
+    ## WORKAROUND: Make batchtools futures pass packages tests on
+    ##             future.batchtools /HB 2020-12-21
+    makeFuture <- plan("next")
+    if (inherits(makeFuture, "batchtools")) {
+      dummy <- makeFuture(NULL, globals = FALSE)
+      future$config <- dummy$config
+      dummy <- NULL
+    }
   } else {
     makeFuture <- plan("next")
     future <- makeFuture(expr, substitute = FALSE,
