@@ -344,16 +344,25 @@ run.Future <- function(future, ...) {
   if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUND: For UniprocessFuture:s only
+  lazy <- TRUE
+  preserveDummyFuture <- FALSE
   if (inherits(makeFuture, c("sequential", "transparent"))) {
     if (inherits(makeFuture, "transparent")) local <- FALSE
     if (!local) globals <- FALSE
+  } else if (inherits(makeFuture, "batchtools")) {
+    if (packageVersion("future.batchtools") < "0.9.0-9000") {
+      lazy <- FALSE
+      preserveDummyFuture <- TRUE
+    }
+  } else if (inherits(makeFuture, "batchjobs")) {
+    lazy <- FALSE
+    preserveDummyFuture <- TRUE
   }
 
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    ## WORKAROUND: Launch batchtools/batchjobs futures here /HB 2020-12-21
-    lazy = if (inherits(makeFuture, c("batchtools", "batchjobs"))) FALSE else TRUE,
+    lazy = lazy,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = globals,
@@ -395,7 +404,7 @@ run.Future <- function(future, ...) {
   ##     future to prevent it's registered finalizer from running
   ##     immediately. /HB 2020-12-21
   ##     This calls for a standard addFinalizer() for Future objects.
-  if (inherits(tmpFuture, c("BatchtoolsFuture", "BatchJobsFuture"))) {
+  if (preserveDummyFuture) {
     if (debug) mdebug("  - Preserve finalizer")
 #    for (name in names(tmpFuture)) tmpFuture[[name]] <- NULL
     future$...adhoc.original.future <- tmpFuture
