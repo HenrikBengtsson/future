@@ -18,6 +18,10 @@ ConstantFuture <- function(..., globals = TRUE, envir = emptyenv()) {
   future
 }
 
+#' @export
+run.ConstantFuture <- function(future, ...) {
+  future
+}
 
 #' @export
 result.ConstantFuture <- function(future, ...) {

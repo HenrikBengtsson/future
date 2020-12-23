@@ -40,7 +40,7 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 #' @rdname sequential
 #' @export
-transparent <- function(..., envir = parent.frame()) {
+transparent <- function(..., local = FALSE, envir = parent.frame()) {
   sequential(..., local = FALSE, envir = envir)
 }
 class(transparent) <- c("transparent", "sequential", "uniprocess", "future", "function")

@@ -334,7 +334,21 @@ run.Future <- function(future, ...) {
   ## Create temporary future for a specific backend, but don't launch it
   makeFuture <- plan("next")
   if (debug) mdebug("- Future backend: ", paste(sQuote(class(makeFuture)), collapse = ", "))
-  
+
+  ## AD HOC/WORKAROUND: /HB 2020-12-21
+  globals <- future$globals
+  packages <- future$packages
+  local <- future$local
+  if (!is.logical(local)) local <- TRUE
+  persistent <- future$persistent
+  if (!is.logical(persistent)) persistent <- FALSE
+
+  ## WORKAROUND: For UniprocessFuture:s only
+  if (inherits(makeFuture, c("sequential", "transparent"))) {
+    if (inherits(makeFuture, "transparent")) local <- FALSE
+    if (!local) globals <- FALSE
+  }
+
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
@@ -342,11 +356,13 @@ run.Future <- function(future, ...) {
     lazy = if (inherits(makeFuture, c("batchtools", "batchjobs"))) FALSE else TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
-    globals = future$globals,
-    packages = future$packages,
+    globals = globals,
+    packages = packages,
     seed = future$seed,
     label = future$label,
-    calls = future$calls
+    calls = future$calls,
+    local = local,
+    persistent = persistent
   )
 
   if (debug) mdebug("- Future class: ", paste(sQuote(class(tmpFuture)), collapse = ", "))
@@ -364,10 +380,13 @@ run.Future <- function(future, ...) {
   ## This can be done because Future:s are environments and we can even
   ## assign attributes such as the class to existing environments
   
+  if (debug) mdebugf("- Copy elements of temporary %s to final %s object ...", sQuote(class(tmpFuture)[1]), sQuote(class(future)[1]))
   ## (a) Copy all elements
   for (name in names(tmpFuture)) {
+    if (debug) mdebug("  - Field: ", sQuote(name))
     future[[name]] <- tmpFuture[[name]]
   }
+  if (debug) mdebugf("- Copy elements of temporary %s to final %s object ... done", sQuote(class(tmpFuture)[1]), sQuote(class(future)[1]))
   ## (b) Copy all attributes
   attributes(future) <- attributes(tmpFuture)
 
@@ -377,7 +396,8 @@ run.Future <- function(future, ...) {
   ##     immediately. /HB 2020-12-21
   ##     This calls for a standard addFinalizer() for Future objects.
   if (inherits(tmpFuture, c("BatchtoolsFuture", "BatchJobsFuture"))) {
-    for (name in names(tmpFuture)) tmpFuture[[name]] <- NULL
+    if (debug) mdebug("  - Preserve finalizer")
+#    for (name in names(tmpFuture)) tmpFuture[[name]] <- NULL
     future$...adhoc.original.future <- tmpFuture
   }
   
@@ -485,7 +505,7 @@ resolved.Future <- function(x, run = TRUE, ...) {
     mdebug("resolved() for ", sQuote(class(x)[1]), " ...")
     on.exit(mdebug("resolved() for ", sQuote(class(x)[1]), " ... done"), add = TRUE)
     mdebug("- state: ", sQuote(x$state))
-    mdebug("- run: ", sQuote(run))
+    mdebug("- run: ", run)
   }
   
   ## A lazy future not even launched?

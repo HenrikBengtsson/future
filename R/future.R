@@ -189,49 +189,39 @@
 future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (lazy) {
-    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-    expr <- gp$expr
-    globals <- gp$globals
-    ## Record packages?
-    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
-      packages <- unique(c(gp$packages, packages))
-    }
-    gp <- NULL
-    future <- Future(expr, substitute = FALSE,
-                     envir = envir,
-                     lazy = TRUE,
-                     seed = seed,
-                     globals = globals,
-                     packages = packages,
-                     label = label,
-                     gc = gc,
-                     ...)
-
-    ## WORKAROUND: Make batchtools futures pass packages tests on
-    ##             future.batchtools /HB 2020-12-21
-    makeFuture <- plan("next")
-    if (inherits(makeFuture, "batchtools")) {
-      dummy <- makeFuture(NULL, globals = FALSE)
-      future$config <- dummy$config
-      dummy <- NULL
-    }
-  } else {
-    makeFuture <- plan("next")
-    future <- makeFuture(expr, substitute = FALSE,
-                         envir = envir,
-                         lazy = lazy,
-                         seed = seed,
-                         globals = globals,
-                         packages = packages,
-                         label = label,
-                         gc = gc,
-                         ...)
+  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+  expr <- gp$expr
+  globals <- gp$globals
+  ## Record packages?
+  if (length(packages) > 0 || length(gp$packages) > 0) {
+    packages <- unique(c(gp$packages, packages))
   }
+  gp <- NULL
+  future <- Future(expr, substitute = FALSE,
+                   envir = envir,
+                   lazy = TRUE,
+                   seed = seed,
+                   globals = globals,
+                   packages = packages,
+                   label = label,
+                   gc = gc,
+                   ...)
 
-  ## Assert that a future was returned
-  if (!inherits(future, "Future")) {
-    stop(FutureError("plan(\"next\") returned a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", ")))
+  ## WORKAROUND: Make batchtools futures pass packages tests on
+  ##             future.batchtools /HB 2020-12-21
+  makeFuture <- plan("next")
+  if (inherits(makeFuture, "batchtools")) {
+    dummy <- makeFuture(NULL, globals = FALSE, label="future()-dummy-batchtools")
+    future$config <- dummy$config
+    dummy <- NULL
+  }
+  makeFuture <- NULL
+
+  if (!lazy) {
+    future <- run(future)
+    future$lazy <- FALSE
+    ## Assert that a future was returned
+    stop_if_not(inherits(future, "Future"), !future$lazy)
   }
 
   future
