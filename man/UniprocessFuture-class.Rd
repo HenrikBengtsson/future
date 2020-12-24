@@ -4,6 +4,7 @@
 \alias{UniprocessFuture-class}
 \alias{UniprocessFuture}
 \alias{SequentialFuture}
+\alias{TransparentFuture}
 \title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
 UniprocessFuture(
@@ -24,6 +25,16 @@ SequentialFuture(
   lazy = FALSE,
   globals = TRUE,
   local = TRUE,
+  ...
+)
+
+TransparentFuture(
+  expr = NULL,
+  envir = parent.frame(),
+  substitute = TRUE,
+  lazy = FALSE,
+  globals = TRUE,
+  local = FALSE,
   ...
 )
 }
