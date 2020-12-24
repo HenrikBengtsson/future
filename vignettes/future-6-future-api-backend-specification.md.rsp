@@ -12,7 +12,7 @@
 --------------------------------------------------------------------"%>
 # Future API Backend Specification
 
-Version 0.1.0-1
+Version 0.1.1
 
 ## Introduction
 
@@ -46,7 +46,7 @@ The Future API has three fundamental functions at its core:
 
 The implementation of a future backend for these involves several steps.  For simplicity, lets say we call our future backend 'myparallel'.  In summary, a future backend needs to implement four API components:
 
-* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture`.  The default should be that this function calls `run()` on the `Future` object before returning, unless a _lazy_ is created.
+* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture` if a non-lazy future is created (the default `lazy = FALSE`).  The default should be that this function calls `run()` on the `Future` object before returning, unless a _lazy_ is created.
 * An S3 method of `run()` for  `MyParallelFuture` that starts the evaluation of the future R expression part of the `Future` object.  This method is often non-blocking for parallel backends, but may be blocking if all compute resources are exhausted.  It is typically blocking for sequential backends.
 * An S3 method of `resolved()` for `MyParallelFuture` that, in a non-blocking fashion, returns `TRUE` if the future is resolved and `FALSE` if not.
 * An S3 method of `result()` for `MyParallelFuture` that returns a `FutureResult` object (as defined by the [future] package) when the future is resolved or otherwise fails to resolve.  If the future is not yet resolved, this method should block until the future is resolved.  

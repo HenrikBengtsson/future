@@ -8,18 +8,13 @@
 \usage{
 sequential(..., envir = parent.frame())
 
-transparent(..., local = FALSE, envir = parent.frame())
+transparent(..., envir = parent.frame())
 }
 \arguments{
 \item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
-
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
 }
 \value{
 A \link{SequentialFuture}.
@@ -37,7 +32,7 @@ it becomes the default mechanism for all futures.  After this
 \code{\link[=future]{future()}} and \code{\link{\%<-\%}} will create
 \emph{sequential futures}.
 }
-\section{transparent futures}{
+\section{transparent futures (troubleshooting only)}{
 
 Transparent futures are sequential futures configured to emulate how R
 evaluates expressions as far as possible.  For instance, errors and
@@ -45,6 +40,11 @@ warnings are signaled immediately and assignments are done to the
 calling environment (without \code{local()} as default for all other
 types of futures).  This makes transparent futures ideal for
 troubleshooting, especially when there are errors.
+\emph{WARNING: Transparent futures should only be used for debugging and
+troubleshooting.  They should not be used for production pipelines
+and must not be set within another package.  This is especially
+important since 'transparent' futures might be deprecated and replaced
+by better means of debugging in future releases.}
 }
 
 \examples{

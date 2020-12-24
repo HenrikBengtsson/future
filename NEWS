@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2020-12-21]
+Version: 1.21.0-9000 [2020-12-24]
 
 SIGNIFICANT CHANGES:
 
@@ -13,6 +13,11 @@ BUG FIXES:
  * Resolving a 'sequential' future without globals would result in internal
    several '...future.*' objects being written to the calling environment,
    which might be the global environment.
+
+ * Transparent futures no longer warns about 'local = FALSE' being deprecated.
+   Although 'local=FALSE' is being deprecated, it is still used internally by
+   'transparent' futures for a while longer.  Please do not use 'transparent'
+   futures in production code and never in a package.
 
 
 Version: 1.21.0 [2020-12-09]
