@@ -344,25 +344,29 @@ run.Future <- function(future, ...) {
   if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUND: For UniprocessFuture:s only
-  lazy <- TRUE
+  tmpLazy <- TRUE
   preserveDummyFuture <- FALSE
   if (inherits(makeFuture, c("sequential", "transparent"))) {
     if (inherits(makeFuture, "transparent")) local <- FALSE
-    if (!local) globals <- FALSE
+    if (!local && is.logical(globals)) {
+      globals <- FALSE
+    } else {
+      tmpLazy <- FALSE
+    }    
   } else if (inherits(makeFuture, "batchtools")) {
     if (packageVersion("future.batchtools") < "0.9.0-9000") {
-      lazy <- FALSE
+      tmpLazy <- FALSE
       preserveDummyFuture <- TRUE
     }
   } else if (inherits(makeFuture, "batchjobs")) {
-    lazy <- FALSE
+    tmpLazy <- FALSE
     preserveDummyFuture <- TRUE
   }
 
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    lazy = lazy,
+    lazy = tmpLazy,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = globals,
@@ -420,11 +424,9 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ... done")
   }
 
-  ## WORKAROUND: Make sure batchtools/batchjobs futures are marked
-  ## as being lazy /HB 2020-12-21
-  if (inherits(future, c("BatchtoolsFuture", "BatchJobsFuture"))) {
-    future$lazy <- TRUE
-  }
+  ## WORKAROUND: Make sure transparent/batchtools/batchjobs futures remain
+  ## lazy future if they were from the beginning /HB 2020-12-21
+  if (!future$lazy) future$lazy <- TRUE
 
   stop_if_not(future$state != "created", future$lazy)
 
