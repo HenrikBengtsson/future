@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[62101,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[59597,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -448,6 +448,48 @@ Run `revdep_details(, "delayed")` for more info
       All declared Imports should be used.
     ```
 
+# dipsaus
+
+<details>
+
+* Version: 0.1.1
+* GitHub: https://github.com/dipterix/dipsaus
+* Source code: https://github.com/cran/dipsaus
+* Date/Publication: 2020-10-09 07:50:02 UTC
+* Number of recursive dependencies: 77
+
+Run `revdep_details(, "dipsaus")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    [1] FALSE
+    > 
+    > 
+    > # Store 'a' with 2 with same signature
+    > # will fail and ignore the value (value will not be evaluated if signatured)
+    > # Return 2 (Important! use cached values)
+    > container$cache(key = 'a', value = {
+    +   print(123)
+    +   return(2)
+    + }, signature = 111, replace = FALSE)
+    [1] 123
+    Error in force(value) : no function to return from, jumping to top level
+    Warning in save_item() : restarting interrupted promise evaluation
+    [1] 123
+    Error in save_item() : no function to return from, jumping to top level
+    Warning in container$cache(key = "a", value = { :
+      restarting interrupted promise evaluation
+    [1] 123
+    Error in container$cache(key = "a", value = { : 
+      no function to return from, jumping to top level
+    Execution halted
+    ```
+
 # dragon
 
 <details>
@@ -639,48 +681,6 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
-    ```
-
-# furrr
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/DavisVaughan/furrr
-* Source code: https://github.com/cran/furrr
-* Date/Publication: 2020-10-21 18:00:06 UTC
-* Number of recursive dependencies: 67
-
-Run `revdep_details(, "furrr")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-        5.         └─future:::evaluator(...)
-        6.           └─future:::strategy(..., envir = envir, workers = workers)
-        7.             └─future::MultisessionFuture(...)
-        8.               └─future::ClusterFuture(...)
-        9.                 ├─base::do.call(...)
-       10.                 └─(function (future, workers = NULL, ...) ...
-       11.                   └─future:::ClusterRegistry("start", workers = workers, ...)
-       12.                     └─future:::makeCluster(workers, ...)
-       13.                       └─parallelly::makeClusterPSOCK(workers, ...)
-       14.                         └─parallelly:::add_cluster_session_info(cl[ii])
-       15.                           └─parallel::clusterCall(cl[ii], fun = get_session_info, pkgs = pkgs)
-       16.                             ├─parallel:::checkForRemoteErrors(lapply(cl, recvResult))
-       17.                             └─base::lapply(cl, recvResult)
-       18.                               └─parallel:::FUN(X[[i]], ...)
-       19.                                 ├─parallel:::recvData(con)
-       20.                                 └─parallel:::recvData.SOCK0node(con)
-       21.                                   └─base::unserialize(node$con)
-      
-      [ FAIL 3 | WARN 2 | SKIP 1 | PASS 595 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # GetBCBData
@@ -1251,48 +1251,6 @@ Run `revdep_details(, "MineICA")` for more info
                  "write.table")
     to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
     contains 'methods').
-    ```
-
-# nflfastR
-
-<details>
-
-* Version: 3.2.0
-* GitHub: https://github.com/mrcaseb/nflfastR
-* Source code: https://github.com/cran/nflfastR
-* Date/Publication: 2020-11-20 15:10:02 UTC
-* Number of recursive dependencies: 94
-
-Run `revdep_details(, "nflfastR")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-    ...
-        4. │   ├─base::suppressWarnings(...)
-        5. │   │ └─base::withCallingHandlers(...)
-        6. │   ├─progressr::with_progress(...)
-        7. │   └─purrr::map_dfr(...)
-        8. │     └─purrr::map(.x, .f, ...)
-        9. │       └─nflfastR:::.f(.x[[i]], ...)
-       10. │         └─nflfastR:::get_pbp_gc(x, ...)
-       11. │           └─base::tryCatch(...)
-       12. │             └─base:::tryCatchList(expr, classes, parentenv, handlers)
-       13. │               └─base:::tryCatchOne(...)
-       14. │                 └─value[[3L]](cond)
-       15. ├─nflfastR::add_xyac(., in_builder = builder)
-       16. │ └─base::nrow(pbp)
-       17. ├─nflfastR::add_qb_epa(., in_builder = builder)
-       18. │ └─base::nrow(pbp)
-       19. └─nflfastR::clean_pbp(., in_builder = builder)
-       20.   └─base::nrow(pbp)
-      
-      [ FAIL 9 | WARN 9 | SKIP 0 | PASS 0 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # origami

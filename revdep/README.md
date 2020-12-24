@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-12-22                   |
+|date     |2020-12-23                   |
 
 # Dependencies
 
@@ -30,10 +30,11 @@
 |:--------------------------|:-------|:-----|:-------|:----|
 |[steps](failures.md#steps) |1.1.0   |1     |        |     |
 
-## New problems (4)
+## New problems (5)
 
 |package                                |version |error  |warning |note |
 |:--------------------------------------|:-------|:------|:-------|:----|
+|[dipsaus](problems.md#dipsaus)         |0.1.1   |__+1__ |        |     |
 |[drtmle](problems.md#drtmle)           |1.0.5   |__+2__ |        |     |
 |[haldensify](problems.md#haldensify)   |0.0.6   |__+1__ |        |     |
 |[lgr](problems.md#lgr)                 |0.4.1   |__+1__ |        |     |
@@ -70,7 +71,7 @@
 |DeclareDesign                                      |0.24.0    |       |        |     |
 |[delayed](problems.md#delayed)                     |0.3.0     |       |        |1    |
 |dhReg                                              |0.1.0     |       |        |     |
-|dipsaus                                            |0.1.1     |       |        |     |
+|[dipsaus](problems.md#dipsaus)                     |0.1.1     |__+1__ |        |     |
 |disk.frame                                         |0.3.7     |       |        |     |
 |doFuture                                           |0.11.0    |       |        |     |
 |[dragon](problems.md#dragon)                       |1.1.0     |       |        |1    |
@@ -88,7 +89,7 @@
 |[foieGras](problems.md#foiegras)                   |0.6-9     |       |        |1    |
 |[forecastML](problems.md#forecastml)               |0.9.0     |       |        |1    |
 |funGp                                              |0.2.1     |       |        |     |
-|[furrr](problems.md#furrr)                         |0.2.1     |1      |        |     |
+|furrr                                              |0.2.1     |       |        |     |
 |future.apply                                       |1.6.0     |       |        |     |
 |future.BatchJobs                                   |0.16.2    |       |        |     |
 |future.batchtools                                  |0.9.0     |       |        |     |
@@ -135,7 +136,7 @@
 |mlr3                                               |0.9.0     |       |        |     |
 |mlr3db                                             |0.3.0     |       |        |     |
 |mrgsim.parallel                                    |0.1.1     |       |        |     |
-|[nflfastR](problems.md#nflfastr)                   |3.2.0     |1      |        |     |
+|nflfastR                                           |3.2.0     |       |        |     |
 |onemapsgapi                                        |1.0.0     |       |        |     |
 |[origami](problems.md#origami)                     |1.0.3     |       |        |1    |
 |[pavo](problems.md#pavo)                           |2.6.1     |       |1       |     |
