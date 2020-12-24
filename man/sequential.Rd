@@ -8,18 +8,13 @@
 \usage{
 sequential(..., envir = parent.frame())
 
-transparent(..., local = FALSE, envir = parent.frame())
+transparent(..., envir = parent.frame())
 }
 \arguments{
 \item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
-
-\item{local}{If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
 }
 \value{
 A \link{SequentialFuture}.

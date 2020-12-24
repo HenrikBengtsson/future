@@ -43,9 +43,12 @@ sequential <- function(..., envir = parent.frame()) {
 }
 class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
+
 #' @rdname sequential
 #' @export
-transparent <- function(..., local = FALSE, envir = parent.frame()) {
-  sequential(..., local = FALSE, persistent = TRUE, envir = envir)
+transparent <- function(..., envir = parent.frame()) {
+  future <- TransparentFuture(..., envir = envir)
+  if (!future$lazy) future <- run(future)
+  invisible(future)
 }
 class(transparent) <- c("transparent", "sequential", "uniprocess", "future", "function")
