@@ -207,14 +207,22 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
                    gc = gc,
                    ...)
 
-  ## WORKAROUND: Make batchtools futures pass packages tests on
-  ##             future.batchtools /HB 2020-12-21
+  ## WORKAROUNDS:
   makeFuture <- plan("next")
   if (inherits(makeFuture, "batchtools")) {
-    dummy <- makeFuture(NULL, globals = FALSE, label="future()-dummy-batchtools")
+    ## Pass package tests on future.batchtools /HB 2020-12-21
+    dummy <- makeFuture(NULL, globals = FALSE,
+                        label="future()-dummy-batchtools")
     future$config <- dummy$config
     dummy <- NULL
+  } else if (inherits(makeFuture, "cluster")) {
+    ## Make persistent=TRUE cluster futures local=FALSE /HB 2020-12-25
+    if (isTRUE(formals(makeFuture)$persistent)) {
+      future$persistent <- TRUE
+      if (!isTRUE(list(...)$local)) future$local <- FALSE
+    }
   }
+  
   makeFuture <- NULL
 
   if (!lazy) {
