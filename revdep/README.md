@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2020-12-22                   |
+|date     |2020-12-24                   |
 
 # Dependencies
 
@@ -46,7 +46,7 @@
 |[bcmaps](problems.md#bcmaps)                       |0.18.1    |      |        |1    |
 |biotmle                                            |1.14.0    |      |        |     |
 |bkmrhat                                            |1.0.0     |      |        |     |
-|[blavaan](problems.md#blavaan)                     |0.3-12    |      |        |2    |
+|[blavaan](problems.md#blavaan)                     |0.3-12    |1     |        |2    |
 |[blockCV](problems.md#blockcv)                     |2.1.1     |      |        |1    |
 |[brms](problems.md#brms)                           |2.14.4    |      |        |2    |
 |ceRNAnetsim                                        |1.2.1     |      |        |     |
