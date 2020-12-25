@@ -326,10 +326,18 @@ run.Future <- function(future, ...) {
 
   stop_if_not(future$lazy)
 
-  ## Be conservative for now; don't allow lazy futures created in another R
-  ## session to be launched. This will hopefully change later, but we won't
-  ## open this door until we understand the ramifications. /HB 2020-12-21
-  stop_if_not(future$owner == session_uuid())
+  if (is.null(future$owner)) {
+    future$owner <- session_uuid()
+  } else {  
+    ## Be conservative for now; don't allow lazy futures created in another R
+    ## session to be launched. This will hopefully change later, but we won't
+    ## open this door until we understand the ramifications. /HB 2020-12-21
+    if (getOption("future.assertOwner", TRUE)) {
+      assertOwner(future)
+    } else {
+      future$owner <- session_uuid()
+    }
+  }
 
   ## Create temporary future for a specific backend, but don't launch it
   makeFuture <- plan("next")
