@@ -15,6 +15,19 @@
     mdebug(paste(c("Future-specific environment variables:", envs), collapse = "\n"))
   }
 
+  noplans <- getOption("future.plan.disallow")
+  if (is.null(noplans)) {
+    noplans <- trim(Sys.getenv("R_FUTURE_PLAN_DISALLOW"))
+    if (debug) mdebugf("R_FUTURE_PLAN_DISALLOW=%s", sQuote(noplans))
+    if (nzchar(noplans)) {
+      noplans <- strsplit(noplans, split = ",", fixed = TRUE)[[1]]
+      noplans <- trim(noplans)
+      options(future.plan.disallow = noplans)
+      mdebugf(" => options(future.plan.disallow = c(%s))",
+              paste(sQuote(noplans), collapse = ", "))
+    }
+  }
+
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
   if (is.na(attr(multiprocess, "init", exact = TRUE))) {
