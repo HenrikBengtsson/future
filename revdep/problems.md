@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[58456,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[21058,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -198,6 +198,74 @@ Run `revdep_details(, "bcmaps")` for more info
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘bcmapsdata’
+    ```
+
+# biotmle
+
+<details>
+
+* Version: 1.14.0
+* GitHub: https://github.com/nhejazi/biotmle
+* Source code: https://github.com/cran/biotmle
+* Date/Publication: 2020-10-27
+* Number of recursive dependencies: 163
+
+Run `revdep_details(, "biotmle")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    
+    The following object is masked from ‘package:SummarizedExperiment’:
+    
+        values
+    
+    The following object is masked from ‘package:GenomicRanges’:
+    
+        values
+    
+    The following object is masked from ‘package:IRanges’:
+    
+        values
+    
+    The following object is masked from ‘package:S4Vectors’:
+    
+        values
+    
+    Error: BiocParallel errors
+      element index: 1
+      first error: task 1 failed - "Can not use ‘transparent’ in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': ‘transparent’"
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+    ...
+          █
+       1. └─biotmle::biomarkertmle(...) test-biomarkertmle.R:15:0
+       2.   ├─BiocParallel::bplapply(...)
+       3.   └─BiocParallel::bplapply(...)
+       4.     ├─BiocParallel::bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
+       5.     └─BiocParallel::bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
+      ── Error (test-modtest_ic.R:15:1): (code run outside of `test_that()`) ─────────
+      Error: BiocParallel errors
+        element index: 1
+        first error: task 1 failed - "Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'"
+      Backtrace:
+          █
+       1. └─biotmle::biomarkertmle(...) test-modtest_ic.R:15:0
+       2.   ├─BiocParallel::bplapply(...)
+       3.   └─BiocParallel::bplapply(...)
+       4.     ├─BiocParallel::bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
+       5.     └─BiocParallel::bplapply(X, FUN, ..., BPREDO = BPREDO, BPPARAM = BPPARAM)
+      
+      [ FAIL 2 | WARN 1 | SKIP 0 | PASS 5 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # blavaan
@@ -237,7 +305,7 @@ Run `revdep_details(, "blavaan")` for more info
           █
        1. └─blavaan::blavaan(...)
       
-      [ FAIL 1 | WARN 12 | SKIP 0 | PASS 61 ]
+      [ FAIL 1 | WARN 13 | SKIP 0 | PASS 61 ]
       Error: Test failures
       Execution halted
     ```
@@ -470,6 +538,74 @@ Run `revdep_details(, "dragon")` for more info
       All declared Imports should be used.
     ```
 
+# drtmle
+
+<details>
+
+* Version: 1.0.5
+* GitHub: https://github.com/benkeser/drtmle
+* Source code: https://github.com/cran/drtmle
+* Date/Publication: 2020-01-09 23:30:02 UTC
+* Number of recursive dependencies: 95
+
+Run `revdep_details(, "drtmle")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    > # load super learner
+    > library(SuperLearner)
+    Loading required package: nnls
+    Super Learner
+    Version: 2.0-26
+    Package created on 2019-10-27
+    
+    > # fit adaptive_iptw
+    > set.seed(123456)
+    > n <- 200
+    > W <- data.frame(W1 = runif(n), W2 = rnorm(n))
+    > A <- rbinom(n, 1, plogis(W$W1 - W$W2))
+    > Y <- rbinom(n, 1, plogis(W$W1 * W$W2 * A))
+    > 
+    > fit1 <- adaptive_iptw(
+    +   W = W, A = A, Y = Y, a_0 = c(1, 0),
+    +   SL_g = c("SL.glm", "SL.mean", "SL.step"),
+    +   SL_Qr = "SL.glm"
+    + )
+    Error: Can not use ‘transparent’ in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': ‘transparent’
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+    ...
+       4.       └─future:::assert_no_disallowed_strategies(newStack)
+      ── Error (test-tests.R:87:3): wald_test.adaptive_iptw works as expected ────────
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─drtmle::adaptive_iptw(...) test-tests.R:87:2
+       2.   └─future::plan(future::transparent)
+       3.     └─future:::plan_set(...)
+       4.       └─future:::assert_no_disallowed_strategies(newStack)
+      ── Error (testthat-adaptive_iptw.R:15:3): adaptive_iptw works as expected with cv ──
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─drtmle::adaptive_iptw(...) testthat-adaptive_iptw.R:15:2
+       2.   └─future::plan(future::transparent)
+       3.     └─future:::plan_set(...)
+       4.       └─future:::assert_no_disallowed_strategies(newStack)
+      
+      [ FAIL 25 | WARN 3 | SKIP 0 | PASS 26 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 # EFAtools
 
 <details>
@@ -686,6 +822,48 @@ Run `revdep_details(, "hal9001")` for more info
         libs   5.5Mb
     ```
 
+# haldensify
+
+<details>
+
+* Version: 0.0.6
+* GitHub: https://github.com/nhejazi/haldensify
+* Source code: https://github.com/cran/haldensify
+* Date/Publication: 2020-09-16 06:40:13 UTC
+* Number of recursive dependencies: 86
+
+Run `revdep_details(, "haldensify")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+    ...
+      > 
+      > test_check("haldensify")
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test-density_standard.R:6:1): (code run outside of `test_that()`) ────
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─future::plan(transparent) test-density_standard.R:6:0
+       2.   └─future:::plan_set(...)
+       3.     └─future:::assert_no_disallowed_strategies(newStack)
+      ── Error (test-density_weights.R:6:1): (code run outside of `test_that()`) ─────
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─future::plan(transparent) test-density_weights.R:6:0
+       2.   └─future:::plan_set(...)
+       3.     └─future:::assert_no_disallowed_strategies(newStack)
+      
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 0 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 # IFAA
 
 <details>
@@ -805,6 +983,48 @@ Run `revdep_details(, "ItemResponseTrees")` for more info
     See section 'Cross-references' in the 'Writing R Extensions' manual.
     ```
 
+# lgr
+
+<details>
+
+* Version: 0.4.1
+* GitHub: https://github.com/s-fleck/lgr
+* Source code: https://github.com/cran/lgr
+* Date/Publication: 2020-10-20 20:00:06 UTC
+* Number of recursive dependencies: 64
+
+Run `revdep_details(, "lgr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+    ...
+    Complete output:
+      > library(testthat)
+      > library(lgr)
+      > 
+      > test_check("lgr")
+      ══ Skipped tests ═══════════════════════════════════════════════════════════════
+      ● Terminal does not support colors (1)
+      ● empty test (1)
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test_parallel.R:19:5): transparent: Logging works ────────────────────
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─future::plan(strategy) test_parallel.R:19:4
+       2.   └─future:::plan_set(...)
+       3.     └─future:::assert_no_disallowed_strategies(newStack)
+      
+      [ FAIL 1 | WARN 0 | SKIP 2 | PASS 548 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 # lidR
 
 <details>
@@ -918,14 +1138,6 @@ Run `revdep_details(, "methyvim")` for more info
 *   checking tests ...
     ```
     ...
-      Backtrace:
-       1. methyvim:::set_parallel(parallel = TRUE) test-set_parallel.R:9:2
-       2. future::plan(future::multiprocess)
-       3. future:::plan_set(...)
-       4. future:::warn_about_multiprocess(newStack)
-       5. base::.Deprecated(...)
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
       ── Error (test-methyvim.R:22:1): (code run outside of `test_that()`) ───────────
       Error: 'names' attribute [8] must be the same length as the vector [1]
       Backtrace:
@@ -935,8 +1147,16 @@ Run `revdep_details(, "methyvim")` for more info
        3. └─methyvim::methyvim(...)
        4.   ├─base::`colnames<-`(...)
        5.   └─base::`colnames<-`(...)
+      ── Error (test-set_parallel.R:59:3): sets up transparent future plan when so asked ──
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─methyvim:::set_parallel(parallel = TRUE, future_param = "transparent") test-set_parallel.R:59:2
+       2.   └─future::plan(eval(set_future_param))
+       3.     └─future:::plan_set(...)
+       4.       └─future:::assert_no_disallowed_strategies(newStack)
       
-      [ FAIL 1 | WARN 2 | SKIP 0 | PASS 34 ]
+      [ FAIL 2 | WARN 2 | SKIP 0 | PASS 33 ]
       Error: Test failures
       Execution halted
     ```
@@ -1209,6 +1429,74 @@ Run `revdep_details(, "QDNAseq")` for more info
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
+    ```
+
+# rangeMapper
+
+<details>
+
+* Version: 0.3-7
+* GitHub: https://github.com/valcu/rangeMapper
+* Source code: https://github.com/cran/rangeMapper
+* Date/Publication: 2019-10-25 18:20:02 UTC
+* Number of recursive dependencies: 100
+
+Run `revdep_details(, "rangeMapper")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    ...
+    +                sd = sample(1:2/5, n, TRUE) ))
+    > 
+    > 
+    > X = WKT2SpatialPolygonsDataFrame(d, 'range', 'nam')
+    > 
+    > 
+    > dbcon = rangeMap.start(file = "test.sqlite", overwrite = TRUE, dir = tempdir() )
+    New session 2020-12-25 11:44:43
+    PROJECT: test.sqlite 
+    DIRECTORY: /scratch/henrik/RtmpAQghTl
+    Warning: call dbDisconnect() when finished working with a connection
+    > global.bbox.save(con = dbcon, bbox = X)
+    [1] TRUE
+    > gridSize.save(dbcon)
+    Warning in .local(object, ...) : Default grid size used!
+    Grid size set to 0.0302818233 map units.
+    > canvas.save(dbcon)
+    Canvas uploaded.
+    > processRanges(spdf = X, con =  dbcon, ID = "nam")
+    Error: Can not use ‘transparent’ in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': ‘transparent’
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+    ...
+       4.     └─rangeMapper:::.local(...)
+       5.       └─future::plan(future::transparent)
+       6.         └─future:::plan_set(...)
+       7.           └─future:::assert_no_disallowed_strategies(newStack)
+      ── Error (test-4_save.R:7:1): (code run outside of `test_that()`) ──────────────
+      Error: Can not use 'transparent' in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': 'transparent'
+      Backtrace:
+          █
+       1. └─rangeMapper::ramp(...) test-4_save.R:7:0
+       2.   ├─rangeMapper::processRanges(...)
+       3.   └─rangeMapper::processRanges(...)
+       4.     └─rangeMapper:::.local(...)
+       5.       └─future::plan(future::transparent)
+       6.         └─future:::plan_set(...)
+       7.           └─future:::assert_no_disallowed_strategies(newStack)
+      
+      [ FAIL 6 | WARN 1 | SKIP 0 | PASS 18 ]
+      Error: Test failures
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
     ```
 
 # regmedint
