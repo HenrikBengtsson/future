@@ -168,7 +168,7 @@ Run `revdep_details(, "batchtools")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     --------------------------------------------------------------------------
-    [[59597,1],0]: A high-performance Open MPI point-to-point messaging module
+    [[58456,1],0]: A high-performance Open MPI point-to-point messaging module
     was unable to find any relevant network interfaces:
     
     Module: OpenFabrics (openib)
@@ -237,7 +237,7 @@ Run `revdep_details(, "blavaan")` for more info
           █
        1. └─blavaan::blavaan(...)
       
-      [ FAIL 1 | WARN 13 | SKIP 0 | PASS 61 ]
+      [ FAIL 1 | WARN 12 | SKIP 0 | PASS 61 ]
       Error: Test failures
       Execution halted
     ```
@@ -448,48 +448,6 @@ Run `revdep_details(, "delayed")` for more info
       All declared Imports should be used.
     ```
 
-# dipsaus
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/dipterix/dipsaus
-* Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2020-10-09 07:50:02 UTC
-* Number of recursive dependencies: 77
-
-Run `revdep_details(, "dipsaus")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    [1] FALSE
-    > 
-    > 
-    > # Store 'a' with 2 with same signature
-    > # will fail and ignore the value (value will not be evaluated if signatured)
-    > # Return 2 (Important! use cached values)
-    > container$cache(key = 'a', value = {
-    +   print(123)
-    +   return(2)
-    + }, signature = 111, replace = FALSE)
-    [1] 123
-    Error in force(value) : no function to return from, jumping to top level
-    Warning in save_item() : restarting interrupted promise evaluation
-    [1] 123
-    Error in save_item() : no function to return from, jumping to top level
-    Warning in container$cache(key = "a", value = { :
-      restarting interrupted promise evaluation
-    [1] 123
-    Error in container$cache(key = "a", value = { : 
-      no function to return from, jumping to top level
-    Execution halted
-    ```
-
 # dragon
 
 <details>
@@ -510,74 +468,6 @@ Run `revdep_details(, "dragon")` for more info
     ```
     Namespace in Imports field not imported from: ‘htmltools’
       All declared Imports should be used.
-    ```
-
-# drtmle
-
-<details>
-
-* Version: 1.0.5
-* GitHub: https://github.com/benkeser/drtmle
-* Source code: https://github.com/cran/drtmle
-* Date/Publication: 2020-01-09 23:30:02 UTC
-* Number of recursive dependencies: 95
-
-Run `revdep_details(, "drtmle")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    Super Learner
-    Version: 2.0-26
-    Package created on 2019-10-27
-    
-    > # fit adaptive_iptw
-    > set.seed(123456)
-    > n <- 200
-    > W <- data.frame(W1 = runif(n), W2 = rnorm(n))
-    > A <- rbinom(n, 1, plogis(W$W1 - W$W2))
-    > Y <- rbinom(n, 1, plogis(W$W1 * W$W2 * A))
-    > 
-    > fit1 <- adaptive_iptw(
-    +   W = W, A = A, Y = Y, a_0 = c(1, 0),
-    +   SL_g = c("SL.glm", "SL.mean", "SL.step"),
-    +   SL_Qr = "SL.glm"
-    + )
-    Warning: Using 'local = FALSE' for a future is deprecated and will soon be defunct and produce an error.
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: adaptive_iptw ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-       6.         ├─future::resolve(...)
-       7.         └─future:::resolve.list(...)
-       8.           └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       9.             └─future:::signalConditions(...)
-      ── Error (testthat-adaptive_iptw.R:15:3): adaptive_iptw works as expected with cv ──
-      Error: object 'future.call.arguments' not found
-      Backtrace:
-          █
-       1. └─drtmle::adaptive_iptw(...) testthat-adaptive_iptw.R:15:2
-       2.   └─future.apply::future_lapply(...)
-       3.     └─future.apply:::future_xapply(...)
-       4.       ├─future::value(fs)
-       5.       └─future:::value.list(fs)
-       6.         ├─future::resolve(...)
-       7.         └─future:::resolve.list(...)
-       8.           └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       9.             └─future:::signalConditions(...)
-      
-      [ FAIL 25 | WARN 26 | SKIP 0 | PASS 26 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # EFAtools
@@ -796,48 +686,6 @@ Run `revdep_details(, "hal9001")` for more info
         libs   5.5Mb
     ```
 
-# haldensify
-
-<details>
-
-* Version: 0.0.6
-* GitHub: https://github.com/nhejazi/haldensify
-* Source code: https://github.com/cran/haldensify
-* Date/Publication: 2020-09-16 06:40:13 UTC
-* Number of recursive dependencies: 86
-
-Run `revdep_details(, "haldensify")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-    ...
-           █
-        1. ├─base::with(...) test-density_weights.R:26:0
-        2. └─base::with.default(...)
-        3.   └─base::eval(substitute(expr), data, enclos = parent.frame())
-        4.     └─base::eval(substitute(expr), data, enclos = parent.frame())
-        5.       └─haldensify::haldensify(...)
-        6.         └─base::mapply(...)
-        7.           └─(function (A, W, wts = rep(1, length(A)), grid_type = "equal_range", ...
-        8.             └─haldensify:::format_long_hazards(...)
-        9.               └─future.apply::future_lapply(...)
-       10.                 └─future.apply:::future_xapply(...)
-       11.                   ├─future::value(fs)
-       12.                   └─future:::value.list(fs)
-       13.                     ├─future::resolve(...)
-       14.                     └─future:::resolve.list(...)
-       15.                       └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       16.                         └─future:::signalConditions(...)
-      
-      [ FAIL 2 | WARN 2 | SKIP 0 | PASS 0 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # IFAA
 
 <details>
@@ -955,48 +803,6 @@ Run `revdep_details(, "ItemResponseTrees")` for more info
       ‘[MplusAutomation:MplusAutomation-package]{MplusAutomation}’
     
     See section 'Cross-references' in the 'Writing R Extensions' manual.
-    ```
-
-# lgr
-
-<details>
-
-* Version: 0.4.1
-* GitHub: https://github.com/s-fleck/lgr
-* Source code: https://github.com/cran/lgr
-* Date/Publication: 2020-10-20 20:00:06 UTC
-* Number of recursive dependencies: 64
-
-Run `revdep_details(, "lgr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-    ...
-        9. future::UniprocessFuture(...)
-       10. future::Future(...)
-       11. base::.Deprecated(...)
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Error (test_parallel.R:40:5): transparent: Logging works ────────────────────
-      Error: object 'future.call.arguments' not found
-      Backtrace:
-          █
-       1. └─future.apply::future_lapply(...) test_parallel.R:40:4
-       2.   └─future.apply:::future_xapply(...)
-       3.     ├─future::value(fs)
-       4.     └─future:::value.list(fs)
-       5.       ├─future::resolve(...)
-       6.       └─future:::resolve.list(...)
-       7.         └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       8.           └─future:::signalConditions(...)
-      
-      [ FAIL 1 | WARN 3 | SKIP 2 | PASS 552 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # lidR
@@ -1403,74 +1209,6 @@ Run `revdep_details(, "QDNAseq")` for more info
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
-    ```
-
-# rangeMapper
-
-<details>
-
-* Version: 0.3-7
-* GitHub: https://github.com/valcu/rangeMapper
-* Source code: https://github.com/cran/rangeMapper
-* Date/Publication: 2019-10-25 18:20:02 UTC
-* Number of recursive dependencies: 100
-
-Run `revdep_details(, "rangeMapper")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    ...
-    +______________+
-    > 
-    > 
-    > lmSlope = function(formula, data) {
-    +     fm = try(lm(formula, data = data), silent = TRUE)
-    +     if (inherits(fm, "try-error"))
-    +         res = NA else res = coef(fm)[2]
-    +     as.numeric(res)
-    + }
-    > 
-    > # Subsetting by Species and Assembladge
-    > rangeMap.save(con, FUN = lmSlope, biotab = "biotab", biotrait = "body_mass",
-    +     tableName = "slope_bodyMass_clutchSize", formula = log(body_mass) ~ clutch_size,
-    +     list(MAP_species_richness = "species_richness >= 5",
-    +         BIO_biotab = "body_size > 15"
-    +         ), overwrite = TRUE)
-    Warning: Using 'local = FALSE' for a future is deprecated and will soon be defunct and produce an error.
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: rangeMap.save ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-    ...
-           █
-        1. └─rangeMapper::ramp(...) test-4_save.R:7:0
-        2.   ├─rangeMapper::processRanges(...)
-        3.   └─rangeMapper::processRanges(...)
-        4.     └─rangeMapper:::.local(...)
-        5.       ├─rangeMapper::processRanges(con = con, spdf = spdf, ID = ID)
-        6.       └─rangeMapper::processRanges(con = con, spdf = spdf, ID = ID)
-        7.         └─rangeMapper:::.local(...)
-        8.           └─`%dopar%`(...)
-        9.             └─e$fun(obj, substitute(ex), parent.frame(), e$data)
-       10.               ├─base::withCallingHandlers(...)
-       11.               ├─future::resolve(fs, result = TRUE, stdout = TRUE, signal = TRUE)
-       12.               └─future:::resolve.list(fs, result = TRUE, stdout = TRUE, signal = TRUE)
-       13.                 └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       14.                   └─future:::signalConditions(...)
-      
-      [ FAIL 6 | WARN 7 | SKIP 0 | PASS 18 ]
-      Error: Test failures
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
     ```
 
 # regmedint
