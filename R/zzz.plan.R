@@ -133,6 +133,20 @@ plan <- local({
   ## Stack of type of futures to use
   stack <- defaultStack
 
+  assert_no_disallowed_strategies <- function(stack) {
+    noplans <- getOption("future.plan.disallow")
+    if (length(noplans) == 0L) return()
+
+    for (kk in seq_along(stack)) {
+      evaluator <- stack[[kk]]
+      if (!inherits(evaluator, noplans)) next
+      clazz <- class(evaluator)[1]
+      if (!clazz %in% noplans) next  ## <== sic!
+
+      stop(FutureError(sprintf("Can not use %s in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': %s", sQuote(clazz), paste(sQuote(noplans), collapse = ", "))))
+    }
+  }
+
   warn_about_multiprocess <- local({
     .warn <- TRUE
 
@@ -237,6 +251,8 @@ plan <- local({
       mdebug("plan(): Setting new future strategy stack:")
       mprint(newStack)
     }
+
+    assert_no_disallowed_strategies(newStack)
 
     warn_about_multiprocess(newStack)
 
