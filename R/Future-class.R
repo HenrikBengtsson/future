@@ -354,13 +354,15 @@ run.Future <- function(future, ...) {
   ## WORKAROUND: For UniprocessFuture:s only
   tmpLazy <- TRUE
   preserveDummyFuture <- FALSE
-  if (inherits(makeFuture, c("sequential", "transparent"))) {
-    if (inherits(makeFuture, "transparent")) local <- FALSE
-    if (!local && is.logical(globals)) {
+  if (inherits(makeFuture, "transparent")) {
+    local <- FALSE
+    if (is.logical(globals)) {
       globals <- FALSE
     } else {
       tmpLazy <- FALSE
     }    
+  } else if (inherits(makeFuture, "sequential")) {
+    tmpLazy <- FALSE
   } else if (inherits(makeFuture, "batchtools")) {
     if (packageVersion("future.batchtools") < "0.9.0-9000") {
       tmpLazy <- FALSE
