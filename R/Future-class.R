@@ -369,8 +369,10 @@ run.Future <- function(future, ...) {
       preserveDummyFuture <- TRUE
     }
   } else if (inherits(makeFuture, "batchjobs")) {
-    tmpLazy <- FALSE
-    preserveDummyFuture <- TRUE
+    if (packageVersion("future.BatchJobs") < "0.16.2-9000") {
+      tmpLazy <- FALSE
+      preserveDummyFuture <- TRUE
+    }
   }
 
   tmpFuture <- makeFuture(
