@@ -150,7 +150,7 @@ The future package implements the following types of futures:
 
 _Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  (_Comment_: The [future.BatchJobs] package provides analogue backends based on the [BatchJobs] package; however the BatchJobs developers have deprecated it in favor of batchtools.)
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session).  This evaluation strategy is referred to as "sequential".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
 
@@ -648,16 +648,14 @@ demo("mandelbrot", package = "future", ask = FALSE)
 The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas on how to improve the 'future' package, I would love to hear about them.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
 
 
-[BatchJobs]: https://cran.r-project.org/package=BatchJobs
 [batchtools]: https://cran.r-project.org/package=batchtools
 [callr]: https://cran.r-project.org/package=callr
 [future]: https://cran.r-project.org/package=future
 [future.callr]: https://cran.r-project.org/package=future.callr
-[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
 [future.batchtools]: https://cran.r-project.org/package=future.batchtools
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-4-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2020
+Copyright Henrik Bengtsson, 2015-2021
