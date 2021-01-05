@@ -363,16 +363,6 @@ run.Future <- function(future, ...) {
     }    
   } else if (inherits(makeFuture, "sequential")) {
     tmpLazy <- FALSE
-  } else if (inherits(makeFuture, "batchtools")) {
-    if (packageVersion("future.batchtools") < "0.9.0-9000") {
-      tmpLazy <- FALSE
-      preserveDummyFuture <- TRUE
-    }
-  } else if (inherits(makeFuture, "batchjobs")) {
-    if (packageVersion("future.BatchJobs") < "0.16.2-9000") {
-      tmpLazy <- FALSE
-      preserveDummyFuture <- TRUE
-    }
   }
 
   tmpFuture <- makeFuture(
@@ -436,10 +426,10 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ... done")
   }
 
-  ## WORKAROUND: Make sure transparent/batchtools/batchjobs futures remain
-  ## lazy future if they were from the beginning /HB 2020-12-21
+  ## WORKAROUND: Make sure 'transparent' futures remain lazy future if
+  ## they were from the beginning /HB 2020-12-21
   if (!future$lazy) future$lazy <- TRUE
-
+  
   stop_if_not(future$state != "created", future$lazy)
 
   future
