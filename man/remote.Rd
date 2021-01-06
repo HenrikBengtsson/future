@@ -10,6 +10,7 @@ remote(
   revtunnel = TRUE,
   myip = NULL,
   persistent = TRUE,
+  homogeneous = TRUE,
   envir = parent.frame()
 )
 }
@@ -35,6 +36,10 @@ If NULL, then it is inferred using an online service (default).}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
+
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main \R session.  If FALSE, the
+it is assumed to be on the PATH for each node.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
