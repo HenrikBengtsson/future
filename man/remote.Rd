@@ -59,6 +59,12 @@ more convenient default argument values when connecting to remote machines.  Spe
 \code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
 \code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
 See below for example on how \code{remote} and \code{cluster} are related.
+
+The preferred way to create an cluster future is not to call
+this function directly, but to register it via
+\code{\link{plan}(remote)} such that it becomes the default
+mechanism for all futures.  After this \code{\link[=future]{future()}}
+and \code{\link{\%<-\%}} will create \emph{cluster futures}.
 }
 
 \examples{

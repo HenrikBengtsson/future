@@ -23,6 +23,12 @@
 #' `revtunnel`, and `myip` "wisely" depending on the value of `workers`.
 #' See below for example on how `remote` and `cluster` are related.
 #'
+#' The preferred way to create an cluster future is not to call
+#' this function directly, but to register it via
+#' \code{\link{plan}(remote)} such that it becomes the default
+#' mechanism for all futures.  After this [future()]
+#' and \code{\link{\%<-\%}} will create _cluster futures_.
+#'
 #' @export
 remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, homogeneous = TRUE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
