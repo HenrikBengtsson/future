@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2020-12-24]
+Version: 1.21.0-9000 [2021-01-06]
 
 SIGNIFICANT CHANGES:
 
@@ -18,6 +18,8 @@ BUG FIXES:
    Although 'local=FALSE' is being deprecated, it is still used internally by
    'transparent' futures for a while longer.  Please do not use 'transparent'
    futures in production code and never in a package.
+
+ * remote() could produce an error on "object 'homogeneous' not found".
 
 
 Version: 1.21.0 [2020-12-09]
