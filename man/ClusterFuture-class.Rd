@@ -20,7 +20,7 @@ ClusterFuture(
   user = NULL,
   master = NULL,
   revtunnel = TRUE,
-  homogeneous = TRUE,
+  homogeneous = NULL,
   ...
 )
 
@@ -80,7 +80,9 @@ the internal / public IP address of the master \R session.}
 
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
 same path to \file{Rscript} as the main \R session.  If FALSE, the
-it is assumed to be on the PATH for each node.}
+it is assumed to be on the PATH for each node.
+If NULL, then \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}} will decide on TRUE
+or FALSE depending on \code{workers}.}
 
 \item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }

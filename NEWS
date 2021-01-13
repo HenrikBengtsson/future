@@ -1,8 +1,15 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-06]
+Version: 1.21.0-9000 [2021-01-13]
 
+NEW FEATURES:
+
+ * Now cluster futures use 'homogeneous = NULL' as the default instead of
+   'homogeneous = TRUE'.  The new default will result in the 'parallelly'
+   package trying to infer whether TRUE or FALSE should be used based on
+   the 'workers' argument.
+ 
 BUG FIXES:
 
  * Resolving a 'sequential' future without globals would result in internal
