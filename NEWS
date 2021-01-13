@@ -1,12 +1,19 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-06]
+Version: 1.21.0-9000 [2021-01-13]
 
 SIGNIFICANT CHANGES:
 
  * A lazy future remains a generic future until it is launched, which means
    it is not assigned a future backend class until launched.
+
+NEW FEATURES:
+
+ * Now cluster futures use 'homogeneous = NULL' as the default instead of
+   'homogeneous = TRUE'.  The new default will result in the 'parallelly'
+   package trying to infer whether TRUE or FALSE should be used based on
+   the 'workers' argument.
  
 BUG FIXES:
 

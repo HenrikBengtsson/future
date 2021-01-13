@@ -29,6 +29,8 @@
 #' @param homogeneous If TRUE, all cluster nodes is assumed to use the
 #' same path to \file{Rscript} as the main \R session.  If FALSE, the
 #' it is assumed to be on the PATH for each node.
+#' If NULL, then [parallelly::makeClusterPSOCK()] will decide on TRUE
+#' or FALSE depending on `workers`.
 #'
 #' @return
 #' `ClusterFuture()` returns an object of class `ClusterFuture`.
@@ -43,7 +45,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = TRUE, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   stop_if_not(is.logical(persistent), length(persistent) == 1L,

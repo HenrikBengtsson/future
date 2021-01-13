@@ -39,7 +39,9 @@ from objects prior to the evaluation of the future.}
 
 \item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
 same path to \file{Rscript} as the main \R session.  If FALSE, the
-it is assumed to be on the PATH for each node.}
+it is assumed to be on the PATH for each node.
+If NULL, then \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}} will decide on TRUE
+or FALSE depending on \code{workers}.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
