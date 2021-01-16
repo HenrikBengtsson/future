@@ -189,7 +189,10 @@
 future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  makeFuture <- plan("next")
+  resources <- list(...)$resources
+  makeFuture <- plan("next", resources = resources)
+  resources <- NULL
+  
   future <- makeFuture(expr, substitute = FALSE,
                        envir = envir,
                        lazy = lazy,

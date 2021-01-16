@@ -287,10 +287,20 @@ plan <- local({
     if (is.null(strategy) || identical(strategy, "next")) {
       ## Next future strategy?
       strategy <- stack[[1L]]
+
+      ## Does strategy support requested 'resources'?
+      resources <- list(...)$resources
+      if (inherits(resources, "formula")) {
+        if (!supportsResources(strategy, resources)) {
+          strategy <- sequential
+        }
+      }
+
       if (!inherits(strategy, "FutureStrategy")) {
         class(strategy) <- c("FutureStrategy", class(strategy))
       }
       stop_if_not(is.function(strategy))
+
       return(strategy)
     } else if (identical(strategy, "default")) {
       strategy <- getOption("future.plan", sequential)
@@ -557,3 +567,44 @@ resetWorkers.multicore <- function(x, ...) {
   stop_if_not(usedCores() == 0L)
 }
 
+
+
+
+#' @export
+supportsResources <- function(strategy, resources, ...) {
+  UseMethod("supportsResources")
+}
+
+#' @export
+supportsResources.future <- function(strategy, resources, localhost = NA, fork = NA, ...) {
+  if (is.null(resources)) return(TRUE)
+  stop_if_not(
+    inherits(resources, "formula"),
+    length(resources) == 2L
+  )
+
+  res <- eval(resources[[2]])
+  stop_if_not(is.logical(res), length(res) == 1L)
+
+  ## BACKWARD COMPATIBILITY: If unknown, assume strategy supports resources
+  if (is.na(res)) {
+    res <- TRUE
+  }
+
+  res
+}
+
+#' @export
+supportsResources.sequential <- function(strategy, resources, localhost = TRUE, fork = FALSE, ...) {
+  NextMethod(localhost = localhost, fork = fork)
+}
+
+#' @export
+supportsResources.multisession <- function(strategy, resources, localhost = TRUE, fork = FALSE, ...) {
+  NextMethod(localhost = localhost, fork = fork)
+}
+
+#' @export
+supportsResources.multicore <- function(strategy, resources, localhost = TRUE, fork = TRUE, ...) {
+  NextMethod(localhost = localhost, fork = fork)
+}
