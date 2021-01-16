@@ -144,6 +144,25 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
 
+  ## Resources?
+  resources <- args$resources
+  if (!is.null(resources)) {
+    ## BACKWARD COMPATIBILITY: future.batchtools already has an argument
+    ## 'resources' for passing batchtools "resources" arguments.
+    ## For legacy code, rename such arguments here
+    if (is.list(resources)) {
+      core$batchtools_resources <- resources
+    } else if (inherits(resources, "formula")) {
+      if (length(resources) != 2) {
+        stop("Argument 'resources' should be a RHS-only formula")
+      }
+      core$resources <- resources
+    } else {
+      stop("Argument 'resources' is not a formula: ",
+           sQuote(class(resources)[1]))
+    }
+  }
+
   ## Result
   core$result <- NULL
 
@@ -225,6 +244,12 @@ print.Future <- function(x, ...) {
     cat(sprintf("L'Ecuyer-CMRG RNG seed: c(%s)\n", paste(x$seed, collapse = ", ")))
   } else {
     cat("L'Ecuyer-CMRG RNG seed: <none> (seed = ", deparse(x$seed), ")\n", sep = "")
+  }
+
+  if (inherits(x$resources, "formula")) {
+    cat(sprintf("Resources: %s\n", deparse(x$resources, width.cutoff = 500L)))
+  } else {
+#    cat("Resources: <none>\n")
   }
 
   result <- x$result
