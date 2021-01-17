@@ -197,6 +197,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
     packages <- unique(c(gp$packages, packages))
   }
   gp <- NULL
+
   future <- Future(expr, substitute = FALSE,
                    envir = envir,
                    lazy = TRUE,
@@ -207,17 +208,9 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
                    gc = gc,
                    ...)
 
-  ## WORKAROUNDS:
-  makeFuture <- plan("next")
-  if (inherits(makeFuture, "cluster")) {
-    ## Make persistent=TRUE cluster futures local=FALSE /HB 2020-12-25
-    if (isTRUE(formals(makeFuture)$persistent)) {
-      future$persistent <- TRUE
-      if (!isTRUE(list(...)$local)) future$local <- FALSE
-    }
-  }
-  
-  makeFuture <- NULL
+  ## WORKAROUND: Was argument 'local' specified?
+  ## Comment: Only allowed for persistent 'cluster' futures
+  future$.defaultLocal <- "local" %in% names(list(...))
 
   if (!lazy) {
     future <- run(future)

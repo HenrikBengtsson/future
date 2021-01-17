@@ -351,17 +351,23 @@ run.Future <- function(future, ...) {
   persistent <- future$persistent
   if (!is.logical(persistent)) persistent <- FALSE
 
-  ## WORKAROUND: For UniprocessFuture:s only
+  ## WORKAROUNDS: /HB 2020-12-25
   tmpLazy <- TRUE
-  if (inherits(makeFuture, "transparent")) {
-    local <- FALSE
+  if (inherits(makeFuture, "sequential")) {
+    tmpLazy <- FALSE
+  } else if (inherits(makeFuture, "transparent")) {
+    if (future$.defaultLocal) local <- FALSE
     if (is.logical(globals)) {
       globals <- FALSE
     } else {
       tmpLazy <- FALSE
     }    
-  } else if (inherits(makeFuture, "sequential")) {
-    tmpLazy <- FALSE
+  } else if (inherits(makeFuture, "cluster")) {
+    ## Make persistent=TRUE cluster futures default to local=FALSE
+    if (isTRUE(formals(makeFuture)$persistent)) {
+      persistent <- TRUE
+      if (future$.defaultLocal) local <- FALSE
+    }
   }
 
   tmpFuture <- makeFuture(
