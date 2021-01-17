@@ -353,7 +353,6 @@ run.Future <- function(future, ...) {
 
   ## WORKAROUND: For UniprocessFuture:s only
   tmpLazy <- TRUE
-  preserveDummyFuture <- FALSE
   if (inherits(makeFuture, "transparent")) {
     local <- FALSE
     if (is.logical(globals)) {
@@ -405,18 +404,7 @@ run.Future <- function(future, ...) {
   ## (b) Copy all attributes
   attributes(future) <- attributes(tmpFuture)
 
-  ## (c) WORKAROUND:
-  ##     Preserve the environment of the temporary future in the original
-  ##     future to prevent it's registered finalizer from running
-  ##     immediately. /HB 2020-12-21
-  ##     This calls for a standard addFinalizer() for Future objects.
-  if (preserveDummyFuture) {
-    if (debug) mdebug("  - Preserve finalizer")
-#    for (name in names(tmpFuture)) tmpFuture[[name]] <- NULL
-    future$...adhoc.original.future <- tmpFuture
-  }
-  
-  ## (d) Temporary future no longer needed
+  ## (c) Temporary future no longer needed
   tmpFuture <- NULL
 
   ## Launch the future?
