@@ -324,6 +324,7 @@ run.Future <- function(future, ...) {
     stop(FutureError(msg, future = future))
   }
 
+  ## Sanity check: This method should only called for lazy futures
   stop_if_not(future$lazy)
 
   if (is.null(future$owner)) {
@@ -418,12 +419,16 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ...")
     future <- run(future)
     if (debug) mdebug("- Launch lazy future ... done")
+  } else {
+    ## WORKAROUND: Make sure 'sequential' and 'transparent' futures remain
+    ## lazy future if they were from the beginning /HB 2020-12-21
+    if (!tmpLazy) {
+      if (debug) mdebugf("- Fix: lazy %s was no longer lazy", class(future)[1])
+      future$lazy <- TRUE
+    }
   }
-
-  ## WORKAROUND: Make sure 'transparent' futures remain lazy future if
-  ## they were from the beginning /HB 2020-12-21
-  if (!future$lazy) future$lazy <- TRUE
   
+  ## Sanity check: This method was only called for lazy futures
   stop_if_not(future$state != "created", future$lazy)
 
   future
