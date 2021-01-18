@@ -333,7 +333,7 @@ run.Future <- function(future, ...) {
     ## Be conservative for now; don't allow lazy futures created in another R
     ## session to be launched. This will hopefully change later, but we won't
     ## open this door until we understand the ramifications. /HB 2020-12-21
-    if (getOption("future.assertOwner", TRUE)) {
+    if (getOption("future.lazy.assertOwner", TRUE)) {
       assertOwner(future)
     } else {
       future$owner <- session_uuid()
