@@ -197,7 +197,8 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
     packages <- unique(c(gp$packages, packages))
   }
   gp <- NULL
-
+  attr(globals, "already-done") <- TRUE
+  
   future <- Future(expr, substitute = FALSE,
                    envir = envir,
                    lazy = TRUE,

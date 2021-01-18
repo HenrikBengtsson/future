@@ -15,24 +15,33 @@
 MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## Global objects
-  assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
-  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-
-  ## Assign?
-  if (length(gp) > 0L) {
-    if (lazy || assignToTarget || !identical(expr, gp$expr)) {
-      expr <- gp$expr
-      target <- new.env(parent = envir)
-      globalsT <- gp$globals
-      for (name in names(globalsT)) {
-        target[[name]] <- globalsT[[name]]
+  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
+  if (!isTRUE(attr(globals, "already-done"))) {
+    ## Global objects
+    assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+    
+    ## Assign?
+    if (length(gp) > 0L) {
+      if (lazy || assignToTarget || !identical(expr, gp$expr)) {
+        expr <- gp$expr
+        target <- new.env(parent = envir)
+        globalsT <- gp$globals
+        for (name in names(globalsT)) {
+          target[[name]] <- globalsT[[name]]
+        }
+        globalsT <- NULL
+        envir <- target
       }
-      globalsT <- NULL
-      envir <- target
     }
+    gp <- NULL
+  } else {
+    target <- new.env(parent = envir)
+    for (name in names(globals)) {
+      target[[name]] <- globals[[name]]
+    }
+    envir <- target
   }
-  gp <- NULL
 
   future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, ...)
 
