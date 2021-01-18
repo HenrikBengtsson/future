@@ -210,7 +210,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
 
   ## WORKAROUND: Was argument 'local' specified?
   ## Comment: Only allowed for persistent 'cluster' futures
-  future$.defaultLocal <- "local" %in% names(list(...))
+  future$.defaultLocal <- !is.element("local", names(list(...)))
 
   if (!lazy) {
     future <- run(future)
