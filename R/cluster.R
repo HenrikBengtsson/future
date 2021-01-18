@@ -34,4 +34,4 @@ cluster <- function(..., workers = availableWorkers(), envir = parent.frame()) {
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
-attr(cluster, "tweakable") <- quote(makeClusterPSOCK_args())
+attr(cluster, "tweakable") <- quote(c(makeClusterPSOCK_args(), "persistent"))

@@ -51,8 +51,14 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
               !is.na(persistent))
 
-  ## Global objects
-  gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
+  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
+  if (!isTRUE(attr(globals, "already-done"))) {
+    gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
+    globals <- gp$globals
+    packages <- c(packages, gp$packages)
+    expr <- gp$expr
+    gp <- NULL
+  }
 
   args <- list(...)
 
@@ -60,7 +66,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   ## which should be passed to makeClusterPSOCK()?
   future_args <- !is.element(names(args), makeClusterPSOCK_args())
   
-  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(gp$expr), substitute = FALSE, envir = envir, globals = gp$globals, packages = c(packages, gp$packages), local = local, node = NA_integer_, persistent = persistent), args[future_args]))
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]))
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]))
 
