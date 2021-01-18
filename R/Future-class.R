@@ -354,8 +354,7 @@ run.Future <- function(future, ...) {
 
   ## WORKAROUNDS: /HB 2020-12-25
   tmpLazy <- TRUE
-  if (inherits(makeFuture, "sequential")) {
-  } else if (inherits(makeFuture, "transparent")) {
+  if (inherits(makeFuture, "transparent")) {
     if (future$.defaultLocal) local <- FALSE
     if (is.logical(globals)) {
       globals <- FALSE
