@@ -355,7 +355,6 @@ run.Future <- function(future, ...) {
   ## WORKAROUNDS: /HB 2020-12-25
   tmpLazy <- TRUE
   if (inherits(makeFuture, "sequential")) {
-    tmpLazy <- FALSE
   } else if (inherits(makeFuture, "transparent")) {
     if (future$.defaultLocal) local <- FALSE
     if (is.logical(globals)) {
@@ -420,7 +419,7 @@ run.Future <- function(future, ...) {
     future <- run(future)
     if (debug) mdebug("- Launch lazy future ... done")
   } else {
-    ## WORKAROUND: Make sure 'sequential' and 'transparent' futures remain
+    ## WORKAROUND: Make sure 'transparent' futures remain
     ## lazy future if they were from the beginning /HB 2020-12-21
     if (!tmpLazy) {
       if (debug) mdebugf("- Fix: lazy %s was no longer lazy", class(future)[1])
