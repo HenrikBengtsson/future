@@ -28,17 +28,17 @@
     }
   }
 
-  assertOwner <- getOption("future.assertOwner", NULL)
+  assertOwner <- getOption("future.lazy.assertOwner", NULL)
   if (is.null(assertOwner)) {
-    assertOwner <- trim(Sys.getenv("R_FUTURE_ASSERT_OWNER"))
-    if (debug) mdebugf("R_FUTURE_ASSERT_OWNER=%s", sQuote(assertOwner))
+    assertOwner <- trim(Sys.getenv("R_FUTURE_LAZY_ASSERT_OWNER"))
+    if (debug) mdebugf("R_FUTURE_LAZY_ASSERT_OWNER=%s", sQuote(assertOwner))
     if (nzchar(assertOwner)) {
       assertOwner <- as.logical(toupper(assertOwner))
       if (is.na(assertOwner)) {
-        stop("Environment variable 'R_FUTURE_ASSERT_OWNER' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_ASSERT_OWNER")))
+        stop("Environment variable 'R_FUTURE_LAZY_ASSERT_OWNER' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_LAZY_ASSERT_OWNER")))
       }
-      options(future.assertOwner = assertOwner)
-      mdebugf(" => options(future.assertOwner = %s)", assertOwner)
+      options(future.lazy.assertOwner = assertOwner)
+      mdebugf(" => options(future.lazy.assertOwner = %s)", assertOwner)
     }
   }
 
