@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-18]
+Version: 1.21.0-9000 [2021-01-19]
 
 SIGNIFICANT CHANGES:
 
@@ -27,6 +27,10 @@ BUG FIXES:
    futures in production code and never in a package.
 
  * remote() could produce an error on "object 'homogeneous' not found".
+
+DEPRECATED AND DEFUNCT:
+
+ * Argument 'value' of resolve() is defunct. Use 'result' instead.
 
 
 Version: 1.21.0 [2020-12-09]
