@@ -3,6 +3,6 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @export
 values <- function(...) {
-  .Deprecated(new = "value()", old = "values()", package = .packageName)
+  .Deprecated(msg = "values() is deprecated in future (>= 1.20.0). Instead, use values().", package = .packageName)
   value(...)
 }

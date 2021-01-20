@@ -122,7 +122,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   args <- list(...)
 
   if (!local && !isTRUE(args[["persistent"]])) {
-    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated and will soon be defunct and produce an error.", package = .packageName)
+    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
   }
 
   core <- new.env(parent = emptyenv())
