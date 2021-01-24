@@ -600,8 +600,21 @@ supportsResources.sequential <- function(strategy, resources, localhost = TRUE, 
 }
 
 #' @export
-supportsResources.multisession <- function(strategy, resources, localhost = TRUE, fork = FALSE, ...) {
+supportsResources.cluster <- function(strategy, resources, localhost = NA, fork = FALSE, ...) {
+  ## Infer 'localhost' from cluster inspection?
+  if (is.na(localhost)) {
+    workers <- formals(strategy)$workers
+    workers <- eval(workers)
+    if (is.numeric(workers)) {
+      localhost <- TRUE
+    }
+  }
   NextMethod(localhost = localhost, fork = fork)
+}
+
+#' @export
+supportsResources.multisession <- function(strategy, resources, localhost = TRUE, ...) {
+  NextMethod(localhost = localhost)
 }
 
 #' @export
