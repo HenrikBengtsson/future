@@ -1,7 +1,12 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-13]
+Version: 1.21.0-9000 [2021-01-23]
+
+SIGNIFICANT CHANGES:
+
+ * A lazy future remains a generic future until it is launched, which means
+   it is not assigned a future backend class until launched.
 
 NEW FEATURES:
 
@@ -23,6 +28,9 @@ BUG FIXES:
 
  * remote() could produce an error on "object 'homogeneous' not found".
 
+ * nbrOfFreeWorkers() for 'cluster' futures assumed that the current plan
+   is set to cluster too.
+   
 
 Version: 1.21.0 [2020-12-09]
 
@@ -34,7 +42,7 @@ NEW FEATURES:
    and RngFutureError, respectively.  Both of these classes inherits from
    RngFutureCondition.
 
- * Now run-time errors from resolving a future take precendence over
+ * Now run-time errors from resolving a future take precedence over
    RngFutureError:s. That is, future({ rnorm(1); log("a") }, seed = FALSE)
    will signal an error 'log("a")' instead of an RNG error when option
    'future.rng.onMisuse' is set to "error".

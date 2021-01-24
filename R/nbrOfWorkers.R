@@ -111,8 +111,8 @@ nbrOfFreeWorkers.cluster <- function(evaluator, background = FALSE, ...) {
   
   workers <- nbrOfWorkers(evaluator)
   
-  ## Create a dummy, lazy future
-  f <- future(NULL, lazy = TRUE)
+  ## Create a dummy, lazy future based on the future strategy ("evaluator")
+  f <- evaluator(NULL, lazy = TRUE)
   name <- attr(f$workers, "name", exact = TRUE)
   stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)

@@ -21,36 +21,36 @@ for (strategy in strategies) {
   if (strategy == "multisession" && availableCores() >= 2) {
     message("*** resolve() for Future objects ...")
     
-    for (value in c(FALSE, TRUE)) {
+    for (result in c(FALSE, TRUE)) {
       for (recursive in list(FALSE, TRUE, -1, 0, 1, 2, Inf)) {
-        message(sprintf("- value = %s, recursive = %s ...", value, recursive))
+        message(sprintf("- result = %s, recursive = %s ...", result, recursive))
       
         f <- future({
           Sys.sleep(0.5)
           list(a = 1, b = 42L)
         })
-        res <- resolve(f, value = value, recursive = recursive)
+        res <- resolve(f, result = result, recursive = recursive)
         stopifnot(identical(res, f))
     
         f <- future({
           Sys.sleep(0.5)
           list(a = 1, b = 42L)
         }, lazy = TRUE)
-        res <- resolve(f, value = value, recursive = recursive)
+        res <- resolve(f, result = result, recursive = recursive)
         stopifnot(identical(res, f))
     
         message("- w/ exception ...")
         f <- future(list(a = 1, b = 42L, c = stop("Nah!")))
-        res <- resolve(f, value = value, recursive = recursive)
+        res <- resolve(f, result = result, recursive = recursive)
         stopifnot(identical(res, f))
     
         f <- future(list(a = 1, b = 42L, c = stop("Nah!")), lazy = TRUE)
-        res <- resolve(f, value = value, recursive = recursive)
+        res <- resolve(f, result = result, recursive = recursive)
         stopifnot(identical(res, f))
     
-        message(sprintf("- value = %s, recursive = %s ... DONE", value, recursive))
+        message(sprintf("- result = %s, recursive = %s ... DONE", result, recursive))
       } ## for (resolve ...)
-    } ## for (value ...)
+    } ## for (result ...)
     
     message("*** resolve() for Future objects ... DONE")
   } ## if (strategy == "multisession" && availableCores() >= 2)
@@ -112,7 +112,7 @@ for (strategy in strategies) {
   y <- resolve(x, idxs = names(x))
   stopifnot(identical(y, x))
 
-  y <- resolve(x, idxs = matrix(c(1, 2), ncol = 2L), value = TRUE)
+  y <- resolve(x, idxs = matrix(c(1, 2), ncol = 2L), result = TRUE)
   stopifnot(identical(y, x))
 
   x <- list()
@@ -191,10 +191,10 @@ for (strategy in strategies) {
   y <- resolve(x, idxs = "c")
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
-  y <- resolve(x, idxs = names(x), value = TRUE)
+  y <- resolve(x, idxs = names(x), result = TRUE)
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir = x, drop = TRUE)) == 2L)
-  y <- resolve(x, recursive = TRUE, value = TRUE)
+  y <- resolve(x, recursive = TRUE, result = TRUE)
   stopifnot(identical(y, x))
 
   ## Exceptions
@@ -268,11 +268,11 @@ for (strategy in strategies) {
   #stopifnot(is.na(futureOf(x[[4L]], mustExist = FALSE)))
   stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  y <- resolve(x, idxs = names(x), value = TRUE)
+  y <- resolve(x, idxs = names(x), result = TRUE)
   stopifnot(identical(y, x))
   stopifnot(length(futureOf(envir = x, drop = TRUE)) == 3L)
 
-  y <- resolve(x, recursive = TRUE, value = TRUE)
+  y <- resolve(x, recursive = TRUE, result = TRUE)
   stopifnot(identical(y, x))
 
   ## Exceptions
