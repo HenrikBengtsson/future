@@ -365,8 +365,8 @@ run.Future <- function(future, ...) {
     }
   }
 
-  ## Create temporary future for a specific backend, but don't launch it
-  makeFuture <- plan("next")
+  ## Get future backend that supports the requested resources
+  makeFuture <- plan("next", resources = future$resources)
   if (debug) mdebug("- Future backend: ", paste(sQuote(class(makeFuture)), collapse = ", "))
 
   ## AD HOC/WORKAROUND: /HB 2020-12-21
@@ -394,6 +394,7 @@ run.Future <- function(future, ...) {
     }
   }
 
+  ## Create temporary future for the select backend, but don't launch it
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
