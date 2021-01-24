@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-18]
+Version: 1.21.0-9000 [2021-01-23]
 
 SIGNIFICANT CHANGES:
 
@@ -28,6 +28,9 @@ BUG FIXES:
 
  * remote() could produce an error on "object 'homogeneous' not found".
 
+ * nbrOfFreeWorkers() for 'cluster' futures assumed that the current plan
+   is set to cluster too.
+   
 
 Version: 1.21.0 [2020-12-09]
 
