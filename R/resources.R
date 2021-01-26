@@ -42,15 +42,47 @@ supportsResources.sequential <- function(strategy, resources, localhost = TRUE, 
 }
 
 #' @export
-supportsResources.cluster <- function(strategy, resources, localhost = NA, fork = FALSE, ...) {
-  ## Infer 'localhost' from cluster inspection?
-  if (is.na(localhost)) {
+supportsResources.cluster <- function(strategy, resources, localhost = NA, fork = NA, ...) {
+  ## Infer 'localhost' or 'fork' from cluster inspection?
+  if (is.na(localhost) || is.na(fork)) {
     workers <- formals(strategy)$workers
     workers <- eval(workers)
-    if (is.numeric(workers)) {
-      localhost <- TRUE
-    }
+    future <- future:::as_ClusterFuture(list(), workers = workers)
+    workers <- future$workers
+
+    ## Attempt to infer (localhost, fork) from cluster nodes
+    .localhost <- logical(0L)
+    .fork <- logical(0L)
+    for (kk in seq_along(workers)) {
+      node <- workers[[kk]]
+
+      ## Localhost processing?
+      host <- node$host
+      if (inherits(node, "RichSOCKnode")) {
+        value <- attr(host, "localhost", exact = TRUE)
+      } else if (inherits(node, "forknode")) {
+        value <- TRUE
+      } else {
+        value <- parallelly:::is_localhost(host)
+      }
+      if (is.logical(value)) .localhost <- c(.localhost, value)
+      
+      ## Forked processing?
+      if (inherits(node, "forknode")) {
+        value <- TRUE
+      } else {
+        value <- NULL
+      }
+      if (is.logical(value)) .fork <- c(.fork, value)
+    } ## for (kk ...)
+
+    ## Update 'localhost'?
+    if (is.na(localhost)) localhost <- all(.localhost, na.rm = TRUE)
+    
+    ## Update 'fork'?
+    if (is.na(fork)) fork <- any(.fork, na.rm = TRUE)
   }
+
   NextMethod(localhost = localhost, fork = fork)
 }
 
