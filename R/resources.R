@@ -45,37 +45,41 @@ supportsResources.sequential <- function(strategy, resources, localhost = TRUE, 
 supportsResources.cluster <- function(strategy, resources, localhost = NA, fork = NA, ...) {
   ## Infer 'localhost' or 'fork' from cluster inspection?
   if (is.na(localhost) || is.na(fork)) {
+    ## Get the 'cluster' object
     workers <- formals(strategy)$workers
     workers <- eval(workers)
-    future <- future:::as_ClusterFuture(list(), workers = workers)
+    future <- as_ClusterFuture(list(), workers = workers)
     workers <- future$workers
 
-    ## Attempt to infer (localhost, fork) from cluster nodes
-    .localhost <- logical(0L)
-    .fork <- logical(0L)
-    for (kk in seq_along(workers)) {
-      node <- workers[[kk]]
-
-      ## Localhost processing?
-      host <- node$host
-      if (inherits(node, "RichSOCKnode")) {
-        value <- attr(host, "localhost", exact = TRUE)
-      } else if (inherits(node, "forknode")) {
-        value <- TRUE
-      } else {
-        value <- parallelly:::is_localhost(host)
-      }
-      if (is.logical(value)) .localhost <- c(.localhost, value)
-      
-      ## Forked processing?
-      if (inherits(node, "forknode")) {
-        value <- TRUE
-      } else {
-        value <- NULL
-      }
-      if (is.logical(value)) .fork <- c(.fork, value)
-    } ## for (kk ...)
-
+    if (packageVersion("parallelly") >= "1.23.0-9000") {
+      .localhost <- parallelly::isLocalhostNode(workers)
+      .fork <- parallelly::isForkedNode(workers)
+    } else {
+      ## Attempt to infer (localhost, fork) from cluster nodes
+      n <- length(workers)
+      .localhost <- logical(length = n)
+      .fork <- logical(length = n)
+      for (kk in seq_len(n)) {
+        node <- workers[[kk]]
+  
+        ## Localhost processing?
+        host <- node$host
+        if (inherits(node, "RichSOCKnode")) {
+          value <- attr(host, "localhost", exact = TRUE)
+          if (is.logical(value)) .localhost[kk] <- value
+        } else if (inherits(node, "forknode")) {
+          .localhost[kk] <- TRUE
+        } else {
+          .localhost[kk] <- parallelly:::is_localhost(host)
+        }
+        
+        ## Forked processing?
+        if (inherits(node, "forknode")) {
+          .fork[kk] <- TRUE
+        }
+      } ## for (kk ...)
+    }
+    
     ## Update 'localhost'?
     if (is.na(localhost)) localhost <- all(.localhost, na.rm = TRUE)
     
