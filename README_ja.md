@@ -520,7 +520,7 @@ In other words, with these settings, there will be two (2) background processes 
 The availableCores() is also agile to different options and system environment variables.
 For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; availableCores() acknowledges these as well. 
 If nothing else is specified, all available cores on the machine will be utilized, cf. parallel::detectCores(). 
-For more details, please see help("availableCores", package = "future").
+For more details, please see help("availableCores", package = "parallelly").
 -->
 
 この結果から、メインプロセス以外に 2つのプロセスが利用可能なことがわかる。 したがって、この設定では、マルチセッションフューチャは
@@ -529,7 +529,7 @@ For more details, please see help("availableCores", package = "future").
 TORQUE/PBS や Slurm）を使用する場合、与えられたジョブに割り当てられたコア数を指定するための環境変数を設定する。 その場合も
 `availableCores()` はそのコア数を認識する。 何も指定しない場合、マシン上の利用可能なすべてのコアが使われる。
 このデフォルトの値は `parallel::detectCores()` で確認できる。 詳細については
-`help("availableCores", package = "future")` を参照してほしい。
+`help("availableCores", package = "parallelly")` を参照してほしい。
 
 #### マルチコアフューチャ (Multicore Future)
 
