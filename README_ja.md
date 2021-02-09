@@ -1181,7 +1181,7 @@ The develop branch contains the latest contributions and other code that will ap
 -->
 
 この Git リポジトリは [Git
-Flow](http://nvie.com/posts/a-successful-git-branching-model/)
+Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 ブランチモデルを使用している（[`git
 flow`](https://github.com/petervanderdoes/gitflow-avh) エクステンションが便利である）。
 [`develop`](https://github.com/HenrikBengtsson/future/tree/develop)
@@ -1204,6 +1204,12 @@ Your PR should pass R CMD check --as-cran, which will also be checked by Travis 
 CI](https://travis-ci.org/HenrikBengtsson/future) と [AppVeyor
 CI](https://ci.appveyor.com/project/HenrikBengtsson/future)
 によって自動でチェックされる。
+
+<!--
+We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
+-->
+
+我々は、コントリビューター規約の[行動規範](https://www.contributor-covenant.org/version/2/0/code_of_conduct/)を遵守する。
 
 ## ソフトウェアステータス
 
