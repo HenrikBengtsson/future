@@ -96,7 +96,7 @@ Because we can choose to evaluate the future expression in a separate R process 
 
 ``` r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > v %<-% {
 +   cat("Hello world!\n")
 +   3.14
@@ -681,14 +681,14 @@ However, there is nothing stopping us from using a “nested topology” of futu
 これを「ネストトポロジー」と呼ぶ。
 
 <!--
-For instance, here is an example of two “top” futures (a and b) that uses multiprocess evaluation and where the second future (b) in turn uses two internal futures:
+For instance, here is an example of two “top” futures (a and b) that uses multisession evaluation and where the second future (b) in turn uses two internal futures:
 -->
 
-例えば、次の例では、2つの「トップ」フューチャ（`a` と `b`）があり、マルチプロセス戦略を使って評価される。 ただし、フューチャ `b`
+例えば、次の例では、2つの「トップ」フューチャ（`a` と `b`）があり、マルチセッション戦略を使って評価される。 ただし、フューチャ `b`
 は内部に別のフューチャが使われている。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > pid <- Sys.getpid()
 > a %<-% {
 +     cat("Future 'a' ...\n")
@@ -734,7 +734,7 @@ There are a few reasons for this, but the main reason is that it protects us fro
 これにはいくつかの理由があるが、主な理由は、再帰呼び出しなどによって、誤って多くのバックグラウンドプロセスが発生するのを防ぐためである。
 
 <!--
-To specify a different type of evaluation topology, other than the first level of futures being resolved by multiprocess evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to plan(). 
+To specify a different type of evaluation topology, other than the first level of futures being resolved by multisession evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to plan(). 
 First, the same evaluation strategies as above can be explicitly specified as:
 -->
 
@@ -742,17 +742,17 @@ First, the same evaluation strategies as above can be explicitly specified as:
 例えば、上記と同じ評価トポロジーを明示的に指定するには次のようにする。
 
 ``` r
-plan(list(multiprocess, sequential))
+plan(list(multisession, sequential))
 ```
 
 <!--
-We would actually get the same behavior if we try with multiple levels of multiprocess evaluations;
+We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 -->
 
-しかし、次に示すように、複数レベルのマルチプロセス評価を試しても、上記と同じ動作になる。
+しかし、次に示すように、複数レベルのマルチセッション評価を試しても、上記と同じ動作になる。
 
 ``` r
-> plan(list(multiprocess, multiprocess))
+> plan(list(multisession, multisession))
 [...]
 > pid
 [1] 23153
@@ -778,13 +778,13 @@ This is the case for both multisession and multicore evaluation.
 これはマルチセッション評価とマルチコア評価の両方で起こる。
 
 <!--
-Continuing, if we start off by sequential evaluation and then use multiprocess evaluation for any nested futures, we get:
+Continuing, if we start off by sequential evaluation and then use multisession evaluation for any nested futures, we get:
 -->
 
-次に、トップレベルを逐次評価にして、ネストされたフューチャをマルチプロセス評価してみよう。
+次に、トップレベルを逐次評価にして、ネストされたフューチャをマルチセッション評価してみよう。
 
 ``` r
-> plan(list(sequential, multiprocess))
+> plan(list(sequential, multisession))
 [...]
 > pid
 [1] 23153
@@ -807,15 +807,15 @@ which clearly show that a and b are resolved in the calling process (pid 23153) 
 `b2`）はそれぞれ別のプロセス (pid 23433 と 23434) で解決されることがわかる。
 
 <!--
-Having said this, it is indeed possible to use nested multiprocess evaluation strategies, if we explicitly specify (read force) the number of cores available at each level. 
+Having said this, it is indeed possible to use nested multisession evaluation strategies, if we explicitly specify (read force) the number of cores available at each level. 
 In order to do this we need to “tweak” the default settings, which can be done as follows:
 -->
 
-各レベルで利用可能なコアの数を明示的に指定する（**強制する**）と、ネストされたマルチプロセス評価戦略を使用することができる。
+各レベルで利用可能なコアの数を明示的に指定する（**強制する**）と、ネストされたマルチセッション評価戦略を使用することができる。
 そのためには、次のようにしてデフォルト設定を “tweak” する必要がある。
 
 ``` r
-> plan(list(tweak(multiprocess, workers = 2L), tweak(multiprocess, 
+> plan(list(tweak(multisession, workers = 2L), tweak(multisession, 
 +     workers = 2L)))
 [...]
 > pid
@@ -862,7 +862,7 @@ For example,
 futureOf(a)` のようにして非明示的なフューチャを明示的なフューチャに変換する必要がある。 例を次に示す。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > a %<-% {
 +     cat("Future 'a' ...")
 +     Sys.sleep(2)
@@ -1010,7 +1010,7 @@ For instance, we can create several of them in a loop and assign them to a list,
 例えば、次のように、ループの中でフューチャをリストの要素として代入できる。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > f <- list()
 > for (ii in 1:3) {
 +     f[[ii]] <- future({
@@ -1038,7 +1038,7 @@ envir)` と同じ動作である。
 したがって、上記と同様のことを非明示的フューチャで行いたい場合は、次のように名前インデックスを使って環境に代入する。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > v <- new.env()
 > for (name in c("a", "b", "c")) {
 +     v[[name]] %<-% {
@@ -1075,7 +1075,7 @@ For example,
 
 ``` r
 > library("listenv")
-> plan(multiprocess)
+> plan(multisession)
 > v <- listenv()
 > for (ii in 1:3) {
 +     v[[ii]] %<-% {
@@ -1114,16 +1114,16 @@ demo("mandelbrot", package = "future", ask = FALSE)
 
 <!--
 which resembles how the script would run if futures were not used. 
-Then, try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
+Then, try multisession evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
 Try,
 -->
 
-これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチプロセス評価を試してみよう。
+これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチセッション評価を試してみよう。
 これは異なるマンデルブロ平面をバックグラウンドで実行される
 R プロセスで並列に計算する。
 
 ``` r
-plan(multiprocess)
+plan(multisession)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
