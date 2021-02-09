@@ -802,8 +802,8 @@ In order to do this we need to “tweak” the default settings, which can be do
 そのためには、次のようにしてデフォルト設定を “tweak” する必要がある。
 
 ``` r
-> plan(list(tweak(multisession, workers = 2L), tweak(multisession, 
-+     workers = 2L)))
+> plan(list(tweak(multisession, workers = 2), tweak(multisession, 
++     workers = 2)))
 [...]
 > pid
 [1] 23153
