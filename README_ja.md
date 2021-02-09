@@ -1,5 +1,7 @@
 _This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2020-01-06](https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
 
+<img src="man/figures/logo.png" align="right" />
+
 # future: Rにおける統一的な並列分散処理
 
 ## イントロダクション
