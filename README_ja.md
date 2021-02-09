@@ -223,11 +223,16 @@ remote  all Simple access to remote R sessions
 | `sequential`   | すべて                 | 逐次的かつ現行のRプロセス                                          |
 | `transparent`  | すべて                 | 逐次的で早期シグナリングかつローカルでない（デバッグ用）                           |
 | ***非同期:***     |                     | ***並列:***                                              |
-| `multiprocess` | すべて                 | サポートされていれば `multicore` を利用、そうでない場合は `multisession` を利用 |
 | `multisession` | すべて                 | バックグラウンド R セッション（現行のマシン上）                              |
 | `multicore`    | Windows以外/RStudio以外 | フォークされた R プロセス（現行のマシン上）                                |
 | `cluster`      | すべて                 | 外部 R セッション（現行、ローカル、リモートマシン上）                           |
 | `remote`       | すべて                 | リモート R セッションへのシンプルアクセス                                 |
+
+<!--
+_Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
+-->
+
+**注意:** future (>= 1.20.0) では、`multiprocess` は非推奨となり、`multisession` または `multicore` の明確な指定が推奨される。
 
 <!--
 The future package is designed such that support for additional strategies can be implemented as well. 
@@ -573,26 +578,6 @@ See help("supportsMulticore") for more details.
 セッションがクラッシュする可能性がある。 このため、future
 パッケージでは、RStudio 上でマルチコアフューチャの使用をデフォルトで無効にしている。 詳細は
 `help("supportsMulticore")` を参照してほしい。
-
-#### マルチプロセスフューチャ (Multiprocess Future)
-
-<!--
-Sometimes we do not know whether multicore futures are supported or not, but it might still be that we would like to write platform-independent scripts or instructions that work everywhere.
-In such cases we can specify that we want to use “multiprocess” futures as in:
--->
-
-マルチコアフューチャがサポートされているかどうかわからないとき、例えばプラットフォームに依存せずにどこでも動くスクリプトを書きたいとき、マルチプロセスフューチャが便利である。
-
-``` r
-plan(multiprocess)
-```
-
-<!--
-A multiprocess future is not a formal class of futures by itself, but rather a convenient alias for either of the two.
-When this is specified, multisession evaluation will be used unless multicore evaluation is supported.
--->
-
-マルチプロセスフューチャは、フォークが（安定して）サポートされていればマルチコアフューチャを使い、サポートされていなければマルチセッションフューチャを使う。
 
 #### クラスタフューチャ (Cluster Future)
 
