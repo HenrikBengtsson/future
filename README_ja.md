@@ -239,7 +239,6 @@ The future package is designed such that support for additional strategies can b
 For instance, the future.callr package provides future backends that evaluates futures in a background R process utilizing the callr package - they work similarly to multisession futures but has a few advantages. 
 Continuing, the future.batchtools package provides futures for all types of cluster functions (“backends”) that the batchtools package supports. 
 Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available. 
-(Comment: The future.BatchJobs package provides analogue backends based on the BatchJobs package; however the BatchJobs developers have deprecated it in favor of batchtools.)
 -->
 
 future パッケージは、自分で実装した戦略を追加できるように設計されている。
@@ -253,10 +252,6 @@ future パッケージは、自分で実装した戦略を追加できるよう�
 パッケージがサポートするすべてのクラスタ関数に対するフューチャバックエンドを提供する。
 具体的には、Slurm、TORQUE/PBS、Oracle/Sun Grid Engine (SGE)、Load
 Sharing Facility (LSF) などのジョブスケジューラを使用して R の式を評価するフューチャがある。
-（**注**：[BatchJobs](https://cran.r-project.org/package=BatchJobs)
-パッケージに基づいてアナログバックエンドを提供する
-[future.BatchJobs](https://cran.r-project.org/package=future.BatchJobs)
-パッケージもあるが、BatchJobs の開発者はこのパッケージを使うのを推奨しておらず、batchtools を推奨している。）
 
 <!--
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session). 
