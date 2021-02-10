@@ -1,4 +1,6 @@
-_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2020-01-06](https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
+_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-02-09](https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
+
+<img src="man/figures/logo.png" align="right" />
 
 # future: Rにおける統一的な並列分散処理
 
@@ -96,7 +98,7 @@ Because we can choose to evaluate the future expression in a separate R process 
 
 ``` r
 > library("future")
-> plan(multiprocess)
+> plan(multisession)
 > v %<-% {
 +   cat("Hello world!\n")
 +   3.14
@@ -221,18 +223,22 @@ remote  all Simple access to remote R sessions
 | `sequential`   | すべて                 | 逐次的かつ現行のRプロセス                                          |
 | `transparent`  | すべて                 | 逐次的で早期シグナリングかつローカルでない（デバッグ用）                           |
 | ***非同期:***     |                     | ***並列:***                                              |
-| `multiprocess` | すべて                 | サポートされていれば `multicore` を利用、そうでない場合は `multisession` を利用 |
 | `multisession` | すべて                 | バックグラウンド R セッション（現行のマシン上）                              |
 | `multicore`    | Windows以外/RStudio以外 | フォークされた R プロセス（現行のマシン上）                                |
 | `cluster`      | すべて                 | 外部 R セッション（現行、ローカル、リモートマシン上）                           |
 | `remote`       | すべて                 | リモート R セッションへのシンプルアクセス                                 |
 
 <!--
+_Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
+-->
+
+**注意:** future (>= 1.20.0) では、`multiprocess` は非推奨となり、`multisession` または `multicore` の明確な指定が推奨される。
+
+<!--
 The future package is designed such that support for additional strategies can be implemented as well. 
 For instance, the future.callr package provides future backends that evaluates futures in a background R process utilizing the callr package - they work similarly to multisession futures but has a few advantages. 
 Continuing, the future.batchtools package provides futures for all types of cluster functions (“backends”) that the batchtools package supports. 
 Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available. 
-(Comment: The future.BatchJobs package provides analogue backends based on the BatchJobs package; however the BatchJobs developers have deprecated it in favor of batchtools.)
 -->
 
 future パッケージは、自分で実装した戦略を追加できるように設計されている。
@@ -246,10 +252,6 @@ future パッケージは、自分で実装した戦略を追加できるよう�
 パッケージがサポートするすべてのクラスタ関数に対するフューチャバックエンドを提供する。
 具体的には、Slurm、TORQUE/PBS、Oracle/Sun Grid Engine (SGE)、Load
 Sharing Facility (LSF) などのジョブスケジューラを使用して R の式を評価するフューチャがある。
-（**注**：[BatchJobs](https://cran.r-project.org/package=BatchJobs)
-パッケージに基づいてアナログバックエンドを提供する
-[future.BatchJobs](https://cran.r-project.org/package=future.BatchJobs)
-パッケージもあるが、BatchJobs の開発者はこのパッケージを使うのを推奨しておらず、batchtools を推奨している。）
 
 <!--
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session). 
@@ -513,7 +515,7 @@ In other words, with these settings, there will be two (2) background processes 
 The availableCores() is also agile to different options and system environment variables.
 For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm), they set specific environment variable specifying the number of cores that was allotted to any given job; availableCores() acknowledges these as well. 
 If nothing else is specified, all available cores on the machine will be utilized, cf. parallel::detectCores(). 
-For more details, please see help("availableCores", package = "future").
+For more details, please see help("availableCores", package = "parallelly").
 -->
 
 この結果から、メインプロセス以外に 2つのプロセスが利用可能なことがわかる。 したがって、この設定では、マルチセッションフューチャは
@@ -522,7 +524,7 @@ For more details, please see help("availableCores", package = "future").
 TORQUE/PBS や Slurm）を使用する場合、与えられたジョブに割り当てられたコア数を指定するための環境変数を設定する。 その場合も
 `availableCores()` はそのコア数を認識する。 何も指定しない場合、マシン上の利用可能なすべてのコアが使われる。
 このデフォルトの値は `parallel::detectCores()` で確認できる。 詳細については
-`help("availableCores", package = "future")` を参照してほしい。
+`help("availableCores", package = "parallelly")` を参照してほしい。
 
 #### マルチコアフューチャ (Multicore Future)
 
@@ -571,26 +573,6 @@ See help("supportsMulticore") for more details.
 セッションがクラッシュする可能性がある。 このため、future
 パッケージでは、RStudio 上でマルチコアフューチャの使用をデフォルトで無効にしている。 詳細は
 `help("supportsMulticore")` を参照してほしい。
-
-#### マルチプロセスフューチャ (Multiprocess Future)
-
-<!--
-Sometimes we do not know whether multicore futures are supported or not, but it might still be that we would like to write platform-independent scripts or instructions that work everywhere.
-In such cases we can specify that we want to use “multiprocess” futures as in:
--->
-
-マルチコアフューチャがサポートされているかどうかわからないとき、例えばプラットフォームに依存せずにどこでも動くスクリプトを書きたいとき、マルチプロセスフューチャが便利である。
-
-``` r
-plan(multiprocess)
-```
-
-<!--
-A multiprocess future is not a formal class of futures by itself, but rather a convenient alias for either of the two.
-When this is specified, multisession evaluation will be used unless multicore evaluation is supported.
--->
-
-マルチプロセスフューチャは、フォークが（安定して）サポートされていればマルチコアフューチャを使い、サポートされていなければマルチセッションフューチャを使う。
 
 #### クラスタフューチャ (Cluster Future)
 
@@ -681,14 +663,14 @@ However, there is nothing stopping us from using a “nested topology” of futu
 これを「ネストトポロジー」と呼ぶ。
 
 <!--
-For instance, here is an example of two “top” futures (a and b) that uses multiprocess evaluation and where the second future (b) in turn uses two internal futures:
+For instance, here is an example of two “top” futures (a and b) that uses multisession evaluation and where the second future (b) in turn uses two internal futures:
 -->
 
-例えば、次の例では、2つの「トップ」フューチャ（`a` と `b`）があり、マルチプロセス戦略を使って評価される。 ただし、フューチャ `b`
+例えば、次の例では、2つの「トップ」フューチャ（`a` と `b`）があり、マルチセッション戦略を使って評価される。 ただし、フューチャ `b`
 は内部に別のフューチャが使われている。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > pid <- Sys.getpid()
 > a %<-% {
 +     cat("Future 'a' ...\n")
@@ -734,7 +716,7 @@ There are a few reasons for this, but the main reason is that it protects us fro
 これにはいくつかの理由があるが、主な理由は、再帰呼び出しなどによって、誤って多くのバックグラウンドプロセスが発生するのを防ぐためである。
 
 <!--
-To specify a different type of evaluation topology, other than the first level of futures being resolved by multiprocess evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to plan(). 
+To specify a different type of evaluation topology, other than the first level of futures being resolved by multisession evaluation and the second level by sequential evaluation, we can provide a list of evaluation strategies to plan(). 
 First, the same evaluation strategies as above can be explicitly specified as:
 -->
 
@@ -742,17 +724,17 @@ First, the same evaluation strategies as above can be explicitly specified as:
 例えば、上記と同じ評価トポロジーを明示的に指定するには次のようにする。
 
 ``` r
-plan(list(multiprocess, sequential))
+plan(list(multisession, sequential))
 ```
 
 <!--
-We would actually get the same behavior if we try with multiple levels of multiprocess evaluations;
+We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 -->
 
-しかし、次に示すように、複数レベルのマルチプロセス評価を試しても、上記と同じ動作になる。
+しかし、次に示すように、複数レベルのマルチセッション評価を試しても、上記と同じ動作になる。
 
 ``` r
-> plan(list(multiprocess, multiprocess))
+> plan(list(multisession, multisession))
 [...]
 > pid
 [1] 23153
@@ -778,13 +760,13 @@ This is the case for both multisession and multicore evaluation.
 これはマルチセッション評価とマルチコア評価の両方で起こる。
 
 <!--
-Continuing, if we start off by sequential evaluation and then use multiprocess evaluation for any nested futures, we get:
+Continuing, if we start off by sequential evaluation and then use multisession evaluation for any nested futures, we get:
 -->
 
-次に、トップレベルを逐次評価にして、ネストされたフューチャをマルチプロセス評価してみよう。
+次に、トップレベルを逐次評価にして、ネストされたフューチャをマルチセッション評価してみよう。
 
 ``` r
-> plan(list(sequential, multiprocess))
+> plan(list(sequential, multisession))
 [...]
 > pid
 [1] 23153
@@ -807,16 +789,16 @@ which clearly show that a and b are resolved in the calling process (pid 23153) 
 `b2`）はそれぞれ別のプロセス (pid 23433 と 23434) で解決されることがわかる。
 
 <!--
-Having said this, it is indeed possible to use nested multiprocess evaluation strategies, if we explicitly specify (read force) the number of cores available at each level. 
+Having said this, it is indeed possible to use nested multisession evaluation strategies, if we explicitly specify (read force) the number of cores available at each level. 
 In order to do this we need to “tweak” the default settings, which can be done as follows:
 -->
 
-各レベルで利用可能なコアの数を明示的に指定する（**強制する**）と、ネストされたマルチプロセス評価戦略を使用することができる。
+各レベルで利用可能なコアの数を明示的に指定する（**強制する**）と、ネストされたマルチセッション評価戦略を使用することができる。
 そのためには、次のようにしてデフォルト設定を “tweak” する必要がある。
 
 ``` r
-> plan(list(tweak(multiprocess, workers = 2L), tweak(multiprocess, 
-+     workers = 2L)))
+> plan(list(tweak(multisession, workers = 2), tweak(multisession, 
++     workers = 2)))
 [...]
 > pid
 [1] 23153
@@ -862,7 +844,7 @@ For example,
 futureOf(a)` のようにして非明示的なフューチャを明示的なフューチャに変換する必要がある。 例を次に示す。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > a %<-% {
 +     cat("Future 'a' ...")
 +     Sys.sleep(2)
@@ -1010,7 +992,7 @@ For instance, we can create several of them in a loop and assign them to a list,
 例えば、次のように、ループの中でフューチャをリストの要素として代入できる。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > f <- list()
 > for (ii in 1:3) {
 +     f[[ii]] <- future({
@@ -1038,7 +1020,7 @@ envir)` と同じ動作である。
 したがって、上記と同様のことを非明示的フューチャで行いたい場合は、次のように名前インデックスを使って環境に代入する。
 
 ``` r
-> plan(multiprocess)
+> plan(multisession)
 > v <- new.env()
 > for (name in c("a", "b", "c")) {
 +     v[[name]] %<-% {
@@ -1075,7 +1057,7 @@ For example,
 
 ``` r
 > library("listenv")
-> plan(multiprocess)
+> plan(multisession)
 > v <- listenv()
 > for (ii in 1:3) {
 +     v[[ii]] %<-% {
@@ -1114,16 +1096,16 @@ demo("mandelbrot", package = "future", ask = FALSE)
 
 <!--
 which resembles how the script would run if futures were not used. 
-Then, try multiprocess evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
+Then, try multisession evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
 Try,
 -->
 
-これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチプロセス評価を試してみよう。
+これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチセッション評価を試してみよう。
 これは異なるマンデルブロ平面をバックグラウンドで実行される
 R プロセスで並列に計算する。
 
 ``` r
-plan(multiprocess)
+plan(multisession)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
@@ -1166,7 +1148,7 @@ install.packages("future")
 プレリリースバージョンは GitHub の `develop` ブランチにあり、インストールするには次のようにする。
 
 ``` r
-remotes::install_github("HenrikBengtsson/future@develop")
+remotes::install_github("HenrikBengtsson/future", ref="develop")
 ```
 
 これはソースからのインストールとなる。
@@ -1179,7 +1161,7 @@ The develop branch contains the latest contributions and other code that will ap
 -->
 
 この Git リポジトリは [Git
-Flow](http://nvie.com/posts/a-successful-git-branching-model/)
+Flow](https://nvie.com/posts/a-successful-git-branching-model/)
 ブランチモデルを使用している（[`git
 flow`](https://github.com/petervanderdoes/gitflow-avh) エクステンションが便利である）。
 [`develop`](https://github.com/HenrikBengtsson/future/tree/develop)
@@ -1203,10 +1185,16 @@ CI](https://travis-ci.org/HenrikBengtsson/future) と [AppVeyor
 CI](https://ci.appveyor.com/project/HenrikBengtsson/future)
 によって自動でチェックされる。
 
+<!--
+We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
+-->
+
+我々は、コントリビューター規約の[行動規範](https://www.contributor-covenant.org/version/2/0/code_of_conduct/)を遵守する。
+
 ## ソフトウェアステータス
 
-| Resource:     | CRAN                                                                                                                                                               | Travis CI                                                                                                                                                                 | AppVeyor                                                                                                                                                                               |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| *Platforms:*  | *Multiple*                                                                                                                                                         | *Linux & macOS*                                                                                                                                                           | *Windows*                                                                                                                                                                              |
-| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>                                | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
-| Test coverage |                                                                                                                                                                    | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> |                                                                                                                                                                                        |
+| Resource      | CRAN        | GitHub Actions      | Travis CI       | AppVeyor CI      |
+| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
+| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
+| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
+| Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
