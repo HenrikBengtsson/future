@@ -24,7 +24,7 @@ First, all the essential core packages part of the future framework,
 These are validated regularly across the wide-range of operating
 systems (Linux, Solaris, macOS, and MS Windows) and R versions available
 on CRAN, on continuous integration (CI) services ([GitHub Actions], [Travis CI],
-and [AppVeyor CI]), an on [R-hub].
+and [AppVeyor CI]), and on [R-hub].
 
 Second, for each new release, these packages undergo full reverse-package
 dependency checks using **[revdepcheck]**.
