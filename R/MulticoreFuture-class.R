@@ -309,6 +309,9 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
 
   ## Inject code for resignaling immediateCondition:s?
   if (resignalImmediateConditions && immediateConditions) {
+    ## Preserve condition classes to be ignored
+    exclude <- attr(conditionClasses, "exclude", exact = TRUE)
+  
     immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
     conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
 
@@ -336,6 +339,9 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
         })
       })
     } ## if (length(conditionClasses) > 0)
+    
+    ## Set condition classes to be ignored in case changed
+    attr(conditionClasses, "exclude") <- exclude
   } ## if (resignalImmediateConditions && immediateConditions)
 
   NextMethod(expr = expr, mc.cores = mc.cores, immediateConditions = immediateConditions, conditionClasses = conditionClasses)

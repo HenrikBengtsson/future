@@ -624,6 +624,9 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
 
   ## Inject code for resignaling immediateCondition:s?
   if (resignalImmediateConditions && immediateConditions) {
+    ## Preserve condition classes to be ignored
+    exclude <- attr(conditionClasses, "exclude", exact = TRUE)
+  
     immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
     conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
 
@@ -687,6 +690,9 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
         })
       } ## if (!is.null(con))
     } ## if (length(conditionClasses) > 0)
+    
+    ## Set condition classes to be ignored in case changed
+    attr(conditionClasses, "exclude") <- exclude
   } ## if (resignalImmediateConditions && immediateConditions)
   
   NextMethod(expr = expr, immediateConditions = immediateConditions, conditionClasses = conditionClasses)

@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-02-12]
+Version: 1.21.0-9000 [2021-02-13]
 
 SIGNIFICANT CHANGES:
 
@@ -12,6 +12,11 @@ SIGNIFICANT CHANGES:
    just like for future().
 
 NEW FEATURES:
+
+ * In addition to specify which condition classes to be captured and relayed,
+   it is now possible to also specify condition classes to be ignored.  For
+   example, conditions = structure("condition", exclude = "message") captures
+   all conditions but message conditions.
 
  * Now cluster futures use 'homogeneous = NULL' as the default instead of
    'homogeneous = TRUE'.  The new default will result in the 'parallelly'

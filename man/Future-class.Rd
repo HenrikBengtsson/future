@@ -40,6 +40,9 @@ If NA (not recommended), output is \emph{not} intercepted.}
 \item{conditions}{A character string of conditions classes to be captured
 and relayed.  The default is to relay messages and warnings.
 To not intercept any types of conditions, use \code{conditions = NULL}.
+Attribute \code{exclude} can be used to ignore specific classes, e.g.
+\code{conditions = structure("condition", exclude = "message")} will capture
+all \code{condition} classes except those that inherits from the \code{message} class.
 Errors are always relayed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list

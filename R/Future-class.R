@@ -24,6 +24,9 @@
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
 #' To not intercept any types of conditions, use `conditions = NULL`.
+#' Attribute `exclude` can be used to ignore specific classes, e.g.
+#' `conditions = structure("condition", exclude = "message")` will capture
+#' all `condition` classes except those that inherits from the `message` class.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
@@ -190,8 +193,11 @@ print.Future <- function(x, ...) {
   cat(sprintf("Environment: %s\n", envname(x$envir)))
   cat(sprintf("Capture standard output: %s\n", x$stdout))
   if (length(x$conditions) > 0) {
-    cat(sprintf("Capture condition classes: %s\n",
-                paste(sQuote(x$conditions), collapse = ", ")))
+    exclude <- attr(x$conditions, "exclude", exact = TRUE)
+    if (length(exclude) == 0) exclude <- "nothing"
+    cat(sprintf("Capture condition classes: %s (excluding %s)\n",
+                paste(sQuote(x$conditions), collapse = ", "),
+                paste(sQuote(exclude), collapse = ", ")))
   } else {
     cat("Capture condition classes: <none>\n")
   }
@@ -753,6 +759,8 @@ makeExpression <- local({
   skip <- skip.local <- NULL
   
   function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
+    conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
+
     if (immediateConditions && !is.null(conditionClasses)) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
@@ -874,8 +882,15 @@ makeExpression <- local({
                 calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
               }
               function(cond) {
+                is_error <- inherits(cond, "error")
+                
+                ## Ignore condition?
+                ignore <- !is_error &&
+                          !is.null(.(conditionClassesExclude)) && 
+                          inherits(cond, .(conditionClassesExclude))
+              
                 ## Handle error:s specially
-                if (inherits(cond, "error")) {
+                if (is_error) {
                   sessionInformation <- function() {
                     list(
                       r          = base::R.Version(),
@@ -897,8 +912,10 @@ makeExpression <- local({
                   )
 		  
                   signalCondition(cond)
-                } else if (.(!is.null(conditionClasses)) &&
-                           inherits(cond, .(conditionClasses))) {
+                } else if (!ignore &&
+                           .(!is.null(conditionClasses)) &&
+                           inherits(cond, .(conditionClasses))
+                           ) {
                   ## Relay 'immediateCondition' conditions immediately?
                   ## If so, then do not muffle it and flag it as signalled
                   ## already here.
