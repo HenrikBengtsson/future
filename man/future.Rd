@@ -17,6 +17,9 @@ future(
   seed = FALSE,
   globals = TRUE,
   packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
   label = NULL,
   gc = FALSE,
   ...
@@ -30,6 +33,12 @@ futureAssign(
   lazy = FALSE,
   seed = NULL,
   globals = TRUE,
+  packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
+  label = NULL,
+  gc = FALSE,
   ...,
   assign.env = envir
 )
@@ -44,6 +53,11 @@ futureCall(
   seed = NULL,
   globals = TRUE,
   packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
+  label = NULL,
+  gc = FALSE,
   ...
 )
 }
@@ -81,6 +95,20 @@ in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
+
+\item{stdout}{If TRUE (default), then the standard output is captured,
+and re-outputted when \code{value()} is called.
+If FALSE, any output is silenced (by sinking it to the null device as
+it is outputted).
+If NA (not recommended), output is \emph{not} intercepted.}
+
+\item{conditions}{A character string of conditions classes to be captured
+and relayed.  The default is to relay messages and warnings.
+To not intercept any types of conditions, use \code{conditions = NULL}.
+Errors are always relayed.}
+
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 

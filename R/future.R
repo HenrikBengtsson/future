@@ -186,7 +186,7 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, stdout = TRUE, conditions = "condition", earlySignal = FALSE, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
@@ -205,6 +205,9 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
                    seed = seed,
                    globals = globals,
                    packages = packages,
+                   stdout = stdout,
+                   conditions = conditions,
+                   earlySignal = earlySignal,
                    label = label,
                    gc = gc,
                    ...)
