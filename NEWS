@@ -1,12 +1,15 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-01-23]
+Version: 1.21.0-9000 [2021-02-12]
 
 SIGNIFICANT CHANGES:
 
  * A lazy future remains a generic future until it is launched, which means
    it is not assigned a future backend class until launched.
+
+ * Argument 'seed' for futureAssign() and futureCall() now defaults to FALSE
+   just like for future().
 
 NEW FEATURES:
 
