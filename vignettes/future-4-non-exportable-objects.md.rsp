@@ -74,6 +74,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **keras**       | keras.engine.sequential.Sequential (`externalptr`)
   **magick**      | magick-image (`externalptr`)
   **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
+  **parallel**    | cluster and cluster nodes (`connection`)
   **raster**      | RasterLayer (`externalptr`; _not all_)
   **Rcpp**        | NativeSymbol (`externalptr`)
   **reticulate**  | python.builtin.function (`externalptr`), python.builtin.module (`externalptr`)
@@ -86,6 +87,34 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 
 
 These are illustrated in sections 'Packages that rely on external pointers' and 'Packages with other types of non-external objects' below.
+
+
+### Packages with connections
+
+#### Package: parallel
+
+```r
+library(future)
+plan(multisession, workers = 2)
+
+cl <- parallel::makeCluster(2L)
+y <- parSapply(cl, X = 2:3, FUN = sqrt)
+print(y)
+## [1] 1.414214 1.732051
+
+y %<-% parSapply(cl, X = 2:3, FUN = sqrt)
+print(y)
+## Error in summary.connection(connection) : invalid connection
+```
+
+If we turn on `options(future.globals.onReference = "error")`, we will catch this already when we create the future:
+
+```r
+y %<-% parSapply(cl, X = 2:3, FUN = sqrt)
+## Error: Detected a non-exportable reference ('externalptr') in one of the globals
+## ('cl' of class 'SOCKcluster') used in the future expression
+```
+
 
 
 ### Packages that rely on external pointers
@@ -483,4 +512,4 @@ y
 
 ---
 
-Copyright Henrik Bengtsson, 2020
+Copyright Henrik Bengtsson, 2020-2021
