@@ -83,7 +83,7 @@
 #' }
 #'
 #'
-#' @section Deprecated of for internal prototyping:
+#' @section Deprecated or for internal prototyping:
 #'
 #' The following options exists only for troubleshooting purposes and must not
 #' be used in production.  If used, there is a risk that the results are
