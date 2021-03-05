@@ -213,6 +213,3 @@ It is only the standard output that is relayed.  It is _not possible_ to relay o
 [doFuture]: https://cran.r-project.org/package=doFuture
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
-
----
-Copyright Henrik Bengtsson, 2018-2020

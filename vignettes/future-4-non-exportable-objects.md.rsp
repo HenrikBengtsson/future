@@ -508,8 +508,3 @@ y <- value(f)
 y
 ## [1] 42
 ```
-
-
----
-
-Copyright Henrik Bengtsson, 2020-2021

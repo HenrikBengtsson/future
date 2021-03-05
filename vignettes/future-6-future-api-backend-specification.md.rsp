@@ -123,4 +123,3 @@ The `result()` method may produce `FutureError` error as created by `FutureError
 
 [future]: https://cran.r-project.org/package=future
 [future.tests]: https://cran.r-project.org/package=future.tests
-
