@@ -66,7 +66,8 @@ $(PKGDOWN_DIR)/vignettes/%.md:
            echo "<!--"; \
 	   grep -F "%\Vignette" "$$ss"; \
            echo "-->"; \
-	   cat "$(@F)"; \
+# Drop the first Markdown H1 header (to avoid duplicating it)
+	   sed -n -E '/^#[[:space:]]+/{:a;n;p;ba};p' "$(@F)"; \
 	} >> "$@"
 	rm "$(@F)"
         
