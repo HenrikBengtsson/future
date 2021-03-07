@@ -1,5 +1,6 @@
 .package <- new.env()
- 
+
+
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
   .package[["version"]] <- utils::packageVersion(pkgname)
@@ -15,79 +16,17 @@
     mdebug(paste(c("Future-specific environment variables:", envs), collapse = "\n"))
   }
 
-  noplans <- getOption("future.plan.disallow")
-  if (is.null(noplans)) {
-    noplans <- trim(Sys.getenv("R_FUTURE_PLAN_DISALLOW"))
-    if (debug) mdebugf("R_FUTURE_PLAN_DISALLOW=%s", sQuote(noplans))
-    if (nzchar(noplans)) {
-      noplans <- strsplit(noplans, split = ",", fixed = TRUE)[[1]]
-      noplans <- trim(noplans)
-      options(future.plan.disallow = noplans)
-      mdebugf(" => options(future.plan.disallow = c(%s))",
-              paste(sQuote(noplans), collapse = ", "))
-    }
-  }
+  ## Set future options based on environment variables
+  update_package_option("future.lazy.assertOwner", mode = "logical", debug = debug)
 
-  assertOwner <- getOption("future.lazy.assertOwner", NULL)
-  if (is.null(assertOwner)) {
-    assertOwner <- trim(Sys.getenv("R_FUTURE_LAZY_ASSERT_OWNER"))
-    if (debug) mdebugf("R_FUTURE_LAZY_ASSERT_OWNER=%s", sQuote(assertOwner))
-    if (nzchar(assertOwner)) {
-      assertOwner <- as.logical(toupper(assertOwner))
-      if (is.na(assertOwner)) {
-        stop("Environment variable 'R_FUTURE_LAZY_ASSERT_OWNER' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_LAZY_ASSERT_OWNER")))
-      }
-      options(future.lazy.assertOwner = assertOwner)
-      mdebugf(" => options(future.lazy.assertOwner = %s)", assertOwner)
-    }
-  }
+  update_package_option("future.plan", debug = debug)
 
-  ## Unless already set, set option 'future.resolved.timeout'
-  ## according to environment variable 'R_FUTURE_RESOLVED_TIMEOUT'.
-  timeout <- getOption("future.resolved.timeout")
-  if (is.null(timeout)) {
-    timeout <- trim(Sys.getenv("R_FUTURE_RESOLVED_TIMEOUT"))
-    if (debug) mdebugf("R_FUTURE_RESOLVED_TIMEOUT=%s", sQuote(timeout))
-    if (nzchar(timeout)) {
-      timeout <- as.numeric(timeout)
-      if (is.na(timeout)) {
-        stop("Environment variable 'R_FUTURE_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_RESOLVED_TIMEOUT")))
-      }
-      if (debug) mdebugf(" => options(future.resolved.timeout = %s)", timeout)
-      options(future.resolved.timeout = timeout)
-    }
-  }
+  update_package_option("future.plan.disallow", split = ",", debug = debug)
 
-  ## Unless already set, set option 'future.cluster.resolved.timeout'
-  ## according to environment variable 'R_FUTURE_CLUSTER_RESOLVED_TIMEOUT'.
-  timeout <- getOption("future.cluster.resolved.timeout")
-  if (is.null(timeout)) {
-    timeout <- trim(Sys.getenv("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT"))
-    if (debug) mdebugf("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT=%s", sQuote(timeout))
-    if (nzchar(timeout)) {
-      timeout <- as.numeric(timeout)
-      if (is.na(timeout)) {
-        stop("Environment variable 'R_FUTURE_CLUSTER_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT")))
-      }
-      if (debug) mdebugf(" => options(future.cluster.resolved.timeout = %s)", timeout)
-      options(future.cluster.resolved.timeout = timeout)
-    }
-  }
+  update_package_option("future.psock.relay.immediate", mode = "logical", debug = debug)
 
-  ## Unless already set, set option 'future.multicore.resolved.timeout'
-  ## according to environment variable 'R_FUTURE_MULTICORE_RESOLVED_TIMEOUT'.
-  timeout <- getOption("future.multicore.resolved.timeout")
-  if (is.null(timeout)) {
-    timeout <- trim(Sys.getenv("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT"))
-    if (debug) mdebugf("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT=%s", sQuote(timeout))
-    if (nzchar(timeout)) {
-      timeout <- as.numeric(timeout)
-      if (is.na(timeout)) {
-        stop("Environment variable 'R_FUTURE_MULTICORE_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT")))
-      }
-      if (debug) mdebugf(" => options(future.multicore.resolved.timeout = %s)", timeout)
-      options(future.multicore.resolved.timeout = timeout)
-    }
+  for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
+    update_package_option(name, mode = "numeric", debug = debug)
   }
 
   ## Does multiprocess resolve to multisession? If so, then
@@ -100,36 +39,9 @@
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)
 
-  ## Unless already set, set option 'future.psock.relay.immediate'
-  ## according to environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE'.
-  relay <- getOption("future.psock.relay.immediate")
-  if (is.null(relay)) {
-    relay <- trim(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE"))
-    if (debug) mdebugf("R_FUTURE_PSOCK_RELAY_IMMEDIATE=%s", sQuote(relay))
-    if (nzchar(relay)) {
-      relay <- as.logical(toupper(relay))
-      if (is.na(relay)) {
-        stop("Environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE")))
-      }
-      if (debug) mdebugf(" => options(future.psock.relay.immediate = %s)", relay)
-      options(future.psock.relay.immediate = relay)
-    }
-  }
 
-  ## Unless already set, set option 'future.plan' according to
-  ## system environment variable 'R_FUTURE_PLAN'.
+  ## Report on future plan, if set
   strategy <- getOption("future.plan")
-  if (is.null(strategy)) {
-    strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-    if (nzchar(strategy)) {
-      if (debug) {
-        mdebugf("R_FUTURE_PLAN=%s", sQuote(strategy))
-        mdebugf(" => options(future.plan = '%s')", strategy)
-      }
-      options(future.plan = strategy)
-    }
-    strategy <- getOption("future.plan")
-  }
   if (!is.null(strategy)) {
     if (debug) {
       if (is.character(strategy)) {
@@ -139,6 +51,7 @@
       }
     }
   }
+
 
   args <- parseCmdArgs()
   p <- args$p

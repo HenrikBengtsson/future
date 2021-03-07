@@ -72,6 +72,9 @@ trim <- function(s) {
   sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
 } # trim()
 
+comma <- function(x, sep = ",") paste(x, collapse = sep)
+
+commaq <- function(x, sep = ",") paste(sQuote(x), collapse = sep)
 
 hexpr <- function(expr, trim = TRUE, collapse = "; ", maxHead = 6L, maxTail = 3L, ...) {
   code <- deparse(expr)
