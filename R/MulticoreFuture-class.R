@@ -100,7 +100,7 @@ run.MulticoreFuture <- function(future, ...) {
 }
 
 #' @export
-resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
+resolved.MulticoreFuture <- function(x, run = TRUE, timeout = NULL, ...) {
   ## A lazy future not even launched?
   if (x$state == "created") {
     if (run) {
@@ -126,7 +126,12 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
 
   selectChildren <- importParallel("selectChildren")
   
-  ## NOTE: We cannot use mcollect(job, wait = FALSE, timeout = 0.2),
+  if (is.null(timeout)) {
+    timeout <- getOption("future.multicore.resolved.timeout", NULL)
+    if (is.null(timeout)) timeout <- getOption("future.resolved.timeout", 0.2)
+  }
+
+  ## NOTE: We cannot use mcollect(job, wait = FALSE, timeout),
   ## because that will return NULL if there's a timeout, which is
   ## an ambigous value because the future expression may return NULL.
   ## WORKAROUND: Adopted from parallel::mccollect().

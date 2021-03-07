@@ -42,6 +42,54 @@
     }
   }
 
+  ## Unless already set, set option 'future.resolved.timeout'
+  ## according to environment variable 'R_FUTURE_RESOLVED_TIMEOUT'.
+  timeout <- getOption("future.resolved.timeout")
+  if (is.null(timeout)) {
+    timeout <- trim(Sys.getenv("R_FUTURE_RESOLVED_TIMEOUT"))
+    if (debug) mdebugf("R_FUTURE_RESOLVED_TIMEOUT=%s", sQuote(timeout))
+    if (nzchar(timeout)) {
+      timeout <- as.numeric(timeout)
+      if (is.na(timeout)) {
+        stop("Environment variable 'R_FUTURE_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_RESOLVED_TIMEOUT")))
+      }
+      if (debug) mdebugf(" => options(future.resolved.timeout = %s)", timeout)
+      options(future.resolved.timeout = timeout)
+    }
+  }
+
+  ## Unless already set, set option 'future.cluster.resolved.timeout'
+  ## according to environment variable 'R_FUTURE_CLUSTER_RESOLVED_TIMEOUT'.
+  timeout <- getOption("future.cluster.resolved.timeout")
+  if (is.null(timeout)) {
+    timeout <- trim(Sys.getenv("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT"))
+    if (debug) mdebugf("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT=%s", sQuote(timeout))
+    if (nzchar(timeout)) {
+      timeout <- as.numeric(timeout)
+      if (is.na(timeout)) {
+        stop("Environment variable 'R_FUTURE_CLUSTER_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_CLUSTER_RESOLVED_TIMEOUT")))
+      }
+      if (debug) mdebugf(" => options(future.cluster.resolved.timeout = %s)", timeout)
+      options(future.cluster.resolved.timeout = timeout)
+    }
+  }
+
+  ## Unless already set, set option 'future.multicore.resolved.timeout'
+  ## according to environment variable 'R_FUTURE_MULTICORE_RESOLVED_TIMEOUT'.
+  timeout <- getOption("future.multicore.resolved.timeout")
+  if (is.null(timeout)) {
+    timeout <- trim(Sys.getenv("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT"))
+    if (debug) mdebugf("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT=%s", sQuote(timeout))
+    if (nzchar(timeout)) {
+      timeout <- as.numeric(timeout)
+      if (is.na(timeout)) {
+        stop("Environment variable 'R_FUTURE_MULTICORE_RESOLVED_TIMEOUT' must be a numeric value: ", sQuote(Sys.getenv("R_FUTURE_MULTICORE_RESOLVED_TIMEOUT")))
+      }
+      if (debug) mdebugf(" => options(future.multicore.resolved.timeout = %s)", timeout)
+      options(future.multicore.resolved.timeout = timeout)
+    }
+  }
+
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
   if (is.na(attr(multiprocess, "init", exact = TRUE))) {

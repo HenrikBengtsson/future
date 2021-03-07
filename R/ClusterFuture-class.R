@@ -219,7 +219,7 @@ run.ClusterFuture <- function(future, ...) {
 
 #' @importFrom parallelly connectionId isConnectionValid
 #' @export
-resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
+resolved.ClusterFuture <- function(x, run = TRUE, timeout = NULL, ...) {
   workers <- x$workers
   
   ## A lazy future not even launched?
@@ -270,6 +270,11 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = 0.2, ...) {
       label <- x$label
       if (is.null(label)) label <- "<none>"
       stop(FutureError(sprintf("Cannot resolve %s (%s), because the connection to the worker is corrupt: %s", class(x)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
+    }
+
+    if (is.null(timeout)) {
+      timeout <- getOption("future.cluster.resolved.timeout", NULL)
+      if (is.null(timeout)) timeout <- getOption("future.resolved.timeout", 0.2)
     }
 
     ## WORKAROUND: Non-integer timeouts (at least < 2.0 seconds) may result in

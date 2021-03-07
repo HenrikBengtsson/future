@@ -66,7 +66,6 @@ $(PKGDOWN_DIR)/vignettes/%.md:
            echo "<!--"; \
 	   grep -F "%\Vignette" "$$ss"; \
            echo "-->"; \
-# Drop the first Markdown H1 header (to avoid duplicating it)
 	   sed -n -E '/^#[[:space:]]+/{:a;n;p;ba};p' "$(@F)"; \
 	} >> "$@"
 	rm "$(@F)"
@@ -89,3 +88,4 @@ $(PKGDOWN_DIR)/docs/articles/.pruned: $(PKGDOWN_DIR)/.built
 
 docs: $(PKGDOWN_DIR)/docs/articles/.pruned
 	rsync --archive --delete "$(PKGDOWN_DIR)/docs" .
+	[[ -d "$(PKGDOWN_DIR)/pkgdown" ]] && rsync --archive --delete "$(PKGDOWN_DIR)/pkgdown" .

@@ -69,6 +69,9 @@ If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFE
 
 \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
 
+\item{\option{future.resolved.timeout}:}{(numeric) The maximum time (in seconds) \code{resolved()} spends checking whether or not a future is resolved. If it takes longer, it will give up and return FALSE. If the option is not set, then environment variable \env{R_FUTURE_RESOLVED_TIMEOUT} will set it when the \pkg{future} package is \emph{loaded}. (Default: \code{0.2} seconds)
+}
+
 \item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed.
 If the option is not set, then environment variable \env{R_FUTURE_RNG_ONMISUSE} is used. (Default: \code{"warning"})}
 

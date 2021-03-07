@@ -22,7 +22,11 @@ NEW FEATURES:
    'homogeneous = TRUE'.  The new default will result in the 'parallelly'
    package trying to infer whether TRUE or FALSE should be used based on
    the 'workers' argument.
- 
+
+ * The default for argument 'timeout' of resolved() can now be controlled
+   via R option 'future.resolved.timeout' (defaults to 0.2 seconds).
+   See help("future.options", package = "future") for more details.
+
 BUG FIXES:
 
  * Resolving a 'sequential' future without globals would result in internal

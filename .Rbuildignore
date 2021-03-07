@@ -9,6 +9,7 @@
 ^README.*[.]md$
 ^CONDUCT[.]md$
 ^docs/
+^pkgdown/
 
 #----------------------------
 # devtools
