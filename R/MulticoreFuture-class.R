@@ -277,11 +277,8 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
 
   debug <- getOption("future.debug", FALSE)
 
-  ## Disable multithreading?
   ## Disable multi-threading in futures?
-  multithreading <- Sys.getenv("R_FUTURE_FORK_MULTITHREADING_ENABLE", "TRUE")
-  multithreading <- isTRUE(as.logical(multithreading))
-  multithreading <- getOption("future.fork.multithreading.enable", multithreading)
+  multithreading <- getOption("future.fork.multithreading.enable", TRUE)  
   if (isFALSE(multithreading) &&
       !supports_omp_threads(assert = TRUE, debug = debug)) {
     warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))

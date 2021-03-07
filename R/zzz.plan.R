@@ -158,9 +158,7 @@ plan <- local({
         evaluator <- stack[[kk]]
         if (inherits(evaluator, "multiprocess") && 
             class(evaluator)[1] == "multiprocess") {  ## <== sic!
-          ignore <- Sys.getenv("R_FUTURE_DEPRECATED_IGNORE", "")
-          ignore <- getOption("future.deprecated.ignore", ignore)
-          ignore <- unlist(strsplit(ignore, split="[, ]", fixed = FALSE))
+          ignore <- getOption("future.deprecated.ignore")
           if (!is.element("multiprocess", ignore)) {
             ## Warn only once
             .warn <<- FALSE

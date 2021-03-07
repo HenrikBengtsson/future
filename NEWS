@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-02-13]
+Version: 1.21.0-9000 [2021-03-07]
 
 SIGNIFICANT CHANGES:
 
@@ -10,6 +10,14 @@ SIGNIFICANT CHANGES:
 
  * Argument 'seed' for futureAssign() and futureCall() now defaults to FALSE
    just like for future().
+
+ * R_FUTURE_* environment variables are now only read when the 'future'
+   package is loaded, where they set the corresponding future.* option.
+   Previously, some of these environment variables were queried by different
+   functions as a fallback to when an option was not set.  By only parsing
+   them when the package is loaded, it decrease the overhead in functions,
+   and it clarifies that options can be changed at runtime whereas environment
+   variables should only be set at startup.
 
 NEW FEATURES:
 

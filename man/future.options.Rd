@@ -55,7 +55,7 @@ See the \link[parallelly:parallelly.options]{parallelly::parallelly.options} pag
 \section{Options for controlling futures}{
 
 \describe{
-\item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via \code{\link[=plan]{plan()}}. This will also be the future plan set when calling \code{plan("default")}.  If not specified, this option may be set when the \pkg{future} package is \emph{loaded} if command-line option \code{--parallel=ncores} (short \verb{-p ncores}) is specified; if \code{ncores > 1}, then option \option{future.plan} is set to \code{multisession} otherwise \code{sequential} (in addition to option \option{mc.cores} being set to \code{ncores}, if \code{ncores >= 1}).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: \code{sequential})}
+\item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via \code{\link[=plan]{plan()}}. This will also be the future plan set when calling \code{plan("default")}.  If not specified, this option may be set when the \pkg{future} package is \emph{loaded} if command-line option \code{--parallel=ncores} (short \verb{-p ncores}) is specified; if \code{ncores > 1}, then option \option{future.plan} is set to \code{multisession} otherwise \code{sequential} (in addition to option \option{mc.cores} being set to \code{ncores}, if \code{ncores >= 1}).  This option can be set via environment variable \env{R_FUTURE_PLAN} when the package is loaded.  (Default: \code{sequential})}
 
 \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of \code{+Inf}, then the check for large globals is skipped. (Default: \code{500 * 1024 ^ 2} = 500 MiB)}
 
@@ -63,27 +63,27 @@ See the \link[parallelly:parallelly.options]{parallelly::parallelly.options} pag
 If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
 If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
 If \code{"ignore"}, no scan is performed.
-If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} is used.
+This option can be set via environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} when the package is loaded.
 (Default: \code{"ignore"} but may change)
 }
 
 \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If \code{0}, only the future itself is resolved.  If \code{1}, the future and any of its elements that are futures are resolved, and so on. If \code{+Inf}, infinite search depth is used. (Default: \code{0})}
 
 \item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed.
-If the option is not set, then environment variable \env{R_FUTURE_RNG_ONMISUSE} is used. (Default: \code{"warning"})}
+This option can be set via environment variable \env{R_FUTURE_RNG_ONMISUSE} when the package is loaded. (Default: \code{"warning"})}
 
-\item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_TIMEOUT} is used.  (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
+\item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  This option can be set via environment variable \env{R_FUTURE_WAIT_TIMEOUT} when the package is loaded. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
 
-\item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_INTERVAL} is used.  (Default: \code{0.2} = 0.2 seconds)}
+\item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  This option can be set via environment variable \env{R_FUTURE_WAIT_INTERVAL} when the package is loaded. (Default: \code{0.2} = 0.2 seconds)}
 
-\item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_ALPHA} is used.  (Default: \code{1.01})}
+\item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  This option can be set via environment variable \env{R_FUTURE_WAIT_ALPHA} when the package is loaded.  (Default: \code{1.01})}
 }
 }
 
 \section{Options for debugging futures}{
 
 \describe{
-\item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. (Default: \code{FALSE})}
+\item{\option{future.debug}:}{(logical) If \code{TRUE}, extensive debug messages are generated. This option can be set via environment variable \env{R_FUTURE_DEBUG} when the package is loaded. (Default: \code{FALSE})}
 }
 }
 
@@ -101,7 +101,7 @@ If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRI
 
 
 \describe{
-\item{\option{future.fork.multithreading.enable} (\emph{beta feature - may change}):}{(logical) Enable or disable \emph{multi-threading} while using \emph{forked} parallel processing.  If \code{FALSE}, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the \pkg{RhpcBLASctl} package is installed.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_MULTITHREADING_ENABLE}.  If \code{TRUE}, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using \code{plan(multicore)} but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package.}
+\item{\option{future.fork.multithreading.enable} (\emph{beta feature - may change}):}{(logical) Enable or disable \emph{multi-threading} while using \emph{forked} parallel processing.  If \code{FALSE}, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the \pkg{RhpcBLASctl} package is installed. If \code{TRUE}, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using \code{plan(multicore)} but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package.  This option can be set via environment variable \env{R_FUTURE_FORK_MULTITHREADING_ENABLE} when the package is loaded. (Default: not set)}
 }
 
 See also \link[parallelly:parallelly.options]{parallelly::parallelly.options}.

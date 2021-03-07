@@ -5,9 +5,8 @@
 .onLoad <- function(libname, pkgname) {
   .package[["version"]] <- utils::packageVersion(pkgname)
 
-  debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
-  if (debug) options(future.debug = TRUE)
-  debug <- getOption("future.debug", debug)
+  update_package_option("future.debug", mode = "logical")
+  debug <- getOption("future.debug", FALSE)
 
   if (debug) {
     envs <- Sys.getenv()
@@ -17,17 +16,7 @@
   }
 
   ## Set future options based on environment variables
-  update_package_option("future.lazy.assertOwner", mode = "logical", debug = debug)
-
-  update_package_option("future.plan", debug = debug)
-
-  update_package_option("future.plan.disallow", split = ",", debug = debug)
-
-  update_package_option("future.psock.relay.immediate", mode = "logical", debug = debug)
-
-  for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
-    update_package_option(name, mode = "numeric", debug = debug)
-  }
+  update_package_options(debug = debug)
 
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
