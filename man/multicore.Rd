@@ -36,11 +36,17 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
-This function will block if all cores are occupied and
-will be unblocked as soon as one of the already running
-multicore futures is resolved.  For the total number of
-cores available including the current/main \R process, see
-\code{\link[=availableCores]{availableCores()}}.
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many forked
+# processes as available to the current R process
+plan(multicore)
+
+# Evaluate futures in parallel on the local machine via two forked processes
+plan(multicore, workers = 2)
+}\if{html}{\out{</div>}}
+
+For the total number of cores available including the current/main
+\R process, see \code{\link[parallelly:availableCores]{parallelly::availableCores()}}.
 
 Not all operating systems support process forking and thereby not multicore
 futures.  For instance, forking is not supported on Microsoft Windows.
@@ -50,12 +56,6 @@ such cases.  See \code{\link[=supportsMulticore]{supportsMulticore()}} for detai
 Trying to create multicore futures on non-supported systems or when
 forking is disabled will result in multicore futures falling back to
 becoming \link{sequential} futures.
-
-The preferred way to create an multicore future is not to call
-this function directly, but to register it via
-\code{\link{plan}(multicore)} such that it becomes the default
-mechanism for all futures.  After this \code{\link[=future]{future()}}
-and \code{\link{\%<-\%}} will create \emph{multicore futures}.
 }
 \examples{
 ## Use multicore futures

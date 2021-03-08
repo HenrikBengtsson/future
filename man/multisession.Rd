@@ -50,23 +50,24 @@ which means that its \emph{value is computed and resolved in
 parallel in another \R session}.
 }
 \details{
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many background
+# processes as available to the current R process
+plan(multisession)
+
+# Evaluate futures in parallel on the local machine via two background
+# processes
+plan(multisession, workers = 2)
+}\if{html}{\out{</div>}}
+
 The background \R sessions (the "workers") are created using
 \code{\link[=makeClusterPSOCK]{makeClusterPSOCK()}}.
 
-The \code{multisession()} function will block if all available
-\R session are occupied
-and will be unblocked as soon as one of the already running
-multisession futures is resolved.  For the total number of
+For the total number of
 \R sessions available including the current/main \R process, see
 \code{\link[parallelly:availableCores]{parallelly::availableCores()}}.
 
 A multisession future is a special type of cluster future.
-
-The preferred way to create an multisession future is not to call
-this function directly, but to register it via
-\code{\link{plan}(multisession)} such that it becomes the default
-mechanism for all futures.  After this \code{\link[=future]{future()}}
-and \code{\link{\%<-\%}} will create \emph{multisession futures}.
 }
 \examples{
 \donttest{

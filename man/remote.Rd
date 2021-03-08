@@ -54,19 +54,34 @@ A remote future is a future that uses remote cluster evaluation,
 which means that its \emph{value is computed and resolved
 remotely in another process}.
 }
+\details{
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
+# any nested ones sequentially (default) on that remote machine
+plan(remote, workers = "server.example.org")
+
+# Evaluate futures on remote machine 'server.example.org', and
+# nested ones in parallel on that remote machine
+plan(list(
+   tweak(remote, workers = "server.example.org"),
+   multisession
+))
+
+# Evaluate futures on remote machine 'server.example.org', and
+# nested ones in parallel on the remote machines n1, n2, and n3.
+plan(list(
+  tweak(remote, workers = "server.example.org"),
+  tweak(cluster, workers = c("n1", "n2", "n3"))
+))
+}\if{html}{\out{</div>}}
+}
 \section{'remote' versus 'cluster'}{
 
 The \code{remote} plan is a very similar to the \code{\link{cluster}} plan, but provides
-more convenient default argument values when connecting to remote machines.  Specifically,
-\code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
-\code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
-See below for example on how \code{remote} and \code{cluster} are related.
-
-The preferred way to create an cluster future is not to call
-this function directly, but to register it via
-\code{\link{plan}(remote)} such that it becomes the default
-mechanism for all futures.  After this \code{\link[=future]{future()}}
-and \code{\link{\%<-\%}} will create \emph{cluster futures}.
+more convenient default argument values when connecting to remote machines.  #' Specifically, \code{remote} uses \code{persistent = TRUE} by default, and it sets
+\code{homogeneous}, \code{revtunnel}, and \code{myip} "wisely" depending on the value of
+\code{workers}.
+' See below for example on how \code{remote} and \code{cluster} are related.
 }
 
 \examples{

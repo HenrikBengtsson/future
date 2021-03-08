@@ -5,6 +5,14 @@
 #' The only difference to \R itself is that globals are validated
 #' by default just as for all other types of futures in this package.
 #'
+#' @details
+#' This function is _not_ meant to be called directly.  Instead, the
+#' typical usages are:
+#'
+#' ```r
+#' # Evaluate futures sequentially in the current R process
+#' plan(sequential)
+#' ```
 #'
 #' @inheritParams future
 #' @inheritParams multiprocess
@@ -15,11 +23,6 @@
 #' @example incl/sequential.R
 #'
 #' @details
-#' The preferred way to create a sequential future is not to call these functions
-#' directly, but to register them via \code{\link{plan}(sequential)} such that
-#' it becomes the default mechanism for all futures.  After this
-#' [future()] and \code{\link{\%<-\%}} will create
-#' _sequential futures_.
 #'
 #' @section transparent futures (troubleshooting only):
 #' Transparent futures are sequential futures configured to emulate how R
