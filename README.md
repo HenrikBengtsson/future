@@ -602,6 +602,7 @@ Contributing to this package is easy.  Just send a [pull request](https://help.g
 
 We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
 
+<div id="badges"><!-- pkgdown markup -->
 
 ## Software status
 
@@ -610,3 +611,5 @@ We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2
 | _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
 | R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
 | Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
+
+</div>
