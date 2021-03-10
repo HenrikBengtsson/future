@@ -182,7 +182,7 @@
 |[spNetwork](problems.md#spnetwork)                 |0.1.1     |      |        |1    |
 |[stars](problems.md#stars)                         |0.5-1     |      |        |2    |
 |startR                                             |2.1.0     |      |        |     |
-|[steps](problems.md#steps)                         |1.2.1     |1     |        |     |
+|steps                                              |1.2.1     |      |        |     |
 |[tableschema.r](problems.md#tableschemar)          |1.1.1     |      |        |2    |
 |targets                                            |0.2.0     |      |        |     |
 |tcensReg                                           |0.1.7     |      |        |     |

@@ -1626,30 +1626,6 @@ Run `revdep_details(, "stars")` for more info
         nc    4.5Mb
     ```
 
-# steps
-
-<details>
-
-* Version: 1.2.1
-* GitHub: NA
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2021-03-03 09:20:10 UTC
-* Number of recursive dependencies: 72
-
-Run `revdep_details(, "steps")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘rasterVis’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # tableschema.r
 
 <details>
