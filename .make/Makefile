@@ -460,8 +460,8 @@ Makefile: $(FILES_MAKEFILE)
 .make/appveyor.yml.rsp:
 	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/.make/appveyor.yml.rsp', path='.make/')"
 
-.make/README.md.rsp:
-	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/.make/README.md.rsp', path='.make/')"
+.make/%.md.rsp:
+	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/r-package-files/master/$@', path='.make/')"
 
 .covr.R:
 	$(R_SCRIPT) -e "R.utils::downloadFile('https://raw.githubusercontent.com/HenrikBengtsson/covr-utils/master/.covr.R')"
@@ -482,6 +482,9 @@ refresh: clean
 # GitHub, Travis CI, ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 README.md: .make/README.md.rsp
+	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
+
+CONTRIBUTING.md: .make/CONTRIBUTING.md.rsp
 	$(R_SCRIPT) -e "R.rsp::rfile('$<', postprocess=FALSE)"
 
 .travis.yml: .make/.travis.yml.rsp
