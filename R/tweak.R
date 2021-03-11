@@ -116,7 +116,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
     formals(strategy2)[name] <- list(args[[name]])
     args2[[name]] <- as.symbol(name)
   }
-  body(strategy2) <- bquote(strategy(..., ..(args2)), splice = TRUE)
+  body(strategy2) <- bquote_splice(strategy(..., ..(args2)), splice = TRUE)
 
   ## Avoid strategy2() depending on the calling frame, which would cause it
   ## to pick up package dependencies from there, which then are attached on

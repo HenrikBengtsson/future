@@ -1,7 +1,10 @@
 ## base::bquote() gained argument 'splice' in R 4.0.0 (April 2020)
 ## Below is a verbatim copy of bquote() in R 4.0.4
 if (getRversion() < "4.0.0") {
-  bquote <- function (expr, where = parent.frame(), splice = FALSE) {
+  #' @importFrom utils globalVariables
+  globalVariables(c(".", ".."))
+  
+  bquote_splice <- function (expr, where = parent.frame(), splice = FALSE) {
       if (!is.environment(where)) 
           where <- as.environment(where)
       unquote <- function(e) {
@@ -43,4 +46,73 @@ if (getRversion() < "4.0.0") {
       }
       unquote(substitute(expr))
   }
+} else {
+  bquote_splice <- base::bquote
 } ## if (getRversion() < "4.0.0")
+
+
+#' @importFrom utils globalVariables
+globalVariables(c(".", ".."))
+bquote_compile <- function(expr, substitute = TRUE, envir = parent.frame()) {
+    if (substitute) expr <- substitute(expr)
+    
+    tmpl <- list()
+    
+    unquote <- function(e, at = integer(0L)) {
+        n <- length(e)
+        if (n == 0L) return()
+
+        if (is.pairlist(e)) {
+          for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
+          return()
+        }
+
+        if (!is.call(e)) return()
+        
+        ## .(<name>)?
+        if (is.name(e[[1L]]) && as.character(e[[1]]) == ".") {
+            ## Record location in expression tree
+            entry <- list(
+              expression = e[[2L]],
+              at         = at
+            )
+            tmpl <<- c(tmpl, list(entry))
+            return()
+        }
+        
+        ## `{`, `+`, ...
+        for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
+    }
+
+    dummy <- unquote(expr)
+    attr(tmpl, "expression") <- expr
+    tmpl
+}
+
+
+bquote_apply <- function(tmpl, envir = parent.frame()) {
+  expr <- attr(tmpl, "expression")
+  
+  for (kk in seq_along(tmpl)) {
+    entry <- tmpl[[kk]]
+    value <- eval(entry$expression, envir = envir)
+    at <- entry$at
+    ## Special case
+    if (length(at) == 0) return(value)
+    if (is.null(value)) {
+      expr[[at]] <- quote(c())  ## How to inject 'NULL'?!?
+    } else {
+      expr[[at]] <- value
+    }
+  }
+
+  expr
+}
+
+
+bquote <- function(expr, where = parent.frame(), splice = FALSE) {
+  stop_if_not(!splice)
+  expr <- substitute(expr)
+  tmpl <- bquote_compile(expr, envir = where, substitute = FALSE)
+  bquote_apply(tmpl, envir = where)
+}
