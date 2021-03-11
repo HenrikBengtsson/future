@@ -97,10 +97,31 @@ bquote_apply <- function(tmpl, envir = parent.frame()) {
     entry <- tmpl[[kk]]
     value <- eval(entry$expression, envir = envir)
     at <- entry$at
-    ## Special case
-    if (length(at) == 0) return(value)
+    
+    ## Special case: Result becomes just a value
+    nat <- length(at)
+    if (nat == 0) return(value)
+
+    ## Inject a NULL (needs special care) or a regular value?
     if (is.null(value)) {
-      expr[[at]] <- quote(c())  ## How to inject 'NULL'?!?
+      head <- if (nat == 1L) NULL else at[-nat]
+      e <- if (is.null(head)) expr else expr[[head]]
+      if (is.call(e)) {
+        f <- as.list(e)
+        f[at[nat]] <- list(NULL)
+        e <- as.call(f)
+      } else if (is.pairlist(e)) {
+        e[1] <- list(NULL)
+        e <- as.pairlist(e)
+      } else {
+        stop("Unknown type of expression (please report to the maintainer): ",
+             sQuote(paste(deparse(e), collapse = "\\n")))
+      }
+      if (is.null(head)) {
+        expr <- e
+      } else {
+        expr[[head]] <- e
+      }
     } else {
       expr[[at]] <- value
     }
@@ -110,9 +131,9 @@ bquote_apply <- function(tmpl, envir = parent.frame()) {
 }
 
 
-bquote <- function(expr, where = parent.frame(), splice = FALSE) {
+bquote2 <- function(expr, where = parent.frame(), substitute = TRUE, splice = FALSE) {
   stop_if_not(!splice)
-  expr <- substitute(expr)
+  if (substitute) expr <- substitute(expr)
   tmpl <- bquote_compile(expr, envir = where, substitute = FALSE)
   bquote_apply(tmpl, envir = where)
 }

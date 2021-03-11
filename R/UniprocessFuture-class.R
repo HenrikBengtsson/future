@@ -132,13 +132,13 @@ getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, e
   oseed <- get_random_seed()
   if (is.null(oseed)) {
     okind <- RNGkind()[1]
-    exit <- bquote({
+    exit <- bquote2({
       .(exit)
       RNGkind(.(okind))
       base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
     })
   } else {
-    exit <- bquote({
+    exit <- bquote2({
       .(exit)
       base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
     })

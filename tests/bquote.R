@@ -3,7 +3,7 @@ source("incl/start.R")
 bquote_compile <- future:::bquote_compile
 bquote_apply <- future:::bquote_apply
 
-message("*** bquote( ) ...")
+message("*** bquote2( ) ...")
 
 exprs <- list(
   A = quote(.(a)),
@@ -39,10 +39,6 @@ for (kk in seq_along(exprs)) {
       expr2 <- bquote_apply(tmpl)
       print(expr2)
 
-      ## Until we've figured out how to inject a NULL in an expression
-      ## /HB 2021-03-11
-      if (is.null(a) || is.null(b)) next
-      
       if (!isTRUE(all.equal(expr2, truth))) {
         str(list(name = name, a = a, b = b, truth = truth, expr2 = expr2))  
         stopifnot(all.equal(expr2, truth))
@@ -51,6 +47,6 @@ for (kk in seq_along(exprs)) {
   }
 }
 
-message("*** bquote() ... DONE")
+message("*** bquote2() ... DONE")
 
 source("incl/end.R")

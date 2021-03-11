@@ -606,7 +606,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
   }
 
 
-  enter <- bquote({
+  enter <- bquote2({
     base::local({
       ## covr: skip=4
       ## If 'future' is not installed on the worker, or a too old version
@@ -646,14 +646,14 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
 ##    mdebugf("getExpression(): setting mc.cores = %d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
-    enter <- bquote({
+    enter <- bquote2({
       ## covr: skip=3
       .(enter)
       ...future.mc.cores.old <- base::getOption("mc.cores")
       base::options(mc.cores = .(mc.cores))
     })
 
-    exit <- bquote({
+    exit <- bquote2({
       ## covr: skip=2
       .(exit)
       base::options(mc.cores = ...future.mc.cores.old)
@@ -662,7 +662,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
   
   ## Set RNG seed?
   if (is.numeric(future$seed)) {
-    enter <- bquote({
+    enter <- bquote2({
       ## covr: skip=2
       .(enter)
       ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
@@ -709,7 +709,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     ## already before launching the future.
     for (pkg in pkgs) loadNamespace(pkg)
 
-    enter <- bquote({
+    enter <- bquote2({
       ## covr: skip=3
       .(enter)      
       ## TROUBLESHOOTING: If the package fails to load, then library()
@@ -733,14 +733,14 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
   if (length(strategiesR) == 0L) strategiesR <- "default"
     
   ## Pass down future strategies
-  enter <- bquote({
+  enter <- bquote2({
     ## covr: skip=2
     .(enter)
     future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
   })
 
   ## Reset future strategies when done
-  exit <- bquote({
+  exit <- bquote2({
     ## covr: skip=2
     .(exit)
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
@@ -778,12 +778,12 @@ makeExpression <- local({
     
     ## Evaluate expression in a local() environment?
     if (local) {
-      expr <- bquote(base::local(.(expr)))
+      expr <- bquote2(base::local(.(expr)))
       skip <- skip.local
     }
   
     ## Set and reset certain future.* options etc.
-    enter <- bquote({
+    enter <- bquote2({
       ## Start time for future evaluation
       ...future.startTime <- base::Sys.time()
       
@@ -811,7 +811,7 @@ makeExpression <- local({
       .(enter)
     })
   
-    exit <- bquote({
+    exit <- bquote2({
       .(exit)
       base::options(...future.oldOptions)
     })
@@ -823,7 +823,7 @@ makeExpression <- local({
     ## a tryCatch() statement. /HB 2016-03-14
   
     if (version == "1.8") {    
-      expr <- bquote({
+      expr <- bquote2({
         ## covr: skip=6
         .(enter)
   

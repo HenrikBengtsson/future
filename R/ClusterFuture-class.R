@@ -649,7 +649,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
       node <- cl[[1L]]
       con <- node$con
       if (!is.null(con)) {
-        expr <- bquote({
+        expr <- bquote2({
           ...future.sendCondition <- local({
             sendCondition <- NULL
   

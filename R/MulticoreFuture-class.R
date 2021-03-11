@@ -286,7 +286,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
   }
   
   if (isFALSE(multithreading)) {
-    expr <- bquote({
+    expr <- bquote2({
       ## Force single-threaded OpenMP, iff needed
       old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
       if (old_omp_threads > 1L) {
@@ -323,7 +323,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
 
     if (length(conditionClasses) > 0L) {
       ## Communicate via the local file system
-      expr <- bquote({
+      expr <- bquote2({
         withCallingHandlers({
           .(expr)
         }, immediateCondition = function(cond) {
