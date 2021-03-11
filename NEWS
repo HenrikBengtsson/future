@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-03-07]
+Version: 1.21.0-9000 [2021-03-11]
 
 SIGNIFICANT CHANGES:
 
@@ -18,6 +18,17 @@ SIGNIFICANT CHANGES:
    them when the package is loaded, it decrease the overhead in functions,
    and it clarifies that options can be changed at runtime whereas environment
    variables should only be set at startup.
+
+PERFORMANCE: 
+
+ * The overhead of initiating futures have been significantly reduced.  For
+   example, the roundtrip time for value(future(NULL)) is about twice as fast
+   for 'sequential', 'cluster', and 'multisession' futures.  For 'multicore'
+   futures the roundtrip speedup is about 20%.
+   The speedup comes from pre-compiling the R expression that will be used
+   to resolve the future expression into R expression templates which then
+   can quickly compiled for each future. This speeds up the creation of
+   these expression by ~10 times, compared when re-compiling them each time.
 
 NEW FEATURES:
 

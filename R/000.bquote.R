@@ -53,7 +53,7 @@ if (getRversion() < "4.0.0") {
 
 #' @importFrom utils globalVariables
 globalVariables(c(".", ".."))
-bquote_compile <- function(expr, substitute = TRUE, envir = parent.frame()) {
+bquote_compile <- function(expr, substitute = TRUE) {
     if (substitute) expr <- substitute(expr)
     
     tmpl <- list()
@@ -131,9 +131,9 @@ bquote_apply <- function(tmpl, envir = parent.frame()) {
 }
 
 
-bquote2 <- function(expr, where = parent.frame(), substitute = TRUE, splice = FALSE) {
+bquote2 <- function(expr, where = parent.frame(), splice = FALSE, substitute = TRUE) {
   stop_if_not(!splice)
   if (substitute) expr <- substitute(expr)
-  tmpl <- bquote_compile(expr, envir = where, substitute = FALSE)
+  tmpl <- bquote_compile(expr, substitute = FALSE)
   bquote_apply(tmpl, envir = where)
 }
