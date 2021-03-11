@@ -627,7 +627,58 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 
 
 #' @export
-getExpression.ClusterFuture <- function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.psock.relay.immediate", immediateConditions), ...) {
+getExpression.ClusterFuture <- local({
+  tmpl_expr_conditions <- bquote_compile({
+    ...future.sendCondition <- local({
+      sendCondition <- NULL
+
+      function(frame = 1L) {
+        if (is.function(sendCondition)) return(sendCondition)
+
+        ns <- getNamespace("parallel")
+        if (exists("sendData", mode = "function", envir = ns)) {
+          parallel_sendData <- get("sendData", mode = "function", envir = ns)
+
+          ## Find the 'master' argument of the worker's {slave,work}Loop()
+          envir <- sys.frame(frame)
+          master <- NULL
+          while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
+            if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
+              master <- get("master", mode = "list", envir = envir, inherits = FALSE)
+              if (inherits(master, c("SOCKnode", "SOCK0node"))) {
+                sendCondition <<- function(cond) {
+                  data <- list(type = "VALUE", value = cond, success = TRUE)
+                  parallel_sendData(master, data)
+                }
+                return(sendCondition)
+              }
+            }
+            frame <- frame + 1L
+            envir <- sys.frame(frame)
+          }
+        }  
+
+        ## Failed to locate 'master' or 'parallel:::sendData()',
+        ## so just ignore conditions
+        sendCondition <<- function(cond) NULL
+      }
+    })
+
+    withCallingHandlers({
+      .(expr)
+    }, immediateCondition = function(cond) {
+      sendCondition <- ...future.sendCondition()
+      sendCondition(cond)
+
+      ## Avoid condition from being signaled more than once
+      ## muffleCondition <- future:::muffleCondition()
+      muffleCondition <- .(muffleCondition)
+      muffleCondition(cond)
+    })
+  })
+
+
+function(future, expr = future$expr, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.psock.relay.immediate", immediateConditions), ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
@@ -649,54 +700,7 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
       node <- cl[[1L]]
       con <- node$con
       if (!is.null(con)) {
-        expr <- bquote2({
-          ...future.sendCondition <- local({
-            sendCondition <- NULL
-  
-            function(frame = 1L) {
-              if (is.function(sendCondition)) return(sendCondition)
-  
-              ns <- getNamespace("parallel")
-              if (exists("sendData", mode = "function", envir = ns)) {
-                parallel_sendData <- get("sendData", mode = "function", envir = ns)
-  
-                ## Find the 'master' argument of the worker's {slave,work}Loop()
-                envir <- sys.frame(frame)
-                master <- NULL
-                while (!identical(envir, .GlobalEnv) && !identical(envir, emptyenv())) {
-                  if (exists("master", mode = "list", envir = envir, inherits=FALSE)) {
-                    master <- get("master", mode = "list", envir = envir, inherits = FALSE)
-                    if (inherits(master, c("SOCKnode", "SOCK0node"))) {
-                      sendCondition <<- function(cond) {
-                        data <- list(type = "VALUE", value = cond, success = TRUE)
-                        parallel_sendData(master, data)
-                      }
-                      return(sendCondition)
-                    }
-                  }
-                  frame <- frame + 1L
-                  envir <- sys.frame(frame)
-                }
-              }  
-  
-              ## Failed to locate 'master' or 'parallel:::sendData()',
-              ## so just ignore conditions
-              sendCondition <<- function(cond) NULL
-            }
-          })
-  
-          withCallingHandlers({
-            .(expr)
-          }, immediateCondition = function(cond) {
-            sendCondition <- ...future.sendCondition()
-            sendCondition(cond)
-
-            ## Avoid condition from being signaled more than once
-            ## muffleCondition <- future:::muffleCondition()
-            muffleCondition <- .(muffleCondition)
-            muffleCondition(cond)
-          })
-        })
+        expr <- bquote_apply(tmpl_expr_conditions)
       } ## if (!is.null(con))
     } ## if (length(conditionClasses) > 0)
     
@@ -706,3 +710,4 @@ getExpression.ClusterFuture <- function(future, expr = future$expr, immediateCon
   
   NextMethod(expr = expr, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
 }
+})

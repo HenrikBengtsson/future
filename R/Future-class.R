@@ -592,21 +592,9 @@ resolved.Future <- function(x, run = TRUE, ...) {
 getExpression <- function(future, ...) UseMethod("getExpression")
 
 #' @export
-getExpression.Future <- function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
-  debug <- getOption("future.debug", FALSE)
-  ##  mdebug("getExpression() ...")
+getExpression.Future <- local({
 
-  if (is.null(split)) split <- FALSE
-  stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
- 
-  version <- future$version
-  if (is.null(version)) {
-    warning(FutureWarning("Future version was not set. Using default %s",
-                          sQuote(version)))
-  }
-
-
-  enter <- bquote2({
+  tmpl_enter <- bquote_compile({
     base::local({
       ## covr: skip=4
       ## If 'future' is not installed on the worker, or a too old version
@@ -640,36 +628,87 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
       }
     })
   })
+
+  tmpl_enter_mccores <- bquote_compile({
+    ## covr: skip=3
+    .(enter)
+    ...future.mc.cores.old <- base::getOption("mc.cores")
+    base::options(mc.cores = .(mc.cores))
+  })
+
+  tmpl_exit_mccores <- bquote_compile({
+    ## covr: skip=2
+    .(exit)
+    base::options(mc.cores = ...future.mc.cores.old)
+  })
+
+  tmpl_enter_rng <- bquote_compile({
+    ## covr: skip=2
+    .(enter)
+    ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
+    ## because the type of RNG is defined by .Random.seed, especially
+    ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
+    base::assign(".Random.seed", .(future$seed), envir = base::globalenv(), inherits = FALSE)
+  })
+
+  tmpl_enter_packages <- bquote_compile({
+    ## covr: skip=3
+    .(enter)      
+    ## TROUBLESHOOTING: If the package fails to load, then library()
+    ## suppress that error and generates a generic much less
+    ## informative error message.  Because of this, we load the
+    ## namespace first (to get a better error message) and then
+    ## calls library(), which attaches the package. /HB 2016-06-16
+    ## NOTE: We use local() here such that 'pkg' is not assigned
+    ##       to the future environment. /HB 2016-07-03
+    base::local({
+      for (pkg in .(pkgs)) {
+        base::loadNamespace(pkg)
+        base::library(pkg, character.only = TRUE)
+      }
+    })
+  })
+
+  tmpl_enter_plan <- bquote_compile({
+    ## covr: skip=2
+    .(enter)
+    future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
+  })
+
+  ## Reset future strategies when done
+  tmpl_exit_plan <- bquote_compile({
+    ## covr: skip=2
+    .(exit)
+    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+  })
+
+function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
+  debug <- getOption("future.debug", FALSE)
+  ##  mdebug("getExpression() ...")
+
+  if (is.null(split)) split <- FALSE
+  stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
+ 
+  version <- future$version
+  if (is.null(version)) {
+    warning(FutureWarning("Future version was not set. Using default %s",
+                          sQuote(version)))
+  }
+
+  enter <- bquote_apply(tmpl_enter)
   
   ## Should 'mc.cores' be set?
   if (!is.null(mc.cores)) {
 ##    mdebugf("getExpression(): setting mc.cores = %d inside future", mc.cores)
     ## FIXME: How can we guarantee that '...future.mc.cores.old'
     ## is not overwritten?  /HB 2016-03-14
-    enter <- bquote2({
-      ## covr: skip=3
-      .(enter)
-      ...future.mc.cores.old <- base::getOption("mc.cores")
-      base::options(mc.cores = .(mc.cores))
-    })
-
-    exit <- bquote2({
-      ## covr: skip=2
-      .(exit)
-      base::options(mc.cores = ...future.mc.cores.old)
-    })
+    enter <- bquote_apply(tmpl_enter_mccores)
+    exit <- bquote_apply(tmpl_exit_mccores)
   }
   
   ## Set RNG seed?
   if (is.numeric(future$seed)) {
-    enter <- bquote2({
-      ## covr: skip=2
-      .(enter)
-      ## NOTE: It is not needed to call RNGkind("L'Ecuyer-CMRG") here
-      ## because the type of RNG is defined by .Random.seed, especially
-      ## .Random.seed[1].  See help("RNGkind"). /HB 2017-01-12
-      base::assign(".Random.seed", .(future$seed), envir = base::globalenv(), inherits = FALSE)
-    })
+    enter <- bquote_apply(tmpl_enter_rng)
   }
 
   ## Packages needed by the future
@@ -709,23 +748,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
     ## already before launching the future.
     for (pkg in pkgs) loadNamespace(pkg)
 
-    enter <- bquote2({
-      ## covr: skip=3
-      .(enter)      
-      ## TROUBLESHOOTING: If the package fails to load, then library()
-      ## suppress that error and generates a generic much less
-      ## informative error message.  Because of this, we load the
-      ## namespace first (to get a better error message) and then
-      ## calls library(), which attaches the package. /HB 2016-06-16
-      ## NOTE: We use local() here such that 'pkg' is not assigned
-      ##       to the future environment. /HB 2016-07-03
-      base::local({
-        for (pkg in .(pkgs)) {
-          base::loadNamespace(pkg)
-          base::library(pkg, character.only = TRUE)
-        }
-      })
-    })
+    enter <- bquote_apply(tmpl_enter_packages)
   }
 
   ## Make sure to set all nested future strategies needed
@@ -733,18 +756,8 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
   if (length(strategiesR) == 0L) strategiesR <- "default"
     
   ## Pass down future strategies
-  enter <- bquote2({
-    ## covr: skip=2
-    .(enter)
-    future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
-  })
-
-  ## Reset future strategies when done
-  exit <- bquote2({
-    ## covr: skip=2
-    .(exit)
-    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
-  })
+  enter <- bquote_apply(tmpl_enter_plan)
+  exit <- bquote_apply(tmpl_exit_plan)
 
   expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
   if (getOption("future.debug", FALSE)) mprint(expr)
@@ -753,7 +766,7 @@ getExpression.Future <- function(future, expr = future$expr, local = future$loca
   
   expr
 } ## getExpression()
-
+})
 
 globals <- function(future, ...) UseMethod("globals")
 

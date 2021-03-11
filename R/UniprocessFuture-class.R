@@ -124,7 +124,19 @@ resolved.UniprocessFuture <- function(x, ...) {
 }
 
 #' @export
-getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, exit = NULL, ...) {
+getExpression.UniprocessFuture <- local({
+  tmpl_exit_rng_remove <- bquote_compile({
+    .(exit)
+    RNGkind(.(okind))
+    base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
+  })
+  
+  tmpl_exit_rng_undo <- bquote_compile({
+    .(exit)
+    base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
+  })
+
+function(future, immediateConditions = TRUE, exit = NULL, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
@@ -132,21 +144,14 @@ getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, e
   oseed <- get_random_seed()
   if (is.null(oseed)) {
     okind <- RNGkind()[1]
-    exit <- bquote2({
-      .(exit)
-      RNGkind(.(okind))
-      base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
-    })
+    exit <- bquote_apply(tmpl_exit_rng_remove)
   } else {
-    exit <- bquote2({
-      .(exit)
-      base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
-    })
+    exit <- bquote_apply(tmpl_exit_rng_undo)
   }
 
   NextMethod(immediateConditions = immediateConditions, exit = exit)
 }
-
+})
 
 #' @rdname UniprocessFuture-class
 #' @export

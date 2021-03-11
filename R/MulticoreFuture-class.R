@@ -271,7 +271,53 @@ result.MulticoreFuture <- function(future, ...) {
 
 
 #' @export
-getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
+getExpression.MulticoreFuture <- local({
+  tmpl_expr_disable_multithreading <- bquote_compile({
+    ## Force single-threaded OpenMP, iff needed
+    old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+    if (old_omp_threads > 1L) {
+      RhpcBLASctl::omp_set_num_threads(1L)
+      base::on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
+      new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
+      if (!is.numeric(new_omp_threads) || is.na(new_omp_threads) || new_omp_threads != 1L) {
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        warning(future::FutureWarning(sprintf("Failed to force a single OMP thread on this system. Number of threads used: %s", new_omp_threads), future = future))
+      }
+    }
+
+    ## Tell BLAS to use a single thread(?)
+    ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
+    ## FIXME: How can we get the current BLAS settings?
+    ## /HB 2020-01-09
+    ## RhpcBLASctl::blas_set_num_threads(1L)
+
+    .(expr)
+  })
+  
+  tmpl_expr_conditions <- bquote_compile({
+    withCallingHandlers({
+      .(expr)
+    }, immediateCondition = function(cond) {
+      ## Send condition wrapped in an object with a timestamp
+      obj <- list(time = Sys.time(), condition = cond)
+      file <- tempfile(
+        class(cond)[1],
+        tmpdir = .(immediateConditionsPath()),
+        fileext = ".rds"
+      )
+      ## save_rds <- future:::save_rds
+      save_rds <- .(save_rds)
+      save_rds(obj, file)
+
+      ## Avoid condition from being signaled more than once
+      ## muffleCondition <- future:::muffleCondition
+      muffleCondition <- .(muffleCondition)
+      muffleCondition(cond)
+    })
+  })
+
+function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
@@ -286,29 +332,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
   }
   
   if (isFALSE(multithreading)) {
-    expr <- bquote2({
-      ## Force single-threaded OpenMP, iff needed
-      old_omp_threads <- RhpcBLASctl::omp_get_max_threads()
-      if (old_omp_threads > 1L) {
-        RhpcBLASctl::omp_set_num_threads(1L)
-        base::on.exit(RhpcBLASctl::omp_set_num_threads(old_omp_threads), add = TRUE)
-        new_omp_threads <- RhpcBLASctl::omp_get_max_threads()
-        if (!is.numeric(new_omp_threads) || is.na(new_omp_threads) || new_omp_threads != 1L) {
-          label <- future$label
-          if (is.null(label)) label <- "<none>"
-          warning(future::FutureWarning(sprintf("Failed to force a single OMP thread on this system. Number of threads used: %s", new_omp_threads), future = future))
-        }
-      }
-
-      ## Tell BLAS to use a single thread(?)
-      ## NOTE: Is multi-threaded BLAS an issue? Have we got any reports on this.
-      ## FIXME: How can we get the current BLAS settings?
-      ## /HB 2020-01-09
-      ## RhpcBLASctl::blas_set_num_threads(1L)
-
-      .(expr)
-    })
-    
+    expr <- bquote_apply(tmpl_expr_disable_multithreading)
     if (debug) mdebug("- Updated expression to force single-threaded mode")
   }
 
@@ -323,27 +347,7 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
 
     if (length(conditionClasses) > 0L) {
       ## Communicate via the local file system
-      expr <- bquote2({
-        withCallingHandlers({
-          .(expr)
-        }, immediateCondition = function(cond) {
-          ## Send condition wrapped in an object with a timestamp
-          obj <- list(time = Sys.time(), condition = cond)
-          file <- tempfile(
-            class(cond)[1],
-            tmpdir = .(immediateConditionsPath()),
-            fileext = ".rds"
-          )
-          ## save_rds <- future:::save_rds
-          save_rds <- .(save_rds)
-          save_rds(obj, file)
-
-          ## Avoid condition from being signaled more than once
-          ## muffleCondition <- future:::muffleCondition
-          muffleCondition <- .(muffleCondition)
-          muffleCondition(cond)
-        })
-      })
+      expr <- bquote_apply(tmpl_expr_conditions)
     } ## if (length(conditionClasses) > 0)
     
     ## Set condition classes to be ignored in case changed
@@ -352,3 +356,4 @@ getExpression.MulticoreFuture <- function(future, expr = future$expr, mc.cores =
 
   NextMethod(expr = expr, mc.cores = mc.cores, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
 }
+})
