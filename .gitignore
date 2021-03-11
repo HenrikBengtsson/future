@@ -18,6 +18,8 @@
 .issues
 .make
 .local
+docs/
+pkgdown/
 revdep/data.sqlite
 revdep/checks/*
 revdep/library/*
