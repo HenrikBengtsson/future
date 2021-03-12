@@ -1,3 +1,7 @@
+## Load namespace already here; it'll set some options based on
+## environment variables
+loadNamespace("future")
+
 ## Record original state
 ovars <- ls()
 oenvs <- oenvs0 <- Sys.getenv()
