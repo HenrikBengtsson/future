@@ -20,14 +20,20 @@ if (!identical(options(), oopts0)) {
   oopts <- options()
   message(sprintf(" - Expected options: [n=%d] %s",
                   length(oopts0), hpaste(sQuote(names(oopts0)))))
-  message(sprintf(" - Options after undo: [n=%d] %s",
-                  length(oopts), hpaste(sQuote(names(oopts)))))
   extra <- setdiff(names(oopts), names(oopts0))
   message(paste(sprintf(" - Options still there: [n=%d]", length(extra)),
                 hpaste(sQuote(extra))))
   missing <- setdiff(names(oopts0), names(oopts))
   message(paste(sprintf(" - Options missing: [n=%d]", length(missing)),
                 hpaste(sQuote(missing))))
+  message("Differences option by option:")                
+  for (name in names(oopts0)) {
+    value0 <- oopts0[[name]]
+    value  <- oopts[[name]]
+    if (!identical(value, value0)) {
+      utils::str(list(name = name, expected = value0, actual = value))
+    }
+  }
 }
 stopifnot(identical(options(), oopts0))
 
