@@ -14,7 +14,9 @@ options(oopts)
 removed <- setdiff(names(oopts0), names(options()))
 opts <- oopts0[removed]
 options(opts)
-## (d) Assert that everything was undone
+## (d) Undo any future options that was set at startup
+options(oopts0[grep("^future[.]", names(oopts0))])
+## (e) Assert that everything was undone
 if (!identical(options(), oopts0)) {
   message("Failed to undo options:")
   oopts <- options()
