@@ -691,90 +691,90 @@ getExpression.Future <- local({
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
-function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
-  debug <- getOption("future.debug", FALSE)
-  ##  mdebug("getExpression() ...")
-
-  if (is.null(split)) split <- FALSE
-  stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
- 
-  version <- future$version
-  if (is.null(version)) {
-    warning(FutureWarning("Future version was not set. Using default %s",
-                          sQuote(version)))
-  }
-
-  enter <- bquote_apply(tmpl_enter)
+  function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
+    debug <- getOption("future.debug", FALSE)
+    ##  mdebug("getExpression() ...")
   
-  ## Should 'mc.cores' be set?
-  if (!is.null(mc.cores)) {
-##    mdebugf("getExpression(): setting mc.cores = %d inside future", mc.cores)
-    ## FIXME: How can we guarantee that '...future.mc.cores.old'
-    ## is not overwritten?  /HB 2016-03-14
-    enter <- bquote_apply(tmpl_enter_mccores)
-    exit <- bquote_apply(tmpl_exit_mccores)
-  }
+    if (is.null(split)) split <- FALSE
+    stop_if_not(is.logical(split), length(split) == 1L, !is.na(split))
+   
+    version <- future$version
+    if (is.null(version)) {
+      warning(FutureWarning("Future version was not set. Using default %s",
+                            sQuote(version)))
+    }
   
-  ## Set RNG seed?
-  if (is.numeric(future$seed)) {
-    enter <- bquote_apply(tmpl_enter_rng)
-  }
-
-  ## Packages needed by the future
-  pkgs <- packages(future)
-  if (length(pkgs) > 0) {
-    if (debug) mdebugf("Packages needed by the future expression (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
-  } else {
-    if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
-  }
-
-  ## Future strategies
-  strategies <- plan("list")
-  stop_if_not(length(strategies) >= 1L)
-
-  ## Pass down the default or the remain set of future strategies?
-  strategiesR <- strategies[-1]
-  ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
-
-  ## Identify packages needed by the futures
-  if (length(strategiesR) > 0L) {
-    ## Identify package namespaces needed for strategies
-    pkgsS <- lapply(strategiesR, FUN = environment)
-    pkgsS <- lapply(pkgsS, FUN = environmentName)
-    pkgsS <- unique(unlist(pkgsS, use.names = FALSE))
-    ## CLEANUP: Only keep those that are loaded in the current session
-    pkgsS <- intersect(pkgsS, loadedNamespaces())
-    if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
-    pkgs <- unique(c(pkgs, pkgsS))
-  } else {
-    if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
-  }
-
-  ## Make sure to load and attach all package needed  
-  if (length(pkgs) > 0L) {
-    ## Sanity check by verifying packages can be loaded already here
-    ## If there is somethings wrong in 'pkgs', we get the error
-    ## already before launching the future.
-    for (pkg in pkgs) loadNamespace(pkg)
-
-    enter <- bquote_apply(tmpl_enter_packages)
-  }
-
-  ## Make sure to set all nested future strategies needed
-  ## Use default future strategy?
-  if (length(strategiesR) == 0L) strategiesR <- "default"
+    enter <- bquote_apply(tmpl_enter)
     
-  ## Pass down future strategies
-  enter <- bquote_apply(tmpl_enter_plan)
-  exit <- bquote_apply(tmpl_exit_plan)
-
-  expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
-  if (getOption("future.debug", FALSE)) mprint(expr)
-
-##  mdebug("getExpression() ... DONE")
+    ## Should 'mc.cores' be set?
+    if (!is.null(mc.cores)) {
+  ##    mdebugf("getExpression(): setting mc.cores = %d inside future", mc.cores)
+      ## FIXME: How can we guarantee that '...future.mc.cores.old'
+      ## is not overwritten?  /HB 2016-03-14
+      enter <- bquote_apply(tmpl_enter_mccores)
+      exit <- bquote_apply(tmpl_exit_mccores)
+    }
+    
+    ## Set RNG seed?
+    if (is.numeric(future$seed)) {
+      enter <- bquote_apply(tmpl_enter_rng)
+    }
   
-  expr
-} ## getExpression()
+    ## Packages needed by the future
+    pkgs <- packages(future)
+    if (length(pkgs) > 0) {
+      if (debug) mdebugf("Packages needed by the future expression (n = %d): %s", length(pkgs), paste(sQuote(pkgs), collapse = ", "))
+    } else {
+      if (debug) mdebug("Packages needed by the future expression (n = 0): <none>")
+    }
+  
+    ## Future strategies
+    strategies <- plan("list")
+    stop_if_not(length(strategies) >= 1L)
+  
+    ## Pass down the default or the remain set of future strategies?
+    strategiesR <- strategies[-1]
+    ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
+  
+    ## Identify packages needed by the futures
+    if (length(strategiesR) > 0L) {
+      ## Identify package namespaces needed for strategies
+      pkgsS <- lapply(strategiesR, FUN = environment)
+      pkgsS <- lapply(pkgsS, FUN = environmentName)
+      pkgsS <- unique(unlist(pkgsS, use.names = FALSE))
+      ## CLEANUP: Only keep those that are loaded in the current session
+      pkgsS <- intersect(pkgsS, loadedNamespaces())
+      if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
+      pkgs <- unique(c(pkgs, pkgsS))
+    } else {
+      if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
+    }
+  
+    ## Make sure to load and attach all package needed  
+    if (length(pkgs) > 0L) {
+      ## Sanity check by verifying packages can be loaded already here
+      ## If there is somethings wrong in 'pkgs', we get the error
+      ## already before launching the future.
+      for (pkg in pkgs) loadNamespace(pkg)
+  
+      enter <- bquote_apply(tmpl_enter_packages)
+    }
+  
+    ## Make sure to set all nested future strategies needed
+    ## Use default future strategy?
+    if (length(strategiesR) == 0L) strategiesR <- "default"
+      
+    ## Pass down future strategies
+    enter <- bquote_apply(tmpl_enter_plan)
+    exit <- bquote_apply(tmpl_exit_plan)
+  
+    expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
+    if (getOption("future.debug", FALSE)) mprint(expr)
+  
+  ##  mdebug("getExpression() ... DONE")
+    
+    expr
+  } ## getExpression()
 })
 
 globals <- function(future, ...) UseMethod("globals")

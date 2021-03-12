@@ -41,7 +41,7 @@ makeExpression <- local({
     .(enter)
 
     ## Capture standard output?
-    if (.(base::is.na(stdout))) {  ## stdout = NA
+    if (.(is.na(stdout))) {  ## stdout = NA
       ## Don't capture, but also don't block any output
     } else {
       if (.(stdout)) {  ## stdout = TRUE
@@ -67,6 +67,11 @@ makeExpression <- local({
     ...future.frame <- base::sys.nframe()
     ...future.conditions <- base::list()
     ...future.rng <- base::globalenv()$.Random.seed
+
+    ## NOTE: We don't want to use local(body) w/ on.exit() because
+    ## evaluation in a local is optional, cf. argument 'local'.
+    ## If this was mandatory, we could.  Instead we use
+    ## a tryCatch() statement. /HB 2016-03-14
     ...future.result <- base::tryCatch({
       base::withCallingHandlers({
         ...future.value <- base::withVisible(.(expr))
@@ -209,14 +214,7 @@ makeExpression <- local({
   
     ## Set and reset certain future.* options etc.
     enter <- bquote_apply(tmpl_enter)
-
     exit <- bquote_apply(tmpl_exit)
-
-  
-    ## NOTE: We don't want to use local(body) w/ on.exit() because
-    ## evaluation in a local is optional, cf. argument 'local'.
-    ## If this was mandatory, we could.  Instead we use
-    ## a tryCatch() statement. /HB 2016-03-14
   
     if (version == "1.8") {    
       expr <- bquote_apply(tmpl_expr_evaluate)

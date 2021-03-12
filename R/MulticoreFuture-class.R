@@ -317,43 +317,43 @@ getExpression.MulticoreFuture <- local({
     })
   })
 
-function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
-  ## Assert that no arguments but the first is passed by position
-  assert_no_positional_args_but_first()
-
-  debug <- getOption("future.debug", FALSE)
-
-  ## Disable multi-threading in futures?
-  multithreading <- getOption("future.fork.multithreading.enable", TRUE)  
-  if (isFALSE(multithreading) &&
-      !supports_omp_threads(assert = TRUE, debug = debug)) {
-    warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
-    multithreading <- TRUE
-  }
+  function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
+    ## Assert that no arguments but the first is passed by position
+    assert_no_positional_args_but_first()
   
-  if (isFALSE(multithreading)) {
-    expr <- bquote_apply(tmpl_expr_disable_multithreading)
-    if (debug) mdebug("- Updated expression to force single-threaded mode")
-  }
-
-
-  ## Inject code for resignaling immediateCondition:s?
-  if (resignalImmediateConditions && immediateConditions) {
-    ## Preserve condition classes to be ignored
-    exclude <- attr(conditionClasses, "exclude", exact = TRUE)
+    debug <- getOption("future.debug", FALSE)
   
-    immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
-    conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
-
-    if (length(conditionClasses) > 0L) {
-      ## Communicate via the local file system
-      expr <- bquote_apply(tmpl_expr_conditions)
-    } ## if (length(conditionClasses) > 0)
+    ## Disable multi-threading in futures?
+    multithreading <- getOption("future.fork.multithreading.enable", TRUE)  
+    if (isFALSE(multithreading) &&
+        !supports_omp_threads(assert = TRUE, debug = debug)) {
+      warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
+      multithreading <- TRUE
+    }
     
-    ## Set condition classes to be ignored in case changed
-    attr(conditionClasses, "exclude") <- exclude
-  } ## if (resignalImmediateConditions && immediateConditions)
-
-  NextMethod(expr = expr, mc.cores = mc.cores, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
-}
+    if (isFALSE(multithreading)) {
+      expr <- bquote_apply(tmpl_expr_disable_multithreading)
+      if (debug) mdebug("- Updated expression to force single-threaded mode")
+    }
+  
+  
+    ## Inject code for resignaling immediateCondition:s?
+    if (resignalImmediateConditions && immediateConditions) {
+      ## Preserve condition classes to be ignored
+      exclude <- attr(conditionClasses, "exclude", exact = TRUE)
+    
+      immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
+      conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
+  
+      if (length(conditionClasses) > 0L) {
+        ## Communicate via the local file system
+        expr <- bquote_apply(tmpl_expr_conditions)
+      } ## if (length(conditionClasses) > 0)
+      
+      ## Set condition classes to be ignored in case changed
+      attr(conditionClasses, "exclude") <- exclude
+    } ## if (resignalImmediateConditions && immediateConditions)
+  
+    NextMethod(expr = expr, mc.cores = mc.cores, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
+  }
 })
