@@ -345,8 +345,7 @@
 <h3 class="hasAnchor">
 <a href="#performance-1" class="anchor"></a>Performance</h3>
 <ul>
-<li>Now plan(multisession), plan(cluster, workers = <number>), and makeClusterPSOCK() which they both use internally, sets up localhost workers twice as fast compared to versions since future 1.12.0, which brings it back to par with a bare-bone parallel::makeCluster(…, setup_strategy = “sequential”) setup. The slowdown was introduced in future 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</number>
-</li>
+<li>Now plan(multisession), plan(cluster, workers = &lt;number&gt;), and makeClusterPSOCK() which they both use internally, sets up localhost workers twice as fast compared to versions since future 1.12.0, which brings it back to par with a bare-bone parallel::makeCluster(…, setup_strategy = “sequential”) setup. The slowdown was introduced in future 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</li>
 </ul>
 </div>
 <div id="bug-fixes-5" class="section level3">
@@ -379,8 +378,8 @@
 <a href="#new-features-4" class="anchor"></a>New Features</h3>
 <ul>
 <li><p>print() on RichSOCKcluster gives information not only on the name of the host but also on the version of R and the platform of each node (“worker”), e.g. “Socket cluster with 3 nodes where 2 nodes are on host ‘localhost’ (R version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)”.</p></li>
-<li><p>Error messages from cluster future failures are now more informative than “Unexpected result (of class ‘NULL’ != ‘FutureResult’)”. For example, if the ‘future’ package is not installed on the worker, then the error message clearly says so. Even, if there is an unexpected result error from a PSOCK cluster future, then the error produced give extra information on node where it failed, e.g. “Unexpected result (of class ‘NULL’ != ‘FutureResult’) retrieved for ClusterFuture future (label = ‘<none>’, expression = ‘…’): This suggests that the communication with ClusterFuture worker (‘RichSOCKnode’ <a href='https://github.com/HenrikBengtsson/future/issues/1'>#1</a> on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)) is out of sync.”</none></p></li>
-<li><p>It is now possible to set environment variables on workers before they are launched by makeClusterPSOCK() by specify them as as “<name>=<value>” as part of the ‘rscript’ vector argument, e.g. rscript=c(“ABC=123”, “DEF=‘hello world’”, “Rscript”). This works because elements in ‘rscript’ that match regular expression ‘^[[:alpha:]_][[:alnum:]_]*=.*’ are no longer shell quoted.</value></name></p></li>
+<li><p>Error messages from cluster future failures are now more informative than “Unexpected result (of class ‘NULL’ != ‘FutureResult’)”. For example, if the ‘future’ package is not installed on the worker, then the error message clearly says so. Even, if there is an unexpected result error from a PSOCK cluster future, then the error produced give extra information on node where it failed, e.g. “Unexpected result (of class ‘NULL’ != ‘FutureResult’) retrieved for ClusterFuture future (label = ‘&lt;none&gt;’, expression = ‘…’): This suggests that the communication with ClusterFuture worker (‘RichSOCKnode’ <a href='https://github.com/HenrikBengtsson/future/issues/1'>#1</a> on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)) is out of sync.”</p></li>
+<li><p>It is now possible to set environment variables on workers before they are launched by makeClusterPSOCK() by specify them as as “&lt;name&gt;=&lt;value&gt;” as part of the ‘rscript’ vector argument, e.g. rscript=c(“ABC=123”, “DEF=‘hello world’”, “Rscript”). This works because elements in ‘rscript’ that match regular expression ‘^[[:alpha:]_][[:alnum:]_]*=.*’ are no longer shell quoted.</p></li>
 <li><p>makeClusterPSOCK() now returns a cluster that in addition to inheriting from’ SOCKcluster’ it will also inherit from ‘RichSOCKcluster’.</p></li>
 </ul>
 </div>
@@ -738,7 +737,7 @@
 <li><p>Now futureCall() defaults to args = list() making is easier to call functions that do not take arguments, e.g. futureCall(function() 42).</p></li>
 <li><p>plan() gained argument ‘.skip = FALSE’. When TRUE, setting the same future strategy as already set will be skipped, e.g. calling plan(multisession) consecutively will have the same effect as calling it just once.</p></li>
 <li><p>makeClusterPSOCK() produces more informative error messages whenever the setup of R workers fails. Also, its verbose messages are now prefixed with “[local output]” to help distinguish the output produced by the current R session from that produced by background workers.</p></li>
-<li><p>It is now possible to specify what type of SSH clients makeClusterPSOCK() automatically searches for and in what order, e.g. ‘rshcmd = c(“<rstudio-ssh>”, “<putty-plink>”)’.</putty-plink></rstudio-ssh></p></li>
+<li><p>It is now possible to specify what type of SSH clients makeClusterPSOCK() automatically searches for and in what order, e.g. ‘rshcmd = c(“&lt;rstudio-ssh&gt;”, “&lt;putty-plink&gt;”)’.</p></li>
 <li><p>Now makeClusterPSOCK() preserves the global RNG state (.Random.seed) also when it draws a random port number.</p></li>
 <li><p>makeClusterPSOCK() gained argument ‘rshlogfile’.</p></li>
 <li><p>Cluster futures provide more informative error messages when the communication with the worker node is out of sync.</p></li>
@@ -1312,7 +1311,7 @@
 <h3 class="hasAnchor">
 <a href="#new-features-28" class="anchor"></a>New Features</h3>
 <ul>
-<li><p>Add support for remote(…, myip=“<external>”), which now queries a set of external lookup services in case one of them fails.</external></p></li>
+<li><p>Add support for remote(…, myip=“&lt;external&gt;”), which now queries a set of external lookup services in case one of them fails.</p></li>
 <li><p>Add mandelbrot() function used in demo to the API for convenience.</p></li>
 <li><p>ROBUSTNESS: If .future.R script, which is sourced when the future package is attached, gives an error, then the error is ignored with a warning.</p></li>
 <li><p>TROUBLESHOOTING: If the future requires attachment of packages, then each namespace is loaded separately and before attaching the package. This is done in order to see the actual error message in case there is a problem while loading the namespace. With require()/library() this error message is otherwise suppressed and replaced with a generic one.</p></li>
@@ -1356,15 +1355,8 @@
 <li><p>Added remote futures, which are cluster futures with convenient default arguments for simple remote access to R, e.g. plan(remote, workers=“login.my-server.org”).</p></li>
 <li><p>Now .future.R (if found in the current directory or otherwise in the user’s home directory) is sourced when the future package is attach (but not loaded). This helps separating scripts from configuration of futures.</p></li>
 <li><p>Added support for plan(cluster, workers=c(“n1”, “n2”, “n2”, “n4”)), where ‘workers’ (also for ClusterFuture()) is a set of host names passed to parallel::makeCluster(workers). It can also be the number of localhost workers.</p></li>
-<li>
-<p>Added command line option –parallel=</p>
-<p>, which is long for -p </p>
-<p>.</p>
-</li>
-<li>
-<p>Now command line option -p </p>
-<p> also set the default future strategy to multiprocessing (if p &gt;= 2 and eager otherwise), unless another strategy is already specified via option ‘future.plan’ or system environment variable R_FUTURE_PLAN.</p>
-</li>
+<li><p>Added command line option –parallel=&lt;p&gt;, which is long for -p &lt;p&gt;.</p></li>
+<li><p>Now command line option -p &lt;p&gt; also set the default future strategy to multiprocessing (if p &gt;= 2 and eager otherwise), unless another strategy is already specified via option ‘future.plan’ or system environment variable R_FUTURE_PLAN.</p></li>
 <li><p>Now availableCores() also acknowledges environment variable NSLOTS set by Sun/Oracle Grid Engine (SGE).</p></li>
 <li><p>MEMORY: Added argument ‘gc=FALSE’ to all futures. When TRUE, the garbage collector will run at the very end in the process that evaluated the future (just before returning the value). This may help lowering the overall memory footprint when running multiple parallel R processes. The user can enable this by specifying plan(multiprocess, gc=TRUE). The developer can control this using future(expr, gc=TRUE) or v %&lt;-% { expr } %tweak% list(gc=TRUE).</p></li>
 </ul>
@@ -1489,7 +1481,7 @@
 <li><p>Add multisession futures, which analogously to multicore ones, use multiple cores on the local machine with the difference that they are evaluated in separate R session running in the background rather than separate forked R processes. A multisession future is a special type of cluster futures that do not require explicit setup of cluster nodes.</p></li>
 <li><p>Add support for cluster futures, which can make use of a cluster of nodes created by parallel::makeCluster().</p></li>
 <li><p>Add futureCall(), which is for futures what do.call() is otherwise.</p></li>
-<li><p>Standardized how options are named, i.e. ‘future.<option>’. If you used any future options previously, make sure to check they follow the above format.</option></p></li>
+<li><p>Standardized how options are named, i.e. ‘future.&lt;option&gt;’. If you used any future options previously, make sure to check they follow the above format.</p></li>
 </ul>
 </div>
 <div id="globals-4" class="section level3">
