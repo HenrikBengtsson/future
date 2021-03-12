@@ -19,7 +19,7 @@ SIGNIFICANT CHANGES:
    and it clarifies that options can be changed at runtime whereas environment
    variables should only be set at startup.
 
-PERFORMANCE: 
+PERFORMANCE:
 
  * The overhead of initiating futures have been significantly reduced.  For
    example, the roundtrip time for value(future(NULL)) is about twice as fast
@@ -1611,7 +1611,7 @@ PERFORMANCE:
  * Significantly decreased the overhead of creating a future, particularly
    multicore futures.
     
-BUG FIXES: 
+BUG FIXES:
 
  * Future would give an error with plan(list("eager")),
    whereas it did work with plan("eager") and plan(list(eager)).
@@ -1777,7 +1777,7 @@ NEW FEATURES:
  * CLEANUP: Now the internal future variable created by %<=% is
    removed when the future variable is resolved.
     
-BUG FIXES:  
+BUG FIXES:
 
  * futureOf(envir=x) did not work properly when 'x' was
    a list environment.
