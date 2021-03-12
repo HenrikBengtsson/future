@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2021-03-09                   |
+|date     |2021-03-12                   |
 
 # Dependencies
 
@@ -30,7 +30,7 @@
 |:----------------------------|:-------|:-----|:-------|:----|
 |[Signac](failures.md#signac) |1.1.1   |1     |        |1    |
 
-## All (160)
+## All (161)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
@@ -43,7 +43,7 @@
 |batchr                                             |0.0.1     |      |        |     |
 |[batchtools](problems.md#batchtools)               |0.9.15    |      |        |1    |
 |bayesmove                                          |0.1.0     |      |        |     |
-|bcmaps                                             |1.0.1     |      |        |     |
+|bcmaps                                             |1.0.2     |      |        |     |
 |[biotmle](problems.md#biotmle)                     |1.14.0    |1     |        |     |
 |bkmrhat                                            |1.0.2     |      |        |     |
 |[blavaan](problems.md#blavaan)                     |0.3-15    |      |        |2    |
@@ -127,9 +127,9 @@
 |metagam                                            |0.2.0     |      |        |     |
 |[methyvim](problems.md#methyvim)                   |1.11.0    |1     |        |1    |
 |mikropml                                           |0.0.2     |      |        |     |
-|[MineICA](problems.md#mineica)                     |1.30.0    |-1    |2       |4    |
+|[MineICA](problems.md#mineica)                     |1.30.0    |      |2       |4    |
 |mlr3                                               |0.11.0    |      |        |     |
-|mlr3db                                             |0.3.0     |      |        |     |
+|mlr3db                                             |0.4.0     |      |        |     |
 |mrgsim.parallel                                    |0.1.1     |      |        |     |
 |nflfastR                                           |4.0.0     |      |        |     |
 |onemapsgapi                                        |1.0.0     |      |        |     |
@@ -183,6 +183,7 @@
 |[stars](problems.md#stars)                         |0.5-1     |      |        |2    |
 |startR                                             |2.1.0     |      |        |     |
 |steps                                              |1.2.1     |      |        |     |
+|[synergyfinder](problems.md#synergyfinder)         |2.4.9     |      |        |2    |
 |[tableschema.r](problems.md#tableschemar)          |1.1.1     |      |        |2    |
 |targets                                            |0.2.0     |      |        |     |
 |tcensReg                                           |0.1.7     |      |        |     |
