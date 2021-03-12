@@ -175,7 +175,7 @@
 </div>
 <div id="performance" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance" class="anchor"></a>Performance:</h3>
+<a href="#performance" class="anchor"></a>Performance</h3>
 <ul>
 <li>The overhead of initiating futures have been significantly reduced. For example, the roundtrip time for value(future(NULL)) is about twice as fast for ‘sequential’, ‘cluster’, and ‘multisession’ futures. For ‘multicore’ futures the roundtrip speedup is about 20%. The speedup comes from pre-compiling the R expression that will be used to resolve the future expression into R expression templates which then can quickly compiled for each future. This speeds up the creation of these expression by ~10 times, compared when re-compiling them each time.</li>
 </ul>
@@ -1378,7 +1378,7 @@
 </div>
 <div id="bug-fixes-32" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-32" class="anchor"></a>Bug Fixes:</h3>
+<a href="#bug-fixes-32" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Future would give an error with plan(list(“eager”)), whereas it did work with plan(“eager”) and plan(list(eager)).</li>
 </ul>
@@ -1517,7 +1517,7 @@
 </div>
 <div id="bug-fixes-36" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-36" class="anchor"></a>Bug Fixes:</h3>
+<a href="#bug-fixes-36" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>futureOf(envir=x) did not work properly when ‘x’ was a list environment.</li>
 </ul>
