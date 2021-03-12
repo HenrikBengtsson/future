@@ -52,6 +52,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -63,9 +65,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -86,12 +94,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -171,6 +173,13 @@
 <li><p>R_FUTURE_* environment variables are now only read when the ‘future’ package is loaded, where they set the corresponding future.* option. Previously, some of these environment variables were queried by different functions as a fallback to when an option was not set. By only parsing them when the package is loaded, it decrease the overhead in functions, and it clarifies that options can be changed at runtime whereas environment variables should only be set at startup.</p></li>
 </ul>
 </div>
+<div id="performance" class="section level3">
+<h3 class="hasAnchor">
+<a href="#performance" class="anchor"></a>Performance:</h3>
+<ul>
+<li>The overhead of initiating futures have been significantly reduced. For example, the roundtrip time for value(future(NULL)) is about twice as fast for ‘sequential’, ‘cluster’, and ‘multisession’ futures. For ‘multicore’ futures the roundtrip speedup is about 20%. The speedup comes from pre-compiling the R expression that will be used to resolve the future expression into R expression templates which then can quickly compiled for each future. This speeds up the creation of these expression by ~10 times, compared when re-compiling them each time.</li>
+</ul>
+</div>
 <div id="new-features" class="section level3">
 <h3 class="hasAnchor">
 <a href="#new-features" class="anchor"></a>New Features</h3>
@@ -184,6 +193,7 @@
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Resolving a ‘sequential’ future without globals would result in internal several ‘…future.*’ objects being written to the calling environment, which might be the global environment.</p></li>
+<li><p>Environment variable ‘R_FUTURE_PLAN’ would propagate down with nested futures, forcing itself onto also nested future plans. Now it is unset in nested futures, resulting in a sequential future strategy unless another was explicitly set by `plan()`.</p></li>
 <li><p>Transparent futures no longer warns about ‘local = FALSE’ being deprecated. Although ‘local=FALSE’ is being deprecated, it is still used internally by ‘transparent’ futures for a while longer. Please do not use ‘transparent’ futures in production code and never in a package.</p></li>
 <li><p>remote() could produce an error on “object ‘homogeneous’ not found”.</p></li>
 <li><p>nbrOfFreeWorkers() for ‘cluster’ futures assumed that the current plan is set to cluster too.</p></li>
@@ -331,9 +341,9 @@
 <li><p>Now availableCores() and availableWorkers() supports LSF/OpenLava. Specifically, they acknowledge environment variable ‘LSB_DJOB_NUMPROC’ and ‘LSB_HOSTS’, respectively.</p></li>
 </ul>
 </div>
-<div id="performance" class="section level3">
+<div id="performance-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance" class="anchor"></a>Performance</h3>
+<a href="#performance-1" class="anchor"></a>Performance</h3>
 <ul>
 <li>Now plan(multisession), plan(cluster, workers = <number>), and makeClusterPSOCK() which they both use internally, sets up localhost workers twice as fast compared to versions since future 1.12.0, which brings it back to par with a bare-bone parallel::makeCluster(…, setup_strategy = “sequential”) setup. The slowdown was introduced in future 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</number>
 </li>
@@ -1108,9 +1118,9 @@
 <li><p>It is now possible to specify a pre-generated sequence of .Random.seed seeds to be used for each FUN(x[i], …) call in future_lapply(x, FUN, …).</p></li>
 </ul>
 </div>
-<div id="performance-1" class="section level3">
+<div id="performance-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance-1" class="anchor"></a>Performance</h3>
+<a href="#performance-2" class="anchor"></a>Performance</h3>
 <ul>
 <li>future_lapply() scans global variables for non-resolved futures (to resolve them) and calculate their total size once. Previously, each chunk (a future) would redo this.</li>
 </ul>
@@ -1359,9 +1369,9 @@
 <li><p>MEMORY: Added argument ‘gc=FALSE’ to all futures. When TRUE, the garbage collector will run at the very end in the process that evaluated the future (just before returning the value). This may help lowering the overall memory footprint when running multiple parallel R processes. The user can enable this by specifying plan(multiprocess, gc=TRUE). The developer can control this using future(expr, gc=TRUE) or v %&lt;-% { expr } %tweak% list(gc=TRUE).</p></li>
 </ul>
 </div>
-<div id="performance-2" class="section level3">
+<div id="performance-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance-2" class="anchor"></a>Performance</h3>
+<a href="#performance-3" class="anchor"></a>Performance</h3>
 <ul>
 <li>Significantly decreased the overhead of creating a future, particularly multicore futures.</li>
 </ul>
@@ -1444,9 +1454,9 @@
 <li><p>ROBUSTNESS: Now value() for multicore futures detects if the underlying forked R process was terminated before completing and if so generates an informative error messages.</p></li>
 </ul>
 </div>
-<div id="performance-3" class="section level3">
+<div id="performance-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#performance-3" class="anchor"></a>Performance</h3>
+<a href="#performance-4" class="anchor"></a>Performance</h3>
 <ul>
 <li>Adjusted the parameters for the schema used to wait for next available cluster node such that nodes are polled more frequently.</li>
 </ul>
@@ -1722,11 +1732,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p><p>Developed by Henrik Bengtsson.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
 </div>
 
       </footer>
@@ -1734,6 +1744,8 @@
 
   
 
+
+  
 
   </body>
 </html>

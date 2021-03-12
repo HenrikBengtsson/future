@@ -1,6 +1,6 @@
 pandoc: 1.19.2.4
-pkgdown: 1.6.1
-pkgdown_sha: ~
+pkgdown: 1.6.1.9000
+pkgdown_sha: d0a93b68f9eaf951ba27c5ec74175acfdbe8b2de
 articles:
   future-1-overview: future-1-overview.html
   future-2-output: future-2-output.html
@@ -11,5 +11,5 @@ articles:
   future-6-future-api-backend-specification: future-6-future-api-backend-specification.html
   future-7-for-package-developers: future-7-for-package-developers.html
   future-8-how-future-is-validated: future-8-how-future-is-validated.html
-last_built: 2021-03-10T21:29Z
+last_built: 2021-03-12T04:28Z
 

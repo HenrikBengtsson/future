@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -44,12 +46,6 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -95,7 +91,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/HenrikBengtsson/future/">
+  <a href="https://github.com/HenrikBengtsson/future/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -114,10 +110,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: How the Future Framework is Validated</h1>
-                        <h4 class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-8-how-future-is-validated.md.rsp"><code>vignettes/future-8-how-future-is-validated.md.rsp</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-8-how-future-is-validated.md.rsp" class="external-link"><code>vignettes/future-8-how-future-is-validated.md.rsp</code></a></small>
       <div class="hidden name"><code>future-8-how-future-is-validated.Rmd</code></div>
 
     </div>
@@ -125,12 +121,12 @@
     
     
 <p>Since correctness and reproducibility is essential to all data processing, validation is a top priority and part of the design and implementation throughout the future ecosystem. Several types of testing are performed.</p>
-<p>First, all the essential core packages part of the future framework, <strong><a href="https://CRAN.R-Project.org/package=future">future</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=globals">globals</a></strong>, and <strong><a href="https://CRAN.R-Project.org/package=listenv">listenv</a></strong>, implement a rich set of package tests. These are validated regularly across the wide-range of operating systems (Linux, Solaris, macOS, and MS Windows) and R versions available on CRAN, on continuous integration (CI) services (<a href="https://github.com/features/actions">GitHub Actions</a>, <a href="https://travis-ci.org/">Travis CI</a>, and <a href="https://www.appveyor.com/">AppVeyor CI</a>), and on <a href="https://builder.r-hub.io/">R-hub</a>.</p>
-<p>Second, for each new release, these packages undergo full reverse-package dependency checks using <strong><a href="https://github.com/r-lib/revdepcheck">revdepcheck</a></strong>. As of October 2020, the <strong>future</strong> package is tested against 140+ direct reverse-package dependencies available on CRAN and Bioconductor. These checks are performed on Linux with both the default settings and when forcing tests to use multisession workers (SOCK clusters), which further validates that globals and packages are identified correctly.</p>
-<p>Third, a suite of <em>Future API conformance tests</em> available in the <strong><a href="https://CRAN.R-Project.org/package=future">future.tests</a></strong> package validates the correctness of all future backends. Any new future backend developed, must pass these tests to comply with the <em>Future API</em>. By conforming to this API, the end-user can trust that the backend will produce the same correct and reproducible results as any other backend, including the ones that the developer have tested on. Also, by making it the responsibility of the developer to assert that their new future backend conforms to the <em>Future API</em>, we relieve other developers from having to test that their future-based software works on all backends. It would be a daunting task for a developer to validate the correctness of their software with all existing backends. Even if they would achieve that, there may be additional third-party future backends that they are not aware of, that they do not have the possibility to test with, or that yet have not been developed.</p>
-<p>Fourth, since <strong><a href="https://CRAN.R-Project.org/package=foreach">foreach</a></strong> is used by a large number of essential CRAN packages, it provides an excellent opportunity for supplementary validation. Specifically, we dynamically tweak the examples of <strong><a href="https://CRAN.R-Project.org/package=foreach">foreach</a></strong> and popular CRAN packages <strong><a href="https://CRAN.R-Project.org/package=caret">caret</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=glmnet">glmnet</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=NMF">NMF</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=plyr">plyr</a></strong>, and <strong><a href="https://CRAN.R-Project.org/package=TSP">TSP</a></strong> to use the <strong><a href="https://CRAN.R-Project.org/package=doFuture">doFuture</a></strong> adaptor. This allows us to run these examples with a variety of future backends to validate that the examples produce no run-time errors, which indirectly validates the backends as well as the <em>Future API</em>. In the past, these types of tests helped to identify and resolve corner cases where automatic identification of global variables would fail. As a side note, several of these foreach-based examples fail when using a parallel foreach adaptor because they do not properly export globals or declare package dependencies. The exception is when using the sequential <em>doSEQ</em> adaptor (default), fork-based ones such as <strong><a href="https://CRAN.R-Project.org/package=doMC">doMC</a></strong>, or the generic <strong><a href="https://CRAN.R-Project.org/package=doFuture">doFuture</a></strong>, which supports any future backend and relies on the future framework for handling globals and packages(*)</p>
+<p>First, all the essential core packages part of the future framework, <strong><a href="https://CRAN.R-Project.org/package=future" class="external-link">future</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=globals" class="external-link">globals</a></strong>, and <strong><a href="https://CRAN.R-Project.org/package=listenv" class="external-link">listenv</a></strong>, implement a rich set of package tests. These are validated regularly across the wide-range of operating systems (Linux, Solaris, macOS, and MS Windows) and R versions available on CRAN, on continuous integration (CI) services (<a href="https://github.com/features/actions" class="external-link">GitHub Actions</a>, <a href="https://travis-ci.org/" class="external-link">Travis CI</a>, and <a href="https://www.appveyor.com/" class="external-link">AppVeyor CI</a>), and on <a href="https://builder.r-hub.io/" class="external-link">R-hub</a>.</p>
+<p>Second, for each new release, these packages undergo full reverse-package dependency checks using <strong><a href="https://github.com/r-lib/revdepcheck" class="external-link">revdepcheck</a></strong>. As of October 2020, the <strong>future</strong> package is tested against 140+ direct reverse-package dependencies available on CRAN and Bioconductor. These checks are performed on Linux with both the default settings and when forcing tests to use multisession workers (SOCK clusters), which further validates that globals and packages are identified correctly.</p>
+<p>Third, a suite of <em>Future API conformance tests</em> available in the <strong><a href="https://CRAN.R-Project.org/package=future" class="external-link">future.tests</a></strong> package validates the correctness of all future backends. Any new future backend developed, must pass these tests to comply with the <em>Future API</em>. By conforming to this API, the end-user can trust that the backend will produce the same correct and reproducible results as any other backend, including the ones that the developer have tested on. Also, by making it the responsibility of the developer to assert that their new future backend conforms to the <em>Future API</em>, we relieve other developers from having to test that their future-based software works on all backends. It would be a daunting task for a developer to validate the correctness of their software with all existing backends. Even if they would achieve that, there may be additional third-party future backends that they are not aware of, that they do not have the possibility to test with, or that yet have not been developed.</p>
+<p>Fourth, since <strong><a href="https://CRAN.R-Project.org/package=foreach" class="external-link">foreach</a></strong> is used by a large number of essential CRAN packages, it provides an excellent opportunity for supplementary validation. Specifically, we dynamically tweak the examples of <strong><a href="https://CRAN.R-Project.org/package=foreach" class="external-link">foreach</a></strong> and popular CRAN packages <strong><a href="https://CRAN.R-Project.org/package=caret" class="external-link">caret</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=glmnet" class="external-link">glmnet</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=NMF" class="external-link">NMF</a></strong>, <strong><a href="https://CRAN.R-Project.org/package=plyr" class="external-link">plyr</a></strong>, and <strong><a href="https://CRAN.R-Project.org/package=TSP" class="external-link">TSP</a></strong> to use the <strong><a href="https://CRAN.R-Project.org/package=doFuture" class="external-link">doFuture</a></strong> adaptor. This allows us to run these examples with a variety of future backends to validate that the examples produce no run-time errors, which indirectly validates the backends as well as the <em>Future API</em>. In the past, these types of tests helped to identify and resolve corner cases where automatic identification of global variables would fail. As a side note, several of these foreach-based examples fail when using a parallel foreach adaptor because they do not properly export globals or declare package dependencies. The exception is when using the sequential <em>doSEQ</em> adaptor (default), fork-based ones such as <strong><a href="https://CRAN.R-Project.org/package=doMC" class="external-link">doMC</a></strong>, or the generic <strong><a href="https://CRAN.R-Project.org/package=doFuture" class="external-link">doFuture</a></strong>, which supports any future backend and relies on the future framework for handling globals and packages(*)</p>
 <p>Lastly, analogously to above reverse-dependency checks of each new release, CRAN and Bioconductor continuously run checks on all these direct, but also indirect, reverse dependencies, which further increases the validation of the <em>Future API</em> and the future ecosystem at large.</p>
-<p>(*) There is a plan to update <strong><a href="https://CRAN.R-Project.org/package=foreach">foreach</a></strong> to use the exact same static-code-analysis method as the <strong><a href="https://CRAN.R-Project.org/package=future">future</a></strong> package use for identifying globals. As the maintainer of the future framework, I collaborate with the maintainer of the <strong><a href="https://CRAN.R-Project.org/package=foreach">foreach</a></strong> package to implement this.</p>
+<p>(*) There is a plan to update <strong><a href="https://CRAN.R-Project.org/package=foreach" class="external-link">foreach</a></strong> to use the exact same static-code-analysis method as the <strong><a href="https://CRAN.R-Project.org/package=future" class="external-link">future</a></strong> package use for identifying globals. As the maintainer of the future framework, I collaborate with the maintainer of the <strong><a href="https://CRAN.R-Project.org/package=foreach" class="external-link">foreach</a></strong> package to implement this.</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -142,11 +138,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
 </div>
 
       </footer>
@@ -154,6 +152,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -53,6 +53,8 @@
 
 
 
+
+
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -64,9 +66,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -87,12 +95,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -201,8 +203,8 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpmJ8cpF/callr-fun-792838fb1025"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpnkBiJb/callr-fun-6d13136f94a5"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -228,7 +230,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -252,7 +254,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -287,8 +289,8 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpmJ8cpF/callr-fun-792838fb1025"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpnkBiJb/callr-fun-6d13136f94a5"), 
+#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -314,7 +316,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -338,7 +340,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -346,11 +348,11 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpmJ8cpF/callr-fun-792838fb1025"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpmJ8cpF/callr-res-79285148e3a1")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpnkBiJb/callr-fun-6d13136f94a5"), 
+#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpnkBiJb/callr-res-6d13203a8d24")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpmJ8cpF/callr-fun-792838fb1025"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpnkBiJb/callr-fun-6d13136f94a5"), 
 #&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
 #&gt; 
 #&gt; [[11]]
@@ -367,7 +369,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }, list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpmJ8cpF/future", dst_path = "/tmp/hb/RtmpmJ8cpF/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmpnkBiJb/future", dst_path = "/tmp/hb/RtmpnkBiJb/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
@@ -2734,8 +2736,8 @@
 #&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; })(pkg = list(package = "future", version = "1.21.0-9000", src_path = "/tmp/hb/RtmpmJ8cpF/future", 
-#&gt;     dst_path = "/tmp/hb/RtmpmJ8cpF/future/docs", install_metadata = FALSE, 
+#&gt; })(pkg = list(package = "future", version = "1.21.0-9000", src_path = "/tmp/hb/RtmpnkBiJb/future", 
+#&gt;     dst_path = "/tmp/hb/RtmpnkBiJb/future/docs", install_metadata = FALSE, 
 #&gt;     desc = &lt;environment&gt;, meta = list(), figures = list(dev = "ragg::agg_png", 
 #&gt;         dpi = 96L, dev.args = list(), fig.ext = "png", fig.width = 7.29166666666667, 
 #&gt;         fig.height = NULL, fig.retina = 2L, fig.asp = 0.618046971569839, 
@@ -5247,11 +5249,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p><p>Developed by Henrik Bengtsson.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
 </div>
 
       </footer>
@@ -5259,6 +5261,8 @@
 
   
 
+
+  
 
   </body>
 </html>
