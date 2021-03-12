@@ -48,6 +48,11 @@ BUG FIXES:
    several '...future.*' objects being written to the calling environment,
    which might be the global environment.
 
+ * Environment variable 'R_FUTURE_PLAN' would propagate down with nested
+   futures, forcing itself onto also nested future plans.  Now it is unset
+   in nested futures, resulting in a sequential future strategy unless
+   another was explicitly set by `plan()`.
+
  * Transparent futures no longer warns about 'local = FALSE' being deprecated.
    Although 'local=FALSE' is being deprecated, it is still used internally by
    'transparent' futures for a while longer.  Please do not use 'transparent'

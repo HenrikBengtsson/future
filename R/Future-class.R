@@ -672,6 +672,9 @@ getExpression.Future <- local({
   tmpl_enter_plan <- bquote_compile({
     ## covr: skip=2
     .(enter)
+    ## Prevent 'future.plan' / R_FUTURE_PLAN settings from being nested
+    options(future.plan = NULL)
+    Sys.unsetenv("R_FUTURE_PLAN")
     future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
   })
 
@@ -679,6 +682,12 @@ getExpression.Future <- local({
   tmpl_exit_plan <- bquote_compile({
     ## covr: skip=2
     .(exit)
+    ## Reset option 'future.plan' and env var 'R_FUTURE_PLAN'
+    options(future.plan = .(getOption("future.plan")))
+    if (is.na(.(oenv <- Sys.getenv("R_FUTURE_PLAN", NA_character_))))
+      Sys.unsetenv("R_FUTURE_PLAN")
+    else
+      Sys.setenv(R_FUTURE_PLAN = .(oenv))
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
   })
 
