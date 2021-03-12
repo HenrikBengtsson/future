@@ -1,6 +1,5 @@
 source("incl/start.R")
 
-options(future.debug=FALSE)
 strategies <- supportedStrategies()
 
 message("*** Nested futures ...")
