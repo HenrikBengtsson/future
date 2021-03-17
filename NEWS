@@ -30,6 +30,10 @@ PERFORMANCE:
    can quickly compiled for each future. This speeds up the creation of
    these expression by ~10 times, compared when re-compiling them each time.
 
+ * The default timeout for resolved() was decreased from 0.20 to 0.01 seconds
+   for cluster/multisession and multicore futures, which means they will
+   spend less time waiting for results when they are not available.
+
 NEW FEATURES:
 
  * In addition to specify which condition classes to be captured and relayed,
