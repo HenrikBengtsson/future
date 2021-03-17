@@ -9,8 +9,7 @@
 
 </div>
 
-<img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"></a>
-# future: Unified Parallel and Distributed Processing in R for Everyone
+# future: Unified Parallel and Distributed Processing in R for Everyone <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"></a>
 
 ## Introduction
 The purpose of the [future] package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
