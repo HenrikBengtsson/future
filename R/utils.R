@@ -817,11 +817,10 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   ref <- ref[[1]]
   if (is.list(x) && !is.null(names(x))) {
     for (ii in seq_along(x)) {
-      x_ii <- x[[ii]]
-      ref_ii <- find_references(x_ii, first_only = TRUE)
+      ref_ii <- find_references(x[ii], first_only = TRUE)
       if (length(ref_ii) > 0) {
         global <- sprintf(" (%s of class %s)",
-                          sQuote(names(x)[ii]), sQuote(class(x_ii)[1]))
+                          sQuote(names(x)[ii]), sQuote(class(x[[ii]])[1]))
         ref <- ref_ii[[1]]
         break
       }
