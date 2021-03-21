@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-03-11]
+Version: 1.21.0-9000 [2021-03-21]
 
 SIGNIFICANT CHANGES:
 
@@ -47,6 +47,12 @@ NEW FEATURES:
    the 'workers' argument.
 
 BUG FIXES:
+
+ * When enabled, option 'future.globals.onReference' could falsely alert on
+   'Detected a non-exportable reference ('externalptr') in one of the globals
+   (<unknown>) used in the future expression' in globals, e.g. when using
+   'future.apply' or 'furrr' map-reduce functions when using a 'multisession'
+   backend.
 
  * Resolving a 'sequential' future without globals would result in internal
    several '...future.*' objects being written to the calling environment,

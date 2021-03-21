@@ -807,6 +807,12 @@ find_references <- function(x, first_only = FALSE) {
 #' 
 #' @keywords internal
 assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
+  ## Don't look for references in the 'where' attribute of Globals objects
+  if (inherits(x, "Globals")) {
+    attr(x, "where") <- NULL
+    attr(x, "class") <- NULL
+  }
+  
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return()
 
