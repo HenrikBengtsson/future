@@ -64,9 +64,9 @@ BUG FIXES:
    another was explicitly set by `plan()`.
 
  * Transparent futures no longer warns about 'local = FALSE' being deprecated.
-   Although 'local=FALSE' is being deprecated, it is still used internally by
-   'transparent' futures for a while longer.  Please do not use 'transparent'
-   futures in production code and never in a package.
+   Although 'local = FALSE' is being deprecated, it is still used internally
+   by 'transparent' futures for a while longer.  Please do not use
+   'transparent' futures in production code and never in a package.
 
  * remote() could produce an error on "object 'homogeneous' not found".
 
