@@ -238,7 +238,6 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
 
 ## Set future options based on environment variables
 update_package_options <- function(debug = FALSE) {
-
   update_package_option("future.demo.mandelbrot.region", mode = "integer", debug = debug)
   
   update_package_option("future.demo.mandelbrot.nrow", mode = "integer", debug = debug)
@@ -256,21 +255,22 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.globals.method", debug = debug)
   
   update_package_option("future.globals.resolve", mode = "logical", debug = debug)
-  update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
-  
+
+  ## Introduced future 1.22.0:
   update_package_option("future.lazy.assertOwner", mode = "logical", debug = debug)
 
   update_package_option("future.plan", debug = debug)
 
-  ## future.plan.disallow or future.psock.relay.immediate?!? /HB 2021-03-07
   update_package_option("future.plan.disallow", split = ",", debug = debug)
 
+  ## future.plan.relay.immediate or future.psock.relay.immediate?!? /HB 2021-03-07
   update_package_option("future.psock.relay.immediate", mode = "logical", debug = debug)
   
   update_package_option("future.relay.immediate", mode = "logical", debug = debug)
 
   update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
 
+  ## future 1.22.0:
   for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
     update_package_option(name, mode = "numeric", debug = debug)
   }
@@ -280,4 +280,9 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)
   update_package_option("future.wait.alpha", mode = "numeric", debug = debug)
+
+  ## SETTINGS USED FOR DEPRECATING FEATURES
+  ## future 1.22.0:
+  update_package_option("future.rng.onMisuse.backport", debug = debug)
+  update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
 }

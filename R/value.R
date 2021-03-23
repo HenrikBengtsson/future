@@ -64,12 +64,19 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
     ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
     ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
-    ## future.apply (<= 1.3.0) and furrr
-    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
-    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
-    ## doFuture w/ doRNG, e.g. %dorng%
-    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
-    if (!rng_ok) {
+    if (any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))) {
+      ## doFuture w/ doRNG, e.g. %dorng%
+    } else if (is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])) {
+      ## future.apply (<= 1.3.0) and furrr
+      fcn <- switch(getOption("future.rng.onMisuse.backport", "deprecated"),
+                    deprecated = .Deprecated, defunct    = .Defunct, identity)
+      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 1)")
+    } else if (is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])) {
+      ## future.apply (<= 1.3.0) and furrr
+      fcn <- switch(getOption("future.rng.onMisuse.backport", "deprecated"),
+                    deprecated = .Deprecated, defunct    = .Defunct, identity)
+      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 2)")
+    } else {
       onMisuse <- getOption("future.rng.onMisuse", "warning")
       if (onMisuse != "ignore") {
         if (onMisuse == "error") {
@@ -100,6 +107,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       }
     }
   }
+  
   future$.rng_checked <- TRUE
 
   ## Signal captured conditions?
