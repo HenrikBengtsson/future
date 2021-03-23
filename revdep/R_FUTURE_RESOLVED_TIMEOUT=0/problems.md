@@ -266,7 +266,7 @@ Run `revdep_details(, "brms")` for more info
 * GitHub: https://github.com/bachmannpatrick/CLVTools
 * Source code: https://github.com/cran/CLVTools
 * Date/Publication: 2020-08-26 20:10:02 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 82
 
 Run `revdep_details(, "CLVTools")` for more info
 
@@ -395,6 +395,29 @@ Run `revdep_details(, "dragon")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘htmltools’
+      All declared Imports should be used.
+    ```
+
+# drimmR
+
+<details>
+
+* Version: 1.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/drimmR
+* Date/Publication: 2021-03-22 10:00:03 UTC
+* Number of recursive dependencies: 119
+
+Run `revdep_details(, "drimmR")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Biostrings’ ‘stats’ ‘testthat’
       All declared Imports should be used.
     ```
 

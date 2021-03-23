@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2021-03-22                   |
+|date     |2021-03-23                   |
 
 # Dependencies
 
@@ -30,7 +30,7 @@
 |:----------------------------|:-------|:-----|:-------|:----|
 |[Signac](failures.md#signac) |1.1.1   |1     |        |1    |
 
-## All (167)
+## All (168)
 
 |package                                            |version   |error |warning |note |
 |:--------------------------------------------------|:---------|:-----|:-------|:----|
@@ -67,6 +67,7 @@
 |doFuture                                           |0.12.0    |      |        |     |
 |[dragon](problems.md#dragon)                       |1.1.0     |      |        |1    |
 |drake                                              |7.13.1    |      |        |     |
+|[drimmR](problems.md#drimmr)                       |1.0.0     |      |        |1    |
 |drtmle                                             |1.0.5     |      |        |     |
 |[easyalluvial](problems.md#easyalluvial)           |0.3.0     |      |        |2    |
 |[EFAtools](problems.md#efatools)                   |0.3.0     |      |        |2    |
