@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Back trace the expressions evaluated when an error was caught — backtrace" />
 <meta property="og:description" content="Back trace the expressions evaluated when an error was caught" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="https://future.futureverse.org/logo.png" />
 
 
 
@@ -64,6 +64,9 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+
+<!-- dependencies from examples -->
 
 
   
@@ -203,8 +206,9 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpClpFoQ/callr-fun-676231ceb86f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpCQ6B04/callr-fun-6d6758172169"), 
+#&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -230,7 +234,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -254,7 +258,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -289,8 +293,9 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpClpFoQ/callr-fun-676231ceb86f"), 
-#&gt;         list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c")
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpCQ6B04/callr-fun-6d6758172169"), 
+#&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -316,7 +321,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -340,7 +345,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -348,12 +353,14 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpClpFoQ/callr-fun-676231ceb86f"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv), file = "/tmp/hb/RtmpClpFoQ/callr-res-67624a31444c")
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpCQ6B04/callr-fun-6d6758172169"), 
+#&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
+#&gt;     quote = TRUE), file = "/tmp/hb/RtmpCQ6B04/callr-res-6d671200a32c")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpClpFoQ/callr-fun-676231ceb86f"), 
-#&gt;     list(envir = .GlobalEnv)), envir = .GlobalEnv)
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpCQ6B04/callr-fun-6d6758172169"), 
+#&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
+#&gt;     quote = TRUE)
 #&gt; 
 #&gt; [[11]]
 #&gt; (function (what, args, quote = FALSE, envir = parent.frame()) 
@@ -363,18 +370,21 @@
 #&gt;     if (quote) 
 #&gt;         args &lt;- lapply(args, enquote)
 #&gt;     .Internal(do.call(what, args, envir))
-#&gt; })(function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
+#&gt; })(base::quote(function (..., crayon_enabled, crayon_colors, 
+#&gt;     pkgdown_internet) 
 #&gt; {
 #&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; }, list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpClpFoQ/future", dst_path = "/tmp/hb/RtmpClpFoQ/future/docs", 
-#&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(), 
+#&gt; }), base::quote(list(pkg = list(package = "future", version = "1.21.0-9000", 
+#&gt;     src_path = "/tmp/hb/RtmpCQ6B04/future", dst_path = "/tmp/hb/RtmpCQ6B04/future/docs", 
+#&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
+#&gt;         url = "https://future.futureverse.org", home = list(links = list(
+#&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/")))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
-#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL), 
-#&gt;     repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
+#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
+#&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
 #&gt;         source = "https://github.com/HenrikBengtsson/future/blob/master/", 
 #&gt;         issue = "https://github.com/HenrikBengtsson/future/issues/", 
 #&gt;         user = "https://github.com/")), development = list(destination = "dev", 
@@ -2725,11 +2735,12 @@
 #&gt;     "A Future for R: How the Future Framework is Validated"), 
 #&gt;         description = c(NA_character_, NA_character_, NA_character_, 
 #&gt;         NA_character_, NA_character_, NA_character_, NA_character_, 
-#&gt;         NA_character_, NA_character_)), bs_version = 3), examples = TRUE, 
-#&gt;     run_dont_run = FALSE, seed = 1014, lazy = FALSE, override = list(), 
-#&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
-#&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE), 
-#&gt;     envir = &lt;environment&gt;)
+#&gt;         NA_character_, NA_character_)), bs_version = 3, has_logo = TRUE), 
+#&gt;     examples = TRUE, run_dont_run = FALSE, seed = 1014, lazy = FALSE, 
+#&gt;     override = list(), install = FALSE, preview = FALSE, new_process = FALSE, 
+#&gt;     devel = FALSE, crayon_enabled = TRUE, crayon_colors = 256, 
+#&gt;     pkgdown_internet = TRUE)), envir = base::quote(&lt;environment&gt;), 
+#&gt;     quote = base::quote(TRUE))
 #&gt; 
 #&gt; [[12]]
 #&gt; (function (..., crayon_enabled, crayon_colors, pkgdown_internet) 
@@ -2737,12 +2748,15 @@
 #&gt;     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, 
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
-#&gt; })(pkg = list(package = "future", version = "1.21.0-9000", src_path = "/tmp/hb/RtmpClpFoQ/future", 
-#&gt;     dst_path = "/tmp/hb/RtmpClpFoQ/future/docs", install_metadata = FALSE, 
-#&gt;     desc = &lt;environment&gt;, meta = list(), figures = list(dev = "ragg::agg_png", 
-#&gt;         dpi = 96L, dev.args = list(), fig.ext = "png", fig.width = 7.29166666666667, 
-#&gt;         fig.height = NULL, fig.retina = 2L, fig.asp = 0.618046971569839, 
-#&gt;         bg = NULL), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
+#&gt; })(pkg = base::quote(list(package = "future", version = "1.21.0-9000", 
+#&gt;     src_path = "/tmp/hb/RtmpCQ6B04/future", dst_path = "/tmp/hb/RtmpCQ6B04/future/docs", 
+#&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
+#&gt;         url = "https://future.futureverse.org", home = list(links = list(
+#&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/")))), 
+#&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
+#&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
+#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
+#&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
 #&gt;         source = "https://github.com/HenrikBengtsson/future/blob/master/", 
 #&gt;         issue = "https://github.com/HenrikBengtsson/future/issues/", 
 #&gt;         user = "https://github.com/")), development = list(destination = "dev", 
@@ -5093,10 +5107,13 @@
 #&gt;     "A Future for R: How the Future Framework is Validated"), 
 #&gt;         description = c(NA_character_, NA_character_, NA_character_, 
 #&gt;         NA_character_, NA_character_, NA_character_, NA_character_, 
-#&gt;         NA_character_, NA_character_)), bs_version = 3), examples = TRUE, 
-#&gt;     run_dont_run = FALSE, seed = 1014, lazy = FALSE, override = list(), 
-#&gt;     install = FALSE, preview = FALSE, new_process = FALSE, devel = FALSE, 
-#&gt;     crayon_enabled = TRUE, crayon_colors = 256, pkgdown_internet = TRUE)
+#&gt;         NA_character_, NA_character_)), bs_version = 3, has_logo = TRUE)), 
+#&gt;     examples = base::quote(TRUE), run_dont_run = base::quote(FALSE), 
+#&gt;     seed = base::quote(1014), lazy = base::quote(FALSE), override = base::quote(list()), 
+#&gt;     install = base::quote(FALSE), preview = base::quote(FALSE), 
+#&gt;     new_process = base::quote(FALSE), devel = base::quote(FALSE), 
+#&gt;     crayon_enabled = base::quote(TRUE), crayon_colors = base::quote(256), 
+#&gt;     pkgdown_internet = base::quote(TRUE))
 #&gt; 
 #&gt; [[13]]
 #&gt; pkgdown::build_site(...)
@@ -5138,10 +5155,10 @@
 #&gt; 
 #&gt; [[22]]
 #&gt; downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, 
-#&gt;     env = child_env(env))
+#&gt;     env = child_env(env), output_handler = evaluate::new_output_handler(value = pkgdown_print))
 #&gt; 
 #&gt; [[23]]
-#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE)
+#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)
 #&gt; 
 #&gt; [[24]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
@@ -5254,7 +5271,7 @@
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9000.</p>
 </div>
 
       </footer>
