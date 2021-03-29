@@ -4,3 +4,7 @@ home:
   links:
   - text: The Futureverse Project
     href: https://www.futureverse.org/
+
+template:
+  params:
+    ganalytics: G-SB3EQSD9FR
