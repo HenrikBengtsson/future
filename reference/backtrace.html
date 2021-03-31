@@ -203,7 +203,7 @@
   </ul>
 </li>
 <li>
-  <a href="https://cloud.r-project.org/package=progressr">
+  <a href="https://cloud.r-project.org/package=future">
     <span class="fab fa-r-project"></span>
      
   </a>
@@ -273,9 +273,9 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpshPSGH/callr-fun-3e4053e9b3eb"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDp0iQd/callr-fun-614854d342da"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -301,7 +301,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -325,7 +325,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -360,9 +360,9 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpshPSGH/callr-fun-3e4053e9b3eb"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDp0iQd/callr-fun-614854d342da"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -388,7 +388,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -412,7 +412,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -420,12 +420,12 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpshPSGH/callr-fun-3e4053e9b3eb"), 
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDp0iQd/callr-fun-614854d342da"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;     quote = TRUE), file = "/tmp/hb/RtmpshPSGH/callr-res-3e407dd44681")
+#&gt;     quote = TRUE), file = "/tmp/hb/RtmpDp0iQd/callr-res-61485e783f58")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpshPSGH/callr-fun-3e4053e9b3eb"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpDp0iQd/callr-fun-614854d342da"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
 #&gt;     quote = TRUE)
 #&gt; 
@@ -444,7 +444,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }), base::quote(list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpshPSGH/future", dst_path = "/tmp/hb/RtmpshPSGH/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmpDp0iQd/future", dst_path = "/tmp/hb/RtmpDp0iQd/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
@@ -464,7 +464,7 @@
 #&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
-#&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=progressr"))), 
+#&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
 #&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
@@ -2834,7 +2834,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = base::quote(list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpshPSGH/future", dst_path = "/tmp/hb/RtmpshPSGH/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmpDp0iQd/future", dst_path = "/tmp/hb/RtmpDp0iQd/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
@@ -2854,7 +2854,7 @@
 #&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
-#&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=progressr"))), 
+#&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
 #&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
