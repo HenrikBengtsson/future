@@ -157,6 +157,51 @@
      
   </a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Packages
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="https://BiocParallel.FutureParam.futureverse.org">BiocParallel.FutureParam</a>
+    </li>
+    <li>
+      <a href="https://doFuture.futureverse.org">doFuture</a>
+    </li>
+    <li>
+      <a href="https://davisvaughan.github.io/furrr">furrr</a>
+    </li>
+    <li>
+      <a href="https://future.futureverse.org">future</a>
+    </li>
+    <li>
+      <a href="https://future.apply.futureverse.org">future.apply</a>
+    </li>
+    <li>
+      <a href="https://future.batchtools.futureverse.org">future.batchtools</a>
+    </li>
+    <li>
+      <a href="https://future.callr.futureverse.org">future.callr</a>
+    </li>
+    <li>
+      <a href="https://future.tests.futureverse.org">future.tests</a>
+    </li>
+    <li>
+      <a href="https://globals.futureverse.org">globals</a>
+    </li>
+    <li>
+      <a href="https://listenv.futureverse.org">listenv</a>
+    </li>
+    <li>
+      <a href="https://parallelly.futureverse.org">parallelly</a>
+    </li>
+    <li>
+      <a href="https://progressr.futureverse.org">progressr</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="https://github.com/HenrikBengtsson/future/">
     <span class="fab fa-github fa-lg"></span>
@@ -222,9 +267,9 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpLH7sA1/callr-fun-47cc38e6e526"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpc1IzAU/callr-fun-caa114a9ca0"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6")
+#&gt;         quote = TRUE), file = "/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -250,7 +295,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -274,7 +319,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -309,9 +354,9 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpLH7sA1/callr-fun-47cc38e6e526"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpc1IzAU/callr-fun-caa114a9ca0"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6")
+#&gt;         quote = TRUE), file = "/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -337,7 +382,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -361,7 +406,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -369,12 +414,12 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpLH7sA1/callr-fun-47cc38e6e526"), 
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpc1IzAU/callr-fun-caa114a9ca0"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;     quote = TRUE), file = "/tmp/hb/RtmpLH7sA1/callr-res-47cc7ffb9a6")
+#&gt;     quote = TRUE), file = "/tmp/hb/Rtmpc1IzAU/callr-res-caa29f661f4")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpLH7sA1/callr-fun-47cc38e6e526"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/Rtmpc1IzAU/callr-fun-caa114a9ca0"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
 #&gt;     quote = TRUE)
 #&gt; 
@@ -393,15 +438,28 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }), base::quote(list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpLH7sA1/future", dst_path = "/tmp/hb/RtmpLH7sA1/future/docs", 
+#&gt;     src_path = "/tmp/hb/Rtmpc1IzAU/future", dst_path = "/tmp/hb/Rtmpc1IzAU/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
 #&gt;         navbar = list(structure = list(right = c("futureverse", 
-#&gt;         "github")), components = list(futureverse = list(icon = "fas fa-fast-backward", 
-#&gt;             href = "https://www.futureverse.org/"))), template = list(
-#&gt;             params = list(ganalytics = "G-SB3EQSD9FR"))), figures = list(
-#&gt;         dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
+#&gt;         "pkgs", "github")), components = list(futureverse = list(
+#&gt;             icon = "fas fa-fast-backward", href = "https://www.futureverse.org/"), 
+#&gt;             pkgs = list(text = "Packages", menu = list(list(text = "BiocParallel.FutureParam", 
+#&gt;                 href = "https://BiocParallel.FutureParam.futureverse.org"), 
+#&gt;                 list(text = "doFuture", href = "https://doFuture.futureverse.org"), 
+#&gt;                 list(text = "furrr", href = "https://davisvaughan.github.io/furrr"), 
+#&gt;                 list(text = "future", href = "https://future.futureverse.org"), 
+#&gt;                 list(text = "future.apply", href = "https://future.apply.futureverse.org"), 
+#&gt;                 list(text = "future.batchtools", href = "https://future.batchtools.futureverse.org"), 
+#&gt;                 list(text = "future.callr", href = "https://future.callr.futureverse.org"), 
+#&gt;                 list(text = "future.tests", href = "https://future.tests.futureverse.org"), 
+#&gt;                 list(text = "globals", href = "https://globals.futureverse.org"), 
+#&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
+#&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
+#&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))))), 
+#&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
+#&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
 #&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
@@ -2769,15 +2827,28 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = base::quote(list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpLH7sA1/future", dst_path = "/tmp/hb/RtmpLH7sA1/future/docs", 
+#&gt;     src_path = "/tmp/hb/Rtmpc1IzAU/future", dst_path = "/tmp/hb/Rtmpc1IzAU/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
 #&gt;         navbar = list(structure = list(right = c("futureverse", 
-#&gt;         "github")), components = list(futureverse = list(icon = "fas fa-fast-backward", 
-#&gt;             href = "https://www.futureverse.org/"))), template = list(
-#&gt;             params = list(ganalytics = "G-SB3EQSD9FR"))), figures = list(
-#&gt;         dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
+#&gt;         "pkgs", "github")), components = list(futureverse = list(
+#&gt;             icon = "fas fa-fast-backward", href = "https://www.futureverse.org/"), 
+#&gt;             pkgs = list(text = "Packages", menu = list(list(text = "BiocParallel.FutureParam", 
+#&gt;                 href = "https://BiocParallel.FutureParam.futureverse.org"), 
+#&gt;                 list(text = "doFuture", href = "https://doFuture.futureverse.org"), 
+#&gt;                 list(text = "furrr", href = "https://davisvaughan.github.io/furrr"), 
+#&gt;                 list(text = "future", href = "https://future.futureverse.org"), 
+#&gt;                 list(text = "future.apply", href = "https://future.apply.futureverse.org"), 
+#&gt;                 list(text = "future.batchtools", href = "https://future.batchtools.futureverse.org"), 
+#&gt;                 list(text = "future.callr", href = "https://future.callr.futureverse.org"), 
+#&gt;                 list(text = "future.tests", href = "https://future.tests.futureverse.org"), 
+#&gt;                 list(text = "globals", href = "https://globals.futureverse.org"), 
+#&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
+#&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
+#&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))))), 
+#&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
+#&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
 #&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
