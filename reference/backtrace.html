@@ -44,6 +44,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 
 <meta property="og:title" content="Back trace the expressions evaluated when an error was caught — backtrace" />
@@ -216,6 +222,12 @@
 </li>
       </ul>
       
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -273,9 +285,9 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpwPGM0H/callr-fun-3a19bb1e04"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpzvfNWC/callr-fun-5c4c1d5358af"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -301,7 +313,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -325,7 +337,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -360,9 +372,9 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpwPGM0H/callr-fun-3a19bb1e04"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpzvfNWC/callr-fun-5c4c1d5358af"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -388,7 +400,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -412,7 +424,7 @@
 #&gt;         if (inherits(e, "rlib_error")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -420,12 +432,12 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpwPGM0H/callr-fun-3a19bb1e04"), 
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpzvfNWC/callr-fun-5c4c1d5358af"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;     quote = TRUE), file = "/tmp/hb/RtmpwPGM0H/callr-res-3a14137200c")
+#&gt;     quote = TRUE), file = "/tmp/hb/RtmpzvfNWC/callr-res-5c4c4cc5c457")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpwPGM0H/callr-fun-3a19bb1e04"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpzvfNWC/callr-fun-5c4c1d5358af"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
 #&gt;     quote = TRUE)
 #&gt; 
@@ -444,7 +456,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }), base::quote(list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpwPGM0H/future", dst_path = "/tmp/hb/RtmpwPGM0H/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmpzvfNWC/future", dst_path = "/tmp/hb/RtmpzvfNWC/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
@@ -465,7 +477,8 @@
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
 #&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
-#&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
+#&gt;         template = list(params = list(docsearch = list(api_key = "aa6e02fc501886fb0f7c91ac4e300456", 
+#&gt;             index_name = "futureverse"), ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
@@ -634,8 +647,8 @@
 #&gt;         FutureCondition.Rd = "A condition (message, warning, or error) that occurred while orchestrating a future", 
 #&gt;         FutureGlobals.Rd = "A representation of a set of globals used with futures", 
 #&gt;         FutureResult.Rd = "Results from resolving a future", 
-#&gt;         `MulticoreFuture-class.Rd` = "An multicore future is a future whose value will be resolved asynchronously in a parallel process", 
-#&gt;         `MultiprocessFuture-class.Rd` = "An multiprocess future is a future whose value will be resolved asynchronously in a parallel process", 
+#&gt;         `MulticoreFuture-class.Rd` = "A multicore future is a future whose value will be resolved asynchronously in a parallel process", 
+#&gt;         `MultiprocessFuture-class.Rd` = "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process", 
 #&gt;         `UniprocessFuture-class.Rd` = "An uniprocess future is a future whose value will be resolved synchronously in the current process", 
 #&gt;         as_lecyer_cmrg_seed.Rd = "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state", 
 #&gt;         backtrace.Rd = "Back trace the expressions evaluated when an error was caught", 
@@ -944,7 +957,7 @@
 #&gt;             "% Generated by roxygen2: do not edit by hand", "\n", 
 #&gt;             "% Please edit documentation in R/MulticoreFuture-class.R", 
 #&gt;             "\n", list("MulticoreFuture-class"), "\n", list("MulticoreFuture-class"), 
-#&gt;             "\n", list("MulticoreFuture"), "\n", list("An multicore future is a future whose value will be resolved asynchronously in a parallel process"), 
+#&gt;             "\n", list("MulticoreFuture"), "\n", list("A multicore future is a future whose value will be resolved asynchronously in a parallel process"), 
 #&gt;             "\n", list("\n", "MulticoreFuture(\n", "  expr = NULL,\n", 
 #&gt;                 "  substitute = TRUE,\n", "  envir = parent.frame(),\n", 
 #&gt;                 "  globals = TRUE,\n", "  lazy = FALSE,\n", "  ...\n", 
@@ -964,7 +977,7 @@
 #&gt;                 "\n", "\n", list(list("..."), list("Additional named elements passed to ", 
 #&gt;                   list(list("Future()")), ".")), "\n"), "\n", 
 #&gt;             list("\n", "An object of class ", list("MulticoreFuture"), 
-#&gt;                 ".\n"), "\n", list("\n", "An multicore future is a future whose value will be resolved asynchronously in a parallel process\n"), 
+#&gt;                 ".\n"), "\n", list("\n", "A multicore future is a future whose value will be resolved asynchronously in a parallel process\n"), 
 #&gt;             "\n", list("\n", "To evaluate an expression using \"multicore future\", see function\n", 
 #&gt;                 list(list("multicore()")), ".\n"), "\n", list(
 #&gt;                 "internal"), "\n"), `MultiprocessFuture-class.Rd` = list(
@@ -972,7 +985,7 @@
 #&gt;             "% Please edit documentation in R/MultiprocessFuture-class.R", 
 #&gt;             "\n", list("MultiprocessFuture-class"), "\n", list(
 #&gt;                 "MultiprocessFuture-class"), "\n", list("MultiprocessFuture"), 
-#&gt;             "\n", list("An multiprocess future is a future whose value will be resolved asynchronously in a parallel process"), 
+#&gt;             "\n", list("A multiprocess future is a future whose value will be resolved asynchronously in a parallel process"), 
 #&gt;             "\n", list("\n", "MultiprocessFuture(expr = NULL, substitute = TRUE, envir = parent.frame(), ...)\n"), 
 #&gt;             "\n", list("\n", list(list("expr"), list("An ", list(), 
 #&gt;                 " ", list("expression"), ".")), "\n", "\n", list(
@@ -984,7 +997,7 @@
 #&gt;                 "\n", "\n", list(list(list()), list("Additional named elements passed to ", 
 #&gt;                   list(list("Future()")), ".")), "\n"), "\n", 
 #&gt;             list("\n", "An object of class ", list("MultiprocessFuture"), 
-#&gt;                 ".\n"), "\n", list("\n", "An multiprocess future is a future whose value will be resolved asynchronously in a parallel process\n"), 
+#&gt;                 ".\n"), "\n", list("\n", "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process\n"), 
 #&gt;             "\n", list("\n", "To evaluate an expression using \"multiprocess future\", see function\n", 
 #&gt;                 list(list("multiprocess()")), ".\n"), "\n", list(
 #&gt;                 "internal"), "\n"), `UniprocessFuture-class.Rd` = list(
@@ -2834,7 +2847,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = base::quote(list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpwPGM0H/future", dst_path = "/tmp/hb/RtmpwPGM0H/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmpzvfNWC/future", dst_path = "/tmp/hb/RtmpzvfNWC/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"))), 
@@ -2855,7 +2868,8 @@
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
 #&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
-#&gt;         template = list(params = list(ganalytics = "G-SB3EQSD9FR"))), 
+#&gt;         template = list(params = list(docsearch = list(api_key = "aa6e02fc501886fb0f7c91ac4e300456", 
+#&gt;             index_name = "futureverse"), ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
 #&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
@@ -3024,8 +3038,8 @@
 #&gt;         FutureCondition.Rd = "A condition (message, warning, or error) that occurred while orchestrating a future", 
 #&gt;         FutureGlobals.Rd = "A representation of a set of globals used with futures", 
 #&gt;         FutureResult.Rd = "Results from resolving a future", 
-#&gt;         `MulticoreFuture-class.Rd` = "An multicore future is a future whose value will be resolved asynchronously in a parallel process", 
-#&gt;         `MultiprocessFuture-class.Rd` = "An multiprocess future is a future whose value will be resolved asynchronously in a parallel process", 
+#&gt;         `MulticoreFuture-class.Rd` = "A multicore future is a future whose value will be resolved asynchronously in a parallel process", 
+#&gt;         `MultiprocessFuture-class.Rd` = "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process", 
 #&gt;         `UniprocessFuture-class.Rd` = "An uniprocess future is a future whose value will be resolved synchronously in the current process", 
 #&gt;         as_lecyer_cmrg_seed.Rd = "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state", 
 #&gt;         backtrace.Rd = "Back trace the expressions evaluated when an error was caught", 
@@ -3334,7 +3348,7 @@
 #&gt;             "% Generated by roxygen2: do not edit by hand", "\n", 
 #&gt;             "% Please edit documentation in R/MulticoreFuture-class.R", 
 #&gt;             "\n", list("MulticoreFuture-class"), "\n", list("MulticoreFuture-class"), 
-#&gt;             "\n", list("MulticoreFuture"), "\n", list("An multicore future is a future whose value will be resolved asynchronously in a parallel process"), 
+#&gt;             "\n", list("MulticoreFuture"), "\n", list("A multicore future is a future whose value will be resolved asynchronously in a parallel process"), 
 #&gt;             "\n", list("\n", "MulticoreFuture(\n", "  expr = NULL,\n", 
 #&gt;                 "  substitute = TRUE,\n", "  envir = parent.frame(),\n", 
 #&gt;                 "  globals = TRUE,\n", "  lazy = FALSE,\n", "  ...\n", 
@@ -3354,7 +3368,7 @@
 #&gt;                 "\n", "\n", list(list("..."), list("Additional named elements passed to ", 
 #&gt;                   list(list("Future()")), ".")), "\n"), "\n", 
 #&gt;             list("\n", "An object of class ", list("MulticoreFuture"), 
-#&gt;                 ".\n"), "\n", list("\n", "An multicore future is a future whose value will be resolved asynchronously in a parallel process\n"), 
+#&gt;                 ".\n"), "\n", list("\n", "A multicore future is a future whose value will be resolved asynchronously in a parallel process\n"), 
 #&gt;             "\n", list("\n", "To evaluate an expression using \"multicore future\", see function\n", 
 #&gt;                 list(list("multicore()")), ".\n"), "\n", list(
 #&gt;                 "internal"), "\n"), `MultiprocessFuture-class.Rd` = list(
@@ -3362,7 +3376,7 @@
 #&gt;             "% Please edit documentation in R/MultiprocessFuture-class.R", 
 #&gt;             "\n", list("MultiprocessFuture-class"), "\n", list(
 #&gt;                 "MultiprocessFuture-class"), "\n", list("MultiprocessFuture"), 
-#&gt;             "\n", list("An multiprocess future is a future whose value will be resolved asynchronously in a parallel process"), 
+#&gt;             "\n", list("A multiprocess future is a future whose value will be resolved asynchronously in a parallel process"), 
 #&gt;             "\n", list("\n", "MultiprocessFuture(expr = NULL, substitute = TRUE, envir = parent.frame(), ...)\n"), 
 #&gt;             "\n", list("\n", list(list("expr"), list("An ", list(), 
 #&gt;                 " ", list("expression"), ".")), "\n", "\n", list(
@@ -3374,7 +3388,7 @@
 #&gt;                 "\n", "\n", list(list(list()), list("Additional named elements passed to ", 
 #&gt;                   list(list("Future()")), ".")), "\n"), "\n", 
 #&gt;             list("\n", "An object of class ", list("MultiprocessFuture"), 
-#&gt;                 ".\n"), "\n", list("\n", "An multiprocess future is a future whose value will be resolved asynchronously in a parallel process\n"), 
+#&gt;                 ".\n"), "\n", list("\n", "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process\n"), 
 #&gt;             "\n", list("\n", "To evaluate an expression using \"multiprocess future\", see function\n", 
 #&gt;                 list(list("multiprocess()")), ".\n"), "\n", list(
 #&gt;                 "internal"), "\n"), `UniprocessFuture-class.Rd` = list(
@@ -5381,6 +5395,23 @@
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'aa6e02fc501886fb0f7c91ac4e300456',
+    indexName: 'futureverse',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   

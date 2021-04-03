@@ -44,6 +44,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 
 <meta property="og:title" content="Get the future of a future variable — futureOf" />
@@ -217,6 +223,12 @@ or indirectly via future()." />
 </li>
       </ul>
       
+      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -293,7 +305,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -302,7 +314,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>b</span> <span class='op'>%&lt;-%</span> <span class='op'>{</span> <span class='fl'>2</span> <span class='op'>}</span>
 
@@ -317,7 +329,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -326,7 +338,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='co'>## All futures</span>
 <span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='op'>)</span>
@@ -341,7 +353,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -350,7 +362,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; 
 #&gt; $b
@@ -363,7 +375,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -372,7 +384,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; 
 #&gt; $f
@@ -385,7 +397,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -394,7 +406,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; </div><div class='input'>
 
@@ -413,7 +425,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -422,7 +434,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>f2</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='va'>c</span>, envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
@@ -435,7 +447,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -444,7 +456,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>f3</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='st'>"c"</span>, envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>f3</span><span class='op'>)</span>
@@ -457,7 +469,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -466,7 +478,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span>envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fs</span><span class='op'>)</span>
@@ -480,7 +492,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x5562aa9a3a00
+#&gt; Environment: 0x55b3540e6228
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -489,7 +501,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: 2b8979f2-cc9d-2a21-629f-7f4645646dcb
+#&gt; Owner process: a8c895b5-52f6-72ae-d352-2aa832ef68fd
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; </div></pre>
   </div>
@@ -514,6 +526,23 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
    </div>
 
   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'aa6e02fc501886fb0f7c91ac4e300456',
+    indexName: 'futureverse',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
 
   
