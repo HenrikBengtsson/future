@@ -1,4 +1,4 @@
-#' An multicore future is a future whose value will be resolved asynchronously in a parallel process
+#' A multicore future is a future whose value will be resolved asynchronously in a parallel process
 #'
 #' @inheritParams MultiprocessFuture-class
 #' @inheritParams Future-class
