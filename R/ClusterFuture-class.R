@@ -426,15 +426,19 @@ receiveMessageFromWorker <- function(future, ...) {
       if (localhost && is.numeric(pid)) {
         alive <- pid_exists(pid)
         if (is.na(alive)) {
-          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not."
+          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not"
         } else if (alive) {
-          msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive."
+          msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive"
         } else {
-          msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive."
+          msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive"
         }
         postmortem$alive <- msg2
       }
     }
+
+    ## (c) Any non-exportable globals?
+    msg <- assert_no_references(future, action = "string")
+    if (is.character(msg)) postmortem$non_exportable <- msg
 
     postmortem <- unlist(postmortem, use.names = FALSE)
     if (!is.null(postmortem)) {

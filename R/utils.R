@@ -759,7 +759,7 @@ reference_filters <- local({
 #' @param first_only If `TRUE`, only the first reference is returned,
 #' otherwise all references.
 #'
-#' @return `find_references()` returns a list of one or more references
+#' @return `find_references()` returns a list of zero or more references
 #' identified.
 #' 
 #' @keywords internal
@@ -814,7 +814,7 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   }
   
   ref <- find_references(x, first_only = TRUE)
-  if (length(ref) == 0) return()
+  if (length(ref) == 0) return(NULL)
 
   action <- match.arg(action, choices = c("error", "warning", "message", "string"))
   

@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-03-21]
+Version: 1.21.0-9000 [2021-04-03]
 
 SIGNIFICANT CHANGES:
 
@@ -45,6 +45,9 @@ NEW FEATURES:
    'homogeneous = TRUE'.  The new default will result in the 'parallelly'
    package trying to infer whether TRUE or FALSE should be used based on
    the 'workers' argument.
+
+ * Now multicore and cluster futures include non-exportable globals as part
+   of the post-mortem analysis report in case results could not be retrieved.
 
 BUG FIXES:
 

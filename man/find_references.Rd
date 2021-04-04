@@ -18,7 +18,7 @@ otherwise all references.}
 \item{action}{Type of action to take if a reference is found.}
 }
 \value{
-\code{find_references()} returns a list of one or more references
+\code{find_references()} returns a list of zero or more references
 identified.
 
 If a reference is detected, an informative error, warning, message,
