@@ -317,32 +317,11 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
       sizes <- unlist(sizes, use.names = TRUE)
-      total_size <- sum(sizes, na.rm = TRUE)
-      attr(globals, "total_size") <- total_size
-      if (debug) mdebugf("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
-  
-      if (total_size > maxSize) {
-        n <- length(sizes)
-        o <- order(sizes, decreasing = TRUE)[1:3]
-        o <- o[is.finite(o)]
-        sizes <- sizes[o]
-        classes <- lapply(globals[o], FUN = mode)
-        classes <- unlist(classes, use.names = FALSE)
-        largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-        msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSize))
-        if (n == 1) {
-          fmt <- "%s There is one global: %s."
-        } else if (n == 2) {
-          fmt <- "%s There are two globals: %s."
-        } else if (n == 3) {
-          fmt <- "%s There are three globals: %s."
-        } else {
-          fmt <- "%s The three largest globals are %s."
-        }
-        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse = " and "))
-        if (debug) mdebug(msg)
-        stop(msg)
-      } ## if (total_size > ...)
+      msg <- summarize_size_of_globals(globals, sizes = sizes,
+                                       maxSize = maxSize, exprOrg = exprOrg,
+                                       debug = debug)
+      if (debug) mdebug(msg)
+      if (sum(sizes, na.rm = TRUE) > maxSize) stop(msg)
     }
   } ## if (length(globals) > 0)
 
@@ -386,3 +365,53 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   
   list(expr = expr, globals = globals, packages = pkgs)
 } ## getGlobalsAndPackages()
+
+
+
+summarize_size_of_globals <- function(globals, sizes = NULL, maxSize = NULL, exprOrg = NULL, debug = FALSE) {
+  if (length(globals) == 0L) return(NULL)
+
+  ## Get the size of the globals
+  if (is.null(sizes)) {
+    sizes <- lapply(globals, FUN = objectSize)
+    sizes <- unlist(sizes, use.names = TRUE)
+  }
+  total_size <- sum(sizes, na.rm = TRUE)
+  if (debug) {
+    mdebugf("The total size of the %d globals is %s (%s bytes)",
+            length(globals), asIEC(total_size), total_size)
+  }
+  
+  n <- length(sizes)
+  o <- order(sizes, decreasing = TRUE)[1:3]
+  o <- o[is.finite(o)]
+  sizes <- sizes[o]
+  classes <- lapply(globals[o], FUN = mode)
+  classes <- unlist(classes, use.names = FALSE)
+  largest <- sprintf("%s (%s of class %s)",
+                     sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
+
+  if (is.null(exprOrg)) {
+    msg <- sprintf("The total size of the %d globals exported is %s.", length(globals), asIEC(total_size))
+  } else {
+    msg <- sprintf("The total size of the %d globals exported for future expression (%s) is %s.", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size))
+  }
+
+  if (!is.null(maxSize)) {
+    msg <- sprintf("%s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", msg, asIEC(maxSize))
+  }
+
+  if (n == 1) {
+    fmt <- "%s There is one global: %s"
+  } else if (n == 2) {
+    fmt <- "%s There are two globals: %s"
+  } else if (n == 3) {
+    fmt <- "%s There are three globals: %s"
+  } else {
+    fmt <- "%s The three largest globals are %s"
+  }
+  
+  msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse = " and "))
+  
+  msg
+} # summarize_size_of_globals()

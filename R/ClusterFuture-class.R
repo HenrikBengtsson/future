@@ -437,8 +437,10 @@ receiveMessageFromWorker <- function(future, ...) {
     }
 
     ## (c) Any non-exportable globals?
-    msg <- assert_no_references(future, action = "string")
-    if (is.character(msg)) postmortem$non_exportable <- msg
+    postmortem$non_exportable <- assert_no_references(future, action = "string")
+
+    ## (d) Size of globals
+    postmortem$global_sizes <- summarize_size_of_globals(globals(future))
 
     postmortem <- unlist(postmortem, use.names = FALSE)
     if (!is.null(postmortem)) {

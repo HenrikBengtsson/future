@@ -46,8 +46,9 @@ NEW FEATURES:
    package trying to infer whether TRUE or FALSE should be used based on
    the 'workers' argument.
 
- * Now multicore and cluster futures include non-exportable globals as part
-   of the post-mortem analysis report in case results could not be retrieved.
+ * Now the the post-mortem analysis report of multicore and cluster futures
+   in case their results could not be retrieved include information on
+   globals and their sizes, and if some of them are non-exportable.
 
 BUG FIXES:
 
