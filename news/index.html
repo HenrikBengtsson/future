@@ -267,6 +267,7 @@
 <ul>
 <li><p>In addition to specify which condition classes to be captured and relayed, it is now possible to also specify condition classes to be ignored. For example, conditions = structure(“condition”, exclude = “message”) captures all conditions but message conditions.</p></li>
 <li><p>Now cluster futures use ‘homogeneous = NULL’ as the default instead of ‘homogeneous = TRUE’. The new default will result in the ‘parallelly’ package trying to infer whether TRUE or FALSE should be used based on the ‘workers’ argument.</p></li>
+<li><p>Now the the post-mortem analysis report of multicore and cluster futures in case their results could not be retrieved include information on globals and their sizes, and if some of them are non-exportable.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">

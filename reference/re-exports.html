@@ -258,18 +258,18 @@ are also useful outside of the <span class="pkg">future</span> framework.</p>
 
     
 <ul>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/as.cluster.html'>parallelly::as.cluster()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/autoStopCluster.html'>parallelly::autoStopCluster()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/availableCores.html'>parallelly::availableCores()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/availableWorkers.html'>parallelly::availableWorkers()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/makeClusterMPI.html'>parallelly::makeClusterMPI()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/makeClusterPSOCK.html'>parallelly::makeClusterPSOCK()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/makeClusterPSOCK.html'>parallelly::makeNodePSOCK()</a></code></p></li>
-<li><p><code><a href='https://rdrr.io/pkg/parallelly/man/supportsMulticore.html'>parallelly::supportsMulticore()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/as.cluster.html'>parallelly::as.cluster()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/autoStopCluster.html'>parallelly::autoStopCluster()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/availableCores.html'>parallelly::availableCores()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/availableWorkers.html'>parallelly::availableWorkers()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/makeClusterMPI.html'>parallelly::makeClusterMPI()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/makeClusterPSOCK.html'>parallelly::makeClusterPSOCK()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/makeClusterPSOCK.html'>parallelly::makeNodePSOCK()</a></code></p></li>
+<li><p><code><a href='https://parallelly.futureverse.org/reference/supportsMulticore.html'>parallelly::supportsMulticore()</a></code></p></li>
 </ul>
 
 <p>For backward-compatible reasons, these functions remain available as
-exact copies also from this package (as re-exports).  For example,<div class="r"></p><pre><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'>parallelly</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/parallelly/man/makeClusterPSOCK.html'>makeClusterPSOCK</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
+exact copies also from this package (as re-exports).  For example,<div class="r"></p><pre><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'>parallelly</span><span class='fu'>::</span><span class='fu'><a href='https://parallelly.futureverse.org/reference/makeClusterPSOCK.html'>makeClusterPSOCK</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
 </pre><p></div></p>
 <p>can still be accessed as:<div class="r"></p><pre><span class='va'>cl</span> <span class='op'>&lt;-</span> <span class='fu'>future</span><span class='fu'>::</span><span class='fu'>makeClusterPSOCK</span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span>
 </pre><p></div></p>

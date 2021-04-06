@@ -291,7 +291,7 @@ To avoid this, use <code><a href='plan.html'>plan(multisession, ..., rscript_lib
 created, i.e. when <code><a href='plan.html'>plan(multisession)</a></code> is called.  Any changes to
 <code><a href='https://rdrr.io/r/base/libPaths.html'>.libPaths()</a></code> in the main R session after the workers have been created
 will have no effect.</em>
-This is passed down as-is to <code><a href='https://rdrr.io/pkg/parallelly/man/makeClusterPSOCK.html'>parallelly::makeClusterPSOCK()</a></code>.</p></td>
+This is passed down as-is to <code><a href='https://parallelly.futureverse.org/reference/makeClusterPSOCK.html'>parallelly::makeClusterPSOCK()</a></code>.</p></td>
     </tr>
     <tr>
       <th>envir</th>
@@ -321,13 +321,13 @@ typical usages are:<div class="r"></p><pre><span class='co'># Evaluate futures i
 <code><a href='re-exports.html'>makeClusterPSOCK()</a></code>.</p>
 <p>For the total number of
 <span style="R">R</span> sessions available including the current/main <span style="R">R</span> process, see
-<code><a href='https://rdrr.io/pkg/parallelly/man/availableCores.html'>parallelly::availableCores()</a></code>.</p>
+<code><a href='https://parallelly.futureverse.org/reference/availableCores.html'>parallelly::availableCores()</a></code>.</p>
 <p>A multisession future is a special type of cluster future.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>For processing in multiple forked <span style="R">R</span> sessions, see
 <a href='multicore.html'>multicore</a> futures.</p>
-<p>Use <code><a href='https://rdrr.io/pkg/parallelly/man/availableCores.html'>parallelly::availableCores()</a></code> to see the total number of
+<p>Use <code><a href='https://parallelly.futureverse.org/reference/availableCores.html'>parallelly::availableCores()</a></code> to see the total number of
 cores that are available for the current <span style="R">R</span> session.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
