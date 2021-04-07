@@ -317,6 +317,8 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     if (is.finite(maxSize)) {
       sizes <- lapply(globals, FUN = objectSize)
       sizes <- unlist(sizes, use.names = TRUE)
+      total_size <- sum(sizes, na.rm = TRUE)
+      attr(globals, "total_size") <- total_size
       msg <- summarize_size_of_globals(globals, sizes = sizes,
                                        maxSize = maxSize, exprOrg = exprOrg,
                                        debug = debug)
