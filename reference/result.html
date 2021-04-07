@@ -299,6 +299,7 @@ This function is <em>not</em> part of the frontend Future API.</p>
     
     apiKey: 'aa6e02fc501886fb0f7c91ac4e300456',
     indexName: 'futureverse',
+    algoliaOptions: { 'facetFilters': ['project:future'] },
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {

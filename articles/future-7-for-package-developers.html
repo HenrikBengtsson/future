@@ -334,6 +334,7 @@ $ <span class="ex">R</span> CMD check --as-cran mypkg_1.0.tar.gz</code></pre></d
     
     apiKey: 'aa6e02fc501886fb0f7c91ac4e300456',
     indexName: 'futureverse',
+    algoliaOptions: { 'facetFilters': ['project:future'] },
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {
