@@ -2,6 +2,8 @@ url: https://future.futureverse.org
 
 home:
   links:
+  - text: Roadmap/Milestones
+    href: https://github.com/HenrikBengtsson/future/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
 
@@ -48,4 +50,5 @@ template:
     docsearch:
       api_key: aa6e02fc501886fb0f7c91ac4e300456
       index_name: futureverse
+      algoliaOptions: { 'facetFilters': ['project:future'] }
     ganalytics: G-SB3EQSD9FR
