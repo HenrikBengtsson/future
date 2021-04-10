@@ -115,7 +115,6 @@ as_ClusterFuture <- function(future, workers = NULL, ...) {
 }
 
 
-#' @importFrom parallel clusterCall clusterExport
 #' @export
 run.ClusterFuture <- function(future, ...) {
   debug <- getOption("future.debug", FALSE)
@@ -130,7 +129,6 @@ run.ClusterFuture <- function(future, ...) {
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
 
-  sendCall <- importParallel("sendCall")
   workers <- future$workers
   expr <- getExpression(future)
   persistent <- future$persistent
@@ -154,7 +152,7 @@ run.ClusterFuture <- function(future, ...) {
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
   if (!persistent) {
-    clusterCall(cl, fun = grmall)
+    cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
   }
 
 
@@ -167,7 +165,7 @@ run.ClusterFuture <- function(future, ...) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ...",
                       length(packages), hpaste(sQuote(packages)), node_idx)
 
-    clusterCall(cl, fun = requirePackages, packages)
+    cluster_call(cl, fun = requirePackages, packages, future = future, when = "call requirePackages() on")
 
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ... DONE",
                       length(packages), hpaste(sQuote(packages)), node_idx)
@@ -193,7 +191,7 @@ run.ClusterFuture <- function(future, ...) {
         mdebugf("Exporting %s (%s) to cluster node #%d ...", sQuote(name), size, node_idx)
       }
       suppressWarnings({
-        clusterCall(cl, fun = gassign, name, value)
+        cluster_call(cl, fun = gassign, name, value, future = future, when = "call gassign() on")
       })
       if (debug) mdebugf("Exporting %s (%s) to cluster node #%d ... DONE", sQuote(name), size, node_idx)
       value <- NULL
@@ -208,7 +206,7 @@ run.ClusterFuture <- function(future, ...) {
   FutureRegistry(reg, action = "add", future = future, earlySignal = FALSE)
 
   ## (iv) Launch future
-  sendCall(cl[[1L]], fun = geval, args = list(expr))
+  send_call(cl[[1L]], fun = geval, args = list(expr), future = future, when = "launch future on")
 
   future$state <- 'running'
 
@@ -392,63 +390,9 @@ receiveMessageFromWorker <- function(future, ...) {
     TRUE
   }, simpleError = function(ex) ex)
 
-  if (inherits(ack, "simpleError")) {
+  if (inherits(ack, "error")) {
     if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
-    label <- future$label
-    if (is.null(label)) label <- "<none>"
-    
-    pid <- node$session_info$process$pid
-    pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
-
-    ## AD HOC: This assumes that the worker has a hostname, which is not
-    ## the case for MPI workers. /HB 2017-03-07
-    host <- node$host
-    localhost <- isTRUE(attr(host, "localhost", exact = TRUE))
-    host_info <- if (!is.null(host)) {
-      sprintf("on %s%s", if (localhost) "localhost " else "", sQuote(host))
-    } else NULL
-    
-    info <- paste(c(pid_info, host_info), collapse = " ")
-    msg <- sprintf("Failed to retrieve the value of %s (%s) from cluster %s #%d (%s).",
-                   class(future)[1], label, class(node)[1], node_idx, info)
-    msg <- sprintf("%s The reason reported was %s", msg, sQuote(ack$message))
-    
-    ## POST-MORTEM ANALYSIS:
-    postmortem <- list()
-    
-    ## (a) Did the worker use a connection that changed?
-    if (inherits(node$con, "connection")) {
-      postmortem$connection <- check_connection_details(node, future = future)
-    }
-
-    ## (b) Did a localhost worker process terminate?
-    if (!is.null(host)) {
-      if (localhost && is.numeric(pid)) {
-        alive <- pid_exists(pid)
-        if (is.na(alive)) {
-          msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not"
-        } else if (alive) {
-          msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive"
-        } else {
-          msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive"
-        }
-        postmortem$alive <- msg2
-      }
-    }
-
-    ## (c) Any non-exportable globals?
-    postmortem$non_exportable <- assert_no_references(future, action = "string")
-
-    ## (d) Size of globals
-    postmortem$global_sizes <- summarize_size_of_globals(globals(future))
-
-    postmortem <- unlist(postmortem, use.names = FALSE)
-    if (!is.null(postmortem)) {
-       postmortem <- sprintf("Post-mortem diagnostic: %s",
-                             paste(postmortem, collapse = ". "))
-       msg <- paste0(msg, ". ", postmortem)
-    }
-
+    msg <- post_mortem_cluster_failure(ack, when = "receive results from", node = node, future = future)
     ex <- FutureError(msg, call = ack$call, future = future)
     future$result <- ex
     stop(ex)          
@@ -512,7 +456,7 @@ receiveMessageFromWorker <- function(future, ...) {
     if (future$gc) {
       if (debug) mdebug("- Garbage collecting worker ...")
       ## Cleanup global environment while at it
-      if (!future$persistent) clusterCall(cl[1], fun = grmall)
+      if (!future$persistent) cluster_call(cl[1], fun = grmall, future = future, when = "call grmall() on")
       
       ## WORKAROUND: Need to clear cluster worker before garbage collection.
       ## This is needed for workers running R (<= 3.3.1). It will create
@@ -520,9 +464,9 @@ receiveMessageFromWorker <- function(future, ...) {
       ## objects to be garbage collected.  For more details, see
       ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/27.
       ## (We return a value identifiable for troubleshooting purposes)
-      clusterCall(cl[1], function() "future-clearing-cluster-worker")
+      cluster_call(cl[1], function() "future-clearing-cluster-worker", future = future, when = "call dummy() on")
       
-      clusterCall(cl[1], gc, verbose = FALSE, reset = FALSE)
+      cluster_call(cl[1], gc, verbose = FALSE, reset = FALSE, future = future, when = "call gc() on")
       if (debug) mdebug("- Garbage collecting worker ... done")
     }
   } else if (inherits(msg, "condition")) {
@@ -717,3 +661,117 @@ getExpression.ClusterFuture <- local({
     NextMethod(expr = expr, immediateConditions = immediateConditions, conditionClasses = conditionClasses)
   }
 })
+
+
+send_call <- function(node, ..., when = "send call to", future) {
+  sendCall <- importParallel("sendCall")
+  tryCatch({
+    sendCall(node, ...)
+  }, error = function(ex) {
+    msg <- post_mortem_cluster_failure(ex, when = when, node = node, future = future)
+    ex <- FutureError(msg, future = future)
+    stop(ex)          
+  })
+}
+
+
+#' @importFrom parallel clusterCall
+cluster_call <- function(cl, ..., when = "call function on", future) {
+  stop_if_not(inherits(cl, "cluster"), length(cl) == 1L)
+  stop_if_not(inherits(future, "Future"))
+  node <- cl[[1]]
+  
+  tryCatch({
+    clusterCall(cl = cl, ...)
+  }, error = function(ex) {
+    msg <- post_mortem_cluster_failure(ex, when = when, node = node, future = future)
+    ex <- FutureError(msg, future = future)
+    future$result <- ex
+    stop(ex)          
+  })
+}
+
+
+post_mortem_cluster_failure <- function(ex, when, node, future) {
+  stop_if_not(inherits(ex, "error"))
+  stop_if_not(length(when) == 1L, is.character(when))
+  stop_if_not(inherits(future, "Future"))
+  
+  node_idx <- future$node
+  if (is.null(node_idx)) {
+    node_idx <- NA_integer_
+  } else {
+    stop_if_not(length(node_idx) == 1L, is.numeric(node_idx))
+    node_idx <- as.integer(node_idx)
+  }
+  
+  ## (1) Trimmed error message
+  reason <- conditionMessage(ex)
+
+  ## (2) Information on the cluster node
+  
+  ## (a) Process information on the worker, if available
+  pid <- node$session_info$process$pid
+  pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
+
+  ## (b) Host information on the worker, if available
+  ##     AD HOC: This assumes that the worker has a hostname, which is not
+  ##     the case for MPI workers. /HB 2017-03-07
+  host <- node$host
+  localhost <- isTRUE(attr(host, "localhost", exact = TRUE))
+  host_info <- if (!is.null(host)) {
+    sprintf("on %s%s", if (localhost) "localhost " else "", sQuote(host))
+  } else NULL
+  
+  node_info <- sprintf("cluster %s #%d (%s)",
+                       class(node)[1], node_idx,
+                       paste(c(pid_info, host_info), collapse = " "))
+  stop_if_not(length(node_info) == 1L)
+  
+  ## (3) Information on the future
+  label <- future$label
+  if (is.null(label)) label <- "<none>"
+  stop_if_not(length(label) == 1L)
+
+  ## (4) POST-MORTEM ANALYSIS:
+  postmortem <- list()
+  ## (a) Did a localhost worker process terminate?
+  if (!is.null(host)) {
+    if (localhost && is.numeric(pid)) {
+      alive <- pid_exists(pid)
+      if (is.na(alive)) {
+        msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not"
+      } else if (alive) {
+        msg2 <- "A process with this PID exists, which suggests that the localhost worker is still alive"
+      } else {
+        msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive"
+      }
+      postmortem$alive <- msg2
+    }
+  }
+
+  ## (b) Did the worker use a connection that changed?
+  if (inherits(node$con, "connection")) {
+    postmortem$connection <- check_connection_details(node, future = future)
+  }
+
+  ## (c) Any non-exportable globals?
+  globals <- globals(future)
+  postmortem$non_exportable <- assert_no_references(globals, action = "string")
+
+  ## (d) Size of globals
+  postmortem$global_sizes <- summarize_size_of_globals(globals)
+
+  ## (5) The final error message
+  msg <- sprintf("%s (%s) failed to %s %s. The reason reported was %s",
+                 class(future)[1], label, when, node_info, sQuote(reason))
+  stop_if_not(length(msg) == 1L)
+  if (length(postmortem) > 0) {
+    postmortem <- unlist(postmortem, use.names = FALSE)
+    msg <- sprintf("%s. Post-mortem diagnostic: %s",
+                   msg, paste(postmortem, collapse = ". "))
+    stop_if_not(length(msg) == 1L)
+  }
+
+  msg
+} # post_mortem_cluster_failure()

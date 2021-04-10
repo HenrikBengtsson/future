@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-04-03]
+Version: 1.21.0-9000 [2021-04-09]
 
 SIGNIFICANT CHANGES:
 
@@ -49,6 +49,8 @@ NEW FEATURES:
  * Now the the post-mortem analysis report of multicore and cluster futures
    in case their results could not be retrieved include information on
    globals and their sizes, and if some of them are non-exportable.
+   A similar, detailed report is also produced when a cluster future fails
+   to set up and launch itself on a parallel worker.
 
 BUG FIXES:
 
