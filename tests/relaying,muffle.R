@@ -22,14 +22,20 @@ message(" - conditions = NULL")
 f <- future(fcn(), conditions = NULL)
 v <- value(f)
 message("RESULT: ", v)
-#stopifnot(v == "success")
+stopifnot(v == "success")
 
 message(" - split = TRUE")
 ## Splitting output works
 f <- future(fcn(), split = TRUE)
 v <- value(f)
 message("RESULT: ", v)
-#stopifnot(v == "success")
+stopifnot(v == "success")
+
+message(" - muffleInclude = '^$'")
+f <- future(fcn(), conditions = structure("condition", muffleInclude = "^$"))
+v <- value(f)
+message("RESULT: ", v)
+stopifnot(v == "success")
 
 message(" - FIXME")
 ## FIXME: Ignoring specific condition class 'not_me' does not work

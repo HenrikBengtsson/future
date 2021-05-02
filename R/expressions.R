@@ -146,14 +146,14 @@ makeExpression <- local({
               if (.(immediateConditions && !split) && !signal) {
                 ## muffleCondition <- future:::muffleCondition()
                 muffleCondition <- .(muffleCondition)
-                muffleCondition(cond)
+                muffleCondition(cond, pattern = .(muffleInclude))
               }
             } else {
               if (.(!split && !is.null(conditionClasses))) {
                 ## Muffle all non-captured conditions
                 ## muffleCondition <- future:::muffleCondition()
                 muffleCondition <- .(muffleCondition)
-                muffleCondition(cond)
+                muffleCondition(cond, pattern = .(muffleInclude))
               }
             }
           }
@@ -190,7 +190,9 @@ makeExpression <- local({
 
   function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
     conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
-
+    muffleInclude <- attr(conditionClasses, "muffleInclude", exact = TRUE)
+    if (is.null(muffleInclude)) muffleInclude <- "^muffle"
+    
     if (immediateConditions && !is.null(conditionClasses)) {
       immediateConditionClasses <- getOption("future.relay.immediate", "immediateCondition")
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
