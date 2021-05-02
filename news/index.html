@@ -267,12 +267,14 @@
 <ul>
 <li><p>In addition to specify which condition classes to be captured and relayed, it is now possible to also specify condition classes to be ignored. For example, conditions = structure(“condition”, exclude = “message”) captures all conditions but message conditions.</p></li>
 <li><p>Now cluster futures use ‘homogeneous = NULL’ as the default instead of ‘homogeneous = TRUE’. The new default will result in the ‘parallelly’ package trying to infer whether TRUE or FALSE should be used based on the ‘workers’ argument.</p></li>
+<li><p>Now the the post-mortem analysis report of multicore and cluster futures in case their results could not be retrieved include information on globals and their sizes, and if some of them are non-exportable. A similar, detailed report is also produced when a cluster future fails to set up and launch itself on a parallel worker.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
 <ul>
+<li><p>getGlobalsAndPackages() could throw a false error on “Did you mean to create the future within a function? Invalid future expression tries to use global ‘…’ variables that do not exist: &lt;some expression&gt;” when ‘…’ is solely part of a formula or used in some S4 generic functions.</p></li>
 <li><p>When enabled, option ‘future.globals.onReference’ could falsely alert on ‘Detected a non-exportable reference (’externalptr’) in one of the globals (&lt;unknown&gt;) used in the future expression’ in globals, e.g. when using ‘future.apply’ or ‘furrr’ map-reduce functions when using a ‘multisession’ backend.</p></li>
 <li><p>Resolving a ‘sequential’ future without globals would result in internal several ‘…future.*’ objects being written to the calling environment, which might be the global environment.</p></li>
 <li><p>Environment variable ‘R_FUTURE_PLAN’ would propagate down with nested futures, forcing itself onto also nested future plans. Now it is unset in nested futures, resulting in a sequential future strategy unless another was explicitly set by `plan()`.</p></li>
@@ -1810,7 +1812,7 @@
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9001.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
