@@ -170,40 +170,50 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## Tweak expression to be called with global ... arguments?
   if (length(globals) > 0 && inherits(globals[["..."]], "DotDotDotList")) {
     if (debug) mdebug("Tweak future expression to call with '...' arguments ...")
+    has_dotdotdot <- TRUE
     ## Missing global '...'?
     if (!is.list(globals[["..."]])) {
-      msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
-      if (debug) mdebug(msg)
-      stop(msg)
+      if (!is.na(globals[["..."]])) {
+        msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
+        if (debug) mdebug(msg)
+        stop(msg)
+      }
+      globals[["..."]] <- NULL
+      where <- attr(globals, "where", exact = TRUE)
+      where[["..."]] <- NULL
+      attr(globals, "where") <- where
+      has_dotdotdot <- FALSE
     }
 
-    names <- names(globals)
-    names[names == "..."] <- "future.call.arguments"
-    names(globals) <- names
+    if (has_dotdotdot) {
+      names <- names(globals)
+      names[names == "..."] <- "future.call.arguments"
+      names(globals) <- names
 
-    ## AD HOC: Drop duplicated 'future.call.arguments' elements, cf.
-    ## https://github.com/HenrikBengtsson/future/issues/417.
-    ## The reason for duplicates being possible, is that '...' is renamed
-    ## to 'future.call.arguments' so the former won't override the latter.
-    ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
-    idxs <- which(names == "future.call.arguments")
-    if (length(idxs) > 1L) {
-      if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Dropping all but the last.", length(idxs))
-      # Drop all but the last replicate
-      idxs <- idxs[-length(idxs)]
-      globals <- globals[-idxs]
+      ## AD HOC: Drop duplicated 'future.call.arguments' elements, cf.
+      ## https://github.com/HenrikBengtsson/future/issues/417.
+      ## The reason for duplicates being possible, is that '...' is renamed
+      ## to 'future.call.arguments' so the former won't override the latter.
+      ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
+      idxs <- which(names == "future.call.arguments")
+      if (length(idxs) > 1L) {
+        if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Dropping all but the last.", length(idxs))
+        # Drop all but the last replicate
+        idxs <- idxs[-length(idxs)]
+        globals <- globals[-idxs]
+      }
+      idxs <- NULL
+      names <- NULL
+  
+      ## To please R CMD check
+      a <- `future.call.arguments` <- NULL
+      rm(list = c("a", "future.call.arguments"))
+      expr <- substitute({
+        ## covr: skip=1
+        do.call(function(...) a, args = `future.call.arguments`)
+      }, list(a = expr))
+      if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
     }
-    idxs <- NULL
-    names <- NULL
-
-    ## To please R CMD check
-    a <- `future.call.arguments` <- NULL
-    rm(list = c("a", "future.call.arguments"))
-    expr <- substitute({
-      ## covr: skip=1
-      do.call(function(...) a, args = `future.call.arguments`)
-    }, list(a = expr))
-    if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
   }
 
   ## Resolve futures and turn into already-resolved "constant" futures

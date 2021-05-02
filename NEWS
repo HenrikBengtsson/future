@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-04-09]
+Version: 1.21.0-9000 [2021-05-01]
 
 SIGNIFICANT CHANGES:
 
@@ -53,6 +53,11 @@ NEW FEATURES:
    to set up and launch itself on a parallel worker.
 
 BUG FIXES:
+
+ * getGlobalsAndPackages() could throw a false error on "Did you mean to 
+   create the future within a function? Invalid future expression tries to use
+   global '...' variables that do not exist: <some expression>" when use in
+   certain map-reduce calls involving non-standard evaluation or S4 classes.
 
  * When enabled, option 'future.globals.onReference' could falsely alert on
    'Detected a non-exportable reference ('externalptr') in one of the globals
