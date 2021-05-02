@@ -55,9 +55,9 @@ NEW FEATURES:
 BUG FIXES:
 
  * getGlobalsAndPackages() could throw a false error on "Did you mean to 
-   create the future within a function? Invalid future expression tries to use
-   global '...' variables that do not exist: <some expression>" when use in
-   certain map-reduce calls involving non-standard evaluation or S4 classes.
+   create the future within a function? Invalid future expression tries to 
+   use global '...' variables that do not exist: <some expression>" when '...'
+   is solely part of a formula or used in some S4 generic functions.
 
  * When enabled, option 'future.globals.onReference' could falsely alert on
    'Detected a non-exportable reference ('externalptr') in one of the globals
