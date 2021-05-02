@@ -58,6 +58,21 @@ for (cores in 1:availCores) {
     y
   }
 
+  ## Issue: https://github.com/HenrikBengtsson/globals/issues/72
+  sum_fcns$F <- function(x, y) {
+    message("Using '...' in a formula")
+
+    fcn <- function(x, y) {
+      z = ~ list(...)
+      sum(x, y)
+    }
+    
+    f <- future(fcn(x, y))
+    y <- value(f)
+    y
+  }
+
+
   for (strategy in supportedStrategies(cores)) {
     message(sprintf("- plan('%s') ...", strategy))
     plan(strategy, substitute = FALSE)
