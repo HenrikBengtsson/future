@@ -214,6 +214,10 @@ Run `revdep_details(, "biotmle")` for more info
       > library(biotmle)
       biotmle v1.14.0: Targeted Learning with Moderated Statistics for Biomarker
       Discovery
+      Warning message:
+      In .recacheSubclasses(def@className, def, env) :
+        undefined subclass "numericVector" of class "Mnumeric"; definition not updated
+    ...
       > 
       > test_check("biotmle")
       ══ Failed tests ════════════════════════════════════════════════════════════════
@@ -242,38 +246,18 @@ Run `revdep_details(, "blavaan")` for more info
 
 ## In both
 
-*   checking whether package ‘blavaan’ can be installed ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/blavaan/new/blavaan.Rcheck/00install.out’ for details.
+      installed size is 64.6Mb
+      sub-directories of 1Mb or more:
+        libs  63.1Mb
     ```
 
-## Installation
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘blavaan’ ...
-** package ‘blavaan’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/blavaan/new/blavaan.Rcheck/blavaan’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘blavaan’ ...
-** package ‘blavaan’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/blavaan/old/blavaan.Rcheck/blavaan’
-
-
-```
 # blockCV
 
 <details>
@@ -394,6 +378,29 @@ Run `revdep_details(, "cSEM")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘Rdpack’
+      All declared Imports should be used.
+    ```
+
+# CSGo
+
+<details>
+
+* Version: 0.6.7
+* GitHub: https://github.com/adsoncostanzifilho/CSGo
+* Source code: https://github.com/cran/CSGo
+* Date/Publication: 2021-05-07 18:50:02 UTC
+* Number of recursive dependencies: 69
+
+Run `revdep_details(, "CSGo")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘extrafont’ ‘future’
       All declared Imports should be used.
     ```
 
@@ -583,43 +590,18 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 ## In both
 
-*   checking whether package ‘EpiNow2’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/new/EpiNow2.Rcheck/00install.out’ for details.
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘EpiSoon’
     ```
 
-## Installation
+*   checking installed package size ... NOTE
+    ```
+      installed size is 155.0Mb
+      sub-directories of 1Mb or more:
+        libs  153.4Mb
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘EpiNow2’ ...
-** package ‘EpiNow2’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/new/EpiNow2.Rcheck/EpiNow2’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘EpiNow2’ ...
-** package ‘EpiNow2’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/old/EpiNow2.Rcheck/EpiNow2’
-
-
-```
 # finbif
 
 <details>
@@ -685,47 +667,6 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
-    ```
-
-# future.callr
-
-<details>
-
-* Version: 0.6.0
-* GitHub: https://github.com/HenrikBengtsson/future.callr
-* Source code: https://github.com/cran/future.callr
-* Date/Publication: 2021-01-04 18:10:02 UTC
-* Number of recursive dependencies: 19
-
-Run `revdep_details(, "future.callr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/dotdotdot.R’ failed.
-    Last 50 lines of output:
-      [11:42:43.649]                 if (substitute) 
-      [11:42:43.649]                   expr <- substitute(expr)
-      [11:42:43.649]                 if (is.null(workers)) 
-      [11:42:43.649]                   workers <- availableCores()
-      [11:42:43.649]                 future <- CallrFuture(expr = expr, envir = envir, 
-      [11:42:43.649]                   substitute = FALSE, globals = globals, label = label, 
-      [11:42:43.649]                   workers = workers, ...)
-    ...
-      [11:42:45.599]  $ stdout    : chr ""
-      [11:42:45.599]  $ conditions: list()
-      [11:42:45.599]  $ rng       : logi FALSE
-      [11:42:45.599]  $ started   : POSIXct[1:1], format: "2021-05-02 11:42:45"
-      [11:42:45.599]  $ finished  : POSIXct[1:1], format: "2021-05-02 11:42:45"
-      [11:42:45.599]  $ version   : chr "1.8"
-      [11:42:45.599]  - attr(*, "class")= chr "FutureResult"
-      [11:42:45.599] [1] 12
-      Error: inherits(y, "error") is not TRUE
-      Execution halted
     ```
 
 # GetBCBData
@@ -1047,38 +988,14 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking whether package ‘lidR’ can be installed ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/00install.out’ for details.
+      installed size is 13.5Mb
+      sub-directories of 1Mb or more:
+        extdata   1.1Mb
+        libs      9.9Mb
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘lidR’ ...
-** package ‘lidR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/lidR/new/lidR.Rcheck/lidR’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘lidR’ ...
-** package ‘lidR’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-Error: C++14 standard requested but CXX14 is not defined
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/lidR/old/lidR.Rcheck/lidR’
-
-
-```
 # lmtp
 
 <details>
@@ -1516,6 +1433,7 @@ Run `revdep_details(, "rainette")` for more info
       The following object is masked from 'package:stats':
       
     ...
+       5. │     └─quanteda::textstat_keyness
        6. │       └─base::getExportedValue(pkg, name)
        7. ├─dplyr::arrange(., desc(abs(!!stat_col)))
        8. └─tibble::as_tibble(.)
@@ -1523,8 +1441,7 @@ Run `revdep_details(, "rainette")` for more info
       [ FAIL 1 | WARN 42 | SKIP 1 | PASS 132 ]
       Error: Test failures
       In addition: Warning message:
-      In for (i in seq_len(n)) { :
-        closing unused connection 4 (doesnt/exist.txtt)
+      closing unused connection 4 (doesnt/exist.txtt) 
       Execution halted
     ```
 
@@ -1785,7 +1702,7 @@ Run `revdep_details(, "shiny.worker")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/shinyrecap
 * Date/Publication: 2019-01-19 23:40:03 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 95
 
 Run `revdep_details(, "shinyrecap")` for more info
 
@@ -2026,30 +1943,6 @@ Run `revdep_details(, "stars")` for more info
         nc    4.5Mb
     ```
 
-# startR
-
-<details>
-
-* Version: 2.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/startR
-* Date/Publication: 2020-10-29 17:40:02 UTC
-* Number of recursive dependencies: 37
-
-Run `revdep_details(, "startR")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘s2dverification’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # synergyfinder
 
 <details>
@@ -2241,6 +2134,41 @@ Run `revdep_details(, "treeHMM")` for more info
     ```
     Namespace in Imports field not imported from: ‘Matrix’
       All declared Imports should be used.
+    ```
+
+# TriDimRegression
+
+<details>
+
+* Version: 1.0.0.0
+* GitHub: https://github.com/alexander-pastukhov/tridim-regression
+* Source code: https://github.com/cran/TriDimRegression
+* Date/Publication: 2021-05-04 07:00:16 UTC
+* Number of recursive dependencies: 91
+
+Run `revdep_details(, "TriDimRegression")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 39.8Mb
+      sub-directories of 1Mb or more:
+        libs  39.2Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘RcppParallel’ ‘rstantools’
+      All declared Imports should be used.
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
     ```
 
 # TSstudio
