@@ -37,6 +37,8 @@ navbar:
         href: https://globals.futureverse.org
       - text: listenv
         href: https://listenv.futureverse.org
+      - text: marshal
+        href: https://marshal.futureverse.org
       - text: parallelly
         href: https://parallelly.futureverse.org
       - text: progressr

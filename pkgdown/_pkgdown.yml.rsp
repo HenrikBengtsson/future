@@ -1,5 +1,5 @@
 <%
-pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr", "BiocParallel.FutureParam")
+pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr", "BiocParallel.FutureParam", "marshal")
 pkgs <- sort(pkgs)
 urls <- sprintf("https://%s.futureverse.org", pkgs)
 names(urls) <- pkgs
