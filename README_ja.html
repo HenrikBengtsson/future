@@ -58,8 +58,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -81,16 +79,9 @@
 </script>
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -111,7 +102,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -148,9 +148,6 @@
       <a href="articles/future-8-how-future-is-validated.html">A Future for R: How the Future Framework is Validated</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -198,6 +195,9 @@
       <a href="https://listenv.futureverse.org">listenv</a>
     </li>
     <li>
+      <a href="https://marshal.futureverse.org">marshal</a>
+    </li>
+    <li>
       <a href="https://parallelly.futureverse.org">parallelly</a>
     </li>
     <li>
@@ -240,7 +240,7 @@
     </div>
 
 
-<p><em>This is a translation of <a href="https://github.com/HenrikBengtsson/future/blob/develop/README.md" class="external-link">README.md</a> as of <a href="https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md" class="external-link">2021-02-09</a> done by <a href="https://github.com/hoxo-m" class="external-link">hoxo_m</a>.</em></p>
+<p><em>This is a translation of <a href="https://github.com/HenrikBengtsson/future/blob/develop/README.md">README.md</a> as of <a href="https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md">2021-02-09</a> done by <a href="https://github.com/hoxo-m">hoxo_m</a>.</em></p>
 <p><img src="man/figures/logo.png" align="right"></p>
 <div id="future-r" class="section level1">
 
@@ -249,7 +249,7 @@
 <!--
 The purpose of the future package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
 -->
-<p><a href="https://cran.r-project.org/package=future" class="external-link">future</a> パッケージは、R の式 (expression) を非同期的に実行するためのシンプルな方法を提供する。 また、非同期処理に使われる様々なリソースを一貫した方法で取り扱うことができる。</p>
+<p><a href="https://cran.r-project.org/package=future">future</a> パッケージは、R の式 (expression) を非同期的に実行するためのシンプルな方法を提供する。 また、非同期処理に使われる様々なリソースを一貫した方法で取り扱うことができる。</p>
 <!--
 In programming, a future is an abstraction for a value that may be available at some point in the future.
 The state of a future can either be unresolved or resolved. 
@@ -294,7 +294,7 @@ Hello world<span class="op">!</span>
 The difference is in how v is constructed; with plain R we use <- whereas with futures we use %<-%.
 The other difference is that output is relayed after the future is resolved (not during) and when the value is queried (see Vignette 'Outputting Text').
 -->
-<p>2つのコード違いは <code>v</code> に対する代入記号にある。 最初のコードで <code><a href="https://rdrr.io/r/base/assignOps.html" class="external-link">&lt;-</a></code> が使われていたところが、フューチャの場合は <code><a href="reference/future.html">%&lt;-%</a></code> に変わっている。 もう1つの違いは、<code>Hello World!</code> がフューチャが解決された<strong>あと</strong>、すなわち値が要求されたときに表示される（ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-2-output.html" class="external-link">‘Outputting Text’</a> を参照）。</p>
+<p>2つのコード違いは <code>v</code> に対する代入記号にある。 最初のコードで <code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code> が使われていたところが、フューチャの場合は <code><a href="reference/future.html">%&lt;-%</a></code> に変わっている。 もう1つの違いは、<code>Hello World!</code> がフューチャが解決された<strong>あと</strong>、すなわち値が要求されたときに表示される（ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-2-output.html">‘Outputting Text’</a> を参照）。</p>
 <!--
 So why are futures useful? 
 Because we can choose to evaluate the future expression in a separate R process asynchronously by simply switching settings as:
@@ -343,7 +343,7 @@ In principle, all you have to do is to replace <- with a %<-% to turn the assign
 On the other hand, this simplicity can also be deceiving, particularly when asynchronous futures are being used. 
 In contrast, the explicit style makes it much clearer that futures are being used, which lowers the risk for mistakes and better communicates the design to others reading your code.
 -->
-<p>どちらのスタイルで作成してもフューチャの動作は同じである(*)。 非明示的なスタイルを使うと通常の R コードに近い書き方になる。 この場合、原則的に、フューチャの作成は <code><a href="https://rdrr.io/r/base/assignOps.html" class="external-link">&lt;-</a></code> で代入していたところを <code><a href="reference/future.html">%&lt;-%</a></code> に置き換えるだけである。 しかし、このシンプルさの欠点として、コードを読む際に、コード内で非同期フューチャが使用されていることに気づかない可能性がある。 明示的なスタイルならば、フューチャが使用されていることが明確になり、こうした見逃しのリスクは軽減されるため、コードを読む人に優しい。</p>
+<p>どちらのスタイルで作成してもフューチャの動作は同じである(*)。 非明示的なスタイルを使うと通常の R コードに近い書き方になる。 この場合、原則的に、フューチャの作成は <code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code> で代入していたところを <code><a href="reference/future.html">%&lt;-%</a></code> に置き換えるだけである。 しかし、このシンプルさの欠点として、コードを読む際に、コード内で非同期フューチャが使用されていることに気づかない可能性がある。 明示的なスタイルならば、フューチャが使用されていることが明確になり、こうした見逃しのリスクは軽減されるため、コードを読む人に優しい。</p>
 <!--
 (*) There are cases where %<-% cannot be used without some (small) modifications. 
 We will return to this in Section 'Constraints when using Implicit Futures' near the end of this document.
@@ -449,7 +449,7 @@ For instance, the future.callr package provides future backends that evaluates f
 Continuing, the future.batchtools package provides futures for all types of cluster functions (“backends”) that the batchtools package supports. 
 Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available. 
 -->
-<p>future パッケージは、自分で実装した戦略を追加できるように設計されている。 例えば、<a href="https://cran.r-project.org/package=future.callr" class="external-link">future.callr</a> パッケージは、<a href="https://cran.r-project.org/package=callr" class="external-link">callr</a> パッケージを利用してバックグラウンドの R プロセスでフューチャを評価するバックエンドを提供する。 これは <code>multisession</code> 戦略と似ているが、いくつかの利点がある。 また、<a href="https://cran.r-project.org/package=future.batchtools" class="external-link">future.batchtools</a> パッケージは、<a href="https://cran.r-project.org/package=batchtools" class="external-link">batchtools</a> パッケージがサポートするすべてのクラスタ関数に対するフューチャバックエンドを提供する。 具体的には、Slurm、TORQUE/PBS、Oracle/Sun Grid Engine (SGE)、Load Sharing Facility (LSF) などのジョブスケジューラを使用して R の式を評価するフューチャがある。</p>
+<p>future パッケージは、自分で実装した戦略を追加できるように設計されている。 例えば、<a href="https://cran.r-project.org/package=future.callr">future.callr</a> パッケージは、<a href="https://cran.r-project.org/package=callr">callr</a> パッケージを利用してバックグラウンドの R プロセスでフューチャを評価するバックエンドを提供する。 これは <code>multisession</code> 戦略と似ているが、いくつかの利点がある。 また、<a href="https://cran.r-project.org/package=future.batchtools">future.batchtools</a> パッケージは、<a href="https://cran.r-project.org/package=batchtools">batchtools</a> パッケージがサポートするすべてのクラスタ関数に対するフューチャバックエンドを提供する。 具体的には、Slurm、TORQUE/PBS、Oracle/Sun Grid Engine (SGE)、Load Sharing Facility (LSF) などのジョブスケジューラを使用して R の式を評価するフューチャがある。</p>
 <!--
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session). 
 This evaluation strategy is referred to as “sequential”.
@@ -489,7 +489,7 @@ If the threshold is exceeded, an informative error is thrown.
 As soon as the value (or an error) has been collected it will be available for all succeeding requests.
 -->
 <ul>
-<li>式の評価は<strong>ローカル環境</strong>（すなわち <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local({ 式 })</a></code>）で行われる。したがって、代入文は呼び出し環境に影響を与えない。 これは評価が外部の R プロセスで行われるときはもちろん、現行の R セッションで行われるときにも適用される。</li>
+<li>式の評価は<strong>ローカル環境</strong>（すなわち <code><a href="https://rdrr.io/r/base/eval.html">local({ 式 })</a></code>）で行われる。したがって、代入文は呼び出し環境に影響を与えない。 これは評価が外部の R プロセスで行われるときはもちろん、現行の R セッションで行われるときにも適用される。</li>
 <li>フューチャの作成時に、<strong>グローバル変数が固定される</strong>。 非同期評価の場合、グローバル変数は、フューチャの式を評価する R プロセスにエクスポートされる。 遅延評価 (<code>lazy = TRUE</code>) を伴う逐次戦略においては、グローバル変数はフリーズ（フューチャのローカル環境にクローン）される。 また、誤って大きすぎるオブジェクトをエクスポートすることを防ぐために、グローバル変数の合計サイズにしきい値を設定できる。このしきい値を超えるとエラーが発生する（<code><a href="reference/future.options.html">help("future.options")</a></code> を参照）。</li>
 <li>フューチャの式の評価は一度だけ実行される。 値が定まった（解決済み状態になった）あとで、同じフューチャをもう一度評価することはできない。</li>
 </ul>
@@ -645,7 +645,7 @@ For instance, if compute cluster schedulers are used (e.g. TORQUE/PBS and Slurm)
 If nothing else is specified, all available cores on the machine will be utilized, cf. parallel::detectCores(). 
 For more details, please see help("availableCores", package = "parallelly").
 -->
-<p>この結果から、メインプロセス以外に 2つのプロセスが利用可能なことがわかる。 したがって、この設定では、マルチセッションフューチャは 2つのバックグラウンドプロセスを使うことができる。 この値は <code>mc.cores</code> オプションで変更できる。 <code><a href="reference/re-exports.html">availableCores()</a></code> はさまざまなオプションやシステム環境にも対応している。 例えば、計算クラスタスケジューラ（例えば TORQUE/PBS や Slurm）を使用する場合、与えられたジョブに割り当てられたコア数を指定するための環境変数を設定する。 その場合も <code><a href="reference/re-exports.html">availableCores()</a></code> はそのコア数を認識する。 何も指定しない場合、マシン上の利用可能なすべてのコアが使われる。 このデフォルトの値は <code><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">parallel::detectCores()</a></code> で確認できる。 詳細については <code><a href="https://parallelly.futureverse.org/reference/availableCores.html" class="external-link">help("availableCores", package = "parallelly")</a></code> を参照してほしい。</p>
+<p>この結果から、メインプロセス以外に 2つのプロセスが利用可能なことがわかる。 したがって、この設定では、マルチセッションフューチャは 2つのバックグラウンドプロセスを使うことができる。 この値は <code>mc.cores</code> オプションで変更できる。 <code><a href="reference/re-exports.html">availableCores()</a></code> はさまざまなオプションやシステム環境にも対応している。 例えば、計算クラスタスケジューラ（例えば TORQUE/PBS や Slurm）を使用する場合、与えられたジョブに割り当てられたコア数を指定するための環境変数を設定する。 その場合も <code><a href="reference/re-exports.html">availableCores()</a></code> はそのコア数を認識する。 何も指定しない場合、マシン上の利用可能なすべてのコアが使われる。 このデフォルトの値は <code><a href="https://rdrr.io/r/parallel/detectCores.html">parallel::detectCores()</a></code> で確認できる。 詳細については <code><a href="https://parallelly.futureverse.org/reference/availableCores.html">help("availableCores", package = "parallelly")</a></code> を参照してほしい。</p>
 </div>
 <div id="-multicore-future" class="section level4">
 <h4 class="hasAnchor">
@@ -717,9 +717,9 @@ Future <span class="st">'c'</span> ...
 Any types of clusters that parallel::makeCluster() creates can be used for cluster futures. 
 For instance, the above cluster can be explicitly set up as:
 -->
-<p><code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> で作られたクラスタなら何でもクラスタフューチャで利用できる。 例えば、上記のクラスタを明示的にセットアップするには次のように書く。</p>
+<p><code><a href="https://rdrr.io/r/parallel/makeCluster.html">parallel::makeCluster()</a></code> で作られたクラスタなら何でもクラスタフューチャで利用できる。 例えば、上記のクラスタを明示的にセットアップするには次のように書く。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></code></pre></div>
 <!--
 Also, it is considered good style to shut down cluster cl when it is no longer needed, that is, calling parallel::stopCluster(cl). 
@@ -727,7 +727,7 @@ However, it will shut itself down if the main process is terminated.
 For more information on how to set up and manage such clusters, see help("makeCluster", package = "parallel"). 
 Clusters created implicitly using plan(cluster, workers = hosts) where hosts is a character vector will also be shut down when the main R session terminates, or when the future strategy is changed, e.g. by calling plan(sequential).
 -->
-<p>クラスタ <code>cl</code> がもう使われなくなったとき、<code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::stopCluster(cl)</a></code> を実行してクラスタをシャットダウンするのが良い作法である。 便利なことに、future パッケージは、メインプロセスが終了したときに、クラスタを自動でシャットダウンしてくれる。 クラスタのセットアップや管理については <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">help("makeCluster", package = "parallel")</a></code> を参照してほしい。 <code><a href="reference/plan.html">plan(cluster, workers = hosts)</a></code>（<code>hosts</code> には文字列が入る）で非明示的に作られたクラスタも、メインの R セッションが終了するとシャットダウンされる。 また、フューチャ戦略が変更されたとき（例えば <code><a href="reference/plan.html">plan(sequential)</a></code> が呼ばれたとき）もクラスタはシャットダウンされる。</p>
+<p>クラスタ <code>cl</code> がもう使われなくなったとき、<code><a href="https://rdrr.io/r/parallel/makeCluster.html">parallel::stopCluster(cl)</a></code> を実行してクラスタをシャットダウンするのが良い作法である。 便利なことに、future パッケージは、メインプロセスが終了したときに、クラスタを自動でシャットダウンしてくれる。 クラスタのセットアップや管理については <code><a href="https://rdrr.io/r/parallel/makeCluster.html">help("makeCluster", package = "parallel")</a></code> を参照してほしい。 <code><a href="reference/plan.html">plan(cluster, workers = hosts)</a></code>（<code>hosts</code> には文字列が入る）で非明示的に作られたクラスタも、メインの R セッションが終了するとシャットダウンされる。 また、フューチャ戦略が変更されたとき（例えば <code><a href="reference/plan.html">plan(sequential)</a></code> が呼ばれたとき）もクラスタはシャットダウンされる。</p>
 <!--
 Note that with automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 -->
@@ -788,7 +788,7 @@ First, the same evaluation strategies as above can be explicitly specified as:
 -->
 <p><code><a href="reference/plan.html">plan()</a></code> に戦略のリストを渡すことで、<strong>評価トポロジー</strong>を指定することができる。 例えば、上記と同じ評価トポロジーを明示的に指定するには次のようにする。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <!--
 We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 -->
@@ -811,7 +811,7 @@ The reason for this is, also here, to protect us from launching more processes t
 Internally, this is done by setting mc.cores = 1 such that functions like parallel::mclapply() will fall back to run sequentially. 
 This is the case for both multisession and multicore evaluation.
 -->
-<p>この理由は、ここでも、誤って多くのプロセスが起動するのを防ぐためである。 内部的には、<code><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">parallel::mclapply()</a></code> のような関数が逐次実行されるように <code>mc.core = 1</code> が設定される。 これはマルチセッション評価とマルチコア評価の両方で起こる。</p>
+<p>この理由は、ここでも、誤って多くのプロセスが起動するのを防ぐためである。 内部的には、<code><a href="https://rdrr.io/r/parallel/mclapply.html">parallel::mclapply()</a></code> のような関数が逐次実行されるように <code>mc.core = 1</code> が設定される。 これはマルチセッション評価とマルチコア評価の両方で起こる。</p>
 <!--
 Continuing, if we start off by sequential evaluation and then use multisession evaluation for any nested futures, we get:
 -->
@@ -860,7 +860,7 @@ Second, the two nested futures (b1 and b2) are resolved in yet two other R proce
 <!--
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette 'Futures in R: Future Topologies'.
 -->
-<p>ネストされたフューチャの各レベルで異なる評価戦略を使う方法についての詳細は、ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-3-topologies.html" class="external-link">‘Futures in R: Future Topologies’</a> を参照してほしい。</p>
+<p>ネストされたフューチャの各レベルで異なる評価戦略を使う方法についての詳細は、ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-3-topologies.html">‘Futures in R: Future Topologies’</a> を参照してほしい。</p>
 </div>
 <div class="section level3">
 <h3>ブロックされずにフューチャの状態を確認する</h3>
@@ -938,7 +938,7 @@ To see the last call in the call stack that gave the error, we can use the backt
 (*) The commonly used traceback() does not provide relevant information in the context of futures.
 Furthermore, it is unfortunately not possible to see the list of calls (evaluated expressions) that led up to the error; only the call that gave the error (this is due to a limitation in tryCatch() used internally).
 -->
-<p>(*) 一般的に使用される <code><a href="https://rdrr.io/r/base/traceback.html" class="external-link">traceback()</a></code> はフューチャの場合には関連情報を提供しない。 さらに、残念ながら、エラーの原因となった呼び出しのリストを見ることはできない。 エラーを起こした呼び出しだけを見ることができる（これは内部で使われる <code><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch()</a></code> の制約である）。</p>
+<p>(*) 一般的に使用される <code><a href="https://rdrr.io/r/base/traceback.html">traceback()</a></code> はフューチャの場合には関連情報を提供しない。 さらに、残念ながら、エラーの原因となった呼び出しのリストを見ることはできない。 エラーを起こした呼び出しだけを見ることができる（これは内部で使われる <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> の制約である）。</p>
 </div>
 <div class="section level2">
 <h2>グローバルオブジェクト</h2>
@@ -956,14 +956,14 @@ Moreover, if a global is defined in a package, then that global is not exported.
 Instead, it is made sure that the corresponding package is attached when the future is evaluated.
 This not only better reflects the setup of the main R session, but it also minimizes the need for exporting globals, which saves not only memory but also time and bandwidth, especially when using remote compute nodes.
 -->
-<p>future パッケージではこれをできる限り自動化している。 そのために静的コード解析によってグローバル変数を特定する <a href="https://cran.r-project.org/package=globals" class="external-link">globals</a> パッケージが使われる。 グローバル変数が特定されると、キャプチャされ、評価プロセスで利用可能になる。 また、パッケージ内でグローバル変数が定義されている場合、それらはエクスポートされない。 かわりに、フューチャが評価されるときに対応するパッケージが確実に読み込まれているようにする。 これはメイン R セッションの設定をよりよく反映するだけでなく、グローバルオブジェクトのエクスポートの必要性も最小限に抑える。 これにより、特にリモートの計算ノードを使用する場合、メモリだけでなく時間と帯域幅も節約できる。</p>
+<p>future パッケージではこれをできる限り自動化している。 そのために静的コード解析によってグローバル変数を特定する <a href="https://cran.r-project.org/package=globals">globals</a> パッケージが使われる。 グローバル変数が特定されると、キャプチャされ、評価プロセスで利用可能になる。 また、パッケージ内でグローバル変数が定義されている場合、それらはエクスポートされない。 かわりに、フューチャが評価されるときに対応するパッケージが確実に読み込まれているようにする。 これはメイン R セッションの設定をよりよく反映するだけでなく、グローバルオブジェクトのエクスポートの必要性も最小限に抑える。 これにより、特にリモートの計算ノードを使用する場合、メモリだけでなく時間と帯域幅も節約できる。</p>
 <!--
 Finally, it should be clarified that identifying globals from static code inspection alone is a challenging problem. 
 There will always be corner cases where automatic identification of globals fails so that either false globals are identified (less of a concern) or some of the true globals are missing (which will result in a run-time error or possibly the wrong results). 
 Vignette 'Futures in R: Common Issues with Solutions' provides examples of common cases and explains how to avoid them as well as how to help the package to identify globals or to ignore falsely identified globals.
 If that does not suffice, it is always possible to manually specify the global variables by their names (e.g. globals = c("a", "slow_sum")) or as name-value pairs (e.g. globals = list(a = 42, slow_sum = my_sum)).
 -->
-<p>最後に、静的コード解析だけではグローバル変数を特定するのは難しいということを述べておこう。 グローバル変数の自動識別に失敗するケースが常に存在する。 そのため、間違ってグローバル判定してしまう場合（これは特に問題にならない）と、グローバル変数を見逃してしまう場合（この場合はエラーか間違った結果になる）がある。 ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html" class="external-link">‘Futures in R: Common Issues with Solutions’</a> では、そのようなケースの一般的な例や、避けるにはどうすればいいか、また、どのようにグローバル変数が特定されるかや間違って特定したグローバル変数を無視する方法を説明している。 それでも十分でない場合、グローバル変数の名前を指定する（例：<code>globals = c("a", "slow_sum")</code>）か、名前と値のペアで指定する（例：<code>globals = list(a = 42, slow_sum = my_sum)</code>）ことができる。</p>
+<p>最後に、静的コード解析だけではグローバル変数を特定するのは難しいということを述べておこう。 グローバル変数の自動識別に失敗するケースが常に存在する。 そのため、間違ってグローバル判定してしまう場合（これは特に問題にならない）と、グローバル変数を見逃してしまう場合（この場合はエラーか間違った結果になる）がある。 ビネット <a href="https://cran.r-project.org/web/packages/future/vignettes/future-4-issues.html">‘Futures in R: Common Issues with Solutions’</a> では、そのようなケースの一般的な例や、避けるにはどうすればいいか、また、どのようにグローバル変数が特定されるかや間違って特定したグローバル変数を無視する方法を説明している。 それでも十分でない場合、グローバル変数の名前を指定する（例：<code>globals = c("a", "slow_sum")</code>）か、名前と値のペアで指定する（例：<code>globals = list(a = 42, slow_sum = my_sum)</code>）ことができる。</p>
 </div>
 <div class="section level2">
 <h2>非明示的フューチャの制約</h2>
@@ -992,7 +992,7 @@ This is because the %<-% assignment operator cannot be used in all cases where t
 It can only be used to assign future values to environments (including the calling environment) much like how assign(name, value, envir) works. 
 However, we can assign implicit futures to environments using named indices, e.g.
 -->
-<p>これは非明示的なフューチャでは<strong>できない</strong>。 なぜなら、<code><a href="reference/future.html">%&lt;-%</a></code> 演算子は通常の <code><a href="https://rdrr.io/r/base/assignOps.html" class="external-link">&lt;-</a></code> 代入演算子とは違う動作をするからである。 <code><a href="reference/future.html">%&lt;-%</a></code> 演算子はフューチャの値を<strong>環境</strong>（呼び出し環境など）に代入する。 これは <code><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign(name, value, envir)</a></code> と同じ動作である。 したがって、上記と同様のことを非明示的フューチャで行いたい場合は、次のように名前インデックスを使って環境に代入する。</p>
+<p>これは非明示的なフューチャでは<strong>できない</strong>。 なぜなら、<code><a href="reference/future.html">%&lt;-%</a></code> 演算子は通常の <code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code> 代入演算子とは違う動作をするからである。 <code><a href="reference/future.html">%&lt;-%</a></code> 演算子はフューチャの値を<strong>環境</strong>（呼び出し環境など）に代入する。 これは <code><a href="https://rdrr.io/r/base/assign.html">assign(name, value, envir)</a></code> と同じ動作である。 したがって、上記と同様のことを非明示的フューチャで行いたい場合は、次のように名前インデックスを使って環境に代入する。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
 <span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">new.env</span>()
 <span class="op">&gt;</span><span class="st"> </span><span class="cf">for</span> (name <span class="cf">in</span> <span class="kw">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)) {
@@ -1010,14 +1010,14 @@ List of <span class="dv">3</span>
 Here as.list(v) blocks until all futures in the environment v have been resolved.
 Then their values are collected and returned as a regular list.
 -->
-<p>ここで、<code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list(v)</a></code> は環境 <code>v</code> のすべてのフューチャが解決するまでブロックされる。 その後、フューチャの値は通常のリストとして返される。</p>
+<p>ここで、<code><a href="https://rdrr.io/r/base/list.html">as.list(v)</a></code> は環境 <code>v</code> のすべてのフューチャが解決するまでブロックされる。 その後、フューチャの値は通常のリストとして返される。</p>
 <!--
 If numeric indices are required, then list environments can be used. 
 List environments, which are implemented by the listenv package, are regular environments with customized subsetting operators making it possible to index them much like how lists can be indexed.
 By using list environments where we otherwise would use lists, we can also assign implicit futures to list-like objects using numeric indices. 
 For example,
 -->
-<p>もし<strong>数値インデックス</strong>を使いたい場合は、<a href="https://cran.r-project.org/package=listenv" class="external-link">listenv</a> パッケージで提供されている<strong>リスト環境</strong>を使えばよい。 リスト環境は、インデックス付きリストと同じように、インデックス付けすることができる環境である。 上記のコードでリストをリスト環境に置き換えると、数値インデックスを使って非明示的フューチャを代入できるようになる。</p>
+<p>もし<strong>数値インデックス</strong>を使いたい場合は、<a href="https://cran.r-project.org/package=listenv">listenv</a> パッケージで提供されている<strong>リスト環境</strong>を使えばよい。 リスト環境は、インデックス付きリストと同じように、インデックス付けすることができる環境である。 上記のコードでリストをリスト環境に置き換えると、数値インデックスを使って非明示的フューチャを代入できるようになる。</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"listenv"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
 <span class="op">&gt;</span><span class="st"> </span>v &lt;-<span class="st"> </span><span class="kw">listenv</span>()
@@ -1035,7 +1035,7 @@ List of <span class="dv">3</span>
 <!--
 As previously, as.list(v) blocks until all futures are resolved.
 -->
-<p>ここでも、<code><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list(v)</a></code> はすべてのフューチャが解決するまでブロックされる。</p>
+<p>ここでも、<code><a href="https://rdrr.io/r/base/list.html">as.list(v)</a></code> はすべてのフューチャが解決するまでブロックされる。</p>
 </div>
 <div class="section level2">
 <h2>デモ</h2>
@@ -1045,9 +1045,9 @@ First, try with the sequential evaluation,
 -->
 <p>様々な戦略においてフューチャがどのように評価されるかの実例を見るには、このパッケージに含まれるマンデルブロ (Mandelbrot) デモを実行するとよい。 まず、逐次評価で実行してみよう。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
 <span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/demo.html">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <!--
 which resembles how the script would run if futures were not used. 
 Then, try multisession evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
@@ -1056,14 +1056,14 @@ Try,
 <p>これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチセッション評価を試してみよう。 これは異なるマンデルブロ平面をバックグラウンドで実行される R プロセスで並列に計算する。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/demo.html">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <!--
 Finally, if you have access to multiple machines you can try to set up a cluster of workers and use them, e.g.
 -->
 <p>最後に、複数の計算機にアクセスできる場合、クラスタのワーカを指定して実行できる。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/demo.html">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2>貢献するには</h2>
@@ -1074,18 +1074,18 @@ If you have comments or ideas on how to improve the 'future' package, I would lo
 The preferred way to get in touch is via the GitHub repository, where you also find the latest source code.
 I am also open to contributions and collaborations of any kind.
 -->
-<p>このパッケージの目的は、R でフューチャを使うための標準的で統一された API を提供することである。 現状はこの目的を達成するための初期段階にすぎない。 future パッケージを改善するアイデアや意見を持っている人がいたらぜひ教えてほしい。 開発者に連絡をとるには <a href="https://github.com/HenrikBengtsson/future/" class="external-link">GitHub リポジトリ</a>経由が好ましいが、どのような手段であっても歓迎する。</p>
+<p>このパッケージの目的は、R でフューチャを使うための標準的で統一された API を提供することである。 現状はこの目的を達成するための初期段階にすぎない。 future パッケージを改善するアイデアや意見を持っている人がいたらぜひ教えてほしい。 開発者に連絡をとるには <a href="https://github.com/HenrikBengtsson/future/">GitHub リポジトリ</a>経由が好ましいが、どのような手段であっても歓迎する。</p>
 </div>
 <div class="section level2">
 <h2>インストール</h2>
 <p>future パッケージは CRAN で利用可能であり、次のコードを実行してインストールできる。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></code></pre></div>
 <div class="section level3">
 <h3>プレリリースバージョンのインストール</h3>
 <p>プレリリースバージョンは GitHub の <code>develop</code> ブランチにあり、インストールするには次のようにする。</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/future"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/future"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
 <p>これはソースからのインストールとなる。</p>
 </div>
 </div>
@@ -1095,18 +1095,18 @@ I am also open to contributions and collaborations of any kind.
 This Git repository uses the Git Flow branching model (the git flow extension is useful for this).
 The develop branch contains the latest contributions and other code that will appear in the next release, and the master branch contains the code of the latest release, which is exactly what is currently on CRAN.
 -->
-<p>この Git リポジトリは <a href="https://nvie.com/posts/a-successful-git-branching-model/" class="external-link">Git Flow</a> ブランチモデルを使用している（<a href="https://github.com/petervanderdoes/gitflow-avh" class="external-link"><code>git flow</code></a> エクステンションが便利である）。 <a href="https://github.com/HenrikBengtsson/future/tree/develop" class="external-link"><code>develop</code></a> ブランチには、次のリリースで登場する最新の貢献やコードが含まれ、<a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>master</code></a> ブランチには、最新のリリースの（現在 <a href="https://cran.r-project.org/package=future" class="external-link">CRAN</a> にあるものと同じ）コードが含まれる。</p>
+<p>この Git リポジトリは <a href="https://nvie.com/posts/a-successful-git-branching-model/">Git Flow</a> ブランチモデルを使用している（<a href="https://github.com/petervanderdoes/gitflow-avh"><code>git flow</code></a> エクステンションが便利である）。 <a href="https://github.com/HenrikBengtsson/future/tree/develop"><code>develop</code></a> ブランチには、次のリリースで登場する最新の貢献やコードが含まれ、<a href="https://github.com/HenrikBengtsson/future"><code>master</code></a> ブランチには、最新のリリースの（現在 <a href="https://cran.r-project.org/package=future">CRAN</a> にあるものと同じ）コードが含まれる。</p>
 <!--
 Contributing to this package is easy. 
 Just send a pull request. 
 When you send your PR, make sure develop is the destination branch on the future repository. 
 Your PR should pass R CMD check --as-cran, which will also be checked by Travis CI and AppVeyor CI when the PR is submitted.
 -->
-<p>このパッケージへの貢献は簡単である。 <a href="https://help.github.com/articles/using-pull-requests/" class="external-link">プルリクエスト</a>を送るだけである。 プルリクエストを送るときは、<a href="https://github.com/HenrikBengtsson/future" class="external-link">future リポジトリ</a>の <code>develop</code> ブランチを送り先に指定していることを確認してほしい。 なお、プルリクエストは <code>R CMD check --as-cran</code> をパスしている必要がある。 これはプルリクエストを送信したときに、<a href="https://travis-ci.org/HenrikBengtsson/future" class="external-link">Travis CI</a> と <a href="https://ci.appveyor.com/project/HenrikBengtsson/future" class="external-link">AppVeyor CI</a> によって自動でチェックされる。</p>
+<p>このパッケージへの貢献は簡単である。 <a href="https://help.github.com/articles/using-pull-requests/">プルリクエスト</a>を送るだけである。 プルリクエストを送るときは、<a href="https://github.com/HenrikBengtsson/future">future リポジトリ</a>の <code>develop</code> ブランチを送り先に指定していることを確認してほしい。 なお、プルリクエストは <code>R CMD check --as-cran</code> をパスしている必要がある。 これはプルリクエストを送信したときに、<a href="https://travis-ci.org/HenrikBengtsson/future">Travis CI</a> と <a href="https://ci.appveyor.com/project/HenrikBengtsson/future">AppVeyor CI</a> によって自動でチェックされる。</p>
 <!--
 We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
 -->
-<p>我々は、コントリビューター規約の<a href="https://www.contributor-covenant.org/version/2/0/code_of_conduct/" class="external-link">行動規範</a>を遵守する。</p>
+<p>我々は、コントリビューター規約の<a href="https://www.contributor-covenant.org/version/2/0/code_of_conduct/">行動規範</a>を遵守する。</p>
 </div>
 <div class="section level2">
 <h2>ソフトウェアステータス</h2>
@@ -1128,16 +1128,16 @@ We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2
 </tr>
 <tr class="even">
 <td>R CMD check</td>
-<td><a href="https://cran.r-project.org/web/checks/check_results_future.html" class="external-link"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a></td>
-<td><a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check" class="external-link"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></td>
-<td><a href="https://travis-ci.org/HenrikBengtsson/future" class="external-link"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a></td>
-<td><a href="https://ci.appveyor.com/project/HenrikBengtsson/future" class="external-link"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a></td>
+<td><a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a></td>
+<td><a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></td>
+<td><a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a></td>
+<td><a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a></td>
 </tr>
 <tr class="odd">
 <td>Test coverage</td>
 <td></td>
 <td></td>
-<td><a href="https://codecov.io/gh/HenrikBengtsson/future" class="external-link"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></td>
+<td><a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></td>
 <td></td>
 </tr>
 </tbody>
@@ -1160,11 +1160,11 @@ We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -1190,8 +1190,6 @@ We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2
 </script>
 
 
-
-  
 
   </body>
 </html>

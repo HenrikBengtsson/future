@@ -59,8 +59,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -82,18 +80,9 @@
 </script>
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -114,7 +103,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -151,9 +149,6 @@
       <a href="../articles/future-8-how-future-is-validated.html">A Future for R: How the Future Framework is Validated</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -199,6 +194,9 @@
     </li>
     <li>
       <a href="https://listenv.futureverse.org">listenv</a>
+    </li>
+    <li>
+      <a href="https://marshal.futureverse.org">marshal</a>
     </li>
     <li>
       <a href="https://parallelly.futureverse.org">parallelly</a>
@@ -285,9 +283,9 @@
 </div><div class='output co'>#&gt; [[1]]
 #&gt; tryCatch(withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpqGXDRn/callr-fun-295153cd9cc9"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmplxmOHl/callr-fun-72b23b806d8c"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpqGXDRn/callr-res-295154912be0")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -314,7 +312,7 @@
 #&gt;         if (inherits(e, "rlib_error_2_0")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2, embed = FALSE)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpqGXDRn/callr-res-295154912be0", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -339,7 +337,7 @@
 #&gt;         if (inherits(e, "rlib_error_2_0")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2, embed = FALSE)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpqGXDRn/callr-res-295154912be0", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -374,9 +372,9 @@
 #&gt; [[8]]
 #&gt; withCallingHandlers({
 #&gt;     NULL
-#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpqGXDRn/callr-fun-295153cd9cc9"), 
+#&gt;     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmplxmOHl/callr-fun-72b23b806d8c"), 
 #&gt;         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;         quote = TRUE), file = "/tmp/hb/RtmpqGXDRn/callr-res-295154912be0")
+#&gt;         quote = TRUE), file = "/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b")
 #&gt;     flush(stdout())
 #&gt;     flush(stderr())
 #&gt;     NULL
@@ -403,7 +401,7 @@
 #&gt;         if (inherits(e, "rlib_error_2_0")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2, embed = FALSE)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpqGXDRn/callr-res-295154912be0", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, interrupt = function(e) {
@@ -428,7 +426,7 @@
 #&gt;         if (inherits(e, "rlib_error_2_0")) 
 #&gt;             e2$parent &lt;- e$parent
 #&gt;         e2 &lt;- err$add_trace_back(e2, embed = FALSE)
-#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmpqGXDRn/callr-res-295154912be0", 
+#&gt;         saveRDS(list("error", e2), file = paste0("/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b", 
 #&gt;             ".error"))
 #&gt;     }
 #&gt; }, callr_message = function(e) {
@@ -436,12 +434,12 @@
 #&gt; })
 #&gt; 
 #&gt; [[9]]
-#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpqGXDRn/callr-fun-295153cd9cc9"), 
+#&gt; saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmplxmOHl/callr-fun-72b23b806d8c"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
-#&gt;     quote = TRUE), file = "/tmp/hb/RtmpqGXDRn/callr-res-295154912be0")
+#&gt;     quote = TRUE), file = "/tmp/hb/RtmplxmOHl/callr-res-72b21d73554b")
 #&gt; 
 #&gt; [[10]]
-#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmpqGXDRn/callr-fun-295153cd9cc9"), 
+#&gt; do.call(do.call, c(readRDS("/tmp/hb/RtmplxmOHl/callr-fun-72b23b806d8c"), 
 #&gt;     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, 
 #&gt;     quote = TRUE)
 #&gt; 
@@ -460,7 +458,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; }), base::quote(list(pkg = list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpqGXDRn/future", dst_path = "/tmp/hb/RtmpqGXDRn/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmplxmOHl/future", dst_path = "/tmp/hb/RtmplxmOHl/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), 
@@ -479,6 +477,7 @@
 #&gt;                 list(text = "future.tests", href = "https://future.tests.futureverse.org"), 
 #&gt;                 list(text = "globals", href = "https://globals.futureverse.org"), 
 #&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
+#&gt;                 list(text = "marshal", href = "https://marshal.futureverse.org"), 
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
 #&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
@@ -487,8 +486,8 @@
 #&gt;                 facetFilters = "project:future")), ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
-#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
-#&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
+#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL), 
+#&gt;     repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
 #&gt;         source = "https://github.com/HenrikBengtsson/future/blob/master/", 
 #&gt;         issue = "https://github.com/HenrikBengtsson/future/issues/", 
 #&gt;         user = "https://github.com/")), development = list(destination = "dev", 
@@ -2839,11 +2838,10 @@
 #&gt;     "A Future for R: How the Future Framework is Validated"), 
 #&gt;         description = c(NA_character_, NA_character_, NA_character_, 
 #&gt;         NA_character_, NA_character_, NA_character_, NA_character_, 
-#&gt;         NA_character_, NA_character_)), bs_version = 3, has_logo = TRUE), 
-#&gt;     examples = TRUE, run_dont_run = FALSE, seed = 1014, lazy = FALSE, 
-#&gt;     override = list(), install = FALSE, preview = FALSE, new_process = FALSE, 
-#&gt;     devel = FALSE, crayon_enabled = TRUE, crayon_colors = 256, 
-#&gt;     pkgdown_internet = TRUE)), envir = base::quote(&lt;environment&gt;), 
+#&gt;         NA_character_, NA_character_))), examples = TRUE, run_dont_run = FALSE, 
+#&gt;     seed = 1014, lazy = FALSE, override = list(), install = FALSE, 
+#&gt;     preview = FALSE, new_process = FALSE, devel = FALSE, crayon_enabled = TRUE, 
+#&gt;     crayon_colors = 256, pkgdown_internet = TRUE)), envir = base::quote(&lt;environment&gt;), 
 #&gt;     quote = base::quote(TRUE))
 #&gt; 
 #&gt; [[12]]
@@ -2853,7 +2851,7 @@
 #&gt;         pkgdown.internet = pkgdown_internet)
 #&gt;     pkgdown::build_site(...)
 #&gt; })(pkg = base::quote(list(package = "future", version = "1.21.0-9000", 
-#&gt;     src_path = "/tmp/hb/RtmpqGXDRn/future", dst_path = "/tmp/hb/RtmpqGXDRn/future/docs", 
+#&gt;     src_path = "/tmp/hb/RtmplxmOHl/future", dst_path = "/tmp/hb/RtmplxmOHl/future/docs", 
 #&gt;     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(
 #&gt;         url = "https://future.futureverse.org", home = list(links = list(
 #&gt;             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), 
@@ -2872,6 +2870,7 @@
 #&gt;                 list(text = "future.tests", href = "https://future.tests.futureverse.org"), 
 #&gt;                 list(text = "globals", href = "https://globals.futureverse.org"), 
 #&gt;                 list(text = "listenv", href = "https://listenv.futureverse.org"), 
+#&gt;                 list(text = "marshal", href = "https://marshal.futureverse.org"), 
 #&gt;                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), 
 #&gt;                 list(text = "progressr", href = "https://progressr.futureverse.org"))), 
 #&gt;             cran = list(icon = "fab fa-r-project", href = "https://cloud.r-project.org/package=future"))), 
@@ -2880,8 +2879,8 @@
 #&gt;                 facetFilters = "project:future")), ganalytics = "G-SB3EQSD9FR"))), 
 #&gt;     figures = list(dev = "ragg::agg_png", dpi = 96L, dev.args = list(), 
 #&gt;         fig.ext = "png", fig.width = 7.29166666666667, fig.height = NULL, 
-#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL, 
-#&gt;         other.parameters = list()), repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
+#&gt;         fig.retina = 2L, fig.asp = 0.618046971569839, bg = NULL), 
+#&gt;     repo = list(url = list(home = "https://github.com/HenrikBengtsson/future/", 
 #&gt;         source = "https://github.com/HenrikBengtsson/future/blob/master/", 
 #&gt;         issue = "https://github.com/HenrikBengtsson/future/issues/", 
 #&gt;         user = "https://github.com/")), development = list(destination = "dev", 
@@ -5232,9 +5231,9 @@
 #&gt;     "A Future for R: How the Future Framework is Validated"), 
 #&gt;         description = c(NA_character_, NA_character_, NA_character_, 
 #&gt;         NA_character_, NA_character_, NA_character_, NA_character_, 
-#&gt;         NA_character_, NA_character_)), bs_version = 3, has_logo = TRUE)), 
-#&gt;     examples = base::quote(TRUE), run_dont_run = base::quote(FALSE), 
-#&gt;     seed = base::quote(1014), lazy = base::quote(FALSE), override = base::quote(list()), 
+#&gt;         NA_character_, NA_character_)))), examples = base::quote(TRUE), 
+#&gt;     run_dont_run = base::quote(FALSE), seed = base::quote(1014), 
+#&gt;     lazy = base::quote(FALSE), override = base::quote(list()), 
 #&gt;     install = base::quote(FALSE), preview = base::quote(FALSE), 
 #&gt;     new_process = base::quote(FALSE), devel = base::quote(FALSE), 
 #&gt;     crayon_enabled = base::quote(TRUE), crayon_colors = base::quote(256), 
@@ -5280,10 +5279,10 @@
 #&gt; 
 #&gt; [[22]]
 #&gt; downlit::evaluate_and_highlight(code, fig_save = fig_save_topic, 
-#&gt;     env = child_env(env), output_handler = evaluate::new_output_handler(value = pkgdown_print))
+#&gt;     env = child_env(env))
 #&gt; 
 #&gt; [[23]]
-#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE, output_handler = output_handler)
+#&gt; evaluate::evaluate(code, child_env(env), new_device = TRUE)
 #&gt; 
 #&gt; [[24]]
 #&gt; evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
@@ -5392,11 +5391,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -5422,8 +5421,6 @@
 </script>
 
 
-
-  
 
   </body>
 </html>

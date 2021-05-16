@@ -60,8 +60,6 @@ or indirectly via future()." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -83,18 +81,9 @@ or indirectly via future()." />
 </script>
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -115,7 +104,16 @@ or indirectly via future()." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -152,9 +150,6 @@ or indirectly via future()." />
       <a href="../articles/future-8-how-future-is-validated.html">A Future for R: How the Future Framework is Validated</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -200,6 +195,9 @@ or indirectly via future()." />
     </li>
     <li>
       <a href="https://listenv.futureverse.org">listenv</a>
+    </li>
+    <li>
+      <a href="https://marshal.futureverse.org">marshal</a>
     </li>
     <li>
       <a href="https://parallelly.futureverse.org">parallelly</a>
@@ -305,7 +303,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -314,7 +312,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>b</span> <span class='op'>%&lt;-%</span> <span class='op'>{</span> <span class='fl'>2</span> <span class='op'>}</span>
 
@@ -329,7 +327,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -338,7 +336,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='co'>## All futures</span>
 <span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='op'>)</span>
@@ -353,7 +351,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -362,7 +360,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; 
 #&gt; $b
@@ -375,7 +373,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -384,7 +382,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; 
 #&gt; $f
@@ -397,7 +395,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -406,7 +404,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; </div><div class='input'>
 
@@ -425,7 +423,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -434,7 +432,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>f2</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='va'>c</span>, envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>f2</span><span class='op'>)</span>
@@ -447,7 +445,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -456,7 +454,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>f3</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span><span class='st'>"c"</span>, envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>f3</span><span class='op'>)</span>
@@ -469,7 +467,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -478,7 +476,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</div><div class='input'>
 <span class='va'>fs</span> <span class='op'>&lt;-</span> <span class='fu'>futureOf</span><span class='op'>(</span>envir <span class='op'>=</span> <span class='va'>env</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fs</span><span class='op'>)</span>
@@ -492,7 +490,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Lazy evaluation: FALSE
 #&gt; Asynchronous evaluation: FALSE
 #&gt; Local evaluation: TRUE
-#&gt; Environment: 0x55b3f5e005f8
+#&gt; Environment: 0x564388858250
 #&gt; Capture standard output: TRUE
 #&gt; Capture condition classes: ‘condition’ (excluding ‘nothing’)
 #&gt; Globals: &lt;none&gt;
@@ -501,7 +499,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 #&gt; Resolved: TRUE
 #&gt; Value: 56 bytes of class ‘numeric’
 #&gt; Early signaling: FALSE
-#&gt; Owner process: e51f3e4f-4fa6-4a00-c38d-3be98875b342
+#&gt; Owner process: 3bc53b33-5cc6-c16f-2b20-aecd42bf2e63
 #&gt; Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’
 #&gt; </div></pre>
   </div>
@@ -515,11 +513,11 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -545,8 +543,6 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 </script>
 
 
-
-  
 
   </body>
 </html>

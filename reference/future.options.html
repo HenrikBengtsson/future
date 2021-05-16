@@ -64,8 +64,6 @@ further notice." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -87,18 +85,9 @@ further notice." />
 </script>
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -119,7 +108,16 @@ further notice." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -156,9 +154,6 @@ further notice." />
       <a href="../articles/future-8-how-future-is-validated.html">A Future for R: How the Future Framework is Validated</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -204,6 +199,9 @@ further notice." />
     </li>
     <li>
       <a href="https://listenv.futureverse.org">listenv</a>
+    </li>
+    <li>
+      <a href="https://marshal.futureverse.org">marshal</a>
     </li>
     <li>
       <a href="https://parallelly.futureverse.org">parallelly</a>
@@ -365,7 +363,7 @@ if set.</p>
 <dl>
 <dt><span class="option">future.globals.onMissing</span>:</dt><dd><p>(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If <code>"error"</code>, an error is generated immediately.  If <code>"ignore"</code>, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: <code>"ignore"</code>)</p></dd>
 
-<dt><span class="option">future.globals.method</span>:</dt><dd><p>(character string) Method used to identify globals. For details, see <code><a href='https://globals.futureverse.org/reference/globalsOf.html'>globalsOf</a>()</code>. (Default: <code>"ordered"</code>)</p></dd>
+<dt><span class="option">future.globals.method</span>:</dt><dd><p>(character string) Method used to identify globals. For details, see <code><a href='https://rdrr.io/pkg/globals/man/globalsOf.html'>globalsOf</a>()</code>. (Default: <code>"ordered"</code>)</p></dd>
 
 <dt><span class="option">future.globals.resolve</span>:</dt><dd><p>(logical) If <code>TRUE</code>, globals that are <code><a href='Future-class.html'>Future</a></code> objects (typically created as <em>explicit</em> futures) will be resolved and have their values (using <code><a href='value.html'>value()</a></code>) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: <code>FALSE</code>)</p></dd>
 
@@ -406,11 +404,11 @@ Similarly, if <code>R_FUTURE_GLOBALS_MAXSIZE = "50000000"</code>, then option
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Henrik Bengtsson.</p></p>
+  <p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
 </div>
 
       </footer>
@@ -436,8 +434,6 @@ Similarly, if <code>R_FUTURE_GLOBALS_MAXSIZE = "50000000"</code>, then option
 </script>
 
 
-
-  
 
   </body>
 </html>
