@@ -302,14 +302,18 @@
 <td align="left">tbl_spark (<code>externalptr</code>)</td>
 </tr>
 <tr class="odd">
+<td align="left"><strong>terra</strong></td>
+<td align="left">SpatRaster, SpatVector (<code>externalptr</code>)</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>udpipe</strong></td>
 <td align="left">udpipe_model (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>xgboost</strong></td>
 <td align="left">xgb.DMatrix (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>xml2</strong></td>
 <td align="left">xml_document (<code>externalptr</code>)</td>
 </tr>
@@ -328,11 +332,11 @@
 
 <span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html">makeCluster</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+<span class="va">y</span>
 <span class="co">## [1] 1.414214 1.732051</span>
 
 <span class="va">y</span> <span class="op">%&lt;-%</span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+<span class="va">y</span>
 <span class="co">## Error in summary.connection(connection) : invalid connection</span></code></pre></div>
 <p>If we turn on <code><a href="https://rdrr.io/r/base/options.html">options(future.globals.onReference = "error")</a></code>, we will catch this already when we create the future:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
@@ -530,25 +534,61 @@ my_length(x)
 <div id="package-sparklyr" class="section level4">
 <h4 class="hasAnchor">
 <a href="#package-sparklyr" class="anchor"></a>Package: sparklyr</h4>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sparklyr</span><span class="op">)</span>
+<span class="va">sc</span> <span class="op">&lt;-</span> <span class="fu">spark_connect</span><span class="op">(</span>master <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span>
+
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"misc"</span>, <span class="st">"exDIF.csv"</span>, package <span class="op">=</span> <span class="st">"utils"</span><span class="op">)</span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">spark_read_csv</span><span class="op">(</span><span class="va">sc</span>, <span class="st">"exDIF"</span>, <span class="va">file</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+<span class="va">d</span>
+<span class="co">## Error in unserialize(node$con) : </span>
+<span class="co">##   Failed to retrieve the value of MultisessionFuture (&lt;none&gt;) from cluster</span>
+<span class="co">## SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was</span>
+<span class="co">## 'unknown input format'. Post-mortem diagnostic: A process with this PID</span>
+<span class="co">## exists, which suggests that the localhost worker is still alive.</span></code></pre></div>
+<p>To catch this as soon as possible,</p>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<span class="va">d</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+<span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of</span>
+<span class="co">## the globals ('data' of class 'tbl_spark') used in the future expression</span></code></pre></div>
+</div>
+<div id="package-terra" class="section level4">
+<h4 class="hasAnchor">
+<a href="#package-terra" class="anchor"></a>Package: terra</h4>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(future)
 <span class="kw">plan</span>(multisession)
-<span class="kw">library</span>(sparklyr)
-sc &lt;-<span class="st"> </span><span class="kw">spark_connect</span>(<span class="dt">master =</span> <span class="st">"local"</span>)
+<span class="kw">library</span>(terra)
 
-file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"misc"</span>, <span class="st">"exDIF.csv"</span>, <span class="dt">package =</span> <span class="st">"utils"</span>)
-data &lt;-<span class="st"> </span><span class="kw">spark_read_csv</span>(sc, <span class="st">"exDIF"</span>, file)
-d <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(data)
-d
-Error <span class="cf">in</span> <span class="kw">unserialize</span>(node<span class="op">$</span>con) <span class="op">:</span><span class="st"> </span>
-<span class="st">  </span>Failed to retrieve the value of <span class="kw">MultisessionFuture</span> (<span class="op">&lt;</span>none<span class="op">&gt;</span>) from cluster
-SOCKnode <span class="co">#1 (PID 29864 on localhost 'localhost'). The reason reported was</span>
-<span class="st">'unknown input format'</span>. Post<span class="op">-</span>mortem diagnostic<span class="op">:</span><span class="st"> </span>A process with this PID
-exists, which suggests that the localhost worker is still alive.</code></pre></div>
+file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="dt">package =</span> <span class="st">"terra"</span>)
+v &lt;-<span class="st"> </span><span class="kw">vect</span>(file)
+dv <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(v)
+dv
+Error <span class="cf">in</span> x<span class="op">@</span>ptr<span class="op">$</span><span class="kw">nrow</span>() <span class="op">:</span><span class="st"> </span>external pointer is not valid
+
+file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="dt">package=</span><span class="st">"terra"</span>)
+r &lt;-<span class="st"> </span><span class="kw">rast</span>(file)
+dr <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(r)
+dr
+## Error in .External(list(name = "CppMethod__invoke_notvoid", address = &lt;pointer: (nil)&gt;,  : 
+##  NULL value passed as symbol address</code></pre></div>
 <p>To catch this as soon as possible,</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">options</span>(<span class="dt">future.globals.onReference =</span> <span class="st">"error"</span>)
-d <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(data)
-## Error: Detected a non-exportable reference ('externalptr') in one of
-the <span class="kw">globals</span> (<span class="st">'data'</span> of class <span class="st">'tbl_spark'</span>) used <span class="cf">in</span> the future expression</code></pre></div>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+
+<span class="va">dv</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>
+<span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span>
+<span class="co">## 'RegisteredNativeSymbol') in one of the globals ('v' of class</span>
+<span class="co">## 'SpatVector') used in the future expression</span>
+
+<span class="va">dr</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
+<span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span>
+<span class="co">## 'RegisteredNativeSymbol') in one of the globals ('r' of class</span>
+<span class="co">## 'SpatRaster') used in the future expression</span></code></pre></div>
+<p>For some workarounds, see <code><a href="https://rdrr.io/pkg/terra/man/wrap.html">help("wrap", package = "terra")</a></code>.</p>
 </div>
 <div id="package-udpipe" class="section level4">
 <h4 class="hasAnchor">
@@ -582,17 +622,17 @@ the <span class="kw">globals</span> (<span class="st">'data'</span> of class <sp
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">xgboost</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">agaricus.train</span>, package <span class="op">=</span> <span class="st">"xgboost"</span><span class="op">)</span>
 <span class="va">train</span> <span class="op">&lt;-</span> <span class="fu">xgb.DMatrix</span><span class="op">(</span><span class="va">agaricus.train</span><span class="op">$</span><span class="va">data</span>, label <span class="op">=</span> <span class="va">agaricus.train</span><span class="op">$</span><span class="va">label</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span>
 <span class="co">## [1] "xgb.DMatrix"</span>
 
 <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
+<span class="va">d</span>
 <span class="co">## [1] 6513  126</span></code></pre></div>
 <p>works just fine but if we attempt to pass on the 'xgb.DMatrix' object <code>train</code> to an external worker, we silently get a incorrect value:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span><span class="op">)</span>
 <span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">d</span><span class="op">)</span>
+<span class="va">d</span>
 <span class="co">## NULL</span></code></pre></div>
 <p>This is unfortunate, but we can at least detect this by:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
