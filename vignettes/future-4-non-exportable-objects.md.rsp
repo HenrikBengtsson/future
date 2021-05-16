@@ -81,6 +81,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **rJava**       | jclassName (`externalptr`)
   **rstan**       | stanmodel (`externalptr`)
   **sparklyr**    | tbl_spark (`externalptr`)
+  **terra**       | SpatRaster, SpatVector (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
   **xgboost**     | xgb.DMatrix (`externalptr`)
   **xml2**        | xml_document (`externalptr`)
@@ -99,11 +100,11 @@ plan(multisession, workers = 2)
 
 cl <- parallel::makeCluster(2L)
 y <- parSapply(cl, X = 2:3, FUN = sqrt)
-print(y)
+y
 ## [1] 1.414214 1.732051
 
 y %<-% parSapply(cl, X = 2:3, FUN = sqrt)
-print(y)
+y
 ## Error in summary.connection(connection) : invalid connection
 ```
 
@@ -354,11 +355,11 @@ file <- system.file("misc", "exDIF.csv", package = "utils")
 data <- spark_read_csv(sc, "exDIF", file)
 d %<-% dim(data)
 d
-Error in unserialize(node$con) : 
-  Failed to retrieve the value of MultisessionFuture (<none>) from cluster
-SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was
-'unknown input format'. Post-mortem diagnostic: A process with this PID
-exists, which suggests that the localhost worker is still alive.
+## Error in unserialize(node$con) : 
+##   Failed to retrieve the value of MultisessionFuture (<none>) from cluster
+## SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was
+## 'unknown input format'. Post-mortem diagnostic: A process with this PID
+## exists, which suggests that the localhost worker is still alive.
 ```
 
 To catch this as soon as possible,
@@ -366,8 +367,48 @@ To catch this as soon as possible,
 options(future.globals.onReference = "error")
 d %<-% dim(data)
 ## Error: Detected a non-exportable reference ('externalptr') in one of
-the globals ('data' of class 'tbl_spark') used in the future expression
+## the globals ('data' of class 'tbl_spark') used in the future expression
 ```
+
+
+#### Package: terra
+
+```r
+library(future)
+plan(multisession)
+library(terra)
+
+file <- system.file("ex/lux.shp", package = "terra")
+v <- vect(file)
+dv %<-% dim(v)
+dv
+Error in x@ptr$nrow() : external pointer is not valid
+
+file <- system.file("ex/elev.tif", package="terra")
+r <- rast(file)
+dr %<-% dim(r)
+dr
+## Error in .External(list(name = "CppMethod__invoke_notvoid", address = <pointer: (nil)>,  : 
+##  NULL value passed as symbol address
+```
+
+To catch this as soon as possible,
+
+```r
+options(future.globals.onReference = "error")
+
+dv %<-% dim(v)
+## Error: Detected a non-exportable reference ('externalptr' of class
+## 'RegisteredNativeSymbol') in one of the globals ('v' of class
+## 'SpatVector') used in the future expression
+
+dr %<-% dim(data)
+## Error: Detected a non-exportable reference ('externalptr' of class
+## 'RegisteredNativeSymbol') in one of the globals ('r' of class
+## 'SpatRaster') used in the future expression
+```
+
+For some workarounds, see `help("wrap", package = "terra")`.
 
 
 #### Package: udpipe
@@ -406,11 +447,11 @@ plan(multisession)
 library(xgboost)
 data(agaricus.train, package = "xgboost")
 train <- xgb.DMatrix(agaricus.train$data, label = agaricus.train$label)
-print(class(train))
+class(train)
 ## [1] "xgb.DMatrix"
 
 d <- dim(dtrain)
-print(d)
+d
 ## [1] 6513  126
 ```
 
@@ -419,7 +460,7 @@ works just fine but if we attempt to pass on the 'xgb.DMatrix' object `train` to
 ```r
 f <- future(dim(dtrain))
 d <- value(f)
-print(d)
+d
 ## NULL
 ```
 
