@@ -80,6 +80,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **reticulate**  | python.builtin.function (`externalptr`), python.builtin.module (`externalptr`)
   **rJava**       | jclassName (`externalptr`)
   **rstan**       | stanmodel (`externalptr`)
+  **ShortRead**   | FastqFile, FastqStreamer, FastqStreamerList (`connection`)
   **sparklyr**    | tbl_spark (`externalptr`)
   **terra**       | SpatRaster, SpatVector (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
@@ -341,6 +342,47 @@ f <- future({
 ## Error: Detected a non-exportable reference ('externalptr') in one of the
 ## globals ('Double' of class 'jclassName') used in the future expression
 ```
+
+
+#### Package: ShortRead
+
+The **[ShortRead](https://bioconductor.org/packages/ShortRead/)** package from Bioconductor implements efficient methods for sampling, iterating, and reading FASTQ files.  Some of the helper objects used cannot be saved to file or exported to a parallel worker, because they comprise of connections and other non-exportable objects.
+
+Here is an example that illustrates how using a 'FastqStreamer' object causes the parallel workers to crash and terminate:
+
+```r
+library(future)
+plan(multisession)
+
+# Adopted from example("FastqStreamer", package = "ShortRead")
+library(ShortRead)
+sp <- SolexaPath(system.file("extdata", package="ShortRead"))
+fl <- file.path(analysisPath(sp), "s_1_sequence.txt")
+fs <- FastqStreamer(fl, 50)
+
+reads %<-% yield(fs)
+reads
+## Error in unserialize(node$con) : 
+## ClusterFuture (<none>) failed to receive results from cluster RichSOCKnode #1
+## (PID 18716 on localhost 'localhost'). The reason reported was 'error reading
+## from connection'. Post-mortem diagnostic: No process exists with this PID,
+## i.e. the localhost worker is no longer alive. Detected a non-exportable
+## reference ('externalptr') in one of the globals ('fs' of class
+## 'FastqStreamer') used in the future expression. The total size of the 2
+## globals exported is 433.16 KiB. There are two globals: 'fs' (428.66 KiB of
+## class 'S4') and 'yield' (4.51 KiB of class 'function')
+```
+
+Luckily, we can protect against such radical outcomes;
+
+```r
+options(future.globals.onReference = "error")
+
+reads %<-% yield(fs)
+## Error: Detected a non-exportable reference ('externalptr') in one of the
+## globals ('fs' of class 'FastqStreamer') used in the future expression
+```
+
 
 
 #### Package: sparklyr
