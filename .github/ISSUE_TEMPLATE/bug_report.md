@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve (Please use 'Discussions' for Q&A)
+about: Create a report to help us improve (Please use [Discussions](https://github.com/HenrikBengtsson/future/discussions) for Q&A)
 title: ''
 labels: ''
 assignees: ''
