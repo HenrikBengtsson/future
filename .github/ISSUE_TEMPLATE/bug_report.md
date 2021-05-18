@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-This issue tracker for bug reports and specific feature requests on the **future** package. For questions and discussion on how to use futures (e.g. **future**, **future.apply**, **doFuture**, **future.batchtools**, **future.callr**, **parallelly**, ...), please use dedicated GitHub [Discussions](https://github.com/HenrikBengtsson/future/discussions) forum.
-
 **Describe the bug**
 A clear and concise description of what the bug is.  
 
