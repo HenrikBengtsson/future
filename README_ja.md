@@ -9,9 +9,7 @@ _This is a translation of [README.md](https://github.com/HenrikBengtsson/future/
 
 </div>
 
-<img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"></a>
-
-# future: Rにおける統一的な並列分散処理
+# future: Rにおける統一的な並列分散処理 <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"></a>
 
 ## イントロダクション
 
