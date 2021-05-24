@@ -1,15 +1,10 @@
 _This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-02-09](https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
 
 <div id="badges"><!-- pkgdown markup -->
-<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"></a></a>
-<a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></a>
-<a href="https://travis-ci.org/HenrikBengtsson/future"><img border="0" src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a></a>
-<a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a></a>
-<a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></a>
-
+<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a> <a href="https://travis-ci.org/HenrikBengtsson/future"><img border="0" src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"/></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>
 </div>
 
-# future: Rにおける統一的な並列分散処理 <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"></a>
+# future: Rにおける統一的な並列分散処理 <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right" />
 
 ## イントロダクション
 
