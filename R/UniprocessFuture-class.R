@@ -17,7 +17,7 @@ UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.fram
   if (substitute) expr <- substitute(expr)
 
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done"))) {
+  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
     if (lazy && !local && (!is.logical(globals) || globals)) {
       stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
     }

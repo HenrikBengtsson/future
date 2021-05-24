@@ -52,7 +52,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
               !is.na(persistent))
 
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done"))) {
+  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
     gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
     globals <- gp$globals
     packages <- c(packages, gp$packages)

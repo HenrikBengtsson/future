@@ -6,6 +6,8 @@ home:
     href: https://github.com/HenrikBengtsson/future/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
+  - text: Futureverse User Forum (new!)
+    href: https://github.com/HenrikBengtsson/future/discussions
 
 navbar:
   structure:
@@ -17,32 +19,34 @@ navbar:
     pkgs:
       text: Packages
       menu:
-      - text: BiocParallel.FutureParam
+      - text: BiocParallel.FutureParam 
         href: https://BiocParallel.FutureParam.futureverse.org
-      - text: doFuture
+      - text: doFuture 
         href: https://doFuture.futureverse.org
-      - text: furrr
+      - text: furrr 
         href: https://furrr.futureverse.org
-      - text: future
+      - text: future 
         href: https://future.futureverse.org
-      - text: future.apply
+      - text: future.apply 
         href: https://future.apply.futureverse.org
-      - text: future.batchtools
+      - text: future.batchtools 
         href: https://future.batchtools.futureverse.org
-      - text: future.callr
+      - text: future.callr 
         href: https://future.callr.futureverse.org
-      - text: future.tests
+      - text: future.tests 
         href: https://future.tests.futureverse.org
-      - text: globals
+      - text: globals 
         href: https://globals.futureverse.org
-      - text: listenv
+      - text: listenv 
         href: https://listenv.futureverse.org
-      - text: marshal
-        href: https://marshal.futureverse.org
-      - text: parallelly
+      - text: parallelly 
         href: https://parallelly.futureverse.org
-      - text: progressr
+      - text: progressr 
         href: https://progressr.futureverse.org
+      - text: future.mapreduce (experimental)
+        href: https://future.mapreduce.futureverse.org
+      - text: marshal (experimental)
+        href: https://marshal.futureverse.org
     cran:
       icon: fab fa-r-project
       href: https://cloud.r-project.org/package=future

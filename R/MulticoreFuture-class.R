@@ -16,7 +16,7 @@ MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame
   if (substitute) expr <- substitute(expr)
 
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done"))) {
+  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
     ## Global objects
     assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
     gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
