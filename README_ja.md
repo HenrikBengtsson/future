@@ -1153,45 +1153,15 @@ remotes::install_github("HenrikBengtsson/future", ref="develop")
 
 これはソースからのインストールとなる。
 
+<div id="badges"><!-- pkgdown markup -->
+
 ## 貢献
 
 <!--
-This Git repository uses the Git Flow branching model (the git flow extension is useful for this).
-The develop branch contains the latest contributions and other code that will appear in the next release, and the master branch contains the code of the latest release, which is exactly what is currently on CRAN.
+To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 -->
 
-この Git リポジトリは [Git
-Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-ブランチモデルを使用している（[`git
-flow`](https://github.com/petervanderdoes/gitflow-avh) エクステンションが便利である）。
-[`develop`](https://github.com/HenrikBengtsson/future/tree/develop)
-ブランチには、次のリリースで登場する最新の貢献やコードが含まれ、[`master`](https://github.com/HenrikBengtsson/future)
-ブランチには、最新のリリースの（現在 [CRAN](https://cran.r-project.org/package=future)
-にあるものと同じ）コードが含まれる。
-
-<!--
-Contributing to this package is easy. 
-Just send a pull request. 
-When you send your PR, make sure develop is the destination branch on the future repository. 
-Your PR should pass R CMD check --as-cran, which will also be checked by Travis CI and AppVeyor CI when the PR is submitted.
--->
-
-このパッケージへの貢献は簡単である。
-[プルリクエスト](https://help.github.com/articles/using-pull-requests/)を送るだけである。
-プルリクエストを送るときは、[future リポジトリ](https://github.com/HenrikBengtsson/future)の
-`develop` ブランチを送り先に指定していることを確認してほしい。 なお、プルリクエストは `R CMD check --as-cran`
-をパスしている必要がある。 これはプルリクエストを送信したときに、[Travis
-CI](https://travis-ci.org/HenrikBengtsson/future) と [AppVeyor
-CI](https://ci.appveyor.com/project/HenrikBengtsson/future)
-によって自動でチェックされる。
-
-<!--
-We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
--->
-
-我々は、コントリビューター規約の[行動規範](https://www.contributor-covenant.org/version/2/0/code_of_conduct/)を遵守する。
-
-<div id="badges"><!-- pkgdown markup -->
+このパッケージに貢献するには、[CONTRIBUTING.md](CONTRIBUTING.md) を参照してほしい。
 
 ## ソフトウェアステータス
 
