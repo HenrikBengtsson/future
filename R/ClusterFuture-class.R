@@ -479,6 +479,8 @@ receiveMessageFromWorker <- function(future, ...) {
 
     ## Sanity check
     if (inherits(condition, "error")) {
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
       stop(FutureError(sprintf("Received a %s condition from the %s worker for future ('%s'), which is not possible to relay because that would break the internal state of the future-worker communication. The condition message was: %s", class(condition)[1], class(future)[1], label, sQuote(conditionMessage(condition))), future = future))
     }
 
