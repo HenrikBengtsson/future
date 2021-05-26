@@ -542,7 +542,7 @@ my_length(x)
 <h4 class="hasAnchor">
 <a href="#package-shortread" class="anchor"></a>Package: ShortRead</h4>
 <p>The <strong><a href="https://bioconductor.org/packages/ShortRead/">ShortRead</a></strong> package from Bioconductor implements efficient methods for sampling, iterating, and reading FASTQ files. Some of the helper objects used cannot be saved to file or exported to a parallel worker, because they comprise of connections and other non-exportable objects.</p>
-<p>Here is an example that illustrates how using a 'FastqStreamer' object causes the parallel workers to crash and terminate:</p>
+<p>Here is an example that illustrates how an attempt to use a 'FastqStreamer' object created in the main R session fails when used in a parallel worker:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
@@ -554,16 +554,8 @@ my_length(x)
 
 <span class="va">reads</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/pkg/ShortRead/man/Sampler-class.html">yield</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span>
 <span class="va">reads</span>
-<span class="co">## Error in unserialize(node$con) : </span>
-<span class="co">## ClusterFuture (&lt;none&gt;) failed to receive results from cluster RichSOCKnode #1</span>
-<span class="co">## (PID 18716 on localhost 'localhost'). The reason reported was 'error reading</span>
-<span class="co">## from connection'. Post-mortem diagnostic: No process exists with this PID,</span>
-<span class="co">## i.e. the localhost worker is no longer alive. Detected a non-exportable</span>
-<span class="co">## reference ('externalptr') in one of the globals ('fs' of class</span>
-<span class="co">## 'FastqStreamer') used in the future expression. The total size of the 2</span>
-<span class="co">## globals exported is 433.16 KiB. There are two globals: 'fs' (428.66 KiB of</span>
-<span class="co">## class 'S4') and 'yield' (4.51 KiB of class 'function')</span></code></pre></div>
-<p>Luckily, we can protect against such radical outcomes;</p>
+<span class="co">## Error in status(update = TRUE) : invalid FastqStreamer</span></code></pre></div>
+<p>To catch this earlier, and to get a more informative error message, we do as before;</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 
