@@ -78,6 +78,8 @@ find_references <- function(x, first_only = FALSE) {
 #' Assert that there are no references among the identified globals
 #'
 #' @param action Type of action to take if a reference is found.
+#'
+#' @param source Is the source of `x` the globals or the value of the future?
 #' 
 #' @return If a reference is detected, an informative error, warning, message,
 #' or a character string is produced, otherwise `NULL` is returned
@@ -86,7 +88,7 @@ find_references <- function(x, first_only = FALSE) {
 #' @rdname find_references
 #' 
 #' @keywords internal
-assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
+assert_no_references <- function(x, action = c("error", "warning", "message", "string"), source = c("globals", "value")) {
   ## Don't look for references in the 'where' attribute of Globals objects
   if (inherits(x, "Globals")) {
     attr(x, "where") <- NULL
@@ -97,21 +99,7 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   if (length(ref) == 0) return(NULL)
 
   action <- match.arg(action, choices = c("error", "warning", "message", "string"))
-  
-  ## Identify which global object has a reference
-  global <- " (<unknown>)"
-  ref <- ref[[1]]
-  if (is.list(x) && !is.null(names(x))) {
-    for (ii in seq_along(x)) {
-      ref_ii <- find_references(x[ii], first_only = TRUE)
-      if (length(ref_ii) > 0) {
-        global <- sprintf(" (%s of class %s)",
-                          sQuote(names(x)[ii]), sQuote(class(x[[ii]])[1]))
-        ref <- ref_ii[[1]]
-        break
-      }
-    }
-  }
+  source <- match.arg(source, choices = c("globals", "value"))
 
   typeof <- typeof(ref)
   class <- class(ref)[1]
@@ -120,8 +108,27 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   } else {
     typeof <- sprintf("%s of class %s", sQuote(typeof), sQuote(class))
   }
+
+  if (source == "globals") {
+    ## Identify which global object has a reference
+    global <- " (<unknown>)"
+    ref <- ref[[1]]
+    if (is.list(x) && !is.null(names(x))) {
+      for (ii in seq_along(x)) {
+        ref_ii <- find_references(x[ii], first_only = TRUE)
+        if (length(ref_ii) > 0) {
+          global <- sprintf(" (%s of class %s)",
+                            sQuote(names(x)[ii]), sQuote(class(x[[ii]])[1]))
+          ref <- ref_ii[[1]]
+          break
+        }
+      }
+    }
+    msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
+  } else if (source == "value") {
+    msg <- sprintf("Detected a non-exportable reference (%s) in the value (of class %s) of the resolved future", typeof, sQuote(class(x)[1]))
+  }
   
-  msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
   if (action == "error") {
     stop(FutureError(msg, call = NULL))
   } else if (action == "warning") {

@@ -110,6 +110,36 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   
   future$.rng_checked <- TRUE
 
+
+  ## Check for non-exportable objects in the value?
+  onReference <- getOption("future.globals.onReference", "ignore")
+  if (onReference %in% c("error", "warning")) {
+    new <- tryCatch({
+      assert_no_references(value, action = onReference, source = "value")
+      NULL
+    }, FutureCondition = function(cond) {
+      list(condition = cond, signaled  = FALSE)
+    })
+
+    if (!is.null(new)) {
+      ## Append FutureCondition to the regular condition stack
+      conditions <- result$conditions
+      n <- length(conditions)
+
+      ## An existing run-time error takes precedence
+      if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
+        conditions[[n + 1L]] <- conditions[[n]]
+        conditions[[n]] <- new
+      } else {
+        conditions[[n + 1L]] <- new
+      }
+      
+      result$conditions <- conditions
+      future$result <- result
+    }
+  }
+
+
   ## Signal captured conditions?
   conditions <- result$conditions
   if (length(conditions) > 0) {
