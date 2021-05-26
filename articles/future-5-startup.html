@@ -207,7 +207,7 @@
 <a href="#r-options" class="anchor"></a>R options</h2>
 <p>The default strategy for resolving futures can be controlled via R option <code>future.plan</code>. For instance, if we add</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.plan <span class="op">=</span> <span class="st">"multisession"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.plan <span class="op">=</span> <span class="st">"multisession"</span><span class="op">)</span></code></pre></div>
 <p>to our <code>~/.Rprofile</code> startup script, the future package will resolve futures in parallel (asynchronously using all available cores), i.e.</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="ex">Rscript</span> -e <span class="st">"class(future::plan())"</span>
 [<span class="ex">1</span>] <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></code></pre></div>
@@ -216,7 +216,7 @@
 <div id="environment-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#environment-variables" class="anchor"></a>Environment variables</h2>
-<p>An alternative to using <code><a href="https://rdrr.io/r/base/options.html">options()</a></code> for setting option <code>future.plan</code> is to specify system environment variable <code>R_FUTURE_PLAN</code>. If set, then the future package will set <code>future.plan</code> accordingly <em>when loaded</em>. For example,</p>
+<p>An alternative to using <code><a href="https://docs.ropensci.org/magick/reference/options.html">options()</a></code> for setting option <code>future.plan</code> is to specify system environment variable <code>R_FUTURE_PLAN</code>. If set, then the future package will set <code>future.plan</code> accordingly <em>when loaded</em>. For example,</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash">$ <span class="bu">export</span> <span class="va">R_FUTURE_PLAN=</span>multisession
 $ <span class="ex">Rscript</span> -e <span class="st">"class(future::plan())"</span>
 [<span class="ex">1</span>] <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></code></pre></div>

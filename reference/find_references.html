@@ -253,7 +253,11 @@ Assert that there are no references among the identified globals" />
 
     <pre class="usage"><span class='fu'>find_references</span><span class='op'>(</span><span class='va'>x</span>, first_only <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
-<span class='fu'>assert_no_references</span><span class='op'>(</span><span class='va'>x</span>, action <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"error"</span>, <span class='st'>"warning"</span>, <span class='st'>"message"</span>, <span class='st'>"string"</span><span class='op'>)</span><span class='op'>)</span></pre>
+<span class='fu'>assert_no_references</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  action <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"error"</span>, <span class='st'>"warning"</span>, <span class='st'>"message"</span>, <span class='st'>"string"</span><span class='op'>)</span>,
+  source <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"globals"</span>, <span class='st'>"value"</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -270,6 +274,10 @@ otherwise all references.</p></td>
     <tr>
       <th>action</th>
       <td><p>Type of action to take if a reference is found.</p></td>
+    </tr>
+    <tr>
+      <th>source</th>
+      <td><p>Is the source of <code>x</code> the globals or the value of the future?</p></td>
     </tr>
     </table>
 

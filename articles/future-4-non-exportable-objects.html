@@ -345,7 +345,7 @@
 <span class="va">y</span> <span class="op">%&lt;-%</span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span>
 <span class="va">y</span>
 <span class="co">## Error in summary.connection(connection) : invalid connection</span></code></pre></div>
-<p>If we turn on <code><a href="https://rdrr.io/r/base/options.html">options(future.globals.onReference = "error")</a></code>, we will catch this already when we create the future:</p>
+<p>If we turn on <code><a href="https://docs.ropensci.org/magick/reference/options.html">options(future.globals.onReference = "error")</a></code>, we will catch this already when we create the future:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">y</span> <span class="op">%&lt;-%</span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the globals</span>
@@ -390,7 +390,7 @@ f &lt;-<span class="st"> </span><span class="kw">future</span>(model <span class
 <span class="st">       </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">10</span>, <span class="dt">activation =</span> <span class="st">'softmax'</span>))
 model2 &lt;-<span class="st"> </span><span class="kw">value</span>(f)
 Error <span class="cf">in</span> object<span class="op">$</span><span class="kw">add</span>(layer) <span class="op">:</span><span class="st"> </span>attempt to apply non<span class="op">-</span><span class="cf">function</span></code></pre></div>
-<p>If we turn on <code><a href="https://rdrr.io/r/base/options.html">options(future.globals.onReference = "error")</a></code>, we will catch this already when we create the future:</p>
+<p>If we turn on <code><a href="https://docs.ropensci.org/magick/reference/options.html">options(future.globals.onReference = "error")</a></code>, we will catch this already when we create the future:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Error<span class="op">:</span><span class="st"> </span>Detected a non<span class="op">-</span>exportable <span class="kw">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the
 <span class="kw">globals</span> (<span class="st">'model'</span> of class <span class="st">'keras.engine.sequential.Sequential'</span>) used <span class="cf">in</span>
 the future expression</code></pre></div>
@@ -402,15 +402,15 @@ the future expression</code></pre></div>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">magick</span><span class="op">)</span>
-<span class="va">frink</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu">image_read</span><span class="op">(</span><span class="st">"https://jeroen.github.io/images/frink.png"</span><span class="op">)</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu">image_fill</span><span class="op">(</span><span class="va">frink</span>, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span>
+<span class="va">frink</span> <span class="op">&lt;-</span> <span class="fu">magick</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/editing.html">image_read</a></span><span class="op">(</span><span class="st">"https://jeroen.github.io/images/frink.png"</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://docs.ropensci.org/magick/reference/painting.html">image_fill</a></span><span class="op">(</span><span class="va">frink</span>, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span>
 <span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 <span class="co">## Error: Image pointer is dead. You cannot save or cache image objects</span>
 <span class="co">## between R sessions.</span></code></pre></div>
 <p>If we set:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></code></pre></div>
 <p>we'll see that this is caught even before attempting to run this in parallel;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">future</span>(<span class="kw">image_fill</span>(frink, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="dv">20</span>))
 ## Error: Detected a non-exportable reference ('externalptr' of class
@@ -463,7 +463,7 @@ my_length(x)
 <span class="co">## Error in .Call(&lt;pointer: (nil)&gt;, x) : NULL value passed as symbol address</span></code></pre></div>
 <p>We can detect / protect against this using:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">n</span> <span class="op">%&lt;-%</span> <span class="fu">my_length</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span>
 <span class="co">## 'NativeSymbol') in one of the globals ('my_length' of class 'function')</span>
@@ -484,7 +484,7 @@ my_length(x)
 <span class="co">##   attempt to apply non-function</span></code></pre></div>
 <p>and by telling the future package to validate globals further, we get:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">pwd</span> <span class="op">%&lt;-%</span> <span class="va">os</span><span class="op">$</span><span class="fu">getcwd</span><span class="op">(</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
 <span class="co">## globals ('os' of class 'python.builtin.module') used in the future expression</span></code></pre></div>
@@ -501,7 +501,7 @@ my_length(x)
 <span class="co">##   (on 'localhost').  The reason reported was 'error reading from connection'</span></code></pre></div>
 <p>which, again, is because:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">y</span> <span class="op">%&lt;-%</span> <span class="fu">twice</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the globals</span>
 <span class="co">## ('twice' of class 'python.builtin.function') used in the future expression</span></code></pre></div>
@@ -530,7 +530,7 @@ my_length(x)
 <span class="co">## [1] "Java-Object&lt;null&gt;"</span></code></pre></div>
 <p>Although no error is produced, we see that the value <code>d1</code> is a Java NULL Object. As before, we can catch this by using:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span>
   <span class="fu">.jinit</span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on worker</span>
   <span class="fu">new</span><span class="op">(</span><span class="va">Double</span>, <span class="st">"3.14"</span><span class="op">)</span>
@@ -565,7 +565,7 @@ my_length(x)
 <span class="co">## class 'S4') and 'yield' (4.51 KiB of class 'function')</span></code></pre></div>
 <p>Luckily, we can protect against such radical outcomes;</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 
 <span class="va">reads</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/pkg/ShortRead/man/Sampler-class.html">yield</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
@@ -591,7 +591,7 @@ my_length(x)
 <span class="co">## exists, which suggests that the localhost worker is still alive.</span></code></pre></div>
 <p>To catch this as soon as possible,</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">d</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of</span>
 <span class="co">## the globals ('data' of class 'tbl_spark') used in the future expression</span></code></pre></div>
@@ -617,7 +617,7 @@ dr
 ##  NULL value passed as symbol address</code></pre></div>
 <p>To catch this as soon as possible,</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 
 <span class="va">dv</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span>
@@ -645,7 +645,7 @@ dr
 <span class="co">##   external pointer is not valid</span></code></pre></div>
 <p>To catch this as soon as possible,</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">x</span> <span class="op">%&lt;-%</span> <span class="fu">udpipe_annotate</span><span class="op">(</span><span class="va">udmodel</span>, x <span class="op">=</span> <span class="st">"Ik ging op reis en ik nam mee."</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
 <span class="co">## globals ('udmodel' of class 'udpipe_model') used in the future expression</span></code></pre></div>
@@ -659,9 +659,9 @@ dr
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">xgboost</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dmlc/xgboost">xgboost</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">agaricus.train</span>, package <span class="op">=</span> <span class="st">"xgboost"</span><span class="op">)</span>
-<span class="va">train</span> <span class="op">&lt;-</span> <span class="fu">xgb.DMatrix</span><span class="op">(</span><span class="va">agaricus.train</span><span class="op">$</span><span class="va">data</span>, label <span class="op">=</span> <span class="va">agaricus.train</span><span class="op">$</span><span class="va">label</span><span class="op">)</span>
+<span class="va">train</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.DMatrix.html">xgb.DMatrix</a></span><span class="op">(</span><span class="va">agaricus.train</span><span class="op">$</span><span class="va">data</span>, label <span class="op">=</span> <span class="va">agaricus.train</span><span class="op">$</span><span class="va">label</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">train</span><span class="op">)</span>
 <span class="co">## [1] "xgb.DMatrix"</span>
 
@@ -676,7 +676,7 @@ dr
 <span class="co">## NULL</span></code></pre></div>
 <p>This is unfortunate, but we can at least detect this by:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr' of class 'xgb.DMatrix')</span>
 <span class="co">## in one of the globals ('dtrain' of class 'xgb.DMatrix') used in the future expression</span></code></pre></div>
@@ -695,7 +695,7 @@ dr
 <span class="co">## Error: external pointer is not valid</span></code></pre></div>
 <p>The future framework can help detect this <em>before</em> sending off the future to the worker;</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_children</a></span><span class="op">(</span><span class="va">xml</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
 <span class="co">## globals ('xml' of class 'xml_document') used in the future expression</span></code></pre></div>
@@ -731,7 +731,7 @@ dr
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 <span class="co">## Error in R_nc4_inq_varndims: NetCDF: Not a valid ID</span>
 <span class="co">## Error in ncvar_ndims(ncid, varid) : error returned from C call</span></code></pre></div>
-<p>This is because ncdf4 objects make use of internal references that are unique to the R session where they were created. However, these are <em>not</em> formal <em>external pointer</em>:s, meaning the future framework cannot detect them. That is, using <code><a href="https://rdrr.io/r/base/options.html">options(future.globals.onReference = "error")</a></code> is of no help here.</p>
+<p>This is because ncdf4 objects make use of internal references that are unique to the R session where they were created. However, these are <em>not</em> formal <em>external pointer</em>:s, meaning the future framework cannot detect them. That is, using <code><a href="https://docs.ropensci.org/magick/reference/options.html">options(future.globals.onReference = "error")</a></code> is of no help here.</p>
 <p>A workaround is to open the netCDF in each worker, e.g.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
