@@ -438,3 +438,5 @@ SpatVector
 terra
 tif
 vect
+OpenMP
+RcppParallel
