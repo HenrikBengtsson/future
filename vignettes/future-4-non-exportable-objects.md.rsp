@@ -348,7 +348,7 @@ f <- future({
 
 The **[ShortRead](https://bioconductor.org/packages/ShortRead/)** package from Bioconductor implements efficient methods for sampling, iterating, and reading FASTQ files.  Some of the helper objects used cannot be saved to file or exported to a parallel worker, because they comprise of connections and other non-exportable objects.
 
-Here is an example that illustrates how using a 'FastqStreamer' object causes the parallel workers to crash and terminate:
+Here is an example that illustrates how an attempt to use a 'FastqStreamer' object created in the main R session fails when used in a parallel worker:
 
 ```r
 library(future)
@@ -362,18 +362,10 @@ fs <- FastqStreamer(fl, 50)
 
 reads %<-% yield(fs)
 reads
-## Error in unserialize(node$con) : 
-## ClusterFuture (<none>) failed to receive results from cluster RichSOCKnode #1
-## (PID 18716 on localhost 'localhost'). The reason reported was 'error reading
-## from connection'. Post-mortem diagnostic: No process exists with this PID,
-## i.e. the localhost worker is no longer alive. Detected a non-exportable
-## reference ('externalptr') in one of the globals ('fs' of class
-## 'FastqStreamer') used in the future expression. The total size of the 2
-## globals exported is 433.16 KiB. There are two globals: 'fs' (428.66 KiB of
-## class 'S4') and 'yield' (4.51 KiB of class 'function')
+## Error in status(update = TRUE) : invalid FastqStreamer
 ```
 
-Luckily, we can protect against such radical outcomes;
+To catch this earlier, and to get a more informative error message, we do as before;
 
 ```r
 options(future.globals.onReference = "error")

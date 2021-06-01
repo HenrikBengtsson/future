@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9000 [2021-05-25]
+Version: 1.21.0-9000 [2021-05-31]
 
 SIGNIFICANT CHANGES:
 
@@ -58,6 +58,11 @@ NEW FEATURES:
    globals and their sizes, and if some of them are non-exportable.
    A similar, detailed report is also produced when a cluster future fails
    to set up and launch itself on a parallel worker.
+
+ * if option 'future.fork.multithreading.enable' is FALSE, RcppParallel,
+   in addition to OpenMP, is forced to run with a single threaded whenever
+   running in a forked process (=multicore futures).  This is done by setting
+   environment variable 'RCPP_PARALLEL_NUM_THREADS' to 1.
 
 BUG FIXES:
 

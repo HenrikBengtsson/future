@@ -298,6 +298,18 @@ getExpression.MulticoreFuture <- local({
     ## /HB 2020-01-09
     ## RhpcBLASctl::blas_set_num_threads(1L)
 
+    ## Force single-threaded RcppParallel, iff needed
+    old_rcppparallel_threads <- Sys.getenv("RCPP_PARALLEL_NUM_THREADS", "")
+    if (old_rcppparallel_threads != "1") {
+      Sys.setenv(RCPP_PARALLEL_NUM_THREADS = "1")
+      if (old_rcppparallel_threads == "") {
+        base::on.exit(Sys.unsetenv("RCPP_PARALLEL_NUM_THREADS"), add = TRUE)
+      } else {
+        base::on.exit(Sys.setenv(RCPP_PARALLEL_NUM_THREADS = old_rcppparallel_threads), add = TRUE)
+      }
+    }
+
+
     .(expr)
   })
   
@@ -331,15 +343,13 @@ getExpression.MulticoreFuture <- local({
   
     ## Disable multi-threading in futures?
     multithreading <- getOption("future.fork.multithreading.enable", TRUE)  
-    if (isFALSE(multithreading) &&
-        !supports_omp_threads(assert = TRUE, debug = debug)) {
-      warning(FutureWarning("It is not possible to disable multi-threading on this systems", future = future))
-      multithreading <- TRUE
-    }
-    
     if (isFALSE(multithreading)) {
+      if (!supports_omp_threads(assert = TRUE, debug = debug)) {
+        warning(FutureWarning("It is not possible to disable OpenMP multi-threading on this systems", future = future))
+      }
+
       expr <- bquote_apply(tmpl_expr_disable_multithreading)
-      if (debug) mdebug("- Updated expression to force single-threaded mode")
+      if (debug) mdebug("- Updated expression to force single-threaded (OpenMP and RcppParallel) processing")
     }
   
   

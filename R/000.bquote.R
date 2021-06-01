@@ -54,39 +54,39 @@ if (getRversion() < "4.0.0") {
 #' @importFrom utils globalVariables
 globalVariables(c(".", ".."))
 bquote_compile <- function(expr, substitute = TRUE) {
-    if (substitute) expr <- substitute(expr)
-    
-    tmpl <- list()
-    
-    unquote <- function(e, at = integer(0L)) {
-        n <- length(e)
-        if (n == 0L) return()
+  if (substitute) expr <- substitute(expr)
+  
+  tmpl <- list()
+  
+  unquote <- function(e, at = integer(0L)) {
+    n <- length(e)
+    if (n == 0L) return()
 
-        if (is.pairlist(e)) {
-          for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
-          return()
-        }
-
-        if (!is.call(e)) return()
-        
-        ## .(<name>)?
-        if (is.name(e[[1L]]) && as.character(e[[1]]) == ".") {
-            ## Record location in expression tree
-            entry <- list(
-              expression = e[[2L]],
-              at         = at
-            )
-            tmpl <<- c(tmpl, list(entry))
-            return()
-        }
-        
-        ## `{`, `+`, ...
-        for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
+    if (is.pairlist(e)) {
+      for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
+      return()
     }
 
-    dummy <- unquote(expr)
-    attr(tmpl, "expression") <- expr
-    tmpl
+    if (!is.call(e)) return()
+    
+    ## .(<name>)?
+    if (is.name(e[[1L]]) && as.character(e[[1]]) == ".") {
+      ## Record location in expression tree
+      entry <- list(
+        expression = e[[2L]],
+        at         = at
+      )
+      tmpl <<- c(tmpl, list(entry))
+      return()
+    }
+  
+    ## `{`, `+`, ...
+    for (kk in 1:n) unquote(e[[kk]], at = c(at, kk))
+  }
+
+  dummy <- unquote(expr)
+  attr(tmpl, "expression") <- expr
+  tmpl
 }
 
 
@@ -128,12 +128,4 @@ bquote_apply <- function(tmpl, envir = parent.frame()) {
   }
 
   expr
-}
-
-
-bquote2 <- function(expr, where = parent.frame(), splice = FALSE, substitute = TRUE) {
-  stop_if_not(!splice)
-  if (substitute) expr <- substitute(expr)
-  tmpl <- bquote_compile(expr, substitute = FALSE)
-  bquote_apply(tmpl, envir = where)
 }
