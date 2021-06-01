@@ -3,7 +3,7 @@ source("incl/start.R")
 bquote_compile <- future:::bquote_compile
 bquote_apply <- future:::bquote_apply
 
-message("*** bquote2( ) ...")
+message("*** bquote_compile() & bquote_apply() ...")
 
 exprs <- list(
   A = quote(.(a)),
@@ -47,6 +47,6 @@ for (kk in seq_along(exprs)) {
   }
 }
 
-message("*** bquote2() ... DONE")
+message("*** bquote_compile() & bquote_apply() ... DONE")
 
 source("incl/end.R")
