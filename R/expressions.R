@@ -77,88 +77,87 @@ makeExpression <- local({
         ...future.value <- base::withVisible(.(expr))
         future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
       }, condition = base::local({
-          ## WORKAROUND: If the name of any of the below objects/functions
-          ## coincides with a promise (e.g. a future assignment) then we
-          ## we will end up with a recursive evaluation resulting in error:
-          ##   "promise already under evaluation: recursive default argument
-          ##    reference or earlier problems?"
-          ## To avoid this, we make sure to import the functions explicitly
-          ## /HB 2018-12-22
-          c <- base::c
-          inherits <- base::inherits
-          invokeRestart <- base::invokeRestart
-          length <- base::length
-          list <- base::list
-          seq.int <- base::seq.int
-          signalCondition <- base::signalCondition
-          sys.calls <- base::sys.calls
-          `[[` <- base::`[[`
-          `+` <- base::`+`
-          `<<-` <- base::`<<-`
+        ## WORKAROUND: If the name of any of the below objects/functions
+        ## coincides with a promise (e.g. a future assignment) then we
+        ## we will end up with a recursive evaluation resulting in error:
+        ##   "promise already under evaluation: recursive default argument
+        ##    reference or earlier problems?"
+        ## To avoid this, we make sure to import the functions explicitly
+        ## /HB 2018-12-22
+        c <- base::c
+        inherits <- base::inherits
+        invokeRestart <- base::invokeRestart
+        length <- base::length
+        list <- base::list
+        seq.int <- base::seq.int
+        signalCondition <- base::signalCondition
+        sys.calls <- base::sys.calls
+        `[[` <- base::`[[`
+        `+` <- base::`+`
+        `<<-` <- base::`<<-`
           
-          sysCalls <- function(calls = sys.calls(), from = 1L) {
-            calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
-          }
-          function(cond) {
-            is_error <- inherits(cond, "error")
+        sysCalls <- function(calls = sys.calls(), from = 1L) {
+          calls[seq.int(from = from + .(skip[1L]), to = length(calls) - .(skip[2L]))]
+        }
+        
+        function(cond) {
+          is_error <- inherits(cond, "error")
             
-            ## Ignore condition?
-            ignore <- !is_error &&
-                      !is.null(.(conditionClassesExclude)) && 
-                      inherits(cond, .(conditionClassesExclude))
+          ## Ignore condition?
+          ignore <- !is_error &&
+                    !is.null(.(conditionClassesExclude)) && 
+                    inherits(cond, .(conditionClassesExclude))
           
-            ## Handle error:s specially
-            if (is_error) {
-              sessionInformation <- function() {
-                list(
-                  r          = base::R.Version(),
-                  locale     = base::Sys.getlocale(),
-    	      rngkind    = base::RNGkind(),
-    	      namespaces = base::loadedNamespaces(),
-    	      search     = base::search(),
-    	      system     = base::Sys.info()
-    	    )
-              }
-
-              ## Record condition
-              ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
-                condition = cond,
-                calls     = c(sysCalls(from = ...future.frame), cond$call),
-                session   = sessionInformation(),
-                timestamp = base::Sys.time(),
-                signaled  = 0L
+          ## Handle error:s specially
+          if (is_error) {
+            sessionInformation <- function() {
+              list(
+                r          = base::R.Version(),
+                locale     = base::Sys.getlocale(),
+                rngkind    = base::RNGkind(),
+                namespaces = base::loadedNamespaces(),
+                search     = base::search(),
+                system     = base::Sys.info()
               )
-    	  
-              signalCondition(cond)
-            } else if (!ignore &&
-                       .(!is.null(conditionClasses)) &&
-                       inherits(cond, .(conditionClasses))
-                       ) {
-              ## Relay 'immediateCondition' conditions immediately?
-              ## If so, then do not muffle it and flag it as signalled
-              ## already here.
-              signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
-              ## Record condition
-              ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
-    	    condition = cond,
-    	    signaled = base::as.integer(signal)
-    	  )
-              if (.(immediateConditions && !split) && !signal) {
-                ## muffleCondition <- future:::muffleCondition()
-                muffleCondition <- .(muffleCondition)
-                muffleCondition(cond, pattern = .(muffleInclude))
-              }
-            } else {
-              if (.(!split && !is.null(conditionClasses))) {
-                ## Muffle all non-captured conditions
-                ## muffleCondition <- future:::muffleCondition()
-                muffleCondition <- .(muffleCondition)
-                muffleCondition(cond, pattern = .(muffleInclude))
-              }
+            }
+           ## Record condition
+            ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
+              condition = cond,
+              calls     = c(sysCalls(from = ...future.frame), cond$call),
+              session   = sessionInformation(),
+              timestamp = base::Sys.time(),
+              signaled  = 0L
+            )
+        
+            signalCondition(cond)
+          } else if (!ignore &&
+                     .(!is.null(conditionClasses)) &&
+                     inherits(cond, .(conditionClasses))
+                    ) {
+            ## Relay 'immediateCondition' conditions immediately?
+            ## If so, then do not muffle it and flag it as signalled
+            ## already here.
+            signal <- .(immediateConditions) && inherits(cond, .(immediateConditionClasses))
+            ## Record condition
+            ...future.conditions[[length(...future.conditions) + 1L]] <<- list(
+              condition = cond,
+              signaled = base::as.integer(signal)
+            )
+            if (.(immediateConditions && !split) && !signal) {
+              ## muffleCondition <- future:::muffleCondition()
+              muffleCondition <- .(muffleCondition)
+              muffleCondition(cond, pattern = .(muffleInclude))
+            }
+          } else {
+            if (.(!split && !is.null(conditionClasses))) {
+              ## Muffle all non-captured conditions
+              ## muffleCondition <- future:::muffleCondition()
+              muffleCondition <- .(muffleCondition)
+              muffleCondition(cond, pattern = .(muffleInclude))
             }
           }
-        }) ## local()
-      ) ## withCallingHandlers()
+        } ## function(cond)
+      })) ## local() + withCallingHandlers()
     }, error = function(ex) {
       base::structure(base::list(
         value = NULL,

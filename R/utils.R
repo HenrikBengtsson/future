@@ -118,7 +118,7 @@ envname <- function(env) {
         on.exit(class(env) <- class)
         class(env) <- NULL
         capture.output(print(env))
-      })	
+      })
     }
     if (length(name) > 1L) name <- name[1]
     name <- gsub("(.*: |>)", "", name)
