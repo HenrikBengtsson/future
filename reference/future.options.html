@@ -101,7 +101,7 @@ further notice." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9001</span>
       </span>
     </div>
 
@@ -337,7 +337,7 @@ If this option is not specified, environment variable <code class="env">R_FUTURE
 
 
 <dl>
-<dt><span class="option">future.fork.multithreading.enable</span> (<em>beta feature - may change</em>):</dt><dd><p>(logical) Enable or disable <em>multi-threading</em> while using <em>forked</em> parallel processing.  If <code>FALSE</code>, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the <span class="pkg">RhpcBLASctl</span> package is installed. If <code>TRUE</code>, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using <code><a href='plan.html'>plan(multicore)</a></code> but also when using, for instance, <code>mclapply()</code> of the <span class="pkg">parallel</span> package. (Default: not set)</p></dd>
+<dt><span class="option">future.fork.multithreading.enable</span> (<em>beta feature - may change</em>):</dt><dd><p>(logical) Enable or disable <em>multi-threading</em> while using <em>forked</em> parallel processing.  If <code>FALSE</code>, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the <span class="pkg">RhpcBLASctl</span> package) and for <strong>RcppParallel</strong>. If <code>TRUE</code>, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using <code><a href='plan.html'>plan(multicore)</a></code> but also when using, for instance, <code>mclapply()</code> of the <span class="pkg">parallel</span> package. (Default: not set)</p></dd>
 
 </dl>
 
