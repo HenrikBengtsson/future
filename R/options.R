@@ -276,6 +276,7 @@ update_package_options <- function(debug = FALSE) {
   }
 
   update_package_option("future.rng.onMisuse", debug = debug)
+  update_package_option("future.rng.onMisuse.keepFuture", mode = "logical", debug = debug)
   
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)

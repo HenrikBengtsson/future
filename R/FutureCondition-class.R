@@ -102,7 +102,7 @@ FutureError <- function(message, call = NULL, future = NULL) {
 
 #' @rdname FutureCondition
 #' @export
-RngFutureCondition <- function(message = NULL, call = NULL, future) {
+RngFutureCondition <- function(message = NULL, call = NULL, future = NULL) {
   if (is.null(message)) {
     label <- future$label
     if (is.null(label)) label <- "<none>"

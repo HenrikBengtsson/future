@@ -19,7 +19,7 @@ FutureWarning(message, call = NULL, future = NULL)
 
 FutureError(message, call = NULL, future = NULL)
 
-RngFutureCondition(message = NULL, call = NULL, future)
+RngFutureCondition(message = NULL, call = NULL, future = NULL)
 
 RngFutureWarning(...)
 

@@ -16,14 +16,15 @@ makeExpression <- local({
       future.globals.onMissing   = .(globals.onMissing),
       
       ## Pass down other future.* options
-      future.globals.maxSize     = .(getOption("future.globals.maxSize")),
-      future.globals.method      = .(getOption("future.globals.method")),
-      future.globals.onMissing   = .(getOption("future.globals.onMissing")),
-      future.globals.onReference = .(getOption("future.globals.onReference")),
-      future.globals.resolve     = .(getOption("future.globals.resolve")),
-      future.resolve.recursive   = .(getOption("future.resolve.recursive")),
-      future.rng.onMisuse        = .(getOption("future.rng.onMisuse")),
-      
+      future.globals.maxSize         = .(getOption("future.globals.maxSize")),
+      future.globals.method          = .(getOption("future.globals.method")),
+      future.globals.onMissing       = .(getOption("future.globals.onMissing")),
+      future.globals.onReference     = .(getOption("future.globals.onReference")),
+      future.globals.resolve         = .(getOption("future.globals.resolve")),
+      future.resolve.recursive       = .(getOption("future.resolve.recursive")),
+      future.rng.onMisuse            = .(getOption("future.rng.onMisuse")),
+      future.rng.onMisuse.keepFuture = .(getOption("future.rng.onMisuse.keepFuture")),
+
       ## Other options relevant to making futures behave consistently
       ## across backends
       width = .(getOption("width"))
