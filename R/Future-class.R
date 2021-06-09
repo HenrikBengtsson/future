@@ -155,6 +155,8 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$earlySignal <- earlySignal
   core$gc <- gc
   core$owner <- session_uuid()
+  .package$futureCounter <- .package$futureCounter + 1
+  core$id <- uuid(list(owner = core$owner, counter = .package$futureCounter))
   core$calls <- sys.calls()
 
   ## The current state of the future, e.g.
