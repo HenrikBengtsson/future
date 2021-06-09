@@ -1,8 +1,10 @@
-_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-02-09](https://github.com/HenrikBengtsson/future/blob/259a27ea9e2ee3b730788e55ec1efa7b3d3fc012/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
+_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-05-24](https://github.com/HenrikBengtsson/future/blob/74aea903791cbead5be7341766004571d4e0135b/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
 
-<img src="man/figures/logo.png" align="right" />
+<div id="badges"><!-- pkgdown markup -->
+<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a> <a href="https://travis-ci.org/HenrikBengtsson/future"><img border="0" src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"/></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>
+</div>
 
-# future: Rにおける統一的な並列分散処理
+# future: Rにおける統一的な並列分散処理 <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right" />
 
 ## イントロダクション
 
@@ -1153,48 +1155,12 @@ remotes::install_github("HenrikBengtsson/future", ref="develop")
 
 これはソースからのインストールとなる。
 
+<!-- pkgdown-drop-below -->
+
 ## 貢献
 
 <!--
-This Git repository uses the Git Flow branching model (the git flow extension is useful for this).
-The develop branch contains the latest contributions and other code that will appear in the next release, and the master branch contains the code of the latest release, which is exactly what is currently on CRAN.
+To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 -->
 
-この Git リポジトリは [Git
-Flow](https://nvie.com/posts/a-successful-git-branching-model/)
-ブランチモデルを使用している（[`git
-flow`](https://github.com/petervanderdoes/gitflow-avh) エクステンションが便利である）。
-[`develop`](https://github.com/HenrikBengtsson/future/tree/develop)
-ブランチには、次のリリースで登場する最新の貢献やコードが含まれ、[`master`](https://github.com/HenrikBengtsson/future)
-ブランチには、最新のリリースの（現在 [CRAN](https://cran.r-project.org/package=future)
-にあるものと同じ）コードが含まれる。
-
-<!--
-Contributing to this package is easy. 
-Just send a pull request. 
-When you send your PR, make sure develop is the destination branch on the future repository. 
-Your PR should pass R CMD check --as-cran, which will also be checked by Travis CI and AppVeyor CI when the PR is submitted.
--->
-
-このパッケージへの貢献は簡単である。
-[プルリクエスト](https://help.github.com/articles/using-pull-requests/)を送るだけである。
-プルリクエストを送るときは、[future リポジトリ](https://github.com/HenrikBengtsson/future)の
-`develop` ブランチを送り先に指定していることを確認してほしい。 なお、プルリクエストは `R CMD check --as-cran`
-をパスしている必要がある。 これはプルリクエストを送信したときに、[Travis
-CI](https://travis-ci.org/HenrikBengtsson/future) と [AppVeyor
-CI](https://ci.appveyor.com/project/HenrikBengtsson/future)
-によって自動でチェックされる。
-
-<!--
-We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
--->
-
-我々は、コントリビューター規約の[行動規範](https://www.contributor-covenant.org/version/2/0/code_of_conduct/)を遵守する。
-
-## ソフトウェアステータス
-
-| Resource      | CRAN        | GitHub Actions      | Travis CI       | AppVeyor CI      |
-| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
-| Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
+このパッケージに貢献するには、[CONTRIBUTING.md](CONTRIBUTING.md) を参照してほしい。
