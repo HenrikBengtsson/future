@@ -83,15 +83,16 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
         if (is.null(label)) label <- "<none>"
         cond <- RngFutureCondition(future = future)
         msg <- conditionMessage(cond)
+        uuid <- future$uuid
         if (getOption("future.rng.onMisuse.keepFuture", TRUE)) {
           f <- future
         } else {
           f <- NULL
         }
         if (onMisuse == "error") {
-          cond <- RngFutureError(msg, future = f)
+          cond <- RngFutureError(msg, uuid = uuid, future = f)
         } else if (onMisuse == "warning") {
-          cond <- RngFutureWarning(msg, future = f)
+          cond <- RngFutureWarning(msg, uuid = uuid, future = f)
         } else {
           cond <- NULL
           warning("Unknown value on option 'future.rng.onMisuse': ",
