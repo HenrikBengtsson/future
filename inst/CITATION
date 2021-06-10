@@ -7,12 +7,9 @@ citEntry(
   entry = "Misc",
   author = "Henrik Bengtsson",
   title = "A Unifying Framework for Parallel and Distributed Processing in R using Futures",
-  year = "2020",
-  month = "aug",
-  eprint = "2008.00553",
-  archivePrefix = "arXiv",
-  primaryClass = "cs.DC",
-  url = "https://arxiv.org/abs/2008.00553",
+  year = "2021",
+  doi = "10.32614/RJ-2021-048",
+  url = "https://journal.r-project.org/archive/2021/RJ-2021-048/index.html",
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Plain-text citation:
@@ -20,7 +17,8 @@ citEntry(
   textVersion = paste(sep="",
     "H. Bengtsson, ",
     "A Unifying Framework for Parallel and Distributed Processing in R using Futures, ",
-    "arXiv:2008.00553, ",
-    "2020"
+    "The R Journal, ",
+    "2021, ",
+    "doi:10.32614/RJ-2021-048"
   )
 )
