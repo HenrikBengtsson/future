@@ -100,7 +100,7 @@ evaluation of the future." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9002</span>
       </span>
     </div>
 
@@ -257,15 +257,20 @@ class to help distinguish them from conditions that occur due to the
 <em>evaluation</em> of the future.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>FutureCondition</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>FutureCondition</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, uuid <span class='op'>=</span> <span class='va'>future</span><span class='op'>$</span><span class='va'>uuid</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>FutureMessage</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>FutureMessage</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, uuid <span class='op'>=</span> <span class='va'>future</span><span class='op'>$</span><span class='va'>uuid</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>FutureWarning</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>FutureWarning</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, uuid <span class='op'>=</span> <span class='va'>future</span><span class='op'>$</span><span class='va'>uuid</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>FutureError</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
+<span class='fu'>FutureError</span><span class='op'>(</span><span class='va'>message</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, uuid <span class='op'>=</span> <span class='va'>future</span><span class='op'>$</span><span class='va'>uuid</span>, future <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>RngFutureCondition</span><span class='op'>(</span>message <span class='op'>=</span> <span class='cn'>NULL</span>, call <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>future</span><span class='op'>)</span>
+<span class='fu'>RngFutureCondition</span><span class='op'>(</span>
+  message <span class='op'>=</span> <span class='cn'>NULL</span>,
+  call <span class='op'>=</span> <span class='cn'>NULL</span>,
+  uuid <span class='op'>=</span> <span class='va'>future</span><span class='op'>$</span><span class='va'>uuid</span>,
+  future <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span>
 
 <span class='fu'>RngFutureWarning</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span>
 
@@ -283,6 +288,11 @@ class to help distinguish them from conditions that occur due to the
     <tr>
       <th>call</th>
       <td><p>The call stack that led up to the condition.</p></td>
+    </tr>
+    <tr>
+      <th>uuid</th>
+      <td><p>A universally unique identifier for the future associated with
+this FutureCondition.</p></td>
     </tr>
     <tr>
       <th>future</th>
