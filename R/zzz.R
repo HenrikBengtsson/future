@@ -15,6 +15,11 @@
     mdebug(paste(c("Future-specific environment variables:", envs), collapse = "\n"))
   }
 
+  ## TEMPORARY WORKAROUND: Until parallelly (>= 1.26.1) is released
+  if (packageVersion("parallelly") < "1.26.1") {
+    parallelly_disable_parallel_setup_if_needed()
+  }
+
   ## Set future options based on environment variables
   update_package_options(debug = debug)
 
