@@ -1,3 +1,27 @@
+# AIPW
+
+<details>
+
+* Version: 0.6.3.2
+* GitHub: https://github.com/yqzhong7/AIPW
+* Source code: https://github.com/cran/AIPW
+* Date/Publication: 2021-06-11 09:30:02 UTC
+* Number of recursive dependencies: 92
+
+Run `revdep_details(, "AIPW")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘Rsolnp’ ‘SuperLearner’ ‘future.apply’ ‘ggplot2’ ‘progressr’ ‘stats’
+      ‘utils’
+      All declared Imports should be used.
+    ```
+
 # alookr
 
 <details>
@@ -137,9 +161,9 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
-        libs   5.1Mb
+        libs   5.7Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -206,9 +230,9 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-    Package suggested but not available for checking: ‘future.batchtools’
+    Package unavailable to check Rd xrefs: ‘Rmpi’
     ```
 
 # bayesmove
@@ -219,7 +243,7 @@ Run `revdep_details(, "batchtools")` for more info
 * GitHub: https://github.com/joshcullen/bayesmove
 * Source code: https://github.com/cran/bayesmove
 * Date/Publication: 2021-04-26 22:10:11 UTC
-* Number of recursive dependencies: 141
+* Number of recursive dependencies: 143
 
 Run `revdep_details(, "bayesmove")` for more info
 
@@ -241,7 +265,7 @@ Run `revdep_details(, "bayesmove")` for more info
 * GitHub: https://github.com/bcgov/bcmaps
 * Source code: https://github.com/cran/bcmaps
 * Date/Publication: 2021-03-09 23:40:03 UTC
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 120
 
 Run `revdep_details(, "bcmaps")` for more info
 
@@ -293,9 +317,9 @@ Run `revdep_details(, "blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 64.6Mb
+      installed size is 66.7Mb
       sub-directories of 1Mb or more:
-        libs  63.1Mb
+        libs  65.2Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -311,7 +335,7 @@ Run `revdep_details(, "blavaan")` for more info
 * GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
 * Date/Publication: 2020-02-23 20:00:02 UTC
-* Number of recursive dependencies: 113
+* Number of recursive dependencies: 116
 
 Run `revdep_details(, "blockCV")` for more info
 
@@ -337,7 +361,7 @@ Run `revdep_details(, "blockCV")` for more info
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
 * Date/Publication: 2021-03-14 15:50:31 UTC
-* Number of recursive dependencies: 221
+* Number of recursive dependencies: 223
 
 Run `revdep_details(, "brms")` for more info
 
@@ -384,7 +408,7 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  7.8Mb
       sub-directories of 1Mb or more:
         data   1.3Mb
         doc    2.9Mb
@@ -442,30 +466,6 @@ Run `revdep_details(, "civis")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# Clustering
-
-<details>
-
-* Version: 1.7.2
-* GitHub: https://github.com/laperez/clustering
-* Source code: https://github.com/cran/Clustering
-* Date/Publication: 2021-01-07 10:30:06 UTC
-* Number of recursive dependencies: 159
-
-Run `revdep_details(, "Clustering")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘gama’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # CLVTools
 
 <details>
@@ -484,9 +484,9 @@ Run `revdep_details(, "CLVTools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.4Mb
+      installed size is 11.0Mb
       sub-directories of 1Mb or more:
-        libs   9.2Mb
+        libs   9.8Mb
     ```
 
 # codalm
@@ -619,13 +619,18 @@ Run `revdep_details(, "datapackage.r")` for more info
 * GitHub: https://github.com/DeclareDesign/DeclareDesign
 * Source code: https://github.com/cran/DeclareDesign
 * Date/Publication: 2021-02-14 21:50:10 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "DeclareDesign")` for more info
 
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘DesignLibrary’
+    ```
 
 *   checking LazyData ... NOTE
     ```
@@ -707,27 +712,6 @@ Run `revdep_details(, "dragon")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# drtmle
-
-<details>
-
-* Version: 1.0.5
-* GitHub: https://github.com/benkeser/drtmle
-* Source code: https://github.com/cran/drtmle
-* Date/Publication: 2020-01-09 23:30:02 UTC
-* Number of recursive dependencies: 93
-
-Run `revdep_details(, "drtmle")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # easyalluvial
 
 <details>
@@ -736,13 +720,18 @@ Run `revdep_details(, "drtmle")` for more info
 * GitHub: https://github.com/erblast/easyalluvial
 * Source code: https://github.com/cran/easyalluvial
 * Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 175
+* Number of recursive dependencies: 141
 
 Run `revdep_details(, "easyalluvial")` for more info
 
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘parcats’
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -768,10 +757,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.2Mb
+      installed size is  7.4Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
-        libs   5.3Mb
+        libs   5.5Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -788,7 +777,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
 * Date/Publication: 2021-03-15 11:30:09 UTC
-* Number of recursive dependencies: 124
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "envi")` for more info
 
@@ -816,7 +805,7 @@ Run `revdep_details(, "envi")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 151
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -831,75 +820,9 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 155.0Mb
+      installed size is 168.3Mb
       sub-directories of 1Mb or more:
-        libs  153.4Mb
-    ```
-
-# EWCE
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/NathanSkene/EWCE
-* Source code: https://github.com/cran/EWCE
-* Date/Publication: 2021-05-19
-* Number of recursive dependencies: 169
-
-Run `revdep_details(, "EWCE")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘EWCE-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: add_res_to_merging_list
-    > ### Title: Add to results to merging list
-    > ### Aliases: add_res_to_merging_list
-    > 
-    > ### ** Examples
-    > 
-    > # Load the single cell data
-    ...
-      title: ctd
-      reason: Corrupt Cache: resource path
-      See AnnotationHub's TroubleshootingTheCache vignette section on corrupt cache
-      cache: /c4/home/henrik/.cache/R/ExperimentHub
-      potential duplicate files: 
-        a63659642d12_2538
-        a73b5004d8f_2538
-        a6362b7117d_2539
-        a73b2c3448ef_2539
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-          a63659642d12_2538
-          a73b5004d8f_2538
-          a6362b7117d_2539
-          a73b2c3448ef_2539
-      Backtrace:
-           █
-        1. └─ewceData::cortex_mrna() test_fix_bad_mgi_symbols.r:4:4
-    ...
-        9.         └─AnnotationHub:::.local(x, i, j = j, ...)
-       10.           └─AnnotationHub:::.Hub_get1(x[idx], force = force, verbose = verbose)
-       11.             └─base::tryCatch(...)
-       12.               └─base:::tryCatchList(expr, classes, parentenv, handlers)
-       13.                 └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       14.                   └─value[[3L]](cond)
-      
-      [ FAIL 8 | WARN 0 | SKIP 0 | PASS 2 ]
-      Error: Test failures
-      Execution halted
+        libs  166.7Mb
     ```
 
 # ezcox
@@ -1025,7 +948,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 132
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -1035,9 +958,9 @@ Run `revdep_details(, "foieGras")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 39.5Mb
+      installed size is 40.6Mb
       sub-directories of 1Mb or more:
-        libs  38.5Mb
+        libs  39.7Mb
     ```
 
 # forecastML
@@ -1225,7 +1148,7 @@ Run `revdep_details(, "grattan")` for more info
       installed size is  6.1Mb
       sub-directories of 1Mb or more:
         doc    1.8Mb
-        libs   3.3Mb
+        libs   3.2Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1252,9 +1175,9 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 28.7Mb
+      installed size is 30.2Mb
       sub-directories of 1Mb or more:
-        libs  26.5Mb
+        libs  28.0Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -1291,7 +1214,7 @@ Run `revdep_details(, "greta")` for more info
 * GitHub: https://github.com/ipeaGIT/gtfs2gps
 * Source code: https://github.com/cran/gtfs2gps
 * Date/Publication: 2021-04-13 12:20:02 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 82
 
 Run `revdep_details(, "gtfs2gps")` for more info
 
@@ -1366,9 +1289,9 @@ Run `revdep_details(, "hal9001")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.8Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
-        libs   5.6Mb
+        libs   5.8Mb
     ```
 
 # haldensify
@@ -1494,6 +1417,29 @@ Run `revdep_details(, "inlinedocs")` for more info
     Package unavailable to check Rd xrefs: ‘R.methodsS3’
     ```
 
+# interflex
+
+<details>
+
+* Version: 1.2.6
+* GitHub: NA
+* Source code: https://github.com/cran/interflex
+* Date/Publication: 2021-05-18 11:40:02 UTC
+* Number of recursive dependencies: 112
+
+Run `revdep_details(, "interflex")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        libs   4.4Mb
+    ```
+
 # ipc
 
 <details>
@@ -1565,7 +1511,7 @@ Run `revdep_details(, "jstor")` for more info
 * GitHub: https://github.com/twolodzko/kernelboot
 * Source code: https://github.com/cran/kernelboot
 * Date/Publication: 2020-02-13 23:10:03 UTC
-* Number of recursive dependencies: 63
+* Number of recursive dependencies: 64
 
 Run `revdep_details(, "kernelboot")` for more info
 
@@ -1596,9 +1542,9 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.0Mb
+      installed size is 18.8Mb
       sub-directories of 1Mb or more:
-        libs  17.7Mb
+        libs  18.4Mb
     ```
 
 # lgr
@@ -1630,7 +1576,7 @@ Run `revdep_details(, "lgr")` for more info
 * GitHub: https://github.com/Jean-Romain/lidR
 * Source code: https://github.com/cran/lidR
 * Date/Publication: 2021-05-20 13:10:02 UTC
-* Number of recursive dependencies: 163
+* Number of recursive dependencies: 166
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1640,11 +1586,11 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.5Mb
+      installed size is 14.3Mb
       sub-directories of 1Mb or more:
         doc       1.0Mb
         extdata   1.1Mb
-        libs      9.9Mb
+        libs     10.7Mb
     ```
 
 # lightr
@@ -1731,7 +1677,7 @@ Run `revdep_details(, "meedr")` for more info
 * GitHub: https://github.com/Lifebrain/metagam
 * Source code: https://github.com/cran/metagam
 * Date/Publication: 2020-11-12 08:10:02 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 145
 
 Run `revdep_details(, "metagam")` for more info
 
@@ -1742,6 +1688,52 @@ Run `revdep_details(, "metagam")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# microservices
+
+<details>
+
+* Version: 0.1.2
+* GitHub: https://github.com/tidylab/microservices
+* Source code: https://github.com/cran/microservices
+* Date/Publication: 2021-06-12 06:10:02 UTC
+* Number of recursive dependencies: 69
+
+Run `revdep_details(, "microservices")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(microservices)
+      > test_check("microservices")
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test-endpoint-plumber-{route_name}.R:2:1): (code run outside of `test_that()`) ──
+      Error: no file found
+      Backtrace:
+          █
+       1. ├─config::get(...) test-endpoint-plumber-{route_name}.R:2:0
+       2. │ └─base::normalizePath(file, mustWork = FALSE)
+       3. │   └─base::path.expand(path)
+       4. └─base::system.file(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 12 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘config’ ‘desc’ ‘dplyr’ ‘glue’ ‘withr’
+      All declared Imports should be used.
     ```
 
 # MineICA
@@ -1860,10 +1852,10 @@ Run `revdep_details(, "MineICA")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * GitHub: https://github.com/grossSBM/missSBM
 * Source code: https://github.com/cran/missSBM
-* Date/Publication: 2021-05-25 16:20:02 UTC
+* Date/Publication: 2021-06-04 13:10:02 UTC
 * Number of recursive dependencies: 100
 
 Run `revdep_details(, "missSBM")` for more info
@@ -1874,9 +1866,9 @@ Run `revdep_details(, "missSBM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.3Mb
+      installed size is  8.5Mb
       sub-directories of 1Mb or more:
-        libs   6.3Mb
+        libs   6.5Mb
     ```
 
 # mlr3
@@ -1950,7 +1942,7 @@ Run `revdep_details(, "nfl4th")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/onemapsgapi
 * Date/Publication: 2020-02-06 11:00:02 UTC
-* Number of recursive dependencies: 59
+* Number of recursive dependencies: 61
 
 Run `revdep_details(, "onemapsgapi")` for more info
 
@@ -2115,10 +2107,10 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.7Mb
+      installed size is 13.2Mb
       sub-directories of 1Mb or more:
         doc    2.1Mb
-        libs   9.6Mb
+        libs  10.1Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -2155,7 +2147,7 @@ Run `revdep_details(, "plumber")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 112
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2165,10 +2157,10 @@ Run `revdep_details(, "ppcseq")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 44.1Mb
+      installed size is 45.6Mb
       sub-directories of 1Mb or more:
         data   1.5Mb
-        libs  41.2Mb
+        libs  42.8Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -2248,10 +2240,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.24.3
+* Version: 1.24.4
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2021-05-25
+* Date/Publication: 2021-06-10
 * Number of recursive dependencies: 316
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2286,6 +2278,12 @@ Run `revdep_details(, "QDNAseq")` for more info
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      'QDNAseq.hg19', 'QDNAseq.mm10'
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2323,18 +2321,13 @@ Run `revdep_details(, "regmedint")` for more info
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
 * Date/Publication: 2021-04-24 04:20:02 UTC
-* Number of recursive dependencies: 136
+* Number of recursive dependencies: 138
 
 Run `revdep_details(, "rgee")` for more info
 
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘geojsonio’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2419,7 +2412,7 @@ Run `revdep_details(, "sctransform")` for more info
 * GitHub: https://github.com/Abson-dev/sdmApp
 * Source code: https://github.com/cran/sdmApp
 * Date/Publication: 2021-01-22 10:40:03 UTC
-* Number of recursive dependencies: 236
+* Number of recursive dependencies: 265
 
 Run `revdep_details(, "sdmApp")` for more info
 
@@ -2445,10 +2438,10 @@ Run `revdep_details(, "sdmApp")` for more info
 
 <details>
 
-* Version: 1.1.5
+* Version: 1.1.6
 * GitHub: NA
 * Source code: https://github.com/cran/seer
-* Date/Publication: 2020-06-08 05:00:02 UTC
+* Date/Publication: 2021-06-01 04:50:02 UTC
 * Number of recursive dependencies: 110
 
 Run `revdep_details(, "seer")` for more info
@@ -2467,10 +2460,10 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 4.0.2
+* Version: 4.0.3
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* Date/Publication: 2021-05-20 22:00:09 UTC
+* Date/Publication: 2021-06-10 21:20:02 UTC
 * Number of recursive dependencies: 240
 
 Run `revdep_details(, "Seurat")` for more info
@@ -2481,10 +2474,10 @@ Run `revdep_details(, "Seurat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.4Mb
+      installed size is 11.8Mb
       sub-directories of 1Mb or more:
         R      1.3Mb
-        libs   9.5Mb
+        libs   9.9Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -2591,10 +2584,10 @@ Run `revdep_details(, "sigminer")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         extdata   1.5Mb
-        libs      1.1Mb
+        libs      1.0Mb
     ```
 
 # simfinapi
@@ -2710,9 +2703,9 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 47.0Mb
+      installed size is 49.8Mb
       sub-directories of 1Mb or more:
-        libs  45.5Mb
+        libs  48.3Mb
     ```
 
 # solitude
@@ -2723,7 +2716,7 @@ Run `revdep_details(, "skpr")` for more info
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
 * Date/Publication: 2020-09-17 10:10:07 UTC
-* Number of recursive dependencies: 143
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -2842,9 +2835,9 @@ Run `revdep_details(, "spatialwarnings")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.1Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
-        libs   5.1Mb
+        libs   5.2Mb
     ```
 
 # spNetwork
@@ -2855,7 +2848,7 @@ Run `revdep_details(, "spatialwarnings")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2021-01-21 23:30:02 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -2865,10 +2858,10 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.9Mb
+      installed size is 10.2Mb
       sub-directories of 1Mb or more:
         extdata   5.6Mb
-        libs      3.3Mb
+        libs      3.6Mb
     ```
 
 *   checking LazyData ... NOTE
@@ -2880,10 +2873,10 @@ Run `revdep_details(, "spNetwork")` for more info
 
 <details>
 
-* Version: 0.5-2
+* Version: 0.5-3
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* Date/Publication: 2021-03-17 16:20:02 UTC
+* Date/Publication: 2021-06-08 14:50:02 UTC
 * Number of recursive dependencies: 141
 
 Run `revdep_details(, "stars")` for more info
@@ -2930,10 +2923,10 @@ Run `revdep_details(, "startR")` for more info
 
 <details>
 
-* Version: 3.0.3
+* Version: 3.0.7
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2021-05-27
+* Date/Publication: 2021-06-13
 * Number of recursive dependencies: 174
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -3100,9 +3093,9 @@ Run `revdep_details(, "TriDimRegression")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 39.8Mb
+      installed size is 41.3Mb
       sub-directories of 1Mb or more:
-        libs  39.2Mb
+        libs  40.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -3200,7 +3193,7 @@ Run `revdep_details(, "txshift")` for more info
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
 * Date/Publication: 2021-05-16 05:00:08 UTC
-* Number of recursive dependencies: 204
+* Number of recursive dependencies: 202
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
@@ -3220,10 +3213,10 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.2
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
-* Date/Publication: 2021-05-19
+* Date/Publication: 2021-06-03
 * Number of recursive dependencies: 92
 
 Run `revdep_details(, "XNAString")` for more info
@@ -3234,9 +3227,9 @@ Run `revdep_details(, "XNAString")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is 11.6Mb
       sub-directories of 1Mb or more:
-        libs   4.8Mb
+        libs   9.7Mb
     ```
 
 *   checking top-level files ... NOTE
@@ -3249,20 +3242,10 @@ Run `revdep_details(, "XNAString")` for more info
 *   checking compiled code ... NOTE
     ```
     File ‘XNAString/libs/XNAString.so’:
-      Found ‘printf’, possibly from ‘printf’ (C)
-        Object: ‘./ViennaRNA/subopt.o’
-      Found ‘putchar’, possibly from ‘putchar’ (C)
-        Object: ‘./ViennaRNA/subopt.o’
-      Found ‘puts’, possibly from ‘printf’ (C), ‘puts’ (C)
-        Object: ‘./ViennaRNA/subopt.o’
       Found ‘rand’, possibly from ‘rand’ (C)
         Object: ‘./ViennaRNA/utils/utils.o’
       Found ‘srand’, possibly from ‘srand’ (C)
-    ...
-      Found ‘stderr’, possibly from ‘stderr’ (C)
-        Object: ‘./ViennaRNA/landscape/neighbor.o’
-      Found ‘stdout’, possibly from ‘stdout’ (C)
-        Object: ‘./ViennaRNA/subopt.o’
+        Object: ‘./ViennaRNA/utils/utils.o’
     
     Compiled code should not call entry points which might terminate R nor
     write to stdout/stderr instead of to the console, nor use Fortran I/O
