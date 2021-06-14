@@ -681,8 +681,8 @@ dr
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org/">xml2</a></span><span class="op">)</span>
-<span class="va">xml</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_xml</a></span><span class="op">(</span><span class="st">"&lt;body&gt;&lt;/body&gt;"</span><span class="op">)</span>
-<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_children</a></span><span class="op">(</span><span class="va">xml</span><span class="op">)</span><span class="op">)</span>
+<span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_xml</a></span><span class="op">(</span><span class="st">"&lt;body&gt;&lt;/body&gt;"</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_children</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
 <span class="co">## Error: external pointer is not valid</span></code></pre></div>
 <p>The future framework can help detect this <em>before</em> sending off the future to the worker;</p>
@@ -691,6 +691,26 @@ dr
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_children</a></span><span class="op">(</span><span class="va">xml</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
 <span class="co">## globals ('xml' of class 'xml_document') used in the future expression</span></code></pre></div>
+<p>One workaround when dealing with non-exportable objects is to look for ways to encode the object such that it can be exported, and the decoded on the receiving end. With <strong>xml2</strong>, we can use <code><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml2::xml_serialize()</a></code> and <code><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml2::xml_unserialize()</a></code> to do this. Here is how we can rewrite the above example such that we can pass <strong>xml2</strong> object back and forth between the main R session and R workers:</p>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## Encode the 'xml_document' object 'doc' as a 'raw' object</span>
+<span class="va">doc_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml_serialize</a></span><span class="op">(</span><span class="va">doc</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="co">## In the future, reconstruct the 'xml_document' object</span>
+  <span class="co">## from the 'raw' object</span>
+  <span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml_unserialize</a></span><span class="op">(</span><span class="va">doc_raw</span><span class="op">)</span>
+
+  <span class="co">## Continue as usual</span>
+  <span class="va">children</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html">xml_children</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span>
+
+  <span class="co">## Send back a 'raw' representation of the 'xml_nodeset'</span>
+  <span class="co">## object 'children'</span>
+  <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml_serialize</a></span><span class="op">(</span><span class="va">children</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+
+<span class="co">## Reconstruct the 'xml_nodeset' object in the main R session</span>
+<span class="va">children</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_serialize.html">xml_unserialize</a></span><span class="op">(</span><span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="packages-with-other-types-of-non-external-objects" class="section level3">
