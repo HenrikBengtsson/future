@@ -515,8 +515,8 @@ Another example is XML objects of the [xml2](https://cran.r-project.org/package=
 library(future)
 plan(multisession)
 library(xml2)
-xml <- read_xml("<body></body>")
-f <- future(xml_children(xml))
+doc <- read_xml("<body></body>")
+f <- future(xml_children(doc))
 value(f)
 ## Error: external pointer is not valid
 ```
@@ -526,6 +526,29 @@ options(future.globals.onReference = "error")
 f <- future(xml_children(xml))
 ## Error: Detected a non-exportable reference ('externalptr') in one of the
 ## globals ('xml' of class 'xml_document') used in the future expression
+```
+
+One workaround when dealing with non-exportable objects is to look for ways to encode the object such that it can be exported, and the decoded on the receiving end.  With **xml2**, we can use `xml2::xml_serialize()` and `xml2::xml_unserialize()` to do this.  Here is how we can rewrite the above example such that we can pass **xml2** object back and forth between the main R session and R workers:
+
+```r
+## Encode the 'xml_document' object 'doc' as a 'raw' object
+doc_raw <- xml_serialize(doc, connection = NULL)
+
+f <- future({
+  ## In the future, reconstruct the 'xml_document' object
+  ## from the 'raw' object
+  doc <- xml_unserialize(doc_raw)
+
+  ## Continue as usual
+  children <- xml_children(doc)
+
+  ## Send back a 'raw' representation of the 'xml_nodeset'
+  ## object 'children'
+  xml_serialize(children, connection = NULL)
+})
+
+## Reconstruct the 'xml_nodeset' object in the main R session
+children <- xml_unserialize(value(f))
 ```
 
 
