@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9002 [2021-06-08]
+Version: 1.21.0-9003 [2021-06-15]
 
 SIGNIFICANT CHANGES:
 
@@ -76,6 +76,11 @@ BUG FIXES:
    (<unknown>) used in the future expression' in globals, e.g. when using
    'future.apply' or 'furrr' map-reduce functions when using a 'multisession'
    backend.
+
+ * future(fcn(), globals=list(a=42, fcn=function() a)) would fail with "Error
+   in fcn() : object 'a' not found" when using sequential or multicore futures.
+   This affected also map-reduce calls such as future.apply::future_lapply(1,
+   function(x) a, future.globals=list(a=42)).
 
  * Resolving a 'sequential' future without globals would result in internal
    several '...future.*' objects being written to the calling environment,

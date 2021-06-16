@@ -129,6 +129,43 @@ envname <- function(env) {
   name
 }
 
+
+inherits_from_namespace <- function(env) {
+  while (!identical(env, emptyenv())) {
+    if (is.null(env)) return(TRUE) ## primitive functions, e.g. base::sum()
+    if (isNamespace(env)) return(TRUE)
+    if (identical(env, globalenv())) return(FALSE)
+    env <- parent.env(env)
+  }
+  FALSE
+}
+
+
+## Assign globals to an specific environment and set that environment
+## for functions, unless they are functions of namespaces/packages
+## https://github.com/HenrikBengtsson/future/issues/515
+assign_globals <- function(envir, globals) {
+  stop_if_not(is.environment(envir), is.list(globals))
+  if (length(globals) == 0L) return(envir)
+  names <- names(globals)
+  where <- attr(globals, "where")
+  for (name in names) {
+    global <- globals[[name]]
+    e <- environment(global)
+    if (!inherits_from_namespace(e)) {
+      where <- where[[name]]
+      ## FIXME: Can we remove this?
+      ## Here I'm just being overly conservative ## /HB 2021-06-15
+      if (identical(where, emptyenv())) {
+        environment(global) <- envir
+      }
+    }
+    envir[[name]] <- global
+  }
+  invisible(envir)
+}
+
+
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   ## format(x, format = format) ## slower
   format(as.POSIXlt(x, tz = ""), format = format)
