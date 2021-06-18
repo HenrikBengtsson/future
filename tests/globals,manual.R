@@ -24,7 +24,7 @@ message("*** Globals manually specified as named list ...")
 globals <- list(
   a = 1,
   b = 2,
-  sumtwo = function(x) x[1] + x[2]
+  sumtwo = function(x) x[a] + x[b]
 )
 
 ## Assign 'globals' globally

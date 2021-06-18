@@ -25,22 +25,16 @@ MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame
     if (length(gp) > 0L) {
       if (lazy || assignToTarget || !identical(expr, gp$expr)) {
         expr <- gp$expr
-        target <- new.env(parent = envir)
-        globalsT <- gp$globals
-        for (name in names(globalsT)) {
-          target[[name]] <- globalsT[[name]]
-        }
-        globalsT <- NULL
-        envir <- target
+        globals <- gp$globals
+        envir <- new.env(parent = envir)
+        envir <- assign_globals(envir, globals = globals)
+        globals <- NULL
       }
     }
     gp <- NULL
   } else {
-    target <- new.env(parent = envir)
-    for (name in names(globals)) {
-      target[[name]] <- globals[[name]]
-    }
-    envir <- target
+    envir <- new.env(parent = envir)
+    envir <- assign_globals(envir, globals = globals)
   }
 
   future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, ...)

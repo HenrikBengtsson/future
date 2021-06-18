@@ -62,9 +62,7 @@ run.UniprocessFuture <- function(future, ...) {
   ## Assign globals to separate "globals" enclosure environment?
   globals <- future$globals
   if (length(globals) > 0) {
-    for (name in names(globals)) {
-      envir[[name]] <- globals[[name]]
-    }
+    envir <- assign_globals(envir, globals = globals)
   }
 
   ## Run future
