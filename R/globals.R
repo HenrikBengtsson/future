@@ -197,10 +197,18 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
       idxs <- which(names == "future.call.arguments")
       if (length(idxs) > 1L) {
-        if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Dropping all but the last.", length(idxs))
-        # Drop all but the last replicate
-        idxs <- idxs[-length(idxs)]
-        globals <- globals[-idxs]
+        if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Keeping non-empty ones.", length(idxs))
+        # Drop all empty entries
+        ns <- vapply(globals[idxs], FUN = length, FUN.VALUE = 0L)
+        keep <- (ns > 0)
+        if (sum(keep) > 1L) {
+          # Drop all but the last non-empty replicate
+          if (debug) mdebugf("- Detected %d non-empty 'future.call.arguments' global entries. Keeping the last one.", sum(keep))
+          keep2 <- logical(length = length(idxs))
+          keep2[max(which(keep))] <- TRUE
+          keep <- keep2
+        }
+        globals <- globals[-idxs[!keep]]
       }
       idxs <- NULL
       names <- NULL
