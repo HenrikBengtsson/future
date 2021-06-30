@@ -150,14 +150,22 @@ plan <- local({
   warn_about_multiprocess <- local({
     .warn <- TRUE
 
+    is_multiprocess <- function(evaluator) {
+      if (!inherits(evaluator, "multiprocess")) return(FALSE)
+      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
+      class <- class(evaluator)
+      if (class[1] == "multiprocess") return(TRUE)
+      if (length(class) == 1L) return(FALSE)
+      if (class[1] == "tweaked" && class[2] == "multiprocess") return(TRUE)
+      FALSE
+    }
+
     function(stack) {
       if (!.warn) return()
 
       ## Is deprecated 'multiprocess' used?    
       for (kk in seq_along(stack)) {
-        evaluator <- stack[[kk]]
-        if (inherits(evaluator, "multiprocess") && 
-            class(evaluator)[1] == "multiprocess") {  ## <== sic!
+        if (is_multiprocess(stack[[kk]])) {
           ignore <- getOption("future.deprecated.ignore")
           if (!is.element("multiprocess", ignore)) {
             ## Warn only once
