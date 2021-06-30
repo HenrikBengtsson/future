@@ -2,7 +2,7 @@
 name: Support (Questions, Something is not working, ...)
 about: Please use future's 'Discussions' instead
 title: ''
-labels: ''
+labels: 'invalid'
 assignees: ''
 
 ---

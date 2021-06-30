@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for this project (Please use future's 'Discussions' for Q&A)
 title: ''
-labels: ''
+labels: 'feature request'
 assignees: ''
 
 ---
