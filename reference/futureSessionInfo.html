@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gets the length of an object without dispatching — .length • future</title>
+<title>Get session information specific to the future framework — futureSessionInfo • future</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Gets the length of an object without dispatching — .length" />
-<meta property="og:description" content="Gets the length of an object without dispatching" />
+<meta property="og:title" content="Get session information specific to the future framework — futureSessionInfo" />
+<meta property="og:description" content="Get session information specific to the future framework" />
 <meta property="og:image" content="https://future.futureverse.org/logo.png" />
 
 
@@ -240,36 +240,30 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Gets the length of an object without dispatching</h1>
-    <small class="dont-index">Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
-    <div class="hidden name"><code>private_length.Rd</code></div>
+    <h1>Get session information specific to the future framework</h1>
+    <small class="dont-index">Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/R/futureSessionInfo.R'><code>R/futureSessionInfo.R</code></a></small>
+    <div class="hidden name"><code>futureSessionInfo.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Gets the length of an object without dispatching</p>
+    <p>Get session information specific to the future framework</p>
     </div>
 
-    <pre class="usage"><span class='fu'>.length</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>futureSessionInfo</span><span class='op'>(</span>test <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Any <span style="R">R</span> object.</p></td>
+      <th>test</th>
+      <td><p>If TRUE, one or more futures are created to query workers
+and validate their information.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A non-negative integer.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function returns <code><a href='https://rdrr.io/r/base/length.html'>length(unclass(x))</a></code>, but tries to avoid
-calling <code><a href='https://rdrr.io/r/base/class.html'>unclass(x)</a></code> unless necessary.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='https://rdrr.io/r/base/base-internal.html'>.subset</a>()</code> and <code><a href='https://rdrr.io/r/base/base-internal.html'>.subset2</a>()</code>.</p></div>
+    <p>Nothing.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
