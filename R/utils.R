@@ -171,27 +171,27 @@ now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   format(as.POSIXlt(x, tz = ""), format = format)
 }
 
-mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
+mdebug <- function(..., prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(now(), ...)
+  message(prefix, ...)
 }
 
 mdebugf <- function(..., appendLF = TRUE,
-                    debug = getOption("future.debug", FALSE)) {
+                    prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(now(), sprintf(...), appendLF = appendLF)
+  message(prefix, sprintf(...), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output
-mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+mprint <- function(..., appendLF = TRUE, prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(prefix, capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output str
-mstr <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+mstr <- function(..., appendLF = TRUE, prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(prefix, capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 

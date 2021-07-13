@@ -64,6 +64,9 @@ NEW FEATURES:
    running in a forked process (=multicore futures).  This is done by setting
    environment variable 'RCPP_PARALLEL_NUM_THREADS' to 1.
 
+ * Add futureSessionInfo() to get a quick overview of the future framework,
+   its current setup, and to run simple tests on it.
+
 BUG FIXES:
 
  * plan(multiprocess, workers = n) did not warn about 'multiprocess' being
