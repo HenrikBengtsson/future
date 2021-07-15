@@ -179,6 +179,35 @@ plan <- local({
     }
   })
 
+  warn_about_multicore <- local({
+    .warn <- TRUE
+
+    is_multicore <- function(evaluator) {
+      if (!inherits(evaluator, "multicore")) return(FALSE)
+      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
+      class <- class(evaluator)
+      if (class[1] == "multicore") return(TRUE)
+      if (length(class) == 1L) return(FALSE)
+      if (class[1] == "tweaked" && class[2] == "multicore") return(TRUE)
+      FALSE
+    }
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'multicore' used despite not being supported on the current
+      ## platform?    
+      for (kk in seq_along(stack)) {
+        if (is_multicore(stack[[kk]])) {
+          supportsMulticore(warn = TRUE)
+          ## Warn only once, if at all
+          .warn <<- FALSE
+          break
+        }
+      }
+    }
+  })
+
   plan_cleanup <- function() {
     ClusterRegistry(action = "stop")
   }
@@ -261,6 +290,7 @@ plan <- local({
     assert_no_disallowed_strategies(newStack)
 
     warn_about_multiprocess(newStack)
+    warn_about_multicore(newStack)
 
     stack <<- newStack
 

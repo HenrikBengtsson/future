@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.21.0-9004 [2021-06-30]
+Version: 1.21.0-9005 [2021-07-15]
 
 SIGNIFICANT CHANGES:
 
@@ -66,6 +66,10 @@ NEW FEATURES:
 
  * Add futureSessionInfo() to get a quick overview of the future framework,
    its current setup, and to run simple tests on it.
+
+ * Now plan(multicore) warns immediately if multicore processing, that is,
+   forked processing, is not supported, e.g. when running in the RStudio
+   Console.
 
 BUG FIXES:
 
