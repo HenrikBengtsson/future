@@ -54,6 +54,7 @@
 #'
 #' @export
 multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
+  default_workers <- missing(workers)
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(is.finite(workers), workers >= 1L)
@@ -62,6 +63,8 @@ multicore <- function(..., workers = availableCores(constraints = "multicore"), 
   ## can be spawned off, i.e. then use the current main R process.
   ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore(warn = TRUE)) {
+    ## AD HOC: Make sure plan(multicore) also produces a warning, if needed
+    if (default_workers) supportsMulticore(warn = TRUE)
     ## covr: skip=1
     return(sequential(..., envir = envir))
   }
