@@ -18,22 +18,30 @@ jobs:
           - {os: windows-latest, r: 'release' }
 #          - {os: macOS-latest,   r: 'devel'   }
           - {os: macOS-latest,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
-          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
-          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
-          - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
-          - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest" }
+          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false' }
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      R_FUTURE_RNG_ONMISUSE: error
       _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
+      ## Specific to futures
+      R_FUTURE_RNG_ONMISUSE: error
+      R_FUTURE_PLAN: ${{ matrix.config.future.plan }}
+      R_FUTURE_FORK_ENABLE: ${{ matrix.config.future.fork.enable }}
+      R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.future.psock.relay.immediate }}
+      R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.future.fork.multithreading.enable }}
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -102,8 +110,6 @@ jobs:
       - name: Test coverage
         if: matrix.config.os == 'ubuntu-20.04' && matrix.config.r == 'release'
         run: |
-          ## 0. Workaround: 'curl' from RSPM fails to load; install from CRAN
-          install.packages("curl", repos="https://cloud.r-project.org")
           ## 1. Get 'Repository Upload Token' from Codecov:
           ##    https://app.codecov.io/gh/<org>/<repo>/settings
           ## 2. Set 'CODECOV_TOKEN' in GitHub Secrets:
