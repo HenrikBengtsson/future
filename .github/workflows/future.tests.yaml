@@ -8,7 +8,7 @@ jobs:
 
     runs-on: ubuntu-20.04
 
-    name: future.plan=${{ future.plan }}
+    name: future.plan=${{ matrix.future.plan }}
 
     strategy:
       fail-fast: false
