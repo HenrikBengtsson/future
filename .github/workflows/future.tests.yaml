@@ -14,10 +14,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - { future.plan: sequential   }
-          - { future.plan: multicore    }
-          - { future.plan: multisession }
-          - { future.plan: cluster      }
+          - { future.plan: 'sequential'   }
+          - { future.plan: 'multicore'    }
+          - { future.plan: 'multisession' }
+          - { future.plan: 'cluster'      }
 
     env:
       RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
