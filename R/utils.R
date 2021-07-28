@@ -142,22 +142,28 @@ inherits_from_namespace <- function(env) {
 
 
 ## Assign globals to an specific environment and set that environment
-## for functions, unless they are functions of namespaces/packages
-## https://github.com/HenrikBengtsson/future/issues/515
-assign_globals <- function(envir, globals) {
+## for functions.  If they are functions of namespaces/packages
+## and exclude == "namespace", then the globals are not assigned
+## Reference: https://github.com/HenrikBengtsson/future/issues/515
+assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", NULL)) {
   stop_if_not(is.environment(envir), is.list(globals))
   if (length(globals) == 0L) return(envir)
+
+  exclude_namespace <- ("namespace" %in% exclude)
+
   names <- names(globals)
   where <- attr(globals, "where")
   for (name in names) {
     global <- globals[[name]]
-    e <- environment(global)
-    if (!inherits_from_namespace(e)) {
-      where <- where[[name]]
-      ## FIXME: Can we remove this?
-      ## Here I'm just being overly conservative ## /HB 2021-06-15
-      if (identical(where, emptyenv())) {
-        environment(global) <- envir
+    if (exclude_namespace) {
+      e <- environment(global)
+      if (!inherits_from_namespace(e)) {
+        where <- where[[name]]
+        ## FIXME: Can we remove this?
+        ## Here I'm just being overly conservative ## /HB 2021-06-15
+        if (identical(where, emptyenv())) {
+          environment(global) <- envir
+        }
       }
     }
     envir[[name]] <- global

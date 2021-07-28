@@ -256,7 +256,7 @@ update_package_options <- function(debug = FALSE) {
   
   update_package_option("future.globals.resolve", mode = "logical", debug = debug)
 
-  ## Introduced future 1.22.0:
+  ## Introduced in future 1.22.0:
   update_package_option("future.lazy.assertOwner", mode = "logical", debug = debug)
 
   update_package_option("future.plan", debug = debug)
@@ -270,7 +270,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
 
-  ## future 1.22.0:
+  ## Introduced in future 1.22.0:
   for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
     update_package_option(name, mode = "numeric", debug = debug)
   }
@@ -281,6 +281,10 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)
   update_package_option("future.wait.alpha", mode = "numeric", debug = debug)
+
+  ## Prototyping in future 1.22.0:
+  ## https://github.com/HenrikBengtsson/future/issues/515
+  update_package_option("future.assign_globals.exclude", default = "namespace", split = ",", debug = debug)
 
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
