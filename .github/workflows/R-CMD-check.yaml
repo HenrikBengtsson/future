@@ -8,7 +8,7 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
 
     strategy:
       fail-fast: false
@@ -19,28 +19,26 @@ jobs:
 #          - {os: macOS-latest,   r: 'devel'   }
           - {os: macOS-latest,   r: 'release' }
           - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", covr: 'true', label: 'w/ covr' }
           - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false', label: 'forks.enable=false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false', label: 'psock.relay.immediate=false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false', label: 'plan=multisession' }
 
     env:
+      RSPM: ${{ matrix.config.rspm }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      ## R CMD check
       _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
-      RSPM: ${{ matrix.config.rspm }}
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      _R_CHECK_CRAN_INCOMING_: false
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
-      R_FUTURE_PLAN: ${{ matrix.config.future.plan }}
-      R_FUTURE_FORK_ENABLE: ${{ matrix.config.future.fork.enable }}
-      R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.future.psock.relay.immediate }}
-      R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.future.fork.multithreading.enable }}
       
     steps:
       - uses: actions/checkout@v2
@@ -66,7 +64,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -89,9 +87,18 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
+      - name: Check (!Windows)
+        if: runner.os != 'Windows'
         env:
-          _R_CHECK_CRAN_INCOMING_: false
+          R_FUTURE_PLAN: ${{ matrix.config.future.plan }}
+          R_FUTURE_FORK_ENABLE: ${{ matrix.config.future.fork.enable }}
+          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.future.psock.relay.immediate }}
+          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.future.fork.multithreading.enable }}
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Check (Windows)
+        if: runner.os = 'Windows'
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
@@ -103,12 +110,12 @@ jobs:
           path: check
 
       - name: Test coverage - Install dependencies
-        if: matrix.config.os == 'ubuntu-20.04' && matrix.config.r == 'release'
+        if: matrix.config.covr == 'true' && matrix.config.os == 'ubuntu-20.04'
         run: |
             sudo apt-get install --yes libcurl4-openssl-dev
 
       - name: Test coverage
-        if: matrix.config.os == 'ubuntu-20.04' && matrix.config.r == 'release'
+        if: matrix.config.covr == 'true'
         run: |
           ## 1. Get 'Repository Upload Token' from Codecov:
           ##    https://app.codecov.io/gh/<org>/<repo>/settings
