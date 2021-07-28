@@ -112,7 +112,7 @@ jobs:
           path: check
 
       - name: Test coverage - Install dependencies
-        if: && matrix.config.covr == 'true'
+        if: matrix.config.covr == 'true'
         run: |
             sudo apt-get install --yes libcurl4-openssl-dev
             Rscript -e "install.packages('covr')"
