@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9005</span>
       </span>
     </div>
 
@@ -243,9 +243,9 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="future-1-21-0-9004" class="section level1">
-<h1 class="page-header" data-toc-text="1.21.0-9004">
-<a href="#future-1-21-0-9004" class="anchor"></a>future 1.21.0-9004<small> Unreleased </small>
+    <div id="future-1-21-0-9005" class="section level1">
+<h1 class="page-header" data-toc-text="1.21.0-9005">
+<a href="#future-1-21-0-9005" class="anchor"></a>future 1.21.0-9005<small> Unreleased </small>
 </h1>
 <div id="significant-changes" class="section level3">
 <h3 class="hasAnchor">
@@ -274,6 +274,7 @@
 <li><p>Now the the post-mortem analysis report of multicore and cluster futures in case their results could not be retrieved include information on globals and their sizes, and if some of them are non-exportable. A similar, detailed report is also produced when a cluster future fails to set up and launch itself on a parallel worker.</p></li>
 <li><p>if option ‘future.fork.multithreading.enable’ is FALSE, RcppParallel, in addition to OpenMP, is forced to run with a single threaded whenever running in a forked process (=multicore futures). This is done by setting environment variable ‘RCPP_PARALLEL_NUM_THREADS’ to 1.</p></li>
 <li><p>Add futureSessionInfo() to get a quick overview of the future framework, its current setup, and to run simple tests on it.</p></li>
+<li><p>Now plan(multicore) warns immediately if multicore processing, that is, forked processing, is not supported, e.g. when running in the RStudio Console.</p></li>
 </ul>
 </div>
 <div id="bug-fixes" class="section level3">
