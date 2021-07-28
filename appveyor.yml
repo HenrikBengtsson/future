@@ -6,9 +6,9 @@
 environment:
   _R_CHECK_FORCE_SUGGESTS_: false
   
-  matrix:
-  - R_VERSION: devel
-    R_ARCH: x64
+#  matrix:
+#  - R_VERSION: devel
+#    R_ARCH: x64
 
   - R_VERSION: release
     R_ARCH: x64
@@ -28,7 +28,7 @@ cache:
 build_script:
   - Rscript -e "c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())"
   - echo Current directory=%CD%
-  - travis-tool.sh install_r parallelly digest globals listenv markdown R.rsp
+  - travis-tool.sh install_r parallelly digest globals listenv RhpcBLASctl markdown R.rsp
   
 test_script:
   - travis-tool.sh run_tests
