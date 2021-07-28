@@ -98,7 +98,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check (Windows)
-        if: runner.os = 'Windows'
+        if: runner.os == 'Windows'
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
