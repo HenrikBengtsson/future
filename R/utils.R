@@ -145,32 +145,50 @@ inherits_from_namespace <- function(env) {
 ## for functions.  If they are functions of namespaces/packages
 ## and exclude == "namespace", then the globals are not assigned
 ## Reference: https://github.com/HenrikBengtsson/future/issues/515
-assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", c("namespace"))) {
+assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", c("namespace")), debug = getOption("future.debug", FALSE)) {
   stop_if_not(is.environment(envir), is.list(globals))
   if (length(globals) == 0L) return(envir)
 
+  if (debug) {
+    mdebug("assign_globals() ...")
+    mstr(globals)
+  }
+  
   exclude_namespace <- ("namespace" %in% exclude)
 
   names <- names(globals)
   where <- attr(globals, "where")
   for (name in names) {
     global <- globals[[name]]
-    
+
     if (exclude_namespace) {
       e <- environment(global)
       if (!inherits_from_namespace(e)) {
-        where <- where[[name]]
+        w <- where[[name]]
         ## FIXME: Can we remove this?
         ## Here I'm just being overly conservative ## /HB 2021-06-15
-        if (identical(where, emptyenv())) {
+        if (identical(w, emptyenv())) {
           environment(global) <- envir
+          if (debug) {
+            mdebugf("- reassign environment for %s", sQuote(name))
+            where[[name]] <- envir
+            globals[[name]] <- global
+          }
         }
       }
     }
     
     envir[[name]] <- global
+    if (debug) mdebugf("- copied %s to environment", sQuote(name))
   }
-  
+
+
+  if (debug) {
+    attr(globals, "where") <- where
+    mstr(globals)
+    mdebug("assign_globals() ... done")
+  }
+
   invisible(envir)
 }
 
