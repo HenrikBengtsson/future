@@ -197,18 +197,32 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
       idxs <- which(names == "future.call.arguments")
       if (length(idxs) > 1L) {
-        if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Keeping non-empty ones.", length(idxs))
+        if (debug) {
+          mdebugf("- Detected %d 'future.call.arguments' global entries:", length(idxs))
+          mstr(globals[idxs])
+        }
         # Drop all empty entries
         ns <- vapply(globals[idxs], FUN = length, FUN.VALUE = 0L)
+        if (debug) mprint(ns)
         keep <- (ns > 0)
-        if (sum(keep) > 1L) {
+        nkeep <- sum(keep)
+        if (nkeep == 0L) {
+          if (debug) mdebugf("- All 'future.call.arguments' global entries are empty. Keeping the first one.")
+          ## All are empty, keep first
+          keep[1L] <- TRUE
+        } else if (nkeep > 1L) {
           # Drop all but the last non-empty replicate
-          if (debug) mdebugf("- Detected %d non-empty 'future.call.arguments' global entries. Keeping the last one.", sum(keep))
+          if (debug) mdebugf("- Detected %d non-empty 'future.call.arguments' global entries. Keeping the last one.", nkeep)
           keep2 <- logical(length = length(idxs))
           keep2[max(which(keep))] <- TRUE
           keep <- keep2
         }
         globals <- globals[-idxs[!keep]]
+        if (debug) {
+          idxs <- which(names == "future.call.arguments")
+          mdebugf("- 'future.call.arguments' global entries:")
+          mstr(globals[idxs])
+        }
       }
       idxs <- NULL
       names <- NULL
@@ -220,7 +234,10 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
         ## covr: skip=1
         do.call(function(...) a, args = `future.call.arguments`)
       }, list(a = expr))
-      if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
+      if (debug) {
+        mprint(expr)
+        mdebug("Tweak future expression to call with '...' arguments ... DONE")
+      }
     }
   }
 
