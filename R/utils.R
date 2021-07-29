@@ -145,7 +145,7 @@ inherits_from_namespace <- function(env) {
 ## for functions.  If they are functions of namespaces/packages
 ## and exclude == "namespace", then the globals are not assigned
 ## Reference: https://github.com/HenrikBengtsson/future/issues/515
-assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", NULL)) {
+assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", c("namespace"))) {
   stop_if_not(is.environment(envir), is.list(globals))
   if (length(globals) == 0L) return(envir)
 
@@ -155,6 +155,7 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
   where <- attr(globals, "where")
   for (name in names) {
     global <- globals[[name]]
+    
     if (exclude_namespace) {
       e <- environment(global)
       if (!inherits_from_namespace(e)) {
@@ -166,8 +167,10 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
         }
       }
     }
+    
     envir[[name]] <- global
   }
+  
   invisible(envir)
 }
 
