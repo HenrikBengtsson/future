@@ -14,6 +14,7 @@ jobs:
       fail-fast: false
 
     env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
@@ -21,7 +22,7 @@ jobs:
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
       _R_CHECK_CRAN_INCOMING_: false
-      
+
     steps:
       - uses: actions/checkout@v2
 
@@ -52,7 +53,6 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          sudo apt-get install --yes libcurl4-openssl-dev
 
       - name: Install dependencies
         run: |

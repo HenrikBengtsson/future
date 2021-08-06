@@ -19,7 +19,7 @@ jobs:
 #          - {os: macOS-latest,   r: 'devel'   }
           - {os: macOS-latest,   r: 'release' }
           - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", covr: 'true', label: 'w/ covr' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
           - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
@@ -30,8 +30,8 @@ jobs:
           - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'plan=globals.onreference=warning' }
 
     env:
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      RSPM: ${{ matrix.config.rspm }}
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
       _R_CHECK_LENGTH_1_CONDITION_: true
@@ -110,22 +110,4 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-
-      - name: Test coverage - Install dependencies
-        if: matrix.config.covr == 'true'
-        run: |
-            sudo apt-get install --yes libcurl4-openssl-dev
-            Rscript -e "install.packages('covr')"
-            
-      - name: Test coverage
-        if: matrix.config.covr == 'true'
-        run: |
-          ## 1. Get 'Repository Upload Token' from Codecov:
-          ##    https://app.codecov.io/gh/<org>/<repo>/settings
-          ## 2. Set 'CODECOV_TOKEN' in GitHub Secrets:
-          ##    https://github.com/<org>/<repo>/settings/environments/
-          coverage <- covr::package_coverage()
-          print(coverage)
-          covr::codecov(coverage = coverage, token="${{secrets.CODECOV_TOKEN}}")
-        shell: Rscript {0}
         
