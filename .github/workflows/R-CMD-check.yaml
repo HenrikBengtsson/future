@@ -14,20 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         config:
-#          - {os: windows-latest, r: 'devel'   }
-          - {os: windows-latest, r: 'release' }
 #          - {os: macOS-latest,   r: 'devel'   }
           - {os: macOS-latest,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false', label: 'forks.enable=false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false', label: 'psock.relay.immediate=false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false', label: 'plan=multisession' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'globals.onreference=warning' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
