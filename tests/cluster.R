@@ -21,7 +21,7 @@ if (covr_testing) types <- setdiff(types, "FORK")
 
 ## WORKAROUND: FORK:ed processing gives really odd results on macOS when
 ## running on GitHub Actions. /HB 2020-06-07
-if (on_githubactions && on_macos) types <- setdiff(types, "FORK")
+#if (on_githubactions && on_macos) types <- setdiff(types, "FORK")
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
