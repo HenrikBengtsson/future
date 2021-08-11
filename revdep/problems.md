@@ -30,7 +30,7 @@ Run `revdep_details(, "AIPW")` for more info
 * GitHub: https://github.com/choonghyunryu/alookr
 * Source code: https://github.com/cran/alookr
 * Date/Publication: 2021-02-22 14:40:02 UTC
-* Number of recursive dependencies: 186
+* Number of recursive dependencies: 155
 
 Run `revdep_details(, "alookr")` for more info
 
@@ -146,9 +146,9 @@ Run `revdep_details(, "aroma.affymetrix")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
-        R             4.0Mb
+        R             2.3Mb
         help          2.1Mb
         testScripts   1.1Mb
     ```
@@ -400,17 +400,28 @@ Run `revdep_details(, "brms")` for more info
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.2.61
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
-* Date/Publication: 2021-05-19
-* Number of recursive dependencies: 264
+* Date/Publication: 2021-08-01
+* Number of recursive dependencies: 268
 
 Run `revdep_details(, "ChromSCape")` for more info
 
 </details>
 
 ## In both
+
+*   checking whether package ‘ChromSCape’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: replacing previous import ‘shinyWidgets::progressBar’ by ‘shinydashboardPlus::progressBar’ when loading ‘ChromSCape’
+      Warning: replacing previous import ‘shinydashboardPlus::box’ by ‘shinydashboard::box’ when loading ‘ChromSCape’
+      Warning: replacing previous import ‘shinydashboardPlus::dashboardHeader’ by ‘shinydashboard::dashboardHeader’ when loading ‘ChromSCape’
+      Warning: replacing previous import ‘shinydashboardPlus::dashboardPage’ by ‘shinydashboard::dashboardPage’ when loading ‘ChromSCape’
+      Warning: replacing previous import ‘shinydashboardPlus::dashboardSidebar’ by ‘shinydashboard::dashboardSidebar’ when loading ‘ChromSCape’
+    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/00install.out’ for details.
+    ```
 
 *   checking for hidden files and directories ... NOTE
     ```
@@ -550,33 +561,6 @@ Run `revdep_details(, "cSEM")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘cSEM-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: infer
-    > ### Title: Inference
-    > ### Aliases: infer
-    > 
-    > ### ** Examples
-    > 
-    > model <- "
-    ...
-    + VAL  =~ val1  + val2  + val3  + val4
-    + "
-    >   
-    > ## Estimate the model with bootstrap resampling 
-    > a <- csem(satisfaction, model, .resample_method = "bootstrap", .R = 20,
-    +           .handle_inadmissibles = "replace")
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: csem ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -605,29 +589,6 @@ Run `revdep_details(, "CSGo")` for more info
     ```
     Namespaces in Imports field not imported from:
       ‘extrafont’ ‘future’
-      All declared Imports should be used.
-    ```
-
-# datapackage.r
-
-<details>
-
-* Version: 1.3.3
-* GitHub: https://github.com/frictionlessdata/datapackage-r
-* Source code: https://github.com/cran/datapackage.r
-* Date/Publication: 2021-04-16 18:40:03 UTC
-* Number of recursive dependencies: 116
-
-Run `revdep_details(, "datapackage.r")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
     ```
 
@@ -688,11 +649,11 @@ Run `revdep_details(, "delayed")` for more info
 
 <details>
 
-* Version: 0.1.6
+* Version: 0.1.7
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2021-07-08 21:50:05 UTC
-* Number of recursive dependencies: 80
+* Date/Publication: 2021-07-26 19:20:02 UTC
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "dipsaus")` for more info
 
@@ -702,10 +663,51 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  6.4Mb
       sub-directories of 1Mb or more:
-        doc    1.2Mb
-        libs   3.2Mb
+        doc    1.3Mb
+        libs   3.4Mb
+    ```
+
+# dispositionEffect
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/marcozanotti/dispositionEffect
+* Source code: https://github.com/cran/dispositionEffect
+* Date/Publication: 2021-08-02 07:50:02 UTC
+* Number of recursive dependencies: 118
+
+Run `revdep_details(, "dispositionEffect")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      ── Failure (test-realized_duration.R:113:2): realized_duration works (realized_only = TRUE) ──
+      realized_duration(...) not equal to c(...).
+      1/4 mismatches
+      [2] 34 - 28 == 6
+      ── Failure (test-realized_duration.R:116:2): realized_duration works (realized_only = TRUE) ──
+      realized_duration(...) not equal to c(...).
+      1/4 mismatches
+    ...
+      1/4 mismatches
+      [2] 34 - 28 == 6
+      ── Failure (test-realized_duration.R:161:2): realized_duration works (realized_only = TRUE) ──
+      realized_duration(...) not equal to c(...).
+      1/4 mismatches
+      [1] 34 - 28 == 6
+      
+      [ FAIL 36 | WARN 0 | SKIP 0 | PASS 331 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # dragon
@@ -791,10 +793,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.4.1
 * GitHub: https://github.com/jhollist/elevatr
 * Source code: https://github.com/cran/elevatr
-* Date/Publication: 2021-07-19 20:50:02 UTC
+* Date/Publication: 2021-07-22 04:40:15 UTC
 * Number of recursive dependencies: 77
 
 Run `revdep_details(, "elevatr")` for more info
@@ -832,10 +834,10 @@ Run `revdep_details(, "elevatr")` for more info
 
 <details>
 
-* Version: 0.1.9
+* Version: 0.1.10
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2021-07-16 07:30:16 UTC
+* Date/Publication: 2021-08-02 20:10:08 UTC
 * Number of recursive dependencies: 127
 
 Run `revdep_details(, "envi")` for more info
@@ -920,28 +922,6 @@ Run `revdep_details(, "fabletools")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
-    ```
-
-# finbif
-
-<details>
-
-* Version: 0.5.0
-* GitHub: https://github.com/luomus/finbif
-* Source code: https://github.com/cran/finbif
-* Date/Publication: 2021-03-27 01:20:02 UTC
-* Number of recursive dependencies: 66
-
-Run `revdep_details(, "finbif")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘curl’
-      All declared Imports should be used.
     ```
 
 # fipe
@@ -1060,47 +1040,6 @@ Run `revdep_details(, "fundiversity")` for more info
     ```
     Namespace in Imports field not imported from: ‘geometry’
       All declared Imports should be used.
-    ```
-
-# future.apply
-
-<details>
-
-* Version: 1.7.0
-* GitHub: https://github.com/HenrikBengtsson/future.apply
-* Source code: https://github.com/cran/future.apply
-* Date/Publication: 2021-01-04 21:20:16 UTC
-* Number of recursive dependencies: 14
-
-Run `revdep_details(, "future.apply")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/future_lapply,globals.R’ failed.
-    Last 50 lines of output:
-      > y_truth <- list(A = NULL, B = list(1), C = list(1), D = list(2))
-      > str(y_truth)
-      List of 4
-       $ A: NULL
-       $ B:List of 1
-        ..$ : num 1
-       $ C:List of 1
-    ...
-      > message("*** future_lapply() - manual globals ...")
-      *** future_lapply() - manual globals ...
-      > 
-      > d <- 42
-      > y <- future_lapply(1:2, FUN = function(x) { x * d },
-      +                    future.globals = structure(FALSE, add = "d"))
-      Error in do.call(function(...) { : 
-        object 'future.call.arguments' not found
-      Calls: future_lapply ... resolve.list -> signalConditionsASAP -> signalConditions
-      Execution halted
     ```
 
 # future.tests
@@ -1387,10 +1326,10 @@ Run `revdep_details(, "haldensify")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/gitlzg/IFAA
 * Source code: https://github.com/cran/IFAA
-* Date/Publication: 2021-01-06 17:10:02 UTC
+* Date/Publication: 2021-07-20 16:00:10 UTC
 * Number of recursive dependencies: 42
 
 Run `revdep_details(, "IFAA")` for more info
@@ -1420,58 +1359,6 @@ Run `revdep_details(, "iml")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘iml-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: FeatureEffects
-    > ### Title: Effect of a feature on predictions
-    > ### Aliases: FeatureEffects
-    > 
-    > ### ** Examples
-    > 
-    > # We train a random forest on the Boston dataset:
-    ...
-    > rf <- rpart(medv ~ ., data = Boston)
-    > mod <- Predictor$new(rf, data = Boston)
-    > 
-    > # Compute the accumulated local effects for all features
-    > eff <- FeatureEffects$new(mod)
-    > eff$plot()
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: <Anonymous> ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-        6.       ├─data.table::rbindlist(...)
-        7.       ├─base::unname(...)
-        8.       └─future.apply::future_lapply(...)
-        9.         └─future.apply:::future_xapply(...)
-       10.           ├─future::value(fs)
-       11.           └─future:::value.list(fs)
-       12.             ├─future::resolve(...)
-    ...
-       10.           ├─future::value(fs)
-       11.           └─future:::value.list(fs)
-       12.             ├─future::resolve(...)
-       13.             └─future:::resolve.list(...)
-       14.               └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       15.                 └─future:::signalConditions(...)
-      
-      [ FAIL 10 | WARN 2 | SKIP 11 | PASS 458 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -1498,9 +1385,8 @@ Run `revdep_details(, "infercnv")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
-        data      1.0Mb
         extdata   3.1Mb
     ```
 
@@ -1611,7 +1497,7 @@ Run `revdep_details(, "isoreader")` for more info
 * GitHub: https://github.com/ropensci/jstor
 * Source code: https://github.com/cran/jstor
 * Date/Publication: 2020-06-04 04:50:03 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "jstor")` for more info
 
@@ -1722,7 +1608,7 @@ Run `revdep_details(, "lgr")` for more info
 * GitHub: https://github.com/Jean-Romain/lidR
 * Source code: https://github.com/cran/lidR
 * Date/Publication: 2021-06-21 14:40:02 UTC
-* Number of recursive dependencies: 166
+* Number of recursive dependencies: 164
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1744,10 +1630,10 @@ Run `revdep_details(, "lidR")` for more info
 
 <details>
 
-* Version: 1.5.0
+* Version: 1.6.0
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
-* Date/Publication: 2021-06-19 09:30:02 UTC
+* Date/Publication: 2021-07-22 10:50:03 UTC
 * Number of recursive dependencies: 71
 
 Run `revdep_details(, "lightr")` for more info
@@ -1889,10 +1775,10 @@ Run `revdep_details(, "microservices")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.0
 * GitHub: https://github.com/SchlossLab/mikropml
 * Source code: https://github.com/cran/mikropml
-* Date/Publication: 2021-05-13 23:20:06 UTC
+* Date/Publication: 2021-08-10 15:40:04 UTC
 * Number of recursive dependencies: 111
 
 Run `revdep_details(, "mikropml")` for more info
@@ -1923,50 +1809,6 @@ Run `revdep_details(, "MineICA")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘MineICA-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: IcaSet
-    > ### Title: Class to Contain and Describe an ICA decomposition of
-    > ###   High-Throughput Data.
-    > ### Aliases: class:IcaSet IcaSet IcaSet-class [ [,ANY,ANY,IcaSet-method
-    > ###   [,IcaSet,ANY-method [,IcaSet,ANY,ANY-method
-    > ###   [,IcaSet,ANY,ANY,ANY-method [<- [<-,IcaSet,ANY,ANY,ANY,ANY-method
-    > ###   [<-,IcaSet,ANY,ANY,ANY-method [<-,IcaSet,ANY,ANY-method organism
-    ...
-    > 
-    > ### ** Examples
-    > 
-    > # create an instance of IcaSet
-    > new("IcaSet")
-    Ensembl site unresponsive, trying uswest mirror
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Peer's Certificate issuer is not recognized.
-    Calls: new ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
-
-*   checking running R code from vignettes ...
-    ```
-      ‘MineICA.Rnw’... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘MineICA.Rnw’
-      ...
-    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
-    [31] "hgu133aUNIPROT"       "hgu133a_dbInfo"       "hgu133a_dbconn"      
-    [34] "hgu133a_dbfile"       "hgu133a_dbschema"    
-    
-    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
-    Ensembl site unresponsive, trying uswest mirror
-    
-      When sourcing ‘MineICA.R’:
-    Error: Peer's Certificate issuer is not recognized.
-    Execution halted
-    ```
 
 *   checking Rd cross-references ... WARNING
     ```
@@ -2091,10 +1933,10 @@ Run `revdep_details(, "missSBM")` for more info
 
 <details>
 
-* Version: 1.0.2
+* Version: 1.0.3
 * GitHub: https://github.com/saezlab/mistyR
 * Source code: https://github.com/cran/mistyR
-* Date/Publication: 2021-05-27
+* Date/Publication: 2021-07-22
 * Number of recursive dependencies: 181
 
 Run `revdep_details(, "mistyR")` for more info
@@ -2103,50 +1945,22 @@ Run `revdep_details(, "mistyR")` for more info
 
 ## In both
 
-*   checking tests ...
+*   checking R code for possible problems ... NOTE
     ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      
-      Collecting improvements
-      Computing triangulation
-      Generating juxtaview
-      Generating paraview
-      Generating paraview using 20 nearest neighbors per unit
-      Approximating RBF matrix using the Nystrom method
-    ...
-        8.         ├─future::value(futures)
-        9.         └─future:::value.list(futures)
-       10.           ├─future::resolve(...)
-       11.           └─future:::resolve.list(...)
-       12.             └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       13.               └─future:::signalConditions(...)
-      
-      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 45 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-# mlr3
-
-<details>
-
-* Version: 0.11.0
-* GitHub: https://github.com/mlr-org/mlr3
-* Source code: https://github.com/cran/mlr3
-* Date/Publication: 2021-03-05 14:00:06 UTC
-* Number of recursive dependencies: 58
-
-Run `revdep_details(, "mlr3")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+    plot_interaction_heatmap: no visible binding for global variable
+      ‘Importance’
+    plot_interaction_heatmap: no visible binding for global variable
+      ‘Predictor’
+    plot_interaction_heatmap: no visible binding for global variable
+      ‘total’
+    plot_interaction_heatmap: no visible binding for global variable
+      ‘Target’
+    plot_view_contributions: no visible binding for global variable
+      ‘measure’
+    plot_view_contributions: no visible binding for global variable
+      ‘target’
+    Undefined global functions or variables:
+      Importance Predictor Target measure target total
     ```
 
 # momentuHMM
@@ -2203,7 +2017,7 @@ Run `revdep_details(, "mrgsim.parallel")` for more info
 * GitHub: https://github.com/guga31bb/nfl4th
 * Source code: https://github.com/cran/nfl4th
 * Date/Publication: 2021-03-17 13:20:08 UTC
-* Number of recursive dependencies: 132
+* Number of recursive dependencies: 124
 
 Run `revdep_details(, "nfl4th")` for more info
 
@@ -2214,6 +2028,28 @@ Run `revdep_details(, "nfl4th")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# NMproject
+
+<details>
+
+* Version: 0.6.2
+* GitHub: https://github.com/tsahota/NMproject
+* Source code: https://github.com/cran/NMproject
+* Date/Publication: 2021-08-09 14:20:02 UTC
+* Number of recursive dependencies: 172
+
+Run `revdep_details(, "NMproject")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘lifecycle’
+      All declared Imports should be used.
     ```
 
 # onemapsgapi
@@ -2314,7 +2150,7 @@ Run `revdep_details(, "partR2")` for more info
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
 * Date/Publication: 2021-03-23 11:40:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 85
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -2327,47 +2163,6 @@ Run `revdep_details(, "pavo")` for more info
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
-    ```
-
-# penaltyLearning
-
-<details>
-
-* Version: 2020.5.13
-* GitHub: https://github.com/tdhock/penaltyLearning
-* Source code: https://github.com/cran/penaltyLearning
-* Date/Publication: 2020-05-14 16:20:02 UTC
-* Number of recursive dependencies: 60
-
-Run `revdep_details(, "penaltyLearning")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      Expected match: "after filtering NA and constant features, none remain for training"
-      Actual message: "object 'future.call.arguments' not found"
-      Backtrace:
-           █
-        1. ├─testthat::expect_error(...) test-errors.R:110:2
-        2. │ └─testthat:::quasi_capture(...)
-        3. │   ├─testthat:::.capture(...)
-    ...
-       14.             ├─future::value(fs)
-       15.             └─future:::value.list(fs)
-       16.               ├─future::resolve(...)
-       17.               └─future:::resolve.list(...)
-       18.                 └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       19.                   └─future:::signalConditions(...)
-      
-      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 166 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # photosynthesis
@@ -2413,33 +2208,6 @@ Run `revdep_details(, "photosynthesis")` for more info
 Run `revdep_details(, "phylolm")` for more info
 
 </details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘phylolm-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: phylolm
-    > ### Title: Phylogenetic Linear Model
-    > ### Aliases: phylolm
-    > 
-    > ### ** Examples
-    > 
-    > set.seed(123456)
-    ...
-    Note: p-values and R-squared are conditional on lambda=0.7180128.
-    > 
-    > # adding measurement errors and bootstrap
-    > z <- y + rnorm(60,0,1)
-    > dat = data.frame(trait=z[taxa],pred=x[taxa])
-    > fit = phylolm(trait~pred,data=dat,phy=tre,model="BM",measurement_error=TRUE,boot=100)
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: phylolm ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
 
 ## In both
 
@@ -2506,7 +2274,7 @@ Run `revdep_details(, "plumber")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 112
+* Number of recursive dependencies: 113
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2599,10 +2367,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.24.6
+* Version: 1.24.7
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2021-07-04
+* Date/Publication: 2021-07-20
 * Number of recursive dependencies: 318
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2644,70 +2412,27 @@ Run `revdep_details(, "QDNAseq")` for more info
       All declared Imports should be used.
     ```
 
-# rangeMapper
+# refineR
 
 <details>
 
-* Version: 2.0.2
-* GitHub: https://github.com/mpio-be/rangeMapper
-* Source code: https://github.com/cran/rangeMapper
-* Date/Publication: 2021-02-26 21:40:07 UTC
-* Number of recursive dependencies: 116
+* Version: 1.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/refineR
+* Date/Publication: 2021-08-02 08:10:02 UTC
+* Number of recursive dependencies: 8
 
-Run `revdep_details(, "rangeMapper")` for more info
+Run `revdep_details(, "refineR")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
-*   checking examples ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Running examples in ‘rangeMapper-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: rmap_save_map
-    > ### Title: Save maps
-    > ### Aliases: rmap_save_map
-    > ###   rmap_save_map,rmapConnection,missing,missing,missing,missing,missing-method
-    > ###   rmap_save_map,rmapConnection,missing,missing,missing,character,character-method
-    > ###   rmap_save_map,rmapConnection,character,character,character,missing,character-method
-    > ###   rmap_save_map,rmapConnection,character,character,character,character,character-method
-    ...
-    +  subset='ss1', dst='mean_bodymass_high_SR')
-    > 
-    > linmod = function(x) {
-    +   lm(clutch_size ~ log(female_tarsus), x) %>% 
-    +   summary %>% coefficients %>% data.table %>% .[-1] }
-    > rmap_save_map(con, fun= linmod, src='wrens', dst='slope_clutch_size')
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: rmap_save_map ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-        1. ├─rangeMapper::rmap_save_map(con, fun = fun, src = "wrens", dst = "m") test-4_maps.R:80:4
-        2. └─rangeMapper::rmap_save_map(con, fun = fun, src = "wrens", dst = "m")
-        3.   └─rangeMapper:::.rmap_save2(...)
-        4.     └─future.apply::future_lapply(...)
-        5.       └─future.apply:::future_xapply(...)
-        6.         ├─future::value(fs)
-        7.         └─future:::value.list(fs)
-    ...
-       13.           ├─future::resolve(...)
-       14.           └─future:::resolve.list(...)
-       15.             └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       16.               └─future:::signalConditions(...)
-      
-      [ FAIL 4 | WARN 0 | SKIP 0 | PASS 54 ]
-      Error: Test failures
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        data   4.8Mb
     ```
 
 # regmedint
@@ -2736,10 +2461,10 @@ Run `revdep_details(, "regmedint")` for more info
 
 <details>
 
-* Version: 1.0.9
+* Version: 1.1.0
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2021-04-24 04:20:02 UTC
+* Date/Publication: 2021-08-10 14:00:02 UTC
 * Number of recursive dependencies: 144
 
 Run `revdep_details(, "rgee")` for more info
@@ -2990,10 +2715,10 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 2.0.3
+* Version: 2.0.4
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2021-07-18 23:10:07 UTC
+* Date/Publication: 2021-08-03 12:10:02 UTC
 * Number of recursive dependencies: 207
 
 Run `revdep_details(, "sigminer")` for more info
@@ -3004,9 +2729,9 @@ Run `revdep_details(, "sigminer")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.0Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
-        extdata   2.7Mb
+        extdata   2.1Mb
         libs      1.1Mb
     ```
 
@@ -3059,10 +2784,10 @@ Run `revdep_details(, "simfinapi")` for more info
 
 <details>
 
-* Version: 0.8.0
+* Version: 0.8.8
 * GitHub: https://github.com/lebebr01/simglm
 * Source code: https://github.com/cran/simglm
-* Date/Publication: 2020-06-12 20:10:02 UTC
+* Date/Publication: 2021-08-09 18:40:02 UTC
 * Number of recursive dependencies: 104
 
 Run `revdep_details(, "simglm")` for more info
@@ -3071,18 +2796,10 @@ Run `revdep_details(, "simglm")` for more info
 
 ## In both
 
-*   checking Rd cross-references ... WARNING
+*   checking dependencies in R code ... NOTE
     ```
-    Missing link or links in documentation object 'sim_pow.Rd':
-      ‘corStruct’
-    
-    Missing link or links in documentation object 'sim_pow_nested.Rd':
-      ‘corStruct’
-    
-    Missing link or links in documentation object 'sim_pow_nested3.Rd':
-      ‘corStruct’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
+    Namespace in Imports field not imported from: ‘Matrix’
+      All declared Imports should be used.
     ```
 
 # simhelpers
@@ -3156,11 +2873,11 @@ Run `revdep_details(, "skpr")` for more info
 
 <details>
 
-* Version: 1.1.1
+* Version: 1.1.3
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
-* Date/Publication: 2020-09-17 10:10:07 UTC
-* Number of recursive dependencies: 147
+* Date/Publication: 2021-07-29 20:00:02 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -3183,7 +2900,7 @@ Run `revdep_details(, "solitude")` for more info
 * GitHub: https://github.com/mikemahoney218/spacey
 * Source code: https://github.com/cran/spacey
 * Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 101
+* Number of recursive dependencies: 83
 
 Run `revdep_details(, "spacey")` for more info
 
@@ -3206,10 +2923,10 @@ Run `revdep_details(, "spacey")` for more info
 
 <details>
 
-* Version: 3.8.9
+* Version: 3.8.23
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2021-06-28 05:00:06 UTC
+* Date/Publication: 2021-08-05 13:20:02 UTC
 * Number of recursive dependencies: 96
 
 Run `revdep_details(, "spaMM")` for more info
@@ -3229,20 +2946,32 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 46.0Mb
+      installed size is 46.4Mb
       sub-directories of 1Mb or more:
         R      2.0Mb
-        libs  43.0Mb
+        libs  43.3Mb
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... NOTE
+    ```
+    Warning in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE,  :
+      there is no package called ‘memoise’
+    
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
     ```
 
 # sparrpowR
 
 <details>
 
-* Version: 0.2.3
+* Version: 0.2.4
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
-* Date/Publication: 2021-07-16 07:30:02 UTC
+* Date/Publication: 2021-08-02 20:20:02 UTC
 * Number of recursive dependencies: 98
 
 Run `revdep_details(, "sparrpowR")` for more info
@@ -3483,11 +3212,11 @@ Run `revdep_details(, "tableschema.r")` for more info
 
 <details>
 
-* Version: 0.4.2
+* Version: 0.6.0
 * GitHub: https://github.com/ropensci/targets
 * Source code: https://github.com/cran/targets
-* Date/Publication: 2021-04-30 08:50:02 UTC
-* Number of recursive dependencies: 138
+* Date/Publication: 2021-07-21 16:20:02 UTC
+* Number of recursive dependencies: 141
 
 Run `revdep_details(, "targets")` for more info
 
@@ -3684,11 +3413,11 @@ Run `revdep_details(, "txshift")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
-* Date/Publication: 2021-07-16 11:20:02 UTC
-* Number of recursive dependencies: 205
+* Date/Publication: 2021-07-30 04:50:02 UTC
+* Number of recursive dependencies: 206
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
@@ -3698,10 +3427,10 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.3Mb
+      installed size is  8.1Mb
       sub-directories of 1Mb or more:
         data       1.9Mb
-        doc        1.1Mb
+        doc        1.6Mb
         shinyapp   3.4Mb
     ```
 
@@ -3718,58 +3447,6 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 Run `revdep_details(, "XNAString")` for more info
 
 </details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘XNAString-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: dt2Set
-    > ### Title: Function which creates XNAstringSet object from table with base,
-    > ###   sugar and backbone columns.
-    > ### Aliases: dt2Set
-    > 
-    > ### ** Examples
-    > 
-    ...
-    > dt <- data.table::data.table(
-    +   base = c("TT", "GG"),
-    +   sugar = c("FF", "FO"),
-    +   backbone = c("S", "S")
-    + )
-    > dt2Set(dt)
-    Error in do.call(function(...) { : 
-      object 'future.call.arguments' not found
-    Calls: dt2Set ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      ── Error (test_XNAStringSetClass.R:237:23): checks if creation of XNAStringSet from data.table 
-                          (or data.frame) works ──
-      Error: object 'future.call.arguments' not found
-      Backtrace:
-           █
-        1. └─XNAString::dt2Set(dt, "base_t", "sugar_t", "backbone_t") test_XNAStringSetClass.R:237:22
-        2.   └─future.apply::future_sapply(...)
-    ...
-        6.         ├─future::value(fs)
-        7.         └─future:::value.list(fs)
-        8.           ├─future::resolve(...)
-        9.           └─future:::resolve.list(...)
-       10.             └─future:::signalConditionsASAP(obj, resignal = FALSE, pos = ii)
-       11.               └─future:::signalConditions(...)
-      
-      [ FAIL 7 | WARN 0 | SKIP 0 | PASS 141 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 ## In both
 
