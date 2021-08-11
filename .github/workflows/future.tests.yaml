@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: future.tests
+name: future_tests
 
 jobs:
   future_tests:
@@ -14,10 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         future:
-          - { plan: sequential   }
-          - { plan: multicore    }
-          - { plan: multisession }
-          - { plan: cluster      }
+          - { plan: 'sequential'   }
+          - { plan: 'multicore'    }
+          - { plan: 'multisession' }
+          - { plan: 'cluster'      }
+          - { plan: 'future.callr::callr', pkg: 'future.callr' }
+          - { plan: 'future.batchtools::batchtools_local', pkg: 'future.batchtools' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -68,6 +70,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("future.tests")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
+          if (nzchar(pkg <- "${{ matrix.future.pkg }}")) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info

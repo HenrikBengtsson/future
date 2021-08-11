@@ -1,10 +1,10 @@
-on: [push, pull_request]
+on: [push]
 
 name: covr
 
 jobs:
   covr:
-    if: "! contains(github.event.head_commit.message, '[ci skip]')"    
+    if: contains(github.ref, 'release') || contains(github.ref, 'master') || contains(github.ref, 'main') || contains(github.event.head_commit.message, '[covr]')
 
     runs-on: ubuntu-20.04
 
@@ -56,8 +56,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          install.packages(c("covr", "sessioninfo"))
           remotes::install_deps(dependencies = TRUE)
-          install.packages("covr")
           install.packages(".", repos=NULL, type="source")
         shell: Rscript {0}
 

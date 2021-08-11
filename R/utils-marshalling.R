@@ -97,7 +97,8 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   
   ref <- find_references(x, first_only = TRUE)
   if (length(ref) == 0) return(NULL)
-
+  ref <- ref[[1]]
+  
   action <- match.arg(action, choices = c("error", "warning", "message", "string"))
   source <- match.arg(source, choices = c("globals", "value"))
 
@@ -112,7 +113,6 @@ assert_no_references <- function(x, action = c("error", "warning", "message", "s
   if (source == "globals") {
     ## Identify which global object has a reference
     global <- " (<unknown>)"
-    ref <- ref[[1]]
     if (is.list(x) && !is.null(names(x))) {
       for (ii in seq_along(x)) {
         ref_ii <- find_references(x[ii], first_only = TRUE)
