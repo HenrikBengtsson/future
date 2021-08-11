@@ -1,4 +1,5 @@
 source("incl/start.R")
+library(parallel)
 options(future.debug = FALSE)
 
 pid <- Sys.getpid()
@@ -9,19 +10,15 @@ if (supportsMulticore() && !on_solaris && !covr_testing) {
   print(cl)
 
   message("*** cluster() - crashed worker ...")
-  
-  plan(cluster, workers = cl, .skip = FALSE)
-  f <- future(42L)
-  x <- value(f)
+
+  x <- clusterEvalQ(cl, 42L)
   stopifnot(x == 42L)
   
   ## Force R worker to quit
-  f <- future(quit(save = "no"))
-  res <- tryCatch(y <- value(f), error = identity)
+  res <- tryCatch(x <- clusterEvalQ(cl, quit(save = "no")), error = identity)
   print(res)
   stopifnot(
-    inherits(res, "error"),
-    inherits(res, "FutureError")
+    inherits(res, "error")
   )
 
   ## Cleanup
@@ -30,11 +27,9 @@ if (supportsMulticore() && !on_solaris && !covr_testing) {
   # parallel::stopCluster(cl)
 
   ## Verify that the reset worked
-  cl <- parallel::makeCluster(1L, type = type, timeout = 60)
+  cl <- parallel::makeCluster(1L, type = "FORK", timeout = 60)
   print(cl)
-  plan(cluster, workers = cl, .skip = FALSE)
-  f <- future(43L)
-  x <- value(f)
+  x <- clusterEvalQ(cl, 43L)
   stopifnot(x == 43L)
   
   message("*** cluster() - crashed worker ... DONE")
