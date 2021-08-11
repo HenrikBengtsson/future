@@ -1,4 +1,6 @@
+source("incl/start.R")
 library(parallel)
+options(future.debug=FALSE)
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
@@ -53,3 +55,5 @@ pid2 <- Sys.getpid()
 message("Main PID: ", pid2)
 message("Main PID (original): ", pid)
 stopifnot(pid2 == pid)
+
+source("incl/end.R")
