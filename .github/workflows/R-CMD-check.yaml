@@ -27,7 +27,7 @@ jobs:
           - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false', label: 'forks.enable=false' }
           - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false', label: 'psock.relay.immediate=false' }
           - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false', label: 'plan=multisession' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'plan=globals.onreference=warning' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'globals.onreference=warning' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
