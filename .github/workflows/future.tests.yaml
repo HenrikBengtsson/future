@@ -70,7 +70,7 @@ jobs:
           remotes::install_cran("rcmdcheck")
           remotes::install_cran("future.tests")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
-          if (nzchar(pkg <- "${{ matrix.pkg }}")) install.packages(pkg)
+          if (nzchar(pkg <- "${{ matrix.future.pkg }}")) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
