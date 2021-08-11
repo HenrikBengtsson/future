@@ -441,3 +441,4 @@ vect
 OpenMP
 RcppParallel
 nodeset
+futureSessionInfo
