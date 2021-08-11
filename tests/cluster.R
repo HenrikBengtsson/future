@@ -17,7 +17,7 @@ if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
 ## "Error in readRDS(x) : error reading from connection" for type = "FORK".
 ## Is this related to mcparallel() comments in help("package_coverage")?
 ## /HB 2017-05-20
-if (covr_testing || on_githubactions) types <- setdiff(types, "FORK")
+if (covr_testing) types <- setdiff(types, "FORK")
 
 ## WORKAROUND: FORK:ed processing gives really odd results on macOS when
 ## running on GitHub Actions. /HB 2020-06-07
