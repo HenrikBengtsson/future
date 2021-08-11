@@ -1,6 +1,7 @@
-source("incl/start,load-only.R")
+## Record original state
+ovars <- ls()
+
 library(parallel)
-options(future.debug=FALSE)
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
@@ -56,4 +57,5 @@ message("Main PID: ", pid2)
 message("Main PID (original): ", pid)
 stopifnot(pid2 == pid)
 
-source("incl/end.R")
+## Undo variables
+rm(list = c(setdiff(ls(), ovars)))
