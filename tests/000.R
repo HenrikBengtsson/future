@@ -1,7 +1,7 @@
 source("incl/start.R")
 options(future.debug = FALSE)
 
-types <- if (supportsMulticore() && !on_solaris && !covr_testing) else NULL
+types <- if (supportsMulticore() && !on_solaris && !covr_testing) "FORK" else NULL
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
