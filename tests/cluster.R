@@ -19,9 +19,11 @@ if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
 ## /HB 2017-05-20
 if (covr_testing) types <- setdiff(types, "FORK")
 
-## WORKAROUND: FORK:ed processing gives really odd results on macOS when
-## running on GitHub Actions. /HB 2020-06-07
-#if (on_githubactions && on_macos) types <- setdiff(types, "FORK")
+## WORKAROUND: FORK:ed processing gives really odd type="FORK" results on
+## macOS when running on GitHub Actions. /HB 2020-06-07
+## This error is also appearing on CRANs' 'r-release-macos-arm64' and
+## 'M1mac' checks. /HB 2021-08-11
+if (on_githubactions && on_macos) types <- setdiff(types, "FORK")
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
