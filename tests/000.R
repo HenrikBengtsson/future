@@ -1,4 +1,4 @@
-source("incl/start.R")
+source("incl/start,load-only.R")
 library(parallel)
 options(future.debug=FALSE)
 
