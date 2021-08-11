@@ -41,7 +41,6 @@ Rplots.pdf$
 ^NAMESPACE,.*[.]txt$
 ^nohup.*$
 ^[.]R
-^[.]Rdump
 ^[.]benchmark
 ^[.]devel
 ^[.]test
@@ -61,3 +60,4 @@ Rplots.pdf$
 ^.ghi
 ^.issues
 ^last.dump*
+[.]Rdump
