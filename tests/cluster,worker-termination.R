@@ -12,26 +12,12 @@ types <- "PSOCK"
 ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
 if (isWin32) types <- NULL
 
-if (supportsMulticore() && !on_solaris) types <- c(types, "FORK")
-
-## WORKAROUND: covr::package_coverage() -> merge_coverage() -> ... produces
-## "Error in readRDS(x) : error reading from connection" for type = "FORK".
-## Is this related to mcparallel() comments in help("package_coverage")?
-## /HB 2017-05-20
-if (covr_testing) types <- setdiff(types, "FORK")
-
-## WORKAROUND: FORK:ed processing gives really odd type="FORK" results on
-## macOS when running on GitHub Actions. /HB 2020-06-07
-## This error is also appearing on CRANs' 'r-release-macos-arm64' and
-## 'M1mac' checks. /HB 2021-08-11
-if (on_macos) types <- setdiff(types, "FORK")
+if (supportsMulticore()) types <- c(types, "FORK")
 
 pid <- Sys.getpid()
 message("Main PID (original): ", pid)
 cl <- NULL
 for (type in types) {
-  if (on_solaris) next
- 
   message(sprintf("Cluster type %s ...", sQuote(type)))
   
   cl <- parallel::makeCluster(1L, type = type, timeout = 60)
