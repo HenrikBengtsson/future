@@ -7,7 +7,7 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
   plan(multicore, workers = 2L)
 
   ## Force R worker to quit
-  x %<-% quit(save = "no")
+  x %<-% tools::pskill(pid = Sys.getpid())
   res <- tryCatch(y <- x, error = identity)
   print(res)
   stopifnot(inherits(res, "FutureError"))
