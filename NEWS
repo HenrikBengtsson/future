@@ -6,7 +6,7 @@ Version: 1.22.1-9000 [2021-08-16]
 MISCELLANEOUS:
 
  * Using more robust emulation of crashed forked parallel workers after
-   understand that quit() must not be used in forked R processes.
+   understanding that quit() must not be used in forked R processes.
  
 
 Version: 1.22.1 [2021-08-11]
