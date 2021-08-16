@@ -326,8 +326,10 @@ for (type in types) {
   x %<-% 42L
   stopifnot(x == 42L)
   
-  ## Force R worker to quit
-  x %<-% quit(save = "no")
+  ## Force R worker to terminate
+  ## It's not safe to use quit() here when using type = "FORK" [1]
+  ## [1] https://stat.ethz.ch/pipermail/r-devel/2021-August/080995.html
+  x %<-% tools::pskill(pid = Sys.getpid())
   res <- tryCatch(y <- x, error = identity)
   print(res)
   stopifnot(
