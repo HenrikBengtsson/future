@@ -146,9 +146,9 @@ Run `revdep_details(, "aroma.affymetrix")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  8.0Mb
       sub-directories of 1Mb or more:
-        R             2.3Mb
+        R             4.0Mb
         help          2.1Mb
         testScripts   1.1Mb
     ```
@@ -179,10 +179,10 @@ Run `revdep_details(, "aroma.core")` for more info
 
 <details>
 
-* Version: 2.3.0
+* Version: 2.3.1
 * GitHub: https://github.com/c7rishi/BAMBI
 * Source code: https://github.com/cran/BAMBI
-* Date/Publication: 2020-06-19 13:50:07 UTC
+* Date/Publication: 2021-08-12 16:30:08 UTC
 * Number of recursive dependencies: 49
 
 Run `revdep_details(, "BAMBI")` for more info
@@ -193,9 +193,9 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  6.5Mb
       sub-directories of 1Mb or more:
-        libs   5.6Mb
+        libs   5.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -389,9 +389,9 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.8Mb
+      installed size is  7.8Mb
       sub-directories of 1Mb or more:
-        R      5.0Mb
+        R      4.0Mb
         doc    2.4Mb
         help   1.0Mb
     ```
@@ -592,6 +592,29 @@ Run `revdep_details(, "CSGo")` for more info
       All declared Imports should be used.
     ```
 
+# datapackage.r
+
+<details>
+
+* Version: 1.3.3
+* GitHub: https://github.com/frictionlessdata/datapackage-r
+* Source code: https://github.com/cran/datapackage.r
+* Date/Publication: 2021-04-16 18:40:03 UTC
+* Number of recursive dependencies: 116
+
+Run `revdep_details(, "datapackage.r")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘iterators’ ‘readr’
+      All declared Imports should be used.
+    ```
+
 # DeclareDesign
 
 <details>
@@ -777,7 +800,7 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.0Mb
+      installed size is  8.1Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
         libs   5.6Mb
@@ -953,13 +976,38 @@ Run `revdep_details(, "fipe")` for more info
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 83
+* Number of recursive dependencies: 84
 
 Run `revdep_details(, "flowGraph")` for more info
 
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘flowGraph.Rmd’ using rmarkdown
+    - 8 pops @ layer 1
+    14:12:40-14:12:40 > 16:00:00
+    - 24 pops @ layer 2
+    14:12:40-14:12:40 > 16:00:00
+    - 32 pops @ layer 3
+    14:12:40-14:12:40 > 16:00:00
+    - 16 pops @ layer 4
+    14:12:40-14:12:40 > 16:00:00
+    ...
+    Quitting from lines 557-561 (flowGraph.Rmd) 
+    Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
+    `map_df()` requires dplyr
+    --- failed re-building ‘flowGraph.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘flowGraph.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking R code for possible problems ... NOTE
     ```
@@ -1217,11 +1265,11 @@ Run `revdep_details(, "greta")` for more info
 
 <details>
 
-* Version: 1.4-1
+* Version: 1.5-0
 * GitHub: https://github.com/ipeaGIT/gtfs2gps
 * Source code: https://github.com/cran/gtfs2gps
-* Date/Publication: 2021-04-13 12:20:02 UTC
-* Number of recursive dependencies: 87
+* Date/Publication: 2021-08-13 19:00:02 UTC
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "gtfs2gps")` for more info
 
@@ -1231,7 +1279,8 @@ Run `revdep_details(, "gtfs2gps")` for more info
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘readr’
+    Namespaces in Imports field not imported from:
+      ‘pbapply’ ‘zip’
       All declared Imports should be used.
     ```
 
@@ -1375,7 +1424,7 @@ Run `revdep_details(, "iml")` for more info
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1385,8 +1434,9 @@ Run `revdep_details(, "infercnv")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
+        data      1.0Mb
         extdata   3.1Mb
     ```
 
@@ -1442,7 +1492,7 @@ Run `revdep_details(, "interflex")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  5.3Mb
       sub-directories of 1Mb or more:
         libs   4.5Mb
     ```
@@ -1665,6 +1715,33 @@ Run `revdep_details(, "lightr")` for more info
 Run `revdep_details(, "lmtp")` for more info
 
 </details>
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘getting-started.Rmd’ using rmarkdown
+    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
+      prediction from a rank-deficient fit may be misleading
+    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
+      prediction from a rank-deficient fit may be misleading
+    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
+      prediction from a rank-deficient fit may be misleading
+    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
+      prediction from a rank-deficient fit may be misleading
+    ...
+    Quitting from lines 160-182 (getting-started.Rmd) 
+    Error: processing vignette 'getting-started.Rmd' failed with diagnostics:
+    evaluation nested too deeply: infinite recursion / options(expressions=)?
+    --- failed re-building ‘getting-started.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘getting-started.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 ## In both
 
@@ -1906,6 +1983,31 @@ Run `revdep_details(, "MineICA")` for more info
     contains 'methods').
     ```
 
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘MineICA.Rnw’ using Sweave
+    Loading required package: BiocGenerics
+    Loading required package: parallel
+    
+    Attaching package: ‘BiocGenerics’
+    
+    The following objects are masked from ‘package:parallel’:
+    
+        clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    ...
+    l.23 \usepackage
+                    {subfig}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘MineICA.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘MineICA.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # missSBM
 
 <details>
@@ -1937,13 +2039,38 @@ Run `revdep_details(, "missSBM")` for more info
 * GitHub: https://github.com/saezlab/mistyR
 * Source code: https://github.com/cran/mistyR
 * Date/Publication: 2021-07-22
-* Number of recursive dependencies: 181
+* Number of recursive dependencies: 182
 
 Run `revdep_details(, "mistyR")` for more info
 
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘mistyR.Rmd’ using rmarkdown
+    mistyR is able to run computationally intensive functions
+      in parallel. Please consider specifying a future::plan(). For example by running
+      future::plan(future::multisession) before calling mistyR functions.
+    
+    Attaching package: 'dplyr'
+    
+    The following objects are masked from 'package:stats':
+    
+    ...
+    Quitting from lines 32-37 (mistySpatialExperiment.Rmd) 
+    Error: processing vignette 'mistySpatialExperiment.Rmd' failed with diagnostics:
+    could not find function "Githubpkg"
+    --- failed re-building ‘mistySpatialExperiment.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘mistySpatialExperiment.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking R code for possible problems ... NOTE
     ```
@@ -2274,7 +2401,7 @@ Run `revdep_details(, "plumber")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 113
+* Number of recursive dependencies: 114
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2390,6 +2517,31 @@ Run `revdep_details(, "Prostar")` for more info
       All declared Imports should be used.
     ```
 
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘Prostar_UserManual.Rnw’ using Sweave
+    Error: processing vignette 'Prostar_UserManual.Rnw' failed with diagnostics:
+    Running 'texi2dvi' on 'Prostar_UserManual.tex' failed.
+    LaTeX errors:
+    ! LaTeX Error: File `nowidow.sty' not found.
+    
+    Type X to quit or <RETURN> to proceed,
+    or enter new name. (Default extension: sty)
+    ...
+    l.189 \RequirePackage
+                         {parnotes}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘Prostar_UserManual.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘Prostar_UserManual.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # QDNAseq
 
 <details>
@@ -2398,7 +2550,7 @@ Run `revdep_details(, "Prostar")` for more info
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
 * Date/Publication: 2021-05-19
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -2410,6 +2562,31 @@ Run `revdep_details(, "QDNAseq")` for more info
     ```
     Namespace in Imports field not imported from: ‘future’
       All declared Imports should be used.
+    ```
+
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘QDNAseq.Rnw’ using Sweave
+    EM algorithm started ... 
+    
+    Warning in allprior/tot :
+      Recycling array of length 1 in vector-array arithmetic is deprecated.
+      Use c() or as.vector() instead.
+    
+    Warning in allprior/tot :
+      Recycling array of length 1 in vector-array arithmetic is deprecated.
+    ...
+    l.189 \RequirePackage
+                         {parnotes}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘QDNAseq.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘QDNAseq.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # refineR
@@ -2533,6 +2710,29 @@ Run `revdep_details(, "sapfluxnetr")` for more info
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 4 marked UTF-8 strings
+    ```
+
+# scDiffCom
+
+<details>
+
+* Version: 0.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/scDiffCom
+* Date/Publication: 2021-08-17 07:20:05 UTC
+* Number of recursive dependencies: 239
+
+Run `revdep_details(, "scDiffCom")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘future’ ‘utils’
+      All declared Imports should be used.
     ```
 
 # sctransform
@@ -2729,8 +2929,9 @@ Run `revdep_details(, "sigminer")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.1Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
+        R         1.0Mb
         extdata   2.1Mb
         libs      1.1Mb
     ```
@@ -3442,7 +3643,7 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
 * Date/Publication: 2021-06-03
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "XNAString")` for more info
 
