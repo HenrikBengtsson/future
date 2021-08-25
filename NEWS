@@ -1,7 +1,13 @@
 Package: future
 ===============
 
-Version: 1.22.1-9000 [2021-08-16]
+Version: 1.22.1-9000 [2021-08-25]
+
+HOW TO INSTALL THE DEVELOP VERSION:
+
+ * To install this develop version of the package, use:
+
+   remotes::install_github("HenrikBengtsson/future", ref = "develop")
 
 MISCELLANEOUS:
 
