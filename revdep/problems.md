@@ -1706,42 +1706,15 @@ Run `revdep_details(, "lightr")` for more info
 
 <details>
 
-* Version: 0.9.0
-* GitHub: NA
+* Version: 0.9.1
+* GitHub: https://github.com/nt-williams/lmtp
 * Source code: https://github.com/cran/lmtp
-* Date/Publication: 2021-02-22 15:50:02 UTC
+* Date/Publication: 2021-08-18 09:10:02 UTC
 * Number of recursive dependencies: 107
 
 Run `revdep_details(, "lmtp")` for more info
 
 </details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘getting-started.Rmd’ using rmarkdown
-    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
-      prediction from a rank-deficient fit may be misleading
-    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
-      prediction from a rank-deficient fit may be misleading
-    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
-      prediction from a rank-deficient fit may be misleading
-    Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type ==  :
-      prediction from a rank-deficient fit may be misleading
-    ...
-    Quitting from lines 160-182 (getting-started.Rmd) 
-    Error: processing vignette 'getting-started.Rmd' failed with diagnostics:
-    evaluation nested too deeply: infinite recursion / options(expressions=)?
-    --- failed re-building ‘getting-started.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘getting-started.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 ## In both
 
@@ -2161,10 +2134,10 @@ Run `revdep_details(, "nfl4th")` for more info
 
 <details>
 
-* Version: 0.6.2
+* Version: 0.6.4
 * GitHub: https://github.com/tsahota/NMproject
 * Source code: https://github.com/cran/NMproject
-* Date/Publication: 2021-08-09 14:20:02 UTC
+* Date/Publication: 2021-08-18 09:00:04 UTC
 * Number of recursive dependencies: 172
 
 Run `revdep_details(, "NMproject")` for more info
@@ -3051,10 +3024,10 @@ Run `revdep_details(, "sims")` for more info
 
 <details>
 
-* Version: 0.66.5
+* Version: 1.0.0
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
-* Date/Publication: 2021-05-11 21:20:02 UTC
+* Date/Publication: 2021-08-17 16:30:18 UTC
 * Number of recursive dependencies: 139
 
 Run `revdep_details(, "skpr")` for more info
@@ -3065,7 +3038,7 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 50.4Mb
+      installed size is 49.7Mb
       sub-directories of 1Mb or more:
         libs  48.2Mb
     ```

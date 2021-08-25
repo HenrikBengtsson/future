@@ -10,26 +10,20 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2021-08-17                   |
+|date     |2021-08-18                   |
 
 # Dependencies
 
-|package    |old    |new    |Δ  |
-|:----------|:------|:------|:--|
-|future     |1.21.0 |1.22.0 |*  |
-|codetools  |0.2-18 |0.2-18 |   |
-|digest     |0.6.27 |0.6.27 |   |
-|globals    |0.14.0 |0.14.0 |   |
-|listenv    |0.8.0  |0.8.0  |   |
-|parallelly |1.27.0 |1.27.0 |   |
+|package    |old    |new         |Δ  |
+|:----------|:------|:-----------|:--|
+|future     |1.21.0 |1.22.1-9000 |*  |
+|codetools  |0.2-18 |0.2-18      |   |
+|digest     |0.6.27 |0.6.27      |   |
+|globals    |0.14.0 |0.14.0      |   |
+|listenv    |0.8.0  |0.8.0       |   |
+|parallelly |1.27.0 |1.27.0      |   |
 
 # Revdeps
-
-## New problems (1)
-
-|package                  |version |error |warning |note |
-|:------------------------|:-------|:-----|:-------|:----|
-|[lmtp](problems.md#lmtp) |0.9.0   |      |__+1__  |1    |
 
 ## All (198)
 
@@ -136,7 +130,7 @@
 |[lgr](problems.md#lgr)                                   |0.4.2     |      |        |1    |
 |[lidR](problems.md#lidr)                                 |3.1.4     |      |        |1    |
 |[lightr](problems.md#lightr)                             |1.6.0     |      |        |2    |
-|[lmtp](problems.md#lmtp)                                 |0.9.0     |      |__+1__  |1    |
+|[lmtp](problems.md#lmtp)                                 |0.9.1     |      |        |1    |
 |LWFBrook90R                                              |0.4.4     |      |        |     |
 |mcmcensemble                                             |3.0.0     |      |        |     |
 |[meedr](problems.md#meedr)                               |0.0.1     |1     |        |2    |
@@ -155,7 +149,7 @@
 |[nfl4th](problems.md#nfl4th)                             |1.0.0     |      |        |1    |
 |nflfastR                                                 |4.2.0     |      |        |     |
 |nflseedR                                                 |1.0.2     |      |        |     |
-|[NMproject](problems.md#nmproject)                       |0.6.2     |      |        |1    |
+|[NMproject](problems.md#nmproject)                       |0.6.4     |      |        |1    |
 |[onemapsgapi](problems.md#onemapsgapi)                   |1.0.0     |      |        |1    |
 |[OOS](problems.md#oos)                                   |1.0.0     |      |        |1    |
 |[origami](problems.md#origami)                           |1.0.3     |      |        |2    |
@@ -203,7 +197,7 @@
 |[simglm](problems.md#simglm)                             |0.8.8     |      |        |1    |
 |[simhelpers](problems.md#simhelpers)                     |0.1.1     |      |        |1    |
 |[sims](problems.md#sims)                                 |0.0.2     |      |        |1    |
-|[skpr](problems.md#skpr)                                 |0.66.5    |      |        |1    |
+|[skpr](problems.md#skpr)                                 |1.0.0     |      |        |1    |
 |sNPLS                                                    |1.0.27    |      |        |     |
 |[solitude](problems.md#solitude)                         |1.1.3     |      |        |1    |
 |sovereign                                                |1.2.0     |      |        |     |
