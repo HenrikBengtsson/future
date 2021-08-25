@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9000</span>
       </span>
     </div>
 
@@ -204,11 +204,11 @@
 <p>Futures can be nested in R such that one future creates another set of futures and so on. This may, for instance, occur within nested for loops, e.g.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv">"listenv"</a></span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://listenv.futureverse.org">"listenv"</a></span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span><span class="op">[[</span><span class="va">ii</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="op">{</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
     <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span>
       <span class="va">y</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="va">ii</span> <span class="op">+</span> <span class="va">jj</span> <span class="op">/</span> <span class="fl">10</span> <span class="op">}</span>
     <span class="op">}</span>
@@ -225,16 +225,16 @@
 <p>Here is the layout of what such an analysis could look like in R using futures.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv">"listenv"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://listenv.futureverse.org">"listenv"</a></span><span class="op">)</span>
 <span class="va">htseq_align</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fq</span>, <span class="va">chr</span><span class="op">)</span> <span class="op">{</span> <span class="va">chr</span> <span class="op">}</span>
 
 <span class="va">fqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[.]fastq$"</span><span class="op">)</span>
 
-<span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">ss</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_along</a></span><span class="op">(</span><span class="va">fqs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">fq</span> <span class="op">&lt;-</span> <span class="va">fqs</span><span class="op">[</span><span class="va">ss</span><span class="op">]</span>
   <span class="va">bams</span><span class="op">[[</span><span class="va">ss</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="op">{</span>
-    <span class="va">bams_ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="va">bams_ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
     <span class="kw">for</span> <span class="op">(</span><span class="va">cc</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">)</span> <span class="op">{</span>
       <span class="va">bams_ss</span><span class="op">[[</span><span class="va">cc</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="fu">htseq_align</span><span class="op">(</span><span class="va">fq</span>, chr <span class="op">=</span> <span class="va">cc</span><span class="op">)</span>
     <span class="op">}</span>
@@ -299,7 +299,7 @@
 <p>With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes. Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv">"listenv"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://listenv.futureverse.org">"listenv"</a></span><span class="op">)</span>
 
 <span class="co">## Set up access to remote login node</span>
 <span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">remote</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span><span class="op">)</span>
@@ -321,13 +321,13 @@
 <span class="va">x</span> <span class="op">%&lt;-%</span> <span class="op">{</span>
   <span class="va">thost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>
   <span class="va">tpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
   <span class="kw">for</span> <span class="op">(</span><span class="va">task</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">{</span>
     <span class="co">## (b) This will be evaluated on a compute node on the cluster</span>
     <span class="va">y</span><span class="op">[[</span><span class="va">task</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="op">{</span>
       <span class="va">mhost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>
       <span class="va">mpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span>
-      <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
+      <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html">listenv</a></span><span class="op">(</span><span class="op">)</span>
       <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span> <span class="op">{</span>
         <span class="co">## (c) These will be evaluated in separate processes on the same compute node</span>
         <span class="va">z</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op">%&lt;-%</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,

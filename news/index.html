@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9000</span>
       </span>
     </div>
 
@@ -243,9 +243,40 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="future-1-21-0-9005" class="section level1">
-<h1 class="page-header" data-toc-text="1.21.0-9005">
-<a href="#future-1-21-0-9005" class="anchor"></a>future 1.21.0-9005<small> Unreleased </small>
+    <div id="future-1-22-1-9000" class="section level1">
+<h1 class="page-header" data-toc-text="1.22.1-9000">
+<a href="#future-1-22-1-9000" class="anchor"></a>future 1.22.1-9000<small> Unreleased </small>
+</h1>
+<div id="how-to-install-the-develop-version" class="section level3">
+<h3 class="hasAnchor">
+<a href="#how-to-install-the-develop-version" class="anchor"></a>How to Install the Develop Version</h3>
+<ul>
+<li>To install this develop version of the package, use: remotes::install_github(“HenrikBengtsson/future”, ref = “develop”)</li>
+</ul>
+</div>
+<div id="miscellaneous" class="section level3">
+<h3 class="hasAnchor">
+<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
+<ul>
+<li>Using more robust emulation of crashed forked parallel workers after understanding that quit() must not be used in forked R processes.</li>
+</ul>
+</div>
+</div>
+    <div id="future-1-22-1" class="section level1">
+<h1 class="page-header" data-toc-text="1.22.1">
+<a href="#future-1-22-1" class="anchor"></a>future 1.22.1<small> 2021-08-25 </small>
+</h1>
+<div id="miscellaneous-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h3>
+<ul>
+<li>Disable package test that emulates crashing of forked parallel workers when using parallel::makeCluster(…, type = “FORK”). This test is disabled on macOS, where it appears that the main R session becomes unstable after the FORK node is terminated.</li>
+</ul>
+</div>
+</div>
+    <div id="future-1-22-0" class="section level1">
+<h1 class="page-header" data-toc-text="1.22.0">
+<a href="#future-1-22-0" class="anchor"></a>future 1.22.0<small> Unreleased </small>
 </h1>
 <div id="significant-changes" class="section level3">
 <h3 class="hasAnchor">
@@ -369,9 +400,9 @@
 <li><p>Add a ‘How the Future Framework is Validated’ vignette.</p></li>
 </ul>
 </div>
-<div id="miscellaneous" class="section level3">
+<div id="miscellaneous-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
+<a href="#miscellaneous-2" class="anchor"></a>Miscellaneous</h3>
 <ul>
 <li>Harmonizing Future constructor functions to also use ‘substitute = TRUE’.</li>
 </ul>
@@ -516,9 +547,9 @@
 <li><p>Now the result of a future holds session details in case an error occurred while evaluating the future.</p></li>
 </ul>
 </div>
-<div id="miscellaneous-1" class="section level3">
+<div id="miscellaneous-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#miscellaneous-1" class="anchor"></a>Miscellaneous</h3>
+<a href="#miscellaneous-3" class="anchor"></a>Miscellaneous</h3>
 <ul>
 <li>Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set. To better emulate CRAN submission checks, the future package will, when loaded, set this environment variable to ‘TRUE’ if unset and if ‘R CMD check’ is running. Note that future::availableCores() respects _R_CHECK_LIMIT_CORES_ and returns at most 2L (two cores) if detected.</li>
 </ul>
