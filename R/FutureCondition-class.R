@@ -10,6 +10,9 @@
 #' 
 #' @param call The call stack that led up to the condition.
 #' 
+#' @param uuid A universally unique identifier for the future associated with
+#' this FutureCondition.
+#' 
 #' @param future The [Future] involved.
 #' 
 #' @return An object of class FutureCondition which inherits from class
@@ -21,7 +24,7 @@
 #'
 #' @export
 #' @keywords internal
-FutureCondition <- function(message, call = NULL, future = NULL) {
+FutureCondition <- function(message, call = NULL, uuid = future$uuid, future = NULL) {
   ## Support different types of input
   if (inherits(message, "condition")) {
     cond <- message
@@ -37,12 +40,17 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
   if (length(message) != 1L) {
     stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
   }
+
+  if (!is.null(uuid)) {
+    stop_if_not(is.character(uuid), length(uuid) == 1L, !is.na(uuid))
+  }
+  if (!is.null(future)) stop_if_not(inherits(future, "Future"))
   
   ## Create a condition object
   class <- c("FutureCondition", class)
   structure(list(message = message, call = call), 
             class = class[!duplicated(class, fromLast = TRUE)],
-            future = future)
+            uuid = uuid, future = future)
 }
 
 
@@ -50,6 +58,9 @@ FutureCondition <- function(message, call = NULL, future = NULL) {
 #' @export
 print.FutureCondition <- function(x, ...) {
   NextMethod()
+
+  uuid <- attr(x, "uuid", exact = TRUE)
+  cat(sprintf("\n\nFuture UUID: %s\n", if (is.null(uuid)) "<NA>" else uuid))
 
   future <- attr(x, "future", exact = TRUE)
 
@@ -72,8 +83,8 @@ print.FutureCondition <- function(x, ...) {
 
 #' @rdname FutureCondition
 #' @export
-FutureMessage <- function(message, call = NULL, future = NULL) {
-  cond <- FutureCondition(message = message, call = call, future = future)
+FutureMessage <- function(message, call = NULL, uuid = future$uuid, future = NULL) {
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
   class <- c("FutureMessage", "message", class(cond))
   class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
@@ -82,8 +93,8 @@ FutureMessage <- function(message, call = NULL, future = NULL) {
 
 #' @rdname FutureCondition
 #' @export
-FutureWarning <- function(message, call = NULL, future = NULL) {
-  cond <- FutureCondition(message = message, call = call, future = future)
+FutureWarning <- function(message, call = NULL, uuid = future$uuid, future = NULL) {
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
   class <- c("FutureWarning", "warning", class(cond))
   class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
@@ -92,8 +103,8 @@ FutureWarning <- function(message, call = NULL, future = NULL) {
 
 #' @rdname FutureCondition
 #' @export
-FutureError <- function(message, call = NULL, future = NULL) {
-  cond <- FutureCondition(message = message, call = call, future = future)
+FutureError <- function(message, call = NULL, uuid = future$uuid, future = NULL) {
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
   class <- c("FutureError", "error", class(cond))
   class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
@@ -102,13 +113,13 @@ FutureError <- function(message, call = NULL, future = NULL) {
 
 #' @rdname FutureCondition
 #' @export
-RngFutureCondition <- function(message = NULL, call = NULL, future) {
+RngFutureCondition <- function(message = NULL, call = NULL, uuid = future$uuid, future = NULL) {
   if (is.null(message)) {
     label <- future$label
     if (is.null(label)) label <- "<none>"
     message <- sprintf("UNRELIABLE VALUE: Future (%s) unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to \"ignore\".", sQuote(label))
   }
-  cond <- FutureCondition(message = message, call = call, future = future)
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
   class <- c("RngFutureCondition", class(cond))
   class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond

@@ -133,26 +133,75 @@ plan <- local({
   ## Stack of type of futures to use
   stack <- defaultStack
 
+  assert_no_disallowed_strategies <- function(stack) {
+    noplans <- getOption("future.plan.disallow")
+    if (length(noplans) == 0L) return()
+
+    for (kk in seq_along(stack)) {
+      evaluator <- stack[[kk]]
+      if (!inherits(evaluator, noplans)) next
+      clazz <- class(evaluator)[1]
+      if (!clazz %in% noplans) next  ## <== sic!
+
+      stop(FutureError(sprintf("Can not use %s in the future plan because it is on the list of future strategies that are not allow per option 'future.plan.disallow': %s", sQuote(clazz), paste(sQuote(noplans), collapse = ", "))))
+    }
+  }
+
   warn_about_multiprocess <- local({
     .warn <- TRUE
+
+    is_multiprocess <- function(evaluator) {
+      if (!inherits(evaluator, "multiprocess")) return(FALSE)
+      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
+      class <- class(evaluator)
+      if (class[1] == "multiprocess") return(TRUE)
+      if (length(class) == 1L) return(FALSE)
+      if (class[1] == "tweaked" && class[2] == "multiprocess") return(TRUE)
+      FALSE
+    }
 
     function(stack) {
       if (!.warn) return()
 
       ## Is deprecated 'multiprocess' used?    
       for (kk in seq_along(stack)) {
-        evaluator <- stack[[kk]]
-        if (inherits(evaluator, "multiprocess") && 
-            class(evaluator)[1] == "multiprocess") {  ## <== sic!
-          ignore <- Sys.getenv("R_FUTURE_DEPRECATED_IGNORE", "")
-          ignore <- getOption("future.deprecated.ignore", ignore)
-          ignore <- unlist(strsplit(ignore, split="[, ]", fixed = FALSE))
+        if (is_multiprocess(stack[[kk]])) {
+          ignore <- getOption("future.deprecated.ignore")
           if (!is.element("multiprocess", ignore)) {
             ## Warn only once
             .warn <<- FALSE
             .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
           }
 
+          break
+        }
+      }
+    }
+  })
+
+  warn_about_multicore <- local({
+    .warn <- TRUE
+
+    is_multicore <- function(evaluator) {
+      if (!inherits(evaluator, "multicore")) return(FALSE)
+      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
+      class <- class(evaluator)
+      if (class[1] == "multicore") return(TRUE)
+      if (length(class) == 1L) return(FALSE)
+      if (class[1] == "tweaked" && class[2] == "multicore") return(TRUE)
+      FALSE
+    }
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'multicore' used despite not being supported on the current
+      ## platform?    
+      for (kk in seq_along(stack)) {
+        if (is_multicore(stack[[kk]])) {
+          supportsMulticore(warn = TRUE)
+          ## Warn only once, if at all
+          .warn <<- FALSE
           break
         }
       }
@@ -238,7 +287,10 @@ plan <- local({
       mprint(newStack)
     }
 
+    assert_no_disallowed_strategies(newStack)
+
     warn_about_multiprocess(newStack)
+    warn_about_multicore(newStack)
 
     stack <<- newStack
 

@@ -8,28 +8,39 @@ jobs:
 
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'devel'}
-          - {os: windows-latest, r: 'release'}
-#2020-08-08#          - {os: macOS-latest,   r: 'devel'}
-          - {os: macOS-latest,   r: 'release'}
-          - {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+#          - {os: windows-latest, r: 'devel'   }
+          - {os: windows-latest, r: 'release' }
+#          - {os: macOS-latest,   r: 'devel'   }
+          - {os: macOS-latest,   r: 'release' }
+          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false', label: 'forks.enable=false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false', label: 'psock.relay.immediate=false' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false', label: 'plan=multisession' }
+          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'globals.onreference=warning' }
 
     env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      R_FUTURE_RNG_ONMISUSE: error
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-
+      RSPM: ${{ matrix.config.rspm }}
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      ## R CMD check
+      _R_CHECK_LENGTH_1_CONDITION_: true
+      _R_CHECK_LENGTH_1_LOGIC2_: true
+      _R_CHECK_MATRIX_DATA_: true
+      _R_CHECK_CRAN_INCOMING_: false
+      ## Specific to futures
+      R_FUTURE_RNG_ONMISUSE: error
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -54,7 +65,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies (Linux)
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -77,10 +88,20 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
 
-      - name: Check
+      - name: Check (!Windows)
+        if: runner.os != 'Windows'
         env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+          R_FUTURE_PLAN: ${{ matrix.config.future.plan }}
+          R_FUTURE_FORK_ENABLE: ${{ matrix.config.future.fork.enable }}
+          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.future.psock.relay.immediate }}
+          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.future.fork.multithreading.enable }}
+          R_FUTURE_GLOBALS_ONREFERENCE: ${{ matrix.config.future.globals.onreference }}
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Check (Windows)
+        if: runner.os == 'Windows'
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
@@ -89,3 +110,4 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+        

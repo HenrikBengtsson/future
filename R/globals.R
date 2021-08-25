@@ -170,40 +170,75 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## Tweak expression to be called with global ... arguments?
   if (length(globals) > 0 && inherits(globals[["..."]], "DotDotDotList")) {
     if (debug) mdebug("Tweak future expression to call with '...' arguments ...")
+    has_dotdotdot <- TRUE
     ## Missing global '...'?
     if (!is.list(globals[["..."]])) {
-      msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
-      if (debug) mdebug(msg)
-      stop(msg)
+      if (!is.na(globals[["..."]])) {
+        msg <- sprintf("Did you mean to create the future within a function?  Invalid future expression tries to use global '...' variables that do not exist: %s", hexpr(exprOrg))
+        if (debug) mdebug(msg)
+        stop(msg)
+      }
+      globals[["..."]] <- NULL
+      where <- attr(globals, "where", exact = TRUE)
+      where[["..."]] <- NULL
+      attr(globals, "where") <- where
+      has_dotdotdot <- FALSE
     }
 
-    names <- names(globals)
-    names[names == "..."] <- "future.call.arguments"
-    names(globals) <- names
+    if (has_dotdotdot) {
+      names <- names(globals)
+      names[names == "..."] <- "future.call.arguments"
+      names(globals) <- names
 
-    ## AD HOC: Drop duplicated 'future.call.arguments' elements, cf.
-    ## https://github.com/HenrikBengtsson/future/issues/417.
-    ## The reason for duplicates being possible, is that '...' is renamed
-    ## to 'future.call.arguments' so the former won't override the latter.
-    ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
-    idxs <- which(names == "future.call.arguments")
-    if (length(idxs) > 1L) {
-      if (debug) mdebugf("- Detected %d 'future.call.arguments' global entries. Dropping all but the last.", length(idxs))
-      # Drop all but the last replicate
-      idxs <- idxs[-length(idxs)]
-      globals <- globals[-idxs]
+      ## AD HOC: Drop duplicated 'future.call.arguments' elements, cf.
+      ## https://github.com/HenrikBengtsson/future/issues/417.
+      ## The reason for duplicates being possible, is that '...' is renamed
+      ## to 'future.call.arguments' so the former won't override the latter.
+      ## This might have to be fixed in future.apply and furrr. /HB 2020-09-21
+      idxs <- which(names == "future.call.arguments")
+      if (length(idxs) > 1L) {
+        if (debug) {
+          mdebugf("- Detected %d 'future.call.arguments' global entries:", length(idxs))
+          mstr(globals[idxs])
+        }
+        # Drop all empty entries
+        ns <- vapply(globals[idxs], FUN = length, FUN.VALUE = 0L)
+        if (debug) mprint(ns)
+        keep <- (ns > 0)
+        nkeep <- sum(keep)
+        if (nkeep == 0L) {
+          if (debug) mdebugf("- All 'future.call.arguments' global entries are empty. Keeping the first one.")
+          ## All are empty, keep first
+          keep[1L] <- TRUE
+        } else if (nkeep > 1L) {
+          # Drop all but the last non-empty replicate
+          if (debug) mdebugf("- Detected %d non-empty 'future.call.arguments' global entries. Keeping the last one.", nkeep)
+          keep2 <- logical(length = length(idxs))
+          keep2[max(which(keep))] <- TRUE
+          keep <- keep2
+        }
+        globals <- globals[-idxs[!keep]]
+        if (debug) {
+          idxs <- which(names == "future.call.arguments")
+          mdebugf("- 'future.call.arguments' global entries:")
+          mstr(globals[idxs])
+        }
+      }
+      idxs <- NULL
+      names <- NULL
+  
+      ## To please R CMD check
+      a <- `future.call.arguments` <- NULL
+      rm(list = c("a", "future.call.arguments"))
+      expr <- substitute({
+        ## covr: skip=1
+        do.call(function(...) a, args = `future.call.arguments`)
+      }, list(a = expr))
+      if (debug) {
+        mprint(expr)
+        mdebug("Tweak future expression to call with '...' arguments ... DONE")
+      }
     }
-    idxs <- NULL
-    names <- NULL
-
-    ## To please R CMD check
-    a <- `future.call.arguments` <- NULL
-    rm(list = c("a", "future.call.arguments"))
-    expr <- substitute({
-      ## covr: skip=1
-      do.call(function(...) a, args = `future.call.arguments`)
-    }, list(a = expr))
-    if (debug) mdebug("Tweak future expression to call with '...' arguments ... DONE")
   }
 
   ## Resolve futures and turn into already-resolved "constant" futures
@@ -286,7 +321,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   ## set.  /HB 2016-02-04
   if (resolve && length(globals) > 0L) {
     if (debug) mdebug("Resolving futures part of globals (recursively) ...")
-    globals <- resolve(globals, value = TRUE, recursive = TRUE)
+    globals <- resolve(globals, result = TRUE, recursive = TRUE)
     if (debug) {
       mdebugf("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
       mdebug("Resolving futures part of globals (recursively) ... DONE")
@@ -296,8 +331,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
 
   ## Protect against references?
   if (length(globals) > 0L) {
-    action <- Sys.getenv("R_FUTURE_GLOBALS_ONREFERENCE", "ignore")
-    action <- getOption("future.globals.onReference", action)
+    action <- getOption("future.globals.onReference", "ignore")
     if (action != "ignore") {
       if (debug) {
         mdebugf("Checking for globals with references (future.globals.onReference = \"%s\") ...", action, appendLF = FALSE)
@@ -320,30 +354,11 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       sizes <- unlist(sizes, use.names = TRUE)
       total_size <- sum(sizes, na.rm = TRUE)
       attr(globals, "total_size") <- total_size
-      if (debug) mdebugf("The total size of the %d globals is %s (%s bytes)", length(globals), asIEC(total_size), total_size)
-  
-      if (total_size > maxSize) {
-        n <- length(sizes)
-        o <- order(sizes, decreasing = TRUE)[1:3]
-        o <- o[is.finite(o)]
-        sizes <- sizes[o]
-        classes <- lapply(globals[o], FUN = mode)
-        classes <- unlist(classes, use.names = FALSE)
-        largest <- sprintf("%s (%s of class %s)", sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
-        msg <- sprintf("The total size of the %d globals that need to be exported for the future expression (%s) is %s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size), asIEC(maxSize))
-        if (n == 1) {
-          fmt <- "%s There is one global: %s."
-        } else if (n == 2) {
-          fmt <- "%s There are two globals: %s."
-        } else if (n == 3) {
-          fmt <- "%s There are three globals: %s."
-        } else {
-          fmt <- "%s The three largest globals are %s."
-        }
-        msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse = " and "))
-        if (debug) mdebug(msg)
-        stop(msg)
-      } ## if (total_size > ...)
+      msg <- summarize_size_of_globals(globals, sizes = sizes,
+                                       maxSize = maxSize, exprOrg = exprOrg,
+                                       debug = debug)
+      if (debug) mdebug(msg)
+      if (sum(sizes, na.rm = TRUE) > maxSize) stop(msg)
     }
   } ## if (length(globals) > 0)
 
@@ -370,6 +385,13 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     pkgs <- pkgs[isAttached]
   }
 
+  keepWhere <- getOption("future.globals.keepWhere", FALSE)
+  if (!keepWhere) {
+    where <- attr(globals, "where")
+    for (kk in seq_along(where)) where[[kk]] <- emptyenv()
+    attr(globals, "where") <- where
+  }
+  
   if (debug) {
     mdebugf("- globals: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
     mdebugf("- packages: [%d] %s", length(pkgs), hpaste(sQuote(pkgs)))
@@ -380,3 +402,53 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   
   list(expr = expr, globals = globals, packages = pkgs)
 } ## getGlobalsAndPackages()
+
+
+
+summarize_size_of_globals <- function(globals, sizes = NULL, maxSize = NULL, exprOrg = NULL, debug = FALSE) {
+  if (length(globals) == 0L) return(NULL)
+
+  ## Get the size of the globals
+  if (is.null(sizes)) {
+    sizes <- lapply(globals, FUN = objectSize)
+    sizes <- unlist(sizes, use.names = TRUE)
+  }
+  total_size <- sum(sizes, na.rm = TRUE)
+  if (debug) {
+    mdebugf("The total size of the %d globals is %s (%s bytes)",
+            length(globals), asIEC(total_size), total_size)
+  }
+  
+  n <- length(sizes)
+  o <- order(sizes, decreasing = TRUE)[1:3]
+  o <- o[is.finite(o)]
+  sizes <- sizes[o]
+  classes <- lapply(globals[o], FUN = mode)
+  classes <- unlist(classes, use.names = FALSE)
+  largest <- sprintf("%s (%s of class %s)",
+                     sQuote(names(sizes)), asIEC(sizes), sQuote(classes))
+
+  if (is.null(exprOrg)) {
+    msg <- sprintf("The total size of the %d globals exported is %s.", length(globals), asIEC(total_size))
+  } else {
+    msg <- sprintf("The total size of the %d globals exported for future expression (%s) is %s.", length(globals), sQuote(hexpr(exprOrg)), asIEC(total_size))
+  }
+
+  if (!is.null(maxSize)) {
+    msg <- sprintf("%s. This exceeds the maximum allowed size of %s (option 'future.globals.maxSize').", msg, asIEC(maxSize))
+  }
+
+  if (n == 1) {
+    fmt <- "%s There is one global: %s"
+  } else if (n == 2) {
+    fmt <- "%s There are two globals: %s"
+  } else if (n == 3) {
+    fmt <- "%s There are three globals: %s"
+  } else {
+    fmt <- "%s The three largest globals are %s"
+  }
+  
+  msg <- sprintf(fmt, msg, hpaste(largest, lastCollapse = " and "))
+  
+  msg
+} # summarize_size_of_globals()

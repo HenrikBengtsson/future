@@ -180,7 +180,3 @@ If not all of your tests are written this way, you can set environment variable 
 $ export R_FUTURE_PLAN=multisession
 $ R CMD check --as-cran mypkg_1.0.tar.gz
 ```
-
-
----
-Copyright Henrik Bengtsson, 2020

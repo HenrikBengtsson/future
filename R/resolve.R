@@ -53,7 +53,7 @@ resolve.default <- function(x, ...) x
 resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.", package = .packageName)
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
     result <- TRUE
   }
 
@@ -121,7 +121,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.", package = .packageName)
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
     result <- TRUE
   }
 
@@ -250,7 +250,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
 resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.", package = .packageName)
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
     result <- TRUE
   }
 
@@ -374,7 +374,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated. Use 'result' instead.", package = .packageName)
+    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
     result <- TRUE
   }
 

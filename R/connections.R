@@ -15,7 +15,8 @@ check_connection_details <- function(worker, future) {
   label <- future$label
   if (is.null(label)) label <- "<none>"
 
-  msg <- sprintf("The socket connection to the worker of %s future (%s) is lost or corrupted: %s", class(future)[1], label, attr(isValid, "reason", exact = TRUE))
-  msg <- paste(msg, "This suggests that base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate.", Sys.getpid())
-  msg
+  reason <- attr(isValid, "reason", exact = TRUE)
+  reason <- gsub("[.]?[[:space:]]*$", "", reason)
+  msg <- sprintf("The socket connection to the worker of %s future (%s) is lost or corrupted: %s", class(future)[1], label, reason)
+  sprintf("%s. As an example, this may happen if base::closeAllConnections() have been called, for instance via base::sys.save.image() which in turn is called if the R session (pid %s) is forced to terminate", msg, Sys.getpid())
 }

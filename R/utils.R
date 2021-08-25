@@ -72,6 +72,9 @@ trim <- function(s) {
   sub("[\t\n\f\r ]+$", "", sub("^[\t\n\f\r ]+", "", s))
 } # trim()
 
+comma <- function(x, sep = ", ") paste(x, collapse = sep)
+
+commaq <- function(x, sep = ", ") paste(sQuote(x), collapse = sep)
 
 hexpr <- function(expr, trim = TRUE, collapse = "; ", maxHead = 6L, maxTail = 3L, ...) {
   code <- deparse(expr)
@@ -115,7 +118,7 @@ envname <- function(env) {
         on.exit(class(env) <- class)
         class(env) <- NULL
         capture.output(print(env))
-      })	
+      })
     }
     if (length(name) > 1L) name <- name[1]
     name <- gsub("(.*: |>)", "", name)
@@ -126,32 +129,96 @@ envname <- function(env) {
   name
 }
 
+
+inherits_from_namespace <- function(env) {
+  while (!identical(env, emptyenv())) {
+    if (is.null(env)) return(TRUE) ## primitive functions, e.g. base::sum()
+    if (isNamespace(env)) return(TRUE)
+    if (identical(env, globalenv())) return(FALSE)
+    env <- parent.env(env)
+  }
+  FALSE
+}
+
+
+## Assign globals to an specific environment and set that environment
+## for functions.  If they are functions of namespaces/packages
+## and exclude == "namespace", then the globals are not assigned
+## Reference: https://github.com/HenrikBengtsson/future/issues/515
+assign_globals <- function(envir, globals, exclude = getOption("future.assign_globals.exclude", c("namespace")), debug = getOption("future.debug", FALSE)) {
+  stop_if_not(is.environment(envir), is.list(globals))
+  if (length(globals) == 0L) return(envir)
+
+  if (debug) {
+    mdebug("assign_globals() ...")
+    mstr(globals)
+  }
+  
+  exclude_namespace <- ("namespace" %in% exclude)
+
+  names <- names(globals)
+  where <- attr(globals, "where")
+  for (name in names) {
+    global <- globals[[name]]
+
+    if (exclude_namespace) {
+      e <- environment(global)
+      if (!inherits_from_namespace(e)) {
+        w <- where[[name]]
+        ## FIXME: Can we remove this?
+        ## Here I'm just being overly conservative ## /HB 2021-06-15
+        if (identical(w, emptyenv())) {
+          environment(global) <- envir
+          if (debug) {
+            mdebugf("- reassign environment for %s", sQuote(name))
+            where[[name]] <- envir
+            globals[[name]] <- global
+          }
+        }
+      }
+    }
+    
+    envir[[name]] <- global
+    if (debug) mdebugf("- copied %s to environment", sQuote(name))
+  }
+
+
+  if (debug) {
+    attr(globals, "where") <- where
+    mstr(globals)
+    mdebug("assign_globals() ... done")
+  }
+
+  invisible(envir)
+}
+
+
 now <- function(x = Sys.time(), format = "[%H:%M:%OS3] ") {
   ## format(x, format = format) ## slower
   format(as.POSIXlt(x, tz = ""), format = format)
 }
 
-mdebug <- function(..., debug = getOption("future.debug", FALSE)) {
+mdebug <- function(..., prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(now(), ...)
+  message(prefix, ...)
 }
 
 mdebugf <- function(..., appendLF = TRUE,
-                    debug = getOption("future.debug", FALSE)) {
+                    prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(now(), sprintf(...), appendLF = appendLF)
+  message(prefix, sprintf(...), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output
-mprint <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+mprint <- function(..., appendLF = TRUE, prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(prefix, capture.output(print(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 #' @importFrom utils capture.output str
-mstr <- function(..., appendLF = TRUE, debug = getOption("future.debug", FALSE)) {
+mstr <- function(..., appendLF = TRUE, prefix = now(), debug = getOption("future.debug", FALSE)) {
   if (!debug) return()
-  message(paste(now(), capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
+  message(paste(prefix, capture.output(str(...)), sep = "", collapse = "\n"), appendLF = appendLF)
 }
 
 
@@ -716,136 +783,6 @@ nullcon <- local({
 })
 
 
-reference_filters <- local({
-  filters <- default <- list(
-    ignore_envirs = function(ref, typeof, class, ...) {
-      typeof != "environment"
-    }
-  )
-
-  function(action = "drop_function", ...) {
-    if (action == "drop_function") {
-      function(ref) {
-        typeof <- typeof(ref)
-        class <- class(ref)
-        for (kk in seq_along(filters)) {
-          filter <- filters[[kk]]
-          if (filter(ref, typeof = typeof, class = class)) next
-          return(TRUE) ## drop reference
-        }
-        FALSE  ## don't drop reference
-      }
-    } else if (action == "set") {
-      filters <- list(...)
-    } else if (action == "reset") {
-      filters <<- default
-    } else if (action == "append") {
-      filters <<- c(filters, list(...))
-    } else if (action == "prepend") {
-      filters <<- c(list(...), filters)
-    } else if (action == "get") {
-      filters
-    }
-  }
-})
-
-#' Get first or all references of an \R object
-#'
-#' @param x The \R object to be checked.
-#' 
-#' @param first_only If `TRUE`, only the first reference is returned,
-#' otherwise all references.
-#'
-#' @return `find_references()` returns a list of one or more references
-#' identified.
-#' 
-#' @keywords internal
-find_references <- function(x, first_only = FALSE) {
-  con <- nullcon()
-  on.exit(close(con))
-
-  ## Get function that drops references
-  drop_reference <- reference_filters()
-  
-  refs <- list()
-    
-  refhook <- if (first_only) {
-    function(ref) {
-      if (drop_reference(ref)) return(NULL)
-      refs <<- c(refs, list(ref))
-      stop(structure(list(message = ""), class = c("refhook", "condition")))
-    }
-  } else {
-    function(ref) {
-      if (drop_reference(ref)) return(NULL)
-      refs <<- c(refs, list(ref))
-      NULL
-    }
-  }
-  
-  tryCatch({
-    serialize(x, connection = con, ascii = FALSE, xdr = FALSE,
-              refhook = refhook)
-  }, refhook = identity)
-  
-  refs
-}
-
-
-#' Assert that there are no references among the identified globals
-#'
-#' @param action Type of action to take if a reference is found.
-#' 
-#' @return If a reference is detected, an informative error, warning, message,
-#' or a character string is produced, otherwise `NULL` is returned
-#' invisibly.
-#'
-#' @rdname find_references
-#' 
-#' @keywords internal
-assert_no_references <- function(x, action = c("error", "warning", "message", "string")) {
-  ref <- find_references(x, first_only = TRUE)
-  if (length(ref) == 0) return()
-
-  action <- match.arg(action, choices = c("error", "warning", "message", "string"))
-  
-  ## Identify which global object has a reference
-  global <- " (<unknown>)"
-  ref <- ref[[1]]
-  if (is.list(x) && !is.null(names(x))) {
-    for (ii in seq_along(x)) {
-      x_ii <- x[[ii]]
-      ref_ii <- find_references(x_ii, first_only = TRUE)
-      if (length(ref_ii) > 0) {
-        global <- sprintf(" (%s of class %s)",
-                          sQuote(names(x)[ii]), sQuote(class(x_ii)[1]))
-        ref <- ref_ii[[1]]
-        break
-      }
-    }
-  }
-
-  typeof <- typeof(ref)
-  class <- class(ref)[1]
-  if (class == typeof) {
-    typeof <- sQuote(typeof)
-  } else {
-    typeof <- sprintf("%s of class %s", sQuote(typeof), sQuote(class))
-  }
-  
-  msg <- sprintf("Detected a non-exportable reference (%s) in one of the globals%s used in the future expression", typeof, global)
-  if (action == "error") {
-    stop(FutureError(msg, call = NULL))
-  } else if (action == "warning") {
-    warning(FutureWarning(msg, call = NULL))
-  } else if (action == "message") {
-    message(FutureMessage(msg, call = NULL))
-  } else if (action == "string") {
-    msg
-  }
-}
-
-
 ## https://github.com/HenrikBengtsson/future/issues/130
 #' @importFrom utils packageVersion
 resolveMPI <- local({
@@ -1197,53 +1134,4 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   if (debug) mdebugf("supports_omp_threads() = %s", res, debug = debug)
 
   res
-}
-
-
-
-## base::bquote() gained argument 'splice' in R 4.0.0 (April 2020)
-## Below is a verbatim copy of bquote() in R 4.0.3
-if (getRversion() < "4.0.0") {
-  bquote <- function(expr, where = parent.frame(), splice = FALSE) {
-      if (!is.environment(where)) 
-          where <- as.environment(where)
-      unquote <- function(e) {
-          if (is.pairlist(e)) 
-              as.pairlist(lapply(e, unquote))
-          else if (is.call(e)) {
-              if (is.name(e[[1L]]) && as.character(e[[1]]) == ".") 
-                  eval(e[[2L]], where)
-              else if (splice) {
-                  if (is.name(e[[1L]]) && as.character(e[[1L]]) == 
-                    "..") 
-                    stop("can only splice inside a call", call. = FALSE)
-                  else as.call(unquote.list(e))
-              }
-              else as.call(lapply(e, unquote))
-          }
-          else e
-      }
-      is.splice.macro <- function(e) is.call(e) && is.name(e[[1L]]) && 
-          as.character(e[[1L]]) == ".."
-      unquote.list <- function(e) {
-          p <- Position(is.splice.macro, e, nomatch = NULL)
-          if (is.null(p)) 
-              lapply(e, unquote)
-          else {
-              n <- length(e)
-              head <- if (p == 1) 
-                  NULL
-              else e[1:(p - 1)]
-              tail <- if (p == n) 
-                  NULL
-              else e[(p + 1):n]
-              macro <- e[[p]]
-              mexp <- eval(macro[[2L]], where)
-              if (!is.vector(mexp)) 
-                  stop("can only splice vectors")
-              c(lapply(head, unquote), mexp, as.list(unquote.list(tail)))
-          }
-      }
-      unquote(substitute(expr))
-  }
 }

@@ -12,14 +12,14 @@
 --------------------------------------------------------------------"%>
 # Future API Backend Specification
 
-Version 0.1.0-1
+Version 0.1.1
 
 ## Introduction
 
 This document is written to serve as a reference for developers who are developing a future backend to the future framework as implemented in the [future] package for R that available on CRAN.  The Future Application Programming Interface (API) has three fundamental functions at its core:
 
 * `f <- future(expr)` - create a future from an R expression (non-blocking but may be blocking)
-* `r <- resolved(f)` - check whether a future is resolved or not (non-blocking)
+* ` r <- resolved(f)` - check whether a future is resolved or not (non-blocking)
 * `v <- value(f)` - retrieve the value of a future (blocking)
 
 With these three functions alone, it is possible to evaluate one or more R expressions synchronously and asynchronously.  How and where these expressions are resolved depends on which "future backend" is in use.  For example, one backend may evaluated the expressions sequentially (synchronously) while another may evaluated them in parallel (asynchronously).  Regardless of backend, the value of a future expression is always the same.  
@@ -41,12 +41,12 @@ If you find that something in this document to be missing, unclear, or faulty, p
 The Future API has three fundamental functions at its core:
 
 * `f <- future(expr)` - create a future from an R expression (non-blocking but may be blocking)
-* `r <- resolved(f)` - check whether a future is resolved or not (non-blocking)
+* ` r <- resolved(f)` - check whether a future is resolved or not (non-blocking)
 * `v <- value(f)` - retrieve the value of a future (blocking)
 
 The implementation of a future backend for these involves several steps.  For simplicity, lets say we call our future backend 'myparallel'.  In summary, a future backend needs to implement four API components:
 
-* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture`.  The default should be that this function calls `run()` on the `Future` object before returning, unless a _lazy_ is created.
+* A constructor function `myparallel()` that inherits from class `future`.  This function should return a `Future` object (as defined in the [future] package) that also inherits from S3 class `MyParallelFuture` if a non-lazy future is created (the default `lazy = FALSE`).  The default should be that this function calls `run()` on the `Future` object before returning, unless a _lazy_ is created.
 * An S3 method of `run()` for  `MyParallelFuture` that starts the evaluation of the future R expression part of the `Future` object.  This method is often non-blocking for parallel backends, but may be blocking if all compute resources are exhausted.  It is typically blocking for sequential backends.
 * An S3 method of `resolved()` for `MyParallelFuture` that, in a non-blocking fashion, returns `TRUE` if the future is resolved and `FALSE` if not.
 * An S3 method of `result()` for `MyParallelFuture` that returns a `FutureResult` object (as defined by the [future] package) when the future is resolved or otherwise fails to resolve.  If the future is not yet resolved, this method should block until the future is resolved.  
@@ -123,4 +123,3 @@ The `result()` method may produce `FutureError` error as created by `FutureError
 
 [future]: https://cran.r-project.org/package=future
 [future.tests]: https://cran.r-project.org/package=future.tests
-

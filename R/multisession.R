@@ -4,6 +4,20 @@
 #' which means that its _value is computed and resolved in
 #' parallel in another \R session_.
 #'
+#' @details
+#' This function is _not_ meant to be called directly.  Instead, the
+#' typical usages are:
+#'
+#' ```r
+#' # Evaluate futures in parallel on the local machine via as many background
+#' # processes as available to the current R process
+#' plan(multisession)
+#'
+#' # Evaluate futures in parallel on the local machine via two background
+#' # processes
+#' plan(multisession, workers = 2)
+#' ```
+#'
 #' @inheritParams multiprocess
 #' @inheritParams cluster
 #' @inheritParams Future-class
@@ -33,20 +47,11 @@
 #' The background \R sessions (the "workers") are created using
 #' [makeClusterPSOCK()].
 #' 
-#' The `multisession()` function will block if all available
-#' \R session are occupied
-#' and will be unblocked as soon as one of the already running
-#' multisession futures is resolved.  For the total number of
+#' For the total number of
 #' \R sessions available including the current/main \R process, see
 #' [parallelly::availableCores()].
 #'
 #' A multisession future is a special type of cluster future.
-#'
-#' The preferred way to create an multisession future is not to call
-#' this function directly, but to register it via
-#' \code{\link{plan}(multisession)} such that it becomes the default
-#' mechanism for all futures.  After this [future()]
-#' and \code{\link{\%<-\%}} will create _multisession futures_.
 #'
 #' @seealso
 #' For processing in multiple forked \R sessions, see
@@ -73,3 +78,4 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
 attr(multisession, "init") <- TRUE
+attr(multisession, "untweakable") <- c("persistent")

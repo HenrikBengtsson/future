@@ -1,0 +1,49 @@
+<%
+pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr", "BiocParallel.FutureParam")
+pkgs_extra <- c("future.mapreduce", "marshal")
+pkgs <- c(sort(pkgs), pkgs_extra)
+urls <- sprintf("https://%s.futureverse.org", pkgs)
+names(urls) <- pkgs
+
+file <- file.path(c(".", ".."), "DESCRIPTION")
+file <- file[utils::file_test("-f", file)]
+pkg <- read.dcf(file)[,"Package"]
+
+#common_support <- c("future", "future.apply", "future.callr", "future.batchtools", "doFuture", "BiocParallel.FutureParam")
+%>
+url: https://<%= pkg %>.futureverse.org
+
+home:
+  links:
+  - text: Roadmap/Milestones
+    href: https://github.com/HenrikBengtsson/<%= pkg %>/milestones
+  - text: The Futureverse Project
+    href: https://www.futureverse.org/
+  - text: Futureverse User Forum (new!)
+    href: https://github.com/HenrikBengtsson/future/discussions
+
+navbar:
+  structure:
+    right: [futureverse, pkgs, cran, github]
+  components:
+    futureverse:
+      icon: fas fa-fast-backward
+      href: https://www.futureverse.org/
+    pkgs:
+      text: Packages
+      menu:
+<% for (name in names(urls)) { %>
+      - text: <%= name %> <% if (name %in% pkgs_extra) { %>(experimental)<% } %>
+        href: <%= urls[name] %>
+<% } %>
+    cran:
+      icon: fab fa-r-project
+      href: https://cloud.r-project.org/package=<%= pkg %>
+
+template:
+  params:
+    docsearch:
+      api_key: aa6e02fc501886fb0f7c91ac4e300456
+      index_name: futureverse
+      algoliaOptions: { 'facetFilters': ['project:<%= pkg %>'] }
+    ganalytics: G-SB3EQSD9FR

@@ -6,9 +6,11 @@
 ^.make
 ^INSTALL[.]md$
 ^OVERVIEW[.]md$
-^README[.]md$
+^README.*[.]md$
 ^CONDUCT[.]md$
-^docs/
+^CONTRIBUTING[.]md$
+^docs
+^pkgdown
 
 #----------------------------
 # devtools
@@ -58,3 +60,4 @@ Rplots.pdf$
 ^.ghi
 ^.issues
 ^last.dump*
+[.]Rdump

@@ -16,21 +16,24 @@
 UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  if (lazy && !local && (!is.logical(globals) || globals)) {
-    stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
-  }
-
-  ## Global objects?
-  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-  globals <- gp$globals
-  expr <- gp$expr
+  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
+  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
+    if (lazy && !local && (!is.logical(globals) || globals)) {
+      stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
+    }
   
-  ## Record packages?
-  if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
-    packages <- unique(c(gp$packages, packages))
-  }
+    ## Global objects?
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+    globals <- gp$globals
+    expr <- gp$expr
   
-  gp <- NULL
+    ## Record packages?
+    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
+      packages <- unique(c(gp$packages, packages))
+    }
+    
+    gp <- NULL
+  }
  
   future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
   future <- structure(future, class = c("UniprocessFuture", class(future)))
@@ -54,16 +57,12 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
+  if (future$local) envir <- new.env(parent = envir)
 
   ## Assign globals to separate "globals" enclosure environment?
   globals <- future$globals
   if (length(globals) > 0) {
-    if (future$local) {
-      envir <- new.env(parent = envir)
-    }
-    for (name in names(globals)) {
-      envir[[name]] <- globals[[name]]
-    }
+    envir <- assign_globals(envir, globals = globals, debug = debug)
   }
 
   ## Run future
@@ -123,7 +122,19 @@ resolved.UniprocessFuture <- function(x, ...) {
 }
 
 #' @export
-getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, exit = NULL, ...) {
+getExpression.UniprocessFuture <- local({
+  tmpl_exit_rng_remove <- bquote_compile({
+    .(exit)
+    RNGkind(.(okind))
+    base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
+  })
+  
+  tmpl_exit_rng_undo <- bquote_compile({
+    .(exit)
+    base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
+  })
+
+function(future, immediateConditions = TRUE, exit = NULL, ...) {
   ## Assert that no arguments but the first is passed by position
   assert_no_positional_args_but_first()
 
@@ -131,21 +142,14 @@ getExpression.UniprocessFuture <- function(future, immediateConditions = TRUE, e
   oseed <- get_random_seed()
   if (is.null(oseed)) {
     okind <- RNGkind()[1]
-    exit <- bquote({
-      .(exit)
-      RNGkind(.(okind))
-      base::rm(list = ".Random.seed", envir = base::globalenv(), inherits = FALSE)
-    })
+    exit <- bquote_apply(tmpl_exit_rng_remove)
   } else {
-    exit <- bquote({
-      .(exit)
-      base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
-    })
+    exit <- bquote_apply(tmpl_exit_rng_undo)
   }
 
   NextMethod(immediateConditions = immediateConditions, exit = exit)
 }
-
+})
 
 #' @rdname UniprocessFuture-class
 #' @export
@@ -153,4 +157,13 @@ SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = T
   if (substitute) expr <- substitute(expr)
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
   structure(f, class = c("SequentialFuture", class(f)))
+}
+
+
+#' @rdname UniprocessFuture-class
+#' @export
+TransparentFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = FALSE, ...) {
+  if (substitute) expr <- substitute(expr)
+  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, persistent = TRUE, ...)
+  structure(f, class = c("TransparentFuture", "SequentialFuture", class(f)))
 }

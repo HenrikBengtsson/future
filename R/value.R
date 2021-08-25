@@ -64,19 +64,35 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
     ## BACKWARD COMPATIBILITY: Until higher-level APIs set future()
     ## argument 'seed' to indicate that RNGs are used. /HB 2019-12-24
-    ## future.apply (<= 1.3.0) and furrr
-    rng_ok <-           is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])
-    rng_ok <- rng_ok || is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])
-    ## doFuture w/ doRNG, e.g. %dorng%
-    rng_ok <- rng_ok || any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))
-    if (!rng_ok) {
-      onMisuse <- Sys.getenv("R_FUTURE_RNG_ONMISUSE", "warning")
-      onMisuse <- getOption("future.rng.onMisuse", onMisuse)
+    if (any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))) {
+      ## doFuture w/ doRNG, e.g. %dorng%
+    } else if (is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])) {
+      ## future.apply (<= 1.3.0) and furrr
+      fcn <- switch(getOption("future.rng.onMisuse.backport", "defunct"),
+                    deprecated = .Deprecated, defunct = .Defunct, identity)
+      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 1)")
+    } else if (is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])) {
+      ## future.apply (<= 1.3.0) and furrr
+      fcn <- switch(getOption("future.rng.onMisuse.backport", "defunct"),
+                    deprecated = .Deprecated, defunct = .Defunct, identity)
+      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 2)")
+    } else {
+      onMisuse <- getOption("future.rng.onMisuse", "warning")
       if (onMisuse != "ignore") {
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        cond <- RngFutureCondition(future = future)
+        msg <- conditionMessage(cond)
+        uuid <- future$uuid
+        if (getOption("future.rng.onMisuse.keepFuture", TRUE)) {
+          f <- future
+        } else {
+          f <- NULL
+        }
         if (onMisuse == "error") {
-          cond <- RngFutureError(future = future)
+          cond <- RngFutureError(msg, uuid = uuid, future = f)
         } else if (onMisuse == "warning") {
-          cond <- RngFutureWarning(future = future)
+          cond <- RngFutureWarning(msg, uuid = uuid, future = f)
         } else {
           cond <- NULL
           warning("Unknown value on option 'future.rng.onMisuse': ",
@@ -101,7 +117,38 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
       }
     }
   }
+  
   future$.rng_checked <- TRUE
+
+
+  ## Check for non-exportable objects in the value?
+  onReference <- getOption("future.globals.onReference", "ignore")
+  if (onReference %in% c("error", "warning")) {
+    new <- tryCatch({
+      assert_no_references(value, action = onReference, source = "value")
+      NULL
+    }, FutureCondition = function(cond) {
+      list(condition = cond, signaled  = FALSE)
+    })
+
+    if (!is.null(new)) {
+      ## Append FutureCondition to the regular condition stack
+      conditions <- result$conditions
+      n <- length(conditions)
+
+      ## An existing run-time error takes precedence
+      if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
+        conditions[[n + 1L]] <- conditions[[n]]
+        conditions[[n]] <- new
+      } else {
+        conditions[[n + 1L]] <- new
+      }
+      
+      result$conditions <- conditions
+      future$result <- result
+    }
+  }
+
 
   ## Signal captured conditions?
   conditions <- result$conditions

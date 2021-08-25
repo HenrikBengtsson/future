@@ -1,7 +1,11 @@
 
-<img src="man/figures/logo.png" align="right" />
 
-# future: Unified Parallel and Distributed Processing in R for Everyone
+<div id="badges"><!-- pkgdown markup -->
+<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a>  <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml/badge.svg" alt="future.tests checks"/></a>
+
+</div>
+
+# future: Unified Parallel and Distributed Processing in R for Everyone <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"/>
 
 ## Introduction
 The purpose of the [future] package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
@@ -103,7 +107,7 @@ The future package implements the following types of futures:
 
 _Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
 
-The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.  (_Comment_: The [future.BatchJobs] package provides analogue backends based on the [BatchJobs] package; however the BatchJobs developers have deprecated it in favor of batchtools.)
+The future package is designed such that support for additional strategies can be implemented as well.  For instance, the [future.callr] package provides future backends that evaluates futures in a background R process utilizing the [callr] package - they work similarly to `multisession` futures but has a few advantages.  Continuing, the [future.batchtools] package provides futures for all types of _cluster functions_ ("backends") that the [batchtools] package supports.  Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.
 
 By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session).  This evaluation strategy is referred to as "sequential".  In this section, we will go through each of these strategies and discuss what they have in common and how they differ.
 
@@ -150,7 +154,7 @@ Sequential futures are the default unless otherwise specified.  They were design
 > plan(sequential)
 > pid <- Sys.getpid()
 > pid
-[1] 13477
+[1] 8000
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -168,14 +172,14 @@ Sequential futures are the default unless otherwise specified.  They were design
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 13477
+[1] 8000
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 13477
+[1] 8000
 ```
 Since eager sequential evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid` in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed.  This is because futures are evaluated in a local environment.  Since synchronous (uni-)processing is used, future `b` is resolved by the main R process (still in a local environment), which is why the value of `b` and `pid` are the same.
 
@@ -194,7 +198,7 @@ We start with multisession futures because they are supported by all operating s
 > plan(multisession)
 > pid <- Sys.getpid()
 > pid
-[1] 13477
+[1] 8000
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -212,14 +216,14 @@ We start with multisession futures because they are supported by all operating s
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 13556
+[1] 8079
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 13477
+[1] 8000
 ```
 The first thing we observe is that the values of `a`, `c` and `pid` are the same as previously.  However, we notice that `b` is different from before.  This is because future `b` is evaluated in a different R process and therefore it returns a different process ID.
 
@@ -253,7 +257,7 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 > plan(cluster, workers = c("n1", "n2", "n3"))
 > pid <- Sys.getpid()
 > pid
-[1] 13477
+[1] 8000
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -271,14 +275,14 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 13621
+[1] 8164
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 13477
+[1] 8000
 ```
 
 
@@ -319,23 +323,23 @@ For instance, here is an example of two "top" futures (`a` and `b`) that uses mu
 +     c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
 + }
 > pid
-[1] 13477
+[1] 8000
 > a
 Future 'a' ...
-[1] 13677
+[1] 8220
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
  b.pid b1.pid b2.pid 
- 13708  13708  13708 
+  8251   8251   8251 
 ```
 By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process
-(pid 13477),
+(pid 8000),
 and there are the two processes used by `a`
-(pid 13677)
+(pid 8220)
 and `b`
-(pid 13708).
+(pid 8251).
 However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use sequential evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 
 
@@ -349,16 +353,16 @@ We would actually get the same behavior if we try with multiple levels of multis
 > plan(list(multisession, multisession))
 [...]
 > pid
-[1] 13477
+[1] 8000
 > a
 Future 'a' ...
-[1] 13750
+[1] 8310
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
  b.pid b1.pid b2.pid 
- 13783  13783  13783 
+  8341   8341   8341 
 ```
 The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores = 1` such that functions like `parallel::mclapply()` will fall back to run sequentially.  This is the case for both multisession and multicore evaluation.
 
@@ -368,21 +372,21 @@ Continuing, if we start off by sequential evaluation and then use multisession e
 > plan(list(sequential, multisession))
 [...]
 > pid
-[1] 13477
+[1] 8000
 > a
 Future 'a' ...
-[1] 13477
+[1] 8000
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
  b.pid b1.pid b2.pid 
- 13477  13829  13860 
+  8000   8418   8449 
 ```
 which clearly show that `a` and `b` are resolved in the calling process
-(pid 13477)
+(pid 8000)
 whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes
-(pids 13829 and 13860).
+(pids 8418 and 8449).
 
 
 
@@ -392,23 +396,23 @@ Having said this, it is indeed possible to use nested multisession evaluation st
 +     workers = 2)))
 [...]
 > pid
-[1] 13477
+[1] 8000
 > a
 Future 'a' ...
-[1] 13901
+[1] 8500
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
  b.pid b1.pid b2.pid 
- 13932  13994  14025 
+  8531   8589   8620 
 ```
 First, we see that both `a` and `b` are resolved in different processes
-(pids 13901 and 13932)
+(pids 8500 and 8531)
 than the calling process
-(pid 13477).
+(pid 8000).
 Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes
-(pids 13994 and 14025).
+(pids 8589 and 8620).
 
 
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette '[Futures in R: Future Topologies]'.
@@ -442,7 +446,7 @@ Waiting for 'a' to be resolved ...
 Waiting for 'a' to be resolved ... DONE
 > a
 Future 'a' ...done
-[1] 14060
+[1] 8657
 ```
 
 
@@ -502,9 +506,9 @@ There is one limitation with implicit futures that does not exist for explicit o
 > v <- lapply(f, FUN = value)
 > str(v)
 List of 3
- $ : int 14134
- $ : int 14165
- $ : int 14134
+ $ : int 8742
+ $ : int 8773
+ $ : int 8742
 ```
 This is _not_ possible to do when using implicit futures.  This is because the `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  It can only be used to assign future values to _environments_ (including the calling environment) much like how `assign(name, value, envir)` works.  However, we can assign implicit futures to environments using _named indices_, e.g.
 ```r
@@ -518,9 +522,9 @@ This is _not_ possible to do when using implicit futures.  This is because the `
 > v <- as.list(v)
 > str(v)
 List of 3
- $ a: int 14211
- $ b: int 14244
- $ c: int 14211
+ $ a: int 8832
+ $ b: int 8864
+ $ c: int 8832
 ```
 Here `as.list(v)` blocks until all futures in the environment `v` have been resolved.  Then their values are collected and returned as a regular list.
 
@@ -537,9 +541,9 @@ If _numeric indices_ are required, then _list environments_ can be used.  List e
 > v <- as.list(v)
 > str(v)
 List of 3
- $ : int 14286
- $ : int 14317
- $ : int 14286
+ $ : int 8929
+ $ : int 8960
+ $ : int 8929
 ```
 As previously, `as.list(v)` blocks until all futures are resolved.
 
@@ -564,17 +568,10 @@ demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
 
-
-## Contributing
-The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas on how to improve the 'future' package, I would love to hear about them.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
-
-
-[BatchJobs]: https://cran.r-project.org/package=BatchJobs
 [batchtools]: https://cran.r-project.org/package=batchtools
 [callr]: https://cran.r-project.org/package=callr
 [future]: https://cran.r-project.org/package=future
 [future.callr]: https://cran.r-project.org/package=future.callr
-[future.BatchJobs]: https://cran.r-project.org/package=future.BatchJobs
 [future.batchtools]: https://cran.r-project.org/package=future.batchtools
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
@@ -596,19 +593,10 @@ remotes::install_github("HenrikBengtsson/future", ref="develop")
 ```
 This will install the package from source.  
 
-## Contributions
-
-This Git repository uses the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model (the [`git flow`](https://github.com/petervanderdoes/gitflow-avh) extension is useful for this).  The [`develop`](https://github.com/HenrikBengtsson/future/tree/develop) branch contains the latest contributions and other code that will appear in the next release, and the [`master`](https://github.com/HenrikBengtsson/future) branch contains the code of the latest release, which is exactly what is currently on [CRAN](https://cran.r-project.org/package=future).
-
-Contributing to this package is easy.  Just send a [pull request](https://help.github.com/articles/using-pull-requests/).  When you send your PR, make sure `develop` is the destination branch on the [future repository](https://github.com/HenrikBengtsson/future).  Your PR should pass `R CMD check --as-cran`, which will also be checked by <a href="https://travis-ci.org/HenrikBengtsson/future">Travis CI</a> and <a href="https://ci.appveyor.com/project/HenrikBengtsson/future">AppVeyor CI</a> when the PR is submitted.
-
-We abide to the [Code of Conduct](https://www.contributor-covenant.org/version/2/0/code_of_conduct/) of Contributor Covenant.
+<!-- pkgdown-drop-below -->
 
 
-## Software status
+## Contributing
 
-| Resource      | CRAN        | GitHub Actions      | Travis CI       | AppVeyor CI      |
-| ------------- | ------------------- | ------------------- | --------------- | ---------------- |
-| _Platforms:_  | _Multiple_          | _Multiple_          | _Linux & macOS_ | _Windows_        |
-| R CMD check   | <a href="https://cran.r-project.org/web/checks/check_results_future.html"><img border="0" src="http://www.r-pkg.org/badges/version/future" alt="CRAN version"></a> | <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a>       | <a href="https://travis-ci.org/HenrikBengtsson/future"><img src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a>   | <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> |
-| Test coverage |                     |                     | <a href="https://codecov.io/gh/HenrikBengtsson/future"><img src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>     |                  |
+To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
+

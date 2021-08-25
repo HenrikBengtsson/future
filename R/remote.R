@@ -4,6 +4,30 @@
 #' which means that its _value is computed and resolved
 #' remotely in another process_.
 #'
+#' @details
+#' This function is _not_ meant to be called directly.  Instead, the
+#' typical usages are:
+#'
+#' ```r
+#' # Evaluate futures on remote machine 'server.example.org', and
+#' # any nested ones sequentially (default) on that remote machine
+#' plan(remote, workers = "server.example.org")
+#'
+#' # Evaluate futures on remote machine 'server.example.org', and
+#' # nested ones in parallel on that remote machine
+#' plan(list(
+#'    tweak(remote, workers = "server.example.org"),
+#'    multisession
+#' ))
+#'
+#' # Evaluate futures on remote machine 'server.example.org', and
+#' # nested ones in parallel on the remote machines n1, n2, and n3.
+#' plan(list(
+#'   tweak(remote, workers = "server.example.org"),
+#'   tweak(cluster, workers = c("n1", "n2", "n3"))
+#' ))
+#' ```
+#'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
@@ -18,13 +42,13 @@
 #'
 #' @section 'remote' versus 'cluster':
 #' The `remote` plan is a very similar to the [`cluster`] plan, but provides
-#' more convenient default argument values when connecting to remote machines.  Specifically,
-#' `remote` uses `persistent = TRUE` by default, and it sets `homogeneous`,
-#' `revtunnel`, and `myip` "wisely" depending on the value of `workers`.
-#' See below for example on how `remote` and `cluster` are related.
+#' more convenient default argument values when connecting to remote machines.  #' Specifically, `remote` uses `persistent = TRUE` by default, and it sets
+#' `homogeneous`, `revtunnel`, and `myip` "wisely" depending on the value of
+#' `workers`.
+#' ' See below for example on how `remote` and `cluster` are related.
 #'
 #' @export
-remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, envir = parent.frame()) {
+remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, homogeneous = TRUE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   stop_if_not(length(workers) >= 1L, !anyNA(workers))
 

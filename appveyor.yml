@@ -7,11 +7,8 @@ environment:
   _R_CHECK_FORCE_SUGGESTS_: false
   
   matrix:
-  - R_VERSION: devel
-    R_ARCH: x64
-
-  - R_VERSION: devel
-    R_ARCH: i386
+#  - R_VERSION: devel
+#    R_ARCH: x64
 
   - R_VERSION: release
     R_ARCH: x64
@@ -19,7 +16,7 @@ environment:
 init:
   ps: |
         $ErrorActionPreference = "Stop"
-        Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
+        Invoke-WebRequest https://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
 install:
   ps: |
@@ -31,7 +28,7 @@ cache:
 build_script:
   - Rscript -e "c(physical = parallel::detectCores(logical = FALSE), logical = parallel::detectCores())"
   - echo Current directory=%CD%
-  - travis-tool.sh install_r parallelly digest globals listenv markdown R.rsp
+  - travis-tool.sh install_r parallelly digest globals listenv RhpcBLASctl markdown R.rsp
   
 test_script:
   - travis-tool.sh run_tests

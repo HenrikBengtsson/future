@@ -205,32 +205,34 @@ make_signalConditionsASAP <- function(nx, stdout = TRUE, signal = TRUE, force = 
 
 
 
-muffleCondition <- function(cond) {
+muffleCondition <- function(cond, pattern = "^muffle") {
   inherits <- base::inherits
   invokeRestart <- base::invokeRestart
+  is.null <- base::is.null
 
   muffled <- FALSE
   if (inherits(cond, "message")) {
-    invokeRestart("muffleMessage")
-    muffled <- TRUE
+    muffled <- grepl(pattern, "muffleMessage")
+    if (muffled) invokeRestart("muffleMessage")
   } else if (inherits(cond, "warning")) {
-    invokeRestart("muffleWarning")
-    muffled <- TRUE
+    muffled <- grepl(pattern, "muffleWarning")
+    if (muffled) invokeRestart("muffleWarning")
   } else if (inherits(cond, "condition")) {
-    computeRestarts <- base::computeRestarts
-    grepl <- base::grepl
-    is.null <- base::is.null
-    
-    ## If there is a "muffle" restart for this condition,
-    ## then invoke that restart, i.e. "muffle" the condition
-    restarts <- computeRestarts(cond)
-    for (restart in restarts) {
-      name <- restart$name
-      if (is.null(name)) next
-      if (!grepl("^muffle", name)) next
-      invokeRestart(restart)
-      muffled <- TRUE
-      break
+    if (!is.null(pattern)) {
+      computeRestarts <- base::computeRestarts
+      grepl <- base::grepl
+  
+      ## If there is a "muffle" restart for this condition,
+      ## then invoke that restart, i.e. "muffle" the condition
+      restarts <- computeRestarts(cond)
+      for (restart in restarts) {
+        name <- restart$name
+        if (is.null(name)) next
+        if (!grepl(pattern, name)) next
+        invokeRestart(restart)
+        muffled <- TRUE
+        break
+      }
     }
   }
 

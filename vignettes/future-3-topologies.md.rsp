@@ -234,6 +234,3 @@ and `n3` will respect what `availableCores()` returns.
 [listenv]: https://cran.r-project.org/package=listenv
 [globals]: https://cran.r-project.org/package=globals
 [Futures in R: Common issues with solutions]: future-issues.html
-
----
-Copyright Henrik Bengtsson, 2015-2020

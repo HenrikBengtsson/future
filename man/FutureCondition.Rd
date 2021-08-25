@@ -11,15 +11,20 @@
 \alias{UnexpectedFutureResultError}
 \title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
-FutureCondition(message, call = NULL, future = NULL)
+FutureCondition(message, call = NULL, uuid = future$uuid, future = NULL)
 
-FutureMessage(message, call = NULL, future = NULL)
+FutureMessage(message, call = NULL, uuid = future$uuid, future = NULL)
 
-FutureWarning(message, call = NULL, future = NULL)
+FutureWarning(message, call = NULL, uuid = future$uuid, future = NULL)
 
-FutureError(message, call = NULL, future = NULL)
+FutureError(message, call = NULL, uuid = future$uuid, future = NULL)
 
-RngFutureCondition(message = NULL, call = NULL, future)
+RngFutureCondition(
+  message = NULL,
+  call = NULL,
+  uuid = future$uuid,
+  future = NULL
+)
 
 RngFutureWarning(...)
 
@@ -31,6 +36,9 @@ UnexpectedFutureResultError(future, hint = NULL)
 \item{message}{A message condition.}
 
 \item{call}{The call stack that led up to the condition.}
+
+\item{uuid}{A universally unique identifier for the future associated with
+this FutureCondition.}
 
 \item{future}{The \link{Future} involved.}
 

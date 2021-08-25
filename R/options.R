@@ -29,7 +29,7 @@
 #'
 #' @section Options for controlling futures:
 #' \describe{
-#'  \item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via [plan()]. This will also be the future plan set when calling `plan("default")`.  If not specified, this option may be set when the \pkg{future} package is _loaded_ if command-line option `--parallel=ncores` (short `-p ncores`) is specified; if `ncores > 1`, then option \option{future.plan} is set to `multisession` otherwise `sequential` (in addition to option \option{mc.cores} being set to `ncores`, if `ncores >= 1`).  If system environment variable \env{R_FUTURE_PLAN} is set, then that overrides the future plan set by the command-line option. (Default: `sequential`)}
+#'  \item{\option{future.plan}:}{(character string or future function) Default future strategy plan used unless otherwise specified via [plan()]. This will also be the future plan set when calling `plan("default")`.  If not specified, this option may be set when the \pkg{future} package is _loaded_ if command-line option `--parallel=ncores` (short `-p ncores`) is specified; if `ncores > 1`, then option \option{future.plan} is set to `multisession` otherwise `sequential` (in addition to option \option{mc.cores} being set to `ncores`, if `ncores >= 1`). (Default: `sequential`)}
 #'
 #'  \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of `+Inf`, then the check for large globals is skipped. (Default: `500 * 1024 ^ 2` = 500 MiB)}
 #'
@@ -37,20 +37,20 @@
 #'    If this option is `"error"`, an informative error message is produced if a non-exportable global is detected.
 #'    If `"warning"`, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. `plan(sequential)` and `plan(multicore)`).
 #'    If `"ignore"`, no scan is performed.
-#'    If the option is not set, then environment variable \env{R_FUTURE_GLOBALS_ONREFERENCE} is used.  
 #'    (Default: `"ignore"` but may change)
 #'  }
 #'
 #'  \item{\option{future.resolve.recursive}:}{(integer) An integer specifying the maximum recursive depth to which futures should be resolved. If negative, nothing is resolved.  If `0`, only the future itself is resolved.  If `1`, the future and any of its elements that are futures are resolved, and so on. If `+Inf`, infinite search depth is used. (Default: `0`)}
 #'
-#'  \item{\option{future.rng.onMisuse}: (_beta feature - may change_)}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that _no_ random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and `future.rng.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed.
-#' If the option is not set, then environment variable \env{R_FUTURE_RNG_ONMISUSE} is used. (Default: `"warning"`)}
+### HIDDEN/SECRET FOR NOW:  \item{\option{future.resolved.timeout}:}{(numeric) The maximum time (in seconds) `resolved()` spends checking whether or not a future is resolved. If it takes longer, it will give up and return FALSE. (Default: `0.01` = 0.01 seconds)}
 #'
-#'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_TIMEOUT} is used.  (Default: `30 * 24 * 60 * 60` (= 30 days))}
+#'  \item{\option{future.rng.onMisuse}: (_beta feature - may change_)}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that _no_ random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and `future.rng.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"warning"`)}
 #'
-#'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_INTERVAL} is used.  (Default: `0.2` = 0.2 seconds)}
+#'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: `30 * 24 * 60 * 60` (= 30 days))}
 #'
-#'  \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll.  If the option is not set, then environment variable \env{R_FUTURE_WAIT_ALPHA} is used.  (Default: `1.01`)}
+#'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: `0.2` = 0.2 seconds)}
+#'
+#'  \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: `1.01`)}
 #' }
 #'
 #' @section Options for debugging futures:
@@ -69,7 +69,7 @@
 #' @section Options for configuring low-level system behaviors:
 #'
 #' \describe{
-#'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode, which requires that the \pkg{RhpcBLASctl} package is installed.  If not specified, this option is set according to environment variable \env{R_FUTURE_FORK_MULTITHREADING_ENABLE}.  If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package.}
+#'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for **RcppParallel**. If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
 #' }
 #'
 #' See also [parallelly::parallelly.options].
@@ -83,7 +83,7 @@
 #' }
 #'
 #'
-#' @section Deprecated of for internal prototyping:
+#' @section Deprecated or for internal prototyping:
 #'
 #' The following options exists only for troubleshooting purposes and must not
 #' be used in production.  If used, there is a risk that the results are
@@ -99,28 +99,195 @@
 #'  \item{\option{future.globals.resolve}:}{(logical) If `TRUE`, globals that are [`Future`] objects (typically created as _explicit_ futures) will be resolved and have their values (using `value()`) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: `FALSE`)}
 #' }
 #'
-#' @examples
-#' # Set an R option:
-#' options(future.rng.onMisuse = "ignore")
+#' @section Environment variables that set R options:
+#' All of the above \R \option{future.*} options can be set by corresponding
+#' environment variable \env{R_FUTURE_*} _when the \pkg{future} package is
+#' loaded_.
+#' For example, if `R_FUTURE_RNG_ONMISUSE = "ignore"`, then option
+#' \option{future.rng.onMisuse} is set to `"ignore"` (character string).
+#' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE = "50000000"`, then option
+#' \option{future.globals.maxSize} is set to `50000000` (numeric).
 #'
-#' # Set an environment variable:
-#' Sys.setenv(R_FUTURE_RNG_ONMISUSE = "ignore")
+#' @examples
+#' # Allow at most 5 MB globals per futures
+#' options(future.globals.maxSize = 5e6)
+#'
+#' # Be strict; catch all RNG mistakes
+#' options(future.rng.onMisuse = "error")
 #' 
 #'
 #' @seealso
-#' To set \R options when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
+#' To set \R options or environment variables when \R starts (even before the \pkg{future} package is loaded), see the \link[base]{Startup} help page.  The \href{https://cran.r-project.org/package=startup}{\pkg{startup}} package provides a friendly mechanism for configurating \R's startup process.
 #'
 #' @aliases
 #' future.cmdargs 
-#' future.startup.script R_FUTURE_STARTUP_SCRIPT .future.R
-#' future.plan R_FUTURE_PLAN
-#' future.globals.maxSize future.globals.method future.globals.onMissing
-#' future.globals.resolve future.globals.onReference
-#' future.resolve.recursive
-#' future.wait.alpha future.wait.interval future.wait.timeout
+#' .future.R
+#' future.startup.script
+#' R_FUTURE_STARTUP_SCRIPT
 #' future.debug
-#' future.demo.mandelbrot.region future.demo.mandelbrot.nrow
+#' R_FUTURE_DEBUG
+#' future.demo.mandelbrot.region
+#' R_FUTURE_DEMO_MANDELBROT_REGION
+#' future.demo.mandelbrot.nrow
+#' R_FUTURE_DEMO_MANDELBROT_NROW
+#' future.fork.multithreading.enable
+#' R_FUTURE_FORK_MULTITHREADING_ENABLE
+#' future.globals.maxSize
+#' R_FUTURE_GLOBALS_MAXSIZE
+#' future.globals.method
+#' R_FUTURE_GLOBALS_METHOD
+#' future.globals.onMissing
+#' R_FUTURE_GLOBALS_ONMISSING
+#' future.globals.resolve
+#' R_FUTURE_GLOBALS_RESOLVE
+#' future.globals.onReference
+#' R_FUTURE_GLOBALS_ONREFERENCE
+#' future.plan
+#' R_FUTURE_PLAN
+#' future.resolve.recursive
+#' R_FUTURE_RNG_ONMISUSE
+#' future.wait.alpha
+#' R_FUTURE_WAIT_ALPHA
+#' future.wait.interval
+#' R_FUTURE_WAIT_INTERVAL
+#' future.wait.timeout
+#' R_FUTURE_WAIT_TIMEOUT
+#' R_FUTURE_RESOLVED_TIMEOUT
 #'
 #' @keywords internal
 #' @name future.options
 NULL
+
+
+
+
+# Set an R option from an environment variable
+update_package_option <- function(name, mode = "character", default = NULL, split = NULL, trim = TRUE, disallow = c("NA"), force = FALSE, debug = FALSE) {
+  ## Nothing to do?
+  value <- getOption(name, NULL)
+  if (!force && !is.null(value)) return(getOption(name, default = default))
+
+  ## name="future.plan.disallow" => env="R_FUTURE_PLAN_DISALLOW"
+  env <- gsub(".", "_", toupper(name), fixed = TRUE)
+  env <- paste("R_", env, sep = "")
+
+  env_value <- value <- Sys.getenv(env, unset = NA_character_)
+  ## Nothing to do?
+  if (is.na(value)) {  
+    if (debug) mdebugf("Environment variable %s not set", sQuote(env))
+    return(getOption(name, default = default))
+  }
+  
+  if (debug) mdebugf("%s=%s", env, sQuote(value))
+
+  ## Trim?
+  if (trim) value <- trim(value)
+
+  ## Nothing to do?
+  if (!nzchar(value)) return(getOption(name, default = default))
+
+  ## Split?
+  if (!is.null(split)) {
+    value <- strsplit(value, split = split, fixed = TRUE)
+    value <- unlist(value, use.names = FALSE)
+    if (trim) value <- trim(value)
+  }
+
+  ## Coerce?
+  mode0 <- storage.mode(value)
+  if (mode0 != mode) {
+    suppressWarnings({
+      storage.mode(value) <- mode
+    })
+    if (debug) {
+      mdebugf("Coercing from %s to %s: %s", mode0, mode, commaq(value))
+    }
+  }
+
+  if (length(disallow) > 0) {
+    if ("NA" %in% disallow) {
+      if (any(is.na(value))) {
+        stop(sprintf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value)))
+      }
+    }
+    if (is.numeric(value)) {
+      if ("non-positive" %in% disallow) {
+        if (any(value <= 0, na.rm = TRUE)) {
+          stop(sprintf("Environment variable %s=%s specifies a non-positive value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+        }
+      }
+      if ("negative" %in% disallow) {
+        if (any(value < 0, na.rm = TRUE)) {
+          stop(sprintf("Environment variable %s=%s specifies a negative value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+        }
+      }
+    }
+  }
+  
+  if (debug) {
+    mdebugf("=> options(%s = %s) [n=%d, mode=%s]",
+            dQuote(name), commaq(value),
+            length(value), storage.mode(value))
+  }
+
+  do.call(options, args = structure(list(value), names = name))
+  
+  getOption(name, default = default)
+}
+
+
+## Set future options based on environment variables
+update_package_options <- function(debug = FALSE) {
+  update_package_option("future.demo.mandelbrot.region", mode = "integer", debug = debug)
+  
+  update_package_option("future.demo.mandelbrot.nrow", mode = "integer", debug = debug)
+
+  update_package_option("future.deprecated.ignore", split = ",", debug = debug)
+
+  update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
+
+  update_package_option("future.globals.maxSize", mode = "numeric", debug = debug)
+
+  update_package_option("future.globals.onMissing", debug = debug)
+  
+  update_package_option("future.globals.onReference", debug = debug)
+
+  update_package_option("future.globals.method", debug = debug)
+  
+  update_package_option("future.globals.resolve", mode = "logical", debug = debug)
+
+  ## Introduced in future 1.22.0:
+  update_package_option("future.lazy.assertOwner", mode = "logical", debug = debug)
+
+  update_package_option("future.plan", debug = debug)
+
+  update_package_option("future.plan.disallow", split = ",", debug = debug)
+
+  ## future.plan.relay.immediate or future.psock.relay.immediate?!? /HB 2021-03-07
+  update_package_option("future.psock.relay.immediate", mode = "logical", debug = debug)
+  
+  update_package_option("future.relay.immediate", mode = "logical", debug = debug)
+
+  update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
+
+  ## Introduced in future 1.22.0:
+  for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
+    update_package_option(name, mode = "numeric", debug = debug)
+  }
+
+  update_package_option("future.rng.onMisuse", debug = debug)
+  update_package_option("future.rng.onMisuse.keepFuture", mode = "logical", debug = debug)
+  
+  update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
+  update_package_option("future.wait.interval", mode = "numeric", debug = debug)
+  update_package_option("future.wait.alpha", mode = "numeric", debug = debug)
+
+  ## Prototyping in future 1.22.0:
+  ## https://github.com/HenrikBengtsson/future/issues/515
+  update_package_option("future.assign_globals.exclude", default = c("namespace"), split = ",", debug = debug)
+
+  ## SETTINGS USED FOR DEPRECATING FEATURES
+  ## future 1.22.0:
+  update_package_option("future.rng.onMisuse.backport", debug = debug)
+  update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+}

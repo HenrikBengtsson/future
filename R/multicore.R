@@ -4,6 +4,19 @@
 #' which means that its _value is computed and resolved in
 #' parallel in another process_.
 #'
+#' @details
+#' This function is _not_ meant to be called directly.  Instead, the
+#' typical usages are:
+#'
+#' ```r
+#' # Evaluate futures in parallel on the local machine via as many forked
+#' # processes as available to the current R process
+#' plan(multicore)
+#'
+#' # Evaluate futures in parallel on the local machine via two forked processes
+#' plan(multicore, workers = 2)
+#' ```
+#'
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
@@ -17,11 +30,8 @@
 #' @example incl/multicore.R
 #'
 #' @details
-#' This function will block if all cores are occupied and
-#' will be unblocked as soon as one of the already running
-#' multicore futures is resolved.  For the total number of
-#' cores available including the current/main \R process, see
-#' [availableCores()].
+#' For the total number of cores available including the current/main
+#' \R process, see [parallelly::availableCores()].
 #'
 #' Not all operating systems support process forking and thereby not multicore
 #' futures.  For instance, forking is not supported on Microsoft Windows.
@@ -31,12 +41,6 @@
 #' Trying to create multicore futures on non-supported systems or when
 #' forking is disabled will result in multicore futures falling back to
 #' becoming [sequential] futures.
-#'
-#' The preferred way to create an multicore future is not to call
-#' this function directly, but to register it via
-#' \code{\link{plan}(multicore)} such that it becomes the default
-#' mechanism for all futures.  After this [future()]
-#' and \code{\link{\%<-\%}} will create _multicore futures_.
 #'
 #' @seealso
 #' For processing in multiple background \R sessions, see
@@ -50,6 +54,7 @@
 #'
 #' @export
 multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
+  default_workers <- missing(workers)
   if (is.function(workers)) workers <- workers()
   workers <- as.integer(workers)
   stop_if_not(is.finite(workers), workers >= 1L)
@@ -58,6 +63,8 @@ multicore <- function(..., workers = availableCores(constraints = "multicore"), 
   ## can be spawned off, i.e. then use the current main R process.
   ## Sequential futures best reflect how multicore futures handle globals.
   if (workers == 1L || !supportsMulticore(warn = TRUE)) {
+    ## AD HOC: Make sure plan(multicore) also produces a warning, if needed
+    if (default_workers) supportsMulticore(warn = TRUE)
     ## covr: skip=1
     return(sequential(..., envir = envir))
   }
@@ -147,7 +154,7 @@ usedCores <- function() {
 #'         extensive waiting, then a timeout error is thrown.
 #'
 #' @keywords internal
-requestCore <- function(await, workers = availableCores(), timeout = getOption("future.wait.timeout", as.numeric(Sys.getenv("R_FUTURE_WAIT_TIMEOUT", 30 * 24 * 60 * 60))), delta = getOption("future.wait.interval", as.numeric(Sys.getenv("R_FUTURE_WAIT_INTERVAL", "0.2"))), alpha = getOption("future.wait.alpha", as.numeric(Sys.getenv("R_FUTURE_WAIT_ALPHA", "1.01")))) {
+requestCore <- function(await, workers = availableCores(), timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval",  0.2), alpha = getOption("future.wait.alpha", 1.01)) {
   stop_if_not(length(workers) == 1L, is.numeric(workers), is.finite(workers), workers >= 1)
   stop_if_not(is.function(await))
   stop_if_not(is.finite(timeout), timeout >= 0)

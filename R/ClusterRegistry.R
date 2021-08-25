@@ -50,6 +50,7 @@ ClusterRegistry <- local({
 } ## .makeCluster()
 
 
+#' @importFrom parallel clusterCall
 addCovrLibPath <- function(cl) {
   if (!is.element("covr", loadedNamespaces())) return(cl)
   debug <- getOption("future.debug", FALSE)

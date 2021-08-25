@@ -424,6 +424,3 @@ foo <- function() {
 [future]: https://cran.r-project.org/package=future
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
-
----
-Copyright Henrik Bengtsson, 2015-2020

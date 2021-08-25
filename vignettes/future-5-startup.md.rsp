@@ -71,6 +71,3 @@ Specifying these command-line options override any other startup settings.
 
 
 [future]: https://cran.r-project.org/package=future
-
----
-Copyright Henrik Bengtsson, 2015-2020

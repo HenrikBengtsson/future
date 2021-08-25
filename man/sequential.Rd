@@ -26,13 +26,14 @@ The only difference to \R itself is that globals are validated
 by default just as for all other types of futures in this package.
 }
 \details{
-The preferred way to create a sequential future is not to call these functions
-directly, but to register them via \code{\link{plan}(sequential)} such that
-it becomes the default mechanism for all futures.  After this
-\code{\link[=future]{future()}} and \code{\link{\%<-\%}} will create
-\emph{sequential futures}.
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures sequentially in the current R process
+plan(sequential)
+}\if{html}{\out{</div>}}
+
+
 }
-\section{transparent futures}{
+\section{transparent futures (troubleshooting only)}{
 
 Transparent futures are sequential futures configured to emulate how R
 evaluates expressions as far as possible.  For instance, errors and
@@ -40,6 +41,11 @@ warnings are signaled immediately and assignments are done to the
 calling environment (without \code{local()} as default for all other
 types of futures).  This makes transparent futures ideal for
 troubleshooting, especially when there are errors.
+\emph{WARNING: Transparent futures should only be used for debugging and
+troubleshooting.  They should not be used for production pipelines
+and must not be set within another package.  This is especially
+important since 'transparent' futures might be deprecated and replaced
+by better means of debugging in future releases.}
 }
 
 \examples{

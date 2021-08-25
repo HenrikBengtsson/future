@@ -10,6 +10,7 @@ remote(
   revtunnel = TRUE,
   myip = NULL,
   persistent = TRUE,
+  homogeneous = TRUE,
   envir = parent.frame()
 )
 }
@@ -36,6 +37,12 @@ If NULL, then it is inferred using an online service (default).}
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}
 
+\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
+same path to \file{Rscript} as the main \R session.  If FALSE, the
+it is assumed to be on the PATH for each node.
+If NULL, then \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}} will decide on TRUE
+or FALSE depending on \code{workers}.}
+
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
 }
@@ -47,13 +54,34 @@ A remote future is a future that uses remote cluster evaluation,
 which means that its \emph{value is computed and resolved
 remotely in another process}.
 }
+\details{
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
+# any nested ones sequentially (default) on that remote machine
+plan(remote, workers = "server.example.org")
+
+# Evaluate futures on remote machine 'server.example.org', and
+# nested ones in parallel on that remote machine
+plan(list(
+   tweak(remote, workers = "server.example.org"),
+   multisession
+))
+
+# Evaluate futures on remote machine 'server.example.org', and
+# nested ones in parallel on the remote machines n1, n2, and n3.
+plan(list(
+  tweak(remote, workers = "server.example.org"),
+  tweak(cluster, workers = c("n1", "n2", "n3"))
+))
+}\if{html}{\out{</div>}}
+}
 \section{'remote' versus 'cluster'}{
 
 The \code{remote} plan is a very similar to the \code{\link{cluster}} plan, but provides
-more convenient default argument values when connecting to remote machines.  Specifically,
-\code{remote} uses \code{persistent = TRUE} by default, and it sets \code{homogeneous},
-\code{revtunnel}, and \code{myip} "wisely" depending on the value of \code{workers}.
-See below for example on how \code{remote} and \code{cluster} are related.
+more convenient default argument values when connecting to remote machines.  #' Specifically, \code{remote} uses \code{persistent = TRUE} by default, and it sets
+\code{homogeneous}, \code{revtunnel}, and \code{myip} "wisely" depending on the value of
+\code{workers}.
+' See below for example on how \code{remote} and \code{cluster} are related.
 }
 
 \examples{

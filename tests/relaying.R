@@ -13,55 +13,66 @@ for (ss in seq_along(strategies)) {
 
   message("* A single future ...")
 
-  message("- creating future")
-  relay <- recordRelay({
-    f <- future({
-      cat("O\n")
-      message("M")
-      1L
+  for (exclude in list(NULL, "message", "warning")) {
+    if (is.null(exclude)) {
+      msgs_truth <- c("M\n", "W")
+    } else if (exclude == "message") {
+      msgs_truth <- c("W")
+    } else if (exclude == "warning") {
+      msgs_truth <- c("M\n")
+    }
+
+    message("- creating future")
+    relay <- recordRelay({
+      f <- future({
+        cat("O\n")
+        message("M")
+        warning("W")
+        1L
+      }, conditions = structure("condition", exclude = exclude))
     })
-  })
-  message("  class: ", paste(sQuote(class(f)), collapse = ", "))
-  stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
+    message("  class: ", paste(sQuote(class(f)), collapse = ", "))
+    stopifnot(length(relay$stdout) == 0L)
+    stopifnot(length(relay$msgs) == 0L)
+    
+    message("- checking if resolved")
+    relay <- recordRelay({
+      r <- resolved(f)
+    })
+    message("  result: ", r)
+    stopifnot(length(relay$stdout) == 0L)
+    stopifnot(length(relay$msgs) == 0L)
   
-  message("- checking if resolved")
-  relay <- recordRelay({
-    r <- resolved(f)
-  })
-  message("  result: ", r)
-  stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
-
-  message("- resolve w/ collecting results")
-  relay <- recordRelay({
-    f <- resolve(f, result = TRUE)
-  })
-  stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
-
-  message("- resolve w/out collecting results")
-  relay <- recordRelay({
-    f <- resolve(f, result = FALSE)
-  })
-  stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
-
-  message("- getting value")
-  relay <- recordRelay({
-    v <- value(f)
-  })
-  message("  value: ", v)
-  stopifnot(identical(relay$stdout, "O\n"))
-  stopifnot(identical(relay$msgs, "M\n"))
+    message("- resolve w/ collecting results")
+    relay <- recordRelay({
+      f <- resolve(f, result = TRUE)
+    })
+    stopifnot(length(relay$stdout) == 0L)
+    stopifnot(length(relay$msgs) == 0L)
   
-  message("- getting value again")
-  relay <- recordRelay({
-    v <- value(f)
-  })
-  message("  value: ", v)
-  stopifnot(identical(relay$stdout, "O\n"))
-  stopifnot(identical(relay$msgs, "M\n"))
+    message("- resolve w/out collecting results")
+    relay <- recordRelay({
+      f <- resolve(f, result = FALSE)
+    })
+    stopifnot(length(relay$stdout) == 0L)
+    stopifnot(length(relay$msgs) == 0L)
+  
+    message("- getting value")
+    relay <- recordRelay({
+      v <- value(f)
+    })
+    message("  value: ", v)
+    stopifnot(identical(relay$stdout, "O\n"))
+    stopifnot(identical(relay$msgs, msgs_truth))
+    
+    message("- getting value again")
+    relay <- recordRelay({
+      v <- value(f)
+    })
+    message("  value: ", v)
+    stopifnot(identical(relay$stdout, "O\n"))
+    stopifnot(identical(relay$msgs, msgs_truth))
+  } ## for (exclude ...)
 
   message("* A single future ... DONE")
 

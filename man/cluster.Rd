@@ -30,15 +30,24 @@ which means that its \emph{value is computed and resolved in
 parallel in another process}.
 }
 \details{
-This function will block if all available \R cluster nodes are
-occupied and will be unblocked as soon as one of the already
-running cluster futures is resolved.
+This function is \emph{not} meant to be called directly.  Instead, the
+typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures via a single background R process on the local machine
+plan(cluster, workers = 1)
 
-The preferred way to create an cluster future is not to call
-this function directly, but to register it via
-\code{\link{plan}(cluster)} such that it becomes the default
-mechanism for all futures.  After this \code{\link[=future]{future()}}
-and \code{\link{\%<-\%}} will create \emph{cluster futures}.
+# Evaluate futures via two background R processes on the local machine
+plan(cluster, workers = 2)
+
+# Evaluate futures via a single R process on another machine on on the
+# local area network (LAN)
+plan(cluster, workers = "raspberry-pi")
+
+# Evaluate futures via a single R process running on a remote machine
+plan(cluster, workers = "pi.example.org")
+
+# Evaluate futures via four R processes, one running on the local machine,
+# two running on LAN machine 'n1' and one on a remote machine
+plan(cluster, workers = c("localhost", "n1", "n1", "pi.example.org")
+}\if{html}{\out{</div>}}
 }
 \examples{
 \donttest{

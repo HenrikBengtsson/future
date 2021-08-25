@@ -1,6 +1,127 @@
 Package: future
 ===============
 
+Version: 1.22.1 [2021-08-11]
+
+MISCELLANEOUS:
+
+ * Disable package test that emulates crashing of forked parallel workers when
+   using parallel::makeCluster(..., type = "FORK").  This test is disabled on
+   macOS, where it appears that the main R session becomes unstable after the
+   FORK node is terminated.
+ 
+
+Version: 1.22.0 [2021-08-11]
+
+SIGNIFICANT CHANGES:
+
+ * A lazy future remains a generic future until it is launched, which means
+   it is not assigned a future backend class until launched.
+
+ * Argument 'seed' for futureAssign() and futureCall() now defaults to FALSE
+   just like for future().
+
+ * R_FUTURE_* environment variables are now only read when the 'future'
+   package is loaded, where they set the corresponding future.* option.
+   Previously, some of these environment variables were queried by different
+   functions as a fallback to when an option was not set.  By only parsing
+   them when the package is loaded, it decrease the overhead in functions,
+   and it clarifies that options can be changed at runtime whereas environment
+   variables should only be set at startup.
+
+PERFORMANCE:
+
+ * The overhead of initiating futures have been significantly reduced.  For
+   example, the roundtrip time for value(future(NULL)) is about twice as fast
+   for 'sequential', 'cluster', and 'multisession' futures.  For 'multicore'
+   futures the roundtrip speedup is about 20%.
+   The speedup comes from pre-compiling the R expression that will be used
+   to resolve the future expression into R expression templates which then
+   can quickly compiled for each future. This speeds up the creation of
+   these expression by ~10 times, compared when re-compiling them each time.
+
+ * The default timeout for resolved() was decreased from 0.20 to 0.01 seconds
+   for cluster/multisession and multicore futures, which means they will
+   spend less time waiting for results when they are not available.
+
+NEW FEATURES:
+
+ * Analogously to how globals may be scanned for "non-exportable" objects when
+   option 'future.globals.onReference' is set to "error" or "warning", value()
+   will now check for similar problems in the resolved value object.  An
+   example of this is 'f <- future(xml2::read_xml("<body></body>"))', which
+   will result in an invalid 'xml_document' object if run in parallel, because
+   such objects cannot be transferred between R processes.
+
+ * In addition to specify which condition classes to be captured and relayed,
+   it is now possible to also specify condition classes to be ignored.  For
+   example, conditions = structure("condition", exclude = "message") captures
+   all conditions but message conditions.
+
+ * Now cluster futures use 'homogeneous = NULL' as the default instead of
+   'homogeneous = TRUE'.  The new default will result in the 'parallelly'
+   package trying to infer whether TRUE or FALSE should be used based on
+   the 'workers' argument.
+
+ * Now the the post-mortem analysis report of multicore and cluster futures
+   in case their results could not be retrieved include information on
+   globals and their sizes, and if some of them are non-exportable.
+   A similar, detailed report is also produced when a cluster future fails
+   to set up and launch itself on a parallel worker.
+
+ * if option 'future.fork.multithreading.enable' is FALSE, RcppParallel,
+   in addition to OpenMP, is forced to run with a single threaded whenever
+   running in a forked process (=multicore futures).  This is done by setting
+   environment variable 'RCPP_PARALLEL_NUM_THREADS' to 1.
+
+ * Add futureSessionInfo() to get a quick overview of the future framework,
+   its current setup, and to run simple tests on it.
+
+ * Now plan(multicore) warns immediately if multicore processing, that is,
+   forked processing, is not supported, e.g. when running in the RStudio
+   Console.
+
+BUG FIXES:
+
+ * plan(multiprocess, workers = n) did not warn about 'multiprocess' being
+   deprecated when argument 'workers' was specified.
+
+ * getGlobalsAndPackages() could throw a false error on "Did you mean to 
+   create the future within a function? Invalid future expression tries to 
+   use global '...' variables that do not exist: <some expression>" when '...'
+   is solely part of a formula or used in some S4 generic functions.
+
+ * When enabled, option 'future.globals.onReference' could falsely alert on
+   'Detected a non-exportable reference ('externalptr') in one of the globals
+   (<unknown>) used in the future expression' in globals, e.g. when using
+   'future.apply' or 'furrr' map-reduce functions when using a 'multisession'
+   backend.
+
+ * future(fcn(), globals=list(a=42, fcn=function() a)) would fail with "Error
+   in fcn() : object 'a' not found" when using sequential or multicore futures.
+   This affected also map-reduce calls such as future.apply::future_lapply(1,
+   function(x) a, future.globals=list(a=42)).
+
+ * Resolving a 'sequential' future without globals would result in internal
+   several '...future.*' objects being written to the calling environment,
+   which might be the global environment.
+
+ * Environment variable 'R_FUTURE_PLAN' would propagate down with nested
+   futures, forcing itself onto also nested future plans.  Now it is unset
+   in nested futures, resulting in a sequential future strategy unless
+   another was explicitly set by `plan()`.
+
+ * Transparent futures no longer warn about 'local = FALSE' being deprecated.
+   Although 'local = FALSE' is being deprecated, it is still used internally
+   by 'transparent' futures for a while longer.  Please do not use
+   'transparent' futures in production code and never in a package.
+
+ * remote() could produce an error on "object 'homogeneous' not found".
+
+ * nbrOfFreeWorkers() for 'cluster' futures assumed that the current plan
+   is set to cluster too.
+
+
 Version: 1.21.0 [2020-12-09]
 
 NEW FEATURES:
@@ -11,7 +132,7 @@ NEW FEATURES:
    and RngFutureError, respectively.  Both of these classes inherits from
    RngFutureCondition.
 
- * Now run-time errors from resolving a future take precendence over
+ * Now run-time errors from resolving a future take precedence over
    RngFutureError:s. That is, future({ rnorm(1); log("a") }, seed = FALSE)
    will signal an error 'log("a")' instead of an RNG error when option
    'future.rng.onMisuse' is set to "error".
@@ -1548,7 +1669,7 @@ PERFORMANCE:
  * Significantly decreased the overhead of creating a future, particularly
    multicore futures.
     
-BUG FIXES: 
+BUG FIXES:
 
  * Future would give an error with plan(list("eager")),
    whereas it did work with plan("eager") and plan(list(eager)).
@@ -1714,7 +1835,7 @@ NEW FEATURES:
  * CLEANUP: Now the internal future variable created by %<=% is
    removed when the future variable is resolved.
     
-BUG FIXES:  
+BUG FIXES:
 
  * futureOf(envir=x) did not work properly when 'x' was
    a list environment.

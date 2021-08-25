@@ -186,23 +186,41 @@
 #' @aliases futureCall
 #' @export
 #' @name future
-future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, label = NULL, gc = FALSE, ...) {
+future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, stdout = TRUE, conditions = "condition", earlySignal = FALSE, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
-  makeFuture <- plan("next")
-  future <- makeFuture(expr, substitute = FALSE,
-                       envir = envir,
-                       lazy = lazy,
-                       seed = seed,
-                       globals = globals,
-                       packages = packages,
-                       label = label,
-                       gc = gc,
-                       ...)
+  gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+  expr <- gp$expr
+  globals <- gp$globals
+  ## Record packages?
+  if (length(packages) > 0 || length(gp$packages) > 0) {
+    packages <- unique(c(gp$packages, packages))
+  }
+  gp <- NULL
+  attr(globals, "already-done") <- TRUE
+  
+  future <- Future(expr, substitute = FALSE,
+                   envir = envir,
+                   lazy = TRUE,
+                   seed = seed,
+                   globals = globals,
+                   packages = packages,
+                   stdout = stdout,
+                   conditions = conditions,
+                   earlySignal = earlySignal,
+                   label = label,
+                   gc = gc,
+                   ...)
 
-  ## Assert that a future was returned
-  if (!inherits(future, "Future")) {
-    stop(FutureError("plan(\"next\") returned a function that does not return a Future object: ", paste(sQuote(class(future)), collapse = ", ")))
+  ## WORKAROUND: Was argument 'local' specified?
+  ## Comment: Only allowed for persistent 'cluster' futures
+  future$.defaultLocal <- !is.element("local", names(list(...)))
+
+  if (!lazy) {
+    future <- run(future)
+    future$lazy <- FALSE
+    ## Assert that a future was returned
+    stop_if_not(inherits(future, "Future"), !future$lazy)
   }
 
   future

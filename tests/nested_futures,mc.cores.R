@@ -2,6 +2,18 @@ source("incl/start.R")
 library("listenv")
 options(future.debug = FALSE)
 
+## WORKAROUND: R CMD check --as-cran on Windows will report
+## 
+## * checking for detritus in the temp directory ... NOTE
+## Found the following files/directories:
+##  'Rscript171866c62e
+##
+## which I think is due to a bug in R. For details, see R-devel thread 
+## 'R for Windows leaves detritus in the temp directory' on 2021-06-15
+## <https://stat.ethz.ch/pipermail/r-devel/2021-June/080830.html>.
+## Until fixed, we skip the one test that triggers this bug.
+winWorkaround <- (.Platform$OS.type == "windows" && getRversion() >= "4.0.0")
+
 message("*** Nested futures - mc.cores ...")
 
 strategies <- NULL
@@ -78,7 +90,7 @@ for (mc in 1:2) {
     stopifnot((mc2 <= 1 && a$pid2 == pid) || (a$pid2 != pid))
     stopifnot(a$pid2 == a$pid1)
 
-    if (mc == 1L) {
+    if (mc == 1L && !winWorkaround) {
       message(sprintf("plan(list('%s':2, '%s':2)):", strategy, strategy))
       plan(list(tweak(strategy, workers = 2), tweak(strategy, workers = 2)))
       a %<-% {

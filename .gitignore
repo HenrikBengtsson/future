@@ -18,6 +18,8 @@
 .issues
 .make
 .local
+docs/
 revdep/data.sqlite
 revdep/checks/*
 revdep/library/*
+.Rdump

@@ -14,7 +14,29 @@ options(oopts)
 removed <- setdiff(names(oopts0), names(options()))
 opts <- oopts0[removed]
 options(opts)
-## (d) Assert that everything was undone
+## (d) Undo any future options that was set at startup
+options(oopts0[grep("^future[.]", names(oopts0))])
+## (e) Assert that everything was undone
+if (!identical(options(), oopts0)) {
+  message("Failed to undo options:")
+  oopts <- options()
+  message(sprintf(" - Expected options: [n=%d] %s",
+                  length(oopts0), hpaste(sQuote(names(oopts0)))))
+  extra <- setdiff(names(oopts), names(oopts0))
+  message(paste(sprintf(" - Options still there: [n=%d]", length(extra)),
+                hpaste(sQuote(extra))))
+  missing <- setdiff(names(oopts0), names(oopts))
+  message(paste(sprintf(" - Options missing: [n=%d]", length(missing)),
+                hpaste(sQuote(missing))))
+  message("Differences option by option:")                
+  for (name in names(oopts0)) {
+    value0 <- oopts0[[name]]
+    value  <- oopts[[name]]
+    if (!identical(value, value0)) {
+      utils::str(list(name = name, expected = value0, actual = value))
+    }
+  }
+}
 stopifnot(identical(options(), oopts0))
 
 

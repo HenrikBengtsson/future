@@ -4,6 +4,29 @@
 #' which means that its _value is computed and resolved in
 #' parallel in another process_.
 #'
+#' @details
+#' This function is _not_ meant to be called directly.  Instead, the
+#' typical usages are:
+#'
+#' ```r
+#' # Evaluate futures via a single background R process on the local machine
+#' plan(cluster, workers = 1)
+#'
+#' # Evaluate futures via two background R processes on the local machine
+#' plan(cluster, workers = 2)
+#'
+#' # Evaluate futures via a single R process on another machine on on the
+#' # local area network (LAN)
+#' plan(cluster, workers = "raspberry-pi")
+#'
+#' # Evaluate futures via a single R process running on a remote machine
+#' plan(cluster, workers = "pi.example.org")
+#'
+#' # Evaluate futures via four R processes, one running on the local machine,
+#' # two running on LAN machine 'n1' and one on a remote machine
+#' plan(cluster, workers = c("localhost", "n1", "n1", "pi.example.org")
+#' ```
+#'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
@@ -15,17 +38,6 @@
 #'
 #' @example incl/cluster.R
 #'
-#' @details
-#' This function will block if all available \R cluster nodes are
-#' occupied and will be unblocked as soon as one of the already
-#' running cluster futures is resolved.
-#'
-#' The preferred way to create an cluster future is not to call
-#' this function directly, but to register it via
-#' \code{\link{plan}(cluster)} such that it becomes the default
-#' mechanism for all futures.  After this [future()]
-#' and \code{\link{\%<-\%}} will create _cluster futures_.
-#'
 #' @export
 cluster <- function(..., workers = availableWorkers(), envir = parent.frame()) {
   future <- ClusterFuture(..., workers = workers, envir = envir)
@@ -34,4 +46,4 @@ cluster <- function(..., workers = availableWorkers(), envir = parent.frame()) {
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
-attr(cluster, "tweakable") <- quote(makeClusterPSOCK_args())
+attr(cluster, "tweakable") <- quote(c(makeClusterPSOCK_args(), "persistent"))

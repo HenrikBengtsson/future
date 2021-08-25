@@ -1,12 +1,12 @@
 .package <- new.env()
- 
+
 ## covr: skip=all
 .onLoad <- function(libname, pkgname) {
   .package[["version"]] <- utils::packageVersion(pkgname)
+  .package[["futureCounter"]] <- 0L
 
-  debug <- isTRUE(as.logical(Sys.getenv("R_FUTURE_DEBUG", FALSE)))
-  if (debug) options(future.debug = TRUE)
-  debug <- getOption("future.debug", debug)
+  update_package_option("future.debug", mode = "logical")
+  debug <- getOption("future.debug", FALSE)
 
   if (debug) {
     envs <- Sys.getenv()
@@ -14,6 +14,9 @@
     envs <- sprintf("- %s=%s", names(envs), sQuote(envs))
     mdebug(paste(c("Future-specific environment variables:", envs), collapse = "\n"))
   }
+
+  ## Set future options based on environment variables
+  update_package_options(debug = debug)
 
   ## Does multiprocess resolve to multisession? If so, then
   ## plan(multiprocess) should initiate the workers.
@@ -25,36 +28,9 @@
   ## .GlobalEnv$.Random.seed.
   session_uuid(attributes = FALSE)
 
-  ## Unless already set, set option 'future.psock.relay.immediate'
-  ## according to environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE'.
-  relay <- getOption("future.psock.relay.immediate")
-  if (is.null(relay)) {
-    relay <- trim(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE"))
-    if (debug) mdebugf("R_FUTURE_PSOCK_RELAY_IMMEDIATE=%s", sQuote(relay))
-    if (nzchar(relay)) {
-      relay <- as.logical(toupper(relay))
-      if (is.na(relay)) {
-        stop("Environment variable 'R_FUTURE_PSOCK_RELAY_IMMEDIATE' must be a logical value: ", sQuote(Sys.getenv("R_FUTURE_PSOCK_RELAY_IMMEDIATE")))
-      }
-      if (debug) mdebugf(" => options(future.psock.relay.immediate = %s)", relay)
-      options(future.psock.relay.immediate = relay)
-    }
-  }
 
-  ## Unless already set, set option 'future.plan' according to
-  ## system environment variable 'R_FUTURE_PLAN'.
+  ## Report on future plan, if set
   strategy <- getOption("future.plan")
-  if (is.null(strategy)) {
-    strategy <- trim(Sys.getenv("R_FUTURE_PLAN"))
-    if (nzchar(strategy)) {
-      if (debug) {
-        mdebugf("R_FUTURE_PLAN=%s", sQuote(strategy))
-        mdebugf(" => options(future.plan = '%s')", strategy)
-      }
-      options(future.plan = strategy)
-    }
-    strategy <- getOption("future.plan")
-  }
   if (!is.null(strategy)) {
     if (debug) {
       if (is.character(strategy)) {
@@ -64,6 +40,7 @@
       }
     }
   }
+
 
   args <- parseCmdArgs()
   p <- args$p

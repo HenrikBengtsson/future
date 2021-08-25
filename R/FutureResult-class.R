@@ -97,7 +97,7 @@ as.character.FutureResult <- function(x, ...) {
 #' @keywords internal
 print.FutureResult <- function(x, ...) {
   s <- sprintf("%s:", class(x)[1])
-  s <- c(s, sprintf("value: %s", class(x[["value"]])))
+  s <- c(s, sprintf("value: %s", commaq(class(x[["value"]]))))
   if (!is.null(v <- x$visible)) s <- c(s, sprintf("visible: %s", v))
   s <- c(s, sprintf("stdout: %s", class(x[["stdout"]])))
   conditions <- x[["conditions"]]

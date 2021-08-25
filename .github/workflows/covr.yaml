@@ -1,0 +1,80 @@
+on: [push]
+
+name: covr
+
+jobs:
+  covr:
+    if: contains(github.ref, 'release') || contains(github.ref, 'master') || contains(github.ref, 'main') || contains(github.event.head_commit.message, '[covr]')
+
+    runs-on: ubuntu-20.04
+
+    name: covr
+
+    strategy:
+      fail-fast: false
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      ## R CMD check
+      _R_CHECK_LENGTH_1_CONDITION_: true
+      _R_CHECK_LENGTH_1_LOGIC2_: true
+      _R_CHECK_MATRIX_DATA_: true
+      _R_CHECK_CRAN_INCOMING_: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: release
+
+      - uses: r-lib/actions/setup-pandoc@master
+
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+
+      - name: Install system dependencies
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+        run: |
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+
+      - name: Install dependencies
+        run: |
+          install.packages(c("covr", "sessioninfo"))
+          remotes::install_deps(dependencies = TRUE)
+          install.packages(".", repos=NULL, type="source")
+        shell: Rscript {0}
+
+      - name: Session info
+        run: |
+          options(width = 100)
+          pkgs <- installed.packages()[, "Package"]
+          sessioninfo::session_info(pkgs, include_base = TRUE)
+        shell: Rscript {0}
+    
+      - name: Test coverage
+        run: |
+          ## 1. Get 'Repository Upload Token' from Codecov:
+          ##    https://app.codecov.io/gh/<org>/<repo>/settings
+          ## 2. Set 'CODECOV_TOKEN' in GitHub Secrets:
+          ##    https://github.com/<org>/<repo>/settings/environments/
+          coverage <- covr::package_coverage()
+          print(coverage)
+          covr::codecov(coverage = coverage, token="${{secrets.CODECOV_TOKEN}}")
+        shell: Rscript {0}

@@ -17,6 +17,9 @@ future(
   seed = FALSE,
   globals = TRUE,
   packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
   label = NULL,
   gc = FALSE,
   ...
@@ -28,8 +31,14 @@ futureAssign(
   envir = parent.frame(),
   substitute = TRUE,
   lazy = FALSE,
-  seed = NULL,
+  seed = FALSE,
   globals = TRUE,
+  packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
+  label = NULL,
+  gc = FALSE,
   ...,
   assign.env = envir
 )
@@ -41,9 +50,14 @@ futureCall(
   args = list(),
   envir = parent.frame(),
   lazy = FALSE,
-  seed = NULL,
+  seed = FALSE,
   globals = TRUE,
   packages = NULL,
+  stdout = TRUE,
+  conditions = "condition",
+  earlySignal = FALSE,
+  label = NULL,
+  gc = FALSE,
   ...
 )
 }
@@ -81,6 +95,23 @@ in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
+
+\item{stdout}{If TRUE (default), then the standard output is captured,
+and re-outputted when \code{value()} is called.
+If FALSE, any output is silenced (by sinking it to the null device as
+it is outputted).
+If NA (not recommended), output is \emph{not} intercepted.}
+
+\item{conditions}{A character string of conditions classes to be captured
+and relayed.  The default is to relay messages and warnings.
+To not intercept any types of conditions, use \code{conditions = NULL}.
+Attribute \code{exclude} can be used to ignore specific classes, e.g.
+\code{conditions = structure("condition", exclude = "message")} will capture
+all \code{condition} classes except those that inherits from the \code{message} class.
+Errors are always relayed.}
+
+\item{earlySignal}{Specified whether conditions should be signaled as soon
+as possible or not.}
 
 \item{label}{An optional character string label attached to the future.}
 
