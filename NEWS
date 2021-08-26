@@ -13,7 +13,12 @@ MISCELLANEOUS:
 
  * Using more robust emulation of crashed forked parallel workers after
    understanding that quit() must not be used in forked R processes.
- 
+
+ * Package no longer (implicitly) imports 'graphics' and 'grDevices',
+   which was done previously because they were needed by the Mandelbrot
+   demo functions. Now, they're imported at run time and only when those
+   functions are called by the user.
+
 
 Version: 1.22.1 [2021-08-11]
 
