@@ -78,7 +78,7 @@ jobs:
 
       - name: Check reverse dependency package
         run: |
-          url=$(Rscript -e "cat(remotes:::download_version_url('future', version=NULL, repos='https://cloud.r-project.org', type='source'))")
+          url=$(Rscript -e "cat(remotes:::download_version_url('${{ matrix.config.pkg }}', version=NULL, repos='https://cloud.r-project.org', type='source'))")
           wget "$url"
           R CMD check --no-manual --as-cran "$(basename "$url")"
 
