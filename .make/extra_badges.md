@@ -1,2 +1,2 @@
 <%=a("https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml", body=img("https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml/badge.svg", alt="future.tests checks"))%>
-
+<%=a("https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml", body=img("https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml/badge.svg", alt="revdepcheck-top checks"))%>
