@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: R-CMD-check
+name: revdepcheck_top
 
 jobs:
   R-CMD-check:
@@ -79,9 +79,8 @@ jobs:
       - name: Check reverse dependency package
         run: |
           url=$(Rscript -e "cat(remotes:::download_version_url('future', version=NULL, repos='https://cloud.r-project.org', type='source'))")
-          filename=$(basename "$url")
           wget "$url"
-          Rscript -e "rcmdcheck::rcmdcheck('${url}', args = c('--no-manual', '--as-cran'), error_on = 'warning', check_dir = 'check')"
+          R CMD check --no-manual --as-cran "$(basename "$url")"
 
       - name: Upload check results
         if: failure()
