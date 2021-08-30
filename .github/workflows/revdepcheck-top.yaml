@@ -6,19 +6,23 @@ jobs:
   R-CMD-check:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
-    runs-on: ${{ matrix.config.os }}
+    runs-on: ubuntu-20.04
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
+    name: ${{ matrix.config.pkg }} (${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - { pkg: "future.apply", os: ubuntu-20.04, r: "release", rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
+          - { r: "release", pkg: "doFuture"          }
+          - { r: "release", pkg: "future.apply"      }
+          - { r: "release", pkg: "future.batchtools" }
+          - { r: "release", pkg: "future.callr"      }
+          - { r: "release", pkg: "furrr"             }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: ${{ matrix.config.rspm }}
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
       _R_CHECK_LENGTH_1_CONDITION_: true
@@ -86,5 +90,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-revdep${{ matrix.config.pkg }}-results
           path: check
