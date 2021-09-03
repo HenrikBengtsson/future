@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: revdepcheck_top
+name: revdepcheck-top
 
 jobs:
   R-CMD-check:
