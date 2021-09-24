@@ -11,8 +11,8 @@ HOW TO INSTALL THE DEVELOP VERSION:
 
 MISCELLANEOUS:
 
- * Using more robust emulation of crashed forked parallel workers after
-   understanding that quit() must not be used in forked R processes.
+ * TESTS: Using more robust emulation of crashed forked parallel workers
+   after understanding that quit() must not be used in forked R processes.
  
 
 Version: 1.22.1 [2021-08-11]
