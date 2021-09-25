@@ -1,13 +1,21 @@
 Package: future
 ===============
 
-Version: 1.22.1-9000 [2021-08-25]
+Version: 1.22.1-9001 [2021-09-25]
 
 HOW TO INSTALL THE DEVELOP VERSION:
 
  * To install this develop version of the package, use:
 
    remotes::install_github("HenrikBengtsson/future", ref = "develop")
+
+SIGNIFICANT CHANGES:
+
+ * plan() now produces a one-time warning if a 'transparent' strategy is set.
+   The warning reminds the user that 'transparent' should only be used for
+   troubleshooting purposes and never be used in production. By the way, these
+   days plan(sequential, split = TRUE) together with debug() is probably a
+   better approach for troubleshooting.
 
 MISCELLANEOUS:
 

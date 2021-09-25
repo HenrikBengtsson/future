@@ -27,7 +27,7 @@ by default just as for all other types of futures in this package.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures sequentially in the current R process
+typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures sequentially in the current R process
 plan(sequential)
 }\if{html}{\out{</div>}}
 
@@ -39,8 +39,13 @@ Transparent futures are sequential futures configured to emulate how R
 evaluates expressions as far as possible.  For instance, errors and
 warnings are signaled immediately and assignments are done to the
 calling environment (without \code{local()} as default for all other
-types of futures).  This makes transparent futures ideal for
-troubleshooting, especially when there are errors.
+types of futures).  This makes transparent futures useful for
+troubleshooting, especially when there are errors.  Having said that,
+using:\if{html}{\out{<div class="sourceCode r">}}\preformatted{plan(sequential, split = TRUE)
+}\if{html}{\out{</div>}}
+
+together with \code{debug()} is often sufficient for troubleshooting.
+
 \emph{WARNING: Transparent futures should only be used for debugging and
 troubleshooting.  They should not be used for production pipelines
 and must not be set within another package.  This is especially

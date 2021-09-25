@@ -56,7 +56,7 @@ remotely in another process}.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
+typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
 # any nested ones sequentially (default) on that remote machine
 plan(remote, workers = "server.example.org")
 

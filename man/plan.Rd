@@ -57,11 +57,6 @@ To reset the strategy back to the default, use \code{plan("default")}.
 \item{\code{\link{sequential}}:}{
 Resolves futures sequentially in the current \R process.
 }
-\item{\code{\link{transparent}}:}{
-Resolves futures sequentially in the current \R process and
-assignments will be done to the calling environment.
-Early stopping is enabled by default.
-}
 \item{\code{\link{multisession}}:}{
 Resolves futures asynchronously (in parallel) in separate
 \R sessions running in the background on the same machine.

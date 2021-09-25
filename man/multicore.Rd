@@ -37,7 +37,7 @@ parallel in another process}.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many forked
+typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many forked
 # processes as available to the current R process
 plan(multicore)
 
