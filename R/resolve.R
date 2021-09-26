@@ -54,7 +54,6 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
   }
 
   if (is.logical(recursive)) {
@@ -122,7 +121,6 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
   }
 
   if (is.logical(recursive)) {
@@ -251,7 +249,6 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
   }
 
   if (is.logical(recursive)) {
@@ -374,8 +371,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
