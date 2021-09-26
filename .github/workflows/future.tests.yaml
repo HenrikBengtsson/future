@@ -68,7 +68,8 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          remotes::install_cran("future.tests")
+#          remotes::install_cran("future.tests")
+          remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
           if (nzchar(pkg <- "${{ matrix.future.pkg }}")) install.packages(pkg)
         shell: Rscript {0}
