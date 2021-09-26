@@ -288,6 +288,5 @@ update_package_options <- function(debug = FALSE) {
 
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
-  update_package_option("future.rng.onMisuse.backport", debug = debug)
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
 }
