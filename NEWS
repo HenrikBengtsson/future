@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.22.1-9001 [2021-09-25]
+Version: 1.22.1-9002 [2021-09-25]
 
 HOW TO INSTALL THE DEVELOP VERSION:
 
@@ -17,11 +17,20 @@ SIGNIFICANT CHANGES:
    days plan(sequential, split = TRUE) together with debug() is probably a
    better approach for troubleshooting.
 
+ * Support for 'persistent = TRUE' with multisession futures is defunct.
+
 MISCELLANEOUS:
 
  * TESTS: Using more robust emulation of crashed forked parallel workers
    after understanding that quit() must not be used in forked R processes.
- 
+
+DEPRECATED AND DEFUNCT:
+
+ * Support for 'persistent = TRUE' with multisession futures is defunct.  If
+   still needed, a temporary workaround is to use cluster futures. However,
+   it is likely that support for 'persistent' will eventually be deprecated
+   for all future backends.
+
 
 Version: 1.22.1 [2021-08-11]
 
