@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.22.1-9002 [2021-09-25]
+Version: 1.22.1-9003 [2021-09-25]
 
 HOW TO INSTALL THE DEVELOP VERSION:
 
@@ -31,6 +31,9 @@ DEPRECATED AND DEFUNCT:
    it is likely that support for 'persistent' will eventually be deprecated
    for all future backends.
 
+ * Argument 'value' of resolve(), deprecated since future 1.15.0, is defunct
+   in favor of argument 'result'.
+   
 
 Version: 1.22.1 [2021-08-11]
 
