@@ -110,7 +110,6 @@ The future package implements the following types of futures:
 |:----------------|:------------|:-----------------------------------------------------
 | _synchronous:_  |             | _non-parallel:_
 | `sequential`    | all         | sequentially and in the current R process
-| `transparent`   | all         | as sequential w/ early signaling and w/out local (for debugging)
 | _asynchronous:_ |             | _parallel_:
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows/not RStudio | forked R processes (on current machine)
@@ -157,10 +156,10 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  There are two types of synchronous futures in the future package, _sequential_ and _transparent_.
-
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  
 
 #### Sequential Futures
+
 Sequential futures are the default unless otherwise specified.  They were designed to behave as similar as possible to regular R evaluation while still fulfilling the Future API and its behaviors.  Here is an example illustrating their properties:
 ```r
 > plan(sequential)
@@ -194,10 +193,6 @@ Future 'c' ...
 [1] 8000
 ```
 Since eager sequential evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid` in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed.  This is because futures are evaluated in a local environment.  Since synchronous (uni-)processing is used, future `b` is resolved by the main R process (still in a local environment), which is why the value of `b` and `pid` are the same.
-
-
-#### Transparent Futures
-For troubleshooting, _transparent_ futures can be used by specifying `plan(transparent)`.  A transparent future is technically a sequential future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment.  Transparent futures are particularly useful for troubleshooting errors that are otherwise hard to narrow down.
 
 
 ### Asynchronous Futures
