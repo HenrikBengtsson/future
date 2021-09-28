@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9003</span>
       </span>
     </div>
 
@@ -243,9 +243,9 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="future-1-22-1-9000" class="section level1">
-<h1 class="page-header" data-toc-text="1.22.1-9000">
-<a href="#future-1-22-1-9000" class="anchor"></a>future 1.22.1-9000<small> Unreleased </small>
+    <div id="future-1-22-1-9003" class="section level1">
+<h1 class="page-header" data-toc-text="1.22.1-9003">
+<a href="#future-1-22-1-9003" class="anchor"></a>future 1.22.1-9003<small> Unreleased </small>
 </h1>
 <div id="how-to-install-the-develop-version" class="section level3">
 <h3 class="hasAnchor">
@@ -254,11 +254,27 @@
 <li>To install this develop version of the package, use: remotes::install_github(“HenrikBengtsson/future”, ref = “develop”)</li>
 </ul>
 </div>
+<div id="significant-changes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#significant-changes" class="anchor"></a>Significant Changes</h3>
+<ul>
+<li><p>plan() now produces a one-time warning if a ‘transparent’ strategy is set. The warning reminds the user that ‘transparent’ should only be used for troubleshooting purposes and never be used in production. By the way, these days plan(sequential, split = TRUE) together with debug() is probably a better approach for troubleshooting.</p></li>
+<li><p>Support for ‘persistent = TRUE’ with multisession futures is defunct.</p></li>
+</ul>
+</div>
 <div id="miscellaneous" class="section level3">
 <h3 class="hasAnchor">
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <ul>
-<li>Using more robust emulation of crashed forked parallel workers after understanding that quit() must not be used in forked R processes.</li>
+<li>TESTS: Using more robust emulation of crashed forked parallel workers after understanding that quit() must not be used in forked R processes.</li>
+</ul>
+</div>
+<div id="deprecated-and-defunct" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and Defunct</h3>
+<ul>
+<li><p>Support for ‘persistent = TRUE’ with multisession futures is defunct. If still needed, a temporary workaround is to use cluster futures. However, it is likely that support for ‘persistent’ will eventually be deprecated for all future backends.</p></li>
+<li><p>Argument ‘value’ of resolve(), deprecated since future 1.15.0, is defunct in favor of argument ‘result’.</p></li>
 </ul>
 </div>
 </div>
@@ -278,9 +294,9 @@
 <h1 class="page-header" data-toc-text="1.22.0">
 <a href="#future-1-22-0" class="anchor"></a>future 1.22.0<small> Unreleased </small>
 </h1>
-<div id="significant-changes" class="section level3">
+<div id="significant-changes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-1" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li><p>A lazy future remains a generic future until it is launched, which means it is not assigned a future backend class until launched.</p></li>
 <li><p>Argument ‘seed’ for futureAssign() and futureCall() now defaults to FALSE just like for future().</p></li>
@@ -370,9 +386,9 @@
 <h1 class="page-header" data-toc-text="1.20.0">
 <a href="#future-1-20-0" class="anchor"></a>future 1.20.0<small> Unreleased </small>
 </h1>
-<div id="significant-changes-1" class="section level3">
+<div id="significant-changes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-1" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-2" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li><p>Strategy ‘multiprocess’ is deprecated in favor of either ‘multisession’ or ‘multicore’, depending on operating system and R setup. The plan() function will give an informative deprecation warning when ‘multiprocess’ is used. This warning is given only once per R session.</p></li>
 <li><p>Launching R or Rscript with command-line option –parallel=n, where n &gt; 1, will now use ‘multisession’ as future strategy. Previously, it would use ‘multiprocess’, which is now deprecated.</p></li>
@@ -419,9 +435,9 @@
 <li><p>The Mandelbrot demo would produce random numbers without declaring so.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct" class="section level3">
+<div id="deprecated-and-defunct-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-1" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Strategy ‘multiprocess’ is deprecated in favor of either ‘multisession’ or ‘multicore’, depending on operating system and R setup.</p></li>
 <li><p>values() is deprecated. Use value() instead.</p></li>
@@ -445,9 +461,9 @@
 <h1 class="page-header" data-toc-text="1.19.0">
 <a href="#future-1-19-0" class="anchor"></a>future 1.19.0<small> Unreleased </small>
 </h1>
-<div id="significant-changes-2" class="section level3">
+<div id="significant-changes-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-2" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-3" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li><p>Futures detect when random number generation (RNG) was used to resolve them. If a future uses RNG without parallel RNG was requested, then an informative warning is produced. To request parallel RNG, specify argument ‘seed’, e.g. ‘f &lt;- future(rnorm(3), seed=TRUE)’ or ‘y %&lt;-% { rnorm(3) } %seed% TRUE’. Higher-level map-reduce APIs provide similarly named “seed” arguments to achieve the same. To, escalate these warning to errors, set option ‘future.rng.onMisuse’ to “error”. To silence them, set it to “ignore”.</p></li>
 <li><p>Now, all non-captured conditions are muffled, if possible. For instance, future(warning(“boom”), conditions = c(“message”)) will truly muffle the warning regardless of backend used. This was needed to fix below bug.</p></li>
@@ -490,9 +506,9 @@
 <h1 class="page-header" data-toc-text="1.18.0">
 <a href="#future-1-18-0" class="anchor"></a>future 1.18.0<small> 2020-07-09 </small>
 </h1>
-<div id="significant-changes-3" class="section level3">
+<div id="significant-changes-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-3" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-4" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Support for ‘persistent = TRUE’ with multisession futures is deprecated.</li>
 </ul>
@@ -519,9 +535,9 @@
 <li><p>TESTS: ‘R_FUTURE_FORK_ENABLE=false R CMD check …’ would produce ‘Error: connections left open: …’ when checking the ‘multiprocess’ example.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-1" class="section level3">
+<div id="deprecated-and-defunct-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-1" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-2" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Support for ‘persistent = TRUE’ with multisession futures is deprecated. If still needed, a temporary workaround is to use cluster futures. However, it is likely that support for ‘persistent’ will eventually be deprecated for all future backends.</p></li>
 <li><p>Options ‘future.globals.method’, ‘future.globals.onMissing’, and ‘future.globals.resolve’ are deprecated and produce warnings if set. They may only be used for troubleshooting purposes because they may affect how futures are evaluated, which means that reproducibility cannot be guaranteed elsewhere.</p></li>
@@ -532,9 +548,9 @@
 <h1 class="page-header" data-toc-text="1.17.0">
 <a href="#future-1-17-0" class="anchor"></a>future 1.17.0<small> 2020-04-18 </small>
 </h1>
-<div id="significant-changes-4" class="section level3">
+<div id="significant-changes-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-4" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-5" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Renamed values() to value() to clean up and simplify the API.</li>
 </ul>
@@ -562,9 +578,9 @@
 <li><p>Disabling of multi-threading when using ‘multicore’ futures did not work on all platforms.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-2" class="section level3">
+<div id="deprecated-and-defunct-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-2" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-3" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>All values() S3 methods have been renamed to value() since they are closely related to the original purpose value(). The values() methods will continue to work but will soon be formally deprecated and later be made defunct and finally be removed. Please replace all values() with value() calls.</li>
 </ul>
@@ -574,9 +590,9 @@
 <h1 class="page-header" data-toc-text="1.16.0">
 <a href="#future-1-16-0" class="anchor"></a>future 1.16.0<small> 2020-01-16 </small>
 </h1>
-<div id="significant-changes-5" class="section level3">
+<div id="significant-changes-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-5" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-6" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Now oplan &lt;- plan(new_strategy) returns the list of all nested strategies previously set, instead of just the strategy on top of this stack. This makes it easier to temporarily use another plan. For the old behavior, use ‘oplan &lt;- plan(new_strategy)[[1]]’.</li>
 </ul>
@@ -606,9 +622,9 @@
 <li><p>1L) : argument “x_kk” is missing, with no default"</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-3" class="section level3">
+<div id="deprecated-and-defunct-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-3" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-4" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Future and FutureResult objects with an internal version 1.7 or older have been deprecated since 1.14.0 (July 2019) and are now defunct.</p></li>
 <li><p>Defunct hidden argument ‘progress’ of resolve(), and hidden arguments/fields ‘condition’ and ‘calls’ of FutureResult are now gone.</p></li>
@@ -638,9 +654,9 @@
 <h1 class="page-header" data-toc-text="1.15.0">
 <a href="#future-1-15-0" class="anchor"></a>future 1.15.0<small> 2019-11-08 </small>
 </h1>
-<div id="significant-changes-6" class="section level3">
+<div id="significant-changes-7" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-6" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-7" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>resolved() will now launch lazy futures.</li>
 </ul>
@@ -672,9 +688,9 @@
 <li><p>makeClusterMPI() did not work for MPI clusters with ‘comm’ other than ‘1’.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-4" class="section level3">
+<div id="deprecated-and-defunct-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-4" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-5" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Argument ‘value’ of resolve() is deprecated. Use ‘result’ instead.</p></li>
 <li><p>Use of internal argument ‘evaluator’ is now defunct.</p></li>
@@ -685,9 +701,9 @@
 <h1 class="page-header" data-toc-text="1.14.0">
 <a href="#future-1-14-0" class="anchor"></a>future 1.14.0<small> 2019-07-02 </small>
 </h1>
-<div id="significant-changes-7" class="section level3">
+<div id="significant-changes-8" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-7" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-8" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li><p>All types of conditions are now captured and relayed. Previously, only conditions of class ‘message’ and ‘warning’ were relayed.</p></li>
 <li><p>If one of the futures in a collection produces an error, then values() will signal that error as soon as it is detected. This means that while calling values() guarantees to resolve all futures, it does not guarantee that the result from all futures are gathered back to the master R session before the error is relayed.</p></li>
@@ -713,9 +729,9 @@
 <li><p>The validation of connections failed to detect when the connection had been serialized (= a NIL external pointer) on some macOS systems.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-5" class="section level3">
+<div id="deprecated-and-defunct-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-5" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-6" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Argument ‘progress’ of resolve() is now defunct (was deprecated since future 1.12.0). Option ‘future.progress’ is ignored. This will make room for other progress-update mechanisms that are in the works.</p></li>
 <li><p>Usage of internal argument ‘evaluator’ is now deprecated.</p></li>
@@ -729,9 +745,9 @@
 <h1 class="page-header" data-toc-text="1.13.0">
 <a href="#future-1-13-0" class="anchor"></a>future 1.13.0<small> 2019-05-08 </small>
 </h1>
-<div id="significant-changes-8" class="section level3">
+<div id="significant-changes-9" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-8" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-9" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Forked processing is now disabled by default when running R via RStudio When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures. This update follows from an RStudio recommendation against using _forked_ parallel processing from within RStudio because it is likely to break the RStudio R session. See help(“supportsMulticore”) for more details, e.g. how to re-enable process forking. Note that parallelization via ‘multisession’ is unaffected and will still work as before. Also, when forked processing is disabled, or otherwise not supported, using plan(“multiprocess”) will fall back to using ‘multisession’ futures.</li>
 </ul>
@@ -762,9 +778,9 @@
 <li>makeClusterPSOCK() did not shell quote the Rscript executable when running its pre-tests checking whether localhost Rscript processes can be killed by their PIDs or not.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-6" class="section level3">
+<div id="deprecated-and-defunct-7" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-6" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-7" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Argument ‘value’ of resolve() has been renamed to `result` to better reflect that not only values are collected when this argument is used. Argument ‘value’ still works for backward compatibility, but will eventually be formally deprecated and then defunct.</li>
 </ul>
@@ -793,9 +809,9 @@
 <li><p>With options(OutDec = “,”), the default value of several argument would resolve to NA_real_ rather than a numeric value resulting in errors such as “is.finite(alpha) is not TRUE”.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-7" class="section level3">
+<div id="deprecated-and-defunct-8" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-7" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-8" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Argument ‘progress’ of resolve() is now deprecated.</p></li>
 <li><p>Argument ‘output’ of FutureError() is now defunct.</p></li>
@@ -846,9 +862,9 @@
 <h1 class="page-header" data-toc-text="1.11.0">
 <a href="#future-1-11-0" class="anchor"></a>future 1.11.0<small> 2019-01-21 </small>
 </h1>
-<div id="significant-changes-9" class="section level3">
+<div id="significant-changes-10" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-9" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-10" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Message and warning conditions are now captured and relayed by default.</li>
 </ul>
@@ -878,9 +894,9 @@
 <li><p>Calling result() on a non-resolved UniprocessFuture would signal evaluation errors.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-8" class="section level3">
+<div id="deprecated-and-defunct-9" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-8" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-9" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Removed defunct future::future_lapply(). Please use the one in the future.apply package instead.</li>
 </ul>
@@ -913,9 +929,9 @@
 <h1 class="page-header" data-toc-text="1.9.0">
 <a href="#future-1-9-0" class="anchor"></a>future 1.9.0<small> 2018-07-23 </small>
 </h1>
-<div id="significant-changes-10" class="section level3">
+<div id="significant-changes-11" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-10" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-11" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Standard output is now captured and re-outputted when value() is called. This new behavior can be controlled by the argument ‘stdout’ to future() or by specifying the %stdout% operator if a future assignment is used.</li>
 </ul>
@@ -946,9 +962,9 @@
 <li><p>Printing a plan() could produce an error when the deparsed call used to set up the plan() was longer than 60 characters.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-9" class="section level3">
+<div id="deprecated-and-defunct-10" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-9" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-10" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>future::future_lapply() is defunct (gives an error if called). Please use the one in the future.apply package instead.</p></li>
 <li><p>Argument ‘output’ of FutureError() is formally deprecated.</p></li>
@@ -984,9 +1000,9 @@
 <h1 class="page-header" data-toc-text="1.8.0">
 <a href="#future-1-8-0" class="anchor"></a>future 1.8.0<small> 2018-04-08 </small>
 </h1>
-<div id="significant-changes-11" class="section level3">
+<div id="significant-changes-12" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-11" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-12" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Errors produces when evaluating futures are now (re-)signaled on the master R process “as is” with the original content and class attributes.</li>
 </ul>
@@ -1011,9 +1027,9 @@
 <li><p>Nested futures were too conservative in requiring global variables to exist, even when they were false positives.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-10" class="section level3">
+<div id="deprecated-and-defunct-11" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-10" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-11" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>future::future_lapply() is formally deprecated. Please use the one in the future.apply package instead.</p></li>
 <li><p>Recently introduced FutureEvaluationCondition classes are deprecated, because they no longer serve a purpose since future evaluation conditions are now signaled as is.</p></li>
@@ -1024,9 +1040,9 @@
 <h1 class="page-header" data-toc-text="1.7.0">
 <a href="#future-1-7-0" class="anchor"></a>future 1.7.0<small> 2018-02-11 </small>
 </h1>
-<div id="significant-changes-12" class="section level3">
+<div id="significant-changes-13" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-12" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-13" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>future_lapply() has moved to the future.apply package available on CRAN.</li>
 </ul>
@@ -1066,9 +1082,9 @@
 <li><p>Protection against passing future objects to other futures did not work for future strategy ‘multicore’.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-11" class="section level3">
+<div id="deprecated-and-defunct-12" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-11" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-12" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>future_lapply() has moved to the new future.apply package available on CRAN. The future::future_lapply() function will soon be deprecated, then defunct, and eventually be removed from the future package. Please update your code to make use of future.apply::future_lapply() instead.</p></li>
 <li><p>Dropped defunct ‘eager’ and ‘lazy’ futures; use ‘sequential’ instead.</p></li>
@@ -1149,9 +1165,9 @@
 <li>TESTS: No longer testing forced termination of forked cluster workers when running on Solaris. The termination was done by launching a future that called quit(), but that appeared to have corrupted the main R session when running on Solaris.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-12" class="section level3">
+<div id="deprecated-and-defunct-13" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-12" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-13" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Formally defunct ‘eager’ and ‘lazy’ futures; use ‘sequential’ instead.</p></li>
 <li><p>Dropped previously defunct %&lt;=% and %=&gt;% operators.</p></li>
@@ -1162,9 +1178,9 @@
 <h1 class="page-header" data-toc-text="1.5.0">
 <a href="#future-1-5-0" class="anchor"></a>future 1.5.0<small> 2017-05-26 </small>
 </h1>
-<div id="significant-changes-13" class="section level3">
+<div id="significant-changes-14" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-13" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-14" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Multicore and multisession futures no longer reserve one core for the main R process, which was done to lower the risk for producing a higher CPU load than the number of cores available for the R session.</li>
 </ul>
@@ -1186,9 +1202,9 @@
 <li>Help on makeClusterPSOCK() gained more detailed descriptions on arguments and what their defaults are.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-13" class="section level3">
+<div id="deprecated-and-defunct-14" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-13" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-14" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Formally deprecated eager futures; use sequential instead.</li>
 </ul>
@@ -1218,9 +1234,9 @@
 <h1 class="page-header" data-toc-text="1.4.0">
 <a href="#future-1-4-0" class="anchor"></a>future 1.4.0<small> 2017-03-13 </small>
 </h1>
-<div id="significant-changes-14" class="section level3">
+<div id="significant-changes-15" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-14" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-15" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>The default for future_lapply() is now to _not_ generate RNG seeds (future.seed = FALSE). If proper random number generation is needed, use future.seed = TRUE. For more details, see help page.</li>
 </ul>
@@ -1258,9 +1274,9 @@
 <li><p>plan(cluster, workers = cl) where cl &lt;- makeCluster(…, type = MPI“) would give an instant error due to an invalid internal assertion.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-14" class="section level3">
+<div id="deprecated-and-defunct-15" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-14" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-15" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li><p>Previously deprecated arguments ‘maxCores’ and ‘cluster’ are now defunct.</p></li>
 <li><p>Previously deprecated assignment operators %&lt;=% and %=&gt;% are now defunct.</p></li>
@@ -1272,9 +1288,9 @@
 <h1 class="page-header" data-toc-text="1.3.0">
 <a href="#future-1-3-0" class="anchor"></a>future 1.3.0<small> 2017-02-19 </small>
 </h1>
-<div id="significant-changes-15" class="section level3">
+<div id="significant-changes-16" class="section level3">
 <h3 class="hasAnchor">
-<a href="#significant-changes-15" class="anchor"></a>Significant Changes</h3>
+<a href="#significant-changes-16" class="anchor"></a>Significant Changes</h3>
 <ul>
 <li>Where applicable, workers are now initiated when calling plan(), e.g. plan(cluster) will set up workers on all cluster nodes. Previously, this only happened when the first future was created.</li>
 </ul>
@@ -1304,9 +1320,9 @@
 <li>Globals part of locally defined functions are now also identified thanks to globals (&gt;= 0.8.0) updates.</li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-15" class="section level3">
+<div id="deprecated-and-defunct-16" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-15" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-16" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager) and then f &lt;- future(…, lazy = TRUE) or x %&lt;-% { … } %lazy% TRUE. The reason behind this is that in some cases code that uses futures only works under eager evaluation (lazy = FALSE; the default), or vice verse. By removing the “lazy” future strategy, the user can no longer override the lazy = TRUE / FALSE that the developer is using.</li>
 </ul>
@@ -1336,9 +1352,9 @@
 <li><p>On Unix, internal myInternalIP() tries more alternatives for finding the local IP number.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-16" class="section level3">
+<div id="deprecated-and-defunct-17" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-16" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-17" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>%&lt;=% is deprecated. Use %&lt;-% instead. Same for %=&gt;%.</li>
 </ul>
@@ -1514,9 +1530,9 @@
 <li><p>Added FutureError class.</p></li>
 </ul>
 </div>
-<div id="deprecated-and-defunct-17" class="section level3">
+<div id="deprecated-and-defunct-18" class="section level3">
 <h3 class="hasAnchor">
-<a href="#deprecated-and-defunct-17" class="anchor"></a>Deprecated and Defunct</h3>
+<a href="#deprecated-and-defunct-18" class="anchor"></a>Deprecated and Defunct</h3>
 <ul>
 <li>Renamed arguments ‘maxCores’ and ‘cluster’ to ‘workers’. If using the old argument names a deprecation warning will be generated, but it will still work until made defunct in a future release.</li>
 </ul>

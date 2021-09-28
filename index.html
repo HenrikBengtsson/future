@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9003</span>
       </span>
     </div>
 
@@ -281,11 +281,6 @@ Hello world<span class="op">!</span>
 <a href="#controlling-how-futures-are-resolved" class="anchor"></a>Controlling How Futures are Resolved</h2>
 <p>The future package implements the following types of futures:</p>
 <table class="table">
-<colgroup>
-<col width="20%">
-<col width="16%">
-<col width="63%">
-</colgroup>
 <thead><tr class="header">
 <th align="left">Name</th>
 <th align="left">OSes</th>
@@ -303,32 +298,27 @@ Hello world<span class="op">!</span>
 <td align="left">sequentially and in the current R process</td>
 </tr>
 <tr class="odd">
-<td align="left"><code>transparent</code></td>
-<td align="left">all</td>
-<td align="left">as sequential w/ early signaling and w/out local (for debugging)</td>
-</tr>
-<tr class="even">
 <td align="left"><em>asynchronous:</em></td>
 <td align="left"></td>
 <td align="left">
 <em>parallel</em>:</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>multisession</code></td>
 <td align="left">all</td>
 <td align="left">background R sessions (on current machine)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>multicore</code></td>
 <td align="left">not Windows/not RStudio</td>
 <td align="left">forked R processes (on current machine)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>cluster</code></td>
 <td align="left">all</td>
 <td align="left">external R sessions on current, local, and/or remote machines</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>remote</code></td>
 <td align="left">all</td>
 <td align="left">Simple access to remote R sessions</td>
@@ -365,7 +355,7 @@ Hello world<span class="op">!</span>
 <div id="synchronous-futures" class="section level3">
 <h3 class="hasAnchor">
 <a href="#synchronous-futures" class="anchor"></a>Synchronous Futures</h3>
-<p>Synchronous futures are resolved one after another and most commonly by the R process that creates them. When a synchronous future is being resolved it blocks the main process until resolved. There are two types of synchronous futures in the future package, <em>sequential</em> and <em>transparent</em>.</p>
+<p>Synchronous futures are resolved one after another and most commonly by the R process that creates them. When a synchronous future is being resolved it blocks the main process until resolved.</p>
 <div id="sequential-futures" class="section level4">
 <h4 class="hasAnchor">
 <a href="#sequential-futures" class="anchor"></a>Sequential Futures</h4>
@@ -400,11 +390,6 @@ Future <span class="st">'c'</span> ...
 <span class="op">&gt;</span><span class="st"> </span>pid
 [<span class="dv">1</span>] <span class="dv">8000</span></code></pre></div>
 <p>Since eager sequential evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created. Note also how <code>pid</code> in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed. This is because futures are evaluated in a local environment. Since synchronous (uni-)processing is used, future <code>b</code> is resolved by the main R process (still in a local environment), which is why the value of <code>b</code> and <code>pid</code> are the same.</p>
-</div>
-<div id="transparent-futures" class="section level4">
-<h4 class="hasAnchor">
-<a href="#transparent-futures" class="anchor"></a>Transparent Futures</h4>
-<p>For troubleshooting, <em>transparent</em> futures can be used by specifying <code><a href="reference/plan.html">plan(transparent)</a></code>. A transparent future is technically a sequential future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment. Transparent futures are particularly useful for troubleshooting errors that are otherwise hard to narrow down.</p>
 </div>
 </div>
 <div id="asynchronous-futures" class="section level3">
@@ -786,7 +771,8 @@ List of <span class="dv">3</span>
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"></a></li>
-<li><a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a></li>
+<li><a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"></a></li>
+<li><a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Arevdepcheck-top"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"></a></li>
 <li><a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a></li>
 <li><a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></li>
 <li><a href="https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/future.tests.yaml/badge.svg" alt="future.tests checks"></a></li>

@@ -99,7 +99,7 @@ by default just as for all other types of futures in this package." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9003</span>
       </span>
     </div>
 
@@ -279,7 +279,7 @@ identified.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function is <em>not</em> meant to be called directly.  Instead, the
-typical usages are:<div class="r"></p><pre><span class='co'># Evaluate futures sequentially in the current R process</span>
+typical usages are:<div class="sourceCode r"></p><pre><span class='co'># Evaluate futures sequentially in the current R process</span>
 <span class='fu'><a href='plan.html'>plan</a></span><span class='op'>(</span><span class='va'>sequential</span><span class='op'>)</span>
 </pre><p></div></p>
 
@@ -292,9 +292,12 @@ typical usages are:<div class="r"></p><pre><span class='co'># Evaluate futures s
 evaluates expressions as far as possible.  For instance, errors and
 warnings are signaled immediately and assignments are done to the
 calling environment (without <code><a href='https://rdrr.io/r/base/eval.html'>local()</a></code> as default for all other
-types of futures).  This makes transparent futures ideal for
-troubleshooting, especially when there are errors.
-<em>WARNING: Transparent futures should only be used for debugging and
+types of futures).  This makes transparent futures useful for
+troubleshooting, especially when there are errors.  Having said that,
+using:<div class="sourceCode r"></p><pre><span class='fu'><a href='plan.html'>plan</a></span><span class='op'>(</span><span class='va'>sequential</span>, split <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</pre><p></div></p>
+<p>together with <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code> is often sufficient for troubleshooting.</p>
+<p><em>WARNING: Transparent futures should only be used for debugging and
 troubleshooting.  They should not be used for production pipelines
 and must not be set within another package.  This is especially
 important since 'transparent' futures might be deprecated and replaced
