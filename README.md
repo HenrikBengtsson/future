@@ -7,6 +7,7 @@
 # future: Unified Parallel and Distributed Processing in R for Everyone <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right"/>
 
 ## Introduction
+
 The purpose of the [future] package is to provide a very simple and uniform way of evaluating R expressions asynchronously using various resources available to the user.
 
 In programming, a _future_ is an abstraction for a _value_ that may be available at some point in the future.  The state of a future can either be _unresolved_ or _resolved_.  As soon as it is resolved, the value is available instantaneously.  If the value is queried while the future is still unresolved, the current process is _blocked_ until the future is resolved.  It is possible to check whether a future is resolved or not without blocking.  Exactly how and when futures are resolved depends on what strategy is used to evaluate them.  For instance, a future can be resolved using a sequential strategy, which means it is resolved in the current R session.  Other strategies may be to resolve futures asynchronously, for instance, by evaluating expressions in parallel on the current machine or concurrently on a compute cluster.
@@ -91,6 +92,7 @@ To keep it simple, we will use the implicit style in the rest of this document, 
 
 
 ## Controlling How Futures are Resolved
+
 The future package implements the following types of futures:
 
 | Name            | OSes        | Description
@@ -111,6 +113,7 @@ By default, future expressions are evaluated eagerly (= instantaneously) and syn
 
 
 ### Consistent Behavior Across Futures
+
 Before going through each of the different future strategies, it is probably helpful to clarify the objectives of the Future API (as defined by the future package).  When programming with futures, it should not really matter what future strategy is used for executing code.  This is because we cannot really know what computational resources the user has access to so the choice of evaluation strategy should be in the hands of the user and not the developer.  In other words, the code should not make any assumptions on the type of futures used, e.g. synchronous or asynchronous.
 
 One of the designs of the Future API was to encapsulate any differences such that all types of futures will appear to work the same.  This despite expressions may be evaluated locally in the current R session or across the world in remote R sessions.  Another obvious advantage of having a consistent API and behavior among different types of futures is that it helps while prototyping.  Typically one would use sequential evaluation while building up a script and, later, when the script is fully developed, one may turn on asynchronous processing.
@@ -183,10 +186,12 @@ Since eager sequential evaluation is taking place, each of the three futures is 
 
 
 ### Asynchronous Futures
+
 Next, we will turn to asynchronous futures, which are futures that are resolved in the background.  By design, these futures are non-blocking, that is, after being created the calling process is available for other tasks including creating additional futures.  It is only when the calling process tries to access the value of a future that is not yet resolved, or trying to create another asynchronous future when all available R processes are busy serving other futures, that it blocks.
 
 
 #### Multisession Futures
+
 We start with multisession futures because they are supported by all operating systems.  A multisession future is evaluated in a background R session running on the same machine as the calling R process.  Here is our example with multisession evaluation:
 ```r
 > plan(multisession)
@@ -232,6 +237,7 @@ This particular result tells us that the `mc.cores` option was set such that we 
 
 
 #### Multicore Futures
+
 On operating systems where R supports _forking_ of processes, which is basically all operating system except Windows, an alternative to spawning R sessions in the background is to fork the existing R process.  To use multicore futures, when supported, specify:
 
 ```r
@@ -246,6 +252,7 @@ On the other hand, process forking is also considered unstable in some R environ
 
 
 #### Cluster Futures
+
 Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the parallel package).  For instance, assume you have access to three nodes `n1`, `n2` and `n3`, you can then use these for asynchronous evaluation as:
 ```r
 > plan(cluster, workers = c("n1", "n2", "n3"))
@@ -294,6 +301,7 @@ Note that with automatic authentication setup (e.g. SSH key pairs), there is not
 
 
 ### Nested Futures and Evaluation Topologies
+
 This far we have discussed what can be referred to as "flat topology" of futures, that is, all futures are created in and assigned to the same environment.  However, there is nothing stopping us from using a "nested topology" of futures, where one set of futures may, in turn, create another set of futures internally and so on.
 
 For instance, here is an example of two "top" futures (`a` and `b`) that uses multisession evaluation and where the second future (`b`) in turn uses two internal futures:
@@ -413,6 +421,7 @@ For more details on working with nested futures and different evaluation strateg
 
 
 ### Checking A Future without Blocking
+
 It is possible to check whether a future has been resolved or not without blocking.  This can be done using the `resolved(f)` function, which takes an explicit future `f` as input.  If we work with implicit futures (as in all the examples above), we can use the `f <- futureOf(a)` function to retrieve the explicit future from an implicit one.  For example,
 ```r
 > plan(multisession)
@@ -445,6 +454,7 @@ Future 'a' ...done
 
 
 ## Failed Futures
+
 Sometimes the future is not what you expected.  If an error occurs while evaluating a future, the error is propagated and thrown as an error in the calling environment _when the future value is requested_.  For example, if we use lazy evaluation on a future that generates an error, we might see something like
 ```r
 > plan(sequential)
@@ -478,6 +488,7 @@ log(a)
 
 
 ## Globals
+
 Whenever an R expression is to be evaluated asynchronously (in parallel) or sequentially via lazy evaluation, global (aka "free") objects have to be identified and passed to the evaluator.  They need to be passed exactly as they were at the time the future was created, because, for lazy evaluation, globals may otherwise change between when it is created and when it is resolved.  For asynchronous processing, the reason globals need to be identified is so that they can be exported to the process that evaluates the future.
 
 The future package tries to automate these tasks as far as possible.  It does this with help of the [globals] package, which uses static-code inspection to identify global variables.  If a global variable is identified, it is captured and made available to the evaluating process.
@@ -544,6 +555,7 @@ As previously, `as.list(v)` blocks until all futures are resolved.
 
 
 ## Demos
+
 To see a live illustration how different types of futures are evaluated, run the Mandelbrot demo of this package.  First, try with the sequential evaluation,
 ```r
 library("future")

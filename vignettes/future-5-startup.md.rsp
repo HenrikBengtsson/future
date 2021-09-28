@@ -21,6 +21,7 @@ The default is to use synchronous futures, but this _default_ can be overridden 
 
 
 ## R options
+
 The default strategy for resolving futures can be controlled via R option `future.plan`.  For instance, if we add
 ```r
 options(future.plan = "multisession")
@@ -35,6 +36,7 @@ Option `future.plan` is ignored if command-line option `--parallel` (`-p`) is sp
 
 
 ## Environment variables
+
 An alternative to using `options()` for setting option `future.plan` is to specify system environment variable `R_FUTURE_PLAN`.  If set, then the future package will set `future.plan` accordingly _when loaded_.  For example,
 ```sh
 $ export R_FUTURE_PLAN=multisession
