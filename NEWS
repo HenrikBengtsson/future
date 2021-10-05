@@ -26,6 +26,9 @@ MISCELLANEOUS:
 
 DEPRECATED AND DEFUNCT:
 
+ * values(), which has been deprecated since future 1.20.0, is now defunct.
+   Use value() instead.
+
  * Support for 'persistent = TRUE' with multisession futures is defunct.  If
    still needed, a temporary workaround is to use cluster futures. However,
    it is likely that support for 'persistent' will eventually be deprecated
