@@ -14,30 +14,27 @@ jobs:
       fail-fast: false
       matrix:
         config:
-#          - {os: windows-latest, r: 'devel'   }
+          - {os: windows-latest, r: 'devel'   }
           - {os: windows-latest, r: 'release' }
-#          - {os: macOS-latest,   r: 'devel'   }
+          - {os: macOS-latest,   r: 'devel'   }
           - {os: macOS-latest,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest" }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.fork.enable: 'false', label: 'forks.enable=false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.psock.relay.immediate: 'false', label: 'psock.relay.immediate=false' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.plan: 'multisession', future.fork.multithreading.enable: 'false', label: 'plan=multisession' }
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest", future.globals.onreference: 'warning', label: 'globals.onreference=warning' }
+          - {os: ubuntu-20.04,   r: 'devel'   }
+          - {os: ubuntu-20.04,   r: 'release' }
+          - {os: ubuntu-20.04,   r: 'oldrel'  }
+          - {os: ubuntu-20.04,   r: '3.5'     }
+          - {os: ubuntu-20.04,   r: '3.4'     }
+          - {os: ubuntu-20.04,   r: '3.3'     }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: ${{ matrix.config.rspm }}
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
+      _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
-      _R_CHECK_CRAN_INCOMING_: false
+      _R_CHECK_SUGGESTS_ONLY_: true
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
       
@@ -50,7 +47,7 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+      - name: Query R package dependencies
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
@@ -65,7 +62,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies (Linux)
+      - name: Install R package system dependencies (Linux)
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -73,17 +70,24 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+          sudo apt install -y libcurl4-openssl-dev
 
-      - name: Install dependencies
+      - name: Install R package dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
+        shell: Rscript {0}
+
+      - name: Install 'rcmdcheck'
+        run: |
+          remotes::install_cran("rcmdcheck")
+          library(rcmdcheck)  ## triggers an error, if installation failed
         shell: Rscript {0}
 
       - name: Session info
         run: |
           options(width = 100)
+          capabilities()
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
@@ -98,7 +102,7 @@ jobs:
           R_FUTURE_GLOBALS_ONREFERENCE: ${{ matrix.config.future.globals.onreference }}
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
-
+ 
       - name: Check (Windows)
         if: runner.os == 'Windows'
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
@@ -110,4 +114,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-        
