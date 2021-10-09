@@ -75,7 +75,7 @@ jobs:
         run: |
           remotes::install_cran("future.tests")
           remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
-          if (grepl("::", plan <- "${{ matrix.future.plan }}") && nzchar(pkg <- sub("::.*", plan))) install.packages(pkg)
+          if (grepl("::", plan <- "${{ matrix.future.plan }}") && nzchar(pkg <- sub("::.*", "", plan))) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
