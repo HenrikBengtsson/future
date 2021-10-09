@@ -42,7 +42,7 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+      - name: Query R package dependencies
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
@@ -56,7 +56,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install R package system dependencies (Linux)
+        if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
@@ -64,14 +65,21 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
-      - name: Install dependencies
+      - name: Install R package 'rcmdcheck'
+        run: |
+          remotes::install_cran("rcmdcheck")
+          library(rcmdcheck)  ## triggers an error, if installation failed
+        shell: Rscript {0}
+
+      - name: Install R package dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-          ## remotes::install_cran("future.tests")
-          remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
-          if (nzchar(pkg <- "${{ matrix.future.pkg }}")) install.packages(pkg)
+          
+      - name: Install 'future.tests' and its dependencies
+          remotes::install_cran("future.tests")
+          remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
+          if (grepl("::", plan) && nzchar(pkg <- sub("::.*", "${{ matrix.future.plan }}"))) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
@@ -81,7 +89,7 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
     
-      - name: Check
+      - name: Check future backend '${{ matrix.future.plan }}'
         run: |
           R CMD build --no-build-vignettes --no-manual . 
           R CMD INSTALL *.tar.gz 
