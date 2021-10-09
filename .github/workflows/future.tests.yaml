@@ -77,6 +77,7 @@ jobs:
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
           
       - name: Install 'future.tests' and its dependencies
+        run: |
           remotes::install_cran("future.tests")
           remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
           if (grepl("::", plan) && nzchar(pkg <- sub("::.*", "${{ matrix.future.plan }}"))) install.packages(pkg)
