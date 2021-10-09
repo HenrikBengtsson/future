@@ -65,12 +65,6 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
-      - name: Install R package 'rcmdcheck'
-        run: |
-          remotes::install_cran("rcmdcheck")
-          library(rcmdcheck)  ## triggers an error, if installation failed
-        shell: Rscript {0}
-
       - name: Install R package dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
@@ -81,7 +75,7 @@ jobs:
         run: |
           remotes::install_cran("future.tests")
           remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
-          if (grepl("::", plan) && nzchar(pkg <- sub("::.*", "${{ matrix.future.plan }}"))) install.packages(pkg)
+          if (grepl("::", plan <- "${{ matrix.future.plan }}") && nzchar(pkg <- sub("::.*", plan))) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
