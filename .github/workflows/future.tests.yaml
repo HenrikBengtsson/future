@@ -14,12 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         future:
-          - { plan: 'sequential'   }
-          - { plan: 'multicore'    }
-          - { plan: 'multisession' }
-          - { plan: 'cluster'      }
-          - { plan: 'future.callr::callr', pkg: 'future.callr' }
-          - { plan: 'future.batchtools::batchtools_local', pkg: 'future.batchtools' }
+          - { plan: 'sequential'                          }
+          - { plan: 'multicore'                           }
+          - { plan: 'multisession'                        }
+          - { plan: 'cluster'                             }
+          - { plan: 'future.callr::callr'                 }
+          - { plan: 'future.batchtools::batchtools_local' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -75,6 +75,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
+        shell: Rscript {0}
           
       - name: Install 'future.tests' and its dependencies
         run: |
