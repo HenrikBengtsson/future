@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,23 +48,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.22.1-9003</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,10 +93,13 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://www.futureverse.org/">
+  <a href="https://www.futureverse.org/" class="external-link">
     <span class="fas fa-fast-backward"></span>
      
   </a>
@@ -116,57 +112,57 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://BiocParallel.FutureParam.futureverse.org">BiocParallel.FutureParam</a>
+      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam</a>
     </li>
     <li>
-      <a href="https://doFuture.futureverse.org">doFuture</a>
+      <a href="https://doFuture.futureverse.org" class="external-link">doFuture</a>
     </li>
     <li>
-      <a href="https://furrr.futureverse.org">furrr</a>
+      <a href="https://furrr.futureverse.org" class="external-link">furrr</a>
     </li>
     <li>
       <a href="https://future.futureverse.org">future</a>
     </li>
     <li>
-      <a href="https://future.apply.futureverse.org">future.apply</a>
+      <a href="https://future.apply.futureverse.org" class="external-link">future.apply</a>
     </li>
     <li>
-      <a href="https://future.batchtools.futureverse.org">future.batchtools</a>
+      <a href="https://future.batchtools.futureverse.org" class="external-link">future.batchtools</a>
     </li>
     <li>
-      <a href="https://future.callr.futureverse.org">future.callr</a>
+      <a href="https://future.callr.futureverse.org" class="external-link">future.callr</a>
     </li>
     <li>
-      <a href="https://future.tests.futureverse.org">future.tests</a>
+      <a href="https://future.tests.futureverse.org" class="external-link">future.tests</a>
     </li>
     <li>
-      <a href="https://globals.futureverse.org">globals</a>
+      <a href="https://globals.futureverse.org" class="external-link">globals</a>
     </li>
     <li>
-      <a href="https://listenv.futureverse.org">listenv</a>
+      <a href="https://listenv.futureverse.org" class="external-link">listenv</a>
     </li>
     <li>
-      <a href="https://parallelly.futureverse.org">parallelly</a>
+      <a href="https://parallelly.futureverse.org" class="external-link">parallelly</a>
     </li>
     <li>
-      <a href="https://progressr.futureverse.org">progressr</a>
+      <a href="https://progressr.futureverse.org" class="external-link">progressr</a>
     </li>
     <li>
-      <a href="https://future.mapreduce.futureverse.org">future.mapreduce (experimental)</a>
+      <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
     </li>
     <li>
-      <a href="https://marshal.futureverse.org">marshal (experimental)</a>
+      <a href="https://marshal.futureverse.org" class="external-link">marshal (experimental)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="https://cloud.r-project.org/package=future">
+  <a href="https://cloud.r-project.org/package=future" class="external-link">
     <span class="fab fa-r-project"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/HenrikBengtsson/future/">
+  <a href="https://github.com/HenrikBengtsson/future/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -191,58 +187,58 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Common Issues with Solutions</h1>
-                        <h4 class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-4-issues.md.rsp"><code>vignettes/future-4-issues.md.rsp</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-4-issues.md.rsp" class="external-link"><code>vignettes/future-4-issues.md.rsp</code></a></small>
       <div class="hidden name"><code>future-4-issues.md.rsp</code></div>
 
     </div>
 
     
     
-<p>In the ideal case, all it takes to start using futures in R is to replace select standard assignments (<code><a href="https://rdrr.io/r/base/assignOps.html">&lt;-</a></code>) in your R code with future assignments (<code><a href="../reference/future.html">%&lt;-%</a></code>) and make sure the right-hand side (RHS) expressions are within curly brackets (<code>{ ... }</code>). Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (<code>listenv</code>) instead of a plain list.</p>
+<p>In the ideal case, all it takes to start using futures in R is to replace select standard assignments (<code>&lt;-</code>) in your R code with future assignments (<code>%&lt;-%</code>) and make sure the right-hand side (RHS) expressions are within curly brackets (<code>{ ... }</code>). Also, if you assign these to lists (e.g. in a for loop), you need to use a list environment (<code>listenv</code>) instead of a plain list.</p>
 <p>However, as show below, there are few cases where you might run into some hurdles, but, as also shown, they are often easy to overcome. These are often related to global variables.</p>
-<p><em>If you identify other cases, please consider <a href="https://github.com/HenrikBengtsson/future/issues/">reporting</a> them so they can be documented here and possibly even be fixed.</em></p>
+<p><em>If you identify other cases, please consider <a href="https://github.com/HenrikBengtsson/future/issues/" class="external-link">reporting</a> them so they can be documented here and possibly even be fixed.</em></p>
 <div id="issues-with-globals-and-packages" class="section level2">
 <h2 class="hasAnchor">
-<a href="#issues-with-globals-and-packages" class="anchor"></a>Issues with globals and packages</h2>
+<a href="#issues-with-globals-and-packages" class="anchor" aria-hidden="true"></a>Issues with globals and packages</h2>
 <div id="missing-globals-false-negatives" class="section level3">
 <h3 class="hasAnchor">
-<a href="#missing-globals-false-negatives" class="anchor"></a>Missing globals (false negatives)</h3>
+<a href="#missing-globals-false-negatives" class="anchor" aria-hidden="true"></a>Missing globals (false negatives)</h3>
 <p>If a global variable is used in a future expression that <em>conditionally</em> overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error. For example, although this works:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 
 <span class="va">reset</span> <span class="op">&lt;-</span> <span class="cn">TRUE</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-<span class="va">y</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
+<span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
 <span class="va">y</span>
 <span class="co">## [1] 1</span></code></pre></div>
 <p>the following does <em>not</em> work:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">reset</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-<span class="va">y</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
+<span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
 <span class="va">y</span>
 <span class="co">## Error: object 'x' not found</span></code></pre></div>
 <p>It is recommended to avoid above constructs where it is ambiguous whether a variable is global or local. To force variable <code>x</code> to always be global, insert it at the very being of the future expression, e.g.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">reset</span> <span class="op">&lt;-</span> <span class="cn">FALSE</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span>
-<span class="va">y</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="va">x</span>; <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
+<span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">x</span>; <span class="kw">if</span> <span class="op">(</span><span class="va">reset</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">0</span>; <span class="va">x</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
 <span class="va">y</span>
 <span class="co">## [1] 2</span></code></pre></div>
 <p><em>Comment:</em> The goal is to in a future version of the package detect globals also in expression where the local-global state of a variable is only known at run time.</p>
 <div id="do-call---function-not-found" class="section level4">
 <h4 class="hasAnchor">
-<a href="#do-call---function-not-found" class="anchor"></a>do.call() - function not found</h4>
-<p>When calling a function using <code><a href="https://rdrr.io/r/base/do.call.html">do.call()</a></code> make sure to specify the function as the object itself and not by name. This will help identify the function as a global object in the future expression. For instance, use</p>
+<a href="#do-call---function-not-found" class="anchor" aria-hidden="true"></a>do.call() - function not found</h4>
+<p>When calling a function using <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code> make sure to specify the function as the object itself and not by name. This will help identify the function as a global object in the future expression. For instance, use</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">file_ext</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"foo.txt"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">file_ext</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"foo.txt"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>instead of</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"file_ext"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"foo.txt"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="st">"file_ext"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"foo.txt"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>so that <code>file_ext()</code> is properly located and exported. Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster. It may also become a problem with futures evaluated with lazy evaluation if the intended function is redefined after the future is resolved. For example,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"listenv"</span>)
@@ -259,8 +255,8 @@
 </div>
 <div id="get---object-not-found" class="section level4">
 <h4 class="hasAnchor">
-<a href="#get---object-not-found" class="anchor"></a>get() - object not found</h4>
-<p>The base R function <code><a href="https://rdrr.io/r/base/get.html">get()</a></code> can be used to get the value of a object by its name. For example, <code><a href="https://rdrr.io/r/base/get.html">get("pi", envir = baseenv())</a></code> will get the value of object <code>pi</code> in the 'base' environment, i.e. it corresponds to <code><a href="https://rdrr.io/r/base/Constants.html">base::pi</a></code>. If no other objects named <code>pi</code> exists on the search path, we could have used <code><a href="https://rdrr.io/r/base/get.html">get("pi")</a></code> and <code>pi</code>, respectively. It is not unusual to see code snippets such as:</p>
+<a href="#get---object-not-found" class="anchor" aria-hidden="true"></a>get() - object not found</h4>
+<p>The base R function <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> can be used to get the value of a object by its name. For example, <code>get("pi", envir = baseenv())</code> will get the value of object <code>pi</code> in the 'base' environment, i.e. it corresponds to <code><a href="https://rdrr.io/r/base/Constants.html" class="external-link">base::pi</a></code>. If no other objects named <code>pi</code> exists on the search path, we could have used <code>get("pi")</code> and <code>pi</code>, respectively. It is not unusual to see code snippets such as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>a &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
 <span class="op">&gt;</span><span class="st"> </span>b &lt;-<span class="st"> </span><span class="dv">4</span><span class="op">:</span><span class="dv">6</span>
 <span class="op">&gt;</span><span class="st"> </span>c &lt;-<span class="st"> </span><span class="dv">3</span><span class="op">:</span><span class="dv">5</span>
@@ -274,7 +270,7 @@
 <span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">future</span>(<span class="kw">my_sum</span>(<span class="st">"a"</span>))
 <span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">value</span>(f)
 Error <span class="cf">in</span> <span class="kw">get</span>(var) <span class="op">:</span><span class="st"> </span>object <span class="st">'a'</span> not found</code></pre></div>
-<p>This is because the static code inspection done on the future expression <code>my_sum("a")</code> does not reveal object <code>a</code> as a global object. In that expression alone, there are only three objects: the function <code>my_sum()</code>, the primitive function <code>(</code>, and the string <code>"a"</code>, and none of those are object <code>a</code>. The future framework will also scan these three objects for globals, which in this example means that it scans also <code>my_sum()</code>. This recursive search for globals will identify three additional globals, namely, the primitive function <code>{</code>, the function <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, and the function <code><a href="https://rdrr.io/r/base/get.html">get()</a></code>, but, as before, none of these source will identify <code>a</code> as a global object. In order for <code>a</code> to be identified, the future framework would need to have a built-in understanding on how <code><a href="https://rdrr.io/r/base/get.html">get(var)</a></code> works, which would be a daunting task, especially if it need to know it acts for different data types of <code>var</code> and various choices on arguments <code>envir</code> and <code>enclos</code>. In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code. In short, it is not possible to automatically identify global variables specified via a character string.</p>
+<p>This is because the static code inspection done on the future expression <code>my_sum("a")</code> does not reveal object <code>a</code> as a global object. In that expression alone, there are only three objects: the function <code>my_sum()</code>, the primitive function <code>(</code>, and the string <code>"a"</code>, and none of those are object <code>a</code>. The future framework will also scan these three objects for globals, which in this example means that it scans also <code>my_sum()</code>. This recursive search for globals will identify three additional globals, namely, the primitive function <code>{</code>, the function <code><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum()</a></code>, and the function <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code>, but, as before, none of these source will identify <code>a</code> as a global object. In order for <code>a</code> to be identified, the future framework would need to have a built-in understanding on how <code>get(var)</code> works, which would be a daunting task, especially if it need to know it acts for different data types of <code>var</code> and various choices on arguments <code>envir</code> and <code>enclos</code>. In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code. In short, it is not possible to automatically identify global variables specified via a character string.</p>
 <p>The workaround is to tell the future framework what <em>additional</em> globals are needed. This can be done via argument <code>globals</code> using:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">future</span>(<span class="kw">my_sum</span>(<span class="st">"a"</span>), <span class="dt">globals =</span> <span class="kw">structure</span>(<span class="ot">TRUE</span>, <span class="dt">add =</span> <span class="st">"a"</span>))
 <span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">value</span>(f)
@@ -285,9 +281,9 @@ Error <span class="cf">in</span> <span class="kw">get</span>(var) <span class="o
 <span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">value</span>(f)
 <span class="op">&gt;</span><span class="st"> </span>y
 [<span class="dv">1</span>] <span class="dv">6</span></code></pre></div>
-<p>Note that, independently of the future framework, it is often a bad idea to use <code><a href="https://rdrr.io/r/base/get.html">get()</a></code>, and related functions <code><a href="https://rdrr.io/r/base/get.html">mget()</a></code> and <code><a href="https://rdrr.io/r/base/assign.html">assign()</a></code>, in R code. Searching the archives of R forums, such as the R-help and R-devel mailing lists, will reveal numerous suggestions against using them. A good rule of thumb is:</p>
+<p>Note that, independently of the future framework, it is often a bad idea to use <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code>, and related functions <code><a href="https://rdrr.io/r/base/get.html" class="external-link">mget()</a></code> and <code><a href="https://rdrr.io/r/base/assign.html" class="external-link">assign()</a></code>, in R code. Searching the archives of R forums, such as the R-help and R-devel mailing lists, will reveal numerous suggestions against using them. A good rule of thumb is:</p>
 <blockquote>
-<p>If you find yourself using <code><a href="https://rdrr.io/r/base/get.html">get()</a></code> in your code, take a step back, and reconsider your implementation. There is most likely a better solution available.</p>
+<p>If you find yourself using <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> in your code, take a step back, and reconsider your implementation. There is most likely a better solution available.</p>
 </blockquote>
 <p>For example, consider this, slightly more complex, example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>a &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
@@ -300,7 +296,7 @@ Error <span class="cf">in</span> <span class="kw">get</span>(var) <span class="o
  <span class="dv">6</span> <span class="dv">22</span> <span class="dv">12</span></code></pre></div>
 <p>Instead of using "free roaming" objects <code>a</code>, <code>b</code>, and <code>c</code>, it's better to put those values in a list (or a data frame of of the same length);</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">b =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">7</span>, <span class="dt">c =</span> <span class="dv">3</span><span class="op">:</span><span class="dv">5</span>)</code></pre></div>
-<p>This will in turn allow us to perform the same calculations without having to use <code><a href="https://rdrr.io/r/base/get.html">get()</a></code>;</p>
+<p>This will in turn allow us to perform the same calculations without having to use <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code>;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>my_sum &lt;-<span class="st"> </span><span class="cf">function</span>(x) { <span class="kw">sum</span>(x) }
 <span class="op">&gt;</span><span class="st"> </span>y &lt;-<span class="st"> </span><span class="kw">sapply</span>(data, <span class="dt">FUN =</span> my_sum)
 <span class="op">&gt;</span><span class="st"> </span>y
@@ -309,8 +305,8 @@ Error <span class="cf">in</span> <span class="kw">get</span>(var) <span class="o
 </div>
 <div id="glueglue---object-not-found" class="section level4">
 <h4 class="hasAnchor">
-<a href="#glueglue---object-not-found" class="anchor"></a>glue::glue() - object not found</h4>
-<p>The future framework will fail to identify globals that are declared via character strings. The above section gives an example of this where <code><a href="https://rdrr.io/r/base/get.html">get()</a></code> is used and explains why it is not feasible to automatically identify string-embedded globals from such code. Another example, is when using <code>glue()</code> from the glue package to generate strings dynamically, e.g.</p>
+<a href="#glueglue---object-not-found" class="anchor" aria-hidden="true"></a>glue::glue() - object not found</h4>
+<p>The future framework will fail to identify globals that are declared via character strings. The above section gives an example of this where <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> is used and explains why it is not feasible to automatically identify string-embedded globals from such code. Another example, is when using <code>glue()</code> from the glue package to generate strings dynamically, e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"glue"</span>)
 <span class="op">&gt;</span><span class="st"> </span>a &lt;-<span class="st"> </span><span class="dv">42</span>
 <span class="op">&gt;</span><span class="st"> </span>s &lt;-<span class="st"> </span><span class="kw">glue</span>(<span class="st">"The value of a is {a}."</span>)
@@ -337,8 +333,8 @@ The value of a is 42.</code></pre>
 </div>
 <div id="missing-packages-false-negatives" class="section level3">
 <h3 class="hasAnchor">
-<a href="#missing-packages-false-negatives" class="anchor"></a>Missing packages (false negatives)</h3>
-<p>Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression. This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package. For example, in the below future generic function <code><a href="https://rdrr.io/r/base/Extract.html">[</a></code> is used on data.table object <code>DT</code>, which requires S3 method <code>[.data.table</code> from the data.table package. However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:</p>
+<a href="#missing-packages-false-negatives" class="anchor" aria-hidden="true"></a>Missing packages (false negatives)</h3>
+<p>Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression. This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package. For example, in the below future generic function <code>[</code> is used on data.table object <code>DT</code>, which requires S3 method <code>[.data.table</code> from the data.table package. However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
 
@@ -360,7 +356,7 @@ Error<span class="op">:</span><span class="st"> </span>object <span class="st">'
 </div>
 <div id="non-exportable-objects" class="section level2">
 <h2 class="hasAnchor">
-<a href="#non-exportable-objects" class="anchor"></a>Non-exportable objects</h2>
+<a href="#non-exportable-objects" class="anchor" aria-hidden="true"></a>Non-exportable objects</h2>
 <p>Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker"). An example of a non-exportable object is is XML objects of the xml2 package. If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
@@ -379,7 +375,7 @@ Error <span class="cf">in</span> <span class="ot">FALSE</span> <span class="op">
 </div>
 <div id="trying-to-pass-an-unresolved-future-to-another-future" class="section level2">
 <h2 class="hasAnchor">
-<a href="#trying-to-pass-an-unresolved-future-to-another-future" class="anchor"></a>Trying to pass an unresolved future to another future</h2>
+<a href="#trying-to-pass-an-unresolved-future-to-another-future" class="anchor" aria-hidden="true"></a>Trying to pass an unresolved future to another future</h2>
 <p>It is not possible for a future to resolve another one unless it was created by the future trying to resolve it. For instance, the following gives an error:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
@@ -402,7 +398,7 @@ Error<span class="op">:</span><span class="st"> </span>Invalid usage of futures<
 <span class="op">&gt;</span><span class="st"> </span>v2 &lt;-<span class="st"> </span><span class="kw">value</span>(f2)
 <span class="op">&gt;</span><span class="st"> </span>v2
 [<span class="dv">1</span>] <span class="dv">7464</span></code></pre></div>
-<p>This works because the value has already been collected and stored inside future <code>f1</code> before future <code>f2</code> is created. Since the value is already stored internally, <code><a href="../reference/value.html">value(f1)</a></code> is readily available everywhere. Of course, instead of using <code><a href="../reference/value.html">value(f1)</a></code> for the second future, it would be more readable and cleaner to simply use <code>v1</code>.</p>
+<p>This works because the value has already been collected and stored inside future <code>f1</code> before future <code>f2</code> is created. Since the value is already stored internally, <code>value(f1)</code> is readily available everywhere. Of course, instead of using <code>value(f1)</code> for the second future, it would be more readable and cleaner to simply use <code>v1</code>.</p>
 <p>The above is typically not a problem when future assignments are used. For example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>v1 <span class="op">%&lt;-%</span><span class="st"> </span>{ <span class="kw">Sys.getpid</span>() }<span class="er">)</span>
 <span class="op">&gt;</span><span class="st"> </span>v2 <span class="op">%&lt;-%</span><span class="st"> </span>{ v1 }
@@ -423,16 +419,16 @@ Error<span class="op">:</span><span class="st"> </span>Invalid usage of futures<
  can only be queried by the R <span class="kw">process</span> (cdd013cb<span class="op">-</span>e045<span class="op">-</span>f4a5<span class="dv">-3977</span><span class="op">-</span>9f064c31f188; pid
  <span class="dv">1276</span> on localhost) that created it, not by any other R <span class="kw">processes</span> (2ce86ccd<span class="dv">-5854</span>
  <span class="op">-</span>7a05<span class="dv">-1373</span><span class="op">-</span>e1b20022e4d8; pid <span class="dv">7464</span> on localhost)<span class="op">:</span><span class="st"> </span>{; <span class="kw">Sys.getpid</span>(); }</code></pre></div>
-<p>As previously, this can be avoided by making sure <code>x$a</code> is resolved first, which can be one in various ways, e.g. <code>dummy &lt;- x$a</code>, <code><a href="../reference/resolve.html">resolve(x$a)</a></code> and <code><a href="https://rdrr.io/r/base/force.html">force(x$a)</a></code>.</p>
+<p>As previously, this can be avoided by making sure <code>x$a</code> is resolved first, which can be one in various ways, e.g. <code>dummy &lt;- x$a</code>, <code>resolve(x$a)</code> and <code>force(x$a)</code>.</p>
 <p><em>Footnote</em>: (*) Although sequential futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type. This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.</p>
 </div>
 <div id="miscellaneous" class="section level2">
 <h2 class="hasAnchor">
-<a href="#miscellaneous" class="anchor"></a>Miscellaneous</h2>
+<a href="#miscellaneous" class="anchor" aria-hidden="true"></a>Miscellaneous</h2>
 <div id="clashes-with-other-packages" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clashes-with-other-packages" class="anchor"></a>Clashes with other packages</h3>
-<p>Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached <em>after</em> the future package, their objects will mask the ones of the future package. For instance, the igraph package also defines a <code><a href="../reference/future.html">%&lt;-%</a></code> operator which clashes with the one in future <em>if used at the prompt or in a script</em> (it is not a problem inside package because there we explicitly import objects in a known order). Here is what we might get:</p>
+<a href="#clashes-with-other-packages" class="anchor" aria-hidden="true"></a>Clashes with other packages</h3>
+<p>Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached <em>after</em> the future package, their objects will mask the ones of the future package. For instance, the igraph package also defines a <code>%&lt;-%</code> operator which clashes with the one in future <em>if used at the prompt or in a script</em> (it is not a problem inside package because there we explicitly import objects in a known order). Here is what we might get:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"igraph"</span>)
 
@@ -453,7 +449,7 @@ The following object is masked from <span class="st">'package:base'</span><span 
 <span class="op">&gt;</span><span class="st"> </span>y <span class="op">%&lt;-%</span><span class="st"> </span>{ <span class="dv">42</span> }
 Error <span class="cf">in</span> <span class="kw">get</span>(<span class="st">".igraph.from"</span>, <span class="kw">parent.frame</span>()) <span class="op">:</span><span class="st"> </span>
 <span class="st">  </span>object <span class="st">'.igraph.from'</span> not found</code></pre></div>
-<p>Here we get an error because <code><a href="../reference/future.html">%&lt;-%</a></code> is from igraph and not the future assignment operator as we wanted. This can be confirmed as:</p>
+<p>Here we get an error because <code>%&lt;-%</code> is from igraph and not the future assignment operator as we wanted. This can be confirmed as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">environment</span>(<span class="st">`</span><span class="dt">%&lt;-%</span><span class="st">`</span>)
 <span class="op">&lt;</span>environment<span class="op">:</span><span class="st"> </span>namespace<span class="op">:</span>igraph<span class="op">&gt;</span></code></pre></div>
 <p>To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.</p>
@@ -481,11 +477,11 @@ The following objects are masked from <span class="st">'package:igraph'</span><s
 </div>
 <div id="syntax-error-non-numeric-argument-to-binary-operator" class="section level3">
 <h3 class="hasAnchor">
-<a href="#syntax-error-non-numeric-argument-to-binary-operator" class="anchor"></a>Syntax error: "non-numeric argument to binary operator"</h3>
-<p>The future assignment operator <code><a href="../reference/future.html">%&lt;-%</a></code> is a <em>binary infix operator</em>, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R. For instance, this explains why we get the following error:</p>
+<a href="#syntax-error-non-numeric-argument-to-binary-operator" class="anchor" aria-hidden="true"></a>Syntax error: "non-numeric argument to binary operator"</h3>
+<p>The future assignment operator <code>%&lt;-%</code> is a <em>binary infix operator</em>, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R. For instance, this explains why we get the following error:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>x <span class="op">%&lt;-%</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)
 Error <span class="cf">in</span> x <span class="op">%&lt;-%</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>) <span class="op">:</span><span class="st"> </span>non<span class="op">-</span>numeric argument to binary operator</code></pre></div>
-<p>What effectively is happening here is that because of the higher priority of <code><a href="../reference/future.html">%&lt;-%</a></code>, we first create a future <code>x %&lt;-% 2</code> and then we try to multiply the future (not its value) with the value of <code><a href="https://rdrr.io/r/stats/Uniform.html">runif(1)</a></code> - which makes no sense. In order to properly assign the future variable, we need to put the future expression within curly brackets;</p>
+<p>What effectively is happening here is that because of the higher priority of <code>%&lt;-%</code>, we first create a future <code>x %&lt;-% 2</code> and then we try to multiply the future (not its value) with the value of <code>runif(1)</code> - which makes no sense. In order to properly assign the future variable, we need to put the future expression within curly brackets;</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span>x <span class="op">%&lt;-%</span><span class="st"> </span>{ <span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>) }
 <span class="op">&gt;</span><span class="st"> </span>x
 [<span class="dv">1</span>] <span class="fl">1.030209</span></code></pre></div>
@@ -493,12 +489,12 @@ Error <span class="cf">in</span> x <span class="op">%&lt;-%</span><span class="s
 </div>
 <div id="r-cmd-check-notes" class="section level3">
 <h3 class="hasAnchor">
-<a href="#r-cmd-check-notes" class="anchor"></a>R CMD check NOTEs</h3>
-<p>The code inspection run by <code>R CMD check</code> will not recognize the future assignment operator <code><a href="../reference/future.html">%&lt;-%</a></code> as an assignment operator, which is not surprising because <code><a href="../reference/future.html">%&lt;-%</a></code> is technically an infix operator. This means that if you for instance use the following code in your package:</p>
+<a href="#r-cmd-check-notes" class="anchor" aria-hidden="true"></a>R CMD check NOTEs</h3>
+<p>The code inspection run by <code>R CMD check</code> will not recognize the future assignment operator <code>%&lt;-%</code> as an assignment operator, which is not surprising because <code>%&lt;-%</code> is technically an infix operator. This means that if you for instance use the following code in your package:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span>
-  <span class="va">a</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
+  <span class="va">a</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
   <span class="va">a</span>
 <span class="op">}</span></code></pre></div>
 <p>then <code>R CMD check</code> will produce a NOTE saying:</p>
@@ -511,7 +507,7 @@ Error <span class="cf">in</span> x <span class="op">%&lt;-%</span><span class="s
 <code class="sourceCode R"><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">a</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co">## To please R CMD check</span>
   <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span>
-  <span class="va">a</span> <span class="op">%&lt;-%</span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
+  <span class="va">a</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
   <span class="va">a</span>
 <span class="op">}</span></code></pre></div>
 </div>
@@ -529,11 +525,13 @@ Error <span class="cf">in</span> x <span class="op">%&lt;-%</span><span class="s
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9002.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
