@@ -51,7 +51,7 @@ Run `revdep_details(, "alookr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/AlpsNMR
 * Date/Publication: 2021-09-19
-* Number of recursive dependencies: 163
+* Number of recursive dependencies: 164
 
 Run `revdep_details(, "AlpsNMR")` for more info
 
@@ -156,7 +156,7 @@ Run `revdep_details(, "BAMBI")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/BatchGetSymbols
 * Date/Publication: 2020-11-28 15:10:21 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 85
 
 Run `revdep_details(, "BatchGetSymbols")` for more info
 
@@ -177,7 +177,7 @@ Run `revdep_details(, "BatchGetSymbols")` for more info
 * GitHub: https://github.com/joshcullen/bayesmove
 * Source code: https://github.com/cran/bayesmove
 * Date/Publication: 2021-04-26 22:10:11 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 145
 
 Run `revdep_details(, "bayesmove")` for more info
 
@@ -199,7 +199,7 @@ Run `revdep_details(, "bayesmove")` for more info
 * GitHub: https://github.com/bcgov/bcmaps
 * Source code: https://github.com/cran/bcmaps
 * Date/Publication: 2021-03-09 23:40:03 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "bcmaps")` for more info
 
@@ -284,7 +284,7 @@ Run `revdep_details(, "blavaan")` for more info
 * GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
 * Date/Publication: 2021-06-17 04:50:02 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 118
 
 Run `revdep_details(, "blockCV")` for more info
 
@@ -312,7 +312,7 @@ Run `revdep_details(, "blockCV")` for more info
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
 * Date/Publication: 2021-08-23 14:00:05 UTC
-* Number of recursive dependencies: 230
+* Number of recursive dependencies: 220
 
 Run `revdep_details(, "brms")` for more info
 
@@ -421,11 +421,11 @@ Run `revdep_details(, "civis")` for more info
 
 <details>
 
-* Version: 0.8.0
+* Version: 0.8.1
 * GitHub: https://github.com/bachmannpatrick/CLVTools
 * Source code: https://github.com/cran/CLVTools
-* Date/Publication: 2021-03-23 16:40:08 UTC
-* Number of recursive dependencies: 80
+* Date/Publication: 2021-10-18 22:50:09 UTC
+* Number of recursive dependencies: 81
 
 Run `revdep_details(, "CLVTools")` for more info
 
@@ -522,10 +522,10 @@ Run `revdep_details(, "CSGo")` for more info
 
 <details>
 
-* Version: 1.3.3
+* Version: 1.3.4
 * GitHub: https://github.com/frictionlessdata/datapackage-r
 * Source code: https://github.com/cran/datapackage.r
-* Date/Publication: 2021-04-16 18:40:03 UTC
+* Date/Publication: 2021-10-11 18:50:08 UTC
 * Number of recursive dependencies: 116
 
 Run `revdep_details(, "datapackage.r")` for more info
@@ -533,28 +533,6 @@ Run `revdep_details(, "datapackage.r")` for more info
 </details>
 
 ## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(datapackage.r)
-      > 
-      > test_check("datapackage.r")
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Error (test-package.R:112:3): string remote path ────────────────────────────
-      Error: 'with_mock_API' is not an exported object from 'namespace:httptest'
-      ── Error (test-profile.R:49:3): load remote profile ────────────────────────────
-      Error: 'with_mock_API' is not an exported object from 'namespace:httptest'
-      ── Error (test-resource.R:67:3): string remote path ────────────────────────────
-      Error: 'with_mock_API' is not an exported object from 'namespace:httptest'
-      
-      [ FAIL 3 | WARN 0 | SKIP 0 | PASS 186 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -615,10 +593,10 @@ Run `revdep_details(, "delayed")` for more info
 
 <details>
 
-* Version: 0.1.8
+* Version: 0.1.9
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2021-09-06 11:50:02 UTC
+* Date/Publication: 2021-10-13 16:52:04 UTC
 * Number of recursive dependencies: 76
 
 Run `revdep_details(, "dipsaus")` for more info
@@ -653,6 +631,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
 
 *   checking tests ...
     ```
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
@@ -662,7 +641,6 @@ Run `revdep_details(, "dispositionEffect")` for more info
       [2] 34 - 28 == 6
       ── Failure (test-realized_duration.R:116:2): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
-      1/4 mismatches
     ...
       1/4 mismatches
       [2] 34 - 28 == 6
@@ -763,7 +741,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/jhollist/elevatr
 * Source code: https://github.com/cran/elevatr
 * Date/Publication: 2021-07-22 04:40:15 UTC
-* Number of recursive dependencies: 78
+* Number of recursive dependencies: 79
 
 Run `revdep_details(, "elevatr")` for more info
 
@@ -773,6 +751,7 @@ Run `revdep_details(, "elevatr")` for more info
 
 *   checking tests ...
     ```
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Complete output:
@@ -782,7 +761,6 @@ Run `revdep_details(, "elevatr")` for more info
       > test_check("elevatr")
       ══ Failed tests ════════════════════════════════════════════════════════════════
       ── Error (test-get_elev_point.R:11:1): (code run outside of `test_that()`) ─────
-      Error in `CRS(SRS_string = ll_prj)`: no arguments in initialization list
     ...
           █
        1. ├─sp::SpatialPoints(coordinates(pt_df), CRS(SRS_string = ll_prj)) test-internal.R:14:0
@@ -804,7 +782,7 @@ Run `revdep_details(, "elevatr")` for more info
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
 * Date/Publication: 2021-08-02 20:10:08 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "envi")` for more info
 
@@ -877,7 +855,7 @@ Run `revdep_details(, "fabletools")` for more info
 * GitHub: https://github.com/italocegatta/fipe
 * Source code: https://github.com/cran/fipe
 * Date/Publication: 2019-08-25 07:20:06 UTC
-* Number of recursive dependencies: 63
+* Number of recursive dependencies: 62
 
 Run `revdep_details(, "fipe")` for more info
 
@@ -911,13 +889,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    11:39:48-11:39:48 > 16:00:00
+    19:40:04-19:40:04 > 16:00:00
     - 24 pops @ layer 2
-    11:39:48-11:39:48 > 16:00:00
+    19:40:04-19:40:04 > 16:00:00
     - 32 pops @ layer 3
-    11:39:48-11:39:48 > 16:00:00
+    19:40:04-19:40:04 > 16:00:00
     - 16 pops @ layer 4
-    11:39:48-11:39:48 > 16:00:00
+    19:40:04-19:40:04 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -953,7 +931,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -990,54 +968,6 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
-# future.tests
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/HenrikBengtsson/future.tests
-* Source code: https://github.com/cran/future.tests
-* Date/Publication: 2020-03-20 12:40:05 UTC
-* Number of recursive dependencies: 12
-
-Run `revdep_details(, "future.tests")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/check.R’ failed.
-    Last 50 lines of output:
-      [[1]][[41]][[1]]
-      TestResult:
-      - Test:
-        - Title: 'value() - visibility'
-        - Tags: 'value', 'visibility'
-        - Reset workers: FALSE
-        - Arguments:
-    ...
-      - args: function (..., envir = parent.frame())
-      - tweaked: FALSE
-      - call: plan(sequential)
-      
-      attr(,"exit_code")
-      [1] 1
-      Total number of errors: 8
-      > proc.time()
-         user  system elapsed 
-        3.292   0.223  10.020 
-    ```
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # geocmeans
 
 <details>
@@ -1046,7 +976,7 @@ Run `revdep_details(, "future.tests")` for more info
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
 * Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 217
+* Number of recursive dependencies: 218
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -1077,7 +1007,7 @@ Run `revdep_details(, "geocmeans")` for more info
 * GitHub: https://github.com/msperlin/GetBCBData
 * Source code: https://github.com/cran/GetBCBData
 * Date/Publication: 2021-01-21 17:40:07 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 84
 
 Run `revdep_details(, "GetBCBData")` for more info
 
@@ -1286,97 +1216,6 @@ Run `revdep_details(, "hal9001")` for more info
         libs   5.7Mb
     ```
 
-# haldensify
-
-<details>
-
-* Version: 0.0.6
-* GitHub: https://github.com/nhejazi/haldensify
-* Source code: https://github.com/cran/haldensify
-* Date/Publication: 2020-09-16 06:40:13 UTC
-* Number of recursive dependencies: 83
-
-Run `revdep_details(, "haldensify")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘haldensify-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: fit_haldensify
-    > ### Title: Fit conditional density estimation for a sequence of HAL models
-    > ### Aliases: fit_haldensify
-    > 
-    > ### ** Examples
-    > 
-    > # simulate data: W ~ U[-4, 4] and A|W ~ N(mu = W, sd = 0.5)
-    ...
-    > fit_cv_haldensify <- fit_haldensify(
-    +   A = a, W = w, n_bins = 3,
-    +   lambda_seq = exp(seq(-1, -10, length = 50))
-    + )
-    Warning in origami::cross_validate(cv_fun = cv_haldensify, folds = folds,  :
-      All iterations resulted in errors
-    Error in apply(density_pred_unscaled, 2, function(x) { : 
-      dim(X) must have a positive length
-    Calls: fit_haldensify -> apply
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(haldensify)
-      haldensify v0.0.6: Highly Adaptive Lasso Conditional Density Estimation
-      > 
-      > test_check("haldensify")
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Error (test-density_standard.R:16:1): (code run outside of `test_that()`) ───
-    ...
-       3.   └─base::eval(substitute(expr), data, enclos = parent.frame())
-       4.     └─base::eval(substitute(expr), data, enclos = parent.frame())
-       5.       └─haldensify::haldensify(...)
-       6.         └─base::mapply(...)
-       7.           └─(function (A, W, wts = rep(1, length(A)), grid_type = "equal_range", ...
-       8.             └─base::apply(...)
-      
-      [ FAIL 2 | WARN 3 | SKIP 0 | PASS 0 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘intro_haldensify.Rmd’ using rmarkdown
-    haldensify v0.0.6: Highly Adaptive Lasso Conditional Density Estimation
-    Warning in origami::cross_validate(cv_fun = cv_haldensify, folds = folds,  :
-      All iterations resulted in errors
-    Quitting from lines 166-173 (intro_haldensify.Rmd) 
-    Error: processing vignette 'intro_haldensify.Rmd' failed with diagnostics:
-    dim(X) must have a positive length
-    --- failed re-building ‘intro_haldensify.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘intro_haldensify.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # hwep
 
 <details>
@@ -1539,27 +1378,6 @@ Run `revdep_details(, "ipc")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# isoreader
-
-<details>
-
-* Version: 1.3.0
-* GitHub: https://github.com/isoverse/isoreader
-* Source code: https://github.com/cran/isoreader
-* Date/Publication: 2021-02-16 06:20:07 UTC
-* Number of recursive dependencies: 109
-
-Run `revdep_details(, "isoreader")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # ivmte
 
 <details>
@@ -1579,52 +1397,6 @@ Run `revdep_details(, "ivmte")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking: 'gurobi', 'cplexAPI'
-    ```
-
-# jstor
-
-<details>
-
-* Version: 0.3.9
-* GitHub: https://github.com/ropensci/jstor
-* Source code: https://github.com/cran/jstor
-* Date/Publication: 2020-06-04 04:50:03 UTC
-* Number of recursive dependencies: 77
-
-Run `revdep_details(, "jstor")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      ── Failure (test-writing-to-file.R:80:3): writing error messages to file works ──
-      `res` not identical to `correct_res`.
-      Objects equal but not identical
-      ── Failure (test-writing-to-file.R:91:3): import wrapper works with column names ──
-      read_csv("testfiles/correct_meta_data.csv", col_names = TRUE) not identical to read_csv(file.path(temp_dir, "/meta_data-1.csv"), col_names = TRUE).
-      Objects equal but not identical
-      ── Failure (test-writing-to-file.R:104:3): import wrapper works without column names ──
-    ...
-      Backtrace:
-          █
-       1. ├─expected_files %>% purrr::map(test_expected_zip) test-zip.R:51:2
-       2. └─purrr::map(., test_expected_zip)
-       3.   └─jstor:::.f(.x[[i]], ...)
-       4.     └─testthat::expect_identical(...) test-zip.R:48:4
-      
-      [ FAIL 11 | WARN 1 | SKIP 4 | PASS 242 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # kernelboot
@@ -1720,7 +1492,8 @@ Run `revdep_details(, "lava")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking: 'gof', 'lava.tobit'
+    Packages suggested but not available for checking:
+      'gof', 'lava.tobit', 'lavaSearch2', 'mets'
     ```
 
 # lidR
@@ -1731,7 +1504,7 @@ Run `revdep_details(, "lava")` for more info
 * GitHub: https://github.com/Jean-Romain/lidR
 * Source code: https://github.com/cran/lidR
 * Date/Publication: 2021-09-29 12:20:16 UTC
-* Number of recursive dependencies: 155
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1770,33 +1543,6 @@ Run `revdep_details(, "lmtp")` for more info
     Namespaces in Imports field not imported from:
       ‘R6’ ‘nnls’ ‘utils’
       All declared Imports should be used.
-    ```
-
-# meedr
-
-<details>
-
-* Version: 0.0.1
-* GitHub: https://github.com/schoulten/meedr
-* Source code: https://github.com/cran/meedr
-* Date/Publication: 2021-03-18 09:00:02 UTC
-* Number of recursive dependencies: 63
-
-Run `revdep_details(, "meedr")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘lubridate’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # metagam
@@ -1858,6 +1604,25 @@ Run `revdep_details(, "MineICA")` for more info
 </details>
 
 ## In both
+
+*   checking running R code from vignettes ...
+    ```
+      ‘MineICA.Rnw’... failed
+     ERROR
+    Errors in running code in vignettes:
+    when running code in ‘MineICA.Rnw’
+      ...
+    > resPath(params)
+    [1] "mainz/"
+    
+    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
+    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
+    
+      When sourcing ‘MineICA.R’:
+    Error: task 1 failed - "Multiple cache results found.
+    Please clear your cache by running biomartCacheClear()"
+    Execution halted
+    ```
 
 *   checking Rd cross-references ... WARNING
     ```
@@ -1968,9 +1733,9 @@ Run `revdep_details(, "MineICA")` for more info
     
         clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
     ...
-    l.23 \usepackage
-                    {subfig}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
+    Error in { : task 1 failed - "Multiple cache results found.
+    Please clear your cache by running biomartCacheClear()"
+    
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -2071,7 +1836,7 @@ Run `revdep_details(, "mistyR")` for more info
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
 * Date/Publication: 2021-09-03 04:30:02 UTC
-* Number of recursive dependencies: 205
+* Number of recursive dependencies: 206
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -2109,35 +1874,14 @@ Run `revdep_details(, "mrgsim.parallel")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# nfl4th
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/guga31bb/nfl4th
-* Source code: https://github.com/cran/nfl4th
-* Date/Publication: 2021-03-17 13:20:08 UTC
-* Number of recursive dependencies: 125
-
-Run `revdep_details(, "nfl4th")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # NMproject
 
 <details>
 
-* Version: 0.6.5
+* Version: 0.6.7
 * GitHub: https://github.com/tsahota/NMproject
 * Source code: https://github.com/cran/NMproject
-* Date/Publication: 2021-09-02 16:50:06 UTC
+* Date/Publication: 2021-10-17 18:00:02 UTC
 * Number of recursive dependencies: 172
 
 Run `revdep_details(, "NMproject")` for more info
@@ -2591,7 +2335,7 @@ Run `revdep_details(, "regmedint")` for more info
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
 * Date/Publication: 2021-08-10 14:00:02 UTC
-* Number of recursive dependencies: 146
+* Number of recursive dependencies: 147
 
 Run `revdep_details(, "rgee")` for more info
 
@@ -2647,7 +2391,7 @@ Run `revdep_details(, "robotstxt")` for more info
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
 * Date/Publication: 2021-10-04 07:40:02 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 74
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2720,7 +2464,7 @@ Run `revdep_details(, "sctransform")` for more info
 * GitHub: https://github.com/Abson-dev/sdmApp
 * Source code: https://github.com/cran/sdmApp
 * Date/Publication: 2021-07-07 08:30:02 UTC
-* Number of recursive dependencies: 164
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "sdmApp")` for more info
 
@@ -2760,10 +2504,10 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 4.0.4
+* Version: 4.0.5
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* Date/Publication: 2021-08-20 19:10:02 UTC
+* Date/Publication: 2021-10-17 20:30:02 UTC
 * Number of recursive dependencies: 242
 
 Run `revdep_details(, "Seurat")` for more info
@@ -2772,62 +2516,12 @@ Run `revdep_details(, "Seurat")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-                             AR_FLAGS: cr
-                               Ranlib: ranlib
-      
-      Languages:
-      ----------
-                                    C: yes
-                           C Compiler: /usr/bin/gcc ( gcc (GCC) 4.8.5 20150623 )
-    ...
-                               dmalloc: no
-        Packages w/ extra debug output: none
-                           API tracing: no
-                  Using memory checker: no
-       Memory allocation sanity checks: no
-                Function stack tracing: no
-                      Use file locking: best-effort
-             Strict file format checks: no
-          Optimization instrumentation: no
-      Bye...
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 12.7Mb
       sub-directories of 1Mb or more:
         R      1.8Mb
         libs   9.9Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Warning! ***HDF5 library version mismatched error***
-    The HDF5 header files used to compile this application do not match
-    the version used by the HDF5 library to which this application is linked.
-    Data corruption or segmentation faults may occur if the application continues.
-    This can happen when an application was compiled by one version of HDF5 but
-    linked with a different version of static or shared HDF5 library.
-    You should recompile the application or check your shared library related
-    settings such as 'LD_LIBRARY_PATH'.
-    You can, at your own risk, disable this warning by setting the environment
-    variable 'HDF5_DISABLE_VERSION_CHECK' to a value of '1'.
-    ...
-                             dmalloc: no
-      Packages w/ extra debug output: none
-                         API tracing: no
-                Using memory checker: no
-     Memory allocation sanity checks: no
-              Function stack tracing: no
-                    Use file locking: best-effort
-           Strict file format checks: no
-        Optimization instrumentation: no
-    Bye...
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -3037,28 +2731,6 @@ Run `revdep_details(, "skpr")` for more info
         libs  48.2Mb
     ```
 
-# smoots
-
-<details>
-
-* Version: 1.1.1
-* GitHub: NA
-* Source code: https://github.com/cran/smoots
-* Date/Publication: 2021-09-22 10:40:02 UTC
-* Number of recursive dependencies: 66
-
-Run `revdep_details(, "smoots")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘progress’
-      All declared Imports should be used.
-    ```
-
 # solitude
 
 <details>
@@ -3090,7 +2762,7 @@ Run `revdep_details(, "solitude")` for more info
 * GitHub: https://github.com/mikemahoney218/spacey
 * Source code: https://github.com/cran/spacey
 * Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 85
 
 Run `revdep_details(, "spacey")` for more info
 
@@ -3107,27 +2779,6 @@ Run `revdep_details(, "spacey")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
-    ```
-
-# SpaDES.core
-
-<details>
-
-* Version: 1.0.9
-* GitHub: https://github.com/PredictiveEcology/SpaDES.core
-* Source code: https://github.com/cran/SpaDES.core
-* Date/Publication: 2021-09-30 14:20:06 UTC
-* Number of recursive dependencies: 145
-
-Run `revdep_details(, "SpaDES.core")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘RandomFields’
     ```
 
 # spaMM
@@ -3171,7 +2822,7 @@ Run `revdep_details(, "spaMM")` for more info
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
 * Date/Publication: 2021-08-02 20:20:02 UTC
-* Number of recursive dependencies: 96
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "sparrpowR")` for more info
 
@@ -3296,11 +2947,11 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.1.1
+* Version: 0.2.0
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2021-01-21 23:30:02 UTC
-* Number of recursive dependencies: 120
+* Date/Publication: 2021-10-09 15:00:02 UTC
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -3310,15 +2961,11 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.3Mb
+      installed size is 21.8Mb
       sub-directories of 1Mb or more:
-        extdata   5.6Mb
-        libs      3.6Mb
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+        doc       2.0Mb
+        extdata   4.0Mb
+        libs     15.1Mb
     ```
 
 # stars
@@ -3371,80 +3018,14 @@ Run `revdep_details(, "startR")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# steps
-
-<details>
-
-* Version: 1.2.1
-* GitHub: NA
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2021-03-03 09:20:10 UTC
-* Number of recursive dependencies: 83
-
-Run `revdep_details(, "steps")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      > library(testthat)
-      > library(raster)
-      Loading required package: sp
-      > library(steps)
-      > 
-      > test_check("steps")
-      [1] "Kernel-based dispersal utilising available RAM to speed up operations"
-    ...
-       4.   ├─rasterVis::levelplot(...)
-       5.   └─rasterVis::levelplot(...)
-       6.     └─rasterVis:::.local(x, data = data, ...)
-       7.       └─rasterVis:::.levelplot(...)
-       8.         └─terra::xmin(bb)
-       9.           └─(function (classes, fdef, mtable) ...
-      
-      [ FAIL 1 | WARN 88 | SKIP 0 | PASS 45 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘custom_function_example.Rmd’ using rmarkdown
-    Loading required package: sp
-    
-    Attaching package: 'future'
-    
-    The following object is masked from 'package:raster':
-    
-        values
-    
-    ...
-    Quitting from lines 151-152 (kangaroo_model_example.Rmd) 
-    Error: processing vignette 'kangaroo_model_example.Rmd' failed with diagnostics:
-    unable to find an inherited method for function 'xmin' for signature '"Extent"'
-    --- failed re-building ‘kangaroo_model_example.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘custom_function_example.Rmd’ ‘kangaroo_model_example.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # synergyfinder
 
 <details>
 
-* Version: 3.0.13
+* Version: 3.0.14
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2021-07-18
+* Date/Publication: 2021-10-14
 * Number of recursive dependencies: 177
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -3500,7 +3081,7 @@ Run `revdep_details(, "synergyfinder")` for more info
 * GitHub: https://github.com/frictionlessdata/tableschema-r
 * Source code: https://github.com/cran/tableschema.r
 * Date/Publication: 2020-03-12 12:40:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 65
 
 Run `revdep_details(, "tableschema.r")` for more info
 
@@ -3654,11 +3235,11 @@ Run `revdep_details(, "TSstudio")` for more info
 
 <details>
 
-* Version: 0.3.5
+* Version: 0.3.6
 * GitHub: https://github.com/nhejazi/txshift
 * Source code: https://github.com/cran/txshift
-* Date/Publication: 2021-02-07 20:10:05 UTC
-* Number of recursive dependencies: 96
+* Date/Publication: 2021-10-18 18:10:02 UTC
+* Number of recursive dependencies: 106
 
 Run `revdep_details(, "txshift")` for more info
 
@@ -3666,93 +3247,9 @@ Run `revdep_details(, "txshift")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘txshift-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: confint.txshift
-    > ### Title: Confidence Intervals for Counterfactual Mean Under Stochastic
-    > ###   Intervention
-    > ### Aliases: confint.txshift
-    > 
-    > ### ** Examples
-    > 
-    ...
-    +     fit_type = "glm",
-    +     glm_formula = "Y ~ ."
-    +   )
-    + )
-    Warning in origami::cross_validate(cv_fun = cv_haldensify, folds = folds,  :
-      All iterations resulted in errors
-    Error in apply(density_pred_unscaled, 2, function(x) { : 
-      dim(X) must have a positive length
-    Calls: txshift ... do.call -> <Anonymous> -> mapply -> <Anonymous> -> apply
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(txshift)
-      txshift v0.3.5: Efficient Estimation of the Causal Effects of Stochastic
-      Interventions
-      > 
-      > test_check("txshift")
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-    ...
-          yolo = FALSE)`: unused arguments (fit_type = "glmnet", standardize = FALSE, type.measure = "mse", nlambda = 1000, lambda.min.ratio = 1/nrow(data_internal))
-      Backtrace:
-          █
-       1. └─txshift::txshift(...) test-tmle_comparison.R:124:0
-       2.   └─txshift:::tmle_txshift(...)
-       3.     └─txshift:::ipcw_eif_update(...)
-      
-      [ FAIL 2 | WARN 4 | SKIP 0 | PASS 7 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘intro_txshift.Rmd’ using rmarkdown
-    Quitting from lines 107-116 (intro_txshift.Rmd) 
-    Error: processing vignette 'intro_txshift.Rmd' failed with diagnostics:
-    dim(X) must have a positive length
-    --- failed re-building ‘intro_txshift.Rmd’
-    
-    --- re-building ‘ipcw_txshift.Rmd’ using rmarkdown
-    Quitting from lines 129-141 (ipcw_txshift.Rmd) 
-    Error: processing vignette 'ipcw_txshift.Rmd' failed with diagnostics:
-    dim(X) must have a positive length
-    --- failed re-building ‘ipcw_txshift.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘intro_txshift.Rmd’ ‘ipcw_txshift.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package which this enhances but not available for checking: ‘sl3’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘tibble’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # UCSCXenaShiny
@@ -3763,7 +3260,7 @@ Run `revdep_details(, "txshift")` for more info
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
 * Date/Publication: 2021-07-30 04:50:02 UTC
-* Number of recursive dependencies: 207
+* Number of recursive dependencies: 205
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
