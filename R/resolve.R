@@ -155,7 +155,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
     if (is.numeric(idxs)) {
       idxs <- as.numeric(idxs)
       if (any(idxs < 1 | idxs > nx)) {
-        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
+        stopf("Indices out of range [1,%d]: %s", nx, hpaste(idxs))
       }
     } else {
       names <- names(x)
@@ -404,7 +404,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
 
     if (is.numeric(idxs)) {
       if (any(idxs < 1 | idxs > nx)) {
-        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
+        stopf("Indices out of range [1,%d]: %s", nx, hpaste(idxs))
       }
     } else {
       names <- names(x)

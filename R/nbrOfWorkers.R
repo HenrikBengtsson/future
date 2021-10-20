@@ -30,7 +30,7 @@ nbrOfWorkers.cluster <- function(evaluator) {
   } else if (inherits(workers, "cluster")) {
     workers <- length(workers)
   } else {
-    stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
+    stopf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1])
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L, is.finite(workers))
 
@@ -54,7 +54,7 @@ nbrOfWorkers.multiprocess <- function(evaluator) {
   if (is.function(workers)) workers <- workers()
   if (is.numeric(workers)) {
   } else {
-    stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
+    stopf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1])
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L, is.finite(workers))
 
@@ -72,7 +72,7 @@ nbrOfWorkers.future <- function(evaluator) {
   } else if (is.null(workers)) {
     workers <- Inf
   } else {
-    stop(sprintf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1]))
+    stopf("Unsupported type of 'workers' for evaluator of class %s: %s", paste(sQuote(class(evaluator)), collapse = ", "), class(workers)[1])
   }
   stop_if_not(length(workers) == 1L, !is.na(workers), workers >= 1L)
 
