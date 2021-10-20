@@ -23,7 +23,7 @@ tweak.character <- function(strategy, ..., penvir = parent.frame()) {
     envir <- getNamespace(parts[[1]])
     s <- parts[[2]]
     if (!exists(s, mode = "function", envir = envir, inherits = TRUE)) {
-      stop("No such strategy for futures: ", sQuote(strategy))
+      stopf("No such strategy for futures: %s", sQuote(strategy))
     }
     strategy <- get(s, mode = "function", envir = envir, inherits = TRUE)
   } else {
@@ -33,7 +33,7 @@ tweak.character <- function(strategy, ..., penvir = parent.frame()) {
     for (envir in envirs) {
       ## Reached the end? Nothing found.
       if (is.null(envir)) {
-        stop("No such strategy for futures: ", sQuote(strategy))
+        stopf("No such strategy for futures: %s", sQuote(strategy))
       }
   
       if (exists(strategy, mode = "function", envir = envir, inherits = TRUE)) {
@@ -83,7 +83,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   if (any(names %in% untweakable)) {
     untweakable <- intersect(names, untweakable)
     untweakable <- paste(sQuote(untweakable), collapse = ", ")
-    stop("Detected arguments that must not be set via plan() or tweak(): ",
+    stopf("Detected arguments that must not be set via plan() or tweak(): %s",
          untweakable)
   }
   

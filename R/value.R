@@ -89,7 +89,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
           cond <- RngFutureWarning(msg, uuid = uuid, future = f)
         } else {
           cond <- NULL
-          warning("Unknown value on option 'future.rng.onMisuse': ",
+          warnf("Unknown value on option 'future.rng.onMisuse': %s",
                   sQuote(onMisuse))
         }
 

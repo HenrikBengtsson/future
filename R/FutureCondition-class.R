@@ -38,7 +38,7 @@ FutureCondition <- function(message, call = NULL, uuid = future$uuid, future = N
 
   message <- as.character(message)
   if (length(message) != 1L) {
-    stop("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: ", length(message))
+    stopf("INTERNAL ERROR: Trying to set up a FutureCondition with length(message) != 1L: %d", length(message))
   }
 
   if (!is.null(uuid)) {

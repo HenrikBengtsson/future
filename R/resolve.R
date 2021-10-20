@@ -166,7 +166,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]
       if (length(unknown) > 0) {
-        stop("Unknown elements: ", hpaste(sQuote(unknown)))
+        stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
       }
     }
 
@@ -283,7 +283,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
     idxs <- as.character(idxs)
     unknown <- idxs[!is.element(idxs, names)]
     if (length(unknown) > 0) {
-      stop("Unknown elements: ", hpaste(sQuote(unknown)))
+      stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
     }
   }
 
@@ -415,7 +415,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]
       if (length(unknown) > 0) {
-        stop("Unknown elements: ", hpaste(sQuote(unknown)))
+        stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
       }
     }
   }

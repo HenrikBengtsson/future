@@ -18,7 +18,7 @@ whichIndex <- function(I, dim, dimnames = NULL) {
         idxs <- match(idxs, dimnames[[kk]])
         if (anyNA(idxs)) {
           unknown <- I[is.na(idxs), kk]
-          stop("Unknown indices: ", hpaste(sQuote(unknown)))
+          stopf("Unknown indices: %s", hpaste(sQuote(unknown)))
         }
       }
       I2[, kk] <- idxs
@@ -42,7 +42,7 @@ whichIndex <- function(I, dim, dimnames = NULL) {
       idxs <- match(idxs, dimnames[[kk]])
       if (anyNA(idxs)) {
         unknown <- I[is.na(idxs), kk]
-        stop("Unknown indices: ", hpaste(sQuote(unknown)))
+        stopf("Unknown indices: %s", hpaste(sQuote(unknown)))
       }
       I2[, kk] <- idxs
     }

@@ -147,7 +147,7 @@ nbrOfFreeWorkers.multicore <- function(evaluator, background = FALSE, ...) {
 
 #' @export
 nbrOfFreeWorkers.multiprocess <- function(evaluator, background = FALSE, ...) {
-  stop("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
+  stopf("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): %s", paste(sQuote(class(evaluator)), collapse = ", "))
 }
 
 #' @export
@@ -157,7 +157,7 @@ nbrOfFreeWorkers.future <- function(evaluator, background = FALSE, ...) {
   workers <- nbrOfWorkers(evaluator)
   if (is.infinite(workers)) return(workers)
 
-  stop("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): ", paste(sQuote(class(evaluator)), collapse = ", "))
+  stopf("nbrOfFreeWorkers() is not implemented for this type of future backend (please contacts the maintainer of that backend): %s", paste(sQuote(class(evaluator)), collapse = ", "))
 }
 
 

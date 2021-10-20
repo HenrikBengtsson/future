@@ -114,7 +114,7 @@ bquote_apply <- function(tmpl, envir = parent.frame()) {
         e[1] <- list(NULL)
         e <- as.pairlist(e)
       } else {
-        stop("Unknown type of expression (please report to the maintainer): ",
+        stopf("Unknown type of expression (please report to the maintainer): %s",
              sQuote(paste(deparse(e), collapse = "\\n")))
       }
       if (is.null(head)) {

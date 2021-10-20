@@ -76,7 +76,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       } else if (is.list(add)) {
         if (debug) mdebugf("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
       } else {
-        stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
+        stopf("Attribute 'add' of argument 'globals' must be either a character vector or a named list: %s", mode(add))
       }
       add <- as.FutureGlobals(add)
       stop_if_not(inherits(add, "FutureGlobals"))
@@ -138,7 +138,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else if (is.list(globals)) {
     if (debug) mdebugf("- globals passed as-list: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else {
-    stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
+    stopf("Argument 'globals' must be either a logical scalar or a character vector: %s", mode(globals))
   }
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)
