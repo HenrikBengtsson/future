@@ -636,7 +636,7 @@ DEPRECATED AND DEFUNCT:
 
  * Argument 'value' of resolve() is deprecated. Use 'result' instead.
 
- * Use of internal argument 'evaluator' is now defunct.
+ * Use of internal argument 'evaluator' to future() is now defunct.
 
 
 Version: 1.14.0 [2019-07-01]
@@ -699,7 +699,7 @@ DEPRECATED AND DEFUNCT:
    future 1.12.0).  Option 'future.progress' is ignored.  This will make
    room for other progress-update mechanisms that are in the works.
 
- * Usage of internal argument 'evaluator' is now deprecated.
+ * Usage of internal argument 'evaluator' to future() is now deprecated.
  
  * Removed defunct argument 'output' from FutureError().
 
