@@ -1151,8 +1151,10 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
 adhoc_native_to_utf8 <- function(x) {
   code <- gsub("<U[+]([[:digit:]]+)>", "\\\\u\\1", x)
   if (identical(code, x)) return(x)
+  code <- gsub('"', '\\"', code, fixed = TRUE)
+  code <- paste('"', code, '"', sep = "")
   tryCatch({
-    expr <- parse(text = dQuote(code, q = FALSE))
+    expr <- parse(text = code)
     eval(expr, envir = emptyenv())
   }, error = function(ex) x)
 }
