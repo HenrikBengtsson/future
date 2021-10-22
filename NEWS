@@ -20,10 +20,10 @@ SIGNIFICANT CHANGES:
  * Support for 'persistent = TRUE' with multisession futures is defunct.
 
  * UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols,
-   e.g. a UTF-8 checkmark symbol would be relayed as '<U+2713>'.  The reason
-   for this is a limitation in R itself on MS Windows.  Now, value() attempts
-   to re-encode such MS Windows output to UTF-8 before relaying it.  To
-   disable this feature, set option 'future.output.windows.reencode' to FALSE.
+   e.g. a UTF-8 checkmark symbol ('\u2713') would be relayed as '<U+2713>'
+   (8 characters).  The reason for this is a limitation in R itself on MS
+   Windows.  Now, value() attempts to recover such MS Windows output to UTF-8
+   before relaying it.  There is an option for disabling this new feature.
 
 MISCELLANEOUS:
 
