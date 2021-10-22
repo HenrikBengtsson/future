@@ -1152,7 +1152,7 @@ adhoc_native_to_utf8 <- function(x) {
   code <- gsub("<U[+]([[:digit:]]+)>", "\\\\u\\1", x)
   if (identical(code, x)) return(x)
   tryCatch({
-    expr <- parse(text = dQuote(code))
+    expr <- parse(text = dQuote(code, q = FALSE))
     eval(expr, envir = emptyenv())
   }, error = function(ex) x)
 }
