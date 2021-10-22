@@ -11,7 +11,8 @@ strings <- c(
         "[x] hello" = "[x] hello",
     "\\u2713 hello" = "<U+2713> hello",
   "'\\u2713 hello'" = "'<U+2713> hello'",
-  '"\\u2713 hello"' = '"<U+2713> hello"'
+  '"\\u2713 hello"' = '"<U+2713> hello"',
+    "\\u306B hello" = "<U+306B> hello"
 )
 for (kk in seq_along(strings)) {
   name <- names(strings)[kk]

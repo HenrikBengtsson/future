@@ -1149,7 +1149,7 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
 
 ## https://github.com/HenrikBengtsson/future/issues/473
 adhoc_native_to_utf8 <- function(x) {
-  code <- gsub("<U[+]([[:digit:]]+)>", "\\\\u\\1", x)
+  code <- gsub("<U[+]([[:alnum:]]+)>", "\\\\u\\1", x)
   if (identical(code, x)) return(x)
   code <- gsub('"', '\\"', code, fixed = TRUE)
   code <- paste('"', code, '"', sep = "")
