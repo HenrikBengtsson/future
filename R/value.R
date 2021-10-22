@@ -55,7 +55,14 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
       inherits(result$stdout, "character")) {
-    cat(paste(result$stdout, collapse = "\n"))
+      out <- paste(result$stdout, collapse = "\n")
+      if (nzchar(out) > 0) {
+        ## AD HOC: Fix captured UTF-8 output on Windows?
+        if (getOption("future.stdout.windows.reencode", TRUE) && identical(result$r_info$os, "windows")) {
+          out <- adhoc_native_to_utf8(out)
+        }
+        cat(out)
+      }
   }
 
 

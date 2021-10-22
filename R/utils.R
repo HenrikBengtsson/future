@@ -1146,3 +1146,13 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
 
   res
 }
+
+## https://github.com/HenrikBengtsson/future/issues/473
+adhoc_native_to_utf8 <- function(x) {
+  code <- gsub("<U[+]([[:digit:]]+)>", "\\\\u\\1", x)
+  if (identical(code, x)) return(x)
+  tryCatch({
+    expr <- parse(text = dQuote(code))
+    eval(expr, envir = emptyenv())
+  }, error = function(ex) x)
+}

@@ -34,43 +34,56 @@
 #'
 #' @export
 #' @keywords internal
-FutureResult <- function(value = NULL, visible = TRUE, stdout = NULL, conditions = NULL, rng = FALSE, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
-  args <- list(...)
-  if (length(args) > 0) {
-    names <- names(args)
-    if (is.null(names) || any(nchar(names) == 0)) {
-      stop(FutureError(
-        "Internal error: All arguments to FutureResult() must be named"
-      ))
+FutureResult <- local({
+  r_info <- NULL
+
+  function(value = NULL, visible = TRUE, stdout = NULL, conditions = NULL, rng = FALSE, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
+    args <- list(...)
+    if (length(args) > 0) {
+      names <- names(args)
+      if (is.null(names) || any(nchar(names) == 0)) {
+        stop(FutureError(
+          "Internal error: All arguments to FutureResult() must be named"
+        ))
+      }
     }
+  
+    stop_if_not(is.logical(visible), length(visible) == 1L, !is.na(visible))
+  
+    if (!is.null(stdout)) stop_if_not(is.character(stdout))
+  
+    stop_if_not(is.null(conditions) || is.list(conditions))
+  
+    stop_if_not(is.logical(rng), length(rng) == 1L, !is.na(rng))
+  
+    stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
+  
+    if (version == "1.7") {
+      .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.", package = .packageName)
+    }
+
+    if (is.null(r_info)) {
+      r_info <<- list(
+        version = getRversion(),
+        os      = .Platform[["OS.type"]],
+        os_name = Sys.info()[["sysname"]]
+      )
+    }
+
+    structure(list(
+      value      = value,
+      visible    = visible,
+      stdout     = stdout,
+      conditions = conditions,
+      rng        = rng,
+      ...,
+      started    = started,
+      finished   = finished,
+      r_info     = r_info,
+      version    = version
+    ), class = "FutureResult")
   }
-
-  stop_if_not(is.logical(visible), length(visible) == 1L, !is.na(visible))
-
-  if (!is.null(stdout)) stop_if_not(is.character(stdout))
-
-  stop_if_not(is.null(conditions) || is.list(conditions))
-
-  stop_if_not(is.logical(rng), length(rng) == 1L, !is.na(rng))
-
-  stop_if_not(is.character(version), length(version) == 1L, !is.na(version))
-
-  if (version == "1.7") {
-    .Defunct(msg = "FutureResult objects with an internal version of 1.7 or earlier are defunct. This error is likely coming from a third-party package or other R code. Please report this to the maintainer of the 'future' package so this can be resolved.", package = .packageName)
-  }
-
-  structure(list(
-    value      = value,
-    visible    = visible,
-    stdout     = stdout,
-    conditions = conditions,
-    rng        = rng,
-    ...,
-    started    = started,
-    finished   = finished,
-    version    = version
-  ), class = "FutureResult")
-}
+})
 
 
 #' @rdname FutureResult

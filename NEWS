@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.22.1-9003 [2021-09-25]
+Version: 1.22.1-9004 [2021-10-21]
 
 HOW TO INSTALL THE DEVELOP VERSION:
 
@@ -18,6 +18,12 @@ SIGNIFICANT CHANGES:
    better approach for troubleshooting.
 
  * Support for 'persistent = TRUE' with multisession futures is defunct.
+
+ * UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols,
+   e.g. a UTF-8 checkmark symbol would be relayed as '<U+2713>'.  The reason
+   for this is a limitation in R itself on MS Windows.  Now, value() attempts
+   to re-encode such MS Windows output to UTF-8 before relaying it.  To
+   disable this feature, set option 'future.output.windows.reencode' to FALSE.
 
 MISCELLANEOUS:
 
