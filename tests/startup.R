@@ -88,7 +88,8 @@ options(future.plan = NULL, future.cmdargs = c("-p", 2))
 strategy <- plan("next")
 print(strategy)
 if (maxCores >= 2) {
-  stopifnot(inherits(strategy, "multisession"))
+  ## Exactly which type of 'multiprocess' future depends on R_FUTURE_PLAN
+  stopifnot(inherits(strategy, "multiprocess"))
 } else {
   stopifnot(all(class(strategy) == class(strategy0)))
 }
