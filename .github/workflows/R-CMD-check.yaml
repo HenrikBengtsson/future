@@ -37,6 +37,10 @@ jobs:
       _R_CHECK_SUGGESTS_ONLY_: true
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
+      R_FUTURE_PLAN: ${{ matrix.config.plan }}
+      R_FUTURE_GLOBALS_ONREFERENCE: warning
+      R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.relay_immediate }}
+      R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.multithreading_enable }}
       
     steps:
       - uses: actions/checkout@v2
@@ -87,6 +91,9 @@ jobs:
       - name: Session info
         run: |
           options(width = 100)
+          parallelly::availableCores(which = "all")
+          sapply(c(physical_cores = FALSE, logical_cores = TRUE), parallel::detectCores)
+          if (require(RhpcBLASctl, quietly=TRUE)) c(get_num_procs = get_num_procs(), get_num_cores = get_num_cores(), blas_get_num_procs = blas_get_num_procs(), omp_get_num_procs = omp_get_num_procs(), omp_get_max_threads = omp_get_max_threads())
           capabilities()
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
