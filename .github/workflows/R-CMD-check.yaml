@@ -101,6 +101,7 @@ jobs:
       - name: Check (!Windows)
         if: runner.os != 'Windows'
         env:
+          ## FIXME: Eventually update to 'R_FUTURE_GLOBALS_ONREFERENCE=error'
           R_FUTURE_GLOBALS_ONREFERENCE: "warning"
           R_FUTURE_PLAN: ${{ matrix.config.plan }}
           R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork_enable }}
