@@ -4,7 +4,7 @@ name: covr
 
 jobs:
   covr:
-    if: contains(github.ref, 'release') || contains(github.ref, 'master') || contains(github.ref, 'main') || contains(github.event.head_commit.message, '[covr]')
+    if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
     runs-on: ubuntu-20.04
 
