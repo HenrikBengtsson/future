@@ -20,6 +20,8 @@ jobs:
           - {os: macOS-latest,   r: 'release' }
           - {os: ubuntu-20.04,   r: 'devel'   }
           - {os: ubuntu-20.04,   r: 'release' }
+          - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork.multithreading.enable: false, label: 'multisession, no-multithreading' }
+          - {os: ubuntu-20.04,   r: 'release', psock.relay.immediate: false, label: 'no-immediate-relay' }
           - {os: ubuntu-20.04,   r: 'oldrel'  }
           - {os: ubuntu-20.04,   r: '3.5'     }
           - {os: ubuntu-20.04,   r: '3.4'     }
@@ -37,10 +39,6 @@ jobs:
       _R_CHECK_SUGGESTS_ONLY_: true
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
-      R_FUTURE_PLAN: ${{ matrix.config.plan }}
-      R_FUTURE_GLOBALS_ONREFERENCE: warning
-      R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.relay_immediate }}
-      R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.multithreading_enable }}
       
     steps:
       - uses: actions/checkout@v2
@@ -102,12 +100,12 @@ jobs:
       - name: Check (!Windows)
         if: runner.os != 'Windows'
         env:
-          R_FUTURE_PLAN: ${{ matrix.config.future.plan }}
-          R_FUTURE_FORK_ENABLE: ${{ matrix.config.future.fork.enable }}
-          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.future.psock.relay.immediate }}
-          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.future.fork.multithreading.enable }}
-          R_FUTURE_GLOBALS_ONREFERENCE: ${{ matrix.config.future.globals.onreference }}
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "warning", check_dir = "check")
+          R_FUTURE_GLOBALS_ONREFERENCE: "warning"
+          R_FUTURE_PLAN: ${{ matrix.config.plan }}
+          R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork.enable }}
+          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock.relay.immediate }}
+          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork.multithreading.enable }}
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "warning", check_dir = "check")
         shell: Rscript {0}
  
       - name: Check (Windows)
