@@ -20,8 +20,9 @@ jobs:
           - {os: macOS-latest,   r: 'release' }
           - {os: ubuntu-20.04,   r: 'devel'   }
           - {os: ubuntu-20.04,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork.multithreading.enable: false, label: 'multisession, no-multithreading' }
-          - {os: ubuntu-20.04,   r: 'release', psock.relay.immediate: false, label: 'no-immediate-relay' }
+          - {os: ubuntu-20.04,   r: 'release', plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
+          - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
+          - {os: ubuntu-20.04,   r: 'release', psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
           - {os: ubuntu-20.04,   r: 'oldrel'  }
           - {os: ubuntu-20.04,   r: '3.5'     }
           - {os: ubuntu-20.04,   r: '3.4'     }
@@ -102,9 +103,9 @@ jobs:
         env:
           R_FUTURE_GLOBALS_ONREFERENCE: "warning"
           R_FUTURE_PLAN: ${{ matrix.config.plan }}
-          R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork.enable }}
-          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock.relay.immediate }}
-          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork.multithreading.enable }}
+          R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork_enable }}
+          R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork_multithreading_enable }}
+          R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock_relay_immediate }}
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "warning", check_dir = "check")
         shell: Rscript {0}
  
