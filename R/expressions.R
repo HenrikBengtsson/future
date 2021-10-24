@@ -24,6 +24,7 @@ makeExpression <- local({
       future.resolve.recursive       = .(getOption("future.resolve.recursive")),
       future.rng.onMisuse            = .(getOption("future.rng.onMisuse")),
       future.rng.onMisuse.keepFuture = .(getOption("future.rng.onMisuse.keepFuture")),
+      future.stdout.windows.reencode = .(getOption("future.stdout.windows.reencode")),
 
       ## Other options relevant to making futures behave consistently
       ## across backends
