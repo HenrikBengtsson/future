@@ -13,14 +13,17 @@ SIGNIFICANT CHANGES:
 
  * plan() now produces a one-time warning if a 'transparent' strategy is set.
    The warning reminds the user that 'transparent' should only be used for
-   troubleshooting purposes and never be used in production. By the way, these
-   days plan(sequential, split = TRUE) together with debug() is probably a
-   better approach for troubleshooting.
+   troubleshooting purposes and never be used in production. These days
+   plan(sequential, split = TRUE) together with debug() is probably a better
+   approach for troubleshooting. The long-term plan is to deprecate the
+   'transparent' strategy.
 
  * Support for 'persistent = TRUE' with multisession futures is defunct.
 
+BETA FEATURES:
+
  * UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols,
-   e.g. a UTF-8 checkmark symbol ('\u2713') would be relayed as '<U+2713>'
+   e.g. a UTF-8 check mark symbol ('\u2713') would be relayed as '<U+2713>'
    (8 characters).  The reason for this is a limitation in R itself on MS
    Windows.  Now, value() attempts to recover such MS Windows output to UTF-8
    before relaying it.  There is an option for disabling this new feature.
