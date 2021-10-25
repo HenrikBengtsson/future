@@ -258,9 +258,15 @@
 <h3 class="hasAnchor">
 <a href="#significant-changes" class="anchor"></a>Significant Changes</h3>
 <ul>
-<li><p>plan() now produces a one-time warning if a ‘transparent’ strategy is set. The warning reminds the user that ‘transparent’ should only be used for troubleshooting purposes and never be used in production. By the way, these days plan(sequential, split = TRUE) together with debug() is probably a better approach for troubleshooting.</p></li>
+<li><p>plan() now produces a one-time warning if a ‘transparent’ strategy is set. The warning reminds the user that ‘transparent’ should only be used for troubleshooting purposes and never be used in production. These days plan(sequential, split = TRUE) together with debug() is probably a better approach for troubleshooting. The long-term plan is to deprecate the ‘transparent’ strategy.</p></li>
 <li><p>Support for ‘persistent = TRUE’ with multisession futures is defunct.</p></li>
-<li><p>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 checkmark symbol (‘\u2713’) would be relayed as ‘&lt;U+2713&gt;’ (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, value() attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</p></li>
+</ul>
+</div>
+<div id="beta-features" class="section level3">
+<h3 class="hasAnchor">
+<a href="#beta-features" class="anchor"></a>Beta Features</h3>
+<ul>
+<li>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 check mark symbol (‘\u2713’) would be relayed as ‘&lt;U+2713&gt;’ (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, value() attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</li>
 </ul>
 </div>
 <div id="miscellaneous" class="section level3">
@@ -354,9 +360,9 @@
 <li><p>Now run-time errors from resolving a future take precedence over RngFutureError:s. That is, future({ rnorm(1); log(“a”) }, seed = FALSE) will signal an error ‘log(“a”)’ instead of an RNG error when option ‘future.rng.onMisuse’ is set to “error”.</p></li>
 </ul>
 </div>
-<div id="beta-features" class="section level3">
+<div id="beta-features-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#beta-features" class="anchor"></a>Beta Features</h3>
+<a href="#beta-features-1" class="anchor"></a>Beta Features</h3>
 <ul>
 <li>Add nbrOfFreeWorkers() to query how many workers are free to take on futures immediately. Until all third-party future backends have implemented this, some backends might produce an error saying it is not yet supported.</li>
 </ul>
@@ -608,9 +614,9 @@
 <li><p>ClusterFuture:s now relay immediateCondition:s back to the main process momentarily after they are signaled and before the future is resolved.</p></li>
 </ul>
 </div>
-<div id="beta-features-1" class="section level3">
+<div id="beta-features-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#beta-features-1" class="anchor"></a>Beta Features</h3>
+<a href="#beta-features-2" class="anchor"></a>Beta Features</h3>
 <ul>
 <li>Add support for automatically disable multi-threading when using ‘multicore’ futures. For now, the default is to allow multi-threaded processing but this might change in the future. To disable multi-threaded, set option ‘future.fork.multithreading.enable’ or environment variable ‘R_FUTURE_FORK_MULTITHREADING_ENABLE’ to ‘FALSE’. This requires that ‘RhpcBLASctl’ package is installed. Parallelization via multi-threaded processing (done in native code by some packages and externally library) while at the same time using forked (aka “multicore”) parallel processing is unstable in some cases. Note that this is not only true when using plan(multicore) but also when using, for instance, parallel::mclapply(). This is in beta so the above names and options might change later.</li>
 </ul>
@@ -1067,9 +1073,9 @@
 <li>Vignette ‘Common Issues with Solutions’ now documents the case where the future framework fails to identify a variable as being global because it is only so conditionally, e.g. ‘if (runif(1) &lt; 1/2) x &lt;- 0; y &lt;- 2 * x’.</li>
 </ul>
 </div>
-<div id="beta-features-2" class="section level3">
+<div id="beta-features-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#beta-features-2" class="anchor"></a>Beta Features</h3>
+<a href="#beta-features-3" class="anchor"></a>Beta Features</h3>
 <ul>
 <li>Added mechanism for detecting globals that _may_ not be exportable to an external R process (a “worker”). Typically, globals that carry connections and external pointers (“externalptr”) can not be exported, but there are exceptions. By setting options ‘future.globals.onReference’ to “warning”, a warning is produced informing the user about potential problems. If “error”, an error is produced. Because there might be false positive, the default is “ignore”, which will cause above scans to be skipped. If there are non-exportable globals and these tests are skipped, a run-time error may be produced only when the future expression is evaluated.</li>
 </ul>
