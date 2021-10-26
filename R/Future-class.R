@@ -717,11 +717,6 @@ getExpression.Future <- local({
       exit <- bquote_apply(tmpl_exit_mccores)
     }
     
-    ## Set RNG seed?
-    if (is.numeric(future$seed)) {
-      enter <- bquote_apply(tmpl_enter_rng)
-    }
-  
     ## Packages needed by the future
     pkgs <- packages(future)
     if (length(pkgs) > 0) {
@@ -765,10 +760,15 @@ getExpression.Future <- local({
     ## Make sure to set all nested future strategies needed
     ## Use default future strategy?
     if (length(strategiesR) == 0L) strategiesR <- "default"
-      
+
     ## Pass down future strategies
     enter <- bquote_apply(tmpl_enter_plan)
     exit <- bquote_apply(tmpl_exit_plan)
+
+    ## Set RNG seed?
+    if (is.numeric(future$seed)) {
+      enter <- bquote_apply(tmpl_enter_rng)
+    }
   
     expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
     if (getOption("future.debug", FALSE)) mprint(expr)

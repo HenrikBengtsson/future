@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.22.1-9004 [2021-10-21]
+Version: 1.22.1-9005 [2021-10-26]
 
 HOW TO INSTALL THE DEVELOP VERSION:
 
@@ -32,6 +32,14 @@ MISCELLANEOUS:
 
  * TESTS: Using more robust emulation of crashed forked parallel workers
    after understanding that quit() must not be used in forked R processes.
+
+BUG FIXES:
+
+ * Now future(..., seed) will set the random seed as late as possible just
+   before the future expression is evaluated.  Previously it was done before
+   package dependencies where attached, which could lead to non-reproduce
+   random numbers in case a package dependency would update the RNG seed
+   when attached.
 
 DEPRECATED AND DEFUNCT:
 
