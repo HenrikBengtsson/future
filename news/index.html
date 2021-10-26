@@ -95,7 +95,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9005</span>
       </span>
     </div>
 
@@ -243,9 +243,9 @@
       <small>Source: <a href='https://github.com/HenrikBengtsson/future/blob/master/NEWS'><code>NEWS</code></a></small>
     </div>
 
-    <div id="future-1-22-1-9004" class="section level1">
-<h1 class="page-header" data-toc-text="1.22.1-9004">
-<a href="#future-1-22-1-9004" class="anchor"></a>future 1.22.1-9004<small> Unreleased </small>
+    <div id="future-1-22-1-9005" class="section level1">
+<h1 class="page-header" data-toc-text="1.22.1-9005">
+<a href="#future-1-22-1-9005" class="anchor"></a>future 1.22.1-9005<small> Unreleased </small>
 </h1>
 <div id="how-to-install-the-develop-version" class="section level3">
 <h3 class="hasAnchor">
@@ -274,6 +274,13 @@
 <a href="#miscellaneous" class="anchor"></a>Miscellaneous</h3>
 <ul>
 <li>TESTS: Using more robust emulation of crashed forked parallel workers after understanding that quit() must not be used in forked R processes.</li>
+</ul>
+</div>
+<div id="bug-fixes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<ul>
+<li>Now future(…, seed) will set the random seed as late as possible just before the future expression is evaluated. Previously it was done before package dependencies where attached, which could lead to non-reproduce random numbers in case a package dependency would update the RNG seed when attached.</li>
 </ul>
 </div>
 <div id="deprecated-and-defunct" class="section level3">
@@ -332,9 +339,9 @@
 <li><p>Now plan(multicore) warns immediately if multicore processing, that is, forked processing, is not supported, e.g. when running in the RStudio Console.</p></li>
 </ul>
 </div>
-<div id="bug-fixes" class="section level3">
+<div id="bug-fixes-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>plan(multiprocess, workers = n) did not warn about ‘multiprocess’ being deprecated when argument ‘workers’ was specified.</p></li>
 <li><p>getGlobalsAndPackages() could throw a false error on “Did you mean to create the future within a function? Invalid future expression tries to use global ‘…’ variables that do not exist: &lt;some expression&gt;” when ‘…’ is solely part of a formula or used in some S4 generic functions.</p></li>
@@ -367,9 +374,9 @@
 <li>Add nbrOfFreeWorkers() to query how many workers are free to take on futures immediately. Until all third-party future backends have implemented this, some backends might produce an error saying it is not yet supported.</li>
 </ul>
 </div>
-<div id="bug-fixes-1" class="section level3">
+<div id="bug-fixes-2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>future(…, seed = TRUE) with ‘sequential’ futures would set the RNG kind of the parent process. Now it behaves the same regardless of future backend.</p></li>
 <li><p>Signaling immediateCondition:s with ‘multicore’ could result in “Error in save_rds(obj, file) : save_rds() failed to rename temporary save file ‘/tmp/RtmpxNyIyK/progression21f3f31eadc.rds.tmp’ (NA bytes; last modified on NA) to ‘/tmp/RtmpxNyIyK/progression21f3f31eadc.rds’ (NA bytes; last modified on NA)”. There was an assertion at the end of the internal save_rds() function that incorrectly assumed that the target file should exist. However, the file might have already been processed and removed by the future in the main R session.</p></li>
@@ -382,9 +389,9 @@
 <h1 class="page-header" data-toc-text="1.20.1">
 <a href="#future-1-20-1" class="anchor"></a>future 1.20.1<small> 2020-11-03 </small>
 </h1>
-<div id="bug-fixes-2" class="section level3">
+<div id="bug-fixes-3" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>future::plan(“multisession”) would produce ‘Error in if (debug) mdebug(“covr::package_coverage() workaround …”) : argument is not interpretable as logical’ if and only if the ‘covr’ package was loaded.</li>
 </ul>
@@ -431,9 +438,9 @@
 <li>Harmonizing Future constructor functions to also use ‘substitute = TRUE’.</li>
 </ul>
 </div>
-<div id="bug-fixes-3" class="section level3">
+<div id="bug-fixes-4" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-3" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-4" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Since last version, future 1.19.1, future(…, conditions = character(0L)) would no longer avoid intercepting conditions as intended; instead, it muffles all conditions. From now on, use ‘conditions = NULL’.</p></li>
 <li><p>Relaying of immediateCondition:s was not near-live for multisession and cluster if the underlying PSOCK cluster used useXDR=FALSE for communication.</p></li>
@@ -457,9 +464,9 @@
 <h1 class="page-header" data-toc-text="1.19.1">
 <a href="#future-1-19-1" class="anchor"></a>future 1.19.1<small> 2020-09-22 </small>
 </h1>
-<div id="bug-fixes-4" class="section level3">
+<div id="bug-fixes-5" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-4" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-5" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>When passing ‘…’ as a globals, rather than via arguments, in higher-level map-reduce APIs such as future.apply and furrr, arguments in ‘…’ could produce an error on “unused argument”.</li>
 </ul>
@@ -496,9 +503,9 @@
 <li>Now plan(multisession), plan(cluster, workers = &lt;number&gt;), and makeClusterPSOCK() which they both use internally, sets up localhost workers twice as fast compared to versions since future 1.12.0, which brings it back to par with a bare-bone parallel::makeCluster(…, setup_strategy = “sequential”) setup. The slowdown was introduced in future 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</li>
 </ul>
 </div>
-<div id="bug-fixes-5" class="section level3">
+<div id="bug-fixes-6" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-5" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-6" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Sequential and multicore backends, but not multisession, would produce errors on “‘…’ used in an incorrect context” in cases where ‘…’ was part of argument ‘globals’ and not the evaluation environment.</p></li>
 <li><p>Contrary to other future backends, any conditions produced while resolving a sequential future using future(…, conditions = character()) would be signaled, although the most reasonable expectation would be that they are silenced. Now, all non-captured conditions are muffled, if possible.</p></li>
@@ -531,9 +538,9 @@
 <li><p>makeClusterPSOCK() now returns a cluster that in addition to inheriting from’ SOCKcluster’ it will also inherit from ‘RichSOCKcluster’.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-6" class="section level3">
+<div id="bug-fixes-7" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-6" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-7" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Made makeClusterPSOCK() and makeNodePSOCK() agile to the name change from parallel:::.slaveRSOCK() to parallel:::.workRSOCK() in R (&gt;= 4.1.0).</p></li>
 <li><p>makeClusterPSOCK(…, rscript) will not try to locate rscript[1] if argument ‘homogeneous’ is FALSE (or inferred to be FALSE).</p></li>
@@ -578,9 +585,9 @@
 <li>Not all CRAN servers have _R_CHECK_LIMIT_CORES_ set. To better emulate CRAN submission checks, the future package will, when loaded, set this environment variable to ‘TRUE’ if unset and if ‘R CMD check’ is running. Note that future::availableCores() respects _R_CHECK_LIMIT_CORES_ and returns at most 2L (two cores) if detected.</li>
 </ul>
 </div>
-<div id="bug-fixes-7" class="section level3">
+<div id="bug-fixes-8" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-7" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-8" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Any globals named ‘version’ and ‘has_future’ would be overwritten with “garbage” values internally.</p></li>
 <li><p>Disabling of multi-threading when using ‘multicore’ futures did not work on all platforms.</p></li>
@@ -621,9 +628,9 @@
 <li>Add support for automatically disable multi-threading when using ‘multicore’ futures. For now, the default is to allow multi-threaded processing but this might change in the future. To disable multi-threaded, set option ‘future.fork.multithreading.enable’ or environment variable ‘R_FUTURE_FORK_MULTITHREADING_ENABLE’ to ‘FALSE’. This requires that ‘RhpcBLASctl’ package is installed. Parallelization via multi-threaded processing (done in native code by some packages and externally library) while at the same time using forked (aka “multicore”) parallel processing is unstable in some cases. Note that this is not only true when using plan(multicore) but also when using, for instance, parallel::mclapply(). This is in beta so the above names and options might change later.</li>
 </ul>
 </div>
-<div id="bug-fixes-8" class="section level3">
+<div id="bug-fixes-9" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-8" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-9" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Evaluation of futures could fail if the global environment contained *functions* with the same names as a small set of base R functions, e.g. ‘raw()’, ‘list()’, and ‘options()’.</p></li>
 <li>future(alist(a=)) would produce “Error in objectSize_list(x, depth = depth</li>
@@ -650,9 +657,9 @@
 <li>The default range of ports that makeClusterPSOCK() draws a random port from (when argument ‘port’ is not specified) can now be controlled by environment variable `R_FUTURE_RANDOM_PORTS`. The default range is still 11000:11999 as with the ‘parallel’ package.</li>
 </ul>
 </div>
-<div id="bug-fixes-9" class="section level3">
+<div id="bug-fixes-10" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-9" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-10" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>The change introduced to resolved() in future 1.15.0 would cause lazy futures to block if all workers were occupied.</li>
 </ul>
@@ -684,9 +691,9 @@
 <li>Added ‘Troubleshooting’ section to ?makeClusterPSOCK with instructions on how to troubleshoot when the setup of local and remote clusters fail.</li>
 </ul>
 </div>
-<div id="bug-fixes-10" class="section level3">
+<div id="bug-fixes-11" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-10" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-11" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>values() would resignal immediateCondition:s despite those should only be signaled at most once per future.</p></li>
 <li><p>makeClusterPSOCK() could produce warnings like “cannot open file ‘/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid’: No such file”, e.g. when launching R workers running in Docker containers.</p></li>
@@ -728,9 +735,9 @@
 <li><p>Conditions inheriting ‘immediateCondition’ are signaled as soon as possible. Contrary to other types of conditions, these will be signaled only once per future, despite being collected.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-11" class="section level3">
+<div id="bug-fixes-12" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-11" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-12" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Early signaling did not take place for resolved() for ClusterFuture and MulticoreFuture.</p></li>
 <li><p>When early signaling was enabled, functions such as resolved() and resolve() would relay captured conditions multiple times. This would, for instance, result in the same messages and warnings being outputted more than once. Now it is only value() that will resignal conditions.</p></li>
@@ -779,9 +786,9 @@
 <li>Add vignette on ‘Non-Exportable Objects’ (extracted from another vignette).</li>
 </ul>
 </div>
-<div id="bug-fixes-12" class="section level3">
+<div id="bug-fixes-13" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-12" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-13" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>makeClusterPSOCK() did not shell quote the Rscript executable when running its pre-tests checking whether localhost Rscript processes can be killed by their PIDs or not.</li>
 </ul>
@@ -806,9 +813,9 @@
 <li><p>Future results now hold the timestamps when the evaluation of the future started and finished.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-13" class="section level3">
+<div id="bug-fixes-14" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-13" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-14" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Functions no longer produce “partial match of ‘condition’ to ‘conditions’” warnings with options(warnPartialMatchDollar=TRUE).</p></li>
 <li><p>When future infix operators (%conditions%, %globals%, %label%, %lazy%, %packages%, %seed%, and %stdout%) that are intended for future assignments were used in the wrong context, they would incorrectly be applied to the next future created. Now they’re discarded.</p></li>
@@ -831,9 +838,9 @@
 <h1 class="page-header" data-toc-text="1.11.1.1">
 <a href="#future-1-11-1-1" class="anchor"></a>future 1.11.1.1<small> 2019-01-26 </small>
 </h1>
-<div id="bug-fixes-14" class="section level3">
+<div id="bug-fixes-15" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-14" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-15" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>When makeClusterPSOCK() fails to connect to a worker, it produces an error with detailed information on what could have happened. In rare cases, another error could be produced when generating the information on what the workers PID is.</li>
 </ul>
@@ -858,9 +865,9 @@
 <li>TESTS: When the ‘future’ package is loaded, it checks whether ‘R CMD check’ is running or not. If it is, then a few future-specific environment variables are adjusted such that the tests play nice with the testing environment. For instance, it sets the socket connection timeout for PSOCK cluster workers to 120 seconds (instead of the default 30 days!). This will lower the risk for more and more zombie worker processes cluttering up the test machine (e.g. CRAN servers) in case a worker process is left behind despite the main R processes is terminated. Note that these adjustments are applied automatically to the checks of any package that depends on, or imports, the ‘future’ package.</li>
 </ul>
 </div>
-<div id="bug-fixes-15" class="section level3">
+<div id="bug-fixes-16" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-15" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-16" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Whenever makeClusterPSOCK() would fail to connect to a worker, for instance due to a port clash, then it would leave the R worker process running - also after the main R process terminated. When the worker is running on the same machine, makeClusterPSOCK() will now attempt to kill such stray R processes. Note that parallel::makePSOCKcluster() still has this problem.</li>
 </ul>
@@ -891,9 +898,9 @@
 <li><p>Cluster futures provide more informative error messages when the communication with the worker node is out of sync.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-16" class="section level3">
+<div id="bug-fixes-17" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-16" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-17" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Argument ‘stdout’ was forced to TRUE when using single-core multicore or single-core multisession futures.</p></li>
 <li><p>When evaluated in a local environment, futureCall(…, globals = “a”) would set the value of global ‘a’ to NULL, regardless if it exists or not and what its true value is.</p></li>
@@ -925,9 +932,9 @@
 <li><p>BETA: Now resolved() for ClusterFuture is non-blocking also for clusters of type MPIcluster as created by parallel::makeCluster(…, type = “MPI”).</p></li>
 </ul>
 </div>
-<div id="bug-fixes-17" class="section level3">
+<div id="bug-fixes-18" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-17" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-18" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>On Windows, plan(multiprocess) would not initiate the workers. Instead workers would be set up only when the first future was created.</li>
 </ul>
@@ -960,9 +967,9 @@
 <li><p>CLEANUP: Only the core parts of the API are now listed in the help index. This was done to clarify the Future API. Help for non-core parts are still via cross references in the indexed API as well via help().</p></li>
 </ul>
 </div>
-<div id="bug-fixes-18" class="section level3">
+<div id="bug-fixes-19" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-18" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-19" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>When using forced, nested ‘multicore’ parallel processing, such as, plan(list(tweak(multicore, workers = 2), tweak(multicore, workers = 2))), then the child process would attempt to resolve futures owned by the parent process resulting in an error (on ‘bad error message’).</p></li>
 <li><p>When using plan(multicore), if a forked worker would terminate unexpectedly, it could corrupt the master R session such that any further attempts of using forked workers would fail. A forked worker could be terminated this way if the user pressed Ctrl-C (the worker receives a SIGINT signal).</p></li>
@@ -994,9 +1001,9 @@
 <li><p>Added UnexpectedFutureResultError to be used by backends for signaling in a standard way that an unexpected result was retrieved from a worker.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-19" class="section level3">
+<div id="bug-fixes-20" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-19" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-20" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>When the communication between an asynchronous future and a background R process failed, further querying of the future state/results could end up in an infinite waiting loop. Now the failed communication error is recorded and re-signaled if any further querying attempts.</p></li>
 <li><p>Internal, seldom used myExternalIP() failed to recognize IPv4 answers from some of the lookup servers. This could in turn produce another error.</p></li>
@@ -1024,9 +1031,9 @@
 <li><p>backtrace() returns only the last call that produced the error. It is unfortunately not possible to capture the call stack that led up to the error when evaluating a future expression.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-20" class="section level3">
+<div id="bug-fixes-21" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-20" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-21" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>value() for MulticoreFuture would not produce an error when a (forked) background R workers would terminate before the future expression is resolved. This was a limitation inherited from the parallel package. Now an informative FutureError message is produced.</p></li>
 <li><p>value() for MulticoreFuture would not signal errors unless they inherited from ‘simpleError’ - now it’s enough for them to inherits from ‘error’.</p></li>
@@ -1080,9 +1087,9 @@
 <li>Added mechanism for detecting globals that _may_ not be exportable to an external R process (a “worker”). Typically, globals that carry connections and external pointers (“externalptr”) can not be exported, but there are exceptions. By setting options ‘future.globals.onReference’ to “warning”, a warning is produced informing the user about potential problems. If “error”, an error is produced. Because there might be false positive, the default is “ignore”, which will cause above scans to be skipped. If there are non-exportable globals and these tests are skipped, a run-time error may be produced only when the future expression is evaluated.</li>
 </ul>
 </div>
-<div id="bug-fixes-21" class="section level3">
+<div id="bug-fixes-22" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-21" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-22" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>The total size of global variables was overestimated, and dramatically so if defined in the global environment and there were are large objects there too. This would sometimes result in a false error saying that the total size is larger than the allowed limit.</p></li>
 <li><p>An assignment such as ‘x &lt;- x + 1’ where the left-hand side (LHS) ‘x’ is a global failed to identify ‘x’ as a global because the right-hand side (RHS) ‘x’ would override it as a local variable. Updates to the globals package fixed this problem.</p></li>
@@ -1113,9 +1120,9 @@
 <li><p>Now backtrace(x[[ER]]) works also for non-environment ‘x’:s, e.g. lists.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-22" class="section level3">
+<div id="bug-fixes-23" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-22" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-23" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>When measuring the size of globals by scanning their content, for certain types of classes the inferred lengths of these objects were incorrect causing internal subset out-of-range issues.</p></li>
 <li><p>print() for Future would output one global per line instead of concatenating the information with commas.</p></li>
@@ -1133,9 +1140,9 @@
 <li>Now exporting getGlobalsAndPackages().</li>
 </ul>
 </div>
-<div id="bug-fixes-23" class="section level3">
+<div id="bug-fixes-24" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-23" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-24" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>future_lapply() would give “Error in objectSize.env(x, depth = depth - 1L): object ‘nnn’ not found” when for instance ‘nnn’ is part of an unresolved expression that is an argument value.</li>
 </ul>
@@ -1159,9 +1166,9 @@
 <li>Now tweak(), and hence plan(), generates a more informative error message if a non-future function is specified by mistake, e.g. calling plan(cluster) with the ‘survival’ package attached after ‘future’ is equivalent to calling plan(survival::cluster) when plan(future::cluster) was intended.</li>
 </ul>
 </div>
-<div id="bug-fixes-24" class="section level3">
+<div id="bug-fixes-25" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-24" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-25" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>nbrOfWorkers() gave an error with plan(remote). Fixed by making the ‘remote’ future inherit ‘cluster’ (as it should).</li>
 </ul>
@@ -1217,9 +1224,9 @@
 <li>Formally deprecated eager futures; use sequential instead.</li>
 </ul>
 </div>
-<div id="bug-fixes-25" class="section level3">
+<div id="bug-fixes-26" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-25" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-26" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>future_lapply() with multicore / multisession futures, would use a suboptimal workload balancing where it split up the data in one chunk too many. This is no longer a problem because of how argument ‘workers’ is now defined for those type of futures (see note on top).</p></li>
 <li><p>future_lapply(), as well as lazy multicore and lazy sequential futures, did not respect option ‘future.globals.resolve’, but was hardcoded to always resolve globals (future.globals.resolve = TRUE).</p></li>
@@ -1272,9 +1279,9 @@
 <li>future_lapply() scans global variables for non-resolved futures (to resolve them) and calculate their total size once. Previously, each chunk (a future) would redo this.</li>
 </ul>
 </div>
-<div id="bug-fixes-26" class="section level3">
+<div id="bug-fixes-27" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-26" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-27" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Now future_lapply(x, FUN, …) identifies global objects among ‘x’, ‘FUN’ and ‘…’ recursively until no new globals are found. Previously, only the first level of globals were scanned. This is mostly thanks to a bug fix in globals 0.9.0.</p></li>
 <li><p>A future that used a global object ‘x’ of a class that overrides length() would produce an error if length(x) reports more elements than what can be subsetted.</p></li>
@@ -1335,9 +1342,9 @@
 <li>Lazy futures and plan(lazy) are now deprecated. Instead, use plan(eager) and then f &lt;- future(…, lazy = TRUE) or x %&lt;-% { … } %lazy% TRUE. The reason behind this is that in some cases code that uses futures only works under eager evaluation (lazy = FALSE; the default), or vice verse. By removing the “lazy” future strategy, the user can no longer override the lazy = TRUE / FALSE that the developer is using.</li>
 </ul>
 </div>
-<div id="bug-fixes-27" class="section level3">
+<div id="bug-fixes-28" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-27" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-28" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Creation of cluster futures (including multisession ones) would time out already after 40 seconds if all workers were busy. New default timeout is 30 days (option ‘future.wait.timeout’).</p></li>
 <li><p>nbrOfWorkers() gave an error for plan(cluster, workers) where ‘workers’ was a character vector or a ‘cluster’ object of the parallel package. Because of this, future_lapply() gave an error with such setups.</p></li>
@@ -1367,9 +1374,9 @@
 <li>%&lt;=% is deprecated. Use %&lt;-% instead. Same for %=&gt;%.</li>
 </ul>
 </div>
-<div id="bug-fixes-28" class="section level3">
+<div id="bug-fixes-29" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-28" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-29" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>values() for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
 <li><p>value() for ClusterFuture would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of ClusterFuture from cluster node <a href='https://github.com/HenrikBengtsson/future/issues/1'>#1</a> on ‘localhost’. The reason reported was”error reading from connection“.</p></li>
@@ -1381,9 +1388,9 @@
 <h1 class="page-header" data-toc-text="1.1.1">
 <a href="#future-1-1-1" class="anchor"></a>future 1.1.1<small> 2016-10-11 </small>
 </h1>
-<div id="bug-fixes-29" class="section level3">
+<div id="bug-fixes-30" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-29" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-30" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>For the special case where ‘remote’ futures use workers = “localhost” they (again) use the exact same R executable as the main / calling R session (in all other cases it uses whatever ‘Rscript’ is found in the PATH). This was already indeed implemented in 1.0.1, but with the added support for reverse SSH tunnels in 1.1.0 this default behavior was lost.</li>
 </ul>
@@ -1442,9 +1449,9 @@
 <li>Adding section to vignette on globals in formulas describing how they are currently not automatically detected and how to explicitly export them.</li>
 </ul>
 </div>
-<div id="bug-fixes-30" class="section level3">
+<div id="bug-fixes-31" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-30" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-31" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Since future 0.13.0, a global ‘pkg’ would be overwritten by the name of the last package attached in future.</p></li>
 <li><p>Futures that generated R.oo::Exception errors, they triggered another internal error.</p></li>
@@ -1481,9 +1488,9 @@
 <li><p>Documented R options used by the future package.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-31" class="section level3">
+<div id="bug-fixes-32" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-31" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-32" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Custom futures based on a constructor function that is defined outside a package gave an error.</p></li>
 <li><p>plan(“default”) assumed that the ‘future.plan’ option was a string; gave an error if it was a function.</p></li>
@@ -1516,9 +1523,9 @@
 <li>Significantly decreased the overhead of creating a future, particularly multicore futures.</li>
 </ul>
 </div>
-<div id="bug-fixes-32" class="section level3">
+<div id="bug-fixes-33" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-32" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-33" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Future would give an error with plan(list(“eager”)), whereas it did work with plan(“eager”) and plan(list(eager)).</li>
 </ul>
@@ -1545,9 +1552,9 @@
 <li>Renamed arguments ‘maxCores’ and ‘cluster’ to ‘workers’. If using the old argument names a deprecation warning will be generated, but it will still work until made defunct in a future release.</li>
 </ul>
 </div>
-<div id="bug-fixes-33" class="section level3">
+<div id="bug-fixes-34" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-33" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-34" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>resolve() for lists and environments did not work properly when the set of futures was not resolved in order, which could happen with asynchronous futures.</li>
 </ul>
@@ -1571,9 +1578,9 @@
 <li><p>OVERHEAD: Utility functions exported by ClusterFuture are now much smaller; previously they would export all of the package environment.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-34" class="section level3">
+<div id="bug-fixes-35" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-34" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-35" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>f &lt;- multicore(NA, maxCores=2) would end up in an endless waiting loop for a free core if availableCores() returned one.</p></li>
 <li><p>ClusterFuture would ignore local=TRUE.</p></li>
@@ -1609,9 +1616,9 @@
 <li><p>Added option ‘future.globals.resolve’ for controlling whether global variables should be resolved for futures or not. If TRUE, then globals are searched recursively for any futures and if found such “global” futures are resolved. If FALSE, global futures are not located, but if they are later trying to be resolved by the parent future, then an informative error message is generated clarifying that only the R process that created the future can resolve it. The default is currently FALSE.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-35" class="section level3">
+<div id="bug-fixes-36" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-35" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-36" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>FIX: Exports of objects available in packages already attached by the future were still exported.</p></li>
 <li><p>FIX: Now availableCores() returns 3L (=2L+1L) instead of 2L if _R_CHECK_LIMIT_CORES_ is set.</p></li>
@@ -1655,9 +1662,9 @@
 <li><p>CLEANUP: Now the internal future variable created by %&lt;=% is removed when the future variable is resolved.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-36" class="section level3">
+<div id="bug-fixes-37" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-36" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-37" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>futureOf(envir=x) did not work properly when ‘x’ was a list environment.</li>
 </ul>
@@ -1689,9 +1696,9 @@
 <li>Updated vignette on common issues with the case where a global variable is not identified because it is hidden by an element assignment in the future expression.</li>
 </ul>
 </div>
-<div id="bug-fixes-37" class="section level3">
+<div id="bug-fixes-38" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-37" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-38" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>Errors occurring in multicore futures could prevent further multicore futures from being created.</li>
 </ul>
@@ -1701,9 +1708,9 @@
 <h1 class="page-header" data-toc-text="0.8.2">
 <a href="#future-0-8-2" class="anchor"></a>future 0.8.2<small> 2015-10-14 </small>
 </h1>
-<div id="bug-fixes-38" class="section level3">
+<div id="bug-fixes-39" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-38" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-39" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>Globals that were copies of package objects were not exported to the future environments.</p></li>
 <li><p>The future package had to be attached or future::future() had to be imported, if %&lt;=% was used internally in another package. Similarly, it also had to be attached if multicore futures where used.</p></li>
@@ -1728,9 +1735,9 @@
 <li>eager() and multicore() gained argument ‘globals’, where globals=TRUE will validate that all global variables identified can be located already before the future is created. This provides the means for providing the same tests on global variables with eager and multicore futures as with lazy futures.</li>
 </ul>
 </div>
-<div id="bug-fixes-39" class="section level3">
+<div id="bug-fixes-40" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-39" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-40" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>lazy(sum(x, …), globals=TRUE) now properly passes `…` from the function from which the future is setup. If not called within a function or called within a function without `…` arguments, an informative error message is thrown.</li>
 </ul>
@@ -1748,9 +1755,9 @@
 <li><p>availableCores(“mc.cores”) returns getOption(“mc.cores”) + 1L, because option ‘mc.cores’ specifies “allowed number of _additional_ R processes” to be used in addition to the main R process.</p></li>
 </ul>
 </div>
-<div id="bug-fixes-40" class="section level3">
+<div id="bug-fixes-41" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-40" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-41" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li>plan(future::lazy) and similar gave errors.</li>
 </ul>
@@ -1775,9 +1782,9 @@
 <li>More colorful demo(“mandelbrot”, package=“future”).</li>
 </ul>
 </div>
-<div id="bug-fixes-41" class="section level3">
+<div id="bug-fixes-42" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bug-fixes-41" class="anchor"></a>Bug Fixes</h3>
+<a href="#bug-fixes-42" class="anchor"></a>Bug Fixes</h3>
 <ul>
 <li><p>ROBUSTNESS: multicore() blocks until one of the CPU cores is available, iff all are currently occupied by other multicore futures.</p></li>
 <li><p>old &lt;- plan(new) now returns the old plan/strategy (was the newly set one).</p></li>
