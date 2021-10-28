@@ -47,10 +47,10 @@ Run `revdep_details(, "alookr")` for more info
 
 <details>
 
-* Version: 3.2.3
+* Version: 3.4.0
 * GitHub: NA
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2021-09-19
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 164
 
 Run `revdep_details(, "AlpsNMR")` for more info
@@ -167,28 +167,6 @@ Run `revdep_details(, "BatchGetSymbols")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
-    ```
-
-# bayesmove
-
-<details>
-
-* Version: 0.2.0
-* GitHub: https://github.com/joshcullen/bayesmove
-* Source code: https://github.com/cran/bayesmove
-* Date/Publication: 2021-04-26 22:10:11 UTC
-* Number of recursive dependencies: 145
-
-Run `revdep_details(, "bayesmove")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘move’
-      All declared Imports should be used.
     ```
 
 # bcmaps
@@ -327,20 +305,42 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.2Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
-        R     5.5Mb
+        R     4.2Mb
         doc   2.4Mb
+    ```
+
+# cfbfastR
+
+<details>
+
+* Version: 1.6.4
+* GitHub: https://github.com/saiemgilani/cfbfastR
+* Source code: https://github.com/cran/cfbfastR
+* Date/Publication: 2021-10-27 12:30:02 UTC
+* Number of recursive dependencies: 108
+
+Run `revdep_details(, "cfbfastR")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘xgboost’
+      All declared Imports should be used.
     ```
 
 # ChromSCape
 
 <details>
 
-* Version: 1.2.62
+* Version: 1.4.0
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
-* Date/Publication: 2021-09-14
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 270
 
 Run `revdep_details(, "ChromSCape")` for more info
@@ -359,7 +359,7 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.5Mb
+      installed size is  8.6Mb
       sub-directories of 1Mb or more:
         data   1.3Mb
         doc    2.9Mb
@@ -394,6 +394,14 @@ Run `revdep_details(, "ChromSCape")` for more info
 *   checking Rd files ... NOTE
     ```
     prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
+    ```
+
+*   checking files in ‘vignettes’ ... NOTE
+    ```
+    Files named as vignettes but with no recognized vignette engine:
+       ‘vignettes/PairedTag_Zhu_H3K4me1.Rmd’
+       ‘vignettes/scChIC_Ku_H3K4me3.Rmd’
+    (Is a VignetteBuilder field missing?)
     ```
 
 # civis
@@ -534,32 +542,81 @@ Run `revdep_details(, "datapackage.r")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘datapackage.r-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: Package.load
+    > ### Title: Instantiate 'Data Package' class
+    > ### Aliases: Package.load
+    > 
+    > ### ** Examples
+    > 
+    > 
+    > # Load local descriptor
+    > descriptor <- system.file('extdata/dp1/datapackage.json', 
+    +                          package = "datapackage.r")
+    > dataPackage <- Package.load(descriptor)
+    Error in context_eval(join(src), private$context, serialize) : 
+      SyntaxError: Use of const in strict mode.
+    Calls: Package.load ... <Anonymous> -> evaluate_js -> get_str_output -> context_eval
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        2.   └─datapackage.r::Package.load(descriptor = descriptor)
+        3.     └─Package$new(descriptor, basePath, strict = strict, profile = profile)
+        4.       └─datapackage.r:::initialize(...)
+        5.         └─private$build_()
+        6.           └─private$profile_$validate(private$currentDescriptor_)
+        7.             └─datapackage.r::is.valid(descriptor2, helpers.from.list.to.json(private$jsonschema_))
+    ...
+        8.               └─jsonvalidate::json_validator(schema)
+        9.                 └─jsonvalidate:::jsonvalidate_js()
+       10.                   └─ct$source(system.file("bundle.js", package = "jsonvalidate"))
+       11.                     └─V8:::evaluate_js(readLines(file, encoding = "UTF-8", warn = FALSE))
+       12.                       ├─V8:::get_str_output(...)
+       13.                       └─V8:::context_eval(join(src), private$context, serialize)
+      
+      [ FAIL 80 | WARN 0 | SKIP 0 | PASS 117 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘creating_data_packages_in_r.Rmd’ using rmarkdown
+    Quitting from lines 44-49 (creating_data_packages_in_r.Rmd) 
+    Error: processing vignette 'creating_data_packages_in_r.Rmd' failed with diagnostics:
+    SyntaxError: Use of const in strict mode.
+    --- failed re-building ‘creating_data_packages_in_r.Rmd’
+    
+    --- re-building ‘using_data_packages_in_r.Rmd.Rmd’ using rmarkdown
+    Quitting from lines 55-59 (using_data_packages_in_r.Rmd.Rmd) 
+    Error: processing vignette 'using_data_packages_in_r.Rmd.Rmd' failed with diagnostics:
+    SyntaxError: Use of const in strict mode.
+    --- failed re-building ‘using_data_packages_in_r.Rmd.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘creating_data_packages_in_r.Rmd’ ‘using_data_packages_in_r.Rmd.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
-    ```
-
-# DeclareDesign
-
-<details>
-
-* Version: 0.28.0
-* GitHub: https://github.com/DeclareDesign/DeclareDesign
-* Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2021-08-21 15:00:12 UTC
-* Number of recursive dependencies: 149
-
-Run `revdep_details(, "DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
 # delayed
@@ -691,11 +748,6 @@ Run `revdep_details(, "easyalluvial")` for more info
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘parcats’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -872,10 +924,10 @@ Run `revdep_details(, "fipe")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.2.0
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
-* Date/Publication: 2021-05-19
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 83
 
 Run `revdep_details(, "flowGraph")` for more info
@@ -889,13 +941,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    19:40:04-19:40:04 > 16:00:00
+    21:11:18-21:11:18 > 16:00:00
     - 24 pops @ layer 2
-    19:40:04-19:40:04 > 16:00:00
+    21:11:18-21:11:18 > 16:00:00
     - 32 pops @ layer 3
-    19:40:04-19:40:04 > 16:00:00
+    21:11:18-21:11:18 > 16:00:00
     - 16 pops @ layer 4
-    19:40:04-19:40:04 > 16:00:00
+    21:11:18-21:11:18 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1287,10 +1339,10 @@ Run `revdep_details(, "iml")` for more info
 
 <details>
 
-* Version: 1.8.1
+* Version: 1.10.0
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* Date/Publication: 2021-08-17
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 131
 
 Run `revdep_details(, "infercnv")` for more info
@@ -1492,18 +1544,17 @@ Run `revdep_details(, "lava")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking:
-      'gof', 'lava.tobit', 'lavaSearch2', 'mets'
+    Packages suggested but not available for checking: 'gof', 'lava.tobit'
     ```
 
 # lidR
 
 <details>
 
-* Version: 3.2.1
+* Version: 3.2.2
 * GitHub: https://github.com/Jean-Romain/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2021-09-29 12:20:16 UTC
+* Date/Publication: 2021-10-20 09:20:02 UTC
 * Number of recursive dependencies: 156
 
 Run `revdep_details(, "lidR")` for more info
@@ -1514,7 +1565,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.7Mb
+      installed size is 16.8Mb
       sub-directories of 1Mb or more:
         R         1.8Mb
         doc       1.0Mb
@@ -1543,6 +1594,29 @@ Run `revdep_details(, "lmtp")` for more info
     Namespaces in Imports field not imported from:
       ‘R6’ ‘nnls’ ‘utils’
       All declared Imports should be used.
+    ```
+
+# MAI
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/KechrisLab/MAI
+* Source code: https://github.com/cran/MAI
+* Date/Publication: 2021-10-26
+* Number of recursive dependencies: 159
+
+Run `revdep_details(, "MAI")` for more info
+
+</details>
+
+## In both
+
+*   checking top-level files ... NOTE
+    ```
+    File
+      LICENSE
+    is not mentioned in the DESCRIPTION file.
     ```
 
 # metagam
@@ -1593,10 +1667,10 @@ Run `revdep_details(, "microservices")` for more info
 
 <details>
 
-* Version: 1.32.0
+* Version: 1.34.0
 * GitHub: NA
 * Source code: https://github.com/cran/MineICA
-* Date/Publication: 2021-05-19
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 205
 
 Run `revdep_details(, "MineICA")` for more info
@@ -1604,25 +1678,6 @@ Run `revdep_details(, "MineICA")` for more info
 </details>
 
 ## In both
-
-*   checking running R code from vignettes ...
-    ```
-      ‘MineICA.Rnw’... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘MineICA.Rnw’
-      ...
-    > resPath(params)
-    [1] "mainz/"
-    
-    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
-    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
-    
-      When sourcing ‘MineICA.R’:
-    Error: task 1 failed - "Multiple cache results found.
-    Please clear your cache by running biomartCacheClear()"
-    Execution halted
-    ```
 
 *   checking Rd cross-references ... WARNING
     ```
@@ -1725,17 +1780,17 @@ Run `revdep_details(, "MineICA")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘MineICA.Rnw’ using Sweave
     Loading required package: BiocGenerics
-    Loading required package: parallel
     
     Attaching package: ‘BiocGenerics’
     
-    The following objects are masked from ‘package:parallel’:
+    The following objects are masked from ‘package:stats’:
     
-        clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+        IQR, mad, sd, var, xtabs
+    
     ...
-    Error in { : task 1 failed - "Multiple cache results found.
-    Please clear your cache by running biomartCacheClear()"
-    
+    l.23 \usepackage
+                    {subfig}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -1767,65 +1822,6 @@ Run `revdep_details(, "missSBM")` for more info
       sub-directories of 1Mb or more:
         R      1.8Mb
         libs   6.5Mb
-    ```
-
-# mistyR
-
-<details>
-
-* Version: 1.0.3
-* GitHub: https://github.com/saezlab/mistyR
-* Source code: https://github.com/cran/mistyR
-* Date/Publication: 2021-07-22
-* Number of recursive dependencies: 184
-
-Run `revdep_details(, "mistyR")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘mistyR.Rmd’ using rmarkdown
-    mistyR is able to run computationally intensive functions
-      in parallel. Please consider specifying a future::plan(). For example by running
-      future::plan(future::multisession) before calling mistyR functions.
-    
-    Attaching package: 'dplyr'
-    
-    The following objects are masked from 'package:stats':
-    
-    ...
-    Quitting from lines 32-37 (mistySpatialExperiment.Rmd) 
-    Error: processing vignette 'mistySpatialExperiment.Rmd' failed with diagnostics:
-    could not find function "Githubpkg"
-    --- failed re-building ‘mistySpatialExperiment.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘mistySpatialExperiment.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    plot_interaction_heatmap: no visible binding for global variable
-      ‘Importance’
-    plot_interaction_heatmap: no visible binding for global variable
-      ‘Predictor’
-    plot_interaction_heatmap: no visible binding for global variable
-      ‘total’
-    plot_interaction_heatmap: no visible binding for global variable
-      ‘Target’
-    plot_view_contributions: no visible binding for global variable
-      ‘measure’
-    plot_view_contributions: no visible binding for global variable
-      ‘target’
-    Undefined global functions or variables:
-      Importance Predictor Target measure target total
     ```
 
 # momentuHMM
@@ -2090,10 +2086,10 @@ Run `revdep_details(, "plumber")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.2.0
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
-* Date/Publication: 2021-05-19
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 114
 
 Run `revdep_details(, "ppcseq")` for more info
@@ -2210,10 +2206,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.24.8
+* Version: 1.26.0
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2021-08-22
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 321
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2262,10 +2258,10 @@ Run `revdep_details(, "Prostar")` for more info
 
 <details>
 
-* Version: 1.28.0
+* Version: 1.30.0
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
-* Date/Publication: 2021-05-19
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 75
 
 Run `revdep_details(, "QDNAseq")` for more info
@@ -2273,12 +2269,6 @@ Run `revdep_details(, "QDNAseq")` for more info
 </details>
 
 ## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘future’
-      All declared Imports should be used.
-    ```
 
 *   checking re-building of vignette outputs ... NOTE
     ```
@@ -2412,7 +2402,7 @@ Run `revdep_details(, "sapfluxnetr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/scDiffCom
 * Date/Publication: 2021-08-17 07:20:05 UTC
-* Number of recursive dependencies: 240
+* Number of recursive dependencies: 243
 
 Run `revdep_details(, "scDiffCom")` for more info
 
@@ -2799,9 +2789,6 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Packages suggested but not available for checking:
-      'Infusion', 'IsoriX', 'blackbox'
-    
     Packages which this enhances but not available for checking:
       'multcomp', 'RLRsim'
     ```
@@ -3022,10 +3009,10 @@ Run `revdep_details(, "startR")` for more info
 
 <details>
 
-* Version: 3.0.14
+* Version: 3.2.0
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2021-10-14
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 177
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -3089,6 +3076,56 @@ Run `revdep_details(, "tableschema.r")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘tableschema.r-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: Schema.load
+    > ### Title: Instantiate 'Schema' class
+    > ### Aliases: Schema.load
+    > 
+    > ### ** Examples
+    > 
+    > SCHEMA <- '{"fields": [
+    ...
+    +   {"name": "occupation", "type": "string"}
+    +   ]}'
+    > 
+    > # instantiate Schema class
+    > def  = Schema.load(descriptor = SCHEMA)
+    > schema = future::value(def)
+    Error in context_eval(join(src), private$context, serialize) : 
+      SyntaxError: Use of const in strict mode.
+    Calls: <Anonymous> -> value.Future -> signalConditions
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+       2.   ├─future::value(def)
+       3.   └─future:::value.Future(def)
+       4.     └─future:::signalConditions(...)
+      ── Error (test-validate.R:172:3): ensure fields exists in schema ───────────────
+      <std::invalid_argument/C++Error/error/condition>
+      Error in `context_eval(join(src), private$context, serialize)`: SyntaxError: Use of const in strict mode.
+    ...
+      Backtrace:
+          █
+       1. └─tableschema.r::validate(readLines("inst/extdata/schema.json")) test-validate.R:255:2
+       2.   ├─future::value(def)
+       3.   └─future:::value.Future(def)
+       4.     └─future:::signalConditions(...)
+      
+      [ FAIL 61 | WARN 0 | SKIP 0 | PASS 435 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘iterators’
@@ -3103,6 +3140,29 @@ Run `revdep_details(, "tableschema.r")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# targeted
+
+<details>
+
+* Version: 0.2.0
+* GitHub: https://github.com/kkholst/targeted
+* Source code: https://github.com/cran/targeted
+* Date/Publication: 2021-10-26 14:40:02 UTC
+* Number of recursive dependencies: 72
+
+Run `revdep_details(, "targeted")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 13.8Mb
+      sub-directories of 1Mb or more:
+        libs  12.7Mb
     ```
 
 # text
@@ -3142,17 +3202,64 @@ Run `revdep_details(, "TKCat")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking whether package ‘TKCat’ can be installed ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘base64enc’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+    Installation failed.
+    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/new/TKCat.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘TKCat’ ...
+** package ‘TKCat’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+Error: package or namespace load failed for ‘TKCat’:
+ .onLoad failed in loadNamespace() for 'TKCat', details:
+  call: context_eval(join(src), private$context, serialize)
+  error: SyntaxError: Use of const in strict mode.
+Error: loading failed
+Execution halted
+ERROR: loading failed
+* removing ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/new/TKCat.Rcheck/TKCat’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘TKCat’ ...
+** package ‘TKCat’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+Error: package or namespace load failed for ‘TKCat’:
+ .onLoad failed in loadNamespace() for 'TKCat', details:
+  call: context_eval(join(src), private$context, serialize)
+  error: SyntaxError: Use of const in strict mode.
+Error: loading failed
+Execution halted
+ERROR: loading failed
+* removing ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/old/TKCat.Rcheck/TKCat’
+
+
+```
 # TriDimRegression
 
 <details>
@@ -3277,14 +3384,37 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
         shinyapp   3.4Mb
     ```
 
+# updog
+
+<details>
+
+* Version: 2.1.1
+* GitHub: https://github.com/dcgerard/updog
+* Source code: https://github.com/cran/updog
+* Date/Publication: 2021-10-25 23:10:02 UTC
+* Number of recursive dependencies: 142
+
+Run `revdep_details(, "updog")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.9Mb
+      sub-directories of 1Mb or more:
+        libs   6.0Mb
+    ```
+
 # XNAString
 
 <details>
 
-* Version: 1.0.2
+* Version: 1.2.0
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
-* Date/Publication: 2021-06-03
+* Date/Publication: 2021-10-26
 * Number of recursive dependencies: 94
 
 Run `revdep_details(, "XNAString")` for more info
