@@ -2,10 +2,17 @@ source("incl/start.R")
 library("listenv")
 options(future.debug = FALSE)
 
+## IMPORTANT: Since we're killing parallel workers, some of them will not
+## get a chance to clean up their R temporary folders.  Here we configuring
+## them to use temporary folders with this R process temporary folder.
+## This way they'll be removed when this R process terminates
+Sys.setenv(TMPDIR = tempdir())
+
 message("*** cluster() - terminating worker ...")
 
 message("Library paths: ", paste(sQuote(.libPaths()), collapse = ", "))
 message("Package path: ", sQuote(system.file(package = "future")))
+message("TMPDIR for parallel workers: ", sQuote(Sys.getenv("TMPDIR")))
 
 types <- "PSOCK"
 
