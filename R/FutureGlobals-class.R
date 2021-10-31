@@ -24,7 +24,7 @@
 #' @keywords internal
 FutureGlobals <- function(object = list(), resolved = FALSE, total_size = NA_real_, ...) {
   if (!is.list(object)) {
-    stop("Argument 'object' is not a list: ", class(object)[1])
+    stopf("Argument 'object' is not a list: %s", class(object)[1])
   }
 
   if (!inherits(object, "Globals")) {

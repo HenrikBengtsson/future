@@ -1,8 +1,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-## DEPRECATED
+## DEPRECATED & DEFUNCT
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #' @export
 values <- function(...) {
-  .Deprecated(msg = "values() is deprecated in future (>= 1.20.0). Instead, use values().", package = .packageName)
-  value(...)
+  .Defunct(msg = "values() is defunct in future (>= 1.20.0). Use value() instead.", package = .packageName)
 }

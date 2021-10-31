@@ -112,7 +112,7 @@ save_rds <- function(object, pathname, ...) {
   pathname_tmp <- sprintf("%s.tmp", pathname)
   if (file_test("-f", pathname_tmp)) {
     fi_tmp <- file.info(pathname_tmp)
-    stop(sprintf("Cannot save RDS file because a temporary save file already exists: %s (%0.f bytes; last modified on %s)", sQuote(pathname_tmp), fi_tmp[["size"]], fi_tmp[["mtime"]]))
+    stopf("Cannot save RDS file because a temporary save file already exists: %s (%0.f bytes; last modified on %s)", sQuote(pathname_tmp), fi_tmp[["size"]], fi_tmp[["mtime"]])
   }
   
   tryCatch({

@@ -1,25 +1,28 @@
 on: [push, pull_request]
 
-name: future_tests
+name: revdepcheck-top
 
 jobs:
-  future_tests:
+  R-CMD-check:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
     runs-on: ubuntu-20.04
 
-    name: future.plan=${{ matrix.future.plan }}
+    name: ${{ matrix.config.pkg }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
 
     strategy:
       fail-fast: false
       matrix:
-        future:
-          - { plan: 'sequential'   }
-          - { plan: 'multicore'    }
-          - { plan: 'multisession' }
-          - { plan: 'cluster'      }
-          - { plan: 'future.callr::callr', pkg: 'future.callr' }
-          - { plan: 'future.batchtools::batchtools_local', pkg: 'future.batchtools' }
+        config:
+          - { r: "release", pkg: "future.batchtools" }
+          - { r: "release", pkg: "future.callr"      }
+          - { r: "release", pkg: "doFuture"          }
+          - { r: "release", pkg: "future.apply"      }
+          - { r: "release", pkg: "furrr"             }
+## FIXME: Enable when doFuture (>= 0.12.1) is on CRAN
+##        - { r: "release", pkg: "doFuture"    , plan: multisession, label: multisession }
+          - { r: "release", pkg: "future.apply", plan: multisession, label: multisession }
+          - { r: "release", pkg: "furrr"       , plan: multisession, label: multisession }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -32,13 +35,14 @@ jobs:
       _R_CHECK_CRAN_INCOMING_: false
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
+      R_FUTURE_PLAN: ${{ matrix.config.plan }}
       
     steps:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
         with:
-          r-version: release
+          r-version: ${{ matrix.config.r }}
 
       - uses: r-lib/actions/setup-pandoc@master
 
@@ -50,13 +54,15 @@ jobs:
         shell: Rscript {0}
 
       - name: Cache R packages
+        if: runner.os != 'Windows'
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
@@ -68,9 +74,8 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          remotes::install_cran("future.tests")
           install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
-          if (nzchar(pkg <- "${{ matrix.future.pkg }}")) install.packages(pkg)
+          install.packages("${{ matrix.config.pkg }}", dependencies=TRUE)
         shell: Rscript {0}
 
       - name: Session info
@@ -79,16 +84,16 @@ jobs:
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
-    
-      - name: Check
+
+      - name: Check reverse dependency package
         run: |
-          R CMD build --no-build-vignettes --no-manual . 
-          R CMD INSTALL *.tar.gz 
-          Rscript -e future.tests::check --args --test-plan=${{ matrix.future.plan }}
+          url=$(Rscript -e "cat(remotes:::download_version_url('${{ matrix.config.pkg }}', version=NULL, repos='https://cloud.r-project.org', type='source'))")
+          wget "$url"
+          R CMD check --no-manual --as-cran "$(basename "$url")"
 
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.future.plan }}-results
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-revdep${{ matrix.config.pkg }}-results
           path: check

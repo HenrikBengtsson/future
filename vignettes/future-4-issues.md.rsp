@@ -21,6 +21,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ## Issues with globals and packages
 
 ### Missing globals (false negatives)
+
 If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
 ```r
 plan(multisession)
@@ -380,6 +381,7 @@ In this case, it does not matter in what order the packages are attached because
 
 
 ### Syntax error: "non-numeric argument to binary operator"
+
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
 ```r
 > x %<-% 2 * runif(1)
@@ -395,6 +397,7 @@ Parentheses will also do.  For details on precedence on operators in R, see Sect
 
 
 ### R CMD check NOTEs
+
 The code inspection run by `R CMD check` will not recognize the future assignment operator `%<-%` as an assignment operator, which is not surprising because `%<-%` is technically an infix operator.  This means that if you for instance use the following code in your package:
 ```r
 foo <- function() {

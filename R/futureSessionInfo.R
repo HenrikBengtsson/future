@@ -50,7 +50,7 @@ futureSessionInfo <- function(test = TRUE) {
   message()
   
   message("*** Backends")
-  message("Number of workers: ", nbrOfWorkers())
+  msgf("Number of workers: %d", nbrOfWorkers())
   mprint0(plan("list"))
 
 

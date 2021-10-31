@@ -55,7 +55,14 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   ## Output captured standard output?
   if (stdout && length(result$stdout) > 0 &&
       inherits(result$stdout, "character")) {
-    cat(paste(result$stdout, collapse = "\n"))
+      out <- paste(result$stdout, collapse = "\n")
+      if (nzchar(out)) {
+        ## AD HOC: Fix captured UTF-8 output on Windows?
+        if (getOption("future.stdout.windows.reencode", TRUE) && identical(result$r_info$os, "windows")) {
+          out <- adhoc_native_to_utf8(out)
+        }
+        cat(out)
+      }
   }
 
 
@@ -67,15 +74,9 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     if (any(grepl(".doRNG.stream", deparse(future$expr), fixed = TRUE))) {
       ## doFuture w/ doRNG, e.g. %dorng%
     } else if (is_lecyer_cmrg_seed(future$globals$...future.seeds_ii[[1]])) {
-      ## future.apply (<= 1.3.0) and furrr
-      fcn <- switch(getOption("future.rng.onMisuse.backport", "defunct"),
-                    deprecated = .Deprecated, defunct = .Defunct, identity)
-      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 1)")
+      .Defunct(msg = "Please upgrade your 'future.apply' or 'furrr' (type 1)")
     } else if (is_lecyer_cmrg_seed(future$envir$...future.seeds_ii[[1]])) {
-      ## future.apply (<= 1.3.0) and furrr
-      fcn <- switch(getOption("future.rng.onMisuse.backport", "defunct"),
-                    deprecated = .Deprecated, defunct = .Defunct, identity)
-      fcn(msg = "Please upgrade your 'future.apply' or 'furrr' (type 2)")
+      .Defunct(msg = "Please upgrade your 'future.apply' or 'furrr' (type 2)")
     } else {
       onMisuse <- getOption("future.rng.onMisuse", "warning")
       if (onMisuse != "ignore") {
@@ -95,7 +96,7 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
           cond <- RngFutureWarning(msg, uuid = uuid, future = f)
         } else {
           cond <- NULL
-          warning("Unknown value on option 'future.rng.onMisuse': ",
+          warnf("Unknown value on option 'future.rng.onMisuse': %s",
                   sQuote(onMisuse))
         }
 

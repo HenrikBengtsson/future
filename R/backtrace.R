@@ -40,7 +40,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   }
 
   if (!resolved(future)) {
-    stop("No error has been caught because the future is unresolved: ", sQuote(expr))
+    stopf("No error has been caught because the future is unresolved: %s", sQuote(expr))
   }
 
   result <- result(future)
@@ -57,13 +57,13 @@ backtrace <- function(future, envir = parent.frame(), ...) {
   }
 
   if (is.null(error)) {
-    stop("No error was caught for this future: ", sQuote(expr))
+    stopf("No error was caught for this future: %s", sQuote(expr))
   }
 
   calls <- error$calls
 
   if (is.null(calls)) {
-    stop("The error call stack was not recorded for this future: ", sQuote(expr))
+    stopf("The error call stack was not recorded for this future: %s", sQuote(expr))
   }
 
   ## Recreate the full call stack

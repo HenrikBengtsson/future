@@ -1,6 +1,54 @@
 Package: future
 ===============
 
+Version: 1.23.0 [2021-10-30]
+
+SIGNIFICANT CHANGES:
+
+ * plan() now produces a one-time warning if a 'transparent' strategy is set.
+   The warning reminds the user that 'transparent' should only be used for
+   troubleshooting purposes and never be used in production. These days
+   plan(sequential, split = TRUE) together with debug() is probably a better
+   approach for troubleshooting. The long-term plan is to deprecate the
+   'transparent' strategy.
+
+ * Support for 'persistent = TRUE' with multisession futures is defunct.
+
+BETA FEATURES:
+
+ * UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols,
+   e.g. a UTF-8 check mark symbol ('\u2713') would be relayed as '<U+2713>'
+   (8 characters).  The reason for this is a limitation in R itself on MS
+   Windows.  Now, value() attempts to recover such MS Windows output to UTF-8
+   before relaying it.  There is an option for disabling this new feature.
+
+MISCELLANEOUS:
+
+ * TESTS: Using more robust emulation of crashed forked parallel workers
+   after understanding that quit() must not be used in forked R processes.
+
+BUG FIXES:
+
+ * Now future(..., seed) will set the random seed as late as possible just
+   before the future expression is evaluated.  Previously it was done before
+   package dependencies where attached, which could lead to non-reproduce
+   random numbers in case a package dependency would update the RNG seed
+   when attached.
+
+DEPRECATED AND DEFUNCT:
+
+ * values(), which has been deprecated since future 1.20.0, is now defunct.
+   Use value() instead.
+
+ * Support for 'persistent = TRUE' with multisession futures is defunct.  If
+   still needed, a temporary workaround is to use cluster futures. However,
+   it is likely that support for 'persistent' will eventually be deprecated
+   for all future backends.
+
+ * Argument 'value' of resolve(), deprecated since future 1.15.0, is defunct
+   in favor of argument 'result'.
+   
+
 Version: 1.22.1 [2021-08-11]
 
 MISCELLANEOUS:
@@ -599,7 +647,7 @@ DEPRECATED AND DEFUNCT:
 
  * Argument 'value' of resolve() is deprecated. Use 'result' instead.
 
- * Use of internal argument 'evaluator' is now defunct.
+ * Use of internal argument 'evaluator' to future() is now defunct.
 
 
 Version: 1.14.0 [2019-07-01]
@@ -662,7 +710,7 @@ DEPRECATED AND DEFUNCT:
    future 1.12.0).  Option 'future.progress' is ignored.  This will make
    room for other progress-update mechanisms that are in the works.
 
- * Usage of internal argument 'evaluator' is now deprecated.
+ * Usage of internal argument 'evaluator' to future() is now deprecated.
  
  * Removed defunct argument 'output' from FutureError().
 

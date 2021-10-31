@@ -27,7 +27,7 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param value (DEPRECATED) Use argument `result` instead.
+#' @param value (DEFUNCT) Use argument `result` instead.
 #' 
 #' @param \dots Not used.
 #'
@@ -53,8 +53,7 @@ resolve.default <- function(x, ...) x
 resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -121,8 +120,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -157,7 +155,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
     if (is.numeric(idxs)) {
       idxs <- as.numeric(idxs)
       if (any(idxs < 1 | idxs > nx)) {
-        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
+        stopf("Indices out of range [1,%d]: %s", nx, hpaste(idxs))
       }
     } else {
       names <- names(x)
@@ -168,7 +166,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]
       if (length(unknown) > 0) {
-        stop("Unknown elements: ", hpaste(sQuote(unknown)))
+        stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
       }
     }
 
@@ -250,8 +248,7 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
 resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -286,7 +283,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
     idxs <- as.character(idxs)
     unknown <- idxs[!is.element(idxs, names)]
     if (length(unknown) > 0) {
-      stop("Unknown elements: ", hpaste(sQuote(unknown)))
+      stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
     }
   }
 
@@ -374,8 +371,7 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 0.1, value = result, ...) {
   ## BACKWARD COMPATIBILITY
   if (value && missing(result)) {
-    .Deprecated(msg = "Argument 'value' of resolve() is deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
-    result <- TRUE
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -408,7 +404,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
 
     if (is.numeric(idxs)) {
       if (any(idxs < 1 | idxs > nx)) {
-        stop(sprintf("Indices out of range [1,%d]: %s", nx, hpaste(idxs)))
+        stopf("Indices out of range [1,%d]: %s", nx, hpaste(idxs))
       }
     } else {
       names <- names(x)
@@ -419,7 +415,7 @@ resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdou
       idxs <- as.character(idxs)
       unknown <- idxs[!is.element(idxs, names)]
       if (length(unknown) > 0) {
-        stop("Unknown elements: ", hpaste(sQuote(unknown)))
+        stopf("Unknown elements: %s", hpaste(sQuote(unknown)))
       }
     }
   }

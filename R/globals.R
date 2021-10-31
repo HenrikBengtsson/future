@@ -33,7 +33,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     resolve <- FALSE
   } else {
     stop_if_not(is.logical(resolve), length(resolve) == 1L, !is.na(resolve))
-    .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.resolve"), sQuote(resolve)), package = .packageName)
+    .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a great risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.resolve"), sQuote(resolve)), package = .packageName)
   }
   
   debug <- getOption("future.debug", FALSE)
@@ -55,7 +55,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     } else {
       globals.onMissing <- match.arg(globals.onMissing,
                                      choices = c("error", "ignore"))
-      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)), package = .packageName)
+      .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a great risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.onMissing"), sQuote(globals.onMissing)), package = .packageName)
       mustExist <- is.element(globals.onMissing, "error")
     }
   }
@@ -76,7 +76,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       } else if (is.list(add)) {
         if (debug) mdebugf("- 'add' globals passed as-list: [%d] %s", length(add), hpaste(sQuote(names(add))))
       } else {
-        stop("Attribute 'add' of argument 'globals' must be either a character vector or a named list: ", mode(add))
+        stopf("Attribute 'add' of argument 'globals' must be either a character vector or a named list: %s", mode(add))
       }
       add <- as.FutureGlobals(add)
       stop_if_not(inherits(add, "FutureGlobals"))
@@ -95,7 +95,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       if (is.null(globals.method)) {
         globals.method <- "ordered"
       } else {
-        .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a greak risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.method"), sQuote(globals.method)), package = .packageName)
+        .Deprecated(msg = sprintf("R option %s may only be used for troubleshooting. It must not be used in production since it changes how futures are evaluated and there is a great risk that the results cannot be reproduced elsewhere: %s", sQuote("future.globals.method"), sQuote(globals.method)), package = .packageName)
       }
       
       globals <- globalsOf(
@@ -138,7 +138,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
   } else if (is.list(globals)) {
     if (debug) mdebugf("- globals passed as-list: [%d] %s", length(globals), hpaste(sQuote(names(globals))))
   } else {
-    stop("Argument 'globals' must be either a logical scalar or a character vector: ", mode(globals))
+    stopf("Argument 'globals' must be either a logical scalar or a character vector: %s", mode(globals))
   }
   ## Make sure to preserve 'resolved' attribute
   globals <- as.FutureGlobals(globals)

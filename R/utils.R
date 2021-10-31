@@ -15,8 +15,20 @@ assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
   if (length(ast) == 0L) return()
   names <- names(ast)
   if (is.null(names) || any(names == "")) {    
-    stop(sprintf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L)))
+    stopf("Function %s() requires that all arguments beyond the first one are passed by name and not by position: %s", as.character(call[[1L]]), deparse(call, width.cutoff = 100L))
   }
+}
+
+stopf <- function(fmt, ..., call. = TRUE, domain = NULL) {  #nolint
+  stop(sprintf(fmt, ...), call. = call., domain = domain)
+}
+
+warnf <- function(fmt, ..., call. = TRUE, immediate. = FALSE, domain = NULL) {  #nolint
+  warning(sprintf(fmt, ...), call. = call., immediate. = immediate., domain = domain)
+}
+
+msgf <- function(fmt, ..., appendLF = FALSE, domain = NULL) {  #nolint
+  message(sprintf(fmt, ...), appendLF = appendLF, domain = domain)
 }
 
 stop_if_not <- function(...) {
@@ -27,8 +39,7 @@ stop_if_not <- function(...) {
         mc <- match.call()
         call <- deparse(mc[[ii + 1]], width.cutoff = 60L)
         if (length(call) > 1L) call <- paste(call[1L], "....")
-        stop(sprintf("%s is not TRUE", sQuote(call)),
-             call. = FALSE, domain = NA)
+        stopf("%s is not TRUE", sQuote(call), call. = FALSE, domain = NA)
     }
   }
   
@@ -466,7 +477,7 @@ myExternalIP <- local({
     ## Nothing found?
     if (is.null(value)) {
       if (mustWork) {
-        stop(sprintf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", ")))
+        stopf("Failed to identify external IP from any of the %d external services: %s", length(urls), paste(sQuote(urls), collapse = ", "))
       }
       mdebug("myExternalIP() ... failed")
       return(NA_character_)
@@ -559,7 +570,7 @@ myInternalIP <- local({
       value <- res[isPrivateIP(res)]
     } else {
       if (mustWork) {
-        stop(sprintf("remote(..., myip = '<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os))
+        stopf("remote(..., myip = '<internal>') is yet not implemented for this operating system (%s). Please specify the 'myip' IP number manually.", os)
       }
       return(NA_character_)
     }
@@ -776,7 +787,7 @@ nullcon <- local({
     on.exit(close(con))
     cat("test", file = con)
   }, error = function(ex) {
-    stop(sprintf("Failed to write to null file (%s) on this platform (%s). Please report this the maintainer of the 'future' package.", sQuote(nullfile), sQuote(.Platform$OS.type)))
+    stopf("Failed to write to null file (%s) on this platform (%s). Please report this the maintainer of the 'future' package.", sQuote(nullfile), sQuote(.Platform$OS.type))
   })
   
   .nullcon
@@ -793,7 +804,7 @@ resolveMPI <- local({
     if (is.null(resolveMPI)) {
       resolveMPI <- function(future) {
         node <- future$workers[[future$node]]
-        warning(sprintf("resolved() on %s failed to load the Rmpi package. Will use blocking value() instead and return TRUE", sQuote(class(node)[1])))
+        warnf("resolved() on %s failed to load the Rmpi package. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]))
         value(future, stdout = FALSE, signal = FALSE)
         TRUE
       }
@@ -803,7 +814,7 @@ resolveMPI <- local({
 
         resolveMPI <- function(future) {
           node <- future$workers[[future$node]]
-          warning(sprintf("resolved() on %s failed to find mpi.iprobe() and mpi.any.tag() in Rmpi %s. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]), packageVersion("Rmpi")))
+          warnf("resolved() on %s failed to find mpi.iprobe() and mpi.any.tag() in Rmpi %s. Will use blocking value() instead and return TRUE", sQuote(class(node)[1]), packageVersion("Rmpi"))
           value(future, stdout = FALSE, signal = FALSE)
           TRUE
         }
@@ -1134,4 +1145,16 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   if (debug) mdebugf("supports_omp_threads() = %s", res, debug = debug)
 
   res
+}
+
+## https://github.com/HenrikBengtsson/future/issues/473
+adhoc_native_to_utf8 <- function(x) {
+  code <- gsub("<U[+]([[:alnum:]]+)>", "\\\\u\\1", x)
+  if (identical(code, x)) return(x)
+  code <- gsub('"', '\\"', code, fixed = TRUE)
+  code <- paste('"', code, '"', sep = "")
+  tryCatch({
+    expr <- parse(text = code)
+    eval(expr, envir = emptyenv())
+  }, error = function(ex) x)
 }

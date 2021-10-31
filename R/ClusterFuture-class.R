@@ -87,7 +87,7 @@ as_ClusterFuture <- function(future, workers = NULL, ...) {
     workers <- addCovrLibPath(workers)
   }
   if (!inherits(workers, "cluster")) {
-    stop("Argument 'workers' is not of class 'cluster': ", paste(sQuote(class(workers)), collapse = ", "))
+    stopf("Argument 'workers' is not of class 'cluster': %s", paste(sQuote(class(workers)), collapse = ", "))
   }
   stop_if_not(length(workers) > 0)
 
@@ -309,8 +309,7 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = NULL, ...) {
   } else if (inherits(node, "MPInode")) {
     res <- resolveMPI(x)
   } else {
-    ## stop("Not yet implemented: ", paste(sQuote(class(node)), collapse = ", "))
-    warning(sprintf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1])))
+    warnf("resolved() is not yet implemented for workers of class %s. Will use value() instead and return TRUE", sQuote(class(node)[1]))
     value(x, stdout = FALSE, signal = FALSE)
     res <- TRUE
   }

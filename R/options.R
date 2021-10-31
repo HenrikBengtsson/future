@@ -70,6 +70,8 @@
 #'
 #' \describe{
 #'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for **RcppParallel**. If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
+#'
+#'  \item{\option{future.output.windows.reencode} (_beta feature - may change_):}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (`"\u2713"`) would be relayed as `"<U+2713>"` (a string with eight ASCII characters).  This option will cause `value()` to attempt to recover the intended UTF-8 symbols from `<U+nnnn>` string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: `TRUE`)}
 #' }
 #'
 #' See also [parallelly::parallelly.options].
@@ -153,6 +155,8 @@
 #' future.wait.timeout
 #' R_FUTURE_WAIT_TIMEOUT
 #' R_FUTURE_RESOLVED_TIMEOUT
+#' future.output.windows.reencode
+#' R_FUTURE_OUTPUT_WINDOWS_REENCODE
 #'
 #' @keywords internal
 #' @name future.options
@@ -207,18 +211,18 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
   if (length(disallow) > 0) {
     if ("NA" %in% disallow) {
       if (any(is.na(value))) {
-        stop(sprintf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value)))
+        stopf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value))
       }
     }
     if (is.numeric(value)) {
       if ("non-positive" %in% disallow) {
         if (any(value <= 0, na.rm = TRUE)) {
-          stop(sprintf("Environment variable %s=%s specifies a non-positive value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+          stopf("Environment variable %s=%s specifies a non-positive value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value))
         }
       }
       if ("negative" %in% disallow) {
         if (any(value < 0, na.rm = TRUE)) {
-          stop(sprintf("Environment variable %s=%s specifies a negative value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value)))
+          stopf("Environment variable %s=%s specifies a negative value for option %s: %s", sQuote(env), sQuote(env_value), sQuote(name), commaq(value))
         }
       }
     }
@@ -286,8 +290,10 @@ update_package_options <- function(debug = FALSE) {
   ## https://github.com/HenrikBengtsson/future/issues/515
   update_package_option("future.assign_globals.exclude", default = c("namespace"), split = ",", debug = debug)
 
+  ## Prototyping in future 1.23.0:
+  update_package_option("future.output.windows.reencode", mode = "logical", debug = debug)
+
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
-  update_package_option("future.rng.onMisuse.backport", debug = debug)
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
 }

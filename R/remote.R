@@ -90,7 +90,7 @@ remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persisten
       myip <- myInternalIP()
     }
   } else if (!inherits(workers, "cluster")) {
-    stop("Argument 'workers' is not of class 'cluster': ", class(workers)[1])
+    stopf("Argument 'workers' is not of class 'cluster': %s", class(workers)[1])
   }
 
   future <- ClusterFuture(..., workers = workers, master = myip, revtunnel = revtunnel, homogeneous = homogeneous, persistent = persistent, envir = envir)

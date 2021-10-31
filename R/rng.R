@@ -63,7 +63,7 @@ as_lecyer_cmrg_seed <- function(seed) {
   if (is.logical(seed)) {
     stop_if_not(length(seed) == 1L)
     if (!is.na(seed) && !seed) {
-      stop("Argument 'seed' must be TRUE if logical: ", seed)
+      stopf("Argument 'seed' must be TRUE if logical: %s", seed)
     }
 
     oseed <- get_random_seed()
@@ -108,7 +108,7 @@ as_lecyer_cmrg_seed <- function(seed) {
     return(get_random_seed())
   }
   
-  stop("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: ", capture.output(str(seed)))
+  stopf("Argument 'seed' must be L'Ecuyer-CMRG RNG seed as returned by parallel::nextRNGStream() or an single integer: %s", capture.output(str(seed)))
 }
 
 
@@ -170,13 +170,13 @@ make_rng_seeds <- function(count, seed = FALSE,
     seeds <- seed
     nseeds <- length(seeds)
     if (nseeds != count) {
-      stop(sprintf("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element iterated over, but length(seed) != number of elements: %g != %g", nseeds, count))
+      stopf("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element iterated over, but length(seed) != number of elements: %g != %g", nseeds, count)
     }
 
     ## Assert same type of RNG seeds?
     ns <- unique(unlist(lapply(seeds, FUN = length), use.names = FALSE))
     if (length(ns) != 1L) {
-      stop("The elements of the list specified in argument 'seed' are not all of the same lengths (did you really pass RNG seeds?): ", hpaste(ns))
+      stopf("The elements of the list specified in argument 'seed' are not all of the same lengths (did you really pass RNG seeds?): %s", hpaste(ns))
     }
 
     ## Did use specify scalar integers as meant for set.seed()?
@@ -186,13 +186,13 @@ make_rng_seeds <- function(count, seed = FALSE,
 
     types <- unlist(lapply(seeds, FUN = typeof), use.names = FALSE)
     if (!all(types == "integer")) {
-      stop("The elements of the list specified in argument 'seed' are not all integers (did you really pass RNG seeds?): ", hpaste(unique(types)))
+      stopf("The elements of the list specified in argument 'seed' are not all integers (did you really pass RNG seeds?): %s", hpaste(unique(types)))
     }
     
     ## Check if valid random seeds are specified.
     ## For efficiency, only look at the first one.
     if (!is_valid_random_seed(seeds[[1]])) {
-      stop("The list in argument 'seed' does not seem to hold elements that are valid .Random.seed values: ", capture.output(str(seeds[[1]])))
+      stopf("The list in argument 'seed' does not seem to hold elements that are valid .Random.seed values: %s", capture.output(str(seeds[[1]])))
     }
 
     if (debug) {

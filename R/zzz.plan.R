@@ -41,11 +41,6 @@
 #'  \item{[`sequential`]:}{
 #'    Resolves futures sequentially in the current \R process.
 #'  }
-#'  \item{[`transparent`]:}{
-#'    Resolves futures sequentially in the current \R process and
-#'    assignments will be done to the calling environment.
-#'    Early stopping is enabled by default.
-#'  }
 #'  \item{[`multisession`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running in the background on the same machine.
@@ -147,25 +142,25 @@ plan <- local({
     }
   }
 
+  evaluator_uses <- function(evaluator, strategy) {
+    if (!inherits(evaluator, strategy)) return(FALSE)
+    ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
+    class <- class(evaluator)
+    if (class[1] == strategy) return(TRUE)
+    if (length(class) == 1L) return(FALSE)
+    if (class[1] == "tweaked" && class[2] == strategy) return(TRUE)
+    FALSE
+  }
+
   warn_about_multiprocess <- local({
     .warn <- TRUE
-
-    is_multiprocess <- function(evaluator) {
-      if (!inherits(evaluator, "multiprocess")) return(FALSE)
-      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
-      class <- class(evaluator)
-      if (class[1] == "multiprocess") return(TRUE)
-      if (length(class) == 1L) return(FALSE)
-      if (class[1] == "tweaked" && class[2] == "multiprocess") return(TRUE)
-      FALSE
-    }
 
     function(stack) {
       if (!.warn) return()
 
       ## Is deprecated 'multiprocess' used?    
       for (kk in seq_along(stack)) {
-        if (is_multiprocess(stack[[kk]])) {
+        if (evaluator_uses(stack[[kk]], "multiprocess")) {
           ignore <- getOption("future.deprecated.ignore")
           if (!is.element("multiprocess", ignore)) {
             ## Warn only once
@@ -182,24 +177,32 @@ plan <- local({
   warn_about_multicore <- local({
     .warn <- TRUE
 
-    is_multicore <- function(evaluator) {
-      if (!inherits(evaluator, "multicore")) return(FALSE)
-      ## NOTE: Yes, we are indeed inspecting the 'class' attribute itself
-      class <- class(evaluator)
-      if (class[1] == "multicore") return(TRUE)
-      if (length(class) == 1L) return(FALSE)
-      if (class[1] == "tweaked" && class[2] == "multicore") return(TRUE)
-      FALSE
-    }
-
     function(stack) {
       if (!.warn) return()
 
       ## Is 'multicore' used despite not being supported on the current
       ## platform?    
       for (kk in seq_along(stack)) {
-        if (is_multicore(stack[[kk]])) {
+        if (evaluator_uses(stack[[kk]], "multicore")) {
           supportsMulticore(warn = TRUE)
+          ## Warn only once, if at all
+          .warn <<- FALSE
+          break
+        }
+      }
+    }
+  })
+
+  warn_about_transparent <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'transparent' used?
+      for (kk in seq_along(stack)) {
+        if (evaluator_uses(stack[[kk]], "transparent")) {
+          warning("This is a friendly reminder that the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production")
           ## Warn only once, if at all
           .warn <<- FALSE
           break
@@ -291,6 +294,7 @@ plan <- local({
 
     warn_about_multiprocess(newStack)
     warn_about_multicore(newStack)
+    warn_about_transparent(newStack)
 
     stack <<- newStack
 

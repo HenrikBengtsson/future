@@ -14,7 +14,7 @@ ClusterRegistry <- local({
       stop_if_not(length(workers) >= 1, !anyNA(workers))
       workers <- sort(workers)
     } else {
-      stop("Unknown mode of argument 'workers': ", mode(workers))
+      stopf("Unknown mode of argument 'workers': %s", mode(workers))
     }
 
     if (length(cluster) == 0L && action != "stop") {

@@ -1,17 +1,25 @@
-on: [push]
+on: [push, pull_request]
 
-name: covr
+name: future_tests
 
 jobs:
-  covr:
+  future_tests:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
     runs-on: ubuntu-20.04
 
-    name: covr
+    name: future.plan=${{ matrix.future.plan }}
 
     strategy:
       fail-fast: false
+      matrix:
+        future:
+          - { plan: 'cluster'                             }
+          - { plan: 'multicore'                           }
+          - { plan: 'multisession'                        }
+          - { plan: 'sequential'                          }
+          - { plan: 'future.batchtools::batchtools_local' }
+          - { plan: 'future.callr::callr'                 }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -22,7 +30,9 @@ jobs:
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
       _R_CHECK_CRAN_INCOMING_: false
-
+      ## Specific to futures
+      R_FUTURE_RNG_ONMISUSE: error
+      
     steps:
       - uses: actions/checkout@v2
 
@@ -32,7 +42,7 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+      - name: Query R package dependencies
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
@@ -46,7 +56,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install R package system dependencies (Linux)
+        if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
@@ -54,11 +65,17 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
-      - name: Install dependencies
+      - name: Install R package dependencies
         run: |
-          install.packages(c("covr", "sessioninfo"))
           remotes::install_deps(dependencies = TRUE)
-          install.packages(".", repos=NULL, type="source")
+          install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
+        shell: Rscript {0}
+          
+      - name: Install 'future.tests' and any backend R packages
+        run: |
+          remotes::install_cran("future.tests")
+          remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
+          if (grepl("::", plan <- "${{ matrix.future.plan }}") && nzchar(pkg <- sub("::.*", "", plan))) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
@@ -68,13 +85,15 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
     
-      - name: Test coverage
+      - name: Check future backend '${{ matrix.future.plan }}'
         run: |
-          ## 1. Get 'Repository Upload Token' from Codecov:
-          ##    https://app.codecov.io/gh/<org>/<repo>/settings
-          ## 2. Set 'CODECOV_TOKEN' in GitHub Secrets:
-          ##    https://github.com/<org>/<repo>/settings/environments/
-          coverage <- covr::package_coverage()
-          print(coverage)
-          covr::codecov(coverage = coverage, token="${{secrets.CODECOV_TOKEN}}")
-        shell: Rscript {0}
+          R CMD build --no-build-vignettes --no-manual . 
+          R CMD INSTALL *.tar.gz 
+          Rscript -e future.tests::check --args --test-plan=${{ matrix.future.plan }}
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}-r${{ matrix.future.plan }}-results
+          path: check

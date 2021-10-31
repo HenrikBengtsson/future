@@ -35,6 +35,8 @@
 \alias{future.wait.timeout}
 \alias{R_FUTURE_WAIT_TIMEOUT}
 \alias{R_FUTURE_RESOLVED_TIMEOUT}
+\alias{future.output.windows.reencode}
+\alias{R_FUTURE_OUTPUT_WINDOWS_REENCODE}
 \title{Options used for futures}
 \description{
 Below are the \R options and environment variables that are used by the
@@ -115,6 +117,8 @@ If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRI
 
 \describe{
 \item{\option{future.fork.multithreading.enable} (\emph{beta feature - may change}):}{(logical) Enable or disable \emph{multi-threading} while using \emph{forked} parallel processing.  If \code{FALSE}, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for \strong{RcppParallel}. If \code{TRUE}, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using \code{plan(multicore)} but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
+
+\item{\option{future.output.windows.reencode} (\emph{beta feature - may change}):}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (\code{"\\u2713"}) would be relayed as \code{"<U+2713>"} (a string with eight ASCII characters).  This option will cause \code{value()} to attempt to recover the intended UTF-8 symbols from \verb{<U+nnnn>} string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: \code{TRUE})}
 }
 
 See also \link[parallelly:parallelly.options]{parallelly::parallelly.options}.

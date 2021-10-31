@@ -12,6 +12,10 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
     message(sprintf("Multicore futures are not supporting on '%s'. Falling back to use synchronous sequential futures", .Platform$OS.type))
   }
 
+  nworkers <- nbrOfWorkers()
+  message("Number of workers: ", nworkers)
+  stopifnot(nworkers == cores)
+  
   for (globals in c(FALSE, TRUE)) {
 
     message(sprintf("*** multicore(..., globals = %s) without globals", globals))
@@ -97,20 +101,6 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
   } # for (globals ...)
 
 
-  message("*** multicore() - terminating workers ...")
-  
-  ## Force R worker to quit
-  x %<-% quit(save = "no")
-  res <- tryCatch(y <- x, error = identity)
-  print(res)
-  stopifnot(
-    inherits(res, "simpleError"),
-    inherits(res, "FutureError")
-  )
-
-  message("*** multicore() - terminating workers ... DONE")
-  
-  
   message("*** multicore(..., workers = 1L) ...")
 
   a <- 2
