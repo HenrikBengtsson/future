@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.22.1-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9000</span>
       </span>
     </div>
 
@@ -219,7 +219,7 @@
 </ul>
 <p>With these three functions alone, it is possible to evaluate one or more R expressions synchronously and asynchronously. How and where these expressions are resolved depends on which "future backend" is in use. For example, one backend may evaluated the expressions sequentially (synchronously) while another may evaluated them in parallel (asynchronously). Regardless of backend, the value of a future expression is always the same.</p>
 <p>It is fundamental to the future ecosystem that all future backends conform to the Future API specification. Conformance serves as a guarantor of correctness and behavior for both the developer who use futures in their software as well as the end-user of their software. A future backend that meets the requirements can be used in any software that use futures internally.</p>
-<p>For example, the above three functions serve as building blocks in several higher-level map-reduce APIs. One example is the [future.apply] package on CRAN that provides <code>future_lapply()</code>, which is a futurized version of <code><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html">lapply()</a></code> available in the 'base' package. This function can be used to perform the lapply-like processing in parallel using a parallel backend. The implementation of the 'future.apply' package is 100% invariant to the parallel backend used. This is possible because all future backends conform to a set of rules. Rules that are documented below.</p>
+<p>For example, the above three functions serve as building blocks in several higher-level map-reduce APIs. One example is the [future.apply] package on CRAN that provides <code>future_lapply()</code>, which is a futurized version of <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> available in the 'base' package. This function can be used to perform the lapply-like processing in parallel using a parallel backend. The implementation of the 'future.apply' package is 100% invariant to the parallel backend used. This is possible because all future backends conform to a set of rules. Rules that are documented below.</p>
 <p>A supplement to the specification herein is the 'Test Suite for Future API Backends', which consists of a set of tests that can be used to validated that a future backend meets the minimal requirements of the Future API. These tests run from the command-line, from the R prompt, or as part of the package tests of a backend package. This test suite is documented and implemented in the <a href="https://cran.r-project.org/package=future.tests">future.tests</a> package available on CRAN.</p>
 </div>
 <div id="feedback" class="section level2">
