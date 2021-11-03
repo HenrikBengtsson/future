@@ -1,10 +1,12 @@
 Package: future
 ===============
 
-Version: 1.23.0-9000 [2021-10-30]
+Version: 1.23.0-9001 [2021-11-03]
 
- * ...
- 
+NEW FEATURES:
+
+ * Now tweak() keeps calls in arguments, e.g. tweak(..., abc=quote(x == y)).
+
 
 Version: 1.23.0 [2021-10-30]
 

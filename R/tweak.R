@@ -100,22 +100,29 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
     warnf("Detected %d unknown future arguments: %s", length(unknown), paste(sQuote(unknown), collapse = ", "))
   }
 
-  ## Arguments 'envir' and 'workers' must exist in the wrapper, if
-  ## they exist in the "future" function
-  for (name in c("envir", "workers")) {
-    if (is.element(name, formals) && !is.element(name, names)) {
-      args <- c(formals(strategy)[name], args)
-      names <- c(name, names)
-    }
-  }
-  
   strategy2 <- function(...) NULL
   args2 <- args
   for (kk in seq_along(args)) {
     name <- names[kk]
-    formals(strategy2)[name] <- list(args[[name]])
+    value <- args[[name]]
+    if (is.call(value)) {
+      ## enquote()
+      value <- as.call(list(quote(quote), value))
+    }
+    formals(strategy2)[name] <- list(value)
     args2[[name]] <- as.symbol(name)
   }
+
+  ## Arguments 'envir' and 'workers' must exist in the wrapper, if
+  ## they exist in the "future" function
+  formals2 <- names(formals(strategy2))
+  for (name in c("envir", "workers")) {
+    if (is.element(name, formals) && !is.element(name, formals2)) {
+      formals(strategy2) <- c(formals(strategy2), formals(strategy)[name])
+      args2 <- c(args2, args[name])
+    }
+  }
+
   body(strategy2) <- bquote_splice(strategy(..., ..(args2)), splice = TRUE)
 
   ## Avoid strategy2() depending on the calling frame, which would cause it
