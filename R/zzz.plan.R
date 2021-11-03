@@ -247,7 +247,12 @@ plan <- local({
       }
 
       if (!identical(res, NA)) {
-        stop(FutureError("Initialization of plan() failed, because the value of the test future is not the expected one: ", sQuote(res)))
+        res <- if (is.null(res)) {
+          "NULL"
+        } else {
+          paste(sQuote(res), collapse = ", ")
+        }
+        stop(FutureError(sprintf("Initialization of plan() failed, because the value of the test future is not NA as expected: %s", res)))
       }
       
       if (debug) {
