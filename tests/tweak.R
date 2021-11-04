@@ -55,6 +55,20 @@ stopifnot(inherits(sequential2, "tweaked"))
 stopifnot(identical(formals(sequential2)$abc, FALSE))
 
 
+message("*** y <- tweak(cluster, rscript_startup = quote(...)) ...")
+cluster2 <- tweak(cluster, rscript_startup = quote(options(abc = 42L)))
+print(args(cluster2))
+stopifnot(!identical(cluster2, future::cluster))
+stopifnot(inherits(cluster2, "tweaked"))
+formals2 <- formals(cluster2)
+stopifnot("rscript_startup" %in% names(formals2))
+rscript_startup <- formals2$rscript_startup
+stopifnot(!is.null(rscript_startup),
+          is.language(rscript_startup), is.call(rscript_startup))
+value <- eval(rscript_startup)
+stopifnot(is.language(value), is.call(value))
+
+
 message("*** plan() - tweak without introducting package dependencies ...")
 
 ## Requires a auxillary package that is available and not already loaded
