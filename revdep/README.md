@@ -10,13 +10,13 @@
 |collate  |en_US.UTF-8                  |
 |ctype    |en_US.UTF-8                  |
 |tz       |America/Los_Angeles          |
-|date     |2021-10-27                   |
+|date     |2021-11-03                   |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.22.1 |1.22.1-9005 |*  |
+|future     |1.23.0 |1.23.0-9001 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.28 |0.6.28      |   |
 |globals    |0.14.0 |0.14.0      |   |
@@ -25,13 +25,7 @@
 
 # Revdeps
 
-## Failed to check (1)
-
-|package                    |version |error |warning |note |
-|:--------------------------|:-------|:-----|:-------|:----|
-|[TKCat](failures.md#tkcat) |0.5.4   |1     |        |     |
-
-## All (210)
+## All (209)
 
 |package                                                  |version   |error |warning |note |
 |:--------------------------------------------------------|:---------|:-----|:-------|:----|
@@ -63,7 +57,7 @@
 |[cSEM](problems.md#csem)                                 |0.4.0     |      |        |1    |
 |[CSGo](problems.md#csgo)                                 |0.6.7     |      |        |1    |
 |cvCovEst                                                 |1.0.1     |      |        |     |
-|[datapackage.r](problems.md#datapackager)                |1.3.4     |2     |1       |1    |
+|[datapackage.r](problems.md#datapackager)                |1.3.4     |      |        |1    |
 |DeclareDesign                                            |0.28.0    |      |        |     |
 |[delayed](problems.md#delayed)                           |0.3.0     |      |        |2    |
 |dhReg                                                    |0.1.1     |      |        |     |
@@ -82,7 +76,7 @@
 |[EpiNow2](problems.md#epinow2)                           |1.3.2     |      |        |2    |
 |epwshiftr                                                |0.1.3     |      |        |     |
 |EWCE                                                     |1.2.0     |      |        |     |
-|ezcox                                                    |1.0.1     |      |        |     |
+|ezcox                                                    |1.0.2     |      |        |     |
 |[fabletools](problems.md#fabletools)                     |0.3.1     |      |        |1    |
 |FAMoS                                                    |0.3.0     |      |        |     |
 |fastpos                                                  |0.4.1     |      |        |     |
@@ -130,11 +124,10 @@
 |JuliaConnectoR                                           |1.0.0     |      |        |     |
 |[kernelboot](problems.md#kernelboot)                     |0.1.7     |      |        |1    |
 |[keyATM](problems.md#keyatm)                             |0.4.0     |      |        |1    |
-|[latentcor](problems.md#latentcor)                       |1.1.0     |      |        |2    |
 |[lava](problems.md#lava)                                 |1.6.10    |      |        |1    |
 |ldaPrototype                                             |0.3.1     |      |        |     |
 |ldsr                                                     |0.0.2     |      |        |     |
-|LexFindR                                                 |1.0.1     |      |        |     |
+|LexFindR                                                 |1.0.2     |      |        |     |
 |lgr                                                      |0.4.3     |      |        |     |
 |[lidR](problems.md#lidr)                                 |3.2.2     |      |        |1    |
 |lightr                                                   |1.6.0     |      |        |     |
@@ -147,9 +140,9 @@
 |[microservices](problems.md#microservices)               |0.1.2     |      |        |1    |
 |microSTASIS                                              |0.1.0     |      |        |     |
 |mikropml                                                 |1.1.1     |      |        |     |
-|[MineICA](problems.md#mineica)                           |1.34.0    |      |2       |5    |
+|[MineICA](problems.md#mineica)                           |1.34.0    |-1    |2       |5    |
 |[missSBM](problems.md#misssbm)                           |1.0.1     |      |        |1    |
-|mistyR                                                   |1.2.0     |      |        |     |
+|mistyR                                                   |1.2.1     |      |        |     |
 |mlr3                                                     |0.12.0    |      |        |     |
 |mlr3db                                                   |0.4.1     |      |        |     |
 |[momentuHMM](problems.md#momentuhmm)                     |1.5.4     |      |        |1    |
@@ -202,7 +195,7 @@
 |[shiny](problems.md#shiny)                               |1.7.1     |      |        |1    |
 |[shiny.worker](problems.md#shinyworker)                  |0.0.1     |      |        |2    |
 |[shinyrecap](problems.md#shinyrecap)                     |0.1.0     |      |        |2    |
-|[sigminer](problems.md#sigminer)                         |2.1.0     |      |        |1    |
+|[sigminer](problems.md#sigminer)                         |2.1.1     |      |        |1    |
 |[Signac](problems.md#signac)                             |1.4.0     |      |        |1    |
 |simfinapi                                                |0.2.0     |      |        |     |
 |[simglm](problems.md#simglm)                             |0.8.8     |      |        |1    |
@@ -223,12 +216,12 @@
 |[spatialwarnings](problems.md#spatialwarnings)           |3.0.0     |      |1       |1    |
 |sperrorest                                               |3.0.2     |      |        |     |
 |[sphunif](problems.md#sphunif)                           |1.0.1     |      |        |2    |
-|[spNetwork](problems.md#spnetwork)                       |0.2.0     |      |        |1    |
+|[spNetwork](problems.md#spnetwork)                       |0.2.1     |      |        |1    |
 |[stars](problems.md#stars)                               |0.5-3     |      |        |2    |
 |[startR](problems.md#startr)                             |2.1.0     |      |        |1    |
 |steps                                                    |1.2.1     |      |        |     |
-|[synergyfinder](problems.md#synergyfinder)               |3.2.0     |      |        |3    |
-|[tableschema.r](problems.md#tableschemar)                |1.1.1     |2     |        |3    |
+|[synergyfinder](problems.md#synergyfinder)               |3.2.2     |      |        |3    |
+|[tableschema.r](problems.md#tableschemar)                |1.1.1     |      |        |3    |
 |[targeted](problems.md#targeted)                         |0.2.0     |      |        |1    |
 |targets                                                  |0.8.1     |      |        |     |
 |tcensReg                                                 |0.1.7     |      |        |     |
@@ -236,7 +229,7 @@
 |tealeaves                                                |1.0.5     |      |        |     |
 |[text](problems.md#text)                                 |0.9.10    |      |        |1    |
 |tidyqwi                                                  |0.1.2     |      |        |     |
-|[TKCat](failures.md#tkcat)                               |0.5.4     |1     |        |     |
+|[TKCat](problems.md#tkcat)                               |0.5.4     |      |        |2    |
 |TreeSearch                                               |1.0.1     |      |        |     |
 |[TriDimRegression](problems.md#tridimregression)         |1.0.1     |      |        |3    |
 |[tsfeatures](problems.md#tsfeatures)                     |1.0.2     |      |        |1    |
