@@ -6,7 +6,7 @@
 * GitHub: https://github.com/yqzhong7/AIPW
 * Source code: https://github.com/cran/AIPW
 * Date/Publication: 2021-06-11 09:30:02 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 95
 
 Run `revdep_details(, "AIPW")` for more info
 
@@ -116,7 +116,7 @@ Run `revdep_details(, "aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
+      'expectile', 'HaarSeg', 'mpcbs'
     ```
 
 # BAMBI
@@ -233,7 +233,7 @@ Run `revdep_details(, "bistablehistory")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2021-07-19 22:00:02 UTC
-* Number of recursive dependencies: 105
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -305,9 +305,9 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  9.2Mb
       sub-directories of 1Mb or more:
-        R     4.2Mb
+        R     5.5Mb
         doc   2.4Mb
     ```
 
@@ -542,76 +542,6 @@ Run `revdep_details(, "datapackage.r")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘datapackage.r-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: Package.load
-    > ### Title: Instantiate 'Data Package' class
-    > ### Aliases: Package.load
-    > 
-    > ### ** Examples
-    > 
-    > 
-    > # Load local descriptor
-    > descriptor <- system.file('extdata/dp1/datapackage.json', 
-    +                          package = "datapackage.r")
-    > dataPackage <- Package.load(descriptor)
-    Error in context_eval(join(src), private$context, serialize) : 
-      SyntaxError: Use of const in strict mode.
-    Calls: Package.load ... <Anonymous> -> evaluate_js -> get_str_output -> context_eval
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-        2.   └─datapackage.r::Package.load(descriptor = descriptor)
-        3.     └─Package$new(descriptor, basePath, strict = strict, profile = profile)
-        4.       └─datapackage.r:::initialize(...)
-        5.         └─private$build_()
-        6.           └─private$profile_$validate(private$currentDescriptor_)
-        7.             └─datapackage.r::is.valid(descriptor2, helpers.from.list.to.json(private$jsonschema_))
-    ...
-        8.               └─jsonvalidate::json_validator(schema)
-        9.                 └─jsonvalidate:::jsonvalidate_js()
-       10.                   └─ct$source(system.file("bundle.js", package = "jsonvalidate"))
-       11.                     └─V8:::evaluate_js(readLines(file, encoding = "UTF-8", warn = FALSE))
-       12.                       ├─V8:::get_str_output(...)
-       13.                       └─V8:::context_eval(join(src), private$context, serialize)
-      
-      [ FAIL 80 | WARN 0 | SKIP 0 | PASS 117 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘creating_data_packages_in_r.Rmd’ using rmarkdown
-    Quitting from lines 44-49 (creating_data_packages_in_r.Rmd) 
-    Error: processing vignette 'creating_data_packages_in_r.Rmd' failed with diagnostics:
-    SyntaxError: Use of const in strict mode.
-    --- failed re-building ‘creating_data_packages_in_r.Rmd’
-    
-    --- re-building ‘using_data_packages_in_r.Rmd.Rmd’ using rmarkdown
-    Quitting from lines 55-59 (using_data_packages_in_r.Rmd.Rmd) 
-    Error: processing vignette 'using_data_packages_in_r.Rmd.Rmd' failed with diagnostics:
-    SyntaxError: Use of const in strict mode.
-    --- failed re-building ‘using_data_packages_in_r.Rmd.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘creating_data_packages_in_r.Rmd’ ‘using_data_packages_in_r.Rmd.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -664,8 +594,9 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  6.5Mb
       sub-directories of 1Mb or more:
+        R      1.0Mb
         doc    1.3Mb
         libs   3.5Mb
     ```
@@ -741,7 +672,7 @@ Run `revdep_details(, "dragon")` for more info
 * GitHub: https://github.com/erblast/easyalluvial
 * Source code: https://github.com/cran/easyalluvial
 * Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 142
+* Number of recursive dependencies: 143
 
 Run `revdep_details(, "easyalluvial")` for more info
 
@@ -941,13 +872,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    21:11:18-21:11:18 > 16:00:00
+    13:34:38-13:34:38 > 16:00:00
     - 24 pops @ layer 2
-    21:11:18-21:11:18 > 16:00:00
+    13:34:38-13:34:38 > 16:00:00
     - 32 pops @ layer 3
-    21:11:18-21:11:18 > 16:00:00
+    13:34:38-13:34:38 > 16:00:00
     - 16 pops @ layer 4
-    21:11:18-21:11:18 > 16:00:00
+    13:34:38-13:34:38 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1006,7 +937,7 @@ Run `revdep_details(, "foieGras")` for more info
 * GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 95
+* Number of recursive dependencies: 96
 
 Run `revdep_details(, "forecastML")` for more info
 
@@ -1028,7 +959,7 @@ Run `revdep_details(, "forecastML")` for more info
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
 * Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 218
+* Number of recursive dependencies: 231
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -1161,7 +1092,7 @@ Run `revdep_details(, "grattan")` for more info
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
 * Date/Publication: 2021-05-10 06:50:03 UTC
-* Number of recursive dependencies: 132
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1189,7 +1120,7 @@ Run `revdep_details(, "greed")` for more info
 * GitHub: https://github.com/greta-dev/greta
 * Source code: https://github.com/cran/greta
 * Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 154
+* Number of recursive dependencies: 176
 
 Run `revdep_details(, "greta")` for more info
 
@@ -1298,7 +1229,7 @@ Run `revdep_details(, "hwep")` for more info
 * GitHub: https://github.com/gitlzg/IFAA
 * Source code: https://github.com/cran/IFAA
 * Date/Publication: 2021-07-20 16:00:10 UTC
-* Number of recursive dependencies: 42
+* Number of recursive dependencies: 44
 
 Run `revdep_details(, "IFAA")` for more info
 
@@ -1394,7 +1325,7 @@ Run `revdep_details(, "inlinedocs")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/interflex
 * Date/Publication: 2021-05-18 11:40:02 UTC
-* Number of recursive dependencies: 112
+* Number of recursive dependencies: 129
 
 Run `revdep_details(, "interflex")` for more info
 
@@ -1438,7 +1369,7 @@ Run `revdep_details(, "ipc")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 148
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1495,37 +1426,6 @@ Run `revdep_details(, "keyATM")` for more info
         libs  18.5Mb
     ```
 
-# latentcor
-
-<details>
-
-* Version: 1.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/latentcor
-* Date/Publication: 2021-10-04 13:30:02 UTC
-* Number of recursive dependencies: 134
-
-Run `revdep_details(, "latentcor")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.4Mb
-      sub-directories of 1Mb or more:
-        R   7.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘doFuture’ ‘doRNG’ ‘foreach’ ‘future’ ‘microbenchmark’ ‘parallel’
-      ‘rmarkdown’ ‘utils’
-      All declared Imports should be used.
-    ```
-
 # lava
 
 <details>
@@ -1534,7 +1434,7 @@ Run `revdep_details(, "latentcor")` for more info
 * GitHub: https://github.com/kkholst/lava
 * Source code: https://github.com/cran/lava
 * Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "lava")` for more info
 
@@ -1627,7 +1527,7 @@ Run `revdep_details(, "MAI")` for more info
 * GitHub: https://github.com/Lifebrain/metagam
 * Source code: https://github.com/cran/metagam
 * Date/Publication: 2020-11-12 08:10:02 UTC
-* Number of recursive dependencies: 145
+* Number of recursive dependencies: 169
 
 Run `revdep_details(, "metagam")` for more info
 
@@ -1676,6 +1576,27 @@ Run `revdep_details(, "microservices")` for more info
 Run `revdep_details(, "MineICA")` for more info
 
 </details>
+
+## Newly fixed
+
+*   checking running R code from vignettes ...
+    ```
+      ‘MineICA.Rnw’... failed
+     ERROR
+    Errors in running code in vignettes:
+    when running code in ‘MineICA.Rnw’
+      ...
+    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
+    [31] "hgu133aUNIPROT"       "hgu133a_dbInfo"       "hgu133a_dbconn"      
+    [34] "hgu133a_dbfile"       "hgu133a_dbschema"    
+    
+    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+    Ensembl site unresponsive, trying asia mirror
+    
+      When sourcing ‘MineICA.R’:
+    Error: Peer's Certificate issuer is not recognized.
+    Execution halted
+    ```
 
 ## In both
 
@@ -1788,9 +1709,9 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    l.23 \usepackage
-                    {subfig}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Peer's Certificate issuer is not recognized.
+    
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -1832,7 +1753,7 @@ Run `revdep_details(, "missSBM")` for more info
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
 * Date/Publication: 2021-09-03 04:30:02 UTC
-* Number of recursive dependencies: 206
+* Number of recursive dependencies: 215
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -1842,9 +1763,9 @@ Run `revdep_details(, "momentuHMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.3Mb
+      installed size is 10.5Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
+        R      2.0Mb
         doc    1.7Mb
         libs   5.7Mb
     ```
@@ -1923,7 +1844,7 @@ Run `revdep_details(, "onemapsgapi")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "OOS")` for more info
 
@@ -2040,7 +1961,7 @@ Run `revdep_details(, "phylolm")` for more info
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
 * Date/Publication: 2021-03-16 16:10:02 UTC
-* Number of recursive dependencies: 188
+* Number of recursive dependencies: 205
 
 Run `revdep_details(, "PLNmodels")` for more info
 
@@ -2210,7 +2131,7 @@ Run `revdep_details(, "promises")` for more info
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 321
+* Number of recursive dependencies: 334
 
 Run `revdep_details(, "Prostar")` for more info
 
@@ -2498,7 +2419,7 @@ Run `revdep_details(, "seer")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2021-10-17 20:30:02 UTC
-* Number of recursive dependencies: 242
+* Number of recursive dependencies: 259
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2604,11 +2525,11 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 2.1.0
+* Version: 2.1.1
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2021-09-22 10:00:02 UTC
-* Number of recursive dependencies: 210
+* Date/Publication: 2021-10-29 05:40:02 UTC
+* Number of recursive dependencies: 228
 
 Run `revdep_details(, "sigminer")` for more info
 
@@ -2618,13 +2539,12 @@ Run `revdep_details(, "sigminer")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.3Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
-        R         1.8Mb
-        data      1.0Mb
-        extdata   2.7Mb
-        help      1.2Mb
-        libs      1.2Mb
+        R      1.8Mb
+        data   1.0Mb
+        help   1.2Mb
+        libs   1.2Mb
     ```
 
 # Signac
@@ -2705,7 +2625,7 @@ Run `revdep_details(, "simhelpers")` for more info
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
 * Date/Publication: 2021-08-17 16:30:18 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 159
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -2855,7 +2775,7 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 * GitHub: https://github.com/FridleyLab/spatialTIME
 * Source code: https://github.com/cran/spatialTIME
 * Date/Publication: 2021-09-11 04:10:02 UTC
-* Number of recursive dependencies: 136
+* Number of recursive dependencies: 157
 
 Run `revdep_details(, "spatialTIME")` for more info
 
@@ -2934,10 +2854,10 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.2.1
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2021-10-09 15:00:02 UTC
+* Date/Publication: 2021-10-30 09:50:02 UTC
 * Number of recursive dependencies: 153
 
 Run `revdep_details(, "spNetwork")` for more info
@@ -2948,10 +2868,10 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 21.8Mb
+      installed size is 21.9Mb
       sub-directories of 1Mb or more:
         doc       2.0Mb
-        extdata   4.0Mb
+        extdata   4.1Mb
         libs     15.1Mb
     ```
 
@@ -3009,11 +2929,11 @@ Run `revdep_details(, "startR")` for more info
 
 <details>
 
-* Version: 3.2.0
+* Version: 3.2.2
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 177
+* Date/Publication: 2021-10-28
+* Number of recursive dependencies: 196
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -3075,56 +2995,6 @@ Run `revdep_details(, "tableschema.r")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘tableschema.r-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: Schema.load
-    > ### Title: Instantiate 'Schema' class
-    > ### Aliases: Schema.load
-    > 
-    > ### ** Examples
-    > 
-    > SCHEMA <- '{"fields": [
-    ...
-    +   {"name": "occupation", "type": "string"}
-    +   ]}'
-    > 
-    > # instantiate Schema class
-    > def  = Schema.load(descriptor = SCHEMA)
-    > schema = future::value(def)
-    Error in context_eval(join(src), private$context, serialize) : 
-      SyntaxError: Use of const in strict mode.
-    Calls: <Anonymous> -> value.Future -> signalConditions
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       2.   ├─future::value(def)
-       3.   └─future:::value.Future(def)
-       4.     └─future:::signalConditions(...)
-      ── Error (test-validate.R:172:3): ensure fields exists in schema ───────────────
-      <std::invalid_argument/C++Error/error/condition>
-      Error in `context_eval(join(src), private$context, serialize)`: SyntaxError: Use of const in strict mode.
-    ...
-      Backtrace:
-          █
-       1. └─tableschema.r::validate(readLines("inst/extdata/schema.json")) test-validate.R:255:2
-       2.   ├─future::value(def)
-       3.   └─future:::value.Future(def)
-       4.     └─future:::signalConditions(...)
-      
-      [ FAIL 61 | WARN 0 | SKIP 0 | PASS 435 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -3202,64 +3072,17 @@ Run `revdep_details(, "TKCat")` for more info
 
 ## In both
 
-*   checking whether package ‘TKCat’ can be installed ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Installation failed.
-    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/new/TKCat.Rcheck/00install.out’ for details.
+    Namespace in Imports field not imported from: ‘base64enc’
+      All declared Imports should be used.
     ```
 
-## Installation
+*   checking LazyData ... NOTE
+    ```
+      'LazyData' is specified without a 'data' directory
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘TKCat’ ...
-** package ‘TKCat’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-Error: package or namespace load failed for ‘TKCat’:
- .onLoad failed in loadNamespace() for 'TKCat', details:
-  call: context_eval(join(src), private$context, serialize)
-  error: SyntaxError: Use of const in strict mode.
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/new/TKCat.Rcheck/TKCat’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘TKCat’ ...
-** package ‘TKCat’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-Error: package or namespace load failed for ‘TKCat’:
- .onLoad failed in loadNamespace() for 'TKCat', details:
-  call: context_eval(join(src), private$context, serialize)
-  error: SyntaxError: Use of const in strict mode.
-Error: loading failed
-Execution halted
-ERROR: loading failed
-* removing ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/TKCat/old/TKCat.Rcheck/TKCat’
-
-
-```
 # TriDimRegression
 
 <details>
@@ -3367,7 +3190,7 @@ Run `revdep_details(, "txshift")` for more info
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
 * Date/Publication: 2021-07-30 04:50:02 UTC
-* Number of recursive dependencies: 205
+* Number of recursive dependencies: 226
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
