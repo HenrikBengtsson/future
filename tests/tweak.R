@@ -56,11 +56,13 @@ stopifnot(identical(formals(sequential2)$abc, FALSE))
 
 
 message("*** y <- tweak(cluster, rscript_startup = quote(...)) ...")
-cluster2 <- tweak(cluster, rscript_startup = quote(options(abc = 42L)))
+cl <- 42L
+cluster2 <- tweak(cluster, workers = cl, rscript_startup = quote(options(abc = 42L)))
 print(args(cluster2))
 stopifnot(!identical(cluster2, future::cluster))
 stopifnot(inherits(cluster2, "tweaked"))
 formals2 <- formals(cluster2)
+stopifnot(identical(formals2$workers, cl))
 stopifnot("rscript_startup" %in% names(formals2))
 rscript_startup <- formals2$rscript_startup
 stopifnot(!is.null(rscript_startup),
