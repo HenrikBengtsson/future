@@ -101,7 +101,7 @@ further notice." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9002</span>
       </span>
     </div>
 
@@ -368,7 +368,7 @@ if set.</p>
 <dl>
 <dt><span class="option">future.globals.onMissing</span>:</dt><dd><p>(character string) Action to take when non-existing global variables ("globals" or "unknowns") are identified when the future is created.  If <code>"error"</code>, an error is generated immediately.  If <code>"ignore"</code>, no action is taken and an attempt to evaluate the future expression will be made.  The latter is useful when there is a risk for false-positive globals being identified, e.g. when future expression contains non-standard evaluation (NSE).  (Default: <code>"ignore"</code>)</p></dd>
 
-<dt><span class="option">future.globals.method</span>:</dt><dd><p>(character string) Method used to identify globals. For details, see <code><a href='https://globals.futureverse.org/reference/globalsOf.html'>globalsOf</a>()</code>. (Default: <code>"ordered"</code>)</p></dd>
+<dt><span class="option">future.globals.method</span>:</dt><dd><p>(character string) Method used to identify globals. For details, see <code><a href='https://rdrr.io/pkg/globals/man/globalsOf.html'>globalsOf</a>()</code>. (Default: <code>"ordered"</code>)</p></dd>
 
 <dt><span class="option">future.globals.resolve</span>:</dt><dd><p>(logical) If <code>TRUE</code>, globals that are <code><a href='Future-class.html'>Future</a></code> objects (typically created as <em>explicit</em> futures) will be resolved and have their values (using <code><a href='value.html'>value()</a></code>) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: <code>FALSE</code>)</p></dd>
 
