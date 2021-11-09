@@ -66,9 +66,9 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   ## which should be passed to makeClusterPSOCK()?
   future_args <- !is.element(names(args), makeClusterPSOCK_args())
   
-  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]))
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
 
-  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]))
+  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]), quote = TRUE)
 
   future
 }

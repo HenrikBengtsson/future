@@ -1,11 +1,13 @@
 Package: future
 ===============
 
-Version: 1.23.0-9001 [2021-11-03]
+Version: 1.23.0-9002 [2021-11-08]
 
 NEW FEATURES:
 
- * Now tweak() keeps calls in arguments, e.g. tweak(..., abc=quote(x == y)).
+ * Now plan() and tweak() preserves calls in arguments, e.g. plan(multisession,
+   workers = 2, rscript_startup = quote(options(socketOptions="no-delay"))),
+   and tweak(..., abc = quote(x == y)).
 
 
 Version: 1.23.0 [2021-10-30]

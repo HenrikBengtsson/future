@@ -217,6 +217,7 @@ plan <- local({
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
+
     init <- attr(evaluator, "init", exact = TRUE)
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
@@ -437,16 +438,21 @@ plan <- local({
         } else {
           isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
-            targs <- c(targs, strategyT[-1L])
-            strategy <- strategyT[[1L]]
+            strategy <- eval(strategyT[[1L]], envir = parent.frame(), enclos = baseenv())
+            if (length(strategyT) > 1L) {
+              ## Tweak this part of the future strategy
+              args <- c(list(strategy), strategyT[-1L], penvir = parent.frame())
+              strategy <- do.call(tweak, args = args)
+            }
+          } else {
+            strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
           }
-          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         }
       }
 
       ## Tweak future strategy accordingly
       args <- c(list(strategy), targs, penvir = parent.frame())
-      tstrategy <- do.call(tweak, args = args)
+      tstrategy <- do.call(tweak, args = args, quote = TRUE)
 
       ## Setup a new stack of future strategies (with a single one)
       newStack <- list(tstrategy)
