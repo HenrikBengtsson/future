@@ -1,13 +1,18 @@
 Package: future
 ===============
 
-Version: 1.23.0-9002 [2021-11-08]
+Version: 1.23.0-9003 [2021-11-14]
 
 NEW FEATURES:
 
- * Now plan() and tweak() preserves calls in arguments, e.g. plan(multisession,
+ * Now plan() and tweak() preserve calls in arguments, e.g. plan(multisession,
    workers = 2, rscript_startup = quote(options(socketOptions="no-delay"))),
    and tweak(..., abc = quote(x == y)).
+
+BUG FIXES:
+
+ * nbrOfFreeWorkers() would produce "Error: 'is.character(name)' is not TRUE"
+   for plan(multisession, workers = 1).
 
 
 Version: 1.23.0 [2021-10-30]
