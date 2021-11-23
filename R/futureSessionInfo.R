@@ -44,7 +44,7 @@ futureSessionInfo <- function(test = TRUE) {
   for (name in names) {
     value <- getOption(name, default = NULL)
     if (is.character(value)) value <- sQuote(value)
-    if (is.null(value)) value <- "<no set>"
+    if (is.null(value)) value <- "<not set>"
     mprintf0("- %s=%s", name, value)
   }
   message()
