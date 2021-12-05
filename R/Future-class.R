@@ -98,6 +98,9 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
   } else {
+    if (isTRUE(seed)) {
+      sample.int(n = 1L, size = 1L, replace = FALSE)
+    }
     .seed <- as_lecyer_cmrg_seed(seed)
     seed <- nextRNGSubStream(.seed)
   }
