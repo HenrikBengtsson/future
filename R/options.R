@@ -158,7 +158,6 @@
 #' future.output.windows.reencode
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
 #'
-#' @keywords internal
 #' @name future.options
 NULL
 
