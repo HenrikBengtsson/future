@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,23 +48,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,10 +93,13 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://www.futureverse.org/">
+  <a href="https://www.futureverse.org/" class="external-link">
     <span class="fas fa-fast-backward"></span>
      
   </a>
@@ -116,57 +112,57 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://BiocParallel.FutureParam.futureverse.org">BiocParallel.FutureParam</a>
+      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam</a>
     </li>
     <li>
-      <a href="https://doFuture.futureverse.org">doFuture</a>
+      <a href="https://doFuture.futureverse.org" class="external-link">doFuture</a>
     </li>
     <li>
-      <a href="https://furrr.futureverse.org">furrr</a>
+      <a href="https://furrr.futureverse.org" class="external-link">furrr</a>
     </li>
     <li>
       <a href="https://future.futureverse.org">future</a>
     </li>
     <li>
-      <a href="https://future.apply.futureverse.org">future.apply</a>
+      <a href="https://future.apply.futureverse.org" class="external-link">future.apply</a>
     </li>
     <li>
-      <a href="https://future.batchtools.futureverse.org">future.batchtools</a>
+      <a href="https://future.batchtools.futureverse.org" class="external-link">future.batchtools</a>
     </li>
     <li>
-      <a href="https://future.callr.futureverse.org">future.callr</a>
+      <a href="https://future.callr.futureverse.org" class="external-link">future.callr</a>
     </li>
     <li>
-      <a href="https://future.tests.futureverse.org">future.tests</a>
+      <a href="https://future.tests.futureverse.org" class="external-link">future.tests</a>
     </li>
     <li>
-      <a href="https://globals.futureverse.org">globals</a>
+      <a href="https://globals.futureverse.org" class="external-link">globals</a>
     </li>
     <li>
-      <a href="https://listenv.futureverse.org">listenv</a>
+      <a href="https://listenv.futureverse.org" class="external-link">listenv</a>
     </li>
     <li>
-      <a href="https://parallelly.futureverse.org">parallelly</a>
+      <a href="https://parallelly.futureverse.org" class="external-link">parallelly</a>
     </li>
     <li>
-      <a href="https://progressr.futureverse.org">progressr</a>
+      <a href="https://progressr.futureverse.org" class="external-link">progressr</a>
     </li>
     <li>
-      <a href="https://future.mapreduce.futureverse.org">future.mapreduce (experimental)</a>
+      <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
     </li>
     <li>
-      <a href="https://marshal.futureverse.org">marshal (experimental)</a>
+      <a href="https://marshal.futureverse.org" class="external-link">marshal (experimental)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="https://cloud.r-project.org/package=future">
+  <a href="https://cloud.r-project.org/package=future" class="external-link">
     <span class="fab fa-r-project"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/HenrikBengtsson/future/">
+  <a href="https://github.com/HenrikBengtsson/future/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -191,10 +187,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Best Practices for Package Developers</h1>
-                        <h4 class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-7-for-package-developers.md.rsp"><code>vignettes/future-7-for-package-developers.md.rsp</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-7-for-package-developers.md.rsp" class="external-link"><code>vignettes/future-7-for-package-developers.md.rsp</code></a></small>
       <div class="hidden name"><code>future-7-for-package-developers.md.rsp</code></div>
 
     </div>
@@ -202,9 +198,9 @@
     
     
 <p>Using future code in package is not much different from other type of package code or when using futures in R scripts. However, there are a few things that are useful to know about in order to minimize the risk for surprises to the end user.</p>
-<div id="the-future-smell-test" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-future-smell-test" class="anchor"></a>The future smell test</h2>
+<div class="section level2">
+<h2 id="the-future-smell-test">The future smell test<a class="anchor" aria-label="anchor" href="#the-future-smell-test"></a>
+</h2>
 <p>The by far most common and popular future strategy is to parallelize on the local machine, i.e. <code>plan(multisession)</code>. This is often good enough in most situations but note that some end-users have access to multiple machines and might want to run your code using all of them to speed it up beyond what a single machine can do. Because of this, avoid as far as possible making assumption about your code will only run on the local machine. A good "smell test" is to ask yourself:</p>
 <p><em>- Will my future code work if it ends up running on the other side of the world?</em></p>
 <p>Regardless of performance, if you answer "Yes", you have already embraced the core philosophy of the future framework. If you answer "Maybe" or "No", see if you can rewrite it.</p>
@@ -225,18 +221,18 @@
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"n1.remote.org"</span>, <span class="st">"n2.remote.org"</span>, <span class="st">"n3.remote.org"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">32</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1.remote.org"</span>, <span class="st">"n2.remote.org"</span>, <span class="st">"n3.remote.org"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">32</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Remember, as developers we never know what compute resources the end-user has access to right now or they will have access to in six month. Who knows, your code might even end up running on 2,000 cores located on The Moon twenty years from now.</p>
 </div>
-<div id="avoid-changing-the-future-strategy" class="section level2">
-<h2 class="hasAnchor">
-<a href="#avoid-changing-the-future-strategy" class="anchor"></a>Avoid changing the future strategy</h2>
+<div class="section level2">
+<h2 id="avoid-changing-the-future-strategy">Avoid changing the future strategy<a class="anchor" aria-label="anchor" href="#avoid-changing-the-future-strategy"></a>
+</h2>
 <p>For reasons like the ones mentioned above, refrain from setting <code><a href="../reference/plan.html">plan()</a></code> in a function. It is better to leave it to the end-user to decided how they want to parallelize. One reason for this is that we can never know how and in what context our code will run. For example, they might use futures to parallelize a function call in some other package and that package code calls your package internally. If you set <code>plan(multisession)</code> internally without undoing, you might mess up the <code><a href="../reference/plan.html">plan()</a></code> that is already set breaking any further parallelization.</p>
-<p>If you still think it is necessary to set <code><a href="../reference/plan.html">plan()</a></code>, make sure to undo when the function exits, also on errors. This can be done by using <code><a href="https://rdrr.io/r/base/on.exit.html">on.exit()</a></code>, e.g.</p>
+<p>If you still think it is necessary to set <code><a href="../reference/plan.html">plan()</a></code>, make sure to undo when the function exits, also on errors. This can be done by using <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code>, e.g.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">oplan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span>
 
   <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">analyze</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
   <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
@@ -246,10 +242,10 @@
 <code class="sourceCode R"><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">parallel</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="va">parallel</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">oplan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span>
     <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">future_lapply</span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span> <span class="co">## from future.apply package</span>
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span>
+    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span>
   <span class="op">}</span>
   <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
@@ -275,9 +271,9 @@
 <span class="op">}</span></code></pre></div>
 <p>and let the user control whether or not they want to parallelize via <code><a href="../reference/plan.html">plan()</a></code>, e.g. <code>plan(multisession)</code> and <code>plan(sequential)</code>.</p>
 </div>
-<div id="writing-examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#writing-examples" class="anchor"></a>Writing examples</h2>
+<div class="section level2">
+<h2 id="writing-examples">Writing examples<a class="anchor" aria-label="anchor" href="#writing-examples"></a>
+</h2>
 <p>If your example sets the future strategy at the beginning, make sure to reset the future strategy to <code>plan(sequential)</code> at the end of the example. The reason for this is that when switching plan, the previous one will be cleaned up. This is particularly important for multisession and cluster futures where <code>plan(sequential)</code> will shut down the underlying PSOCK clusters.</p>
 <p>For instance, here is an example:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
@@ -301,9 +297,9 @@ Error<span class="op">:</span><span class="st"> </span>connections left open<spa
 Execution halted</code></pre></div>
 <p>If you for some reason do not like to display reset of the future strategy in the help documentation, but you still want it run, wrap the statement in an Rd <code>\dontshow{}</code> statement.</p>
 </div>
-<div id="testing-a-package-that-relies-on-futures" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing-a-package-that-relies-on-futures" class="anchor"></a>Testing a package that relies on futures</h2>
+<div class="section level2">
+<h2 id="testing-a-package-that-relies-on-futures">Testing a package that relies on futures<a class="anchor" aria-label="anchor" href="#testing-a-package-that-relies-on-futures"></a>
+</h2>
 <p>If you want to make sure your code works when running sequentially as well as when running in parallel, it is often good enough to have package tests that run the code with:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></code></pre></div>
@@ -325,11 +321,13 @@ $ <span class="ex">R</span> CMD check --as-cran mypkg_1.0.tar.gz</code></pre></d
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>

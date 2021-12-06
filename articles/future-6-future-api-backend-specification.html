@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,23 +48,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,10 +93,13 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://www.futureverse.org/">
+  <a href="https://www.futureverse.org/" class="external-link">
     <span class="fas fa-fast-backward"></span>
      
   </a>
@@ -116,57 +112,57 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://BiocParallel.FutureParam.futureverse.org">BiocParallel.FutureParam</a>
+      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam</a>
     </li>
     <li>
-      <a href="https://doFuture.futureverse.org">doFuture</a>
+      <a href="https://doFuture.futureverse.org" class="external-link">doFuture</a>
     </li>
     <li>
-      <a href="https://furrr.futureverse.org">furrr</a>
+      <a href="https://furrr.futureverse.org" class="external-link">furrr</a>
     </li>
     <li>
       <a href="https://future.futureverse.org">future</a>
     </li>
     <li>
-      <a href="https://future.apply.futureverse.org">future.apply</a>
+      <a href="https://future.apply.futureverse.org" class="external-link">future.apply</a>
     </li>
     <li>
-      <a href="https://future.batchtools.futureverse.org">future.batchtools</a>
+      <a href="https://future.batchtools.futureverse.org" class="external-link">future.batchtools</a>
     </li>
     <li>
-      <a href="https://future.callr.futureverse.org">future.callr</a>
+      <a href="https://future.callr.futureverse.org" class="external-link">future.callr</a>
     </li>
     <li>
-      <a href="https://future.tests.futureverse.org">future.tests</a>
+      <a href="https://future.tests.futureverse.org" class="external-link">future.tests</a>
     </li>
     <li>
-      <a href="https://globals.futureverse.org">globals</a>
+      <a href="https://globals.futureverse.org" class="external-link">globals</a>
     </li>
     <li>
-      <a href="https://listenv.futureverse.org">listenv</a>
+      <a href="https://listenv.futureverse.org" class="external-link">listenv</a>
     </li>
     <li>
-      <a href="https://parallelly.futureverse.org">parallelly</a>
+      <a href="https://parallelly.futureverse.org" class="external-link">parallelly</a>
     </li>
     <li>
-      <a href="https://progressr.futureverse.org">progressr</a>
+      <a href="https://progressr.futureverse.org" class="external-link">progressr</a>
     </li>
     <li>
-      <a href="https://future.mapreduce.futureverse.org">future.mapreduce (experimental)</a>
+      <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
     </li>
     <li>
-      <a href="https://marshal.futureverse.org">marshal (experimental)</a>
+      <a href="https://marshal.futureverse.org" class="external-link">marshal (experimental)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="https://cloud.r-project.org/package=future">
+  <a href="https://cloud.r-project.org/package=future" class="external-link">
     <span class="fab fa-r-project"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/HenrikBengtsson/future/">
+  <a href="https://github.com/HenrikBengtsson/future/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -191,24 +187,24 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Future API Backend Specification</h1>
-                        <h4 class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-6-future-api-backend-specification.md.rsp"><code>vignettes/future-6-future-api-backend-specification.md.rsp</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-6-future-api-backend-specification.md.rsp" class="external-link"><code>vignettes/future-6-future-api-backend-specification.md.rsp</code></a></small>
       <div class="hidden name"><code>future-6-future-api-backend-specification.md.rsp</code></div>
 
     </div>
 
     
     
-<div id="future-api-backend-specification" class="section level1">
-<h1 class="hasAnchor">
-<a href="#future-api-backend-specification" class="anchor"></a>Future API Backend Specification</h1>
+<div class="section level1">
+<h1 id="future-api-backend-specification">Future API Backend Specification<a class="anchor" aria-label="anchor" href="#future-api-backend-specification"></a>
+</h1>
 <p>Version 0.1.1</p>
-<div id="introduction" class="section level2">
-<h2 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>This document is written to serve as a reference for developers who are developing a future backend to the future framework as implemented in the <a href="https://cran.r-project.org/package=future">future</a> package for R that available on CRAN. The Future Application Programming Interface (API) has three fundamental functions at its core:</p>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p>This document is written to serve as a reference for developers who are developing a future backend to the future framework as implemented in the <a href="https://cran.r-project.org/package=future" class="external-link">future</a> package for R that available on CRAN. The Future Application Programming Interface (API) has three fundamental functions at its core:</p>
 <ul>
 <li>
 <code>f &lt;- future(expr)</code> - create a future from an R expression (non-blocking but may be blocking)</li>
@@ -219,17 +215,17 @@
 </ul>
 <p>With these three functions alone, it is possible to evaluate one or more R expressions synchronously and asynchronously. How and where these expressions are resolved depends on which "future backend" is in use. For example, one backend may evaluated the expressions sequentially (synchronously) while another may evaluated them in parallel (asynchronously). Regardless of backend, the value of a future expression is always the same.</p>
 <p>It is fundamental to the future ecosystem that all future backends conform to the Future API specification. Conformance serves as a guarantor of correctness and behavior for both the developer who use futures in their software as well as the end-user of their software. A future backend that meets the requirements can be used in any software that use futures internally.</p>
-<p>For example, the above three functions serve as building blocks in several higher-level map-reduce APIs. One example is the [future.apply] package on CRAN that provides <code>future_lapply()</code>, which is a futurized version of <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> available in the 'base' package. This function can be used to perform the lapply-like processing in parallel using a parallel backend. The implementation of the 'future.apply' package is 100% invariant to the parallel backend used. This is possible because all future backends conform to a set of rules. Rules that are documented below.</p>
-<p>A supplement to the specification herein is the 'Test Suite for Future API Backends', which consists of a set of tests that can be used to validated that a future backend meets the minimal requirements of the Future API. These tests run from the command-line, from the R prompt, or as part of the package tests of a backend package. This test suite is documented and implemented in the <a href="https://cran.r-project.org/package=future.tests">future.tests</a> package available on CRAN.</p>
+<p>For example, the above three functions serve as building blocks in several higher-level map-reduce APIs. One example is the [future.apply] package on CRAN that provides <code>future_lapply()</code>, which is a futurized version of <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> available in the 'base' package. This function can be used to perform the lapply-like processing in parallel using a parallel backend. The implementation of the 'future.apply' package is 100% invariant to the parallel backend used. This is possible because all future backends conform to a set of rules. Rules that are documented below.</p>
+<p>A supplement to the specification herein is the 'Test Suite for Future API Backends', which consists of a set of tests that can be used to validated that a future backend meets the minimal requirements of the Future API. These tests run from the command-line, from the R prompt, or as part of the package tests of a backend package. This test suite is documented and implemented in the <a href="https://cran.r-project.org/package=future.tests" class="external-link">future.tests</a> package available on CRAN.</p>
 </div>
-<div id="feedback" class="section level2">
-<h2 class="hasAnchor">
-<a href="#feedback" class="anchor"></a>Feedback</h2>
-<p>If you find that something in this document to be missing, unclear, or faulty, please report your feedback using the official issue tracker for the 'future' package at <a href="https://github.com/HenrikBengtsson/future" class="uri">https://github.com/HenrikBengtsson/future</a>. If you have feedback that is specific to the test suite, please use the official issue tracker for the 'future.tests' package at <a href="https://github.com/HenrikBengtsson/future.tests" class="uri">https://github.com/HenrikBengtsson/future.tests</a></p>
+<div class="section level2">
+<h2 id="feedback">Feedback<a class="anchor" aria-label="anchor" href="#feedback"></a>
+</h2>
+<p>If you find that something in this document to be missing, unclear, or faulty, please report your feedback using the official issue tracker for the 'future' package at <a href="https://github.com/HenrikBengtsson/future" class="external-link uri">https://github.com/HenrikBengtsson/future</a>. If you have feedback that is specific to the test suite, please use the official issue tracker for the 'future.tests' package at <a href="https://github.com/HenrikBengtsson/future.tests" class="external-link uri">https://github.com/HenrikBengtsson/future.tests</a></p>
 </div>
-<div id="overview-of-the-future-api" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview-of-the-future-api" class="anchor"></a>Overview of the Future API</h2>
+<div class="section level2">
+<h2 id="overview-of-the-future-api">Overview of the Future API<a class="anchor" aria-label="anchor" href="#overview-of-the-future-api"></a>
+</h2>
 <p>The Future API has three fundamental functions at its core:</p>
 <ul>
 <li>
@@ -241,55 +237,55 @@
 </ul>
 <p>The implementation of a future backend for these involves several steps. For simplicity, lets say we call our future backend 'myparallel'. In summary, a future backend needs to implement four API components:</p>
 <ul>
-<li>A constructor function <code>myparallel()</code> that inherits from class <code>future</code>. This function should return a <code>Future</code> object (as defined in the <a href="https://cran.r-project.org/package=future">future</a> package) that also inherits from S3 class <code>MyParallelFuture</code> if a non-lazy future is created (the default <code>lazy = FALSE</code>). The default should be that this function calls <code><a href="../reference/run.Future.html">run()</a></code> on the <code>Future</code> object before returning, unless a <em>lazy</em> is created.</li>
-<li>An S3 method of <code><a href="../reference/run.Future.html">run()</a></code> for <code>MyParallelFuture</code> that starts the evaluation of the future R expression part of the <code>Future</code> object. This method is often non-blocking for parallel backends, but may be blocking if all compute resources are exhausted. It is typically blocking for sequential backends.</li>
+<li>A constructor function <code>myparallel()</code> that inherits from class <code>future</code>. This function should return a <code>Future</code> object (as defined in the <a href="https://cran.r-project.org/package=future" class="external-link">future</a> package) that also inherits from S3 class <code>MyParallelFuture</code> if a non-lazy future is created (the default <code>lazy = FALSE</code>). The default should be that this function calls <code><a href="../reference/run.html">run()</a></code> on the <code>Future</code> object before returning, unless a <em>lazy</em> is created.</li>
+<li>An S3 method of <code><a href="../reference/run.html">run()</a></code> for <code>MyParallelFuture</code> that starts the evaluation of the future R expression part of the <code>Future</code> object. This method is often non-blocking for parallel backends, but may be blocking if all compute resources are exhausted. It is typically blocking for sequential backends.</li>
 <li>An S3 method of <code><a href="../reference/resolved.html">resolved()</a></code> for <code>MyParallelFuture</code> that, in a non-blocking fashion, returns <code>TRUE</code> if the future is resolved and <code>FALSE</code> if not.</li>
-<li>An S3 method of <code><a href="../reference/result.Future.html">result()</a></code> for <code>MyParallelFuture</code> that returns a <code>FutureResult</code> object (as defined by the <a href="https://cran.r-project.org/package=future">future</a> package) when the future is resolved or otherwise fails to resolve. If the future is not yet resolved, this method should block until the future is resolved.</li>
+<li>An S3 method of <code><a href="../reference/result.html">result()</a></code> for <code>MyParallelFuture</code> that returns a <code>FutureResult</code> object (as defined by the <a href="https://cran.r-project.org/package=future" class="external-link">future</a> package) when the future is resolved or otherwise fails to resolve. If the future is not yet resolved, this method should block until the future is resolved.</li>
 </ul>
 <p>With this in place, the selection of using this backend as the future plan, will be done as <code>plan(myparallel)</code> with the option of specifying certain arguments to be passed to <code>myparallel()</code>. With the plan set, a call to <code>f &lt;- future(expr)</code> will then correspond to a <code>f &lt;- myparallel(expr)</code> call. With the defaults, <code>myparallel()</code> will then launch the evaluation of <code>expr</code> asynchronously before returning the <code>MyParallelFuture</code> object. When calling <code>resolved(f)</code> to query whether the future expression is resolved or not, the underlying S3 method for this class will then check in with the parallel worker whether the expression is resolved or not. When calling <code>value(f)</code>, the S3 method for the <code>Future</code> class calls <code>result(f)</code>, which will return the <code>FutureResult</code> object for this future. If the future is not yet resolved, this call will block until it is. If no errors occurred while resolving the future expression, then <code>value(f)</code> will return the value of the expression, which is recorded by the backend in the <code>FutureResult</code> object. If there was an evaluation error, then <code>value(f)</code> will resignal ("relayed") that error. Any captured conditions or standard output will also be relayed at this point.</p>
 </div>
-<div id="requirements-for-the-backend-future-api" class="section level2">
-<h2 class="hasAnchor">
-<a href="#requirements-for-the-backend-future-api" class="anchor"></a>Requirements for the backend Future API</h2>
-<p>This section describes in detail what the requirements of the above four components are. The requirements are given as a continuation of the above 'myparallel' example. If otherwise not specified, all functions mentioned below are from the <a href="https://cran.r-project.org/package=future">future</a> package.</p>
-<div id="constructor-function-creating-a-future" class="section level3">
-<h3 class="hasAnchor">
-<a href="#constructor-function-creating-a-future" class="anchor"></a>Constructor function creating a Future</h3>
+<div class="section level2">
+<h2 id="requirements-for-the-backend-future-api">Requirements for the backend Future API<a class="anchor" aria-label="anchor" href="#requirements-for-the-backend-future-api"></a>
+</h2>
+<p>This section describes in detail what the requirements of the above four components are. The requirements are given as a continuation of the above 'myparallel' example. If otherwise not specified, all functions mentioned below are from the <a href="https://cran.r-project.org/package=future" class="external-link">future</a> package.</p>
+<div class="section level3">
+<h3 id="constructor-function-creating-a-future">Constructor function creating a Future<a class="anchor" aria-label="anchor" href="#constructor-function-creating-a-future"></a>
+</h3>
 <p>The constructor function <code>myparallel()</code> for creating a <code>Future</code> object must inherits from class <code>future</code> such that <code>inherits(myparallel, "future")</code> is true.</p>
-<p>The constructor function should have explicit arguments <code>expr</code>, <code>substitute</code>, <code>envir</code>, and <code>...</code>, where argument <code>expr</code> is an expression, argument <code>substitute</code> is a logical (<code>TRUE</code> or <code>FALSE</code>), and <code>envir</code> is an environment. All or parts of the <code>...</code> arguments should be passed along to the <code><a href="../reference/Future-class.html">Future()</a></code> function. If <code>substitute</code> is <code>TRUE</code> (default), then <code>expr</code> should be re-evaluated as <code>expr &lt;- substitute(expr)</code>. Environment <code>envir</code> should default to <code><a href="https://rdrr.io/r/base/sys.parent.html">parent.frame()</a></code> as it is used to identify global variables.</p>
+<p>The constructor function should have explicit arguments <code>expr</code>, <code>substitute</code>, <code>envir</code>, and <code>...</code>, where argument <code>expr</code> is an expression, argument <code>substitute</code> is a logical (<code>TRUE</code> or <code>FALSE</code>), and <code>envir</code> is an environment. All or parts of the <code>...</code> arguments should be passed along to the <code><a href="../reference/Future-class.html">Future()</a></code> function. If <code>substitute</code> is <code>TRUE</code> (default), then <code>expr</code> should be re-evaluated as <code>expr &lt;- substitute(expr)</code>. Environment <code>envir</code> should default to <code><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame()</a></code> as it is used to identify global variables.</p>
 <p>If the backend supports more than one worker, then it should also have an explicit <code>workers</code> argument.</p>
 <p>Any currying arguments that can be specified when setting the future plan must be explicit arguments of the constructor function such that they appear as named elements in <code>formals(myparallel)</code>. Currying arguments are arguments that can be "tweaked" by the end-user, e.g. <code>plan(myparallel, workers = 2)</code>.</p>
 <p>The value of the constructor function should be invisible and a <code>MyParallelFuture</code> object that inherits from <code>Future</code>. This is achieved by calling <code><a href="../reference/Future-class.html">Future()</a></code>, with all matching arguments passed along and then prepending <code>"MyParallelFuture"</code> to the class attribute of the returned <code>Future</code> object.</p>
 <p>Before returning the <code>Future</code> object, the constructor function should launch the future if, and only if, the <code>lazy</code> element of the <code>Future</code> object (e.g. <code>f$lazy</code>) is <code>FALSE</code> (default). The constructor function must never evaluate the expression <code>expr</code> if <code>lazy</code> is <code>TRUE</code>.</p>
 </div>
-<div id="run-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#run-method" class="anchor"></a>run() method</h3>
-<p>An S3 method <code><a href="../reference/run.Future.html">run()</a></code> for <code>MyParallelFuture</code> that takes a <code>Future</code> object as its first argument is required. It should accept additional arguments via <code>...</code>, which are currently not used.</p>
-<p>The <code><a href="../reference/run.Future.html">run()</a></code> method should invisibly return the <code>Future</code> object, which may be a modified version of the input <code>Future</code> object.</p>
-<p>The <code><a href="../reference/run.Future.html">run()</a></code> method is responsible for not launching the same future twice. If <code><a href="../reference/run.Future.html">run()</a></code> is called on an already launched or a resolved future, then an informative <code>FutureError</code> error constructed by the <code><a href="../reference/FutureCondition.html">FutureError()</a></code> function should be produced.</p>
-<p>The <code><a href="../reference/run.Future.html">run()</a></code> method is responsible for evaluation the expression returned by <code><a href="../reference/getExpression.html">getExpression()</a></code> with the <code>Future</code> object as the first argument. The evaluation of this expression should respect any global variables in the <code>FutureGlobals</code> object returned by <code>globals()</code> with the <code>Future</code> object as the first argument. The evaluation should also respect any package names returned by <code>packages()</code> with the <code>Future</code> object as the first argument.</p>
-<p>If the backend provides parallel processing, then <code><a href="../reference/run.Future.html">run()</a></code> should return the future as soon as possible and without waiting for it to be resolved. If all workers are occupied, then <code><a href="../reference/run.Future.html">run()</a></code> is responsible for waiting until a worker becomes available and then launch the future on that worker and immediatedly return the future.</p>
-<p>The <code><a href="../reference/run.Future.html">run()</a></code> method may produce <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case it fails to launch the future on the worker or the worker has terminated unexpectedly.</p>
+<div class="section level3">
+<h3 id="run-method">run() method<a class="anchor" aria-label="anchor" href="#run-method"></a>
+</h3>
+<p>An S3 method <code><a href="../reference/run.html">run()</a></code> for <code>MyParallelFuture</code> that takes a <code>Future</code> object as its first argument is required. It should accept additional arguments via <code>...</code>, which are currently not used.</p>
+<p>The <code><a href="../reference/run.html">run()</a></code> method should invisibly return the <code>Future</code> object, which may be a modified version of the input <code>Future</code> object.</p>
+<p>The <code><a href="../reference/run.html">run()</a></code> method is responsible for not launching the same future twice. If <code><a href="../reference/run.html">run()</a></code> is called on an already launched or a resolved future, then an informative <code>FutureError</code> error constructed by the <code><a href="../reference/FutureCondition.html">FutureError()</a></code> function should be produced.</p>
+<p>The <code><a href="../reference/run.html">run()</a></code> method is responsible for evaluation the expression returned by <code><a href="../reference/getExpression.html">getExpression()</a></code> with the <code>Future</code> object as the first argument. The evaluation of this expression should respect any global variables in the <code>FutureGlobals</code> object returned by <code>globals()</code> with the <code>Future</code> object as the first argument. The evaluation should also respect any package names returned by <code>packages()</code> with the <code>Future</code> object as the first argument.</p>
+<p>If the backend provides parallel processing, then <code><a href="../reference/run.html">run()</a></code> should return the future as soon as possible and without waiting for it to be resolved. If all workers are occupied, then <code><a href="../reference/run.html">run()</a></code> is responsible for waiting until a worker becomes available and then launch the future on that worker and immediatedly return the future.</p>
+<p>The <code><a href="../reference/run.html">run()</a></code> method may produce <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case it fails to launch the future on the worker or the worker has terminated unexpectedly.</p>
 </div>
-<div id="resolved-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#resolved-method" class="anchor"></a>resolved() method</h3>
+<div class="section level3">
+<h3 id="resolved-method">resolved() method<a class="anchor" aria-label="anchor" href="#resolved-method"></a>
+</h3>
 <p>An S3 method <code><a href="../reference/resolved.html">resolved()</a></code> for <code>MyParallelFuture</code> that takes a <code>Future</code> object as its first argument and return either <code>TRUE</code> or <code>FALSE</code> is required. It should accept additional arguments via <code>...</code>, which are currently not used.</p>
 <p>The method may be called zero or more times.</p>
 <p>The method should return <code>FALSE</code> as long as the future is unresolved. It may also return <code>FALSE</code> if it fail to establish the state of the future within a reasonable time period ("timeout"). It should return <code>TRUE</code> as soon as it can be established that the future is resolved. After it has returned <code>TRUE</code> once, any succeeding calls should return <code>TRUE</code>.</p>
-<p>If <code><a href="../reference/resolved.html">resolved()</a></code> is called on a future that yet has not been launched, it should launch the future by calling <code><a href="../reference/run.Future.html">run()</a></code>. This is the only occasion when <code><a href="../reference/resolved.html">resolved()</a></code> may block. In all other cases, it should return promptly.</p>
+<p>If <code><a href="../reference/resolved.html">resolved()</a></code> is called on a future that yet has not been launched, it should launch the future by calling <code><a href="../reference/run.html">run()</a></code>. This is the only occasion when <code><a href="../reference/resolved.html">resolved()</a></code> may block. In all other cases, it should return promptly.</p>
 <p>The <code><a href="../reference/resolved.html">resolved()</a></code> method may produce <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case communication with the worker has broken down or the worker has terminated unexpectedly.</p>
 </div>
-<div id="result-method" class="section level3">
-<h3 class="hasAnchor">
-<a href="#result-method" class="anchor"></a>result() method</h3>
-<p>An S3 method <code><a href="../reference/result.Future.html">result()</a></code> for <code>MyParallelFuture</code> that takes a <code>Future</code> object as its first argument and return a <code>FutureResult</code> object is required. It should accept additional arguments via <code>...</code>, which are currently not used.</p>
+<div class="section level3">
+<h3 id="result-method">result() method<a class="anchor" aria-label="anchor" href="#result-method"></a>
+</h3>
+<p>An S3 method <code><a href="../reference/result.html">result()</a></code> for <code>MyParallelFuture</code> that takes a <code>Future</code> object as its first argument and return a <code>FutureResult</code> object is required. It should accept additional arguments via <code>...</code>, which are currently not used.</p>
 <p>The method may be called zero or more times.</p>
-<p>If <code><a href="../reference/result.Future.html">result()</a></code> is called on a future that yet has not been launched, it should launch the future by calling <code><a href="../reference/run.Future.html">run()</a></code>.</p>
-<p>If <code><a href="../reference/result.Future.html">result()</a></code> is called on a future that is not yet resolved, it should block until the future is resolved.</p>
-<p>The value of <code><a href="../reference/result.Future.html">result()</a></code> should be the value from evaluating the <code><a href="../reference/getExpression.html">getExpression()</a></code> expression that <code><a href="../reference/run.Future.html">run()</a></code> launched.</p>
-<p>The <code><a href="../reference/result.Future.html">result()</a></code> method may produce <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case communication with the worker has broken down or the worker has terminated unexpectedly.</p>
+<p>If <code><a href="../reference/result.html">result()</a></code> is called on a future that yet has not been launched, it should launch the future by calling <code><a href="../reference/run.html">run()</a></code>.</p>
+<p>If <code><a href="../reference/result.html">result()</a></code> is called on a future that is not yet resolved, it should block until the future is resolved.</p>
+<p>The value of <code><a href="../reference/result.html">result()</a></code> should be the value from evaluating the <code><a href="../reference/getExpression.html">getExpression()</a></code> expression that <code><a href="../reference/run.html">run()</a></code> launched.</p>
+<p>The <code><a href="../reference/result.html">result()</a></code> method may produce <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case communication with the worker has broken down or the worker has terminated unexpectedly.</p>
 </div>
 </div>
 </div>
@@ -306,11 +302,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>

@@ -1,7 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://future.futureverse.org/404.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/OVERVIEW.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/README_ja.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-1-overview.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-2-output.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-3-topologies.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-4-issues.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-4-non-exportable-objects.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-5-startup.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-6-future-api-backend-specification.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-7-for-package-developers.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/future-8-how-future-is-validated.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://future.futureverse.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://future.futureverse.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://future.futureverse.org/reference/ClusterFuture-class.html</loc>
@@ -91,6 +142,9 @@
     <loc>https://future.futureverse.org/reference/grapes-tweak-grapes.html</loc>
   </url>
   <url>
+    <loc>https://future.futureverse.org/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://future.futureverse.org/reference/make_rng_seeds.html</loc>
   </url>
   <url>
@@ -170,32 +224,5 @@
   </url>
   <url>
     <loc>https://future.futureverse.org/reference/value.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-1-overview.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-2-output.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-3-topologies.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-4-issues.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-4-non-exportable-objects.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-5-startup.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-6-future-api-backend-specification.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-7-for-package-developers.html</loc>
-  </url>
-  <url>
-    <loc>https://future.futureverse.org/articles/future-8-how-future-is-validated.html</loc>
   </url>
 </urlset>

@@ -34,6 +34,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -46,23 +48,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li>
-  <a href="../news/index.html">Changelog</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -100,10 +93,13 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://www.futureverse.org/">
+  <a href="https://www.futureverse.org/" class="external-link">
     <span class="fas fa-fast-backward"></span>
      
   </a>
@@ -116,57 +112,57 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="https://BiocParallel.FutureParam.futureverse.org">BiocParallel.FutureParam</a>
+      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam</a>
     </li>
     <li>
-      <a href="https://doFuture.futureverse.org">doFuture</a>
+      <a href="https://doFuture.futureverse.org" class="external-link">doFuture</a>
     </li>
     <li>
-      <a href="https://furrr.futureverse.org">furrr</a>
+      <a href="https://furrr.futureverse.org" class="external-link">furrr</a>
     </li>
     <li>
       <a href="https://future.futureverse.org">future</a>
     </li>
     <li>
-      <a href="https://future.apply.futureverse.org">future.apply</a>
+      <a href="https://future.apply.futureverse.org" class="external-link">future.apply</a>
     </li>
     <li>
-      <a href="https://future.batchtools.futureverse.org">future.batchtools</a>
+      <a href="https://future.batchtools.futureverse.org" class="external-link">future.batchtools</a>
     </li>
     <li>
-      <a href="https://future.callr.futureverse.org">future.callr</a>
+      <a href="https://future.callr.futureverse.org" class="external-link">future.callr</a>
     </li>
     <li>
-      <a href="https://future.tests.futureverse.org">future.tests</a>
+      <a href="https://future.tests.futureverse.org" class="external-link">future.tests</a>
     </li>
     <li>
-      <a href="https://globals.futureverse.org">globals</a>
+      <a href="https://globals.futureverse.org" class="external-link">globals</a>
     </li>
     <li>
-      <a href="https://listenv.futureverse.org">listenv</a>
+      <a href="https://listenv.futureverse.org" class="external-link">listenv</a>
     </li>
     <li>
-      <a href="https://parallelly.futureverse.org">parallelly</a>
+      <a href="https://parallelly.futureverse.org" class="external-link">parallelly</a>
     </li>
     <li>
-      <a href="https://progressr.futureverse.org">progressr</a>
+      <a href="https://progressr.futureverse.org" class="external-link">progressr</a>
     </li>
     <li>
-      <a href="https://future.mapreduce.futureverse.org">future.mapreduce (experimental)</a>
+      <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
     </li>
     <li>
-      <a href="https://marshal.futureverse.org">marshal (experimental)</a>
+      <a href="https://marshal.futureverse.org" class="external-link">marshal (experimental)</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="https://cloud.r-project.org/package=future">
+  <a href="https://cloud.r-project.org/package=future" class="external-link">
     <span class="fab fa-r-project"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://github.com/HenrikBengtsson/future/">
+  <a href="https://github.com/HenrikBengtsson/future/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -191,17 +187,17 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Text and Message Output</h1>
-                        <h4 class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/master/vignettes/future-2-output.md.rsp"><code>vignettes/future-2-output.md.rsp</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-2-output.md.rsp" class="external-link"><code>vignettes/future-2-output.md.rsp</code></a></small>
       <div class="hidden name"><code>future-2-output.md.rsp</code></div>
 
     </div>
 
     
     
-<p>Futures will <em>relay</em> output produced by functions such as <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code>, <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>. More specifically, output sent to the standard output (stdout) while a future is evaluated will be captured and <em>re-outputted ("relayed") when the value of the future is queried</em>. Messages produced by <code><a href="https://rdrr.io/r/base/message.html">message()</a></code>, which formally are R conditions are also captured and resignaled ("relayed") as messages in the main R session. Importantly, this works identically regardless of future backend used.</p>
+<p>Futures will <em>relay</em> output produced by functions such as <code><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat()</a></code>, <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code>. More specifically, output sent to the standard output (stdout) while a future is evaluated will be captured and <em>re-outputted ("relayed") when the value of the future is queried</em>. Messages produced by <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code>, which formally are R conditions are also captured and resignaled ("relayed") as messages in the main R session. Importantly, this works identically regardless of future backend used.</p>
 <p>For simplicitly, lets start with an illustration on how standard output ("stdout") is captured and relayed:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
@@ -268,7 +264,7 @@ Hello world<span class="op">!</span>
 [<span class="dv">1</span>] <span class="dv">42</span>
 <span class="op">&gt;</span><span class="st"> </span>a
 [<span class="dv">1</span>] <span class="dv">42</span></code></pre></div>
-<p>Next, lets see what happens if we use <code><a href="https://rdrr.io/r/base/message.html">message()</a></code> to produce output:</p>
+<p>Next, lets see what happens if we use <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> to produce output:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
 <span class="op">&gt;</span><span class="st"> </span>fa &lt;-<span class="st"> </span><span class="kw">future</span>({ <span class="kw">message</span>(<span class="st">"Hello world!"</span>); 42L })
@@ -285,10 +281,10 @@ ping        ## &lt;= ... block of output
 Hello       ## &lt;= 1st message
 world<span class="op">!</span><span class="st">      </span>## &lt;= 2nd message
 [<span class="dv">1</span>] <span class="dv">42</span></code></pre></div>
-<div id="future-frontends" class="section level2">
-<h2 class="hasAnchor">
-<a href="#future-frontends" class="anchor"></a>Future frontends</h2>
-<p>The output is relayed automatically also when using frontends such as <a href="https://cran.r-project.org/package=future.apply">future.apply</a> or <a href="https://cran.r-project.org/package=foreach">foreach</a> with <a href="https://cran.r-project.org/package=doFuture">doFuture</a>. Again, it works with any future backend. For example,</p>
+<div class="section level2">
+<h2 id="future-frontends">Future frontends<a class="anchor" aria-label="anchor" href="#future-frontends"></a>
+</h2>
+<p>The output is relayed automatically also when using frontends such as <a href="https://cran.r-project.org/package=future.apply" class="external-link">future.apply</a> or <a href="https://cran.r-project.org/package=foreach" class="external-link">foreach</a> with <a href="https://cran.r-project.org/package=doFuture" class="external-link">doFuture</a>. Again, it works with any future backend. For example,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future.apply"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(future.callr<span class="op">::</span>callr)
 
@@ -324,10 +320,10 @@ List of <span class="dv">3</span>
  <span class="op">$</span><span class="st"> </span><span class="er">:</span><span class="st"> </span>num <span class="fl">1.41</span>
  <span class="op">$</span><span class="st"> </span><span class="er">:</span><span class="st"> </span>num <span class="fl">1.73</span></code></pre></div>
 </div>
-<div id="capturing-output" class="section level2">
-<h2 class="hasAnchor">
-<a href="#capturing-output" class="anchor"></a>Capturing output</h2>
-<p>To capture the output produced by futures, use <code><a href="https://rdrr.io/r/utils/capture.output.html">capture.output()</a></code> as you would do when capturing output elsewhere in R. For example,</p>
+<div class="section level2">
+<h2 id="capturing-output">Capturing output<a class="anchor" aria-label="anchor" href="#capturing-output"></a>
+</h2>
+<p>To capture the output produced by futures, use <code><a href="https://rdrr.io/r/utils/capture.output.html" class="external-link">capture.output()</a></code> as you would do when capturing output elsewhere in R. For example,</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span>fa &lt;-<span class="st"> </span><span class="kw">future</span>({ <span class="kw">cat</span>(<span class="st">"Hello world!</span><span class="ch">\n</span><span class="st">"</span>); <span class="kw">print</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>); 42L })
 <span class="op">&gt;</span><span class="st"> </span>stdout &lt;-<span class="st"> </span><span class="kw">capture.output</span>(a &lt;-<span class="st"> </span><span class="kw">value</span>(fa))
@@ -336,9 +332,9 @@ List of <span class="dv">3</span>
 <span class="op">&gt;</span><span class="st"> </span>a
 [<span class="dv">1</span>] <span class="dv">42</span></code></pre></div>
 </div>
-<div id="suppressing-messages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#suppressing-messages" class="anchor"></a>Suppressing messages</h2>
+<div class="section level2">
+<h2 id="suppressing-messages">Suppressing messages<a class="anchor" aria-label="anchor" href="#suppressing-messages"></a>
+</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(<span class="st">"future"</span>)
 <span class="op">&gt;</span><span class="st"> </span><span class="kw">plan</span>(multisession)
 <span class="op">&gt;</span><span class="st"> </span>fa &lt;-<span class="st"> </span><span class="kw">future</span>({ <span class="kw">message</span>(<span class="st">"Hello"</span>); <span class="kw">print</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>); <span class="kw">message</span>(<span class="st">"world!"</span>); <span class="kw">cat</span>(<span class="st">"ping</span><span class="ch">\n</span><span class="st">"</span>); 42L })
@@ -348,10 +344,10 @@ ping
 <span class="op">&gt;</span><span class="st"> </span>a
 [<span class="dv">1</span>] <span class="dv">42</span></code></pre></div>
 </div>
-<div id="known-limitations" class="section level2">
-<h2 class="hasAnchor">
-<a href="#known-limitations" class="anchor"></a>Known limitations</h2>
-<p>It is only the standard output that is relayed. It is <em>not possible</em> to relay output send to the standard error (stderr), e.g. output by <code>cat(..., file = stderr())</code> will be lost. This is due to a <a href="https://github.com/HenrikBengtsson/Wishlist-for-R/issues/55">limitation in R</a>, preventing us from capturing stderr in a reliable way, particularity across all backends. However, note that the captured messages by <code><a href="https://rdrr.io/r/base/message.html">message()</a></code> are outputted to stderr (as expected) when resignaled/relayed.</p>
+<div class="section level2">
+<h2 id="known-limitations">Known limitations<a class="anchor" aria-label="anchor" href="#known-limitations"></a>
+</h2>
+<p>It is only the standard output that is relayed. It is <em>not possible</em> to relay output send to the standard error (stderr), e.g. output by <code>cat(..., file = stderr())</code> will be lost. This is due to a <a href="https://github.com/HenrikBengtsson/Wishlist-for-R/issues/55" class="external-link">limitation in R</a>, preventing us from capturing stderr in a reliable way, particularity across all backends. However, note that the captured messages by <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> are outputted to stderr (as expected) when resignaled/relayed.</p>
 </div>
   </div>
 
@@ -366,11 +362,13 @@ ping
 
 
       <footer><div class="copyright">
-  <p>Developed by Henrik Bengtsson.</p>
+  <p></p>
+<p>Developed by Henrik Bengtsson.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
