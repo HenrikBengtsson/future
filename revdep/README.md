@@ -1,36 +1,37 @@
 # Platform
 
-|field    |value                        |
-|:--------|:----------------------------|
-|version  |R version 4.1.1 (2021-08-10) |
-|os       |CentOS Linux 7 (Core)        |
-|system   |x86_64, linux-gnu            |
-|ui       |X11                          |
-|language |en                           |
-|collate  |en_US.UTF-8                  |
-|ctype    |en_US.UTF-8                  |
-|tz       |America/Los_Angeles          |
-|date     |2021-11-03                   |
+|field    |value                                                       |
+|:--------|:-----------------------------------------------------------|
+|version  |R version 4.1.2 (2021-11-01)                                |
+|os       |CentOS Linux 7 (Core)                                       |
+|system   |x86_64, linux-gnu                                           |
+|ui       |X11                                                         |
+|language |en                                                          |
+|collate  |en_US.UTF-8                                                 |
+|ctype    |en_US.UTF-8                                                 |
+|tz       |America/Los_Angeles                                         |
+|date     |2021-12-05                                                  |
+|pandoc   |2.16.2 @ /software/c4/cbi/software/pandoc-2.16.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.23.0 |1.23.0-9001 |*  |
+|future     |1.23.0 |1.23.0-9004 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
-|digest     |0.6.28 |0.6.28      |   |
+|digest     |0.6.29 |0.6.29      |   |
 |globals    |0.14.0 |0.14.0      |   |
 |listenv    |0.8.0  |0.8.0       |   |
-|parallelly |1.28.1 |1.28.1      |   |
+|parallelly |1.29.0 |1.29.0      |   |
 
 # Revdeps
 
-## All (209)
+## All (216)
 
 |package                                                  |version   |error |warning |note |
 |:--------------------------------------------------------|:---------|:-----|:-------|:----|
 |[AIPW](problems.md#aipw)                                 |0.6.3.2   |      |        |1    |
-|[alookr](problems.md#alookr)                             |0.3.4     |      |        |1    |
+|alookr                                                   |0.3.5     |      |        |     |
 |[AlpsNMR](problems.md#alpsnmr)                           |3.4.0     |      |        |2    |
 |[aroma.affymetrix](problems.md#aromaaffymetrix)          |3.2.0     |      |        |1    |
 |[aroma.core](problems.md#aromacore)                      |3.2.2     |      |        |1    |
@@ -42,9 +43,9 @@
 |[bcmaps](problems.md#bcmaps)                             |1.0.2     |      |        |1    |
 |[bistablehistory](problems.md#bistablehistory)           |1.0.0     |      |        |3    |
 |bkmrhat                                                  |1.1.1     |      |        |     |
-|[blavaan](problems.md#blavaan)                           |0.3-17    |      |        |2    |
+|[blavaan](problems.md#blavaan)                           |0.3-18    |      |        |2    |
 |[blockCV](problems.md#blockcv)                           |2.1.4     |      |        |2    |
-|[brms](problems.md#brms)                                 |2.16.1    |      |        |2    |
+|[brms](problems.md#brms)                                 |2.16.3    |      |        |2    |
 |ceRNAnetsim                                              |1.6.0     |      |        |     |
 |[cfbfastR](problems.md#cfbfastr)                         |1.6.4     |      |        |1    |
 |[ChromSCape](problems.md#chromscape)                     |1.4.0     |      |        |5    |
@@ -71,13 +72,13 @@
 |drtmle                                                   |1.1.0     |      |        |     |
 |[easyalluvial](problems.md#easyalluvial)                 |0.3.0     |      |        |1    |
 |[EFAtools](problems.md#efatools)                         |0.3.1     |      |        |2    |
-|[elevatr](problems.md#elevatr)                           |0.4.1     |1     |        |     |
+|elevatr                                                  |0.4.1     |      |        |     |
 |[envi](problems.md#envi)                                 |0.1.10    |      |1       |     |
 |[EpiNow2](problems.md#epinow2)                           |1.3.2     |      |        |2    |
 |epwshiftr                                                |0.1.3     |      |        |     |
 |EWCE                                                     |1.2.0     |      |        |     |
 |ezcox                                                    |1.0.2     |      |        |     |
-|[fabletools](problems.md#fabletools)                     |0.3.1     |      |        |1    |
+|fabletools                                               |0.3.2     |      |        |     |
 |FAMoS                                                    |0.3.0     |      |        |     |
 |fastpos                                                  |0.4.1     |      |        |     |
 |fiery                                                    |1.1.3     |      |        |     |
@@ -91,13 +92,14 @@
 |furrr                                                    |0.2.3     |      |        |     |
 |future.apply                                             |1.8.1     |      |        |     |
 |future.batchtools                                        |0.10.0    |      |        |     |
-|future.callr                                             |0.6.1     |      |        |     |
+|future.callr                                             |0.7.0     |      |        |     |
 |future.tests                                             |0.3.0     |      |        |     |
 |fxTWAPLS                                                 |0.0.7     |      |        |     |
 |genBaRcode                                               |1.2.4     |      |        |     |
 |[geocmeans](problems.md#geocmeans)                       |0.2.0     |      |        |2    |
 |[GetBCBData](problems.md#getbcbdata)                     |0.6       |      |        |2    |
 |[googleComputeEngineR](problems.md#googlecomputeenginer) |0.3.0     |      |        |1    |
+|googlePubsubR                                            |0.0.2     |      |        |     |
 |[googleTagManageR](problems.md#googletagmanager)         |0.1.6     |      |        |1    |
 |[grattan](problems.md#grattan)                           |1.9.0.9   |      |        |2    |
 |[greed](problems.md#greed)                               |0.5.1     |      |        |2    |
@@ -108,20 +110,22 @@
 |gtfs2gps                                                 |1.5-4     |      |        |     |
 |[gWQS](problems.md#gwqs)                                 |3.0.4     |      |        |1    |
 |[hackeRnews](problems.md#hackernews)                     |0.1.0     |      |        |1    |
+|hacksig                                                  |0.1.1     |      |        |     |
 |[hal9001](problems.md#hal9001)                           |0.4.1     |      |        |1    |
 |haldensify                                               |0.2.1     |      |        |     |
+|hoopR                                                    |1.5.0     |      |        |     |
 |[hwep](problems.md#hwep)                                 |0.0.1     |      |        |1    |
 |idmodelr                                                 |0.3.2     |      |        |     |
-|[IFAA](problems.md#ifaa)                                 |1.0.2     |      |        |1    |
+|[IFAA](problems.md#ifaa)                                 |1.0.3     |      |        |1    |
 |[iml](problems.md#iml)                                   |0.10.1    |      |        |1    |
-|[infercnv](problems.md#infercnv)                         |1.10.0    |      |        |2    |
+|[infercnv](problems.md#infercnv)                         |1.10.1    |      |        |2    |
 |[inlinedocs](problems.md#inlinedocs)                     |2019.12.5 |      |        |1    |
 |[interflex](problems.md#interflex)                       |1.2.6     |      |        |1    |
 |[ipc](problems.md#ipc)                                   |0.1.3     |      |        |1    |
-|isoreader                                                |1.3.1     |      |        |     |
+|isoreader                                                |1.3.2     |      |        |     |
 |[ivmte](problems.md#ivmte)                               |1.4.0     |      |        |1    |
-|JointAI                                                  |1.0.2     |      |        |     |
-|JuliaConnectoR                                           |1.0.0     |      |        |     |
+|JointAI                                                  |1.0.3     |      |        |     |
+|JuliaConnectoR                                           |1.1.0     |      |        |     |
 |[kernelboot](problems.md#kernelboot)                     |0.1.7     |      |        |1    |
 |[keyATM](problems.md#keyatm)                             |0.4.0     |      |        |1    |
 |[lava](problems.md#lava)                                 |1.6.10    |      |        |1    |
@@ -129,22 +133,23 @@
 |ldsr                                                     |0.0.2     |      |        |     |
 |LexFindR                                                 |1.0.2     |      |        |     |
 |lgr                                                      |0.4.3     |      |        |     |
-|[lidR](problems.md#lidr)                                 |3.2.2     |      |        |1    |
-|lightr                                                   |1.6.0     |      |        |     |
+|[lidR](problems.md#lidr)                                 |3.2.3     |      |        |1    |
+|lightr                                                   |1.6.2     |      |        |     |
 |[lmtp](problems.md#lmtp)                                 |1.0.0     |      |        |1    |
-|LWFBrook90R                                              |0.4.4     |      |        |     |
+|LWFBrook90R                                              |0.4.5     |      |        |     |
 |[MAI](problems.md#mai)                                   |1.0.0     |      |        |1    |
 |mcmcensemble                                             |3.0.0     |      |        |     |
+|mcp                                                      |0.3.1     |      |        |     |
 |merTools                                                 |0.5.2     |      |        |     |
-|[metagam](problems.md#metagam)                           |0.2.0     |      |        |1    |
 |[microservices](problems.md#microservices)               |0.1.2     |      |        |1    |
 |microSTASIS                                              |0.1.0     |      |        |     |
-|mikropml                                                 |1.1.1     |      |        |     |
-|[MineICA](problems.md#mineica)                           |1.34.0    |-1    |2       |5    |
+|mikropml                                                 |1.2.0     |      |        |     |
+|[MineICA](problems.md#mineica)                           |1.34.0    |1 -1  |2       |5    |
 |[missSBM](problems.md#misssbm)                           |1.0.1     |      |        |1    |
 |mistyR                                                   |1.2.1     |      |        |     |
-|mlr3                                                     |0.12.0    |      |        |     |
-|mlr3db                                                   |0.4.1     |      |        |     |
+|mlr3                                                     |0.13.0    |      |        |     |
+|mlr3db                                                   |0.4.2     |      |        |     |
+|mlr3spatial                                              |0.1.0     |      |        |     |
 |[momentuHMM](problems.md#momentuhmm)                     |1.5.4     |      |        |1    |
 |MOSS                                                     |0.2.0     |      |        |     |
 |[mrgsim.parallel](problems.md#mrgsimparallel)            |0.1.1     |      |        |1    |
@@ -169,7 +174,7 @@
 |[prewas](problems.md#prewas)                             |1.1.1     |      |        |1    |
 |progressr                                                |0.9.0     |      |        |     |
 |[promises](problems.md#promises)                         |1.2.0.1   |      |        |1    |
-|[Prostar](problems.md#prostar)                           |1.26.0    |      |        |2    |
+|[Prostar](problems.md#prostar)                           |1.26.1    |      |        |2    |
 |protti                                                   |0.2.0     |      |        |     |
 |PSCBS                                                    |0.66.0    |      |        |     |
 |[QDNAseq](problems.md#qdnaseq)                           |1.30.0    |      |        |1    |
@@ -183,8 +188,9 @@
 |reval                                                    |3.0-0     |      |        |     |
 |[rgee](problems.md#rgee)                                 |1.1.0     |      |        |2    |
 |[robotstxt](problems.md#robotstxt)                       |0.7.13    |      |        |2    |
+|robust2sls                                               |0.1.0     |      |        |     |
 |RTransferEntropy                                         |0.2.14    |      |        |     |
-|[sapfluxnetr](problems.md#sapfluxnetr)                   |0.1.2     |      |        |1    |
+|[sapfluxnetr](problems.md#sapfluxnetr)                   |0.1.3     |      |        |1    |
 |[scDiffCom](problems.md#scdiffcom)                       |0.1.0     |      |        |2    |
 |SCtools                                                  |0.3.1     |      |        |     |
 |[sctransform](problems.md#sctransform)                   |0.3.2     |      |        |1    |
@@ -208,22 +214,22 @@
 |[solitude](problems.md#solitude)                         |1.1.3     |      |        |1    |
 |sovereign                                                |1.2.0     |      |        |     |
 |[spacey](problems.md#spacey)                             |0.1.1     |      |        |2    |
-|SpaDES.core                                              |1.0.9     |      |        |     |
-|[spaMM](problems.md#spamm)                               |3.9.13    |      |        |2    |
+|[SpaDES.core](problems.md#spadescore)                    |1.0.9     |1     |1       |     |
+|[spaMM](problems.md#spamm)                               |3.9.25    |      |        |2    |
 |[sparrpowR](problems.md#sparrpowr)                       |0.2.4     |      |1       |     |
 |[SPARSEMODr](problems.md#sparsemodr)                     |1.1.0     |      |        |1    |
 |[spatialTIME](problems.md#spatialtime)                   |1.2.0     |      |        |1    |
 |[spatialwarnings](problems.md#spatialwarnings)           |3.0.0     |      |1       |1    |
-|sperrorest                                               |3.0.2     |      |        |     |
+|sperrorest                                               |3.0.4     |      |        |     |
 |[sphunif](problems.md#sphunif)                           |1.0.1     |      |        |2    |
 |[spNetwork](problems.md#spnetwork)                       |0.2.1     |      |        |1    |
-|[stars](problems.md#stars)                               |0.5-3     |      |        |2    |
+|[stars](problems.md#stars)                               |0.5-4     |      |        |2    |
 |[startR](problems.md#startr)                             |2.1.0     |      |        |1    |
 |steps                                                    |1.2.1     |      |        |     |
 |[synergyfinder](problems.md#synergyfinder)               |3.2.2     |      |        |3    |
 |[tableschema.r](problems.md#tableschemar)                |1.1.1     |      |        |3    |
 |[targeted](problems.md#targeted)                         |0.2.0     |      |        |1    |
-|targets                                                  |0.8.1     |      |        |     |
+|targets                                                  |0.9.0     |      |        |     |
 |tcensReg                                                 |0.1.7     |      |        |     |
 |tcplfit2                                                 |0.1.3     |      |        |     |
 |tealeaves                                                |1.0.5     |      |        |     |
@@ -235,7 +241,9 @@
 |[tsfeatures](problems.md#tsfeatures)                     |1.0.2     |      |        |1    |
 |[TSstudio](problems.md#tsstudio)                         |0.1.6     |      |        |1    |
 |[txshift](problems.md#txshift)                           |0.3.6     |      |        |1    |
-|[UCSCXenaShiny](problems.md#ucscxenashiny)               |1.1.1     |      |        |1    |
+|[UCSCXenaShiny](problems.md#ucscxenashiny)               |1.1.3     |      |        |1    |
 |[updog](problems.md#updog)                               |2.1.1     |      |        |1    |
-|[XNAString](problems.md#xnastring)                       |1.2.0     |      |        |3    |
+|[vmeasur](problems.md#vmeasur)                           |0.1.4     |      |1       |     |
+|wehoop                                                   |1.2.1     |      |        |     |
+|[XNAString](problems.md#xnastring)                       |1.2.2     |      |        |3    |
 
