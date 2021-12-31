@@ -510,15 +510,15 @@ int my_length(NumericVector x) {
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.rforge.net/rJava/" class="external-link">rJava</a></span><span class="op">)</span>
-<span class="fu">.jinit</span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on master</span>
+<span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html" class="external-link">.jinit</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on master</span>
 
-<span class="va">Double</span> <span class="op">&lt;-</span> <span class="fu">J</span><span class="op">(</span><span class="st">"java.lang.Double"</span><span class="op">)</span>
+<span class="va">Double</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rJava/man/J.html" class="external-link">J</a></span><span class="op">(</span><span class="st">"java.lang.Double"</span><span class="op">)</span>
 <span class="va">d0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">new</a></span><span class="op">(</span><span class="va">Double</span>, <span class="st">"3.14"</span><span class="op">)</span>
 <span class="va">d0</span>
 <span class="co">## [1] "Java-Object{3.14}"</span>
 
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="fu">.jinit</span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on worker</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html" class="external-link">.jinit</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on worker</span>
   <span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">new</a></span><span class="op">(</span><span class="va">Double</span>, <span class="st">"3.14"</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
@@ -528,7 +528,7 @@ int my_length(NumericVector x) {
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://docs.ropensci.org/magick/reference/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span>
-  <span class="fu">.jinit</span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on worker</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/rJava/man/jinit.html" class="external-link">.jinit</a></span><span class="op">(</span><span class="op">)</span> <span class="co">## Initialize Java VM on worker</span>
   <span class="fu"><a href="https://rdrr.io/r/methods/new.html" class="external-link">new</a></span><span class="op">(</span><span class="va">Double</span>, <span class="st">"3.14"</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span>
