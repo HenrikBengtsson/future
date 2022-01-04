@@ -19,4 +19,5 @@ Get future-specific session information and validate current backend
 \examples{
 plan(multisession, workers = 2)
 futureSessionInfo()
+plan(sequential)
 }
