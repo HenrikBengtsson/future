@@ -68,7 +68,7 @@ futureSessionInfo <- function(test = TRUE) {
           r      = getRversion(),
           as.list(Sys.info())
         )
-      })
+      }, label = sprintf("futureSessionInfo-%d", ii))
     }
     vs <- value(fs)
     vs <- do.call(rbind, vs)
