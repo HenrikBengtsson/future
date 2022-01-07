@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9005</span>
       </span>
     </div>
 
@@ -168,10 +168,6 @@
   local <span class="op">=</span> <span class="op">!</span><span class="va">persistent</span>,
   persistent <span class="op">=</span> <span class="cn">FALSE</span>,
   workers <span class="op">=</span> <span class="cn">NULL</span>,
-  user <span class="op">=</span> <span class="cn">NULL</span>,
-  master <span class="op">=</span> <span class="cn">NULL</span>,
-  revtunnel <span class="op">=</span> <span class="cn">TRUE</span>,
-  homogeneous <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">...</span>
 <span class="op">)</span>
 
@@ -220,23 +216,6 @@ is created using <code><a href="re-exports.html">makeClusterPSOCK</a>(workers)</
 If a function, it is called without arguments <em>when the future
 is created</em> and its value is used to configure the workers.
 The function should return any of the above types.</p></dd>
-<dt>user</dt>
-<dd><p>(optional) The user name to be used when communicating
-with another host.</p></dd>
-<dt>master</dt>
-<dd><p>(optional) The hostname or IP address of the master
-machine running this node.</p></dd>
-<dt>revtunnel</dt>
-<dd><p>If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master <span style="R">R</span> process.  This
-avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master <span style="R">R</span> session.</p></dd>
-<dt>homogeneous</dt>
-<dd><p>If TRUE, all cluster nodes is assumed to use the
-same path to <code class="file">Rscript</code> as the main <span style="R">R</span> session.  If FALSE, the
-it is assumed to be on the PATH for each node.
-If NULL, then <code><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">parallelly::makeClusterPSOCK()</a></code> will decide on TRUE
-or FALSE depending on <code>workers</code>.</p></dd>
 <dt>...</dt>
 <dd><p>Additional named elements passed to <code><a href="Future-class.html">Future()</a></code>.</p></dd>
 </dl></div>

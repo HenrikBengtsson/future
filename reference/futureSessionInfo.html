@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9005</span>
       </span>
     </div>
 
@@ -178,7 +178,7 @@ and validate their information.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">futureSessionInfo</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Package versions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.23.0.9004, parallelly 1.30.0, parallel 4.1.2, globals 0.14.0, listenv 0.8.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.23.0.9005, parallelly 1.30.0, parallel 4.1.2, globals 0.14.0, listenv 0.8.0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Allocations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> availableCores():</span>
@@ -211,15 +211,16 @@ and validate their information.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Basic tests</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   worker   pid     r sysname          release</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 28584 4.1.2   Linux 5.4.0-91-generic</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 28585 4.1.2   Linux 5.4.0-91-generic</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>                                                version nodename machine login</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #102~18.04.1-Ubuntu SMP Thu Nov 11 14:46:36 UTC 2021    hb-x1  x86_64    hb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #102~18.04.1-Ubuntu SMP Thu Nov 11 14:46:36 UTC 2021    hb-x1  x86_64    hb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 14353 4.1.2   Linux 5.4.0-92-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 14352 4.1.2   Linux 5.4.0-92-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>                                               version nodename machine login</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #103~18.04.2-Ubuntu SMP Wed Dec 1 16:50:36 UTC 2021    hb-x1  x86_64    hb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #103~18.04.2-Ubuntu SMP Wed Dec 1 16:50:36 UTC 2021    hb-x1  x86_64    hb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   user effective_user</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1   hb             hb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2   hb             hb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of unique PIDs: 2 (as expected)</span>
+<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </div>

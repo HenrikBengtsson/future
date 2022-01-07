@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9005</span>
       </span>
     </div>
 
@@ -154,18 +154,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.23.0-9004" id="future-1-23-0-9004">future 1.23.0-9004<a class="anchor" aria-label="anchor" href="#future-1-23-0-9004"></a></h2>
+<h2 class="page-header" data-toc-text="1.23.0-9005" id="future-1-23-0-9005">future 1.23.0-9005<a class="anchor" aria-label="anchor" href="#future-1-23-0-9005"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-23-0-9004">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-23-0-9004"></a></h4>
+<h4 id="significant-changes-1-23-0-9005">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-23-0-9005"></a></h4>
 <ul><li>Now future(…, seed = TRUE) forwards the RNG state in the calling R session. Previously, it would leave it intact.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="new-features-1-23-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-23-0-9004"></a></h4>
+<h4 id="new-features-1-23-0-9005">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-23-0-9005"></a></h4>
 <ul><li>Now plan() and tweak() preserve calls in arguments, e.g. plan(multisession, workers = 2, rscript_startup = quote(options(socketOptions=“no-delay”))), and tweak(…, abc = quote(x == y)).</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-23-0-9004">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-23-0-9004"></a></h4>
+<h4 id="bug-fixes-1-23-0-9005">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-23-0-9005"></a></h4>
 <ul><li>nbrOfFreeWorkers() would produce “Error: ‘is.character(name)’ is not TRUE” for plan(multisession, workers = 1).</li>
+</ul></div>
+<div class="section level4">
+<h4 id="deprecated-and-defunct-1-23-0-9005">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-23-0-9005"></a></h4>
+<ul><li>Strategy ‘remote’ is deprecated in favor of ‘cluster’. The plan() function will give an informative deprecation warning when ‘remote’ is used. For now, this warning is given only once per R session.</li>
 </ul></div>
 </div>
     <div class="section level2">

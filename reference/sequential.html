@@ -26,7 +26,7 @@ by default just as for all other types of futures in this package."><meta proper
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9005</span>
       </span>
     </div>
 
@@ -189,24 +189,6 @@ typical usages are:</p><div class="sourceCode r"><pre><code><span class="co"># E
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></code></pre><p></p></div>
 
 
-    </div>
-    <div id="transparent-futures-troubleshooting-only-">
-    <h2>transparent futures (troubleshooting only)</h2>
-    
-
-<p>Transparent futures are sequential futures configured to emulate how R
-evaluates expressions as far as possible.  For instance, errors and
-warnings are signaled immediately and assignments are done to the
-calling environment (without <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local()</a></code> as default for all other
-types of futures).  This makes transparent futures useful for
-troubleshooting, especially when there are errors.  Having said that,
-using:</p><div class="sourceCode r"><pre><code><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span>, split <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre><p></p></div>
-<p>together with <code><a href="https://rdrr.io/r/base/debug.html" class="external-link">debug()</a></code> is often sufficient for troubleshooting.</p>
-<p><em>WARNING: Transparent futures should only be used for debugging and
-troubleshooting.  They should not be used for production pipelines
-and must not be set within another package.  This is especially
-important since 'transparent' futures might be deprecated and replaced
-by better means of debugging in future releases.</em></p>
     </div>
 
     <div id="ref-examples">
