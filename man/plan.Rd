@@ -66,18 +66,29 @@ Resolves futures asynchronously (in parallel) in separate
 \emph{forked} \R processes running in the background on
 the same machine.  Not supported on Windows.
 }
-\item{\code{\link{multiprocess}}:}{(DEPRECATED)
-If multicore evaluation is supported, that will be used,
-otherwise multisession evaluation will be used.
-}
 \item{\code{\link{cluster}}:}{
 Resolves futures asynchronously (in parallel) in separate
 \R sessions running typically on one or more machines.
 }
-\item{\code{\link{remote}}:}{
+}
+}
+
+\section{Deprecated evaluation strategies}{
+
+The following future strategies are deprecated.  Please use
+the recommended alternatives instead.
+
+\itemize{
+\item{\code{\link{multiprocess}}:}{(DEPRECATED since future 1.20.0)
+If multicore evaluation is supported, that will be used,
+otherwise multisession evaluation will be used.
+\emph{Please use \code{multisession}, or possibly \code{multicore} instead.}
+}
+\item{\code{\link{remote}}:}{(DEPRECATED since future 1.24.0)
 Resolves futures asynchronously in a separate \R session
 running on a separate machine, typically on a different
 network.
+\emph{Please use \code{cluster} instead.}
 }
 }
 

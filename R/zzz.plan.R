@@ -50,18 +50,27 @@
 #'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{[`multiprocess`]:}{(DEPRECATED)
-#'    If multicore evaluation is supported, that will be used,
-#'    otherwise multisession evaluation will be used.
-#'  }
 #'  \item{[`cluster`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running typically on one or more machines.
 #'  }
-#'  \item{[`remote`]:}{
+#' }
+#'
+#' @section Deprecated evaluation strategies:
+#' The following future strategies are deprecated.  Please use
+#' the recommended alternatives instead.
+#'
+#' \itemize{
+#'  \item{[`multiprocess`]:}{(DEPRECATED since future 1.20.0)
+#'    If multicore evaluation is supported, that will be used,
+#'    otherwise multisession evaluation will be used.
+#'    _Please use `multisession`, or possibly `multicore` instead._
+#'  }
+#'  \item{[`remote`]:}{(DEPRECATED since future 1.24.0)
 #'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
+#'    _Please use `cluster` instead._
 #'  }
 #' }
 #' 
@@ -169,6 +178,26 @@ plan <- local({
           }
 
           break
+        }
+      }
+    }
+  })
+
+  warn_about_remote <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'remote' used?
+      for (kk in seq_along(stack)) {
+        if (evaluator_uses(stack[[kk]], "remote")) {
+          ignore <- getOption("future.deprecated.ignore")
+          if (!is.element("remote", ignore)) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = "Strategy 'remote' is deprecated in future (>= 1.24.0). Instead, use 'cluster'.", package = .packageName)
+          }
         }
       }
     }
@@ -299,6 +328,7 @@ plan <- local({
     assert_no_disallowed_strategies(newStack)
 
     warn_about_multiprocess(newStack)
+    warn_about_remote(newStack)
     warn_about_multicore(newStack)
     warn_about_transparent(newStack)
 
