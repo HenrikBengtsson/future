@@ -203,6 +203,27 @@ plan <- local({
     }
   })
 
+  warn_about_transparent <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'transparent' used?
+      for (kk in seq_along(stack)) {
+        if (evaluator_uses(stack[[kk]], "transparent")) {
+          ignore <- getOption("future.deprecated.ignore")
+          if (!is.element("remote", ignore)) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = "Strategy 'transparent' is deprecated in future (>= 1.24.0). It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE). Also, as a friendly reminder, the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production.", package = .packageName)
+          }
+          break
+        }
+      }
+    }
+  })
+
   warn_about_multicore <- local({
     .warn <- TRUE
 
@@ -214,24 +235,6 @@ plan <- local({
       for (kk in seq_along(stack)) {
         if (evaluator_uses(stack[[kk]], "multicore")) {
           supportsMulticore(warn = TRUE)
-          ## Warn only once, if at all
-          .warn <<- FALSE
-          break
-        }
-      }
-    }
-  })
-
-  warn_about_transparent <- local({
-    .warn <- TRUE
-
-    function(stack) {
-      if (!.warn) return()
-
-      ## Is 'transparent' used?
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "transparent")) {
-          warning("This is a friendly reminder that the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production")
           ## Warn only once, if at all
           .warn <<- FALSE
           break
@@ -329,8 +332,8 @@ plan <- local({
 
     warn_about_multiprocess(newStack)
     warn_about_remote(newStack)
-    warn_about_multicore(newStack)
     warn_about_transparent(newStack)
+    warn_about_multicore(newStack)
 
     stack <<- newStack
 
