@@ -6,7 +6,7 @@ Imports:
     globals (>= 0.14.0),
     listenv (>= 0.8.0),
     parallel,
-    parallelly (>= 1.26.1),
+    parallelly (>= 1.30.0),
     tools,
     utils
 Suggests:

@@ -17,10 +17,6 @@ ClusterFuture(
   local = !persistent,
   persistent = FALSE,
   workers = NULL,
-  user = NULL,
-  master = NULL,
-  revtunnel = TRUE,
-  homogeneous = NULL,
   ...
 )
 
@@ -66,23 +62,6 @@ is created using \code{\link{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
-
-\item{user}{(optional) The user name to be used when communicating
-with another host.}
-
-\item{master}{(optional) The hostname or IP address of the master
-machine running this node.}
-
-\item{revtunnel}{If TRUE, reverse SSH tunneling is used for the
-PSOCK cluster nodes to connect back to the master \R process.  This
-avoids the hassle of firewalls, port forwarding and having to know
-the internal / public IP address of the master \R session.}
-
-\item{homogeneous}{If TRUE, all cluster nodes is assumed to use the
-same path to \file{Rscript} as the main \R session.  If FALSE, the
-it is assumed to be on the PATH for each node.
-If NULL, then \code{\link[parallelly:makeClusterPSOCK]{parallelly::makeClusterPSOCK()}} will decide on TRUE
-or FALSE depending on \code{workers}.}
 
 \item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }

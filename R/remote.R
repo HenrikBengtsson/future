@@ -32,6 +32,17 @@
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
+#'
+#' @param revtunnel If TRUE, reverse SSH tunneling is used for the
+#' PSOCK cluster nodes to connect back to the master \R process.  This
+#' avoids the hassle of firewalls, port forwarding and having to know
+#' the internal / public IP address of the master \R session.
+#'
+#' @param homogeneous If TRUE, all cluster nodes is assumed to use the
+#' same path to \file{Rscript} as the main \R session.  If FALSE, the
+#' it is assumed to be on the PATH for each node.
+#' If NULL, then [parallelly::makeClusterPSOCK()] will decide on TRUE
+#' or FALSE depending on `workers`.
 #' 
 #' @param myip The external IP address of this machine.
 #' If NULL, then it is inferred using an online service (default).
@@ -47,6 +58,7 @@
 #' `workers`.
 #' ' See below for example on how `remote` and `cluster` are related.
 #'
+#' @keywords internal
 #' @export
 remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, homogeneous = TRUE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()

@@ -35,7 +35,7 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 
 #' @rdname sequential
-#' @keyword internal
+#' @keywords internal
 #' @export
 transparent <- function(..., envir = parent.frame()) {
   future <- TransparentFuture(..., envir = envir)

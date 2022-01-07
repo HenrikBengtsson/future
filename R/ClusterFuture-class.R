@@ -15,23 +15,6 @@
 #' is created_ and its value is used to configure the workers.
 #' The function should return any of the above types.
 #' 
-#' @param revtunnel If TRUE, reverse SSH tunneling is used for the
-#' PSOCK cluster nodes to connect back to the master \R process.  This
-#' avoids the hassle of firewalls, port forwarding and having to know
-#' the internal / public IP address of the master \R session.
-#' 
-#' @param user (optional) The user name to be used when communicating
-#' with another host.
-#' 
-#' @param master (optional) The hostname or IP address of the master
-#' machine running this node.
-#' 
-#' @param homogeneous If TRUE, all cluster nodes is assumed to use the
-#' same path to \file{Rscript} as the main \R session.  If FALSE, the
-#' it is assumed to be on the PATH for each node.
-#' If NULL, then [parallelly::makeClusterPSOCK()] will decide on TRUE
-#' or FALSE depending on `workers`.
-#'
 #' @return
 #' `ClusterFuture()` returns an object of class `ClusterFuture`.
 #'
@@ -45,7 +28,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, user = NULL, master = NULL, revtunnel = TRUE, homogeneous = NULL, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
@@ -68,7 +51,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   
   future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
 
-  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers, user = user, master = master, revtunnel = revtunnel, homogeneous = homogeneous), args[!future_args]), quote = TRUE)
+  future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
 
   future
 }
