@@ -25,6 +25,11 @@ DEPRECATED AND DEFUNCT:
    will give an informative deprecation warning when 'remote' is used.
    For now, this warning is given only once per R session.
 
+ * Strategy 'transparent' is deprecated in favor of 'sequential' with argument
+   'split = TRUE' set.  The plan() function will give an informative
+   deprecation warning when 'transparent' is used.  For now, this warning is
+   given only once per R session.
+
 
 Version: 1.23.0 [2021-10-30]
 
