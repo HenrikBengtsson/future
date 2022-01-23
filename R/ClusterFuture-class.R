@@ -540,7 +540,8 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
   if (!finished) {
     msg <- sprintf("TIMEOUT: All %d cluster nodes are still occupied after %s (polled %d times)", total, format(round(dt, digits = 2L)), iter)
     if (debug) mdebug(msg)
-    stop(msg)
+    ex <- FutureError(msg, future = future)
+    stop(ex)
   }
 
   ## Find which node is available
