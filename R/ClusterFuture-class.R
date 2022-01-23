@@ -696,7 +696,7 @@ post_mortem_cluster_failure <- function(ex, when, node, future) {
   
   ## (a) Process information on the worker, if available
   pid <- node$session_info$process$pid
-  pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
+  pid_info <- if (is.numeric(pid)) sprintf("PID %.0f", pid) else NULL
 
   ## (b) Host information on the worker, if available
   ##     AD HOC: This assumes that the worker has a hostname, which is not

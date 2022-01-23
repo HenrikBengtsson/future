@@ -346,7 +346,7 @@ plan <- local({
     ## Sanity checks
     nbrOfWorkers <- nbrOfWorkers()
     if (getOption("future.debug", FALSE)) {
-      mdebugf(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
+      mdebugf(sprintf("plan(): nbrOfWorkers() = %.0f", nbrOfWorkers))
     }
     stop_if_not(is.numeric(nbrOfWorkers), length(nbrOfWorkers) == 1L, 
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)

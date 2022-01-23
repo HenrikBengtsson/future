@@ -943,7 +943,7 @@ pid_exists <- local({
     ## on Sys.getpid() once found a match while the second time none.
     for (kk in 1:5) {
       res <- tryCatch({
-        args = c("/FI", shQuote(sprintf("PID eq %g", pid)), "/NH")
+        args = c("/FI", shQuote(sprintf("PID eq %.0f", pid)), "/NH")
         out <- system2("tasklist", args = args, stdout = TRUE)
         if (debug) {
           cat(sprintf("Call: tasklist %s\n", paste(args, collapse = " ")))

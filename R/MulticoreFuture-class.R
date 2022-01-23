@@ -202,7 +202,7 @@ result.MulticoreFuture <- function(future, ...) {
       if (is.null(label)) label <- "<none>"
 
       pid <- job$pid
-      pid_info <- if (is.numeric(pid)) sprintf("PID %g", pid) else NULL
+      pid_info <- if (is.numeric(pid)) sprintf("PID %.0f", pid) else NULL
 
       info <- pid_info
       msg <- sprintf("Failed to retrieve the result of %s (%s) from the forked worker (on localhost; %s)", class(future)[1], label, info)

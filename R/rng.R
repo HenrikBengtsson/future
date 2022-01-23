@@ -170,7 +170,7 @@ make_rng_seeds <- function(count, seed = FALSE,
     seeds <- seed
     nseeds <- length(seeds)
     if (nseeds != count) {
-      stopf("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element iterated over, but length(seed) != number of elements: %g != %g", nseeds, count)
+      stopf("Argument 'seed' is a list, which specifies the sequence of seeds to be used for each element iterated over, but length(seed) != number of elements: %.0f != %.0f", nseeds, count)
     }
 
     ## Assert same type of RNG seeds?
