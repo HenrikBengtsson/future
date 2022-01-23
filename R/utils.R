@@ -957,7 +957,7 @@ pid_exists <- local({
           print(out)
           str(out)
         }
-        out <- grepl(sprintf(" %g ", pid), out)
+        out <- grepl(sprintf(" %.0f ", pid), out)
         if (debug) {
           cat("Contains PID: ", paste(out, collapse = ", "), "\n", sep = "")
         }
