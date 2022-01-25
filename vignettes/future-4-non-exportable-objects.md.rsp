@@ -71,6 +71,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   :---------------|:-------------------------------------------
   **base**        | connection (`externalptr`)
   **DBI**         | DBIConnection (`externalptr`)
+  **inline**      | CFunc (`externalptr` of class DLLHandle)
   **keras**       | keras.engine.sequential.Sequential (`externalptr`)
   **magick**      | magick-image (`externalptr`)
   **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
@@ -142,6 +143,43 @@ dummy %<-% print(con)
 ## ('con' of class 'SQLiteConnection') used in the future expression
 ```
 
+
+#### Package: inline
+
+Another example is [inline](https://cran.r-project.org/package=inline), which allow us to easily create R functions that are implemented in C and C++, e.g.
+
+```r
+library(inline)
+code <- "
+  int i;
+  for (i = 0; i < *n; i++) x[0] = x[0] + (i+1);
+"
+sum_1_to_n <- cfunction(signature(n="integer", x="numeric"), code, language = "C", convention = ".C")
+y <- sum_1_to_n(10, 0)$x
+print(y)
+## 55
+```
+
+However, if we would attempt to call `sum_1_to_n()` in a future, we get an error:
+
+```r
+library(future)
+plan(cluster, workers = 1L)
+f <- future(sum_1_to_n(10, 0))
+v <- value(f)
+## Error in .Primitive(".C")(<pointer: (nil)>, n = as.integer(n), x = as.double(x)) : 
+##   NULL value passed as symbol address
+```
+
+This is because:
+
+```r
+options(future.globals.onReference = "error")
+f <- future(sum_1_to_n(10, 0))
+## Error: Detected a non-exportable reference ('externalptr' of class
+## 'DLLHandle') in one of the globals ('sum_1_to_n' of class 'CFunc')
+## used in the future expression
+```
 
 
 #### Package: keras
@@ -226,7 +264,7 @@ Note that it is only the RasterLayer object `s` that carries an external pointer
 
 #### Package: Rcpp
 
-Another example is [Rcpp](https://cran.r-project.org/package=Rcpp) , which allow us to easily create R functions that are implemented in C++, e.g.
+Another example is [Rcpp](https://cran.r-project.org/package=Rcpp), which allow us to easily create R functions that are implemented in C++, e.g.
 ```r
 Rcpp::sourceCpp(code = "
 #include <Rcpp.h>
