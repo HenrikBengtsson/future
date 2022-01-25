@@ -766,7 +766,6 @@ str(e)
 [DBI]: https://cran.r-project.org/package=DBI
 [inline]: https://cran.r-project.org/package=inline
 [keras]: https://cran.r-project.org/package=DBI
-[reticulate]: https://cran.r-project.org/package=reticulate
 [magick]: https://cran.r-project.org/package=magick
 [ncdf4]: https://cran.r-project.org/package=ncdf4
 [raster]: https://cran.r-project.org/package=raster
