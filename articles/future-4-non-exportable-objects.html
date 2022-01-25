@@ -261,62 +261,66 @@
 <td align="left">DBIConnection (<code>externalptr</code>)</td>
 </tr>
 <tr class="odd">
+<td align="left"><strong>inline</strong></td>
+<td align="left">CFunc (<code>externalptr</code> of class DLLHandle)</td>
+</tr>
+<tr class="even">
 <td align="left"><strong>keras</strong></td>
 <td align="left">keras.engine.sequential.Sequential (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>magick</strong></td>
 <td align="left">magick-image (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>ncdf4</strong></td>
 <td align="left">ncdf4 (custom reference; <em>non-detectable</em>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>parallel</strong></td>
 <td align="left">cluster and cluster nodes (<code>connection</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>raster</strong></td>
 <td align="left">RasterLayer (<code>externalptr</code>; <em>not all</em>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>Rcpp</strong></td>
 <td align="left">NativeSymbol (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>reticulate</strong></td>
 <td align="left">python.builtin.function (<code>externalptr</code>), python.builtin.module (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>rJava</strong></td>
 <td align="left">jclassName (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>rstan</strong></td>
 <td align="left">stanmodel (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>ShortRead</strong></td>
 <td align="left">FastqFile, FastqStreamer, FastqStreamerList (<code>connection</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>sparklyr</strong></td>
 <td align="left">tbl_spark (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>terra</strong></td>
 <td align="left">SpatRaster, SpatVector (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>udpipe</strong></td>
 <td align="left">udpipe_model (<code>externalptr</code>)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><strong>xgboost</strong></td>
 <td align="left">xgb.DMatrix (<code>externalptr</code>)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><strong>xml2</strong></td>
 <td align="left">xml_document (<code>externalptr</code>)</td>
 </tr>
@@ -367,6 +371,36 @@
 <span class="va">dummy</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
 <span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the globals</span>
 <span class="co">## ('con' of class 'SQLiteConnection') used in the future expression</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="package-inline">Package: inline<a class="anchor" aria-label="anchor" href="#package-inline"></a>
+</h4>
+<p>Another example is <a href="https://cran.r-project.org/package=inline" class="external-link">inline</a>, which allow us to easily create R functions that are implemented in C and C++, e.g.</p>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eddelbuettel/inline" class="external-link">inline</a></span><span class="op">)</span>
+<span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"
+  int i;
+  for (i = 0; i &lt; *n; i++) x[0] = x[0] + (i+1);
+"</span>
+<span class="va">sum_1_to_n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/inline/man/cfunction.html" class="external-link">cfunction</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/methods/GenericFunctions.html" class="external-link">signature</a></span><span class="op">(</span>n<span class="op">=</span><span class="st">"integer"</span>, x<span class="op">=</span><span class="st">"numeric"</span><span class="op">)</span>, <span class="va">code</span>, language <span class="op">=</span> <span class="st">"C"</span>, convention <span class="op">=</span> <span class="st">".C"</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">sum_1_to_n</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">x</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
+<span class="co">## 55</span></code></pre></div>
+<p>However, if we would attempt to call <code>sum_1_to_n()</code> in a future, we get an error:</p>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu">sum_1_to_n</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>
+<span class="co">## Error in .Primitive(".C")(&lt;pointer: (nil)&gt;, n = as.integer(n), x = as.double(x)) : </span>
+<span class="co">##   NULL value passed as symbol address</span></code></pre></div>
+<p>This is because:</p>
+<div class="sourceCode"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu">sum_1_to_n</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
+<span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span>
+<span class="co">## 'DLLHandle') in one of the globals ('sum_1_to_n' of class 'CFunc')</span>
+<span class="co">## used in the future expression</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-keras">Package: keras<a class="anchor" aria-label="anchor" href="#package-keras"></a>
@@ -436,7 +470,7 @@ Error<span class="op">:</span><span class="st"> </span>Detected a non<span class
 <div class="section level4">
 <h4 id="package-rcpp">Package: Rcpp<a class="anchor" aria-label="anchor" href="#package-rcpp"></a>
 </h4>
-<p>Another example is <a href="https://cran.r-project.org/package=Rcpp" class="external-link">Rcpp</a> , which allow us to easily create R functions that are implemented in C++, e.g.</p>
+<p>Another example is <a href="https://cran.r-project.org/package=Rcpp" class="external-link">Rcpp</a>, which allow us to easily create R functions that are implemented in C++, e.g.</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/sourceCpp.html" class="external-link">sourceCpp</a></span><span class="op">(</span>code <span class="op">=</span> <span class="st">"
 using namespace Rcpp;
@@ -472,8 +506,8 @@ int my_length(NumericVector x) {
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a></span><span class="op">)</span>
-<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">"os"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span>
+<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">"os"</span><span class="op">)</span>
 <span class="va">pwd</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="va">os</span><span class="op">$</span><span class="fu">getcwd</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pwd</span>
 <span class="co">## Error in eval(quote(os$getcwd()), new.env()) : </span>
@@ -487,7 +521,7 @@ int my_length(NumericVector x) {
 <p>Another reticulate example is when we try to use a Python function that we create ourselves as in:</p>
 <div class="sourceCode"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"def twice(x):\n    return 2*x\n"</span>, file <span class="op">=</span> <span class="st">"twice.py"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/source_python.html" class="external-link">source_python</a></span><span class="op">(</span><span class="st">"twice.py"</span><span class="op">)</span>
+<span class="fu"><a href="https://rstudio.github.io/reticulate/reference/source_python.html" class="external-link">source_python</a></span><span class="op">(</span><span class="st">"twice.py"</span><span class="op">)</span>
 <span class="fu">twice</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
 <span class="co">## [1] 2.4</span>
 <span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">twice</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
@@ -776,7 +810,7 @@ dr
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
 </div>
 
       </footer>
