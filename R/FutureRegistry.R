@@ -18,7 +18,7 @@ FutureRegistry <- local({
       ## NOTE: It is when calling resolved() on a future with
       ##       early signaling is enabled that conditioned
       ##       may be signaled.
-      if (resolved(future, run = FALSE)) {
+      if (resolved(future, run = FALSE, .signalEarly = FALSE)) {
         ## (a) Let future cleanup after itself, iff needed.
         ##     This, this may result in a call to
         ##     FutureRegistry(..., action = "remove").
