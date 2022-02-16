@@ -4,22 +4,25 @@ citEntry(
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # BibTeX entry:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  entry = "Misc",
+  key = "RJ-2021-048",
+  entry = "article",
   author = "Henrik Bengtsson",
   title = "A Unifying Framework for Parallel and Distributed Processing in R using Futures",
   year = "2021",
-#  doi = "10.32614/RJ-2021-048", ## until DOI URL exist
-  note = "10.32614/RJ-2021-048",
-  url = "https://journal.r-project.org/archive/2021/RJ-2021-048/index.html",
+  journal = "The R Journal",
+  doi = "10.32614/RJ-2021-048",
+  url = "https://doi.org/10.32614/RJ-2021-048",
+  pages = "208--227",
+  volume = "13",
+  number = "2",
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Plain-text citation:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   textVersion = paste(sep="",
-    "H. Bengtsson, ",
+    "Henrik Bengtsson, ",
     "A Unifying Framework for Parallel and Distributed Processing in R using Futures, ",
-    "The R Journal, ",
-    "2021, ",
+    "The R Journal (2021) 13:2, pages 208-227, ",
     "doi:10.32614/RJ-2021-048"
   )
 )
