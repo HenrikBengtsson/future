@@ -191,7 +191,7 @@ BUG FIXES:
  * Environment variable 'R_FUTURE_PLAN' would propagate down with nested
    futures, forcing itself onto also nested future plans.  Now it is unset
    in nested futures, resulting in a sequential future strategy unless
-   another was explicitly set by `plan()`.
+   another was explicitly set by 'plan()'.
 
  * Transparent futures no longer warn about 'local = FALSE' being deprecated.
    Although 'local = FALSE' is being deprecated, it is still used internally
@@ -629,7 +629,7 @@ NEW FEATURES:
 
  * The default range of ports that makeClusterPSOCK() draws a random port from
    (when argument 'port' is not specified) can now be controlled by environment
-   variable `R_FUTURE_RANDOM_PORTS`.  The default range is still 11000:11999
+   variable 'R_FUTURE_RANDOM_PORTS'.  The default range is still 11000:11999
    as with the 'parallel' package.
  
 BUG FIXES:
@@ -819,7 +819,7 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
- * Argument 'value' of resolve() has been renamed to `result` to better reflect
+ * Argument 'value' of resolve() has been renamed to 'result' to better reflect
    that not only values are collected when this argument is used.  Argument
    'value' still works for backward compatibility, but will eventually be
    formally deprecated and then defunct.
@@ -1982,10 +1982,10 @@ GLOBALS:
 
 BUG FIXES:
 
- * lazy(sum(x, ...), globals=TRUE) now properly passes `...`
+ * lazy(sum(x, ...), globals=TRUE) now properly passes '...'
    from the function from which the future is setup.  If not
    called within a function or called within a function without
-   `...` arguments, an informative error message is thrown.
+   '...' arguments, an informative error message is thrown.
     
     
 Version: 0.8.0 [2015-09-06]
