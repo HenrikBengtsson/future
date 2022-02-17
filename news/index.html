@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.23.0-9006</span>
       </span>
     </div>
 
@@ -154,27 +154,28 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.23.0-9005" id="future-1-23-0-9005">future 1.23.0-9005<a class="anchor" aria-label="anchor" href="#future-1-23-0-9005"></a></h2>
+<h2 class="page-header" data-toc-text="1.23.0-9006" id="future-1230-9006">future 1.23.0-9006<a class="anchor" aria-label="anchor" href="#future-1230-9006"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-23-0-9005">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-23-0-9005"></a></h4>
+<h4 id="significant-changes-1-23-0-9006">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-23-0-9006"></a></h4>
 <ul><li>Now future(…, seed = TRUE) forwards the RNG state in the calling R session. Previously, it would leave it intact.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="new-features-1-23-0-9005">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-23-0-9005"></a></h4>
+<h4 id="new-features-1-23-0-9006">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-23-0-9006"></a></h4>
 <ul><li>Now plan() and tweak() preserve calls in arguments, e.g. plan(multisession, workers = 2, rscript_startup = quote(options(socketOptions=“no-delay”))), and tweak(…, abc = quote(x == y)).</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-23-0-9005">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-23-0-9005"></a></h4>
-<ul><li>nbrOfFreeWorkers() would produce “Error: ‘is.character(name)’ is not TRUE” for plan(multisession, workers = 1).</li>
+<h4 id="bug-fixes-1-23-0-9006">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-23-0-9006"></a></h4>
+<ul><li><p>nbrOfFreeWorkers() would produce “Error: ‘is.character(name)’ is not TRUE” for plan(multisession, workers = 1).</p></li>
+<li><p>Internal calls to FutureRegistry(action=“collect-first”) and FutureRegistry(action=“collect-last”) could signal errors early when polling resolved().</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="deprecated-and-defunct-1-23-0-9005">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-23-0-9005"></a></h4>
+<h4 id="deprecated-and-defunct-1-23-0-9006">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-23-0-9006"></a></h4>
 <ul><li><p>Strategy ‘remote’ is deprecated in favor of ‘cluster’. The plan() function will give an informative deprecation warning when ‘remote’ is used. For now, this warning is given only once per R session.</p></li>
 <li><p>Strategy ‘transparent’ is deprecated in favor of ‘sequential’ with argument ‘split = TRUE’ set. The plan() function will give an informative deprecation warning when ‘transparent’ is used. For now, this warning is given only once per R session.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.23.0" id="future-1-23-0">future 1.23.0<small>2021-10-31</small><a class="anchor" aria-label="anchor" href="#future-1-23-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.23.0" id="future-1230">future 1.23.0<small>2021-10-31</small><a class="anchor" aria-label="anchor" href="#future-1230"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-23-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-23-0"></a></h4>
 <ul><li><p>plan() now produces a one-time warning if a ‘transparent’ strategy is set. The warning reminds the user that ‘transparent’ should only be used for troubleshooting purposes and never be used in production. These days plan(sequential, split = TRUE) together with debug() is probably a better approach for troubleshooting. The long-term plan is to deprecate the ‘transparent’ strategy.</p></li>
@@ -182,7 +183,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="beta-features-1-23-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-23-0"></a></h4>
-<ul><li>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 check mark symbol (‘\u2713’) would be relayed as ‘&lt;U+2713&gt;’ (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, value() attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</li>
+<ul><li>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 check mark symbol (‘713’) would be relayed as ‘&lt;U+2713&gt;’ (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, value() attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="miscellaneous-1-23-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-23-0"></a></h4>
@@ -200,14 +201,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.22.1" id="future-1-22-1">future 1.22.1<small>2021-08-25</small><a class="anchor" aria-label="anchor" href="#future-1-22-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.22.1" id="future-1221">future 1.22.1<small>2021-08-25</small><a class="anchor" aria-label="anchor" href="#future-1221"></a></h2>
 <div class="section level4">
 <h4 id="miscellaneous-1-22-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-22-1"></a></h4>
 <ul><li>Disable package test that emulates crashing of forked parallel workers when using parallel::makeCluster(…, type = “FORK”). This test is disabled on macOS, where it appears that the main R session becomes unstable after the FORK node is terminated.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.22.0" id="future-1-22-0">future 1.22.0<a class="anchor" aria-label="anchor" href="#future-1-22-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.22.0" id="future-1220">future 1.22.0<a class="anchor" aria-label="anchor" href="#future-1220"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-22-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-22-0"></a></h4>
 <ul><li><p>A lazy future remains a generic future until it is launched, which means it is not assigned a future backend class until launched.</p></li>
@@ -236,14 +237,14 @@
 <li><p>When enabled, option ‘future.globals.onReference’ could falsely alert on ‘Detected a non-exportable reference (’externalptr’) in one of the globals (&lt;unknown&gt;) used in the future expression’ in globals, e.g. when using ‘future.apply’ or ‘furrr’ map-reduce functions when using a ‘multisession’ backend.</p></li>
 <li><p>future(fcn(), globals=list(a=42, fcn=function() a)) would fail with “Error in fcn() : object ‘a’ not found” when using sequential or multicore futures. This affected also map-reduce calls such as future.apply::future_lapply(1, function(x) a, future.globals=list(a=42)).</p></li>
 <li><p>Resolving a ‘sequential’ future without globals would result in internal several ‘…future.*’ objects being written to the calling environment, which might be the global environment.</p></li>
-<li><p>Environment variable ‘R_FUTURE_PLAN’ would propagate down with nested futures, forcing itself onto also nested future plans. Now it is unset in nested futures, resulting in a sequential future strategy unless another was explicitly set by `plan()`.</p></li>
+<li><p>Environment variable ‘R_FUTURE_PLAN’ would propagate down with nested futures, forcing itself onto also nested future plans. Now it is unset in nested futures, resulting in a sequential future strategy unless another was explicitly set by ‘plan()’.</p></li>
 <li><p>Transparent futures no longer warn about ‘local = FALSE’ being deprecated. Although ‘local = FALSE’ is being deprecated, it is still used internally by ‘transparent’ futures for a while longer. Please do not use ‘transparent’ futures in production code and never in a package.</p></li>
 <li><p>remote() could produce an error on “object ‘homogeneous’ not found”.</p></li>
 <li><p>nbrOfFreeWorkers() for ‘cluster’ futures assumed that the current plan is set to cluster too.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.21.0" id="future-1-21-0">future 1.21.0<small>2020-12-10</small><a class="anchor" aria-label="anchor" href="#future-1-21-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.21.0" id="future-1210">future 1.21.0<small>2020-12-10</small><a class="anchor" aria-label="anchor" href="#future-1210"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-21-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-21-0"></a></h4>
 <ul><li><p>In order to handle them conditionally higher up in the call chain, warnings and errors produced from using the random number generator (RNG) in a future without declaring the intention to use one are now of class RngFutureWarning and RngFutureError, respectively. Both of these classes inherits from RngFutureCondition.</p></li>
@@ -262,14 +263,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.20.1" id="future-1-20-1">future 1.20.1<small>2020-11-03</small><a class="anchor" aria-label="anchor" href="#future-1-20-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.20.1" id="future-1201">future 1.20.1<small>2020-11-03</small><a class="anchor" aria-label="anchor" href="#future-1201"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-1-20-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-20-1"></a></h4>
 <ul><li>future::plan(“multisession”) would produce ‘Error in if (debug) mdebug(“covr::package_coverage() workaround …”) : argument is not interpretable as logical’ if and only if the ‘covr’ package was loaded.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.20.0" id="future-1-20-0">future 1.20.0<a class="anchor" aria-label="anchor" href="#future-1-20-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.20.0" id="future-1200">future 1.20.0<a class="anchor" aria-label="anchor" href="#future-1200"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-20-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-20-0"></a></h4>
 <ul><li><p>Strategy ‘multiprocess’ is deprecated in favor of either ‘multisession’ or ‘multicore’, depending on operating system and R setup. The plan() function will give an informative deprecation warning when ‘multiprocess’ is used. This warning is given only once per R session.</p></li>
@@ -280,7 +281,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-20-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-20-0"></a></h4>
-<ul><li><p>Setting up a future strategy with argument ‘split = TRUE’ will cause the standard output and non-error conditions to be split (“tee:d”) on the worker’s end, while still relaying back to the main R session as before. This can be useful when debugging with browse() or debug(), e.g. plan(sequential, split = TRUE). Without it, debug output is not displayed.</p></li>
+<ul><li><p>Setting up a future strategy with argument ‘split = TRUE’ will cause the standard output and non-error conditions to be split (“tee:d”) on the worker’s end, while still relaying back to the main R session as before. This can be useful when debugging with browse() or debug(), e.g. plan(sequential, split = TRUE). Without it, debug output is not displayed.</p></li>
 <li><p>Now multicore futures relay immediateCondition:s in a near-live fashion.</p></li>
 <li><p>It is now possible to pass any arguments that makeClusterPSOCK() accepts in the call to plan(cluster, …) and plan(multisession, …). For instance, to set the working directory of the cluster workers to a temporary folder, pass argument ‘rscript_startup = “setwd(tempdir())”’. Another example is ‘rscript_libs = c(libs, “*”)’ to prepend the library path on the worker with the paths in ‘libs’.</p></li>
 <li><p>plan() and tweak() check for even more arguments that must not be set by either of them. Specifically, attempts to adjust the following arguments of future() will result in an error: ‘conditions’, ‘envir’, ‘globals’, ‘packages’, ‘stdout’, and ‘substitute’ in addition to already validated ‘lazy’ and ‘seed’.</p></li>
@@ -312,14 +313,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.19.1" id="future-1-19-1">future 1.19.1<small>2020-09-22</small><a class="anchor" aria-label="anchor" href="#future-1-19-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.19.1" id="future-1191">future 1.19.1<small>2020-09-22</small><a class="anchor" aria-label="anchor" href="#future-1191"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-1-19-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-19-1"></a></h4>
 <ul><li>When passing ‘…’ as a globals, rather than via arguments, in higher-level map-reduce APIs such as future.apply and furrr, arguments in ‘…’ could produce an error on “unused argument”.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.19.0" id="future-1-19-0">future 1.19.0<a class="anchor" aria-label="anchor" href="#future-1-19-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.19.0" id="future-1190">future 1.19.0<a class="anchor" aria-label="anchor" href="#future-1190"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-19-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-19-0"></a></h4>
 <ul><li><p>Futures detect when random number generation (RNG) was used to resolve them. If a future uses RNG without parallel RNG was requested, then an informative warning is produced. To request parallel RNG, specify argument ‘seed’, e.g. ‘f &lt;- future(rnorm(3), seed=TRUE)’ or ‘y %&lt;-% { rnorm(3) } %seed% TRUE’. Higher-level map-reduce APIs provide similarly named “seed” arguments to achieve the same. To, escalate these warning to errors, set option ‘future.rng.onMisuse’ to “error”. To silence them, set it to “ignore”.</p></li>
@@ -350,16 +351,16 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.18.0" id="future-1-18-0">future 1.18.0<small>2020-07-09</small><a class="anchor" aria-label="anchor" href="#future-1-18-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.18.0" id="future-1180">future 1.18.0<small>2020-07-09</small><a class="anchor" aria-label="anchor" href="#future-1180"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-18-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-18-0"></a></h4>
 <ul><li>Support for ‘persistent = TRUE’ with multisession futures is deprecated.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-18-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-18-0"></a></h4>
-<ul><li><p>print() on RichSOCKcluster gives information not only on the name of the host but also on the version of R and the platform of each node (“worker”), e.g. “Socket cluster with 3 nodes where 2 nodes are on host ‘localhost’ (R version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)”.</p></li>
-<li><p>Error messages from cluster future failures are now more informative than “Unexpected result (of class ‘NULL’ != ‘FutureResult’)”. For example, if the ‘future’ package is not installed on the worker, then the error message clearly says so. Even, if there is an unexpected result error from a PSOCK cluster future, then the error produced give extra information on node where it failed, e.g. “Unexpected result (of class ‘NULL’ != ‘FutureResult’) retrieved for ClusterFuture future (label = ‘&lt;none&gt;’, expression = ‘…’): This suggests that the communication with ClusterFuture worker (‘RichSOCKnode’ <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)) is out of sync.”</p></li>
-<li><p>It is now possible to set environment variables on workers before they are launched by makeClusterPSOCK() by specify them as as “&lt;name&gt;=&lt;value&gt;” as part of the ‘rscript’ vector argument, e.g. rscript=c(“ABC=123”, “DEF=‘hello world’”, “Rscript”). This works because elements in ‘rscript’ that match regular expression ‘^[[:alpha:]_][[:alnum:]_]*=.*’ are no longer shell quoted.</p></li>
+<ul><li><p>print() on RichSOCKcluster gives information not only on the name of the host but also on the version of R and the platform of each node (“worker”), e.g. “Socket cluster with 3 nodes where 2 nodes are on host ‘localhost’ (R version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)”.</p></li>
+<li><p>Error messages from cluster future failures are now more informative than “Unexpected result (of class ‘NULL’ != ‘FutureResult’)”. For example, if the ‘future’ package is not installed on the worker, then the error message clearly says so. Even, if there is an unexpected result error from a PSOCK cluster future, then the error produced give extra information on node where it failed, e.g. “Unexpected result (of class ‘NULL’ != ‘FutureResult’) retrieved for ClusterFuture future (label = ‘&lt;none&gt;’, expression = ‘…’): This suggests that the communication with ClusterFuture worker (‘RichSOCKnode’ <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)) is out of sync.”</p></li>
+<li><p>It is now possible to set environment variables on workers before they are launched by makeClusterPSOCK() by specify them as as “&lt;name&gt;=&lt;value&gt;” as part of the ‘rscript’ vector argument, e.g. rscript=c(“ABC=123”, “DEF=‘hello world’”, “Rscript”). This works because elements in ‘rscript’ that match regular expression ‘[[:alpha:]_][[:alnum:]_]*=.*’ are no longer shell quoted.</p></li>
 <li><p>makeClusterPSOCK() now returns a cluster that in addition to inheriting from’ SOCKcluster’ it will also inherit from ‘RichSOCKcluster’.</p></li>
 </ul></div>
 <div class="section level4">
@@ -367,7 +368,7 @@
 <ul><li><p>Made makeClusterPSOCK() and makeNodePSOCK() agile to the name change from parallel:::.slaveRSOCK() to parallel:::.workRSOCK() in R (&gt;= 4.1.0).</p></li>
 <li><p>makeClusterPSOCK(…, rscript) will not try to locate rscript[1] if argument ‘homogeneous’ is FALSE (or inferred to be FALSE).</p></li>
 <li><p>makeClusterPSOCK(…, rscript_envs) would result in a syntax error when starting the workers due to non-ASCII quotation marks if option ‘useFancyQuotes’ was not set to FALSE.</p></li>
-<li><p>plan(list(…)) would produce ‘Error in UseMethod(“tweak”) : no applicable method for ’tweak’ applied to an object of class “list”‘if a non-function object named ’list’ was on the search path.</p></li>
+<li><p>plan(list(…)) would produce ‘Error in UseMethod(“tweak”) : no applicable method for ’tweak’ applied to an object of class “list”’ if a non-function object named ‘list’ was on the search path.</p></li>
 <li><p>plan(x$abc) with x &lt;- list(abc = sequential) would produce ‘Error in UseMethod(“tweak”) : no applicable method for ’tweak’ applied to an object of class “c(‘FutureStrategyList’, ‘list’)”’.</p></li>
 <li><p>TESTS: ‘R_FUTURE_FORK_ENABLE=false R CMD check …’ would produce ‘Error: connections left open: …’ when checking the ‘multiprocess’ example.</p></li>
 </ul></div>
@@ -378,7 +379,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.17.0" id="future-1-17-0">future 1.17.0<small>2020-04-18</small><a class="anchor" aria-label="anchor" href="#future-1-17-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.17.0" id="future-1170">future 1.17.0<small>2020-04-18</small><a class="anchor" aria-label="anchor" href="#future-1170"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-17-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-17-0"></a></h4>
 <ul><li>Renamed values() to value() to clean up and simplify the API.</li>
@@ -403,7 +404,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.16.0" id="future-1-16-0">future 1.16.0<small>2020-01-16</small><a class="anchor" aria-label="anchor" href="#future-1-16-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.16.0" id="future-1160">future 1.16.0<small>2020-01-16</small><a class="anchor" aria-label="anchor" href="#future-1160"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-16-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-16-0"></a></h4>
 <ul><li>Now oplan &lt;- plan(new_strategy) returns the list of all nested strategies previously set, instead of just the strategy on top of this stack. This makes it easier to temporarily use another plan. For the old behavior, use ‘oplan &lt;- plan(new_strategy)[[1]]’.</li>
@@ -421,8 +422,8 @@
 <div class="section level4">
 <h4 id="bug-fixes-1-16-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-16-0"></a></h4>
 <ul><li><p>Evaluation of futures could fail if the global environment contained *functions* with the same names as a small set of base R functions, e.g. ‘raw()’, ‘list()’, and ‘options()’.</p></li>
-<li>future(alist(a=)) would produce “Error in objectSize_list(x, depth = depth</li>
-<li><p>1L) : argument “x_kk” is missing, with no default"</p></li>
+<li><p>future(alist(a=)) would produce “Error in objectSize_list(x, depth = depth</p></li>
+<li><p>1L) : argument “x_kk” is missing, with no default”</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-16-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-16-0"></a></h4>
@@ -431,10 +432,10 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.15.1" id="future-1-15-1">future 1.15.1<small>2019-11-25</small><a class="anchor" aria-label="anchor" href="#future-1-15-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.15.1" id="future-1151">future 1.15.1<small>2019-11-25</small><a class="anchor" aria-label="anchor" href="#future-1151"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-15-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-15-1"></a></h4>
-<ul><li>The default range of ports that makeClusterPSOCK() draws a random port from (when argument ‘port’ is not specified) can now be controlled by environment variable `R_FUTURE_RANDOM_PORTS`. The default range is still 11000:11999 as with the ‘parallel’ package.</li>
+<ul><li>The default range of ports that makeClusterPSOCK() draws a random port from (when argument ‘port’ is not specified) can now be controlled by environment variable ‘R_FUTURE_RANDOM_PORTS’. The default range is still 11000:11999 as with the ‘parallel’ package.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-1-15-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-15-1"></a></h4>
@@ -442,7 +443,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.15.0" id="future-1-15-0">future 1.15.0<small>2019-11-08</small><a class="anchor" aria-label="anchor" href="#future-1-15-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.15.0" id="future-1150">future 1.15.0<small>2019-11-08</small><a class="anchor" aria-label="anchor" href="#future-1150"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-15-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-15-0"></a></h4>
 <ul><li>resolved() will now launch lazy futures.</li>
@@ -472,7 +473,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.14.0" id="future-1-14-0">future 1.14.0<small>2019-07-02</small><a class="anchor" aria-label="anchor" href="#future-1-14-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.14.0" id="future-1140">future 1.14.0<small>2019-07-02</small><a class="anchor" aria-label="anchor" href="#future-1140"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-14-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-14-0"></a></h4>
 <ul><li><p>All types of conditions are now captured and relayed. Previously, only conditions of class ‘message’ and ‘warning’ were relayed.</p></li>
@@ -502,10 +503,10 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.13.0" id="future-1-13-0">future 1.13.0<small>2019-05-08</small><a class="anchor" aria-label="anchor" href="#future-1-13-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.13.0" id="future-1130">future 1.13.0<small>2019-05-08</small><a class="anchor" aria-label="anchor" href="#future-1130"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-13-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-13-0"></a></h4>
-<ul><li>Forked processing is now disabled by default when running R via RStudio When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures. This update follows from an RStudio recommendation against using _forked_ parallel processing from within RStudio because it is likely to break the RStudio R session. See help(“supportsMulticore”) for more details, e.g. how to re-enable process forking. Note that parallelization via ‘multisession’ is unaffected and will still work as before. Also, when forked processing is disabled, or otherwise not supported, using plan(“multiprocess”) will fall back to using ‘multisession’ futures.</li>
+<ul><li>Forked processing is now disabled by default when running R via RStudio When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures. This update follows from an RStudio recommendation against using _forked_ parallel processing from within RStudio because it is likely to break the RStudio R session. See help(“supportsMulticore”) for more details, e.g. how to re-enable process forking. Note that parallelization via ‘multisession’ is unaffected and will still work as before. Also, when forked processing is disabled, or otherwise not supported, using plan(“multiprocess”) will fall back to using ‘multisession’ futures.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-13-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-13-0"></a></h4>
@@ -526,11 +527,11 @@
 </ul></div>
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-13-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-13-0"></a></h4>
-<ul><li>Argument ‘value’ of resolve() has been renamed to `result` to better reflect that not only values are collected when this argument is used. Argument ‘value’ still works for backward compatibility, but will eventually be formally deprecated and then defunct.</li>
+<ul><li>Argument ‘value’ of resolve() has been renamed to ‘result’ to better reflect that not only values are collected when this argument is used. Argument ‘value’ still works for backward compatibility, but will eventually be formally deprecated and then defunct.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.12.0" id="future-1-12-0">future 1.12.0<small>2019-03-08</small><a class="anchor" aria-label="anchor" href="#future-1-12-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.12.0" id="future-1120">future 1.12.0<small>2019-03-08</small><a class="anchor" aria-label="anchor" href="#future-1120"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-12-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-12-0"></a></h4>
 <ul><li><p>If makeClusterPSOCK() fails to create one of many nodes, then it will attempt to stop any nodes that were successfully created. This lowers the risk for leaving R worker processes behind.</p></li>
@@ -552,14 +553,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.11.1.1" id="future-1-11-1-1">future 1.11.1.1<small>2019-01-26</small><a class="anchor" aria-label="anchor" href="#future-1-11-1-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.11.1.1" id="future-11111">future 1.11.1.1<small>2019-01-26</small><a class="anchor" aria-label="anchor" href="#future-11111"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-1-11-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-11-1-1"></a></h4>
 <ul><li>When makeClusterPSOCK() fails to connect to a worker, it produces an error with detailed information on what could have happened. In rare cases, another error could be produced when generating the information on what the workers PID is.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.11.1" id="future-1-11-1">future 1.11.1<a class="anchor" aria-label="anchor" href="#future-1-11-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.11.1" id="future-1111">future 1.11.1<a class="anchor" aria-label="anchor" href="#future-1111"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-11-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-11-1"></a></h4>
 <ul><li><p>The defaults of several arguments of makeClusterPSOCK() and makeNodePSOCK() can now be controlled via environment variables in addition to R options that was supported in the past. An advantage of using environment variables is that they will be inherited by child processes, also nested ones.</p></li>
@@ -575,7 +576,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.11.0" id="future-1-11-0">future 1.11.0<small>2019-01-21</small><a class="anchor" aria-label="anchor" href="#future-1-11-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.11.0" id="future-1110">future 1.11.0<small>2019-01-21</small><a class="anchor" aria-label="anchor" href="#future-1110"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-11-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-11-0"></a></h4>
 <ul><li>Message and warning conditions are now captured and relayed by default.</li>
@@ -605,7 +606,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.10.0" id="future-1-10-0">future 1.10.0<small>2018-10-17</small><a class="anchor" aria-label="anchor" href="#future-1-10-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.10.0" id="future-1100">future 1.10.0<small>2018-10-17</small><a class="anchor" aria-label="anchor" href="#future-1100"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-10-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-10-0"></a></h4>
 <ul><li><p>Add support for manually specifying globals in addition to those that are automatically identified via argument ‘globals’ or %globals%. Two examples are globals = structure(TRUE, add = list(a = 42L, b = 3.14)) and globals = structure(TRUE, add = c(“a”, “b”)). Analogously, attribute ‘ignore’ can be used to exclude automatically identified globals.</p></li>
@@ -620,7 +621,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.9.0" id="future-1-9-0">future 1.9.0<small>2018-07-23</small><a class="anchor" aria-label="anchor" href="#future-1-9-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.9.0" id="future-190">future 1.9.0<small>2018-07-23</small><a class="anchor" aria-label="anchor" href="#future-190"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-9-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-9-0"></a></h4>
 <ul><li>Standard output is now captured and re-outputted when value() is called. This new behavior can be controlled by the argument ‘stdout’ to future() or by specifying the %stdout% operator if a future assignment is used.</li>
@@ -650,12 +651,12 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.8.1" id="future-1-8-1">future 1.8.1<small>2018-05-03</small><a class="anchor" aria-label="anchor" href="#future-1-8-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.8.1" id="future-181">future 1.8.1<small>2018-05-03</small><a class="anchor" aria-label="anchor" href="#future-181"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-8-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-8-1"></a></h4>
 <ul><li><p>getGlobalsAndPackages() gained argument ‘maxSize’.</p></li>
 <li><p>makeClusterPSOCK() now produces a more informative warning if environment variable R_PARALLEL_PORT specifies a non-numeric port.</p></li>
-<li><p>Now plan() gives a more informative error message in case it fails, e.g. when the internal future validation fails and why.</p></li>
+<li><p>Now plan() gives a more informative error message in case it fails, e.g. when the internal future validation fails and why.</p></li>
 <li><p>Added UnexpectedFutureResultError to be used by backends for signaling in a standard way that an unexpected result was retrieved from a worker.</p></li>
 </ul></div>
 <div class="section level4">
@@ -666,7 +667,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.8.0" id="future-1-8-0">future 1.8.0<small>2018-04-08</small><a class="anchor" aria-label="anchor" href="#future-1-8-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.8.0" id="future-180">future 1.8.0<small>2018-04-08</small><a class="anchor" aria-label="anchor" href="#future-180"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-8-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-8-0"></a></h4>
 <ul><li>Errors produces when evaluating futures are now (re-)signaled on the master R process “as is” with the original content and class attributes.</li>
@@ -692,7 +693,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.7.0" id="future-1-7-0">future 1.7.0<small>2018-02-11</small><a class="anchor" aria-label="anchor" href="#future-1-7-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.7.0" id="future-170">future 1.7.0<small>2018-02-11</small><a class="anchor" aria-label="anchor" href="#future-170"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-7-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-7-0"></a></h4>
 <ul><li>future_lapply() has moved to the future.apply package available on CRAN.</li>
@@ -707,7 +708,7 @@
 </ul></div>
 <div class="section level4">
 <h4 id="documentation-1-7-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-7-0"></a></h4>
-<ul><li>Vignette ‘Common Issues with Solutions’ now documents the case where the future framework fails to identify a variable as being global because it is only so conditionally, e.g. ‘if (runif(1) &lt; 1/2) x &lt;- 0; y &lt;- 2 * x’.</li>
+<ul><li>Vignette ‘Common Issues with Solutions’ now documents the case where the future framework fails to identify a variable as being global because it is only so conditionally, e.g. ‘if (runif(1) &lt; 1/2) x &lt;- 0; y &lt;- 2 * x’.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="beta-features-1-7-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-7-0"></a></h4>
@@ -729,7 +730,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.6.2" id="future-1-6-2">future 1.6.2<small>2017-10-16</small><a class="anchor" aria-label="anchor" href="#future-1-6-2"></a></h2>
+<h2 class="page-header" data-toc-text="1.6.2" id="future-162">future 1.6.2<small>2017-10-16</small><a class="anchor" aria-label="anchor" href="#future-162"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-6-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-6-2"></a></h4>
 <ul><li><p>Now plan() accepts also strings such as “future::cluster”.</p></li>
@@ -742,7 +743,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.6.1" id="future-1-6-1">future 1.6.1<small>2017-09-09</small><a class="anchor" aria-label="anchor" href="#future-1-6-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.6.1" id="future-161">future 1.6.1<small>2017-09-09</small><a class="anchor" aria-label="anchor" href="#future-161"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-6-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-6-1"></a></h4>
 <ul><li>Now exporting getGlobalsAndPackages().</li>
@@ -757,7 +758,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.6.0" id="future-1-6-0">future 1.6.0<small>2017-08-13</small><a class="anchor" aria-label="anchor" href="#future-1-6-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.6.0" id="future-160">future 1.6.0<small>2017-08-13</small><a class="anchor" aria-label="anchor" href="#future-160"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-6-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-6-0"></a></h4>
 <ul><li>Now tweak(), and hence plan(), generates a more informative error message if a non-future function is specified by mistake, e.g. calling plan(cluster) with the ‘survival’ package attached after ‘future’ is equivalent to calling plan(survival::cluster) when plan(future::cluster) was intended.</li>
@@ -777,7 +778,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.5.0" id="future-1-5-0">future 1.5.0<small>2017-05-26</small><a class="anchor" aria-label="anchor" href="#future-1-5-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.5.0" id="future-150">future 1.5.0<small>2017-05-26</small><a class="anchor" aria-label="anchor" href="#future-150"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-5-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-5-0"></a></h4>
 <ul><li>Multicore and multisession futures no longer reserve one core for the main R process, which was done to lower the risk for producing a higher CPU load than the number of cores available for the R session.</li>
@@ -813,7 +814,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.4.0" id="future-1-4-0">future 1.4.0<small>2017-03-13</small><a class="anchor" aria-label="anchor" href="#future-1-4-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.4.0" id="future-140">future 1.4.0<small>2017-03-13</small><a class="anchor" aria-label="anchor" href="#future-140"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-4-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-4-0"></a></h4>
 <ul><li>The default for future_lapply() is now to _not_ generate RNG seeds (future.seed = FALSE). If proper random number generation is needed, use future.seed = TRUE. For more details, see help page.</li>
@@ -837,7 +838,7 @@
 <ul><li><p>Now future_lapply(x, FUN, …) identifies global objects among ‘x’, ‘FUN’ and ‘…’ recursively until no new globals are found. Previously, only the first level of globals were scanned. This is mostly thanks to a bug fix in globals 0.9.0.</p></li>
 <li><p>A future that used a global object ‘x’ of a class that overrides length() would produce an error if length(x) reports more elements than what can be subsetted.</p></li>
 <li><p>nbrOfWorkers() gave an error with plan(cluster, workers = cl) where ‘cl’ is a cluster object created by parallel::makeCluster() etc. This prevented for instance future_lapply() to work with such setups.</p></li>
-<li><p>plan(cluster, workers = cl) where cl &lt;- makeCluster(…, type = MPI“) would give an instant error due to an invalid internal assertion.</p></li>
+<li><p>plan(cluster, workers = cl) where cl &lt;- makeCluster(…, type = MPI”) would give an instant error due to an invalid internal assertion.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="deprecated-and-defunct-1-4-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-4-0"></a></h4>
@@ -847,10 +848,10 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.3.0" id="future-1-3-0">future 1.3.0<small>2017-02-19</small><a class="anchor" aria-label="anchor" href="#future-1-3-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.3.0" id="future-130">future 1.3.0<small>2017-02-19</small><a class="anchor" aria-label="anchor" href="#future-130"></a></h2>
 <div class="section level4">
 <h4 id="significant-changes-1-3-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-3-0"></a></h4>
-<ul><li>Where applicable, workers are now initiated when calling plan(), e.g. plan(cluster) will set up workers on all cluster nodes. Previously, this only happened when the first future was created.</li>
+<ul><li>Where applicable, workers are now initiated when calling plan(), e.g. plan(cluster) will set up workers on all cluster nodes. Previously, this only happened when the first future was created.</li>
 </ul></div>
 <div class="section level4">
 <h4 id="new-features-1-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h4>
@@ -883,7 +884,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.2.0" id="future-1-2-0">future 1.2.0<small>2016-11-12</small><a class="anchor" aria-label="anchor" href="#future-1-2-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.2.0" id="future-120">future 1.2.0<small>2016-11-12</small><a class="anchor" aria-label="anchor" href="#future-120"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-2-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-2-0"></a></h4>
 <ul><li><p>Added makeClusterPSOCK() - a version of parallel::makePSOCKcluster() that allows for more flexible control of how PSOCK cluster workers are set up and how they are launched and communicated with if running on external machines.</p></li>
@@ -899,23 +900,23 @@
 <div class="section level4">
 <h4 id="bug-fixes-1-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-2-0"></a></h4>
 <ul><li><p>values() for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
-<li><p>value() for ClusterFuture would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of ClusterFuture from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection“.</p></li>
+<li><p>value() for ClusterFuture would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of ClusterFuture from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection”.</p></li>
 <li><p>Argument ‘user’ to remote() was ignored (since 1.1.0).</p></li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.1.1" id="future-1-1-1">future 1.1.1<small>2016-10-11</small><a class="anchor" aria-label="anchor" href="#future-1-1-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.1.1" id="future-111">future 1.1.1<small>2016-10-11</small><a class="anchor" aria-label="anchor" href="#future-111"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-1-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-1"></a></h4>
 <ul><li>For the special case where ‘remote’ futures use workers = “localhost” they (again) use the exact same R executable as the main / calling R session (in all other cases it uses whatever ‘Rscript’ is found in the PATH). This was already indeed implemented in 1.0.1, but with the added support for reverse SSH tunnels in 1.1.0 this default behavior was lost.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.1.0" id="future-1-1-0">future 1.1.0<small>2016-10-10</small><a class="anchor" aria-label="anchor" href="#future-1-1-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.1.0" id="future-110">future 1.1.0<small>2016-10-10</small><a class="anchor" aria-label="anchor" href="#future-110"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h4>
 <ul><li><p>REMOTE CLUSTERS: It is now very simple to use cluster() and remote() to connect to remote clusters / machines. As long as you can connect via ssh to those machines, it works also with these future. The new code completely avoids incoming firewall and incoming port forwarding issues previously needed. This is done by using reverse SSH tunneling. There is also no need to worry about internal or external IP numbers.</p></li>
-<li><p>Added optional argument ‘label’ to all futures, e.g. f &lt;- future(42, label=“answer”) and v %&lt;-% { 42 } %label% “answer”.</p></li>
+<li><p>Added optional argument ‘label’ to all futures, e.g. f &lt;- future(42, label=“answer”) and v %&lt;-% { 42 } %label% “answer”.</p></li>
 <li><p>Added argument ‘user’ to cluster() and remote().</p></li>
 <li><p>Now all Future classes supports run() for launching the future and value() calls run() if the future has not been launched.</p></li>
 <li><p>MEMORY: Now plan(cluster, gc=TRUE) causes the background R session to be garbage collected immediately after the value is collected. Since multisession and remote futures are special cases of cluster futures, the same is true for these as well.</p></li>
@@ -934,7 +935,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.0.1" id="future-1-0-1">future 1.0.1<small>2016-07-04</small><a class="anchor" aria-label="anchor" href="#future-1-0-1"></a></h2>
+<h2 class="page-header" data-toc-text="1.0.1" id="future-101">future 1.0.1<small>2016-07-04</small><a class="anchor" aria-label="anchor" href="#future-101"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-0-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-0-1"></a></h4>
 <ul><li><p>ROBUSTNESS: For the special case where ‘remote’ futures use workers = “localhost” they now use the exact same R executable as the main / calling R session (in all other cases it uses whatever ‘Rscript’ is found in the PATH).</p></li>
@@ -951,7 +952,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.0.0" id="future-1-0-0">future 1.0.0<small>2016-06-24</small><a class="anchor" aria-label="anchor" href="#future-1-0-0"></a></h2>
+<h2 class="page-header" data-toc-text="1.0.0" id="future-100">future 1.0.0<small>2016-06-24</small><a class="anchor" aria-label="anchor" href="#future-100"></a></h2>
 <div class="section level4">
 <h4 id="new-features-1-0-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h4>
 <ul><li><p>Add support for remote(…, myip=“&lt;external&gt;”), which now queries a set of external lookup services in case one of them fails.</p></li>
@@ -978,10 +979,10 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.15.0" id="future-0-15-0">future 0.15.0<small>2016-06-14</small><a class="anchor" aria-label="anchor" href="#future-0-15-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.15.0" id="future-0150">future 0.15.0<small>2016-06-14</small><a class="anchor" aria-label="anchor" href="#future-0150"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-15-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-15-0"></a></h4>
-<ul><li><p>Added remote futures, which are cluster futures with convenient default arguments for simple remote access to R, e.g. plan(remote, workers=“login.my-server.org”).</p></li>
+<ul><li><p>Added remote futures, which are cluster futures with convenient default arguments for simple remote access to R, e.g. plan(remote, workers=“login.my-server.org”).</p></li>
 <li><p>Now .future.R (if found in the current directory or otherwise in the user’s home directory) is sourced when the future package is attach (but not loaded). This helps separating scripts from configuration of futures.</p></li>
 <li><p>Added support for plan(cluster, workers=c(“n1”, “n2”, “n2”, “n4”)), where ‘workers’ (also for ClusterFuture()) is a set of host names passed to parallel::makeCluster(workers). It can also be the number of localhost workers.</p></li>
 <li><p>Added command line option –parallel=&lt;p&gt;, which is long for -p &lt;p&gt;.</p></li>
@@ -999,7 +1000,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.14.0" id="future-0-14-0">future 0.14.0<small>2016-05-17</small><a class="anchor" aria-label="anchor" href="#future-0-14-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.14.0" id="future-0140">future 0.14.0<small>2016-05-17</small><a class="anchor" aria-label="anchor" href="#future-0140"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-14-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-14-0"></a></h4>
 <ul><li><p>Added nbrOfWorkers().</p></li>
@@ -1017,7 +1018,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.13.0" id="future-0-13-0">future 0.13.0<small>2016-04-14</small><a class="anchor" aria-label="anchor" href="#future-0-13-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.13.0" id="future-0130">future 0.13.0<small>2016-04-14</small><a class="anchor" aria-label="anchor" href="#future-0130"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-13-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-13-0"></a></h4>
 <ul><li><p>Add support to plan() for specifying different future strategies for the different levels of nested futures.</p></li>
@@ -1036,11 +1037,11 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.12.0" id="future-0-12-0">future 0.12.0<small>2016-02-24</small><a class="anchor" aria-label="anchor" href="#future-0-12-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.12.0" id="future-0120">future 0.12.0<small>2016-02-24</small><a class="anchor" aria-label="anchor" href="#future-0120"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-12-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-12-0"></a></h4>
 <ul><li><p>Added multiprocess futures, which are multicore futures if supported, otherwise multisession futures. This makes it possible to use plan(multiprocess) everywhere regardless of operating system.</p></li>
-<li><p>Future strategy functions gained class attributes such that it is possible to test what type of future is currently used, e.g. inherits(plan(), “multicore”).</p></li>
+<li><p>Future strategy functions gained class attributes such that it is possible to test what type of future is currently used, e.g. inherits(plan(), “multicore”).</p></li>
 <li><p>ROBUSTNESS: It is only the R process that created a future that can resolve it. If a non-resolved future is queried by another R process, then an informative error is generated explaining that this is not possible.</p></li>
 <li><p>ROBUSTNESS: Now value() for multicore futures detects if the underlying forked R process was terminated before completing and if so generates an informative error messages.</p></li>
 </ul></div>
@@ -1060,13 +1061,13 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.11.0" id="future-0-11-0">future 0.11.0<small>2016-01-20</small><a class="anchor" aria-label="anchor" href="#future-0-11-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.11.0" id="future-0110">future 0.11.0<small>2016-01-20</small><a class="anchor" aria-label="anchor" href="#future-0110"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-11-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0"></a></h4>
 <ul><li><p>Add multisession futures, which analogously to multicore ones, use multiple cores on the local machine with the difference that they are evaluated in separate R session running in the background rather than separate forked R processes. A multisession future is a special type of cluster futures that do not require explicit setup of cluster nodes.</p></li>
 <li><p>Add support for cluster futures, which can make use of a cluster of nodes created by parallel::makeCluster().</p></li>
 <li><p>Add futureCall(), which is for futures what do.call() is otherwise.</p></li>
-<li><p>Standardized how options are named, i.e. ‘future.&lt;option&gt;’. If you used any future options previously, make sure to check they follow the above format.</p></li>
+<li><p>Standardized how options are named, i.e. ‘future.&lt;option&gt;’. If you used any future options previously, make sure to check they follow the above format.</p></li>
 </ul></div>
 <div class="section level4">
 <h4 id="globals-0-11-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-11-0"></a></h4>
@@ -1074,7 +1075,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.10.0" id="future-0-10-0">future 0.10.0<small>2015-12-31</small><a class="anchor" aria-label="anchor" href="#future-0-10-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.10.0" id="future-0100">future 0.10.0<small>2015-12-31</small><a class="anchor" aria-label="anchor" href="#future-0100"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-10-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-10-0"></a></h4>
 <ul><li><p>Now %&lt;=% can also assign to multi-dimensional list environments.</p></li>
@@ -1089,7 +1090,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.9.0" id="future-0-9-0">future 0.9.0<small>2015-12-12</small><a class="anchor" aria-label="anchor" href="#future-0-9-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.9.0" id="future-090">future 0.9.0<small>2015-12-12</small><a class="anchor" aria-label="anchor" href="#future-090"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-9-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-9-0"></a></h4>
 <ul><li><p>ROBUSTNESS: Now values of environment variables are trimmed before being parsed.</p></li>
@@ -1109,7 +1110,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.8.2" id="future-0-8-2">future 0.8.2<small>2015-10-14</small><a class="anchor" aria-label="anchor" href="#future-0-8-2"></a></h2>
+<h2 class="page-header" data-toc-text="0.8.2" id="future-082">future 0.8.2<small>2015-10-14</small><a class="anchor" aria-label="anchor" href="#future-082"></a></h2>
 <div class="section level4">
 <h4 id="bug-fixes-0-8-2">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-2"></a></h4>
 <ul><li><p>Globals that were copies of package objects were not exported to the future environments.</p></li>
@@ -1117,7 +1118,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.8.1" id="future-0-8-1">future 0.8.1<small>2015-10-05</small><a class="anchor" aria-label="anchor" href="#future-0-8-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.8.1" id="future-081">future 0.8.1<small>2015-10-05</small><a class="anchor" aria-label="anchor" href="#future-081"></a></h2>
 <div class="section level4">
 <h4 id="documentation-0-8-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-8-1"></a></h4>
 <ul><li>Added vignette ‘Futures in R: Common issues with solutions’.</li>
@@ -1128,11 +1129,11 @@
 </ul></div>
 <div class="section level4">
 <h4 id="bug-fixes-0-8-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-1"></a></h4>
-<ul><li>lazy(sum(x, …), globals=TRUE) now properly passes `…` from the function from which the future is setup. If not called within a function or called within a function without `…` arguments, an informative error message is thrown.</li>
+<ul><li>lazy(sum(x, …), globals=TRUE) now properly passes ‘…’ from the function from which the future is setup. If not called within a function or called within a function without ‘…’ arguments, an informative error message is thrown.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.8.0" id="future-0-8-0">future 0.8.0<small>2015-09-07</small><a class="anchor" aria-label="anchor" href="#future-0-8-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.8.0" id="future-080">future 0.8.0<small>2015-09-07</small><a class="anchor" aria-label="anchor" href="#future-080"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-8-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-8-0"></a></h4>
 <ul><li><p>plan(“default”) resets to the default strategy, which is synchronous eager evaluation unless option ‘future_plan’ or environment variable ‘R_FUTURE_PLAN’ has been set.</p></li>
@@ -1144,7 +1145,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.7.0" id="future-0-7-0">future 0.7.0<small>2015-07-14</small><a class="anchor" aria-label="anchor" href="#future-0-7-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.7.0" id="future-070">future 0.7.0<small>2015-07-14</small><a class="anchor" aria-label="anchor" href="#future-070"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-7-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-7-0"></a></h4>
 <ul><li><p>multicore() gained argument ‘maxCores’, which makes it possible to use for instance plan(multicore, maxCores=4L).</p></li>
@@ -1161,14 +1162,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.6.0" id="future-0-6-0">future 0.6.0<small>2015-06-19</small><a class="anchor" aria-label="anchor" href="#future-0-6-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.6.0" id="future-060">future 0.6.0<small>2015-06-19</small><a class="anchor" aria-label="anchor" href="#future-060"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-6-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-6-0"></a></h4>
 <ul><li>Add multicore futures, which are futures that are resolved asynchronously in a separate process. These are only supported on Unix-like systems, but not on Windows.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.5.1" id="future-0-5-1">future 0.5.1<a class="anchor" aria-label="anchor" href="#future-0-5-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.5.1" id="future-051">future 0.5.1<a class="anchor" aria-label="anchor" href="#future-051"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-5-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-5-1"></a></h4>
 <ul><li><p>Eager and lazy futures now records the result internally such that the expression is only evaluated once, even if their error values are requested multiple times.</p></li>
@@ -1177,14 +1178,14 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.5.0" id="future-0-5-0">future 0.5.0<a class="anchor" aria-label="anchor" href="#future-0-5-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.5.0" id="future-050">future 0.5.0<a class="anchor" aria-label="anchor" href="#future-050"></a></h2>
 <div class="section level4">
 <h4 id="globals-0-5-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-5-0"></a></h4>
 <ul><li>lazy() “freezes” global variables at the time when the future is created. This way the result of a lazy future is more likely to be the same as an eager future. This is also how globals are likely to be handled by asynchronous futures.</li>
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.2" id="future-0-4-2">future 0.4.2<a class="anchor" aria-label="anchor" href="#future-0-4-2"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.2" id="future-042">future 0.4.2<a class="anchor" aria-label="anchor" href="#future-042"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-4-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-4-2"></a></h4>
 <ul><li>plan() records the call.</li>
@@ -1195,7 +1196,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.1" id="future-0-4-1">future 0.4.1<a class="anchor" aria-label="anchor" href="#future-0-4-1"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.1" id="future-041">future 0.4.1<a class="anchor" aria-label="anchor" href="#future-041"></a></h2>
 <div class="section level4">
 <h4 id="new-features-0-4-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-4-1"></a></h4>
 <ul><li><p>Added plan().</p></li>
@@ -1203,7 +1204,7 @@
 </ul></div>
 </div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.4.0" id="future-0-4-0">future 0.4.0<a class="anchor" aria-label="anchor" href="#future-0-4-0"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.0" id="future-040">future 0.4.0<a class="anchor" aria-label="anchor" href="#future-040"></a></h2>
 </div>
   </div>
 
