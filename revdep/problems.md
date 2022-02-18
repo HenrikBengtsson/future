@@ -38,42 +38,10 @@ Run `revdep_details(, "AlpsNMR")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        dataset-demo   3.0Mb
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘zip’
       All declared Imports should be used.
-    ```
-
-# aroma.affymetrix
-
-<details>
-
-* Version: 3.2.0
-* GitHub: https://github.com/HenrikBengtsson/aroma.affymetrix
-* Source code: https://github.com/cran/aroma.affymetrix
-* Date/Publication: 2019-06-23 06:00:14 UTC
-* Number of recursive dependencies: 73
-
-Run `revdep_details(, "aroma.affymetrix")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.6Mb
-      sub-directories of 1Mb or more:
-        R             3.8Mb
-        help          1.9Mb
-        testScripts   1.1Mb
     ```
 
 # aroma.core
@@ -95,7 +63,7 @@ Run `revdep_details(, "aroma.core")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'expectile', 'HaarSeg', 'mpcbs'
+      'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
 
 # BAMBI
@@ -116,7 +84,7 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.8Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
         libs   5.8Mb
     ```
@@ -148,6 +116,30 @@ Run `revdep_details(, "BatchGetSymbols")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
+# bayesmove
+
+<details>
+
+* Version: 0.2.1
+* GitHub: https://github.com/joshcullen/bayesmove
+* Source code: https://github.com/cran/bayesmove
+* Date/Publication: 2021-10-22 08:50:09 UTC
+* Number of recursive dependencies: 158
+
+Run `revdep_details(, "bayesmove")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # bcmaps
 
 <details>
@@ -164,20 +156,79 @@ Run `revdep_details(, "bcmaps")` for more info
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      'LazyData' is specified without a 'data' directory
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# BEKKs
+
+<details>
+
+* Version: 1.0.1
+* GitHub: NA
+* Source code: https://github.com/cran/BEKKs
+* Date/Publication: 2022-02-01 16:00:29 UTC
+* Number of recursive dependencies: 81
+
+Run `revdep_details(, "BEKKs")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 11.6Mb
+      sub-directories of 1Mb or more:
+        libs  10.9Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘expm’ ‘forecast’ ‘parallel’
+      All declared Imports should be used.
+    ```
+
+# bigDM
+
+<details>
+
+* Version: 0.4.1
+* GitHub: https://github.com/spatialstatisticsupna/bigDM
+* Source code: https://github.com/cran/bigDM
+* Date/Publication: 2022-02-08 15:40:10 UTC
+* Number of recursive dependencies: 121
+
+Run `revdep_details(, "bigDM")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘sf’
+    
+    Package suggested but not available for checking: ‘INLA’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # bistablehistory
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.1.0
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
-* Date/Publication: 2021-09-28 10:20:08 UTC
-* Number of recursive dependencies: 87
+* Date/Publication: 2022-01-13 23:12:41 UTC
+* Number of recursive dependencies: 85
 
 Run `revdep_details(, "bistablehistory")` for more info
 
@@ -187,9 +238,9 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 43.2Mb
+      installed size is 43.3Mb
       sub-directories of 1Mb or more:
-        libs  42.2Mb
+        libs  42.4Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -208,11 +259,11 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.3-18
+* Version: 0.4-1
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2021-11-27 08:10:02 UTC
-* Number of recursive dependencies: 127
+* Date/Publication: 2022-01-27 21:40:02 UTC
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -222,10 +273,10 @@ Run `revdep_details(, "blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 69.7Mb
+      installed size is 71.5Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
-        libs  66.8Mb
+        libs      68.9Mb
+        testdata   1.5Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -241,7 +292,7 @@ Run `revdep_details(, "blavaan")` for more info
 * GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
 * Date/Publication: 2021-06-17 04:50:02 UTC
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "blockCV")` for more info
 
@@ -249,16 +300,12 @@ Run `revdep_details(, "blockCV")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is  8.7Mb
-      sub-directories of 1Mb or more:
-        extdata   7.8Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘biomod2’
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # brms
@@ -269,7 +316,7 @@ Run `revdep_details(, "blockCV")` for more info
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
 * Date/Publication: 2021-11-22 19:50:02 UTC
-* Number of recursive dependencies: 220
+* Number of recursive dependencies: 216
 
 Run `revdep_details(, "brms")` for more info
 
@@ -284,9 +331,9 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.2Mb
+      installed size is  7.5Mb
       sub-directories of 1Mb or more:
-        R     5.5Mb
+        R     4.1Mb
         doc   2.4Mb
     ```
 
@@ -320,7 +367,7 @@ Run `revdep_details(, "cfbfastR")` for more info
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 270
+* Number of recursive dependencies: 272
 
 Run `revdep_details(, "ChromSCape")` for more info
 
@@ -338,11 +385,11 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.6Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
         data   1.3Mb
         doc    2.9Mb
-        www    2.1Mb
+        www    2.0Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -404,30 +451,6 @@ Run `revdep_details(, "civis")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# CLVTools
-
-<details>
-
-* Version: 0.8.1
-* GitHub: https://github.com/bachmannpatrick/CLVTools
-* Source code: https://github.com/cran/CLVTools
-* Date/Publication: 2021-10-18 22:50:09 UTC
-* Number of recursive dependencies: 81
-
-Run `revdep_details(, "CLVTools")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 11.4Mb
-      sub-directories of 1Mb or more:
-        R      1.0Mb
-        libs   9.8Mb
-    ```
-
 # codebook
 
 <details>
@@ -469,7 +492,7 @@ Run `revdep_details(, "codebook")` for more info
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
 * Date/Publication: 2021-04-19 22:00:18 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -510,10 +533,10 @@ Run `revdep_details(, "CSGo")` for more info
 
 <details>
 
-* Version: 1.3.4
+* Version: 1.3.5
 * GitHub: https://github.com/frictionlessdata/datapackage-r
 * Source code: https://github.com/cran/datapackage.r
-* Date/Publication: 2021-10-11 18:50:08 UTC
+* Date/Publication: 2022-01-11 10:22:47 UTC
 * Number of recursive dependencies: 116
 
 Run `revdep_details(, "datapackage.r")` for more info
@@ -522,11 +545,57 @@ Run `revdep_details(, "datapackage.r")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      ── Failure (test-profile.R:106:5): profile tabular-data-package should be up-to-date ──
+      profile$jsonschema not equal to `response.data`.
+      Component "properties": Component "licenses": Component "items": Names: 2 string mismatches
+      Component "properties": Component "licenses": Component "items": Length mismatch: comparison on first 5 components
+      Component "properties": Component "licenses": Component "items": Component 4: names for target but not for current
+      Component "properties": Component "licenses": Component "items": Component 4: Length mismatch: comparison on first 2 components
+    ...
+      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 1: 1 string mismatch
+      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 2: Modes: list, character
+      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 2: Component 1: 1 string mismatch
+      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 5: Names: 1 string mismatch
+      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 5: Length mismatch: comparison on first 2 components
+      ...
+      
+      [ FAIL 5 | WARN 0 | SKIP 0 | PASS 248 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
       ‘future’ ‘iterators’ ‘readr’
       All declared Imports should be used.
+    ```
+
+# DeclareDesign
+
+<details>
+
+* Version: 0.30.0
+* GitHub: https://github.com/DeclareDesign/DeclareDesign
+* Source code: https://github.com/cran/DeclareDesign
+* Date/Publication: 2022-01-28 06:10:02 UTC
+* Number of recursive dependencies: 129
+
+Run `revdep_details(, "DeclareDesign")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
     ```
 
 # delayed
@@ -560,10 +629,10 @@ Run `revdep_details(, "delayed")` for more info
 
 <details>
 
-* Version: 0.1.9
+* Version: 0.2.0
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2021-10-13 16:52:04 UTC
+* Date/Publication: 2022-01-27 17:30:02 UTC
 * Number of recursive dependencies: 76
 
 Run `revdep_details(, "dipsaus")` for more info
@@ -574,7 +643,7 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
         doc    1.3Mb
         libs   3.5Mb
@@ -683,10 +752,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.1Mb
+      installed size is  7.3Mb
       sub-directories of 1Mb or more:
         doc    1.0Mb
-        libs   5.6Mb
+        libs   5.4Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -695,15 +764,39 @@ Run `revdep_details(, "EFAtools")` for more info
       All declared Imports should be used.
     ```
 
+# elevatr
+
+<details>
+
+* Version: 0.4.2
+* GitHub: https://github.com/jhollist/elevatr
+* Source code: https://github.com/cran/elevatr
+* Date/Publication: 2022-01-07 22:12:41 UTC
+* Number of recursive dependencies: 80
+
+Run `revdep_details(, "elevatr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # envi
 
 <details>
 
-* Version: 0.1.10
+* Version: 0.1.11
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2021-08-02 20:10:08 UTC
-* Number of recursive dependencies: 126
+* Date/Publication: 2022-02-05 00:30:20 UTC
+* Number of recursive dependencies: 124
 
 Run `revdep_details(, "envi")` for more info
 
@@ -715,7 +808,7 @@ Run `revdep_details(, "envi")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
     ```
 
 # EpiNow2
@@ -726,7 +819,7 @@ Run `revdep_details(, "envi")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 154
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -741,10 +834,45 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 169.1Mb
+      installed size is 168.1Mb
       sub-directories of 1Mb or more:
-        help    1.4Mb
-        libs  166.7Mb
+        libs  166.5Mb
+    ```
+
+# epitweetr
+
+<details>
+
+* Version: 2.0.3
+* GitHub: https://github.com/EU-ECDC/epitweetr
+* Source code: https://github.com/cran/epitweetr
+* Date/Publication: 2022-01-05 10:00:08 UTC
+* Number of recursive dependencies: 143
+
+Run `revdep_details(, "epitweetr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘taskscheduleR’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.1Mb
+      sub-directories of 1Mb or more:
+        doc    3.0Mb
+        java   1.3Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘httpuv’ ‘knitr’ ‘plyr’ ‘tidyverse’ ‘tokenizers’ ‘xml2’
+      All declared Imports should be used.
     ```
 
 # fipe
@@ -789,13 +917,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    14:38:58-14:38:58 > 16:00:00
+    11:44:17-11:44:17 > 16:00:00
     - 24 pops @ layer 2
-    14:38:58-14:38:58 > 16:00:00
+    11:44:17-11:44:17 > 16:00:00
     - 32 pops @ layer 3
-    14:38:58-14:38:58 > 16:00:00
+    11:44:17-11:44:17 > 16:00:00
     - 16 pops @ layer 4
-    14:38:58-14:38:58 > 16:00:00
+    11:44:17-11:44:17 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -831,7 +959,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 134
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -839,11 +967,12 @@ Run `revdep_details(, "foieGras")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is 40.9Mb
-      sub-directories of 1Mb or more:
-        libs  39.7Mb
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # forecastML
@@ -876,7 +1005,7 @@ Run `revdep_details(, "forecastML")` for more info
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
 * Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 214
+* Number of recursive dependencies: 203
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -884,11 +1013,88 @@ Run `revdep_details(, "geocmeans")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘geocmeans-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: SFCMeans
+    > ### Title: SFCMeans
+    > ### Aliases: SFCMeans
+    > 
+    > ### ** Examples
+    > 
+    > data(LyonIris)
+    > AnalysisFields <-c("Lden","NO2","PM25","VegHautPrt","Pct0_14","Pct_65","Pct_Img",
+    + "TxChom1564","Pct_brevet","NivVieMed")
+    > dataset <- LyonIris@data[AnalysisFields]
+    > queen <- spdep::poly2nb(LyonIris,queen=TRUE)
+    Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+      there is no package called ‘sf’
+    Calls: loadNamespace ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Error (test_belongingmatrices.R:9:3): Membership matrices must have a rowSums equal to 1 ──
+      Error: package 'sf' required by 'spdep' could not be found
+      Backtrace:
+          ▆
+    ...
+       1. └─base::loadNamespace(x) at test_spatial_functions.R:87:2
+       2.   ├─base::namespaceImport(...)
+       3.   └─base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
+       4.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       5.       └─base withOneRestart(expr, restarts[[1L]])
+       6.         └─base doWithOneRestart(return(expr), restart)
+      
+      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 5 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘FCMres.Rmd’ using rmarkdown
+    Quitting from lines 35-65 (FCMres.Rmd) 
+    Error: processing vignette 'FCMres.Rmd' failed with diagnostics:
+    package or namespace load failed for 'tmap' in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+     there is no package called 'sf'
+    --- failed re-building ‘FCMres.Rmd’
+    
+    --- re-building ‘adjustinconsistency.Rmd’ using rmarkdown
+    Loading required package: sp
+    ...
+    package or namespace load failed for 'tmap' in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
+     there is no package called 'sf'
+    --- failed re-building ‘rasters.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘FCMres.Rmd’ ‘adjustinconsistency.Rmd’ ‘introduction.Rmd’
+      ‘rasters.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.5Mb
+      installed size is 11.4Mb
       sub-directories of 1Mb or more:
-        data   4.3Mb
+        data   2.3Mb
         doc    1.9Mb
         libs   6.1Mb
     ```
@@ -975,11 +1181,11 @@ Run `revdep_details(, "googleTagManageR")` for more info
 
 <details>
 
-* Version: 1.9.0.9
+* Version: 1.9.0.10
 * GitHub: https://github.com/HughParsonage/grattan
 * Source code: https://github.com/cran/grattan
-* Date/Publication: 2021-07-16 07:30:11 UTC
-* Number of recursive dependencies: 116
+* Date/Publication: 2022-01-10 01:02:41 UTC
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "grattan")` for more info
 
@@ -995,9 +1201,8 @@ Run `revdep_details(, "grattan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
-        R      1.0Mb
         libs   4.1Mb
     ```
 
@@ -1009,7 +1214,7 @@ Run `revdep_details(, "grattan")` for more info
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
 * Date/Publication: 2021-05-10 06:50:03 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 115
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1019,7 +1224,7 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 30.2Mb
+      installed size is 30.1Mb
       sub-directories of 1Mb or more:
         libs  27.9Mb
     ```
@@ -1037,7 +1242,7 @@ Run `revdep_details(, "greed")` for more info
 * GitHub: https://github.com/greta-dev/greta
 * Source code: https://github.com/cran/greta
 * Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 176
+* Number of recursive dependencies: 152
 
 Run `revdep_details(, "greta")` for more info
 
@@ -1048,6 +1253,76 @@ Run `revdep_details(, "greta")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# gstat
+
+<details>
+
+* Version: 2.0-8
+* GitHub: https://github.com/r-spatial/gstat
+* Source code: https://github.com/cran/gstat
+* Date/Publication: 2021-10-06 15:00:02 UTC
+* Number of recursive dependencies: 70
+
+Run `revdep_details(, "gstat")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘allier.R’
+      Comparing ‘allier.Rout’ to ‘allier.Rout.save’ ... OK
+      Running ‘blockkr.R’
+      Comparing ‘blockkr.Rout’ to ‘blockkr.Rout.save’ ... OK
+      Running ‘covtable.R’
+      Comparing ‘covtable.Rout’ to ‘covtable.Rout.save’ ... OK
+      Running ‘cv.R’
+      Comparing ‘cv.Rout’ to ‘cv.Rout.save’ ... OK
+      Running ‘cv3d.R’
+      Comparing ‘cv3d.Rout’ to ‘cv3d.Rout.save’ ... OK
+    ...
+      > k_sp = krige(log(zinc)~1, meuse[-(1:5),], meuse[1:5,], v.fit)
+      [using ordinary kriging]
+      > k_sp_grd = krige(log(zinc)~1, meuse, meuse.grid, v.fit)
+      [using ordinary kriging]
+      > 
+      > # 1. using sf:
+      > suppressPackageStartupMessages(library(sf))
+      Error in library(sf) : there is no package called 'sf'
+      Calls: suppressPackageStartupMessages -> withCallingHandlers -> library
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
+# gtfs2gps
+
+<details>
+
+* Version: 1.5-4
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2021-09-06 08:00:07 UTC
+* Number of recursive dependencies: 91
+
+Run `revdep_details(, "gtfs2gps")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # gWQS
@@ -1097,10 +1372,10 @@ Run `revdep_details(, "hackeRnews")` for more info
 
 <details>
 
-* Version: 0.4.1
+* Version: 0.4.3
 * GitHub: https://github.com/tlverse/hal9001
 * Source code: https://github.com/cran/hal9001
-* Date/Publication: 2021-09-28 14:00:09 UTC
+* Date/Publication: 2022-02-09 22:50:02 UTC
 * Number of recursive dependencies: 92
 
 Run `revdep_details(, "hal9001")` for more info
@@ -1111,7 +1386,7 @@ Run `revdep_details(, "hal9001")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.2Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
         libs   5.7Mb
     ```
@@ -1138,29 +1413,6 @@ Run `revdep_details(, "hwep")` for more info
       All declared Imports should be used.
     ```
 
-# IFAA
-
-<details>
-
-* Version: 1.0.3
-* GitHub: https://github.com/gitlzg/IFAA
-* Source code: https://github.com/cran/IFAA
-* Date/Publication: 2021-11-08 21:10:05 UTC
-* Number of recursive dependencies: 44
-
-Run `revdep_details(, "IFAA")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘expm’ ‘rlecuyer’
-      All declared Imports should be used.
-    ```
-
 # iml
 
 <details>
@@ -1169,7 +1421,7 @@ Run `revdep_details(, "IFAA")` for more info
 * GitHub: https://github.com/christophM/iml
 * Source code: https://github.com/cran/iml
 * Date/Publication: 2020-09-24 12:30:14 UTC
-* Number of recursive dependencies: 163
+* Number of recursive dependencies: 164
 
 Run `revdep_details(, "iml")` for more info
 
@@ -1191,7 +1443,7 @@ Run `revdep_details(, "iml")` for more info
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
 * Date/Publication: 2021-11-08
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 132
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1201,9 +1453,8 @@ Run `revdep_details(, "infercnv")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.7Mb
+      installed size is  5.0Mb
       sub-directories of 1Mb or more:
-        data      1.0Mb
         extdata   3.1Mb
     ```
 
@@ -1242,7 +1493,7 @@ Run `revdep_details(, "inlinedocs")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/interflex
 * Date/Publication: 2021-05-18 11:40:02 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 106
 
 Run `revdep_details(, "interflex")` for more info
 
@@ -1252,7 +1503,7 @@ Run `revdep_details(, "interflex")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.6Mb
+      installed size is  5.2Mb
       sub-directories of 1Mb or more:
         libs   4.5Mb
     ```
@@ -1286,7 +1537,7 @@ Run `revdep_details(, "ipc")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 130
+* Number of recursive dependencies: 107
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1338,7 +1589,7 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.0Mb
+      installed size is 18.9Mb
       sub-directories of 1Mb or more:
         libs  18.5Mb
     ```
@@ -1351,7 +1602,7 @@ Run `revdep_details(, "keyATM")` for more info
 * GitHub: https://github.com/kkholst/lava
 * Source code: https://github.com/cran/lava
 * Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 142
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "lava")` for more info
 
@@ -1368,11 +1619,11 @@ Run `revdep_details(, "lava")` for more info
 
 <details>
 
-* Version: 3.2.3
-* GitHub: https://github.com/Jean-Romain/lidR
+* Version: 4.0.0
+* GitHub: https://github.com/r-lidar/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2021-11-13 14:30:02 UTC
-* Number of recursive dependencies: 156
+* Date/Publication: 2022-02-18 16:10:03 UTC
+* Number of recursive dependencies: 158
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1380,14 +1631,12 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is 16.8Mb
-      sub-directories of 1Mb or more:
-        R         1.8Mb
-        doc       1.0Mb
-        extdata   1.2Mb
-        libs     11.8Mb
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # lmtp
@@ -1452,6 +1701,31 @@ Run `revdep_details(, "microservices")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(microservices)
+      > test_check("microservices")
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 12 ]
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+    ...
+      Backtrace:
+          ▆
+       1. ├─config::get(...) at test-endpoint-plumber-{route_name}.R:2:0
+       2. │ └─base::normalizePath(file, mustWork = FALSE)
+       3. │   └─base::path.expand(path)
+       4. └─base::system.file(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 12 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
@@ -1472,27 +1746,6 @@ Run `revdep_details(, "microservices")` for more info
 Run `revdep_details(, "MineICA")` for more info
 
 </details>
-
-## Newly fixed
-
-*   checking running R code from vignettes ...
-    ```
-      ‘MineICA.Rnw’... failed
-     ERROR
-    Errors in running code in vignettes:
-    when running code in ‘MineICA.Rnw’
-      ...
-    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
-    [31] "hgu133aUNIPROT"       "hgu133a_dbInfo"       "hgu133a_dbconn"      
-    [34] "hgu133a_dbfile"       "hgu133a_dbschema"    
-    
-    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
-    Ensembl site unresponsive, trying asia mirror
-    
-      When sourcing ‘MineICA.R’:
-    Error: Peer's Certificate issuer is not recognized.
-    Execution halted
-    ```
 
 ## In both
 
@@ -1646,11 +1899,11 @@ Run `revdep_details(, "MineICA")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/grossSBM/missSBM
 * Source code: https://github.com/cran/missSBM
-* Date/Publication: 2021-06-04 13:10:02 UTC
-* Number of recursive dependencies: 102
+* Date/Publication: 2022-02-01 16:00:20 UTC
+* Number of recursive dependencies: 104
 
 Run `revdep_details(, "missSBM")` for more info
 
@@ -1660,10 +1913,77 @@ Run `revdep_details(, "missSBM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.8Mb
+      installed size is  8.4Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
         libs   6.5Mb
+    ```
+
+# mlr3spatial
+
+<details>
+
+* Version: 0.1.1
+* GitHub: https://github.com/mlr-org/mlr3spatial
+* Source code: https://github.com/cran/mlr3spatial
+* Date/Publication: 2022-01-20 15:02:42 UTC
+* Number of recursive dependencies: 91
+
+Run `revdep_details(, "mlr3spatial")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > if (requireNamespace("testthat", quietly = TRUE)) {
+      +   library(checkmate)
+      +   library(testthat)
+      +   library(mlr3spatial)
+      + 
+      +   test_check("mlr3spatial")
+      + }
+      Loading required package: mlr3
+      Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+        there is no package called 'sf'
+      Calls: test_check ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+      In addition: Warning message:
+      [setCats] this function will be removed. You can use 'set.cats' instead 
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘benchmark.Rmd’ using rmarkdown
+    --- finished re-building ‘benchmark.Rmd’
+    
+    --- re-building ‘mlr3spatial.Rmd’ using rmarkdown
+    Quitting from lines 67-73 (mlr3spatial.Rmd) 
+    Error: processing vignette 'mlr3spatial.Rmd' failed with diagnostics:
+    object 'task' not found
+    --- failed re-building ‘mlr3spatial.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘mlr3spatial.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘sf’
     ```
 
 # momentuHMM
@@ -1674,7 +1994,7 @@ Run `revdep_details(, "missSBM")` for more info
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
 * Date/Publication: 2021-09-03 04:30:02 UTC
-* Number of recursive dependencies: 207
+* Number of recursive dependencies: 195
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -1684,56 +2004,11 @@ Run `revdep_details(, "momentuHMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.3Mb
+      installed size is  9.2Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
+        R      1.2Mb
         doc    1.7Mb
         libs   5.7Mb
-    ```
-
-# mrgsim.parallel
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/kylebaron/mrgsim.parallel
-* Source code: https://github.com/cran/mrgsim.parallel
-* Date/Publication: 2020-07-06 15:30:02 UTC
-* Number of recursive dependencies: 45
-
-Run `revdep_details(, "mrgsim.parallel")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
-# NMproject
-
-<details>
-
-* Version: 0.6.7
-* GitHub: https://github.com/tsahota/NMproject
-* Source code: https://github.com/cran/NMproject
-* Date/Publication: 2021-10-17 18:00:02 UTC
-* Number of recursive dependencies: 172
-
-Run `revdep_details(, "NMproject")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        R         1.8Mb
-        extdata   2.6Mb
     ```
 
 # onemapsgapi
@@ -1751,6 +2026,11 @@ Run `revdep_details(, "onemapsgapi")` for more info
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
 
 *   checking LazyData ... NOTE
     ```
@@ -1820,7 +2100,7 @@ Run `revdep_details(, "pavo")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
     ```
 
 # photosynthesis
@@ -1839,9 +2119,34 @@ Run `revdep_details(, "photosynthesis")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        |                                                                            
+        |===================================                                   |  50%
+        |                                                                            
+        |======================================================================| 100%[ FAIL 6 | WARN 0 | SKIP 0 | PASS 149 ]
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+    ...
+      `Wt1` not equal to `Wt2`.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 149 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.3Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         doc    3.4Mb
         help   1.1Mb
@@ -1878,11 +2183,11 @@ Run `revdep_details(, "phylolm")` for more info
 
 <details>
 
-* Version: 0.11.4
+* Version: 0.11.6
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
-* Date/Publication: 2021-03-16 16:10:02 UTC
-* Number of recursive dependencies: 191
+* Date/Publication: 2022-02-01 16:00:24 UTC
+* Number of recursive dependencies: 173
 
 Run `revdep_details(, "PLNmodels")` for more info
 
@@ -1892,15 +2197,10 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.6Mb
+      installed size is 16.9Mb
       sub-directories of 1Mb or more:
-        doc    2.1Mb
-        libs  10.0Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘DESeq2’
+        doc    2.0Mb
+        libs  13.8Mb
     ```
 
 # plumber
@@ -1932,7 +2232,7 @@ Run `revdep_details(, "plumber")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 114
+* Number of recursive dependencies: 113
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -1942,7 +2242,7 @@ Run `revdep_details(, "ppcseq")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 45.7Mb
+      installed size is 45.6Mb
       sub-directories of 1Mb or more:
         data   1.5Mb
         libs  42.8Mb
@@ -2048,11 +2348,11 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.26.1
+* Version: 1.26.3
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2021-11-23
-* Number of recursive dependencies: 333
+* Date/Publication: 2022-01-06
+* Number of recursive dependencies: 318
 
 Run `revdep_details(, "Prostar")` for more info
 
@@ -2096,6 +2396,28 @@ Run `revdep_details(, "Prostar")` for more info
     Execution halted
     ```
 
+# PUMP
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/MDRCNY/PUMP
+* Source code: https://github.com/cran/PUMP
+* Date/Publication: 2022-02-09 09:50:05 UTC
+* Number of recursive dependencies: 125
+
+Run `revdep_details(, "PUMP")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘here’
+      All declared Imports should be used.
+    ```
+
 # QDNAseq
 
 <details>
@@ -2137,6 +2459,53 @@ Run `revdep_details(, "QDNAseq")` for more info
     Execution halted
     ```
 
+# RAINBOWR
+
+<details>
+
+* Version: 0.1.29
+* GitHub: NA
+* Source code: https://github.com/cran/RAINBOWR
+* Date/Publication: 2022-01-07 13:53:11 UTC
+* Number of recursive dependencies: 147
+
+Run `revdep_details(, "RAINBOWR")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 32.6Mb
+      sub-directories of 1Mb or more:
+        libs  31.4Mb
+    ```
+
+# rangeMapper
+
+<details>
+
+* Version: 2.0.2
+* GitHub: https://github.com/mpio-be/rangeMapper
+* Source code: https://github.com/cran/rangeMapper
+* Date/Publication: 2021-02-26 21:40:07 UTC
+* Number of recursive dependencies: 114
+
+Run `revdep_details(, "rangeMapper")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # regmedint
 
 <details>
@@ -2159,15 +2528,80 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
+# reproducible
+
+<details>
+
+* Version: 1.2.8
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2021-09-26 16:40:04 UTC
+* Number of recursive dependencies: 109
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘reproducible’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘reproducible’ ...
+** package ‘reproducible’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sf’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘reproducible’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/reproducible’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘reproducible’ ...
+** package ‘reproducible’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sf’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘reproducible’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/reproducible’
+
+
+```
 # rgee
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.2
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2021-08-10 14:00:02 UTC
-* Number of recursive dependencies: 147
+* Date/Publication: 2021-12-15 22:00:02 UTC
+* Number of recursive dependencies: 148
 
 Run `revdep_details(, "rgee")` for more info
 
@@ -2175,19 +2609,55 @@ Run `revdep_details(, "rgee")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking whether package ‘rgee’ can be installed ... ERROR
     ```
-      installed size is  5.4Mb
-      sub-directories of 1Mb or more:
-        doc   3.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘R6’
-      All declared Imports should be used.
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/new/rgee.Rcheck/00install.out’ for details.
     ```
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘rgee’ ...
+** package ‘rgee’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sf’
+Error: unable to load R code in package ‘rgee’
+Execution halted
+ERROR: lazy loading failed for package ‘rgee’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/new/rgee.Rcheck/rgee’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘rgee’ ...
+** package ‘rgee’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘sf’
+Error: unable to load R code in package ‘rgee’
+Execution halted
+ERROR: lazy loading failed for package ‘rgee’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/old/rgee.Rcheck/rgee’
+
+
+```
 # robotstxt
 
 <details>
@@ -2244,21 +2714,13 @@ Run `revdep_details(, "sapfluxnetr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/scDiffCom
 * Date/Publication: 2021-08-17 07:20:05 UTC
-* Number of recursive dependencies: 243
+* Number of recursive dependencies: 245
 
 Run `revdep_details(, "scDiffCom")` for more info
 
 </details>
 
 ## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.1Mb
-      sub-directories of 1Mb or more:
-        R      2.8Mb
-        data   4.3Mb
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2271,11 +2733,11 @@ Run `revdep_details(, "scDiffCom")` for more info
 
 <details>
 
-* Version: 0.3.2
-* GitHub: https://github.com/ChristophH/sctransform
+* Version: 0.3.3
+* GitHub: https://github.com/satijalab/sctransform
 * Source code: https://github.com/cran/sctransform
-* Date/Publication: 2020-12-16 14:40:03 UTC
-* Number of recursive dependencies: 65
+* Date/Publication: 2022-01-13 08:20:02 UTC
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "sctransform")` for more info
 
@@ -2304,6 +2766,11 @@ Run `revdep_details(, "sdmApp")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘sf’
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘sp’
@@ -2314,10 +2781,10 @@ Run `revdep_details(, "sdmApp")` for more info
 
 <details>
 
-* Version: 1.1.6
-* GitHub: NA
+* Version: 1.1.7
+* GitHub: https://github.com/thiyangt/seer
 * Source code: https://github.com/cran/seer
-* Date/Publication: 2021-06-01 04:50:02 UTC
+* Date/Publication: 2021-12-08 05:20:02 UTC
 * Number of recursive dependencies: 111
 
 Run `revdep_details(, "seer")` for more info
@@ -2336,11 +2803,11 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 4.0.5
+* Version: 4.1.0
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* Date/Publication: 2021-10-17 20:30:02 UTC
-* Number of recursive dependencies: 259
+* Date/Publication: 2022-01-14 18:32:42 UTC
+* Number of recursive dependencies: 257
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2350,15 +2817,79 @@ Run `revdep_details(, "Seurat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.7Mb
+      installed size is 12.0Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
-        libs   9.9Mb
+        R      1.3Mb
+        libs  10.1Mb
     ```
 
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘Signac’
+    ```
+
+# shar
+
+<details>
+
+* Version: 1.3.1
+* GitHub: https://github.com/r-spatialecology/shar
+* Source code: https://github.com/cran/shar
+* Date/Publication: 2022-01-04 15:30:05 UTC
+* Number of recursive dependencies: 88
+
+Run `revdep_details(, "shar")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘shar-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: calculate_energy
+    > ### Title: calculate_energy
+    > ### Aliases: calculate_energy
+    > 
+    > ### ** Examples
+    > 
+    > pattern_random <- fit_point_process(species_a, n_random = 19)
+    Warning: Unmarked provided input pattern.
+    Error: 'runifpoint' is not an exported object from 'namespace:spatstat.core'
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      Backtrace:
+          ▆
+       1. └─shar::fit_point_process(species_a, n_random = 3, verbose = FALSE) at test-plot_rd_pat.R:3:0
+       2.   └─base::lapply(...)
+       3.     └─shar FUN(X[[i]], ...)
+      ── Error (test-print.R:3:1): (code run outside of `test_that()`) ───────────────
+    ...
+      Error: 'runifpoint' is not an exported object from 'namespace:spatstat.core'
+      Backtrace:
+          ▆
+       1. └─shar::fit_point_process(species_a, n_random = 9, verbose = FALSE) at test-sample_randomized.R:3:0
+       2.   └─base::lapply(...)
+       3.     └─shar FUN(X[[i]], ...)
+      
+      [ FAIL 13 | WARN 0 | SKIP 0 | PASS 36 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking dependencies in R code ... WARNING
+    ```
+    Missing or unexported objects:
+      ‘spatstat.core::rpoint’ ‘spatstat.core::runifpoint’
     ```
 
 # shiny
@@ -2379,10 +2910,10 @@ Run `revdep_details(, "shiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.5Mb
+      installed size is  9.3Mb
       sub-directories of 1Mb or more:
-        R     2.0Mb
-        www   7.1Mb
+        R     1.6Mb
+        www   6.6Mb
     ```
 
 # shiny.worker
@@ -2446,11 +2977,11 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 2.1.1
+* Version: 2.1.2
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2021-10-29 05:40:02 UTC
-* Number of recursive dependencies: 220
+* Date/Publication: 2021-12-15 07:50:02 UTC
+* Number of recursive dependencies: 201
 
 Run `revdep_details(, "sigminer")` for more info
 
@@ -2460,59 +2991,10 @@ Run `revdep_details(, "sigminer")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.6Mb
+      installed size is  6.4Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
-        data   1.0Mb
-        help   1.2Mb
-        libs   1.2Mb
-    ```
-
-# Signac
-
-<details>
-
-* Version: 1.4.0
-* GitHub: https://github.com/timoast/signac
-* Source code: https://github.com/cran/Signac
-* Date/Publication: 2021-09-22 11:50:02 UTC
-* Number of recursive dependencies: 243
-
-Run `revdep_details(, "Signac")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.0Mb
-      sub-directories of 1Mb or more:
-        R      3.0Mb
-        data   1.0Mb
-        libs   2.5Mb
-    ```
-
-# simglm
-
-<details>
-
-* Version: 0.8.8
-* GitHub: https://github.com/lebebr01/simglm
-* Source code: https://github.com/cran/simglm
-* Date/Publication: 2021-08-09 18:40:02 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(, "simglm")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘Matrix’
-      All declared Imports should be used.
+        extdata   2.6Mb
+        libs      1.2Mb
     ```
 
 # simhelpers
@@ -2546,7 +3028,7 @@ Run `revdep_details(, "simhelpers")` for more info
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
 * Date/Publication: 2021-08-17 16:30:18 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 120
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -2556,9 +3038,8 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 50.4Mb
+      installed size is 49.7Mb
       sub-directories of 1Mb or more:
-        R      1.0Mb
         libs  48.2Mb
     ```
 
@@ -2616,11 +3097,11 @@ Run `revdep_details(, "spacey")` for more info
 
 <details>
 
-* Version: 1.0.9
+* Version: 1.0.10
 * GitHub: https://github.com/PredictiveEcology/SpaDES.core
 * Source code: https://github.com/cran/SpaDES.core
-* Date/Publication: 2021-09-30 14:20:06 UTC
-* Number of recursive dependencies: 146
+* Date/Publication: 2022-01-19 16:22:46 UTC
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "SpaDES.core")` for more info
 
@@ -2628,65 +3109,57 @@ Run `revdep_details(, "SpaDES.core")` for more info
 
 ## In both
 
-*   checking tests ...
+*   checking whether package ‘SpaDES.core’ can be installed ... ERROR
     ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/bin/BATCH: line 60: 29797 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 50 lines of output:
-       7: FUN(...)
-       8: Cache(FUN = get(moduleCall, envir = fnEnv), sim = sim, eventTime = cur[["eventTime"]],     eventType = cur[["eventType"]], .objects = moduleSpecificObjects,     notOlderThan = notOlderThan, outputObjects = moduleSpecificOutputObjects,     classOptions = classOptions, showSimilar = showSimilar, cacheRepo = sim@paths[["cachePath"]])
-       9: Cache(FUN = get(moduleCall, envir = fnEnv), sim = sim, eventTime = cur[["eventTime"]],     eventType = cur[["eventType"]], .objects = moduleSpecificObjects,     notOlderThan = notOlderThan, outputObjects = moduleSpecificOutputObjects,     classOptions = classOptions, showSimilar = showSimilar, cacheRepo = sim@paths[["cachePath"]])
-      10: eval(fnCallAsExpr)
-      11: eval(fnCallAsExpr)
-    ...
-      49: doTryCatch(return(expr), name, parentenv, handler)
-      50: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      51: tryCatchList(expr, classes, parentenv, handlers)
-      52: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
-      53: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
-      54: test_files(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
-      55: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
-      56: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
-      57: test_check("SpaDES.core")
-      An irrecoverable exception occurred. R is aborting now ...
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
     ```
 
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘i-introduction.Rmd’ using rmarkdown
-    --- finished re-building ‘i-introduction.Rmd’
-    
-    sh: line 1: 29920 Segmentation fault      '/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/bin/R' --vanilla --no-echo > '/scratch/henrik/Rtmp3rLcKN/file74c2391c5ebf' 2>&1 < '/scratch/henrik/Rtmp3rLcKN/file74c25d9cd979'
-    --- re-building ‘ii-modules.Rmd’ using rmarkdown
-    
-    Attaching package: 'magrittr'
-    
-    The following object is masked from 'package:raster':
-    ...
-    --- finished re-building ‘iv-advanced.Rmd’
-    
-    --- re-building ‘v-automated-testing.Rmd’ using rmarkdown
-    --- finished re-building ‘v-automated-testing.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘ii-modules.Rmd’ ‘iii-cache.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘reproducible’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘sf’
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/SpaDES.core’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘SpaDES.core’ ...
+** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘reproducible’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘sf’
+Execution halted
+ERROR: lazy loading failed for package ‘SpaDES.core’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/SpaDES.core’
+
+
+```
 # spaMM
 
 <details>
 
-* Version: 3.9.25
+* Version: 3.10.0
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2021-11-09 09:00:02 UTC
-* Number of recursive dependencies: 99
+* Date/Publication: 2022-02-07 03:30:04 UTC
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -2702,9 +3175,9 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 48.8Mb
+      installed size is 46.8Mb
       sub-directories of 1Mb or more:
-        R      3.8Mb
+        R      2.1Mb
         libs  43.6Mb
     ```
 
@@ -2712,11 +3185,11 @@ Run `revdep_details(, "spaMM")` for more info
 
 <details>
 
-* Version: 0.2.4
+* Version: 0.2.5
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
-* Date/Publication: 2021-08-02 20:20:02 UTC
-* Number of recursive dependencies: 97
+* Date/Publication: 2022-02-05 00:30:02 UTC
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "sparrpowR")` for more info
 
@@ -2728,7 +3201,7 @@ Run `revdep_details(, "sparrpowR")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/sparrpowR/new/sparrpowR.Rcheck/00install.out’ for details.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/sparrpowR/new/sparrpowR.Rcheck/00install.out’ for details.
     ```
 
 # SPARSEMODr
@@ -2762,7 +3235,7 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 * GitHub: https://github.com/FridleyLab/spatialTIME
 * Source code: https://github.com/cran/spatialTIME
 * Date/Publication: 2021-09-11 04:10:02 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 116
 
 Run `revdep_details(, "spatialTIME")` for more info
 
@@ -2781,11 +3254,11 @@ Run `revdep_details(, "spatialTIME")` for more info
 
 <details>
 
-* Version: 3.0.0
+* Version: 3.0.2
 * GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
-* Date/Publication: 2021-05-20 00:30:10 UTC
-* Number of recursive dependencies: 82
+* Date/Publication: 2021-12-16 10:00:02 UTC
+* Number of recursive dependencies: 84
 
 Run `revdep_details(, "spatialwarnings")` for more info
 
@@ -2803,10 +3276,9 @@ Run `revdep_details(, "spatialwarnings")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.0Mb
+      installed size is  6.4Mb
       sub-directories of 1Mb or more:
-        data   1.3Mb
-        libs   5.2Mb
+        libs   5.4Mb
     ```
 
 # sphunif
@@ -2827,7 +3299,7 @@ Run `revdep_details(, "sphunif")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 21.0Mb
+      installed size is 20.5Mb
       sub-directories of 1Mb or more:
         libs  19.6Mb
     ```
@@ -2845,7 +3317,7 @@ Run `revdep_details(, "sphunif")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2021-10-30 09:50:02 UTC
-* Number of recursive dependencies: 153
+* Number of recursive dependencies: 147
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -2853,24 +3325,74 @@ Run `revdep_details(, "spNetwork")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      [1] "Snapping points on lines ..."
+      [1] "Building graph ..."
+      [1] "Calculating k and g functions ..."
+      [1] "Calculating the simulations ..."
+      [1] "Preparing data ..."
+      [1] "Snapping points on lines ..."
+    ...
+       2. └─base::loadNamespace(x)
+       3.   ├─base::namespaceImport(...)
+       4.   └─base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
+       5.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       6.       └─base withOneRestart(expr, restarts[[1L]])
+       7.         └─base doWithOneRestart(return(expr), restart)
+      
+      [ FAIL 3 | WARN 51 | SKIP 0 | PASS 47 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Isochrones.Rmd’ using rmarkdown
+    Checking rgeos availability: TRUE
+    Please note that 'maptools' will be retired by the end of 2023,
+    plan transition at your earliest convenience;
+    some functionality will be moved to 'sp'.
+    rgeos version: 0.5-9, (SVN revision 684)
+     GEOS runtime version: 3.9.1-CAPI-1.14.2 
+     Please note that rgeos will be retired by the end of 2023,
+    plan transition to sf functions using GEOS at your earliest convenience.
+    ...
+    Quitting from lines 28-31 (SpatialWeightMatrices.Rmd) 
+    Error: processing vignette 'SpatialWeightMatrices.Rmd' failed with diagnostics:
+    package 'sf' required by 'spdep' could not be found
+    --- failed re-building ‘SpatialWeightMatrices.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘Isochrones.Rmd’ ‘NetworkBuilding.Rmd’ ‘SpatialWeightMatrices.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 21.9Mb
+      installed size is 22.1Mb
       sub-directories of 1Mb or more:
-        doc       2.0Mb
+        doc       1.9Mb
         extdata   4.1Mb
-        libs     15.1Mb
+        libs     15.4Mb
     ```
 
 # stars
 
 <details>
 
-* Version: 0.5-4
+* Version: 0.5-5
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* Date/Publication: 2021-11-19 07:30:05 UTC
-* Number of recursive dependencies: 142
+* Date/Publication: 2021-12-19 03:20:02 UTC
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "stars")` for more info
 
@@ -2878,49 +3400,49 @@ Run `revdep_details(, "stars")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking package dependencies ... ERROR
     ```
+    Package required but not available: ‘sf’
+    
     Package suggested but not available for checking: ‘starsdata’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  9.1Mb
-      sub-directories of 1Mb or more:
-        doc   2.3Mb
-        nc    4.5Mb
-    ```
-
-# startR
+# supercells
 
 <details>
 
-* Version: 2.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/startR
-* Date/Publication: 2020-10-29 17:40:02 UTC
-* Number of recursive dependencies: 68
+* Version: 0.8.0
+* GitHub: https://github.com/Nowosad/supercells
+* Source code: https://github.com/cran/supercells
+* Date/Publication: 2022-02-16 20:00:01 UTC
+* Number of recursive dependencies: 77
 
-Run `revdep_details(, "startR")` for more info
+Run `revdep_details(, "supercells")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      'LazyData' is specified without a 'data' directory
+    Package required but not available: ‘sf’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # synergyfinder
 
 <details>
 
-* Version: 3.2.2
+* Version: 3.2.4
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2021-10-28
-* Number of recursive dependencies: 193
+* Date/Publication: 2022-01-16
+* Number of recursive dependencies: 179
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -2928,18 +3450,44 @@ Run `revdep_details(, "synergyfinder")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking dependencies in R code ... WARNING
     ```
-      installed size is  6.2Mb
-      sub-directories of 1Mb or more:
-        doc   5.7Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
+    '::' or ':::' import not declared from: ‘scales’
     Namespaces in Imports field not imported from:
       ‘future’ ‘gstat’ ‘nleqslv’ ‘sp’ ‘tidyverse’
       All declared Imports should be used.
+    ```
+
+*   checking for code/documentation mismatches ... WARNING
+    ```
+    Codoc mismatches from documentation object 'PlotDoseResponseCurve':
+    PlotDoseResponseCurve
+      Code: function(data, plot_block = 1, drug_index = 1, adjusted = TRUE,
+                     Emin = NA, Emax = NA, grid = TRUE, point_color =
+                     "#C24B40", curve_color = "black", text_size_scale = 1,
+                     plot_title = NULL, plot_subtitle = NULL, plot_setting
+                     = list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5,
+                     0), font.main = 2, font.lab = 1, cex.main = 14/12 *
+                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
+                     plot_new = TRUE, record_plot = TRUE)
+    ...
+                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
+                     plot_new = TRUE, record_plot = TRUE)
+      Mismatches in argument default values:
+        Name: 'plot_setting'
+        Code: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
+              font.lab = 1, cex.main = 14/12 * text_size_scale, bty = "l", 
+              lwd = 1.5)
+        Docs: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
+              font.lab = 3, cex.main = 14/12 * text_size_scale, bty = "l", 
+              lwd = 1.5)
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.0Mb
+      sub-directories of 1Mb or more:
+        doc   5.7Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -2955,15 +3503,15 @@ Run `revdep_details(, "synergyfinder")` for more info
     .Extract2DrugPlotData: no visible binding for global variable ‘conc2’
     .Extract2DrugPlotData: no visible binding for global variable ‘text’
     ...
-      input_type label left metric n pred r response response_CI95
-      response_mean response_origin response_origin_CI95
-      response_origin_mean response_origin_sd response_origin_sem
-      response_sd response_sem right start synergy text theta value x y
+      block_id color conc1 conc2 css data end head id input_type label left
+      maxn metric n nn pred r response response_CI95 response_mean
+      response_origin response_origin_CI95 response_origin_mean
+      response_origin_sd response_origin_sem response_sd response_sem right
+      start synergy text theta value x y
     Consider adding
-      importFrom("grDevices", "colorRampPalette")
-      importFrom("graphics", "grid", "text")
+      importFrom("graphics", "text")
       importFrom("stats", "end", "start")
-      importFrom("utils", "data")
+      importFrom("utils", "data", "head")
     to your NAMESPACE file.
     ```
 
@@ -3017,7 +3565,7 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.8Mb
+      installed size is 13.6Mb
       sub-directories of 1Mb or more:
         libs  12.7Mb
     ```
@@ -3026,10 +3574,10 @@ Run `revdep_details(, "targeted")` for more info
 
 <details>
 
-* Version: 0.9.10
+* Version: 0.9.50
 * GitHub: https://github.com/OscarKjell/text
 * Source code: https://github.com/cran/text
-* Date/Publication: 2020-12-14 09:50:02 UTC
+* Date/Publication: 2022-02-12 23:10:02 UTC
 * Number of recursive dependencies: 145
 
 Run `revdep_details(, "text")` for more info
@@ -3043,31 +3591,28 @@ Run `revdep_details(, "text")` for more info
       Note: found 3 marked UTF-8 strings
     ```
 
-# TKCat
+# TreeSearch
 
 <details>
 
-* Version: 0.5.4
-* GitHub: https://github.com/patzaw/TKCat
-* Source code: https://github.com/cran/TKCat
-* Date/Publication: 2021-03-04 09:40:03 UTC
-* Number of recursive dependencies: 102
+* Version: 1.1.0
+* GitHub: https://github.com/ms609/TreeSearch
+* Source code: https://github.com/cran/TreeSearch
+* Date/Publication: 2022-01-17 17:12:49 UTC
+* Number of recursive dependencies: 100
 
-Run `revdep_details(, "TKCat")` for more info
+Run `revdep_details(, "TreeSearch")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘base64enc’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+      installed size is  5.8Mb
+      sub-directories of 1Mb or more:
+        datasets   1.6Mb
+        libs       2.2Mb
     ```
 
 # TriDimRegression
@@ -3078,7 +3623,7 @@ Run `revdep_details(, "TKCat")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "TriDimRegression")` for more info
 
@@ -3088,9 +3633,9 @@ Run `revdep_details(, "TriDimRegression")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 41.5Mb
+      installed size is 41.3Mb
       sub-directories of 1Mb or more:
-        libs  40.8Mb
+        libs  40.7Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -3152,10 +3697,10 @@ Run `revdep_details(, "TSstudio")` for more info
 
 <details>
 
-* Version: 0.3.6
+* Version: 0.3.8
 * GitHub: https://github.com/nhejazi/txshift
 * Source code: https://github.com/cran/txshift
-* Date/Publication: 2021-10-18 18:10:02 UTC
+* Date/Publication: 2022-02-09 22:30:02 UTC
 * Number of recursive dependencies: 106
 
 Run `revdep_details(, "txshift")` for more info
@@ -3173,11 +3718,11 @@ Run `revdep_details(, "txshift")` for more info
 
 <details>
 
-* Version: 1.1.3
+* Version: 1.1.5
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
-* Date/Publication: 2021-11-29 05:40:08 UTC
-* Number of recursive dependencies: 219
+* Date/Publication: 2022-01-15 11:32:42 UTC
+* Number of recursive dependencies: 187
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
@@ -3187,21 +3732,20 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        data       1.0Mb
         doc        1.5Mb
-        shinyapp   3.4Mb
+        shinyapp   3.3Mb
     ```
 
 # updog
 
 <details>
 
-* Version: 2.1.1
+* Version: 2.1.2
 * GitHub: https://github.com/dcgerard/updog
 * Source code: https://github.com/cran/updog
-* Date/Publication: 2021-10-25 23:10:02 UTC
+* Date/Publication: 2022-01-24 21:50:02 UTC
 * Number of recursive dependencies: 142
 
 Run `revdep_details(, "updog")` for more info
@@ -3212,7 +3756,7 @@ Run `revdep_details(, "updog")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.9Mb
+      installed size is  6.7Mb
       sub-directories of 1Mb or more:
         libs   6.0Mb
     ```
@@ -3225,7 +3769,7 @@ Run `revdep_details(, "updog")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "vmeasur")` for more info
 
@@ -3237,7 +3781,7 @@ Run `revdep_details(, "vmeasur")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/scratch/henrik/revdepcheck.extras/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
     ```
 
 # XNAString
@@ -3258,9 +3802,8 @@ Run `revdep_details(, "XNAString")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.9Mb
+      installed size is 10.8Mb
       sub-directories of 1Mb or more:
-        R      1.8Mb
         libs   9.7Mb
     ```
 
