@@ -113,6 +113,12 @@ nbrOfFreeWorkers.cluster <- function(evaluator, background = FALSE, ...) {
   
   ## Create a dummy, lazy future based on the future strategy ("evaluator")
   f <- evaluator(NULL, lazy = TRUE)
+
+  ## Special case
+  if (inherits(f, "SequentialFuture")) {
+    return(if (isTRUE(background)) 0L else 1L)
+  }
+  
   name <- attr(f$workers, "name", exact = TRUE)
   stop_if_not(is.character(name), length(name) == 1L)
   reg <- sprintf("workers-%s", name)

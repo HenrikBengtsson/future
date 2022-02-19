@@ -1,66 +1,78 @@
-# ChromSCape
+# foieGras
 
 <details>
 
-* Version: 1.2.0
-* GitHub: https://github.com/vallotlab/ChromSCape
-* Source code: https://github.com/cran/ChromSCape
-* Date/Publication: 2021-05-19
-* Number of recursive dependencies: 264
+* Version: 0.7-6
+* GitHub: https://github.com/ianjonsen/foieGras
+* Source code: https://github.com/cran/foieGras
+* Date/Publication: 2021-04-26 22:10:07 UTC
+* Number of recursive dependencies: 135
 
-Run `revdep_details(, "ChromSCape")` for more info
+Run `revdep_details(, "foieGras")` for more info
 
 </details>
 
 ## In both
 
-*   R CMD check timed out
-    
-
-*   checking for hidden files and directories ... NOTE
+*   checking whether package ‘foieGras’ can be installed ... ERROR
     ```
-    Found the following hidden files and directories:
-      .BBSoptions
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/00install.out’ for details.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.9Mb
-      sub-directories of 1Mb or more:
-        data   1.3Mb
-        doc    2.9Mb
-        www    1.9Mb
-    ```
+## Installation
 
-*   checking R code for possible problems ... NOTE
-    ```
-    CompareWilcox: no visible binding for global variable ‘annot.’
-    bams_to_matrix_indexes: no visible binding for global variable
-      ‘files_dir_list’
-    filter_correlated_cell_scExp: no visible binding for global variable
-      ‘run_tsne’
-    generate_analysis: no visible binding for global variable ‘k’
-    generate_analysis: no visible binding for global variable
-      ‘clusterConsensus’
-    get_most_variable_cyto: no visible binding for global variable
-      ‘cytoBand’
-    ...
-    plot_reduced_dim_scExp: no visible binding for global variable ‘V1’
-    plot_reduced_dim_scExp: no visible binding for global variable ‘V2’
-    plot_reduced_dim_scExp: no visible binding for global variable
-      ‘cluster’
-    subset_bam_call_peaks: no visible binding for global variable
-      ‘merged_bam’
-    Undefined global functions or variables:
-      Fri_cyto Gain_or_Loss V1 V2 absolute_value annot. cluster
-      clusterConsensus cytoBand files_dir_list genes k merged_bam ncells
-      run_tsne sample_id total_counts
-    ```
+### Devel
 
-*   checking Rd files ... NOTE
-    ```
-    prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
-    ```
+```
+* installing *source* package ‘foieGras’ ...
+** package ‘foieGras’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
+In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
+                 from foieGras.cpp:2:
+/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
+...
+TMB was built with Matrix version 1.3.4
+Current Matrix version is 1.4.0
+Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+Error in dyn.load(file, DLLpath = DLLpath, ...) : 
+  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
+  libproj.so.12: cannot open shared object file: No such file or directory
+Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
+Execution halted
+ERROR: lazy loading failed for package ‘foieGras’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/foieGras’
 
+
+```
+### CRAN
+
+```
+* installing *source* package ‘foieGras’ ...
+** package ‘foieGras’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
+In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
+                 from foieGras.cpp:2:
+/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
+...
+TMB was built with Matrix version 1.3.4
+Current Matrix version is 1.4.0
+Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+Error in dyn.load(file, DLLpath = DLLpath, ...) : 
+  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
+  libproj.so.12: cannot open shared object file: No such file or directory
+Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
+Execution halted
+ERROR: lazy loading failed for package ‘foieGras’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/old/foieGras.Rcheck/foieGras’
+
+
+```

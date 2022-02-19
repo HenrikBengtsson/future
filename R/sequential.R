@@ -24,27 +24,6 @@
 #'
 #' @details
 #'
-#' @section transparent futures (troubleshooting only):
-#' Transparent futures are sequential futures configured to emulate how R
-#' evaluates expressions as far as possible.  For instance, errors and
-#' warnings are signaled immediately and assignments are done to the
-#' calling environment (without `local()` as default for all other
-#' types of futures).  This makes transparent futures useful for
-#' troubleshooting, especially when there are errors.  Having said that,
-#' using:
-#'
-#' ```r
-#' plan(sequential, split = TRUE)
-#' ```
-#'
-#' together with `debug()` is often sufficient for troubleshooting.
-#' 
-#' _WARNING: Transparent futures should only be used for debugging and
-#'  troubleshooting.  They should not be used for production pipelines
-#'  and must not be set within another package.  This is especially
-#'  important since 'transparent' futures might be deprecated and replaced
-#'  by better means of debugging in future releases._
-#'
 #' @aliases uniprocess
 #' @export
 sequential <- function(..., envir = parent.frame()) {
@@ -56,6 +35,7 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 
 #' @rdname sequential
+#' @keywords internal
 #' @export
 transparent <- function(..., envir = parent.frame()) {
   future <- TransparentFuture(..., envir = envir)

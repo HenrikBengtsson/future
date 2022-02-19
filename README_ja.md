@@ -228,7 +228,6 @@ remote  all Simple access to remote R sessions
 | `multisession` | すべて                 | バックグラウンド R セッション（現行のマシン上）                              |
 | `multicore`    | Windows以外/RStudio以外 | フォークされた R プロセス（現行のマシン上）                                |
 | `cluster`      | すべて                 | 外部 R セッション（現行、ローカル、リモートマシン上）                           |
-| `remote`       | すべて                 | リモート R セッションへのシンプルアクセス                                 |
 
 <!--
 _Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.

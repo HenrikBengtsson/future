@@ -113,3 +113,4 @@ plan(cluster, workers = cl, persistent = TRUE)
 
 }}
 }
+\keyword{internal}

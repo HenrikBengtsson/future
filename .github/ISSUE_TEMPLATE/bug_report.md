@@ -18,8 +18,11 @@ A reproducible example using R code.
 A clear and concise description of what you expected to happen.
 
 **Session information**
-Please share your session information *after* the error has occurred so that we also see which packages and versions are involved, e.g.
+Please share your session information *after* the error has occurred so that we also see which packages and versions are involved;
 
 ```r
 > sessionInfo()
+…
+> future::futureSessionInfo()
+…
 ```

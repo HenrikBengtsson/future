@@ -33,26 +33,6 @@ plan(sequential)
 
 
 }
-\section{transparent futures (troubleshooting only)}{
-
-Transparent futures are sequential futures configured to emulate how R
-evaluates expressions as far as possible.  For instance, errors and
-warnings are signaled immediately and assignments are done to the
-calling environment (without \code{local()} as default for all other
-types of futures).  This makes transparent futures useful for
-troubleshooting, especially when there are errors.  Having said that,
-using:\if{html}{\out{<div class="sourceCode r">}}\preformatted{plan(sequential, split = TRUE)
-}\if{html}{\out{</div>}}
-
-together with \code{debug()} is often sufficient for troubleshooting.
-
-\emph{WARNING: Transparent futures should only be used for debugging and
-troubleshooting.  They should not be used for production pipelines
-and must not be set within another package.  This is especially
-important since 'transparent' futures might be deprecated and replaced
-by better means of debugging in future releases.}
-}
-
 \examples{
 ## Use sequential futures
 plan(sequential)
@@ -78,3 +58,4 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 }
+\keyword{internal}

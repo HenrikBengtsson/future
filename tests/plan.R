@@ -1,5 +1,5 @@
 source("incl/start,load-only.R")
-
+options(future.debug=FALSE)
 message("*** plan() ...")
 
 cl <- future::makeClusterPSOCK(1L)
@@ -57,7 +57,6 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 
-
 message("*** plan('sequential')")
 ## Setting strategy by name
 plan("sequential")
@@ -94,6 +93,25 @@ plan(tweak(sequential, abc = 1))
 fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$abc == 1)
+
+if (getRversion() < "4.2.0" || packageVersion("parallelly") >= "1.28.1-9003") {
+
+message("*** plan(cluster, ..., rscript_startup = \"<code>\")")
+plan(cluster, workers = 1L, rscript_startup = "options(abc = 42L)")
+f <- future(getOption("abc"))
+v <- value(f)
+stopifnot(identical(v, 42L))
+plan(sequential)
+
+message("*** plan(cluster, ..., rscript_startup = <expr>)")
+plan(cluster, workers = 1L, rscript_startup = quote(options(abc = 42L)))
+f <- future(getOption("abc"))
+v <- value(f)
+print(v)
+stopifnot(identical(v, 42L))
+plan(sequential)
+
+} ## if (getRversion() < "4.2.0" || ...)
 
 
 message("*** old <- plan(new)")

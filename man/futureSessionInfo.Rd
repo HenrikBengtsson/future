@@ -2,7 +2,7 @@
 % Please edit documentation in R/futureSessionInfo.R
 \name{futureSessionInfo}
 \alias{futureSessionInfo}
-\title{Get session information specific to the future framework}
+\title{Get future-specific session information and validate current backend}
 \usage{
 futureSessionInfo(test = TRUE)
 }
@@ -14,5 +14,10 @@ and validate their information.}
 Nothing.
 }
 \description{
-Get session information specific to the future framework
+Get future-specific session information and validate current backend
+}
+\examples{
+plan(multisession, workers = 2)
+futureSessionInfo()
+plan(sequential)
 }

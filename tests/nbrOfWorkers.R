@@ -15,6 +15,14 @@ for (strategy in strategies) {
   n <- nbrOfWorkers()
   message(sprintf("nbrOfWorkers: %d", n))
   stopifnot(n == 1L)
+
+  n <- nbrOfFreeWorkers()
+  message(sprintf("nbrOfFreeWorkers: %d", n))
+  stopifnot(n == 1L)
+  
+  n <- nbrOfFreeWorkers(background = TRUE)
+  message(sprintf("nbrOfFreeWorkers(background = TRUE): %d", n))
+  stopifnot(n == 0L)
 } ## for (strategy ...)
 
 
@@ -48,10 +56,39 @@ for (strategy in strategies) {
   message(sprintf("nbrOfWorkers: %d", n))
   stopifnot(n == nworkers)
 
+  n <- nbrOfFreeWorkers()
+  message(sprintf("nbrOfFreeWorkers: %d", n))
+  stopifnot(n == nworkers)
+  
+  n <- nbrOfFreeWorkers(background = TRUE)
+  message(sprintf("nbrOfFreeWorkers(background = TRUE): %d", n))
+# FIXME  stopifnot(n == 0L)
+
+  plan(strategy, workers = 1L)
+  n <- nbrOfWorkers()
+  message(sprintf("nbrOfWorkers: %d", n))
+  stopifnot(n == max(1L, nworkers - 1L))
+  
+  n <- nbrOfFreeWorkers()
+  message(sprintf("nbrOfFreeWorkers: %d", n))
+  stopifnot(n == max(1L, nworkers - 1L))
+  
+  n <- nbrOfFreeWorkers(background = TRUE)
+  message(sprintf("nbrOfFreeWorkers(background = TRUE): %d", n))
+# FIXME  stopifnot(n == 0L)
+
   plan(strategy, workers = allButOneCore)
   n <- nbrOfWorkers()
   message(sprintf("nbrOfWorkers: %d", n))
   stopifnot(n == max(1L, nworkers - 1L))
+  
+  n <- nbrOfFreeWorkers()
+  message(sprintf("nbrOfFreeWorkers: %d", n))
+  stopifnot(n == max(1L, nworkers - 1L))
+  
+  n <- nbrOfFreeWorkers(background = TRUE)
+  message(sprintf("nbrOfFreeWorkers(background = TRUE): %d", n))
+# FIXME  stopifnot(n == 0L)
 } ## for (strategy ...)
 
 

@@ -50,18 +50,27 @@
 #'    _forked_ \R processes running in the background on
 #'    the same machine.  Not supported on Windows.
 #'  }
-#'  \item{[`multiprocess`]:}{(DEPRECATED)
-#'    If multicore evaluation is supported, that will be used,
-#'    otherwise multisession evaluation will be used.
-#'  }
 #'  \item{[`cluster`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    \R sessions running typically on one or more machines.
 #'  }
-#'  \item{[`remote`]:}{
+#' }
+#'
+#' @section Deprecated evaluation strategies:
+#' The following future strategies are deprecated.  Please use
+#' the recommended alternatives instead.
+#'
+#' \itemize{
+#'  \item{[`multiprocess`]:}{(DEPRECATED since future 1.20.0)
+#'    If multicore evaluation is supported, that will be used,
+#'    otherwise multisession evaluation will be used.
+#'    _Please use `multisession`, or possibly `multicore` instead._
+#'  }
+#'  \item{[`remote`]:}{(DEPRECATED since future 1.24.0)
 #'    Resolves futures asynchronously in a separate \R session
 #'    running on a separate machine, typically on a different
 #'    network.
+#'    _Please use `cluster` instead._
 #'  }
 #' }
 #' 
@@ -174,6 +183,47 @@ plan <- local({
     }
   })
 
+  warn_about_remote <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'remote' used?
+      for (kk in seq_along(stack)) {
+        if (evaluator_uses(stack[[kk]], "remote")) {
+          ignore <- getOption("future.deprecated.ignore")
+          if (!is.element("remote", ignore)) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = "Strategy 'remote' is deprecated in future (>= 1.24.0). Instead, use 'cluster'.", package = .packageName)
+          }
+        }
+      }
+    }
+  })
+
+  warn_about_transparent <- local({
+    .warn <- TRUE
+
+    function(stack) {
+      if (!.warn) return()
+
+      ## Is 'transparent' used?
+      for (kk in seq_along(stack)) {
+        if (evaluator_uses(stack[[kk]], "transparent")) {
+          ignore <- getOption("future.deprecated.ignore")
+          if (!is.element("remote", ignore)) {
+            ## Warn only once
+            .warn <<- FALSE
+            .Deprecated(msg = "Strategy 'transparent' is deprecated in future (>= 1.24.0). It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE). Also, as a friendly reminder, the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production.", package = .packageName)
+          }
+          break
+        }
+      }
+    }
+  })
+
   warn_about_multicore <- local({
     .warn <- TRUE
 
@@ -193,30 +243,13 @@ plan <- local({
     }
   })
 
-  warn_about_transparent <- local({
-    .warn <- TRUE
-
-    function(stack) {
-      if (!.warn) return()
-
-      ## Is 'transparent' used?
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "transparent")) {
-          warning("This is a friendly reminder that the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production")
-          ## Warn only once, if at all
-          .warn <<- FALSE
-          break
-        }
-      }
-    }
-  })
-
   plan_cleanup <- function() {
     ClusterRegistry(action = "stop")
   }
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
+
     init <- attr(evaluator, "init", exact = TRUE)
     if (identical(init, TRUE)) {
       debug <- getOption("future.debug", FALSE)
@@ -247,7 +280,12 @@ plan <- local({
       }
 
       if (!identical(res, NA)) {
-        stop(FutureError("Initialization of plan() failed, because the value of the test future is not the expected one: ", sQuote(res)))
+        res <- if (is.null(res)) {
+          "NULL"
+        } else {
+          paste(sQuote(res), collapse = ", ")
+        }
+        stop(FutureError(sprintf("Initialization of plan() failed, because the value of the test future is not NA as expected: %s", res)))
       }
       
       if (debug) {
@@ -293,8 +331,9 @@ plan <- local({
     assert_no_disallowed_strategies(newStack)
 
     warn_about_multiprocess(newStack)
-    warn_about_multicore(newStack)
+    warn_about_remote(newStack)
     warn_about_transparent(newStack)
+    warn_about_multicore(newStack)
 
     stack <<- newStack
 
@@ -307,7 +346,7 @@ plan <- local({
     ## Sanity checks
     nbrOfWorkers <- nbrOfWorkers()
     if (getOption("future.debug", FALSE)) {
-      mdebugf(sprintf("plan(): nbrOfWorkers() = %g", nbrOfWorkers))
+      mdebugf(sprintf("plan(): nbrOfWorkers() = %.0f", nbrOfWorkers))
     }
     stop_if_not(is.numeric(nbrOfWorkers), length(nbrOfWorkers) == 1L, 
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)
@@ -432,16 +471,21 @@ plan <- local({
         } else {
           isSymbol <- sapply(strategyT, FUN = is.symbol)
           if (!all(isSymbol)) {
-            targs <- c(targs, strategyT[-1L])
-            strategy <- strategyT[[1L]]
+            strategy <- eval(strategyT[[1L]], envir = parent.frame(), enclos = baseenv())
+            if (length(strategyT) > 1L) {
+              ## Tweak this part of the future strategy
+              args <- c(list(strategy), strategyT[-1L], penvir = parent.frame())
+              strategy <- do.call(tweak, args = args)
+            }
+          } else {
+            strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
           }
-          strategy <- eval(strategy, envir = parent.frame(), enclos = baseenv())
         }
       }
 
       ## Tweak future strategy accordingly
       args <- c(list(strategy), targs, penvir = parent.frame())
-      tstrategy <- do.call(tweak, args = args)
+      tstrategy <- do.call(tweak, args = args, quote = TRUE)
 
       ## Setup a new stack of future strategies (with a single one)
       newStack <- list(tstrategy)

@@ -115,8 +115,7 @@ The future package implements the following types of futures:
 | _asynchronous:_ |             | _parallel_:
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows/not RStudio | forked R processes (on current machine)
-| `cluster`       | all         | external R sessions on current, local, and/or remote machines
-| `remote`        | all         | Simple access to remote R sessions
+| `cluster`       | all         | external R sessions on current, local, and remote machines
 
 _Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
 

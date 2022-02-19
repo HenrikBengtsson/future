@@ -442,3 +442,14 @@ OpenMP
 RcppParallel
 nodeset
 futureSessionInfo
+CFunc
+cfunction
+DLLHandle
+FutureRegistry
+imagemagick
+iter
+lp
+lpdf
+socketOptions
+stan
+stanfit
