@@ -116,30 +116,6 @@ Run `revdep_details(, "BatchGetSymbols")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# bayesmove
-
-<details>
-
-* Version: 0.2.1
-* GitHub: https://github.com/joshcullen/bayesmove
-* Source code: https://github.com/cran/bayesmove
-* Date/Publication: 2021-10-22 08:50:09 UTC
-* Number of recursive dependencies: 158
-
-Run `revdep_details(, "bayesmove")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # bcmaps
 
 <details>
@@ -156,12 +132,9 @@ Run `revdep_details(, "bcmaps")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking LazyData ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      'LazyData' is specified without a 'data' directory
     ```
 
 # BEKKs
@@ -210,14 +183,14 @@ Run `revdep_details(, "bigDM")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
     Package suggested but not available for checking: ‘INLA’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 940 marked Latin-1 strings
     ```
 
 # bistablehistory
@@ -300,12 +273,16 @@ Run `revdep_details(, "blockCV")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is  8.6Mb
+      sub-directories of 1Mb or more:
+        extdata   7.7Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘biomod2’
     ```
 
 # brms
@@ -764,30 +741,6 @@ Run `revdep_details(, "EFAtools")` for more info
       All declared Imports should be used.
     ```
 
-# elevatr
-
-<details>
-
-* Version: 0.4.2
-* GitHub: https://github.com/jhollist/elevatr
-* Source code: https://github.com/cran/elevatr
-* Date/Publication: 2022-01-07 22:12:41 UTC
-* Number of recursive dependencies: 80
-
-Run `revdep_details(, "elevatr")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # envi
 
 <details>
@@ -967,14 +920,68 @@ Run `revdep_details(, "foieGras")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking whether package ‘foieGras’ can be installed ... ERROR
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘foieGras’ ...
+** package ‘foieGras’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
+In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
+                 from foieGras.cpp:2:
+/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
+...
+TMB was built with Matrix version 1.3.4
+Current Matrix version is 1.4.0
+Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+Error in dyn.load(file, DLLpath = DLLpath, ...) : 
+  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
+  libproj.so.12: cannot open shared object file: No such file or directory
+Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
+Execution halted
+ERROR: lazy loading failed for package ‘foieGras’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/foieGras’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘foieGras’ ...
+** package ‘foieGras’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
+In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
+                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
+                 from foieGras.cpp:2:
+/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
+...
+TMB was built with Matrix version 1.3.4
+Current Matrix version is 1.4.0
+Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+Error in dyn.load(file, DLLpath = DLLpath, ...) : 
+  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
+  libproj.so.12: cannot open shared object file: No such file or directory
+Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
+Execution halted
+ERROR: lazy loading failed for package ‘foieGras’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/old/foieGras.Rcheck/foieGras’
+
+
+```
 # forecastML
 
 <details>
@@ -1012,83 +1019,6 @@ Run `revdep_details(, "geocmeans")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘geocmeans-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: SFCMeans
-    > ### Title: SFCMeans
-    > ### Aliases: SFCMeans
-    > 
-    > ### ** Examples
-    > 
-    > data(LyonIris)
-    > AnalysisFields <-c("Lden","NO2","PM25","VegHautPrt","Pct0_14","Pct_65","Pct_Img",
-    + "TxChom1564","Pct_brevet","NivVieMed")
-    > dataset <- LyonIris@data[AnalysisFields]
-    > queen <- spdep::poly2nb(LyonIris,queen=TRUE)
-    Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-      there is no package called ‘sf’
-    Calls: loadNamespace ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-      ── Error (test_belongingmatrices.R:9:3): Membership matrices must have a rowSums equal to 1 ──
-      Error: package 'sf' required by 'spdep' could not be found
-      Backtrace:
-          ▆
-    ...
-       1. └─base::loadNamespace(x) at test_spatial_functions.R:87:2
-       2.   ├─base::namespaceImport(...)
-       3.   └─base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
-       4.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       5.       └─base withOneRestart(expr, restarts[[1L]])
-       6.         └─base doWithOneRestart(return(expr), restart)
-      
-      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 5 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘FCMres.Rmd’ using rmarkdown
-    Quitting from lines 35-65 (FCMres.Rmd) 
-    Error: processing vignette 'FCMres.Rmd' failed with diagnostics:
-    package or namespace load failed for 'tmap' in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
-     there is no package called 'sf'
-    --- failed re-building ‘FCMres.Rmd’
-    
-    --- re-building ‘adjustinconsistency.Rmd’ using rmarkdown
-    Loading required package: sp
-    ...
-    package or namespace load failed for 'tmap' in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]):
-     there is no package called 'sf'
-    --- failed re-building ‘rasters.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘FCMres.Rmd’ ‘adjustinconsistency.Rmd’ ‘introduction.Rmd’
-      ‘rasters.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -1255,52 +1185,6 @@ Run `revdep_details(, "greta")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# gstat
-
-<details>
-
-* Version: 2.0-8
-* GitHub: https://github.com/r-spatial/gstat
-* Source code: https://github.com/cran/gstat
-* Date/Publication: 2021-10-06 15:00:02 UTC
-* Number of recursive dependencies: 70
-
-Run `revdep_details(, "gstat")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘allier.R’
-      Comparing ‘allier.Rout’ to ‘allier.Rout.save’ ... OK
-      Running ‘blockkr.R’
-      Comparing ‘blockkr.Rout’ to ‘blockkr.Rout.save’ ... OK
-      Running ‘covtable.R’
-      Comparing ‘covtable.Rout’ to ‘covtable.Rout.save’ ... OK
-      Running ‘cv.R’
-      Comparing ‘cv.Rout’ to ‘cv.Rout.save’ ... OK
-      Running ‘cv3d.R’
-      Comparing ‘cv3d.Rout’ to ‘cv3d.Rout.save’ ... OK
-    ...
-      > k_sp = krige(log(zinc)~1, meuse[-(1:5),], meuse[1:5,], v.fit)
-      [using ordinary kriging]
-      > k_sp_grd = krige(log(zinc)~1, meuse, meuse.grid, v.fit)
-      [using ordinary kriging]
-      > 
-      > # 1. using sf:
-      > suppressPackageStartupMessages(library(sf))
-      Error in library(sf) : there is no package called 'sf'
-      Calls: suppressPackageStartupMessages -> withCallingHandlers -> library
-      Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
 # gtfs2gps
 
 <details>
@@ -1317,12 +1201,29 @@ Run `revdep_details(, "gtfs2gps")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking tests ...
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(gtfs2gps)
+      > 
+      > test_check("gtfs2gps")
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 186 ]
+      
+    ...
+      sum(poa_gps$dist) not equal to 516072.
+      Attributes: < Modes: list, NULL >
+      Attributes: < Lengths: 2, 0 >
+      Attributes: < names for target but not for current >
+      Attributes: < current is not list-like >
+      target is units, current is numeric
+      
+      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 186 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # gWQS
@@ -1421,7 +1322,7 @@ Run `revdep_details(, "hwep")` for more info
 * GitHub: https://github.com/christophM/iml
 * Source code: https://github.com/cran/iml
 * Date/Publication: 2020-09-24 12:30:14 UTC
-* Number of recursive dependencies: 164
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "iml")` for more info
 
@@ -1631,12 +1532,14 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is 15.8Mb
+      sub-directories of 1Mb or more:
+        R         1.1Mb
+        doc       1.0Mb
+        extdata   1.1Mb
+        libs     12.0Mb
     ```
 
 # lmtp
@@ -1670,7 +1573,7 @@ Run `revdep_details(, "lmtp")` for more info
 * GitHub: https://github.com/KechrisLab/MAI
 * Source code: https://github.com/cran/MAI
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 159
+* Number of recursive dependencies: 160
 
 Run `revdep_details(, "MAI")` for more info
 
@@ -1748,31 +1651,6 @@ Run `revdep_details(, "MineICA")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘MineICA-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: IcaSet
-    > ### Title: Class to Contain and Describe an ICA decomposition of
-    > ###   High-Throughput Data.
-    > ### Aliases: class:IcaSet IcaSet IcaSet-class [ [,ANY,ANY,IcaSet-method
-    > ###   [,IcaSet,ANY-method [,IcaSet,ANY,ANY-method
-    > ###   [,IcaSet,ANY,ANY,ANY-method [<- [<-,IcaSet,ANY,ANY,ANY,ANY-method
-    > ###   [<-,IcaSet,ANY,ANY,ANY-method [<-,IcaSet,ANY,ANY-method organism
-    ...
-    > 
-    > ### ** Examples
-    > 
-    > # create an instance of IcaSet
-    > new("IcaSet")
-    Ensembl site unresponsive, trying uswest mirror
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Peer's Certificate issuer is not recognized.
-    Calls: new ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
 
 *   checking Rd cross-references ... WARNING
     ```
@@ -1918,74 +1796,6 @@ Run `revdep_details(, "missSBM")` for more info
         libs   6.5Mb
     ```
 
-# mlr3spatial
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/mlr-org/mlr3spatial
-* Source code: https://github.com/cran/mlr3spatial
-* Date/Publication: 2022-01-20 15:02:42 UTC
-* Number of recursive dependencies: 91
-
-Run `revdep_details(, "mlr3spatial")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > if (requireNamespace("testthat", quietly = TRUE)) {
-      +   library(checkmate)
-      +   library(testthat)
-      +   library(mlr3spatial)
-      + 
-      +   test_check("mlr3spatial")
-      + }
-      Loading required package: mlr3
-      Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-        there is no package called 'sf'
-      Calls: test_check ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-      In addition: Warning message:
-      [setCats] this function will be removed. You can use 'set.cats' instead 
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘benchmark.Rmd’ using rmarkdown
-    --- finished re-building ‘benchmark.Rmd’
-    
-    --- re-building ‘mlr3spatial.Rmd’ using rmarkdown
-    Quitting from lines 67-73 (mlr3spatial.Rmd) 
-    Error: processing vignette 'mlr3spatial.Rmd' failed with diagnostics:
-    object 'task' not found
-    --- failed re-building ‘mlr3spatial.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘mlr3spatial.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘sf’
-    ```
-
 # momentuHMM
 
 <details>
@@ -2045,7 +1855,7 @@ Run `revdep_details(, "onemapsgapi")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "OOS")` for more info
 
@@ -2482,30 +2292,6 @@ Run `revdep_details(, "RAINBOWR")` for more info
         libs  31.4Mb
     ```
 
-# rangeMapper
-
-<details>
-
-* Version: 2.0.2
-* GitHub: https://github.com/mpio-be/rangeMapper
-* Source code: https://github.com/cran/rangeMapper
-* Date/Publication: 2021-02-26 21:40:07 UTC
-* Number of recursive dependencies: 114
-
-Run `revdep_details(, "rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # regmedint
 
 <details>
@@ -2528,71 +2314,6 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
-# reproducible
-
-<details>
-
-* Version: 1.2.8
-* GitHub: https://github.com/PredictiveEcology/reproducible
-* Source code: https://github.com/cran/reproducible
-* Date/Publication: 2021-09-26 16:40:04 UTC
-* Number of recursive dependencies: 109
-
-Run `revdep_details(, "reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘reproducible’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sf’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/new/reproducible.Rcheck/reproducible’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘reproducible’ ...
-** package ‘reproducible’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sf’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘reproducible’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/reproducible/old/reproducible.Rcheck/reproducible’
-
-
-```
 # rgee
 
 <details>
@@ -2609,55 +2330,12 @@ Run `revdep_details(, "rgee")` for more info
 
 ## In both
 
-*   checking whether package ‘rgee’ can be installed ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/new/rgee.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
+    Namespace in Imports field not imported from: ‘R6’
+      All declared Imports should be used.
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘rgee’ ...
-** package ‘rgee’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sf’
-Error: unable to load R code in package ‘rgee’
-Execution halted
-ERROR: lazy loading failed for package ‘rgee’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/new/rgee.Rcheck/rgee’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘rgee’ ...
-** package ‘rgee’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘sf’
-Error: unable to load R code in package ‘rgee’
-Execution halted
-ERROR: lazy loading failed for package ‘rgee’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/rgee/old/rgee.Rcheck/rgee’
-
-
-```
 # robotstxt
 
 <details>
@@ -3093,64 +2771,6 @@ Run `revdep_details(, "spacey")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# SpaDES.core
-
-<details>
-
-* Version: 1.0.10
-* GitHub: https://github.com/PredictiveEcology/SpaDES.core
-* Source code: https://github.com/cran/SpaDES.core
-* Date/Publication: 2022-01-19 16:22:46 UTC
-* Number of recursive dependencies: 150
-
-Run `revdep_details(, "SpaDES.core")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘SpaDES.core’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘SpaDES.core’ ...
-** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘reproducible’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
- there is no package called ‘sf’
-Execution halted
-ERROR: lazy loading failed for package ‘SpaDES.core’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/new/SpaDES.core.Rcheck/SpaDES.core’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘SpaDES.core’ ...
-** package ‘SpaDES.core’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘reproducible’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
- there is no package called ‘sf’
-Execution halted
-ERROR: lazy loading failed for package ‘SpaDES.core’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/SpaDES.core/old/SpaDES.core.Rcheck/SpaDES.core’
-
-
-```
 # spaMM
 
 <details>
@@ -3325,56 +2945,6 @@ Run `revdep_details(, "spNetwork")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      [1] "Snapping points on lines ..."
-      [1] "Building graph ..."
-      [1] "Calculating k and g functions ..."
-      [1] "Calculating the simulations ..."
-      [1] "Preparing data ..."
-      [1] "Snapping points on lines ..."
-    ...
-       2. └─base::loadNamespace(x)
-       3.   ├─base::namespaceImport(...)
-       4.   └─base::loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]])
-       5.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       6.       └─base withOneRestart(expr, restarts[[1L]])
-       7.         └─base doWithOneRestart(return(expr), restart)
-      
-      [ FAIL 3 | WARN 51 | SKIP 0 | PASS 47 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘Isochrones.Rmd’ using rmarkdown
-    Checking rgeos availability: TRUE
-    Please note that 'maptools' will be retired by the end of 2023,
-    plan transition at your earliest convenience;
-    some functionality will be moved to 'sp'.
-    rgeos version: 0.5-9, (SVN revision 684)
-     GEOS runtime version: 3.9.1-CAPI-1.14.2 
-     Please note that rgeos will be retired by the end of 2023,
-    plan transition to sf functions using GEOS at your earliest convenience.
-    ...
-    Quitting from lines 28-31 (SpatialWeightMatrices.Rmd) 
-    Error: processing vignette 'SpatialWeightMatrices.Rmd' failed with diagnostics:
-    package 'sf' required by 'spdep' could not be found
-    --- failed re-building ‘SpatialWeightMatrices.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘Isochrones.Rmd’ ‘NetworkBuilding.Rmd’ ‘SpatialWeightMatrices.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is 22.1Mb
@@ -3400,38 +2970,17 @@ Run `revdep_details(, "stars")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
     Package suggested but not available for checking: ‘starsdata’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
-# supercells
-
-<details>
-
-* Version: 0.8.0
-* GitHub: https://github.com/Nowosad/supercells
-* Source code: https://github.com/cran/supercells
-* Date/Publication: 2022-02-16 20:00:01 UTC
-* Number of recursive dependencies: 77
-
-Run `revdep_details(, "supercells")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘sf’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is  8.6Mb
+      sub-directories of 1Mb or more:
+        doc   2.3Mb
+        nc    4.5Mb
     ```
 
 # synergyfinder
