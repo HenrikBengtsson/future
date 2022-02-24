@@ -5,7 +5,8 @@ Version: 1.24.0-9001 [2022-02-23]
 
 SIGNIFICANT CHANGES:
 
- * R options are now reset on worker after future is resolved.
+ * R options and environment variables are now reset on the workers after
+   future is resolved so that any changes to them have no effect later on.
  
 
 Version: 1.24.0 [2022-02-19]

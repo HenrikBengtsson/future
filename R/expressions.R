@@ -8,6 +8,7 @@ makeExpression <- local({
     ...future.startTime <- base::Sys.time()
     
     ...future.oldOptions <- base::as.list(base::.Options)
+    ...future.oldEnvVars <- base::Sys.getenv()
     
     ## covr: skip=7
     base::options(
@@ -40,13 +41,22 @@ makeExpression <- local({
     
     ## (a) Reset options
     base::options(...future.oldOptions)
-    
+
     ## (b) Remove any options added
-    diff <- setdiff(base::names(base::.Options), base::names(...future.oldOptions))
+    diff <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
     if (base::length(diff) > 0L) {
       opts <- base::rep(base::list(NULL), times = base::length(diff))
       base::names(opts) <- diff
       base::options(opts)
+    }
+
+    ## (a) Reset environment variables
+    base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
+    
+    ## (b) Remove any environment variables added
+    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
+    if (base::length(diff) > 0L) {
+      base::Sys.unsetenv(diff)
     }
   })
 
