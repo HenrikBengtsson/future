@@ -1,7 +1,7 @@
 _This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-05-24](https://github.com/HenrikBengtsson/future/blob/74aea903791cbead5be7341766004571d4e0135b/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
 
 <div id="badges"><!-- pkgdown markup -->
-<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"/></a> <a href="https://travis-ci.org/HenrikBengtsson/future"><img border="0" src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"/></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/future"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"/></a> <a href="https://codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a>
+<a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Arevdepcheck-top"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Afuture_tests"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/future_tests.yaml/badge.svg?branch=develop" alt="future.tests checks status"/></a>   <a href="https://app.codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> 
 </div>
 
 # future: Rにおける統一的な並列分散処理 <img border="0" src="man/figures/logo.png" alt="The 'future' hexlogo" align="right" />
@@ -210,20 +210,16 @@ future パッケージで利用できる戦略を次の表に示す。
 Name    OSes    Description
 synchronous:        non-parallel:
 sequential  all sequentially and in the current R process
-transparent all as sequential w/ early signaling and w/out local (for debugging)
 asynchronous:       parallel:
-multiprocess    all multicore, if supported, otherwise multisession
 multisession    all background R sessions (on current machine)
 multicore   not Windows forked R processes (on current machine)
 cluster all external R sessions on current, local, and/or remote machines
-remote  all Simple access to remote R sessions
 -->
 
 | 名前             | OS                  | 説明                                                     |
 | :------------- | :------------------ | :----------------------------------------------------- |
 | ***同期:***      |                     | ***非並列:***                                             |
 | `sequential`   | すべて                 | 逐次的かつ現行のRプロセス                                          |
-| `transparent`  | すべて                 | 逐次的で早期シグナリングかつローカルでない（デバッグ用）                           |
 | ***非同期:***     |                     | ***並列:***                                              |
 | `multisession` | すべて                 | バックグラウンド R セッション（現行のマシン上）                              |
 | `multicore`    | Windows以外/RStudio以外 | フォークされた R プロセス（現行のマシン上）                                |
