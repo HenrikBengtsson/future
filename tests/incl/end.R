@@ -54,8 +54,8 @@ if (!identical(Sys.getenv(), oenvs0)) {
                 hpaste(sQuote(missing))))
   message("Differences environment variable by environment variable:")
   for (name in names(oenvs0)) {
-    value0 <- uname(oenvs0[name])
-    value  <- uname(oenvs[name])
+    value0 <- unname(oenvs0[name])
+    value  <- unname(oenvs[name])
     if (!identical(value, value0)) {
       utils::str(list(name = name, expected = value0, actual = value))
     }
