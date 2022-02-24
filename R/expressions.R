@@ -55,9 +55,7 @@ makeExpression <- local({
     
     ## (b) Remove any environment variables added
 #    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
-#    if (base::length(diff) > 0L) {
-#      base::Sys.unsetenv(diff)
-#    }
+#    base::Sys.unsetenv(diff)
   })
 
   tmpl_expr_evaluate <- bquote_compile({

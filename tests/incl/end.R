@@ -35,24 +35,32 @@ stopifnot(identical(options(), oopts0))
 
 
 ## Undo system environment variables
-## (a) Added
-cenvs <- Sys.getenv()
-added <- setdiff(names(cenvs), names(oenvs0))
-for (name in added) Sys.unsetenv(name)
-## (b) Missing
-missing <- setdiff(names(oenvs0), names(cenvs))
-if (length(missing) > 0) do.call(Sys.setenv, as.list(oenvs0[missing]))
-## (c) Modified?
-for (name in intersect(names(cenvs), names(oenvs0))) {
-  ## WORKAROUND: On Linux Wine, base::Sys.getenv() may
-  ## return elements with empty names. /HB 2016-10-06
-  if (nchar(name) == 0) next
-  if (!identical(cenvs[[name]], oenvs0[[name]])) {
-    do.call(Sys.setenv, as.list(oenvs0[name]))
+## (a) Reset
+do.call(Sys.setenv, args=as.list(oenvs0))
+## (b) Removed added
+added <- setdiff(names(Sys.getenv()), names(oenvs0))
+Sys.unsetenv(added)
+## (c) Assert that everything was undone
+if (!identical(Sys.getenv(), oenvs0)) {
+  message("Failed to undo environment variables:")
+  oenvs <- Sys.getenv()
+  message(sprintf(" - Expected environment variables: [n=%d] %s",
+                  length(oenvs0), hpaste(sQuote(names(oenvs0)))))
+  extra <- setdiff(names(oenvs), names(oenvs0))
+  message(paste(sprintf(" - Environment variables still there: [n=%d]", length(extra)),
+                hpaste(sQuote(extra))))
+  missing <- setdiff(names(oenvs0), names(oenvs))
+  message(paste(sprintf(" - Environment variables missing: [n=%d]", length(missing)),
+                hpaste(sQuote(missing))))
+  message("Differences environment variable by environment variable:")
+  for (name in names(oenvs0)) {
+    value0 <- oenvs0[[name]]
+    value  <- oenvs[[name]]
+    if (!identical(value, value0)) {
+      utils::str(list(name = name, expected = value0, actual = value))
+    }
   }
 }
-## (d) Assert that everything was undone
-stopifnot(identical(Sys.getenv(), oenvs0))
 
 
 ## Undo variables
