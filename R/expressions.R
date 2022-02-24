@@ -52,20 +52,28 @@ makeExpression <- local({
 
     ## (a) Reset environment variables
     if (.(.Platform$OS.type == "windows")) {
-      ## (i) On MS Windows, Sys.setenv(ABC = "") will be the same as
-      ##     Sys.unsetenv("ABC"). Because of this, handle empty ("")
-      ##     and non-empty values seperately.
+      ## On MS Windows, you cannot have empty environment variables. When one
+      ## is assigned an empty string, MS Windows interpretes that as it should
+      ## be removed. That is, if we do Sys.setenv(ABC = ""), it'll have the
+      ## same effect as Sys.unsetenv("ABC").
+      ## However, when running MS Windows as a guest OS on a Linux host, then
+      ## we might see empty environment variables also MS Windows. We can
+      ## observe this on GitHub Actions and when running R via Wine.
+      ## Because of this, we need to take extra care to preserve empty ("")
+      ## environment variables.
+
+      ##  (i) Non-empty (the most common case)
       nonempty <- base::nzchar(...future.oldEnvVars)
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars[nonempty]))
       
-      ## (ii) Empty: update only the ones that are no longer empty
-      ##      to minimize damage
+      ## (ii) Empty (special case): Update only the ones that are no longer
+      ##      empty, which means they'll be removed. That is the minimal
+      ##      damage we can do.
       if (!all(nonempty)) {
         names <- base::names(...future.oldEnvVars[!nonempty])
         stopifnot(!any(nzchar(...future.oldEnvVars[names])))
         envs <- base::Sys.getenv()[names]
         names <- names[base::nzchar(envs)]
-        R.utils::cstr(list(envs = envs, names = names, "envs[names]"=envs[names]))
         envs[names] <- ""
         base::do.call(base::Sys.setenv, args = base::as.list(envs))
       }

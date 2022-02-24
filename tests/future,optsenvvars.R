@@ -29,28 +29,15 @@ for (strategy in strategies) {
     identical(options(), old_options),
     identical(Sys.getenv("R_DEFAULT_INTERNET_TIMEOUT"), "300"),
     is.na(Sys.getenv("ABC", NA_character_))
-#    identical(Sys.getenv(), old_envvars)
   )
-  if (!identical(Sys.getenv(), old_envvars)) {
-    message("Failed to undo environment variables:")
-    oenvs <- Sys.getenv()
-    message(sprintf(" - Expected environment variables: [n=%d] %s",
-                    length(old_envvars), hpaste(sQuote(names(old_envvars)))))
-    extra <- setdiff(names(oenvs), names(old_envvars))
-    message(paste(sprintf(" - Environment variables still there: [n=%d]", length(extra)),
-                  hpaste(sQuote(extra))))
-    missing <- setdiff(names(old_envvars), names(oenvs))
-    message(paste(sprintf(" - Environment variables missing: [n=%d]", length(missing)),
-                  hpaste(sQuote(missing))))
-    message("Differences environment variable by environment variable:")
-    for (name in names(old_envvars)) {
-      value0 <- unname(old_envvars[name])
-      value  <- unname(oenvs[name])
-      if (!identical(value, value0)) {
-        utils::str(list(name = name, expected = value0, actual = value))
-      }
-    }
-    print(all.equal(Sys.getenv(), old_envvars))
+  if (.Platform$OS.type == "windows") {
+    ## Drop empty environment variables, because they are not supported by
+    ## MS Windows, but may exist because they're inherited from a host OS
+    old_envvars <- old_envvars[nzchar(old_envvars)]
+    envvars <- Sys.getenv()
+    envvars <- envvars[nzchar(envvars)]
+    stopifnot(identical(envvars, old_envvars))
+  } else {
     stopifnot(identical(Sys.getenv(), old_envvars))
   }
 
