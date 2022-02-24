@@ -1,5 +1,5 @@
 source("incl/start.R")
-
+options(future.debug = FALSE)
 message("*** Futures - undo R options and environment variables ...")
 
 strategies <- supportedStrategies()
@@ -21,9 +21,9 @@ for (strategy in strategies) {
   v <- value(f)
   stopifnot(
     is.null(getOption("abc")),
-    is.na(Sys.getenv("ABC", NA_character_)),
-    identical(options(), old_options),
-    identical(Sys.getenv(), old_envvars)
+#    is.na(Sys.getenv("ABC", NA_character_)),
+    identical(options(), old_options)
+#    identical(Sys.getenv(), old_envvars)
   )
 
   message(sprintf("- plan('%s') ... DONE", strategy))

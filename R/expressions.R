@@ -51,13 +51,13 @@ makeExpression <- local({
     }
 
     ## (a) Reset environment variables
-    base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
+#    base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     
     ## (b) Remove any environment variables added
-    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
-    if (base::length(diff) > 0L) {
-      base::Sys.unsetenv(diff)
-    }
+#    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
+#    if (base::length(diff) > 0L) {
+#      base::Sys.unsetenv(diff)
+#    }
   })
 
   tmpl_expr_evaluate <- bquote_compile({
