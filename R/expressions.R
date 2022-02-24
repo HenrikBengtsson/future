@@ -45,7 +45,7 @@ makeExpression <- local({
     ## (b) Remove any options added
     diff <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
     if (base::length(diff) > 0L) {
-      opts <- base::rep(base::list(NULL), times = base::length(diff))
+      opts <- base::vector("list", length = base::length(diff))
       base::names(opts) <- diff
       base::options(opts)
     }

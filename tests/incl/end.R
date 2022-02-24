@@ -3,20 +3,14 @@ future::plan(oplan)
 
 
 ## Undo options
-## (a) Added
+## (a) Reset
+options(oopts0)
+## (b) Remove added
 added <- setdiff(names(options()), names(oopts0))
 opts <- vector("list", length = length(added))
 names(opts) <- added
 options(opts)
-## (b) Modified
-options(oopts)
-## (c) Removed, e.g. future.plan=NULL
-removed <- setdiff(names(oopts0), names(options()))
-opts <- oopts0[removed]
-options(opts)
-## (d) Undo any future options that was set at startup
-options(oopts0[grep("^future[.]", names(oopts0))])
-## (e) Assert that everything was undone
+## (c) Assert that everything was undone
 if (!identical(options(), oopts0)) {
   message("Failed to undo options:")
   oopts <- options()
