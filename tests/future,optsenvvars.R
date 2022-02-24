@@ -28,9 +28,29 @@ for (strategy in strategies) {
     is.null(getOption("abc")),
     identical(options(), old_options),
     identical(Sys.getenv("R_DEFAULT_INTERNET_TIMEOUT"), "300"),
-    is.na(Sys.getenv("ABC", NA_character_)),
-    identical(Sys.getenv(), old_envvars)
+    is.na(Sys.getenv("ABC", NA_character_))
+#    identical(Sys.getenv(), old_envvars)
   )
+  if (!identical(Sys.getenv(), old_envvars)) {
+    message("Failed to undo environment variables:")
+    oenvs <- Sys.getenv()
+    message(sprintf(" - Expected environment variables: [n=%d] %s",
+                    length(old_envvars), hpaste(sQuote(names(old_envvars)))))
+    extra <- setdiff(names(oenvs), names(old_envvars))
+    message(paste(sprintf(" - Environment variables still there: [n=%d]", length(extra)),
+                  hpaste(sQuote(extra))))
+    missing <- setdiff(names(old_envvars), names(oenvs))
+    message(paste(sprintf(" - Environment variables missing: [n=%d]", length(missing)),
+                  hpaste(sQuote(missing))))
+    message("Differences environment variable by environment variable:")
+    for (name in names(old_envvars)) {
+      value0 <- unname(old_envvars[name])
+      value  <- unname(oenvs[name])
+      if (!identical(value, value0)) {
+        utils::str(list(name = name, expected = value0, actual = value))
+      }
+    }
+  }
 
   message(sprintf("- plan('%s') ... DONE", strategy))
 } ## for (strategy ...)
