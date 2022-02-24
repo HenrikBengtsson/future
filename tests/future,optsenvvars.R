@@ -50,6 +50,8 @@ for (strategy in strategies) {
         utils::str(list(name = name, expected = value0, actual = value))
       }
     }
+    print(all.equal(Sys.getenv(), old_envvars))
+    stopifnot(identical(Sys.getenv(), old_envvars))
   }
 
   message(sprintf("- plan('%s') ... DONE", strategy))
