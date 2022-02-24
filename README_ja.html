@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9001</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@
 <p><em>This is a translation of <a href="https://github.com/HenrikBengtsson/future/blob/develop/README.md" class="external-link">README.md</a> as of <a href="https://github.com/HenrikBengtsson/future/blob/74aea903791cbead5be7341766004571d4e0135b/README.md" class="external-link">2021-05-24</a> done by <a href="https://github.com/hoxo-m" class="external-link">hoxo_m</a>.</em></p>
 <div id="badges">
 <!-- pkgdown markup -->
-<p><a href="https://CRAN.R-project.org/web/checks/check_results_future.html" class="external-link"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check" class="external-link"><img border="0" src="https://github.com/HenrikBengtsson/future/workflows/R-CMD-check/badge.svg?branch=develop" alt="Build status"></a> <a href="https://travis-ci.org/HenrikBengtsson/future" class="external-link"><img border="0" src="https://travis-ci.org/HenrikBengtsson/future.svg" alt="Build status"></a> <a href="https://ci.appveyor.com/project/HenrikBengtsson/future" class="external-link"><img border="0" src="https://ci.appveyor.com/api/projects/status/github/HenrikBengtsson/future?svg=true" alt="Build status"></a> <a href="https://codecov.io/gh/HenrikBengtsson/future" class="external-link"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></p>
+<p><a href="https://CRAN.R-project.org/web/checks/check_results_future.html" class="external-link"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check" class="external-link"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Arevdepcheck-top" class="external-link"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Afuture_tests" class="external-link"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/future_tests.yaml/badge.svg?branch=develop" alt="future.tests checks status"></a> <a href="https://app.codecov.io/gh/HenrikBengtsson/future" class="external-link"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"></a></p>
 </div>
 <div id="future-rにおける統一的な並列分散処理-" class="section level1">
 
@@ -295,13 +295,10 @@ The future package implements the following types of futures:
 Name    OSes    Description
 synchronous:        non-parallel:
 sequential  all sequentially and in the current R process
-transparent all as sequential w/ early signaling and w/out local (for debugging)
 asynchronous:       parallel:
-multiprocess    all multicore, if supported, otherwise multisession
 multisession    all background R sessions (on current machine)
 multicore   not Windows forked R processes (on current machine)
 cluster all external R sessions on current, local, and/or remote machines
-remote  all Simple access to remote R sessions
 -->
 <table class="table"><thead><tr class="header"><th align="left">名前</th>
 <th align="left">OS</th>
@@ -312,19 +309,16 @@ remote  all Simple access to remote R sessions
 </tr><tr class="even"><td align="left"><code>sequential</code></td>
 <td align="left">すべて</td>
 <td align="left">逐次的かつ現行のRプロセス</td>
-</tr><tr class="odd"><td align="left"><code>transparent</code></td>
-<td align="left">すべて</td>
-<td align="left">逐次的で早期シグナリングかつローカルでない（デバッグ用）</td>
-</tr><tr class="even"><td align="left"><strong><em>非同期:</em></strong></td>
+</tr><tr class="odd"><td align="left"><strong><em>非同期:</em></strong></td>
 <td align="left"></td>
 <td align="left"><strong><em>並列:</em></strong></td>
-</tr><tr class="odd"><td align="left"><code>multisession</code></td>
+</tr><tr class="even"><td align="left"><code>multisession</code></td>
 <td align="left">すべて</td>
 <td align="left">バックグラウンド R セッション（現行のマシン上）</td>
-</tr><tr class="even"><td align="left"><code>multicore</code></td>
+</tr><tr class="odd"><td align="left"><code>multicore</code></td>
 <td align="left">Windows以外/RStudio以外</td>
 <td align="left">フォークされた R プロセス（現行のマシン上）</td>
-</tr><tr class="odd"><td align="left"><code>cluster</code></td>
+</tr><tr class="even"><td align="left"><code>cluster</code></td>
 <td align="left">すべて</td>
 <td align="left">外部 R セッション（現行、ローカル、リモートマシン上）</td>
 </tr></tbody></table><!--
