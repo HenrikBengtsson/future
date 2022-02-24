@@ -7,8 +7,10 @@ makeExpression <- local({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
     
+    ...future.oldOptions <- base::as.list(base::.Options)
+    
     ## covr: skip=7
-    ...future.oldOptions <- base::options(
+    base::options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.script      = FALSE,
       
@@ -35,7 +37,17 @@ makeExpression <- local({
 
   tmpl_exit <- bquote_compile({
     .(exit)
+    
+    ## (a) Reset options
     base::options(...future.oldOptions)
+    
+    ## (b) Remove any options added
+    diff <- setdiff(base::names(base::.Options), base::names(...future.oldOptions))
+    if (base::length(diff) > 0L) {
+      opts <- base::rep(base::list(NULL), times = base::length(diff))
+      base::names(opts) <- diff
+      base::options(opts)
+    }
   })
 
   tmpl_expr_evaluate <- bquote_compile({

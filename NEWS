@@ -1,9 +1,11 @@
 Package: future
 ===============
 
-Version: 1.24.0-9000 [2022-02-19]
+Version: 1.24.0-9001 [2022-02-23]
 
- * ...
+SIGNIFICANT CHANGES:
+
+ * R options are now reset on worker after future is resolved.
  
 
 Version: 1.24.0 [2022-02-19]
