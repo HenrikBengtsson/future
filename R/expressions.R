@@ -51,7 +51,22 @@ makeExpression <- local({
     }
 
     ## (a) Reset environment variables
-    base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
+    if (.(.Platform$OS.type == "windows")) {
+      ## On MS Windows, Sys.setenv(ABC = "") will be the same as
+      ## Sys.unsetenv("ABC"). Because of this, handle empty ("")
+      ## and non-empty values seperately.
+      nonempty <- base::nzchar(...future.oldEnvVars)
+      base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars[nonempty]))
+      ## Empty: update only the ones that are no longer empty
+      ## to minimize damage
+      names <- base::names(...future.oldEnvVars[!nonempty])
+      envs <- base::Sys.getenv()[names]
+      names <- names[base::nzchar(envs)]
+      envs[names] <- ""
+      base::do.call(base::Sys.setenv, args = base::as.list(envs))
+    } else {
+      base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
+    }
     
     ## (b) Remove any environment variables added
     diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
