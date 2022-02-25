@@ -179,9 +179,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
   }
 
-  future <- structure(core, class = c("Future", class(core)))
-  future <- makeFutureJournal(future, start = t_start)
-  future
+  structure(core, class = c("Future", class(core)))
 }
 
 
@@ -446,12 +444,40 @@ run.Future <- function(future, ...) {
   future
 }
 
-run <- function(...) UseMethod("run")
+#' @export
+#' @keywords internal
+run <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+        step = "launch",
+        start = start,
+        stop = Sys.time()
+      )
+    })
+  }
+  UseMethod("run")
+}
 
 
 #' @export
 #' @keywords internal
-result <- function(...) UseMethod("result")
+result <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+        step = "gather",
+        start = start,
+        stop = Sys.time()
+      )
+    })
+  }
+  UseMethod("result")
+}
 
 #' Get the results of a resolved future
 #'

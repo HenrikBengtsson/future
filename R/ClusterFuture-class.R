@@ -53,8 +53,6 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
   
-  updateFutureJournal(future, "create")
-
   future
 }
 

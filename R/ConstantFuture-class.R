@@ -15,7 +15,6 @@ ConstantFuture <- function(..., globals = TRUE, envir = emptyenv()) {
   future$result <- FutureResult(value = eval(future$expr, envir = envir))
   future$state <- "finished"
   future <- structure(future, class = c("ConstantFuture", class(future)))
-  updateFutureJournal(future, "create")
   future
 }
 

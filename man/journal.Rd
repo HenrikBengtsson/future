@@ -12,7 +12,7 @@ journal(x, ...)
 \item{\ldots}{Not used.}
 }
 \value{
-A data frame with columns \code{step}, \code{start}, \code{stop}, and \code{duration}.a
+A data frame with columns \code{step}, \code{start}, \code{stop}, and \code{duration}.
 }
 \description{
 Gets a journal of events for a future

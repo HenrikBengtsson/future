@@ -19,7 +19,21 @@
 #' e.g. `while (!resolved(future)) Sys.sleep(5)`.
 #'
 #' @export
-resolved <- function(x, ...) UseMethod("resolved")
+resolved <- function(x, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(x, "Future")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(x,
+        step = "resolved",
+        start = start,
+        stop = Sys.time(),
+        skip = FALSE
+      )
+    })
+  }
+  UseMethod("resolved")
+}
 
 #' @export
 resolved.default <- function(x, ...) TRUE
