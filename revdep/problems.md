@@ -554,27 +554,6 @@ Run `revdep_details(, "datapackage.r")` for more info
       All declared Imports should be used.
     ```
 
-# DeclareDesign
-
-<details>
-
-* Version: 0.30.0
-* GitHub: https://github.com/DeclareDesign/DeclareDesign
-* Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2022-01-28 06:10:02 UTC
-* Number of recursive dependencies: 129
-
-Run `revdep_details(, "DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
 # delayed
 
 <details>
@@ -870,13 +849,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    11:44:17-11:44:17 > 16:00:00
+    12:34:41-12:34:41 > 16:00:00
     - 24 pops @ layer 2
-    11:44:17-11:44:17 > 16:00:00
+    12:34:41-12:34:41 > 16:00:00
     - 32 pops @ layer 3
-    11:44:17-11:44:17 > 16:00:00
+    12:34:41-12:34:41 > 16:00:00
     - 16 pops @ layer 4
-    11:44:17-11:44:17 > 16:00:00
+    12:34:41-12:34:41 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1183,47 +1162,6 @@ Run `revdep_details(, "greta")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
-    ```
-
-# gtfs2gps
-
-<details>
-
-* Version: 1.5-4
-* GitHub: https://github.com/ipeaGIT/gtfs2gps
-* Source code: https://github.com/cran/gtfs2gps
-* Date/Publication: 2021-09-06 08:00:07 UTC
-* Number of recursive dependencies: 91
-
-Run `revdep_details(, "gtfs2gps")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(gtfs2gps)
-      > 
-      > test_check("gtfs2gps")
-      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 186 ]
-      
-    ...
-      sum(poa_gps$dist) not equal to 516072.
-      Attributes: < Modes: list, NULL >
-      Attributes: < Lengths: 2, 0 >
-      Attributes: < names for target but not for current >
-      Attributes: < current is not list-like >
-      target is units, current is numeric
-      
-      [ FAIL 2 | WARN 0 | SKIP 0 | PASS 186 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # gWQS
@@ -1837,11 +1775,6 @@ Run `revdep_details(, "onemapsgapi")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
-
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
@@ -2443,11 +2376,6 @@ Run `revdep_details(, "sdmApp")` for more info
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘sf’
-    ```
 
 *   checking dependencies in R code ... NOTE
     ```
