@@ -5,7 +5,7 @@
 #' @param \ldots Not used.
 #'
 #' @return
-#' A data frame with columns `step`, `start`, `stop`, and `duration`.a
+#' A data frame with columns `step`, `start`, `stop`, and `duration`.
 #'
 #' @export
 journal <- function(x, ...) UseMethod("journal")
@@ -40,6 +40,7 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 makeFutureJournal <- function(x, step = "create", start = stop, stop = Sys.time()) {
   stop_if_not(
     inherits(x, "Future"),
+    is.null(x$.journal),
     length(step) == 1L, is.character(step),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
@@ -53,6 +54,9 @@ makeFutureJournal <- function(x, step = "create", start = stop, stop = Sys.time(
 
 
 updateFutureJournal <- function(x, step, start = NULL, stop = Sys.time()) {
+  ## Nothing to do?
+  if (!inherits(x$.journal, "FutureJournal")) return(x)
+
   stop_if_not(
     inherits(x, "Future"),
     length(step) == 1L, is.character(step),
@@ -77,14 +81,19 @@ updateFutureJournal <- function(x, step, start = NULL, stop = Sys.time()) {
 }
 
 
-appendToFutureJournal <- function(x, step, start = Sys.time(), stop = as.POSIXct(NA_real_)) {
+appendToFutureJournal <- function(x, step, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
+  ## Nothing to do?
+  if (!inherits(x$.journal, "FutureJournal")) return(x)
+
+  if (skip && is.element(step, x$.journal$step)) return(x)
+  
   stop_if_not(
     inherits(x, "Future"),
     length(step) == 1L, is.character(step),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
-    
+
   data <- data.frame(step = step, start = start, stop = stop, duration = stop - start)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)

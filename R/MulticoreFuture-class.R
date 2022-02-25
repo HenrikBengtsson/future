@@ -41,8 +41,6 @@ MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame
 
   future <- as_MulticoreFuture(future, ...)
 
-  updateFutureJournal(future, "create")
-
   future
 }
 
