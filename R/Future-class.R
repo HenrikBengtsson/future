@@ -93,7 +93,8 @@
 #' @name Future-class
 Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-
+  t_start <- Sys.time()
+  
   if (is.null(seed)) {
   } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
@@ -178,7 +179,9 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
   }
 
-  structure(core, class = c("Future", class(core)))
+  future <- structure(core, class = c("Future", class(core)))
+  future <- makeFutureJournal(future, start = t_start)
+  future
 }
 
 
