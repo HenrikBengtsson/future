@@ -50,8 +50,8 @@ makeExpression <- local({
       base::options(opts)
     }
 
-    ## (a) Reset environment variables
-    if (.(.Platform$OS.type == "windows")) {
+    ## (c) Reset environment variables
+    if (.Platform$OS.type == "windows") {
       ## On MS Windows, you cannot have empty environment variables. When one
       ## is assigned an empty string, MS Windows interpretes that as it should
       ## be removed. That is, if we do Sys.setenv(ABC = ""), it'll have the
@@ -69,9 +69,8 @@ makeExpression <- local({
       ## (ii) Empty (special case): Update only the ones that are no longer
       ##      empty, which means they'll be removed. That is the minimal
       ##      damage we can do.
-      if (!all(nonempty)) {
+      if (!base::all(nonempty)) {
         names <- base::names(...future.oldEnvVars[!nonempty])
-        stopifnot(!any(nzchar(...future.oldEnvVars[names])))
         envs <- base::Sys.getenv()[names]
         names <- names[base::nzchar(envs)]
         envs[names] <- ""
@@ -81,7 +80,7 @@ makeExpression <- local({
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }
     
-    ## (b) Remove any environment variables added
+    ## (d) Remove any environment variables added
     diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
     base::Sys.unsetenv(diff)
   })
