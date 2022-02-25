@@ -26,6 +26,9 @@ journal.Future <- function(x, ...) {
     stop_if_not(inherits(data, "FutureJournal"))
   }
 
+  ## Sort by start time
+  if (nrow(data) > 1L) data <- data[order(data$start), ]
+
   data
 }
 
