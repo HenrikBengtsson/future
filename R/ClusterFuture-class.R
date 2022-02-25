@@ -52,6 +52,8 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
+  
+  updateFutureJournal(future, "create")
 
   future
 }
