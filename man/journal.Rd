@@ -12,7 +12,12 @@ journal(x, ...)
 \item{\ldots}{Not used.}
 }
 \value{
-A data frame with columns \code{step}, \code{start}, \code{stop}, and \code{duration}.
+A data frame with columns \code{step}, \code{start}, \code{stop}, \code{at}, and \code{duration},
+where the latter two are calculated from \code{start} and \code{stop}.
+The data frame is sorted by the \code{start} time.
+Note that the timestamps for the \code{evaluate} step are based on the local
+time on the worker. The system clocks on the worker and the calling R
+system may be out of sync.
 }
 \description{
 Gets a journal of events for a future

@@ -5,7 +5,12 @@
 #' @param \ldots Not used.
 #'
 #' @return
-#' A data frame with columns `step`, `start`, `stop`, and `duration`.
+#' A data frame with columns `step`, `start`, `stop`, `at`, and `duration`,
+#' where the latter two are calculated from `start` and `stop`.
+#' The data frame is sorted by the `start` time.
+#' Note that the timestamps for the `evaluate` step are based on the local
+#' time on the worker. The system clocks on the worker and the calling R
+#' system may be out of sync.
 #'
 #' @export
 journal <- function(x, ...) UseMethod("journal")
@@ -27,7 +32,12 @@ journal.Future <- function(x, ...) {
   }
 
   ## Sort by start time
-  if (nrow(data) > 1L) data <- data[order(data$start), ]
+  n <- nrow(data)
+  if (n > 1L) data <- data[order(data$start), ]
+
+  ## Append 'at' and 'duration'
+  data$at <- data$start - data$start[1]
+  data$duration <- data$stop - data$start
 
   data
 }
@@ -49,7 +59,7 @@ makeFutureJournal <- function(x, step = "create", start = stop, stop = Sys.time(
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(step = step, start = start, stop = stop, duration = stop - start)
+  data <- data.frame(step = step, start = start, stop = stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
@@ -76,7 +86,6 @@ updateFutureJournal <- function(x, step, start = NULL, stop = Sys.time()) {
   entry <- data[row, ]
   if (!is.null(start)) entry$start <- start
   if (!is.null(stop)) entry$stop <- stop
-  entry$duration <- entry$stop - entry$start
   data[row, ] <- entry
   stop_if_not(inherits(data, "FutureJournal"))
   x$.journal <- data
@@ -97,7 +106,7 @@ appendToFutureJournal <- function(x, step, start = Sys.time(), stop = as.POSIXct
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(step = step, start = start, stop = stop, duration = stop - start)
+  data <- data.frame(step = step, start = start, stop = stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }
