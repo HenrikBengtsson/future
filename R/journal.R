@@ -2,23 +2,30 @@
 #'
 #' @param x A [Future] object.
 #'
+## @param baseline (POSIXct; optional) A baseline timestamp that the
+## relative start time (`at`) should be calculated towards. The default
+## is the first `start` time in the journal.
+#'
 #' @param \ldots Not used.
 #'
 #' @return
-#' A data frame with columns `step`, `start`, `stop`, `at`, and `duration`,
-#' where the latter two are calculated from `start` and `stop`.
-#' The data frame is sorted by the `start` time.
+#' A data frame with columns `step` (character string), `start` (POSIXct),
+#' `at` (difftime), and `duration` (difftime).
+#' The data frame is sorted by the `at` time.
 #' Note that the timestamps for the `evaluate` step are based on the local
 #' time on the worker. The system clocks on the worker and the calling R
 #' system may be out of sync.
 #'
-#' @export
+#' @example incl/journal.R
 journal <- function(x, ...) UseMethod("journal")
 
 #' @export
-journal.Future <- function(x, ...) {
+journal.Future <- function(x, baseline = NULL, ...) {
   data <- x$.journal
-  stop_if_not(inherits(data, "FutureJournal"))
+  stop_if_not(
+    inherits(data, "FutureJournal"),
+    is.null(baseline) || (length(baseline) == 1L && inherits(baseline, "POSIXct"))
+  )
   
   ## Backward compatibility (until all backends does this)
   if (!is.element("evaluate", data$step) && !is.null(x$result)) {
@@ -31,13 +38,14 @@ journal.Future <- function(x, ...) {
     stop_if_not(inherits(data, "FutureJournal"))
   }
 
-  ## Sort by start time
-  n <- nrow(data)
-  if (n > 1L) data <- data[order(data$start), ]
-
   ## Append 'at' and 'duration'
-  data$at <- data$start - data$start[1]
+  if (is.null(baseline)) baseline <- data$start[1]
+  data$at <- data$start - baseline
   data$duration <- data$stop - data$start
+  data$stop <- NULL
+
+  ## Sort by relative start time
+  if (nrow(data) > 1L) data <- data[order(data$at), ]
 
   data
 }

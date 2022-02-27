@@ -16,8 +16,9 @@ PERFORMANCE:
 
 BETA FEATURES:
 
- * Add journal() for retrieving timing information of internal events for
-   a specific future.
+ * Add internal journal() for retrieving timing information of internal
+   events for a specific future. This function is non-exported for now,
+   because it is under development. Please do _not_ use it in a package.
 
 
 Version: 1.24.0 [2022-02-19]

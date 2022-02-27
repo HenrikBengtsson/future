@@ -12,13 +12,27 @@ journal(x, ...)
 \item{\ldots}{Not used.}
 }
 \value{
-A data frame with columns \code{step}, \code{start}, \code{stop}, \code{at}, and \code{duration},
-where the latter two are calculated from \code{start} and \code{stop}.
-The data frame is sorted by the \code{start} time.
+A data frame with columns \code{step} (character string), \code{start} (POSIXct),
+\code{at} (difftime), and \code{duration} (difftime).
+The data frame is sorted by the \code{at} time.
 Note that the timestamps for the \code{evaluate} step are based on the local
 time on the worker. The system clocks on the worker and the calling R
 system may be out of sync.
 }
 \description{
 Gets a journal of events for a future
+}
+\examples{
+library(future)
+journal <- future:::journal
+plan(multisession, workers = 2L)
+
+t_start <- Sys.time()
+fs <- lapply(1:3, FUN = function(x) future({ Sys.sleep(x); sqrt(x) }))
+vs <- value(fs)
+js <- lapply(fs, FUN = journal, baseline = t_start)
+print(js)
+
+## Stop parallel workers
+plan(sequential)
 }
