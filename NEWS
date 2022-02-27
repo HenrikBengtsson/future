@@ -8,6 +8,8 @@ SIGNIFICANT CHANGES:
  * R options and environment variables are now reset on the workers after
    future is resolved so that any changes to them have no effect later on.
 
+ * Now FutureResult objects hold the session UUID of the worker.
+
 BETA FEATURES:
 
  * Add internal journal() for retrieving timing information of internal

@@ -71,16 +71,17 @@ FutureResult <- local({
     }
 
     structure(list(
-      value      = value,
-      visible    = visible,
-      stdout     = stdout,
-      conditions = conditions,
-      rng        = rng,
+      value        = value,
+      visible      = visible,
+      stdout       = stdout,
+      conditions   = conditions,
+      rng          = rng,
       ...,
-      started    = started,
-      finished   = finished,
-      r_info     = r_info,
-      version    = version
+      started      = started,
+      finished     = finished,
+      session_uuid = session_uuid(),
+      r_info       = r_info,
+      version      = version
     ), class = "FutureResult")
   }
 })

@@ -9,8 +9,16 @@
 #' @param \ldots Not used.
 #'
 #' @return
-#' A data frame with columns `step` (character string), `start` (POSIXct),
-#' `at` (difftime), and `duration` (difftime).
+#' A data frame with columns:
+#'
+#'  1. `step` (character string)
+#'  2. `start` (POSIXct)
+#'  3. `at` (difftime)
+#'  4. `duration` (difftime)
+#'  5. `future_label` (character string)
+#'  6. `future_uuid` (character string)
+#'  7. `session_uuid` (character string)
+#' 
 #' The data frame is sorted by the `at` time.
 #' Note that the timestamps for the `evaluate` step are based on the local
 #' time on the worker. The system clocks on the worker and the calling R
@@ -26,15 +34,19 @@ journal.Future <- function(x, baseline = NULL, ...) {
     inherits(data, "FutureJournal"),
     is.null(baseline) || (length(baseline) == 1L && inherits(baseline, "POSIXct"))
   )
+
+  session_uuid <- rep(x$owner, times = nrow(data))
   
   ## Backward compatibility (until all backends does this)
   if (!is.element("evaluate", data$step) && !is.null(x$result)) {
+    stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
       step = "evaluate",
       start = x$result$started,
       stop = x$result$finished
     )
     data <- x$.journal
+    session_uuid <- c(session_uuid, x$result$session_uuid)
     stop_if_not(inherits(data, "FutureJournal"))
   }
 
@@ -43,6 +55,15 @@ journal.Future <- function(x, baseline = NULL, ...) {
   data$at <- data$start - baseline
   data$duration <- data$stop - data$start
   data$stop <- NULL
+
+  ## Append future 'label'
+  data$future_label <- if (is.null(x$label)) NA_character_ else x$label
+
+  ## Append future UUID
+  data$future_uuid <- x$uuid
+
+  ## Append session UUID
+  data$session_uuid <- session_uuid
 
   ## Sort by relative start time
   if (nrow(data) > 1L) data <- data[order(data$at), ]
