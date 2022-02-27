@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.24.0-9002 [2022-02-25]
+Version: 1.24.0-9002 [2022-02-26]
 
 SIGNIFICANT CHANGES:
 
@@ -10,8 +10,9 @@ SIGNIFICANT CHANGES:
 
 BETA FEATURES:
 
- * Add journal() for retrieving timing information of internal events for
-   a specific future.
+ * Add internal journal() for retrieving timing information of internal
+   events for a specific future. This function is non-exported for now,
+   because it is under development. Please do _not_ use it in a package.
  
 
 Version: 1.24.0 [2022-02-19]
