@@ -72,6 +72,28 @@ journal.Future <- function(x, baseline = NULL, ...) {
 }
 
 #' @export
+journal.FutureJournal <- function(x, baseline = NULL, ...) {
+  if (!is.null(baseline)) {
+    x$at <- x$at - baseline
+  }
+  x
+}
+
+#' @export
+journal.list <- function(x, index = seq_along(x), ...) {
+  if (!is.null(index)) {
+    stop_if_not(length(index) == length(x))
+    x <- lapply(index, FUN = function(idx) {
+      journal <- journal(x[[idx]], ...)
+      stop_if_not(inherits(journal, "FutureJournal"))
+      cbind(index = idx, journal)
+    })
+  }
+  Reduce(rbind, x)
+}
+
+
+#' @export
 print.FutureJournal <- function(x, digits.secs = 3L, ...) {
   oopts <- options(digits.secs = digits.secs)
   on.exit(options(oopts))
