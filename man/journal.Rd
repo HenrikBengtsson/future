@@ -12,8 +12,17 @@ journal(x, ...)
 \item{\ldots}{Not used.}
 }
 \value{
-A data frame with columns \code{step} (character string), \code{start} (POSIXct),
-\code{at} (difftime), and \code{duration} (difftime).
+A data frame with columns:
+\enumerate{
+\item \code{step} (character string)
+\item \code{start} (POSIXct)
+\item \code{at} (difftime)
+\item \code{duration} (difftime)
+\item \code{future_label} (character string)
+\item \code{future_uuid} (character string)
+\item \code{session_uuid} (character string)
+}
+
 The data frame is sorted by the \code{at} time.
 Note that the timestamps for the \code{evaluate} step are based on the local
 time on the worker. The system clocks on the worker and the calling R
