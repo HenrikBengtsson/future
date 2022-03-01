@@ -30,6 +30,11 @@ journal <- function(x, ...) UseMethod("journal")
 #' @export
 journal.Future <- function(x, ...) {
   data <- x$.journal
+  if (is.null(data)) {
+    label <- x$label
+    if (is.null(label)) label <- "<none>"
+    stop(sprintf("No journal is available for future ('%s'). Did you forget to enable journaling?", label))
+  }
   stop_if_not(inherits(data, "FutureJournal"))
   session_uuid <- x$owner
   stop_if_not(length(session_uuid) == 1L, is.character(session_uuid), !is.na(session_uuid))

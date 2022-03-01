@@ -1,5 +1,9 @@
 library(future)
 journal <- future:::journal
+
+## Enable journaling of futures
+oopts <- options(future.journal = TRUE)
+
 plan(multisession, workers = 2L)
 
 t_start <- Sys.time()
@@ -8,5 +12,6 @@ vs <- value(fs)
 js <- lapply(fs, FUN = journal, baseline = t_start)
 print(js)
 
-## Stop parallel workers
+## Stop parallel workers and undo journaling settings
 plan(sequential)
+options(oopts)

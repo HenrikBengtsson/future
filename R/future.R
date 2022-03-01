@@ -217,7 +217,10 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   ## Comment: Only allowed for persistent 'cluster' futures
   future$.defaultLocal <- !is.element("local", names(list(...)))
 
-  future <- makeFutureJournal(future, start = t_start)
+  ## Enable journaling?
+  if (getOption("future.journal", FALSE)) {
+    future <- makeFutureJournal(future, start = t_start)
+  }
 
   if (!lazy) {
     future <- run(future)
