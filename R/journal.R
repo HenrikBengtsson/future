@@ -31,8 +31,10 @@ journal <- function(x, ...) UseMethod("journal")
 journal.Future <- function(x, ...) {
   data <- x$.journal
   stop_if_not(inherits(data, "FutureJournal"))
-
-  session_uuid <- rep(x$owner, times = nrow(data))
+  session_uuid <- x$owner
+  stop_if_not(length(session_uuid) == 1L, is.character(session_uuid), !is.na(session_uuid))
+  
+  session_uuid <- rep(session_uuid, times = nrow(data))
   
   ## Backward compatibility (until all backends does this)
   if (!is.element("evaluate", data$step) && !is.null(x$result)) {
@@ -43,6 +45,7 @@ journal.Future <- function(x, ...) {
       stop = x$result$finished
     )
     data <- x$.journal
+    stop_if_not(length(x$result$session_uuid) == 1L, is.character(x$result$session_uuid))
     session_uuid <- c(session_uuid, x$result$session_uuid)
     stop_if_not(inherits(data, "FutureJournal"))
   }
