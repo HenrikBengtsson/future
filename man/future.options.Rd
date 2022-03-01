@@ -89,7 +89,7 @@ If \code{"ignore"}, no scan is performed.
 
 \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
 
-\item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: \code{0.2} = 0.2 seconds)}
+\item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: \code{0.1} = 0.1 seconds)}
 
 \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: \code{1.01})}
 }
