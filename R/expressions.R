@@ -215,6 +215,7 @@ makeExpression <- local({
         rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
         started = ...future.startTime,
         finished = Sys.time(),
+        session_uuid = NA_character_,
         version = "1.8"
       ), class = "FutureResult")
     }, finally = .(exit))
