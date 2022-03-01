@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2022-02-18                                                  |
+|date     |2022-02-25                                                  |
 |pandoc   |2.16.2 @ /software/c4/cbi/software/pandoc-2.16.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.23.0 |1.23.0-9006 |*  |
+|future     |1.24.0 |1.24.0-9001 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.29 |0.6.29      |   |
 |globals    |0.14.0 |0.14.0      |   |
@@ -71,14 +71,14 @@
 |[CSGo](problems.md#csgo)                                 |0.6.7     |      |        |1    |
 |cvCovEst                                                 |1.0.2     |      |        |     |
 |[datapackage.r](problems.md#datapackager)                |1.3.5     |1     |        |1    |
-|[DeclareDesign](problems.md#declaredesign)               |0.30.0    |      |        |1    |
+|DeclareDesign                                            |0.30.0    |      |        |     |
 |[delayed](problems.md#delayed)                           |0.3.0     |      |        |2    |
 |dhReg                                                    |0.1.1     |      |        |     |
 |[dipsaus](problems.md#dipsaus)                           |0.2.0     |      |        |1    |
 |disk.frame                                               |0.7.1     |      |        |     |
 |[dispositionEffect](problems.md#dispositioneffect)       |1.0.0     |1     |        |     |
 |doFuture                                                 |0.12.0    |      |        |     |
-|DQAstats                                                 |0.2.4     |      |        |     |
+|DQAstats                                                 |0.2.5     |      |        |     |
 |[dragon](problems.md#dragon)                             |1.2.0     |      |        |1    |
 |drake                                                    |7.13.3    |      |        |     |
 |drimmR                                                   |1.0.1     |      |        |     |
@@ -122,7 +122,7 @@
 |gstat                                                    |2.0-8     |      |        |     |
 |GSVA                                                     |1.42.0    |      |        |     |
 |gsynth                                                   |1.2.1     |      |        |     |
-|[gtfs2gps](problems.md#gtfs2gps)                         |1.5-4     |1     |        |     |
+|gtfs2gps                                                 |2.0-0     |      |        |     |
 |[gWQS](problems.md#gwqs)                                 |3.0.4     |      |        |1    |
 |[hackeRnews](problems.md#hackernews)                     |0.1.0     |      |        |1    |
 |hacksig                                                  |0.1.2     |      |        |     |
@@ -175,7 +175,7 @@
 |nflfastR                                                 |4.3.0     |      |        |     |
 |nflseedR                                                 |1.0.2     |      |        |     |
 |NMproject                                                |0.6.7     |      |        |     |
-|[onemapsgapi](problems.md#onemapsgapi)                   |1.0.0     |      |        |2    |
+|[onemapsgapi](problems.md#onemapsgapi)                   |1.0.0     |      |        |1    |
 |[OOS](problems.md#oos)                                   |1.0.0     |      |        |1    |
 |origami                                                  |1.0.5     |      |        |     |
 |[partR2](problems.md#partr2)                             |0.9.1     |      |        |1    |
@@ -214,7 +214,7 @@
 |[scDiffCom](problems.md#scdiffcom)                       |0.1.0     |      |        |1    |
 |SCtools                                                  |0.3.1     |      |        |     |
 |[sctransform](problems.md#sctransform)                   |0.3.3     |      |        |1    |
-|[sdmApp](problems.md#sdmapp)                             |0.0.2     |      |        |2    |
+|[sdmApp](problems.md#sdmapp)                             |0.0.2     |      |        |1    |
 |[seer](problems.md#seer)                                 |1.1.7     |      |        |1    |
 |semtree                                                  |0.9.17    |      |        |     |
 |[Seurat](problems.md#seurat)                             |4.1.0     |      |        |2    |
