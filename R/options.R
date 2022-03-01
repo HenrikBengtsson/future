@@ -48,7 +48,7 @@
 #'
 #'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: `30 * 24 * 60 * 60` (= 30 days))}
 #'
-#'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: `0.2` = 0.2 seconds)}
+#'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in seconds) between polls. (Default: `0.1` = 0.1 seconds)}
 #'
 #'  \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: `1.01`)}
 #' }

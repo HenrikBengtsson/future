@@ -1,13 +1,19 @@
 Package: future
 ===============
 
-Version: 1.24.0-9001 [2022-02-23]
+Version: 1.24.0-9001 [2022-02-28]
 
 SIGNIFICANT CHANGES:
 
  * R options and environment variables are now reset on the workers after
    future is resolved so that any changes to them have no effect later on.
- 
+
+PERFORMANCE:
+
+ * Decrease the default wait time between polls from 0.2 to 0.1 seconds, which
+   can be overridden by an R option, cf. help("future.options"). Now resolve()
+   respects this option (previously it was hardcoded to 0.1 seconds).
+
 
 Version: 1.24.0 [2022-02-19]
 
