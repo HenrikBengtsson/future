@@ -44,7 +44,9 @@
 #' `resolve(futureOf(x))`.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) { 
+  UseMethod("resolve")
+}
 
 #' @export
 resolve.default <- function(x, ...) x
@@ -55,6 +57,17 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
   if (value && missing(result)) {
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
   }
+
+  ## Automatically update journal entries for Future object
+  t_start <- Sys.time()
+  on.exit({
+    appendToFutureJournal(x,
+      step = "resolve",
+      start = t_start,
+      stop = Sys.time(),
+      skip = FALSE
+    )
+  })
 
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
