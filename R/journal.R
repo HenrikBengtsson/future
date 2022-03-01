@@ -2,9 +2,9 @@
 #'
 #' @param x A [Future] object.
 #'
-## @param baseline (POSIXct; optional) A baseline timestamp that the
-## relative start time (`at`) should be calculated towards. The default
-## is the first `start` time in the journal.
+## @param baseline (POSIXct; optional) A timestamp to server as time zero
+## for the relative start time (`at`). If `TRUE` (default), then the
+## earliest timepoint observed is used as the baseline.
 #'
 #' @param \ldots Not used.
 #'
@@ -28,12 +28,9 @@
 journal <- function(x, ...) UseMethod("journal")
 
 #' @export
-journal.Future <- function(x, baseline = NULL, ...) {
+journal.Future <- function(x, ...) {
   data <- x$.journal
-  stop_if_not(
-    inherits(data, "FutureJournal"),
-    is.null(baseline) || (length(baseline) == 1L && inherits(baseline, "POSIXct"))
-  )
+  stop_if_not(inherits(data, "FutureJournal"))
 
   session_uuid <- rep(x$owner, times = nrow(data))
   
@@ -50,8 +47,10 @@ journal.Future <- function(x, baseline = NULL, ...) {
     stop_if_not(inherits(data, "FutureJournal"))
   }
 
+  ## Find relative time zero
+  baseline <- min(data$start, na.rm = TRUE)
+
   ## Append 'at' and 'duration'
-  if (is.null(baseline)) baseline <- data$start[1]
   data$at <- data$start - baseline
   data$duration <- data$stop - data$start
   data$stop <- NULL
@@ -73,23 +72,36 @@ journal.Future <- function(x, baseline = NULL, ...) {
 
 #' @export
 journal.FutureJournal <- function(x, baseline = NULL, ...) {
+  ## Reset relative time zero?
   if (!is.null(baseline)) {
-    x$at <- x$at - baseline
+    if (isTRUE(baseline)) baseline <- min(x$start, na.rm = TRUE)
+    x$at <- x$start - baseline
   }
   x
 }
 
 #' @export
-journal.list <- function(x, index = seq_along(x), ...) {
+journal.list <- function(x, index = seq_along(x), baseline = TRUE, ...) {
+  ## Reset relative time zero to the first observed timestamp?
+  if (isTRUE(baseline)) {
+    stop_if_not(baseline >= 1L, baseline <= length(x))
+    x <- lapply(x, FUN = journal, ...)
+    start <- lapply(x, FUN = function(x) min(x$start, na.rm = TRUE))
+    start <- Reduce(c, start)
+    baseline <- min(start, na.rm = TRUE)
+  }
+  
+  js <- lapply(x, FUN = journal, baseline = baseline, ...)
+
+  ## Add index?
   if (!is.null(index)) {
     stop_if_not(length(index) == length(x))
-    x <- lapply(index, FUN = function(idx) {
-      journal <- journal(x[[idx]], ...)
-      stop_if_not(inherits(journal, "FutureJournal"))
-      cbind(index = idx, journal)
+    js <- lapply(index, FUN = function(idx) {
+      cbind(index = idx, js[[idx]])
     })
   }
-  Reduce(rbind, x)
+  
+  Reduce(rbind, js)
 }
 
 
