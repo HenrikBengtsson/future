@@ -213,6 +213,8 @@ makeExpression <- local({
         visible = NULL,
         conditions = ...future.conditions,
         rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
+        started = ...future.startTime,
+        finished = Sys.time(),
         version = "1.8"
       ), class = "FutureResult")
     }, finally = .(exit))

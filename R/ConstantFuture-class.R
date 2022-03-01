@@ -12,7 +12,12 @@
 #' @keywords internal
 ConstantFuture <- function(..., globals = TRUE, envir = emptyenv()) {
   future <- Future(..., globals = list(), envir = envir)
-  future$result <- FutureResult(value = eval(future$expr, envir = envir))
+  t_start <- Sys.time()
+  future$result <- FutureResult(
+    value = eval(future$expr, envir = envir),
+    started = t_start,
+    finished = t_start
+  )
   future$state <- "finished"
   future <- structure(future, class = c("ConstantFuture", class(future)))
   future
