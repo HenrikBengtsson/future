@@ -119,8 +119,8 @@ run.ClusterFuture <- function(future, ...) {
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
-
   ## Next available cluster node
+  t_start <- Sys.time()
   node_idx <- requestNode(await = function() {
     FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
   }, workers = workers)
@@ -128,6 +128,12 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Cluster node to use
   cl <- workers[node_idx]
+  
+  appendToFutureJournal(future,
+    step = "getWorker",
+    start = t_start,
+    stop = Sys.time()
+  )
 
 
   ## (i) Reset global environment of cluster node such that
@@ -135,7 +141,13 @@ run.ClusterFuture <- function(future, ...) {
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
   if (!persistent) {
+    t_start <- Sys.time()
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
+    appendToFutureJournal(future,
+      step = "eraseWorker",
+      start = t_start,
+      stop = Sys.time()
+    )
   }
 
 
@@ -143,6 +155,7 @@ run.ClusterFuture <- function(future, ...) {
   ##      NOTE: Already take care of by getExpression() of the Future class.
   ##      However, if we need to get an early error about missing packages,
   ##      we can get the error here before launching the future.
+  t_start <- Sys.time()
   packages <- packages(future)
   if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ...",
@@ -153,11 +166,16 @@ run.ClusterFuture <- function(future, ...) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ... DONE",
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
-  
+  appendToFutureJournal(future,
+    step = "attachPackages",
+    start = t_start,
+    stop = Sys.time()
+  )
 
   ## (iii) Export globals
   globals <- globals(future)
   if (length(globals) > 0) {
+    t_start <- Sys.time()
     if (debug) {
       total_size <- asIEC(objectSize(globals))
       mdebugf("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
@@ -180,6 +198,11 @@ run.ClusterFuture <- function(future, ...) {
       value <- NULL
     }
     if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
+    appendToFutureJournal(future,
+      step = "exportGlobals",
+      start = t_start,
+      stop = Sys.time()
+    )
   }
   ## Not needed anymore
   globals <- NULL

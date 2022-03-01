@@ -73,10 +73,19 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
+  ## Get a free worker
+  t_start <- Sys.time()
+  
   reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
     await = function() FutureRegistry(reg, action = "collect-first", earlySignal = TRUE),
     workers = future$workers
+  )
+
+  appendToFutureJournal(future,
+    step = "getWorker",
+    start = t_start,
+    stop = Sys.time()
   )
 
   ## Add to registry
