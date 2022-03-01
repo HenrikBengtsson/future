@@ -173,3 +173,21 @@ appendToFutureJournal <- function(x, step, start = Sys.time(), stop = as.POSIXct
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }
+
+
+
+#' @rdname FutureCondition
+#' @export
+FutureJournalCondition <- function(message, journal, call = NULL, uuid = future$uuid, future = NULL) {
+  stop_if_not(inherits(journal, "FutureJournal"))
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
+  cond$journal <- journal
+  class <- c("FutureJournalCondition", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+#' @export
+journal.FutureJournalCondition <- function(x, ...) {
+  x$journal
+}

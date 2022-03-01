@@ -466,7 +466,8 @@ run <- function(future, ...) {
 #' @keywords internal
 result <- function(future, ...) {
   ## Automatically update journal entries for Future object
-  if (inherits(future, "Future")) {
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
     start <- Sys.time()
     on.exit({
       appendToFutureJournal(future,
@@ -474,6 +475,14 @@ result <- function(future, ...) {
         start = start,
         stop = Sys.time()
       )
+
+      ## Signal FutureJournalCondition
+      journal <- journal(future)
+      label <- future$label
+      if (is.null(label)) label <- "<none>"
+      msg <- sprintf("A future ('%s') of class %s was resolved", label, class(future)[1])
+      cond <- FutureJournalCondition(message = msg, journal = journal) 
+     signalCondition(cond)
     })
   }
   UseMethod("result")
