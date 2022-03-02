@@ -159,6 +159,10 @@
 <h4 id="significant-changes-1-24-0-9001">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0-9001"></a></h4>
 <ul><li>R options and environment variables are now reset on the workers after future is resolved so that any changes to them have no effect later on.</li>
 </ul></div>
+<div class="section level4">
+<h4 id="performance-1-24-0-9001">Performance<a class="anchor" aria-label="anchor" href="#performance-1-24-0-9001"></a></h4>
+<ul><li>Decrease the default wait time between polls from 0.2 to 0.1 seconds, which can be overridden by an R option, cf. help(“future.options”). Now resolve() respects this option (previously it was hardcoded to 0.1 seconds).</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.24.0" id="future-1240">future 1.24.0<small>2022-02-19</small><a class="anchor" aria-label="anchor" href="#future-1240"></a></h2>

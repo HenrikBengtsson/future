@@ -426,84 +426,106 @@ The value of a is 42.</code></pre>
 <h2 id="miscellaneous">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous"></a>
 </h2>
 <div class="section level3">
+<h3 id="capturing-errors-outputting-their-messages-and-returning-a-default-value">Capturing errors, outputting their messages, and returning a default value<a class="anchor" aria-label="anchor" href="#capturing-errors-outputting-their-messages-and-returning-a-default-value"></a>
+</h3>
+<p>Sometimes a function call produce an error for a particular input. In such cases, we might want to return a default value, say, a missing value, instead of signaling an error. This can be done using:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="fu">unstable_calc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span>
+  <span class="cn">NA_real_</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>Here, <code>res</code> takes the value of <code>unstable_calc(x)</code>, unless it produces an error, in case it takes value <code>NA_real_</code>.</p>
+<p>In addition to the above, we could produce a warning whenever we get an error and replace it with a missing value. We can do this as:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="fu">unstable_calc</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+<span class="op">}</span>, error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditionMessage</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span>
+  <span class="cn">NA_real_</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
+<p>This will turn the error into a warning with the same message. If we want to just output the message without producing a warning, we can use <code>message(conditionMessage(e))</code>.</p>
+<p>Importantly, we must not use just <code>warning(e)</code> or <code>message(e)</code>, although it appears to work at a first glance. If we do, we will end up re-signaling the error but without interruption. It is an important distinction that will reveal itself if used within futures. The above example with <code>warning(conditionMessage(e))</code> will work as expected, but if we use <code>warning(e)</code> the future framework will produce an error, not a warning.</p>
+</div>
+<div class="section level3">
 <h3 id="clashes-with-other-packages">Clashes with other packages<a class="anchor" aria-label="anchor" href="#clashes-with-other-packages"></a>
 </h3>
 <p>Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached <em>after</em> the future package, their objects will mask the ones of the future package. For instance, the igraph package also defines a <code>%&lt;-%</code> operator which clashes with the one in future <em>if used at the prompt or in a script</em> (it is not a problem inside package because there we explicitly import objects in a known order). Here is what we might get:</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'igraph'</span></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:future'</span><span class="sc">:</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">%&lt;-%</span>, <span class="sc">%-&gt;%</span></span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:stats'</span><span class="sc">:</span></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    decompose, spectrum</span>
-<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>The following object is masked from <span class="st">'package:base'</span><span class="sc">:</span></span>
-<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    union</span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
-<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">get</span>(<span class="st">".igraph.from"</span>, <span class="fu">parent.frame</span>()) <span class="sc">:</span> </span>
-<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  object <span class="st">'.igraph.from'</span> not found</span></code></pre></div>
-<p>Here we get an error because <code>%&lt;-%</code> is from igraph and not the future assignment operator as we wanted. This can be confirmed as:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">environment</span>(<span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>environment<span class="sc">:</span> namespace<span class="sc">:</span>igraph<span class="sc">&gt;</span></span></code></pre></div>
-<p>To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'future'</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'igraph'</span></span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:igraph'</span><span class="sc">:</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:future'</span><span class="sc">:</span></span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="sc">%&lt;-%</span>, <span class="sc">%-&gt;%</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="sc">%&lt;-%</span>, <span class="sc">%-&gt;%</span></span>
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:stats'</span><span class="sc">:</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>    decompose, spectrum</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>The following object is masked from <span class="st">'package:base'</span><span class="sc">:</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    union</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">get</span>(<span class="st">".igraph.from"</span>, <span class="fu">parent.frame</span>()) <span class="sc">:</span> </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  object <span class="st">'.igraph.from'</span> not found</span></code></pre></div>
+<p>Here we get an error because <code>%&lt;-%</code> is from igraph and not the future assignment operator as we wanted. This can be confirmed as:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">environment</span>(<span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>environment<span class="sc">:</span> namespace<span class="sc">:</span>igraph<span class="sc">&gt;</span></span></code></pre></div>
+<p>To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'future'</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>The following objects are masked from <span class="st">'package:igraph'</span><span class="sc">:</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="sc">%&lt;-%</span>, <span class="sc">%-&gt;%</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
 <p>An alternative is to detach the future package and re-attach it, which will achieve the same thing:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">detach</span>(<span class="st">"package:future"</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">detach</span>(<span class="st">"package:future"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span></code></pre></div>
 <p>Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span> <span class="ot">&lt;-</span> future<span class="sc">::</span><span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span> <span class="ot">&lt;-</span> future<span class="sc">::</span><span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
 <p>In this case, it does not matter in what order the packages are attached because we will always use the copy of <code><a href="../reference/future.html">future::`%&lt;-%`</a></code>.</p>
 </div>
 <div class="section level3">
 <h3 id="syntax-error-non-numeric-argument-to-binary-operator">Syntax error: “non-numeric argument to binary operator”<a class="anchor" aria-label="anchor" href="#syntax-error-non-numeric-argument-to-binary-operator"></a>
 </h3>
 <p>The future assignment operator <code>%&lt;-%</code> is a <em>binary infix operator</em>, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R. For instance, this explains why we get the following error:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> x <span class="sc">%&lt;-%</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to binary operator</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> x <span class="sc">%&lt;-%</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to binary operator</span></code></pre></div>
 <p>What effectively is happening here is that because of the higher priority of <code>%&lt;-%</code>, we first create a future <code>x %&lt;-% 2</code> and then we try to multiply the future (not its value) with the value of <code>runif(1)</code> - which makes no sense. In order to properly assign the future variable, we need to put the future expression within curly brackets;</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> { <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) }</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">1.030209</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> { <span class="dv">2</span> <span class="sc">*</span> <span class="fu">runif</span>(<span class="dv">1</span>) }</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">1.030209</span></span></code></pre></div>
 <p>Parentheses will also do. For details on precedence on operators in R, see Section ‘Infix and prefix operators’ in the ‘R Language Definition’ document.</p>
 </div>
 <div class="section level3">
 <h3 id="r-cmd-check-notes">R CMD check NOTEs<a class="anchor" aria-label="anchor" href="#r-cmd-check-notes"></a>
 </h3>
 <p>The code inspection run by <code>R CMD check</code> will not recognize the future assignment operator <code>%&lt;-%</code> as an assignment operator, which is not surprising because <code>%&lt;-%</code> is technically an infix operator. This means that if you for instance use the following code in your package:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span>
   <span class="va">a</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span>
   <span class="va">a</span>
 <span class="op">}</span></code></pre></div>
 <p>then <code>R CMD check</code> will produce a NOTE saying:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> checking R code for possible problems ... NOTE</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="ex">foo:</span> no visible binding for global variable <span class="st">'a'</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Undefined</span> global functions or variables:</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">a</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> checking R code for possible problems ... NOTE</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="ex">foo:</span> no visible binding for global variable <span class="st">'a'</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Undefined</span> global functions or variables:</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">a</span></span></code></pre></div>
 <p>In order to avoid this, we can add a dummy assignment of the missing global at the top of the function, i.e.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">a</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co">## To please R CMD check</span>
   <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span>
