@@ -476,13 +476,16 @@ result <- function(future, ...) {
         stop = Sys.time()
       )
 
-      ## Signal FutureJournalCondition
-      journal <- journal(future)
-      label <- future$label
-      if (is.null(label)) label <- "<none>"
-      msg <- sprintf("A future ('%s') of class %s was resolved", label, class(future)[1])
-      cond <- FutureJournalCondition(message = msg, journal = journal) 
-     signalCondition(cond)
+      ## Signal FutureJournalCondition?
+      if (!isTRUE(future$.journal_signalled)) {
+        journal <- journal(future)
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        msg <- sprintf("A future ('%s') of class %s was resolved", label, class(future)[1])
+        cond <- FutureJournalCondition(message = msg, journal = journal) 
+        signalCondition(cond)
+        future$.journal_signalled <- TRUE
+      }
     })
   }
   UseMethod("result")
