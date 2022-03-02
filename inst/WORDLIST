@@ -453,3 +453,5 @@ lpdf
 socketOptions
 stan
 stanfit
+calc
+conditionMessage
