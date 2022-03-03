@@ -67,10 +67,17 @@ journal.Future <- function(x, ...) {
   data$future_label <- if (is.null(x$label)) NA_character_ else x$label
 
   ## Append future UUID
-  data$future_uuid <- x$uuid
+  data$future_uuid <- as.factor(x$uuid)
 
   ## Append session UUID
-  data$session_uuid <- session_uuid
+  data$session_uuid <- as.factor(session_uuid)
+
+  ## Coerce 'step' to a factor
+  known_levels <- c("lifespan", "create", "launch", "resolved", "gather", "evaluate")
+  extra_levels <- c("attachPackages", "eraseWorker", "exportGlobals", "getWorker")
+  other_levels <- sort(setdiff(data$step, known_levels))
+  levels <- c(known_levels, other_levels)
+  data$step <- factor(data$step, levels = levels)
 
   ## Sort by relative start time
   if (nrow(data) > 1L) data <- data[order(data$at), ]
