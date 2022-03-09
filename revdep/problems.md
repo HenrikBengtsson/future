@@ -6,7 +6,7 @@
 * GitHub: https://github.com/yqzhong7/AIPW
 * Source code: https://github.com/cran/AIPW
 * Date/Publication: 2021-06-11 09:30:02 UTC
-* Number of recursive dependencies: 95
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "AIPW")` for more info
 
@@ -30,7 +30,7 @@ Run `revdep_details(, "AIPW")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/AlpsNMR
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 164
+* Number of recursive dependencies: 167
 
 Run `revdep_details(, "AlpsNMR")` for more info
 
@@ -103,7 +103,7 @@ Run `revdep_details(, "BAMBI")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/BatchGetSymbols
 * Date/Publication: 2020-11-28 15:10:21 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "BatchGetSymbols")` for more info
 
@@ -124,7 +124,7 @@ Run `revdep_details(, "BatchGetSymbols")` for more info
 * GitHub: https://github.com/bcgov/bcmaps
 * Source code: https://github.com/cran/bcmaps
 * Date/Publication: 2021-03-09 23:40:03 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 129
 
 Run `revdep_details(, "bcmaps")` for more info
 
@@ -175,7 +175,7 @@ Run `revdep_details(, "BEKKs")` for more info
 * GitHub: https://github.com/spatialstatisticsupna/bigDM
 * Source code: https://github.com/cran/bigDM
 * Date/Publication: 2022-02-08 15:40:10 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 125
 
 Run `revdep_details(, "bigDM")` for more info
 
@@ -201,7 +201,7 @@ Run `revdep_details(, "bigDM")` for more info
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
 * Date/Publication: 2022-01-13 23:12:41 UTC
-* Number of recursive dependencies: 85
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "bistablehistory")` for more info
 
@@ -293,7 +293,7 @@ Run `revdep_details(, "blockCV")` for more info
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
 * Date/Publication: 2021-11-22 19:50:02 UTC
-* Number of recursive dependencies: 216
+* Number of recursive dependencies: 214
 
 Run `revdep_details(, "brms")` for more info
 
@@ -322,7 +322,7 @@ Run `revdep_details(, "brms")` for more info
 * GitHub: https://github.com/saiemgilani/cfbfastR
 * Source code: https://github.com/cran/cfbfastR
 * Date/Publication: 2021-10-27 12:30:02 UTC
-* Number of recursive dependencies: 108
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "cfbfastR")` for more info
 
@@ -415,7 +415,7 @@ Run `revdep_details(, "ChromSCape")` for more info
 * GitHub: https://github.com/civisanalytics/civis-r
 * Source code: https://github.com/cran/civis
 * Date/Publication: 2020-06-22 18:00:02 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "civis")` for more info
 
@@ -491,7 +491,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/adsoncostanzifilho/CSGo
 * Source code: https://github.com/cran/CSGo
 * Date/Publication: 2021-05-07 18:50:02 UTC
-* Number of recursive dependencies: 70
+* Number of recursive dependencies: 74
 
 Run `revdep_details(, "CSGo")` for more info
 
@@ -514,7 +514,7 @@ Run `revdep_details(, "CSGo")` for more info
 * GitHub: https://github.com/frictionlessdata/datapackage-r
 * Source code: https://github.com/cran/datapackage.r
 * Date/Publication: 2022-01-11 10:22:47 UTC
-* Number of recursive dependencies: 116
+* Number of recursive dependencies: 118
 
 Run `revdep_details(, "datapackage.r")` for more info
 
@@ -613,7 +613,7 @@ Run `revdep_details(, "dipsaus")` for more info
 * GitHub: https://github.com/marcozanotti/dispositionEffect
 * Source code: https://github.com/cran/dispositionEffect
 * Date/Publication: 2021-08-02 07:50:02 UTC
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 120
 
 Run `revdep_details(, "dispositionEffect")` for more info
 
@@ -654,7 +654,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
 * GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
 * Date/Publication: 2021-07-07 17:30:10 UTC
-* Number of recursive dependencies: 138
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "dragon")` for more info
 
@@ -698,7 +698,7 @@ Run `revdep_details(, "easyalluvial")` for more info
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
 * Date/Publication: 2021-03-27 08:40:42 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 90
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -751,7 +751,7 @@ Run `revdep_details(, "envi")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 153
+* Number of recursive dependencies: 157
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -815,7 +815,7 @@ Run `revdep_details(, "epitweetr")` for more info
 * GitHub: https://github.com/italocegatta/fipe
 * Source code: https://github.com/cran/fipe
 * Date/Publication: 2019-08-25 07:20:06 UTC
-* Number of recursive dependencies: 62
+* Number of recursive dependencies: 66
 
 Run `revdep_details(, "fipe")` for more info
 
@@ -836,7 +836,7 @@ Run `revdep_details(, "fipe")` for more info
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 83
+* Number of recursive dependencies: 87
 
 Run `revdep_details(, "flowGraph")` for more info
 
@@ -849,13 +849,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    12:34:41-12:34:41 > 16:00:00
+    07:53:34-07:53:34 > 16:00:00
     - 24 pops @ layer 2
-    12:34:41-12:34:41 > 16:00:00
+    07:53:34-07:53:34 > 16:00:00
     - 32 pops @ layer 3
-    12:34:41-12:34:41 > 16:00:00
+    07:53:34-07:53:34 > 16:00:00
     - 16 pops @ layer 4
-    12:34:41-12:34:41 > 16:00:00
+    07:53:34-07:53:34 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -891,7 +891,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 135
+* Number of recursive dependencies: 139
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -899,68 +899,13 @@ Run `revdep_details(, "foieGras")` for more info
 
 ## In both
 
-*   checking whether package ‘foieGras’ can be installed ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/00install.out’ for details.
+      installed size is 40.9Mb
+      sub-directories of 1Mb or more:
+        libs  40.0Mb
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘foieGras’ ...
-** package ‘foieGras’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
-                 from foieGras.cpp:2:
-/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
-...
-TMB was built with Matrix version 1.3.4
-Current Matrix version is 1.4.0
-Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
-  libproj.so.12: cannot open shared object file: No such file or directory
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘foieGras’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/new/foieGras.Rcheck/foieGras’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘foieGras’ ...
-** package ‘foieGras’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include' -I'/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c foieGras.cpp -o foieGras.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/foieGras/TMB/include/TMB.hpp:58,
-                 from foieGras.cpp:2:
-/c4/home/henrik/repositories/future/revdep/library/foieGras/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:60:39: warning: ignoring attributes on template argument ‘__m128’ {aka ‘__vector(4) float’} [-Wignored-attributes]
-...
-TMB was built with Matrix version 1.3.4
-Current Matrix version is 1.4.0
-Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
-Error in dyn.load(file, DLLpath = DLLpath, ...) : 
-  unable to load shared object '/c4/home/henrik/repositories/future/revdep/library/foieGras/proj4/libs/proj4.so':
-  libproj.so.12: cannot open shared object file: No such file or directory
-Calls: <Anonymous> ... asNamespace -> loadNamespace -> library.dynam -> dyn.load
-Execution halted
-ERROR: lazy loading failed for package ‘foieGras’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/foieGras/old/foieGras.Rcheck/foieGras’
-
-
-```
 # forecastML
 
 <details>
@@ -969,7 +914,7 @@ ERROR: lazy loading failed for package ‘foieGras’
 * GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 96
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "forecastML")` for more info
 
@@ -1022,7 +967,7 @@ Run `revdep_details(, "geocmeans")` for more info
 * GitHub: https://github.com/msperlin/GetBCBData
 * Source code: https://github.com/cran/GetBCBData
 * Date/Publication: 2021-01-21 17:40:07 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "GetBCBData")` for more info
 
@@ -1050,7 +995,7 @@ Run `revdep_details(, "GetBCBData")` for more info
 * GitHub: https://github.com/cloudyr/googleComputeEngineR
 * Source code: https://github.com/cran/googleComputeEngineR
 * Date/Publication: 2019-05-04 22:40:02 UTC
-* Number of recursive dependencies: 66
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "googleComputeEngineR")` for more info
 
@@ -1071,7 +1016,7 @@ Run `revdep_details(, "googleComputeEngineR")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/googleTagManageR
 * Date/Publication: 2020-10-05 13:20:10 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 70
 
 Run `revdep_details(, "googleTagManageR")` for more info
 
@@ -1094,7 +1039,7 @@ Run `revdep_details(, "googleTagManageR")` for more info
 * GitHub: https://github.com/HughParsonage/grattan
 * Source code: https://github.com/cran/grattan
 * Date/Publication: 2022-01-10 01:02:41 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "grattan")` for more info
 
@@ -1123,7 +1068,7 @@ Run `revdep_details(, "grattan")` for more info
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
 * Date/Publication: 2021-05-10 06:50:03 UTC
-* Number of recursive dependencies: 115
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1151,7 +1096,7 @@ Run `revdep_details(, "greed")` for more info
 * GitHub: https://github.com/greta-dev/greta
 * Source code: https://github.com/cran/greta
 * Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 152
+* Number of recursive dependencies: 154
 
 Run `revdep_details(, "greta")` for more info
 
@@ -1162,6 +1107,47 @@ Run `revdep_details(, "greta")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# gtfs2gps
+
+<details>
+
+* Version: 2.0-1
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2022-03-05 14:00:02 UTC
+* Number of recursive dependencies: 90
+
+Run `revdep_details(, "gtfs2gps")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘intro_to_gtfs2gps.Rmd’ using rmarkdown
+    Writing text files to /scratch/henrik/437810/RtmpSekCkU/gtfsio26a641b4b3c95
+      - Writing agency.txt
+      - Writing calendar.txt
+      - Writing routes.txt
+      - Writing shapes.txt
+      - Writing stop_times.txt
+      - Writing stops.txt
+      - Writing trips.txt
+    ...
+     (ProxyConnectException "latex.codecogs.com" 443 (Status {statusCode = 503, statusMessage = "Service Unavailable"}))
+    Error: processing vignette 'intro_to_gtfs2gps.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 61
+    --- failed re-building ‘intro_to_gtfs2gps.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘intro_to_gtfs2gps.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # gWQS
@@ -1194,7 +1180,7 @@ Run `revdep_details(, "gWQS")` for more info
 * GitHub: https://github.com/szymanskir/hackeRnews
 * Source code: https://github.com/cran/hackeRnews
 * Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "hackeRnews")` for more info
 
@@ -1215,7 +1201,7 @@ Run `revdep_details(, "hackeRnews")` for more info
 * GitHub: https://github.com/tlverse/hal9001
 * Source code: https://github.com/cran/hal9001
 * Date/Publication: 2022-02-09 22:50:02 UTC
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 96
 
 Run `revdep_details(, "hal9001")` for more info
 
@@ -1238,7 +1224,7 @@ Run `revdep_details(, "hal9001")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/hwep
 * Date/Publication: 2021-09-28 10:30:02 UTC
-* Number of recursive dependencies: 65
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "hwep")` for more info
 
@@ -1260,7 +1246,7 @@ Run `revdep_details(, "hwep")` for more info
 * GitHub: https://github.com/christophM/iml
 * Source code: https://github.com/cran/iml
 * Date/Publication: 2020-09-24 12:30:14 UTC
-* Number of recursive dependencies: 165
+* Number of recursive dependencies: 168
 
 Run `revdep_details(, "iml")` for more info
 
@@ -1282,7 +1268,7 @@ Run `revdep_details(, "iml")` for more info
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
 * Date/Publication: 2021-11-08
-* Number of recursive dependencies: 132
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1376,7 +1362,7 @@ Run `revdep_details(, "ipc")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 107
+* Number of recursive dependencies: 111
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1441,7 +1427,7 @@ Run `revdep_details(, "keyATM")` for more info
 * GitHub: https://github.com/kkholst/lava
 * Source code: https://github.com/cran/lava
 * Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "lava")` for more info
 
@@ -1470,6 +1456,56 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘lidR-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: its_dalponte2016
+    > ### Title: Individual Tree Segmentation Algorithm
+    > ### Aliases: its_dalponte2016 dalponte2016
+    > 
+    > ### ** Examples
+    > 
+    > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+    ...
+    > chm <- rasterize_canopy(las, 0.5, p2r(0.3), pkg = "raster")
+    > ker <- matrix(1,3,3)
+    > chm <- raster::focal(chm, w = ker, fun = mean, na.rm = TRUE)
+    > 
+    > ttops <- locate_trees(chm, lmf(4, 2))
+    > las   <- segment_trees(las, dalponte2016(chm, ttops))
+    Error in geos_op2_geom("intersection", x, y, ...) : 
+      st_crs(x) == st_crs(y) is not TRUE
+    Calls: segment_trees ... st_intersection.sf -> geos_op2_df -> geos_op2_geom -> stopifnot
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+       3.   └─lidR algorithm(st_bbox(las))
+       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       5.       └─lidR:::raster_crop(chm, bbox)
+       6.         ├─sf::st_crop(raster, bbox)
+       7.         └─stars:::st_crop.stars(raster, bbox)
+      ── Error (test-segment_trees.R:147:3): Silva algorithm works with sfc ──────────
+    ...
+        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
+        8.   └─lidR algorithm(st_bbox(las))
+        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       10.       └─lidR:::raster_crop(chm, bbox)
+       11.         ├─sf::st_crop(raster, bbox)
+       12.         └─stars:::st_crop.stars(raster, bbox)
+      
+      [ FAIL 20 | WARN 5 | SKIP 40 | PASS 1345 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is 15.8Mb
@@ -1488,7 +1524,7 @@ Run `revdep_details(, "lidR")` for more info
 * GitHub: https://github.com/nt-williams/lmtp
 * Source code: https://github.com/cran/lmtp
 * Date/Publication: 2021-09-29 07:10:07 UTC
-* Number of recursive dependencies: 109
+* Number of recursive dependencies: 113
 
 Run `revdep_details(, "lmtp")` for more info
 
@@ -1511,7 +1547,7 @@ Run `revdep_details(, "lmtp")` for more info
 * GitHub: https://github.com/KechrisLab/MAI
 * Source code: https://github.com/cran/MAI
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 160
+* Number of recursive dependencies: 162
 
 Run `revdep_details(, "MAI")` for more info
 
@@ -1699,9 +1735,9 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    l.23 \usepackage
-                    {subfig}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Peer's Certificate issuer is not recognized.
+    
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -1719,7 +1755,7 @@ Run `revdep_details(, "MineICA")` for more info
 * GitHub: https://github.com/grossSBM/missSBM
 * Source code: https://github.com/cran/missSBM
 * Date/Publication: 2022-02-01 16:00:20 UTC
-* Number of recursive dependencies: 104
+* Number of recursive dependencies: 108
 
 Run `revdep_details(, "missSBM")` for more info
 
@@ -1767,7 +1803,7 @@ Run `revdep_details(, "momentuHMM")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/onemapsgapi
 * Date/Publication: 2020-02-06 11:00:02 UTC
-* Number of recursive dependencies: 62
+* Number of recursive dependencies: 66
 
 Run `revdep_details(, "onemapsgapi")` for more info
 
@@ -1788,11 +1824,38 @@ Run `revdep_details(, "onemapsgapi")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "OOS")` for more info
 
 </details>
+
+## Newly broken
+
+*   checking re-building of vignette outputs ...sh: line 1: 201482 Segmentation fault      (core dumped) '/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/bin/R' --vanilla --no-echo > '/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/build_vignettes.log' 2>&1 < '/scratch/henrik/437810/RtmprfTwew/file311347aa70545'
+    ```
+     WARNING
+    Error(s) in re-building vignettes:
+    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
+    
+     *** caught segfault ***
+    address 0x4, cause 'memory not mapped'
+    
+    Traceback:
+     1: gc(FALSE)
+     2: system.time(finalModel <- createModel(x = subset_x(x, indexFinal),     y = y[indexFinal], wts = weights[indexFinal], method = models,     tuneValue = bestTune, obsLevels = classLevels, pp = ppOpt,     last = TRUE, classProbs = trControl$classProbs, sampling = trControl$sampling,     ...))
+    ...
+    56: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet)
+    57: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv(),     output_dir = getwd(), ...)
+    58: vweave_rmarkdown(...)
+    59: engine$weave(file, quiet = quiet, encoding = enc)
+    60: doTryCatch(return(expr), name, parentenv, handler)
+    61: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+    62: tryCatchList(expr, classes, parentenv, handlers)
+    63: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    output <- find_vignette_product(name, by = "weave", engine = engine)    if (!have.makefile && vignette_is_tex(output)) {        texi2pdf(file = output, clean = FALSE, quiet = quiet)        output <- find_vignette_product(name, by = "texi2pdf",             engine = engine)    }    outputs <- c(outputs, output)}, error = function(e) {    thisOK <<- FALSE    fails <<- c(fails, file)    message(gettextf("Error: processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)))})
+    64: tools:::buildVignettes(dir = "/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/vign_test/OOS",     ser_elibs = "/scratch/henrik/437810/RtmprfTwew/file3113462cf3922.rds")
+    An irrecoverable exception occurred. R is aborting now ...
+    ```
 
 ## In both
 
@@ -1809,7 +1872,7 @@ Run `revdep_details(, "OOS")` for more info
 * GitHub: https://github.com/mastoffel/partR2
 * Source code: https://github.com/cran/partR2
 * Date/Publication: 2021-01-18 16:30:04 UTC
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "partR2")` for more info
 
@@ -1831,7 +1894,7 @@ Run `revdep_details(, "partR2")` for more info
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
 * Date/Publication: 2021-09-21 13:10:21 UTC
-* Number of recursive dependencies: 83
+* Number of recursive dependencies: 87
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -1854,7 +1917,7 @@ Run `revdep_details(, "pavo")` for more info
 * GitHub: https://github.com/cdmuir/photosynthesis
 * Source code: https://github.com/cran/photosynthesis
 * Date/Publication: 2021-07-01 04:30:02 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 104
 
 Run `revdep_details(, "photosynthesis")` for more info
 
@@ -1954,7 +2017,7 @@ Run `revdep_details(, "PLNmodels")` for more info
 * GitHub: https://github.com/rstudio/plumber
 * Source code: https://github.com/cran/plumber
 * Date/Publication: 2021-03-24 05:10:02 UTC
-* Number of recursive dependencies: 77
+* Number of recursive dependencies: 81
 
 Run `revdep_details(, "plumber")` for more info
 
@@ -1975,7 +2038,7 @@ Run `revdep_details(, "plumber")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 113
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2029,7 +2092,7 @@ Run `revdep_details(, "ppcseq")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ppseq
 * Date/Publication: 2021-09-09 09:00:02 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "ppseq")` for more info
 
@@ -2052,7 +2115,7 @@ Run `revdep_details(, "ppseq")` for more info
 * GitHub: https://github.com/Snitkin-Lab-Umich/prewas
 * Source code: https://github.com/cran/prewas
 * Date/Publication: 2021-04-02 12:20:05 UTC
-* Number of recursive dependencies: 71
+* Number of recursive dependencies: 75
 
 Run `revdep_details(, "prewas")` for more info
 
@@ -2074,7 +2137,7 @@ Run `revdep_details(, "prewas")` for more info
 * GitHub: https://github.com/rstudio/promises
 * Source code: https://github.com/cran/promises
 * Date/Publication: 2021-02-11 19:00:02 UTC
-* Number of recursive dependencies: 63
+* Number of recursive dependencies: 67
 
 Run `revdep_details(, "promises")` for more info
 
@@ -2147,7 +2210,7 @@ Run `revdep_details(, "Prostar")` for more info
 * GitHub: https://github.com/MDRCNY/PUMP
 * Source code: https://github.com/cran/PUMP
 * Date/Publication: 2022-02-09 09:50:05 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 129
 
 Run `revdep_details(, "PUMP")` for more info
 
@@ -2169,7 +2232,7 @@ Run `revdep_details(, "PUMP")` for more info
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
 * Date/Publication: 2021-10-26
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 80
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -2233,7 +2296,7 @@ Run `revdep_details(, "RAINBOWR")` for more info
 * GitHub: https://github.com/kaz-yos/regmedint
 * Source code: https://github.com/cran/regmedint
 * Date/Publication: 2021-05-12 04:30:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 123
 
 Run `revdep_details(, "regmedint")` for more info
 
@@ -2255,7 +2318,7 @@ Run `revdep_details(, "regmedint")` for more info
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
 * Date/Publication: 2021-12-15 22:00:02 UTC
-* Number of recursive dependencies: 148
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "rgee")` for more info
 
@@ -2277,7 +2340,7 @@ Run `revdep_details(, "rgee")` for more info
 * GitHub: https://github.com/ropensci/robotstxt
 * Source code: https://github.com/cran/robotstxt
 * Date/Publication: 2020-09-03 19:30:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "robotstxt")` for more info
 
@@ -2304,7 +2367,7 @@ Run `revdep_details(, "robotstxt")` for more info
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
 * Date/Publication: 2021-11-19 15:10:02 UTC
-* Number of recursive dependencies: 74
+* Number of recursive dependencies: 78
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2391,7 +2454,7 @@ Run `revdep_details(, "sdmApp")` for more info
 * GitHub: https://github.com/thiyangt/seer
 * Source code: https://github.com/cran/seer
 * Date/Publication: 2021-12-08 05:20:02 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 115
 
 Run `revdep_details(, "seer")` for more info
 
@@ -2432,70 +2495,6 @@ Run `revdep_details(, "Seurat")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘Signac’
-    ```
-
-# shar
-
-<details>
-
-* Version: 1.3.1
-* GitHub: https://github.com/r-spatialecology/shar
-* Source code: https://github.com/cran/shar
-* Date/Publication: 2022-01-04 15:30:05 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(, "shar")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘shar-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: calculate_energy
-    > ### Title: calculate_energy
-    > ### Aliases: calculate_energy
-    > 
-    > ### ** Examples
-    > 
-    > pattern_random <- fit_point_process(species_a, n_random = 19)
-    Warning: Unmarked provided input pattern.
-    Error: 'runifpoint' is not an exported object from 'namespace:spatstat.core'
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      Backtrace:
-          ▆
-       1. └─shar::fit_point_process(species_a, n_random = 3, verbose = FALSE) at test-plot_rd_pat.R:3:0
-       2.   └─base::lapply(...)
-       3.     └─shar FUN(X[[i]], ...)
-      ── Error (test-print.R:3:1): (code run outside of `test_that()`) ───────────────
-    ...
-      Error: 'runifpoint' is not an exported object from 'namespace:spatstat.core'
-      Backtrace:
-          ▆
-       1. └─shar::fit_point_process(species_a, n_random = 9, verbose = FALSE) at test-sample_randomized.R:3:0
-       2.   └─base::lapply(...)
-       3.     └─shar FUN(X[[i]], ...)
-      
-      [ FAIL 13 | WARN 0 | SKIP 0 | PASS 36 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... WARNING
-    ```
-    Missing or unexported objects:
-      ‘spatstat.core::rpoint’ ‘spatstat.core::runifpoint’
     ```
 
 # shiny
@@ -2587,7 +2586,7 @@ Run `revdep_details(, "shinyrecap")` for more info
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
 * Date/Publication: 2021-12-15 07:50:02 UTC
-* Number of recursive dependencies: 201
+* Number of recursive dependencies: 204
 
 Run `revdep_details(, "sigminer")` for more info
 
@@ -2657,7 +2656,7 @@ Run `revdep_details(, "skpr")` for more info
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
 * Date/Publication: 2021-07-29 20:00:02 UTC
-* Number of recursive dependencies: 123
+* Number of recursive dependencies: 125
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -2680,7 +2679,7 @@ Run `revdep_details(, "solitude")` for more info
 * GitHub: https://github.com/mikemahoney218/spacey
 * Source code: https://github.com/cran/spacey
 * Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "spacey")` for more info
 
@@ -2760,7 +2759,7 @@ Run `revdep_details(, "sparrpowR")` for more info
 * GitHub: https://github.com/NAU-CCL/SPARSEMODr
 * Source code: https://github.com/cran/SPARSEMODr
 * Date/Publication: 2021-07-01 17:50:02 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "SPARSEMODr")` for more info
 
@@ -2783,7 +2782,7 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 * GitHub: https://github.com/FridleyLab/spatialTIME
 * Source code: https://github.com/cran/spatialTIME
 * Date/Publication: 2021-09-11 04:10:02 UTC
-* Number of recursive dependencies: 116
+* Number of recursive dependencies: 120
 
 Run `revdep_details(, "spatialTIME")` for more info
 
@@ -2837,7 +2836,7 @@ Run `revdep_details(, "spatialwarnings")` for more info
 * GitHub: https://github.com/egarpor/sphunif
 * Source code: https://github.com/cran/sphunif
 * Date/Publication: 2021-09-02 07:40:02 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 72
 
 Run `revdep_details(, "sphunif")` for more info
 
@@ -2865,7 +2864,7 @@ Run `revdep_details(, "sphunif")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2021-10-30 09:50:02 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 151
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -2890,7 +2889,7 @@ Run `revdep_details(, "spNetwork")` for more info
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
 * Date/Publication: 2021-12-19 03:20:02 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 148
 
 Run `revdep_details(, "stars")` for more info
 
@@ -2919,7 +2918,7 @@ Run `revdep_details(, "stars")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
 * Date/Publication: 2022-01-16
-* Number of recursive dependencies: 179
+* Number of recursive dependencies: 181
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -3032,7 +3031,7 @@ Run `revdep_details(, "tableschema.r")` for more info
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
 * Date/Publication: 2021-10-26 14:40:02 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -3055,7 +3054,7 @@ Run `revdep_details(, "targeted")` for more info
 * GitHub: https://github.com/OscarKjell/text
 * Source code: https://github.com/cran/text
 * Date/Publication: 2022-02-12 23:10:02 UTC
-* Number of recursive dependencies: 145
+* Number of recursive dependencies: 148
 
 Run `revdep_details(, "text")` for more info
 
@@ -3100,7 +3099,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 89
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "TriDimRegression")` for more info
 
@@ -3135,7 +3134,7 @@ Run `revdep_details(, "TriDimRegression")` for more info
 * GitHub: https://github.com/robjhyndman/tsfeatures
 * Source code: https://github.com/cran/tsfeatures
 * Date/Publication: 2020-06-07 16:10:02 UTC
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "tsfeatures")` for more info
 
@@ -3156,7 +3155,7 @@ Run `revdep_details(, "tsfeatures")` for more info
 * GitHub: https://github.com/RamiKrispin/TSstudio
 * Source code: https://github.com/cran/TSstudio
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 142
 
 Run `revdep_details(, "TSstudio")` for more info
 
@@ -3178,7 +3177,7 @@ Run `revdep_details(, "TSstudio")` for more info
 * GitHub: https://github.com/nhejazi/txshift
 * Source code: https://github.com/cran/txshift
 * Date/Publication: 2022-02-09 22:30:02 UTC
-* Number of recursive dependencies: 106
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "txshift")` for more info
 
@@ -3223,7 +3222,7 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 * GitHub: https://github.com/dcgerard/updog
 * Source code: https://github.com/cran/updog
 * Date/Publication: 2022-01-24 21:50:02 UTC
-* Number of recursive dependencies: 142
+* Number of recursive dependencies: 145
 
 Run `revdep_details(, "updog")` for more info
 
@@ -3269,7 +3268,7 @@ Run `revdep_details(, "vmeasur")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
 * Date/Publication: 2021-11-30
-* Number of recursive dependencies: 94
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "XNAString")` for more info
 
