@@ -141,10 +141,10 @@ Run `revdep_details(, "bcmaps")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.1.0
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-02-01 16:00:29 UTC
+* Date/Publication: 2022-03-19 00:20:02 UTC
 * Number of recursive dependencies: 81
 
 Run `revdep_details(, "BEKKs")` for more info
@@ -155,9 +155,9 @@ Run `revdep_details(, "BEKKs")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.6Mb
+      installed size is 14.8Mb
       sub-directories of 1Mb or more:
-        libs  10.9Mb
+        libs  14.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -236,7 +236,7 @@ Run `revdep_details(, "bistablehistory")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2022-01-27 21:40:02 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 104
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -849,13 +849,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    07:53:34-07:53:34 > 16:00:00
+    14:24:24-14:24:24 > 16:00:00
     - 24 pops @ layer 2
-    07:53:34-07:53:34 > 16:00:00
+    14:24:24-14:24:24 > 16:00:00
     - 32 pops @ layer 3
-    07:53:34-07:53:34 > 16:00:00
+    14:24:24-14:24:24 > 16:00:00
     - 16 pops @ layer 4
-    07:53:34-07:53:34 > 16:00:00
+    14:24:24-14:24:24 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1064,11 +1064,11 @@ Run `revdep_details(, "grattan")` for more info
 
 <details>
 
-* Version: 0.5.1
+* Version: 0.6.0
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
-* Date/Publication: 2021-05-10 06:50:03 UTC
-* Number of recursive dependencies: 119
+* Date/Publication: 2022-03-18 12:50:02 UTC
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1078,76 +1078,14 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 30.1Mb
+      installed size is 28.3Mb
       sub-directories of 1Mb or more:
-        libs  27.9Mb
+        libs  26.0Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
-      Note: found 6693 marked UTF-8 strings
-    ```
-
-# greta
-
-<details>
-
-* Version: 0.3.1
-* GitHub: https://github.com/greta-dev/greta
-* Source code: https://github.com/cran/greta
-* Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 154
-
-Run `revdep_details(, "greta")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
-# gtfs2gps
-
-<details>
-
-* Version: 2.0-1
-* GitHub: https://github.com/ipeaGIT/gtfs2gps
-* Source code: https://github.com/cran/gtfs2gps
-* Date/Publication: 2022-03-05 14:00:02 UTC
-* Number of recursive dependencies: 90
-
-Run `revdep_details(, "gtfs2gps")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘intro_to_gtfs2gps.Rmd’ using rmarkdown
-    Writing text files to /scratch/henrik/437810/RtmpSekCkU/gtfsio26a641b4b3c95
-      - Writing agency.txt
-      - Writing calendar.txt
-      - Writing routes.txt
-      - Writing shapes.txt
-      - Writing stop_times.txt
-      - Writing stops.txt
-      - Writing trips.txt
-    ...
-     (ProxyConnectException "latex.codecogs.com" 443 (Status {statusCode = 503, statusMessage = "Service Unavailable"}))
-    Error: processing vignette 'intro_to_gtfs2gps.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 61
-    --- failed re-building ‘intro_to_gtfs2gps.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘intro_to_gtfs2gps.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+      Note: found 989 marked UTF-8 strings
     ```
 
 # gWQS
@@ -1735,9 +1673,9 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Peer's Certificate issuer is not recognized.
-    
+    l.23 \usepackage
+                    {subfig}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -1829,33 +1767,6 @@ Run `revdep_details(, "onemapsgapi")` for more info
 Run `revdep_details(, "OOS")` for more info
 
 </details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ...sh: line 1: 201482 Segmentation fault      (core dumped) '/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/bin/R' --vanilla --no-echo > '/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/build_vignettes.log' 2>&1 < '/scratch/henrik/437810/RtmprfTwew/file311347aa70545'
-    ```
-     WARNING
-    Error(s) in re-building vignettes:
-    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
-    
-     *** caught segfault ***
-    address 0x4, cause 'memory not mapped'
-    
-    Traceback:
-     1: gc(FALSE)
-     2: system.time(finalModel <- createModel(x = subset_x(x, indexFinal),     y = y[indexFinal], wts = weights[indexFinal], method = models,     tuneValue = bestTune, obsLevels = classLevels, pp = ppOpt,     last = TRUE, classProbs = trControl$classProbs, sampling = trControl$sampling,     ...))
-    ...
-    56: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet)
-    57: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv(),     output_dir = getwd(), ...)
-    58: vweave_rmarkdown(...)
-    59: engine$weave(file, quiet = quiet, encoding = enc)
-    60: doTryCatch(return(expr), name, parentenv, handler)
-    61: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    62: tryCatchList(expr, classes, parentenv, handlers)
-    63: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    output <- find_vignette_product(name, by = "weave", engine = engine)    if (!have.makefile && vignette_is_tex(output)) {        texi2pdf(file = output, clean = FALSE, quiet = quiet)        output <- find_vignette_product(name, by = "texi2pdf",             engine = engine)    }    outputs <- c(outputs, output)}, error = function(e) {    thisOK <<- FALSE    fails <<- c(fails, file)    message(gettextf("Error: processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)))})
-    64: tools:::buildVignettes(dir = "/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/vign_test/OOS",     ser_elibs = "/scratch/henrik/437810/RtmprfTwew/file3113462cf3922.rds")
-    An irrecoverable exception occurred. R is aborting now ...
-    ```
 
 ## In both
 
@@ -2310,14 +2221,36 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
+# remiod
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/xsswang/remiod
+* Source code: https://github.com/cran/remiod
+* Date/Publication: 2022-03-14 08:50:02 UTC
+* Number of recursive dependencies: 125
+
+Run `revdep_details(, "remiod")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘reshape2’
+      All declared Imports should be used.
+    ```
+
 # rgee
 
 <details>
 
-* Version: 1.1.2
+* Version: 1.1.3
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2021-12-15 22:00:02 UTC
+* Date/Publication: 2022-03-16 15:50:02 UTC
 * Number of recursive dependencies: 150
 
 Run `revdep_details(, "rgee")` for more info
@@ -2325,6 +2258,13 @@ Run `revdep_details(, "rgee")` for more info
 </details>
 
 ## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  8.2Mb
+      sub-directories of 1Mb or more:
+        doc   7.0Mb
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2468,6 +2408,41 @@ Run `revdep_details(, "seer")` for more info
       All declared Imports should be used.
     ```
 
+# sentopics
+
+<details>
+
+* Version: 0.6.2
+* GitHub: https://github.com/odelmarcelle/sentopics
+* Source code: https://github.com/cran/sentopics
+* Date/Publication: 2022-03-15 13:50:02 UTC
+* Number of recursive dependencies: 145
+
+Run `revdep_details(, "sentopics")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 13.8Mb
+      sub-directories of 1Mb or more:
+        data   1.2Mb
+        doc    7.4Mb
+        libs   4.7Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘lexicon’
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 3128 marked UTF-8 strings
+    ```
+
 # Seurat
 
 <details>
@@ -2582,10 +2557,10 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 2.1.2
+* Version: 2.1.3
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2021-12-15 07:50:02 UTC
+* Date/Publication: 2022-03-10 11:00:02 UTC
 * Number of recursive dependencies: 204
 
 Run `revdep_details(, "sigminer")` for more info
@@ -3099,7 +3074,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "TriDimRegression")` for more info
 
