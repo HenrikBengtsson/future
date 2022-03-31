@@ -197,10 +197,10 @@ Run `revdep_details(, "bigDM")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
-* Date/Publication: 2022-01-13 23:12:41 UTC
+* Date/Publication: 2022-03-22 13:40:02 UTC
 * Number of recursive dependencies: 89
 
 Run `revdep_details(, "bistablehistory")` for more info
@@ -694,10 +694,10 @@ Run `revdep_details(, "easyalluvial")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2021-03-27 08:40:42 UTC
+* Date/Publication: 2022-03-21 08:10:07 UTC
 * Number of recursive dependencies: 90
 
 Run `revdep_details(, "EFAtools")` for more info
@@ -708,9 +708,8 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.3Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
-        doc    1.0Mb
         libs   5.4Mb
     ```
 
@@ -724,10 +723,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.1.11
+* Version: 0.1.13
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2022-02-05 00:30:20 UTC
+* Date/Publication: 2022-03-24 08:40:17 UTC
 * Number of recursive dependencies: 124
 
 Run `revdep_details(, "envi")` for more info
@@ -849,13 +848,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    14:24:24-14:24:24 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 24 pops @ layer 2
-    14:24:24-14:24:24 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 32 pops @ layer 3
-    14:24:24-14:24:24 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 16 pops @ layer 4
-    14:24:24-14:24:24 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1673,9 +1672,9 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    l.23 \usepackage
-                    {subfig}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Peer's Certificate issuer is not recognized.
+    
     --- failed re-building ‘MineICA.Rnw’
     
     SUMMARY: processing the following file failed:
@@ -2065,10 +2064,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.26.3
+* Version: 1.26.4
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2022-01-06
+* Date/Publication: 2022-01-23
 * Number of recursive dependencies: 318
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2451,7 +2450,7 @@ Run `revdep_details(, "sentopics")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2022-01-14 18:32:42 UTC
-* Number of recursive dependencies: 257
+* Number of recursive dependencies: 254
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2677,10 +2676,10 @@ Run `revdep_details(, "spacey")` for more info
 
 <details>
 
-* Version: 3.10.0
+* Version: 3.11.3
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-02-07 03:30:04 UTC
+* Date/Publication: 2022-03-23 22:40:02 UTC
 * Number of recursive dependencies: 100
 
 Run `revdep_details(, "spaMM")` for more info
@@ -2699,7 +2698,7 @@ Run `revdep_details(, "spaMM")` for more info
     ```
       installed size is 46.8Mb
       sub-directories of 1Mb or more:
-        R      2.1Mb
+        R      2.2Mb
         libs  43.6Mb
     ```
 
@@ -2776,10 +2775,10 @@ Run `revdep_details(, "spatialTIME")` for more info
 
 <details>
 
-* Version: 3.0.2
+* Version: 3.0.3
 * GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
-* Date/Publication: 2021-12-16 10:00:02 UTC
+* Date/Publication: 2022-03-21 13:00:02 UTC
 * Number of recursive dependencies: 84
 
 Run `revdep_details(, "spatialwarnings")` for more info
@@ -2889,10 +2888,10 @@ Run `revdep_details(, "stars")` for more info
 
 <details>
 
-* Version: 3.2.4
+* Version: 3.2.9
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-01-16
+* Date/Publication: 2022-03-27
 * Number of recursive dependencies: 181
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -2911,27 +2910,27 @@ Run `revdep_details(, "synergyfinder")` for more info
 
 *   checking for code/documentation mismatches ... WARNING
     ```
-    Codoc mismatches from documentation object 'PlotDoseResponseCurve':
-    PlotDoseResponseCurve
-      Code: function(data, plot_block = 1, drug_index = 1, adjusted = TRUE,
-                     Emin = NA, Emax = NA, grid = TRUE, point_color =
-                     "#C24B40", curve_color = "black", text_size_scale = 1,
-                     plot_title = NULL, plot_subtitle = NULL, plot_setting
-                     = list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5,
-                     0), font.main = 2, font.lab = 1, cex.main = 14/12 *
-                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
-                     plot_new = TRUE, record_plot = TRUE)
+    Codoc mismatches from documentation object 'PlotDoseResponse':
+    PlotDoseResponse
+      Code: function(data, block_ids = c(1), drugs = c(1, 2), adjusted =
+                     TRUE, statistic = NULL, summary_statistic = "mean",
+                     high_value_color = "#FF0000", low_value_color =
+                     "#00FF00", point_color = "#C24B40", curve_color =
+                     "black", curve_ylim = NULL, curve_grid = TRUE,
+                     text_size_scale = 1, heatmap_text_label_size_scale =
+                     1, heatmap_text_label_color = "#000000",
+                     heatmap_color_range = NULL, curve_plot_title = NULL,
     ...
-                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
-                     plot_new = TRUE, record_plot = TRUE)
+                     high_value_color = "#A90217", low_value_color =
+                     "#2166AC", text_size_scale = 1,
+                     heatmap_text_label_size_scale = 1,
+                     heatmap_text_label_color = "#000000", grid = TRUE,
+                     dynamic = FALSE, display = TRUE, save_file = FALSE,
+                     file_type = "pdf", file_name = NULL, file_path = NULL,
+                     height = 6, width = 6, units = "in")
       Mismatches in argument default values:
-        Name: 'plot_setting'
-        Code: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
-              font.lab = 1, cex.main = 14/12 * text_size_scale, bty = "l", 
-              lwd = 1.5)
-        Docs: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
-              font.lab = 3, cex.main = 14/12 * text_size_scale, bty = "l", 
-              lwd = 1.5)
+        Name: 'high_value_color' Code: "#FF0000" Docs: "#A90217"
+        Name: 'low_value_color' Code: "#00FF00" Docs: "#2166AC"
     ```
 
 *   checking installed package size ... NOTE
@@ -3046,11 +3045,11 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-01-17 17:12:49 UTC
-* Number of recursive dependencies: 100
+* Date/Publication: 2022-03-22 10:10:28 UTC
+* Number of recursive dependencies: 115
 
 Run `revdep_details(, "TreeSearch")` for more info
 
