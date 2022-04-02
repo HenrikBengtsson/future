@@ -141,10 +141,10 @@ Run `revdep_details(, "bcmaps")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.1.0
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-02-01 16:00:29 UTC
+* Date/Publication: 2022-03-19 00:20:02 UTC
 * Number of recursive dependencies: 81
 
 Run `revdep_details(, "BEKKs")` for more info
@@ -155,9 +155,9 @@ Run `revdep_details(, "BEKKs")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.6Mb
+      installed size is 14.8Mb
       sub-directories of 1Mb or more:
-        libs  10.9Mb
+        libs  14.0Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -197,10 +197,10 @@ Run `revdep_details(, "bigDM")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
-* Date/Publication: 2022-01-13 23:12:41 UTC
+* Date/Publication: 2022-03-22 13:40:02 UTC
 * Number of recursive dependencies: 89
 
 Run `revdep_details(, "bistablehistory")` for more info
@@ -236,7 +236,7 @@ Run `revdep_details(, "bistablehistory")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2022-01-27 21:40:02 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 104
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -694,10 +694,10 @@ Run `revdep_details(, "easyalluvial")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.4.0
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2021-03-27 08:40:42 UTC
+* Date/Publication: 2022-03-21 08:10:07 UTC
 * Number of recursive dependencies: 90
 
 Run `revdep_details(, "EFAtools")` for more info
@@ -708,9 +708,8 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.3Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
-        doc    1.0Mb
         libs   5.4Mb
     ```
 
@@ -724,10 +723,10 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.1.11
+* Version: 0.1.13
 * GitHub: https://github.com/Waller-SUSAN/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2022-02-05 00:30:20 UTC
+* Date/Publication: 2022-03-24 08:40:17 UTC
 * Number of recursive dependencies: 124
 
 Run `revdep_details(, "envi")` for more info
@@ -849,13 +848,13 @@ Run `revdep_details(, "flowGraph")` for more info
     Error(s) in re-building vignettes:
     --- re-building ‘flowGraph.Rmd’ using rmarkdown
     - 8 pops @ layer 1
-    07:53:34-07:53:34 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 24 pops @ layer 2
-    07:53:34-07:53:34 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 32 pops @ layer 3
-    07:53:34-07:53:34 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     - 16 pops @ layer 4
-    07:53:34-07:53:34 > 16:00:00
+    10:06:05-10:06:05 > 16:00:00
     ...
     Quitting from lines 557-561 (flowGraph.Rmd) 
     Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
@@ -1064,11 +1063,11 @@ Run `revdep_details(, "grattan")` for more info
 
 <details>
 
-* Version: 0.5.1
+* Version: 0.6.0
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
-* Date/Publication: 2021-05-10 06:50:03 UTC
-* Number of recursive dependencies: 119
+* Date/Publication: 2022-03-18 12:50:02 UTC
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1078,76 +1077,14 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 30.1Mb
+      installed size is 28.3Mb
       sub-directories of 1Mb or more:
-        libs  27.9Mb
+        libs  26.0Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
-      Note: found 6693 marked UTF-8 strings
-    ```
-
-# greta
-
-<details>
-
-* Version: 0.3.1
-* GitHub: https://github.com/greta-dev/greta
-* Source code: https://github.com/cran/greta
-* Date/Publication: 2019-08-09 04:40:03 UTC
-* Number of recursive dependencies: 154
-
-Run `revdep_details(, "greta")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
-# gtfs2gps
-
-<details>
-
-* Version: 2.0-1
-* GitHub: https://github.com/ipeaGIT/gtfs2gps
-* Source code: https://github.com/cran/gtfs2gps
-* Date/Publication: 2022-03-05 14:00:02 UTC
-* Number of recursive dependencies: 90
-
-Run `revdep_details(, "gtfs2gps")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘intro_to_gtfs2gps.Rmd’ using rmarkdown
-    Writing text files to /scratch/henrik/437810/RtmpSekCkU/gtfsio26a641b4b3c95
-      - Writing agency.txt
-      - Writing calendar.txt
-      - Writing routes.txt
-      - Writing shapes.txt
-      - Writing stop_times.txt
-      - Writing stops.txt
-      - Writing trips.txt
-    ...
-     (ProxyConnectException "latex.codecogs.com" 443 (Status {statusCode = 503, statusMessage = "Service Unavailable"}))
-    Error: processing vignette 'intro_to_gtfs2gps.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 61
-    --- failed re-building ‘intro_to_gtfs2gps.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘intro_to_gtfs2gps.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+      Note: found 989 marked UTF-8 strings
     ```
 
 # gWQS
@@ -1830,33 +1767,6 @@ Run `revdep_details(, "OOS")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking re-building of vignette outputs ...sh: line 1: 201482 Segmentation fault      (core dumped) '/software/c4/cbi/software/R-4.1.2-gcc8/lib64/R/bin/R' --vanilla --no-echo > '/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/build_vignettes.log' 2>&1 < '/scratch/henrik/437810/RtmprfTwew/file311347aa70545'
-    ```
-     WARNING
-    Error(s) in re-building vignettes:
-    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
-    
-     *** caught segfault ***
-    address 0x4, cause 'memory not mapped'
-    
-    Traceback:
-     1: gc(FALSE)
-     2: system.time(finalModel <- createModel(x = subset_x(x, indexFinal),     y = y[indexFinal], wts = weights[indexFinal], method = models,     tuneValue = bestTune, obsLevels = classLevels, pp = ppOpt,     last = TRUE, classProbs = trControl$classProbs, sampling = trControl$sampling,     ...))
-    ...
-    56: knitr::knit(knit_input, knit_output, envir = envir, quiet = quiet)
-    57: rmarkdown::render(file, encoding = encoding, quiet = quiet, envir = globalenv(),     output_dir = getwd(), ...)
-    58: vweave_rmarkdown(...)
-    59: engine$weave(file, quiet = quiet, encoding = enc)
-    60: doTryCatch(return(expr), name, parentenv, handler)
-    61: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-    62: tryCatchList(expr, classes, parentenv, handlers)
-    63: tryCatch({    engine$weave(file, quiet = quiet, encoding = enc)    setwd(startdir)    output <- find_vignette_product(name, by = "weave", engine = engine)    if (!have.makefile && vignette_is_tex(output)) {        texi2pdf(file = output, clean = FALSE, quiet = quiet)        output <- find_vignette_product(name, by = "texi2pdf",             engine = engine)    }    outputs <- c(outputs, output)}, error = function(e) {    thisOK <<- FALSE    fails <<- c(fails, file)    message(gettextf("Error: processing vignette '%s' failed with diagnostics:\n%s",         file, conditionMessage(e)))})
-    64: tools:::buildVignettes(dir = "/c4/home/henrik/repositories/future/revdep/checks/OOS/new/OOS.Rcheck/vign_test/OOS",     ser_elibs = "/scratch/henrik/437810/RtmprfTwew/file3113462cf3922.rds")
-    An irrecoverable exception occurred. R is aborting now ...
-    ```
-
 ## In both
 
 *   checking LazyData ... NOTE
@@ -2154,10 +2064,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.26.3
+* Version: 1.26.4
 * GitHub: https://github.com/samWieczorek/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2022-01-06
+* Date/Publication: 2022-01-23
 * Number of recursive dependencies: 318
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2310,14 +2220,36 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
+# remiod
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/xsswang/remiod
+* Source code: https://github.com/cran/remiod
+* Date/Publication: 2022-03-14 08:50:02 UTC
+* Number of recursive dependencies: 125
+
+Run `revdep_details(, "remiod")` for more info
+
+</details>
+
+## In both
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘reshape2’
+      All declared Imports should be used.
+    ```
+
 # rgee
 
 <details>
 
-* Version: 1.1.2
+* Version: 1.1.3
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2021-12-15 22:00:02 UTC
+* Date/Publication: 2022-03-16 15:50:02 UTC
 * Number of recursive dependencies: 150
 
 Run `revdep_details(, "rgee")` for more info
@@ -2325,6 +2257,13 @@ Run `revdep_details(, "rgee")` for more info
 </details>
 
 ## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  8.2Mb
+      sub-directories of 1Mb or more:
+        doc   7.0Mb
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2468,6 +2407,41 @@ Run `revdep_details(, "seer")` for more info
       All declared Imports should be used.
     ```
 
+# sentopics
+
+<details>
+
+* Version: 0.6.2
+* GitHub: https://github.com/odelmarcelle/sentopics
+* Source code: https://github.com/cran/sentopics
+* Date/Publication: 2022-03-15 13:50:02 UTC
+* Number of recursive dependencies: 145
+
+Run `revdep_details(, "sentopics")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 13.8Mb
+      sub-directories of 1Mb or more:
+        data   1.2Mb
+        doc    7.4Mb
+        libs   4.7Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘lexicon’
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 3128 marked UTF-8 strings
+    ```
+
 # Seurat
 
 <details>
@@ -2476,7 +2450,7 @@ Run `revdep_details(, "seer")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2022-01-14 18:32:42 UTC
-* Number of recursive dependencies: 257
+* Number of recursive dependencies: 254
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2582,10 +2556,10 @@ Run `revdep_details(, "shinyrecap")` for more info
 
 <details>
 
-* Version: 2.1.2
+* Version: 2.1.3
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2021-12-15 07:50:02 UTC
+* Date/Publication: 2022-03-10 11:00:02 UTC
 * Number of recursive dependencies: 204
 
 Run `revdep_details(, "sigminer")` for more info
@@ -2702,10 +2676,10 @@ Run `revdep_details(, "spacey")` for more info
 
 <details>
 
-* Version: 3.10.0
+* Version: 3.11.3
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-02-07 03:30:04 UTC
+* Date/Publication: 2022-03-23 22:40:02 UTC
 * Number of recursive dependencies: 100
 
 Run `revdep_details(, "spaMM")` for more info
@@ -2724,7 +2698,7 @@ Run `revdep_details(, "spaMM")` for more info
     ```
       installed size is 46.8Mb
       sub-directories of 1Mb or more:
-        R      2.1Mb
+        R      2.2Mb
         libs  43.6Mb
     ```
 
@@ -2801,10 +2775,10 @@ Run `revdep_details(, "spatialTIME")` for more info
 
 <details>
 
-* Version: 3.0.2
+* Version: 3.0.3
 * GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
-* Date/Publication: 2021-12-16 10:00:02 UTC
+* Date/Publication: 2022-03-21 13:00:02 UTC
 * Number of recursive dependencies: 84
 
 Run `revdep_details(, "spatialwarnings")` for more info
@@ -2914,10 +2888,10 @@ Run `revdep_details(, "stars")` for more info
 
 <details>
 
-* Version: 3.2.4
+* Version: 3.2.9
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-01-16
+* Date/Publication: 2022-03-27
 * Number of recursive dependencies: 181
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -2936,27 +2910,27 @@ Run `revdep_details(, "synergyfinder")` for more info
 
 *   checking for code/documentation mismatches ... WARNING
     ```
-    Codoc mismatches from documentation object 'PlotDoseResponseCurve':
-    PlotDoseResponseCurve
-      Code: function(data, plot_block = 1, drug_index = 1, adjusted = TRUE,
-                     Emin = NA, Emax = NA, grid = TRUE, point_color =
-                     "#C24B40", curve_color = "black", text_size_scale = 1,
-                     plot_title = NULL, plot_subtitle = NULL, plot_setting
-                     = list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5,
-                     0), font.main = 2, font.lab = 1, cex.main = 14/12 *
-                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
-                     plot_new = TRUE, record_plot = TRUE)
+    Codoc mismatches from documentation object 'PlotDoseResponse':
+    PlotDoseResponse
+      Code: function(data, block_ids = c(1), drugs = c(1, 2), adjusted =
+                     TRUE, statistic = NULL, summary_statistic = "mean",
+                     high_value_color = "#FF0000", low_value_color =
+                     "#00FF00", point_color = "#C24B40", curve_color =
+                     "black", curve_ylim = NULL, curve_grid = TRUE,
+                     text_size_scale = 1, heatmap_text_label_size_scale =
+                     1, heatmap_text_label_color = "#000000",
+                     heatmap_color_range = NULL, curve_plot_title = NULL,
     ...
-                     text_size_scale, bty = "l", lwd = 1.5), ylim = NULL,
-                     plot_new = TRUE, record_plot = TRUE)
+                     high_value_color = "#A90217", low_value_color =
+                     "#2166AC", text_size_scale = 1,
+                     heatmap_text_label_size_scale = 1,
+                     heatmap_text_label_color = "#000000", grid = TRUE,
+                     dynamic = FALSE, display = TRUE, save_file = FALSE,
+                     file_type = "pdf", file_name = NULL, file_path = NULL,
+                     height = 6, width = 6, units = "in")
       Mismatches in argument default values:
-        Name: 'plot_setting'
-        Code: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
-              font.lab = 1, cex.main = 14/12 * text_size_scale, bty = "l", 
-              lwd = 1.5)
-        Docs: list(cex.lab = 1 * text_size_scale, mgp = c(2, 0.5, 0), font.main = 2, 
-              font.lab = 3, cex.main = 14/12 * text_size_scale, bty = "l", 
-              lwd = 1.5)
+        Name: 'high_value_color' Code: "#FF0000" Docs: "#A90217"
+        Name: 'low_value_color' Code: "#00FF00" Docs: "#2166AC"
     ```
 
 *   checking installed package size ... NOTE
@@ -3071,11 +3045,11 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.1.1
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-01-17 17:12:49 UTC
-* Number of recursive dependencies: 100
+* Date/Publication: 2022-03-22 10:10:28 UTC
+* Number of recursive dependencies: 115
 
 Run `revdep_details(, "TreeSearch")` for more info
 
@@ -3099,7 +3073,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "TriDimRegression")` for more info
 

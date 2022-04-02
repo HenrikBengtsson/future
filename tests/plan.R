@@ -94,8 +94,6 @@ fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$abc == 1)
 
-if (getRversion() < "4.2.0" || packageVersion("parallelly") >= "1.28.1-9003") {
-
 message("*** plan(cluster, ..., rscript_startup = \"<code>\")")
 plan(cluster, workers = 1L, rscript_startup = "options(abc = 42L)")
 f <- future(getOption("abc"))
@@ -111,7 +109,6 @@ print(v)
 stopifnot(identical(v, 42L))
 plan(sequential)
 
-} ## if (getRversion() < "4.2.0" || ...)
 
 
 message("*** old <- plan(new)")
