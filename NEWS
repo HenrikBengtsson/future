@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.24.0-9003 [2022-04-02]
+Version: 1.24.0-9004 [2022-04-02]
 
 SIGNIFICANT CHANGES:
 
@@ -14,7 +14,9 @@ NEW FEATURES:
  * Now f <- future(..., stdout = structure(TRUE, drop = TRUE)) will
    cause the captured standard output do be dropped from the future
    object as soon as it has been relayed once, for instance, by
-   value(f). This can help decrease the amount of memory used,
+   value(f). Similarly, conditions = structure("conditions", drop =
+   TRUE) will drop captured non-error conditions as soon as they have
+   been relayed.  This can help decrease the amount of memory used,
    especially if there are many active futures.
  
 BETA FEATURE:
