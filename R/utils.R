@@ -1147,6 +1147,44 @@ supports_omp_threads <- function(assert = FALSE, debug = getOption("future.debug
   res
 }
 
+
+## On MS Windows, support for capturing UTF8 symbols was added in R 4.2.0,
+## but it requires a certain setup.
+can_capture_utf8 <- if (.Platform$OS.type == "windows") {
+  if (getRversion() >= "4.2.0") {
+    local({
+      truth <- "\u2713" ## checkmark
+      truth_raw <- charToRaw(truth)
+      success <- NA
+      
+      function() {
+        if (is.na(success)) {
+          con <- rawConnection(raw(), open = "w")
+          on.exit(close(con))
+          sink(file = con)
+          sunk <- TRUE
+          on.exit(if (sunk) sink(NULL), add = TRUE)
+    
+          ## Output UTF-symbol checkmark
+          cat(truth)
+    
+          sink(NULL)
+          sunk <- FALSE
+          output <- rawConnectionValue(con)
+          close(con)
+          on.exit()
+          success <<- identical(output, truth_raw)
+        }
+        success
+      }
+    })
+  } else {
+    function() FALSE
+  }
+} else {
+  function() TRUE
+}
+
 ## https://github.com/HenrikBengtsson/future/issues/473
 adhoc_native_to_utf8 <- function(x) {
   code <- gsub("<U[+]([[:alnum:]]+)>", "\\\\u\\1", x)

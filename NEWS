@@ -1,13 +1,22 @@
 Package: future
 ===============
 
-Version: 1.24.0-9001 [2022-04-02]
+Version: 1.24.0-9002 [2022-04-02]
 
 SIGNIFICANT CHANGES:
 
  * R options and environment variables are now reset on the workers
    after future is resolved so that any changes to them by the future
    expression have no effect for following futures.
+
+BETA FEATURE:
+
+  * Now, value() will only attempt to recover UTF-8 symbols in the
+    captured standard output if the future was evaluated on an MS
+    Windows that does not support capturing of UTF-8 symbols. Support
+    for UTF-8 capturing on also MS Windows was added in R 4.2.0, but
+    it typically requires an up-to-date MS Windows 10 or MS Windows
+    Server 2022.
 
 PERFORMANCE:
 
