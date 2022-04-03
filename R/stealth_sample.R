@@ -20,14 +20,15 @@ stealth_sample <- function(x, size = length(x), replace = FALSE, ...) {
     }
   })
 
-  ## Generate a psuedo-random random seed based on the current
-  ## random state and the current time
-  time_offset <- format(Sys.time(), format = "%H%M%OS6")
+  ## Generate a psuedo-random random seed based on the current random
+  ## state, current time, and the process ID
+  time_offset <- format(Sys.time(), format = "%H%M%OS6") ## current time
   time_offset <- sub(".", "", time_offset, fixed = TRUE)
   time_offset <- strsplit(time_offset, split = "", fixed = TRUE)[[1]]
-  time_offset <- sample(time_offset)
+  time_offset <- sample(time_offset)  ## current RNG state
   time_offset <- paste(time_offset, collapse = "")
   time_offset <- as.numeric(time_offset)
+  time_offset <- time_offset + Sys.getpid() ## process ID
   time_offset <- time_offset %% .Machine$integer.max
   set.seed(time_offset)
 
