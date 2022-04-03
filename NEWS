@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.24.0-9002 [2022-04-02]
+Version: 1.24.0-9003 [2022-04-02]
 
 SIGNIFICANT CHANGES:
 
@@ -9,6 +9,14 @@ SIGNIFICANT CHANGES:
    after future is resolved so that any changes to them by the future
    expression have no effect for following futures.
 
+NEW FEATURES:
+
+ * Now f <- future(..., stdout = structure(TRUE, drop = TRUE)) will
+   cause the captured standard output do be dropped from the future
+   object as soon as it has been relayed once, for instance, by
+   value(f). This can help decrease the amount of memory used,
+   especially if there are many active futures.
+ 
 BETA FEATURE:
 
   * Now, value() will only attempt to recover UTF-8 symbols in the
