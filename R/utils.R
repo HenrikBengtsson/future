@@ -399,20 +399,6 @@ parseCmdArgs <- function() {
 
 
 
-## A version of base::sample() that does not change .Random.seed
-stealth_sample <- function(x, size = length(x), replace = FALSE, ...) {
-  oseed <- .GlobalEnv$.Random.seed
-  on.exit({
-    if (is.null(oseed)) {
-      rm(list = ".Random.seed", envir = .GlobalEnv, inherits = FALSE)
-    } else {
-      .GlobalEnv$.Random.seed <- oseed
-    }
-  })
-  sample(x, size = size, replace = replace, ...)
-}
-
-
 myExternalIP <- local({
   ip <- NULL
   function(force = FALSE, random = TRUE, mustWork = TRUE) {
