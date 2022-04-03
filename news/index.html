@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9004</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,7 +75,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Packages
      
     <span class="caret"></span>
@@ -154,14 +154,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.24.0-9001" id="future-1240-9001">future 1.24.0-9001<a class="anchor" aria-label="anchor" href="#future-1240-9001"></a></h2>
+<h2 class="page-header" data-toc-text="1.24.0-9004" id="future-1240-9004">future 1.24.0-9004<a class="anchor" aria-label="anchor" href="#future-1240-9004"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-24-0-9001">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0-9001"></a></h4>
-<ul><li>R options and environment variables are now reset on the workers after future is resolved so that any changes to them have no effect later on.</li>
+<h4 id="significant-changes-1-24-0-9004">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0-9004"></a></h4>
+<ul><li>R options and environment variables are now reset on the workers after future is resolved so that any changes to them by the future expression have no effect for following futures.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="performance-1-24-0-9001">Performance<a class="anchor" aria-label="anchor" href="#performance-1-24-0-9001"></a></h4>
-<ul><li>Decrease the default wait time between polls from 0.2 to 0.1 seconds, which can be overridden by an R option, cf. help(“future.options”). Now resolve() respects this option (previously it was hardcoded to 0.1 seconds).</li>
+<h4 id="new-features-1-24-0-9004">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0-9004"></a></h4>
+<ul><li>Now f &lt;- future(…, stdout = structure(TRUE, drop = TRUE)) will cause the captured standard output do be dropped from the future object as soon as it has been relayed once, for instance, by value(f). Similarly, conditions = structure(“conditions”, drop = TRUE) will drop captured non-error conditions as soon as they have been relayed. This can help decrease the amount of memory used, especially if there are many active futures.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="beta-feature-1-24-0-9004">Beta Feature<a class="anchor" aria-label="anchor" href="#beta-feature-1-24-0-9004"></a></h4>
+<ul><li>Now, value() will only attempt to recover UTF-8 symbols in the captured standard output if the future was evaluated on an MS Windows that does not support capturing of UTF-8 symbols. Support for UTF-8 capturing on also MS Windows was added in R 4.2.0, but it typically requires an up-to-date MS Windows 10 or MS Windows Server 2022.</li>
+</ul></div>
+<div class="section level4">
+<h4 id="performance-1-24-0-9004">Performance<a class="anchor" aria-label="anchor" href="#performance-1-24-0-9004"></a></h4>
+<ul><li>Decrease the default wait time between polls to 0.1 seconds (was 0.2 seconds), which can be overridden by an R option, cf. help(“future.options”). Now also resolve() respects this option (previously it was hardcoded to 0.1 seconds).</li>
 </ul></div>
 </div>
     <div class="section level2">

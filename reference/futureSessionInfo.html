@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9004</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -75,7 +75,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Packages
      
     <span class="caret"></span>
@@ -178,7 +178,7 @@ and validate their information.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">futureSessionInfo</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Package versions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.24.0.9001, parallelly 1.30.0, parallel 4.1.2, globals 0.14.0, listenv 0.8.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.24.0.9004, parallelly 1.30.0.9003, parallel 4.2.0, globals 0.14.0, listenv 0.8.0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Allocations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> availableCores():</span>
@@ -210,12 +210,12 @@ and validate their information.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>    - call: plan(multisession, workers = 2)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Basic tests</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   worker  pid     r sysname          release</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 3832 4.1.2   Linux 5.4.0-99-generic</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 3829 4.1.2   Linux 5.4.0-99-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   worker   pid     r sysname           release</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 20334 4.2.0   Linux 5.4.0-105-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 20333 4.2.0   Linux 5.4.0-105-generic</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>                                               version nodename machine login</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #112~18.04.1-Ubuntu SMP Thu Feb 3 14:09:57 UTC 2022    hb-x1  x86_64    hb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #112~18.04.1-Ubuntu SMP Thu Feb 3 14:09:57 UTC 2022    hb-x1  x86_64    hb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #119~18.04.1-Ubuntu SMP Tue Mar 8 11:21:24 UTC 2022    hb-x1  x86_64    hb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #119~18.04.1-Ubuntu SMP Tue Mar 8 11:21:24 UTC 2022    hb-x1  x86_64    hb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   user effective_user</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 1   hb             hb</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> 2   hb             hb</span>
