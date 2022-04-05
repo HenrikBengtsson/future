@@ -64,9 +64,10 @@ FutureResult <- local({
 
     if (is.null(r_info)) {
       r_info <<- list(
-        version = getRversion(),
-        os      = .Platform[["OS.type"]],
-        os_name = Sys.info()[["sysname"]]
+              version = getRversion(),
+                   os = .Platform[["OS.type"]],
+              os_name = Sys.info()[["sysname"]],
+        captures_utf8 = can_capture_utf8()
       )
     }
 
