@@ -70,14 +70,18 @@ stopifnot(r)
 v <- tryCatch(value(f), error = identity)
 stopifnot(inherits(v, "error"))
 
-plan(multisession, earlySignal = TRUE)
-f <- future({ stop("bang!") })
-Sys.sleep(0.5)
-print(f)
-r <- tryCatch(resolved(f), error = identity)
-stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
-v <- tryCatch(value(f), error = identity)
-stopifnot(inherits(v, "error"))
+if (availableCores() > 1L) {
+  plan(multisession, earlySignal = TRUE)
+  f <- future({ stop("bang!") })
+  Sys.sleep(0.5)
+  print(f)
+  r <- tryCatch(resolved(f), error = identity)
+  stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
+  v <- tryCatch(value(f), error = identity)
+  stopifnot(inherits(v, "error"))
+} else {
+  message("- Skipping earlySignal = TRUE with 'multisession' because availableCores() == 1")
+}
 
 
 message("*** Early signaling of conditions with multisession futures ... DONE")
@@ -94,22 +98,26 @@ if (supportsMulticore()) {
   v <- tryCatch(value(f), error = identity)
   stopifnot(inherits(v, "error"))
   
-  plan(multicore, earlySignal = TRUE)
-  f <- future({ stop("bang!") })
-  Sys.sleep(0.5)
-  print(f)
-  r <- tryCatch(resolved(f), error = identity)
-  stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
-  v <- tryCatch(value(f), error = identity)
-  stopifnot(inherits(v, "error"))
+  if (availableCores() > 1L) {
+    plan(multicore, earlySignal = TRUE)
+    f <- future({ stop("bang!") })
+    Sys.sleep(0.5)
+    print(f)
+    r <- tryCatch(resolved(f), error = identity)
+    stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
+    v <- tryCatch(value(f), error = identity)
+    stopifnot(inherits(v, "error"))
   
-  ## Errors
-  f <- future({ stop("bang!") }, earlySignal = TRUE)
-  Sys.sleep(0.5)
-  r <- tryCatch(resolved(f), error = identity)
-  stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
-  v <- tryCatch(value(f), error = identity)
-  stopifnot(inherits(v, "error"))
+    ## Errors
+    f <- future({ stop("bang!") }, earlySignal = TRUE)
+    Sys.sleep(0.5)
+    r <- tryCatch(resolved(f), error = identity)
+    stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
+    v <- tryCatch(value(f), error = identity)
+    stopifnot(inherits(v, "error"))
+  } else {
+    message("- Skipping earlySignal = TRUE with 'multicore' because availableCores() == 1")
+  }
   
   ## Warnings
   f <- future({ warning("careful!") }, earlySignal = TRUE)
