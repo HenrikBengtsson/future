@@ -1,6 +1,9 @@
 source("incl/start.R")
 options(future.debug = FALSE)
 
+## Don't poll too frequently in order for these tests to not fail
+options(future.wait.interval = 0.1)
+
 message("*** resolved() - assert non-blocking while launching lazy futures ...")
 
 for (cores in 1:availCores) {
