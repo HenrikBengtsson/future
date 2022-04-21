@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9006</span>
       </span>
     </div>
 
@@ -154,15 +154,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.24.0-9005" id="future-1240-9005">future 1.24.0-9005<a class="anchor" aria-label="anchor" href="#future-1240-9005"></a></h2>
+<h2 class="page-header" data-toc-text="1.24.0-9006" id="future-1240-9006">future 1.24.0-9006<a class="anchor" aria-label="anchor" href="#future-1240-9006"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-24-0-9005">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0-9005"></a></h4>
+<h4 id="significant-changes-1-24-0-9006">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0-9006"></a></h4>
 <ul><li>R options and environment variables are now reset on the workers
 after future is resolved so that any changes to them by the future
 expression have no effect for following futures.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="new-features-1-24-0-9005">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0-9005"></a></h4>
+<h4 id="new-features-1-24-0-9006">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0-9006"></a></h4>
 <ul><li><p>Now f &lt;- future(…, stdout = structure(TRUE, drop = TRUE)) will
 cause the captured standard output do be dropped from the future object
 as soon as it has been relayed once, for instance, by value(f).
@@ -174,7 +174,7 @@ many active futures.</p></li>
 it was hardcoded to poll for results every 0.1 seconds.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="beta-feature-1-24-0-9005">Beta Feature<a class="anchor" aria-label="anchor" href="#beta-feature-1-24-0-9005"></a></h4>
+<h4 id="beta-feature-1-24-0-9006">Beta Feature<a class="anchor" aria-label="anchor" href="#beta-feature-1-24-0-9006"></a></h4>
 <ul><li>Now, value() will only attempt to recover UTF-8 symbols in the
 captured standard output if the future was evaluated on an MS Windows
 that does not support capturing of UTF-8 symbols. Support for UTF-8
@@ -182,15 +182,15 @@ capturing on also MS Windows was added in R 4.2.0, but it typically
 requires an up-to-date MS Windows 10 or MS Windows Server 2022.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="performance-1-24-0-9005">Performance<a class="anchor" aria-label="anchor" href="#performance-1-24-0-9005"></a></h4>
+<h4 id="performance-1-24-0-9006">Performance<a class="anchor" aria-label="anchor" href="#performance-1-24-0-9006"></a></h4>
 <ul><li>The default value for option ‘future.wait.interval’ was decreased
-from 0.2 seconds to 0.1 seconds. This controls the polling frequency for
-finding an available worker when all workers are currently busy.
+from 0.2 seconds to 0.01 seconds. This controls the polling frequency
+for finding an available worker when all workers are currently busy.
 Starting with this release, this option also controls the polling
 frequency of resolve().</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-24-0-9005">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-24-0-9005"></a></h4>
+<h4 id="bug-fixes-1-24-0-9006">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-24-0-9006"></a></h4>
 <ul><li>A bug was introduced in future 1.24.0 [2022-02-19] that caused
 future plan tweaking to break, e.g. plan(multicore, workers = 2) and
 plan(sequential, split = TRUE) introduced breaking side effects to the
