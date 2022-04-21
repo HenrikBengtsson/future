@@ -18,7 +18,10 @@ NEW FEATURES:
    TRUE) will drop captured non-error conditions as soon as they have
    been relayed.  This can help decrease the amount of memory used,
    especially if there are many active futures.
- 
+
+ * Now resolve() respects option 'future.wait.interval'. Previously,
+   it was hardcoded to poll for results every 0.1 seconds.
+
 BETA FEATURE:
 
   * Now, value() will only attempt to recover UTF-8 symbols in the
@@ -30,10 +33,11 @@ BETA FEATURE:
 
 PERFORMANCE:
 
- * Decrease the default wait time between polls to 0.1 seconds (was
-   0.2 seconds), which can be overridden by an R option,
-   cf. help("future.options"). Now also resolve() respects this option
-   (previously it was hardcoded to 0.1 seconds).
+ * The default value for option 'future.wait.interval' was decreased
+   from 0.2 seconds to 0.1 seconds. This controls the polling
+   frequency for finding an available worker when all workers are
+   currently busy. Starting with this release, this option also
+   controls the polling frequency of resolve().
 
 BUG FIXES:
 
