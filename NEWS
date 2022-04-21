@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.24.0-9004 [2022-04-02]
+Version: 1.24.0-9005 [2022-04-20]
 
 SIGNIFICANT CHANGES:
 
@@ -34,6 +34,13 @@ PERFORMANCE:
    0.2 seconds), which can be overridden by an R option,
    cf. help("future.options"). Now also resolve() respects this option
    (previously it was hardcoded to 0.1 seconds).
+
+BUG FIXES:
+
+ * A bug was introduced in future 1.24.0 [2022-02-19] that caused
+   future plan tweaking to break, e.g. plan(multicore, workers = 2)
+   and plan(sequential, split = TRUE) introduced breaking side
+   effects to the futures evaluated.
 
 
 Version: 1.24.0 [2022-02-19]

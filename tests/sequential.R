@@ -22,7 +22,7 @@ res <- tryCatch({
   f <- SequentialFuture(42, lazy = TRUE, local = FALSE)
 }, error = identity)
 stopifnot(inherits(res, "error"))
-          
+
 message("*** sequential() ... DONE")
 
 source("incl/end.R")

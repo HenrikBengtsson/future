@@ -119,7 +119,7 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   for (name in c("workers", "envir")) {
     if (is.element(name, formals) && !is.element(name, formals2)) {
       formals(strategy2) <- c(formals(strategy2), formals(strategy)[name])
-      args2 <- c(args2, args[name])
+      args2[[name]] <- as.symbol(name)
     }
   }
 
