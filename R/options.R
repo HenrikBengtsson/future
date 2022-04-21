@@ -51,7 +51,7 @@
 #'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in
 #'  seconds) between polls. This controls the polling frequency for finding
 #'  an available worker when all workers are currently busy. It also controls
-#'  the polling frequency of `resolve()`. (Default: `0.1` = 0.1 seconds)}
+#'  the polling frequency of `resolve()`. (Default: `0.01` = 0.01 seconds)}
 #'
 #'  \item{\option{future.wait.alpha}:}{(numeric) Positive scale factor used to increase the interval after each poll. (Default: `1.01`)}
 #' }

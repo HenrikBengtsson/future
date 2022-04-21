@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.24.0-9005 [2022-04-20]
+Version: 1.24.0-9006 [2022-04-20]
 
 SIGNIFICANT CHANGES:
 
@@ -34,7 +34,7 @@ BETA FEATURE:
 PERFORMANCE:
 
  * The default value for option 'future.wait.interval' was decreased
-   from 0.2 seconds to 0.1 seconds. This controls the polling
+   from 0.2 seconds to 0.01 seconds. This controls the polling
    frequency for finding an available worker when all workers are
    currently busy. Starting with this release, this option also
    controls the polling frequency of resolve().
