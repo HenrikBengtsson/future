@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9005</span>
       </span>
     </div>
 
@@ -186,8 +186,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>A Future for R: Controlling Default Future Strategy</h1>
-                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
+      <h1 data-toc-skip>A Future for R: Controlling Default Future
+Strategy</h1>
+                        <h4 data-toc-skip class="author">Henrik
+Bengtsson</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-5-startup.md.rsp" class="external-link"><code>vignettes/future-5-startup.md.rsp</code></a></small>
@@ -197,43 +199,67 @@
 
     
     
-<p>The default is to use synchronous futures, but this <em>default</em> can be overridden via R options, system environment variables and command-line options as explained below as well as in <code><a href="../reference/future.options.html">help("future.options", package = "future")</a></code>.</p>
+<p>The default is to use synchronous futures, but this <em>default</em>
+can be overridden via R options, system environment variables and
+command-line options as explained below as well as in
+<code><a href="../reference/future.options.html">help("future.options", package = "future")</a></code>.</p>
 <div class="section level2">
 <h2 id="r-options">R options<a class="anchor" aria-label="anchor" href="#r-options"></a>
 </h2>
-<p>The default strategy for resolving futures can be controlled via R option <code>future.plan</code>. For instance, if we add</p>
+<p>The default strategy for resolving futures can be controlled via R
+option <code>future.plan</code>. For instance, if we add</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.plan <span class="op">=</span> <span class="st">"multisession"</span><span class="op">)</span></code></pre></div>
-<p>to our <code>~/.Rprofile</code> startup script, the future package will resolve futures in parallel (asynchronously using all available cores), i.e.</p>
+<p>to our <code>~/.Rprofile</code> startup script, the future package
+will resolve futures in parallel (asynchronously using all available
+cores), i.e.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
-<p>Option <code>future.plan</code> is ignored if command-line option <code>--parallel</code> (<code>-p</code>) is specified.</p>
+<p>Option <code>future.plan</code> is ignored if command-line option
+<code>--parallel</code> (<code>-p</code>) is specified.</p>
 </div>
 <div class="section level2">
 <h2 id="environment-variables">Environment variables<a class="anchor" aria-label="anchor" href="#environment-variables"></a>
 </h2>
-<p>An alternative to using <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> for setting option <code>future.plan</code> is to specify system environment variable <code>R_FUTURE_PLAN</code>. If set, then the future package will set <code>future.plan</code> accordingly <em>when loaded</em>. For example,</p>
+<p>An alternative to using <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> for setting option
+<code>future.plan</code> is to specify system environment variable
+<code>R_FUTURE_PLAN</code>. If set, then the future package will set
+<code>future.plan</code> accordingly <em>when loaded</em>. For
+example,</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
-<p>Environment variable <code>R_FUTURE_PLAN</code> is ignored if either option <code>future.plan</code> or command-line option <code>--parallel</code> (<code>-p</code>) is specified.</p>
+<p>Environment variable <code>R_FUTURE_PLAN</code> is ignored if either
+option <code>future.plan</code> or command-line option
+<code>--parallel</code> (<code>-p</code>) is specified.</p>
 </div>
 <div class="section level2">
 <h2 id="command-line-options">Command-line options<a class="anchor" aria-label="anchor" href="#command-line-options"></a>
 </h2>
-<p>When loaded, the future package checks for the command-line option <code>--parallel=ncores</code> (short <code>-p ncores</code>) and sets the future strategy (via option <code>future.plan</code>) and the number of available cores (via option <code>mc.cores</code>) accordingly. This provides a convenient mechanism for specifying parallel future processing from the command line. For example, if we start R with</p>
+<p>When loaded, the future package checks for the command-line option
+<code>--parallel=ncores</code> (short <code>-p ncores</code>) and sets
+the future strategy (via option <code>future.plan</code>) and the number
+of available cores (via option <code>mc.cores</code>) accordingly. This
+provides a convenient mechanism for specifying parallel future
+processing from the command line. For example, if we start R with</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> R <span class="at">--quiet</span> <span class="at">--args</span> <span class="at">--parallel</span><span class="op">=</span>2</span></code></pre></div>
-<p>then future will interpret this as we wish to resolve futures in parallel using 2 cores. More specifically, we get that</p>
+<p>then future will interpret this as we wish to resolve futures in
+parallel using 2 cores. More specifically, we get that</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">availableCores</span>()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mc.cores</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="dv">2</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">class</span>(future<span class="sc">::</span><span class="fu">plan</span>())</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"FutureStrategy"</span> <span class="st">"tweaked"</span>        <span class="st">"multisession"</span>   <span class="st">"future"</span>         <span class="st">"function"</span></span></code></pre></div>
-<p>We can use this command-line option also with <code>Rscript</code>, which provides a convenient mechanism for launching future-enhanced R scripts such that they run in parallel, e.g.</p>
+<p>We can use this command-line option also with <code>Rscript</code>,
+which provides a convenient mechanism for launching future-enhanced R
+scripts such that they run in parallel, e.g.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript analysis.R <span class="at">--parallel</span><span class="op">=</span>4</span></code></pre></div>
-<p>This does, of course, require that the script uses futures and the future package.</p>
-<p>If <code>--parallel=1</code> is specified, or equivalently <code>-p 1</code>, then futures are resolved using a single process.</p>
-<p>Specifying these command-line options override any other startup settings.</p>
+<p>This does, of course, require that the script uses futures and the
+future package.</p>
+<p>If <code>--parallel=1</code> is specified, or equivalently
+<code>-p 1</code>, then futures are resolved using a single process.</p>
+<p>Specifying these command-line options override any other startup
+settings.</p>
 </div>
   </div>
 
@@ -254,7 +280,8 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+
 </div>
 
       </footer>

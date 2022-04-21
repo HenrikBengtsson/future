@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9005</span>
       </span>
     </div>
 
@@ -153,18 +153,23 @@
     </div>
 
 
-<p>&lt;% ## Reuse the future vignette md &lt;- R.rsp::rstring(file=“vignettes/future-1-overview.md.rsp”, postprocess=FALSE)</p>
+<p>&lt;% ## Reuse the future vignette md &lt;-
+R.rsp::rstring(file=“vignettes/future-1-overview.md.rsp”,
+postprocess=FALSE)</p>
 <div class="section level2">
 <h2 id="drop-the-header-ie-anything-before-the-first-h2-header">Drop the header, i.e. anything before the first “H2” header<a class="anchor" aria-label="anchor" href="#drop-the-header-ie-anything-before-the-first-h2-header"></a></h2>
-<p>md &lt;- unlist(strsplit(md, split=“”, fixed=TRUE)) row &lt;- grep(“^##”, md)[1] if (!is.na(row)) md &lt;- md[-seq_len(row-1)]</p>
+<p>md &lt;- unlist(strsplit(md, split=“”, fixed=TRUE)) row &lt;-
+grep(“^##”, md)[1] if (!is.na(row)) md &lt;- md[-seq_len(row-1)]</p>
 </div>
 <div class="section level2">
 <h2 id="drop-the-footer-ie-anything-after-the-first-horizontal-line">Drop the footer, i.e. anything after the first horizontal line<a class="anchor" aria-label="anchor" href="#drop-the-footer-ie-anything-after-the-first-horizontal-line"></a></h2>
-<p>row &lt;- grep(“^—”, md)[1] if (!is.na(row)) md &lt;- md[seq_len(row-1)]</p>
+<p>row &lt;- grep(“^—”, md)[1] if (!is.na(row)) md &lt;-
+md[seq_len(row-1)]</p>
 </div>
 <div class="section level2">
 <h2 id="turn-otherwise-local-links-to-cran-for-readmemd">Turn otherwise local links to CRAN for README.md<a class="anchor" aria-label="anchor" href="#turn-otherwise-local-links-to-cran-for-readmemd"></a></h2>
-<p>md &lt;- gsub(“: (future-.*[.]html)“,”: <a href="https://cran.r-project.org/web/packages/future/vignettes/%5C%5C1" class="external-link uri">https://cran.r-project.org/web/packages/future/vignettes/\\1</a>“, md)</p>
+<p>md &lt;- gsub(“: (future-.*[.]html)“,”: <a href="https://cran.r-project.org/web/packages/future/vignettes/%5C%5C1" class="external-link uri">https://cran.r-project.org/web/packages/future/vignettes/\\1</a>“,
+md)</p>
 </div>
 <div class="section level2">
 <h2 id="output">Output<a class="anchor" aria-label="anchor" href="#output"></a></h2>
@@ -187,7 +192,8 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2 and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9003.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+2.0.2.</p>
 </div>
 
       </footer></div>
