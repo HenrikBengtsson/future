@@ -1,18 +1,18 @@
 Package: future
 ===============
 
-Version: 1.24.0-9006 [2022-04-20]
+Version: 1.24.0-9006 [2022-04-23]
 
 SIGNIFICANT CHANGES:
 
  * R options and environment variables are now reset on the workers
    after future is resolved so that any changes to them by the future
-   expression have no effect for following futures.
+   expression have no effect on following futures.
 
 NEW FEATURES:
 
  * Now f <- future(..., stdout = structure(TRUE, drop = TRUE)) will
-   cause the captured standard output do be dropped from the future
+   cause the captured standard output to be dropped from the future
    object as soon as it has been relayed once, for instance, by
    value(f). Similarly, conditions = structure("conditions", drop =
    TRUE) will drop captured non-error conditions as soon as they have
