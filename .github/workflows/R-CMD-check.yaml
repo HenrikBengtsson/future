@@ -109,7 +109,7 @@ jobs:
           R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork_enable }}
           R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork_multithreading_enable }}
           R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock_relay_immediate }}
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "note", check_dir = "check")
         shell: Rscript {0}
  
       - name: Check (Windows)
