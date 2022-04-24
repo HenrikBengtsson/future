@@ -64,6 +64,14 @@ for (cores in seq_len(min(2L, availCores))) {
       } else {
         stopifnot(out == "")
       }
+
+      message("- stdout = structure(TRUE, drop = TRUE)")
+      f <- future(print(42), stdout = structure(TRUE, drop = TRUE))
+      r <- result(f)
+      stopifnot(inherits(r$stdout, "character"))
+      v <- value(f)
+      r <- result(f)
+      stopifnot(is.null(r$stdout))
     } ## for (stdout ...)
 
     message(sprintf("%s ... done", strategy))

@@ -6,6 +6,8 @@ jobs:
   future_tests:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
+    timeout-minutes: 30
+    
     runs-on: ubuntu-20.04
 
     name: future.plan=${{ matrix.future.plan }}
