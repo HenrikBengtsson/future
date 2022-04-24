@@ -7,8 +7,11 @@ makeExpression <- local({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
     
+    ...future.oldOptions <- base::as.list(base::.Options)
+    ...future.oldEnvVars <- base::Sys.getenv()
+    
     ## covr: skip=7
-    ...future.oldOptions <- base::options(
+    base::options(
       ## Prevent .future.R from being source():d when future is attached
       future.startup.script      = FALSE,
       
@@ -35,7 +38,51 @@ makeExpression <- local({
 
   tmpl_exit <- bquote_compile({
     .(exit)
+    
+    ## (a) Reset options
     base::options(...future.oldOptions)
+
+    ## (b) Remove any options added
+    diff <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
+    if (base::length(diff) > 0L) {
+      opts <- base::vector("list", length = base::length(diff))
+      base::names(opts) <- diff
+      base::options(opts)
+    }
+
+    ## (c) Reset environment variables
+    if (.Platform$OS.type == "windows") {
+      ## On MS Windows, you cannot have empty environment variables. When one
+      ## is assigned an empty string, MS Windows interpretes that as it should
+      ## be removed. That is, if we do Sys.setenv(ABC = ""), it'll have the
+      ## same effect as Sys.unsetenv("ABC").
+      ## However, when running MS Windows as a guest OS on a Linux host, then
+      ## we might see empty environment variables also MS Windows. We can
+      ## observe this on GitHub Actions and when running R via Wine.
+      ## Because of this, we need to take extra care to preserve empty ("")
+      ## environment variables.
+
+      ##  (i) Non-empty (the most common case)
+      nonempty <- base::nzchar(...future.oldEnvVars)
+      base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars[nonempty]))
+      
+      ## (ii) Empty (special case): Update only the ones that are no longer
+      ##      empty, which means they'll be removed. That is the minimal
+      ##      damage we can do.
+      if (!base::all(nonempty)) {
+        names <- base::names(...future.oldEnvVars[!nonempty])
+        envs <- base::Sys.getenv()[names]
+        names <- names[base::nzchar(envs)]
+        envs[names] <- ""
+        base::do.call(base::Sys.setenv, args = base::as.list(envs))
+      }
+    } else {
+      base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
+    }
+    
+    ## (d) Remove any environment variables added
+    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
+    base::Sys.unsetenv(diff)
   })
 
   tmpl_expr_evaluate <- bquote_compile({
@@ -166,6 +213,9 @@ makeExpression <- local({
         visible = NULL,
         conditions = ...future.conditions,
         rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
+        started = ...future.startTime,
+        finished = Sys.time(),
+        session_uuid = NA_character_,
         version = "1.8"
       ), class = "FutureResult")
     }, finally = .(exit))

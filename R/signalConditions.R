@@ -55,7 +55,9 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
     on.exit(mdebug("signalConditions() ... done"))
   }
 
+
   ## Signal detected conditions one by one
+  signaled <- logical(length(conditions))
   for (kk in seq_along(conditions)) {
     cond <- conditions[[kk]]
 
@@ -99,6 +101,12 @@ signalConditions <- function(future, include = "condition", exclude = NULL, resi
     } else {
       stop_if_not(inherits(condition, "condition"))
     }
+    signaled[kk] <- TRUE
+  }
+
+  ## Drop captured and signalled conditions to save memory?
+  if (isTRUE(attr(future$conditions, "drop"))) {
+    conditions <- conditions[!signaled]
   }
 
   ## Make sure to update 'signaled' information on exit

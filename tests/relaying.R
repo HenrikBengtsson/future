@@ -166,6 +166,14 @@ for (ss in seq_along(strategies)) {
 
   message("* Two futures - out of order ... DONE")
 
+  message("- conditions = structure(\"condition\", drop = TRUE)")
+  f <- future(message("42"), conditions = structure("condition", drop = TRUE))
+  r <- result(f)
+  stopifnot(length(r$conditions) > 0L)
+  v <- value(f)
+  r <- result(f)
+  stopifnot(length(r$conditions) == 0L)
+
   message(sprintf("Relaying w/ %s ... DONE", names(strategies)[ss]))
 } ## for (ss ...)
 

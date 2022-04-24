@@ -53,16 +53,24 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   signalImmediateConditions(future)
 
   ## Output captured standard output?
-  if (stdout && length(result$stdout) > 0 &&
-      inherits(result$stdout, "character")) {
+  if (stdout) {
+    if (length(result$stdout) > 0 &&
+        inherits(result$stdout, "character")) {
       out <- paste(result$stdout, collapse = "\n")
       if (nzchar(out)) {
-        ## AD HOC: Fix captured UTF-8 output on Windows?
-        if (getOption("future.stdout.windows.reencode", TRUE) && identical(result$r_info$os, "windows")) {
+        ## AD HOC: Fix captured UTF-8 output on MS Windows?
+        if (!isTRUE(result$r_info$captures_utf8) && getOption("future.stdout.windows.reencode", TRUE)) {
           out <- adhoc_native_to_utf8(out)
         }
         cat(out)
       }
+    }
+
+    ## Drop captured stdout to save memory?
+    if (isTRUE(attr(future$stdout, "drop"))) {
+      result$stdout <- NULL
+      future$result <- result
+    }
   }
 
 

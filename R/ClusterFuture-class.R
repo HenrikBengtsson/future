@@ -491,7 +491,7 @@ receiveMessageFromWorker <- function(future, ...) {
 }
 
 
-requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.2), alpha = getOption("future.wait.alpha", 1.01)) {
+requestNode <- function(await, workers, timeout = getOption("future.wait.timeout", 30 * 24 * 60 * 60), delta = getOption("future.wait.interval", 0.01), alpha = getOption("future.wait.alpha", 1.01)) {
   debug <- getOption("future.debug", FALSE)
   
   stop_if_not(inherits(workers, "cluster"))

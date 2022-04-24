@@ -6,6 +6,8 @@ jobs:
   R-CMD-check:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
+    timeout-minutes: 30
+    
     runs-on: ubuntu-20.04
 
     name: ${{ matrix.config.pkg }} (${{ matrix.config.r }}) ${{ matrix.config.label }}
@@ -19,10 +21,9 @@ jobs:
           - { r: "release", pkg: "doFuture"          }
           - { r: "release", pkg: "future.apply"      }
           - { r: "release", pkg: "furrr"             }
-## FIXME: Enable when doFuture (>= 0.12.1) is on CRAN
-##        - { r: "release", pkg: "doFuture"    , plan: multisession, label: multisession }
-          - { r: "release", pkg: "future.apply", plan: multisession, label: multisession }
-          - { r: "release", pkg: "furrr"       , plan: multisession, label: multisession }
+          - { r: "release", pkg: "doFuture"          , plan: multisession, label: multisession }
+          - { r: "release", pkg: "future.apply"      , plan: multisession, label: multisession }
+          - { r: "release", pkg: "furrr"             , plan: multisession, label: multisession }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -96,4 +97,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-revdep${{ matrix.config.pkg }}-results
-          path: check
+          path: ${{ matrix.config.pkg }}.Rcheck

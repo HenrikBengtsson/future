@@ -316,6 +316,37 @@ _Footnote_: (*) Although sequential futures could be passed on to other futures 
 
 ## Miscellaneous
 
+### Capturing errors, outputting their messages, and returning a default value
+
+Sometimes a function call produce an error for a particular input. In such cases, we might want to return a default value, say, a missing value, instead of signaling an error. This can be done using:
+
+```r
+res <- tryCatch({
+  unstable_calc(x)
+}, error = function(e) {
+  NA_real_
+})
+```
+
+Here, `res` takes the value of `unstable_calc(x)`, unless it produces an error, in case it takes value `NA_real_`.
+
+In addition to the above, we could produce a warning whenever we get an error and replace it with a missing value. We can do this as:
+
+
+```r
+res <- tryCatch({
+  unstable_calc(x)
+}, error = function(e) {
+  warning(conditionMessage(e))
+  NA_real_
+})
+```
+
+This will turn the error into a warning with the same message.  If we want to just output the message without producing a warning, we can use `message(conditionMessage(e))`.
+
+Importantly, we must not use just `warning(e)` or `message(e)`, although it appears to work at a first glance.  If we do, we will end up re-signaling the error but without interruption.  It is an important distinction that will reveal itself if used within futures.  The above example with `warning(conditionMessage(e))` will work as expected, but if we use `warning(e)` the future framework will produce an error, not a warning.
+
+
 ### Clashes with other packages
 
 Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:

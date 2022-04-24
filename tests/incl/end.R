@@ -3,20 +3,14 @@ future::plan(oplan)
 
 
 ## Undo options
-## (a) Added
+## (a) Reset
+options(oopts0)
+## (b) Remove added
 added <- setdiff(names(options()), names(oopts0))
 opts <- vector("list", length = length(added))
 names(opts) <- added
 options(opts)
-## (b) Modified
-options(oopts)
-## (c) Removed, e.g. future.plan=NULL
-removed <- setdiff(names(oopts0), names(options()))
-opts <- oopts0[removed]
-options(opts)
-## (d) Undo any future options that was set at startup
-options(oopts0[grep("^future[.]", names(oopts0))])
-## (e) Assert that everything was undone
+## (c) Assert that everything was undone
 if (!identical(options(), oopts0)) {
   message("Failed to undo options:")
   oopts <- options()
@@ -41,24 +35,32 @@ stopifnot(identical(options(), oopts0))
 
 
 ## Undo system environment variables
-## (a) Added
-cenvs <- Sys.getenv()
-added <- setdiff(names(cenvs), names(oenvs0))
-for (name in added) Sys.unsetenv(name)
-## (b) Missing
-missing <- setdiff(names(oenvs0), names(cenvs))
-if (length(missing) > 0) do.call(Sys.setenv, as.list(oenvs0[missing]))
-## (c) Modified?
-for (name in intersect(names(cenvs), names(oenvs0))) {
-  ## WORKAROUND: On Linux Wine, base::Sys.getenv() may
-  ## return elements with empty names. /HB 2016-10-06
-  if (nchar(name) == 0) next
-  if (!identical(cenvs[[name]], oenvs0[[name]])) {
-    do.call(Sys.setenv, as.list(oenvs0[name]))
+## (a) Reset
+do.call(Sys.setenv, args=as.list(oenvs0))
+## (b) Removed added
+added <- setdiff(names(Sys.getenv()), names(oenvs0))
+Sys.unsetenv(added)
+## (c) Assert that everything was undone
+if (!identical(Sys.getenv(), oenvs0)) {
+  message("Failed to undo environment variables:")
+  oenvs <- Sys.getenv()
+  message(sprintf(" - Expected environment variables: [n=%d] %s",
+                  length(oenvs0), hpaste(sQuote(names(oenvs0)))))
+  extra <- setdiff(names(oenvs), names(oenvs0))
+  message(paste(sprintf(" - Environment variables still there: [n=%d]", length(extra)),
+                hpaste(sQuote(extra))))
+  missing <- setdiff(names(oenvs0), names(oenvs))
+  message(paste(sprintf(" - Environment variables missing: [n=%d]", length(missing)),
+                hpaste(sQuote(missing))))
+  message("Differences environment variable by environment variable:")
+  for (name in names(oenvs0)) {
+    value0 <- unname(oenvs0[name])
+    value  <- unname(oenvs[name])
+    if (!identical(value, value0)) {
+      utils::str(list(name = name, expected = value0, actual = value))
+    }
   }
 }
-## (d) Assert that everything was undone
-stopifnot(identical(Sys.getenv(), oenvs0))
 
 
 ## Undo variables
