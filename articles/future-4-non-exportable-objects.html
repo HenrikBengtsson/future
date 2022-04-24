@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.24.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9000</span>
       </span>
     </div>
 
@@ -608,7 +608,7 @@ package, we get errors like:</p>
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span>
-<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu">import</span><span class="op">(</span><span class="st">"os"</span><span class="op">)</span>
+<span class="va">os</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">"os"</span><span class="op">)</span>
 <span class="va">pwd</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="va">os</span><span class="op">$</span><span class="fu">getcwd</span><span class="op">(</span><span class="op">)</span>
 <span class="va">pwd</span>
 <span class="co">## Error in eval(quote(os$getcwd()), new.env()) : </span>
@@ -624,7 +624,7 @@ globals further, we get:</p>
 that we create ourselves as in:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"def twice(x):\n    return 2*x\n"</span>, file <span class="op">=</span> <span class="st">"twice.py"</span><span class="op">)</span>
-<span class="fu">source_python</span><span class="op">(</span><span class="st">"twice.py"</span><span class="op">)</span>
+<span class="fu"><a href="https://rstudio.github.io/reticulate/reference/source_python.html" class="external-link">source_python</a></span><span class="op">(</span><span class="st">"twice.py"</span><span class="op">)</span>
 <span class="fu">twice</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
 <span class="co">## [1] 2.4</span>
 <span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">twice</span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>
@@ -763,7 +763,7 @@ we do as before;</p>
 <span class="co">## 'RegisteredNativeSymbol') in one of the globals ('r' of class</span>
 <span class="co">## 'SpatRaster') used in the future expression</span></code></pre></div>
 <p>For some workarounds, see
-<code>help("wrap", package = "terra")</code>.</p>
+<code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">help("wrap", package = "terra")</a></code>.</p>
 </div>
 <div class="section level4">
 <h4 id="package-udpipe">Package: udpipe<a class="anchor" aria-label="anchor" href="#package-udpipe"></a>
