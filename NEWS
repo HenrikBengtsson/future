@@ -1,16 +1,17 @@
 Package: future
 ===============
 
-Version: 1.25.0-9001 [2022-04-27]
+Version: 1.25.0-9002 [2022-04-27]
 
 DEPRECATED AND DEFUNCT:
 
- * Strategy 'remote' and 'transparent' were deprecated in future
-   1.24.0, where attempts to use them in plan() would produce a
-   deprecation warning, which was limited to one per R session.
-   Starting with this release, this warning is now produced whenever
-   using `plan()` with these deprecated future strategies'.
- 
+ * Strategy 'multiprocess' was deprecated in future 1.20.0, and
+   'remote' and 'transparent' were deprecated in future 1.24.0.  Since
+   then, attempts to use them in plan() would produce a deprecation
+   warning, which was limited to one per R session.  Starting with
+   this release, this warning is now produced whenever using `plan()`
+   with these deprecated future strategies.
+
 
 Version: 1.25.0 [2022-04-23]
 

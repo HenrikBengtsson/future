@@ -161,27 +161,18 @@ plan <- local({
     FALSE
   }
 
-  warn_about_multiprocess <- local({
-    .warn <- TRUE
-
-    function(stack) {
-      if (!.warn) return()
-
-      ## Is deprecated 'multiprocess' used?    
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "multiprocess")) {
-          ignore <- getOption("future.deprecated.ignore")
-          if (!is.element("multiprocess", ignore)) {
-            ## Warn only once
-            .warn <<- FALSE
-            .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
-          }
-
-          break
+  warn_about_multiprocess <- function(stack) {
+    ## Is deprecated 'multiprocess' used?    
+    for (kk in seq_along(stack)) {
+      if (evaluator_uses(stack[[kk]], "multiprocess")) {
+        ignore <- getOption("future.deprecated.ignore")
+        if (!is.element("multiprocess", ignore)) {
+          .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
         }
+        break
       }
     }
-  })
+}
 
   warn_about_remote <- function(stack) {
     ## Is 'remote' used?
@@ -189,7 +180,7 @@ plan <- local({
       if (evaluator_uses(stack[[kk]], "remote")) {
         ignore <- getOption("future.deprecated.ignore")
         if (!is.element("remote", ignore)) {
-          .Deprecated(msg = "Strategy 'remote' is deprecated in future (>= 1.24.0). Instead, use 'cluster'.", package = .packageName)
+          .Deprecated(msg = "Strategy 'remote' is deprecated in future (>= 1.24.0) [2022-02-19] and will soon become defunct. Instead, use 'cluster'.", package = .packageName)
         }
       }
     }
@@ -201,7 +192,7 @@ plan <- local({
       if (evaluator_uses(stack[[kk]], "transparent")) {
         ignore <- getOption("future.deprecated.ignore")
         if (!is.element("remote", ignore)) {
-          .Deprecated(msg = "Strategy 'transparent' is deprecated in future (>= 1.24.0) and will soon become defunct. It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE).", package = .packageName)
+          .Deprecated(msg = "Strategy 'transparent' is deprecated in future (>= 1.24.0) [2022-02-19] and will soon become defunct. It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE).", package = .packageName)
         }
         break
       }
