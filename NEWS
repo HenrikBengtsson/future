@@ -3,6 +3,23 @@ Package: future
 
 Version: 1.25.0-9005 [2022-04-28]
 
+SIGNIFICANT CHANGES:
+
+ * R options and environment variables are now reset on the workers
+   after future is resolved as they were after any packages required
+   by the future has been loaded and attached. Previously, they were
+   reset to what they were before these were loaded and attached.
+
+BUG FIXES:
+
+ * Use of data.table in cluster and multisession futures broke in
+   future 1.25.0, resulting in errors such as "Error in
+   setalloccol(ans) : verbose must be TRUE or FALSE". See above
+   'SIGNIFICANT CHANGES' for the fix.
+
+ * The deprecation warning for using local = FALSE was silenced for
+   sequential futures since future 1.25.0.
+
 DEPRECATED AND DEFUNCT:
 
  * Strategy 'multiprocess' was deprecated in future 1.20.0, and
@@ -12,15 +29,6 @@ DEPRECATED AND DEFUNCT:
    this release, this warning is now produced whenever using `plan()`
    with these deprecated future strategies.
 
-BUG FIXES:
-
- * Use of data.table in cluster and multisession futures broke in
-   future 1.25.0, resulting in errors such as "Error in
-   setalloccol(ans) : verbose must be TRUE or FALSE".
-
- * The deprecation warning for using local = FALSE was silenced for
-   sequential futures since future 1.25.0.
-   
 
 Version: 1.25.0 [2022-04-23]
 
