@@ -26,12 +26,6 @@
 
 # Revdeps
 
-## New problems (1)
-
-|package                            |version |error |warning |note |
-|:----------------------------------|:-------|:-----|:-------|:----|
-|[sovereign](problems.md#sovereign) |1.2.1   |      |__+1__  |     |
-
 ## All (240)
 
 |package                                                  |version   |error |warning |note |
@@ -239,7 +233,7 @@
 |smoots                                                   |1.1.3     |      |        |     |
 |sNPLS                                                    |1.0.27    |      |        |     |
 |[solitude](problems.md#solitude)                         |1.1.3     |      |        |1    |
-|[sovereign](problems.md#sovereign)                       |1.2.1     |      |__+1__  |     |
+|sovereign                                                |1.2.1     |      |        |     |
 |[spacey](problems.md#spacey)                             |0.1.1     |      |        |2    |
 |[SpaDES.core](problems.md#spadescore)                    |1.0.10    |1     |        |     |
 |[spaMM](problems.md#spamm)                               |3.11.14   |      |        |2    |

@@ -2621,47 +2621,6 @@ Run `revdep_details(, "solitude")` for more info
       All declared Imports should be used.
     ```
 
-# sovereign
-
-<details>
-
-* Version: 1.2.1
-* GitHub: https://github.com/tylerJPike/sovereign
-* Source code: https://github.com/cran/sovereign
-* Date/Publication: 2022-01-04 17:20:01 UTC
-* Number of recursive dependencies: 96
-
-Run `revdep_details(, "sovereign")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ...sh: line 1: 139992 Segmentation fault      (core dumped) '/software/c4/cbi/software/R-4.1.3-gcc8/lib64/R/bin/R' --vanilla --no-echo > '/c4/home/henrik/repositories/future/revdep/checks/sovereign/new/sovereign.Rcheck/build_vignettes.log' 2>&1 < '/scratch/henrik/493473/Rtmplr8xJT/file1a2a9727c417c'
-    ```
-     WARNING
-    Error(s) in re-building vignettes:
-    --- re-building ‘getting_started.Rmd’ using rmarkdown
-    `summarise()` has grouped output by 'y'. You can override using the `.groups`
-    argument.
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    ...
-    Warning: Removed 1 row(s) containing missing values (geom_path).
-    Warning: Removed 3 rows containing missing values (position_stack).
-    Warning: Removed 3 row(s) containing missing values (geom_path).
-    Warning: Removed 3 rows containing missing values (position_stack).
-    Warning: Removed 3 row(s) containing missing values (geom_path).
-    Warning: Removed 3 rows containing missing values (position_stack).
-    Warning: Removed 3 row(s) containing missing values (geom_path).
-    
-     *** caught segfault ***
-    address 0x4, cause 'memory not mapped'
-    ```
-
 # spacey
 
 <details>
