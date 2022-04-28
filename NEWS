@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9004 [2022-04-27]
+Version: 1.25.0-9005 [2022-04-28]
 
 DEPRECATED AND DEFUNCT:
 
@@ -13,6 +13,10 @@ DEPRECATED AND DEFUNCT:
    with these deprecated future strategies.
 
 BUG FIXES:
+
+ * Use of data.table in cluster and multisession futures broke in
+   future 1.25.0, resulting in errors such as "Error in
+   setalloccol(ans) : verbose must be TRUE or FALSE".
 
  * The deprecation warning for using local = FALSE was silenced for
    sequential futures since future 1.25.0.

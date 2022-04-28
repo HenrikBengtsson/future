@@ -6,7 +6,14 @@ makeExpression <- local({
   tmpl_enter <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
-    
+
+    ## Required packages are loaded and attached here
+    .(enter)
+
+    ## Record R options and environment variables
+    ## Note, we do this _after_ loading and attaching packages, in
+    ## case they set options/env vars needed for the session, e.g.
+    ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
     ...future.oldEnvVars <- base::Sys.getenv()
     
@@ -33,7 +40,6 @@ makeExpression <- local({
       ## across backends
       width = .(getOption("width"))
     )
-    .(enter)
   })
 
   tmpl_exit <- bquote_compile({
