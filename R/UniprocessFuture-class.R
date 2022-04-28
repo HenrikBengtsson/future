@@ -72,13 +72,19 @@ run.UniprocessFuture <- function(future, ...) {
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
 
+  ## WORKAROUND: Ditto warning by Future() is muffled for UniprocessFuture.
+  ## /HB 2022-04-27
+  if (!future$local) {
+    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
+  }
+
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
   signalImmediateConditions(future)
 
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
-  
+
   invisible(future)
 }
 

@@ -128,6 +128,10 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   args <- list(...)
 
   if (!local && !isTRUE(args[["persistent"]])) {
+    ## Note, this warning will be muffled for UniprocessFuture:s when R option
+    ## 'nwarnings' is reset at the end of evaluating the future expression,
+    ## e.g. local({ warning("boom"); options(nwarnings = 50L) }).
+    ## /HB 2022-04-27
     .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
   }
 

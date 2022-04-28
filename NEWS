@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9002 [2022-04-27]
+Version: 1.25.0-9003 [2022-04-27]
 
 DEPRECATED AND DEFUNCT:
 
@@ -12,6 +12,11 @@ DEPRECATED AND DEFUNCT:
    this release, this warning is now produced whenever using `plan()`
    with these deprecated future strategies.
 
+BUG FIXES:
+
+ * The deprecation warning for using local = FALSE was silenced for
+   sequential futures since future 1.25.0.
+   
 
 Version: 1.25.0 [2022-04-23]
 
