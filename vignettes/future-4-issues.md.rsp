@@ -227,6 +227,8 @@ or equivalently
 [1] 6
 ```
 
+Note, do _not_ use `library()` or `loadNamespace()` to resolve these problems. It is always better to use the above `packages` approach.
+
 
 ## Non-exportable objects
 
