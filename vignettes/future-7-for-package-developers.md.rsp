@@ -10,7 +10,7 @@
 %\VignetteTangle{FALSE}
 --------------------------------------------------------------------"%>
 <%
-library("R.utils")
+library(R.utils)
 `%<-%` <- future::`%<-%`
 options("withCapture/newline" = FALSE)
 %>
