@@ -25,8 +25,8 @@ for (strategy in strategies) {
   v <- value(f)
   stopifnot(
     getOption("digits") == 6L,
-    is.null(getOption("abc")),
-    identical(options(), old_options),
+    #DISABLED# is.null(getOption("abc")),
+    identical(options()[names(old_options)], old_options),
     identical(Sys.getenv("R_DEFAULT_INTERNET_TIMEOUT"), "300"),
     is.na(Sys.getenv("ABC", NA_character_))
   )

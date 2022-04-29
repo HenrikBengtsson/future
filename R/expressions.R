@@ -40,6 +40,9 @@ makeExpression <- local({
       ## across backends
       width = .(getOption("width"))
     )
+
+    ## Record above future options
+    ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
   })
 
   tmpl_exit <- bquote_compile({
@@ -48,15 +51,34 @@ makeExpression <- local({
     ## (a) Reset options
     base::options(...future.oldOptions)
 
+    ## There might be packages that add essential R options when
+    ## loaded or attached, and if their R options are removed, some of
+    ## those packages might break. Because we don't know which these
+    ## packages are, and we cannot detect when a random packages is
+    ## loaded/attached, we cannot reliably workaround R options added
+    ## on package load/attach.  For this reason, I'll relax the
+    ## resetting of R options to only be done to preexisting R options
+    ## for now. These thoughts were triggered by a related data.table
+    ## issue, cf. https://github.com/HenrikBengtsson/future/issues/609
+    ## /HB 2022-04-29
+    
     ## (b) Remove any options added
-    diff <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
-    if (base::length(diff) > 0L) {
-      opts <- base::vector("list", length = base::length(diff))
-      base::names(opts) <- diff
+    ## diff <- base::setdiff(base::names(base::.Options),
+    ##                       base::names(...future.oldOptions))
+    ## if (base::length(diff) > 0L) {
+    ##    opts <- base::vector("list", length = base::length(diff))
+    ##    base::names(opts) <- diff
+    ##    base::options(opts)
+    ## }
+
+    ## (c) Remove any "future" options added
+    if (base::length(...future.futureOptionsAdded) > 0L) {
+      opts <- base::vector("list", length = base::length(...future.futureOptionsAdded))
+      base::names(opts) <- ...future.futureOptionsAdded
       base::options(opts)
     }
 
-    ## (c) Reset environment variables
+    ## (d) Reset environment variables
     if (.Platform$OS.type == "windows") {
       ## On MS Windows, you cannot have empty environment variables. When one
       ## is assigned an empty string, MS Windows interpretes that as it should
