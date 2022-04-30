@@ -6,7 +6,7 @@ makeExpression <- local({
   tmpl_enter <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
-
+    
     ## Required packages are loaded and attached here
     .(enter)
 
@@ -38,7 +38,7 @@ makeExpression <- local({
 
       ## Other options relevant to making futures behave consistently
       ## across backends
-      width = .(getOption("width"))
+      width = .(getOption("width"))      
     )
 
     ## Record above future options
@@ -46,8 +46,6 @@ makeExpression <- local({
   })
 
   tmpl_exit <- bquote_compile({
-    .(exit)
-    
     ## (a) Reset options
     base::options(...future.oldOptions)
 
@@ -111,6 +109,8 @@ makeExpression <- local({
     ## (d) Remove any environment variables added
     diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
     base::Sys.unsetenv(diff)
+    
+    .(exit)
   })
 
   tmpl_expr_evaluate <- bquote_compile({
