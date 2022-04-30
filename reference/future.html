@@ -273,8 +273,8 @@ If FALSE, any output is silenced (by sinking it to the null device as
 it is outputted).
 Using <code>stdout = structure(TRUE, drop = TRUE)</code> causes the captured
 standard output to be dropped from the future object as soon as it has
-been relayed by, for instance, <code>value(f)</code>. This can help decrease the
-overall memory consumed by captured output across futures.
+been relayed. This can help decrease the overall memory consumed by
+captured output across futures.
 Using <code>stdout = NA</code> (not recommended) avoids intercepting the standard
 output; behavior of such unhandled standard output depends on the future</p></dd>
 <dt>conditions</dt>
@@ -489,7 +489,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2613       2.0290  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3372       1.8781  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitB</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -498,7 +498,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.995  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.818  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitC</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -507,7 +507,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3119       2.0850  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2328       1.8773  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"></span>
@@ -525,7 +525,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3119       2.0850  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2328       1.8773  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitB</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -534,7 +534,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.055  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.838  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitC</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -543,7 +543,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3119       2.0850  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2328       1.8773  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"></span>
@@ -565,7 +565,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3119       2.0850  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2328       1.8773  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitB</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -574,7 +574,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.055  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.838  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fitC</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -583,7 +583,7 @@ set by the developer, e.g. it must not be called within a package.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)            x  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      0.3119       2.0850  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      0.2328       1.8773  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># \dontshow{</span></span>
