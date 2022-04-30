@@ -456,3 +456,5 @@ stanfit
 calc
 conditionMessage
 setalloccol
+loadNamespace
+unhandled

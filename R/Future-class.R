@@ -23,19 +23,24 @@
 #' standard output to be dropped from the future object as soon as it has
 #' been relayed by, for instance, `value(f)`. This can help decrease the
 #' overall memory consumed by captured output across futures.
-#' If NA (not recommended), output is _not_ intercepted.
+#' Using `stdout = NA` (not recommended) avoids intercepting the standard
+#' output; behavior of such unhandled standard output depends on the future
+#  backend and the environment from which R runs.
 #' 
 #' @param conditions A character string of conditions classes to be captured
-#' and relayed.  The default is to relay messages and warnings.
-#' To not intercept any types of conditions, use `conditions = NULL`.
+#' and relayed.  The default is to relay all conditions, including messages
+#' and warnings.  To drop all conditions, use `conditions = character(0)`.
+#' Errors are always relayed.
 #' Attribute `exclude` can be used to ignore specific classes, e.g.
 #' `conditions = structure("condition", exclude = "message")` will capture
 #' all `condition` classes except those that inherits from the `message` class.
-#' Using `conditions = structure(..., drop = TRUE)` causes the captured
+#' Using `conditions = structure(..., drop = TRUE)` causes any captured
 #' conditions to be dropped from the future object as soon as it has
-#' been relayed by, for instance, `value(f)`. This can help decrease the
-#' overall memory consumed by captured conditions across futures.
-#' Errors are always relayed.
+#' been relayed, e.g. by `value(f)`. This can help decrease the overall
+#' memory consumed by captured conditions across futures.
+#' Using `conditions = NULL` (not recommended) avoids intercepting conditions,
+#' except from errors; behavior of such unhandled conditions depends on the
+#' future backend and the environment from which R runs.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
