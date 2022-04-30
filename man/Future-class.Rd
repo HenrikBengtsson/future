@@ -34,7 +34,12 @@ identified.}
 \item{stdout}{If TRUE (default), then the standard output is captured,
 and re-outputted when \code{value()} is called.
 If FALSE, any output is silenced (by sinking it to the null device as
-it is outputted).}
+it is outputted).
+Using \code{stdout = structure(TRUE, drop = TRUE)} causes the captured
+standard output to be dropped from the future object as soon as it has
+been relayed by, for instance, \code{value(f)}. This can help decrease the
+overall memory consumed by captured output across futures.
+If NA (not recommended), output is \emph{not} intercepted.}
 
 \item{conditions}{A character string of conditions classes to be captured
 and relayed.  The default is to relay messages and warnings.
@@ -42,6 +47,10 @@ Attribute \code{exclude} can be used to ignore specific classes, e.g.
 \code{conditions = structure("condition", exclude = "message")} will capture
 all \code{condition} classes except those that inherits from the \code{message} class.
 To muffle all conditions, use \code{conditions = character(0)}.
+Using \code{conditions = structure(..., drop = TRUE)} causes the captured
+conditions to be dropped from the future object as soon as it has
+been relayed by, for instance, \code{value(f)}. This can help decrease the
+overall memory consumed by captured conditions across futures.
 Errors are always relayed.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list

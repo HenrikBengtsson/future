@@ -295,7 +295,7 @@ update_package_options <- function(debug = FALSE) {
 
   ## Prototyping in future 1.22.0:
   ## https://github.com/HenrikBengtsson/future/issues/515
-  update_package_option("future.assign_globals.exclude", default = c("namespace"), split = ",", debug = debug)
+  update_package_option("future.assign_globals.exclude", split = ",", debug = debug)
 
   ## Prototyping in future 1.23.0:
   update_package_option("future.output.windows.reencode", mode = "logical", debug = debug)
