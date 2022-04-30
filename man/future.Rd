@@ -99,15 +99,14 @@ to be attached in the \R environment evaluating the future.}
 \item{stdout}{If TRUE (default), then the standard output is captured,
 and re-outputted when \code{value()} is called.
 If FALSE, any output is silenced (by sinking it to the null device as
-it is outputted).
-If NA (not recommended), output is \emph{not} intercepted.}
+it is outputted).}
 
 \item{conditions}{A character string of conditions classes to be captured
 and relayed.  The default is to relay messages and warnings.
-To not intercept any types of conditions, use \code{conditions = NULL}.
 Attribute \code{exclude} can be used to ignore specific classes, e.g.
 \code{conditions = structure("condition", exclude = "message")} will capture
 all \code{condition} classes except those that inherits from the \code{message} class.
+To muffle all conditions, use \code{conditions = character(0)}.
 Errors are always relayed.}
 
 \item{earlySignal}{Specified whether conditions should be signaled as soon

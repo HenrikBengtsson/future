@@ -19,14 +19,13 @@
 #' and re-outputted when `value()` is called.
 #' If FALSE, any output is silenced (by sinking it to the null device as
 #' it is outputted).
-#' If NA (not recommended), output is _not_ intercepted.
 #' 
 #' @param conditions A character string of conditions classes to be captured
 #' and relayed.  The default is to relay messages and warnings.
-#' To not intercept any types of conditions, use `conditions = NULL`.
 #' Attribute `exclude` can be used to ignore specific classes, e.g.
 #' `conditions = structure("condition", exclude = "message")` will capture
 #' all `condition` classes except those that inherits from the `message` class.
+#' To muffle all conditions, use `conditions = character(0)`.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
