@@ -19,6 +19,10 @@
 #' and re-outputted when `value()` is called.
 #' If FALSE, any output is silenced (by sinking it to the null device as
 #' it is outputted).
+#' Using `stdout = structure(TRUE, drop = TRUE)` causes the captured
+#' standard output to be dropped from the future object as soon as it has
+#' been relayed by, for instance, `value(f)`. This can help decrease the
+#' overall memory consumed by captured output across futures.
 #' If NA (not recommended), output is _not_ intercepted.
 #' 
 #' @param conditions A character string of conditions classes to be captured
@@ -27,6 +31,10 @@
 #' Attribute `exclude` can be used to ignore specific classes, e.g.
 #' `conditions = structure("condition", exclude = "message")` will capture
 #' all `condition` classes except those that inherits from the `message` class.
+#' Using `conditions = structure(..., drop = TRUE)` causes the captured
+#' conditions to be dropped from the future object as soon as it has
+#' been relayed by, for instance, `value(f)`. This can help decrease the
+#' overall memory consumed by captured conditions across futures.
 #' Errors are always relayed.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
