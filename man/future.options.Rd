@@ -151,6 +151,9 @@ if set.
 \item{\option{future.globals.method}:}{(character string) Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: \code{"ordered"})}
 
 \item{\option{future.globals.resolve}:}{(logical) If \code{TRUE}, globals that are \code{\link{Future}} objects (typically created as \emph{explicit} futures) will be resolved and have their values (using \code{value()}) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: \code{FALSE})}
+
+\item{\option{future.hidden.features}:}{(logical) If \code{TRUE}, certain hidden features are enabled.  For example, the interception of standard output and conditions can be completely disabled by passing \code{stdout = NA} and \code{conditions = NULL} to \code{future()}, values that normally produces an error. (Default: \code{FALSE})}
+
 }
 }
 

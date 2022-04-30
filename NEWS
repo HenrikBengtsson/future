@@ -15,6 +15,10 @@ SIGNIFICANT CHANGES:
    which of those are essential to that package to work.  Any added
    environment variables are still removed.
 
+ * future(..., stdout = NA) and future(..., conditions = NULL) are now
+   errors by default. To muffle all standard output and conditions,
+   use stdout = FALSE and conditions = character(0).
+
 BUG FIXES:
 
  * Use of data.table in cluster and multisession futures broke in

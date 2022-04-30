@@ -22,7 +22,7 @@ for (cores in seq_len(min(2L, availCores))) {
 
     for (stdout in c(TRUE, FALSE, NA)) {
       message(sprintf("- stdout = %s", stdout))
-
+      if (is.na(stdout)) options(future.hidden.features = TRUE)
       f <- future({
         print(1:50)
         str(1:50)
@@ -51,6 +51,7 @@ for (cores in seq_len(min(2L, availCores))) {
         write.table(datasets::iris[1:10,], sep = "\t")
         42L
       } %stdout% stdout
+      if (is.na(stdout)) options(future.hidden.features = FALSE)
       out <- utils::capture.output(y <- v)
       stopifnot(y == 42L)
       if (is.na(stdout)) {

@@ -106,8 +106,14 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   }
 
   stop_if_not(is.logical(stdout), length(stdout) == 1L)
+  if (is.na(stdout) && !getOption("future.hidden.features", FALSE)) {
+    stop("Argument 'stdout' should be either TRUE or FALSE: NA")
+  }
+  
   if (!is.null(conditions)) {
     stop_if_not(is.character(conditions), !anyNA(conditions))
+  } else if (!getOption("future.hidden.features", FALSE)) {
+    stop("Argument 'conditions' should be a character vector: NULL")
   }
   
   if (!is.null(globals)) {

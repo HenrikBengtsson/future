@@ -102,6 +102,9 @@
 #'  \item{\option{future.globals.method}:}{(character string) Method used to identify globals. For details, see \code{\link[globals]{globalsOf}()}. (Default: `"ordered"`)}
 #'
 #'  \item{\option{future.globals.resolve}:}{(logical) If `TRUE`, globals that are [`Future`] objects (typically created as _explicit_ futures) will be resolved and have their values (using `value()`) collected.  Because searching for unresolved futures among globals (including their content) can be expensive, the default is not to do it and instead leave it to the run-time checks that assert proper ownership when resolving futures and collecting their values. (Default: `FALSE`)}
+#'
+#'  \item{\option{future.hidden.features}:}{(logical) If `TRUE`, certain hidden features are enabled.  For example, the interception of standard output and conditions can be completely disabled by passing `stdout = NA` and `conditions = NULL` to `future()`, values that normally produces an error. (Default: `FALSE`)}
+#'
 #' }
 #'
 #' @section Environment variables that set R options:
@@ -300,4 +303,6 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  update_package_option("future.hidden.features", mode = "logical", debug = debug)
 }

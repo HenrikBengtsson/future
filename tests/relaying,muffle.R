@@ -18,11 +18,13 @@ fcn <- function(...) {
 }
 
 message(" - conditions = NULL")
+options(future.hidden.features = TRUE)
 ## Disabling relaying conditions works
 f <- future(fcn(), conditions = NULL)
 v <- value(f)
 message("RESULT: ", v)
 stopifnot(v == "success")
+options(future.hidden.features = FALSE)
 
 message(" - split = TRUE")
 ## Splitting output works

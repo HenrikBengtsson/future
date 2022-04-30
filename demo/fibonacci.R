@@ -8,6 +8,7 @@ library("listenv")
 ##    'sink stack is full' errors
 ## 3. We disable the capturing of most conditions (condition="error") to
 ##    avoid stacking up too many conditions
+options(future.hidden.features = TRUE)
 oplan <- plan(sequential)
 
 ## Defines the first 100 Fibonacci numbers
@@ -35,4 +36,5 @@ print(x[[7]])
 print(x[[50]])
 
 ## Reset plan
+options(future.hidden.features = FALSE)
 plan(oplan)
