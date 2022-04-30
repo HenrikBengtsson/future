@@ -12,10 +12,11 @@ makeExpression <- local({
     ## case they set options/env vars needed for the session, e.g.
     ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
-    ...future.oldEnvVars <- base::Sys.getenv()
-
+    
     ## Required packages are loaded and attached here
     .(enter)
+
+    ...future.oldEnvVars <- base::Sys.getenv()
 
     ## covr: skip=7
     base::options(
