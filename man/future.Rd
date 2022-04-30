@@ -102,8 +102,8 @@ If FALSE, any output is silenced (by sinking it to the null device as
 it is outputted).
 Using \code{stdout = structure(TRUE, drop = TRUE)} causes the captured
 standard output to be dropped from the future object as soon as it has
-been relayed by, for instance, \code{value(f)}. This can help decrease the
-overall memory consumed by captured output across futures.
+been relayed. This can help decrease the overall memory consumed by
+captured output across futures.
 Using \code{stdout = NA} (not recommended) avoids intercepting the standard
 output; behavior of such unhandled standard output depends on the future}
 
