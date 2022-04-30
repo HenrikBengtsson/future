@@ -7,9 +7,6 @@ makeExpression <- local({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
 
-    ## Required packages are loaded and attached here
-    .(enter)
-
     ## Record R options and environment variables
     ## Note, we do this _after_ loading and attaching packages, in
     ## case they set options/env vars needed for the session, e.g.
@@ -43,6 +40,9 @@ makeExpression <- local({
 
     ## Record above future options
     ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
+    
+    ## Required packages are loaded and attached here
+    .(enter)
   })
 
   tmpl_exit <- bquote_compile({
