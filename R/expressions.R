@@ -13,7 +13,10 @@ makeExpression <- local({
     ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
     ...future.oldEnvVars <- base::Sys.getenv()
-    
+
+    ## Required packages are loaded and attached here
+    .(enter)
+
     ## covr: skip=7
     base::options(
       ## Prevent .future.R from being source():d when future is attached
@@ -40,9 +43,6 @@ makeExpression <- local({
 
     ## Record above future options
     ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
-    
-    ## Required packages are loaded and attached here
-    .(enter)
   })
 
   tmpl_exit <- bquote_compile({
