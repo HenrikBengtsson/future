@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9007</span>
       </span>
     </div>
 
@@ -154,19 +154,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.25.0-9006" id="future-1250-9006">future 1.25.0-9006<a class="anchor" aria-label="anchor" href="#future-1250-9006"></a></h2>
+<h2 class="page-header" data-toc-text="1.25.0-9007" id="future-1250-9007">future 1.25.0-9007<a class="anchor" aria-label="anchor" href="#future-1250-9007"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-25-0-9006">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-25-0-9006"></a></h4>
+<h4 id="significant-changes-1-25-0-9007">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-25-0-9007"></a></h4>
 <ul><li>R options and environment variables are now reset on the workers after future is resolved as they were after any packages required by the future has been loaded and attached. Previously, they were reset to what they were before these were loaded and attached. In addition, only pre-existing R options are reset. Any options added are not removed for now, because we do not know which added options might have been added by a package being loaded at run-time and which of those are essential to that package to work. Any added environment variables are still removed.</li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-25-0-9006">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-25-0-9006"></a></h4>
+<h4 id="bug-fixes-1-25-0-9007">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-25-0-9007"></a></h4>
 <ul><li><p>Use of data.table in cluster and multisession futures broke in future 1.25.0, resulting in errors such as “Error in setalloccol(ans) : verbose must be TRUE or FALSE”. See above ‘SIGNIFICANT CHANGES’ for how this was fixed.</p></li>
 <li><p>The deprecation warning for using local = FALSE was silenced for sequential futures since future 1.25.0.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="deprecated-and-defunct-1-25-0-9006">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-25-0-9006"></a></h4>
-<ul><li>Strategy ‘multiprocess’ was deprecated in future 1.20.0, and ‘remote’ and ‘transparent’ were deprecated in future 1.24.0. Since then, attempts to use them in plan() would produce a deprecation warning, which was limited to one per R session. Starting with this release, this warning is now produced whenever using `plan()` with these deprecated future strategies.</li>
+<h4 id="deprecated-and-defunct-1-25-0-9007">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-25-0-9007"></a></h4>
+<ul><li><p>Strategy ‘transparent’ was deprecated in future 1.24.0 and is now defunct. Use plan(sequential, split = TRUE) instead.</p></li>
+<li><p>Strategy ‘multiprocess’ was deprecated in future 1.20.0, and ‘remote’ was deprecated in future 1.24.0. Since then, attempts to use them in plan() would produce a deprecation warning, which was limited to one per R session. Starting with this release, this warning is now produced whenever using `plan()` with these deprecated future strategies.</p></li>
 </ul></div>
 </div>
     <div class="section level2">
