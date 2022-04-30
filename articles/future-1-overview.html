@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9006</span>
       </span>
     </div>
 
@@ -231,7 +231,7 @@ First, consider the following code snippet that uses plain R code:</p>
 when the expression for <code>v</code> is evaluated we also print a
 message.</p>
 <p>Here is the same code snippet modified to use futures instead:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
@@ -247,7 +247,7 @@ queried (see Vignette ‘Outputting Text’).</p>
 <p>So why are futures useful? Because we can choose to evaluate the
 future expression in a separate R process asynchronously by simply
 switching settings as:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
@@ -278,7 +278,7 @@ evaluation.</p>
 <code>f &lt;- future({ expr })</code> and <code>v &lt;- value(f)</code>
 constructs. With these, our example could alternatively be written
 as:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
@@ -945,7 +945,7 @@ making it possible to index them much like how lists can be indexed. By
 using list environments where we otherwise would use lists, we can also
 assign implicit futures to list-like objects using numeric indices. For
 example,</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"listenv"</span>)</span>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(listenv)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">listenv</span>()</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
@@ -969,7 +969,7 @@ resolved.</p>
 evaluated, run the Mandelbrot demo of this package. First, try with the
 sequential evaluation,</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>which resembles how the script would run if futures were not used.

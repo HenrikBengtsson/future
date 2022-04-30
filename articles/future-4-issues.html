@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9006</span>
       </span>
     </div>
 
@@ -269,9 +269,9 @@ instead of a function object when futures are evaluated in external R
 sessions, such as on a cluster. It may also become a problem with
 futures evaluated with lazy evaluation if the intended function is
 redefined after the future is resolved. For example,</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"listenv"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"tools"</span>)</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(listenv)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(tools)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pathnames <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"foo.txt"</span>, <span class="st">"bar.png"</span>, <span class="st">"yoo.md"</span>)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> res <span class="ot">&lt;-</span> <span class="fu">listenv</span>()</span>
@@ -302,7 +302,7 @@ such as:</p>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">6</span></span></code></pre></div>
 <p>If we attempt to call <code>my_sum()</code> via a future, we will get
 an error (if the future is resolved in an external R process);</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(<span class="fu">my_sum</span>(<span class="st">"a"</span>))</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
@@ -382,15 +382,15 @@ via character strings. The above section gives an example of this where
 automatically identify string-embedded globals from such code. Another
 example, is when using <code>glue()</code> from the glue package to
 generate strings dynamically, e.g.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"glue"</span>)</span>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(glue)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="dv">42</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> s <span class="ot">&lt;-</span> <span class="fu">glue</span>(<span class="st">"The value of a is {a}."</span>)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> s</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>The value of a is <span class="fl">42.</span></span></code></pre></div>
 <p>Attempt to perform the same via a future that is resolved in another
 R session will produce an “object not found” error;</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"glue"</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(glue)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="dv">42</span></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> s <span class="sc">%&lt;-%</span> <span class="fu">glue</span>(<span class="st">"The value of a is {a}."</span>)</span>
@@ -421,10 +421,10 @@ object <code>DT</code>, which requires S3 method
 <code>[.data.table</code> from the data.table package. However, the
 future and global packages fail to identify data.table as a required
 package, which results in an evaluation error:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"data.table"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(data.table)</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> DT <span class="ot">&lt;-</span> <span class="fu">data.table</span>(<span class="at">a =</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">b =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>)</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> DT[, <span class="fu">sum</span>(b)]</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
@@ -443,6 +443,9 @@ additional packages needed:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(DT[, <span class="fu">sum</span>(b)], <span class="at">packages =</span> <span class="st">"data.table"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">value</span>(f)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">6</span></span></code></pre></div>
+<p>Note, do <em>not</em> use <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> or
+<code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">loadNamespace()</a></code> to resolve these problems. It is always
+better to use the above <code>packages</code> approach.</p>
 </div>
 </div>
 <div class="section level2">
@@ -454,9 +457,9 @@ non-exportable object is is XML objects of the xml2 package. If we
 attempt to use those in parallel processing, we may get a error when the
 future is evaluated (or just invalid results depending on how they are
 used), e.g.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"xml2"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(xml2)</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> xml <span class="ot">&lt;-</span> <span class="fu">read_xml</span>(<span class="st">"&lt;body&gt;&lt;/body&gt;"</span>)</span>
 <span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(<span class="fu">xml_children</span>(xml))</span>
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">value</span>(f)</span>
@@ -478,7 +481,7 @@ processing, see Vignette ‘Non-Exportable Objects’.</p>
 <p>It is not possible for a future to resolve another one unless it was
 created by the future trying to resolve it. For instance, the following
 gives an error:</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f1 <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">Sys.getpid</span>() })</span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f2 <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">value</span>(f1) })</span>
@@ -530,7 +533,7 @@ regular variable.</p>
 global variables without being resolved. This can happen if the future
 assignment is done to an element of an environment (including list
 environments). For instance,</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"listenv"</span>)</span>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(listenv)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="ot">&lt;-</span> <span class="fu">listenv</span>()</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x<span class="sc">$</span>a <span class="sc">%&lt;-%</span> { <span class="fu">Sys.getpid</span>() }</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x<span class="sc">$</span>b <span class="sc">%&lt;-%</span> { x<span class="sc">$</span>a }</span>
@@ -603,8 +606,8 @@ the future package. For instance, the igraph package also defines a
 <em>if used at the prompt or in a script</em> (it is not a problem
 inside package because there we explicitly import objects in a known
 order). Here is what we might get:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(igraph)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'igraph'</span></span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -630,8 +633,8 @@ as:</p>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>environment<span class="sc">:</span> namespace<span class="sc">:</span>igraph<span class="sc">&gt;</span></span></code></pre></div>
 <p>To avoid this problem, attach the two packages in opposite order such
 that future comes last and thereby overrides igraph, i.e.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"igraph"</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(igraph)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>Attaching package<span class="sc">:</span> <span class="st">'future'</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -645,7 +648,7 @@ that future comes last and thereby overrides igraph, i.e.</p>
 <p>An alternative is to detach the future package and re-attach it,
 which will achieve the same thing:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">detach</span>(<span class="st">"package:future"</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span></code></pre></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span></code></pre></div>
 <p>Yet another alternative is to explicitly override the object by
 importing it to the global environment, e.g.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span> <span class="ot">&lt;-</span> future<span class="sc">::</span><span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span></span>

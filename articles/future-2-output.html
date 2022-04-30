@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9006</span>
       </span>
     </div>
 
@@ -209,7 +209,7 @@ Importantly, this works identically regardless of future backend
 used.</p>
 <p>For simplicitly, lets start with an illustration on how standard
 output (“stdout”) is captured and relayed:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> fa <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>); 42L })</span>
@@ -247,7 +247,7 @@ output (“stdout”) is captured and relayed:</p>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span> <span class="dv">2</span> <span class="dv">3</span></span></code></pre></div>
 <p>Output is relayed the same way when using future assignments
 (<code>%&lt;-%</code>). For example,</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> { <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>); 42L }</span>
@@ -282,7 +282,7 @@ only print its value, because it is now a regular R object:</p>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
 <p>Next, lets see what happens if we use <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> to
 produce output:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> fa <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">message</span>(<span class="st">"Hello world!"</span>); 42L })</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">value</span>(fa)</span>
@@ -294,7 +294,7 @@ separately. Unfortunately, it is <em>not</em> possible to preserve the
 ordering of interweaved stdout and message output. When using futures,
 stdout output will always be relayed first followed by each of the
 individual conditions captured. For example,</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> fa <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">message</span>(<span class="st">"Hello"</span>); <span class="fu">print</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>); <span class="fu">message</span>(<span class="st">"world!"</span>); <span class="fu">cat</span>(<span class="st">"ping</span><span class="sc">\n</span><span class="st">"</span>); 42L })</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">value</span>(fa)</span>
@@ -311,7 +311,7 @@ individual conditions captured. For example,</p>
 or <a href="https://cran.r-project.org/package=foreach" class="external-link">foreach</a> with
 <a href="https://cran.r-project.org/package=doFuture" class="external-link">doFuture</a>.
 Again, it works with any future backend. For example,</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future.apply"</span>)</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future.apply)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(future.callr<span class="sc">::</span>callr)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">future_lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">FUN =</span> <span class="cf">function</span>(x) { <span class="fu">cat</span>(<span class="st">"x ="</span>, x, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">message</span>(<span class="st">"x : "</span>, x); <span class="fu">sqrt</span>(x) })</span>
@@ -328,7 +328,7 @@ Again, it works with any future backend. For example,</p>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num <span class="fl">1.41</span></span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> num <span class="fl">1.73</span></span></code></pre></div>
 <p>Equivalently,</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"doFuture"</span>)</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(doFuture)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">registerDoFuture</span>()</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(future.callr<span class="sc">::</span>callr)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -352,7 +352,7 @@ Again, it works with any future backend. For example,</p>
 <p>To capture the output produced by futures, use
 <code><a href="https://rdrr.io/r/utils/capture.output.html" class="external-link">capture.output()</a></code> as you would do when capturing output
 elsewhere in R. For example,</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> fa <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>); <span class="fu">print</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>); 42L })</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> stdout <span class="ot">&lt;-</span> <span class="fu">capture.output</span>(a <span class="ot">&lt;-</span> <span class="fu">value</span>(fa))</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> stdout</span>
@@ -363,7 +363,7 @@ elsewhere in R. For example,</p>
 <div class="section level2">
 <h2 id="suppressing-messages">Suppressing messages<a class="anchor" aria-label="anchor" href="#suppressing-messages"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> fa <span class="ot">&lt;-</span> <span class="fu">future</span>({ <span class="fu">message</span>(<span class="st">"Hello"</span>); <span class="fu">print</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>); <span class="fu">message</span>(<span class="st">"world!"</span>); <span class="fu">cat</span>(<span class="st">"ping</span><span class="sc">\n</span><span class="st">"</span>); 42L })</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">suppressMessages</span>(a <span class="ot">&lt;-</span> <span class="fu">value</span>(fa))</span>

@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9006</span>
       </span>
     </div>
 
@@ -202,8 +202,8 @@ Bengtsson</h4>
 of futures and so on. This may, for instance, occur within nested for
 loops, e.g.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">"listenv"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">listenv</a></span><span class="op">)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/listenv/man/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">x</span><span class="op">[[</span><span class="va">ii</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span>
@@ -236,8 +236,8 @@ generate 24 individual BAM files per sample - one per chromosome.</p>
 <p>Here is the layout of what such an analysis could look like in R
 using futures.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">"listenv"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">listenv</a></span><span class="op">)</span>
 <span class="va">htseq_align</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fq</span>, <span class="va">chr</span><span class="op">)</span> <span class="op">{</span> <span class="va">chr</span> <span class="op">}</span>
 
 <span class="va">fqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[.]fastq$"</span><span class="op">)</span>
@@ -363,8 +363,8 @@ session to evaluate R expression on the remote compute cluster and its
 three nodes. Here is a proof of concept illustrating how the different
 nested futures are evaluated on different machines.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">"listenv"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">listenv</a></span><span class="op">)</span>
 
 <span class="co">## Set up access to remote login node</span>
 <span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">remote</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span><span class="op">)</span>
