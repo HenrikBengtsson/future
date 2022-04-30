@@ -2,7 +2,7 @@ source("incl/start.R")
 
 message("*** nbrOfWorkers() ...")
 
-strategies <- c("sequential", "transparent")
+strategies <- c("sequential")
 for (strategy in strategies) {
   message("Type of future: ", strategy)
 

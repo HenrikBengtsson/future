@@ -165,6 +165,13 @@
 NULL
 
 
+setOption <- function(name, value) {
+  oldValue <- getOption(name)
+  args <- list(value)
+  names(args) <- name
+  do.call(options, args = args)
+  invisible(oldValue)
+}
 
 
 # Set an R option from an environment variable
@@ -181,6 +188,7 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
   ## Nothing to do?
   if (is.na(value)) {  
     if (debug) mdebugf("Environment variable %s not set", sQuote(env))
+    if (!is.null(default)) setOption(name, default)
     return(getOption(name, default = default))
   }
   
@@ -190,7 +198,10 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
   if (trim) value <- trim(value)
 
   ## Nothing to do?
-  if (!nzchar(value)) return(getOption(name, default = default))
+  if (!nzchar(value)) {
+    if (!is.null(default)) setOption(name, default)
+    return(getOption(name, default = default))
+  }
 
   ## Split?
   if (!is.null(split)) {
@@ -236,7 +247,7 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
             length(value), storage.mode(value))
   }
 
-  do.call(options, args = structure(list(value), names = name))
+  setOption(name, value)
   
   getOption(name, default = default)
 }
@@ -250,7 +261,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
   ## future (>= 1.25.0-9004):
-  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
+  update_package_option("future.deprecated.defunct", mode = "character", default = c("transparent"), split = ",", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 

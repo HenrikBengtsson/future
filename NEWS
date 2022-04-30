@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9006 [2022-04-29]
+Version: 1.25.0-9007 [2022-04-30]
 
 SIGNIFICANT CHANGES:
 
@@ -27,12 +27,15 @@ BUG FIXES:
 
 DEPRECATED AND DEFUNCT:
 
+ * Strategy 'transparent' was deprecated in future 1.24.0 and is now
+   defunct. Use plan(sequential, split = TRUE) instead.
+
  * Strategy 'multiprocess' was deprecated in future 1.20.0, and
-   'remote' and 'transparent' were deprecated in future 1.24.0.  Since
-   then, attempts to use them in plan() would produce a deprecation
-   warning, which was limited to one per R session.  Starting with
-   this release, this warning is now produced whenever using `plan()`
-   with these deprecated future strategies.
+   'remote' was deprecated in future 1.24.0.  Since then, attempts to
+   use them in plan() would produce a deprecation warning, which was
+   limited to one per R session.  Starting with this release, this
+   warning is now produced whenever using `plan()` with these
+   deprecated future strategies.
 
 
 Version: 1.25.0 [2022-04-23]
