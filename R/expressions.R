@@ -6,18 +6,17 @@ makeExpression <- local({
   tmpl_enter <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
+    
+    ## Required packages are loaded and attached here
+    .(enter)
 
     ## Record R options and environment variables
     ## Note, we do this _after_ loading and attaching packages, in
     ## case they set options/env vars needed for the session, e.g.
     ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
-    
-    ## Required packages are loaded and attached here
-    .(enter)
-
     ...future.oldEnvVars <- base::Sys.getenv()
-
+    
     ## covr: skip=7
     base::options(
       ## Prevent .future.R from being source():d when future is attached
@@ -39,7 +38,7 @@ makeExpression <- local({
 
       ## Other options relevant to making futures behave consistently
       ## across backends
-      width = .(getOption("width"))
+      width = .(getOption("width"))      
     )
 
     ## Record above future options
@@ -47,8 +46,6 @@ makeExpression <- local({
   })
 
   tmpl_exit <- bquote_compile({
-    .(exit)
-    
     ## (a) Reset options
     base::options(...future.oldOptions)
 
@@ -112,6 +109,8 @@ makeExpression <- local({
     ## (d) Remove any environment variables added
     diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
     base::Sys.unsetenv(diff)
+    
+    .(exit)
   })
 
   tmpl_expr_evaluate <- bquote_compile({
