@@ -1,24 +1,64 @@
 Package: future
 ===============
 
-Version: 1.24.0-9104 [2022-04-02]
+Version: 1.25.0-9908 [2022-04-30]
+
+SIGNIFICANT CHANGES:
+
+ * R options and environment variables are now reset on the workers
+   after future is resolved as they were after any packages required
+   by the future has been loaded and attached. Previously, they were
+   reset to what they were before these were loaded and attached. In
+   addition, only pre-existing R options and environment variables are
+   reset. Any new ones added are not removed for now, because we do
+   not know which added R options or environment variables might have
+   been added from loading a package and that are essential for that
+   package to work.
+
+BUG FIXES:
+
+ * Use of data.table in cluster and multisession futures broke in
+   future 1.25.0, resulting in errors such as "Error in
+   setalloccol(ans) : verbose must be TRUE or FALSE". See above
+   'SIGNIFICANT CHANGES' for how this was fixed.
+
+ * The deprecation warning for using local = FALSE was silenced for
+   sequential futures since future 1.25.0.
+
+DEPRECATED AND DEFUNCT:
+
+ * Strategy 'transparent' was deprecated in future 1.24.0 and is now
+   defunct. Use plan(sequential, split = TRUE) instead.
+
+ * Strategy 'multiprocess' was deprecated in future 1.20.0, and
+   'remote' was deprecated in future 1.24.0.  Since then, attempts to
+   use them in plan() would produce a deprecation warning, which was
+   limited to one per R session.  Starting with this release, this
+   warning is now produced whenever using `plan()` with these
+   deprecated future strategies.
+
+
+Version: 1.25.0 [2022-04-23]
 
 SIGNIFICANT CHANGES:
 
  * R options and environment variables are now reset on the workers
    after future is resolved so that any changes to them by the future
-   expression have no effect for following futures.
+   expression have no effect on following futures.
 
 NEW FEATURES:
 
  * Now f <- future(..., stdout = structure(TRUE, drop = TRUE)) will
-   cause the captured standard output do be dropped from the future
+   cause the captured standard output to be dropped from the future
    object as soon as it has been relayed once, for instance, by
    value(f). Similarly, conditions = structure("conditions", drop =
    TRUE) will drop captured non-error conditions as soon as they have
    been relayed.  This can help decrease the amount of memory used,
    especially if there are many active futures.
- 
+
+ * Now resolve() respects option 'future.wait.interval'. Previously,
+   it was hardcoded to poll for results every 0.1 seconds.
+
 BETA FEATURE:
 
   * Now, value() will only attempt to recover UTF-8 symbols in the
@@ -30,10 +70,18 @@ BETA FEATURE:
 
 PERFORMANCE:
 
- * Decrease the default wait time between polls to 0.1 seconds (was
-   0.2 seconds), which can be overridden by an R option,
-   cf. help("future.options"). Now also resolve() respects this option
-   (previously it was hardcoded to 0.1 seconds).
+ * The default value for option 'future.wait.interval' was decreased
+   from 0.2 seconds to 0.01 seconds. This controls the polling
+   frequency for finding an available worker when all workers are
+   currently busy. Starting with this release, this option also
+   controls the polling frequency of resolve().
+
+BUG FIXES:
+
+ * A bug was introduced in future 1.24.0 [2022-02-19] that caused
+   future plan tweaking to break, e.g. plan(multicore, workers = 2)
+   and plan(sequential, split = TRUE) introduced breaking side
+   effects to the futures evaluated.
 
 BETA FEATURES:
 

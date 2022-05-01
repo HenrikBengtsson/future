@@ -6,6 +6,8 @@ jobs:
   R-CMD-check:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
+    timeout-minutes: 30
+    
     runs-on: ubuntu-20.04
 
     name: ${{ matrix.config.pkg }} (${{ matrix.config.r }}) ${{ matrix.config.label }}

@@ -7,6 +7,13 @@ makeExpression <- local({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
     
+    ## Required packages are loaded and attached here
+    .(enter)
+
+    ## Record R options and environment variables
+    ## Note, we do this _after_ loading and attaching packages, in
+    ## case they set options/env vars needed for the session, e.g.
+    ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
     ...future.oldEnvVars <- base::Sys.getenv()
     
@@ -31,26 +38,45 @@ makeExpression <- local({
 
       ## Other options relevant to making futures behave consistently
       ## across backends
-      width = .(getOption("width"))
+      width = .(getOption("width"))      
     )
-    .(enter)
+
+    ## Record above future options
+    ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
   })
 
   tmpl_exit <- bquote_compile({
-    .(exit)
-    
     ## (a) Reset options
     base::options(...future.oldOptions)
 
+    ## There might be packages that add essential R options when
+    ## loaded or attached, and if their R options are removed, some of
+    ## those packages might break. Because we don't know which these
+    ## packages are, and we cannot detect when a random packages is
+    ## loaded/attached, we cannot reliably workaround R options added
+    ## on package load/attach.  For this reason, I'll relax the
+    ## resetting of R options to only be done to preexisting R options
+    ## for now. These thoughts were triggered by a related data.table
+    ## issue, cf. https://github.com/HenrikBengtsson/future/issues/609
+    ## /HB 2022-04-29
+    
     ## (b) Remove any options added
-    diff <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
-    if (base::length(diff) > 0L) {
-      opts <- base::vector("list", length = base::length(diff))
-      base::names(opts) <- diff
+    ## diff <- base::setdiff(base::names(base::.Options),
+    ##                       base::names(...future.oldOptions))
+    ## if (base::length(diff) > 0L) {
+    ##    opts <- base::vector("list", length = base::length(diff))
+    ##    base::names(opts) <- diff
+    ##    base::options(opts)
+    ## }
+
+    ## (c) Remove any "future" options added
+    if (base::length(...future.futureOptionsAdded) > 0L) {
+      opts <- base::vector("list", length = base::length(...future.futureOptionsAdded))
+      base::names(opts) <- ...future.futureOptionsAdded
       base::options(opts)
     }
 
-    ## (c) Reset environment variables
+    ## (d) Reset environment variables
     if (.Platform$OS.type == "windows") {
       ## On MS Windows, you cannot have empty environment variables. When one
       ## is assigned an empty string, MS Windows interpretes that as it should
@@ -80,9 +106,14 @@ makeExpression <- local({
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }
     
+    ## For the same reason as we don't remove added R options, we don't
+    ## remove added environment variables until we know it's safe.
+    ## /HB 2022-04-30
     ## (d) Remove any environment variables added
-    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
-    base::Sys.unsetenv(diff)
+    ## diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
+    ## base::Sys.unsetenv(diff)
+    
+    .(exit)
   })
 
   tmpl_expr_evaluate <- bquote_compile({

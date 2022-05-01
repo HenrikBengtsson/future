@@ -116,10 +116,10 @@ tweak.future <- function(strategy, ..., penvir = parent.frame()) {
   ## Arguments 'envir' and 'workers' must exist in the wrapper, if
   ## they exist in the "future" function
   formals2 <- names(formals(strategy2))
-  for (name in c("envir", "workers")) {
+  for (name in c("workers", "envir")) {
     if (is.element(name, formals) && !is.element(name, formals2)) {
       formals(strategy2) <- c(formals(strategy2), formals(strategy)[name])
-      args2 <- c(args2, args[name])
+      args2[[name]] <- as.symbol(name)
     }
   }
 
