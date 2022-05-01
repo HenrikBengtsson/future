@@ -106,9 +106,12 @@ makeExpression <- local({
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }
     
+    ## For the same reason as we don't remove added R options, we don't
+    ## remove added environment variables until we know it's safe.
+    ## /HB 2022-04-30
     ## (d) Remove any environment variables added
-    diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
-    base::Sys.unsetenv(diff)
+    ## diff <- base::setdiff(base::names(base::Sys.getenv()), base::names(...future.oldEnvVars))
+    ## base::Sys.unsetenv(diff)
     
     .(exit)
   })
