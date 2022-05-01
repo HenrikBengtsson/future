@@ -5,7 +5,7 @@ message("*** transparent() ...")
 
 message("- transparent() is defunct")
 res <- tryCatch(plan(transparent), error = identity)
-stopifnot(inherits(res, "defunctError"))
+stopifnot(inherits(res, "error"))  ## defunctError in R (>= 4.0.0)
 
 
 message("- transparent() legacy behavior")
