@@ -661,8 +661,8 @@ getExpression.Future <- local({
 
   tmpl_exit_mccores <- bquote_compile({
     ## covr: skip=2
-    .(exit)
     base::options(mc.cores = ...future.mc.cores.old)
+    .(exit)
   })
 
   tmpl_enter_rng <- bquote_compile({
@@ -704,7 +704,6 @@ getExpression.Future <- local({
   ## Reset future strategies when done
   tmpl_exit_plan <- bquote_compile({
     ## covr: skip=2
-    .(exit)
     ## Reset option 'future.plan' and env var 'R_FUTURE_PLAN'
     options(future.plan = .(getOption("future.plan")))
     if (is.na(.(oenv <- Sys.getenv("R_FUTURE_PLAN", NA_character_))))
@@ -712,6 +711,7 @@ getExpression.Future <- local({
     else
       Sys.setenv(R_FUTURE_PLAN = .(oenv))
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+    .(exit)
   })
 
   function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
