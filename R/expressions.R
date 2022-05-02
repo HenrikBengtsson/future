@@ -3,7 +3,7 @@ makeExpression <- local({
 
   tmpl_expr_local <- bquote_compile(base::local(.(expr)))
 
-  tmpl_enter <- bquote_compile({
+  tmpl_enter_optenvar <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
     
@@ -16,36 +16,9 @@ makeExpression <- local({
     ## https://github.com/Rdatatable/data.table/issues/5375
     ...future.oldOptions <- base::as.list(base::.Options)
     ...future.oldEnvVars <- base::Sys.getenv()
-    
-    ## covr: skip=7
-    base::options(
-      ## Prevent .future.R from being source():d when future is attached
-      future.startup.script      = FALSE,
-      
-      ## Assert globals when future is created (or at run time)?
-      future.globals.onMissing   = .(globals.onMissing),
-      
-      ## Pass down other future.* options
-      future.globals.maxSize         = .(getOption("future.globals.maxSize")),
-      future.globals.method          = .(getOption("future.globals.method")),
-      future.globals.onMissing       = .(getOption("future.globals.onMissing")),
-      future.globals.onReference     = .(getOption("future.globals.onReference")),
-      future.globals.resolve         = .(getOption("future.globals.resolve")),
-      future.resolve.recursive       = .(getOption("future.resolve.recursive")),
-      future.rng.onMisuse            = .(getOption("future.rng.onMisuse")),
-      future.rng.onMisuse.keepFuture = .(getOption("future.rng.onMisuse.keepFuture")),
-      future.stdout.windows.reencode = .(getOption("future.stdout.windows.reencode")),
-
-      ## Other options relevant to making futures behave consistently
-      ## across backends
-      width = .(getOption("width"))      
-    )
-
-    ## Record above future options
-    ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
   })
 
-  tmpl_exit <- bquote_compile({
+  tmpl_exit_optenvar <- bquote_compile({
     ## (a) Reset options
     base::options(...future.oldOptions)
 
@@ -68,13 +41,6 @@ makeExpression <- local({
     ##    base::names(opts) <- diff
     ##    base::options(opts)
     ## }
-
-    ## (c) Remove any "future" options added
-    if (base::length(...future.futureOptionsAdded) > 0L) {
-      opts <- base::vector("list", length = base::length(...future.futureOptionsAdded))
-      base::names(opts) <- ...future.futureOptionsAdded
-      base::options(opts)
-    }
 
     ## (d) Reset environment variables
     if (.Platform$OS.type == "windows") {
@@ -115,6 +81,51 @@ makeExpression <- local({
     
     .(exit)
   })
+
+
+  tmpl_enter_future_opts <- bquote_compile({
+    .(enter)
+
+    ## covr: skip=7
+    base::options(
+      ## Prevent .future.R from being source():d when future is attached
+      future.startup.script      = FALSE,
+      
+      ## Assert globals when future is created (or at run time)?
+      future.globals.onMissing   = .(globals.onMissing),
+      
+      ## Pass down other future.* options
+      future.globals.maxSize         = .(getOption("future.globals.maxSize")),
+      future.globals.method          = .(getOption("future.globals.method")),
+      future.globals.onMissing       = .(getOption("future.globals.onMissing")),
+      future.globals.onReference     = .(getOption("future.globals.onReference")),
+      future.globals.resolve         = .(getOption("future.globals.resolve")),
+      future.resolve.recursive       = .(getOption("future.resolve.recursive")),
+      future.rng.onMisuse            = .(getOption("future.rng.onMisuse")),
+      future.rng.onMisuse.keepFuture = .(getOption("future.rng.onMisuse.keepFuture")),
+      future.stdout.windows.reencode = .(getOption("future.stdout.windows.reencode")),
+
+      ## Other options relevant to making futures behave consistently
+      ## across backends
+      width = .(getOption("width"))      
+    )
+
+    ## Record above future options
+    ...future.futureOptionsAdded <- base::setdiff(base::names(base::.Options), base::names(...future.oldOptions))
+  })
+
+
+  tmpl_exit_future_opts <- bquote_compile({
+    ## Remove any "future" options added
+    if (base::length(...future.futureOptionsAdded) > 0L) {
+      opts <- base::vector("list", length = base::length(...future.futureOptionsAdded))
+      base::names(opts) <- ...future.futureOptionsAdded
+      base::options(opts)
+    }
+    
+    .(exit)
+  })
+
 
   tmpl_expr_evaluate <- bquote_compile({
     ## covr: skip=6
@@ -297,8 +308,10 @@ makeExpression <- local({
     }
   
     ## Set and reset certain future.* options etc.
-    enter <- bquote_apply(tmpl_enter)
-    exit <- bquote_apply(tmpl_exit)
+    enter <- bquote_apply(tmpl_enter_optenvar)
+    enter <- bquote_apply(tmpl_enter_future_opts)
+    exit <- bquote_apply(tmpl_exit_future_opts)
+    exit <- bquote_apply(tmpl_exit_optenvar)
   
     if (version == "1.8") {    
       expr <- bquote_apply(tmpl_expr_evaluate)
