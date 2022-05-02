@@ -115,7 +115,7 @@ The future package implements the following types of futures:
 | _asynchronous:_ |             | _parallel_:
 | `multisession`  | all         | background R sessions (on current machine)
 | `multicore`     | not Windows/not RStudio | forked R processes (on current machine)
-| `cluster`       | all         | external R sessions on current, local, and remote machines
+| `cluster`       | all         | external R sessions on current, local, and/or remote machines
 
 _Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
 
@@ -158,7 +158,8 @@ Now we are ready to explore the different future strategies.
 
 ### Synchronous Futures
 
-Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.  
+Synchronous futures are resolved one after another and most commonly by the R process that creates them.  When a synchronous future is being resolved it blocks the main process until resolved.
+
 
 #### Sequential Futures
 
@@ -167,7 +168,7 @@ Sequential futures are the default unless otherwise specified.  They were design
 > plan(sequential)
 > pid <- Sys.getpid()
 > pid
-[1] 8000
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -185,14 +186,14 @@ Sequential futures are the default unless otherwise specified.  They were design
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 8000
+[1] 1427324
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 8000
+[1] 1427324
 ```
 Since eager sequential evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created.  Note also how `pid` in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed.  This is because futures are evaluated in a local environment.  Since synchronous (uni-)processing is used, future `b` is resolved by the main R process (still in a local environment), which is why the value of `b` and `pid` are the same.
 
@@ -209,7 +210,7 @@ We start with multisession futures because they are supported by all operating s
 > plan(multisession)
 > pid <- Sys.getpid()
 > pid
-[1] 8000
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -227,14 +228,14 @@ We start with multisession futures because they are supported by all operating s
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 8079
+[1] 1427382
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 8000
+[1] 1427324
 ```
 The first thing we observe is that the values of `a`, `c` and `pid` are the same as previously.  However, we notice that `b` is different from before.  This is because future `b` is evaluated in a different R process and therefore it returns a different process ID.
 
@@ -270,7 +271,7 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 > plan(cluster, workers = c("n1", "n2", "n3"))
 > pid <- Sys.getpid()
 > pid
-[1] 8000
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -288,14 +289,14 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 8164
+[1] 1427499
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 8000
+[1] 1427324
 ```
 
 
@@ -337,23 +338,23 @@ For instance, here is an example of two "top" futures (`a` and `b`) that uses mu
 +     c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
 + }
 > pid
-[1] 8000
+[1] 1427324
 > a
 Future 'a' ...
-[1] 8220
+[1] 1427606
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
-  8251   8251   8251 
+  b.pid  b1.pid  b2.pid 
+1427607 1427607 1427607 
 ```
 By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.  There is the main R process
-(pid 8000),
+(pid 1427324),
 and there are the two processes used by `a`
-(pid 8220)
+(pid 1427606)
 and `b`
-(pid 8251).
+(pid 1427607).
 However, the two futures (`b1` and `b2`) that is nested by `b` are evaluated by the same R process as `b`.  This is because nested futures use sequential evaluation unless otherwise specified.  There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 
 
@@ -367,16 +368,16 @@ We would actually get the same behavior if we try with multiple levels of multis
 > plan(list(multisession, multisession))
 [...]
 > pid
-[1] 8000
+[1] 1427324
 > a
 Future 'a' ...
-[1] 8310
+[1] 1427721
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
-  8341   8341   8341 
+  b.pid  b1.pid  b2.pid 
+1427722 1427722 1427722 
 ```
 The reason for this is, also here, to protect us from launching more processes than what the machine can support.  Internally, this is done by setting `mc.cores = 1` such that functions like `parallel::mclapply()` will fall back to run sequentially.  This is the case for both multisession and multicore evaluation.
 
@@ -386,21 +387,21 @@ Continuing, if we start off by sequential evaluation and then use multisession e
 > plan(list(sequential, multisession))
 [...]
 > pid
-[1] 8000
+[1] 1427324
 > a
 Future 'a' ...
-[1] 8000
+[1] 1427324
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
-  8000   8418   8449 
+  b.pid  b1.pid  b2.pid 
+1427324 1427855 1427854 
 ```
 which clearly show that `a` and `b` are resolved in the calling process
-(pid 8000)
+(pid 1427324)
 whereas the two nested futures (`b1` and `b2`) are resolved in two separate R processes
-(pids 8418 and 8449).
+(pids 1427855 and 1427854).
 
 
 
@@ -410,23 +411,23 @@ Having said this, it is indeed possible to use nested multisession evaluation st
 +     workers = 2)))
 [...]
 > pid
-[1] 8000
+[1] 1427324
 > a
 Future 'a' ...
-[1] 8500
+[1] 1427973
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
-  8531   8589   8620 
+  b.pid  b1.pid  b2.pid 
+1427972 1428098 1428099 
 ```
 First, we see that both `a` and `b` are resolved in different processes
-(pids 8500 and 8531)
+(pids 1427973 and 1427972)
 than the calling process
-(pid 8000).
+(pid 1427324).
 Second, the two nested futures (`b1` and `b2`) are resolved in yet two other R processes
-(pids 8589 and 8620).
+(pids 1428098 and 1428099).
 
 
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette '[Futures in R: Future Topologies]'.
@@ -457,11 +458,16 @@ Waiting for 'a' to be resolved ...
 3 
 4 
 5 
+6 
+7 
+8 
+9 
+10 
 > cat("Waiting for 'a' to be resolved ... DONE\n")
 Waiting for 'a' to be resolved ... DONE
 > a
 Future 'a' ...done
-[1] 8657
+[1] 1428185
 ```
 
 
@@ -523,9 +529,9 @@ There is one limitation with implicit futures that does not exist for explicit o
 > v <- lapply(f, FUN = value)
 > str(v)
 List of 3
- $ : int 8742
- $ : int 8773
- $ : int 8742
+ $ : int 1428291
+ $ : int 1428290
+ $ : int 1428291
 ```
 This is _not_ possible to do when using implicit futures.  This is because the `%<-%` assignment operator _cannot_ be used in all cases where the regular `<-` assignment operator can be used.  It can only be used to assign future values to _environments_ (including the calling environment) much like how `assign(name, value, envir)` works.  However, we can assign implicit futures to environments using _named indices_, e.g.
 ```r
@@ -539,9 +545,9 @@ This is _not_ possible to do when using implicit futures.  This is because the `
 > v <- as.list(v)
 > str(v)
 List of 3
- $ a: int 8832
- $ b: int 8864
- $ c: int 8832
+ $ a: int 1428405
+ $ b: int 1428406
+ $ c: int 1428405
 ```
 Here `as.list(v)` blocks until all futures in the environment `v` have been resolved.  Then their values are collected and returned as a regular list.
 
@@ -558,9 +564,9 @@ If _numeric indices_ are required, then _list environments_ can be used.  List e
 > v <- as.list(v)
 > str(v)
 List of 3
- $ : int 8929
- $ : int 8960
- $ : int 8929
+ $ : int 1428523
+ $ : int 1428522
+ $ : int 1428523
 ```
 As previously, `as.list(v)` blocks until all futures are resolved.
 
@@ -595,3 +601,5 @@ demo("mandelbrot", package = "future", ask = FALSE)
 [listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-4-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
+---
+Copyright Henrik Bengtsson, 2015-2022

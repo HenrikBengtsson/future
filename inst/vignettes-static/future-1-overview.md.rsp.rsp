@@ -651,12 +651,6 @@ demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
 
-
-## Contributing
-
-The goal of this package is to provide a standardized and unified API for using futures in R.  What you are seeing right now is an early but sincere attempt to achieve this goal.  If you have comments or ideas on how to improve the 'future' package, I would love to hear about them.  The preferred way to get in touch is via the [GitHub repository](https://github.com/HenrikBengtsson/future/), where you also find the latest source code.  I am also open to contributions and collaborations of any kind.
-
-
 [batchtools]: https://cran.r-project.org/package=batchtools
 [callr]: https://cran.r-project.org/package=callr
 [future]: https://cran.r-project.org/package=future
@@ -667,4 +661,4 @@ The goal of this package is to provide a standardized and unified API for using 
 [Futures in R: Common Issues with Solutions]: future-4-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
 ---
-Copyright Henrik Bengtsson, 2015-2021
+Copyright Henrik Bengtsson, 2015-2022
