@@ -127,6 +127,17 @@ makeExpression <- local({
   })
 
 
+  tmpl_enter_workdir <- bquote_compile({
+    .(enter)
+    ...future.workdir <- getwd()
+  })
+
+  tmpl_exit_workdir <- bquote_compile({
+    if (!identical(...future.workdir, getwd())) setwd(...future.workdir)
+    .(exit)
+  })
+
+
   tmpl_expr_evaluate <- bquote_compile({
     ## covr: skip=6
     .(enter)
@@ -307,11 +318,14 @@ makeExpression <- local({
       skip <- skip.local
     }
   
-    ## Set and reset certain future.* options etc.
+    ## Set and reset certain properties and states
+    enter <- bquote_apply(tmpl_enter_workdir)
     enter <- bquote_apply(tmpl_enter_optenvar)
     enter <- bquote_apply(tmpl_enter_future_opts)
+    
     exit <- bquote_apply(tmpl_exit_future_opts)
     exit <- bquote_apply(tmpl_exit_optenvar)
+    exit <- bquote_apply(tmpl_exit_workdir)
   
     if (version == "1.8") {    
       expr <- bquote_apply(tmpl_expr_evaluate)
