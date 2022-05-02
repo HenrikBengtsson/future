@@ -343,7 +343,10 @@ idle/unused. An alternative set up is then to use the following
 setup:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,
+  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+<span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>This will cause up to 24 (= 3*8) samples to be processed in parallel
 each processing two chromosomes at the same time.</p>
 </div>
@@ -366,12 +369,14 @@ nested futures are evaluated on different machines.</p>
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/HenrikBengtsson/listenv" class="external-link">listenv</a></span><span class="op">)</span>
 
-<span class="co">## Set up access to remote login node</span>
-<span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">remote</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span><span class="op">)</span>
+<span class="co">## Set up access to remote login node (must have Rscript)</span>
+<span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span>, persistent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">login</span><span class="op">)</span>
 
 <span class="co">## Set up cluster nodes on login node</span>
-<span class="va">nodes</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">.keepme</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span>
+<span class="va">nodes</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">.keepme</span> <span class="op">&lt;-</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">makeClusterPSOCK</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span>
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">)</span>
+<span class="co">## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'</span>
 
 <span class="co">## Specify future topology</span>
 <span class="co">## login node -&gt; { cluster nodes } -&gt; { multiple cores }</span>
