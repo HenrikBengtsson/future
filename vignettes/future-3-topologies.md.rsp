@@ -142,12 +142,14 @@ With the above setup, we can use nested futures in our local R session to evalua
 library(future)
 library(listenv)
 
-## Set up access to remote login node
-login <- tweak(remote, workers = "remote.server.org")
+## Set up access to remote login node (must have Rscript)
+login <- tweak(cluster, workers = "remote.server.org", persistent = TRUE)
 plan(login)
 
 ## Set up cluster nodes on login node
-nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) }
+nodes %<-% { .keepme <- parallelly::makeClusterPSOCK(c("n1", "n2", "n3")) }
+print(nodes)
+## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'
 
 ## Specify future topology
 ## login node -> { cluster nodes } -> { multiple cores }
@@ -242,5 +244,4 @@ and `n3` will respect what `availableCores()` returns.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
-[globals]: https://cran.r-project.org/package=globals
 [Futures in R: Common issues with solutions]: future-issues.html
