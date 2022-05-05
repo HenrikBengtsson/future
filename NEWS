@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9008 [2022-04-30]
+Version: 1.25.0-9009 [2022-05-03]
 
 SIGNIFICANT CHANGES:
 
@@ -14,6 +14,10 @@ SIGNIFICANT CHANGES:
    not know which added R options or environment variables might have
    been added from loading a package and that are essential for that
    package to work.
+
+ * If it was changed while evaluating the future expression, the
+   current working directory is now reset when the future has been
+   resolved.
 
 BUG FIXES:
 
