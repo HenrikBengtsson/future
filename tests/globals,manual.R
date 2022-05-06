@@ -3,6 +3,7 @@ options(future.debug=FALSE)
 
 ## https://github.com/HenrikBengtsson/future/issues/515
 skip_bug_515 <- function(strategy, exclude = getOption("future.assign_globals.exclude", c("namespace"))) {
+  if (packageVersion("future") >= "1.22.0") return(FALSE)
   if ("namespace" %in% exclude) return(TRUE)
   strategy %in% c("sequential", "multicore")
 }
