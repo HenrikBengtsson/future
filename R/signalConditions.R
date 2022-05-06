@@ -23,7 +23,7 @@
 #' Conditions are signaled by
 #' \code{\link[base:conditions]{signalCondition}()}.
 #'
-#' @keyword internal
+#' @keywords internal
 signalConditions <- function(future, include = "condition", exclude = NULL, resignal = TRUE, ...) {
   ## Future is not yet launched
   ## FIXME: civis::CivisFuture uses 'succeeded' /HB 2019-06-18
