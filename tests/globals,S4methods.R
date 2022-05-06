@@ -19,8 +19,9 @@ for (strategy in supportedStrategies()) {
   message("Type of future: ", strategy)
   plan(strategy)
 
-  ## FIXME: https://github.com/HenrikBengtsson/future/issues/615
-  if (strategy %in% c("sequential", "multicore")) {
+  ## WORKAROUND: https://github.com/HenrikBengtsson/future/issues/615
+  ## Apply workaround if and only if 'future.globals.keepWhere' is not set
+  if (is.null(keepWhere) && strategy %in% c("sequential", "multicore")) {
     options(future.globals.keepWhere = TRUE)
   }
   
