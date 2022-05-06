@@ -22,6 +22,8 @@ jobs:
           - {os: macOS-latest,   r: 'release' }
           - {os: ubuntu-20.04,   r: 'devel'   }
           - {os: ubuntu-20.04,   r: 'release' }
+          - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: false }
+          - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: true }
           - {os: ubuntu-20.04,   r: 'release', plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
@@ -42,6 +44,7 @@ jobs:
       _R_CHECK_THINGS_IN_TEMP_DIR_: true
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
+      R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
       
     steps:
       - uses: actions/checkout@v2
