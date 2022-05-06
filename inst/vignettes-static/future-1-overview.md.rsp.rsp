@@ -656,7 +656,6 @@ plan(cluster, workers = c("n2", "n5", "n6", "n6", "n9"))
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
 
-
 [batchtools]: https://cran.r-project.org/package=batchtools
 [callr]: https://cran.r-project.org/package=callr
 [future]: https://cran.r-project.org/package=future
@@ -666,5 +665,3 @@ demo("mandelbrot", package = "future", ask = FALSE)
 [listenv]: https://cran.r-project.org/package=listenv
 [Futures in R: Common Issues with Solutions]: future-4-issues.html
 [Futures in R: Future Topologies]: future-3-topologies.html
----
-Copyright Henrik Bengtsson, 2015-2022
