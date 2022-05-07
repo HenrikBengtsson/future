@@ -22,7 +22,7 @@ for (strategy in supportedStrategies()) {
   print(v)
   stopifnot(
     is.function(v),
-    inherits(v, "nonstandardGenericFunction")
+    inherits(v, "standardGeneric")
   )
   my_fcn <- v
   
