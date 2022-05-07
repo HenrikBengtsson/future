@@ -176,14 +176,19 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
       e <- environment(global)
       if (!inherits_from_namespace(e)) {
         w <- where[[name]]
-        ## FIXME: Can we remove this?
-        ## Here I'm just being overly conservative ## /HB 2021-06-15
-        if (identical(w, emptyenv())) {
+
+        ## If a global has 'where' %in% emptyenv() or globalenv(),
+        ## then it should be moved to the 'envir' environment.
+        ## Related to:
+        ## * https://github.com/HenrikBengtsson/future/issues/475
+        ## * https://github.com/HenrikBengtsson/future/issues/515
+        ## * https://github.com/HenrikBengtsson/future/issues/608
+        if (identical(w, emptyenv()) || identical(w, globalenv())) {
           environment(global) <- envir
+          where[[name]] <- envir
+          globals[[name]] <- global
           if (debug) {
             mdebugf("- reassign environment for %s", sQuote(name))
-            where[[name]] <- envir
-            globals[[name]] <- global
           }
         }
       }

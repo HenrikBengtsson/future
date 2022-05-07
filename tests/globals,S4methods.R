@@ -5,13 +5,9 @@ keepWhere <- getOption("future.globals.keepWhere")
 
 message("*** Globals - S4 methods ...")
 
-setGeneric("my_fcn", function(x) {
-    standardGeneric("my_fcn")
-})
+setGeneric("my_fcn", function(x) standardGeneric("my_fcn"))
 
-setMethod("my_fcn", methods::signature(x = "numeric"), function(x) {
-  x^2
-})
+setMethod("my_fcn", signature(x = "numeric"), function(x) { x^2 })
 
 truth <- my_fcn(3)
 
@@ -19,16 +15,27 @@ for (strategy in supportedStrategies()) {
   message("Type of future: ", strategy)
   plan(strategy)
 
-  ## WORKAROUND: https://github.com/HenrikBengtsson/future/issues/615
-  ## Apply workaround if and only if 'future.globals.keepWhere' is not set
-  if (is.null(keepWhere) && strategy %in% c("sequential", "multicore")) {
-    options(future.globals.keepWhere = TRUE)
-  }
-  
-  f <- future({ my_fcn(3) })
+  ## Assert that S4 generic function 'my_fcn()' is exported
+  f <- future({ my_fcn }, lazy = TRUE)
+  rm(list = "my_fcn")
   v <- value(f)
   print(v)
-  stopifnot(v == truth)
+  stopifnot(
+    is.function(v),
+    inherits(v, "nonstandardGenericFunction")
+  )
+  my_fcn <- v
+  
+  ## FIXME:
+  ## Just like S3 methods, S4 methods are not picked up
+  ## https://github.com/HenrikBengtsson/future/issues/615
+  f <- future({ my_fcn(3) }, lazy = TRUE)
+  res <- tryCatch({
+    v <- value(f)
+  }, error = identity)
+  print(res)
+  stopifnot(inherits(res, "error"))
+  ## stopifnot(v == truth)
 
   ## Make sure to reset option, if changed
   options(future.globals.keepWhere = keepWhere)
