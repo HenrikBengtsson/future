@@ -174,22 +174,21 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
 
     if (exclude_namespace) {
       e <- environment(global)
-      if (!inherits_from_namespace(e)) {
+      if (!is.null(e) && !inherits_from_namespace(e)) {
         w <- where[[name]]
 
-        ## If a global has 'where' %in% emptyenv() or globalenv(),
-        ## then it should be moved to the 'envir' environment.
+        ## If global has 'where' with emptyenv() it means it was
+        ## specified via 'globals' argument. For this closure
+        ## (function or formula) to find its free variables,
+        ## it's environment needs to be reassigned to the 'envir'
+        ## environment.
         ## Related to:
         ## * https://github.com/HenrikBengtsson/future/issues/475
         ## * https://github.com/HenrikBengtsson/future/issues/515
         ## * https://github.com/HenrikBengtsson/future/issues/608
-        if (identical(w, emptyenv()) || identical(w, globalenv())) {
+        if (identical(w, emptyenv())) {
           environment(global) <- envir
-          where[[name]] <- envir
-          globals[[name]] <- global
-          if (debug) {
-            mdebugf("- reassign environment for %s", sQuote(name))
-          }
+          if (debug) mdebugf("- reassign environment for %s", sQuote(name))
         }
       }
     }
@@ -199,11 +198,7 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
   }
 
 
-  if (debug) {
-    attr(globals, "where") <- where
-    mstr(globals)
-    mdebug("assign_globals() ... done")
-  }
+  if (debug) mdebug("assign_globals() ... done")
 
   invisible(envir)
 }

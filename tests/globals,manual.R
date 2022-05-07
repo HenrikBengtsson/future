@@ -101,7 +101,7 @@ for (strategy in supportedStrategies()) {
     f <- futureAssign("y", {
       x <- 1:10
       sumtwo(a + b * x)
-    }, lazy = TRUE, globals = TRUE)
+          }, lazy = TRUE, globals = TRUE)
     print(f)
     rm(list = names(globals))
     z <- value(f)

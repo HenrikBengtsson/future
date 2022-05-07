@@ -30,12 +30,13 @@ for (strategy in supportedStrategies()) {
   ## Just like S3 methods, S4 methods are not picked up
   ## https://github.com/HenrikBengtsson/future/issues/615
   f <- future({ my_fcn(3) }, lazy = TRUE)
-  res <- tryCatch({
-    v <- value(f)
+  v <- tryCatch({
+    value(f)
   }, error = identity)
-  print(res)
-  stopifnot(inherits(res, "error"))
-  ## stopifnot(v == truth)
+  print(v)
+  if (!identical(v, truth)) {
+    stopifnot(inherits(v, "error"))
+  }
 
   ## Make sure to reset option, if changed
   options(future.globals.keepWhere = keepWhere)
