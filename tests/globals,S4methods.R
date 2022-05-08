@@ -29,7 +29,7 @@ for (strategy in supportedStrategies()) {
   ## https://github.com/HenrikBengtsson/future/issues/615
   f <- future({ my_fcn(3) }, lazy = TRUE)
   rm(list = "my_fcn")
-  if (getOption("future.globals.keepWhere", TRUE)) {
+  if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
     v <- value(f)
     print(v)
     stopifnot(identical(v, truth))
