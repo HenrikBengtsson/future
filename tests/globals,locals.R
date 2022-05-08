@@ -13,6 +13,55 @@ for (strategy in supportedStrategies()) {
   message(sprintf("- plan('%s') ...", strategy))
   plan(strategy)
 
+  message("- Missing global variable")
+  g <- function() a
+  h <- function() {
+    a <- 1
+    g()
+  }
+  res <- tryCatch({
+    f <- future(h())
+    v <- value(f)
+  }, error = identity)
+  stopifnot(inherits(res, "error"))
+
+  message("- Missing global variable (v2)")
+  g <- function() a
+  h <- function(g) {
+    a <- 1
+    g()
+  }
+  res <- tryCatch({
+    f <- future(h(g))
+    v <- value(f)
+  }, error = identity)
+  stopifnot(inherits(res, "error"))
+
+  message("- Missing global variable (v3)")
+  g <- function() a
+  res <- tryCatch({
+    f <- future(local({
+      a <- 1
+      g()
+    }))
+    v <- value(f)
+  }, error = identity)
+  stopifnot(inherits(res, "error"))
+
+  message("- Non-missing global variable")
+  a <- 2
+  g <- function() a
+  f <- future(local({
+    a <- 1
+    g()
+  }), lazy = TRUE)
+  rm(list = "a")
+  v <- value(f)
+  stopifnot(v == 2)
+
+
+  message("- Name clashing of globals across local() environments")
+
   ## Closures with local globals of the same name
   g <- local({ a <- 1; function() a })
   h <- local({ a <- 2; function() a })
@@ -30,12 +79,8 @@ for (strategy in supportedStrategies()) {
   v <- value(f)
   print(v)
   
-  if (!strategy %in% c("sequential", "multicore") || (packageVersion("globals") >= "0.14.0.9004") && getOption("future.globals.keepWhere", FALSE)) {
-    stopifnot(identical(v, truth))
-    options(okeep)
-  } else {
-    stopifnot(identical(v, h() + h()))
-  }
+  stopifnot(identical(v, truth))
+  options(okeep)
 } ## for (strategy ...)
 
 message("*** Globals inside local() environments ... DONE")
