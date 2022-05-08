@@ -85,12 +85,14 @@ for (strategy in supportedStrategies()) {
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
-  if (isTRUE(getOption("future.globals.keepWhere", TRUE)) || ! strategy %in% c("sequential", "multicore")) {
+  if (isTRUE(getOption("future.globals.keepWhere")) || ! strategy %in% c("sequential", "multicore")) {
     stopifnot(identical(v, truth))
-  } else if (packageVersion("globals") < "0.14.0.9004") {
-    stopifnot(identical(v, 4))
   } else {
-    stopifnot(inherits(v, "error"))
+    if (packageVersion("globals") >= "0.14.0.9004") {
+      stopifnot(inherits(v, "error"))
+    } else {
+      stopifnot(identical(v, 4))
+    }
   }
   
   options(okeep)
