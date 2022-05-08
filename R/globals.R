@@ -101,6 +101,8 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       globals <- globalsOf(
                    ## Passed to globals::findGlobals()
                    expr, envir = envir, substitute = FALSE, tweak = tweak,
+                   ## Requires globals (>= 0.14.0.9004); ignored otherwise
+                   locals = getOption("future.globals.globalsOf.locals", FALSE),
                    ## Passed to globals::findGlobals() via '...'
                    dotdotdot = "return",
                    method = globals.method,

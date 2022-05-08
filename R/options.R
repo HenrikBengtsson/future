@@ -308,6 +308,9 @@ update_package_options <- function(debug = FALSE) {
   ## Prototyping in future 1.23.0:
   update_package_option("future.output.windows.reencode", mode = "logical", debug = debug)
 
+  ## Prototyping in future 1.26.0:
+  update_package_option("future.globals.globalsOf.locals", mode = "logical", debug = debug)
+
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
