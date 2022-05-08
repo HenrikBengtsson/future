@@ -387,7 +387,7 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
     pkgs <- pkgs[isAttached]
   }
 
-  keepWhere <- getOption("future.globals.keepWhere", FALSE)
+  keepWhere <- getOption("future.globals.keepWhere", TRUE)
   if (!keepWhere) {
     where <- attr(globals, "where")
     for (kk in seq_along(where)) where[[kk]] <- emptyenv()

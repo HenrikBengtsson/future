@@ -5,8 +5,6 @@ oopts <- c(oopts, options(
   future.globals.onMissing = "error"
 ))
 
-okeep <- list()
-
 message("*** Globals inside local() environments ...")
 
 for (strategy in supportedStrategies()) {
@@ -68,7 +66,7 @@ for (strategy in supportedStrategies()) {
   truth <- g() + h()
   print(truth)
 
-  ## Fixed in future (>= 1.25.0-9013) with globals (>= 0.14.0.9004):
+  ## Fixed in future (>= 1.25.0-9016) with globals (>= 0.14.0.9004):
   ##
   ##   f <- future(g() + h())
   ##
@@ -79,13 +77,10 @@ for (strategy in supportedStrategies()) {
   ##
   ## 'a' of h() would overwride 'a' of g() so that g() == 1
   ## https://github.com/HenrikBengtsson/future/issues/608
-  if (is.null(getOption("future.globals.keepWhere")) && packageVersion("globals") >= "0.14.0.9004") {
-    okeep <- options(future.globals.keepWhere = TRUE)
-  }
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
-  if (isTRUE(getOption("future.globals.keepWhere")) || ! strategy %in% c("sequential", "multicore")) {
+  if (isTRUE(getOption("future.globals.keepWhere", TRUE)) || ! strategy %in% c("sequential", "multicore")) {
     stopifnot(identical(v, truth))
   } else {
     if (packageVersion("globals") >= "0.14.0.9004") {
@@ -94,8 +89,6 @@ for (strategy in supportedStrategies()) {
       stopifnot(identical(v, 4))
     }
   }
-  
-  options(okeep)
 } ## for (strategy ...)
 
 message("*** Globals inside local() environments ... DONE")

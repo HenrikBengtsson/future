@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9015 [2022-05-07]
+Version: 1.25.0-9016 [2022-05-08]
 
 SIGNIFICANT CHANGES:
 
@@ -45,6 +45,9 @@ BUG FIXES:
    setalloccol(ans) : verbose must be TRUE or FALSE". See above
    'SIGNIFICANT CHANGES' for how this was fixed.
 
+ * S4 methods defined locally, that is, not in a package, failed to be
+   found in sequential and multicore futures since future 1.22.0.
+   
  * The deprecation warning for using local = FALSE was silenced for
    sequential futures since future 1.25.0.
 

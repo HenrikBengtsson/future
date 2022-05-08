@@ -1,9 +1,6 @@
 source("incl/start.R")
 library(methods)
 
-## Required for S4 methods to work
-options(future.globals.keepWhere = TRUE)
-
 message("*** Globals - S4 methods ...")
 
 setGeneric("my_fcn", function(x) standardGeneric("my_fcn"))
