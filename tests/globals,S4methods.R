@@ -29,9 +29,15 @@ for (strategy in supportedStrategies()) {
   ## https://github.com/HenrikBengtsson/future/issues/615
   f <- future({ my_fcn(3) }, lazy = TRUE)
   rm(list = "my_fcn")
-  v <- value(f)
-  print(v)
-  stopifnot(identical(v, truth))
+  if (getOption("future.globals.keepWhere", TRUE)) {
+    v <- value(f)
+    print(v)
+    stopifnot(identical(v, truth))
+  } else {
+    v <- tryCatch(value(f), error = identity)
+    print(v)
+    stopifnot(inherits(v, "error"))
+  }
   my_fcn <- org_my_fcn
 
 #stop()
