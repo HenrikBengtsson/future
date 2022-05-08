@@ -1359,10 +1359,10 @@ Run `revdep_details(, "ldsr")` for more info
 
 <details>
 
-* Version: 4.0.0
+* Version: 4.0.1
 * GitHub: https://github.com/r-lidar/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2022-02-18 16:10:03 UTC
+* Date/Publication: 2022-05-04 08:30:02 UTC
 * Number of recursive dependencies: 158
 
 Run `revdep_details(, "lidR")` for more info
@@ -1398,37 +1398,33 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.0-gcc10/lib64/R/bin/BATCH: line 60: 49686 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error (test-segment_trees.R:147:3): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 5 | SKIP 40 | PASS 1345 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 16 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.7Mb
+      installed size is 19.8Mb
       sub-directories of 1Mb or more:
         R         1.1Mb
         doc       1.0Mb
         extdata   1.1Mb
-        libs     15.9Mb
+        libs     16.0Mb
     ```
 
 # lightr
@@ -2571,29 +2567,6 @@ Run `revdep_details(, "shiny.worker")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
-    ```
-
-# simhelpers
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/meghapsimatrix/simhelpers
-* Source code: https://github.com/cran/simhelpers
-* Date/Publication: 2021-02-14 17:50:02 UTC
-* Number of recursive dependencies: 103
-
-Run `revdep_details(, "simhelpers")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘future’ ‘magrittr’ ‘purrr’ ‘rlang’ ‘utils’
-      All declared Imports should be used.
     ```
 
 # skpr

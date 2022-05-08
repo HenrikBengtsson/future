@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                             |
 |ctype    |en_US.UTF-8                                             |
 |tz       |America/Los_Angeles                                     |
-|date     |2022-05-03                                              |
+|date     |2022-05-08                                              |
 |pandoc   |2.18 @ /software/c4/cbi/software/pandoc-2.18/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.25.0 |1.25.0-9008 |*  |
+|future     |1.25.0 |1.25.0-9016 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.29 |0.6.29      |   |
 |globals    |0.14.0 |0.14.0      |   |
@@ -64,7 +64,7 @@
 |crossmap                                                 |0.3.0     |      |        |     |
 |[cSEM](problems.md#csem)                                 |0.4.0     |      |        |1    |
 |[CSGo](problems.md#csgo)                                 |0.6.7     |      |        |1    |
-|cvCovEst                                                 |1.0.2     |      |        |     |
+|cvCovEst                                                 |1.1.0     |      |        |     |
 |DeclareDesign                                            |0.30.0    |      |        |     |
 |[delayed](problems.md#delayed)                           |0.3.0     |      |        |2    |
 |dhReg                                                    |0.1.1     |      |        |     |
@@ -96,7 +96,7 @@
 |[forecastML](problems.md#forecastml)                     |0.9.0     |      |        |1    |
 |fundiversity                                             |0.2.1     |      |        |     |
 |funGp                                                    |0.2.2     |      |        |     |
-|furrr                                                    |0.2.3     |      |        |     |
+|furrr                                                    |0.3.0     |      |        |     |
 |future.apply                                             |1.9.0     |      |        |     |
 |future.batchtools                                        |0.10.0    |      |        |     |
 |future.callr                                             |0.8.0     |      |        |     |
@@ -125,7 +125,7 @@
 |idmodelr                                                 |0.3.2     |      |        |     |
 |IFAA                                                     |1.0.6     |      |        |     |
 |[iml](problems.md#iml)                                   |0.10.1    |      |        |1    |
-|incubate                                                 |1.1.6     |      |        |     |
+|incubate                                                 |1.1.8     |      |        |     |
 |[infercnv](problems.md#infercnv)                         |1.12.0    |      |        |3    |
 |[inlinedocs](problems.md#inlinedocs)                     |2019.12.5 |      |        |1    |
 |[InPAS](problems.md#inpas)                               |2.4.0     |      |        |1    |
@@ -143,7 +143,7 @@
 |lemna                                                    |0.9.2     |      |        |     |
 |LexFindR                                                 |1.0.2     |      |        |     |
 |lgr                                                      |0.4.3     |      |        |     |
-|[lidR](problems.md#lidr)                                 |4.0.0     |2     |        |1    |
+|[lidR](problems.md#lidr)                                 |4.0.1     |2     |        |1    |
 |[lightr](problems.md#lightr)                             |1.6.2     |      |        |2    |
 |[lmtp](problems.md#lmtp)                                 |1.0.0     |      |        |1    |
 |LWFBrook90R                                              |0.4.5     |      |        |     |
@@ -223,7 +223,7 @@
 |Signac                                                   |1.6.0     |      |        |     |
 |simfinapi                                                |0.2.0     |      |        |     |
 |simglm                                                   |0.8.9     |      |        |     |
-|[simhelpers](problems.md#simhelpers)                     |0.1.1     |      |        |1    |
+|simhelpers                                               |0.1.2     |      |        |     |
 |sims                                                     |0.0.3     |      |        |     |
 |skewlmm                                                  |1.0.0     |      |        |     |
 |[skpr](problems.md#skpr)                                 |1.1.4     |      |        |1    |
