@@ -63,23 +63,32 @@ for (strategy in supportedStrategies()) {
   message("- Name clashing of globals across local() environments")
 
   ## Closures with local globals of the same name
-  g <- local({ a <- 1; function() a })
-  h <- local({ a <- 2; function() a })
-  truth <- h() + g()
+  g <- local({ a <- 2; function() a })
+  h <- local({ a <- 1; function() a })
+  truth <- g() + h()
   print(truth)
 
-  ## Fixed in future (>= 1.25.0-9013) with globals (>= 0.14.0.9004)
-  ## Previously, 'a' of h() would overwrite 'a' of g(), resulting
-  ## in g() == 2, rather than g() == 1.
+  ## Fixed in future (>= 1.25.0-9013) with globals (>= 0.14.0.9004):
+  ##
+  ##   f <- future(g() + h())
+  ##
+  ## Previously, 'a' of g() would overwrite 'a' of h(), resulting
+  ## in h() == 2, rather than h() == 1. Vice versa, if we did:
+  ##
+  ##   f <- future(h() + g())
+  ##
+  ## 'a' of h() would overwride 'a' of g() so that g() == 1
   ## https://github.com/HenrikBengtsson/future/issues/608
   if (is.null(getOption("future.globals.keepWhere")) && packageVersion("globals") >= "0.14.0.9004") {
     okeep <- options(future.globals.keepWhere = TRUE)
   }
-  f <- future(h() + g())
+  f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
   if (isTRUE(getOption("future.globals.keepWhere", TRUE)) || ! strategy %in% c("sequential", "multicore")) {
     stopifnot(identical(v, truth))
+  } else if (packageVersion("globals") < "0.14.0.9004") {
+    stopifnot(identical(v, 4))
   } else {
     stopifnot(inherits(v, "error"))
   }
