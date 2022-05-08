@@ -1,13 +1,14 @@
 source("incl/start.R")
 library(methods)
 
-keepWhere <- getOption("future.globals.keepWhere")
+## Required for S4 methods to work
+options(future.globals.keepWhere = TRUE)
 
 message("*** Globals - S4 methods ...")
 
 setGeneric("my_fcn", function(x) standardGeneric("my_fcn"))
-
-setMethod("my_fcn", signature(x = "numeric"), function(x) { x^2 })
+setMethod("my_fcn", signature(x = "numeric"), function(x) { -x })
+org_my_fcn <- my_fcn
 
 truth <- my_fcn(3)
 
@@ -22,24 +23,21 @@ for (strategy in supportedStrategies()) {
   print(v)
   stopifnot(
     is.function(v),
-    inherits(v, "standardGeneric")
+    inherits(v, class(org_my_fcn)[1])
   )
-  my_fcn <- v
+  my_fcn <- org_my_fcn
   
   ## FIXME:
   ## Just like S3 methods, S4 methods are not picked up
   ## https://github.com/HenrikBengtsson/future/issues/615
   f <- future({ my_fcn(3) }, lazy = TRUE)
-  v <- tryCatch({
-    value(f)
-  }, error = identity)
+  rm(list = "my_fcn")
+  v <- value(f)
   print(v)
-  if (!identical(v, truth)) {
-    stopifnot(inherits(v, "error"))
-  }
+  stopifnot(identical(v, truth))
+  my_fcn <- org_my_fcn
 
-  ## Make sure to reset option, if changed
-  options(future.globals.keepWhere = keepWhere)
+#stop()
 }
 
 message("*** Globals - S4 methods ... DONE")
