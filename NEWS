@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9014 [2022-05-07]
+Version: 1.25.0-9015 [2022-05-07]
 
 SIGNIFICANT CHANGES:
 
@@ -35,6 +35,10 @@ BUG FIXES:
    g <- function(a) and h <- function() { a <- 1; g() }, calling h()
    should give an error that 'a' is missing.  However, future(h())
    would incorrectly return 1 for sequential and multicore futures.
+
+ * The bug fix in future 1.22.0 that addressed the issue where object
+   'a' in future(fcn(), globals=list(a=42, fcn=function() a)) would
+   not be found has been redesigned in a more robust way.
 
  * Use of data.table in cluster and multisession futures broke in
    future 1.25.0, resulting in errors such as "Error in

@@ -189,7 +189,11 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
         if (identical(w, emptyenv())) {
           environment(global) <- envir
           if (debug) mdebugf("- reassign environment for %s", sQuote(name))
+        } else if (identical(w, globalenv()) && identical(environment(global), globalenv())) {
+          environment(global) <- envir
+          if (debug) mdebugf("- reassign environment for %s", sQuote(name))
         }
+
       }
     }
     

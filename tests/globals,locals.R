@@ -76,10 +76,14 @@ for (strategy in supportedStrategies()) {
     okeep <- options(future.globals.keepWhere = TRUE)
   }
   f <- future(h() + g())
-  v <- value(f)
+  v <- tryCatch(value(f), error = identity)
   print(v)
+  if (isTRUE(getOption("future.globals.keepWhere", TRUE)) || ! strategy %in% c("sequential", "multicore")) {
+    stopifnot(identical(v, truth))
+  } else {
+    stopifnot(inherits(v, "error"))
+  }
   
-  stopifnot(identical(v, truth))
   options(okeep)
 } ## for (strategy ...)
 
