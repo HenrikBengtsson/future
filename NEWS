@@ -25,15 +25,15 @@ BUG FIXES:
    function for some future backends, including sequential and
    multicore.  For example, with 'a' would be decoupled from g() in
    g <- local({ a <- 1; function() a }). This would cause a name clash
-   with ditto in h <-local({ a <- 2; function() a }) if used in the
-   same future.  For example, if future({ h() + g() }) would resolve
-   to 4 and not 3, because g() would also see a == 2.
+   with ditto in h <- local({ a <- 2; function() a }) if used in the
+   same future.  For example, future({ c(g(), h()) }) would resolve to
+   c(1, 1) and not c(1, 2), because h() would also see a == 1.
 
  * Related to the above name clash issue, was an issue where a
    function defined in a local environment could pick up false
    variable in place of a missing global.  For example, with
-   g <- function(a) and h <- function() { a <- 1; g() }, calling h()
-   should give an error that 'a' is missing.  However, future(h())
+   g <- function() { a } and h <- function() { a <- 1; g() }, calling
+   h() should give an error that 'a' is missing.  However, future(h())
    would incorrectly return 1 for sequential and multicore futures.
 
  * The bug fix in future 1.22.0 that addressed the issue where object
