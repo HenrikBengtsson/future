@@ -846,6 +846,88 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
+# future.apply
+
+<details>
+
+* Version: 1.9.0
+* GitHub: https://github.com/HenrikBengtsson/future.apply
+* Source code: https://github.com/cran/future.apply
+* Date/Publication: 2022-04-25 22:40:02 UTC
+* Number of recursive dependencies: 14
+
+Run `revdep_details(, "future.apply")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘fold.R’
+      Running ‘future_apply.R’
+      Running ‘future_by.R’
+      Running ‘future_eapply.R’
+      Running ‘future_lapply,RNG.R’
+      Running ‘future_lapply,globals.R’
+     ERROR
+    Running the tests in ‘tests/future_lapply,globals.R’ failed.
+    Last 50 lines of output:
+      [13:18:35.264] Early signaling: FALSE
+    ...
+      [13:18:35.565] Early signaling: FALSE
+      [13:18:35.565] Owner process: 7675940f-e31b-a801-593b-a901892d631f
+      [13:18:35.565] Class: 'MultisessionFuture', 'ClusterFuture', 'MultiprocessFuture', 'Future', 'environment'
+      [13:18:35.579] Chunk #2 of 2 ... DONE
+      [13:18:35.579] Launching 2 futures (chunks) ... DONE
+      [13:18:35.579] Resolving 2 futures (chunks) ...
+      Error in do.call(my_add, args = list(a = a, b = b)) : 
+        object 'my_add' not found
+      Calls: main ... resolve.list -> signalConditionsASAP -> signalConditions
+      Execution halted
+    ```
+
+# future.tests
+
+<details>
+
+* Version: 0.3.0
+* GitHub: https://github.com/HenrikBengtsson/future.tests
+* Source code: https://github.com/cran/future.tests
+* Date/Publication: 2021-10-10 04:30:05 UTC
+* Number of recursive dependencies: 13
+
+Run `revdep_details(, "future.tests")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘Test-class.R’
+      Running ‘check.R’
+     ERROR
+    Running the tests in ‘tests/check.R’ failed.
+    Last 50 lines of output:
+      [[1]][[42]][[1]]
+      TestResult:
+      - Test:
+        - Title: 'value() - visibility'
+        - Tags: 'value', 'visibility'
+    ...
+      - args: function (..., envir = parent.frame())
+      - tweaked: FALSE
+      - call: plan(sequential)
+      
+      attr(,"exit_code")
+      [1] 1
+      Total number of errors: 1
+      > proc.time()
+         user  system elapsed 
+        4.374   0.406  12.579 
+    ```
+
 # geocmeans
 
 <details>
@@ -1398,23 +1480,27 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.0-gcc10/lib64/R/bin/BATCH: line 60: 49686 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > Sys.setenv("R_TESTS" = "")
-      > 
-      > library(testthat)
-      > library(lidR)
-      > test_check("lidR")
-      Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 16 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
+    Last 50 lines of output:
+       3.   └─lidR algorithm(st_bbox(las))
+       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       5.       └─lidR:::raster_crop(chm, bbox)
+       6.         ├─sf::st_crop(raster, bbox)
+       7.         └─stars:::st_crop.stars(raster, bbox)
+      ── Error (test-segment_trees.R:147:3): Silva algorithm works with sfc ──────────
+    ...
+        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
+        8.   └─lidR algorithm(st_bbox(las))
+        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       10.       └─lidR:::raster_crop(chm, bbox)
+       11.         ├─sf::st_crop(raster, bbox)
+       12.         └─stars:::st_crop.stars(raster, bbox)
+      
+      [ FAIL 21 | WARN 5 | SKIP 48 | PASS 1348 ]
+      Error: Test failures
+      Execution halted
     ```
 
 *   checking installed package size ... NOTE
@@ -2436,11 +2522,11 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 0.6.2
+* Version: 0.7.0
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
-* Date/Publication: 2022-03-15 13:50:02 UTC
-* Number of recursive dependencies: 145
+* Date/Publication: 2022-05-09 07:10:02 UTC
+* Number of recursive dependencies: 161
 
 Run `revdep_details(, "sentopics")` for more info
 
@@ -2450,10 +2536,9 @@ Run `revdep_details(, "sentopics")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.2Mb
+      installed size is  8.1Mb
       sub-directories of 1Mb or more:
         data   1.2Mb
-        doc    7.4Mb
         libs   6.1Mb
     ```
 
@@ -3045,7 +3130,7 @@ Run `revdep_details(, "text")` for more info
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
 * Date/Publication: 2022-03-22 10:10:28 UTC
-* Number of recursive dependencies: 115
+* Number of recursive dependencies: 116
 
 Run `revdep_details(, "TreeSearch")` for more info
 
