@@ -37,8 +37,8 @@ BUG FIXES:
    would incorrectly return 1 for sequential and multicore futures.
 
  * The bug fix in future 1.22.0 that addressed the issue where object
-   'a' in future(fcn(), globals=list(a=42, fcn=function() a)) would
-   not be found has been redesigned in a more robust way.
+   'a' in future(fcn(), globals = list(a = 42, fcn = function() a))
+   would not be found has been redesigned in a more robust way.
 
  * Use of data.table in cluster and multisession futures broke in
    future 1.25.0, resulting in errors such as "Error in
@@ -128,9 +128,9 @@ BUG FIXES:
  * nbrOfFreeWorkers() would produce "Error: 'is.character(name)' is not TRUE"
    for plan(multisession, workers = 1).
 
- * Internal calls to FutureRegistry(action="collect-first") and
-   FutureRegistry(action="collect-last") could signal errors early when
-   polling resolved().
+ * Internal calls to FutureRegistry(action = "collect-first") and
+   FutureRegistry(action = "collect-last") could signal errors early
+   when polling resolved().
 
 DEPRECATED AND DEFUNCT:
 
@@ -288,10 +288,11 @@ BUG FIXES:
    'future.apply' or 'furrr' map-reduce functions when using a 'multisession'
    backend.
 
- * future(fcn(), globals=list(a=42, fcn=function() a)) would fail with "Error
-   in fcn() : object 'a' not found" when using sequential or multicore futures.
-   This affected also map-reduce calls such as future.apply::future_lapply(1,
-   function(x) a, future.globals=list(a=42)).
+ * future(fcn(), globals = list(a = 42, fcn = function() a)) would
+   fail with "Error in fcn() : object 'a' not found" when using
+   sequential or multicore futures.  This affected also map-reduce
+   calls such as future.apply::future_lapply(1, function(x) a,
+   future.globals = list(a = 42)).
 
  * Resolving a 'sequential' future without globals would result in internal
    several '...future.*' objects being written to the calling environment,
@@ -486,7 +487,7 @@ SIGNIFICANT CHANGES:
  * Futures detect when random number generation (RNG) was used to resolve them.
    If a future uses RNG without parallel RNG was requested, then an informative
    warning is produced. To request parallel RNG, specify argument 'seed', e.g.
-   'f <- future(rnorm(3), seed=TRUE)' or 'y %<-% { rnorm(3) } %seed% TRUE'.
+   'f <- future(rnorm(3), seed = TRUE)' or 'y %<-% { rnorm(3) } %seed% TRUE'.
    Higher-level map-reduce APIs provide similarly named "seed" arguments to
    achieve the same.  To, escalate these warning to errors, set option
    'future.rng.onMisuse' to "error".  To silence them, set it to "ignore".
@@ -589,7 +590,7 @@ NEW FEATURES:
 
  * It is now possible to set environment variables on workers before they are
    launched by makeClusterPSOCK() by specify them as as "<name>=<value>"
-   as part of the 'rscript' vector argument, e.g. rscript=c("ABC=123",
+   as part of the 'rscript' vector argument, e.g. rscript = c("ABC=123",
    "DEF='hello world'", "Rscript"). This works because elements in 'rscript'
    that match regular expression '[[:alpha:]_][[:alnum:]_]*=.*' are no longer
    shell quoted.
@@ -720,8 +721,8 @@ BUG FIXES:
    *functions* with the same names as a small set of base R functions, e.g.
    'raw()', 'list()', and 'options()'.
 
- * future(alist(a=)) would produce "Error in objectSize_list(x, depth = depth
-   - 1L) : argument "x_kk" is missing, with no default"
+ * future(alist(a =)) would produce "Error in objectSize_list(x, depth =
+   depth - 1L) : argument "x_kk" is missing, with no default"
 
 DEPRECATED AND DEFUNCT:
 
@@ -948,7 +949,7 @@ NEW FEATURES:
 BUG FIXES:
 
  * Functions no longer produce "partial match of 'condition' to 'conditions'"
-   warnings with options(warnPartialMatchDollar=TRUE).
+   warnings with options(warnPartialMatchDollar = TRUE).
 
  * When future infix operators (%conditions%, %globals%, %label%, %lazy%,
    %packages%, %seed%, and %stdout%) that are intended for future assignments
@@ -1694,14 +1695,14 @@ NEW FEATURES:
    There is also no need to worry about internal or external IP numbers.
 
  * Added optional argument 'label' to all futures, e.g.
-   f <- future(42, label="answer") and v %<-% { 42 } %label% "answer".
+   f <- future(42, label = "answer") and v %<-% { 42 } %label% "answer".
 
  * Added argument 'user' to cluster() and remote().
 
  * Now all Future classes supports run() for launching the future and
    value() calls run() if the future has not been launched.
 
- * MEMORY: Now plan(cluster, gc=TRUE) causes the background
+ * MEMORY: Now plan(cluster, gc = TRUE) causes the background
    R session to be garbage collected immediately after the value
    is collected.  Since multisession and remote futures are special
    cases of cluster futures, the same is true for these as well.
@@ -1728,8 +1729,8 @@ GLOBALS:
  * As an alternative to the default automatic identification of
    globals, it is now also possible to explicitly specify them either
    by their names (as a character vector) or by their names and values
-   (as a named list), e.g. f <- future({ 2*a }, globals=c("a")) or
-   f <- future({ 2*a }, globals=list(a=42)).  For future assignments one
+   (as a named list), e.g. f <- future({ 2*a }, globals = c("a")) or
+   f <- future({ 2*a }, globals = list(a = 42)).  For future assignments one
    can use the %globals% operator, e.g. y %<-% { 2*a } %globals% c("a").
 
 DOCUMENTATION:
@@ -1769,7 +1770,7 @@ Version: 1.0.0 [2016-06-24]
 
 NEW FEATURES:
 
- * Add support for remote(..., myip="<external>"), which now
+ * Add support for remote(..., myip = "<external>"), which now
    queries a set of external lookup services in case one of them
    fails.
 
@@ -1825,14 +1826,14 @@ NEW FEATURES:
 
  * Added remote futures, which are cluster futures with convenient
    default arguments for simple remote access to R, e.g.
-   plan(remote, workers="login.my-server.org").
+   plan(remote, workers = "login.my-server.org").
 
  * Now .future.R (if found in the current directory or otherwise in
    the user's home directory) is sourced when the future package is
    attach (but not loaded).  This helps separating scripts from
    configuration of futures.
 
- * Added support for plan(cluster, workers=c("n1", "n2", "n2", "n4")),
+ * Added support for plan(cluster, workers = c("n1", "n2", "n2", "n4")),
    where 'workers' (also for ClusterFuture()) is a set of host names
    passed to parallel::makeCluster(workers).  It can also be the number
    of localhost workers.
@@ -1847,13 +1848,13 @@ NEW FEATURES:
  * Now availableCores() also acknowledges environment variable NSLOTS
    set by Sun/Oracle Grid Engine (SGE).
 
- * MEMORY: Added argument 'gc=FALSE' to all futures.  When TRUE, the
+ * MEMORY: Added argument 'gc = FALSE' to all futures.  When TRUE, the
    garbage collector will run at the very end in the process that
    evaluated the future (just before returning the value).  This may
    help lowering the overall memory footprint when running multiple
    parallel R processes.  The user can enable this by specifying
-   plan(multiprocess, gc=TRUE).  The developer can control this using
-   future(expr, gc=TRUE) or v %<-% { expr } %tweak% list(gc=TRUE).
+   plan(multiprocess, gc = TRUE).  The developer can control this using
+   future(expr, gc = TRUE) or v %<-% { expr } %tweak% list(gc = TRUE).
 
 PERFORMANCE:
 
@@ -1918,7 +1919,7 @@ NEW FEATURES:
  * Now UniprocessFuture:s captures the call stack for errors occurring
    while resolving futures.
 
- * ClusterFuture gained argument 'persistent=FALSE'.  With persistent=TRUE,
+ * ClusterFuture gained argument 'persistent = FALSE'. With persistent = TRUE,
    any objects in the cluster R session that was created during the
    evaluation of a previous future is available for succeeding futures
    that are evaluated in the same session.  Moreover, globals are
@@ -1931,10 +1932,10 @@ NEW FEATURES:
     
 BUG FIXES:
   
- * f <- multicore(NA, maxCores=2) would end up in an endless
+ * f <- multicore(NA, maxCores = 2) would end up in an endless
    waiting loop for a free core if availableCores() returned one.
 
- * ClusterFuture would ignore local=TRUE.
+ * ClusterFuture would ignore local = TRUE.
     
     
 Version: 0.12.0 [2016-02-23]
@@ -2007,7 +2008,7 @@ NEW FEATURES:
 
 GLOBALS:
 
- * All futures now validates globals by default (globals=TRUE).
+ * All futures now validates globals by default (globals = TRUE).
    
     
 Version: 0.10.0 [2015-12-30]
@@ -2028,7 +2029,7 @@ NEW FEATURES:
     
 BUG FIXES:
 
- * futureOf(envir=x) did not work properly when 'x' was
+ * futureOf(envir = x) did not work properly when 'x' was
    a list environment.
     
     
@@ -2046,7 +2047,7 @@ NEW FEATURES:
 GLOBALS:
 
  * Now globals ("unknown" variables) are identified using the
-   new findGlobals(..., method="ordered") in globals (> 0.5.0)
+   new findGlobals(..., method = "ordered") in globals (> 0.5.0)
    such that a global variable preceding a local variable with
    the same name is properly identified and exported/frozen.
 
@@ -2083,7 +2084,7 @@ DOCUMENTATION:
 GLOBALS:
 
  * eager() and multicore() gained argument 'globals', where
-   globals=TRUE will validate that all global variables
+   globals = TRUE will validate that all global variables
    identified can be located already before the future is
    created.  This provides the means for providing the same
    tests on global variables with eager and multicore futures
@@ -2091,7 +2092,7 @@ GLOBALS:
 
 BUG FIXES:
 
- * lazy(sum(x, ...), globals=TRUE) now properly passes '...'
+ * lazy(sum(x, ...), globals = TRUE) now properly passes '...'
    from the function from which the future is setup.  If not
    called within a function or called within a function without
    '...' arguments, an informative error message is thrown.
@@ -2119,13 +2120,13 @@ Version: 0.7.0 [2015-07-13]
 NEW FEATURES:
 
  * multicore() gained argument 'maxCores', which makes it
-   possible to use for instance plan(multicore, maxCores=4L).
+   possible to use for instance plan(multicore, maxCores = 4L).
 
  * Add availableMulticore() [from (in-house) 'async' package].
 
 DOCUMENTATION:
 
- * More colorful demo("mandelbrot", package="future").
+ * More colorful demo("mandelbrot", package = "future").
     
 BUG FIXES:
   
@@ -2179,7 +2180,7 @@ NEW FEATURES:
 
 DOCUMENTATION:
 
- * Added demo("mandelbrot", package="future"), which can be
+ * Added demo("mandelbrot", package = "future"), which can be
    re-used by other future packages.
     
     
