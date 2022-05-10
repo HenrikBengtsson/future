@@ -24,8 +24,9 @@
 #' 
 #' @param \dots Additional arguments passed to [Future()].
 #'
-#' @return A [MultiprocessFuture] implemented as either a
-#' [MulticoreFuture] or a \link{MultisessionFuture}.
+#' @return
+#' A [MultiprocessFuture] implemented as either a
+#' [MulticoreFuture] or a [MultisessionFuture].
 #'
 #' @example incl/multiprocess.R
 #'

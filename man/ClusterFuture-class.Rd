@@ -58,7 +58,7 @@ from objects prior to the evaluation of the future.}
 a character vector of host names, a positive numeric scalar,
 or a function.
 If a character vector or a numeric scalar, a \code{cluster} object
-is created using \code{\link{makeClusterPSOCK}(workers)}.
+is created using \code{\link[parallelly:makeClusterPSOCK]{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
@@ -68,14 +68,18 @@ The function should return any of the above types.}
 \value{
 \code{ClusterFuture()} returns an object of class \code{ClusterFuture}.
 
-\code{MultisessionFuture()} returns an object of class
-\code{MultisessionFuture}, which inherits from \code{ClusterFuture}.
+\code{MultisessionFuture()} returns an object of class \code{MultisessionFuture},
+which inherits from \code{ClusterFuture}.
 }
 \description{
 A cluster future is a future whose value will be resolved asynchronously in a parallel process
 }
-\seealso{
-To evaluate an expression using "cluster future", see function
-\code{\link[=cluster]{cluster()}}.
+\section{Usage}{
+
+To use 'cluster' futures, use \code{plan(cluster, ...)}, cf. \link{cluster}.
+
+
+To use 'multisession' futures, use \code{plan(multisession, ...)}, cf. \link{multisession}.
 }
+
 \keyword{internal}

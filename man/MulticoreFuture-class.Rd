@@ -34,13 +34,14 @@ eagerly (starting immediately), otherwise not.}
 \item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
-An object of class \code{MulticoreFuture}.
+\code{MulticoreFuture()} returns an object of class \code{MulticoreFuture}.
 }
 \description{
 A multicore future is a future whose value will be resolved asynchronously in a parallel process
 }
-\seealso{
-To evaluate an expression using "multicore future", see function
-\code{\link[=multicore]{multicore()}}.
+\section{Usage}{
+
+To use 'multicore' futures, use \code{plan(multicore, ...)}, cf. \link{multicore}.
 }
+
 \keyword{internal}

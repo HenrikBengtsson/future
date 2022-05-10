@@ -19,13 +19,9 @@ identified.}
 \item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
-An object of class \code{MultiprocessFuture}.
+\code{MultiprocessFuture()} returns an object of class \code{MultiprocessFuture}.
 }
 \description{
 A multiprocess future is a future whose value will be resolved asynchronously in a parallel process
-}
-\seealso{
-To evaluate an expression using "multiprocess future", see function
-\code{\link[=multiprocess]{multiprocess()}}.
 }
 \keyword{internal}

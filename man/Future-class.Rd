@@ -103,7 +103,7 @@ as possible or not.}
 \item{\dots}{Additional named elements of the future.}
 }
 \value{
-An object of class \code{Future}.
+\code{Future()} returns an object of class \code{Future}.
 }
 \description{
 A \emph{future} is an abstraction for a \emph{value} that may

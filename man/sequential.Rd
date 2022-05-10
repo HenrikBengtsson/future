@@ -58,4 +58,3 @@ v <- value(f)
 print(v)
 stopifnot(v == 0)
 }
-\keyword{internal}

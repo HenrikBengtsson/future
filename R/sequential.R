@@ -18,7 +18,8 @@
 #' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' 
-#' @return A \link{SequentialFuture}.
+#' @return
+#' A [SequentialFuture].
 #'
 #' @example incl/sequential.R
 #'
@@ -35,7 +36,6 @@ class(sequential) <- c("sequential", "uniprocess", "future", "function")
 
 
 #' @rdname sequential
-#' @keywords internal
 #' @export
 transparent <- function(..., envir = parent.frame()) {
   future <- TransparentFuture(..., envir = envir)

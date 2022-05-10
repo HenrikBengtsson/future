@@ -4,11 +4,8 @@
 #' 
 #' @param \dots Additional named elements passed to [Future()].
 #'
-#' @return An object of class `UniprocessFuture`.
-#'
-#' @seealso
-#' To evaluate an expression using "uniprocess future", see functions
-#' [uniprocess()].
+#' @return
+#' `UniprocessFuture()` returns an object of class `UniprocessFuture`.
 #'
 #' @export
 #' @name UniprocessFuture-class
@@ -157,6 +154,14 @@ function(future, immediateConditions = TRUE, exit = NULL, ...) {
 }
 })
 
+
+#' @return
+#' `SequentialFuture()` returns an object of class `SequentialProcess`,
+#' which inherits from `UniprocessFuture`.
+#'
+#' @section Usage:
+#' To use 'sequential' futures, use `plan(sequential)`, cf. [sequential].
+#'
 #' @rdname UniprocessFuture-class
 #' @export
 SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
