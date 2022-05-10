@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
       </span>
     </div>
 
@@ -212,7 +212,7 @@ from objects prior to the evaluation of the future.</p></dd>
 a character vector of host names, a positive numeric scalar,
 or a function.
 If a character vector or a numeric scalar, a <code>cluster</code> object
-is created using <code><a href="re-exports.html">makeClusterPSOCK</a>(workers)</code>.
+is created using <code><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">makeClusterPSOCK</a>(workers)</code>.
 If a function, it is called without arguments <em>when the future
 is created</em> and its value is used to configure the workers.
 The function should return any of the above types.</p></dd>
@@ -222,13 +222,16 @@ The function should return any of the above types.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p><code>ClusterFuture()</code> returns an object of class <code>ClusterFuture</code>.
-<code>MultisessionFuture()</code> returns an object of class
-<code>MultisessionFuture</code>, which inherits from <code>ClusterFuture</code>.</p>
+<code>MultisessionFuture()</code> returns an object of class <code>MultisessionFuture</code>,
+which inherits from <code>ClusterFuture</code>.</p>
     </div>
-    <div id="see-also">
-    <h2>See also</h2>
-    <div class="dont-index"><p>To evaluate an expression using "cluster future", see function
-<code><a href="cluster.html">cluster()</a></code>.</p></div>
+    <div id="usage">
+    <h2>Usage</h2>
+    
+
+<p>To use 'cluster' futures, use <code>plan(cluster, ...)</code>, cf. <a href="cluster.html">cluster</a>.</p>
+
+<p>To use 'multisession' futures, use <code>plan(multisession, ...)</code>, cf. <a href="multisession.html">multisession</a>.</p>
     </div>
 
   </div>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
       </span>
     </div>
 
@@ -164,6 +164,7 @@
   envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
   tweak <span class="op">=</span> <span class="va">tweakExpression</span>,
   globals <span class="op">=</span> <span class="cn">TRUE</span>,
+  locals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.globalsOf.locals"</span>, <span class="cn">FALSE</span><span class="op">)</span>,
   resolve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.resolve"</span>, <span class="cn">NULL</span><span class="op">)</span>,
   persistent <span class="op">=</span> <span class="cn">FALSE</span>,
   maxSize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.maxSize"</span>, <span class="fl">500</span> <span class="op">*</span> <span class="fl">1024</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,
@@ -181,6 +182,9 @@
 <dd><p>(optional) A function that takes an expression and returned a modified one.</p></dd>
 <dt>globals</dt>
 <dd><p>(optional) a logical, a character vector, a named list, or a <a href="https://globals.futureverse.org/reference/Globals.html" class="external-link">Globals</a> object.  If TRUE, globals are identified by code inspection based on <code>expr</code> and <code>tweak</code> searching from environment <code>envir</code>.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names <code>globals</code> searching from environment <code>envir</code>.  If a named list or a Globals object, the globals are used as is.</p></dd>
+<dt>locals</dt>
+<dd><p>Should globals part of any "local" environment of
+a function be included or not?</p></dd>
 <dt>resolve</dt>
 <dd><p>If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.</p></dd>
 <dt>persistent</dt>

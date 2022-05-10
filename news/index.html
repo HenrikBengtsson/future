@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9016</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
       </span>
     </div>
 
@@ -154,14 +154,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.25.0-9016" id="future-1250-9016">future 1.25.0-9016<a class="anchor" aria-label="anchor" href="#future-1250-9016"></a></h2>
+<h2 class="page-header" data-toc-text="1.25.0-9017" id="future-1250-9017">future 1.25.0-9017<a class="anchor" aria-label="anchor" href="#future-1250-9017"></a></h2>
 <div class="section level4">
-<h4 id="significant-changes-1-25-0-9016">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-25-0-9016"></a></h4>
+<h4 id="significant-changes-1-25-0-9017">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-25-0-9017"></a></h4>
 <ul><li><p>R options and environment variables are now reset on the workers after future is resolved as they were after any packages required by the future has been loaded and attached. Previously, they were reset to what they were before these were loaded and attached. In addition, only pre-existing R options and environment variables are reset. Any new ones added are not removed for now, because we do not know which added R options or environment variables might have been added from loading a package and that are essential for that package to work.</p></li>
 <li><p>If it was changed while evaluating the future expression, the current working directory is now reset when the future has been resolved.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="bug-fixes-1-25-0-9016">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-25-0-9016"></a></h4>
+<h4 id="bug-fixes-1-25-0-9017">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-25-0-9017"></a></h4>
 <ul><li><p>Globals tied to a function environment would get decoupled from the function for some future backends, including sequential and multicore. For example, with ‘a’ would be decoupled from g() in g &lt;- local({ a &lt;- 1; function() a }). This would cause a name clash with ditto in h &lt;- local({ a &lt;- 2; function() a }) if used in the same future. For example, future({ c(g(), h()) }) would resolve to c(1, 1) and not c(1, 2), because h() would also see a == 1.</p></li>
 <li><p>Related to the above name clash issue, was an issue where a function defined in a local environment could pick up false variable in place of a missing global. For example, with g &lt;- function() { a } and h &lt;- function() { a &lt;- 1; g() }, calling h() should give an error that ‘a’ is missing. However, future(h()) would incorrectly return 1 for sequential and multicore futures.</p></li>
 <li><p>The bug fix in future 1.22.0 that addressed the issue where object ‘a’ in future(fcn(), globals = list(a = 42, fcn = function() a)) would not be found has been redesigned in a more robust way.</p></li>
@@ -170,7 +170,7 @@
 <li><p>The deprecation warning for using local = FALSE was silenced for sequential futures since future 1.25.0.</p></li>
 </ul></div>
 <div class="section level4">
-<h4 id="deprecated-and-defunct-1-25-0-9016">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-25-0-9016"></a></h4>
+<h4 id="deprecated-and-defunct-1-25-0-9017">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-25-0-9017"></a></h4>
 <ul><li><p>Strategy ‘transparent’ was deprecated in future 1.24.0 and is now defunct. Use plan(sequential, split = TRUE) instead.</p></li>
 <li><p>Strategy ‘multiprocess’ was deprecated in future 1.20.0, and ‘remote’ was deprecated in future 1.24.0. Since then, attempts to use them in plan() would produce a deprecation warning, which was limited to one per R session. Starting with this release, this warning is now produced whenever using `plan()` with these deprecated future strategies.</p></li>
 </ul></div>
