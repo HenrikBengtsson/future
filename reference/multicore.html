@@ -214,7 +214,15 @@ Because of this, the future package disables process forking also in
 such cases.  See <code><a href="https://parallelly.futureverse.org/reference/supportsMulticore.html" class="external-link">parallelly::supportsMulticore()</a></code> for details.
 Trying to create multicore futures on non-supported systems or when
 forking is disabled will result in multicore futures falling back to
-becoming <a href="sequential.html">sequential</a> futures.</p>
+becoming <a href="sequential.html">sequential</a> futures.  If used in RStudio, there will be an
+informative warning:</p><div class="sourceCode r"><pre><code>&gt; plan(multicore)
+Warning message:
+In supportsMulticoreAndRStudio(...) :
+  [ONE-TIME WARNING] Forked processing ('multicore') is not supported when
+running R from RStudio because it is considered unstable. For more details,
+how to control forked processing or not, and how to silence this warning in
+future R sessions, see ?parallelly::supportsMulticore
+</code></pre><p></p></div>
     </div>
     <div id="see-also">
     <h2>See also</h2>

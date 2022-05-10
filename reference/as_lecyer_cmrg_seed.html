@@ -229,7 +229,7 @@ vector of format <code>.Random.seed &lt;- c(rng.kind, n)</code> where <code>leng
 <span class="r-in"><span class="co"># (c) A L'Ecuyer-CMRG seed based on the current RNG state</span></span>
 <span class="r-in"><span class="va">seed3</span> <span class="op">&lt;-</span> <span class="fu">future</span><span class="fu">:::</span><span class="fu">as_lecyer_cmrg_seed</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">seed3</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  int [1:7] 10407 -1436576031 -535412946 -768348713 -461348820 -539279555 -1543193382</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  int [1:7] 10407 -1297571238 1134728211 -20411848 -1076656423 -518717242 1335995535</span>
 <span class="r-in"><span class="co">## int [1:7] 10407 495333909 -1491719214 416071979 49340016 1956499377 899435966</span></span>
 <span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu">future</span><span class="fu">:::</span><span class="fu">is_lecyer_cmrg_seed</span><span class="op">(</span><span class="va">seed3</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"></span>
