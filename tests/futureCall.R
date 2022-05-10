@@ -47,6 +47,7 @@ for (cores in 1:availCores) {
 
     for (lazy in c(FALSE, TRUE)) {
       for (globals in c(FALSE, TRUE)) {
+        message("- futureCall() #1")
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
@@ -58,12 +59,13 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res1, "FutureError"))
         if (!inherits(res1, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v1 = v1))
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v1 = v1))
           stopifnot(all.equal(v1, v0))
         } else {
           stopifnot(!globals)
         }
 
+        message("- futureCall() #2")
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
@@ -75,12 +77,13 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res2, "FutureError"))
         if (!inherits(res2, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v2 = v2))
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v2 = v2))
           stopifnot(all.equal(v2, v0))
         } else {
           stopifnot(!globals)
         }
         
+        message("- futureCall() #3")
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
                         globals = list(a = 3), lazy = lazy)
@@ -91,13 +94,13 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res3, "FutureError"))
         if (!inherits(res3, "error")) {
-          utils::str(list(globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3, res3 = res3))
           stopifnot(all.equal(v3, v0))
         } else {
           stopifnot(!globals)
         }
 
-
+        message("- futureCall() #4")
         ## FIXME: This fails with future 1.25.0-9017,
         ## except for sequential and multicore /HB 2022-05-09
         local({
@@ -106,19 +109,20 @@ for (cores in 1:availCores) {
           f <- futureCall(g, globals = globals, lazy = lazy)
           rm(list = "a")
           if (packageVersion("future") > "1.25.0-9000") {
-            if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore"))) {
-              res <- tryCatch(v <- value(f), error = identity)
-              print(res)
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+            res <- tryCatch(v <- value(f), error = identity)
+            print(res)
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
+            if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", TRUE)) && strategy %in% c("sequential", "multicore"))) {
               stopifnot(inherits(res, "error"))
             } else {
               v <- value(f)
               stopifnot(v == 2)
             }
           } else {
+            ## future (<= 1.25.0)
             res <- tryCatch(v <- value(f), error = identity)
             print(res)
-            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v = v, res = res))
             if (!globals && !lazy) {
               if (strategy %in% c("sequential", "multicore")) {
                 stopifnot(inherits(res, "error"))
@@ -137,7 +141,7 @@ for (cores in 1:availCores) {
           }
         })
 
-        rm(list = c("v1", "v2", "v3"))
+        rm(list = c("v1", "v2", "v3", "v4"))
       }
     }
   }
