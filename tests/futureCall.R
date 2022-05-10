@@ -1,5 +1,6 @@
 source("incl/start.R")
 
+options(future.debug = FALSE)
 message("*** futureCall() ...")
 
 message("- futureCall() - sequential + lazy ...")
@@ -90,21 +91,50 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res3, "FutureError"))
         if (!inherits(res3, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+          utils::str(list(globals = globals, lazy = lazy, v0 = v0, v3 = v3))
           stopifnot(all.equal(v3, v0))
         } else {
           stopifnot(!globals)
         }
 
 
-        ## FIXME: This fails with future 1.25.0-9017 /HB 2022-05-09
-        FALSE && local({
+        ## FIXME: This fails with future 1.25.0-9017,
+        ## except for sequential and multicore /HB 2022-05-09
+        local({
           a <- 2
           g <- function() a
           f <- futureCall(g, globals = globals, lazy = lazy)
           rm(list = "a")
-          v <- value(f)
-          stopifnot(v == 2)
+          if (packageVersion("future") > "1.25.0-9000") {
+            if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore"))) {
+              res <- tryCatch(v <- value(f), error = identity)
+              print(res)
+              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+              stopifnot(inherits(res, "error"))
+            } else {
+              v <- value(f)
+              stopifnot(v == 2)
+            }
+          } else {
+            res <- tryCatch(v <- value(f), error = identity)
+            print(res)
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3))
+            if (!globals && !lazy) {
+              if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(res, "error"))
+              } else {
+                stopifnot(res == 2)
+              }
+            } else if (!globals && lazy) {
+              if (strategy %in% c("sequential", "multicore", "multisession")) {
+                stopifnot(inherits(res, "error"))
+              } else {
+                stopifnot(res == 2)
+              }
+            } else {
+              stopifnot(res == 2)
+            }
+          }
         })
 
         rm(list = c("v1", "v2", "v3"))

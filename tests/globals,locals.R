@@ -53,13 +53,19 @@ for (strategy in supportedStrategies()) {
     g()
   }), lazy = TRUE)
   rm(list = "a")
-  v <- value(f)
-  stopifnot(v == 2)
-  str(f$globals)
+  if (packageVersion("future") > "1.25.0-9017") {
+    res <- tryCatch(v <- value(f), error = identity)
+    print(res)
+    stopifnot(inherits(res, "error"))
+  } else {
+    v <- value(f)
+    stopifnot(v == 2)
+  }
+
 
   ## FIXME: This fails with future 1.25.0-9017 /HB 2022-05-09
   message("- Non-missing global variable (inside local())")
-  FALSE && local({
+  local({
     a <- 2
     g <- function() a
     f <- future(local({
@@ -67,8 +73,15 @@ for (strategy in supportedStrategies()) {
       g()
     }), lazy = TRUE)
     rm(list = "a")
-    v <- value(f)
-    stopifnot(v == 2)
+    
+    if (packageVersion("future") > "1.25.0-9000") {
+      res <- tryCatch(v <- value(f), error = identity)
+      print(res)
+      stopifnot(inherits(res, "error"))
+    } else {
+      v <- value(f)
+      stopifnot(v == 2)
+    }
   })
 
 
@@ -94,11 +107,19 @@ for (strategy in supportedStrategies()) {
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
-  if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
-    stopifnot(identical(v, truth))
+  if (packageVersion("future") > "1.25.0-9000") {
+    if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
+      stopifnot(identical(v, truth))
+    } else {
+      if (packageVersion("globals") >= "0.15.0") {
+        stopifnot(inherits(v, "error"))
+      } else {
+        stopifnot(identical(v, 4))
+      }
+    }
   } else {
-    if (packageVersion("globals") >= "0.14.0.9004") {
-      stopifnot(inherits(v, "error"))
+    if (getOption("future.globals.keepWhere", FALSE) || ! strategy %in% c("sequential", "multicore")) {
+      stopifnot(identical(v, truth))
     } else {
       stopifnot(identical(v, 4))
     }
