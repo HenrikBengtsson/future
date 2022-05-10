@@ -72,11 +72,13 @@ futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
         mvalues <- Sys.info()[fields]  ## values in main R session
         uvalues <- unlist(vs[, fields], use.names = FALSE)
         uvalues <- sort(unique(c(mvalues, uvalues)))
-        avalues <- sprintf("%s%03d", prefix, length(uvalues))
+        avalues <- sprintf("%s%03d", prefix, seq_along(uvalues))
         names(avalues) <- uvalues
         for (value in names(avalues)) {
-          idxs <- which(vs[, fields] == value)
-          vs[, fields][idxs] <- avalues[value]
+          for (field in fields) {
+            idxs <- which(vs[[field]] == value)
+            vs[[field]][idxs] <- avalues[value]
+          }
         }
       }
       vs
