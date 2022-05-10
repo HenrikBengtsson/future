@@ -54,12 +54,12 @@ for (strategy in supportedStrategies()) {
   }), lazy = TRUE)
   rm(list = "a")
   if (packageVersion("future") > "1.25.0-9017") {
+    v <- value(f)
+    stopifnot(v == 2)
+  } else {
     res <- tryCatch(v <- value(f), error = identity)
     print(res)
     stopifnot(inherits(res, "error"))
-  } else {
-    v <- value(f)
-    stopifnot(v == 2)
   }
 
 
