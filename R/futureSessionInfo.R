@@ -60,7 +60,39 @@ futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
   message()
 
   message("*** Basic tests")
-  if (test) {  
+  if (test) {
+    anonymize_info <- function(vs) {
+      map <- list(
+        host = c("nodename"),
+        user = c("login", "user", "effective_user")
+      )
+
+      for (prefix in names(map)) {
+        fields <- map[[prefix]]
+        mvalues <- Sys.info()[fields]  ## values in main R session
+        uvalues <- unlist(vs[, fields], use.names = FALSE)
+        uvalues <- sort(unique(c(mvalues, uvalues)))
+        avalues <- sprintf("%s%03d", prefix, length(uvalues))
+        names(avalues) <- uvalues
+        for (value in names(avalues)) {
+          idxs <- which(vs[, fields] == value)
+          vs[, fields][idxs] <- avalues[value]
+        }
+      }
+      vs
+    } ## anonymize_info()
+
+    ## Information on the main R session
+    vs <- data.frame(
+      pid    = Sys.getpid(),
+      r      = getRversion(),
+      as.list(Sys.info())
+    )
+    if (anonymize) vs <- anonymize_info(vs)
+    message("Main R session details:")
+    mprint0(vs)
+    
+    ## Information on the workers
     fs <- list()
     for (ii in seq_len(nbrOfWorkers())) {
       fs[[ii]] <- future({
@@ -76,30 +108,16 @@ futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
     vs <- do.call(rbind, vs)
     rownames(vs) <- NULL
 
-    if (anonymize) {
-      map <- list(
-        host = c("nodename"),
-        user = c("login", "user", "effective_user")
-      )
+    if (anonymize) vs <- anonymize_info(vs)
 
-      for (prefix in names(map)) {
-        fields <- map[[prefix]]
-        uvalues <- sort(unique(unlist(vs[, fields], use.names = FALSE)))
-        avalues <- sprintf("%s%03d", prefix, length(uvalues))
-        names(avalues) <- uvalues
-        for (value in names(avalues)) {
-          idxs <- which(vs[, fields] == value)
-          vs[, fields][idxs] <- avalues[value]
-        }
-      }
-    }
-
+    message("Worker R session details:")
     mprint0(vs)
+    
     npid <- length(unique(vs$pid))
-    if (npid != nbrOfWorkers()) {
-      mprintf0("WARNING: Number of unique PIDs does not match number expected workers: %d != %d", npid, nbrOfWorkers())
+    if (npid == nbrOfWorkers()) {
+      mprintf0("Number of unique worker PIDs: %d (as expected)", npid)
     } else {
-      mprintf0("Number of unique PIDs: %d (as expected)", npid)
+      mprintf0("WARNING: Number of unique worker PIDs does not match number expected workers: %d != %d", npid, nbrOfWorkers())
     }
   }
   

@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9018 [2022-05-09]
+Version: 1.25.0-9019 [2022-05-09]
 
 SIGNIFICANT CHANGES:
 
@@ -23,6 +23,9 @@ NEW FEATURES:
 
  * futureSessionInfo() gained argument 'anonymize'. If TRUE (default),
    host and user names are anonymized.
+
+ * futureSessionInfo() now also report on the main R session details.
+
 
 BUG FIXES:
 
