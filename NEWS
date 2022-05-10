@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9017 [2022-05-09]
+Version: 1.25.0-9018 [2022-05-09]
 
 SIGNIFICANT CHANGES:
 
@@ -18,6 +18,11 @@ SIGNIFICANT CHANGES:
  * If it was changed while evaluating the future expression, the
    current working directory is now reset when the future has been
    resolved.
+
+NEW FEATURES:
+
+ * futureSessionInfo() gained argument 'anonymize'. If TRUE (default),
+   host and user names are anonymized.
 
 BUG FIXES:
 

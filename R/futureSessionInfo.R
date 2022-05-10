@@ -3,12 +3,14 @@
 #' @param test If TRUE, one or more futures are created to query workers
 #' and validate their information.
 #'
+#' @param anonymize If TRUE, user names and host names are anonymized.
+#'
 #' @return Nothing.
 #'
 #' @example incl/futureSessionInfo.R
 #'
 #' @export
-futureSessionInfo <- function(test = TRUE) {
+futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
   mprint0 <- function(...) mprint(..., prefix = NULL, debug = TRUE)
   mprintf0 <- function(...) mdebugf(..., prefix = NULL, debug = TRUE)   
   mstr0 <- function(...) mstr(..., prefix = NULL, debug = TRUE)
@@ -58,11 +60,11 @@ futureSessionInfo <- function(test = TRUE) {
   message()
 
   message("*** Basic tests")
-  if (test) {
+  if (test) {  
     fs <- list()
     for (ii in seq_len(nbrOfWorkers())) {
       fs[[ii]] <- future({
-        info <- data.frame(
+        data.frame(
           worker = ii,
           pid    = Sys.getpid(),
           r      = getRversion(),
@@ -73,6 +75,25 @@ futureSessionInfo <- function(test = TRUE) {
     vs <- value(fs)
     vs <- do.call(rbind, vs)
     rownames(vs) <- NULL
+
+    if (anonymize) {
+      map <- list(
+        host = c("nodename"),
+        user = c("login", "user", "effective_user")
+      )
+
+      for (prefix in names(map)) {
+        fields <- map[[prefix]]
+        uvalues <- sort(unique(unlist(vs[, fields], use.names = FALSE)))
+        avalues <- sprintf("%s%03d", prefix, length(uvalues))
+        names(avalues) <- uvalues
+        for (value in names(avalues)) {
+          idxs <- which(vs[, fields] == value)
+          vs[, fields][idxs] <- avalues[value]
+        }
+      }
+    }
+
     mprint0(vs)
     npid <- length(unique(vs$pid))
     if (npid != nbrOfWorkers()) {
