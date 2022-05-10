@@ -48,10 +48,12 @@ BUG FIXES:
    'a' in future(fcn(), globals = list(a = 42, fcn = function() a))
    would not be found has been redesigned in a more robust way.
 
- * Use of data.table in cluster and multisession futures broke in
-   future 1.25.0, resulting in errors such as "Error in
-   setalloccol(ans) : verbose must be TRUE or FALSE". See above
-   'SIGNIFICANT CHANGES' for how this was fixed.
+ * Use of packages such as 'data.table' and 'ff' in cluster and
+   multisession futures broke in future 1.25.0. For 'data.table', we
+   saw "Error in setalloccol(ans) : verbose must be TRUE or FALSE".
+   For 'ff', we saw "Error in splitted$path[nopath] <-
+   getOption("fftempdir") : replacement has length zero".
+   'SIGNIFICANT CHANGES' for why and how this was fixed.
 
  * S4 methods defined locally, that is, not in a package, failed to be
    found in sequential and multicore futures since future 1.22.0.
