@@ -1,8 +1,7 @@
 source("incl/start.R")
 library("listenv")
 oopts <- c(oopts, options(
-  future.globals.resolve = TRUE,
-  future.globals.onMissing = "error"
+  future.debug = FALSE
 ))
 
 message("*** Globals inside local() environments ...")
@@ -56,6 +55,21 @@ for (strategy in supportedStrategies()) {
   rm(list = "a")
   v <- value(f)
   stopifnot(v == 2)
+  str(f$globals)
+
+  ## FIXME: This fails with future 1.25.0-9017 /HB 2022-05-09
+  message("- Non-missing global variable (inside local())")
+  FALSE && local({
+    a <- 2
+    g <- function() a
+    f <- future(local({
+      a <- 1
+      g()
+    }), lazy = TRUE)
+    rm(list = "a")
+    v <- value(f)
+    stopifnot(v == 2)
+  })
 
 
   message("- Name clashing of globals across local() environments")

@@ -96,6 +96,17 @@ for (cores in 1:availCores) {
           stopifnot(!globals)
         }
 
+
+        ## FIXME: This fails with future 1.25.0-9017 /HB 2022-05-09
+        FALSE && local({
+          a <- 2
+          g <- function() a
+          f <- futureCall(g, globals = globals, lazy = lazy)
+          rm(list = "a")
+          v <- value(f)
+          stopifnot(v == 2)
+        })
+
         rm(list = c("v1", "v2", "v3"))
       }
     }
