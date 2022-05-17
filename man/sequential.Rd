@@ -27,11 +27,11 @@ by default just as for all other types of futures in this package.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures sequentially in the current R process
+typical usages are:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures sequentially in the current R process
 plan(sequential)
 }\if{html}{\out{</div>}}
-
-
 }
 \examples{
 ## Use sequential futures

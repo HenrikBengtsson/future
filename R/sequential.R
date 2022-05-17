@@ -23,8 +23,6 @@
 #'
 #' @example incl/sequential.R
 #'
-#' @details
-#'
 #' @aliases uniprocess
 #' @export
 sequential <- function(..., envir = parent.frame()) {

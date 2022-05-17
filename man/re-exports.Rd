@@ -30,9 +30,13 @@ are also useful outside of the \pkg{future} framework.
 }
 
 For backward-compatible reasons, these functions remain available as
-exact copies also from this package (as re-exports).  For example,\if{html}{\out{<div class="sourceCode r">}}\preformatted{cl <- parallelly::makeClusterPSOCK(2)
+exact copies also from this package (as re-exports).  For example,
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cl <- parallelly::makeClusterPSOCK(2)
 }\if{html}{\out{</div>}}
 
-can still be accessed as:\if{html}{\out{<div class="sourceCode r">}}\preformatted{cl <- future::makeClusterPSOCK(2)
+can still be accessed as:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{cl <- future::makeClusterPSOCK(2)
 }\if{html}{\out{</div>}}
 }
