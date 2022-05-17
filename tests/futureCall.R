@@ -59,7 +59,8 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res1, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-          if (globals) {
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res1 = res1))
+          if (globals || (!lazy && strategy %in% c("sequential", "multicore"))) {
             stopifnot(all.equal(v1, v0))
           } else {
             stopifnot(inherits(res1, "error"))
@@ -85,7 +86,8 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res2, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-          if (globals) {
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res2 = res2))
+          if (globals || (strategy %in% c("sequential", "multicore", "multisession"))) {
             stopifnot(all.equal(v2, v0))
           } else {
             stopifnot(inherits(res2, "error"))
@@ -110,7 +112,8 @@ for (cores in 1:availCores) {
         }, error = identity)
         stopifnot(!inherits(res3, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-          if (globals) {
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res3 = res3))
+          if (globals || (strategy %in% c("sequential", "multicore", "multisession"))) {
             stopifnot(all.equal(v3, v0))
           } else {
             stopifnot(inherits(res3, "error"))
@@ -137,7 +140,10 @@ for (cores in 1:availCores) {
           print(res)
           
           if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-            if (globals) {
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res = res))
+            ## FIXME: (globals && !lazy) is a bug;
+            ## should be enough with 'globals'
+            if ((globals && !lazy) || (!lazy && strategy %in% c("sequential", "multicore", "multisession"))) {
               stopifnot(v == 2)
             } else {
               stopifnot(inherits(res, "error"))

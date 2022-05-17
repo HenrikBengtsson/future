@@ -74,6 +74,14 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   ## Make sure to clean out globals not found
   globals <- cleanup(globals, drop = "missing")
 
+  ## Prune function 'FUN'
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+    FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = globals)
+    prune_undo <- attr(FUN, "prune_undo")
+    attr(FUN, "prune_undo") <- NULL
+    on.exit(prune_undo(), add = TRUE)
+  }
+
   names <- names(globals)
   if (!is.element("FUN", names)) globals$FUN <- FUN
   if (!is.element("args", names)) globals$args <- args

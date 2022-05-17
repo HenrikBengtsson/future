@@ -1,8 +1,9 @@
 Package: future
-Version: 1.25.0-9019
+Version: 1.25.0-9119
 Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
+    environments,
     globals (>= 0.14.0),
     listenv (>= 0.8.0),
     parallel,
@@ -14,6 +15,8 @@ Suggests:
     RhpcBLASctl,
     R.rsp,
     markdown
+Remotes:
+    HenrikBengtsson/environments@develop
 VignetteBuilder: R.rsp
 Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
                                           email = "henrikb@braju.com"))
