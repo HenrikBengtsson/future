@@ -29,18 +29,22 @@ for (strategy in supportedStrategies()) {
   ## https://github.com/HenrikBengtsson/future/issues/615
   f <- future({ my_fcn(3) }, lazy = TRUE)
   rm(list = "my_fcn")
-  if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
-    v <- value(f)
-    print(v)
-    stopifnot(identical(v, truth))
+  v <- tryCatch(value(f), error = identity)
+  print(v)
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+    if (getOption("future.globals.keepWhere", TRUE)) {
+      stopifnot(identical(v, truth))
+    } else {
+      stopifnot(inherits(v, "error"))
+    }
   } else {
-    v <- tryCatch(value(f), error = identity)
-    print(v)
-    stopifnot(inherits(v, "error"))
+    if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
+      stopifnot(identical(v, truth))
+    } else {
+      stopifnot(inherits(v, "error"))
+    }
   }
   my_fcn <- org_my_fcn
-
-#stop()
 }
 
 message("*** Globals - S4 methods ... DONE")

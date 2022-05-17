@@ -53,13 +53,19 @@ for (strategy in supportedStrategies()) {
     g()
   }), lazy = TRUE)
   rm(list = "a")
-  if (packageVersion("future") > "1.25.0-9017") {
+
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
     v <- value(f)
     stopifnot(v == 2)
   } else {
-    res <- tryCatch(v <- value(f), error = identity)
-    print(res)
-    stopifnot(inherits(res, "error"))
+    if (packageVersion("future") > "1.25.0-9017") {
+      v <- value(f)
+      stopifnot(v == 2)
+    } else {
+      res <- tryCatch(v <- value(f), error = identity)
+      print(res)
+      stopifnot(inherits(res, "error"))
+    }
   }
 
 
@@ -74,13 +80,18 @@ for (strategy in supportedStrategies()) {
     }), lazy = TRUE)
     rm(list = "a")
     
-    if (packageVersion("future") > "1.25.0-9000") {
-      res <- tryCatch(v <- value(f), error = identity)
-      print(res)
-      stopifnot(inherits(res, "error"))
-    } else {
+    if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
       v <- value(f)
       stopifnot(v == 2)
+    } else {
+      if (packageVersion("future") > "1.25.0-9000") {
+        res <- tryCatch(v <- value(f), error = identity)
+        print(res)
+        stopifnot(inherits(res, "error"))
+      } else {
+        v <- value(f)
+        stopifnot(v == 2)
+      }
     }
   })
 
@@ -107,21 +118,26 @@ for (strategy in supportedStrategies()) {
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
-  if (packageVersion("future") > "1.25.0-9000") {
-    if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
-      stopifnot(identical(v, truth))
+
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+    stopifnot(identical(v, truth))
+  } else {
+    if (packageVersion("future") > "1.25.0-9000") {
+      if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
+        stopifnot(identical(v, truth))
+      } else {
+        if (packageVersion("globals") >= "0.15.0") {
+          stopifnot(inherits(v, "error"))
+        } else {
+          stopifnot(identical(v, 4))
+        }
+      }
     } else {
-      if (packageVersion("globals") >= "0.15.0") {
-        stopifnot(inherits(v, "error"))
+      if (getOption("future.globals.keepWhere", FALSE) || ! strategy %in% c("sequential", "multicore")) {
+        stopifnot(identical(v, truth))
       } else {
         stopifnot(identical(v, 4))
       }
-    }
-  } else {
-    if (getOption("future.globals.keepWhere", FALSE) || ! strategy %in% c("sequential", "multicore")) {
-      stopifnot(identical(v, truth))
-    } else {
-      stopifnot(identical(v, 4))
     }
   }
 } ## for (strategy ...)
