@@ -75,7 +75,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   globals <- cleanup(globals, drop = "missing")
 
   ## Prune function 'FUN'
-  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+  if (isTRUE(as.logical(Sys.getenv("R_FUTURE_PRUNE_FUNCTIONS")))) {
     FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = globals)
     prune_undo <- attr(FUN, "prune_undo")
     if (is.function(prune_undo)) {

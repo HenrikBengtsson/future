@@ -160,6 +160,12 @@
 #' R_FUTURE_RESOLVED_TIMEOUT
 #' future.output.windows.reencode
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
+#' future.globals.globalsOf.locals
+#' R_FUTURE_GLOBALS_GLOBALSOF_LOCALS
+#' future.globals.keepWhere
+#' R_FUTURE_GLOBALS_KEEPWHERE
+#' future.prune.functions
+#' R_FUTURE_PRUNE_FUNCTIONS
 #'
 #' @name future.options
 NULL
@@ -310,6 +316,7 @@ update_package_options <- function(debug = FALSE) {
 
   ## Prototyping in future 1.26.0:
   update_package_option("future.globals.globalsOf.locals", mode = "logical", debug = debug)
+  update_package_option("future.prune.functions", mode = "logical", debug = debug)
 
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:

@@ -1,6 +1,10 @@
 source("incl/start.R")
 
 options(future.debug = FALSE)
+if (getOption("future.prune.functions", FALSE)) {
+  Sys.setenv(R_CHECK_IDEAL = "true")
+}
+
 message("*** futureCall() ...")
 
 message("- futureCall() - sequential + lazy ...")

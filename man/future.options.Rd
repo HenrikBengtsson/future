@@ -37,6 +37,12 @@
 \alias{R_FUTURE_RESOLVED_TIMEOUT}
 \alias{future.output.windows.reencode}
 \alias{R_FUTURE_OUTPUT_WINDOWS_REENCODE}
+\alias{future.globals.globalsOf.locals}
+\alias{R_FUTURE_GLOBALS_GLOBALSOF_LOCALS}
+\alias{future.globals.keepWhere}
+\alias{R_FUTURE_GLOBALS_KEEPWHERE}
+\alias{future.prune.functions}
+\alias{R_FUTURE_PRUNE_FUNCTIONS}
 \title{Options used for futures}
 \description{
 Below are the \R options and environment variables that are used by the
