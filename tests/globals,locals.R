@@ -48,6 +48,9 @@ for (strategy in supportedStrategies()) {
   message("- Non-missing global variable")
   a <- 2
   g <- function() a
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+    g <- environments::prune_fcn(g)
+  }
   f <- future(local({
     a <- 1
     g()
@@ -74,6 +77,9 @@ for (strategy in supportedStrategies()) {
   local({
     a <- 2
     g <- function() a
+    if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+      g <- environments::prune_fcn(g)
+    }
     f <- future(local({
       a <- 1
       g()
@@ -115,6 +121,10 @@ for (strategy in supportedStrategies()) {
   ##
   ## 'a' of h() would overwride 'a' of g() so that g() == 1
   ## https://github.com/HenrikBengtsson/future/issues/608
+  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+    g <- environments::prune_fcn(g)
+    h <- environments::prune_fcn(h)
+  }
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)

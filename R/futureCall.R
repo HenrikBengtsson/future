@@ -78,8 +78,10 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
     FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = globals)
     prune_undo <- attr(FUN, "prune_undo")
-    attr(FUN, "prune_undo") <- NULL
-    on.exit(prune_undo(), add = TRUE)
+    if (is.function(prune_undo)) {
+      attr(FUN, "prune_undo") <- NULL
+      on.exit(prune_undo(), add = TRUE)
+    }
   }
 
   names <- names(globals)
