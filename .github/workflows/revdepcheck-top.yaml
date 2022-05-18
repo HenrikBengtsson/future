@@ -26,6 +26,8 @@ jobs:
           - { r: "release", pkg: "furrr"             , plan: multisession, label: multisession }
           - { r: "release", pkg: "future.apply"      , globals_keepWhere: true, label: 'keepWhere' }
           - { r: "release", pkg: "future.apply"      , globals_keepWhere: false, label: '!keepWhere' }
+          - { r: "release", pkg: "future.apply"      , prune_functions: true, label: 'prune' }
+          - { r: "release", pkg: "furrr"             , prune_functions: true, label: 'prune' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -39,6 +41,7 @@ jobs:
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
       R_FUTURE_PLAN: ${{ matrix.config.plan }}
+      R_FUTURE_PRUNE_FUNCTIONS: ${{ matrix.config.prune_functions }}
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
       
     steps:

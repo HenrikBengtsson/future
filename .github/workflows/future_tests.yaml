@@ -10,7 +10,7 @@ jobs:
     
     runs-on: ubuntu-20.04
 
-    name: future.plan=${{ matrix.future.plan }}
+    name: future.plan=${{ matrix.future.plan }} ${{ matrix.config.label }}
 
     strategy:
       fail-fast: false
@@ -20,6 +20,7 @@ jobs:
           - { plan: 'multicore'                           }
           - { plan: 'multisession'                        }
           - { plan: 'sequential'                          }
+          - { plan: 'sequential'                          , prune_functions: true, label: 'prune' }
           - { plan: 'future.batchtools::batchtools_local' }
           - { plan: 'future.callr::callr'                 }
 
@@ -34,6 +35,7 @@ jobs:
       _R_CHECK_CRAN_INCOMING_: false
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
+      R_FUTURE_PRUNE_FUNCTIONS: ${{ matrix.config.prune_functions }}
       
     steps:
       - uses: actions/checkout@v2
