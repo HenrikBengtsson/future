@@ -64,11 +64,7 @@ for (cores in 1:availCores) {
         stopifnot(!inherits(res1, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
           utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res1 = res1))
-          if (globals || (!lazy && strategy %in% c("sequential", "multicore"))) {
-            stopifnot(all.equal(v1, v0))
-          } else {
-            stopifnot(inherits(res1, "error"))
-          }
+          stopifnot(all.equal(v1, v0))
         } else {
           if (!inherits(res1, "error")) {
             utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v1 = v1))
@@ -139,6 +135,7 @@ for (cores in 1:availCores) {
           g <- function() a
           f <- futureCall(g, globals = globals, lazy = lazy)
           rm(list = "a")
+          str(f$globals)
           
           res <- tryCatch(v <- value(f), error = identity)
           print(res)
@@ -147,7 +144,7 @@ for (cores in 1:availCores) {
             utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res = res))
             ## FIXME: (globals && !lazy) is a bug;
             ## should be enough with 'globals'
-            if ((globals && !lazy) || (!lazy && strategy %in% c("sequential", "multicore", "multisession"))) {
+            if (globals || (!lazy && strategy %in% c("sequential", "multicore", "multisession"))) {
               stopifnot(v == 2)
             } else {
               stopifnot(inherits(res, "error"))
