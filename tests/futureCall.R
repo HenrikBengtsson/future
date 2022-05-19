@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-options(future.debug = TRUE)
+options(future.debug = FALSE)
 if (getOption("future.prune.functions", FALSE)) {
   Sys.setenv(R_CHECK_IDEAL = "true")
 }
@@ -26,8 +26,8 @@ str(list(v2 = v2))
 
 ## Because we use lazy futures and set the
 ## random seed just before they are resolved
-stopifnot(all.equal(v1, v0))
-stopifnot(all.equal(v1, v2))
+stopifnot(identical(v1, v0))
+stopifnot(identical(v1, v2))
 
 message("- futureCall() - sequential + lazy ... DONE")
 
@@ -55,7 +55,8 @@ for (cores in 1:availCores) {
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
-                        globals = globals, lazy = lazy)
+                        globals = globals, lazy = lazy,
+                        label = "futureCall() #1")
         rm(list = c("a", "args"))
         print(f)
         res1 <- tryCatch({
@@ -64,11 +65,11 @@ for (cores in 1:availCores) {
         stopifnot(!inherits(res1, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
           utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res1 = res1))
-          stopifnot(all.equal(v1, v0))
+          stopifnot(identical(v1, v0))
         } else {
           if (!inherits(res1, "error")) {
             utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v1 = v1))
-            stopifnot(all.equal(v1, v0))
+            stopifnot(identical(v1, v0))
           } else {
             stopifnot(!globals)
           }
@@ -78,7 +79,8 @@ for (cores in 1:availCores) {
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
-                        globals = "a", lazy = lazy)
+                        globals = "a", lazy = lazy,
+                        label = "futureCall() #2")
         rm(list = c("a", "args"))
         print(f)
         res2 <- tryCatch({
@@ -87,15 +89,11 @@ for (cores in 1:availCores) {
         stopifnot(!inherits(res2, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
           utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res2 = res2))
-          if (globals || (strategy %in% c("sequential", "multicore", "multisession"))) {
-            stopifnot(all.equal(v2, v0))
-          } else {
-            stopifnot(inherits(res2, "error"))
-          }
+          stopifnot(identical(v2, v0))
         } else {
           if (!inherits(res2, "error")) {
             utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v2 = v2))
-            stopifnot(all.equal(v2, v0))
+            stopifnot(identical(v2, v0))
           } else {
             stopifnot(!globals)
           }
@@ -104,7 +102,8 @@ for (cores in 1:availCores) {
         message("- futureCall() #3")
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
-                        globals = list(a = 3), lazy = lazy)
+                        globals = list(a = 3), lazy = lazy,
+                        label = "futureCall() #3")
         rm(list = "args")
         print(f)
         res3 <- tryCatch({
@@ -113,15 +112,11 @@ for (cores in 1:availCores) {
         stopifnot(!inherits(res3, "FutureError"))
         if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
           utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res3 = res3))
-          if (globals || (strategy %in% c("sequential", "multicore", "multisession"))) {
-            stopifnot(all.equal(v3, v0))
-          } else {
-            stopifnot(inherits(res3, "error"))
-          }
+          stopifnot(identical(v3, v0))
         } else {
           if (!inherits(res3, "error")) {
             utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3, res3 = res3))
-            stopifnot(all.equal(v3, v0))
+            stopifnot(identical(v3, v0))
           } else {
             stopifnot(!globals)
           }
@@ -133,54 +128,50 @@ for (cores in 1:availCores) {
         local({
           a <- 2
           g <- function() a
-          f <- futureCall(g, globals = globals, lazy = lazy, label = "futureCall() #4")
+          f <- futureCall(g,
+                          globals = globals, lazy = lazy,
+                          label = "futureCall() #4")
           rm(list = "a")
           print(f)
           
-          res <- tryCatch(v <- value(f), error = identity)
-          print(res)
+          res4 <- tryCatch(v4 <- value(f), error = identity)
+          print(res4)
           
           if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res = res))
-            ## FIXME: (globals && !lazy) is a bug;
-            ## should be enough with 'globals'
-            if (globals || (!lazy && strategy %in% c("sequential", "multicore", "multisession"))) {
-              stopifnot(v == 2)
-            } else {
-              stopifnot(inherits(res, "error"))
-            }
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res4 = res4))
+            stopifnot(identical(v4, 2))
           } else {
             if (packageVersion("future") > "1.25.0-9000") {
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
+              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res4 = res4))
               if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", TRUE)) && strategy %in% c("sequential", "multicore"))) {
-                stopifnot(inherits(res, "error"))
+                stopifnot(inherits(res4, "error"))
               } else {
-                v <- value(f)
-                stopifnot(v == 2)
+                v4 <- value(f)
+                stopifnot(v4 == 2)
               }
             } else {
               ## future (<= 1.25.0)
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v = v, res = res))
+              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v4 = v4, res4 = res4))
               if (!globals && !lazy) {
                 if (strategy %in% c("sequential", "multicore")) {
-                  stopifnot(inherits(res, "error"))
+                  stopifnot(inherits(res4, "error"))
                 } else {
-                  stopifnot(res == 2)
+                  stopifnot(res4 == 2)
                 }
               } else if (!globals && lazy) {
                 if (strategy %in% c("sequential", "multicore", "multisession")) {
-                  stopifnot(inherits(res, "error"))
+                  stopifnot(inherits(res4, "error"))
                 } else {
-                  stopifnot(res == 2)
+                  stopifnot(res4 == 2)
                 }
               } else {
-                stopifnot(res == 2)
+                stopifnot(res4 == 2)
               }
             }
           }
         })
 
-        rm(list = c("v1", "v2", "v3"))
+        rm(list = c("v1", "v2", "v3", "v4"))
       }
     }
   }

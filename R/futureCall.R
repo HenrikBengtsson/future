@@ -32,6 +32,68 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
 
   expr <- quote(do.call(what = FUN, args = args))
   
+
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## 0. Prune function FUN()
+  ##
+  ## This:
+  ## 1. Preserves any global variables identified via environment(FUN)
+  ## 2. Drops non-global variables to avoid extra "cargo" when exporting
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (getOption("future.prune.functions", FALSE)) {
+    ## Primitive functions don't have environments,
+    ## and they cannot have globals
+    if (is.primitive(FUN)) {
+      if (debug) mdebug(" - primitive function: skip pruning")
+    } else if (inherits_from_namespace(environment(FUN))) {
+      if (debug) mdebug(" - a package function: skip pruning")
+    } else {
+      if (debug) {
+        mdebug(" - scanning FUN() from environment(FUN)")
+        mprint(FUN)
+      }
+      gp <- getGlobalsAndPackages(FUN, envir = environment(FUN), tweak = tweakExpression, globals = TRUE, locals = TRUE)
+      FUN_globals <- gp$globals
+      packages <- unique(c(packages, gp$packages))
+      gp <- NULL
+      if (debug) {
+        mdebug("Globals in FUN():")
+        mstr(FUN_globals)
+      }
+      
+      ## In case an anonymous function was specified
+      if (identical(environment(FUN), environment())) {
+        if (debug) mdebug(" - scanning FUN() from parent.frame()")
+        gp <- getGlobalsAndPackages(FUN, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, locals = TRUE)
+        FUN_globals <- unique(c(FUN_globals, gp$globals))
+        packages <- unique(c(packages, gp$packages))
+        gp <- NULL
+        if (debug) {
+          mdebug("Globals in FUN():")
+          mstr(FUN_globals)
+        }
+      }
+      
+      ## Prune function 'FUN'
+      if (debug) {
+        mdebug("Pruning function FUN() ...")
+        mdebug("Globals:")
+        mstr(FUN_globals)
+      }
+      FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = FUN_globals)
+      prune_undo <- attr(FUN, "prune_undo")
+      if (is.function(prune_undo)) {
+        attr(FUN, "prune_undo") <- NULL
+        on.exit(prune_undo(), add = TRUE)
+      }
+
+      ## Not needed anytmore
+      FUN_globals <- NULL
+
+      if (debug) mdebug("Pruning function FUN() ... done")
+    }
+  }
+
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 1. Global variables
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,55 +102,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
     if (globals) {
       if (debug) mdebug("Finding globals ...")
       if (getOption("future.prune.functions", FALSE)) {
-        ## Primitive functions don't have environments,
-        ## and they cannot have globals
-        if (is.primitive(FUN)) {
-          if (debug) mdebug(" - primitive function: skipping")
-          globals <- list()
-        } else {
-          if (debug) {
-            mdebug(" - scanning FUN() from environment(FUN)")
-            mprint(FUN)
-          }
-          gp <- getGlobalsAndPackages(FUN, envir = environment(FUN), tweak = tweakExpression, globals = TRUE, locals = FALSE)
-          globals <- gp$globals
-          packages <- unique(c(packages, gp$packages))
-          gp <- NULL
-          if (debug) {
-            mdebug("Globals:")
-            mstr(globals)
-          }
-          
-          ## In case an anonymous function was specified
-          if (!identical(parent.frame(), environment(FUN))) {
-            if (debug) mdebug(" - scanning FUN() from parent.frame()")
-            gp <- getGlobalsAndPackages(quote(FUN), envir = parent.frame(), tweak = tweakExpression, globals = TRUE, locals = FALSE)
-            globals <- unique(c(globals, gp$globals))
-            packages <- unique(c(packages, gp$packages))
-            gp <- NULL
-            if (debug) {
-              mdebug("Globals:")
-              mstr(globals)
-            }
-          }
-          
-          ## Prune function 'FUN'
-          if (!inherits_from_namespace(environment(FUN))) {
-            if (debug) {
-              mdebug("Pruning function FUN() ...")
-              mdebug("Globals:")
-              mstr(globals)
-            }
-            FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = globals)
-            prune_undo <- attr(FUN, "prune_undo")
-            if (is.function(prune_undo)) {
-              attr(FUN, "prune_undo") <- NULL
-              on.exit(prune_undo(), add = TRUE)
-            }
-            if (debug) mdebug("Pruning function FUN() ... done")
-          }
-          globals$FUN <- NULL
-        }
+        globals <- list()
       } else {
         ## expr <- do.call(call, args = c(list("FUN"), list(...)))
         gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = TRUE)
