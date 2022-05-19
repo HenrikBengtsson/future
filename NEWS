@@ -1,7 +1,7 @@
 Package: future
 ===============
 
-Version: 1.25.0-9019 [2022-05-09]
+Version: 1.25.0-9020 [2022-05-18]
 
 SIGNIFICANT CHANGES:
 
@@ -60,6 +60,9 @@ BUG FIXES:
    
  * The deprecation warning for using local = FALSE was silenced for
    sequential futures since future 1.25.0.
+
+ * futureCall() ignored arguments 'stdout', 'conditions', 'earlySignal',
+   'label', and 'gc'.
 
 DEPRECATED AND DEFUNCT:
 
