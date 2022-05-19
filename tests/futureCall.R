@@ -1,6 +1,6 @@
 source("incl/start.R")
 
-options(future.debug = FALSE)
+options(future.debug = TRUE)
 if (getOption("future.prune.functions", FALSE)) {
   Sys.setenv(R_CHECK_IDEAL = "true")
 }
@@ -133,9 +133,9 @@ for (cores in 1:availCores) {
         local({
           a <- 2
           g <- function() a
-          f <- futureCall(g, globals = globals, lazy = lazy)
+          f <- futureCall(g, globals = globals, lazy = lazy, label = "futureCall() #4")
           rm(list = "a")
-          str(f$globals)
+          print(f)
           
           res <- tryCatch(v <- value(f), error = identity)
           print(res)
@@ -180,7 +180,7 @@ for (cores in 1:availCores) {
           }
         })
 
-        rm(list = c("v1", "v2", "v3", "v4"))
+        rm(list = c("v1", "v2", "v3"))
       }
     }
   }
