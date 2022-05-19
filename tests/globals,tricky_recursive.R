@@ -33,30 +33,50 @@ main_future_no_FUN <- function(x = 1L, caller = call_my_add_caller,
 
 main_futureCall <- function(x = 1L, caller = call_my_add_caller,
                             args = list(FUN = call_my_add)) {
-  f <- futureCall(caller, args = c(list(a = x, b = x+1L), args), label = "main_futureCall")
-  str(f$globals)
-  print(f$globals$FUN)
-  print(ls.str(environment(f$globals$FUN)))
+  f <- futureCall(caller, args = c(list(a = x, b = x + 1L), args), label = "main_futureCall") 
   value(f)
 }
 
 main_futureCall_no_FUN <- function(x = 1L, caller = call_my_add_caller,
                             args = list(FUN = call_my_add)) {
-  f <- futureCall(caller, args = list(a = x, b = x+1L), label = "main_future_no_FUN")
+  oopts <- options(future.debug = TRUE)
+  on.exit(options(oopts))
+  
+  f <- futureCall(caller, args = list(a = x, b = x + 1L), label = "main_future_no_FUN")
+  str(f$globals)
+  
+  message("Info on FUN():")
+  FUN <- f$globals$FUN
+  print(FUN)
+  env <- environment(FUN)
+  print(ls.str(env))
+  message("------------------")
+  
+  message("Info on caller():")
+  print(env$caller)
+  env <- environment(env$caller)
+  print(ls.str(env))
+  message("------------------")
+  
+  message("Info on call_my_add():")
+  print(env$call_my_add)
+  env <- environment(env$call_my_add)
+  print(ls.str(env))
+  message("------------------")
   value(f)
 }
 
 main_lapply <- function(x = 1:2, caller = call_my_add_caller,
                                args = list(FUN = call_my_add)) {
   lapply(x, FUN = function(i) {
-    do.call(caller, args = c(list(a = i, b = i+1L), args))
+    do.call(caller, args = c(list(a = i, b = i + 1L), args))
   })
 }
 
 main_lapply_no_FUN <- function(x = 1:2, caller = call_my_add_caller,
                                args = list(FUN = call_my_add)) {
   lapply(x, FUN = function(i) {
-    do.call(caller, args = list(a = i, b = i+1L))
+    do.call(caller, args = list(a = i, b = i + 1L))
   })
 }
 
@@ -79,27 +99,14 @@ for (strategy in supportedStrategies()) {
   stopifnot(identical(x2, x0))
   
   message(" - main_futureCall()")
-  if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-    ## FIXME: This fails because prune_fcn() does not support depth > 1
-    res <- tryCatch(y <- main_futureCall(), error = identity)
-    str(list(res = res))
-    if (strategy %in% c("sequential", "multicore")) {
-      str(list(y = y))
-      if (is.null(y0)) y0 <- y
-      stopifnot(identical(y, y0))
-    } else {
-      stopifnot(inherits(res, "error"))
-    }
-  } else {
-    y <- main_futureCall()
-    str(list(y = y))
-    if (is.null(y0)) y0 <- y
-    stopifnot(identical(y, y0))
-  }
+  y <- main_futureCall()
+  str(list(y = y))
+  if (is.null(y0)) y0 <- y
+  stopifnot(identical(y, y0))
 
   message(" - main_futureCall_no_FUN()")
   if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-    ## FIXME: This fails because prune_fcn() does not support depth > 1
+    ## FIXME: ...
     res <- tryCatch(y2 <- main_futureCall_no_FUN(), error = identity)
     str(list(res = res))
     if (strategy %in% c("sequential", "multicore")) {

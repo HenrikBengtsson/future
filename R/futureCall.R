@@ -34,13 +34,14 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
   
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  ## 0. Prune function FUN()
+  ## 0a. Prune function FUN()
   ##
   ## This:
   ## 1. Preserves any global variables identified via environment(FUN)
   ## 2. Drops non-global variables to avoid extra "cargo" when exporting
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   if (getOption("future.prune.functions", FALSE)) {
+    if (debug) mdebug("Pruning function FUN() ...")
     ## Primitive functions don't have environments,
     ## and they cannot have globals
     if (is.primitive(FUN)) {
@@ -76,11 +77,10 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
       
       ## Prune function 'FUN'
       if (debug) {
-        mdebug("Pruning function FUN() ...")
         mdebug("Globals:")
         mstr(FUN_globals)
       }
-      FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 1L, globals = FUN_globals)
+      FUN <- environments::prune_fcn(FUN, search = environment(FUN), depth = 9L, globals = FUN_globals)
       prune_undo <- attr(FUN, "prune_undo")
       if (is.function(prune_undo)) {
         attr(FUN, "prune_undo") <- NULL
@@ -89,10 +89,88 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
 
       ## Not needed anytmore
       FUN_globals <- NULL
-
-      if (debug) mdebug("Pruning function FUN() ... done")
     }
+    if (debug) mdebug("Pruning function FUN() ... done")
   }
+
+
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  ## 0b. Prune functions in 'args'
+  ##
+  ## This:
+  ## 1. Preserves any global variables identified via environment(fcn)
+  ## 2. Drops non-global variables to avoid extra "cargo" when exporting
+  ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  if (length(args) > 0L && getOption("future.prune.functions", FALSE)) {
+    if (debug) mdebug("Pruning args functions ...")
+    
+    for (name in names(args)) {
+      fcn <- args[[name]]
+      
+      ## Not a function
+      if (!is.function(fcn)) next
+
+      if (debug) mdebugf("Pruning args function %s() ...", name)
+
+      ## Primitive functions don't have environments,
+      ## and they cannot have globals
+      if (is.primitive(fcn)) {
+        if (debug) mdebug(" - primitive function: skip pruning")
+        next
+      } else if (inherits_from_namespace(environment(fcn))) {
+        if (debug) mdebug(" - a package function: skip pruning")
+        next
+      }
+      
+      if (debug) {
+        mdebugf(" - scanning args function %s() from environment(%s)", name, name)
+        mprint(fcn)
+      }
+      gp <- getGlobalsAndPackages(fcn, envir = environment(fcn), tweak = tweakExpression, globals = TRUE, locals = TRUE)
+      fcn_globals <- gp$globals
+      packages <- unique(c(packages, gp$packages))
+      gp <- NULL
+      if (debug) {
+        mdebugf("Globals in %s():", name)
+        mstr(fcn_globals)
+      }
+      
+      ## In case an anonymous function was specified
+      if (identical(environment(fcn), environment())) {
+        if (debug) mdebugf(" - scanning args function %s() from parent.frame()", name)
+        gp <- getGlobalsAndPackages(fcn, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, locals = TRUE)
+        fcn_globals <- unique(c(fcn_globals, gp$globals))
+        packages <- unique(c(packages, gp$packages))
+        gp <- NULL
+        if (debug) {
+          mdebugf("Globals in %s():", name)
+          mstr(fcn_globals)
+        }
+      }
+      
+      ## Prune args function 'fcn'
+      if (debug) {
+        mdebugf("Pruning args function %s() ...", name)
+        mdebug("Globals:")
+        mstr(fcn_globals)
+      }
+      fcn <- environments::prune_fcn(fcn, search = environment(fcn), depth = 9L, globals = fcn_globals)
+      prune_undo <- attr(fcn, "prune_undo")
+      if (is.function(prune_undo)) {
+        args[[name]] <- fcn      
+        attr(fcn, "prune_undo") <- NULL
+        on.exit(prune_undo(), add = TRUE)
+      }
+
+      ## Not needed anytmore
+      fcn_globals <- NULL
+
+      if (debug) mdebugf("Pruning args function %s() ... done", name)
+    } ## for (name in names(argss))
+    
+    if (debug) mdebug("Pruning args functions ... done")
+  }
+
 
   ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   ## 1. Global variables
@@ -137,6 +215,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
 
   ## Make sure to clean out globals not found
   globals <- cleanup(globals, drop = "missing")
+
 
   names <- names(globals)
   if (!is.element("FUN", names)) globals$FUN <- FUN
