@@ -10,12 +10,12 @@ jobs:
     
     runs-on: ubuntu-20.04
 
-    name: future.plan=${{ matrix.future.plan }} ${{ matrix.config.label }}
+    name: future.plan=${{ matrix.config.plan }} ${{ matrix.config.label }}
 
     strategy:
       fail-fast: false
       matrix:
-        future:
+        config:
           - { plan: 'cluster'                             }
           - { plan: 'multicore'                           }
           - { plan: 'multisession'                        }
@@ -79,7 +79,7 @@ jobs:
         run: |
           remotes::install_cran("future.tests")
           remotes::install_github("HenrikBengtsson/future.tests", ref="develop")
-          if (grepl("::", plan <- "${{ matrix.future.plan }}") && nzchar(pkg <- sub("::.*", "", plan))) install.packages(pkg)
+          if (grepl("::", plan <- "${{ matrix.config.plan }}") && nzchar(pkg <- sub("::.*", "", plan))) install.packages(pkg)
         shell: Rscript {0}
 
       - name: Session info
@@ -89,15 +89,15 @@ jobs:
           sessioninfo::session_info(pkgs, include_base = TRUE)
         shell: Rscript {0}
     
-      - name: Check future backend '${{ matrix.future.plan }}'
+      - name: Check future backend '${{ matrix.config.plan }}'
         run: |
           R CMD build --no-build-vignettes --no-manual . 
           R CMD INSTALL *.tar.gz 
-          Rscript -e future.tests::check --args --test-plan=${{ matrix.future.plan }}
+          Rscript -e future.tests::check --args --test-plan=${{ matrix.config.plan }}
 
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
-          name: ${{ runner.os }}-r${{ matrix.future.plan }}-results
+          name: ${{ runner.os }}-r${{ matrix.config.plan }}-results
           path: check
