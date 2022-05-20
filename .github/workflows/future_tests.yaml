@@ -20,9 +20,14 @@ jobs:
           - { plan: 'multicore'                           }
           - { plan: 'multisession'                        }
           - { plan: 'sequential'                          }
-          - { plan: 'sequential'                          , prune_functions: true, label: 'prune' }
           - { plan: 'future.batchtools::batchtools_local' }
           - { plan: 'future.callr::callr'                 }
+          - { plan: 'cluster'                             , prune_functions: true, label: 'prune' }
+          - { plan: 'multicore'                           , prune_functions: true, label: 'prune' }
+          - { plan: 'multisession'                        , prune_functions: true, label: 'prune' }
+          - { plan: 'sequential'                          , prune_functions: true, label: 'prune' }
+          - { plan: 'future.batchtools::batchtools_local' , prune_functions: true, label: 'prune' }
+          - { plan: 'future.callr::callr'                 , prune_functions: true, label: 'prune' }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
