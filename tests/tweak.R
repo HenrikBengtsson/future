@@ -82,6 +82,7 @@ if (!covr_testing && requireNamespace("grid")) {
 
     ## When using futures, the 'future' package is loaded on the worker
     ns0 <- c(ns0, c("tools", "parallelly",
+                    "environments",
                     "codetools", "digest", "globals", "listenv", "future"))
     if (!is.element("grid", ns0)) {
       ## Assert that a global copy from a package does not trigger
