@@ -1,5 +1,5 @@
 #' @importFrom environments prune_fcn
-prune_one_fcn <- function(fcn, name = "<unamed function>", debug = FALSE) {
+prune_one_fcn <- function(fcn, envir = parent.frame(), globals = list(), name = "<unamed function>", debug = FALSE) {
   ## Not a function
   if (!is.function(fcn)) return(fcn)
 
@@ -21,7 +21,7 @@ prune_one_fcn <- function(fcn, name = "<unamed function>", debug = FALSE) {
   }
   
   gp <- getGlobalsAndPackages(fcn, envir = environment(fcn), tweak = tweakExpression, globals = TRUE, locals = TRUE)
-  globals <- gp$globals
+  globals <- c(globals, gp$globals)
   gp <- NULL
   if (debug) {
     mdebugf("Globals in %s():", name)
@@ -31,7 +31,7 @@ prune_one_fcn <- function(fcn, name = "<unamed function>", debug = FALSE) {
   ## In case an anonymous function was specified
   if (identical(environment(fcn), environment())) {
     if (debug) mdebugf(" - scanning function %s() from parent.frame()", name)
-    gp <- getGlobalsAndPackages(fcn, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, locals = TRUE)
+    gp <- getGlobalsAndPackages(fcn, envir = envir, tweak = tweakExpression, globals = TRUE, locals = TRUE)
     globals <- unique(c(globals, gp$globals))
     gp <- NULL
     if (debug) {
