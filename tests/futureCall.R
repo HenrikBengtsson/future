@@ -131,52 +131,34 @@ for (cores in 1:availCores) {
           g <- function() a
           f <- futureCall(g, globals = globals, lazy = lazy)
           rm(list = "a")
-          
-          res <- tryCatch(v <- value(f), error = identity)
-          print(res)
-          
+
+          truth <- 2
+          message("truth: ", truth)
+
+          v <- tryCatch(value(f), error = identity)
+          print(v)
+
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v = v))
+
           if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
             if (globals) {
-              stopifnot(v == 2)
+              stopifnot(identical(v, truth))
             } else {
-              stopifnot(inherits(res, "error"))
+              stopifnot(inherits(v, "error"))
             }
-          } else if (!isTRUE(getOption("future.globals.keepWhere", FALSE))) {
-            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
-            if (strategy %in% c("sequential", "multicore")) {
-              stopifnot(inherits(res, "error"))
-            } else if (lazy) {
-              stopifnot(inherits(res, "error"))
+          } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+            if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", FALSE)) && strategy %in% c("sequential", "multicore"))) {
+              stopifnot(inherits(v, "error"))
             } else {
-              stopifnot(res == 2)
+              stopifnot(identical(v, truth))
             }
           } else {
-            if (packageVersion("future") > "1.25.0-9000") {
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
-              if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", FALSE)) && strategy %in% c("sequential", "multicore"))) {
-                stopifnot(inherits(res, "error"))
-              } else {
-                v <- value(f)
-                stopifnot(v == 2)
-              }
+            if (strategy %in% c("sequential", "multicore")) {
+              stopifnot(inherits(v, "error"))
+            } else if (lazy) {
+              stopifnot(inherits(v, "error"))
             } else {
-              ## future (<= 1.25.0)
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v = v, res = res))
-              if (!globals && !lazy) {
-                if (strategy %in% c("sequential", "multicore")) {
-                  stopifnot(inherits(res, "error"))
-                } else {
-                  stopifnot(res == 2)
-                }
-              } else if (!globals && lazy) {
-                if (strategy %in% c("sequential", "multicore", "multisession")) {
-                  stopifnot(inherits(res, "error"))
-                } else {
-                  stopifnot(res == 2)
-                }
-              } else {
-                stopifnot(res == 2)
-              }
+              stopifnot(identical(v, truth))
             }
           }
         })
