@@ -135,30 +135,52 @@ for (cores in 1:availCores) {
           truth <- 2
           message("truth: ", truth)
 
-          v <- tryCatch(value(f), error = identity)
-          print(v)
+          v4 <- tryCatch(value(f), error = identity)
+          print(v4)
 
-          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v = v))
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v4 = v4))
 
           if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
             if (globals) {
-              stopifnot(identical(v, truth))
+              stopifnot(identical(v4, truth))
             } else {
-              stopifnot(inherits(v, "error"))
+              stopifnot(inherits(v4, "error"))
             }
           } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
-            if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", FALSE)) && strategy %in% c("sequential", "multicore"))) {
-              stopifnot(inherits(v, "error"))
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
             } else {
-              stopifnot(identical(v, truth))
+              if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
             }
           } else {
-            if (strategy %in% c("sequential", "multicore")) {
-              stopifnot(inherits(v, "error"))
-            } else if (lazy) {
-              stopifnot(inherits(v, "error"))
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
             } else {
-              stopifnot(identical(v, truth))
+              if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
             }
           }
         })
