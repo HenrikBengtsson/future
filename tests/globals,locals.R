@@ -69,8 +69,8 @@ for (strategy in supportedStrategies()) {
   }
 
 
-  ## FIXME: This fails with future 1.25.0-9017 /HB 2022-05-09
   message("- Non-missing global variable (inside local())")
+  ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
   local({
     a <- 2
     g <- function() a
@@ -79,19 +79,16 @@ for (strategy in supportedStrategies()) {
       g()
     }), lazy = TRUE)
     rm(list = "a")
+
+    res <- tryCatch({ v <- value(f) }, error = identity)
+    print(res)
     
     if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-      v <- value(f)
+      stopifnot(v == 2)
+    } else if (!isTRUE(getOption("future.globals.keepWhere", FALSE))) {
       stopifnot(v == 2)
     } else {
-      if (packageVersion("future") > "1.25.0-9000") {
-        res <- tryCatch(v <- value(f), error = identity)
-        print(res)
-        stopifnot(inherits(res, "error"))
-      } else {
-        v <- value(f)
-        stopifnot(v == 2)
-      }
+      stopifnot(inherits(res, "error"))
     }
   })
 
@@ -104,40 +101,34 @@ for (strategy in supportedStrategies()) {
   truth <- g() + h()
   print(truth)
 
-  ## Fixed in future (>= 1.25.0-9016) with globals (>= 0.14.0.9004):
+  ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
+  ## With:
   ##
   ##   f <- future(g() + h())
   ##
-  ## Previously, 'a' of g() would overwrite 'a' of h(), resulting
-  ## in h() == 2, rather than h() == 1. Vice versa, if we did:
+  ## there is a risk that global 'a' of g() overwrites global 'a' of h(),
+  ## resulting in h() == 2, rather than h() == 1. Vice versa, with:
   ##
   ##   f <- future(h() + g())
   ##
-  ## 'a' of h() would overwride 'a' of g() so that g() == 1
-  ## https://github.com/HenrikBengtsson/future/issues/608
+  ## 'a' of h() might overwride 'a' of g() so that g() == 1.
+  ## This has to be fixed.
+  ##
+  ## See also https://github.com/HenrikBengtsson/future/issues/608
+  
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
   print(v)
 
   if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
     stopifnot(identical(v, truth))
+  } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+    stopifnot(identical(v, truth))
   } else {
-    if (packageVersion("future") > "1.25.0-9000") {
-      if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
-        stopifnot(identical(v, truth))
-      } else {
-        if (packageVersion("globals") >= "0.15.0") {
-          stopifnot(inherits(v, "error"))
-        } else {
-          stopifnot(identical(v, 4))
-        }
-      }
+    if (strategy %in% c("sequential", "multicore")) {
+      stopifnot(inherits(v, "error"))
     } else {
-      if (getOption("future.globals.keepWhere", FALSE) || ! strategy %in% c("sequential", "multicore")) {
-        stopifnot(identical(v, truth))
-      } else {
-        stopifnot(identical(v, 4))
-      }
+      stopifnot(identical(v, truth))
     }
   }
 } ## for (strategy ...)

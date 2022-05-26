@@ -125,8 +125,7 @@ for (cores in 1:availCores) {
         }
 
         message("- futureCall() #4")
-        ## FIXME: This fails with future 1.25.0-9017,
-        ## except for sequential and multicore /HB 2022-05-09
+        ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
         local({
           a <- 2
           g <- function() a
@@ -142,10 +141,19 @@ for (cores in 1:availCores) {
             } else {
               stopifnot(inherits(res, "error"))
             }
+          } else if (!isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
+            if (strategy %in% c("sequential", "multicore")) {
+              stopifnot(inherits(res, "error"))
+            } else if (lazy) {
+              stopifnot(inherits(res, "error"))
+            } else {
+              stopifnot(res == 2)
+            }
           } else {
             if (packageVersion("future") > "1.25.0-9000") {
               utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res = res))
-              if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", TRUE)) && strategy %in% c("sequential", "multicore"))) {
+              if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", FALSE)) && strategy %in% c("sequential", "multicore"))) {
                 stopifnot(inherits(res, "error"))
               } else {
                 v <- value(f)

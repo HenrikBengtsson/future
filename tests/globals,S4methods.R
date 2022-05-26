@@ -37,11 +37,13 @@ for (strategy in supportedStrategies()) {
     } else {
       stopifnot(inherits(v, "error"))
     }
+  } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+    stopifnot(identical(v, truth))
   } else {
-    if (getOption("future.globals.keepWhere", TRUE) || ! strategy %in% c("sequential", "multicore")) {
-      stopifnot(identical(v, truth))
-    } else {
+    if (strategy %in% c("sequential", "multicore")) {
       stopifnot(inherits(v, "error"))
+    } else {
+      stopifnot(identical(v, truth))
     }
   }
   my_fcn <- org_my_fcn
