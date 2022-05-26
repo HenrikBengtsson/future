@@ -80,15 +80,26 @@ for (strategy in supportedStrategies()) {
     }), lazy = TRUE)
     rm(list = "a")
 
+    truth <- 2
+    message("truth: ", truth)
+    
     res <- tryCatch({ v <- value(f) }, error = identity)
     print(res)
     
     if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-      stopifnot(v == 2)
-    } else if (!isTRUE(getOption("future.globals.keepWhere", FALSE))) {
-      stopifnot(v == 2)
+      stopifnot(identical(v, truth))
+    } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+      if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+        if (strategy %in% c("sequential", "multicore")) {
+          stopifnot(inherits(res, "error"))
+        } else {
+          stopifnot(identical(v, truth))
+        }
+      } else {
+        stopifnot(identical(v, truth))
+      }
     } else {
-      stopifnot(inherits(res, "error"))
+      stopifnot(identical(v, truth))
     }
   })
 
@@ -99,7 +110,7 @@ for (strategy in supportedStrategies()) {
   g <- local({ a <- 2; function() a })
   h <- local({ a <- 1; function() a })
   truth <- g() + h()
-  print(truth)
+  message("truth: ", truth)
 
   ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
   ## With:
@@ -118,17 +129,30 @@ for (strategy in supportedStrategies()) {
   
   f <- future(g() + h())
   v <- tryCatch(value(f), error = identity)
-  print(v)
 
+  utils::str(list(strategy = strategy, v = v))
+  
   if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
     stopifnot(identical(v, truth))
   } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
-    stopifnot(identical(v, truth))
-  } else {
-    if (strategy %in% c("sequential", "multicore")) {
-      stopifnot(inherits(v, "error"))
+    if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+      stopifnot(identical(v, truth))
     } else {
       stopifnot(identical(v, truth))
+    }
+  } else {
+    if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+      if (strategy %in% c("sequential", "multicore")) {
+        stopifnot(identical(v, 4))    ## <= SERIOUS BUG!
+      } else {
+        stopifnot(identical(v, truth))
+      }
+    } else {
+      if (strategy %in% c("sequential", "multicore")) {
+        stopifnot(inherits(v, "error"))
+      } else {
+        stopifnot(identical(v, truth))
+      }
     }
   }
 } ## for (strategy ...)
