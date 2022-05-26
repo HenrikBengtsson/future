@@ -9,7 +9,7 @@ getGlobalsAndPackages(
   envir = parent.frame(),
   tweak = tweakExpression,
   globals = TRUE,
-  locals = getOption("future.globals.globalsOf.locals", FALSE),
+  locals = getOption("future.globals.globalsOf.locals", TRUE),
   resolve = getOption("future.globals.resolve", NULL),
   persistent = FALSE,
   maxSize = getOption("future.globals.maxSize", 500 * 1024^2),
