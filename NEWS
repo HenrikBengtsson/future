@@ -29,21 +29,6 @@ NEW FEATURES:
 
 BUG FIXES:
 
- * Globals tied to a function environment would get decoupled from the
-   function for some future backends, including sequential and
-   multicore.  For example, with 'a' would be decoupled from g() in
-   g <- local({ a <- 1; function() a }). This would cause a name clash
-   with ditto in h <- local({ a <- 2; function() a }) if used in the
-   same future.  For example, future({ c(g(), h()) }) would resolve to
-   c(1, 1) and not c(1, 2), because h() would also see a == 1.
-
- * Related to the above name clash issue, was an issue where a
-   function defined in a local environment could pick up false
-   variable in place of a missing global.  For example, with
-   g <- function() { a } and h <- function() { a <- 1; g() }, calling
-   h() should give an error that 'a' is missing.  However, future(h())
-   would incorrectly return 1 for sequential and multicore futures.
-
  * The bug fix in future 1.22.0 that addressed the issue where object
    'a' in future(fcn(), globals = list(a = 42, fcn = function() a))
    would not be found has been redesigned in a more robust way.
@@ -55,9 +40,6 @@ BUG FIXES:
    getOption("fftempdir") : replacement has length zero".
    'SIGNIFICANT CHANGES' for why and how this was fixed.
 
- * S4 methods defined locally, that is, not in a package, failed to be
-   found in sequential and multicore futures since future 1.22.0.
-   
  * The deprecation warning for using local = FALSE was silenced for
    sequential futures since future 1.25.0.
 
