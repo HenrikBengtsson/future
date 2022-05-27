@@ -25,7 +25,7 @@ parallel in another process."><meta property="og:image" content="https://future.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1</span>
       </span>
     </div>
 
@@ -196,7 +196,8 @@ processing is not supported, e.g. on Windows.</p>
     <div id="details">
     <h2>Details</h2>
     <p>This function is <em>not</em> meant to be called directly.  Instead, the
-typical usages are:</p><div class="sourceCode r"><pre><code><span class="co"># Evaluate futures in parallel on the local machine via as many forked</span>
+typical usages are:</p>
+<p></p><div class="sourceCode r"><pre><code><span class="co"># Evaluate futures in parallel on the local machine via as many forked</span>
 <span class="co"># processes as available to the current R process</span>
 <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span>
 
@@ -215,7 +216,8 @@ such cases.  See <code><a href="https://parallelly.futureverse.org/reference/sup
 Trying to create multicore futures on non-supported systems or when
 forking is disabled will result in multicore futures falling back to
 becoming <a href="sequential.html">sequential</a> futures.  If used in RStudio, there will be an
-informative warning:</p><div class="sourceCode r"><pre><code>&gt; plan(multicore)
+informative warning:</p>
+<p></p><div class="sourceCode r"><pre><code>&gt; plan(multicore)
 Warning message:
 In supportsMulticoreAndRStudio(...) :
   [ONE-TIME WARNING] Forked processing ('multicore') is not supported when

@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1</span>
       </span>
     </div>
 
@@ -657,9 +657,9 @@ e.g. by calling <code>plan(sequential)</code>.</p>
 <p>Note that with automatic authentication setup (e.g. SSH key pairs),
 there is nothing preventing us from using the same approach for using a
 cluster of remote machines.</p>
-<p>If you want to run multiple workers on each node, just replicate the
-node name as many times as the number of workers to run on that node.
-For example,</p>
+<p>If you want to run multiple workers on each node, replicate the node
+name as many times as the number of workers to run on that node. For
+example,</p>
 <pre><code>&gt; plan(cluster, workers = c(rep("n1", times = 3), "n2", rep("n3", times = 5)))</code></pre>
 <p>will run three workers on <code>n1</code>, one on <code>n2</code>,
 and five on <code>n3</code>, in total nine parallel workers.</p>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.25.0-9017</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">futureSessionInfo</span><span class="op">(</span>test <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">futureSessionInfo</span><span class="op">(</span>test <span class="op">=</span> <span class="cn">TRUE</span>, anonymize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -167,6 +167,8 @@
     <dl><dt>test</dt>
 <dd><p>If TRUE, one or more futures are created to query workers
 and validate their information.</p></dd>
+<dt>anonymize</dt>
+<dd><p>If TRUE, user names and host names are anonymized.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -178,7 +180,7 @@ and validate their information.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">futureSessionInfo</span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Package versions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.25.0.9017, parallelly 1.31.1.9000, parallel 4.2.0, globals 0.15.0, listenv 0.8.0</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> future 1.26.1, parallelly 1.31.1.9002, parallel 4.2.0, globals 0.15.0, listenv 0.8.0</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Allocations</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> availableCores():</span>
@@ -210,16 +212,24 @@ and validate their information.</p></dd>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>    - call: plan(multisession, workers = 2)</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> *** Basic tests</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   worker     pid     r sysname           release</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 2585644 4.2.0   Linux 5.4.0-109-generic</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 2585645 4.2.0   Linux 5.4.0-109-generic</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>                                       version nodename machine login user</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #123-Ubuntu SMP Fri Apr 8 09:10:54 UTC 2022    hb-x1  x86_64    hb   hb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #123-Ubuntu SMP Fri Apr 8 09:10:54 UTC 2022    hb-x1  x86_64    hb   hb</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Main R session details:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>       pid     r sysname           release</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 1452271 4.2.0   Linux 5.4.0-110-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>                                        version nodename machine   login    user</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #124-Ubuntu SMP Thu Apr 14 19:46:19 UTC 2022  host001  x86_64 user001 user001</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   effective_user</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 1             hb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2             hb</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of unique PIDs: 2 (as expected)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1        user001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Worker R session details:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   worker     pid     r sysname           release</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1      1 1453131 4.2.0   Linux 5.4.0-110-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2      2 1453132 4.2.0   Linux 5.4.0-110-generic</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>                                        version nodename machine   login    user</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1 #124-Ubuntu SMP Thu Apr 14 19:46:19 UTC 2022  host001  x86_64 user001 user001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2 #124-Ubuntu SMP Thu Apr 14 19:46:19 UTC 2022  host001  x86_64 user001 user001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   effective_user</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 1        user001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2        user001</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of unique worker PIDs: 2 (as expected)</span>
 <span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
