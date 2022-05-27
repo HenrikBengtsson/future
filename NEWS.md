@@ -1,3 +1,8 @@
+# Version (development version)
+
+ * ...
+ 
+
 # Version 1.26.1 [2022-05-28]
 
 ## Miscellaneous
