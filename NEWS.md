@@ -1,4 +1,19 @@
-# Version 1.26.0 [2022-05-18]
+# Version 1.26.1 [2022-05-28]
+
+## Miscellaneous
+
+ * TESTS: `R CMD check --as-cran` on R-devel and MS Windows would
+   trigger a NOTE on "Check: for detritus in the temp directory" and
+   "Found the following files/directories: 'Rscript1349cb8aeeba0'
+   ...". There were two package tests that explicitly created PSOCK
+   cluster without stopping them. A third test launched multisession
+   future without resolving it, which prevented the PSOCK worker to
+   terminate. This was not detected in R 4.2.0.  It is not a problem
+   on macOS and Linux, because there background workers are
+   automatically terminated when the main R session terminates.
+   
+
+# Version 1.26.0 [2022-05-27]
 
 ## Significant Changes
 
@@ -34,7 +49,7 @@
    saw "Error in setalloccol(ans) : verbose must be TRUE or FALSE".
    For **ff**, we saw "Error in splitted$path[nopath] <-
    getOption("fftempdir") : replacement has length zero".
-   See 'Signifcant Changes' for why and how this was fixed.
+   See 'Significant Changes' for why and how this was fixed.
 
  * The deprecation warning for using `local = FALSE` was silenced for
    sequential futures since **future** 1.25.0.
