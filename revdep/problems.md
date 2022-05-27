@@ -121,10 +121,10 @@ Run `revdep_details(, "bcmaps")` for more info
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.2.1
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-05-02 18:02:06 UTC
+* Date/Publication: 2022-05-10 17:20:02 UTC
 * Number of recursive dependencies: 97
 
 Run `revdep_details(, "BEKKs")` for more info
@@ -211,11 +211,11 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.4-1
+* Version: 0.4-3
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2022-01-27 21:40:02 UTC
-* Number of recursive dependencies: 105
+* Date/Publication: 2022-05-11 17:00:05 UTC
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -223,12 +223,16 @@ Run `revdep_details(, "blavaan")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘cmdstanr’
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 82.2Mb
+      installed size is 87.4Mb
       sub-directories of 1Mb or more:
-        libs      79.7Mb
-        testdata   1.5Mb
+        libs  85.5Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -673,9 +677,9 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.4Mb
+      installed size is  7.3Mb
       sub-directories of 1Mb or more:
-        libs   6.2Mb
+        libs   6.1Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -846,88 +850,6 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
-# future.apply
-
-<details>
-
-* Version: 1.9.0
-* GitHub: https://github.com/HenrikBengtsson/future.apply
-* Source code: https://github.com/cran/future.apply
-* Date/Publication: 2022-04-25 22:40:02 UTC
-* Number of recursive dependencies: 14
-
-Run `revdep_details(, "future.apply")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘fold.R’
-      Running ‘future_apply.R’
-      Running ‘future_by.R’
-      Running ‘future_eapply.R’
-      Running ‘future_lapply,RNG.R’
-      Running ‘future_lapply,globals.R’
-     ERROR
-    Running the tests in ‘tests/future_lapply,globals.R’ failed.
-    Last 50 lines of output:
-      [13:18:35.264] Early signaling: FALSE
-    ...
-      [13:18:35.565] Early signaling: FALSE
-      [13:18:35.565] Owner process: 7675940f-e31b-a801-593b-a901892d631f
-      [13:18:35.565] Class: 'MultisessionFuture', 'ClusterFuture', 'MultiprocessFuture', 'Future', 'environment'
-      [13:18:35.579] Chunk #2 of 2 ... DONE
-      [13:18:35.579] Launching 2 futures (chunks) ... DONE
-      [13:18:35.579] Resolving 2 futures (chunks) ...
-      Error in do.call(my_add, args = list(a = a, b = b)) : 
-        object 'my_add' not found
-      Calls: main ... resolve.list -> signalConditionsASAP -> signalConditions
-      Execution halted
-    ```
-
-# future.tests
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/HenrikBengtsson/future.tests
-* Source code: https://github.com/cran/future.tests
-* Date/Publication: 2021-10-10 04:30:05 UTC
-* Number of recursive dependencies: 13
-
-Run `revdep_details(, "future.tests")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘Test-class.R’
-      Running ‘check.R’
-     ERROR
-    Running the tests in ‘tests/check.R’ failed.
-    Last 50 lines of output:
-      [[1]][[42]][[1]]
-      TestResult:
-      - Test:
-        - Title: 'value() - visibility'
-        - Tags: 'value', 'visibility'
-    ...
-      - args: function (..., envir = parent.frame())
-      - tweaked: FALSE
-      - call: plan(sequential)
-      
-      attr(,"exit_code")
-      [1] 1
-      Total number of errors: 1
-      > proc.time()
-         user  system elapsed 
-        4.374   0.406  12.579 
-    ```
-
 # geocmeans
 
 <details>
@@ -936,7 +858,7 @@ Run `revdep_details(, "future.tests")` for more info
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
 * Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 204
+* Number of recursive dependencies: 197
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -1078,9 +1000,9 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 37.1Mb
+      installed size is 37.0Mb
       sub-directories of 1Mb or more:
-        libs  34.8Mb
+        libs  34.7Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -1106,7 +1028,7 @@ Run `revdep_details(, "gsynth")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.2Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         libs   4.8Mb
     ```
@@ -1175,28 +1097,6 @@ Run `revdep_details(, "hal9001")` for more info
       installed size is  7.6Mb
       sub-directories of 1Mb or more:
         libs   7.2Mb
-    ```
-
-# iml
-
-<details>
-
-* Version: 0.10.1
-* GitHub: https://github.com/christophM/iml
-* Source code: https://github.com/cran/iml
-* Date/Publication: 2020-09-24 12:30:14 UTC
-* Number of recursive dependencies: 168
-
-Run `revdep_details(, "iml")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘keras’
-      All declared Imports should be used.
     ```
 
 # infercnv
@@ -1414,29 +1314,6 @@ Run `revdep_details(, "lava")` for more info
       'gof', 'lava.tobit', 'lavaSearch2'
     ```
 
-# ldsr
-
-<details>
-
-* Version: 0.0.2
-* GitHub: https://github.com/ntthung/ldsr
-* Source code: https://github.com/cran/ldsr
-* Date/Publication: 2020-05-04 14:40:09 UTC
-* Number of recursive dependencies: 75
-
-Run `revdep_details(, "ldsr")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.0Mb
-      sub-directories of 1Mb or more:
-        libs   4.6Mb
-    ```
-
 # lidR
 
 <details>
@@ -1498,14 +1375,14 @@ Run `revdep_details(, "lidR")` for more info
        11.         ├─sf::st_crop(raster, bbox)
        12.         └─stars:::st_crop.stars(raster, bbox)
       
-      [ FAIL 21 | WARN 5 | SKIP 48 | PASS 1348 ]
+      [ FAIL 20 | WARN 5 | SKIP 40 | PASS 1357 ]
       Error: Test failures
       Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.8Mb
+      installed size is 19.7Mb
       sub-directories of 1Mb or more:
         R         1.1Mb
         doc       1.0Mb
@@ -1517,10 +1394,10 @@ Run `revdep_details(, "lidR")` for more info
 
 <details>
 
-* Version: 1.6.2
+* Version: 1.7.0
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
-* Date/Publication: 2021-11-08 22:50:05 UTC
+* Date/Publication: 2022-05-14 13:50:02 UTC
 * Number of recursive dependencies: 75
 
 Run `revdep_details(, "lightr")` for more info
@@ -1537,29 +1414,6 @@ Run `revdep_details(, "lightr")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘pavo’
-    ```
-
-# lmtp
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/nt-williams/lmtp
-* Source code: https://github.com/cran/lmtp
-* Date/Publication: 2021-09-29 07:10:07 UTC
-* Number of recursive dependencies: 113
-
-Run `revdep_details(, "lmtp")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘R6’ ‘nnls’ ‘utils’
-      All declared Imports should be used.
     ```
 
 # MAI
@@ -1809,7 +1663,7 @@ Run `revdep_details(, "missSBM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.8Mb
+      installed size is  9.7Mb
       sub-directories of 1Mb or more:
         libs   7.8Mb
     ```
@@ -2522,10 +2376,10 @@ Run `revdep_details(, "seer")` for more info
 
 <details>
 
-* Version: 0.7.0
+* Version: 0.7.1
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
-* Date/Publication: 2022-05-09 07:10:02 UTC
+* Date/Publication: 2022-05-18 13:20:02 UTC
 * Number of recursive dependencies: 161
 
 Run `revdep_details(, "sentopics")` for more info
@@ -2891,11 +2745,11 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.4.3.1
+* Version: 0.4.3.2
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2022-04-23 23:50:02 UTC
-* Number of recursive dependencies: 148
+* Date/Publication: 2022-05-14 12:00:02 UTC
+* Number of recursive dependencies: 147
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -2905,21 +2759,21 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 22.4Mb
+      installed size is 25.0Mb
       sub-directories of 1Mb or more:
-        doc       1.1Mb
+        doc       1.0Mb
         extdata   2.6Mb
-        libs     17.4Mb
+        libs     20.0Mb
     ```
 
 # ssdtools
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/bcgov/ssdtools
 * Source code: https://github.com/cran/ssdtools
-* Date/Publication: 2022-04-10 21:40:02 UTC
+* Date/Publication: 2022-05-14 23:50:02 UTC
 * Number of recursive dependencies: 141
 
 Run `revdep_details(, "ssdtools")` for more info
@@ -3096,7 +2950,7 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.5Mb
+      installed size is 16.4Mb
       sub-directories of 1Mb or more:
         libs  15.5Mb
     ```
@@ -3126,10 +2980,10 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.1.1
+* Version: 1.1.2
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-03-22 10:10:28 UTC
+* Date/Publication: 2022-05-11 11:20:05 UTC
 * Number of recursive dependencies: 116
 
 Run `revdep_details(, "TreeSearch")` for more info
