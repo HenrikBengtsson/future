@@ -65,10 +65,6 @@ for (type in types) {
     print(y)
     stopifnot(y == 42L)
 
-
-    ## Set up a cluster with <cores> nodes (implicitly)
-    plan(cluster, workers = cores)
-  
     ## No global variables
     f <- try(cluster({
       42L
@@ -80,7 +76,6 @@ for (type in types) {
     y <- value(f)
     print(y)
     stopifnot(y == 42L)
-  
   
     ## A global variable
     a <- 0
@@ -218,6 +213,9 @@ for (type in types) {
     message("Main PID: ", pid2)
     stopifnot(pid2 == pid)
 
+    ## Cleanup
+    parallel::stopCluster(cl)
+  
     message(sprintf("Testing with %d cores on type = %s ... DONE",
                     cores, sQuote(type)))
   } ## for (cores ...)
@@ -242,6 +240,11 @@ for (type in types) {
   plan(sequential)
   clR <- ClusterRegistry("get")
   stopifnot(is.null(clR))
+
+  ## Cleanup
+  print(cl)
+  str(cl)
+  parallel::stopCluster(cl)
   
   message("*** cluster() - assert registry behavior ... DONE")
 
@@ -252,17 +255,16 @@ for (type in types) {
   stopifnot(pid2 == pid)
 
   ## Cleanup
-  print(cl)
-  str(cl)
-  parallel::stopCluster(cl)
   plan(sequential)
 
   cl1 <- parallel::makeCluster(1L, type = type, timeout = 60)
   plan(cluster, workers = cl1)
   f1 <- future(1)
 
-  cl1 <- parallel::makeCluster(1L, type = type, timeout = 60)
-  plan(cluster, workers = cl1)
+  ## Cleanup
+  print(cl1)
+  str(cl1)
+  parallel::stopCluster(cl1)
 
   message(sprintf("Test set #1 with cluster type %s ... DONE", sQuote(type)))
 } ## for (type ...)
@@ -290,6 +292,11 @@ for (type in types) {
   message(a)
   
   setDefaultCluster(NULL)
+
+  ## Cleanup
+  print(cl)
+  str(cl)
+  parallel::stopCluster(cl)
   
   message("*** cluster() - setDefaultCluster() ... DONE")
 
@@ -300,9 +307,6 @@ for (type in types) {
   stopifnot(pid2 == pid)
 
   ## Cleanup
-  print(cl)
-  str(cl)
-  parallel::stopCluster(cl)
   plan(sequential)
 
   message(sprintf("Test set #2 with cluster type %s ... DONE", sQuote(type)))
