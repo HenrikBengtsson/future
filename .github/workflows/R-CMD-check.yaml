@@ -16,20 +16,22 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'devel'   }
-          - {os: windows-latest, r: 'release' }
-          - {os: macOS-latest,   r: 'devel'   }
-          - {os: macOS-latest,   r: 'release' }
-          - {os: ubuntu-20.04,   r: 'devel'   }
-          - {os: ubuntu-20.04,   r: 'release' }
+          - {os: windows-latest, r: 'devel'    }
+          - {os: windows-latest, r: 'release'  }
+          - {os: macOS-latest,   r: 'devel'    }
+          - {os: macOS-latest,   r: 'release'  }
+          - {os: ubuntu-20.04,   r: 'devel'    }
+          - {os: ubuntu-20.04,   r: 'release'  }
+          - {os: ubuntu-20.04,   r: 'oldrel'   }
+          - {os: ubuntu-20.04,   r: 'oldrel-1' }
+          - {os: ubuntu-20.04,   r: 'oldrel-2' }
+          - {os: ubuntu-20.04,   r: '3.5'      }
+          - {os: ubuntu-20.04,   r: '3.4'      }
           - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: true, label: 'keepWhere' }
           - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: false, label: '!keepWhere' }
           - {os: ubuntu-20.04,   r: 'release', plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
-          - {os: ubuntu-20.04,   r: 'oldrel'  }
-          - {os: ubuntu-20.04,   r: '3.5'     }
-          - {os: ubuntu-20.04,   r: '3.4'     }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
