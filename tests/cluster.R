@@ -1,5 +1,4 @@
 source("incl/start.R")
-library("listenv")
 options(future.debug = FALSE)
 message("*** cluster() ...")
 
@@ -95,17 +94,18 @@ for (type in types) {
     v <- value(f)
     print(v)
     stopifnot(v == 0)
-  
-  
-    message("*** cluster() with globals and blocking")
-    x <- listenv()
-    for (ii in 1:3) {
-      message(sprintf(" - Creating cluster future #%d ...", ii))
-      x[[ii]] <- future({ ii })
+
+    if (!"covr" %in% loadedNamespaces()) {
+      message("*** cluster() with globals and blocking")
+      fs <- list()
+      for (ii in 1:3) {
+        message(sprintf(" - Creating cluster future #%d ...", ii))
+        fs[[ii]] <- future({ ii }, label = sprintf("future-%d", ii))
+      }
+      message(sprintf(" - Resolving %d cluster futures", length(fs)))
+      v <- sapply(fs, FUN = value)
+      stopifnot(all(v == 1:3))
     }
-    message(sprintf(" - Resolving %d cluster futures", length(x)))
-    v <- sapply(x, FUN = value)
-    stopifnot(all(v == 1:3))
   
   
     message("*** cluster() and errors")

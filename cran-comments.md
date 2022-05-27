@@ -1,3 +1,12 @@
+# CRAN submission future 1.26.1
+
+on 2022-05-27
+
+Resubmitting after CRAN incoming checks on MS Windows and R-devel detected issues with "detritus in the temp directory", which now have been fixed and verified using win-builder "devel".
+
+Thank you
+
+
 # CRAN submission future 1.26.0
 
 on 2022-05-26
