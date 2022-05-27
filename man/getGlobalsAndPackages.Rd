@@ -9,6 +9,7 @@ getGlobalsAndPackages(
   envir = parent.frame(),
   tweak = tweakExpression,
   globals = TRUE,
+  locals = getOption("future.globals.globalsOf.locals", TRUE),
   resolve = getOption("future.globals.resolve", NULL),
   persistent = FALSE,
   maxSize = getOption("future.globals.maxSize", 500 * 1024^2),
@@ -23,6 +24,9 @@ getGlobalsAndPackages(
 \item{tweak}{(optional) A function that takes an expression and returned a modified one.}
 
 \item{globals}{(optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on \code{expr} and \code{tweak} searching from environment \code{envir}.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names \code{globals} searching from environment \code{envir}.  If a named list or a Globals object, the globals are used as is.}
+
+\item{locals}{Should globals part of any "local" environment of
+a function be included or not?}
 
 \item{resolve}{If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.}
 

@@ -38,3 +38,4 @@ requirements are signaled \emph{in the order as they were captured}.
 Conditions are signaled by
 \code{\link[base:conditions]{signalCondition}()}.
 }
+\keyword{internal}

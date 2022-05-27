@@ -10,7 +10,7 @@
 %\VignetteTangle{FALSE}
 --------------------------------------------------------------------"%>
 <%
-library("R.utils")
+library(R.utils)
 `%<-%` <- future::`%<-%`
 options("withCapture/newline"=FALSE)
 %>
@@ -19,8 +19,8 @@ options("withCapture/newline"=FALSE)
 
 Futures can be nested in R such that one future creates another set of futures and so on.  This may, for instance, occur within nested for loops, e.g.
 ```r
-library("future")
-library("listenv")
+library(future)
+library(listenv)
 x <- listenv()
 for (ii in 1:3) {
   x[[ii]] %<-% {
@@ -44,8 +44,8 @@ Consider a high-throughput sequencing (HT-Seq) project with 50 human DNA samples
 
 Here is the layout of what such an analysis could look like in R using futures.
 ```r
-library("future")
-library("listenv")
+library(future)
+library(listenv)
 htseq_align <- function(fq, chr) { chr }
 
 fqs <- dir(pattern = "[.]fastq$")
@@ -120,10 +120,15 @@ plan(list(tweak(cluster, workers = nodes), multisession))
 _Comment:_ Multisession futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.
 
 One possible downside to the above setup is that we might not utilize all available cores all the time.  This is because the alignment of the shorter chromosomes will finish sooner than the longer ones, which means that we might at the end of each sample have only a few alignment processes running on each machine leaving the remaining cores idle/unused.  An alternative set up is then to use the following setup:
+
 ```r
 nodes <- rep(c("n1", "n2", "n3"), each = 8)
-plan(list(tweak(cluster, workers = nodes), multisession))
+plan(list(
+  tweak(cluster, workers = nodes),
+  tweak(multisession, workers = 2)
+))
 ```
+
 This will cause up to 24 (= 3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
 
@@ -134,15 +139,17 @@ Imagine we have access to a remote compute cluster, with login node `remote.serv
 With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes.  Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.
 
 ```r
-library("future")
-library("listenv")
+library(future)
+library(listenv)
 
-## Set up access to remote login node
-login <- tweak(remote, workers = "remote.server.org")
+## Set up access to remote login node (must have Rscript)
+login <- tweak(cluster, workers = "remote.server.org", persistent = TRUE)
 plan(login)
 
 ## Set up cluster nodes on login node
-nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) }
+nodes %<-% { .keepme <- parallelly::makeClusterPSOCK(c("n1", "n2", "n3")) }
+print(nodes)
+## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'
 
 ## Specify future topology
 ## login node -> { cluster nodes } -> { multiple cores }
@@ -237,5 +244,4 @@ and `n3` will respect what `availableCores()` returns.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
-[globals]: https://cran.r-project.org/package=globals
 [Futures in R: Common issues with solutions]: future-issues.html

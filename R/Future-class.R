@@ -19,15 +19,28 @@
 #' and re-outputted when `value()` is called.
 #' If FALSE, any output is silenced (by sinking it to the null device as
 #' it is outputted).
-#' If NA (not recommended), output is _not_ intercepted.
+#' Using `stdout = structure(TRUE, drop = TRUE)` causes the captured
+#' standard output to be dropped from the future object as soon as it has
+#' been relayed. This can help decrease the overall memory consumed by
+#' captured output across futures.
+#' Using `stdout = NA` (not recommended) avoids intercepting the standard
+#' output; behavior of such unhandled standard output depends on the future
+#  backend and the environment from which R runs.
 #' 
 #' @param conditions A character string of conditions classes to be captured
-#' and relayed.  The default is to relay messages and warnings.
-#' To not intercept any types of conditions, use `conditions = NULL`.
+#' and relayed.  The default is to relay all conditions, including messages
+#' and warnings.  To drop all conditions, use `conditions = character(0)`.
+#' Errors are always relayed.
 #' Attribute `exclude` can be used to ignore specific classes, e.g.
 #' `conditions = structure("condition", exclude = "message")` will capture
 #' all `condition` classes except those that inherits from the `message` class.
-#' Errors are always relayed.
+#' Using `conditions = structure(..., drop = TRUE)` causes any captured
+#' conditions to be dropped from the future object as soon as it has
+#' been relayed, e.g. by `value(f)`. This can help decrease the overall
+#' memory consumed by captured conditions across futures.
+#' Using `conditions = NULL` (not recommended) avoids intercepting conditions,
+#' except from errors; behavior of such unhandled conditions depends on the
+#' future backend and the environment from which R runs.
 #' 
 #' @param globals (optional) a logical, a character vector, or a named list
 #' to control how globals are handled.
@@ -74,7 +87,8 @@
 #'
 #' @param \dots Additional named elements of the future.
 #' 
-#' @return An object of class `Future`.
+#' @return
+#' `Future()` returns an object of class `Future`.
 #'
 #' @details
 #' A Future object is itself an \link{environment}.
@@ -128,6 +142,10 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   args <- list(...)
 
   if (!local && !isTRUE(args[["persistent"]])) {
+    ## Note, this warning will be muffled for UniprocessFuture:s when R option
+    ## 'nwarnings' is reset at the end of evaluating the future expression,
+    ## e.g. local({ warning("boom"); options(nwarnings = 50L) }).
+    ## /HB 2022-04-27
     .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
   }
 

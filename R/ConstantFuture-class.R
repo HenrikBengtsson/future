@@ -5,7 +5,8 @@
 #'
 #' @inheritParams Future-class
 #' 
-#' @return An object of class `ConstantFuture`.
+#' @return
+#' `ConstantFuture()` returns an object of class `ConstantFuture`.
 #'
 #' @export
 #' @name ConstantFuture-class

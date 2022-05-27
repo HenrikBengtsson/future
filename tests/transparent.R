@@ -3,6 +3,14 @@ library("listenv")
 
 message("*** transparent() ...")
 
+message("- transparent() is defunct")
+res <- tryCatch(plan(transparent), error = identity)
+stopifnot(inherits(res, "error"))  ## defunctError in R (>= 4.0.0)
+
+
+message("- transparent() legacy behavior")
+options(future.deprecated.defunct = NULL)
+
 ## No global variables
 f <- try(transparent({
   42L

@@ -25,10 +25,10 @@ for (strategy in strategies) {
   v <- value(f)
   stopifnot(
     getOption("digits") == 6L,
-    is.null(getOption("abc")),
-    identical(options(), old_options),
-    identical(Sys.getenv("R_DEFAULT_INTERNET_TIMEOUT"), "300"),
-    is.na(Sys.getenv("ABC", NA_character_))
+    #DISABLED# is.null(getOption("abc")),
+    identical(options()[names(old_options)], old_options),
+    identical(Sys.getenv("R_DEFAULT_INTERNET_TIMEOUT"), "300")
+    #DISABLED# is.na(Sys.getenv("ABC", NA_character_))
   )
   if (.Platform$OS.type == "windows") {
     ## Drop empty environment variables, because they are not supported by
@@ -36,9 +36,9 @@ for (strategy in strategies) {
     old_envvars <- old_envvars[nzchar(old_envvars)]
     envvars <- Sys.getenv()
     envvars <- envvars[nzchar(envvars)]
-    stopifnot(identical(envvars, old_envvars))
+    stopifnot(identical(envvars[names(old_envvars)], old_envvars))
   } else {
-    stopifnot(identical(Sys.getenv(), old_envvars))
+    stopifnot(identical(Sys.getenv()[names(old_envvars)], old_envvars))
   }
 
   message(sprintf("- plan('%s') ... DONE", strategy))

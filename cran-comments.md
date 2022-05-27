@@ -1,8 +1,17 @@
-# CRAN submission future 1.25.0
+# CRAN submission future 1.26.1
 
-on 2022-04-23
+on 2022-05-27
 
-I've verified this submission has no negative impact on any of the 234 reverse package dependencies available on CRAN (n=219) and Bioconductor (n=15).
+Resubmitting after CRAN incoming checks on MS Windows and R-devel detected issues with "detritus in the temp directory", which now have been fixed and verified using win-builder "devel".
+
+Thank you
+
+
+# CRAN submission future 1.26.0
+
+on 2022-05-26
+
+I've verified this submission has no negative impact on any of the 239 reverse package dependencies available on CRAN (n=224) and Bioconductor (n=15).
 
 Thanks in advance
 
@@ -19,7 +28,7 @@ The package has been verified using `R CMD check --as-cran` on:
 | 3.5.x         | L      |          |                 |
 | 4.1.x         | L      |          |                 |
 | 4.2.x         | L M W  | L M M1 W | M1 W            |
-| devel         |   M W  | L        |    W            |
+| devel         | L M W  | L        |    w            |
 
 *Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows*
 
@@ -37,64 +46,57 @@ print(res)
 gives
 
 ```
+── future 1.26.0: OK
 
-── future 1.24.0-9006: OK
-
-  Build ID:   future_1.24.0-9006.tar.gz-4c1af0ac41c146eeae99a97a991cd31c
+  Build ID:   future_1.26.0.tar.gz-d7f11857c8ba4249bd7fcd69827bd36b
   Platform:   Debian Linux, R-devel, clang, ISO-8859-15 locale
-  Submitted:  21m 47.4s ago
-  Build time: 9m 9.7s
+  Submitted:  9m 43.1s ago
+  Build time: 9m 37.3s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.24.0-9006: OK
+── future 1.26.0: OK
 
-  Build ID:   future_1.24.0-9006.tar.gz-caaeb8511b1244ef8e271382345b281b
+  Build ID:   future_1.26.0.tar.gz-00987d6119474fd7b2eb5849dde7d530
   Platform:   Debian Linux, R-patched, GCC
-  Submitted:  21m 47.4s ago
-  Build time: 7m 55.9s
+  Submitted:  9m 43.1s ago
+  Build time: 8m 16.8s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.24.0-9006: OK
+── future 1.26.0: OK
 
-  Build ID:   future_1.24.0-9006.tar.gz-03994f2272224ed3a57ccc8a89250821
+  Build ID:   future_1.26.0.tar.gz-24da19e9353c4e78a4ac42f6df973218
   Platform:   CentOS 8, stock R from EPEL
-  Submitted:  21m 47.4s ago
-  Build time: 6m 50.6s
+  Submitted:  9m 43.1s ago
+  Build time: 7m 9s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.24.0-9006: OK
+── future 1.26.0: OK
 
-  Build ID:   future_1.24.0-9006.tar.gz-8746881d63e642bfa8e5a07203c5a7bb
+  Build ID:   future_1.26.0.tar.gz-21be4ce282cf4bd6900f9af18365ac92
   Platform:   macOS 10.13.6 High Sierra, R-release, CRAN's setup
-  Submitted:  21m 47.4s ago
-  Build time: 5m 23.5s
+  Submitted:  9m 43.1s ago
+  Build time: 5m 31.2s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.24.0-9006: OK
+── future 1.26.0: OK
 
-  Build ID:   future_1.24.0-9006.tar.gz-959cae13372b434e85bab3f99ba5c02c
+  Build ID:   future_1.26.0.tar.gz-63db224e0ed2488f96aefec3642ab087
   Platform:   Apple Silicon (M1), macOS 11.6 Big Sur, R-release
-  Submitted:  21m 47.4s ago
-  Build time: 3m 14.8s
+  Submitted:  9m 43.1s ago
+  Build time: 3m 8.8s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.24.0-9006: ERROR
+── future 1.26.0: OK
 
-  Build ID:   future_1.24.0-9006.tar.gz-29a4c8c82979407d87f0599ef4f38b81
+  Build ID:   future_1.26.0.tar.gz-0141db38c07444e7a1360316763a7777
   Platform:   Windows Server 2008 R2 SP1, R-release, 32/64 bit
-  Submitted:  21m 47.4s ago
-  Build time: 1m 19.9s
+  Submitted:  9m 43.1s ago
+  Build time: 7m 11.1s
 
-❯ checking package dependencies ... ERROR
-  Package required but not available: 'parallelly'
-  
-  See section 'The DESCRIPTION file' in the 'Writing R Extensions'
-  manual.
-
-1 error ✖ | 0 warnings ✔ | 0 notes ✔
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```

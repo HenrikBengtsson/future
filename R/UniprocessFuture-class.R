@@ -4,11 +4,8 @@
 #' 
 #' @param \dots Additional named elements passed to [Future()].
 #'
-#' @return An object of class `UniprocessFuture`.
-#'
-#' @seealso
-#' To evaluate an expression using "uniprocess future", see functions
-#' [uniprocess()].
+#' @return
+#' `UniprocessFuture()` returns an object of class `UniprocessFuture`.
 #'
 #' @export
 #' @name UniprocessFuture-class
@@ -72,13 +69,19 @@ run.UniprocessFuture <- function(future, ...) {
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
 
+  ## WORKAROUND: Ditto warning by Future() is muffled for UniprocessFuture.
+  ## /HB 2022-04-27
+  if (!future$local) {
+    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
+  }
+
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
   signalImmediateConditions(future)
 
   ## Signal conditions early, iff specified for the given future
   signalEarly(future, collect = FALSE)
-  
+
   invisible(future)
 }
 
@@ -151,6 +154,14 @@ function(future, immediateConditions = TRUE, exit = NULL, ...) {
 }
 })
 
+
+#' @return
+#' `SequentialFuture()` returns an object of class `SequentialProcess`,
+#' which inherits from `UniprocessFuture`.
+#'
+#' @section Usage:
+#' To use 'sequential' futures, use `plan(sequential)`, cf. [sequential].
+#'
 #' @rdname UniprocessFuture-class
 #' @export
 SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {

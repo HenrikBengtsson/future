@@ -21,7 +21,8 @@
 #' @inheritParams Future-class
 #' @inheritParams future
 #'
-#' @return A \link{MulticoreFuture}
+#' @return
+#' A \link{MulticoreFuture}.
 #' If `workers == 1`, then all processing using done in the
 #' current/main \R session and we therefore fall back to using
 #' an sequential future.  This is also the case whenever multicore
@@ -29,26 +30,34 @@
 #'
 #' @example incl/multicore.R
 #'
-#' @details
-#' For the total number of cores available including the current/main
-#' \R process, see [parallelly::availableCores()].
-#'
+#' @section Support for forked ("multicore") processing:
 #' Not all operating systems support process forking and thereby not multicore
 #' futures.  For instance, forking is not supported on Microsoft Windows.
 #' Moreover, process forking may break some R environments such as RStudio.
 #' Because of this, the future package disables process forking also in
-#' such cases.  See [supportsMulticore()] for details.
+#' such cases.  See [parallelly::supportsMulticore()] for details.
 #' Trying to create multicore futures on non-supported systems or when
 #' forking is disabled will result in multicore futures falling back to
-#' becoming [sequential] futures.
+#' becoming [sequential] futures.  If used in RStudio, there will be an
+#' informative warning:
+#'
+#' ```r
+#' > plan(multicore)
+#' Warning message:
+#' In supportsMulticoreAndRStudio(...) :
+#'   [ONE-TIME WARNING] Forked processing ('multicore') is not supported when
+#' running R from RStudio because it is considered unstable. For more details,
+#' how to control forked processing or not, and how to silence this warning in
+#' future R sessions, see ?parallelly::supportsMulticore
+#' ```
 #'
 #' @seealso
 #' For processing in multiple background \R sessions, see
 #' [multisession] futures.
 #'
-#' Use [availableCores()] to see the total number of
+#' Use [parallelly::availableCores()] to see the total number of
 #' cores that are available for the current \R session.
-#' Use \code{\link{availableCores}("multicore") > 1L} to check
+#' Use \code{\link[parallelly:availableCores]{availableCores}("multicore") > 1L} to check
 #' whether multicore futures are supported or not on the current
 #' system.
 #'

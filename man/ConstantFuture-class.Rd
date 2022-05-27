@@ -19,7 +19,7 @@ in the help for \code{\link[=future]{future()}}.}
 identified.}
 }
 \value{
-An object of class \code{ConstantFuture}.
+\code{ConstantFuture()} returns an object of class \code{ConstantFuture}.
 }
 \description{
 A constant future is a future whose expression is a constant

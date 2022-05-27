@@ -66,9 +66,9 @@ do.call("file_ext", list("foo.txt"))
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
 It may also become a problem with futures evaluated with lazy evaluation if the intended function is redefined after the future is resolved.  For example,
 ```r
-> library("future")
-> library("listenv")
-> library("tools")
+> library(future)
+> library(listenv)
+> library(tools)
 > plan(sequential)
 > pathnames <- c("foo.txt", "bar.png", "yoo.md")
 > res <- listenv()
@@ -97,7 +97,7 @@ The base R function `get()` can be used to get the value of a object by its name
 
 If we attempt to call `my_sum()` via a future, we will get an error (if the future is resolved in an external R process);
 ```r
-> library("future")
+> library(future)
 > plan(multisession)
 > f <- future(my_sum("a"))
 > y <- value(f)
@@ -162,7 +162,7 @@ This will in turn allow us to perform the same calculations without having to us
 The future framework will fail to identify globals that are declared via character strings.  The above section gives an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the glue package to generate strings dynamically, e.g.
 
 ```r
-> library("glue")
+> library(glue)
 > a <- 42
 > s <- glue("The value of a is {a}.")
 > s
@@ -172,8 +172,8 @@ The value of a is 42.
 Attempt to perform the same via a future that is resolved in another R session will produce an "object not found" error;
 
 ```r
-> library("glue")
-> library("future")
+> library(glue)
+> library(future)
 > plan(multisession)
 > a <- 42
 > s %<-% glue("The value of a is {a}.")
@@ -203,10 +203,10 @@ The value of a is 42.
 
 Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
 ```r
-> library("future")
+> library(future)
 > plan(multisession)
 
-> library("data.table")
+> library(data.table)
 > DT <- data.table(a = LETTERS[1:3], b = 1:3)
 > y %<-% DT[, sum(b)]
 > y
@@ -227,14 +227,16 @@ or equivalently
 [1] 6
 ```
 
+Note, do _not_ use `library()` or `loadNamespace()` to resolve these problems. It is always better to use the above `packages` approach.
+
 
 ## Non-exportable objects
 
 Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the xml2 package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
 ```r
-> library("future")
+> library(future)
 > plan(multisession)
-> library("xml2")
+> library(xml2)
 > xml <- read_xml("<body></body>")
 > f <- future(xml_children(xml))
 > value(f)
@@ -257,7 +259,7 @@ For additional details on non-exportable objects and examples of other R package
 
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
 ```r
-> library("future")
+> library(future)
 > plan(multisession)
 > f1 <- future({ Sys.getpid() })
 > f2 <- future({ value(f1) })
@@ -297,7 +299,7 @@ The reason that this approach works out of the box is because in the second futu
 
 However, there are cases where future assignments can be passed via global variables without being resolved.  This can happen if the future assignment is done to an element of an environment (including list environments).  For instance,
 ```r
-> library("listenv")
+> library(listenv)
 > x <- listenv()
 > x$a %<-% { Sys.getpid() }
 > x$b %<-% { x$a }
@@ -351,8 +353,8 @@ Importantly, we must not use just `warning(e)` or `message(e)`, although it appe
 
 Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
 ```r
-> library("future")
-> library("igraph")
+> library(future)
+> library(igraph)
 
 Attaching package: 'igraph'
 
@@ -380,8 +382,8 @@ Here we get an error because `%<-%` is from igraph and not the future assignment
 
 To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.
 ```r
-> library("igraph")
-> library("future")
+> library(igraph)
+> library(future)
 
 Attaching package: 'future'
 
@@ -397,7 +399,7 @@ The following objects are masked from 'package:igraph':
 An alternative is to detach the future package and re-attach it, which will achieve the same thing:
 ```r
 > detach("package:future")
-> library("future")
+> library(future)
 ```
 
 Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.

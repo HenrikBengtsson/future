@@ -33,7 +33,8 @@
 #' will have no effect._
 #' This is passed down as-is to [parallelly::makeClusterPSOCK()].
 #'
-#' @return A \link{MultisessionFuture}.
+#' @return
+#' A \link{MultisessionFuture}.
 #' If `workers == 1`, then all processing using done in the
 #' current/main \R session and we therefore fall back to using
 #' a lazy future.

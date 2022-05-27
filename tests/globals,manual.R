@@ -1,12 +1,6 @@
 source("incl/start.R")
 options(future.debug=FALSE)
 
-## https://github.com/HenrikBengtsson/future/issues/515
-skip_bug_515 <- function(strategy, exclude = getOption("future.assign_globals.exclude", c("namespace"))) {
-  if ("namespace" %in% exclude) return(TRUE)
-  strategy %in% c("sequential", "multicore")
-}
-
 message("*** getGlobalsAndPackages() ...")
 
 FutureGlobals <- future:::FutureGlobals
@@ -53,71 +47,69 @@ for (strategy in supportedStrategies()) {
 
   message("- Globals - automatic ...")
 
-  if (!skip_bug_515(strategy)) {
-    attachLocally(globals)
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, globals = TRUE)
-    print(f)
-    rm(list = names(globals))
-    y <- value(f)
-    print(y)
-    stopifnot(all.equal(y, v0))
+  attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, globals = TRUE)
+  print(f)
+  rm(list = names(globals))
+  y <- value(f)
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  f <- futureAssign("y", {
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, globals = TRUE)
+  print(f)
+  rm(list = names(globals))
+  z <- value(f)
+  print(z)
+  stopifnot(all.equal(z, y), all.equal(y, v0))
   
-    attachLocally(globals)
-    f <- futureAssign("y", {
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, globals = TRUE)
-    print(f)
-    rm(list = names(globals))
-    z <- value(f)
-    print(z)
-    stopifnot(all.equal(z, y), all.equal(y, v0))
-    
-    attachLocally(globals)
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %globals% TRUE
-    rm(list = names(globals))
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    attachLocally(globals)
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = TRUE)
-    print(f)
-    rm(list = names(globals))
-    y <- value(f)
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    attachLocally(globals)
-    f <- futureAssign("y", {
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = TRUE)
-    print(f)
-    rm(list = names(globals))
-    z <- value(f)
-    print(z)
-    stopifnot(all.equal(z, y), all.equal(y, v0))
-  
-    ## Same with lazy evaluation
-    attachLocally(globals)
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %lazy% TRUE %globals% TRUE
-    rm(list = names(globals))
-    print(y)
-    stopifnot(all.equal(y, v0))
-  } ## if (!skip_bug_515(strategy))
-  
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %globals% TRUE
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = TRUE)
+  print(f)
+  rm(list = names(globals))
+  y <- value(f)
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  f <- futureAssign("y", {
+    x <- 1:10
+    sumtwo(a + b * x)
+        }, lazy = TRUE, globals = TRUE)
+  print(f)
+  rm(list = names(globals))
+  z <- value(f)
+  print(z)
+  stopifnot(all.equal(z, y), all.equal(y, v0))
+
+  ## Same with lazy evaluation
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% TRUE
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
   ## No need to search for globals
   y %<-% { 1 } %globals% FALSE
   print(y)
@@ -146,120 +138,116 @@ for (strategy in supportedStrategies()) {
   ## Make sure globals do not exist
   rm(list = names(globals))
   
-  if (!skip_bug_515(strategy)) {
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, globals = globals)
-    print(f)
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = globals)
-    print(f)
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = structure(FALSE, add = globals))
-    print(f)
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %globals% globals
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %lazy% TRUE %globals% globals
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %lazy% TRUE %globals% structure(FALSE, add = globals)
-    print(y)
-    stopifnot(all.equal(y, v0))
-  } ## if (!skip_bug_515(strategy))
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, globals = globals)
+  print(f)
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = globals)
+  print(f)
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = globals))
+  print(f)
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %globals% globals
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% globals
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = globals)
+  print(y)
+  stopifnot(all.equal(y, v0))
 
 
   message("- Globals manually specified by their names ...")
   
-  if (!skip_bug_515(strategy)) {
-    attachLocally(globals)
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, globals = c("a", "b", "sumtwo"))
-    print(f)
-    rm(list = names(globals))
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    attachLocally(globals)
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = c("a", "b", "sumtwo"))
-    print(f)
-    rm(list = names(globals))
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    attachLocally(globals)
-    f <- future({
-      x <- 1:10
-      sumtwo(a + b * x)
-    }, lazy = TRUE, globals = structure(FALSE, add = c("a", "b", "sumtwo")))
-    print(f)
-    rm(list = names(globals))
-    v <- value(f)
-    print(v)
-    stopifnot(all.equal(v, v0))
-  
-    attachLocally(globals)
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %globals% c("a", "b", "sumtwo")
-    rm(list = names(globals))
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    attachLocally(globals)
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %lazy% TRUE %globals% c("a", "b", "sumtwo")
-    rm(list = names(globals))
-    print(y)
-    stopifnot(all.equal(y, v0))
-  
-    attachLocally(globals)
-    y %<-% {
-      x <- 1:10
-      sumtwo(a + b * x)
-    } %lazy% TRUE %globals% structure(FALSE, add = c("a", "b", "sumtwo"))
-    rm(list = names(globals))
-    print(y)
-    stopifnot(all.equal(y, v0))
-  } ## if (!skip_bug_515(strategy))
+  attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, globals = c("a", "b", "sumtwo"))
+  print(f)
+  rm(list = names(globals))
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = c("a", "b", "sumtwo"))
+  print(f)
+  rm(list = names(globals))
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  attachLocally(globals)
+  f <- future({
+    x <- 1:10
+    sumtwo(a + b * x)
+  }, lazy = TRUE, globals = structure(FALSE, add = c("a", "b", "sumtwo")))
+  print(f)
+  rm(list = names(globals))
+  v <- value(f)
+  print(v)
+  stopifnot(all.equal(v, v0))
+
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %globals% c("a", "b", "sumtwo")
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% c("a", "b", "sumtwo")
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
+
+  attachLocally(globals)
+  y %<-% {
+    x <- 1:10
+    sumtwo(a + b * x)
+  } %lazy% TRUE %globals% structure(FALSE, add = c("a", "b", "sumtwo"))
+  rm(list = names(globals))
+  print(y)
+  stopifnot(all.equal(y, v0))
 
   
   message("- Globals manually specified as named list - also with '...' ...")

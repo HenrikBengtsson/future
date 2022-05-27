@@ -66,13 +66,17 @@ evaluating the future.}
 \item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
 \value{
-An object of class \code{UniprocessFuture}.
+\code{UniprocessFuture()} returns an object of class \code{UniprocessFuture}.
+
+\code{SequentialFuture()} returns an object of class \code{SequentialProcess},
+which inherits from \code{UniprocessFuture}.
 }
 \description{
 An uniprocess future is a future whose value will be resolved synchronously in the current process
 }
-\seealso{
-To evaluate an expression using "uniprocess future", see functions
-\code{\link[=uniprocess]{uniprocess()}}.
+\section{Usage}{
+
+To use 'sequential' futures, use \code{plan(sequential)}, cf. \link{sequential}.
 }
+
 \keyword{internal}

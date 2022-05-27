@@ -3,9 +3,9 @@
 ## Setup
 
 ```r
-> options(Ncpus = 6L)
-> install.packages("remotes")
-> remotes::install_github("r-lib/revdepcheck")
+options(Ncpus = 6L)
+install.packages("remotes")
+remotes::install_github("r-lib/revdepcheck")
 ```
 
 ```sh
@@ -30,7 +30,7 @@ $ revdep/run.R --preinstall-children
 
 ## Testing
 
-### Package that requires Internet
+### Packages that require Internet
 
 The following packages will fail when tested in 'offline' mode because
 their examples or tests require a working internet connection:
@@ -43,3 +43,16 @@ their examples or tests require a working internet connection:
 * iml
 * tableschema.r
 * tsfeatures
+
+
+### Packages that fail if tested in parallel
+
+The following packages will fail when tested in parallel, because they
+compete with themselves for resources.  For example, several Bioconductor
+package assumes their BiocFileCache folder is empty, or no other R
+processes are writing to it at the same time.
+
+* ...
+
+
+

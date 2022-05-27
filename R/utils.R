@@ -174,18 +174,26 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
 
     if (exclude_namespace) {
       e <- environment(global)
-      if (!inherits_from_namespace(e)) {
+      if (!is.null(e) && !inherits_from_namespace(e)) {
         w <- where[[name]]
-        ## FIXME: Can we remove this?
-        ## Here I'm just being overly conservative ## /HB 2021-06-15
+
+        ## If global has 'where' with emptyenv() it means it was
+        ## specified via 'globals' argument. For this closure
+        ## (function or formula) to find its free variables,
+        ## it's environment needs to be reassigned to the 'envir'
+        ## environment.
+        ## Related to:
+        ## * https://github.com/HenrikBengtsson/future/issues/475
+        ## * https://github.com/HenrikBengtsson/future/issues/515
+        ## * https://github.com/HenrikBengtsson/future/issues/608
         if (identical(w, emptyenv())) {
           environment(global) <- envir
-          if (debug) {
-            mdebugf("- reassign environment for %s", sQuote(name))
-            where[[name]] <- envir
-            globals[[name]] <- global
-          }
+          if (debug) mdebugf("- reassign environment for %s", sQuote(name))
+        } else if (identical(w, globalenv()) && identical(environment(global), globalenv())) {
+          environment(global) <- envir
+          if (debug) mdebugf("- reassign environment for %s", sQuote(name))
         }
+
       }
     }
     
@@ -194,11 +202,7 @@ assign_globals <- function(envir, globals, exclude = getOption("future.assign_gl
   }
 
 
-  if (debug) {
-    attr(globals, "where") <- where
-    mstr(globals)
-    mdebug("assign_globals() ... done")
-  }
+  if (debug) mdebug("assign_globals() ... done")
 
   invisible(envir)
 }

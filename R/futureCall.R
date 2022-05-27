@@ -93,7 +93,7 @@ futureCall <- function(FUN, args = list(), envir = parent.frame(), lazy = FALSE,
     mstr(globals)
   }
 
-  f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, ...)
+  f <- future(expr, substitute = FALSE, envir = envir, lazy = lazy, seed = seed, globals = globals, packages = packages, stdout = stdout, conditions = conditions, earlySignal = earlySignal, label = label, gc = gc, ...)
 
   if (debug) mdebug("futureCall() ... DONE")
   

@@ -34,7 +34,8 @@
 #'
 #' @param \dots Additional named elements passed to [ClusterFuture()].
 #'
-#' @return A \link{ClusterFuture}.
+#' @return
+#' A \link{ClusterFuture}.
 #'
 #' @example incl/cluster.R
 #'

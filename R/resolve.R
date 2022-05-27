@@ -44,7 +44,7 @@
 #' `resolve(futureOf(x))`.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = 1.0, value = result, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x

@@ -4,11 +4,13 @@
 \alias{futureSessionInfo}
 \title{Get future-specific session information and validate current backend}
 \usage{
-futureSessionInfo(test = TRUE)
+futureSessionInfo(test = TRUE, anonymize = TRUE)
 }
 \arguments{
 \item{test}{If TRUE, one or more futures are created to query workers
 and validate their information.}
+
+\item{anonymize}{If TRUE, user names and host names are anonymized.}
 }
 \value{
 Nothing.

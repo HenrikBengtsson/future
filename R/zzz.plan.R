@@ -161,68 +161,35 @@ plan <- local({
     FALSE
   }
 
-  warn_about_multiprocess <- local({
-    .warn <- TRUE
-
-    function(stack) {
-      if (!.warn) return()
-
-      ## Is deprecated 'multiprocess' used?    
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "multiprocess")) {
-          ignore <- getOption("future.deprecated.ignore")
-          if (!is.element("multiprocess", ignore)) {
-            ## Warn only once
-            .warn <<- FALSE
-            .Deprecated(msg = sprintf("Strategy 'multiprocess' is deprecated in future (>= 1.20.0). Instead, explicitly specify either 'multisession' or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"), package = .packageName)
+  warn_about_deprecated <- function(stack, strategy, fmtstr) {
+    for (kk in seq_along(stack)) {
+      if (evaluator_uses(stack[[kk]], strategy)) {
+        ignore <- getOption("future.deprecated.ignore")
+        if (!is.element(strategy, ignore)) {
+          if (is.element(strategy, getOption("future.deprecated.defunct"))) {
+            msg <- sprintf(fmtstr, strategy, "defunct")
+            dfcn <- .Defunct
+          } else {
+            msg <- sprintf(fmtstr, strategy, "deprecated")
+            dfcn <- .Deprecated
           }
-
-          break
+          dfcn(msg = msg, package = .packageName)
         }
       }
     }
-  })
+  }
 
-  warn_about_remote <- local({
-    .warn <- TRUE
+  warn_about_multiprocess <- function(stack) {
+    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"))
+  }
 
-    function(stack) {
-      if (!.warn) return()
+  warn_about_remote <- function(stack) {
+    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. Instead, use 'cluster'.")
+  }
 
-      ## Is 'remote' used?
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "remote")) {
-          ignore <- getOption("future.deprecated.ignore")
-          if (!is.element("remote", ignore)) {
-            ## Warn only once
-            .warn <<- FALSE
-            .Deprecated(msg = "Strategy 'remote' is deprecated in future (>= 1.24.0). Instead, use 'cluster'.", package = .packageName)
-          }
-        }
-      }
-    }
-  })
-
-  warn_about_transparent <- local({
-    .warn <- TRUE
-
-    function(stack) {
-      if (!.warn) return()
-
-      ## Is 'transparent' used?
-      for (kk in seq_along(stack)) {
-        if (evaluator_uses(stack[[kk]], "transparent")) {
-          ignore <- getOption("future.deprecated.ignore")
-          if (!is.element("remote", ignore)) {
-            ## Warn only once
-            .warn <<- FALSE
-            .Deprecated(msg = "Strategy 'transparent' is deprecated in future (>= 1.24.0). It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE). Also, as a friendly reminder, the 'transparent' future strategy should only be used for troubleshooting purposes and never be used in production.", package = .packageName)
-          }
-          break
-        }
-      }
-    }
-  })
+  warn_about_transparent <- function(stack) {
+    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE).")
+  }
 
   warn_about_multicore <- local({
     .warn <- TRUE

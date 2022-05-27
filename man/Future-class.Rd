@@ -35,15 +35,27 @@ identified.}
 and re-outputted when \code{value()} is called.
 If FALSE, any output is silenced (by sinking it to the null device as
 it is outputted).
-If NA (not recommended), output is \emph{not} intercepted.}
+Using \code{stdout = structure(TRUE, drop = TRUE)} causes the captured
+standard output to be dropped from the future object as soon as it has
+been relayed. This can help decrease the overall memory consumed by
+captured output across futures.
+Using \code{stdout = NA} (not recommended) avoids intercepting the standard
+output; behavior of such unhandled standard output depends on the future}
 
 \item{conditions}{A character string of conditions classes to be captured
-and relayed.  The default is to relay messages and warnings.
-To not intercept any types of conditions, use \code{conditions = NULL}.
+and relayed.  The default is to relay all conditions, including messages
+and warnings.  To drop all conditions, use \code{conditions = character(0)}.
+Errors are always relayed.
 Attribute \code{exclude} can be used to ignore specific classes, e.g.
 \code{conditions = structure("condition", exclude = "message")} will capture
 all \code{condition} classes except those that inherits from the \code{message} class.
-Errors are always relayed.}
+Using \code{conditions = structure(..., drop = TRUE)} causes any captured
+conditions to be dropped from the future object as soon as it has
+been relayed, e.g. by \code{value(f)}. This can help decrease the overall
+memory consumed by captured conditions across futures.
+Using \code{conditions = NULL} (not recommended) avoids intercepting conditions,
+except from errors; behavior of such unhandled conditions depends on the
+future backend and the environment from which R runs.}
 
 \item{globals}{(optional) a logical, a character vector, or a named list
 to control how globals are handled.
@@ -91,7 +103,7 @@ as possible or not.}
 \item{\dots}{Additional named elements of the future.}
 }
 \value{
-An object of class \code{Future}.
+\code{Future()} returns an object of class \code{Future}.
 }
 \description{
 A \emph{future} is an abstraction for a \emph{value} that may

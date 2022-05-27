@@ -21,7 +21,7 @@ remote(
 a character vector of host names, a positive numeric scalar,
 or a function.
 If a character vector or a numeric scalar, a \code{cluster} object
-is created using \code{\link{makeClusterPSOCK}(workers)}.
+is created using \code{\link[parallelly:makeClusterPSOCK]{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
@@ -56,7 +56,9 @@ remotely in another process}.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
+typical usages are:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures on remote machine 'server.example.org', and
 # any nested ones sequentially (default) on that remote machine
 plan(remote, workers = "server.example.org")
 
@@ -87,8 +89,13 @@ more convenient default argument values when connecting to remote machines.  #' 
 \examples{
 \dontrun{\donttest{
 
+## DEPRECATED: 'remote' is deprecated in favor of 'cluster' with
+## persistent = TRUE.  Note however, that argument 'persistent'
+## will eventually be deprecated too when there is an alternative
+## for users and developers to handle "sticky" globals
+
 ## Use a remote machine
-plan(remote, workers = "remote.server.org")
+plan(cluster, workers = "remote.server.org", persistent = TRUE)
 
 ## Evaluate expression remotely
 host \%<-\% { Sys.info()[["nodename"]] }
@@ -97,18 +104,17 @@ host
 
 
 ## The following setups are equivalent:
-plan(remote, workers = "localhost")
+plan(remote, workers = "localhost")  ## DEPRECATED in future (>= 1.24.0)
 plan(cluster, workers = "localhost", persistent = TRUE)
 plan(cluster, workers = 1, persistent = TRUE)
-plan(multisession, workers = 1, persistent = TRUE)
 
 ## The following setups are equivalent:
-plan(remote, workers = "remote.server.org")
+plan(remote, workers = "remote.server.org")  ## DEPRECATED in future (>= 1.24.0)
 plan(cluster, workers = "remote.server.org", persistent = TRUE, homogeneous = FALSE)
 
 ## The following setups are equivalent:
 cl <- makeClusterPSOCK("remote.server.org")
-plan(remote, workers = cl)
+plan(remote, workers = cl)  ## DEPRECATED in future (>= 1.24.0)
 plan(cluster, workers = cl, persistent = TRUE)
 
 }}
