@@ -1,7 +1,9 @@
 # Version (development version)
 
- * ...
- 
+## Bug Fixes
+
+ * Some warnings and errors showed the wrong call.
+
 
 # Version 1.26.1 [2022-05-28]
 
