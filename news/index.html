@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
       </span>
     </div>
 
@@ -154,7 +154,14 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.26.1" id="version-1261">Version 1.26.1<a class="anchor" aria-label="anchor" href="#version-1261"></a></h2>
+<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Some warnings and errors showed the wrong call.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.26.1" id="version-1261">Version 1.26.1<small>2022-05-27</small><a class="anchor" aria-label="anchor" href="#version-1261"></a></h2>
 <div class="section level3">
 <h3 id="miscellaneous-1-26-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-26-1"></a></h3>
 <ul><li>TESTS: <code>R CMD check --as-cran</code> on R-devel and MS Windows would trigger a NOTE on “Check: for detritus in the temp directory” and “Found the following files/directories: ‘Rscript1349cb8aeeba0’ …”. There were two package tests that explicitly created PSOCK cluster without stopping them. A third test launched multisession future without resolving it, which prevented the PSOCK worker to terminate. This was not detected in R 4.2.0. It is not a problem on macOS and Linux, because there background workers are automatically terminated when the main R session terminates.</li>

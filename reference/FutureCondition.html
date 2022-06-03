@@ -27,7 +27,7 @@ evaluation of the future."><meta property="og:image" content="https://future.fut
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ evaluation of the future."><meta property="og:image" content="https://future.fut
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>A condition (message, warning, or error) that occurred while orchestrating a future</h1>
-    <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/R/FutureCondition-class.R" class="external-link"><code>R/FutureCondition-class.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/R/FutureCondition-class.R" class="external-link"><code>R/FutureCondition-class.R</code></a>, <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/R/journal.R" class="external-link"><code>R/journal.R</code></a></small>
     <div class="hidden name"><code>FutureCondition.Rd</code></div>
     </div>
 
@@ -186,7 +186,15 @@ class to help distinguish them from conditions that occur due to the
 
 <span class="fu">RngFutureError</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
 
-<span class="fu">UnexpectedFutureResultError</span><span class="op">(</span><span class="va">future</span>, hint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<span class="fu">UnexpectedFutureResultError</span><span class="op">(</span><span class="va">future</span>, hint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+
+<span class="fu">FutureJournalCondition</span><span class="op">(</span>
+  <span class="va">message</span>,
+  <span class="va">journal</span>,
+  call <span class="op">=</span> <span class="cn">NULL</span>,
+  uuid <span class="op">=</span> <span class="va">future</span><span class="op">$</span><span class="va">uuid</span>,
+  future <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
