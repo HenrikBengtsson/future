@@ -68,6 +68,15 @@ if (availableCores() >= 2L) {
   res <- tryCatch(backtrace(f), error = identity)
   print(res)
   stopifnot(inherits(res, "error"))
+  
+  ## If we don't resolve the future, the cluster of workers will not
+  ## be able to shut down naturally. They will eventually time out,
+  ## but that will happen long after 'R CMD check' terminates. Because
+  ## of this, 'R CMD check --as-cran' will report on "detritus in the
+  ## temp directory" when running on MS Windows.  This happens because
+  ## MS Windows doesn't shut down child processes as Linux and macOS
+  ## does when the main R session terminates.
+  resolve(f)
 }
 
 message("*** backtrace( ) - exceptions ... DONE")

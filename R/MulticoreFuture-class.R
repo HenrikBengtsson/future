@@ -3,11 +3,11 @@
 #' @inheritParams MultiprocessFuture-class
 #' @inheritParams Future-class
 #'
-#' @return An object of class `MulticoreFuture`.
+#' @return
+#' `MulticoreFuture()` returns an object of class `MulticoreFuture`.
 #'
-#' @seealso
-#' To evaluate an expression using "multicore future", see function
-#' [multicore()].
+#' @section Usage:
+#' To use 'multicore' futures, use `plan(multicore, ...)`, cf. [multicore].
 #'
 #' @export
 #' @name MulticoreFuture-class

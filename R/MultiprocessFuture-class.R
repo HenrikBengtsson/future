@@ -4,11 +4,8 @@
 #' 
 #' @param \dots Additional named elements passed to [Future()].
 #'
-#' @return An object of class `MultiprocessFuture`.
-#'
-#' @seealso
-#' To evaluate an expression using "multiprocess future", see function
-#' [multiprocess()].
+#' @return
+#' `MultiprocessFuture()` returns an object of class `MultiprocessFuture`.
 #'
 #' @export
 #' @name MultiprocessFuture-class

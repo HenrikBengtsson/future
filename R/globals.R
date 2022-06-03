@@ -1,5 +1,7 @@
 #' Retrieves global variables of an expression and their associated packages 
 #'
+#' @inheritParams globals::globalsOf
+#'
 #' @param expr An \R expression whose globals should be found.
 #' 
 #' @param envir The environment from which globals should be searched.
@@ -7,7 +9,7 @@
 #' @param tweak (optional) A function that takes an expression and returned a modified one.
 #' 
 #' @param globals (optional) a logical, a character vector, a named list, or a \link[globals]{Globals} object.  If TRUE, globals are identified by code inspection based on `expr` and `tweak` searching from environment `envir`.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names `globals` searching from environment `envir`.  If a named list or a Globals object, the globals are used as is.
-#' 
+#'
 #' @param resolve If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.
 #'
 #' @param persistent If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignore, but may also trigger an informative error if option \option{future.globals.onMissing} in `"error"` (should only be used for troubleshooting).
@@ -28,7 +30,7 @@
 #' @export
 #'
 #' @keywords internal
-getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, resolve = getOption("future.globals.resolve", NULL), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
+getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExpression, globals = TRUE, locals = getOption("future.globals.globalsOf.locals", TRUE), resolve = getOption("future.globals.resolve", NULL), persistent = FALSE, maxSize = getOption("future.globals.maxSize", 500 * 1024 ^ 2), ...) {
   if (is.null(resolve)) {
     resolve <- FALSE
   } else {
@@ -101,6 +103,8 @@ getGlobalsAndPackages <- function(expr, envir = parent.frame(), tweak = tweakExp
       globals <- globalsOf(
                    ## Passed to globals::findGlobals()
                    expr, envir = envir, substitute = FALSE, tweak = tweak,
+                   ## Requires globals (>= 0.14.0.9004); ignored otherwise
+                   locals = locals,
                    ## Passed to globals::findGlobals() via '...'
                    dotdotdot = "return",
                    method = globals.method,

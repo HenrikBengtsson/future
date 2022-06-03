@@ -1,5 +1,6 @@
 source("incl/start.R")
 
+options(future.debug = FALSE)
 message("*** futureCall() ...")
 
 message("- futureCall() - sequential + lazy ...")
@@ -46,6 +47,7 @@ for (cores in 1:availCores) {
 
     for (lazy in c(FALSE, TRUE)) {
       for (globals in c(FALSE, TRUE)) {
+        message("- futureCall() #1")
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
@@ -56,13 +58,22 @@ for (cores in 1:availCores) {
           v1 <- value(f)
         }, error = identity)
         stopifnot(!inherits(res1, "FutureError"))
-        if (!inherits(res1, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v1 = v1))
-          stopifnot(all.equal(v1, v0))
+        if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+          if (globals) {
+            stopifnot(all.equal(v1, v0))
+          } else {
+            stopifnot(inherits(res1, "error"))
+          }
         } else {
-          stopifnot(!globals)
+          if (!inherits(res1, "error")) {
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v1 = v1))
+            stopifnot(all.equal(v1, v0))
+          } else {
+            stopifnot(!globals)
+          }
         }
 
+        message("- futureCall() #2")
         a <- 3
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
@@ -73,13 +84,22 @@ for (cores in 1:availCores) {
           v2 <- value(f)
         }, error = identity)
         stopifnot(!inherits(res2, "FutureError"))
-        if (!inherits(res2, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v2 = v2))
-          stopifnot(all.equal(v2, v0))
+        if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+          if (globals) {
+            stopifnot(all.equal(v2, v0))
+          } else {
+            stopifnot(inherits(res2, "error"))
+          }
         } else {
-          stopifnot(!globals)
+          if (!inherits(res2, "error")) {
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v2 = v2))
+            stopifnot(all.equal(v2, v0))
+          } else {
+            stopifnot(!globals)
+          }
         }
         
+        message("- futureCall() #3")
         args <- list(x = 42, y = 12)
         f <- futureCall(function(x, y) a * (x - y), args = args,
                         globals = list(a = 3), lazy = lazy)
@@ -89,14 +109,83 @@ for (cores in 1:availCores) {
           v3 <- value(f)
         }, error = identity)
         stopifnot(!inherits(res3, "FutureError"))
-        if (!inherits(res3, "error")) {
-          str(list(globals = globals, lazy = lazy, v0 = v0, v3 = v3))
-          stopifnot(all.equal(v3, v0))
+        if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+          if (globals) {
+            stopifnot(all.equal(v3, v0))
+          } else {
+            stopifnot(inherits(res3, "error"))
+          }
         } else {
-          stopifnot(!globals)
+          if (!inherits(res3, "error")) {
+            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v3 = v3, res3 = res3))
+            stopifnot(all.equal(v3, v0))
+          } else {
+            stopifnot(!globals)
+          }
         }
 
-        rm(list = c("v1", "v2", "v3"))
+        message("- futureCall() #4")
+        ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
+        local({
+          a <- 2
+          g <- function() a
+          f <- futureCall(g, globals = globals, lazy = lazy)
+          rm(list = "a")
+
+          truth <- 2
+          message("truth: ", truth)
+
+          v4 <- tryCatch(value(f), error = identity)
+          print(v4)
+
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v4 = v4))
+
+          if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+            if (globals) {
+              stopifnot(identical(v4, truth))
+            } else {
+              stopifnot(inherits(v4, "error"))
+            }
+          } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
+            } else {
+              if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
+            }
+          } else {
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
+            } else {
+              if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
+            }
+          }
+        })
+
+        rm(list = c("v1", "v2", "v3", "v4"))
       }
     }
   }

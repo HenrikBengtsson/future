@@ -120,10 +120,15 @@ plan(list(tweak(cluster, workers = nodes), multisession))
 _Comment:_ Multisession futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.
 
 One possible downside to the above setup is that we might not utilize all available cores all the time.  This is because the alignment of the shorter chromosomes will finish sooner than the longer ones, which means that we might at the end of each sample have only a few alignment processes running on each machine leaving the remaining cores idle/unused.  An alternative set up is then to use the following setup:
+
 ```r
 nodes <- rep(c("n1", "n2", "n3"), each = 8)
-plan(list(tweak(cluster, workers = nodes), multisession))
+plan(list(
+  tweak(cluster, workers = nodes),
+  tweak(multisession, workers = 2)
+))
 ```
+
 This will cause up to 24 (= 3*8) samples to be processed in parallel each processing two chromosomes at the same time.
 
 
@@ -137,12 +142,14 @@ With the above setup, we can use nested futures in our local R session to evalua
 library(future)
 library(listenv)
 
-## Set up access to remote login node
-login <- tweak(remote, workers = "remote.server.org")
+## Set up access to remote login node (must have Rscript)
+login <- tweak(cluster, workers = "remote.server.org", persistent = TRUE)
 plan(login)
 
 ## Set up cluster nodes on login node
-nodes %<-% { .keepme <- parallel::makeCluster(c("n1", "n2", "n3")) }
+nodes %<-% { .keepme <- parallelly::makeClusterPSOCK(c("n1", "n2", "n3")) }
+print(nodes)
+## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'
 
 ## Specify future topology
 ## login node -> { cluster nodes } -> { multiple cores }
@@ -237,5 +244,4 @@ and `n3` will respect what `availableCores()` returns.
 
 
 [listenv]: https://cran.r-project.org/package=listenv
-[globals]: https://cran.r-project.org/package=globals
 [Futures in R: Common issues with solutions]: future-issues.html

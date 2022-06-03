@@ -87,7 +87,8 @@
 #'
 #' @param \dots Additional named elements of the future.
 #' 
-#' @return An object of class `Future`.
+#' @return
+#' `Future()` returns an object of class `Future`.
 #'
 #' @details
 #' A Future object is itself an \link{environment}.

@@ -4,9 +4,6 @@
 #'
 #' @return Invisibly a list of all details.
 #'
-#' @details
-#' Note that remote futures use `persistent = TRUE` by default.
-#'
 #' @importFrom utils sessionInfo
 #' @export
 #' @keywords internal

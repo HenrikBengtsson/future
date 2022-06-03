@@ -24,7 +24,7 @@ The function should return a numeric scalar.}
 identified.}
 }
 \value{
-A \link{MulticoreFuture}
+A \link{MulticoreFuture}.
 If \code{workers == 1}, then all processing using done in the
 current/main \R session and we therefore fall back to using
 an sequential future.  This is also the case whenever multicore
@@ -37,26 +37,38 @@ parallel in another process}.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many forked
+typical usages are:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures in parallel on the local machine via as many forked
 # processes as available to the current R process
 plan(multicore)
 
 # Evaluate futures in parallel on the local machine via two forked processes
 plan(multicore, workers = 2)
 }\if{html}{\out{</div>}}
-
-For the total number of cores available including the current/main
-\R process, see \code{\link[parallelly:availableCores]{parallelly::availableCores()}}.
+}
+\section{Support for forked ("multicore") processing}{
 
 Not all operating systems support process forking and thereby not multicore
 futures.  For instance, forking is not supported on Microsoft Windows.
 Moreover, process forking may break some R environments such as RStudio.
 Because of this, the future package disables process forking also in
-such cases.  See \code{\link[=supportsMulticore]{supportsMulticore()}} for details.
+such cases.  See \code{\link[parallelly:supportsMulticore]{parallelly::supportsMulticore()}} for details.
 Trying to create multicore futures on non-supported systems or when
 forking is disabled will result in multicore futures falling back to
-becoming \link{sequential} futures.
+becoming \link{sequential} futures.  If used in RStudio, there will be an
+informative warning:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{> plan(multicore)
+Warning message:
+In supportsMulticoreAndRStudio(...) :
+  [ONE-TIME WARNING] Forked processing ('multicore') is not supported when
+running R from RStudio because it is considered unstable. For more details,
+how to control forked processing or not, and how to silence this warning in
+future R sessions, see ?parallelly::supportsMulticore
+}\if{html}{\out{</div>}}
 }
+
 \examples{
 ## Use multicore futures
 plan(multicore)
@@ -85,9 +97,9 @@ stopifnot(v == 0)
 For processing in multiple background \R sessions, see
 \link{multisession} futures.
 
-Use \code{\link[=availableCores]{availableCores()}} to see the total number of
+Use \code{\link[parallelly:availableCores]{parallelly::availableCores()}} to see the total number of
 cores that are available for the current \R session.
-Use \code{\link{availableCores}("multicore") > 1L} to check
+Use \code{\link[parallelly:availableCores]{availableCores}("multicore") > 1L} to check
 whether multicore futures are supported or not on the current
 system.
 }

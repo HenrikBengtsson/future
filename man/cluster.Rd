@@ -13,7 +13,7 @@ cluster(..., workers = availableWorkers(), envir = parent.frame())
 a character vector of host names, a positive numeric scalar,
 or a function.
 If a character vector or a numeric scalar, a \code{cluster} object
-is created using \code{\link{makeClusterPSOCK}(workers)}.
+is created using \code{\link[parallelly:makeClusterPSOCK]{makeClusterPSOCK}(workers)}.
 If a function, it is called without arguments \emph{when the future
 is created} and its value is used to configure the workers.
 The function should return any of the above types.}
@@ -31,7 +31,9 @@ parallel in another process}.
 }
 \details{
 This function is \emph{not} meant to be called directly.  Instead, the
-typical usages are:\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures via a single background R process on the local machine
+typical usages are:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Evaluate futures via a single background R process on the local machine
 plan(cluster, workers = 1)
 
 # Evaluate futures via two background R processes on the local machine

@@ -455,12 +455,14 @@ stan
 stanfit
 calc
 conditionMessage
-<<<<<<< HEAD
 difftime
 POSIXct
-||||||| a9e107dc
-=======
 setalloccol
 loadNamespace
 unhandled
->>>>>>> develop
+anonymize
+anonymized
+fftempdir
+nopath
+splitted
+aeeba

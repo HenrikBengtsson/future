@@ -10,7 +10,7 @@
 #' a character vector of host names, a positive numeric scalar,
 #' or a function.
 #' If a character vector or a numeric scalar, a `cluster` object
-#' is created using \code{\link{makeClusterPSOCK}(workers)}.
+#' is created using \code{\link[parallelly:makeClusterPSOCK]{makeClusterPSOCK}(workers)}.
 #' If a function, it is called without arguments _when the future
 #' is created_ and its value is used to configure the workers.
 #' The function should return any of the above types.
@@ -18,9 +18,8 @@
 #' @return
 #' `ClusterFuture()` returns an object of class `ClusterFuture`.
 #'
-#' @seealso
-#' To evaluate an expression using "cluster future", see function
-#' [cluster()].
+#' @section Usage:
+#' To use 'cluster' futures, use `plan(cluster, ...)`, cf. [cluster].
 #'
 #' @aliases MultisessionFuture MultisessionFuture-class
 #' @export

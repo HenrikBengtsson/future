@@ -42,7 +42,9 @@ message(" - FIXME")
 f <- future(fcn(), conditions = structure("condition", exclude = "not_me"))
 v <- value(f)
 message("RESULT: ", v)
-## stopifnot(v == "success")
+if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
+  stopifnot(v == "success")
+}
 
 
 message("*** withRestart() and muffling ... DONE")

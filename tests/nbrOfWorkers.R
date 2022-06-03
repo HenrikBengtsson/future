@@ -134,7 +134,7 @@ plan(cluster, workers = workers)
 n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %g", n))
 stopifnot(n == length(workers))
-
+parallel::stopCluster(workers)
 
 message("*** nbrOfWorkers() ... DONE")
 
