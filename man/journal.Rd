@@ -38,7 +38,8 @@ time on the worker. The system clocks on the worker and the calling R
 system may be out of sync.
 }
 \description{
-Gets the logged journal of events for a future
+\emph{WARNING: This function is under development. It can change at any time.
+For now, please, do not depend on this function in a published R package.}
 }
 \section{Enabling and disabling event logging}{
 
