@@ -1,4 +1,4 @@
-#' Gets a journal of events for a future
+#' Gets the logged journal of events for a future
 #'
 #' @param x A [Future] object.
 #'
@@ -9,22 +9,37 @@
 #' @param \ldots Not used.
 #'
 #' @return
-#' A data frame with columns:
+#' A data frame of class `FutureJournal` with columns:
 #'
-#'  1. `step` (character string)
+#'  1. `event` (character string)
 #'  2. `start` (POSIXct)
 #'  3. `at` (difftime)
 #'  4. `duration` (difftime)
 #'  5. `future_label` (character string)
 #'  6. `future_uuid` (character string)
 #'  7. `session_uuid` (character string)
-#' 
+#'
+#' Possible events are:
+#'
+#'  * `create` - the future was created
+#'  * `launch` - the future was launched (aka run)
+#'  * `evaluate` - the future was evaluated
+#'  * `resolved` - the future was queried (may be occur multiple times)
+#'  * `gather` - the results was retrieved
+#'
 #' The data frame is sorted by the `at` time.
-#' Note that the timestamps for the `evaluate` step are based on the local
+#' Note that the timestamps for the `evaluate` event are based on the local
 #' time on the worker. The system clocks on the worker and the calling R
 #' system may be out of sync.
 #'
+#' @section Enabling and disabling event logging
+#' To enable logging of events, set option `future.journal` is TRUE.
+#' To disable, set it to FALSE (default).
+#'
 #' @example incl/journal.R
+#'
+#' @keyword internal
+#' @export
 journal <- function(x, ...) UseMethod("journal")
 
 #' @export
@@ -42,10 +57,10 @@ journal.Future <- function(x, ...) {
   session_uuid <- rep(session_uuid, times = nrow(data))
   
   ## Backward compatibility (until all backends does this)
-  if (!is.element("evaluate", data$step) && !is.null(x$result)) {
+  if (!is.element("evaluate", data$event) && !is.null(x$result)) {
     stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
-      step = "evaluate",
+      event = "evaluate",
       start = x$result$started,
       stop = x$result$finished
     )
@@ -72,12 +87,12 @@ journal.Future <- function(x, ...) {
   ## Append session UUID
   data$session_uuid <- as.factor(session_uuid)
 
-  ## Coerce 'step' to a factor
+  ## Coerce 'event' to a factor
   known_levels <- c("lifespan", "create", "launch", "resolved", "gather", "evaluate")
   extra_levels <- c("attachPackages", "eraseWorker", "exportGlobals", "getWorker")
-  other_levels <- sort(setdiff(data$step, known_levels))
+  other_levels <- sort(setdiff(data$event, known_levels))
   levels <- c(known_levels, other_levels)
-  data$step <- factor(data$step, levels = levels)
+  data$event <- factor(data$event, levels = levels)
 
   ## Sort by relative start time
   if (nrow(data) > 1L) data <- data[order(data$at), ]
@@ -128,38 +143,38 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 }
 
 
-makeFutureJournal <- function(x, step = "create", start = stop, stop = Sys.time()) {
+makeFutureJournal <- function(x, event = "create", start = stop, stop = Sys.time()) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
-    length(step) == 1L, is.character(step),
+    length(event) == 1L, is.character(event),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(step = step, start = start, stop = stop)
+  data <- data.frame(event = event, start = start, stop = stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
 }
 
 
-updateFutureJournal <- function(x, step, start = NULL, stop = Sys.time()) {
+updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
   stop_if_not(
     inherits(x, "Future"),
-    length(step) == 1L, is.character(step),
+    length(event) == 1L, is.character(event),
     is.null(start) || (length(start) == 1L && inherits(start, "POSIXct")),
     is.null(stop) || (length(stop) == 1L && inherits(stop, "POSIXct"))
   )
 
   data <- x$.journal
   stop_if_not(inherits(data, "FutureJournal"))
-  row <- which(data$step == step)
+  row <- which(data$event == event)
   n <- length(row)
-  if (n == 0L) stop("No such 'step' entry in journal: ", sQuote(step))
+  if (n == 0L) stop("No such 'event' entry in journal: ", sQuote(event))
   if (n > 1L) row <- row[n]
   entry <- data[row, ]
   if (!is.null(start)) entry$start <- start
@@ -171,20 +186,20 @@ updateFutureJournal <- function(x, step, start = NULL, stop = Sys.time()) {
 }
 
 
-appendToFutureJournal <- function(x, step, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
+appendToFutureJournal <- function(x, event, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
-  if (skip && is.element(step, x$.journal$step)) return(x)
+  if (skip && is.element(event, x$.journal$event)) return(x)
   
   stop_if_not(
     inherits(x, "Future"),
-    length(step) == 1L, is.character(step),
+    length(event) == 1L, is.character(event),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(step = step, start = start, stop = stop)
+  data <- data.frame(event = event, start = start, stop = stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }

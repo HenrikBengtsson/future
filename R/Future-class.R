@@ -470,7 +470,7 @@ run <- function(future, ...) {
     start <- Sys.time()
     on.exit({
       appendToFutureJournal(future,
-        step = "launch",
+        event = "launch",
         start = start,
         stop = Sys.time()
       )
@@ -489,7 +489,7 @@ result <- function(future, ...) {
     start <- Sys.time()
     on.exit({
       appendToFutureJournal(future,
-        step = "gather",
+        event = "gather",
         start = start,
         stop = Sys.time()
       )

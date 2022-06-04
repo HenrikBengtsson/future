@@ -83,7 +83,7 @@ run.MulticoreFuture <- function(future, ...) {
   )
 
   appendToFutureJournal(future,
-    step = "getWorker",
+    event = "getWorker",
     start = t_start,
     stop = Sys.time()
   )

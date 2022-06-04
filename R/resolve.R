@@ -60,7 +60,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
   t_start <- Sys.time()
   on.exit({
     appendToFutureJournal(x,
-      step = "resolve",
+      event = "resolve",
       start = t_start,
       stop = Sys.time(),
       skip = FALSE

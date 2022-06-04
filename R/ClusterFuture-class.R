@@ -129,7 +129,7 @@ run.ClusterFuture <- function(future, ...) {
   cl <- workers[node_idx]
   
   appendToFutureJournal(future,
-    step = "getWorker",
+    event = "getWorker",
     start = t_start,
     stop = Sys.time()
   )
@@ -143,7 +143,7 @@ run.ClusterFuture <- function(future, ...) {
     t_start <- Sys.time()
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
     appendToFutureJournal(future,
-      step = "eraseWorker",
+      event = "eraseWorker",
       start = t_start,
       stop = Sys.time()
     )
@@ -166,7 +166,7 @@ run.ClusterFuture <- function(future, ...) {
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
   appendToFutureJournal(future,
-    step = "attachPackages",
+    event = "attachPackages",
     start = t_start,
     stop = Sys.time()
   )
@@ -198,7 +198,7 @@ run.ClusterFuture <- function(future, ...) {
     }
     if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
     appendToFutureJournal(future,
-      step = "exportGlobals",
+      event = "exportGlobals",
       start = t_start,
       stop = Sys.time()
     )

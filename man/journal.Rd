@@ -12,9 +12,9 @@ journal(x, ...)
 \item{\ldots}{Not used.}
 }
 \value{
-A data frame with columns:
+A data frame of class \code{FutureJournal} with columns:
 \enumerate{
-\item \code{step} (character string)
+\item \code{event} (character string)
 \item \code{start} (POSIXct)
 \item \code{at} (difftime)
 \item \code{duration} (difftime)
@@ -23,8 +23,17 @@ A data frame with columns:
 \item \code{session_uuid} (character string)
 }
 
+Possible events are:
+\itemize{
+\item \code{create} - the future was created
+\item \code{launch} - the future was launched (aka run)
+\item \code{evaluate} - the future was evaluated
+\item \code{resolved} - the future was queried (may be occur multiple times)
+\item \code{gather} - the results was retrieved
+}
+
 The data frame is sorted by the \code{at} time.
-Note that the timestamps for the \code{evaluate} step are based on the local
+Note that the timestamps for the \code{evaluate} event are based on the local
 time on the worker. The system clocks on the worker and the calling R
 system may be out of sync.
 }

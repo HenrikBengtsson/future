@@ -25,7 +25,7 @@ resolved <- function(x, ...) {
     start <- Sys.time()
     on.exit({
       appendToFutureJournal(x,
-        step = "resolved",
+        event = "resolved",
         start = start,
         stop = Sys.time(),
         skip = FALSE
