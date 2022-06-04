@@ -2,7 +2,7 @@
 % Please edit documentation in R/journal.R
 \name{journal}
 \alias{journal}
-\title{Gets a journal of events for a future}
+\title{Gets the logged journal of events for a future}
 \usage{
 journal(x, ...)
 }
@@ -38,8 +38,14 @@ time on the worker. The system clocks on the worker and the calling R
 system may be out of sync.
 }
 \description{
-Gets a journal of events for a future
+Gets the logged journal of events for a future
 }
+\section{Enabling and disabling event logging}{
+
+To enable logging of events, set option \code{future.journal} is TRUE.
+To disable, set it to FALSE (default).
+}
+
 \examples{
 library(future)
 journal <- future:::journal
@@ -59,3 +65,7 @@ print(js)
 plan(sequential)
 options(oopts)
 }
+\seealso{
+Use \code{\link[=gather_journals]{gather_journals()}} to capture journals from all futures.
+}
+\keyword{internal}

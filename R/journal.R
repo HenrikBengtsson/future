@@ -32,13 +32,16 @@
 #' time on the worker. The system clocks on the worker and the calling R
 #' system may be out of sync.
 #'
-#' @section Enabling and disabling event logging
+#' @section Enabling and disabling event logging:
 #' To enable logging of events, set option `future.journal` is TRUE.
 #' To disable, set it to FALSE (default).
 #'
 #' @example incl/journal.R
 #'
-#' @keyword internal
+#' @seealso
+#' Use [gather_journals()] to capture journals from all futures.
+#'
+#' @keywords internal
 #' @export
 journal <- function(x, ...) UseMethod("journal")
 
