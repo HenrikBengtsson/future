@@ -1,6 +1,3 @@
-library(future)
-journal <- future:::journal
-
 ## Enable journaling of futures
 oopts <- options(future.journal = TRUE)
 
@@ -12,6 +9,6 @@ vs <- value(fs)
 js <- lapply(fs, FUN = journal, baseline = t_start)
 print(js)
 
-## Stop parallel workers and undo journaling settings
+## Stop parallel workers and disable journal logging and signaling
 plan(sequential)
 options(oopts)

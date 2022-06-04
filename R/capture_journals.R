@@ -7,19 +7,19 @@
 #' @param envir The environment where `expr` should be evaluated
 #'
 #' @details
-#' This function evaluates an R expression and gathers the journals
-#' signaled by futures as they are completed. A future journal comprise
+#' This function evaluates an R expression and capture the journals
+#' signaled by futures as they are completed. A future [journal] comprise
 #' a log of events appearing during the life-span of a future, e.g.
 #' the timestamps when the future was created, launched, queried,
 #' resolved, and its results are collected.
 #'
 #' @return
-#' A list of \link[journal]{FutureJournal}:s.
+#' A list of \link[=journal]{FutureJournal}:s.
 #'
-#' @example incl/gather_journals.R
+#' @example incl/capture_journals.R
 #'
 #' @export
-gather_journals <- function(expr, substitute = TRUE, envir = parent.frame()) {
+capture_journals <- function(expr, substitute = TRUE, envir = parent.frame()) {
   oopts <- options(future.journal = TRUE)
   on.exit(options(oopts))
   

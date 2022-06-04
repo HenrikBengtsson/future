@@ -47,9 +47,6 @@ To disable, set it to FALSE (default).
 }
 
 \examples{
-library(future)
-journal <- future:::journal
-
 ## Enable journaling of futures
 oopts <- options(future.journal = TRUE)
 
@@ -61,11 +58,11 @@ vs <- value(fs)
 js <- lapply(fs, FUN = journal, baseline = t_start)
 print(js)
 
-## Stop parallel workers and undo journaling settings
+## Stop parallel workers and disable journal logging and signaling
 plan(sequential)
 options(oopts)
 }
 \seealso{
-Use \code{\link[=gather_journals]{gather_journals()}} to capture journals from all futures.
+Use \code{\link[=capture_journals]{capture_journals()}} to capture journals from all futures.
 }
 \keyword{internal}

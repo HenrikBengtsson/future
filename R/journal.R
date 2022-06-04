@@ -39,7 +39,7 @@
 #' @example incl/journal.R
 #'
 #' @seealso
-#' Use [gather_journals()] to capture journals from all futures.
+#' Use [capture_journals()] to capture journals from all futures.
 #'
 #' @keywords internal
 #' @export
