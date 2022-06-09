@@ -15,6 +15,7 @@ journal(x, ...)
 A data frame of class \code{FutureJournal} with columns:
 \enumerate{
 \item \code{event} (character string)
+\item \code{type} (character string)
 \item \code{start} (POSIXct)
 \item \code{at} (difftime)
 \item \code{duration} (difftime)
@@ -23,14 +24,25 @@ A data frame of class \code{FutureJournal} with columns:
 \item \code{session_uuid} (character string)
 }
 
-Possible events are:
+Common events are:
 \itemize{
-\item \code{create} - the future was created
-\item \code{launch} - the future was launched (aka run)
-\item \code{evaluate} - the future was evaluated
-\item \code{resolved} - the future was queried (may be occur multiple times)
-\item \code{gather} - the results was retrieved
+\item \code{create}   - the future was created (an \code{overhead})
+\item \code{launch}   - the future was launched (an \code{overhead})
+\item \code{evaluate} - the future was evaluated (an \code{evaluation})
+\item \code{resolved} - the future was queried (may be occur multiple times) (an \code{overhead})
+\item \code{gather}   - the results was retrieved (an \code{overhead})
 }
+
+but others may be added by other Future classes.
+
+Common event types are:
+\itemize{
+\item \code{evaluation} - processing time is spent on evaluation
+\item \code{overhead}   - processing time is spent on orchestrating the future
+\item \code{querying}   - processing time is spent on polling the future
+}
+
+but others may be added by other Future classes.
 
 The data frame is sorted by the \code{at} time.
 Note that the timestamps for the \code{evaluate} event are based on the local

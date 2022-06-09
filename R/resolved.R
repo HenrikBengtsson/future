@@ -26,6 +26,7 @@ resolved <- function(x, ...) {
     on.exit({
       appendToFutureJournal(x,
         event = "resolved",
+        type = "querying",
         start = start,
         stop = Sys.time(),
         skip = FALSE
