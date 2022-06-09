@@ -16,6 +16,7 @@ A data frame of class \code{FutureJournal} with columns:
 \enumerate{
 \item \code{event} (character string)
 \item \code{type} (character string)
+\item \code{parent} (character string)
 \item \code{start} (POSIXct)
 \item \code{at} (difftime)
 \item \code{duration} (difftime)
@@ -39,7 +40,7 @@ Common event types are:
 \itemize{
 \item \code{evaluation} - processing time is spent on evaluation
 \item \code{overhead}   - processing time is spent on orchestrating the future
-\item \code{querying}   - processing time is spent on polling the future
+\item \code{waiting}    - processing time is spent on waiting to set up or querying the future
 }
 
 but others may be added by other Future classes.

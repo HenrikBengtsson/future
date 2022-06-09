@@ -15,13 +15,14 @@
 #' A data frame of class `FutureJournal` with columns:
 #'
 #'  1. `event` (character string)
-#'  1. `type` (character string)
-#'  2. `start` (POSIXct)
-#'  3. `at` (difftime)
-#'  4. `duration` (difftime)
-#'  5. `future_label` (character string)
-#'  6. `future_uuid` (character string)
-#'  7. `session_uuid` (character string)
+#'  2. `type` (character string)
+#'  3. `parent` (character string)
+#'  4. `start` (POSIXct)
+#'  5. `at` (difftime)
+#'  6. `duration` (difftime)
+#'  7. `future_label` (character string)
+#'  8. `future_uuid` (character string)
+#'  9. `session_uuid` (character string)
 #'
 #' Common events are:
 #'
@@ -37,7 +38,7 @@
 #'
 #'  * `evaluation` - processing time is spent on evaluation
 #'  * `overhead`   - processing time is spent on orchestrating the future
-#'  * `querying`   - processing time is spent on polling the future
+#'  * `waiting`    - processing time is spent on waiting to set up or querying the future
 #'
 #' but others may be added by other Future classes.
 #'
@@ -161,30 +162,30 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 }
 
 
-makeFutureJournal <- function(x, event = "create", type = "other", start = stop, stop = Sys.time()) {
+makeFutureJournal <- function(x, event = "create", type = "other", parent = NA_character_, start = stop, stop = Sys.time()) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
-    length(event) == 1L, is.character(event),
-    length(type) == 1L, is.character(type),
+    length(event) == 1L, is.character(event), !is.na(event),
+    length(type) == 1L, is.character(type), !is.na(event),
+    length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(event = event, type = type, start = start, stop = stop)
+  data <- data.frame(event = event, type = type, parent = parent, start = start, stop = stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
 }
 
-updateFutureJournal <- function(x, event, type = "other", start = NULL, stop = Sys.time()) {
+updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
   stop_if_not(
     inherits(x, "Future"),
-    length(event) == 1L, is.character(event),
-    length(type) == 1L, is.character(type),
+    length(event) == 1L, is.character(event), !is.na(event),
     is.null(start) || (length(start) == 1L && inherits(start, "POSIXct")),
     is.null(stop) || (length(stop) == 1L && inherits(stop, "POSIXct"))
   )
@@ -205,7 +206,7 @@ updateFutureJournal <- function(x, event, type = "other", start = NULL, stop = S
 }
 
 
-appendToFutureJournal <- function(x, event, type = "other", start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
+appendToFutureJournal <- function(x, event, type = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -213,13 +214,14 @@ appendToFutureJournal <- function(x, event, type = "other", start = Sys.time(), 
   
   stop_if_not(
     inherits(x, "Future"),
-    length(event) == 1L, is.character(event),
-    length(type) == 1L, is.character(type),
+    length(event) == 1L, is.character(event), !is.na(event),
+    length(type) == 1L, is.character(type), !is.na(event),
+    length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(event = event, type = type, start = start, stop = stop)
+  data <- data.frame(event = event, type = type, parent = parent, start = start, stop = stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }

@@ -83,9 +83,11 @@ run.MulticoreFuture <- function(future, ...) {
   )
 
   appendToFutureJournal(future,
-    event = "getWorker",
-    start = t_start,
-    stop = Sys.time()
+     event = "getWorker",
+      type = "other",
+    parent = "launch",
+     start = t_start,
+      stop = Sys.time()
   )
 
   ## Add to registry

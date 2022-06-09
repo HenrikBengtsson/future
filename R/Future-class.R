@@ -471,9 +471,9 @@ run <- function(future, ...) {
     on.exit({
       appendToFutureJournal(future,
         event = "launch",
-        type = "overhead",
+         type = "overhead",
         start = start,
-        stop = Sys.time()
+         stop = Sys.time()
       )
     })
   }
@@ -491,9 +491,9 @@ result <- function(future, ...) {
     on.exit({
       appendToFutureJournal(future,
         event = "gather",
-        type = "overhead",
+         type = "overhead",
         start = start,
-        stop = Sys.time()
+         stop = Sys.time()
       )
 
       ## Signal FutureJournalCondition?
