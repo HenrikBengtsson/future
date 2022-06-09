@@ -191,6 +191,7 @@ summary.FutureJournal <- function(object, ...) {
     t <- c(t,   mean =   mean(t_delta, na.rm = TRUE))
     t <- c(t, median = median(t_delta, na.rm = TRUE))
     t <- c(t,    max =    max(t_delta, na.rm = TRUE))
+    t <- as.difftime(t, units = "secs")
   }
   t <- c(t, total = t_total)
   stats <- data.frame(walltime = t)
