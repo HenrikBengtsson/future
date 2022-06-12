@@ -130,7 +130,7 @@ journal.FutureJournal <- function(x, baseline = NULL, ...) {
 }
 
 #' @export
-journal.list <- function(x, index = seq_along(x), baseline = TRUE, ...) {
+journal.list <- function(x, baseline = TRUE, ...) {
   ## Reset relative time zero to the first observed timestamp?
   if (isTRUE(baseline)) {
     stop_if_not(baseline >= 1L, baseline <= length(x))
@@ -142,15 +142,11 @@ journal.list <- function(x, index = seq_along(x), baseline = TRUE, ...) {
   
   js <- lapply(x, FUN = journal, baseline = baseline, ...)
 
-  ## Add index?
-  if (!is.null(index)) {
-    stop_if_not(length(index) == length(x))
-    js <- lapply(index, FUN = function(idx) {
-      cbind(index = idx, js[[idx]])
-    })
-  }
+  class <- class(js[[1]])
+  js <- Reduce(rbind, js)
+  class(js) <- class
   
-  Reduce(rbind, js)
+  js
 }
 
 
@@ -164,6 +160,9 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 
 #' @export
 summary.FutureJournal <- function(object, ...) {
+  ## To please 'R CMD check'
+  event <- future_uuid <- median <- parent <- type <- NULL
+  
   dt_top <- subset(object, is.na(parent))
 
   uuids <- unique(dt_top$future_uuid)
