@@ -18,7 +18,8 @@
 #'
 #' @example incl/capture_journals.R
 #'
-#' @export
+#' @keywords internal
+#' @noRd
 capture_journals <- function(expr, substitute = TRUE, envir = parent.frame()) {
   oopts <- options(future.journal = TRUE)
   on.exit(options(oopts))
