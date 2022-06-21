@@ -18,7 +18,7 @@ jobs:
         config:
           - {os: windows-latest, r: 'devel'    }
           - {os: windows-latest, r: 'release'  }
-          - {os: macOS-latest,   r: 'devel'    }
+#          - {os: macOS-latest,   r: 'devel'    }
           - {os: macOS-latest,   r: 'release'  }
           - {os: ubuntu-20.04,   r: 'devel'    }
           - {os: ubuntu-20.04,   r: 'release'  }
@@ -32,6 +32,9 @@ jobs:
           - {os: ubuntu-20.04,   r: 'release', plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
           - {os: ubuntu-20.04,   r: 'release', psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
+          - {os: ubuntu-20.04,   r: 'release'  , language: ko,    label: ko    }
+          - {os: ubuntu-20.04,   r: 'release'  , language: zh_CN, label: zh_CN }
+          - {os: ubuntu-20.04,   r: 'release'  , language: zh_TW, label: zh_TW }
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -47,6 +50,8 @@ jobs:
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
+      ## Test in other locale (optional)
+      LANGUAGE: ${{ matrix.config.language }}
       
     steps:
       - uses: actions/checkout@v2
