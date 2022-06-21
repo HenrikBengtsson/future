@@ -57,7 +57,7 @@
 #' Use [capture_journals()] to capture journals from all futures.
 #'
 #' @keywords internal
-#' @export
+#' @noRd
 journal <- function(x, ...) UseMethod("journal")
 
 #' @export
