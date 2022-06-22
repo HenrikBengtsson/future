@@ -456,7 +456,7 @@ receiveMessageFromWorker <- function(future, ...) {
       appendToFutureJournal(future,
          event = "receiveResult",
           type = "overhead",
-        parent = "launch",
+        parent = "gather",
          start = t_start,
           stop = Sys.time()
       )
