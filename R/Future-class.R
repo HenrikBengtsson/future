@@ -466,7 +466,8 @@ run.Future <- function(future, ...) {
 #' @keywords internal
 run <- function(future, ...) {
   ## Automatically update journal entries for Future object
-  if (inherits(future, "Future")) {
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
     start <- Sys.time()
     on.exit({
       appendToFutureJournal(future,

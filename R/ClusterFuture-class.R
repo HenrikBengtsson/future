@@ -128,13 +128,15 @@ run.ClusterFuture <- function(future, ...) {
   ## Cluster node to use
   cl <- workers[node_idx]
   
-  appendToFutureJournal(future,
-     event = "getWorker",
-      type = "overhead",
-    parent = "launch",
-     start = t_start,
-      stop = Sys.time()
-  )
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+       event = "getWorker",
+        type = "overhead",
+      parent = "launch",
+       start = t_start,
+        stop = Sys.time()
+    )
+  }
 
 
   ## (i) Reset global environment of cluster node such that
@@ -144,13 +146,15 @@ run.ClusterFuture <- function(future, ...) {
   if (!persistent) {
     t_start <- Sys.time()
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
-    appendToFutureJournal(future,
-       event = "eraseWorker",
-        type = "overhead",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
-    )
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+         event = "eraseWorker",
+          type = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+      )
+    }
   }
 
 
@@ -169,13 +173,16 @@ run.ClusterFuture <- function(future, ...) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ... DONE",
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
-  appendToFutureJournal(future,
-     event = "attachPackages",
-      type = "overhead",
-    parent = "launch",
-     start = t_start,
-      stop = Sys.time()
-  )
+  
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+       event = "attachPackages",
+        type = "overhead",
+      parent = "launch",
+       start = t_start,
+        stop = Sys.time()
+    )
+  }
 
   ## (iii) Export globals
   globals <- globals(future)
@@ -203,13 +210,16 @@ run.ClusterFuture <- function(future, ...) {
       value <- NULL
     }
     if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
-    appendToFutureJournal(future,
-       event = "exportGlobals",
-        type = "overhead",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
-    )
+    
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+         event = "exportGlobals",
+          type = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+      )
+    }
   }
   ## Not needed anymore
   globals <- NULL
@@ -442,13 +452,15 @@ receiveMessageFromWorker <- function(future, ...) {
   if (inherits(msg, "FutureResult")) {
     result <- msg
 
-    appendToFutureJournal(future,
-       event = "receiveResult",
-        type = "overhead",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
-    )
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+         event = "receiveResult",
+          type = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+      )
+    }
 
     ## Add back already signaled and muffled conditions so that also
     ## they will be resignaled each time value() is called.

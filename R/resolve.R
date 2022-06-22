@@ -57,16 +57,19 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
   }
 
   ## Automatically update journal entries for Future object
-  t_start <- Sys.time()
-  on.exit({
-    appendToFutureJournal(x,
-      event = "resolve",
-      type = "overhead",
-      start = t_start,
-      stop = Sys.time(),
-      skip = FALSE
-    )
-  })
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    t_start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(x,
+        event = "resolve",
+        type = "overhead",
+        start = t_start,
+        stop = Sys.time(),
+        skip = FALSE
+      )
+    })
+  }
 
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
