@@ -394,6 +394,8 @@ receiveMessageFromWorker <- function(future, ...) {
     }
   }
 
+  t_start <- Sys.time()
+
   ## If not, wait for process to finish, and
   ## then collect and record the value
   msg <- NULL
@@ -439,6 +441,14 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (inherits(msg, "FutureResult")) {
     result <- msg
+
+    appendToFutureJournal(future,
+       event = "receiveResult",
+        type = "overhead",
+      parent = "launch",
+       start = t_start,
+        stop = Sys.time()
+    )
 
     ## Add back already signaled and muffled conditions so that also
     ## they will be resignaled each time value() is called.

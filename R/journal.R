@@ -108,7 +108,7 @@ journal.Future <- function(x, ...) {
 
   ## Coerce 'event' to a factor
   known_levels <- c("lifespan", "create", "launch", "resolved", "gather", "evaluate")
-  extra_levels <- c("attachPackages", "eraseWorker", "exportGlobals", "getWorker")
+  extra_levels <- c("attachPackages", "eraseWorker", "exportGlobals", "receiveResult", "getWorker")
   other_levels <- sort(setdiff(data$event, known_levels))
   levels <- c(known_levels, other_levels)
   data$event <- factor(data$event, levels = levels)
