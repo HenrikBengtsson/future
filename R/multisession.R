@@ -36,8 +36,8 @@
 #' @return
 #' A \link{MultisessionFuture}.
 #' If `workers == 1`, then all processing using done in the
-#' current/main \R session and we therefore fall back to using
-#' a lazy future.
+#' current/main \R session and we therefore fall back to using a
+#' lazy future.  To override this fallback, use `workers = I(1)`.
 #'
 ## FIXME: It seem that multisession futures in examples gives errors
 ##        with R CMD check, e.g. "cannot open file 'future-Ex.Rout':
@@ -69,7 +69,7 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_
 
   ## Fall back to lazy sequential futures if only a single R session can be used,
   ## that is, then use the current main R process.
-  if (workers == 1L) {
+  if (workers == 1L && !inherits(workers, "AsIs")) {
     return(sequential(..., lazy = TRUE, envir = envir))
   }
 
