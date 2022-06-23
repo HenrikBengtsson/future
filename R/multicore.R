@@ -66,7 +66,7 @@
 multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
   default_workers <- missing(workers)
   if (is.function(workers)) workers <- workers()
-  workers <- as.integer(workers)
+  workers <- structure(as.integer(workers), class = class(workers))
   stop_if_not(is.finite(workers), workers >= 1L)
 
   ## Fall back to sequential futures if only a single additional R process

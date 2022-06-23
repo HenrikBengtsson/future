@@ -64,7 +64,7 @@
 #' @export
 multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_libs = .libPaths(), envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
-  workers <- as.integer(workers)
+  workers <- structure(as.integer(workers), class = class(workers))
   stop_if_not(length(workers) == 1, is.finite(workers), workers >= 1)
 
   ## Fall back to lazy sequential futures if only a single R session can be used,
