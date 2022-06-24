@@ -251,6 +251,7 @@ The **[raster]** package provides methods for working with spatial data, which a
 ```r
 library(future)
 plan(multisession)
+options(future.globals.onReference = "error")
 
 library(raster)
 r <- raster(system.file("external/test.grd", package = "raster"))
@@ -493,12 +494,38 @@ dr %<-% dim(data)
 ## 'SpatRaster') used in the future expression
 ```
 
-For some workarounds, see `help("wrap", package = "terra")`.
+Functions `wrap()` and `vect()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
+
+```r
+library(future)
+plan(multisession)
+library(terra)
+
+file <- system.file("ex/lux.shp", package = "terra")
+v <- vect(file)
+.v <- wrap(v)
+dv %<-% { v <- vect(.v); dim(v) }
+rm(.v) ## not needed anymore
+dv
+[1] 12  6
+```
+
+and
+
+```r
+file <- system.file("ex/elev.tif", package="terra")
+r <- rast(file)
+.r <- wrap(v)
+dr %<-% { r <- vect(.r); dim(r) }
+rm(.r) ## not needed anymore
+dr
+[1] 12  6
+```
+
+For more details, see `help("wrap", package = "terra")`.
 
 
 #### Package: udpipe
-
-The **[udpipe]** package use non-exportable objects;
 
 ```r
 library(future)
