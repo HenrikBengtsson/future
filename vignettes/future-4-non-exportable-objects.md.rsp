@@ -138,7 +138,7 @@ Below are some examples of packages who produce non-exportable objects with _ext
 
 #### Package: cpp11
 
-Another example is **[cpp11]**, which allow us to easily create R functions that are implemented in C++, e.g.
+Another example is **[cpp11]**, which allows us to easily create R functions that are implemented in C++, e.g.
 
 ```r
 cpp11::cpp_source(code = '
@@ -190,7 +190,7 @@ dummy %<-% print(con)
 
 #### Package: inline
 
-Another example is **[inline]**, which allow us to easily create R functions that are implemented in C and C++, e.g.
+Another example is **[inline]**, which allows us to easily create R functions that are implemented in C and C++, e.g.
 
 ```r
 library(inline)
@@ -829,6 +829,7 @@ str(e)
 
 
 [data.table]: https://cran.r-project.org/package=data.table
+[cpp11]: https://cran.r-project.org/package=cpp11
 [DBI]: https://cran.r-project.org/package=DBI
 [inline]: https://cran.r-project.org/package=inline
 [keras]: https://cran.r-project.org/package=DBI
