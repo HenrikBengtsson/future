@@ -1,5 +1,11 @@
 # Version (development version)
 
+## New Features
+
+ * The fallback to sequential processing done by 'multicore' and
+   'multisession' when `workers = 1` can now be overridden by
+   specifying `workers = I(1)`.
+ 
 ## Bug Fixes
 
  * Some warnings and errors showed the wrong call.

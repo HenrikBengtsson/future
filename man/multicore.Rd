@@ -26,9 +26,10 @@ identified.}
 \value{
 A \link{MulticoreFuture}.
 If \code{workers == 1}, then all processing using done in the
-current/main \R session and we therefore fall back to using
-an sequential future.  This is also the case whenever multicore
-processing is not supported, e.g. on Windows.
+current/main \R session and we therefore fall back to using a
+sequential future. To override this fallback, use \code{workers = I(1)}.
+This is also the case whenever multicore processing is not supported,
+e.g. on Windows.
 }
 \description{
 A multicore future is a future that uses multicore evaluation,
