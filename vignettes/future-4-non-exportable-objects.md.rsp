@@ -69,6 +69,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   Package         | Examples of non-exportable types or classes
   :---------------|:-------------------------------------------
   **base**        | connection (`externalptr`)
+  **cpp11**       | E.g. functions created by `cpp_source()`
   **DBI**         | DBIConnection (`externalptr`)
   **inline**      | CFunc (`externalptr` of class DLLHandle)
   **keras**       | keras.engine.sequential.Sequential (`externalptr`)
@@ -133,6 +134,43 @@ If an object carries an _external pointer_, it is likely that it can only be use
 However, there are objects with _external pointer_:s that can be exported, e.g. `data.table` objects of the **[data.table]** package is one such example.  In other words, the existence of a _external pointer_ is just a suggestion for an object being non-exportable - it is not a sufficient condition.
 
 Below are some examples of packages who produce non-exportable objects with _external pointer_:s.
+
+
+#### Package: cpp11
+
+Another example is **[cpp11]**, which allow us to easily create R functions that are implemented in C++, e.g.
+
+```r
+cpp11::cpp_source(code = '
+#include "cpp11/doubles.hpp"
+using namespace cpp11;
+
+[[cpp11::register]]
+int my_length(doubles x) {
+    return x.size();
+}
+')
+```
+
+so that:
+
+```
+x <- rnorm(10)
+my_length(x)
+## [1] 10
+```
+
+However, this function cannot be exported to another R process:
+
+```r
+library(future)
+plan(multisession)
+x <- rnorm(10)
+n %<-% my_length(x)
+n
+#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") : 
+#>   "_code_1748ff617940b9_my_length" not available for .Call() for package "code_1748ff617940b9"
+```
 
 
 #### Package: DBI
@@ -271,10 +309,10 @@ Note that it is only the RasterLayer object `s` that carries an external pointer
 
 #### Package: Rcpp
 
-Another example is **[Rcpp]**, which allow us to easily create R functions that are implemented in C++, e.g.
+Similarly to **cpp11**, **[Rcpp]** can be use to create R functions that are implemented in C++, e.g.
 
 ```r
-Rcpp::sourceCpp(code = "
+Rcpp::sourceCpp(code = '
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -282,7 +320,7 @@ using namespace Rcpp;
 int my_length(NumericVector x) {
     return x.size();
 }
-")
+')
 ```
 
 so that:
@@ -298,6 +336,7 @@ However, since this function uses an external pointer internally, we cannot pass
 ```r
 library(future)
 plan(multisession)
+x <- rnorm(10)
 n %<-% my_length(x)
 n
 ## Error in .Call(<pointer: (nil)>, x) : NULL value passed as symbol address
