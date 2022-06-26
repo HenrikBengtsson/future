@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">resolved</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resolved</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -167,12 +167,17 @@
     <dl><dt>x</dt>
 <dd><p>A <a href="Future-class.html">Future</a>, a list, or an environment (which also
 includes <a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">list environment</a>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A logical of the same length and dimensions as <code>x</code>.
+    
+
+<p>A logical of the same length and dimensions as <code>x</code>.
 Each element is TRUE unless the corresponding element is a
 non-resolved future in case it is FALSE.</p>
     </div>
@@ -199,7 +204,7 @@ e.g. <code>while (!resolved(future)) Sys.sleep(5)</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -155,6 +155,10 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>The fallback to sequential processing done by ‘multicore’ and ‘multisession’ when <code>workers = 1</code> can now be overridden by specifying <code>workers = I(1)</code>.</li>
+</ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
 <ul><li>Some warnings and errors showed the wrong call.</li>
@@ -699,7 +703,7 @@
 <div class="section level3">
 <h3 id="documentation-1-9-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-9-0"></a></h3>
 <ul><li><p>Add vignette on ‘Outputting Text’.</p></li>
-<li><p>CLEANUP: Only the core parts of the API are now listed in the help index. This was done to clarify the Future API. Help for non-core parts are still via cross references in the indexed API as well via <code>help()</code>.</p></li>
+<li><p>CLEANUP: Only the core parts of the API are now listed in the help index. This was done to clarify the Future API. Help for non-core parts are still via cross references in the indexed API as well via <code><a href="https://rdrr.io/r/utils/help.html" class="external-link">help()</a></code>.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-9-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-9-0"></a></h3>
@@ -1137,7 +1141,7 @@
 <h3 id="new-features-0-11-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0"></a></h3>
 <ul><li><p>Add multisession futures, which analogously to multicore ones, use multiple cores on the local machine with the difference that they are evaluated in separate R session running in the background rather than separate forked R processes. A multisession future is a special type of cluster futures that do not require explicit setup of cluster nodes.</p></li>
 <li><p>Add support for cluster futures, which can make use of a cluster of nodes created by <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code>.</p></li>
-<li><p>Add <code><a href="../reference/future.html">futureCall()</a></code>, which is for futures what <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code> is otherwise.</p></li>
+<li><p>Add <code><a href="../reference/future.html">futureCall()</a></code>, which is for futures what <code><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call()</a></code> is otherwise.</p></li>
 <li><p>Standardized how options are named, i.e. <code>future.&lt;option&gt;</code>. If you used any future options previously, make sure to check they follow the above format.</p></li>
 </ul></div>
 <div class="section level3">
@@ -1298,7 +1302,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

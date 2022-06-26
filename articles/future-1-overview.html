@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -582,7 +582,7 @@ which is basically all operating system except Windows, an alternative
 to spawning R sessions in the background is to fork the existing R
 process. To use multicore futures, when supported, specify:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></span></code></pre></div>
 <p>Just like for multisession futures, the maximum number of parallel
 processes running will be decided by <code><a href="../reference/re-exports.html">availableCores()</a></code>,
 since in both cases the evaluation is done on the local machine.</p>
@@ -642,8 +642,8 @@ as:</p>
 creates can be used for cluster futures. For instance, the above cluster
 can be explicitly set up as:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 <p>Also, it is considered good style to shut down cluster
 <code>cl</code> when it is no longer needed, that is, calling
 <code>parallel::stopCluster(cl)</code>. However, it will shut itself
@@ -721,7 +721,7 @@ evaluation and the second level by sequential evaluation, we can provide
 a list of evaluation strategies to <code><a href="../reference/plan.html">plan()</a></code>. First, the same
 evaluation strategies as above can be explicitly specified as:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We would actually get the same behavior if we try with multiple
 levels of multisession evaluations;</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(multisession, multisession))</span>
@@ -981,21 +981,21 @@ resolved.</p>
 evaluated, run the Mandelbrot demo of this package. First, try with the
 sequential evaluation,</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>which resembles how the script would run if futures were not used.
 Then, try multisession evaluation, which calculates the different
 Mandelbrot planes using parallel R processes running in the background.
 Try,</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Finally, if you have access to multiple machines you can try to set
 up a cluster of workers and use them, e.g.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
@@ -1016,7 +1016,7 @@ up a cluster of workers and use them, e.g.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer>

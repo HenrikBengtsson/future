@@ -24,7 +24,7 @@ Assert that there are no references among the identified globals"><meta property
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -161,32 +161,43 @@ Assert that there are no references among the identified globals"><meta property
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">find_references</span><span class="op">(</span><span class="va">x</span>, first_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">assert_no_references</span><span class="op">(</span>
-  <span class="va">x</span>,
-  action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"error"</span>, <span class="st">"warning"</span>, <span class="st">"message"</span>, <span class="st">"string"</span><span class="op">)</span>,
-  source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"globals"</span>, <span class="st">"value"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_references</span><span class="op">(</span><span class="va">x</span>, first_only <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">assert_no_references</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  action <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"error"</span>, <span class="st">"warning"</span>, <span class="st">"message"</span>, <span class="st">"string"</span><span class="op">)</span>,</span>
+<span>  source <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"globals"</span>, <span class="st">"value"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>The <span style="R">R</span> object to be checked.</p></dd>
+
+
 <dt>first_only</dt>
 <dd><p>If <code>TRUE</code>, only the first reference is returned,
 otherwise all references.</p></dd>
+
+
 <dt>action</dt>
 <dd><p>Type of action to take if a reference is found.</p></dd>
+
+
 <dt>source</dt>
 <dd><p>Is the source of <code>x</code> the globals or the value of the future?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>find_references()</code> returns a list of zero or more references
-identified.
-If a reference is detected, an informative error, warning, message,
+    
+
+<p><code>find_references()</code> returns a list of zero or more references
+identified.</p>
+
+
+<p>If a reference is detected, an informative error, warning, message,
 or a character string is produced, otherwise <code>NULL</code> is returned
 invisibly.</p>
     </div>
@@ -203,7 +214,7 @@ invisibly.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

@@ -26,7 +26,7 @@ queried futures are resolved."><meta property="og:image" content="https://future
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -165,44 +165,57 @@ queried futures are resolved.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">value</span><span class="op">(</span><span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for Future</span>
-<span class="fu">value</span><span class="op">(</span><span class="va">future</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for list</span>
-<span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for listenv</span>
-<span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for environment</span>
-<span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">value</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for Future</span></span>
+<span><span class="fu">value</span><span class="op">(</span><span class="va">future</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for list</span></span>
+<span><span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for listenv</span></span>
+<span><span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for environment</span></span>
+<span><span class="fu">value</span><span class="op">(</span><span class="va">x</span>, stdout <span class="op">=</span> <span class="cn">TRUE</span>, signal <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>All arguments used by the S3 methods.</p></dd>
+
+
 <dt>future, x</dt>
 <dd><p>A <a href="Future-class.html">Future</a>, an environment, a list, or a list environment.</p></dd>
+
+
 <dt>stdout</dt>
 <dd><p>If TRUE, standard output captured while resolving futures
 is relayed, otherwise not.</p></dd>
+
+
 <dt>signal</dt>
 <dd><p>If TRUE, <a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditions</a> captured while resolving
 futures are relayed, otherwise not.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>value()</code> of a Future object returns the value of the future, which can
-be any type of <span style="R">R</span> object.
-<code>value()</code> of a list, an environment, or a list environment returns an
+    
+
+<p><code>value()</code> of a Future object returns the value of the future, which can
+be any type of <span style="R">R</span> object.</p>
+
+
+<p><code>value()</code> of a list, an environment, or a list environment returns an
 object with the same number of elements and of the same class.
 Names and dimension attributes are preserved, if available.
 All future elements are replaced by their corresponding <code>value()</code> values.
-For all other elements, the existing object is kept as-is.
-If <code>signal</code> is TRUE and one of the futures produces an error, then
+For all other elements, the existing object is kept as-is.</p>
+
+
+<p>If <code>signal</code> is TRUE and one of the futures produces an error, then
 that error is produced.</p>
     </div>
 
@@ -218,7 +231,7 @@ that error is produced.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

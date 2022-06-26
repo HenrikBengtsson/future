@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,9 +159,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">nbrOfWorkers</span><span class="op">(</span>evaluator <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">nbrOfFreeWorkers</span><span class="op">(</span>evaluator <span class="op">=</span> <span class="cn">NULL</span>, background <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">nbrOfWorkers</span><span class="op">(</span>evaluator <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">nbrOfFreeWorkers</span><span class="op">(</span>evaluator <span class="op">=</span> <span class="cn">NULL</span>, background <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -170,30 +170,39 @@
 <dd><p>A future evaluator function.
 If NULL (default), the current evaluator as returned
 by <code><a href="plan.html">plan()</a></code> is used.</p></dd>
+
+
 <dt>background</dt>
 <dd><p>If TRUE, only workers that can process a future in the
 background are considered.  If FALSE, also workers running in the main <span style="R">R</span>
 process are considered, e.g. when using the 'sequential' backend.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not used; reserved for future use.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>nbrOfWorkers()</code> returns a positive number in \({1, 2, 3, ...}\), which
-for some future backends may also be <code>+Inf</code>.
-<code>nbrOfFreeWorkers()</code> returns a non-negative number in
+    
+
+<p><code>nbrOfWorkers()</code> returns a positive number in \({1, 2, 3, ...}\), which
+for some future backends may also be <code>+Inf</code>.</p>
+
+
+<p><code>nbrOfFreeWorkers()</code> returns a non-negative number in
 \({0, 1, 2, 3, ...}\) which is less than or equal to <code>nbrOfWorkers()</code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">nbrOfWorkers</span><span class="op">(</span><span class="op">)</span>  <span class="co">## == availableCores()</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">nbrOfWorkers</span><span class="op">(</span><span class="op">)</span>  <span class="co">## == availableCores()</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> system </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      8 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">nbrOfWorkers</span><span class="op">(</span><span class="op">)</span>  <span class="co">## == 1</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">nbrOfWorkers</span><span class="op">(</span><span class="op">)</span>  <span class="co">## == 1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 </code></pre></div>
     </div>
@@ -209,7 +218,7 @@ for some future backends may also be <code>+Inf</code>.
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

@@ -25,7 +25,7 @@ the meanwhile retrieving values of already resolved futures."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -163,18 +163,18 @@ the meanwhile retrieving values of already resolved futures.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">resolve</span><span class="op">(</span>
-  <span class="va">x</span>,
-  idxs <span class="op">=</span> <span class="cn">NULL</span>,
-  recursive <span class="op">=</span> <span class="fl">0</span>,
-  result <span class="op">=</span> <span class="cn">FALSE</span>,
-  stdout <span class="op">=</span> <span class="cn">FALSE</span>,
-  signal <span class="op">=</span> <span class="cn">FALSE</span>,
-  force <span class="op">=</span> <span class="cn">FALSE</span>,
-  sleep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.wait.interval"</span>, <span class="fl">0.01</span><span class="op">)</span>,
-  value <span class="op">=</span> <span class="va">result</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">resolve</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  idxs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  recursive <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  result <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  stdout <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  signal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  force <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sleep <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.wait.interval"</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  value <span class="op">=</span> <span class="va">result</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -182,34 +182,55 @@ the meanwhile retrieving values of already resolved futures.</p>
     <dl><dt>x</dt>
 <dd><p>A <a href="Future-class.html">Future</a> to be resolved, or a list, an environment, or a
 list environment of futures to be resolved.</p></dd>
+
+
 <dt>idxs</dt>
 <dd><p>(optional) integer or logical index specifying the subset of
 elements to check.</p></dd>
+
+
 <dt>recursive</dt>
 <dd><p>A non-negative number specifying how deep of a recursion
 should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 no recursion is performed.</p></dd>
+
+
 <dt>result</dt>
 <dd><p>(internal) If TRUE, the results are retrieved, otherwise not.</p></dd>
+
+
 <dt>stdout</dt>
 <dd><p>(internal) If TRUE, captured standard output is relayed, otherwise note.</p></dd>
+
+
 <dt>signal</dt>
 <dd><p>(internal) If TRUE, captured <a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditions</a> are relayed,
 otherwise not.</p></dd>
+
+
 <dt>force</dt>
 <dd><p>(internal) If TRUE, captured standard output and captured
 <a href="https://rdrr.io/r/base/conditions.html" class="external-link">conditions</a> already relayed is relayed again, otherwise not.</p></dd>
+
+
 <dt>sleep</dt>
 <dd><p>Number of seconds to wait before checking if futures have been
 resolved since last time.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>(DEFUNCT) Use argument <code>result</code> instead.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns <code>x</code> (regardless of subsetting or not).
+    
+
+<p>Returns <code>x</code> (regardless of subsetting or not).
 If <code>signal</code> is TRUE and one of the futures produces an error, then
 that error is produced.</p>
     </div>
@@ -237,7 +258,7 @@ any containing futures are resolved.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

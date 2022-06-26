@@ -28,7 +28,7 @@ is available via value()."><meta property="og:image" content="https://future.fut
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -169,34 +169,40 @@ is available via <code><a href="value.html">value</a>()</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">Future</span><span class="op">(</span>
-  expr <span class="op">=</span> <span class="cn">NULL</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  substitute <span class="op">=</span> <span class="cn">TRUE</span>,
-  stdout <span class="op">=</span> <span class="cn">TRUE</span>,
-  conditions <span class="op">=</span> <span class="st">"condition"</span>,
-  globals <span class="op">=</span> <span class="cn">NULL</span>,
-  packages <span class="op">=</span> <span class="cn">NULL</span>,
-  seed <span class="op">=</span> <span class="cn">FALSE</span>,
-  lazy <span class="op">=</span> <span class="cn">FALSE</span>,
-  local <span class="op">=</span> <span class="cn">TRUE</span>,
-  gc <span class="op">=</span> <span class="cn">FALSE</span>,
-  earlySignal <span class="op">=</span> <span class="cn">FALSE</span>,
-  label <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Future</span><span class="op">(</span></span>
+<span>  expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  stdout <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  conditions <span class="op">=</span> <span class="st">"condition"</span>,</span>
+<span>  globals <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  packages <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  local <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  gc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  earlySignal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  label <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>expr</dt>
 <dd><p>An <span style="R">R</span> <a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a>.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
+
+
 <dt>substitute</dt>
 <dd><p>If TRUE, argument <code>expr</code> is
 <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a>()</code>:ed, otherwise not.</p></dd>
+
+
 <dt>stdout</dt>
 <dd><p>If TRUE (default), then the standard output is captured,
 and re-outputted when <code><a href="value.html">value()</a></code> is called.
@@ -208,6 +214,8 @@ been relayed. This can help decrease the overall memory consumed by
 captured output across futures.
 Using <code>stdout = NA</code> (not recommended) avoids intercepting the standard
 output; behavior of such unhandled standard output depends on the future</p></dd>
+
+
 <dt>conditions</dt>
 <dd><p>A character string of conditions classes to be captured
 and relayed.  The default is to relay all conditions, including messages
@@ -223,14 +231,20 @@ memory consumed by captured conditions across futures.
 Using <code>conditions = NULL</code> (not recommended) avoids intercepting conditions,
 except from errors; behavior of such unhandled conditions depends on the
 future backend and the environment from which R runs.</p></dd>
+
+
 <dt>globals</dt>
 <dd><p>(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for <code><a href="future.html">future()</a></code>.</p></dd>
+
+
 <dt>packages</dt>
 <dd><p>(optional) a character vector specifying packages
 to be attached in the <span style="R">R</span> environment evaluating the future.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>(optional) If TRUE, the random seed, that is, the state of the
 random number generator (RNG) will be set such that statistically sound
@@ -246,14 +260,20 @@ option <code><a href="future.options.html">future.rng.onMisuse</a></code>, the c
 ignored, an informative warning, or error will be produced.
 If <code>seed</code> is NULL, then the effect is as with <code>seed = FALSE</code>
 but without the RNG check being performed.</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.</p></dd>
+
+
 <dt>local</dt>
 <dd><p>If TRUE, the expression is evaluated such that
 all assignments are done to local temporary environment, otherwise
 the assignments are done to the global environment of the <span style="R">R</span> process
 evaluating the future.</p></dd>
+
+
 <dt>gc</dt>
 <dd><p>If TRUE, the garbage collector run (in the process that
 evaluated the future) only after the value of the future is collected.
@@ -261,17 +281,26 @@ Exactly when the values are collected may depend on various factors such
 as number of free workers and whether <code>earlySignal</code> is TRUE (more
 frequently) or FALSE (less frequently).
 <em>Some types of futures ignore this argument.</em></p></dd>
+
+
 <dt>earlySignal</dt>
 <dd><p>Specified whether conditions should be signaled as soon
 as possible or not.</p></dd>
+
+
 <dt>label</dt>
 <dd><p>An optional character string label attached to the future.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional named elements of the future.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>Future()</code> returns an object of class <code>Future</code>.</p>
+    
+
+<p><code>Future()</code> returns an object of class <code>Future</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -299,7 +328,7 @@ to a variable as a <em><a href="https://rdrr.io/r/base/delayedAssign.html" class
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

@@ -32,7 +32,7 @@ The 'multiprocess' alias is therefore being phased out."><meta property="og:imag
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -175,13 +175,15 @@ The 'multiprocess' alias is therefore being phased out.</em></p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">multiprocess</span><span class="op">(</span><span class="va">...</span>, workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multiprocess</span><span class="op">(</span><span class="va">...</span>, workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="Future-class.html">Future()</a></code>.</p></dd>
+
+
 <dt>workers</dt>
 <dd><p>A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
@@ -189,13 +191,18 @@ before blocking.
 If a function, it is called without arguments <em>when the future
 is created</em> and its value is used to configure the workers.
 The function should return a numeric scalar.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="MultiprocessFuture-class.html">MultiprocessFuture</a> implemented as either a
+    
+
+<p>A <a href="MultiprocessFuture-class.html">MultiprocessFuture</a> implemented as either a
 <a href="MulticoreFuture-class.html">MulticoreFuture</a> or a <a href="ClusterFuture-class.html">MultisessionFuture</a>.</p>
     </div>
     <div id="see-also">
@@ -206,37 +213,37 @@ are used.</p></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use multiprocess futures</span></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multiprocess</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use multiprocess futures</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multiprocess</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Strategy 'multiprocess' is deprecated in future (&gt;= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A global variable</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create future (explicitly)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A multiprocess future is evaluated in a separate R process.</span></span>
-<span class="r-in"><span class="co">## Changing the value of a global variable will not affect</span></span>
-<span class="r-in"><span class="co">## the result of the future.</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A global variable</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create future (explicitly)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A multiprocess future is evaluated in a separate R process.</span></span></span>
+<span class="r-in"><span><span class="co">## Changing the value of a global variable will not affect</span></span></span>
+<span class="r-in"><span><span class="co">## the result of the future.</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Explicitly close multisession workers, if they were used</span></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Explicitly close multisession workers, if they were used</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -251,7 +258,7 @@ are used.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,40 +159,53 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">MulticoreFuture</span><span class="op">(</span>
-  expr <span class="op">=</span> <span class="cn">NULL</span>,
-  substitute <span class="op">=</span> <span class="cn">TRUE</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  globals <span class="op">=</span> <span class="cn">TRUE</span>,
-  lazy <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MulticoreFuture</span><span class="op">(</span></span>
+<span>  expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>expr</dt>
 <dd><p>An <span style="R">R</span> <a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a>.</p></dd>
+
+
 <dt>substitute</dt>
 <dd><p>If TRUE, argument <code>expr</code> is
 <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute</a>()</code>:ed, otherwise not.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
+
+
 <dt>globals</dt>
 <dd><p>(optional) a logical, a character vector, or a named list
 to control how globals are handled.
 For details, see section 'Globals used by future expressions'
 in the help for <code><a href="future.html">future()</a></code>.</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional named elements passed to <code><a href="Future-class.html">Future()</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>MulticoreFuture()</code> returns an object of class <code>MulticoreFuture</code>.</p>
+    
+
+<p><code>MulticoreFuture()</code> returns an object of class <code>MulticoreFuture</code>.</p>
     </div>
     <div id="usage">
     <h2>Usage</h2>
@@ -213,7 +226,7 @@ eagerly (starting immediately), otherwise not.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

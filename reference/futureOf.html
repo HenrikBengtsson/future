@@ -24,7 +24,7 @@ or indirectly via future()."><meta property="og:image" content="https://future.f
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -161,13 +161,13 @@ or indirectly via <code><a href="future.html">future()</a></code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">futureOf</span><span class="op">(</span>
-  var <span class="op">=</span> <span class="cn">NULL</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  mustExist <span class="op">=</span> <span class="cn">TRUE</span>,
-  default <span class="op">=</span> <span class="cn">NA</span>,
-  drop <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">futureOf</span><span class="op">(</span></span>
+<span>  var <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  mustExist <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  default <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  drop <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -175,29 +175,40 @@ or indirectly via <code><a href="future.html">future()</a></code>.</p>
     <dl><dt>var</dt>
 <dd><p>the variable.  If NULL, all futures in the
 environment are returned.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>the environment where to search from.</p></dd>
+
+
 <dt>mustExist</dt>
 <dd><p>If TRUE and the variable does not exists, then
 an informative error is thrown, otherwise NA is returned.</p></dd>
+
+
 <dt>default</dt>
 <dd><p>the default value if future was not found.</p></dd>
+
+
 <dt>drop</dt>
 <dd><p>if TRUE and <code>var</code> is NULL, then returned list
 only contains futures, otherwise also <code>default</code> values.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="Future-class.html">Future</a> (or <code>default</code>).
+    
+
+<p>A <a href="Future-class.html">Future</a> (or <code>default</code>).
 If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">a</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">1</span> <span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">1</span> <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression:</span>
@@ -207,7 +218,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -216,13 +227,13 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">b</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">2</span> <span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">b</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">2</span> <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">b</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression:</span>
@@ -232,7 +243,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -241,12 +252,12 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## All futures</span></span>
-<span class="r-in"><span class="va">fs</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## All futures</span></span></span>
+<span class="r-in"><span><span class="va">fs</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
@@ -257,7 +268,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -266,7 +277,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
@@ -279,7 +290,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -288,7 +299,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $f</span>
@@ -301,7 +312,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -310,17 +321,17 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Futures part of environment</span></span>
-<span class="r-in"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">env</span><span class="op">$</span><span class="va">c</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">3</span> <span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">c</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Futures part of environment</span></span></span>
+<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">env</span><span class="op">$</span><span class="va">c</span> <span class="op"><a href="future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="fl">3</span> <span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">c</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression:</span>
@@ -330,7 +341,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -339,11 +350,11 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">c</span>, envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="va">c</span>, envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression:</span>
@@ -353,7 +364,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -362,11 +373,11 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="st">"c"</span>, envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">f3</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span><span class="st">"c"</span>, envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">f3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Expression:</span>
@@ -376,7 +387,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -385,11 +396,11 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">fs</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span>envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">fs</span> <span class="op">&lt;-</span> <span class="fu">futureOf</span><span class="op">(</span>envir <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fs</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> SequentialFuture:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Label: ‘&lt;none&gt;’</span>
@@ -400,7 +411,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Lazy evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Asynchronous evaluation: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Local evaluation: TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x560efe621a90</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Environment: 0x5578b1455d38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture standard output: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Capture condition classes: ‘condition’ (excluding ‘nothing’)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Globals: &lt;none&gt;</span>
@@ -409,7 +420,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Resolved: TRUE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Value: 56 bytes of class ‘numeric’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Early signaling: FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: 4575a0a0-1e24-f629-72bb-62e514a092c5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Owner process: bdf6b5eb-5231-7d72-4c20-473bd8b1f983</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Class: ‘SequentialFuture’, ‘UniprocessFuture’, ‘Future’, ‘environment’</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
@@ -426,7 +437,7 @@ If <code>var</code> is NULL, then a named list of Future:s are returned.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

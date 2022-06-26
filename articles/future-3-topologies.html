@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -202,20 +202,20 @@ Bengtsson</h4>
 of futures and so on. This may, for instance, occur within nested for
 loops, e.g.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span><span class="op">[[</span><span class="va">ii</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span>
-    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">y</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">ii</span> <span class="op">+</span> <span class="va">jj</span> <span class="op">/</span> <span class="fl">10</span> <span class="op">}</span>
-    <span class="op">}</span>
-    <span class="va">y</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-<span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">## [1] 1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span><span class="op">[[</span><span class="va">ii</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">y</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">ii</span> <span class="op">+</span> <span class="va">jj</span> <span class="op">/</span> <span class="fl">10</span> <span class="op">}</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">y</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">## [1] 1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3</span></span></code></pre></div>
 <p>The default is to use synchronous futures unless otherwise specified,
 which is also true for nested futures. If we for instance specify,
 <code>plan(multisession)</code>, the first layer of futures
@@ -236,24 +236,24 @@ generate 24 individual BAM files per sample - one per chromosome.</p>
 <p>Here is the layout of what such an analysis could look like in R
 using futures.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span>
-<span class="va">htseq_align</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fq</span>, <span class="va">chr</span><span class="op">)</span> <span class="op">{</span> <span class="va">chr</span> <span class="op">}</span>
-
-<span class="va">fqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[.]fastq$"</span><span class="op">)</span>
-
-<span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">ss</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fqs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">fq</span> <span class="op">&lt;-</span> <span class="va">fqs</span><span class="op">[</span><span class="va">ss</span><span class="op">]</span>
-  <span class="va">bams</span><span class="op">[[</span><span class="va">ss</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span>
-    <span class="va">bams_ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">cc</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">bams_ss</span><span class="op">[[</span><span class="va">cc</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">htseq_align</span><span class="op">(</span><span class="va">fq</span>, chr <span class="op">=</span> <span class="va">cc</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">bams_ss</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">}</span>
-<span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">bams</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
+<span><span class="va">htseq_align</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">fq</span>, <span class="va">chr</span><span class="op">)</span> <span class="op">{</span> <span class="va">chr</span> <span class="op">}</span></span>
+<span></span>
+<span><span class="va">fqs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"[.]fastq$"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">ss</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">fqs</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">fq</span> <span class="op">&lt;-</span> <span class="va">fqs</span><span class="op">[</span><span class="va">ss</span><span class="op">]</span></span>
+<span>  <span class="va">bams</span><span class="op">[[</span><span class="va">ss</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span></span>
+<span>    <span class="va">bams_ss</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">cc</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">24</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">bams_ss</span><span class="op">[[</span><span class="va">cc</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">htseq_align</span><span class="op">(</span><span class="va">fq</span>, chr <span class="op">=</span> <span class="va">cc</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">bams_ss</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">}</span></span>
+<span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">bams</span><span class="op">)</span></span></code></pre></div>
 <p>The default is to use synchronous futures, so without further
 specifications, the above will process each sample and each chromosome
 sequentially. Next, we will consider what can be done with the following
@@ -271,7 +271,7 @@ other words, we would like to evaluate the outer layer of futures using
 multisession futures and the inner ones as sequential futures. This can
 be specified as:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The internals for processing multisession future queries
 <code><a href="../reference/re-exports.html">availableCores()</a></code> to infer how many cores can be used
 simultaneously, so there is no need to explicitly specify that there are
@@ -284,7 +284,7 @@ explicit.</p>
 <p>If we instead would like to process the sample sequentially and the
 chromosomes in parallel, we can use:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">sequential</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">sequential</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="built-in-protection-against-recursive-parallelism">Built-in protection against recursive parallelism<a class="anchor" aria-label="anchor" href="#built-in-protection-against-recursive-parallelism"></a>
 </h4>
@@ -292,7 +292,7 @@ chromosomes in parallel, we can use:</p>
 in parallel. What if we want to process both layers in parallel? It’s
 tempting to use:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Although this does not give an error, we will find that the inner
 layer of futures will be processed sequentially just as if we would use
 <code>plan(list(multisession, sequential))</code>. This behavior is due
@@ -308,15 +308,15 @@ In that case, we would end up running on at most eight cores (= 2 * 4).
 This can be achieved by forcing a fixed number of workers at each
 layer:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>When using this approach, there is a risk of setting up too many
 concurrent workers. To make sure the setup respects
 <code><a href="../reference/re-exports.html">availableCores()</a></code>, use something like:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">4</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>However, before using nested parallelization on a single machine,
 make sure it is actually more efficient than using parallelization in
 only one of the layers.</p>
@@ -329,8 +329,8 @@ only one of the layers.</p>
 up to 48 alignment processes in parallel. A natural setup is to have one
 machine process one sample in parallel. We could specify this as:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><em>Comment:</em> Multisession futures are agile to its environment,
 that is, they will query the machine they are running on to find out how
 many parallel processes it can run at the same time.</p>
@@ -342,11 +342,11 @@ processes running on each machine leaving the remaining cores
 idle/unused. An alternative set up is then to use the following
 setup:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This will cause up to 24 (= 3*8) samples to be processed in parallel
 each processing two chromosomes at the same time.</p>
 </div>
@@ -366,62 +366,62 @@ session to evaluate R expression on the remote compute cluster and its
 three nodes. Here is a proof of concept illustrating how the different
 nested futures are evaluated on different machines.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span>
-
-<span class="co">## Set up access to remote login node (must have Rscript)</span>
-<span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span>, persistent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">login</span><span class="op">)</span>
-
-<span class="co">## Set up cluster nodes on login node</span>
-<span class="va">nodes</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">.keepme</span> <span class="op">&lt;-</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">makeClusterPSOCK</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span>
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">)</span>
-<span class="co">## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'</span>
-
-<span class="co">## Specify future topology</span>
-<span class="co">## login node -&gt; { cluster nodes } -&gt; { multiple cores }</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="va">login</span>,
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,
-  <span class="va">multisession</span>
-<span class="op">)</span><span class="op">)</span>
-
-
-<span class="co">## (a) This will be evaluated on the cluster login computer</span>
-<span class="va">x</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span>
-  <span class="va">thost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>
-  <span class="va">tpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">task</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">{</span>
-    <span class="co">## (b) This will be evaluated on a compute node on the cluster</span>
-    <span class="va">y</span><span class="op">[[</span><span class="va">task</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span>
-      <span class="va">mhost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>
-      <span class="va">mpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span>
-      <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span>
-      <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span> <span class="op">{</span>
-        <span class="co">## (c) These will be evaluated in separate processes on the same compute node</span>
-        <span class="va">z</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,
-                                top.host <span class="op">=</span> <span class="va">thost</span>, top.pid <span class="op">=</span> <span class="va">tpid</span>,
-                                mid.host <span class="op">=</span> <span class="va">mhost</span>, mid.pid <span class="op">=</span> <span class="va">mpid</span>,
-                                host <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>,
-                                pid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-      <span class="op">}</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">z</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">y</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-<span class="co">##   task top.host top.pid mid.host mid.pid host    pid</span>
-<span class="co">## 1    1    login  391547       n1  391878   n1 393943</span>
-<span class="co">## 2    1    login  391547       n1  391878   n1 393951</span>
-<span class="co">## 3    2    login  391547       n2  392204   n2 393971</span>
-<span class="co">## 4    2    login  391547       n2  392204   n2 393978</span>
-<span class="co">## 5    3    login  391547       n3  392527   n3 394040</span>
-<span class="co">## 6    3    login  391547       n3  392527   n3 394048</span>
-<span class="co">## 7    4    login  391547       n1  391878   n1 393959</span>
-<span class="co">## 8    4    login  391547       n1  391878   n1 393966</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Set up access to remote login node (must have Rscript)</span></span>
+<span><span class="va">login</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="st">"remote.server.org"</span>, persistent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">login</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Set up cluster nodes on login node</span></span>
+<span><span class="va">nodes</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">.keepme</span> <span class="op">&lt;-</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">makeClusterPSOCK</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span> <span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">)</span></span>
+<span><span class="co">## socket cluster with 3 nodes on hosts 'n1', 'n2', 'n3'</span></span>
+<span></span>
+<span><span class="co">## Specify future topology</span></span>
+<span><span class="co">## login node -&gt; { cluster nodes } -&gt; { multiple cores }</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="va">login</span>,</span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
+<span>  <span class="va">multisession</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## (a) This will be evaluated on the cluster login computer</span></span>
+<span><span class="va">x</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span></span>
+<span>  <span class="va">thost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="va">tpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">task</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co">## (b) This will be evaluated on a compute node on the cluster</span></span>
+<span>    <span class="va">y</span><span class="op">[[</span><span class="va">task</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span></span>
+<span>      <span class="va">mhost</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span></span>
+<span>      <span class="va">mpid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>      <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://listenv.futureverse.org/reference/listenv.html" class="external-link">listenv</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>      <span class="kw">for</span> <span class="op">(</span><span class="va">jj</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        <span class="co">## (c) These will be evaluated in separate processes on the same compute node</span></span>
+<span>        <span class="va">z</span><span class="op">[[</span><span class="va">jj</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,</span>
+<span>                                top.host <span class="op">=</span> <span class="va">thost</span>, top.pid <span class="op">=</span> <span class="va">tpid</span>,</span>
+<span>                                mid.host <span class="op">=</span> <span class="va">mhost</span>, mid.pid <span class="op">=</span> <span class="va">mpid</span>,</span>
+<span>                                host <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>                                pid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getpid.html" class="external-link">Sys.getpid</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="op">}</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">z</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">y</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">##   task top.host top.pid mid.host mid.pid host    pid</span></span>
+<span><span class="co">## 1    1    login  391547       n1  391878   n1 393943</span></span>
+<span><span class="co">## 2    1    login  391547       n1  391878   n1 393951</span></span>
+<span><span class="co">## 3    2    login  391547       n2  392204   n2 393971</span></span>
+<span><span class="co">## 4    2    login  391547       n2  392204   n2 393978</span></span>
+<span><span class="co">## 5    3    login  391547       n3  392527   n3 394040</span></span>
+<span><span class="co">## 6    3    login  391547       n3  392527   n3 394048</span></span>
+<span><span class="co">## 7    4    login  391547       n1  391878   n1 393959</span></span>
+<span><span class="co">## 8    4    login  391547       n1  391878   n1 393966</span></span></code></pre></div>
 <p>Try the above <code>x %&lt;-% { ... }</code> future with, say,
 <code>plan(list(sequential, multisession))</code> and see what the
 output will be.</p>
@@ -431,8 +431,8 @@ output will be.</p>
 </h2>
 <p>When using</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>the number of workers used on each of the nodes (<code>n1</code>,
 <code>n2</code>, and <code>n3</code>) is given by the value of
 <code><a href="../reference/re-exports.html">availableCores()</a></code> on each of those nodes. In turn,
@@ -451,18 +451,18 @@ instance, if <code>n1</code> and <code>n2</code> have eight cores, and
 16 cores, respectively.</p>
 <p>Another example is:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">customWorkers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>,
-    <span class="st">"n1"</span> <span class="op">=</span> <span class="fl">2L</span>,
-    <span class="st">"n2"</span> <span class="op">=</span> <span class="fl">3L</span>,
-    <span class="co">## default:</span>
-    <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="op">)</span>
-<span class="op">}</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,
-  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="va">customWorkers</span><span class="op">)</span>
-<span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">customWorkers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/switch.html" class="external-link">switch</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.info.html" class="external-link">Sys.info</a></span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="st">"nodename"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>    <span class="st">"n1"</span> <span class="op">=</span> <span class="fl">2L</span>,</span>
+<span>    <span class="st">"n2"</span> <span class="op">=</span> <span class="fl">3L</span>,</span>
+<span>    <span class="co">## default:</span></span>
+<span>    <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="va">customWorkers</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>In this case, node <code>n1</code> will always use two cores,
 <code>n2</code> three cores, and <code>n3</code> will respect what
 <code><a href="../reference/re-exports.html">availableCores()</a></code> returns.</p>
@@ -486,7 +486,7 @@ instance, if <code>n1</code> and <code>n2</code> have eight cores, and
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer>

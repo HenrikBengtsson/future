@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mandelbrot</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mandelbrot</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -167,6 +167,8 @@
     <dl><dt>Z</dt>
 <dd><p>A complex matrix for which convergence
 counts should be calculated.</p></dd>
+
+
 <dt>xmid, ymid, side, resolution</dt>
 <dd><p>Alternative specification of
 the complex plane <code>Z</code>, where
@@ -175,15 +177,22 @@ the complex plane <code>Z</code>, where
 <code>diff(range(Re(Z))) == side</code>,
 <code>diff(range(Im(Z))) == side</code>, and
 <code>dim(Z) == c(resolution, resolution)</code>.</p></dd>
+
+
 <dt>maxIter</dt>
 <dd><p>Maximum number of iterations per bin.</p></dd>
+
+
 <dt>tau</dt>
 <dd><p>A threshold; the radius when calling
 divergence (Mod(z) &gt; tau).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns an integer matrix (of class Mandelbrot) with
+    
+
+<p>Returns an integer matrix (of class Mandelbrot) with
 non-negative counts.</p>
     </div>
     <div id="author">
@@ -195,21 +204,21 @@ from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 (sic!).</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">mandelbrot</span><span class="op">(</span>xmid <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span>, ymid <span class="op">=</span> <span class="fl">0</span>, side <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu">mandelbrot</span><span class="op">(</span>xmid <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span>, ymid <span class="op">=</span> <span class="fl">0</span>, side <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  'Mandelbrot' int [1:400, 1:400] 1 1 1 1 1 1 1 1 1 1 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  - attr(*, "params")=List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ Z      : cplx [1:400, 1:400] -2.25-1.5i -2.25-1.49i -2.25-1.48i ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ maxIter: int 200</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ tau    : num 2</span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">counts</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -224,7 +233,7 @@ from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 (sic!).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

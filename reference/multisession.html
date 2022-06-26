@@ -25,7 +25,7 @@ parallel in another R session."><meta property="og:image" content="https://futur
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -163,19 +163,21 @@ parallel in another <span style="R">R</span> session</em>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">multisession</span><span class="op">(</span>
-  <span class="va">...</span>,
-  workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span>,
-  lazy <span class="op">=</span> <span class="cn">FALSE</span>,
-  rscript_libs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multisession</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  rscript_libs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="Future-class.html">Future()</a></code>.</p></dd>
+
+
 <dt>workers</dt>
 <dd><p>A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
@@ -183,9 +185,13 @@ before blocking.
 If a function, it is called without arguments <em>when the future
 is created</em> and its value is used to configure the workers.
 The function should return a numeric scalar.</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.</p></dd>
+
+
 <dt>rscript_libs</dt>
 <dd><p>A character vector of <span style="R">R</span> package library folders that
 the workers should use.  The default is <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code> so that multisession
@@ -196,28 +202,33 @@ created, i.e. when <code>plan(multisession)</code> is called.  Any changes to
 <code><a href="https://rdrr.io/r/base/libPaths.html" class="external-link">.libPaths()</a></code> in the main R session after the workers have been created
 will have no effect.</em>
 This is passed down as-is to <code><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">parallelly::makeClusterPSOCK()</a></code>.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="ClusterFuture-class.html">MultisessionFuture</a>.
+    
+
+<p>A <a href="ClusterFuture-class.html">MultisessionFuture</a>.
 If <code>workers == 1</code>, then all processing using done in the
-current/main <span style="R">R</span> session and we therefore fall back to using
-a lazy future.</p>
+current/main <span style="R">R</span> session and we therefore fall back to using a
+lazy future.  To override this fallback, use <code>workers = I(1)</code>.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function is <em>not</em> meant to be called directly.  Instead, the
 typical usages are:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Evaluate futures in parallel on the local machine via as many background</span>
-<span class="co"># processes as available to the current R process</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-
-<span class="co"># Evaluate futures in parallel on the local machine via two background</span>
-<span class="co"># processes</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Evaluate futures in parallel on the local machine via as many background</span></span>
+<span><span class="co"># processes as available to the current R process</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Evaluate futures in parallel on the local machine via two background</span></span>
+<span><span class="co"># processes</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>The background <span style="R">R</span> sessions (the "workers") are created using
 <code><a href="re-exports.html">makeClusterPSOCK()</a></code>.</p>
 <p>For the total number of
@@ -235,36 +246,36 @@ cores that are available for the current <span style="R">R</span> session.</p></
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Use multisession futures</span></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A global variable</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create future (explicitly)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A multisession future is evaluated in a separate R session.</span></span>
-<span class="r-in"><span class="co">## Changing the value of a global variable will not affect</span></span>
-<span class="r-in"><span class="co">## the result of the future.</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Use multisession futures</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A global variable</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create future (explicitly)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A multisession future is evaluated in a separate R session.</span></span></span>
+<span class="r-in"><span><span class="co">## Changing the value of a global variable will not affect</span></span></span>
+<span class="r-in"><span><span class="co">## the result of the future.</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Explicitly close multisession workers by switching plan</span></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Explicitly close multisession workers by switching plan</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -279,7 +290,7 @@ cores that are available for the current <span style="R">R</span> session.</p></
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

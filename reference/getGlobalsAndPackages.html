@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,48 +159,67 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getGlobalsAndPackages</span><span class="op">(</span>
-  <span class="va">expr</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,
-  tweak <span class="op">=</span> <span class="va">tweakExpression</span>,
-  globals <span class="op">=</span> <span class="cn">TRUE</span>,
-  locals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.globalsOf.locals"</span>, <span class="cn">TRUE</span><span class="op">)</span>,
-  resolve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.resolve"</span>, <span class="cn">NULL</span><span class="op">)</span>,
-  persistent <span class="op">=</span> <span class="cn">FALSE</span>,
-  maxSize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.maxSize"</span>, <span class="fl">500</span> <span class="op">*</span> <span class="fl">1024</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getGlobalsAndPackages</span><span class="op">(</span></span>
+<span>  <span class="va">expr</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  tweak <span class="op">=</span> <span class="va">tweakExpression</span>,</span>
+<span>  globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  locals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.globalsOf.locals"</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  resolve <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.resolve"</span>, <span class="cn">NULL</span><span class="op">)</span>,</span>
+<span>  persistent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  maxSize <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.globals.maxSize"</span>, <span class="fl">500</span> <span class="op">*</span> <span class="fl">1024</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>expr</dt>
 <dd><p>An <span style="R">R</span> expression whose globals should be found.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The environment from which globals should be searched.</p></dd>
+
+
 <dt>tweak</dt>
 <dd><p>(optional) A function that takes an expression and returned a modified one.</p></dd>
+
+
 <dt>globals</dt>
 <dd><p>(optional) a logical, a character vector, a named list, or a <a href="https://globals.futureverse.org/reference/Globals.html" class="external-link">Globals</a> object.  If TRUE, globals are identified by code inspection based on <code>expr</code> and <code>tweak</code> searching from environment <code>envir</code>.  If FALSE, no globals are used.  If a character vector, then globals are identified by lookup based their names <code>globals</code> searching from environment <code>envir</code>.  If a named list or a Globals object, the globals are used as is.</p></dd>
+
+
 <dt>locals</dt>
 <dd><p>Should globals part of any "local" environment of
 a function be included or not?</p></dd>
+
+
 <dt>resolve</dt>
 <dd><p>If TRUE, any future that is a global variables (or part of one) is resolved and replaced by a "constant" future.</p></dd>
+
+
 <dt>persistent</dt>
 <dd><p>If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignore, but may also trigger an informative error if option <span class="option">future.globals.onMissing</span> in <code>"error"</code> (should only be used for troubleshooting).</p></dd>
+
+
 <dt>maxSize</dt>
 <dd><p>The maximum allowed total size (in bytes) of globals - for
 the purpose of preventing too large exports / transfers happening by
 mistake.  If the total size of the global objects are greater than this
 limit, an informative error message is produced. If
 <code>maxSize = +Inf</code>, then this assertion is skipped. (Default: 500 MiB).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Not used.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A named list with elements <code>expr</code> (the tweaked expression), <code>globals</code> (a named list of class <a href="FutureGlobals.html">FutureGlobals</a>) and <code>packages</code> (a character string).</p>
+    
+
+<p>A named list with elements <code>expr</code> (the tweaked expression), <code>globals</code> (a named list of class <a href="FutureGlobals.html">FutureGlobals</a>) and <code>packages</code> (a character string).</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -219,7 +238,7 @@ limit, an informative error message is produced. If
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

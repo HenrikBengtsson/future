@@ -25,7 +25,7 @@ e.g. sequentially or in parallel."><meta property="og:image" content="https://fu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -163,15 +163,15 @@ e.g. sequentially or in parallel.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plan</span><span class="op">(</span>
-  strategy <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>,
-  substitute <span class="op">=</span> <span class="cn">TRUE</span>,
-  .skip <span class="op">=</span> <span class="cn">FALSE</span>,
-  .call <span class="op">=</span> <span class="cn">TRUE</span>,
-  .cleanup <span class="op">=</span> <span class="cn">TRUE</span>,
-  .init <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plan</span><span class="op">(</span></span>
+<span>  strategy <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .skip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  .call <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  .init <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -179,28 +179,43 @@ e.g. sequentially or in parallel.</p>
     <dl><dt>strategy</dt>
 <dd><p>The evaluation function (or name of it) to use
 for resolving a future.  If NULL, then the current strategy is returned.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional arguments overriding the default arguments
 of the evaluation function.  Which additional arguments are supported
 depends on what evaluation function is used, e.g. several support
 argument <code>workers</code> but not all.  For details, see the individual
 functions of which some are linked to below.</p></dd>
+
+
 <dt>substitute</dt>
 <dd><p>If TRUE, the <code>strategy</code> expression is
 <code><a href="https://rdrr.io/r/base/substitute.html" class="external-link">substitute()</a></code>:d, otherwise not.</p></dd>
+
+
 <dt>.skip</dt>
 <dd><p>(internal) If <code>TRUE</code>, then attempts to set a strategy
 that is the same as what is currently in use, will skipped.</p></dd>
+
+
 <dt>.call</dt>
 <dd><p>(internal) Used for recording the call to this function.</p></dd>
+
+
 <dt>.cleanup</dt>
 <dd><p>(internal) Used to stop implicitly started clusters.</p></dd>
+
+
 <dt>.init</dt>
 <dd><p>(internal) Used to initiate workers.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>If a new strategy is chosen, then the previous one is returned
+    
+
+<p>If a new strategy is chosen, then the previous one is returned
 (invisible), otherwise the current one is returned (visibly).</p>
     </div>
     <div id="details">
@@ -300,88 +315,88 @@ This behavior can be controlled via an <span style="R">R</span> option - see
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">c</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># An sequential future</span></span>
-<span class="r-in"><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="va">b</span> <span class="op">&lt;-</span> <span class="va">c</span> <span class="op">&lt;-</span> <span class="cn">NA_real_</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># An sequential future</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ a: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ b: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ c: num NA</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># A sequential future with lazy evaluation</span></span>
-<span class="r-in"><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span>, lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A sequential future with lazy evaluation</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span>, lazy <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ a: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ b: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ c: num NA</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># A multicore future (specified as a string)</span></span>
-<span class="r-in"><span class="fu">plan</span><span class="op">(</span><span class="st">"multicore"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A multicore future (specified as a string)</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="st">"multicore"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ a: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ b: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ c: num NA</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Multisession futures gives an error on R CMD check on</span></span>
-<span class="r-in"><span class="co">## Windows (but not Linux or macOS) for unknown reasons.</span></span>
-<span class="r-in"><span class="co">## The same code works in package tests.</span></span>
-<span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># A multisession future (specified via a string variable)</span></span>
-<span class="r-in"><span class="fu">plan</span><span class="op">(</span><span class="st">"future::multisession"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Multisession futures gives an error on R CMD check on</span></span></span>
+<span class="r-in"><span><span class="co">## Windows (but not Linux or macOS) for unknown reasons.</span></span></span>
+<span class="r-in"><span><span class="co">## The same code works in package tests.</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A multisession future (specified via a string variable)</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="st">"future::multisession"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 42</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">a</span>, b <span class="op">=</span> <span class="va">b</span>, c <span class="op">=</span> <span class="va">c</span><span class="op">)</span><span class="op">)</span> <span class="co">## All NAs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ a: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ b: num NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ c: num NA</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Explicitly close multisession workers by switching plan</span></span>
-<span class="r-in"><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Explicitly close multisession workers by switching plan</span></span></span>
+<span class="r-in"><span><span class="fu">plan</span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -396,7 +411,7 @@ This behavior can be controlled via an <span style="R">R</span> option - see
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

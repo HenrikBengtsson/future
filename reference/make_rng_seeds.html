@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -159,24 +159,31 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">make_rng_seeds</span><span class="op">(</span><span class="va">count</span>, seed <span class="op">=</span> <span class="cn">FALSE</span>, debug <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.debug"</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_rng_seeds</span><span class="op">(</span><span class="va">count</span>, seed <span class="op">=</span> <span class="cn">FALSE</span>, debug <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"future.debug"</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>count</dt>
 <dd><p>The number of RNG seeds to produce.</p></dd>
+
+
 <dt>seed</dt>
 <dd><p>A logical specifying whether RNG seeds should be generated
 or not.  (<code>seed = NULL</code> corresponds to <code>seed = FALSE</code>).
 If a list, then it should be of length <code>count</code> and each element should
 consist of a valid RNG seed.</p></dd>
+
+
 <dt>debug</dt>
 <dd><p>If <code>TRUE</code>, debug output is produced, otherwise not.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns a non-named list of length <code>count</code>, or <code>NULL</code>.
+    
+
+<p>Returns a non-named list of length <code>count</code>, or <code>NULL</code>.
 Any seed returned is a valid RNG seed.</p>
     </div>
 
@@ -192,7 +199,7 @@ Any seed returned is a valid RNG seed.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

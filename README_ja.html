@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -531,7 +531,7 @@ To use multicore futures, when supported, specify:
 -->
 <p>R がプロセスの<strong>フォーク (forking)</strong> をサポートしている OS（基本的には Windows 以外）では、バックグラウンドで R セッションを作成する代わりに、既存の R プロセスをフォークすることができる。 フォークがサポートされている場合、次のようにしてマルチコアフューチャを使用することができる。</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></span></code></pre></div>
 <!--
 Just like for multisession futures, the maximum number of parallel processes running will be decided by availableCores(), since in both cases the evaluation is done on the local machine.
 -->
@@ -593,8 +593,8 @@ For instance, the above cluster can be explicitly set up as:
 -->
 <p><code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code> で作られたクラスタなら何でもクラスタフューチャで利用できる。 例えば、上記のクラスタを明示的にセットアップするには次のように書く。</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 <!--
 Also, it is considered good style to shut down cluster cl when it is no longer needed, that is, calling parallel::stopCluster(cl). 
 However, it will shut itself down if the main process is terminated. 
@@ -662,7 +662,7 @@ First, the same evaluation strategies as above can be explicitly specified as:
 -->
 <p><code><a href="reference/plan.html">plan()</a></code> に戦略のリストを渡すことで、<strong>評価トポロジー</strong>を指定することができる。 例えば、上記と同じ評価トポロジーを明示的に指定するには次のようにする。</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <!--
 We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 -->
@@ -919,9 +919,9 @@ First, try with the sequential evaluation,
 -->
 <p>様々な戦略においてフューチャがどのように評価されるかの実例を見るには、このパッケージに含まれるマンデルブロ (Mandelbrot) デモを実行するとよい。 まず、逐次評価で実行してみよう。</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span>
-<span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://future.futureverse.org">"future"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <!--
 which resembles how the script would run if futures were not used. 
 Then, try multisession evaluation, which calculates the different Mandelbrot planes using parallel R processes running in the background. 
@@ -929,15 +929,15 @@ Try,
 -->
 <p>これはフューチャを使用しない場合の動作とほとんど同じである。 次に、マルチセッション評価を試してみよう。 これは異なるマンデルブロ平面をバックグラウンドで実行される R プロセスで並列に計算する。</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <!--
 Finally, if you have access to multiple machines you can try to set up a cluster of workers and use them, e.g.
 -->
 <p>最後に、複数の計算機にアクセスできる場合、クラスタのワーカを指定して実行できる。</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n2"</span>, <span class="st">"n5"</span>, <span class="st">"n6"</span>, <span class="st">"n6"</span>, <span class="st">"n9"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/demo.html" class="external-link">demo</a></span><span class="op">(</span><span class="st">"mandelbrot"</span>, package <span class="op">=</span> <span class="st">"future"</span>, ask <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="貢献するには">貢献するには<a class="anchor" aria-label="anchor" href="#%E8%B2%A2%E7%8C%AE%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF"></a></h2>
@@ -954,12 +954,12 @@ I am also open to contributions and collaborations of any kind.
 <h2 id="インストール">インストール<a class="anchor" aria-label="anchor" href="#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"></a></h2>
 <p>future パッケージは CRAN で利用可能であり、次のコードを実行してインストールできる。</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"future"</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="プレリリースバージョンのインストール">プレリリースバージョンのインストール<a class="anchor" aria-label="anchor" href="#%E3%83%97%E3%83%AC%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB"></a></h3>
 <p>プレリリースバージョンは GitHub の <code>develop</code> ブランチにあり、インストールするには次のようにする。</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/future"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"HenrikBengtsson/future"</span>, ref<span class="op">=</span><span class="st">"develop"</span><span class="op">)</span></span></code></pre></div>
 <p>これはソースからのインストールとなる。</p>
 <!-- pkgdown-drop-below -->
 </div>
@@ -989,7 +989,7 @@ To contribute to this package, please see [CONTRIBUTING.md](CONTRIBUTING.md).
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>

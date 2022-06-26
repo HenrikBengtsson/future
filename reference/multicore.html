@@ -25,7 +25,7 @@ parallel in another process."><meta property="og:image" content="https://future.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9102</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9004</span>
       </span>
     </div>
 
@@ -163,17 +163,19 @@ parallel in another process</em>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">multicore</span><span class="op">(</span>
-  <span class="va">...</span>,
-  workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span>constraints <span class="op">=</span> <span class="st">"multicore"</span><span class="op">)</span>,
-  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">multicore</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableCores</a></span><span class="op">(</span>constraints <span class="op">=</span> <span class="st">"multicore"</span><span class="op">)</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Additional arguments passed to <code><a href="Future-class.html">Future()</a></code>.</p></dd>
+
+
 <dt>workers</dt>
 <dd><p>A positive numeric scalar or a function specifying the
 maximum number of parallel futures that can be active at the same time
@@ -181,28 +183,34 @@ before blocking.
 If a function, it is called without arguments <em>when the future
 is created</em> and its value is used to configure the workers.
 The function should return a numeric scalar.</p></dd>
+
+
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <a href="MulticoreFuture-class.html">MulticoreFuture</a>.
+    
+
+<p>A <a href="MulticoreFuture-class.html">MulticoreFuture</a>.
 If <code>workers == 1</code>, then all processing using done in the
-current/main <span style="R">R</span> session and we therefore fall back to using
-an sequential future.  This is also the case whenever multicore
-processing is not supported, e.g. on Windows.</p>
+current/main <span style="R">R</span> session and we therefore fall back to using a
+sequential future. To override this fallback, use <code>workers = I(1)</code>.
+This is also the case whenever multicore processing is not supported,
+e.g. on Windows.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>This function is <em>not</em> meant to be called directly.  Instead, the
 typical usages are:</p>
-<p></p><div class="sourceCode r"><pre><code><span class="co"># Evaluate futures in parallel on the local machine via as many forked</span>
-<span class="co"># processes as available to the current R process</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span>
-
-<span class="co"># Evaluate futures in parallel on the local machine via two forked processes</span>
-<span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre><p></p></div>
+<p></p><div class="sourceCode r"><pre><code><span><span class="co"># Evaluate futures in parallel on the local machine via as many forked</span></span>
+<span><span class="co"># processes as available to the current R process</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Evaluate futures in parallel on the local machine via two forked processes</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre><p></p></div>
     </div>
     <div id="support-for-forked-multicore-processing">
     <h2>Support for forked ("multicore") processing</h2>
@@ -239,30 +247,30 @@ system.</p></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Use multicore futures</span></span>
-<span class="r-in"><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A global variable</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## Create future (explicitly)</span></span>
-<span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span class="r-in">  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span class="r-in">  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## A multicore future is evaluated in a separate forked</span></span>
-<span class="r-in"><span class="co">## process.  Changing the value of a global variable</span></span>
-<span class="r-in"><span class="co">## will not affect the result of the future.</span></span>
-<span class="r-in"><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Use multicore futures</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plan.html">plan</a></span><span class="op">(</span><span class="va">multicore</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A global variable</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">0</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create future (explicitly)</span></span></span>
+<span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="future.html">future</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>  <span class="va">c</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
+<span class="r-in"><span>  <span class="va">a</span> <span class="op">*</span> <span class="va">b</span> <span class="op">*</span> <span class="va">c</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## A multicore future is evaluated in a separate forked</span></span></span>
+<span class="r-in"><span><span class="co">## process.  Changing the value of a global variable</span></span></span>
+<span class="r-in"><span><span class="co">## will not affect the result of the future.</span></span></span>
+<span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fl">7</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">v</span> <span class="op">&lt;-</span> <span class="fu"><a href="value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">v</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="va">v</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -277,7 +285,7 @@ system.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>
