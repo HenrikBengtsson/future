@@ -10,6 +10,9 @@
 
  * Some warnings and errors showed the wrong call.
 
+ * `print()` for `FutureResult` would report captured conditions all
+   with class `list`, instead of their condition classes.
+   
 
 # Version 1.26.1 [2022-05-28]
 
