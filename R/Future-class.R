@@ -101,7 +101,7 @@
 #' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base:delayedAssign]{promise}}.
 #'
-#' @importFrom parallel nextRNGStream
+#' @importFrom parallel nextRNGStream nextRNGSubStream
 #' @export
 #' @keywords internal
 #' @name Future-class

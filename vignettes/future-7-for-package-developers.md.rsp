@@ -48,7 +48,7 @@ f <- future({
 
 Similarly, we should avoid having the future code write to the local file system because the parent R session might not have access to that file system.
 
-By keeping the future smell test is mind when writing future code, we increase the chances that the code can be parallelized in more ways that on just the local computer.  Properly written future code will work regardless of what future strategy the end-user picks, e.g.
+By keeping the future smell test in mind when writing future code, we increase the chances that the code can be parallelized in more ways than on just the local computer.  Properly written future code will work regardless of what future strategy the end-user picks, e.g.
 
 ```r
 plan(sequential)
