@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.26.1-9007</span>
       </span>
     </div>
 
@@ -198,9 +198,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tryCatch(withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpjk11LB/callr-fun-3dd44a40e3aded"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDIl8CQ/callr-fun-dbd1e41e57f2e"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
@@ -209,50 +210,44 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         rm("__callr_dump__", envir = .GlobalEnv)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e$call &lt;- deparse(conditionCall(e), nlines = 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error(conditionMessage(e), call. = conditionCall(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$error &lt;- e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         calls &lt;- sys.calls()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(dcframe)) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$`_ignore` &lt;- list(c(1, dcframe + 1L))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_pid` &lt;- Sys.getpid()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_timestamp` &lt;- Sys.time()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (inherits(e, "rlib_error_2_0")) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$parent &lt;- e$parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2, embed = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         rm("__callr_dump__", envir = .GlobalEnv)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e$call &lt;- deparse(conditionCall(e), nlines = 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error(conditionMessage(e), call. = conditionCall(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$error &lt;- e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         calls &lt;- sys.calls()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(dcframe)) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$`_ignore` &lt;- list(c(1, dcframe + 1L))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_pid` &lt;- Sys.getpid()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_timestamp` &lt;- Sys.time()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (inherits(e, "rlib_error_2_0")) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$parent &lt;- e$parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2, embed = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
@@ -287,9 +282,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpjk11LB/callr-fun-3dd44a40e3aded"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDIl8CQ/callr-fun-dbd1e41e57f2e"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
@@ -298,50 +294,44 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         rm("__callr_dump__", envir = .GlobalEnv)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e$call &lt;- deparse(conditionCall(e), nlines = 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error(conditionMessage(e), call. = conditionCall(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$error &lt;- e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         calls &lt;- sys.calls()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(dcframe)) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$`_ignore` &lt;- list(c(1, dcframe + 1L))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_pid` &lt;- Sys.getpid()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_timestamp` &lt;- Sys.time()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (inherits(e, "rlib_error_2_0")) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$parent &lt;- e$parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2, embed = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         assign(".Last.dump", .GlobalEnv$`__callr_dump__`, envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         rm("__callr_dump__", envir = .GlobalEnv)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e$call &lt;- deparse(conditionCall(e), nlines = 6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error(conditionMessage(e), call. = conditionCall(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$error &lt;- e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         calls &lt;- sys.calls()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         dcframe &lt;- which(vapply(calls, function(x) length(x) &gt;= </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             1 &amp;&amp; identical(x[[1]], quote(do.call)), logical(1)))[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(dcframe)) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$`_ignore` &lt;- list(c(1, dcframe + 1L))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_pid` &lt;- Sys.getpid()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2$`_timestamp` &lt;- Sys.time()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (inherits(e, "rlib_error_2_0")) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$parent &lt;- e$parent</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2, embed = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2), file = paste0("/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
@@ -349,12 +339,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/hb/Rtmpjk11LB/callr-fun-3dd44a40e3aded"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpDIl8CQ/callr-fun-dbd1e41e57f2e"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/hb/Rtmpjk11LB/callr-res-3dd44a8c216a5")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/hb/RtmpDIl8CQ/callr-res-dbd1e181a888f", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/hb/Rtmpjk11LB/callr-fun-3dd44a40e3aded"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/hb/RtmpDIl8CQ/callr-fun-dbd1e41e57f2e"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -366,14 +357,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     if (quote) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         args &lt;- lapply(args, enquote)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     .Internal(do.call(what, args, envir))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> })(base::quote(function (..., crayon_enabled, crayon_colors, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown_internet) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })(base::quote(function (..., cli_colors, pkgdown_internet) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.26.1-9006", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/Rtmpjk11LB/future", dst_path = "/tmp/hb/Rtmpjk11LB/future/docs", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.26.1-9007", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmpDIl8CQ/future", dst_path = "/tmp/hb/RtmpDIl8CQ/future/docs", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         url = "https://future.futureverse.org", home = list(links = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
@@ -415,8 +405,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FutureCondition.Rd = "FutureCondition", FutureGlobals.Rd = "FutureGlobals", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FutureResult.Rd = "FutureResult", `MulticoreFuture-class.Rd` = "MulticoreFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `MultiprocessFuture-class.Rd` = "MultiprocessFuture-class", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     `UniprocessFuture-class.Rd` = "UniprocessFuture-class", as_lecyer_cmrg_seed.Rd = "as_lecyer_cmrg_seed", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     backtrace.Rd = "backtrace", cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     `UniprocessFuture-class.Rd` = "UniprocessFuture-class", backtrace.Rd = "backtrace", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     find_references.Rd = "find_references", future.Rd = "future", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     future.options.Rd = "future.options", futureOf.Rd = "futureOf", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     futureSessionInfo.Rd = "futureSessionInfo", futures.Rd = "futures", </span>
@@ -425,13 +415,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-label-grapes.Rd` = "%label%", `grapes-lazy-grapes.Rd` = "%lazy%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-plan-grapes.Rd` = "%plan%", `grapes-seed-grapes.Rd` = "%seed%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-stdout-grapes.Rd` = "%stdout%", `grapes-tweak-grapes.Rd` = "%tweak%", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     make_rng_seeds.Rd = "make_rng_seeds", mandelbrot.Rd = "mandelbrot", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     multicore.Rd = "multicore", multiprocess.Rd = "multiprocess", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     multisession.Rd = "multisession", nbrOfWorkers.Rd = "nbrOfWorkers", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", plan.Rd = "plan", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     private_length.Rd = ".length", `re-exports.Rd` = "re-exports", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     readImmediateConditions.Rd = "readImmediateConditions", remote.Rd = "remote", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     requestCore.Rd = "requestCore", resetWorkers.Rd = "resetWorkers", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     mandelbrot.Rd = "mandelbrot", multicore.Rd = "multicore", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     multiprocess.Rd = "multiprocess", multisession.Rd = "multisession", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     nbrOfWorkers.Rd = "nbrOfWorkers", nullcon.Rd = "nullcon", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     pid_exists.Rd = "pid_exists", plan.Rd = "plan", private_length.Rd = ".length", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     `re-exports.Rd` = "re-exports", readImmediateConditions.Rd = "readImmediateConditions", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     remote.Rd = "remote", requestCore.Rd = "requestCore", resetWorkers.Rd = "resetWorkers", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     resolve.Rd = "resolve", resolved.Rd = "resolved", result.Rd = "result.Future", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     run.Rd = "run.Future", save_rds.Rd = "save_rds", sequential.Rd = "sequential", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sessionDetails.Rd = "sessionDetails", signalConditions.Rd = "signalConditions", </span>
@@ -440,23 +429,22 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture-class.Rd", "Future-class.Rd", "FutureCondition.Rd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureGlobals.Rd", "FutureResult.Rd", "MulticoreFuture-class.Rd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture-class.Rd", "UniprocessFuture-class.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "as_lecyer_cmrg_seed.Rd", "backtrace.Rd", "cluster.Rd", "clusterExportSticky.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "find_references.Rd", "future.Rd", "future.options.Rd", "futureOf.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "futureSessionInfo.Rd", "futures.Rd", "getExpression.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "getGlobalsAndPackages.Rd", "grapes-conditions-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-globals-grapes.Rd", "grapes-label-grapes.Rd", "grapes-lazy-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-plan-grapes.Rd", "grapes-seed-grapes.Rd", "grapes-stdout-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-tweak-grapes.Rd", "make_rng_seeds.Rd", "mandelbrot.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "multicore.Rd", "multiprocess.Rd", "multisession.Rd", "nbrOfWorkers.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "nullcon.Rd", "pid_exists.Rd", "plan.Rd", "private_length.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "re-exports.Rd", "readImmediateConditions.Rd", "remote.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "requestCore.Rd", "resetWorkers.Rd", "resolve.Rd", "resolved.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "result.Rd", "run.Rd", "save_rds.Rd", "sequential.Rd", "sessionDetails.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "signalConditions.Rd", "sticky_globals.Rd", "tweak.Rd", "usedCores.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "value.Rd"), file_out = c("ClusterFuture-class.html", "ConstantFuture-class.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Future-class.html", "FutureCondition.html", "FutureGlobals.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureResult.html", "MulticoreFuture-class.html", "MultiprocessFuture-class.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "UniprocessFuture-class.html", "as_lecyer_cmrg_seed.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "backtrace.Rd", "cluster.Rd", "clusterExportSticky.Rd", "find_references.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future.Rd", "future.options.Rd", "futureOf.Rd", "futureSessionInfo.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "futures.Rd", "getExpression.Rd", "getGlobalsAndPackages.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-conditions-grapes.Rd", "grapes-globals-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-label-grapes.Rd", "grapes-lazy-grapes.Rd", "grapes-plan-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-seed-grapes.Rd", "grapes-stdout-grapes.Rd", "grapes-tweak-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "mandelbrot.Rd", "multicore.Rd", "multiprocess.Rd", "multisession.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "nbrOfWorkers.Rd", "nullcon.Rd", "pid_exists.Rd", "plan.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "private_length.Rd", "re-exports.Rd", "readImmediateConditions.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "remote.Rd", "requestCore.Rd", "resetWorkers.Rd", "resolve.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "resolved.Rd", "result.Rd", "run.Rd", "save_rds.Rd", "sequential.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "sessionDetails.Rd", "signalConditions.Rd", "sticky_globals.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "tweak.Rd", "usedCores.Rd", "value.Rd"), file_out = c("ClusterFuture-class.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture-class.html", "Future-class.html", "FutureCondition.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureGlobals.html", "FutureResult.html", "MulticoreFuture-class.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture-class.html", "UniprocessFuture-class.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "backtrace.html", "cluster.html", "clusterExportSticky.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "find_references.html", "future.html", "future.options.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "futureOf.html", "futureSessionInfo.html", "futures.html", </span>
@@ -464,15 +452,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-globals-grapes.html", "grapes-label-grapes.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-lazy-grapes.html", "grapes-plan-grapes.html", "grapes-seed-grapes.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-stdout-grapes.html", "grapes-tweak-grapes.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "make_rng_seeds.html", "mandelbrot.html", "multicore.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "multiprocess.html", "multisession.html", "nbrOfWorkers.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "nullcon.html", "pid_exists.html", "plan.html", "private_length.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "re-exports.html", "readImmediateConditions.html", "remote.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "requestCore.html", "resetWorkers.html", "resolve.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "resolved.html", "result.html", "run.html", "save_rds.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "sequential.html", "sessionDetails.html", "signalConditions.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "sticky_globals.html", "tweak.html", "usedCores.html", "value.html"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ), alias = list(`ClusterFuture-class.Rd` = c("ClusterFuture-class", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "mandelbrot.html", "multicore.html", "multiprocess.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "multisession.html", "nbrOfWorkers.html", "nullcon.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "pid_exists.html", "plan.html", "private_length.html", "re-exports.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "readImmediateConditions.html", "remote.html", "requestCore.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "resetWorkers.html", "resolve.html", "resolved.html", "result.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "run.html", "save_rds.html", "sequential.html", "sessionDetails.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "signalConditions.html", "sticky_globals.html", "tweak.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "usedCores.html", "value.html"), alias = list(`ClusterFuture-class.Rd` = c("ClusterFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ClusterFuture", "MultisessionFuture", "MultisessionFuture-class"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), `ConstantFuture-class.Rd` = c("ConstantFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture"), `Future-class.Rd` = c("Future-class", </span>
@@ -486,7 +473,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MulticoreFuture"), `MultiprocessFuture-class.Rd` = c("MultiprocessFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture"), `UniprocessFuture-class.Rd` = c("UniprocessFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "UniprocessFuture", "SequentialFuture", "TransparentFuture"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ), as_lecyer_cmrg_seed.Rd = c("as_lecyer_cmrg_seed", "is_lecyer_cmrg_seed"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), backtrace.Rd = "backtrace", cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references", "assert_no_references"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future", "futureCall", "futureAssign", </span>
@@ -513,12 +499,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "%packages%"), `grapes-label-grapes.Rd` = "%label%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "%lazy%", `grapes-plan-grapes.Rd` = "%plan%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "%seed%", `grapes-stdout-grapes.Rd` = "%stdout%", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "%tweak%", make_rng_seeds.Rd = "make_rng_seeds", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = c("mandelbrot", "as.raster.Mandelbrot", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "plot.Mandelbrot", "mandelbrot_tiles"), multicore.Rd = "multicore", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "multiprocess", multisession.Rd = "multisession", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         nbrOfWorkers.Rd = c("nbrOfWorkers", "nbrOfFreeWorkers"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "%tweak%", mandelbrot.Rd = c("mandelbrot", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "as.raster.Mandelbrot", "plot.Mandelbrot", "mandelbrot_tiles"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         ), multicore.Rd = "multicore", multiprocess.Rd = "multiprocess", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession", nbrOfWorkers.Rd = c("nbrOfWorkers", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers"), nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan", private_length.Rd = ".length", `re-exports.Rd` = c("re-exports", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "as.cluster", "autoStopCluster", "availableCores", "availableWorkers", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "makeClusterMPI", "makeClusterPSOCK", "makeNodePSOCK", </span>
@@ -542,8 +527,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = c("UniprocessFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "SequentialFuture()", "TransparentFuture()"), as_lecyer_cmrg_seed.Rd = c("as_lecyer_cmrg_seed()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "is_lecyer_cmrg_seed()"), backtrace.Rd = "backtrace()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "SequentialFuture()", "TransparentFuture()"), backtrace.Rd = "backtrace()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references()", "assert_no_references()"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
@@ -554,11 +538,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "`%packages%`"), `grapes-label-grapes.Rd` = "`%label%`", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "`%lazy%`", `grapes-plan-grapes.Rd` = "`%plan%`", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "`%seed%`", `grapes-stdout-grapes.Rd` = "`%stdout%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", make_rng_seeds.Rd = "make_rng_seeds()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = "mandelbrot()", multicore.Rd = "multicore()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "multiprocess()", multisession.Rd = "multisession()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         nbrOfWorkers.Rd = c("nbrOfWorkers()", "nbrOfFreeWorkers()"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", mandelbrot.Rd = "mandelbrot()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multicore.Rd = "multicore()", multiprocess.Rd = "multiprocess()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession()", nbrOfWorkers.Rd = c("nbrOfWorkers()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers()"), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan()", private_length.Rd = ".length()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
@@ -577,7 +560,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MulticoreFuture-class.Rd` = "A multicore future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = "An uniprocess future is a future whose value will be resolved synchronously in the current process", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         as_lecyer_cmrg_seed.Rd = "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         backtrace.Rd = "Back trace the expressions evaluated when an error was caught", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "Create a cluster future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         clusterExportSticky.Rd = "Export globals to the sticky-globals environment of the cluster nodes", </span>
@@ -595,7 +577,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "Set random seed for future assignment", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-stdout-grapes.Rd` = "Control whether standard output should be captured or not", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "Temporarily tweaks the arguments of the current strategy", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         make_rng_seeds.Rd = "Produce Reproducible Seeds for Parallel Random Number Generation", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = "Mandelbrot convergence counts", multicore.Rd = "Create a multicore future whose value will be resolved asynchronously in a forked parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "Create a multisession future whose value will be resolved asynchronously in a parallel &lt;span style=\"R\"&gt;R&lt;/span&gt; session", </span>
@@ -981,62 +962,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "\n", list(list("Usage"), list("\n", "\n", "To use 'sequential' futures, use ", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list("plan(sequential)"), ", cf. ", list("sequential"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 ".\n")), "\n", "\n", list("internal"), "\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             as_lecyer_cmrg_seed.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("as_lecyer_cmrg_seed"), "\n", list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "as_lecyer_cmrg_seed"), "\n", list("is_lecyer_cmrg_seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "as_lecyer_cmrg_seed(seed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "is_lecyer_cmrg_seed(seed)\n"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("\n", list(list("seed"), list("TRUE or NA, or a numeric vector of length one or seven.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", list("as_lecyer_cmrg_seed(seed)"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " returns a L'Ecuyer-CMRG seed, which is a\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "7-digit integer vector, based on the input ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), ".\n", "If already a L'Ecuyer-CMRG seed, then ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), " is return as-is.\n", "If a scalar integer, then a random L'Ecuyer-CMRG seed is created based\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "on this seed as the current RNG state.\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "If ", list("seed = TRUE"), " and the current seed is already a L'Ecuyer-CMRG seed,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "then then current seed (", list(".Random.seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ") is return as-is.\n", "If ", list("seed = TRUE"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " and the current seed is ", list("not"), " of the 'L'Ecuyer-CMRG' kind,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "or ", list("seed = NA"), ", then a random one is created (based on the current RNG\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "state).\n", "Any other values, including FALSE, is an error.\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", list("is_lecyer_cmrg_seed(seed)"), " returns TRUE if ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), " is L'Ecuyer-CMRG seed,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "otherwise FALSE.\n"), "\n", list("\n", "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "The ", list("as_lecyer_cmrg_seed()"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " function preserves the current RNG state, that\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "is, it leaves ", list("globalenv()$.Random.seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " intact, which means it also leaved\n", "the RNG kind (", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("RNGkind()"), ") intact.\n", "\n", "Per ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list(list("base::RNGkind()")), ", a L'Ecuyer-CMRG seed comprise a length-seven integer\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "vector of format ", list(".Random.seed &lt;- c(rng.kind, n)"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " where ", list("length(n) == 6L"), " and ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("rng.kind"), " fulfills ", list("rng.kind %% 10000L == 407L"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ".\n"), "\n", list("\n", "# The current RNG kind\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "okind &lt;- RNGkind()\n", "oseed &lt;- globalenv()$.Random.seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "# (a) A L'Ecuyer-CMRG seed based on a numeric-scalar seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed1 &lt;- future:::as_lecyer_cmrg_seed(42)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed1)\n", "## int [1:7] 10407 -2133391687 507561766 1260545903 1362917092 -1772566379 -1344458670\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "# The RNG kind and the RNG state is preserved\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  future:::is_lecyer_cmrg_seed(seed1),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(RNGkind(), okind),\n", "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n", "\n", "# (b) A L'Ecuyer-CMRG seed based on a L'Ecuyer-CMRG seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed2 &lt;- future:::as_lecyer_cmrg_seed(seed1)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed2)\n", "## int [1:7] 10407 -2133391687 507561766 1260545903 1362917092 -1772566379 -1344458670\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "# The input L'Ecuyer-CMRG seed is returned as-is\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(identical(seed2, seed1))\n", "# The RNG kind and the RNG state is preserved\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  future:::is_lecyer_cmrg_seed(seed2),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(RNGkind(), okind),\n", "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n", "\n", "# (c) A L'Ecuyer-CMRG seed based on the current RNG state\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed3 &lt;- future:::as_lecyer_cmrg_seed(TRUE)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed3)\n", "## int [1:7] 10407 495333909 -1491719214 416071979 49340016 1956499377 899435966\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(future:::is_lecyer_cmrg_seed(seed3))\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "\n", "# All of the above calls preserve the RNG state including the RNG kind\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  identical(RNGkind(), okind),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n"), "\n", list("internal"), "\n"), backtrace.Rd = list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "% Generated by roxygen2: do not edit by hand", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             backtrace.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/backtrace.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("backtrace"), "\n", list("backtrace"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Back trace the expressions evaluated when an error was caught"), </span>
@@ -1876,25 +1802,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "A named list (or vector) with arguments that\n", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "should be changed relative to the current strategy.")), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", "Temporarily tweaks the arguments of the current strategy\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), make_rng_seeds.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("make_rng_seeds"), "\n", list("make_rng_seeds"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Produce Reproducible Seeds for Parallel Random Number Generation"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "make_rng_seeds(count, seed = FALSE, debug = getOption(\"future.debug\", FALSE))\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", list(list("count"), list("The number of RNG seeds to produce.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "\n", list(list("seed"), list("A logical specifying whether RNG seeds should be generated\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     "or not.  (", list("seed = NULL"), " corresponds to ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     list("seed = FALSE"), ").\n", "If a list, then it should be of length ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     list("count"), " and each element should\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     "consist of a valid RNG seed.")), "\n", "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list(list("debug"), list("If ", list("TRUE"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     ", debug output is produced, otherwise not.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", "Returns a non-named list of length ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("count"), ", or ", list("NULL"), ".\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "Any seed returned is a valid RNG seed.\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "Produce Reproducible Seeds for Parallel Random Number Generation\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("internal"), "\n"), mandelbrot.Rd = list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "% Generated by roxygen2: do not edit by hand", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), mandelbrot.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/mandelbrot.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("mandelbrot"), "\n", list("mandelbrot"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("as.raster.Mandelbrot"), "\n", list(</span>
@@ -2749,24 +2657,22 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `MulticoreFuture-class.Rd` = "R/MulticoreFuture-class.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `MultiprocessFuture-class.Rd` = "R/MultiprocessFuture-class.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `UniprocessFuture-class.Rd` = "R/UniprocessFuture-class.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             as_lecyer_cmrg_seed.Rd = "R/rng.R", backtrace.Rd = "R/backtrace.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             cluster.Rd = "R/cluster.R", clusterExportSticky.Rd = "R/sticky_globals.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             find_references.Rd = "R/utils-marshalling.R", future.Rd = c("R/future.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "R/futureAssign.R", "R/futureAssign_OP.R", "R/futureCall.R"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             ), future.options.Rd = "R/options.R", futureOf.Rd = "R/futureOf.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             futureSessionInfo.Rd = "R/futureSessionInfo.R", futures.Rd = "R/futures.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             getExpression.Rd = "R/Future-class.R", getGlobalsAndPackages.Rd = "R/globals.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-conditions-grapes.Rd` = "R/conditions_OP.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             backtrace.Rd = "R/backtrace.R", cluster.Rd = "R/cluster.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             clusterExportSticky.Rd = "R/sticky_globals.R", find_references.Rd = "R/utils-marshalling.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             future.Rd = c("R/future.R", "R/futureAssign.R", "R/futureAssign_OP.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "R/futureCall.R"), future.options.Rd = "R/options.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futureOf.Rd = "R/futureOf.R", futureSessionInfo.Rd = "R/futureSessionInfo.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futures.Rd = "R/futures.R", getExpression.Rd = "R/Future-class.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             getGlobalsAndPackages.Rd = "R/globals.R", `grapes-conditions-grapes.Rd` = "R/conditions_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-globals-grapes.Rd` = "R/globals_OP.R", `grapes-label-grapes.Rd` = "R/label_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-lazy-grapes.Rd` = "R/lazy_OP.R", `grapes-plan-grapes.Rd` = "R/plan_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-seed-grapes.Rd` = "R/seed_OP.R", `grapes-stdout-grapes.Rd` = "R/stdout_OP.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-tweak-grapes.Rd` = "R/tweak_OP.R", make_rng_seeds.Rd = "R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             mandelbrot.Rd = "R/mandelbrot.R", multicore.Rd = "R/multicore.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             multiprocess.Rd = "R/multiprocess.R", multisession.Rd = "R/multisession.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             nbrOfWorkers.Rd = "R/nbrOfWorkers.R", nullcon.Rd = "R/utils.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             pid_exists.Rd = "R/utils.R", plan.Rd = "R/zzz.plan.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             private_length.Rd = "R/utils.R", `re-exports.Rd` = "R/000.re-exports.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             readImmediateConditions.Rd = "R/utils-immediateCondition.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-tweak-grapes.Rd` = "R/tweak_OP.R", mandelbrot.Rd = "R/mandelbrot.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multicore.Rd = "R/multicore.R", multiprocess.Rd = "R/multiprocess.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multisession.Rd = "R/multisession.R", nbrOfWorkers.Rd = "R/nbrOfWorkers.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             nullcon.Rd = "R/utils.R", pid_exists.Rd = "R/utils.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             plan.Rd = "R/zzz.plan.R", private_length.Rd = "R/utils.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `re-exports.Rd` = "R/000.re-exports.R", readImmediateConditions.Rd = "R/utils-immediateCondition.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             remote.Rd = "R/remote.R", requestCore.Rd = "R/multicore.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             resetWorkers.Rd = "R/zzz.plan.R", resolve.Rd = "R/resolve.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             resolved.Rd = "R/resolved.R", result.Rd = "R/Future-class.R", </span>
@@ -2776,19 +2682,18 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             tweak.Rd = "R/tweak.R", usedCores.Rd = "R/multicore.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             value.Rd = "R/value.R"), keywords = list("internal", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internals", "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), "internal", "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", character(0), character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", character(0), character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0)), concepts = list(character(0), character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", character(0), "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", character(0)), concepts = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
@@ -2803,17 +2708,17 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0)), internal = c(TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE)), tutorials = list(name = character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         file_out = character(0), title = character(0), pagetitle = character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         url = character(0)), vignettes = list(name = c("future-1-overview", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-2-output", "future-3-topologies", "future-4-issues", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-4-non-exportable-objects", "future-5-startup", "future-6-future-api-backend-specification", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         )), tutorials = list(name = character(0), file_out = character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         title = character(0), pagetitle = character(0), url = character(0)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     vignettes = list(name = c("future-1-overview", "future-2-output", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-3-topologies", "future-4-issues", "future-4-non-exportable-objects", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-5-startup", "future-6-future-api-backend-specification", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "future-7-for-package-developers", "future-8-how-future-is-validated"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), file_in = c("vignettes/future-1-overview.Rmd", "vignettes/future-2-output.Rmd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "vignettes/future-3-topologies.Rmd", "vignettes/future-4-issues.Rmd", </span>
@@ -2837,18 +2742,17 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1L, 1L, 1L, 1L, 1L, 1L)), bs_version = 3, prefix = ""), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     examples = TRUE, run_dont_run = FALSE, seed = 1014, lazy = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     override = list(), install = FALSE, preview = FALSE, new_process = FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     devel = FALSE, crayon_enabled = TRUE, crayon_colors = 16777216L, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown_internet = TRUE)), envir = base::quote(&lt;environment&gt;), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = base::quote(TRUE))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     devel = FALSE, cli_colors = 16777216L, pkgdown_internet = TRUE)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     envir = base::quote(&lt;environment&gt;), quote = base::quote(TRUE))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (function (..., crayon_enabled, crayon_colors, pkgdown_internet) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (function (..., cli_colors, pkgdown_internet) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     options(crayon.enabled = crayon_enabled, crayon.colors = crayon_colors, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.26.1-9006", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/Rtmpjk11LB/future", dst_path = "/tmp/hb/Rtmpjk11LB/future/docs", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.26.1-9007", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmpDIl8CQ/future", dst_path = "/tmp/hb/RtmpDIl8CQ/future/docs", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         url = "https://future.futureverse.org", home = list(links = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
@@ -2890,8 +2794,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FutureCondition.Rd = "FutureCondition", FutureGlobals.Rd = "FutureGlobals", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FutureResult.Rd = "FutureResult", `MulticoreFuture-class.Rd` = "MulticoreFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `MultiprocessFuture-class.Rd` = "MultiprocessFuture-class", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     `UniprocessFuture-class.Rd` = "UniprocessFuture-class", as_lecyer_cmrg_seed.Rd = "as_lecyer_cmrg_seed", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     backtrace.Rd = "backtrace", cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     `UniprocessFuture-class.Rd` = "UniprocessFuture-class", backtrace.Rd = "backtrace", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     find_references.Rd = "find_references", future.Rd = "future", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     future.options.Rd = "future.options", futureOf.Rd = "futureOf", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     futureSessionInfo.Rd = "futureSessionInfo", futures.Rd = "futures", </span>
@@ -2900,13 +2804,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-label-grapes.Rd` = "%label%", `grapes-lazy-grapes.Rd` = "%lazy%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-plan-grapes.Rd` = "%plan%", `grapes-seed-grapes.Rd` = "%seed%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     `grapes-stdout-grapes.Rd` = "%stdout%", `grapes-tweak-grapes.Rd` = "%tweak%", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     make_rng_seeds.Rd = "make_rng_seeds", mandelbrot.Rd = "mandelbrot", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     multicore.Rd = "multicore", multiprocess.Rd = "multiprocess", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     multisession.Rd = "multisession", nbrOfWorkers.Rd = "nbrOfWorkers", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", plan.Rd = "plan", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     private_length.Rd = ".length", `re-exports.Rd` = "re-exports", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     readImmediateConditions.Rd = "readImmediateConditions", remote.Rd = "remote", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     requestCore.Rd = "requestCore", resetWorkers.Rd = "resetWorkers", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     mandelbrot.Rd = "mandelbrot", multicore.Rd = "multicore", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     multiprocess.Rd = "multiprocess", multisession.Rd = "multisession", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     nbrOfWorkers.Rd = "nbrOfWorkers", nullcon.Rd = "nullcon", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     pid_exists.Rd = "pid_exists", plan.Rd = "plan", private_length.Rd = ".length", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     `re-exports.Rd` = "re-exports", readImmediateConditions.Rd = "readImmediateConditions", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     remote.Rd = "remote", requestCore.Rd = "requestCore", resetWorkers.Rd = "resetWorkers", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     resolve.Rd = "resolve", resolved.Rd = "resolved", result.Rd = "result.Future", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     run.Rd = "run.Future", save_rds.Rd = "save_rds", sequential.Rd = "sequential", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sessionDetails.Rd = "sessionDetails", signalConditions.Rd = "signalConditions", </span>
@@ -2915,23 +2818,22 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture-class.Rd", "Future-class.Rd", "FutureCondition.Rd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureGlobals.Rd", "FutureResult.Rd", "MulticoreFuture-class.Rd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture-class.Rd", "UniprocessFuture-class.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "as_lecyer_cmrg_seed.Rd", "backtrace.Rd", "cluster.Rd", "clusterExportSticky.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "find_references.Rd", "future.Rd", "future.options.Rd", "futureOf.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "futureSessionInfo.Rd", "futures.Rd", "getExpression.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "getGlobalsAndPackages.Rd", "grapes-conditions-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-globals-grapes.Rd", "grapes-label-grapes.Rd", "grapes-lazy-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-plan-grapes.Rd", "grapes-seed-grapes.Rd", "grapes-stdout-grapes.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-tweak-grapes.Rd", "make_rng_seeds.Rd", "mandelbrot.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "multicore.Rd", "multiprocess.Rd", "multisession.Rd", "nbrOfWorkers.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "nullcon.Rd", "pid_exists.Rd", "plan.Rd", "private_length.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "re-exports.Rd", "readImmediateConditions.Rd", "remote.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "requestCore.Rd", "resetWorkers.Rd", "resolve.Rd", "resolved.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "result.Rd", "run.Rd", "save_rds.Rd", "sequential.Rd", "sessionDetails.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "signalConditions.Rd", "sticky_globals.Rd", "tweak.Rd", "usedCores.Rd", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "value.Rd"), file_out = c("ClusterFuture-class.html", "ConstantFuture-class.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "Future-class.html", "FutureCondition.html", "FutureGlobals.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureResult.html", "MulticoreFuture-class.html", "MultiprocessFuture-class.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "UniprocessFuture-class.html", "as_lecyer_cmrg_seed.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "backtrace.Rd", "cluster.Rd", "clusterExportSticky.Rd", "find_references.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future.Rd", "future.options.Rd", "futureOf.Rd", "futureSessionInfo.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "futures.Rd", "getExpression.Rd", "getGlobalsAndPackages.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-conditions-grapes.Rd", "grapes-globals-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-label-grapes.Rd", "grapes-lazy-grapes.Rd", "grapes-plan-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-seed-grapes.Rd", "grapes-stdout-grapes.Rd", "grapes-tweak-grapes.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "mandelbrot.Rd", "multicore.Rd", "multiprocess.Rd", "multisession.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "nbrOfWorkers.Rd", "nullcon.Rd", "pid_exists.Rd", "plan.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "private_length.Rd", "re-exports.Rd", "readImmediateConditions.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "remote.Rd", "requestCore.Rd", "resetWorkers.Rd", "resolve.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "resolved.Rd", "result.Rd", "run.Rd", "save_rds.Rd", "sequential.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "sessionDetails.Rd", "signalConditions.Rd", "sticky_globals.Rd", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "tweak.Rd", "usedCores.Rd", "value.Rd"), file_out = c("ClusterFuture-class.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture-class.html", "Future-class.html", "FutureCondition.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "FutureGlobals.html", "FutureResult.html", "MulticoreFuture-class.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture-class.html", "UniprocessFuture-class.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "backtrace.html", "cluster.html", "clusterExportSticky.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "find_references.html", "future.html", "future.options.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "futureOf.html", "futureSessionInfo.html", "futures.html", </span>
@@ -2939,15 +2841,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-globals-grapes.html", "grapes-label-grapes.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-lazy-grapes.html", "grapes-plan-grapes.html", "grapes-seed-grapes.html", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "grapes-stdout-grapes.html", "grapes-tweak-grapes.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "make_rng_seeds.html", "mandelbrot.html", "multicore.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "multiprocess.html", "multisession.html", "nbrOfWorkers.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "nullcon.html", "pid_exists.html", "plan.html", "private_length.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "re-exports.html", "readImmediateConditions.html", "remote.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "requestCore.html", "resetWorkers.html", "resolve.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "resolved.html", "result.html", "run.html", "save_rds.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "sequential.html", "sessionDetails.html", "signalConditions.html", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "sticky_globals.html", "tweak.html", "usedCores.html", "value.html"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ), alias = list(`ClusterFuture-class.Rd` = c("ClusterFuture-class", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "mandelbrot.html", "multicore.html", "multiprocess.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "multisession.html", "nbrOfWorkers.html", "nullcon.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "pid_exists.html", "plan.html", "private_length.html", "re-exports.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "readImmediateConditions.html", "remote.html", "requestCore.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "resetWorkers.html", "resolve.html", "resolved.html", "result.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "run.html", "save_rds.html", "sequential.html", "sessionDetails.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "signalConditions.html", "sticky_globals.html", "tweak.html", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "usedCores.html", "value.html"), alias = list(`ClusterFuture-class.Rd` = c("ClusterFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ClusterFuture", "MultisessionFuture", "MultisessionFuture-class"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), `ConstantFuture-class.Rd` = c("ConstantFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "ConstantFuture"), `Future-class.Rd` = c("Future-class", </span>
@@ -2961,7 +2862,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MulticoreFuture"), `MultiprocessFuture-class.Rd` = c("MultiprocessFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "MultiprocessFuture"), `UniprocessFuture-class.Rd` = c("UniprocessFuture-class", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "UniprocessFuture", "SequentialFuture", "TransparentFuture"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ), as_lecyer_cmrg_seed.Rd = c("as_lecyer_cmrg_seed", "is_lecyer_cmrg_seed"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), backtrace.Rd = "backtrace", cluster.Rd = "cluster", clusterExportSticky.Rd = "clusterExportSticky", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references", "assert_no_references"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future", "futureCall", "futureAssign", </span>
@@ -2988,12 +2888,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "%packages%"), `grapes-label-grapes.Rd` = "%label%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "%lazy%", `grapes-plan-grapes.Rd` = "%plan%", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "%seed%", `grapes-stdout-grapes.Rd` = "%stdout%", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "%tweak%", make_rng_seeds.Rd = "make_rng_seeds", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = c("mandelbrot", "as.raster.Mandelbrot", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "plot.Mandelbrot", "mandelbrot_tiles"), multicore.Rd = "multicore", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "multiprocess", multisession.Rd = "multisession", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         nbrOfWorkers.Rd = c("nbrOfWorkers", "nbrOfFreeWorkers"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "%tweak%", mandelbrot.Rd = c("mandelbrot", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "as.raster.Mandelbrot", "plot.Mandelbrot", "mandelbrot_tiles"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         ), multicore.Rd = "multicore", multiprocess.Rd = "multiprocess", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession", nbrOfWorkers.Rd = c("nbrOfWorkers", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers"), nullcon.Rd = "nullcon", pid_exists.Rd = "pid_exists", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan", private_length.Rd = ".length", `re-exports.Rd` = c("re-exports", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "as.cluster", "autoStopCluster", "availableCores", "availableWorkers", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "makeClusterMPI", "makeClusterPSOCK", "makeNodePSOCK", </span>
@@ -3017,8 +2916,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = c("UniprocessFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "SequentialFuture()", "TransparentFuture()"), as_lecyer_cmrg_seed.Rd = c("as_lecyer_cmrg_seed()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "is_lecyer_cmrg_seed()"), backtrace.Rd = "backtrace()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "SequentialFuture()", "TransparentFuture()"), backtrace.Rd = "backtrace()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references()", "assert_no_references()"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
@@ -3029,11 +2927,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "`%packages%`"), `grapes-label-grapes.Rd` = "`%label%`", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "`%lazy%`", `grapes-plan-grapes.Rd` = "`%plan%`", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "`%seed%`", `grapes-stdout-grapes.Rd` = "`%stdout%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", make_rng_seeds.Rd = "make_rng_seeds()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = "mandelbrot()", multicore.Rd = "multicore()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "multiprocess()", multisession.Rd = "multisession()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         nbrOfWorkers.Rd = c("nbrOfWorkers()", "nbrOfFreeWorkers()"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", mandelbrot.Rd = "mandelbrot()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multicore.Rd = "multicore()", multiprocess.Rd = "multiprocess()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession()", nbrOfWorkers.Rd = c("nbrOfWorkers()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers()"), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan()", private_length.Rd = ".length()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
@@ -3052,7 +2949,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MulticoreFuture-class.Rd` = "A multicore future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "A multiprocess future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = "An uniprocess future is a future whose value will be resolved synchronously in the current process", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         as_lecyer_cmrg_seed.Rd = "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         backtrace.Rd = "Back trace the expressions evaluated when an error was caught", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "Create a cluster future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         clusterExportSticky.Rd = "Export globals to the sticky-globals environment of the cluster nodes", </span>
@@ -3070,7 +2966,6 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "Set random seed for future assignment", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-stdout-grapes.Rd` = "Control whether standard output should be captured or not", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "Temporarily tweaks the arguments of the current strategy", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         make_rng_seeds.Rd = "Produce Reproducible Seeds for Parallel Random Number Generation", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         mandelbrot.Rd = "Mandelbrot convergence counts", multicore.Rd = "Create a multicore future whose value will be resolved asynchronously in a forked parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         multiprocess.Rd = "Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "Create a multisession future whose value will be resolved asynchronously in a parallel &lt;span style=\"R\"&gt;R&lt;/span&gt; session", </span>
@@ -3456,62 +3351,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "\n", list(list("Usage"), list("\n", "\n", "To use 'sequential' futures, use ", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list("plan(sequential)"), ", cf. ", list("sequential"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 ".\n")), "\n", "\n", list("internal"), "\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             as_lecyer_cmrg_seed.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("as_lecyer_cmrg_seed"), "\n", list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "as_lecyer_cmrg_seed"), "\n", list("is_lecyer_cmrg_seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "as_lecyer_cmrg_seed(seed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "is_lecyer_cmrg_seed(seed)\n"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("\n", list(list("seed"), list("TRUE or NA, or a numeric vector of length one or seven.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", list("as_lecyer_cmrg_seed(seed)"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " returns a L'Ecuyer-CMRG seed, which is a\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "7-digit integer vector, based on the input ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), ".\n", "If already a L'Ecuyer-CMRG seed, then ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), " is return as-is.\n", "If a scalar integer, then a random L'Ecuyer-CMRG seed is created based\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "on this seed as the current RNG state.\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "If ", list("seed = TRUE"), " and the current seed is already a L'Ecuyer-CMRG seed,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "then then current seed (", list(".Random.seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ") is return as-is.\n", "If ", list("seed = TRUE"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " and the current seed is ", list("not"), " of the 'L'Ecuyer-CMRG' kind,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "or ", list("seed = NA"), ", then a random one is created (based on the current RNG\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "state).\n", "Any other values, including FALSE, is an error.\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", list("is_lecyer_cmrg_seed(seed)"), " returns TRUE if ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("seed"), " is L'Ecuyer-CMRG seed,\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "otherwise FALSE.\n"), "\n", list("\n", "Get a L'Ecuyer-CMRG seed either from an input seed or the current RNG state\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "The ", list("as_lecyer_cmrg_seed()"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " function preserves the current RNG state, that\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "is, it leaves ", list("globalenv()$.Random.seed"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " intact, which means it also leaved\n", "the RNG kind (", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("RNGkind()"), ") intact.\n", "\n", "Per ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list(list("base::RNGkind()")), ", a L'Ecuyer-CMRG seed comprise a length-seven integer\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "vector of format ", list(".Random.seed &lt;- c(rng.kind, n)"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   " where ", list("length(n) == 6L"), " and ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("rng.kind"), " fulfills ", list("rng.kind %% 10000L == 407L"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ".\n"), "\n", list("\n", "# The current RNG kind\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "okind &lt;- RNGkind()\n", "oseed &lt;- globalenv()$.Random.seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "# (a) A L'Ecuyer-CMRG seed based on a numeric-scalar seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed1 &lt;- future:::as_lecyer_cmrg_seed(42)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed1)\n", "## int [1:7] 10407 -2133391687 507561766 1260545903 1362917092 -1772566379 -1344458670\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "# The RNG kind and the RNG state is preserved\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  future:::is_lecyer_cmrg_seed(seed1),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(RNGkind(), okind),\n", "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n", "\n", "# (b) A L'Ecuyer-CMRG seed based on a L'Ecuyer-CMRG seed\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed2 &lt;- future:::as_lecyer_cmrg_seed(seed1)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed2)\n", "## int [1:7] 10407 -2133391687 507561766 1260545903 1362917092 -1772566379 -1344458670\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "# The input L'Ecuyer-CMRG seed is returned as-is\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(identical(seed2, seed1))\n", "# The RNG kind and the RNG state is preserved\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  future:::is_lecyer_cmrg_seed(seed2),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(RNGkind(), okind),\n", "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n", "\n", "# (c) A L'Ecuyer-CMRG seed based on the current RNG state\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "seed3 &lt;- future:::as_lecyer_cmrg_seed(TRUE)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "str(seed3)\n", "## int [1:7] 10407 495333909 -1491719214 416071979 49340016 1956499377 899435966\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(future:::is_lecyer_cmrg_seed(seed3))\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "\n", "# All of the above calls preserve the RNG state including the RNG kind\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "stopifnot(\n", "  identical(RNGkind(), okind),\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "  identical(globalenv()$.Random.seed, oseed)\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   ")\n"), "\n", list("internal"), "\n"), backtrace.Rd = list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "% Generated by roxygen2: do not edit by hand", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             backtrace.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/backtrace.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("backtrace"), "\n", list("backtrace"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Back trace the expressions evaluated when an error was caught"), </span>
@@ -4351,25 +4191,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "A named list (or vector) with arguments that\n", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "should be changed relative to the current strategy.")), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", "Temporarily tweaks the arguments of the current strategy\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), make_rng_seeds.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("make_rng_seeds"), "\n", list("make_rng_seeds"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("Produce Reproducible Seeds for Parallel Random Number Generation"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "make_rng_seeds(count, seed = FALSE, debug = getOption(\"future.debug\", FALSE))\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", list(list("count"), list("The number of RNG seeds to produce.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", "\n", list(list("seed"), list("A logical specifying whether RNG seeds should be generated\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     "or not.  (", list("seed = NULL"), " corresponds to ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     list("seed = FALSE"), ").\n", "If a list, then it should be of length ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     list("count"), " and each element should\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     "consist of a valid RNG seed.")), "\n", "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list(list("debug"), list("If ", list("TRUE"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                     ", debug output is produced, otherwise not.")), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n"), "\n", list("\n", "Returns a non-named list of length ", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   list("count"), ", or ", list("NULL"), ".\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   "Any seed returned is a valid RNG seed.\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "Produce Reproducible Seeds for Parallel Random Number Generation\n"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("internal"), "\n"), mandelbrot.Rd = list(</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "% Generated by roxygen2: do not edit by hand", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), mandelbrot.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/mandelbrot.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("mandelbrot"), "\n", list("mandelbrot"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("as.raster.Mandelbrot"), "\n", list(</span>
@@ -5224,24 +5046,22 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `MulticoreFuture-class.Rd` = "R/MulticoreFuture-class.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `MultiprocessFuture-class.Rd` = "R/MultiprocessFuture-class.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `UniprocessFuture-class.Rd` = "R/UniprocessFuture-class.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             as_lecyer_cmrg_seed.Rd = "R/rng.R", backtrace.Rd = "R/backtrace.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             cluster.Rd = "R/cluster.R", clusterExportSticky.Rd = "R/sticky_globals.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             find_references.Rd = "R/utils-marshalling.R", future.Rd = c("R/future.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "R/futureAssign.R", "R/futureAssign_OP.R", "R/futureCall.R"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             ), future.options.Rd = "R/options.R", futureOf.Rd = "R/futureOf.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             futureSessionInfo.Rd = "R/futureSessionInfo.R", futures.Rd = "R/futures.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             getExpression.Rd = "R/Future-class.R", getGlobalsAndPackages.Rd = "R/globals.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-conditions-grapes.Rd` = "R/conditions_OP.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             backtrace.Rd = "R/backtrace.R", cluster.Rd = "R/cluster.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             clusterExportSticky.Rd = "R/sticky_globals.R", find_references.Rd = "R/utils-marshalling.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             future.Rd = c("R/future.R", "R/futureAssign.R", "R/futureAssign_OP.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "R/futureCall.R"), future.options.Rd = "R/options.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futureOf.Rd = "R/futureOf.R", futureSessionInfo.Rd = "R/futureSessionInfo.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futures.Rd = "R/futures.R", getExpression.Rd = "R/Future-class.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             getGlobalsAndPackages.Rd = "R/globals.R", `grapes-conditions-grapes.Rd` = "R/conditions_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-globals-grapes.Rd` = "R/globals_OP.R", `grapes-label-grapes.Rd` = "R/label_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-lazy-grapes.Rd` = "R/lazy_OP.R", `grapes-plan-grapes.Rd` = "R/plan_OP.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-seed-grapes.Rd` = "R/seed_OP.R", `grapes-stdout-grapes.Rd` = "R/stdout_OP.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-tweak-grapes.Rd` = "R/tweak_OP.R", make_rng_seeds.Rd = "R/rng.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             mandelbrot.Rd = "R/mandelbrot.R", multicore.Rd = "R/multicore.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             multiprocess.Rd = "R/multiprocess.R", multisession.Rd = "R/multisession.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             nbrOfWorkers.Rd = "R/nbrOfWorkers.R", nullcon.Rd = "R/utils.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             pid_exists.Rd = "R/utils.R", plan.Rd = "R/zzz.plan.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             private_length.Rd = "R/utils.R", `re-exports.Rd` = "R/000.re-exports.R", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             readImmediateConditions.Rd = "R/utils-immediateCondition.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-tweak-grapes.Rd` = "R/tweak_OP.R", mandelbrot.Rd = "R/mandelbrot.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multicore.Rd = "R/multicore.R", multiprocess.Rd = "R/multiprocess.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multisession.Rd = "R/multisession.R", nbrOfWorkers.Rd = "R/nbrOfWorkers.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             nullcon.Rd = "R/utils.R", pid_exists.Rd = "R/utils.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             plan.Rd = "R/zzz.plan.R", private_length.Rd = "R/utils.R", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `re-exports.Rd` = "R/000.re-exports.R", readImmediateConditions.Rd = "R/utils-immediateCondition.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             remote.Rd = "R/remote.R", requestCore.Rd = "R/multicore.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             resetWorkers.Rd = "R/zzz.plan.R", resolve.Rd = "R/resolve.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             resolved.Rd = "R/resolved.R", result.Rd = "R/Future-class.R", </span>
@@ -5251,19 +5071,18 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             tweak.Rd = "R/tweak.R", usedCores.Rd = "R/multicore.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             value.Rd = "R/value.R"), keywords = list("internal", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internals", "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), "internal", "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", character(0), character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), "internal", character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", character(0), character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", character(0), "internal", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0)), concepts = list(character(0), character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", character(0), "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "internal", "internal", "internal", "internal", character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", "internal", "internal", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), "internal", character(0)), concepts = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
@@ -5278,17 +5097,17 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0), character(0), character(0), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             character(0), character(0)), internal = c(TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE)), tutorials = list(name = character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         file_out = character(0), title = character(0), pagetitle = character(0), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         url = character(0)), vignettes = list(name = c("future-1-overview", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-2-output", "future-3-topologies", "future-4-issues", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-4-non-exportable-objects", "future-5-startup", "future-6-future-api-backend-specification", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, TRUE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         FALSE, TRUE, FALSE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, FALSE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         )), tutorials = list(name = character(0), file_out = character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         title = character(0), pagetitle = character(0), url = character(0)), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     vignettes = list(name = c("future-1-overview", "future-2-output", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-3-topologies", "future-4-issues", "future-4-non-exportable-objects", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     "future-5-startup", "future-6-future-api-backend-specification", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "future-7-for-package-developers", "future-8-how-future-is-validated"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ), file_in = c("vignettes/future-1-overview.Rmd", "vignettes/future-2-output.Rmd", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     "vignettes/future-3-topologies.Rmd", "vignettes/future-4-issues.Rmd", </span>
@@ -5314,8 +5133,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     seed = base::quote(1014), lazy = base::quote(FALSE), override = base::quote(list()), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     install = base::quote(FALSE), preview = base::quote(FALSE), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     new_process = base::quote(FALSE), devel = base::quote(FALSE), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     crayon_enabled = base::quote(TRUE), crayon_colors = base::quote(16777216L), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown_internet = base::quote(TRUE))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     cli_colors = base::quote(16777216L), pkgdown_internet = base::quote(TRUE))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> pkgdown::build_site(...)</span>
@@ -5478,7 +5296,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6</p> and <a href="https://github.com/HenrikBengtsson/pkgdown.extras/">pkgdown.extras</a> 0.0.0.9004.</p>
 </div>
 
       </footer></div>
