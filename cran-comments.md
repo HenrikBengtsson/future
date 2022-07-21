@@ -37,4 +37,21 @@ print(res)
 gives
 
 ```
+── future 1.27.0: OK
+
+  Build ID:   future_1.27.0.tar.gz-5cf5a76733974b00b84516fa4abd8a12
+  Platform:   macOS 10.13.6 High Sierra, R-release, CRAN's setup
+  Submitted:  6m 43.5s ago
+  Build time: 6m 39.3s
+
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
+
+── future 1.27.0: OK
+
+  Build ID:   future_1.27.0.tar.gz-c55a6090f379411ab1e413ccc96c1ede
+  Platform:   Apple Silicon (M1), macOS 11.6 Big Sur, R-release
+  Submitted:  6m 43.5s ago
+  Build time: 3m 14s
+
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```
