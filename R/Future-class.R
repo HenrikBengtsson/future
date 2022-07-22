@@ -101,7 +101,7 @@
 #' right-hand-side (RHS) \R expression and assigns its future value
 #' to a variable as a \emph{\link[base:delayedAssign]{promise}}.
 #'
-#' @importFrom parallel nextRNGStream
+#' @importFrom parallel nextRNGStream nextRNGSubStream
 #' @export
 #' @keywords internal
 #' @name Future-class
@@ -661,8 +661,8 @@ getExpression.Future <- local({
 
   tmpl_exit_mccores <- bquote_compile({
     ## covr: skip=2
-    .(exit)
     base::options(mc.cores = ...future.mc.cores.old)
+    .(exit)
   })
 
   tmpl_enter_rng <- bquote_compile({
@@ -712,6 +712,9 @@ getExpression.Future <- local({
     else
       Sys.setenv(R_FUTURE_PLAN = .(oenv))
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+    ## FIXME: If we move .(exit) here, then 'R CMD check' on MS Windows
+    ## complain about leftover RscriptXXXXX temporary files. /2022-07-21
+    ## .(exit)
   })
 
   function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {

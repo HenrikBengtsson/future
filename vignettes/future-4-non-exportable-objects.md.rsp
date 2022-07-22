@@ -69,6 +69,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   Package         | Examples of non-exportable types or classes
   :---------------|:-------------------------------------------
   **base**        | connection (`externalptr`)
+  **cpp11**       | E.g. functions created by `cpp_source()`
   **DBI**         | DBIConnection (`externalptr`)
   **inline**      | CFunc (`externalptr` of class DLLHandle)
   **keras**       | keras.engine.sequential.Sequential (`externalptr`)
@@ -135,6 +136,43 @@ However, there are objects with _external pointer_:s that can be exported, e.g. 
 Below are some examples of packages who produce non-exportable objects with _external pointer_:s.
 
 
+#### Package: cpp11
+
+Another example is **[cpp11]**, which allows us to easily create R functions that are implemented in C++, e.g.
+
+```r
+cpp11::cpp_source(code = '
+#include "cpp11/doubles.hpp"
+using namespace cpp11;
+
+[[cpp11::register]]
+int my_length(doubles x) {
+    return x.size();
+}
+')
+```
+
+so that:
+
+```
+x <- rnorm(10)
+my_length(x)
+## [1] 10
+```
+
+However, this function cannot be exported to another R process:
+
+```r
+library(future)
+plan(multisession)
+x <- rnorm(10)
+n %<-% my_length(x)
+n
+#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") : 
+#>   "_code_1748ff617940b9_my_length" not available for .Call() for package "code_1748ff617940b9"
+```
+
+
 #### Package: DBI
 
 **[DBI]** provides a unified database interface for communication between R and various database engines.  Analogously to regular connections in R, DBIConnection objects can _not_ safely be exported to another R process, e.g.
@@ -152,7 +190,7 @@ dummy %<-% print(con)
 
 #### Package: inline
 
-Another example is **[inline]**, which allow us to easily create R functions that are implemented in C and C++, e.g.
+Another example is **[inline]**, which allows us to easily create R functions that are implemented in C and C++, e.g.
 
 ```r
 library(inline)
@@ -251,6 +289,7 @@ The **[raster]** package provides methods for working with spatial data, which a
 ```r
 library(future)
 plan(multisession)
+options(future.globals.onReference = "error")
 
 library(raster)
 r <- raster(system.file("external/test.grd", package = "raster"))
@@ -270,10 +309,10 @@ Note that it is only the RasterLayer object `s` that carries an external pointer
 
 #### Package: Rcpp
 
-Another example is **[Rcpp]**, which allow us to easily create R functions that are implemented in C++, e.g.
+Similarly to **cpp11**, **[Rcpp]** can be use to create R functions that are implemented in C++, e.g.
 
 ```r
-Rcpp::sourceCpp(code = "
+Rcpp::sourceCpp(code = '
 #include <Rcpp.h>
 using namespace Rcpp;
 
@@ -281,7 +320,7 @@ using namespace Rcpp;
 int my_length(NumericVector x) {
     return x.size();
 }
-")
+')
 ```
 
 so that:
@@ -297,6 +336,7 @@ However, since this function uses an external pointer internally, we cannot pass
 ```r
 library(future)
 plan(multisession)
+x <- rnorm(10)
 n %<-% my_length(x)
 n
 ## Error in .Call(<pointer: (nil)>, x) : NULL value passed as symbol address
@@ -493,12 +533,38 @@ dr %<-% dim(data)
 ## 'SpatRaster') used in the future expression
 ```
 
-For some workarounds, see `help("wrap", package = "terra")`.
+Functions `wrap()` and `vect()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
+
+```r
+library(future)
+plan(multisession)
+library(terra)
+
+file <- system.file("ex/lux.shp", package = "terra")
+v <- vect(file)
+.v <- wrap(v)
+dv %<-% { v <- vect(.v); dim(v) }
+rm(.v) ## not needed anymore
+dv
+[1] 12  6
+```
+
+and
+
+```r
+file <- system.file("ex/elev.tif", package="terra")
+r <- rast(file)
+.r <- wrap(v)
+dr %<-% { r <- vect(.r); dim(r) }
+rm(.r) ## not needed anymore
+dr
+[1] 12  6
+```
+
+For more details, see `help("wrap", package = "terra")`.
 
 
 #### Package: udpipe
-
-The **[udpipe]** package use non-exportable objects;
 
 ```r
 library(future)
@@ -763,6 +829,7 @@ str(e)
 
 
 [data.table]: https://cran.r-project.org/package=data.table
+[cpp11]: https://cran.r-project.org/package=cpp11
 [DBI]: https://cran.r-project.org/package=DBI
 [inline]: https://cran.r-project.org/package=inline
 [keras]: https://cran.r-project.org/package=DBI

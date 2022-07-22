@@ -133,8 +133,8 @@ getExpression.UniprocessFuture <- local({
   })
   
   tmpl_exit_rng_undo <- bquote_compile({
-    .(exit)
     base::assign(".Random.seed", .(oseed), envir = base::globalenv(), inherits = FALSE)
+    .(exit)
   })
 
 function(future, immediateConditions = TRUE, exit = NULL, ...) {

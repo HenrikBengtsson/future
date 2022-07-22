@@ -19,18 +19,6 @@ assert_no_positional_args_but_first <- function(call = sys.call(sys.parent())) {
   }
 }
 
-stopf <- function(fmt, ..., call. = TRUE, domain = NULL) {  #nolint
-  stop(sprintf(fmt, ...), call. = call., domain = domain)
-}
-
-warnf <- function(fmt, ..., call. = TRUE, immediate. = FALSE, domain = NULL) {  #nolint
-  warning(sprintf(fmt, ...), call. = call., immediate. = immediate., domain = domain)
-}
-
-msgf <- function(fmt, ..., appendLF = FALSE, domain = NULL) {  #nolint
-  message(sprintf(fmt, ...), appendLF = appendLF, domain = domain)
-}
-
 stop_if_not <- function(...) {
   res <- list(...)
   for (ii in 1L:length(res)) {
