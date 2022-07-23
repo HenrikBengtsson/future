@@ -748,6 +748,7 @@ getExpression.Future <- local({
   ## Reset future strategies when done
   tmpl_exit_plan <- bquote_compile({
     ## covr: skip=2
+    .(exit)
     ## Reset option 'future.plan' and env var 'R_FUTURE_PLAN'
     options(future.plan = .(getOption("future.plan")))
     if (is.na(.(oenv <- Sys.getenv("R_FUTURE_PLAN", NA_character_))))
@@ -755,7 +756,9 @@ getExpression.Future <- local({
     else
       Sys.setenv(R_FUTURE_PLAN = .(oenv))
     future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
-    .(exit)
+    ## FIXME: If we move .(exit) here, then 'R CMD check' on MS Windows
+    ## complain about leftover RscriptXXXXX temporary files. /2022-07-21
+    ## .(exit)
   })
 
   function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {

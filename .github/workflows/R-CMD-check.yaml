@@ -18,28 +18,31 @@ jobs:
         config:
           - {os: windows-latest, r: 'devel'    }
           - {os: windows-latest, r: 'release'  }
-#          - {os: macOS-latest,   r: 'devel'    }
+          - {os: windows-latest, r: 'oldrel'   }
+          - {os: macOS-latest,   r: 'devel'    }
           - {os: macOS-latest,   r: 'release'  }
+          - {os: macOS-latest,   r: 'oldrel'   }
           - {os: ubuntu-20.04,   r: 'devel'    }
           - {os: ubuntu-20.04,   r: 'release'  }
           - {os: ubuntu-20.04,   r: 'oldrel'   }
           - {os: ubuntu-20.04,   r: 'oldrel-1' }
           - {os: ubuntu-20.04,   r: 'oldrel-2' }
-          - {os: ubuntu-20.04,   r: '3.5'      }
           - {os: ubuntu-20.04,   r: '3.4'      }
-          - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: true, label: 'keepWhere' }
-          - {os: ubuntu-20.04,   r: 'release', globals_keepWhere: false, label: '!keepWhere' }
-          - {os: ubuntu-20.04,   r: 'release', plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
-          - {os: ubuntu-20.04,   r: 'release', plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
-          - {os: ubuntu-20.04,   r: 'release', psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
           - {os: ubuntu-20.04,   r: 'release'  , language: ko,    label: ko    }
           - {os: ubuntu-20.04,   r: 'release'  , language: zh_CN, label: zh_CN }
           - {os: ubuntu-20.04,   r: 'release'  , language: zh_TW, label: zh_TW }
-
+          - {os: ubuntu-20.04,   r: 'release'  , globals_keepWhere: true, label: 'keepWhere' }
+          - {os: ubuntu-20.04,   r: 'release'  , globals_keepWhere: false, label: '!keepWhere' }
+          - {os: ubuntu-20.04,   r: 'release'  , plan: multicore, fork_multithreading_enable: false, label: 'multicore, no-multithreading-in-forks' }
+          - {os: ubuntu-20.04,   r: 'release'  , plan: multisession, fork_multithreading_enable: false, label: 'multisession, no-multithreading-in-forks' }
+          - {os: ubuntu-20.04,   r: 'release'  , psock_relay_immediate: false, label: 'no-immediate-relay-in-psock' }
+ 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
+      R_KEEP_PKG_SOURCE: yes
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      ## Test in other locale (optional)
+      LANGUAGE: ${{ matrix.config.language }}
       ## R CMD check
       _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_LENGTH_1_CONDITION_: true
@@ -50,53 +53,26 @@ jobs:
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
-      ## Test in other locale (optional)
-      LANGUAGE: ${{ matrix.config.language }}
       
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-
-      - uses: r-lib/actions/setup-pandoc@master
-
-      - name: Query R package dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Cache R packages
-        if: runner.os != 'Windows'
-        uses: actions/cache@v1
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+          
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          extra-packages: any::rcmdcheck
+          needs: check
 
-      - name: Install R package system dependencies (Linux)
-        if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+      - name: Install package itself (special case)
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
-          sudo apt install -y libcurl4-openssl-dev
-
-      - name: Install R package dependencies
-        run: |
-          remotes::install_deps(dependencies = TRUE)
-          install.packages(".", repos=NULL, type="source")  ## needed by parallel workers
-        shell: Rscript {0}
-
-      - name: Install 'rcmdcheck'
-        run: |
-          remotes::install_cran("rcmdcheck")
-          library(rcmdcheck)  ## triggers an error, if installation failed
+          install.packages(".", repos = NULL, type = "source")  ## needed by parallel workers
         shell: Rscript {0}
 
       - name: Session info
@@ -108,6 +84,10 @@ jobs:
           capabilities()
           pkgs <- installed.packages()[, "Package"]
           sessioninfo::session_info(pkgs, include_base = TRUE)
+          ## Verify LANGUAGE settings by generating a translatable error
+          cat(sprintf("LANGUAGE=%s\n", sQuote(Sys.getenv("LANGUAGE"))))
+          cat(sprintf("locales: %s\n", sQuote(Sys.getlocale())))
+          tryCatch(log("a"), error = conditionMessage)
         shell: Rscript {0}
 
       - name: Check (!Windows)
@@ -119,17 +99,27 @@ jobs:
           R_FUTURE_FORK_ENABLE: ${{ matrix.config.fork_enable }}
           R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork_multithreading_enable }}
           R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock_relay_immediate }}
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "note", check_dir = "check")
+        run: |
+          rcmdcheck::rcmdcheck(
+            args = c("--no-manual", "--as-cran"),
+            error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "note",
+            check_dir = "check"
+          )
         shell: Rscript {0}
  
       - name: Check (Windows)
         if: runner.os == 'Windows'
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"), error_on = "note", check_dir = "check")
+        run: |
+          rcmdcheck::rcmdcheck(
+            args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"),
+            error_on = "note",
+            check_dir = "check"
+          )
         shell: Rscript {0}
 
       - name: Upload check results
         if: failure()
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
