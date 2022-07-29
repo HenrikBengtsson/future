@@ -104,12 +104,10 @@ envname <- function(env) {
   if (!is.environment(env)) return(NA_character_)
   name <- environmentName(env)
   if (name == "") {
-    class <- class(env)
-
-    ## NOTE:
-    ## 1. It might be that 'env' is of a class that extends 'environment',
-    ##    e.g. R.oo::Object() or R6::R6Class().
-    ## 2. It might be that another package defines print() for 'environment'
+    ## NOTE: I might be that:
+    ## 1. 'env' is of a class that extends 'environment', e.g.
+    ##    R.oo::Object() or R6::R6Class(), or
+    ## 2. another package defines print() for 'environment'
     ## Because of this, we call print.default() instead of generic print().
     name <- capture.output(print.default(env))
     if (length(name) > 1L) name <- name[1]
