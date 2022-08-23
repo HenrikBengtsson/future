@@ -1,6 +1,9 @@
 # Version (development version)
 
- * ...
+## Miscellaneous
+
+* Use CSS style to align image to the right instead of non-HTML5 attribute
+  `align="right"`.
  
 
 # Version 1.27.0 [2022-07-21]

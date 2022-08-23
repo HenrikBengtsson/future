@@ -165,7 +165,7 @@ Both the future and the variable (promise) are assigned to environment
 \code{f <- futureCall(FUN, args)} creates a \link{Future} \code{f} that calls function \code{FUN} with arguments \code{args}, where the value of the future is retrieved using \code{x <- value(f)}.
 }
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right;' alt='logo' width='120'}}
 Creates a future that evaluates an \R expression or
 a future that calls an \R function with a set of arguments.
 How, when, and where these futures are evaluated can be configured
