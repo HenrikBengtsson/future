@@ -2,8 +2,10 @@
 
 ## Miscellaneous
 
-* Use CSS style to align image to the right instead of non-HTML5 attribute
-  `align="right"`.
+ * Use CSS style to align image to the right instead of non-HTML5
+   attribute `align="right"`.
+
+ * Avoid nested `<em>` tags in HTML-generated help pages.
  
 
 # Version 1.27.0 [2022-07-21]

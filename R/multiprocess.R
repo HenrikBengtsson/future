@@ -5,11 +5,11 @@
 #' Regardless, its _value is computed and resolved in
 #' parallel in another process_.\cr
 #' \cr
-#' _WARNING: Consider the 'multiprocess' future plan deprecated.
+#' **WARNING: The 'multiprocess' future plan is deprecated.
 #' Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 #' everywhere and is the recommended one between the two. _Forked processing_,
 #' which 'multicore' uses, is unstable in various environment and setups.
-#' The 'multiprocess' alias is therefore being phased out._
+#' The 'multiprocess' alias is therefore being phased out.**
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams future
