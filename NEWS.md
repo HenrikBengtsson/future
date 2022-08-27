@@ -13,7 +13,10 @@
    was declared defunct has now been removed; `plan(transparent)`,
    together with functions `transparent()` and `TransparentFuture()`
    are now formally defunct.
-   
+
+ * Using argument `persistent` with multisession futures is now defunct.
+   Previously only `persistent = TRUE` was defunct.
+
  * Previously defunct `values()` has now been removed.
    
 
