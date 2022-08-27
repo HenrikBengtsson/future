@@ -169,12 +169,3 @@ SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = T
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
   structure(f, class = c("SequentialFuture", class(f)))
 }
-
-
-#' @rdname UniprocessFuture-class
-#' @export
-TransparentFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = FALSE, ...) {
-  if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, persistent = TRUE, ...)
-  structure(f, class = c("TransparentFuture", "SequentialFuture", class(f)))
-}

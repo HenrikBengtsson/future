@@ -382,15 +382,7 @@ run.Future <- function(future, ...) {
   if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUNDS: /HB 2020-12-25
-  tmpLazy <- TRUE
-  if (inherits(makeFuture, "transparent")) {
-    if (future$.defaultLocal) local <- FALSE
-    if (is.logical(globals)) {
-      globals <- FALSE
-    } else {
-      tmpLazy <- FALSE
-    }    
-  } else if (inherits(makeFuture, "cluster")) {
+  if (inherits(makeFuture, "cluster")) {
     ## Make persistent=TRUE cluster futures default to local=FALSE
     if (isTRUE(formals(makeFuture)$persistent)) {
       persistent <- TRUE
@@ -401,7 +393,7 @@ run.Future <- function(future, ...) {
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    lazy = tmpLazy,
+    lazy = TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = globals,
@@ -446,13 +438,6 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ...")
     future <- run(future)
     if (debug) mdebug("- Launch lazy future ... done")
-  } else {
-    ## WORKAROUND: Make sure 'transparent' futures remain
-    ## lazy future if they were from the beginning /HB 2020-12-21
-    if (!tmpLazy) {
-      if (debug) mdebugf("- Fix: lazy %s was no longer lazy", class(future)[1])
-      future$lazy <- TRUE
-    }
   }
   
   ## Sanity check: This method was only called for lazy futures

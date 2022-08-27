@@ -7,6 +7,13 @@
 
  * Avoid nested `<em>` tags in HTML-generated help pages.
  
+## Deprecated and Defunct
+
+ * The R option to temporarily allow `plan(transparent)` although it
+   was declared defunct has now been removed; `plan(transparent)`,
+   together with functions `transparent()` and `TransparentFuture()`
+   are now formally defunct.
+   
 
 # Version 1.27.0 [2022-07-21]
 
