@@ -14,6 +14,8 @@
    together with functions `transparent()` and `TransparentFuture()`
    are now formally defunct.
    
+ * Previously defunct `values()` has now been removed.
+   
 
 # Version 1.27.0 [2022-07-21]
 
