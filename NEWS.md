@@ -17,6 +17,9 @@
  * Using argument `persistent` with multisession futures is now defunct.
    Previously only `persistent = TRUE` was defunct.
 
+ * Previously deprecated use of `local = FALSE` with uniprocess futures 
+   is now defunct.
+
  * Previously defunct `values()` has now been removed.
    
 
