@@ -10,13 +10,8 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
+UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
-
-  if (!isTRUE(local)) {
-    .Defunct(msg = "Using 'local = FALSE' with uniprocess future is defunct. It was deprecated in future 1.20.0 (2020-10-30).", package = .packageName)
-  }
-
 
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
   if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
@@ -33,7 +28,7 @@ UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.fram
     gp <- NULL
   }
  
-  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, local = TRUE, globals = globals, packages = packages, ...)
+  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, globals = globals, packages = packages, ...)
   future <- structure(future, class = c("UniprocessFuture", class(future)))
   future
 }
@@ -55,9 +50,6 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
-  if (!isTRUE(future$local)) {
-    .Defunct(msg = sprintf("Using 'local = FALSE' with %s futures is defunct", class(future)[1]))
-  }
   envir <- new.env(parent = envir)
 
   ## Assign globals to separate "globals" enclosure environment?
@@ -72,12 +64,6 @@ run.UniprocessFuture <- function(future, ...) {
   future$state <- 'finished'
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
-
-  ## WORKAROUND: Ditto warning by Future() is muffled for UniprocessFuture.
-  ## /HB 2022-04-27
-  if (!future$local) {
-    .Defunct(msg = "Using 'local = FALSE' for a future is defunct. It was deprecated in future 1.20.0 (2020-10-30).", package = .packageName)
-  }
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.

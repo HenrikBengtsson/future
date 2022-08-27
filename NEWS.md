@@ -9,6 +9,9 @@
  
 ## Deprecated and Defunct
 
+ * Previously deprecated use of `local = FALSE` with futures is now 
+   defunct.
+
  * The R option to temporarily allow `plan(transparent)` although it
    was declared defunct has now been removed; `plan(transparent)`,
    together with functions `transparent()` and `TransparentFuture()`
@@ -16,9 +19,6 @@
 
  * Using argument `persistent` with multisession futures is now defunct.
    Previously only `persistent = TRUE` was defunct.
-
- * Previously deprecated use of `local = FALSE` with uniprocess futures 
-   is now defunct.
 
  * Previously defunct `values()` has now been removed.
    
