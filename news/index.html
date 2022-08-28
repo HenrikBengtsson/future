@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.27.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.27.0-9005</span>
       </span>
     </div>
 
@@ -155,10 +155,30 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
-<ul><li>…</li>
+<div class="section level3">
+<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<ul><li>Mention how <code>source(..., local = TRUE)</code> is preferred over <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> when used inside futures.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>
+<code>do.call(plan, args = list(multisession, workers = 2)</code> would ignore the <code>workers</code> argument, and any other arguments.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
+<ul><li><p>Previously deprecated use of <code>local = FALSE</code> with futures is now defunct.</p></li>
+<li><p>The R option to temporarily allow <code>plan(transparent)</code> although it was declared defunct has now been removed; <code>plan(transparent)</code>, together with functions <code><a href="../reference/sequential.html">transparent()</a></code> and <code><a href="../reference/UniprocessFuture-class.html">TransparentFuture()</a></code> are now formally defunct.</p></li>
+<li><p>Using argument <code>persistent</code> with multisession futures is now defunct. Previously only <code>persistent = TRUE</code> was defunct.</p></li>
+<li><p>Previously defunct <code>values()</code> has now been removed.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
+<ul><li><p>Use CSS style to align image to the right instead of non-HTML5 attribute <code>align="right"</code>.</p></li>
+<li><p>Avoid nested <code>&lt;em&gt;</code> tags in HTML-generated help pages.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.27.0" id="version-1270">Version 1.27.0<a class="anchor" aria-label="anchor" href="#version-1270"></a></h2>
+<h2 class="page-header" data-toc-text="1.27.0" id="version-1270">Version 1.27.0<small>2022-07-22</small><a class="anchor" aria-label="anchor" href="#version-1270"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-27-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-27-0"></a></h3>
 <ul><li>The fallback to sequential processing done by ‘multicore’ and ‘multisession’ when <code>workers = 1</code> can now be overridden by specifying <code>workers = I(1)</code>.</li>
@@ -267,7 +287,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-23-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-23-0"></a></h3>
-<ul><li><p><code><a href="../reference/value.html">values()</a></code>, which has been deprecated since <strong>future</strong> 1.20.0, is now defunct. Use <code><a href="../reference/value.html">value()</a></code> instead.</p></li>
+<ul><li><p><code>values()</code>, which has been deprecated since <strong>future</strong> 1.20.0, is now defunct. Use <code><a href="../reference/value.html">value()</a></code> instead.</p></li>
 <li><p>Support for <code>persistent = TRUE</code> with multisession futures is defunct. If still needed, a temporary workaround is to use cluster futures. However, it is likely that support for <code>persistent</code> will eventually be deprecated for all future backends.</p></li>
 <li><p>Argument <code>value</code> of <code><a href="../reference/resolve.html">resolve()</a></code>, deprecated since <strong>future</strong> 1.15.0, is defunct in favor of argument <code>result</code>.</p></li>
 </ul></div>
@@ -381,7 +401,7 @@
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-20-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-20-0"></a></h3>
 <ul><li><p>Strategy ‘multiprocess’ is deprecated in favor of either ‘multisession’ or ‘multicore’, depending on operating system and R setup.</p></li>
-<li><p><code><a href="../reference/value.html">values()</a></code> is deprecated. Use <code><a href="../reference/value.html">value()</a></code> instead.</p></li>
+<li><p><code>values()</code> is deprecated. Use <code><a href="../reference/value.html">value()</a></code> instead.</p></li>
 <li><p>All backward compatible code for the legacy, defunct, internal <code>Future</code> element <code>value</code> is now removed. Using or relying on it is an error.</p></li>
 </ul></div>
 </div>
@@ -455,7 +475,7 @@
 <h2 class="page-header" data-toc-text="1.17.0" id="version-1170">Version 1.17.0<small>2020-04-18</small><a class="anchor" aria-label="anchor" href="#version-1170"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-17-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-17-0"></a></h3>
-<ul><li>Renamed <code><a href="../reference/value.html">values()</a></code> to <code><a href="../reference/value.html">value()</a></code> to clean up and simplify the API.</li>
+<ul><li>Renamed <code>values()</code> to <code><a href="../reference/value.html">value()</a></code> to clean up and simplify the API.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-1-17-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-17-0"></a></h3>
@@ -473,7 +493,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-17-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-17-0"></a></h3>
-<ul><li>All <code><a href="../reference/value.html">values()</a></code> S3 methods have been renamed to <code><a href="../reference/value.html">value()</a></code> since they are closely related to the original purpose <code><a href="../reference/value.html">value()</a></code>. The <code><a href="../reference/value.html">values()</a></code> methods will continue to work but will soon be formally deprecated and later be made defunct and finally be removed. Please replace all <code><a href="../reference/value.html">values()</a></code> with <code><a href="../reference/value.html">value()</a></code> calls.</li>
+<ul><li>All <code>values()</code> S3 methods have been renamed to <code><a href="../reference/value.html">value()</a></code> since they are closely related to the original purpose <code><a href="../reference/value.html">value()</a></code>. The <code>values()</code> methods will continue to work but will soon be formally deprecated and later be made defunct and finally be removed. Please replace all <code>values()</code> with <code><a href="../reference/value.html">value()</a></code> calls.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -532,7 +552,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-15-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-15-0"></a></h3>
-<ul><li><p><code><a href="../reference/value.html">values()</a></code> would resignal <code>immediateCondition</code>:s despite those should only be signaled at most once per future.</p></li>
+<ul><li><p><code>values()</code> would resignal <code>immediateCondition</code>:s despite those should only be signaled at most once per future.</p></li>
 <li><p><code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> could produce warnings like “cannot open file ‘/tmp/alice/Rtmpi69yYF/future.parent=2622.a3e32bc6af7.pid’: No such file”, e.g. when launching R workers running in Docker containers.</p></li>
 <li><p>Package would set or update the RNG state of R (<code>.Random.seed</code>) when loaded, which could affect RNG reproducibility.</p></li>
 <li><p>Package could set <code>.Random.seed</code> to NULL, instead of removing it, which in turn would produce a warning on “‘.Random.seed’ is not an integer vector but of type ‘NULL’, so ignored” when the next random number generated.</p></li>
@@ -550,11 +570,11 @@
 <div class="section level3">
 <h3 id="significant-changes-1-14-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-14-0"></a></h3>
 <ul><li><p>All types of conditions are now captured and relayed. Previously, only conditions of class <code>message</code> and <code>warning</code> were relayed.</p></li>
-<li><p>If one of the futures in a collection produces an error, then <code><a href="../reference/value.html">values()</a></code> will signal that error as soon as it is detected. This means that while calling <code><a href="../reference/value.html">values()</a></code> guarantees to resolve all futures, it does not guarantee that the result from all futures are gathered back to the master R session before the error is relayed.</p></li>
+<li><p>If one of the futures in a collection produces an error, then <code>values()</code> will signal that error as soon as it is detected. This means that while calling <code>values()</code> guarantees to resolve all futures, it does not guarantee that the result from all futures are gathered back to the master R session before the error is relayed.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="new-features-1-14-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-14-0"></a></h3>
-<ul><li><p><code><a href="../reference/value.html">values()</a></code> now relays <code>stdout</code> and signal as soon as possible as long as the standard output and the conditions are relayed in their original order.</p></li>
+<ul><li><p><code>values()</code> now relays <code>stdout</code> and signal as soon as possible as long as the standard output and the conditions are relayed in their original order.</p></li>
 <li><p>If a captured condition can be “muffled”, then it will be muffled. This helps to prevent conditions from being handled twice by condition handlers when futures are evaluated in the main R session, e.g. <code>plan(sequential)</code>. Messages and warnings were already muffled in the past.</p></li>
 <li><p>Forked processing is considered unstable when running R from certain environments, such as the RStudio environment. Because of this, ‘multicore’ futures have been disabled in those cases since <strong>future</strong> 1.13.0. This change caught several RStudio users by surprise. Starting with <strong>future</strong> 1.14.0, an informative one-time-per-session warning will be produced when attempts to use ‘multicore’ is made in non-supported environments such as RStudio. This warning will also be produced when using ‘multiprocess’, which will fall back to using ‘multisession’ futures. The warning can be disabled by setting R option <code>future.supportsMulticore.unstable</code>, or environment variable <code>FUTURE_SUPPORTSMULTICORE_UNSTABLE</code> to <code>"quiet"</code>.</p></li>
 <li><p>Now option <code>future.startup.script</code> falls back to environment variable <code>R_FUTURE_STARTUP_SCRIPT</code>.</p></li>
@@ -978,7 +998,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-2-0"></a></h3>
-<ul><li><p><code><a href="../reference/value.html">values()</a></code> for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
+<ul><li><p><code>values()</code> for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
 <li><p><code><a href="../reference/value.html">value()</a></code> for <code>ClusterFuture</code> would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of <code>ClusterFuture</code> from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection”.</p></li>
 <li><p>Argument <code>user</code> to <code><a href="../reference/remote.html">remote()</a></code> was ignored (since 1.1.0).</p></li>
 </ul></div>
@@ -1084,7 +1104,7 @@
 <h3 id="new-features-0-14-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-14-0"></a></h3>
 <ul><li><p>Added <code><a href="../reference/nbrOfWorkers.html">nbrOfWorkers()</a></code>.</p></li>
 <li><p>Added informative <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method for the <code>Future</code> class.</p></li>
-<li><p><code><a href="../reference/value.html">values()</a></code> passes arguments <code>...</code> to <code><a href="../reference/value.html">value()</a></code> of each future.</p></li>
+<li><p><code>values()</code> passes arguments <code>...</code> to <code><a href="../reference/value.html">value()</a></code> of each future.</p></li>
 <li><p>Added <code>FutureError</code> class.</p></li>
 </ul></div>
 <div class="section level3">
@@ -1159,7 +1179,7 @@
 <div class="section level3">
 <h3 id="new-features-0-10-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-10-0"></a></h3>
 <ul><li><p>Now <code>%&lt;=%</code> can also assign to multi-dimensional list environments.</p></li>
-<li><p>Add <code><a href="../reference/futures.html">futures()</a></code>, <code><a href="../reference/value.html">values()</a></code> and <code><a href="../reference/resolved.html">resolved()</a></code>.</p></li>
+<li><p>Add <code><a href="../reference/futures.html">futures()</a></code>, <code>values()</code> and <code><a href="../reference/resolved.html">resolved()</a></code>.</p></li>
 <li><p>Add <code><a href="../reference/resolve.html">resolve()</a></code> to resolve futures in lists and environments.</p></li>
 <li><p>Now <code><a href="../reference/re-exports.html">availableCores()</a></code> also acknowledges the number of CPUs allotted by Slurm.</p></li>
 <li><p>CLEANUP: Now the internal future variable created by <code>%&lt;=%</code> is removed when the future variable is resolved.</p></li>
