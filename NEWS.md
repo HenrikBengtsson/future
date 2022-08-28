@@ -1,5 +1,10 @@
 # Version (development version)
 
+## Documentation
+
+ * Mention how `source(..., local = TRUE)` is preferred over
+   `source()` when used inside futures.
+
 ## Bug Fixes
 
  * `do.call(plan, args = list(multisession, workers = 2)` would
