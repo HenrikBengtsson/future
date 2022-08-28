@@ -368,6 +368,11 @@ plan <- local({
 
     ## Set new stack?
     if (is.function(strategy)) {
+      ## Tweak the strategy function?
+      if (length(targs) > 0) {
+        args <- c(list(strategy), targs, penvir = parent.frame())
+        strategy <- do.call(tweak, args = args)
+      }
       strategy <- list(strategy)
     }
 

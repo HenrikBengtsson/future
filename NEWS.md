@@ -1,12 +1,10 @@
 # Version (development version)
 
-## Miscellaneous
+## Bug Fixes
 
- * Use CSS style to align image to the right instead of non-HTML5
-   attribute `align="right"`.
+ * `do.call(plan, args = list(multisession, workers = 2)` would
+   ignore the `workers` argument, and any other arguments.
 
- * Avoid nested `<em>` tags in HTML-generated help pages.
- 
 ## Deprecated and Defunct
 
  * Previously deprecated use of `local = FALSE` with futures is now 
@@ -21,7 +19,15 @@
    Previously only `persistent = TRUE` was defunct.
 
  * Previously defunct `values()` has now been removed.
-   
+
+
+## Miscellaneous
+
+ * Use CSS style to align image to the right instead of non-HTML5
+   attribute `align="right"`.
+
+ * Avoid nested `<em>` tags in HTML-generated help pages.
+ 
 
 # Version 1.27.0 [2022-07-21]
 
