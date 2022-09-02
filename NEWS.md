@@ -7,7 +7,7 @@
 
 ## Bug Fixes
 
- * `do.call(plan, args = list(multisession, workers = 2)` would
+ * `do.call(plan, args = list(multisession, workers = 2))` would
    ignore the `workers` argument, and any other arguments.
 
 ## Deprecated and Defunct
