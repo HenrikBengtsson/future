@@ -281,7 +281,7 @@ Run `revdep_details(, "blockCV")` for more info
        14.                   │ └─base::withCallingHandlers(...)
        15.                   └─sp::CRS(...)
       
-      [ FAIL 3 | WARN 2 | SKIP 8 | PASS 181 ]
+      [ FAIL 3 | WARN 5 | SKIP 8 | PASS 181 ]
       Error: Test failures
       Execution halted
     ```
@@ -289,7 +289,6 @@ Run `revdep_details(, "blockCV")` for more info
 *   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
-      ...
     --- re-building ‘BlockCV_for_SDM.Rmd’ using rmarkdown
     Loading required package: sp
     Linking to GEOS 3.9.1, GDAL 2.4.4, PROJ 4.9.3; sf_use_s2() is TRUE
@@ -298,6 +297,7 @@ Run `revdep_details(, "blockCV")` for more info
     Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = "none")` instead.
     There are 10 raster layers
     
+    Warning: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
     ...
     Quitting from lines 205-210 (BlockCV_for_SDM.Rmd) 
     Error: processing vignette 'BlockCV_for_SDM.Rmd' failed with diagnostics:
@@ -331,7 +331,7 @@ Run `revdep_details(, "blockCV")` for more info
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
 * Date/Publication: 2022-04-13 14:22:29 UTC
-* Number of recursive dependencies: 177
+* Number of recursive dependencies: 175
 
 Run `revdep_details(, "brms")` for more info
 
@@ -578,66 +578,6 @@ Run `revdep_details(, "CSGo")` for more info
       All declared Imports should be used.
     ```
 
-# cvCovEst
-
-<details>
-
-* Version: 1.1.0
-* GitHub: https://github.com/PhilBoileau/cvCovEst
-* Source code: https://github.com/cran/cvCovEst
-* Date/Publication: 2022-05-04 11:50:02 UTC
-* Number of recursive dependencies: 127
-
-Run `revdep_details(, "cvCovEst")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘cvCovEst’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/cvCovEst/new/cvCovEst.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘cvCovEst’ ...
-** package ‘cvCovEst’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘cvCovEst’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/cvCovEst/new/cvCovEst.Rcheck/cvCovEst’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘cvCovEst’ ...
-** package ‘cvCovEst’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (cvCovEst)
-
-
-```
 # DeclareDesign
 
 <details>
@@ -806,11 +746,11 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.1.13
-* GitHub: https://github.com/Waller-SUSAN/envi
+* Version: 0.1.15
+* GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2022-03-24 08:40:17 UTC
-* Number of recursive dependencies: 124
+* Date/Publication: 2022-08-30 07:00:16 UTC
+* Number of recursive dependencies: 152
 
 Run `revdep_details(, "envi")` for more info
 
@@ -887,27 +827,6 @@ Run `revdep_details(, "epitweetr")` for more info
     Namespaces in Imports field not imported from:
       ‘httpuv’ ‘knitr’ ‘plyr’ ‘tidyverse’ ‘tokenizers’ ‘xml2’
       All declared Imports should be used.
-    ```
-
-# fabletools
-
-<details>
-
-* Version: 0.3.2
-* GitHub: https://github.com/tidyverts/fabletools
-* Source code: https://github.com/cran/fabletools
-* Date/Publication: 2021-11-29 05:50:02 UTC
-* Number of recursive dependencies: 101
-
-Run `revdep_details(, "fabletools")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘fable’
     ```
 
 # flowGraph
@@ -1162,15 +1081,7 @@ Run `revdep_details(, "hal9001")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking whether package ‘hal9001’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/hal9001/new/hal9001.Rcheck/00install.out’ for details.
-    ```
-
-## Newly fixed
+## In both
 
 *   checking installed package size ... NOTE
     ```
@@ -1179,122 +1090,6 @@ Run `revdep_details(, "hal9001")` for more info
         libs   7.2Mb
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘hal9001’ ...
-** package ‘hal9001’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/hal9001/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/RcppEigenForward.h:30,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/RcppEigen.h:25,
-                 from hal9001_types.h:4,
-...
-installing to /c4/home/henrik/repositories/future/revdep/checks/hal9001/new/hal9001.Rcheck/00LOCK-hal9001/00new/hal9001/libs
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘hal9001’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/hal9001/new/hal9001.Rcheck/hal9001’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘hal9001’ ...
-** package ‘hal9001’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/hal9001/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/RcppEigenForward.h:30,
-                 from /c4/home/henrik/repositories/future/revdep/library/hal9001/RcppEigen/include/RcppEigen.h:25,
-                 from hal9001_types.h:4,
-...
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** checking absolute paths in shared objects and dynamic libraries
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (hal9001)
-
-
-```
-# haldensify
-
-<details>
-
-* Version: 0.2.3
-* GitHub: https://github.com/nhejazi/haldensify
-* Source code: https://github.com/cran/haldensify
-* Date/Publication: 2022-02-09 22:20:06 UTC
-* Number of recursive dependencies: 103
-
-Run `revdep_details(, "haldensify")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘haldensify’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/haldensify/new/haldensify.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘haldensify’ ...
-** package ‘haldensify’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘haldensify’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/haldensify/new/haldensify.Rcheck/haldensify’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘haldensify’ ...
-** package ‘haldensify’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (haldensify)
-
-
-```
 # hwep
 
 <details>
@@ -1581,27 +1376,23 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/bin/BATCH: line 60: 115187 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error (test-segment_trees.R:147:3): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 5 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
@@ -1638,47 +1429,6 @@ Run `revdep_details(, "lightr")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘pavo’
-    ```
-
-# lmtp
-
-<details>
-
-* Version: 1.3.0
-* GitHub: https://github.com/nt-williams/lmtp
-* Source code: https://github.com/cran/lmtp
-* Date/Publication: 2022-05-21 06:40:02 UTC
-* Number of recursive dependencies: 117
-
-Run `revdep_details(, "lmtp")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      Backtrace:
-          ▆
-       1. ├─lmtp::lmtp_sub(...) at test-point_treatment.R:16:0
-       2. │ └─lmtp_Task$new(...)
-       3. │   └─lmtp (local) initialize(...)
-       4. │     └─lmtp:::setup_cv(data, data$lmtp_id, V)
-    ...
-        5. │ └─lmtp_Task$new(...)
-        6. │   └─lmtp (local) initialize(...)
-        7. │     └─lmtp:::setup_cv(data, data$lmtp_id, V)
-        8. └─base::loadNamespace(x)
-        9.   └─base::namespaceImportFrom(...)
-       10.     └─base::importIntoEnv(impenv, impnames, ns, impvars)
-      
-      [ FAIL 7 | WARN 0 | SKIP 1 | PASS 15 ]
-      Error: Test failures
-      Execution halted
     ```
 
 # MAI
@@ -2068,66 +1818,6 @@ Run `revdep_details(, "OOS")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# origami
-
-<details>
-
-* Version: 1.0.5
-* GitHub: https://github.com/tlverse/origami
-* Source code: https://github.com/cran/origami
-* Date/Publication: 2021-09-28 07:40:04 UTC
-* Number of recursive dependencies: 96
-
-Run `revdep_details(, "origami")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘origami’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/origami/new/origami.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘origami’ ...
-** package ‘origami’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘origami’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/origami/new/origami.Rcheck/origami’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘origami’ ...
-** package ‘origami’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (origami)
-
-
-```
 # partR2
 
 <details>
@@ -2524,10 +2214,10 @@ Run `revdep_details(, "reproducible")` for more info
     > ### ** Examples
     > 
     ...
-           done in 0.0021 secs
+           done in 0.00375 secs
         cropping...
-           done in 0.00901 secs
-      postProcessTerra done in 0.0602 secs
+           done in 0.0165 secs
+      postProcessTerra done in 0.0883 secs
         reprojecting ...
         projecting...
     Error in sp::CRS(...) : 
@@ -2545,8 +2235,8 @@ Run `revdep_details(, "reproducible")` for more info
       > library(testthat)
       > test_check("reproducible")
       Loading required package: reproducible
-        adding: scratch/henrik/839931/RtmpVEVxLY/Require/Ecqv9S/CK44itg.tif (stored 0%)
-        adding: scratch/henrik/839931/RtmpVEVxLY/Require/Ecqv9S/zARo8P1.grd (stored 0%)
+        adding: scratch/henrik/844326/Rtmp4SLfnI/Require/Ecqv9S/CK44itg.tif (stored 0%)
+        adding: scratch/henrik/844326/Rtmp4SLfnI/Require/Ecqv9S/zARo8P1.grd (stored 0%)
       Input geom 1 is INVALID: Self-intersection at or near point 6.0996084846637197 49.981174705133611 (6.099608484663719743 49.981174705133611269)
     ...
        2. └─reproducible:::cropInputs.sf(nc3, rasterToMatch = r)
@@ -2576,6 +2266,31 @@ Run `revdep_details(, "rgee")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘rgee01.Rmd’ using rmarkdown
+    --- finished re-building ‘rgee01.Rmd’
+    
+    --- re-building ‘rgee02.Rmd’ using rmarkdown
+    --- finished re-building ‘rgee02.Rmd’
+    
+    --- re-building ‘rgee03.Rmd’ using rmarkdown
+    --- finished re-building ‘rgee03.Rmd’
+    
+    ...
+    Quitting from lines 141-150 (rgee06.Rmd) 
+    Error: processing vignette 'rgee06.Rmd' failed with diagnostics:
+    '/vsicurl/https://storage.googleapis.com/rgee_examples/l8demo2.tif' not recognized as a supported file format.
+    --- failed re-building ‘rgee06.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘rgee06.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -2793,10 +2508,10 @@ Run `revdep_details(, "Seurat")` for more info
 
 <details>
 
-* Version: 4.1.0
+* Version: 4.1.1
 * GitHub: https://github.com/mojaveazure/seurat-object
 * Source code: https://github.com/cran/SeuratObject
-* Date/Publication: 2022-05-01 14:40:07 UTC
+* Date/Publication: 2022-08-29 19:50:02 UTC
 * Number of recursive dependencies: 57
 
 Run `revdep_details(, "SeuratObject")` for more info
@@ -2866,10 +2581,10 @@ Run `revdep_details(, "shiny.worker")` for more info
 
 <details>
 
-* Version: 2.1.6
+* Version: 2.1.7
 * GitHub: https://github.com/ShixiangWang/sigminer
 * Source code: https://github.com/cran/sigminer
-* Date/Publication: 2022-08-09 15:20:02 UTC
+* Date/Publication: 2022-08-31 08:40:10 UTC
 * Number of recursive dependencies: 206
 
 Run `revdep_details(, "sigminer")` for more info
@@ -3243,133 +2958,6 @@ Run `revdep_details(, "stars")` for more info
         nc    1.7Mb
     ```
 
-# steps
-
-<details>
-
-* Version: 1.2.1
-* GitHub: NA
-* Source code: https://github.com/cran/steps
-* Date/Publication: 2021-03-03 09:20:10 UTC
-* Number of recursive dependencies: 91
-
-Run `revdep_details(, "steps")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking whether package ‘steps’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/steps/new/steps.Rcheck/00install.out’ for details.
-    ```
-
-## Newly fixed
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(raster)
-      Loading required package: sp
-      > library(steps)
-      > 
-      > test_check("steps")
-    ...
-          ▆
-       1. └─steps::simulation(...) at test_simulation_results_class.R:516:2
-       2.   └─base::tryCatch(...)
-       3.     └─base (local) tryCatchList(expr, classes, parentenv, handlers)
-       4.       └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
-       5.         └─value[[3L]](cond)
-      
-      [ FAIL 1 | WARN 6 | SKIP 0 | PASS 45 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘custom_function_example.Rmd’ using rmarkdown
-    Loading required package: sp
-    
-    Attaching package: 'future'
-    
-    The following object is masked from 'package:raster':
-    
-        values
-    
-    ...
-    Quitting from lines 122-128 (kangaroo_model_example.Rmd) 
-    Error: processing vignette 'kangaroo_model_example.Rmd' failed with diagnostics:
-    argument is of length zero
-    --- failed re-building ‘kangaroo_model_example.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘custom_function_example.Rmd’ ‘kangaroo_model_example.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘steps’ ...
-** package ‘steps’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c rcpp_dispersal_funs_v4.cpp -o rcpp_dispersal_funs_v4.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c rcpp_utils_funs.cpp -o rcpp_utils_funs.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/lib -L/usr/local/lib64 -o steps.so RcppExports.o rcpp_dispersal_funs_v4.o rcpp_utils_funs.o -L/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/steps/new/steps.Rcheck/00LOCK-steps/00new/steps/libs
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘steps’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/steps/new/steps.Rcheck/steps’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘steps’ ...
-** package ‘steps’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c rcpp_dispersal_funs_v4.cpp -o rcpp_dispersal_funs_v4.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/steps/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c rcpp_utils_funs.cpp -o rcpp_utils_funs.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/lib -L/usr/local/lib64 -o steps.so RcppExports.o rcpp_dispersal_funs_v4.o rcpp_utils_funs.o -L/software/c4/cbi/software/R-4.2.1-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/steps/old/steps.Rcheck/00LOCK-steps/00new/steps/libs
-** R
-...
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** checking absolute paths in shared objects and dynamic libraries
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (steps)
-
-
-```
 # synergyfinder
 
 <details>
@@ -3643,14 +3231,6 @@ Run `revdep_details(, "txshift")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking whether package ‘txshift’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/txshift/new/txshift.Rcheck/00install.out’ for details.
-    ```
-
 ## In both
 
 *   checking package dependencies ... NOTE
@@ -3658,44 +3238,6 @@ Run `revdep_details(, "txshift")` for more info
     Package which this enhances but not available for checking: ‘sl3’
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘txshift’ ...
-** package ‘txshift’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: object ‘values’ is not exported by 'namespace:future'
-Execution halted
-ERROR: lazy loading failed for package ‘txshift’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/txshift/new/txshift.Rcheck/txshift’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘txshift’ ...
-** package ‘txshift’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (txshift)
-
-
-```
 # UCSCXenaShiny
 
 <details>
