@@ -1,3 +1,36 @@
+# Version 1.28.0 [2022-09-02]
+
+## Documentation
+
+ * Mention how `source(..., local = TRUE)` is preferred over
+   `source()` when used inside futures.
+
+## Bug Fixes
+
+ * `do.call(plan, args = list(multisession, workers = 2))` would
+   ignore the `workers` argument, and any other arguments.
+
+## Deprecated and Defunct
+
+ * Previously deprecated use of `local = FALSE` with futures is now 
+   defunct.
+
+ * The R option to temporarily allow `plan(transparent)` although it
+   was declared defunct has now been removed; `plan(transparent)`,
+   together with functions `transparent()` and `TransparentFuture()`
+   are now formally defunct.
+
+ * Using argument `persistent` with multisession futures is now defunct.
+   Previously only `persistent = TRUE` was defunct.
+
+## Miscellaneous
+
+ * Use CSS style to align image to the right instead of non-HTML5
+   attribute `align="right"`.
+
+ * Avoid nested `<em>` tags in HTML-generated help pages.
+ 
+
 # Version 1.27.0 [2022-07-21]
 
 ## New Features

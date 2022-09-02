@@ -29,7 +29,7 @@ if supported, otherwise it uses \link{multisession} evaluation.
 Regardless, its \emph{value is computed and resolved in
 parallel in another process}.\cr
 \cr
-\emph{WARNING: Consider the 'multiprocess' future plan deprecated.
+\strong{WARNING: The 'multiprocess' future plan is deprecated.
 Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 everywhere and is the recommended one between the two. \emph{Forked processing},
 which 'multicore' uses, is unstable in various environment and setups.

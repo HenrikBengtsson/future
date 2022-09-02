@@ -260,8 +260,8 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.demo.mandelbrot.nrow", mode = "integer", debug = debug)
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
-  ## future (>= 1.25.0-9004):
-  update_package_option("future.deprecated.defunct", mode = "character", default = c("transparent"), split = ",", debug = debug)
+
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 

@@ -732,7 +732,7 @@ y
 
 #### Package data.table
 
-The **[data.table]** package creates objects comprising external pointers.  Contrary to above non-exportable examples, such objects can saved to file and used in another R session, or exported to a parallel worker. This is because **data.table** is capable of restoring these objects to a valid state.  Consider the following example:
+The **[data.table]** package creates objects comprising external pointers.  Contrary to above non-exportable examples, such objects can be saved to file and used in another R session, or exported to a parallel worker. This is because **data.table** is capable of restoring these objects to a valid state.  Consider the following example:
 
 ```r
 library(data.table)
@@ -771,7 +771,7 @@ print(row)
 
 #### Package rstan
 
-The **[rstan]** package creates objects comprising external pointers.  Contrary to above non-exportable examples, such objects can saved to file and used in another R session, or exported to a parallel worker. This is because **rstan** is capable of restoring these objects to a valid state.  Consider the following example from `example("rstan", package = "rstan")`:
+The **[rstan]** package creates objects comprising external pointers.  Contrary to above non-exportable examples, such objects can be saved to file and used in another R session, or exported to a parallel worker. This is because **rstan** is capable of restoring these objects to a valid state.  Consider the following example from `example("rstan", package = "rstan")`:
 
 ```r
 library(rstan)

@@ -10,15 +10,11 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, local = TRUE, ...) {
+UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
 
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
   if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
-    if (lazy && !local && (!is.logical(globals) || globals)) {
-      stop("Non-supported use of lazy uniprocess futures: Whenever argument 'local' is FALSE, then argument 'globals' must also be FALSE. Lazy uniprocess future evaluation in the calling environment (local = FALSE) can only be done if global objects are resolved at the same time.")
-    }
-  
     ## Global objects?
     gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
     globals <- gp$globals
@@ -32,7 +28,7 @@ UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.fram
     gp <- NULL
   }
  
-  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, local = local, globals = globals, packages = packages, ...)
+  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, globals = globals, packages = packages, ...)
   future <- structure(future, class = c("UniprocessFuture", class(future)))
   future
 }
@@ -54,7 +50,7 @@ run.UniprocessFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
-  if (future$local) envir <- new.env(parent = envir)
+  envir <- new.env(parent = envir)
 
   ## Assign globals to separate "globals" enclosure environment?
   globals <- future$globals
@@ -68,12 +64,6 @@ run.UniprocessFuture <- function(future, ...) {
   future$state <- 'finished'
 
   if (debug) mdebugf("%s started (and completed)", class(future)[1])
-
-  ## WORKAROUND: Ditto warning by Future() is muffled for UniprocessFuture.
-  ## /HB 2022-04-27
-  if (!future$local) {
-    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
-  }
 
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
@@ -168,13 +158,4 @@ SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = T
   if (substitute) expr <- substitute(expr)
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
   structure(f, class = c("SequentialFuture", class(f)))
-}
-
-
-#' @rdname UniprocessFuture-class
-#' @export
-TransparentFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = FALSE, ...) {
-  if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, persistent = TRUE, ...)
-  structure(f, class = c("TransparentFuture", "SequentialFuture", class(f)))
 }

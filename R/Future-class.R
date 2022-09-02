@@ -68,7 +68,7 @@
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
-#' @param local If TRUE, the expression is evaluated such that
+#' @param local (deprecated) If TRUE, the expression is evaluated such that
 #' all assignments are done to local temporary environment, otherwise
 #' the assignments are done to the global environment of the \R process
 #' evaluating the future.
@@ -142,11 +142,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   args <- list(...)
 
   if (!local && !isTRUE(args[["persistent"]])) {
-    ## Note, this warning will be muffled for UniprocessFuture:s when R option
-    ## 'nwarnings' is reset at the end of evaluating the future expression,
-    ## e.g. local({ warning("boom"); options(nwarnings = 50L) }).
-    ## /HB 2022-04-27
-    .Deprecated(msg = "Using 'local = FALSE' for a future is deprecated in future (>= 1.20.0) and will soon be defunct and produce an error.", package = .packageName)
+    .Defunct(msg = "Using 'local = FALSE' for a future is defunct in future (>= 1.28.0)", package = .packageName)
   }
 
   core <- new.env(parent = emptyenv())
@@ -382,15 +378,7 @@ run.Future <- function(future, ...) {
   if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUNDS: /HB 2020-12-25
-  tmpLazy <- TRUE
-  if (inherits(makeFuture, "transparent")) {
-    if (future$.defaultLocal) local <- FALSE
-    if (is.logical(globals)) {
-      globals <- FALSE
-    } else {
-      tmpLazy <- FALSE
-    }    
-  } else if (inherits(makeFuture, "cluster")) {
+  if (inherits(makeFuture, "cluster")) {
     ## Make persistent=TRUE cluster futures default to local=FALSE
     if (isTRUE(formals(makeFuture)$persistent)) {
       persistent <- TRUE
@@ -401,7 +389,7 @@ run.Future <- function(future, ...) {
   tmpFuture <- makeFuture(
     future$expr, substitute = FALSE,
     envir = future$envir,
-    lazy = tmpLazy,
+    lazy = TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
     globals = globals,
@@ -446,13 +434,6 @@ run.Future <- function(future, ...) {
     if (debug) mdebug("- Launch lazy future ...")
     future <- run(future)
     if (debug) mdebug("- Launch lazy future ... done")
-  } else {
-    ## WORKAROUND: Make sure 'transparent' futures remain
-    ## lazy future if they were from the beginning /HB 2020-12-21
-    if (!tmpLazy) {
-      if (debug) mdebugf("- Fix: lazy %s was no longer lazy", class(future)[1])
-      future$lazy <- TRUE
-    }
   }
   
   ## Sanity check: This method was only called for lazy futures

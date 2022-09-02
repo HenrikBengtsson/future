@@ -38,7 +38,6 @@ y <- value(f)
 print(y)
 str(list(a = a, b = b, c = c)) ## All NAs
 
-
 ## Multisession futures gives an error on R CMD check on
 ## Windows (but not Linux or macOS) for unknown reasons.
 ## The same code works in package tests.
@@ -57,6 +56,13 @@ print(y)
 str(list(a = a, b = b, c = c)) ## All NAs
 
 }
+
+
+## Explicitly specifying number of workers
+## (default is parallelly::availableCores())
+plan(multicore, workers = 2)
+message("Number of parallel workers: ", nbrOfWorkers())
+
 
 ## Explicitly close multisession workers by switching plan
 plan(sequential)
