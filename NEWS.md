@@ -23,9 +23,6 @@
  * Using argument `persistent` with multisession futures is now defunct.
    Previously only `persistent = TRUE` was defunct.
 
- * Previously defunct `values()` has now been removed.
-
-
 ## Miscellaneous
 
  * Use CSS style to align image to the right instead of non-HTML5
