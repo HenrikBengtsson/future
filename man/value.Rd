@@ -2,6 +2,7 @@
 % Please edit documentation in R/value.R
 \name{value}
 \alias{value}
+\alias{values}
 \alias{value.Future}
 \alias{value.list}
 \alias{value.listenv}

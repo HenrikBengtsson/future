@@ -28,6 +28,7 @@
 #' If `signal` is TRUE and one of the futures produces an error, then
 #' that error is produced.
 #'
+#' @aliases values
 #' @rdname value
 #' @export
 value <- function(...) UseMethod("value")
