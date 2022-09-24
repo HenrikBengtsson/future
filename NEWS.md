@@ -1,6 +1,13 @@
 # Version (development version)
 
- * ...
+## Deprecated and Defunct
+
+ * Using the deprecated `plan(multiprocess)` will now trigger a
+   deprecation warning _each_ time a `multiprocess` future is created.
+   This means that there could be a lot of warnings produced.  Note
+   that `multiprocess` has been deprecated since **future** 1.20.0
+   [2020-10-30].  Please use `multisession` (recommended) or
+   `multicore` instead.
  
 
 # Version 1.28.0 [2022-09-02]

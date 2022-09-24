@@ -38,6 +38,10 @@
 #'
 #' @export
 multiprocess <- function(..., workers = availableCores(), envir = parent.frame()) {
+  if (!is.element("multiprocess", getOption("future.deprecated.ignore"))) {
+    .Deprecated(msg = sprintf("Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"))
+  }
+  
   fun <- if (supportsMulticore(warn = TRUE)) multicore else multisession
   fun(..., workers = workers, envir = envir)
 }
