@@ -1,5 +1,12 @@
 # Version (development version)
 
+## Documentation
+
+ * Add section 'Making sure to stop parallel workers' to the 'Best
+   Practices for Package Developers', which explains why `R CMD check`
+   may produce "checking for detritus in the temp directory ... NOTE"
+   and how to avoid them.
+
 ## Deprecated and Defunct
 
  * Using the deprecated `plan(multiprocess)` will now trigger a
