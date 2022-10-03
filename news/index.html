@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0-9003</span>
       </span>
     </div>
 
@@ -155,8 +155,15 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
-<ul><li>…</li>
+<div class="section level3">
+<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<ul><li>Add section ‘Making sure to stop parallel workers’ to the ‘Best Practices for Package Developers’, which explains why <code>R CMD check</code> may produce “checking for detritus in the temp directory … NOTE” and how to avoid them.</li>
 </ul></div>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
+<ul><li>Using the deprecated <code>plan(multiprocess)</code> will now trigger a deprecation warning <em>each</em> time a <code>multiprocess</code> future is created. This means that there could be a lot of warnings produced. Note that <code>multiprocess</code> has been deprecated since <strong>future</strong> 1.20.0 [2020-10-30]. Please use <code>multisession</code> (recommended) or <code>multicore</code> instead.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.28.0" id="version-1280">Version 1.28.0<small>2022-09-02</small><a class="anchor" aria-label="anchor" href="#version-1280"></a></h2>
 <div class="section level3">
