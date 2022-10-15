@@ -592,7 +592,9 @@ external pointer. For example,</p>
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'s'</span> of class <span class="st">'RasterLayer'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
 <p>Note that it is only the RasterLayer object <code>s</code> that
-carries an external pointer and cannot be passed on to an external
+carries an external pointer. If we dig deeper, we find that this is
+because <code>attr(s@file, "con")</code> is file connection opened for
+writing. This is why <code>s</code> cannot be passed on to an external
 worker. In contrast, RasterLayer object <code>r</code> does not have
 this problem and would be fine to pass on to a worker.</p>
 </div>
