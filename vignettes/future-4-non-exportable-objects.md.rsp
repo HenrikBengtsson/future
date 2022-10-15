@@ -304,7 +304,7 @@ Error: Detected a non-exportable reference ('externalptr') in one of the
 globals ('s' of class 'RasterLayer') used in the future expression
 ```
 
-Note that it is only the RasterLayer object `s` that carries an external pointer and cannot be passed on to an external worker.  In contrast, RasterLayer object `r` does not have this problem and would be fine to pass on to a worker.
+Note that it is only the RasterLayer object `s` that carries an external pointer.  If we dig deeper, we find that this is because `attr(s@file, "con")` is file connection opened for writing.  This is why `s` cannot be passed on to an external worker.  In contrast, RasterLayer object `r` does not have this problem and would be fine to pass on to a worker.
 
 
 #### Package: Rcpp
