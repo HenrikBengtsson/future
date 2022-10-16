@@ -586,7 +586,7 @@ x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 ## globals ('udmodel' of class 'udpipe_model') used in the future expression
 ```
 
-Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the **udpipe** package.
+Now, it is indeed possible to parallelize **[udpipe]** calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the **udpipe** package.
 
 
 #### Package: xgboost
