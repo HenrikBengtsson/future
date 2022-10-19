@@ -189,7 +189,7 @@ plan <- local({
   }
 
   warn_about_transparent <- function(stack) {
-    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE).", defunct = "transparent")
+    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. It was designed to simplify interactive troubleshooting, but is now superseded by plan(sequential, split = TRUE).", defunct = "transparent")
   }
 
   warn_about_multicore <- local({
