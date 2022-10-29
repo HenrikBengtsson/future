@@ -15,7 +15,11 @@
    that `multiprocess` has been deprecated since **future** 1.20.0
    [2020-10-30].  Please use `multisession` (recommended) or
    `multicore` instead.
- 
+
+ * Removing `values()`, which has been defunct since **future**
+   1.23.0. Use `value()` instead.
+
+
 
 # Version 1.28.0 [2022-09-02]
 
@@ -253,8 +257,8 @@
 
 ## Deprecated and Defunct
 
- * `values()`, which has been deprecated since **future** 1.20.0, is now defunct.
-   Use `value()` instead.
+ * `values()`, which has been deprecated since **future** 1.20.0, is
+   now defunct.  Use `value()` instead.
 
  * Support for `persistent = TRUE` with multisession futures is defunct.  If
    still needed, a temporary workaround is to use cluster futures. However,
