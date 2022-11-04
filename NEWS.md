@@ -12,7 +12,7 @@
  * The evaluation of a _sequential_ future would reset any warnings
    collected by R prior to creating the future.  This only happened
    with `plan(sequential)` and when `getOption("warn") == 0`.
-   
+   This bug was introduced in **future** 1.26.0 [2022-05-27].
 
 ## Deprecated and Defunct
 
