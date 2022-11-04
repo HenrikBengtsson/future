@@ -7,6 +7,13 @@
    may produce "checking for detritus in the temp directory ... NOTE"
    and how to avoid them.
 
+## Bug Fixes
+
+ * The evaluation of a _sequential_ future would reset any warnings
+   collected by R prior to creating the future.  This only happened
+   with `plan(sequential)` and when `getOption("warn") == 0`.
+   
+
 ## Deprecated and Defunct
 
  * Using the deprecated `plan(multiprocess)` will now trigger a
