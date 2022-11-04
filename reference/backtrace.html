@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0-9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.28.0-9005</span>
       </span>
     </div>
 
@@ -198,9 +198,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tryCatch(withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmptQPvNl/callr-fun-30a3b54ee5d555"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpQKdgsh/callr-fun-1e3ec931cee404"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
@@ -225,7 +225,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
@@ -247,17 +247,27 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     try(signalCondition(e))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }), error = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     try(stop(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         try(stop(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     if (FALSE) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         e</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
@@ -282,9 +292,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmptQPvNl/callr-fun-30a3b54ee5d555"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpQKdgsh/callr-fun-1e3ec931cee404"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
@@ -309,7 +319,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
@@ -331,7 +341,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
@@ -339,13 +349,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmptQPvNl/callr-fun-30a3b54ee5d555"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/hb/RtmpQKdgsh/callr-fun-1e3ec931cee404"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/hb/RtmptQPvNl/callr-res-30a3b56da18ce1", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/hb/RtmpQKdgsh/callr-res-1e3ec945248172", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/hb/RtmptQPvNl/callr-fun-30a3b54ee5d555"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/hb/RtmpQKdgsh/callr-fun-1e3ec931cee404"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -362,8 +372,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.28.0-9003", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmptQPvNl/future", dst_path = "/tmp/hb/RtmptQPvNl/future/docs", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.28.0-9005", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmpQKdgsh/future", dst_path = "/tmp/hb/RtmpQKdgsh/future/docs", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         url = "https://future.futureverse.org", home = list(links = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
@@ -515,42 +525,45 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         sequential.Rd = c("transparent", "sequential", "uniprocess"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), sessionDetails.Rd = "sessionDetails", signalConditions.Rd = "signalConditions", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         sticky_globals.Rd = "sticky_globals", tweak.Rd = "tweak", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         usedCores.Rd = "usedCores", value.Rd = c("value", "values", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "value.Future", "value.list", "value.listenv", "value.environment"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         )), funs = list(`ClusterFuture-class.Rd` = c("ClusterFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "MultisessionFuture()"), `ConstantFuture-class.Rd` = "ConstantFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `Future-class.Rd` = "Future()", FutureCondition.Rd = c("FutureCondition()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "FutureMessage()", "FutureWarning()", "FutureError()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "RngFutureCondition()", "RngFutureWarning()", "RngFutureError()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "UnexpectedFutureResultError()"), FutureGlobals.Rd = "FutureGlobals()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FutureResult.Rd = c("FutureResult()", "as.character(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = c("TransparentFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "UniprocessFuture()", "SequentialFuture()"), backtrace.Rd = "backtrace()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references()", "assert_no_references()"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "futureCall()"), future.options.Rd = character(0), futureOf.Rd = "futureOf()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         futureSessionInfo.Rd = "futureSessionInfo()", futures.Rd = "futures()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         getExpression.Rd = "getExpression()", getGlobalsAndPackages.Rd = "getGlobalsAndPackages()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-conditions-grapes.Rd` = "`%conditions%`", `grapes-globals-grapes.Rd` = c("`%globals%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "`%packages%`"), `grapes-label-grapes.Rd` = "`%label%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "`%lazy%`", `grapes-plan-grapes.Rd` = "`%plan%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "`%seed%`", `grapes-stdout-grapes.Rd` = "`%stdout%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", mandelbrot.Rd = "mandelbrot()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multicore.Rd = "multicore()", multiprocess.Rd = "multiprocess()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession()", nbrOfWorkers.Rd = c("nbrOfWorkers()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers()"), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan()", private_length.Rd = ".length()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         resetWorkers.Rd = "resetWorkers()", resolve.Rd = "resolve()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         resolved.Rd = "resolved()", result.Rd = "result(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         run.Rd = "run(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", save_rds.Rd = "save_rds()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sequential.Rd = c("transparent()", "sequential()"), sessionDetails.Rd = "sessionDetails()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         signalConditions.Rd = "signalConditions()", sticky_globals.Rd = "sticky_globals()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         tweak.Rd = "tweak()", usedCores.Rd = "usedCores()", value.Rd = "value()"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         usedCores.Rd = "usedCores", value.Rd = c("value", "value.Future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "value.list", "value.listenv", "value.environment")), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         funs = list(`ClusterFuture-class.Rd` = c("ClusterFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "MultisessionFuture()"), `ConstantFuture-class.Rd` = "ConstantFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `Future-class.Rd` = "Future()", FutureCondition.Rd = c("FutureCondition()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "FutureMessage()", "FutureWarning()", "FutureError()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "RngFutureCondition()", "RngFutureWarning()", "RngFutureError()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "UnexpectedFutureResultError()"), FutureGlobals.Rd = "FutureGlobals()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             FutureResult.Rd = c("FutureResult()", "as.character(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `UniprocessFuture-class.Rd` = c("TransparentFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "UniprocessFuture()", "SequentialFuture()"), backtrace.Rd = "backtrace()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             find_references.Rd = c("find_references()", "assert_no_references()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "futureCall()"), future.options.Rd = character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futureOf.Rd = "futureOf()", futureSessionInfo.Rd = "futureSessionInfo()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futures.Rd = "futures()", getExpression.Rd = "getExpression()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             getGlobalsAndPackages.Rd = "getGlobalsAndPackages()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-conditions-grapes.Rd` = "`%conditions%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-globals-grapes.Rd` = c("`%globals%`", "`%packages%`"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), `grapes-label-grapes.Rd` = "`%label%`", `grapes-lazy-grapes.Rd` = "`%lazy%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-plan-grapes.Rd` = "`%plan%`", `grapes-seed-grapes.Rd` = "`%seed%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-stdout-grapes.Rd` = "`%stdout%`", `grapes-tweak-grapes.Rd` = "`%tweak%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             mandelbrot.Rd = "mandelbrot()", multicore.Rd = "multicore()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multiprocess.Rd = "multiprocess()", multisession.Rd = "multisession()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             nbrOfWorkers.Rd = c("nbrOfWorkers()", "nbrOfFreeWorkers()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             plan.Rd = "plan()", private_length.Rd = ".length()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             resetWorkers.Rd = "resetWorkers()", resolve.Rd = "resolve()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             resolved.Rd = "resolved()", result.Rd = "result(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             run.Rd = "run(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", save_rds.Rd = "save_rds()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             sequential.Rd = c("transparent()", "sequential()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), sessionDetails.Rd = "sessionDetails()", signalConditions.Rd = "signalConditions()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             sticky_globals.Rd = "sticky_globals()", tweak.Rd = "tweak()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             usedCores.Rd = "usedCores()", value.Rd = "value()"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         title = c(`ClusterFuture-class.Rd` = "A cluster future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `ConstantFuture-class.Rd` = "A future with a constant value", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `Future-class.Rd` = "A future represents a value that will be available at some point in the future", </span>
@@ -2620,9 +2633,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), value.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/value.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value"), "\n", list("value"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("values"), "\n", list("value.Future"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("value.list"), "\n", list("value.listenv"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value.environment"), "\n", list("The value of a future or the values of all elements in a container"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("value.Future"), "\n", list("value.list"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value.listenv"), "\n", list("value.environment"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("The value of a future or the values of all elements in a container"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "value(...)\n", "\n", list(list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "value"), list("Future")), "(future, stdout = TRUE, signal = TRUE, ...)\n", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", list(list("value"), list("list")), "(x, stdout = TRUE, signal = TRUE, ...)\n", </span>
@@ -2753,8 +2766,8 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.28.0-9003", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmptQPvNl/future", dst_path = "/tmp/hb/RtmptQPvNl/future/docs", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.28.0-9005", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/hb/RtmpQKdgsh/future", dst_path = "/tmp/hb/RtmpQKdgsh/future/docs", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     install_metadata = FALSE, desc = &lt;environment&gt;, meta = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         url = "https://future.futureverse.org", home = list(links = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Roadmap/Milestones", href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
@@ -2906,42 +2919,45 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         sequential.Rd = c("transparent", "sequential", "uniprocess"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         ), sessionDetails.Rd = "sessionDetails", signalConditions.Rd = "signalConditions", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         sticky_globals.Rd = "sticky_globals", tweak.Rd = "tweak", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         usedCores.Rd = "usedCores", value.Rd = c("value", "values", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "value.Future", "value.list", "value.listenv", "value.environment"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         )), funs = list(`ClusterFuture-class.Rd` = c("ClusterFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "MultisessionFuture()"), `ConstantFuture-class.Rd` = "ConstantFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `Future-class.Rd` = "Future()", FutureCondition.Rd = c("FutureCondition()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "FutureMessage()", "FutureWarning()", "FutureError()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "RngFutureCondition()", "RngFutureWarning()", "RngFutureError()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "UnexpectedFutureResultError()"), FutureGlobals.Rd = "FutureGlobals()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         FutureResult.Rd = c("FutureResult()", "as.character(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `UniprocessFuture-class.Rd` = c("TransparentFuture()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "UniprocessFuture()", "SequentialFuture()"), backtrace.Rd = "backtrace()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         find_references.Rd = c("find_references()", "assert_no_references()"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "futureCall()"), future.options.Rd = character(0), futureOf.Rd = "futureOf()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         futureSessionInfo.Rd = "futureSessionInfo()", futures.Rd = "futures()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         getExpression.Rd = "getExpression()", getGlobalsAndPackages.Rd = "getGlobalsAndPackages()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-conditions-grapes.Rd` = "`%conditions%`", `grapes-globals-grapes.Rd` = c("`%globals%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "`%packages%`"), `grapes-label-grapes.Rd` = "`%label%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-lazy-grapes.Rd` = "`%lazy%`", `grapes-plan-grapes.Rd` = "`%plan%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-seed-grapes.Rd` = "`%seed%`", `grapes-stdout-grapes.Rd` = "`%stdout%`", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `grapes-tweak-grapes.Rd` = "`%tweak%`", mandelbrot.Rd = "mandelbrot()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multicore.Rd = "multicore()", multiprocess.Rd = "multiprocess()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         multisession.Rd = "multisession()", nbrOfWorkers.Rd = c("nbrOfWorkers()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         "nbrOfFreeWorkers()"), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         plan.Rd = "plan()", private_length.Rd = ".length()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         resetWorkers.Rd = "resetWorkers()", resolve.Rd = "resolve()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         resolved.Rd = "resolved()", result.Rd = "result(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         run.Rd = "run(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", save_rds.Rd = "save_rds()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         sequential.Rd = c("transparent()", "sequential()"), sessionDetails.Rd = "sessionDetails()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         signalConditions.Rd = "signalConditions()", sticky_globals.Rd = "sticky_globals()", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         tweak.Rd = "tweak()", usedCores.Rd = "usedCores()", value.Rd = "value()"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         usedCores.Rd = "usedCores", value.Rd = c("value", "value.Future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "value.list", "value.listenv", "value.environment")), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         funs = list(`ClusterFuture-class.Rd` = c("ClusterFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         "MultisessionFuture()"), `ConstantFuture-class.Rd` = "ConstantFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `Future-class.Rd` = "Future()", FutureCondition.Rd = c("FutureCondition()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "FutureMessage()", "FutureWarning()", "FutureError()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "RngFutureCondition()", "RngFutureWarning()", "RngFutureError()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "UnexpectedFutureResultError()"), FutureGlobals.Rd = "FutureGlobals()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             FutureResult.Rd = c("FutureResult()", "as.character(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "print(&lt;i&gt;&amp;lt;FutureResult&amp;gt;&lt;/i&gt;)"), `MulticoreFuture-class.Rd` = "MulticoreFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `MultiprocessFuture-class.Rd` = "MultiprocessFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `UniprocessFuture-class.Rd` = c("TransparentFuture()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "UniprocessFuture()", "SequentialFuture()"), backtrace.Rd = "backtrace()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cluster.Rd = "cluster()", clusterExportSticky.Rd = "clusterExportSticky()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             find_references.Rd = c("find_references()", "assert_no_references()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), future.Rd = c("future()", "futureAssign()", "`%&amp;lt;-%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             "futureCall()"), future.options.Rd = character(0), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futureOf.Rd = "futureOf()", futureSessionInfo.Rd = "futureSessionInfo()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             futures.Rd = "futures()", getExpression.Rd = "getExpression()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             getGlobalsAndPackages.Rd = "getGlobalsAndPackages()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-conditions-grapes.Rd` = "`%conditions%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-globals-grapes.Rd` = c("`%globals%`", "`%packages%`"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), `grapes-label-grapes.Rd` = "`%label%`", `grapes-lazy-grapes.Rd` = "`%lazy%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-plan-grapes.Rd` = "`%plan%`", `grapes-seed-grapes.Rd` = "`%seed%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `grapes-stdout-grapes.Rd` = "`%stdout%`", `grapes-tweak-grapes.Rd` = "`%tweak%`", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             mandelbrot.Rd = "mandelbrot()", multicore.Rd = "multicore()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             multiprocess.Rd = "multiprocess()", multisession.Rd = "multisession()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             nbrOfWorkers.Rd = c("nbrOfWorkers()", "nbrOfFreeWorkers()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), nullcon.Rd = "nullcon()", pid_exists.Rd = "pid_exists()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             plan.Rd = "plan()", private_length.Rd = ".length()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             `re-exports.Rd` = character(0), readImmediateConditions.Rd = "readImmediateConditions()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             remote.Rd = "remote()", requestCore.Rd = "requestCore()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             resetWorkers.Rd = "resetWorkers()", resolve.Rd = "resolve()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             resolved.Rd = "resolved()", result.Rd = "result(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             run.Rd = "run(&lt;i&gt;&amp;lt;Future&amp;gt;&lt;/i&gt;)", save_rds.Rd = "save_rds()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             sequential.Rd = c("transparent()", "sequential()"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             ), sessionDetails.Rd = "sessionDetails()", signalConditions.Rd = "signalConditions()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             sticky_globals.Rd = "sticky_globals()", tweak.Rd = "tweak()", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             usedCores.Rd = "usedCores()", value.Rd = "value()"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         title = c(`ClusterFuture-class.Rd` = "A cluster future is a future whose value will be resolved asynchronously in a parallel process", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `ConstantFuture-class.Rd` = "A future with a constant value", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         `Future-class.Rd` = "A future represents a value that will be available at some point in the future", </span>
@@ -5011,9 +5027,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n"), value.Rd = list("% Generated by roxygen2: do not edit by hand", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", "% Please edit documentation in R/value.R", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value"), "\n", list("value"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("values"), "\n", list("value.Future"), "\n", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("value.list"), "\n", list("value.listenv"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value.environment"), "\n", list("The value of a future or the values of all elements in a container"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list("value.Future"), "\n", list("value.list"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("value.listenv"), "\n", list("value.environment"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("The value of a future or the values of all elements in a container"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 "\n", list("\n", "value(...)\n", "\n", list(list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "value"), list("Future")), "(future, stdout = TRUE, signal = TRUE, ...)\n", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   "\n", list(list("value"), list("list")), "(x, stdout = TRUE, signal = TRUE, ...)\n", </span>
