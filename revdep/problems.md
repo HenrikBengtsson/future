@@ -533,33 +533,6 @@ Run `revdep_details(, "dipsaus")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘dipsaus-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: lock
-    > ### Title: Create or Unlock a Lock
-    > ### Aliases: lock dipsaus_lock dipsaus_unlock dipsaus_resetlocks
-    > 
-    > ### ** Examples
-    > 
-    > 
-    ...
-    > dipsaus_unlock('testlocker', timeout = 0.01)
-    [1] TRUE
-    > 
-    > # Create a locker, return TRUE
-    > lock_success = dipsaus_lock('testlocker')
-    Warning in file(con, "w") :
-      cannot open file '/c4/home/henrik/.cache/R/dipsaus/file_locks/testlocker': No such file or directory
-    Error in file(con, "w") : cannot open the connection
-    Calls: dipsaus_lock -> writeLines -> file
-    Execution halted
-    ```
-
 ## In both
 
 *   checking installed package size ... NOTE
@@ -1365,7 +1338,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  9228 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 219814 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -2131,8 +2104,8 @@ Run `revdep_details(, "reproducible")` for more info
       > library(testthat)
       > test_check("reproducible")
       Loading required package: reproducible
-        adding: scratch/henrik/996438/RtmpI3xYJL/Require/ZjQzS0/XYnd2hl.tif (stored 0%)
-        adding: scratch/henrik/996438/RtmpI3xYJL/Require/ZjQzS0/0L9Yq5a.grd (stored 0%)
+        adding: scratch/henrik/996438/RtmpKUX3JK/Require/ZjQzS0/XYnd2hl.tif (stored 0%)
+        adding: scratch/henrik/996438/RtmpKUX3JK/Require/ZjQzS0/0L9Yq5a.grd (stored 0%)
       Input geom 1 is INVALID: Self-intersection at or near point 6.0996084846637197 49.981174705133611 (6.099608484663719743 49.981174705133611269)
     ...
         8.         ├─sf::st_sfc(...)
