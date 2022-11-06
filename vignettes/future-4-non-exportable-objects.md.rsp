@@ -304,7 +304,7 @@ Error: Detected a non-exportable reference ('externalptr') in one of the
 globals ('s' of class 'RasterLayer') used in the future expression
 ```
 
-Note that it is only the RasterLayer object `s` that carries an external pointer and cannot be passed on to an external worker.  In contrast, RasterLayer object `r` does not have this problem and would be fine to pass on to a worker.
+Note that it is only the RasterLayer object `s` that carries an external pointer.  If we dig deeper, we find that this is because `attr(s@file, "con")` is file connection opened for writing.  This is why `s` cannot be passed on to an external worker.  In contrast, RasterLayer object `r` does not have this problem and would be fine to pass on to a worker.
 
 
 #### Package: Rcpp
@@ -447,7 +447,7 @@ plan(multisession)
 
 # Adopted from example("FastqStreamer", package = "ShortRead")
 library(ShortRead)
-sp <- SolexaPath(system.file("extdata", package="ShortRead"))
+sp <- SolexaPath(system.file("extdata", package = "ShortRead"))
 fl <- file.path(analysisPath(sp), "s_1_sequence.txt")
 fs <- FastqStreamer(fl, 50)
 
@@ -509,7 +509,7 @@ dv %<-% dim(v)
 dv
 Error in x@ptr$nrow() : external pointer is not valid
 
-file <- system.file("ex/elev.tif", package="terra")
+file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
 dr %<-% dim(r)
 dr
@@ -552,7 +552,7 @@ dv
 and
 
 ```r
-file <- system.file("ex/elev.tif", package="terra")
+file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
 .r <- wrap(v)
 dr %<-% { r <- vect(.r); dim(r) }
@@ -586,7 +586,7 @@ x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 ## globals ('udmodel' of class 'udpipe_model') used in the future expression
 ```
 
-Now, it is indeed possible to parallelize \pkg{udpipe}` calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the **udpipe** package.
+Now, it is indeed possible to parallelize **[udpipe]** calls.  For details on how to do this, see the 'UDPipe Natural Language Processing - Parallel' vignette that comes with the **udpipe** package.
 
 
 #### Package: xgboost
@@ -625,6 +625,9 @@ f <- future(dim(dtrain))
 ## Error: Detected a non-exportable reference ('externalptr' of class 'xgb.DMatrix')
 ## in one of the globals ('dtrain' of class 'xgb.DMatrix') used in the future expression
 ```
+
+This is because `train` itself is an external pointer, i.e. `mode(train) == "externalptr"`.
+
 
 
 #### Package: xml2
@@ -679,13 +682,14 @@ Package **[ncdf4]** provides an R API to work with data that live in netCDF file
 
 ```r
 library(ncdf4)
-x <- ncvar_def("x", units="count", dim=list())
+x <- ncvar_def("x", units = "count", dim = list())
 file <- nc_create("example.nc", x)
 ncvar_put(file, x, 42)
 nc_close(file)
 ```
 
 We can now use this netCDF file next time we start R, e.g.
+
 ```r
 library(ncdf4)
 file <- nc_open("example.nc")
@@ -694,7 +698,7 @@ y
 ## [1] 42
 ```
 
-However, it would fail if we attempt to use `ncdf`, which is an object of class 'ncdf4', in a parallel worker, we will get an error:
+However, it would fail if we attempt to use `file`, which is an object of class 'ncdf4', in a parallel worker, we will get an error:
 
 ```r
 library(future)

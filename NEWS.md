@@ -1,3 +1,33 @@
+# Version 1.29.0 [2022-11-05]
+
+## Documentation
+
+ * Add section 'Making sure to stop parallel workers' to the 'Best
+   Practices for Package Developers', which explains why `R CMD check`
+   may produce "checking for detritus in the temp directory ... NOTE"
+   and how to avoid them.
+
+## Bug Fixes
+
+ * The evaluation of a _sequential_ future would reset any warnings
+   collected by R prior to creating the future.  This only happened
+   with `plan(sequential)` and when `getOption("warn") == 0`.
+   This bug was introduced in **future** 1.26.0 [2022-05-27].
+
+## Deprecated and Defunct
+
+ * Using the deprecated `plan(multiprocess)` will now trigger a
+   deprecation warning _each_ time a `multiprocess` future is created.
+   This means that there could be a lot of warnings produced.  Note
+   that `multiprocess` has been deprecated since **future** 1.20.0
+   [2020-10-30].  Please use `multisession` (recommended) or
+   `multicore` instead.
+
+ * Removing `values()`, which has been defunct since **future**
+   1.23.0. Use `value()` instead.
+
+
+
 # Version 1.28.0 [2022-09-02]
 
 ## Documentation
@@ -234,8 +264,8 @@
 
 ## Deprecated and Defunct
 
- * `values()`, which has been deprecated since **future** 1.20.0, is now defunct.
-   Use `value()` instead.
+ * `values()`, which has been deprecated since **future** 1.20.0, is
+   now defunct.  Use `value()` instead.
 
  * Support for `persistent = TRUE` with multisession futures is defunct.  If
    still needed, a temporary workaround is to use cluster futures. However,
