@@ -26,11 +26,11 @@ Run `revdep_details(, "AIPW")` for more info
 
 <details>
 
-* Version: 4.0.0
+* Version: 4.0.2
 * GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 170
+* Date/Publication: 2022-11-10
+* Number of recursive dependencies: 169
 
 Run `revdep_details(, "AlpsNMR")` for more info
 
@@ -42,14 +42,14 @@ Run `revdep_details(, "AlpsNMR")` for more info
     ```
     Error(s) in re-building vignettes:
     --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    Warning in has_utility("pdfcrop") :
-      pdfcrop not installed or not in PATH
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
+    /bin/bash: line 1: /tmp/pdfcrop_0289//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-9-1.pdf.gs.out: No such file or directory
+    could not overwrite /tmp/pdfcrop_0289//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-9-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
+    /bin/bash: line 1: /tmp/pdfcrop_0641//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-10-1.pdf.gs.out: No such file or directory
+    could not overwrite /tmp/pdfcrop_0641//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-10-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
+    /bin/bash: line 1: /tmp/pdfcrop_0984//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-12-1.pdf.gs.out: No such file or directory
+    could not overwrite /tmp/pdfcrop_0984//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-12-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
+    /bin/bash: line 1: /tmp/pdfcrop_0848//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-13-1.pdf.gs.out: No such file or directory
+    could not overwrite /tmp/pdfcrop_0848//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-13-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
     ...
     LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig02-handling-metadata-and-annotations.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips.
     --- failed re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
@@ -142,7 +142,7 @@ Run `revdep_details(, "batchtools")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
 * Date/Publication: 2022-10-03 14:50:06 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "BEKKs")` for more info
 
@@ -322,7 +322,7 @@ Run `revdep_details(, "brms")` for more info
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 228
+* Number of recursive dependencies: 227
 
 Run `revdep_details(, "ChromSCape")` for more info
 
@@ -483,7 +483,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/adsoncostanzifilho/CSGo
 * Source code: https://github.com/cran/CSGo
 * Date/Publication: 2021-05-07 18:50:02 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "CSGo")` for more info
 
@@ -551,7 +551,7 @@ Run `revdep_details(, "dipsaus")` for more info
 * GitHub: https://github.com/marcozanotti/dispositionEffect
 * Source code: https://github.com/cran/dispositionEffect
 * Date/Publication: 2022-05-30 07:50:02 UTC
-* Number of recursive dependencies: 134
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "dispositionEffect")` for more info
 
@@ -592,7 +592,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
 * GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
 * Date/Publication: 2022-04-08 08:42:33 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 140
 
 Run `revdep_details(, "dragon")` for more info
 
@@ -643,7 +643,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
 * Date/Publication: 2022-08-30 07:00:16 UTC
-* Number of recursive dependencies: 152
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "envi")` for more info
 
@@ -666,7 +666,7 @@ Run `revdep_details(, "envi")` for more info
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
 * Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 159
+* Number of recursive dependencies: 0
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -694,7 +694,7 @@ Run `revdep_details(, "EpiNow2")` for more info
 * GitHub: https://github.com/EU-ECDC/epitweetr
 * Source code: https://github.com/cran/epitweetr
 * Date/Publication: 2022-01-05 10:00:08 UTC
-* Number of recursive dependencies: 144
+* Number of recursive dependencies: 145
 
 Run `revdep_details(, "epitweetr")` for more info
 
@@ -789,7 +789,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 141
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -812,7 +812,7 @@ Run `revdep_details(, "foieGras")` for more info
 * GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 101
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "forecastML")` for more info
 
@@ -1073,7 +1073,7 @@ Run `revdep_details(, "hwep")` for more info
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
 * Date/Publication: 2022-11-02
-* Number of recursive dependencies: 198
+* Number of recursive dependencies: 196
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1193,7 +1193,7 @@ Run `revdep_details(, "ipc")` for more info
 * GitHub: https://github.com/calabrialab/ISAnalytics
 * Source code: https://github.com/cran/ISAnalytics
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 168
+* Number of recursive dependencies: 169
 
 Run `revdep_details(, "ISAnalytics")` for more info
 
@@ -1375,7 +1375,7 @@ Run `revdep_details(, "lidR")` for more info
 * GitHub: https://github.com/KechrisLab/MAI
 * Source code: https://github.com/cran/MAI
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 166
+* Number of recursive dependencies: 168
 
 Run `revdep_details(, "MAI")` for more info
 
@@ -1619,7 +1619,7 @@ Run `revdep_details(, "missSBM")` for more info
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
 * Date/Publication: 2022-10-18 20:52:35 UTC
-* Number of recursive dependencies: 145
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -1697,7 +1697,7 @@ Run `revdep_details(, "onemapsgapi")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "OOS")` for more info
 
@@ -2024,7 +2024,7 @@ Run `revdep_details(, "RAINBOWR")` for more info
 * GitHub: https://github.com/kaz-yos/regmedint
 * Source code: https://github.com/cran/regmedint
 * Date/Publication: 2022-04-06 20:20:02 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "regmedint")` for more info
 
@@ -2087,7 +2087,7 @@ Run `revdep_details(, "remiod")` for more info
 * GitHub: https://github.com/PredictiveEcology/reproducible
 * Source code: https://github.com/cran/reproducible
 * Date/Publication: 2022-08-17 08:50:02 UTC
-* Number of recursive dependencies: 105
+* Number of recursive dependencies: 0
 
 Run `revdep_details(, "reproducible")` for more info
 
@@ -2184,7 +2184,7 @@ Run `revdep_details(, "robotstxt")` for more info
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
 * Date/Publication: 2021-11-19 15:10:02 UTC
-* Number of recursive dependencies: 79
+* Number of recursive dependencies: 80
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2205,7 +2205,7 @@ Run `revdep_details(, "sapfluxnetr")` for more info
 * GitHub: https://github.com/snaketron/scBubbletree
 * Source code: https://github.com/cran/scBubbletree
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 180
+* Number of recursive dependencies: 178
 
 Run `revdep_details(, "scBubbletree")` for more info
 
@@ -2229,7 +2229,7 @@ Run `revdep_details(, "scBubbletree")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/scDiffCom
 * Date/Publication: 2021-08-17 07:20:05 UTC
-* Number of recursive dependencies: 248
+* Number of recursive dependencies: 246
 
 Run `revdep_details(, "scDiffCom")` for more info
 
@@ -2295,7 +2295,7 @@ Run `revdep_details(, "sdmApp")` for more info
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
 * Date/Publication: 2022-05-18 13:20:02 UTC
-* Number of recursive dependencies: 162
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "sentopics")` for more info
 
@@ -2329,7 +2329,7 @@ Run `revdep_details(, "sentopics")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2022-09-21 22:50:11 UTC
-* Number of recursive dependencies: 254
+* Number of recursive dependencies: 251
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2431,7 +2431,7 @@ Run `revdep_details(, "shiny.worker")` for more info
 * GitHub: https://github.com/rvalieris/signeR
 * Source code: https://github.com/cran/signeR
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 242
+* Number of recursive dependencies: 243
 
 Run `revdep_details(, "signeR")` for more info
 
@@ -2495,7 +2495,7 @@ Run `revdep_details(, "signeR")` for more info
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
 * Date/Publication: 2022-07-14 10:50:05 UTC
-* Number of recursive dependencies: 122
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -2518,7 +2518,7 @@ Run `revdep_details(, "skpr")` for more info
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
 * Date/Publication: 2021-07-29 20:00:02 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -2541,7 +2541,7 @@ Run `revdep_details(, "solitude")` for more info
 * GitHub: https://github.com/mikemahoney218/spacey
 * Source code: https://github.com/cran/spacey
 * Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 89
+* Number of recursive dependencies: 0
 
 Run `revdep_details(, "spacey")` for more info
 
@@ -2568,7 +2568,7 @@ Run `revdep_details(, "spacey")` for more info
 * GitHub: https://github.com/PredictiveEcology/SpaDES.core
 * Source code: https://github.com/cran/SpaDES.core
 * Date/Publication: 2022-08-19 13:20:05 UTC
-* Number of recursive dependencies: 141
+* Number of recursive dependencies: 0
 
 Run `revdep_details(, "SpaDES.core")` for more info
 
@@ -2622,7 +2622,7 @@ Run `revdep_details(, "spaMM")` for more info
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
 * Date/Publication: 2022-02-05 00:30:02 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "sparrpowR")` for more info
 
@@ -2645,7 +2645,7 @@ Run `revdep_details(, "sparrpowR")` for more info
 * GitHub: https://github.com/NAU-CCL/SPARSEMODr
 * Source code: https://github.com/cran/SPARSEMODr
 * Date/Publication: 2022-07-19 20:50:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "SPARSEMODr")` for more info
 
@@ -2722,7 +2722,7 @@ Run `revdep_details(, "spatialwarnings")` for more info
 * GitHub: https://github.com/yongkai17/spFSR
 * Source code: https://github.com/cran/spFSR
 * Date/Publication: 2022-10-29 06:22:34 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "spFSR")` for more info
 
@@ -2816,7 +2816,7 @@ Run `revdep_details(, "spNetwork")` for more info
 * GitHub: https://github.com/bcgov/ssdtools
 * Source code: https://github.com/cran/ssdtools
 * Date/Publication: 2022-05-14 23:50:02 UTC
-* Number of recursive dependencies: 143
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "ssdtools")` for more info
 
@@ -2840,7 +2840,7 @@ Run `revdep_details(, "ssdtools")` for more info
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
 * Date/Publication: 2022-07-21 12:10:02 UTC
-* Number of recursive dependencies: 151
+* Number of recursive dependencies: 152
 
 Run `revdep_details(, "stars")` for more info
 
@@ -2894,7 +2894,7 @@ Run `revdep_details(, "stars")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 190
+* Number of recursive dependencies: 191
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -2975,7 +2975,7 @@ Run `revdep_details(, "synergyfinder")` for more info
 * GitHub: https://github.com/frictionlessdata/tableschema-r
 * Source code: https://github.com/cran/tableschema.r
 * Date/Publication: 2022-09-29 20:00:03 UTC
-* Number of recursive dependencies: 65
+* Number of recursive dependencies: 66
 
 Run `revdep_details(, "tableschema.r")` for more info
 
@@ -3019,7 +3019,7 @@ Run `revdep_details(, "targeted")` for more info
 * GitHub: https://github.com/OscarKjell/text
 * Source code: https://github.com/cran/text
 * Date/Publication: 2022-09-20 22:00:02 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "text")` for more info
 
@@ -3099,7 +3099,7 @@ Run `revdep_details(, "TriDimRegression")` for more info
 * GitHub: https://github.com/RamiKrispin/TSstudio
 * Source code: https://github.com/cran/TSstudio
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 155
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "TSstudio")` for more info
 
@@ -3212,7 +3212,7 @@ Run `revdep_details(, "vmeasur")` for more info
 * GitHub: https://github.com/kosukeimai/wru
 * Source code: https://github.com/cran/wru
 * Date/Publication: 2022-10-21 17:30:02 UTC
-* Number of recursive dependencies: 86
+* Number of recursive dependencies: 87
 
 Run `revdep_details(, "wru")` for more info
 

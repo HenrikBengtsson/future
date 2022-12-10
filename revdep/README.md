@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2022-11-04                                                  |
+|date     |2022-11-16                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.28.0 |1.28.0-9005 |*  |
+|future     |1.29.0 |1.29.0-9001 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.30 |0.6.30      |   |
 |globals    |0.16.1 |0.16.1      |   |
@@ -33,7 +33,7 @@
 |[AIPW](problems.md#aipw) |0.6.3.2   |      |        |1    |
 |alookr                   |0.3.7     |      |        |     |
 |alphaci                  |1.0.0     |      |        |     |
-|[AlpsNMR](problems.md#alpsnmr)|4.0.0     |1     |        |     |
+|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |1     |        |     |
 |arkdb                    |0.0.16    |      |        |     |
 |aroma.affymetrix         |3.2.1     |      |        |     |
 |aroma.cn                 |1.7.0     |      |        |     |
