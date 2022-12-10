@@ -1,6 +1,9 @@
 # Version (development version)
 
- * ...
+## Bug Fixes
+
+ * `futureOf()` used `listenv::map()`, which is deprecated in
+   **listenv** (>= 0.9.0) in favor of `listenv::mapping()`.
 
 
 # Version 1.29.0 [2022-11-05]
