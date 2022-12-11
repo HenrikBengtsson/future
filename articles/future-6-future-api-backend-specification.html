@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.29.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.29.0-9003</span>
       </span>
     </div>
 
@@ -202,7 +202,7 @@ Bengtsson</h4>
 <div class="section level2">
 <h2 id="future-api-backend-specification">Future API Backend Specification<a class="anchor" aria-label="anchor" href="#future-api-backend-specification"></a>
 </h2>
-<p>Version 0.1.1</p>
+<p>Version 0.1.2</p>
 <div class="section level3">
 <h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h3>
@@ -369,6 +369,7 @@ element of the <code>Future</code> object (e.g. <code>f$lazy</code>) is
 <code>FALSE</code> (default). The constructor function must never
 evaluate the expression <code>expr</code> if <code>lazy</code> is
 <code>TRUE</code>.</p>
+<p>The constructor function must not update the RNG state.</p>
 </div>
 <div class="section level4">
 <h4 id="run-method">run() method<a class="anchor" aria-label="anchor" href="#run-method"></a>
@@ -403,6 +404,7 @@ the future on that worker and immediatedly return the future.</p>
 error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case it fails to
 launch the future on the worker or the worker has terminated
 unexpectedly.</p>
+<p>The <code><a href="../reference/run.html">run()</a></code> method must not update the RNG state.</p>
 </div>
 <div class="section level4">
 <h4 id="resolved-method">resolved() method<a class="anchor" aria-label="anchor" href="#resolved-method"></a>
@@ -429,6 +431,7 @@ promptly.</p>
 <code>FutureError</code> error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code>
 in case communication with the worker has broken down or the worker has
 terminated unexpectedly.</p>
+<p>The <code><a href="../reference/resolved.html">resolved()</a></code> method must not update the RNG state.</p>
 </div>
 <div class="section level4">
 <h4 id="result-method">result() method<a class="anchor" aria-label="anchor" href="#result-method"></a>
@@ -450,6 +453,7 @@ evaluating the <code><a href="../reference/getExpression.html">getExpression()</
 error as created by <code><a href="../reference/FutureCondition.html">FutureError()</a></code> in case communication
 with the worker has broken down or the worker has terminated
 unexpectedly.</p>
+<p>The <code><a href="../reference/result.html">result()</a></code> method must not update the RNG state.</p>
 </div>
 </div>
 </div>

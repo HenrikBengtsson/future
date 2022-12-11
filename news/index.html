@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.29.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.29.0-9003</span>
       </span>
     </div>
 
@@ -155,10 +155,14 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
-<ul><li>…</li>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/futureOf.html">futureOf()</a></code> used <code><a href="https://listenv.futureverse.org/reference/mapping.html" class="external-link">listenv::map()</a></code>, which is deprecated in <strong>listenv</strong> (&gt;= 0.9.0) in favor of <code><a href="https://listenv.futureverse.org/reference/mapping.html" class="external-link">listenv::mapping()</a></code>.</li>
 </ul></div>
+</div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.29.0" id="version-1290">Version 1.29.0<a class="anchor" aria-label="anchor" href="#version-1290"></a></h2>
+<h2 class="page-header" data-toc-text="1.29.0" id="version-1290">Version 1.29.0<small>2022-11-06</small><a class="anchor" aria-label="anchor" href="#version-1290"></a></h2>
 <div class="section level3">
 <h3 id="documentation-1-29-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-29-0"></a></h3>
 <ul><li>Add section ‘Making sure to stop parallel workers’ to the ‘Best Practices for Package Developers’, which explains why <code>R CMD check</code> may produce “checking for detritus in the temp directory … NOTE” and how to avoid them.</li>
