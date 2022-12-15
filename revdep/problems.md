@@ -22,47 +22,6 @@ Run `revdep_details(, "AIPW")` for more info
       All declared Imports should be used.
     ```
 
-# AlpsNMR
-
-<details>
-
-* Version: 4.0.2
-* GitHub: https://github.com/sipss/AlpsNMR
-* Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2022-11-10
-* Number of recursive dependencies: 169
-
-Run `revdep_details(, "AlpsNMR")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    /bin/bash: line 1: /tmp/pdfcrop_0078//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-9-1.pdf.gs.out: No such file or directory
-    could not overwrite /tmp/pdfcrop_0078//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-9-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
-    /bin/bash: line 1: /tmp/pdfcrop_0079//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-10-1.pdf.gs.out: No such file or directory
-    could not overwrite /tmp/pdfcrop_0079//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-10-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
-    /bin/bash: line 1: /tmp/pdfcrop_0583//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-12-1.pdf.gs.out: No such file or directory
-    could not overwrite /tmp/pdfcrop_0583//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-12-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
-    /bin/bash: line 1: /tmp/pdfcrop_0966//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-13-1.pdf.gs.out: No such file or directory
-    could not overwrite /tmp/pdfcrop_0966//c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr_files/figure-latex/unnamed-chunk-13-1.pdf.fix.qs at /software/c4/cbi/software/pdfcrop-0.4b/pdfcrop line 74.
-    ...
-    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
-    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
-    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
-    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # aroma.core
 
 <details>
@@ -1277,11 +1236,11 @@ Run `revdep_details(, "lava")` for more info
 
 <details>
 
-* Version: 4.0.1
+* Version: 4.0.2
 * GitHub: https://github.com/r-lidar/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2022-05-04 08:30:02 UTC
-* Number of recursive dependencies: 158
+* Date/Publication: 2022-12-15 15:10:02 UTC
+* Number of recursive dependencies: 157
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1294,20 +1253,20 @@ Run `revdep_details(, "lidR")` for more info
     Running examples in ‘lidR-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: its_dalponte2016
+    > ### Name: its_silva2016
     > ### Title: Individual Tree Segmentation Algorithm
-    > ### Aliases: its_dalponte2016 dalponte2016
+    > ### Aliases: its_silva2016 silva2016
     > 
     > ### ** Examples
     > 
     > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
     ...
-    > chm <- rasterize_canopy(las, 0.5, p2r(0.3), pkg = "raster")
+    > chm <- rasterize_canopy(las, res = 0.5, p2r(0.3), pkg = "raster")
     > ker <- matrix(1,3,3)
     > chm <- raster::focal(chm, w = ker, fun = mean, na.rm = TRUE)
     > 
     > ttops <- locate_trees(chm, lmf(4, 2))
-    > las   <- segment_trees(las, dalponte2016(chm, ttops))
+    > las   <- segment_trees(las, silva2016(chm, ttops))
     Error in geos_op2_geom("intersection", x, y, ...) : 
       st_crs(x) == st_crs(y) is not TRUE
     Calls: segment_trees ... st_intersection.sf -> geos_op2_df -> geos_op2_geom -> stopifnot
@@ -1316,27 +1275,23 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  5376 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
@@ -1344,7 +1299,6 @@ Run `revdep_details(, "lidR")` for more info
       installed size is 19.8Mb
       sub-directories of 1Mb or more:
         R         1.2Mb
-        doc       1.0Mb
         extdata   1.1Mb
         libs     16.0Mb
     ```
@@ -2326,10 +2280,10 @@ Run `revdep_details(, "SeuratObject")` for more info
 
 <details>
 
-* Version: 1.7.3
+* Version: 1.7.4
 * GitHub: https://github.com/rstudio/shiny
 * Source code: https://github.com/cran/shiny
-* Date/Publication: 2022-10-25 20:50:02 UTC
+* Date/Publication: 2022-12-15 13:10:02 UTC
 * Number of recursive dependencies: 91
 
 Run `revdep_details(, "shiny")` for more info
@@ -2340,10 +2294,10 @@ Run `revdep_details(, "shiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.3Mb
+      installed size is  9.6Mb
       sub-directories of 1Mb or more:
         R     1.6Mb
-        www   6.6Mb
+        www   6.9Mb
     ```
 
 # shiny.worker
@@ -2378,10 +2332,10 @@ Run `revdep_details(, "shiny.worker")` for more info
 
 <details>
 
-* Version: 2.0.0
+* Version: 2.0.1
 * GitHub: https://github.com/rvalieris/signeR
 * Source code: https://github.com/cran/signeR
-* Date/Publication: 2022-11-01
+* Date/Publication: 2022-12-14
 * Number of recursive dependencies: 242
 
 Run `revdep_details(, "signeR")` for more info
@@ -2392,10 +2346,10 @@ Run `revdep_details(, "signeR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.6Mb
+      installed size is  6.7Mb
       sub-directories of 1Mb or more:
         R     1.1Mb
-        doc   4.6Mb
+        doc   4.7Mb
     ```
 
 *   checking R code for possible problems ... NOTE
