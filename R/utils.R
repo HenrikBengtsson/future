@@ -506,21 +506,21 @@ myInternalIP <- local({
       }, error = identity)
 
       ## (ii) Try commands 'ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("ifconfig", stdout = TRUE)
         }, error = identity)
       }
 
       ## (ii) Try command '/sbin/ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("/sbin/ifconfig", stdout = TRUE)
         }, error = identity)
       }
-      
+
       ## Failed?
-      if (inherits(res, "simpleError")) res <- NA_character_
+      if (inherits(res, "error")) res <- NA_character_
       
       res <- grep(pattern, res, value = TRUE)
       res <- unlist(strsplit(res, split = "[ ]+", fixed = FALSE), use.names = FALSE)
