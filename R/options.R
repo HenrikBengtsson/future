@@ -224,7 +224,7 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
 
   if (length(disallow) > 0) {
     if ("NA" %in% disallow) {
-      if (any(is.na(value))) {
+      if (anyNA(value)) {
         stopf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value))
       }
     }

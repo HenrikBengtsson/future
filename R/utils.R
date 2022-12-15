@@ -563,7 +563,7 @@ myInternalIP <- local({
     }
     ## Sanity check
 
-    stop_if_not(is.character(value), length(value) >= 1, !any(is.na(value)))
+    stop_if_not(is.character(value), length(value) >= 1, !anyNA(value))
 
     ## Cache result
     ip <<- value
