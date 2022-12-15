@@ -2,6 +2,9 @@ source("incl/start.R")
 
 options(future.debug = FALSE)
 
+## WORKAROUND: https://github.com/HenrikBengtsson/parallelly/issues/94
+has_hiccup <- (getRversion() < "4.0.0" && packageVersion("parallelly") == "1.33.0")
+
 message("*** Relaying of standard output and conditions ...")
 
 strategies <- supportedStrategies()
@@ -33,7 +36,7 @@ for (ss in seq_along(strategies)) {
     })
     message("  class: ", paste(sQuote(class(f)), collapse = ", "))
     stopifnot(length(relay$stdout) == 0L)
-    stopifnot(length(relay$msgs) == 0L)
+    stopifnot(has_hiccup || length(relay$msgs) == 0L)
     
     message("- checking if resolved")
     relay <- recordRelay({
@@ -48,7 +51,7 @@ for (ss in seq_along(strategies)) {
       f <- resolve(f, result = TRUE)
     })
     stopifnot(length(relay$stdout) == 0L)
-    stopifnot(length(relay$msgs) == 0L)
+    stopifnot(has_hiccup || length(relay$msgs) == 0L)
   
     message("- resolve w/out collecting results")
     relay <- recordRelay({
@@ -87,7 +90,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
   stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
+  stopifnot(has_hiccup || length(relay$msgs) == 0L)
 
   message("- check if resolved")
   relay <- recordRelay({
@@ -103,7 +106,7 @@ for (ss in seq_along(strategies)) {
   })
   str(relay)
   stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
+  stopifnot(has_hiccup || length(relay$msgs) == 0L)
 
   message("- resolve w/out collecting results")
   relay <- recordRelay({
@@ -144,7 +147,7 @@ for (ss in seq_along(strategies)) {
   })
   message("  class: ", paste(sQuote(class(fs[[1]])), collapse = ", "))
   stopifnot(length(relay$stdout) == 0L)
-  stopifnot(length(relay$msgs) == 0L)
+  stopifnot(has_hiccup || length(relay$msgs) == 0L)
 
   message("- getting value")
   relay <- recordRelay({
