@@ -17,7 +17,7 @@
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.29.0 |1.29.0-9003 |*  |
+|future     |1.29.0 |1.29.0-9013 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -33,7 +33,7 @@
 |[AIPW](problems.md#aipw) |0.6.3.2   |      |        |1    |
 |alookr                   |0.3.7     |      |        |     |
 |alphaci                  |1.0.0     |      |        |     |
-|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |1     |        |     |
+|AlpsNMR                  |4.0.2     |      |        |     |
 |arkdb                    |0.0.16    |      |        |     |
 |aroma.affymetrix         |3.2.1     |      |        |     |
 |aroma.cn                 |1.7.0     |      |        |     |
@@ -153,7 +153,7 @@
 |lemna                    |1.0.0     |      |        |     |
 |LexFindR                 |1.0.2     |      |        |     |
 |lgr                      |0.4.4     |      |        |     |
-|[lidR](problems.md#lidr) |4.0.1     |2     |        |1    |
+|[lidR](problems.md#lidr) |4.0.2     |2     |        |1    |
 |[lightr](problems.md#lightr)|1.7.0     |      |        |2    |
 |lmtp                     |1.3.1     |      |        |     |
 |LWFBrook90R              |0.5.0     |      |        |     |
@@ -241,11 +241,11 @@
 |[sentopics](problems.md#sentopics)|0.7.1     |      |        |3    |
 |[Seurat](problems.md#seurat)|4.3.0     |      |        |2    |
 |[SeuratObject](problems.md#seuratobject)|4.1.3     |      |        |1    |
-|[shiny](problems.md#shiny)|1.7.3     |      |        |1    |
+|[shiny](problems.md#shiny)|1.7.4     |      |        |1    |
 |[shiny.worker](problems.md#shinyworker)|0.0.1     |      |        |2    |
 |sigminer                 |2.1.9     |      |        |     |
 |Signac                   |1.9.0     |      |        |     |
-|[signeR](problems.md#signer)|2.0.0     |      |        |3    |
+|[signeR](problems.md#signer)|2.0.1     |      |        |3    |
 |simfinapi                |0.2.0     |      |        |     |
 |simglm                   |0.8.9     |      |        |     |
 |simhelpers               |0.1.2     |      |        |     |
