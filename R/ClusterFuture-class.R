@@ -369,7 +369,7 @@ receiveMessageFromWorker <- function(future, ...) {
   ack <- tryCatch({
     msg <- recvResult(node)
     TRUE
-  }, simpleError = function(ex) ex)
+  }, error = function(ex) ex)
 
   if (inherits(ack, "error")) {
     if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))

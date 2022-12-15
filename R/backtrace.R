@@ -33,7 +33,7 @@ backtrace <- function(future, envir = parent.frame(), ...) {
     future <- tryCatch({
       target <- parse_env_subset(expr, envir = envir, substitute = FALSE)
       get_future(target, mustExist = TRUE)
-    }, simpleError = function(ex) {
+    }, error = function(ex) {
       eval(expr, envir = envir, enclos = baseenv())
     })
     stop_if_not(inherits(future, "Future"))    

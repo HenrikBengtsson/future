@@ -5,6 +5,12 @@
  * `futureOf()` used `listenv::map()`, which is deprecated in
    **listenv** (>= 0.9.0) in favor of `listenv::mapping()`.
 
+ * Starting with R (>= 4.2.0), the internal function `myInternalIP()`
+   no longer detected when an attempted system call failed, resulting
+   in an obscure error instead of falling back to alternatives.  This
+   was because errors produced by `system2()` no longer inherits from
+   class `simpleError`.
+
 
 # Version 1.29.0 [2022-11-05]
 
