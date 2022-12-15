@@ -14,7 +14,10 @@
 ## Deprecated and Defunct
 
  * Strategy 'remote' was deprecated in **future** 1.24.0 and is now
-   defunct. Use `plan(cluster, ...)` instead.
+   defunct. Use `plan(cluster, ..., persistent = TRUE)` instead. Note
+   that `persistent = TRUE` will eventually also become deprecated and
+   defunct, but by then we will have an alternative solution
+   available.
 
 
 # Version 1.29.0 [2022-11-05]
