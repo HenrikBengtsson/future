@@ -84,12 +84,6 @@ If multicore evaluation is supported, that will be used,
 otherwise multisession evaluation will be used.
 \emph{Please use \code{multisession}, or possibly \code{multicore} instead.}
 }
-\item{\code{\link{remote}}:}{(DEPRECATED since future 1.24.0)
-Resolves futures asynchronously in a separate \R session
-running on a separate machine, typically on a different
-network.
-\emph{Please use \code{cluster} instead.}
-}
 }
 
 Other package may provide additional evaluation strategies.
