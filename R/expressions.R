@@ -20,6 +20,13 @@ makeExpression <- local({
 
   tmpl_exit_optenvar <- bquote_compile({
     ## (a) Reset options
+    ## WORKAROUND: Do not reset 'nwarnings' unless changed, because
+    ## that will, as documented, trigger any warnings collected
+    ## internally to be removed.
+    ## https://github.com/HenrikBengtsson/future/issues/645
+    if (identical(getOption("nwarnings"), ...future.oldOptions$nwarnings)) {
+      ...future.oldOptions$nwarnings <- NULL
+    }
     base::options(...future.oldOptions)
 
     ## There might be packages that add essential R options when

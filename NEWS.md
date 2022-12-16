@@ -3,6 +3,91 @@
  * ...
  
 
+# Version 1.30.0 [2022-12-15]
+
+## Bug Fixes
+
+ * `futureOf()` used `listenv::map()`, which is deprecated in
+   **listenv** (>= 0.9.0) in favor of `listenv::mapping()`.
+
+ * Starting with R (>= 4.2.0), the internal function `myInternalIP()`
+   no longer detected when an attempted system call failed, resulting
+   in an obscure error instead of falling back to alternatives.  This
+   was because errors produced by `system2()` no longer inherits from
+   class `simpleError`.
+
+## Deprecated and Defunct
+
+ * Strategy 'remote' was deprecated in **future** 1.24.0 and is now
+   defunct. Use `plan(cluster, ..., persistent = TRUE)` instead. Note
+   that `persistent = TRUE` will eventually also become deprecated and
+   defunct, but by then we will have an alternative solution
+   available.
+
+
+# Version 1.29.0 [2022-11-05]
+
+## Documentation
+
+ * Add section 'Making sure to stop parallel workers' to the 'Best
+   Practices for Package Developers', which explains why `R CMD check`
+   may produce "checking for detritus in the temp directory ... NOTE"
+   and how to avoid them.
+
+## Bug Fixes
+
+ * The evaluation of a _sequential_ future would reset any warnings
+   collected by R prior to creating the future.  This only happened
+   with `plan(sequential)` and when `getOption("warn") == 0`.
+   This bug was introduced in **future** 1.26.0 [2022-05-27].
+
+## Deprecated and Defunct
+
+ * Using the deprecated `plan(multiprocess)` will now trigger a
+   deprecation warning _each_ time a `multiprocess` future is created.
+   This means that there could be a lot of warnings produced.  Note
+   that `multiprocess` has been deprecated since **future** 1.20.0
+   [2020-10-30].  Please use `multisession` (recommended) or
+   `multicore` instead.
+
+ * Removing `values()`, which has been defunct since **future**
+   1.23.0. Use `value()` instead.
+
+
+
+# Version 1.28.0 [2022-09-02]
+
+## Documentation
+
+ * Mention how `source(..., local = TRUE)` is preferred over
+   `source()` when used inside futures.
+
+## Bug Fixes
+
+ * `do.call(plan, args = list(multisession, workers = 2))` would
+   ignore the `workers` argument, and any other arguments.
+
+## Deprecated and Defunct
+
+ * Previously deprecated use of `local = FALSE` with futures is now 
+   defunct.
+
+ * The R option to temporarily allow `plan(transparent)` although it
+   was declared defunct has now been removed; `plan(transparent)`,
+   together with functions `transparent()` and `TransparentFuture()`
+   are now formally defunct.
+
+ * Using argument `persistent` with multisession futures is now defunct.
+   Previously only `persistent = TRUE` was defunct.
+
+## Miscellaneous
+
+ * Use CSS style to align image to the right instead of non-HTML5
+   attribute `align="right"`.
+
+ * Avoid nested `<em>` tags in HTML-generated help pages.
+ 
+
 # Version 1.27.0 [2022-07-21]
 
 ## New Features
@@ -206,8 +291,8 @@
 
 ## Deprecated and Defunct
 
- * `values()`, which has been deprecated since **future** 1.20.0, is now defunct.
-   Use `value()` instead.
+ * `values()`, which has been deprecated since **future** 1.20.0, is
+   now defunct.  Use `value()` instead.
 
  * Support for `persistent = TRUE` with multisession futures is defunct.  If
    still needed, a temporary workaround is to use cluster futures. However,

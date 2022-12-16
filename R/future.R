@@ -1,7 +1,7 @@
 #' Create a future
 #'
 ## Rescaled to 120x138: convert -geometry 28.7% future-logo.png logo.png
-#' \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+#' \if{html}{\figure{logo.png}{options: style='float: right;' alt='logo' width='120'}}
 #' Creates a future that evaluates an \R expression or
 #' a future that calls an \R function with a set of arguments.
 #' How, when, and where these futures are evaluated can be configured

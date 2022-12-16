@@ -94,6 +94,12 @@ fcn <- plan("next")
 print(fcn)
 stopifnot(formals(fcn)$abc == 1)
 
+message("*** do.call(plan, args = list(sequential, abc = 1))")
+do.call(plan, args = list(sequential, abc = 1, def = TRUE))
+fcn <- plan("next")
+print(fcn)
+stopifnot(formals(fcn)$abc == 1)
+
 message("*** plan(cluster, ..., rscript_startup = \"<code>\")")
 plan(cluster, workers = 1L, rscript_startup = "options(abc = 42L)")
 f <- future(getOption("abc"))

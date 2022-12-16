@@ -31,13 +31,3 @@ sequential <- function(..., envir = parent.frame()) {
   invisible(future)
 }
 class(sequential) <- c("sequential", "uniprocess", "future", "function")
-
-
-#' @rdname sequential
-#' @export
-transparent <- function(..., envir = parent.frame()) {
-  future <- TransparentFuture(..., envir = envir)
-  if (!future$lazy) future <- run(future)
-  invisible(future)
-}
-class(transparent) <- c("transparent", "sequential", "uniprocess", "future", "function")

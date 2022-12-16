@@ -174,9 +174,65 @@ plan(multisession)
 
 If the code works with this setup, you can be sure that all global variables are properly identified and exported to the workers and that the required packages are loaded on the workers.
 
+Always make sure to shut down your parallel 'multisession' workers at the end of each package test by calling:
+
+```r
+plan(sequential)
+```
+
 If not all of your tests are written this way, you can set environment variable `R_FUTURE_PLAN=multisession` before you call `R CMD check`.  This will make the default future strategy to become 'multisession' instead of 'sequential'.  For example,
 
 ```sh
 $ export R_FUTURE_PLAN=multisession
 $ R CMD check --as-cran mypkg_1.0.tar.gz
 ```
+
+
+## Making sure to stop parallel workers
+
+When creating a `cluster` object, for instance via `plan(multisession)`, in
+a package help example, in a package vignette, or in a package test, we must
+_remember to stop the cluster at the end of all examples(*), vignettes, and
+unit tests_. This is required in order to not leave behind stray parallel
+`cluster` workers after our main R session terminates. On Linux and macOS,
+the operating system often takes care of terminating the worker processes
+if we forget, but on MS Windows such processes will keep running in the
+background until they time out themselves, which takes 30 days (sic!).
+
+`R CMD check --as-cran` will indirectly detect these stray worker processes
+on MS Windows when running R (>= 4.3.0). They are detected, because they
+result in placeholder `Rscript<hexcode>` files being left behind in
+the temporary directory.  The check NOTE to look out for
+(only in R (>= 4.3.0)) is:
+
+```
+* checking for detritus in the temp directory ... NOTE
+Found the following files/directories:
+  'Rscript1058267d0c10' 'Rscriptbd4267d0c10'
+```
+
+Those `Rscript<hexcode>` files are from background R worker processes,
+which almost always are parallel `cluster`:s that we forgot to stop
+at the end.  To stop 'multisession' workers, call:
+
+```r
+plan(sequential)
+```
+
+at the end of your examples(*), vignettes, and package tests.
+
+If you create the `cluster` manually using
+
+```r
+cl <- parallelly::makeClusterPSOCK(2)
+plan(cluster, workers = cl)
+```
+
+make sure to stop such clusters at the end using
+
+```r
+parallel::stopCluster(cl)
+```
+
+(*) Currently, examples are excluded from the detritus checks.
+    This was the validated with R-devel revision 82991 (2022-10-02).

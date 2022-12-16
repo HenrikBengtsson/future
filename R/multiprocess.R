@@ -5,11 +5,11 @@
 #' Regardless, its _value is computed and resolved in
 #' parallel in another process_.\cr
 #' \cr
-#' _WARNING: Consider the 'multiprocess' future plan deprecated.
+#' **WARNING: The 'multiprocess' future plan is deprecated.
 #' Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 #' everywhere and is the recommended one between the two. _Forked processing_,
 #' which 'multicore' uses, is unstable in various environment and setups.
-#' The 'multiprocess' alias is therefore being phased out._
+#' The 'multiprocess' alias is therefore being phased out.**
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams future
@@ -38,6 +38,10 @@
 #'
 #' @export
 multiprocess <- function(..., workers = availableCores(), envir = parent.frame()) {
+  if (!is.element("multiprocess", getOption("future.deprecated.ignore"))) {
+    .Deprecated(msg = sprintf("Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"))
+  }
+  
   fun <- if (supportsMulticore(warn = TRUE)) multicore else multisession
   fun(..., workers = workers, envir = envir)
 }

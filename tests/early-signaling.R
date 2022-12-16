@@ -64,7 +64,7 @@ message("*** Early signaling of conditions with multisession futures ...")
 
 plan(multisession)
 f <- future({ stop("bang!") })
-Sys.sleep(0.5)
+Sys.sleep(1.0)
 r <- resolved(f)
 stopifnot(r)
 v <- tryCatch(value(f), error = identity)
@@ -73,7 +73,7 @@ stopifnot(inherits(v, "error"))
 if (availableCores() > 1L) {
   plan(multisession, earlySignal = TRUE)
   f <- future({ stop("bang!") })
-  Sys.sleep(0.5)
+  Sys.sleep(1.0)
   print(f)
   r <- tryCatch(resolved(f), error = identity)
   stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
@@ -92,7 +92,7 @@ if (supportsMulticore()) {
   
   plan(multicore)
   f <- future({ stop("bang!") })
-  Sys.sleep(0.5)
+  Sys.sleep(1.0)
   r <- resolved(f)
   stopifnot(r)
   v <- tryCatch(value(f), error = identity)
@@ -101,7 +101,7 @@ if (supportsMulticore()) {
   if (availableCores() > 1L) {
     plan(multicore, earlySignal = TRUE)
     f <- future({ stop("bang!") })
-    Sys.sleep(0.5)
+    Sys.sleep(1.0)
     print(f)
     r <- tryCatch(resolved(f), error = identity)
     stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
@@ -110,7 +110,7 @@ if (supportsMulticore()) {
   
     ## Errors
     f <- future({ stop("bang!") }, earlySignal = TRUE)
-    Sys.sleep(0.5)
+    Sys.sleep(1.0)
     r <- tryCatch(resolved(f), error = identity)
     stopifnot(inherits(r, "error") || inherits(f, "SequentialFuture"))
     v <- tryCatch(value(f), error = identity)
@@ -121,19 +121,19 @@ if (supportsMulticore()) {
   
   ## Warnings
   f <- future({ warning("careful!") }, earlySignal = TRUE)
-  Sys.sleep(0.5)
+  Sys.sleep(1.0)
   res <- tryCatch({ r <- resolved(f) }, condition = function(w) w)
   #stopifnot(inherits(res, "warning"))
   
   ## Messages
   f <- future({ message("hey!") }, earlySignal = TRUE)
-  Sys.sleep(0.5)
+  Sys.sleep(1.0)
   res <- tryCatch({ r <- resolved(f) }, condition = function(w) w)
   #stopifnot(inherits(res, "message"))
   
   ## Condition
   f <- future({ signalCondition(simpleCondition("hmm")) }, earlySignal = TRUE)
-  Sys.sleep(0.5)
+  Sys.sleep(1.0)
   res <- tryCatch({ r <- resolved(f) }, condition = function(w) w)
   #stopifnot(inherits(res, "condition"))
   

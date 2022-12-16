@@ -104,21 +104,12 @@ envname <- function(env) {
   if (!is.environment(env)) return(NA_character_)
   name <- environmentName(env)
   if (name == "") {
-    class <- class(env)
-    if (identical(class, "environment")) {
-      ## e.g. new.env()
-      name <- capture.output(print(env))
-    } else {
-      ## It might be that 'env' is on a class that extends 'environment',
-      ## e.g. R.oo::Object() or R6::R6Class().
-      ## IMPORTANT: The unset class must be temporary, because changing
-      ## the class of an environment will
-      name <- local({
-        on.exit(class(env) <- class)
-        class(env) <- NULL
-        capture.output(print(env))
-      })
-    }
+    ## NOTE: I might be that:
+    ## 1. 'env' is of a class that extends 'environment', e.g.
+    ##    R.oo::Object() or R6::R6Class(), or
+    ## 2. another package defines print() for 'environment'
+    ## Because of this, we call print.default() instead of generic print().
+    name <- capture.output(print.default(env))
     if (length(name) > 1L) name <- name[1]
     name <- gsub("(.*: |>)", "", name)
   } else {
@@ -283,16 +274,18 @@ requirePackages <- local(function(pkgs) {
 }) ## requirePackages()
 
 
-## When 'default' is specified, this is 30x faster than
-## base::getOption().  The difference is that here we use
-## use names(.Options) whereas in 'base' names(options())
-## is used.
-getOption <- local({
-  go <- base::getOption
-  function(x, default = NULL) {
-    if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
-  }
-}) ## getOption()
+if (getRversion() < "4.0.0") {
+  ## When 'default' is specified, this is 30x faster than
+  ## base::getOption().  The difference is that here we use
+  ## use names(.Options) whereas in 'base' names(options())
+  ## is used.
+  getOption <- local({
+    go <- base::getOption
+    function(x, default = NULL) {
+      if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
+    }
+  })
+}
 
 
 ## We are currently importing the following non-exported functions:
@@ -513,21 +506,21 @@ myInternalIP <- local({
       }, error = identity)
 
       ## (ii) Try commands 'ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("ifconfig", stdout = TRUE)
         }, error = identity)
       }
 
       ## (ii) Try command '/sbin/ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("/sbin/ifconfig", stdout = TRUE)
         }, error = identity)
       }
-      
+
       ## Failed?
-      if (inherits(res, "simpleError")) res <- NA_character_
+      if (inherits(res, "error")) res <- NA_character_
       
       res <- grep(pattern, res, value = TRUE)
       res <- unlist(strsplit(res, split = "[ ]+", fixed = FALSE), use.names = FALSE)
@@ -570,7 +563,7 @@ myInternalIP <- local({
     }
     ## Sanity check
 
-    stop_if_not(is.character(value), length(value) >= 1, !any(is.na(value)))
+    stop_if_not(is.character(value), length(value) >= 1, !anyNA(value))
 
     ## Cache result
     ip <<- value
@@ -843,7 +836,7 @@ resolveMPI <- local({
 #'    \url{https://pubs.opengroup.org/onlinepubs/9699919799/functions/kill.html}
 #'
 #' 2. Microsoft, tasklist, 2018-08-30,
-#'    \url{https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist}
+#'    \url{https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/tasklist}
 #'
 #' 3. R-devel thread 'Detecting whether a process exists or not by its PID?',
 #'    2018-08-30.

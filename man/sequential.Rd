@@ -3,12 +3,9 @@
 \name{sequential}
 \alias{sequential}
 \alias{uniprocess}
-\alias{transparent}
 \title{Create a sequential future whose value will be in the current \R session}
 \usage{
 sequential(..., envir = parent.frame())
-
-transparent(..., envir = parent.frame())
 }
 \arguments{
 \item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
