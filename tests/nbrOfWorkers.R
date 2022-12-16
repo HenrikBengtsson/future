@@ -103,17 +103,6 @@ n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %d", n))
 stopifnot(n == max(1L, nworkers - 1L))
 
-message("Type of future: remote")
-workers <- rep("localhost", times = 2L)
-plan(remote, workers = workers)
-n <- nbrOfWorkers()
-message(sprintf("nbrOfWorkers: %d", n))
-stopifnot(n == length(workers))
-plan(remote, workers = allButOneWorker)
-n <- nbrOfWorkers()
-message(sprintf("nbrOfWorkers: %d", n))
-stopifnot(n == max(1L, nworkers - 1L))
-
 message("Type of future: constant")
 n <- nbrOfWorkers(constant)
 message(sprintf("nbrOfWorkers: %d", n))
@@ -134,7 +123,7 @@ plan(cluster, workers = workers)
 n <- nbrOfWorkers()
 message(sprintf("nbrOfWorkers: %g", n))
 stopifnot(n == length(workers))
-
+parallel::stopCluster(workers)
 
 message("*** nbrOfWorkers() ... DONE")
 

@@ -24,9 +24,10 @@
 #' @return
 #' A \link{MulticoreFuture}.
 #' If `workers == 1`, then all processing using done in the
-#' current/main \R session and we therefore fall back to using
-#' an sequential future.  This is also the case whenever multicore
-#' processing is not supported, e.g. on Windows.
+#' current/main \R session and we therefore fall back to using a
+#' sequential future. To override this fallback, use `workers = I(1)`.
+#' This is also the case whenever multicore processing is not supported,
+#' e.g. on Windows.
 #'
 #' @example incl/multicore.R
 #'
@@ -65,13 +66,14 @@
 multicore <- function(..., workers = availableCores(constraints = "multicore"), envir = parent.frame()) {
   default_workers <- missing(workers)
   if (is.function(workers)) workers <- workers()
-  workers <- as.integer(workers)
+  workers <- structure(as.integer(workers), class = class(workers))
   stop_if_not(is.finite(workers), workers >= 1L)
 
   ## Fall back to sequential futures if only a single additional R process
   ## can be spawned off, i.e. then use the current main R process.
   ## Sequential futures best reflect how multicore futures handle globals.
-  if (workers == 1L || !supportsMulticore(warn = TRUE)) {
+  if ((workers == 1L && !inherits(workers, "AsIs")) ||
+      !supportsMulticore(warn = TRUE)) {
     ## AD HOC: Make sure plan(multicore) also produces a warning, if needed
     if (default_workers) supportsMulticore(warn = TRUE)
     ## covr: skip=1

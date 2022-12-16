@@ -13,14 +13,9 @@
 MultisessionFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), persistent = FALSE, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## Deprecated argument 'persistent'?
-  persistent <- list(...)$persistent
-  if (!is.null(persistent)) {
-    stop_if_not(is.logical(persistent), length(persistent) == 1L,
-                !is.na(persistent))
-    if (persistent) {
-      .Defunct(msg = "Support for 'persistent = TRUE' with multisession futures is defunct.  It was deprecated in future (>= 1.18.0).", package = .packageName)
-    }
+  ## Defunct argument 'persistent'?
+  if (!is.null(list(...)$persistent)) {
+    .Defunct(msg = "Use of argument 'persistent' with multisession futures is defunct.", package = .packageName)
   }
   
   future <- ClusterFuture(expr = expr, substitute = FALSE, envir = envir, workers = workers, ...)

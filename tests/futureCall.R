@@ -123,8 +123,7 @@ for (cores in 1:availCores) {
         }
 
         message("- futureCall() #4")
-        ## FIXME: This fails with future 1.25.0-9017,
-        ## except for sequential and multicore /HB 2022-05-09
+        ## FIXME: This works and fails in non-expected ways /HB 2022-05-26
         local({
           a <- 2
           g <- function() a
@@ -132,40 +131,55 @@ for (cores in 1:availCores) {
                           globals = globals, lazy = lazy,
                           label = "futureCall() #4")
           rm(list = "a")
-          print(f)
-          
-          res4 <- tryCatch(v4 <- value(f), error = identity)
-          print(res4)
-          
+
+          truth <- 2
+          message("truth: ", truth)
+
+          v4 <- tryCatch(value(f), error = identity)
+          print(v4)
+
+          utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v4 = v4))
+
           if (isTRUE(as.logical(Sys.getenv("R_CHECK_IDEAL")))) {
-            utils::str(list(strategy = strategy, globals = globals, lazy = lazy, res4 = res4))
-            stopifnot(identical(v4, 2))
-          } else {
-            if (packageVersion("future") > "1.25.0-9000") {
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, res4 = res4))
-              if ((!globals && lazy) || (globals && lazy) || (lazy && ! strategy %in% c("sequential", "multicore")) || (!isTRUE(getOption("future.globals.keepWhere", TRUE)) && strategy %in% c("sequential", "multicore"))) {
-                stopifnot(inherits(res4, "error"))
+            if (globals) {
+              stopifnot(identical(v4, truth))
+            } else {
+              stopifnot(inherits(v4, "error"))
+            }
+          } else if (isTRUE(getOption("future.globals.keepWhere", FALSE))) {
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
               } else {
-                v4 <- value(f)
-                stopifnot(v4 == 2)
+                stopifnot(identical(v4, truth))
               }
             } else {
-              ## future (<= 1.25.0)
-              utils::str(list(strategy = strategy, globals = globals, lazy = lazy, v0 = v0, v4 = v4, res4 = res4))
-              if (!globals && !lazy) {
-                if (strategy %in% c("sequential", "multicore")) {
-                  stopifnot(inherits(res4, "error"))
-                } else {
-                  stopifnot(res4 == 2)
-                }
-              } else if (!globals && lazy) {
-                if (strategy %in% c("sequential", "multicore", "multisession")) {
-                  stopifnot(inherits(res4, "error"))
-                } else {
-                  stopifnot(res4 == 2)
-                }
+              if (lazy) {
+                stopifnot(inherits(v4, "error"))
               } else {
-                stopifnot(res4 == 2)
+                stopifnot(identical(v4, truth))
+              }
+            }
+          } else {
+            if (isTRUE(getOption("future.globals.globalsOf.locals", TRUE))) {
+              if (globals) {
+                stopifnot(identical(v4, truth))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
+              }
+            } else {
+              if (strategy %in% c("sequential", "multicore")) {
+                stopifnot(inherits(v4, "error"))
+              } else if (lazy) {
+                stopifnot(inherits(v4, "error"))
+              } else {
+                stopifnot(identical(v4, truth))
               }
             }
           }

@@ -66,12 +66,6 @@
 #'    otherwise multisession evaluation will be used.
 #'    _Please use `multisession`, or possibly `multicore` instead._
 #'  }
-#'  \item{[`remote`]:}{(DEPRECATED since future 1.24.0)
-#'    Resolves futures asynchronously in a separate \R session
-#'    running on a separate machine, typically on a different
-#'    network.
-#'    _Please use `cluster` instead._
-#'  }
 #' }
 #' 
 #' Other package may provide additional evaluation strategies.
@@ -161,12 +155,13 @@ plan <- local({
     FALSE
   }
 
-  warn_about_deprecated <- function(stack, strategy, fmtstr) {
+  warn_about_deprecated <- function(stack, strategy, fmtstr, ignore = NULL, defunct = NULL) {
     for (kk in seq_along(stack)) {
       if (evaluator_uses(stack[[kk]], strategy)) {
-        ignore <- getOption("future.deprecated.ignore")
+        if (is.null(ignore)) ignore <- getOption("future.deprecated.ignore")
         if (!is.element(strategy, ignore)) {
-          if (is.element(strategy, getOption("future.deprecated.defunct"))) {
+          if (is.null(defunct)) defunct <- getOption("future.deprecated.defunct")
+          if (is.element(strategy, defunct)) {
             msg <- sprintf(fmtstr, strategy, "defunct")
             dfcn <- .Defunct
           } else {
@@ -184,11 +179,11 @@ plan <- local({
   }
 
   warn_about_remote <- function(stack) {
-    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. Instead, use 'cluster'.")
+    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", defunct = "remote")
   }
 
   warn_about_transparent <- function(stack) {
-    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.24.0) [2022-02-19]. It was designed to simplify interactive troubleshooting, but is now superseeded by plan(sequential, split = TRUE).")
+    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.28.0) [2022-09-02]. It was designed to simplify interactive troubleshooting, but is now superseded by plan(sequential, split = TRUE).", defunct = "transparent")
   }
 
   warn_about_multicore <- local({
@@ -367,6 +362,11 @@ plan <- local({
 
     ## Set new stack?
     if (is.function(strategy)) {
+      ## Tweak the strategy function?
+      if (length(targs) > 0) {
+        args <- c(list(strategy), targs, penvir = parent.frame())
+        strategy <- do.call(tweak, args = args)
+      }
       strategy <- list(strategy)
     }
 

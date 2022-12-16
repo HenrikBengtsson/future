@@ -23,12 +23,11 @@ First, all the essential core packages part of the future framework,
 **[future]**, **[globals]**, and **[listenv]**, implement a rich set of package tests.
 These are validated regularly across the wide-range of operating
 systems (Linux, Solaris, macOS, and MS Windows) and R versions available
-on CRAN, on continuous integration (CI) services ([GitHub Actions], [Travis CI],
-and [AppVeyor CI]), and on [R-hub].
+on CRAN, via continuous integration (CI) ([GitHub Actions]), and on [R-hub].
 
 Second, for each new release, these packages undergo full reverse-package
 dependency checks using **[revdepcheck]**.
-As of October 2020, the **future** package is tested against 140+
+As of June 2022, the **future** package is tested against 240+
 direct reverse-package dependencies available on CRAN and Bioconductor.
 These checks are performed on Linux with both the default settings and
 when forcing tests to use multisession workers (SOCK clusters), which further
@@ -92,6 +91,4 @@ of the _Future API_ and the future ecosystem at large.
 [revdepcheck]: https://github.com/r-lib/revdepcheck
 
 [GitHub Actions]: https://github.com/features/actions
-[Travis CI]: https://travis-ci.org/
-[AppVeyor CI]: https://www.appveyor.com/
 [R-hub]: https://builder.r-hub.io/

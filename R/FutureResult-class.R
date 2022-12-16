@@ -115,7 +115,8 @@ print.FutureResult <- function(x, ...) {
   if (!is.null(v <- x$visible)) s <- c(s, sprintf("visible: %s", v))
   s <- c(s, sprintf("stdout: %s", class(x[["stdout"]])))
   conditions <- x[["conditions"]]
-  s <- c(s, sprintf("conditions: [n = %d] %s", length(conditions), paste(sapply(conditions, FUN = function(c) sQuote(class(c)[1])), collapse = ", ")))
+  conditionClasses <- vapply(conditions, FUN = function(c) class(c$condition)[1], FUN.VALUE = NA_character_)
+  s <- c(s, sprintf("conditions: [n = %d] %s", length(conditions), paste(conditionClasses, collapse = ", ")))
   if (!is.null(v <- x$rng)) s <- c(s, sprintf("RNG used: %s", v))
   t0 <- x[["started"]]
   t1 <- x[["finished"]]

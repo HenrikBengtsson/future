@@ -107,7 +107,8 @@
 #' @section Environment variables that set R options:
 #' All of the above \R \option{future.*} options can be set by corresponding
 #' environment variable \env{R_FUTURE_*} _when the \pkg{future} package is
-#' loaded_.
+#' loaded_. This means that those environment variables must be set before
+#' the \pkg{future} package is loaded in order to have an effect.
 #' For example, if `R_FUTURE_RNG_ONMISUSE = "ignore"`, then option
 #' \option{future.rng.onMisuse} is set to `"ignore"` (character string).
 #' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE = "50000000"`, then option
@@ -229,7 +230,7 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
 
   if (length(disallow) > 0) {
     if ("NA" %in% disallow) {
-      if (any(is.na(value))) {
+      if (anyNA(value)) {
         stopf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value))
       }
     }
@@ -266,8 +267,8 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.demo.mandelbrot.nrow", mode = "integer", debug = debug)
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
-  ## future (>= 1.25.0-9004):
-  update_package_option("future.deprecated.defunct", mode = "character", default = c("transparent"), split = ",", debug = debug)
+
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 

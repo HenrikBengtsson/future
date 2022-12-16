@@ -349,6 +349,31 @@ This will turn the error into a warning with the same message.  If we want to ju
 Importantly, we must not use just `warning(e)` or `message(e)`, although it appears to work at a first glance.  If we do, we will end up re-signaling the error but without interruption.  It is an important distinction that will reveal itself if used within futures.  The above example with `warning(conditionMessage(e))` will work as expected, but if we use `warning(e)` the future framework will produce an error, not a warning.
 
 
+### Using `source()` in a future
+
+Avoid using `source()` inside futures. It is always better to source external R scripts at the top of your main R script, e.g.
+
+```r
+library(future)
+source("./my-script.R")
+
+f <- future({
+  ...
+})
+```
+
+However, if you find yourself having to source a script inside a future, or inside a function, make sure to specify argument `local = TRUE`, e.g.
+
+```r
+f <- future({
+  source("./my-script.R", local = TRUE)
+  ...
+})
+```
+
+This is because `source()` defaults to `local = FALSE`, which has side effects.  When using `local = FALSE`, any functions or variables defined by the R script are assigned to the global environment - not the calling environment as we might expect.  This may make little different when calling `source()` from the R prompt, or from another script.  However, when called from inside a function, inside `local()`, or inside a future, it might result in unexpected behavior. It is similar to using `assign("a", 42, envir = globalenv())`, which is known be a bad practice.  To be on the safe side, it is almost always better call `source()` with `local = TRUE`.
+
+
 ### Clashes with other packages
 
 Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:

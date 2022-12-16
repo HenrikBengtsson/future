@@ -296,7 +296,7 @@ Clusters created implicitly using `plan(cluster, workers = hosts)` where `hosts`
 
 Note that with automatic authentication setup (e.g. SSH key pairs), there is nothing preventing us from using the same approach for using a cluster of remote machines.
 
-If you want to run multiple workers on each node, just replicate the node name as many times as the number of workers to run on that node.  For example,
+If you want to run multiple workers on each node, replicate the node name as many times as the number of workers to run on that node.  For example,
 
 ```
 > plan(cluster, workers = c(rep("n1", times = 3), "n2", rep("n3", times = 5)))
