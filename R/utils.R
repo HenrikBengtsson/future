@@ -274,16 +274,18 @@ requirePackages <- local(function(pkgs) {
 }) ## requirePackages()
 
 
-## When 'default' is specified, this is 30x faster than
-## base::getOption().  The difference is that here we use
-## use names(.Options) whereas in 'base' names(options())
-## is used.
-getOption <- local({
-  go <- base::getOption
-  function(x, default = NULL) {
-    if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
-  }
-}) ## getOption()
+if (getRversion() < "4.0.0") {
+  ## When 'default' is specified, this is 30x faster than
+  ## base::getOption().  The difference is that here we use
+  ## use names(.Options) whereas in 'base' names(options())
+  ## is used.
+  getOption <- local({
+    go <- base::getOption
+    function(x, default = NULL) {
+      if (missing(default) || match(x, table = names(.Options), nomatch = 0L) > 0L) go(x) else default
+    }
+  })
+}
 
 
 ## We are currently importing the following non-exported functions:
@@ -504,21 +506,21 @@ myInternalIP <- local({
       }, error = identity)
 
       ## (ii) Try commands 'ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("ifconfig", stdout = TRUE)
         }, error = identity)
       }
 
       ## (ii) Try command '/sbin/ifconfig'
-      if (inherits(res, "simpleError")) {
+      if (inherits(res, "error")) {
         res <- tryCatch({
           system2("/sbin/ifconfig", stdout = TRUE)
         }, error = identity)
       }
-      
+
       ## Failed?
-      if (inherits(res, "simpleError")) res <- NA_character_
+      if (inherits(res, "error")) res <- NA_character_
       
       res <- grep(pattern, res, value = TRUE)
       res <- unlist(strsplit(res, split = "[ ]+", fixed = FALSE), use.names = FALSE)
@@ -561,7 +563,7 @@ myInternalIP <- local({
     }
     ## Sanity check
 
-    stop_if_not(is.character(value), length(value) >= 1, !any(is.na(value)))
+    stop_if_not(is.character(value), length(value) >= 1, !anyNA(value))
 
     ## Cache result
     ip <<- value

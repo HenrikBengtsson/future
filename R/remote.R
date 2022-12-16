@@ -53,7 +53,8 @@
 #'
 #' @section 'remote' versus 'cluster':
 #' The `remote` plan is a very similar to the [`cluster`] plan, but provides
-#' more convenient default argument values when connecting to remote machines.  #' Specifically, `remote` uses `persistent = TRUE` by default, and it sets
+#' more convenient default argument values when connecting to remote machines.
+#' Specifically, `remote` uses `persistent = TRUE` by default, and it sets
 #' `homogeneous`, `revtunnel`, and `myip` "wisely" depending on the value of
 #' `workers`.
 #' ' See below for example on how `remote` and `cluster` are related.

@@ -22,7 +22,7 @@
 #' @example incl/futureOf.R
 #'
 #' @export
-#' @importFrom listenv map parse_env_subset
+#' @importFrom listenv mapping parse_env_subset
 futureOf <- function(var = NULL, envir = parent.frame(), mustExist = TRUE, default = NA, drop = FALSE) {
   ## Argument 'expr':
   expr <- substitute(var)
@@ -38,7 +38,7 @@ futureOf <- function(var = NULL, envir = parent.frame(), mustExist = TRUE, defau
 
   ## Otherwise, inspect all variables in environment
   if (inherits(envir, "listenv")) {
-    map <- map(envir)
+    map <- mapping(envir)
     res <- list()
     length(res) <- length(map)
     names(res) <- names(map)
@@ -97,7 +97,7 @@ get_future <- function(target, mustExist = TRUE, default = NA) {
 
   ## (a) Check if element is a future promise
   if (inherits(envir, "listenv")) {
-    map <- map(envir)
+    map <- mapping(envir)
     name <- map[target$idx]
   } else {
     name <- target$name

@@ -107,7 +107,8 @@
 #' @section Environment variables that set R options:
 #' All of the above \R \option{future.*} options can be set by corresponding
 #' environment variable \env{R_FUTURE_*} _when the \pkg{future} package is
-#' loaded_.
+#' loaded_. This means that those environment variables must be set before
+#' the \pkg{future} package is loaded in order to have an effect.
 #' For example, if `R_FUTURE_RNG_ONMISUSE = "ignore"`, then option
 #' \option{future.rng.onMisuse} is set to `"ignore"` (character string).
 #' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE = "50000000"`, then option
@@ -223,7 +224,7 @@ update_package_option <- function(name, mode = "character", default = NULL, spli
 
   if (length(disallow) > 0) {
     if ("NA" %in% disallow) {
-      if (any(is.na(value))) {
+      if (anyNA(value)) {
         stopf("Coercing environment variable %s=%s to %s would result in missing values for option %s: %s", sQuote(env), sQuote(env_value), sQuote(mode), sQuote(name), commaq(value))
       }
     }

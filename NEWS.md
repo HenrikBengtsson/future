@@ -1,3 +1,25 @@
+# Version 1.30.0 [2022-12-15]
+
+## Bug Fixes
+
+ * `futureOf()` used `listenv::map()`, which is deprecated in
+   **listenv** (>= 0.9.0) in favor of `listenv::mapping()`.
+
+ * Starting with R (>= 4.2.0), the internal function `myInternalIP()`
+   no longer detected when an attempted system call failed, resulting
+   in an obscure error instead of falling back to alternatives.  This
+   was because errors produced by `system2()` no longer inherits from
+   class `simpleError`.
+
+## Deprecated and Defunct
+
+ * Strategy 'remote' was deprecated in **future** 1.24.0 and is now
+   defunct. Use `plan(cluster, ..., persistent = TRUE)` instead. Note
+   that `persistent = TRUE` will eventually also become deprecated and
+   defunct, but by then we will have an alternative solution
+   available.
+
+
 # Version 1.29.0 [2022-11-05]
 
 ## Documentation

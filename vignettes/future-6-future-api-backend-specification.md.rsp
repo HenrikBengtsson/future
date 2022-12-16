@@ -12,7 +12,7 @@
 --------------------------------------------------------------------"%>
 # Future API Backend Specification
 
-Version 0.1.1
+Version 0.1.2
 
 ## Introduction
 
@@ -74,6 +74,8 @@ The value of the constructor function should be invisible and a `MyParallelFutur
 
 Before returning the `Future` object, the constructor function should launch the future if, and only if, the `lazy` element of the `Future` object (e.g. `f$lazy`) is `FALSE` (default).  The constructor function must never evaluate the expression `expr` if `lazy` is `TRUE`.
 
+The constructor function must not update the RNG state.
+
 
 ### run() method
 
@@ -89,6 +91,7 @@ If the backend provides parallel processing, then `run()` should return the futu
 
 The `run()` method may produce `FutureError` error as created by `FutureError()` in case it fails to launch the future on the worker or the worker has terminated unexpectedly.
 
+The `run()` method must not update the RNG state.
 
 
 ### resolved() method
@@ -102,6 +105,8 @@ The method should return `FALSE` as long as the future is unresolved. It may als
 If `resolved()` is called on a future that yet has not been launched, it should launch the future by calling `run()`.  This is the only occasion when `resolved()` may block.  In all other cases, it should return promptly.
 
 The `resolved()` method may produce `FutureError` error as created by `FutureError()` in case communication with the worker has broken down or the worker has terminated unexpectedly. 
+
+The `resolved()` method must not update the RNG state.
 
 
 ### result() method
@@ -118,6 +123,7 @@ The value of `result()` should be the value from evaluating the `getExpression()
 
 The `result()` method may produce `FutureError` error as created by `FutureError()` in case communication with the worker has broken down or the worker has terminated unexpectedly.
 
+The `result()` method must not update the RNG state.
 
 
 

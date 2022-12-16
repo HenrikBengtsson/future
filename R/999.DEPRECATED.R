@@ -1,7 +1,7 @@
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ## DEPRECATED & DEFUNCT
 ## - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#' @rdname sequential
+#' @rdname remote
 #' @export
 transparent <- function(...) {
   .Defunct(msg = "Transparent futures are defunct. Use plan(sequential, split = TRUE) instead")

@@ -40,6 +40,8 @@ jobs:
       R_FUTURE_RNG_ONMISUSE: error
       R_FUTURE_PLAN: ${{ matrix.config.plan }}
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
+      ## Specific to furrr (to disable expect_snapshot() tests)
+      NOT_CRAN: false
       
     steps:
       - uses: actions/checkout@v3
