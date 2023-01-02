@@ -172,7 +172,7 @@ This will in turn allow us to perform the same calculations without having to us
 
 #### glue::glue() - object not found
 
-The future framework will fail to identify globals that are declared via character strings.  The above section gives an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the glue package to generate strings dynamically, e.g.
+The future framework will fail to identify globals that are declared via character strings.  The above section gives an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the **[glue]** package to generate strings dynamically, e.g.
 
 ```r
 > library(glue)
@@ -215,7 +215,7 @@ The value of a is 42.
 
 ### Missing packages (false negatives)
 
-Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
+Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the **[data.table]** package.  However, the **future** and **[globals]** packages fail to identify **data.table** as a required package, which results in an evaluation error:
 
 ```r
 > library(future)
@@ -228,9 +228,9 @@ Occasionally, the static-code inspection of the future expression fails to ident
 Error: object 'b' not found
 ```
 
-The above error occurs because, contrary to the master R process, the R worker that evaluated the future expression does not have data.table loaded.  Instead the evaluation falls back to the `[.data.frame` method, which is not what we want.
+The above error occurs because, contrary to the master R process, the R worker that evaluated the future expression does not have **data.table** loaded.  Instead the evaluation falls back to the `[.data.frame` method, which is not what we want.
 
-Until the future framework manages to identify data.table as a required package (which is the goal), we can guide future by specifying additional packages needed:
+Until the future framework manages to identify **data.table** as a required package (which is the goal), we can guide future by specifying additional packages needed:
 
 ```r
 > y %<-% DT[, sum(b)] %packages% "data.table"
@@ -251,7 +251,7 @@ Note, do _not_ use `library()` or `loadNamespace()` to resolve these problems. I
 
 ## Non-exportable objects
 
-Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the xml2 package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
+Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the **[xml2]** package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
 
 ```r
 > library(future)
@@ -404,7 +404,7 @@ This is because `source()` defaults to `local = FALSE`, which has side effects. 
 
 ### Clashes with other packages
 
-Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
+Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the **future** package, their objects will mask the ones of the **future** package.  For instance, the **[igraph]** package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
 
 ```r
 > library(future)
@@ -429,14 +429,14 @@ Error in get(".igraph.from", parent.frame()) :
   object '.igraph.from' not found
 ```
 
-Here we get an error because `%<-%` is from igraph and not the future assignment operator as we wanted.  This can be confirmed as:
+Here we get an error because `%<-%` is from **igraph** and not the future assignment operator as we wanted.  This can be confirmed as:
 
 ```r
 > environment(`%<-%`)
 <environment: namespace:igraph>
 ```
 
-To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.
+To avoid this problem, attach the two packages in opposite order such that **future** comes last and thereby overrides **igraph**, i.e.
 
 ```r
 > library(igraph)
@@ -453,7 +453,7 @@ The following objects are masked from 'package:igraph':
 [1] 42
 ```
 
-An alternative is to detach the future package and re-attach it, which will achieve the same thing:
+An alternative is to detach the **future** package and re-attach it, which will achieve the same thing:
 
 ```r
 > detach("package:future")
@@ -548,4 +548,8 @@ foo <- function() {
 [future]: https://cran.r-project.org/package=future
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
+[data.table]: https://cran.r-project.org/package=data.table
+[igraph]: https://cran.r-project.org/package=igraph
+[glue]: https://cran.r-project.org/package=glue
 [magrittr]: https://cran.r-project.org/package=magrittr
+[xml2]: https://cran.r-project.org/package=xml2
