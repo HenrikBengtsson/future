@@ -715,6 +715,23 @@ R, see Section ‘Infix and prefix operators’ in the ‘R Language
 Definition’ document.</p>
 </div>
 <div class="section level3">
+<h3 id="error-invalid-type-environment-of-argument-with-magrittr">Error: invalid ‘type’ (environment) of argument with magrittr<a class="anchor" aria-label="anchor" href="#error-invalid-type-environment-of-argument-with-magrittr"></a>
+</h3>
+<p>Another example where the future assignment operator
+<code>%&lt;-%</code> requires curly brackets is when using the
+<strong><a href="https://cran.r-project.org/package=magrittr" class="external-link">magrittr</a></strong>
+infix operator <code>%&gt;%</code>, e.g.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(magrittr)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span> <span class="sc">%&gt;%</span> sum</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">sum</span>(.) <span class="sc">:</span> invalid <span class="st">'type'</span> (environment) of argument</span></code></pre></div>
+<p>The reason for this error is that <code>x %&lt;-% 1:100</code> is
+passed to <code><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum()</a></code> by <code>%&gt;%</code>. To fix this,
+use:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> { <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span> <span class="sc">%&gt;%</span> sum }</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">5050</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="r-cmd-check-notes">R CMD check NOTEs<a class="anchor" aria-label="anchor" href="#r-cmd-check-notes"></a>
 </h3>
 <p>The code inspection run by <code>R CMD check</code> will not
@@ -722,20 +739,20 @@ recognize the future assignment operator <code>%&lt;-%</code> as an
 assignment operator, which is not surprising because
 <code>%&lt;-%</code> is technically an infix operator. This means that
 if you for instance use the following code in your package:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span></span>
 <span>  <span class="va">a</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="op">{</span> <span class="va">b</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">}</span></span>
 <span>  <span class="va">a</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>then <code>R CMD check</code> will produce a NOTE saying:</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> checking R code for possible problems ... NOTE</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">foo:</span> no visible binding for global variable <span class="st">'a'</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Undefined</span> global functions or variables:</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">a</span></span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="ex">*</span> checking R code for possible problems ... NOTE</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="ex">foo:</span> no visible binding for global variable <span class="st">'a'</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Undefined</span> global functions or variables:</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="ex">a</span></span></code></pre></div>
 <p>In order to avoid this, we can add a dummy assignment of the missing
 global at the top of the function, i.e.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">foo</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="cn">NULL</span> <span class="co">## To please R CMD check</span></span>
 <span>  <span class="va">b</span> <span class="op">&lt;-</span> <span class="fl">3.14</span></span>
