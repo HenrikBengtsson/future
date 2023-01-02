@@ -454,6 +454,25 @@ What effectively is happening here is that because of the higher priority of `%<
 Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
 
 
+### Error: invalid 'type' (environment) of argument with magrittr
+
+Another example where the future assignment operator `%<-%` requires curly brackets is when using the **[magrittr]** infix operator `%>%`, e.g.
+
+```r
+> library(magrittr)
+> x %<-% 1:100 %>% sum
+Error in sum(.) : invalid 'type' (environment) of argument
+```
+
+The reason for this error is that `x %<-% 1:100` is passed to `sum()` by `%>%`.  To fix this, use:
+
+```r
+> x %<-% { 1:100 %>% sum }
+> x
+[1] 5050
+```
+
+
 ### R CMD check NOTEs
 
 The code inspection run by `R CMD check` will not recognize the future assignment operator `%<-%` as an assignment operator, which is not surprising because `%<-%` is technically an infix operator.  This means that if you for instance use the following code in your package:
@@ -485,3 +504,4 @@ foo <- function() {
 [future]: https://cran.r-project.org/package=future
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
+[magrittr]: https://cran.r-project.org/package=magrittr
