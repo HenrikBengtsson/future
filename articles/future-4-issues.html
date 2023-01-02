@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9002</span>
       </span>
     </div>
 
@@ -380,8 +380,8 @@ having to use <code><a href="https://rdrr.io/r/base/get.html" class="external-li
 via character strings. The above section gives an example of this where
 <code><a href="https://rdrr.io/r/base/get.html" class="external-link">get()</a></code> is used and explains why it is not feasible to
 automatically identify string-embedded globals from such code. Another
-example, is when using <code>glue()</code> from the glue package to
-generate strings dynamically, e.g.</p>
+example, is when using <code>glue()</code> from the <strong><a href="https://cran.r-project.org/package=glue" class="external-link">glue</a></strong> package
+to generate strings dynamically, e.g.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(glue)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="dv">42</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> s <span class="ot">&lt;-</span> <span class="fu">glue</span>(<span class="st">"The value of a is {a}."</span>)</span>
@@ -418,8 +418,9 @@ occur when an expression uses S3 generic functions part of one package
 whereas the required S3 method is in another package. For example, in
 the below future generic function <code>[</code> is used on data.table
 object <code>DT</code>, which requires S3 method
-<code>[.data.table</code> from the data.table package. However, the
-future and global packages fail to identify data.table as a required
+<code>[.data.table</code> from the <strong><a href="https://cran.r-project.org/package=data.table" class="external-link">data.table</a></strong>
+package. However, the <strong>future</strong> and <strong><a href="https://cran.r-project.org/package=globals" class="external-link">globals</a></strong>
+packages fail to identify <strong>data.table</strong> as a required
 package, which results in an evaluation error:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
@@ -430,12 +431,12 @@ package, which results in an evaluation error:</p>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
 <span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> object <span class="st">'b'</span> not found</span></code></pre></div>
 <p>The above error occurs because, contrary to the master R process, the
-R worker that evaluated the future expression does not have data.table
-loaded. Instead the evaluation falls back to the
-<code>[.data.frame</code> method, which is not what we want.</p>
-<p>Until the future framework manages to identify data.table as a
-required package (which is the goal), we can guide future by specifying
-additional packages needed:</p>
+R worker that evaluated the future expression does not have
+<strong>data.table</strong> loaded. Instead the evaluation falls back to
+the <code>[.data.frame</code> method, which is not what we want.</p>
+<p>Until the future framework manages to identify
+<strong>data.table</strong> as a required package (which is the goal),
+we can guide future by specifying additional packages needed:</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> DT[, <span class="fu">sum</span>(b)] <span class="sc">%packages%</span> <span class="st">"data.table"</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">6</span></span></code></pre></div>
@@ -453,10 +454,10 @@ better to use the above <code>packages</code> approach.</p>
 </h2>
 <p>Certain types of objects are tied to a given R session and cannot be
 passed along to another R process (a “worker”). An example of a
-non-exportable object is is XML objects of the xml2 package. If we
-attempt to use those in parallel processing, we may get a error when the
-future is evaluated (or just invalid results depending on how they are
-used), e.g.</p>
+non-exportable object is is XML objects of the <strong><a href="https://cran.r-project.org/package=xml2" class="external-link">xml2</a></strong>
+package. If we attempt to use those in parallel processing, we may get a
+error when the future is evaluated (or just invalid results depending on
+how they are used), e.g.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(xml2)</span>
@@ -633,12 +634,13 @@ bad practice. To be on the safe side, it is almost always better call
 </h3>
 <p>Sometimes other packages have functions or operators with the same
 name as the future package, and if those packages are attached
-<em>after</em> the future package, their objects will mask the ones of
-the future package. For instance, the igraph package also defines a
-<code>%&lt;-%</code> operator which clashes with the one in future
-<em>if used at the prompt or in a script</em> (it is not a problem
-inside package because there we explicitly import objects in a known
-order). Here is what we might get:</p>
+<em>after</em> the <strong>future</strong> package, their objects will
+mask the ones of the <strong>future</strong> package. For instance, the
+<strong><a href="https://cran.r-project.org/package=igraph" class="external-link">igraph</a></strong>
+package also defines a <code>%&lt;-%</code> operator which clashes with
+the one in future <em>if used at the prompt or in a script</em> (it is
+not a problem inside package because there we explicitly import objects
+in a known order). Here is what we might get:</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(igraph)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -659,13 +661,14 @@ order). Here is what we might get:</p>
 <span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
 <span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">get</span>(<span class="st">".igraph.from"</span>, <span class="fu">parent.frame</span>()) <span class="sc">:</span> </span>
 <span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  object <span class="st">'.igraph.from'</span> not found</span></code></pre></div>
-<p>Here we get an error because <code>%&lt;-%</code> is from igraph and
-not the future assignment operator as we wanted. This can be confirmed
-as:</p>
+<p>Here we get an error because <code>%&lt;-%</code> is from
+<strong>igraph</strong> and not the future assignment operator as we
+wanted. This can be confirmed as:</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">environment</span>(<span class="st">`</span><span class="at">%&lt;-%</span><span class="st">`</span>)</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&lt;</span>environment<span class="sc">:</span> namespace<span class="sc">:</span>igraph<span class="sc">&gt;</span></span></code></pre></div>
 <p>To avoid this problem, attach the two packages in opposite order such
-that future comes last and thereby overrides igraph, i.e.</p>
+that <strong>future</strong> comes last and thereby overrides
+<strong>igraph</strong>, i.e.</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(igraph)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -678,8 +681,8 @@ that future comes last and thereby overrides igraph, i.e.</p>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> y <span class="sc">%&lt;-%</span> { <span class="dv">42</span> }</span>
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">42</span></span></code></pre></div>
-<p>An alternative is to detach the future package and re-attach it,
-which will achieve the same thing:</p>
+<p>An alternative is to detach the <strong>future</strong> package and
+re-attach it, which will achieve the same thing:</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">detach</span>(<span class="st">"package:future"</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(future)</span></code></pre></div>
 <p>Yet another alternative is to explicitly override the object by
