@@ -19,6 +19,7 @@ Certain types of objects are tied to a given R session.  Such objects cannot be 
 ## A first example - file connections
 
 An example of a non-exportable object is a connection, e.g. a file connection.  For instance, if you create a file connection,
+
 ```r
 con <- file("output.log", open = "wb")
 cat("hello ", file = con)
@@ -26,7 +27,9 @@ flush(con)
 readLines("output.log", warn = FALSE)
 ## [1] "hello "
 ```
+
 it will not work when used in another R process.  If we try, the result is "unknown", e.g.
+
 ```r
 library(future)
 plan(multisession)
@@ -37,20 +40,24 @@ close(con)
 readLines("output.log", warn = FALSE)
 ## [1] "hello "
 ```
+
 In other words, the output `"world!"` written by the R worker is completely lost.
 
 The culprit here is that the connection uses a so called _external pointer_:
+
 ```r
 str(con)
 ## Classes 'file', 'connection'  atomic [1:1] 3
 ##   ..- attr(*, "conn_id")=<externalptr> 
 ```
+
 which is bound to the main R process and makes no sense to the worker.  Ideally, the R process of the worker would detect this and produce an informative error message, but as seen here, that does not always occur.
 
 
 ## Protect against non-exportable objects
 
 To help avoiding exporting non-exportable objects by mistakes, which typically happens because a global variable is non-exportable, the future framework provides a mechanism for automatically detecting such objects.  To enable it, do:
+
 ```r
 options(future.globals.onReference = "error")
 f <- future({ cat("world!", file = con); flush(con) })
@@ -176,6 +183,7 @@ n
 #### Package: DBI
 
 **[DBI]** provides a unified database interface for communication between R and various database engines.  Analogously to regular connections in R, DBIConnection objects can _not_ safely be exported to another R process, e.g.
+
 ```r
 library(future)
 options(future.globals.onReference = "error")
@@ -248,6 +256,7 @@ Error in object$add(layer) : attempt to apply non-function
 ```
 
 If we turn on `options(future.globals.onReference = "error")`, we will catch this already when we create the future:
+
 ```r
 Error: Detected a non-exportable reference ('externalptr') in one of the
 globals ('model' of class 'keras.engine.sequential.Sequential') used in
@@ -258,6 +267,7 @@ the future expression
 #### Package: magic
 
 The **[magick]** package provides an R-level API for [ImageMagick](https://imagemagick.org/) to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
+
 ```r
 library(future)
 plan(multisession)
@@ -270,10 +280,13 @@ v <- value(f)
 ```
 
 If we set:
+
 ```r
 options(future.globals.onReference = "error")
 ```
+
 we'll see that this is caught even before attempting to run this in parallel;
+
 ```r
 > f <- future(image_fill(frink, "orange", "+100+200", 20))
 ## Error: Detected a non-exportable reference ('externalptr' of class
@@ -367,7 +380,9 @@ pwd
 ## Error in eval(quote(os$getcwd()), new.env()) : 
 ##   attempt to apply non-function
 ```
+
 and by telling the **future** package to validate globals further, we get:
+
 ```r
 options(future.globals.onReference = "error")
 pwd %<-% os$getcwd()
@@ -388,7 +403,9 @@ y
 ##   Failed to retrieve the value of MultisessionFuture from cluster node #1
 ##   (on 'localhost').  The reason reported was 'error reading from connection'
 ```
+
 which, again, is because:
+
 ```r
 options(future.globals.onReference = "error")
 y %<-% twice(1.2)
@@ -488,6 +505,7 @@ d
 ```
 
 To catch this as soon as possible,
+
 ```r
 options(future.globals.onReference = "error")
 d %<-% dim(data)
@@ -579,6 +597,7 @@ x
 ```
 
 To catch this as soon as possible,
+
 ```r
 options(future.globals.onReference = "error")
 x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
@@ -633,6 +652,7 @@ This is because `train` itself is an external pointer, i.e. `mode(train) == "ext
 #### Package: xml2
 
 Another example is XML objects of the **[xml2]** package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
+
 ```r
 library(future)
 plan(multisession)
@@ -642,7 +662,9 @@ f <- future(xml_children(doc))
 value(f)
 ## Error: external pointer is not valid
 ```
+
 The future framework can help detect this _before_ sending off the future to the worker;
+
 ```r
 options(future.globals.onReference = "error")
 f <- future(xml_children(xml))
