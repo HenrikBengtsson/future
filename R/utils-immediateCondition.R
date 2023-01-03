@@ -1,21 +1,22 @@
 #' @importFrom utils file_test
 #' @keywords internal
 immediateConditionsPath <- local({
-  path <- NULL
+  .cache <- list()
   
-  function() {
+  function(rootPath = tempdir()) {
+    path <- .cache[[rootPath]]
     if (is.null(path)) {
-      tpath <- file.path(tempdir(), ".future", "immediateConditions")
-      dir.create(tpath, recursive = TRUE, showWarnings = FALSE)
-      stop_if_not(file_test("-d", tpath))
-      path <<- tpath
+      path <- file.path(rootPath, ".future", "immediateConditions")
+      dir.create(path, recursive = TRUE, showWarnings = FALSE)
+      stop_if_not(file_test("-d", path))
+      .cache[[rootPath]] <<- path
     }
     path
   }
 })
 
 
-#' Read All 'immediateCondition' RDS Files
+#' Writes and Reads 'immediateCondition' RDS Files
 #'
 #' @param path (character string) The folder where the RDS files are.
 #'
@@ -29,7 +30,9 @@ immediateConditionsPath <- local({
 #'
 #' @param remove (logical) If TRUE, the RDS files used are removed on exit.
 #'
-#' @return Returns a [base::list] of immediateCondition objects.
+#' @return
+#' `readImmediateConditions()` returns a [base::list] of
+#' `immediateCondition` objects.
 #'
 #' @keywords internal
 readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
@@ -90,6 +93,24 @@ readImmediateConditions <- function(path = immediateConditionsPath(), pattern = 
   conds
 }
 
+
+#' @param cond A condition of class `immediateCondition`.
+#'
+#' @return
+#' `saveImmediateCondition()` returns, invisibly, the pathname of
+#' the RDS written.
+#'
+#' @rdname readImmediateConditions
+saveImmediateCondition <- function(cond, path = immediateConditionsPath()) {
+  ## Wrap condition in an object with a timestamp
+  obj <- list(time = Sys.time(), condition = cond)
+  file <- tempfile(
+    pattern = class(cond)[1],
+     tmpdir = path,
+    fileext = ".rds"
+  )
+  save_rds(obj, file)
+}
 
 
 #' Robustly Saves an Object to RDS File Atomically

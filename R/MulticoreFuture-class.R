@@ -311,16 +311,11 @@ getExpression.MulticoreFuture <- local({
     withCallingHandlers({
       .(expr)
     }, immediateCondition = function(cond) {
-      ## Send condition wrapped in an object with a timestamp
-      obj <- list(time = Sys.time(), condition = cond)
-      file <- tempfile(
-        class(cond)[1],
-        tmpdir = .(immediateConditionsPath()),
-        fileext = ".rds"
-      )
-      ## save_rds <- future:::save_rds
+      ## saveImmediateCondition <- future:::saveImmediateCondition,
+      ## which in turn uses future:::save_rds
+      saveImmediateCondition <- .(saveImmediateCondition)
       save_rds <- .(save_rds)
-      save_rds(obj, file)
+      saveImmediateCondition(cond)
 
       ## Avoid condition from being signaled more than once
       ## muffleCondition <- future:::muffleCondition

@@ -2,7 +2,8 @@
 % Please edit documentation in R/utils-immediateCondition.R
 \name{readImmediateConditions}
 \alias{readImmediateConditions}
-\title{Read All 'immediateCondition' RDS Files}
+\alias{saveImmediateCondition}
+\title{Writes and Reads 'immediateCondition' RDS Files}
 \usage{
 readImmediateConditions(
   path = immediateConditionsPath(),
@@ -11,6 +12,8 @@ readImmediateConditions(
   signal = FALSE,
   remove = TRUE
 )
+
+saveImmediateCondition(cond, path = immediateConditionsPath())
 }
 \arguments{
 \item{path}{(character string) The folder where the RDS files are.}
@@ -24,11 +27,17 @@ to be kept.}
 \item{signal}{(logical) If TRUE, the condition read are signaled.}
 
 \item{remove}{(logical) If TRUE, the RDS files used are removed on exit.}
+
+\item{cond}{A condition of class \code{immediateCondition}.}
 }
 \value{
-Returns a \link[base:list]{base::list} of immediateCondition objects.
+\code{readImmediateConditions()} returns a \link[base:list]{base::list} of
+\code{immediateCondition} objects.
+
+\code{saveImmediateCondition()} returns, invisibly, the pathname of
+the RDS written.
 }
 \description{
-Read All 'immediateCondition' RDS Files
+Writes and Reads 'immediateCondition' RDS Files
 }
 \keyword{internal}
