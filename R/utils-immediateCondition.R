@@ -171,13 +171,13 @@ tmpl_expr_send_immediateConditions_via_file <- bquote_compile({
   }, immediateCondition = function(cond) {
     ## saveImmediateCondition <- future:::saveImmediateCondition,
     ## which in turn uses future:::save_rds
-    save_rds <- .(save_rds)
-    saveImmediateCondition <- .(saveImmediateCondition)
-    saveImmediateCondition(cond, path = .(immediateConditionsPath(rootPath = tempdir())))
+    save_rds <- .(future:::save_rds)
+    saveImmediateCondition <- .(future:::saveImmediateCondition)
+    saveImmediateCondition(cond, path = .(future:::immediateConditionsPath(rootPath = tempdir())))
 
     ## Avoid condition from being signaled more than once
     ## muffleCondition <- future:::muffleCondition
-    muffleCondition <- .(muffleCondition)
+    muffleCondition <- .(future:::muffleCondition)
     muffleCondition(cond)
   })
 })
