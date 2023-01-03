@@ -35,7 +35,7 @@ immediateConditionsPath <- local({
 #' `immediateCondition` objects.
 #'
 #' @keywords internal
-readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
+readImmediateConditions <- function(path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))
   stop_if_not(is.logical(remove), length(remove) == 1L, !is.na(remove))
   
@@ -101,7 +101,7 @@ readImmediateConditions <- function(path = immediateConditionsPath(), pattern = 
 #' the RDS written.
 #'
 #' @rdname readImmediateConditions
-saveImmediateCondition <- function(cond, path = immediateConditionsPath()) {
+saveImmediateCondition <- function(cond, path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir()) {
   ## Wrap condition in an object with a timestamp
   obj <- list(time = Sys.time(), condition = cond)
   file <- tempfile(
@@ -162,3 +162,22 @@ save_rds <- function(object, pathname, ...) {
 
   invisible(pathname)
 }
+
+
+
+tmpl_expr_send_immediateConditions_via_file <- bquote_compile({
+  withCallingHandlers({
+    .(expr)
+  }, immediateCondition = function(cond) {
+    ## saveImmediateCondition <- future:::saveImmediateCondition,
+    ## which in turn uses future:::save_rds
+    save_rds <- .(save_rds)
+    saveImmediateCondition <- .(saveImmediateCondition)
+    saveImmediateCondition(cond, path = .(immediateConditionsPath(rootPath = tempdir())))
+
+    ## Avoid condition from being signaled more than once
+    ## muffleCondition <- future:::muffleCondition
+    muffleCondition <- .(muffleCondition)
+    muffleCondition(cond)
+  })
+})

@@ -6,14 +6,19 @@
 \title{Writes and Reads 'immediateCondition' RDS Files}
 \usage{
 readImmediateConditions(
-  path = immediateConditionsPath(),
+  path = immediateConditionsPath(rootPath = rootPath),
+  rootPath = tempdir(),
   pattern = "[.]rds$",
   include = getOption("future.relay.immediate", "immediateCondition"),
   signal = FALSE,
   remove = TRUE
 )
 
-saveImmediateCondition(cond, path = immediateConditionsPath())
+saveImmediateCondition(
+  cond,
+  path = immediateConditionsPath(rootPath = rootPath),
+  rootPath = tempdir()
+)
 }
 \arguments{
 \item{path}{(character string) The folder where the RDS files are.}

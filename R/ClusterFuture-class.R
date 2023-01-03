@@ -563,7 +563,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 #' @export
 getExpression.ClusterFuture <- local({
   tmpl_expr_conditions <- bquote_compile({
-    ...future.sendCondition <- local({
+    ...future.makeSendCondition <- local({
       sendCondition <- NULL
 
       function(frame = 1L) {
@@ -601,7 +601,7 @@ getExpression.ClusterFuture <- local({
     withCallingHandlers({
       .(expr)
     }, immediateCondition = function(cond) {
-      sendCondition <- ...future.sendCondition()
+      sendCondition <- ...future.makeSendCondition()
       sendCondition(cond)
 
       ## Avoid condition from being signaled more than once

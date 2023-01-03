@@ -303,25 +303,7 @@ getExpression.MulticoreFuture <- local({
       }
     }
 
-
     .(expr)
-  })
-  
-  tmpl_expr_conditions <- bquote_compile({
-    withCallingHandlers({
-      .(expr)
-    }, immediateCondition = function(cond) {
-      ## saveImmediateCondition <- future:::saveImmediateCondition,
-      ## which in turn uses future:::save_rds
-      saveImmediateCondition <- .(saveImmediateCondition)
-      save_rds <- .(save_rds)
-      saveImmediateCondition(cond)
-
-      ## Avoid condition from being signaled more than once
-      ## muffleCondition <- future:::muffleCondition
-      muffleCondition <- .(muffleCondition)
-      muffleCondition(cond)
-    })
   })
 
   function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
@@ -351,8 +333,8 @@ getExpression.MulticoreFuture <- local({
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
   
       if (length(conditionClasses) > 0L) {
-        ## Communicate via the local file system
-        expr <- bquote_apply(tmpl_expr_conditions)
+        ## Communicate via the file system
+        expr <- bquote_apply(tmpl_expr_send_immediateConditions_via_file)
       } ## if (length(conditionClasses) > 0)
       
       ## Set condition classes to be ignored in case changed
