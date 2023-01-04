@@ -4,6 +4,7 @@ immediateConditionsPath <- local({
   .cache <- list()
   
   function(rootPath = tempdir()) {
+    rootPath <- normalizePath(rootPath, mustWork = FALSE)
     path <- .cache[[rootPath]]
     if (is.null(path)) {
       path <- file.path(rootPath, ".future", "immediateConditions")
@@ -173,8 +174,14 @@ tmpl_expr_send_immediateConditions_via_file <- bquote_compile({
     ## which in turn uses future:::save_rds
     save_rds <- .(future:::save_rds)
     saveImmediateCondition <- .(future:::saveImmediateCondition)
-    saveImmediateCondition(cond, path = .(future:::immediateConditionsPath(rootPath = tempdir())))
-
+    saveImmediateCondition(cond, path = .(
+        if (exists("saveImmediateCondition_path", mode = "character")) {
+          get("saveImmediateCondition_path", mode = "character")
+        } else {
+          future:::immediateConditionsPath(rootPath = tempdir())
+        }
+      )
+    )
     ## Avoid condition from being signaled more than once
     ## muffleCondition <- future:::muffleCondition
     muffleCondition <- .(future:::muffleCondition)
