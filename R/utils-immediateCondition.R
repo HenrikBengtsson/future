@@ -35,10 +35,14 @@ immediateConditionsPath <- local({
 #' `readImmediateConditions()` returns a [base::list] of
 #' `immediateCondition` objects.
 #'
+#' @importFrom utils fite_test
 #' @keywords internal
 readImmediateConditions <- function(path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))
   stop_if_not(is.logical(remove), length(remove) == 1L, !is.na(remove))
+
+  ## Nothing to do?
+  if (!file_test("-d", path)) return(list())
   
   files <- dir(path = path, pattern = "[.]rds$", full.names = TRUE)
 
