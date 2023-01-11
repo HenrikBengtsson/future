@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9007</span>
       </span>
     </div>
 
@@ -177,7 +177,6 @@
 <span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  local <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -217,13 +216,6 @@ to be attached in the <span style="R">R</span> environment evaluating the future
 <dt>lazy</dt>
 <dd><p>If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.</p></dd>
-
-
-<dt>local</dt>
-<dd><p>(deprecated) If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the <span style="R">R</span> process
-evaluating the future.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -28,7 +28,7 @@ is available via value()."><meta property="og:image" content="https://future.fut
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9007</span>
       </span>
     </div>
 
@@ -179,7 +179,6 @@ is available via <code><a href="value.html">value</a>()</code>.</p>
 <span>  packages <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  local <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  gc <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  earlySignal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  label <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -265,13 +264,6 @@ but without the RNG check being performed.</p></dd>
 <dt>lazy</dt>
 <dd><p>If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.</p></dd>
-
-
-<dt>local</dt>
-<dd><p>(deprecated) If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the <span style="R">R</span> process
-evaluating the future.</p></dd>
 
 
 <dt>gc</dt>
