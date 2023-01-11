@@ -135,9 +135,19 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   }
   
   args <- list(...)
+  
   ## 'local' is now defunct
   if ("local" %in% names(args)) {
-    .Defunct("Argument 'local' is defunct as of future 1.31.0 (2023-??-??)")
+    dfcn <- .Defunct
+    if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "false") == "true") {
+      caller <- sys.call(which = 1L)
+      if (any(grepl("CivisFuture$", deparse(caller[[1]])))) {
+        dfcn <- .Deprecated
+      }
+    }
+    print(dfcn)
+    dfcn(msg = "Argument 'local' is defunct as of future 1.31.0 (2023-??-??)",
+         package = .packageName)
   }
 
   ## 'local' is now always TRUE, unless persistent = TRUE,
