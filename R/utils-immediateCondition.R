@@ -35,7 +35,7 @@ immediateConditionsPath <- local({
 #' `readImmediateConditions()` returns a [base::list] of
 #' `immediateCondition` objects.
 #'
-#' @importFrom utils fite_test
+#' @importFrom utils file_test
 #' @keywords internal
 readImmediateConditions <- function(path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))

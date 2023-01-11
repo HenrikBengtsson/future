@@ -5,6 +5,11 @@
  * Add example to the 'Common Issues with Solutions' vignette on how
    **magrittr** pipes can result in an error when used with the future
    assignment operator and how to fix it.
+
+## Deprecated and Defunct
+
+ * Argument `local` is defunct and has been removed.  Previously only
+   `local = FALSE` was defunct.
  
 
 # Version 1.30.0 [2022-12-15]

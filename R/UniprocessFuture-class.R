@@ -154,8 +154,8 @@ function(future, immediateConditions = TRUE, exit = NULL, ...) {
 #'
 #' @rdname UniprocessFuture-class
 #' @export
-SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
+SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
+  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, ...)
   structure(f, class = c("SequentialFuture", class(f)))
 }

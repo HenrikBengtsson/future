@@ -25,7 +25,6 @@ SequentialFuture(
   substitute = TRUE,
   lazy = FALSE,
   globals = TRUE,
-  local = TRUE,
   ...
 )
 }
@@ -50,11 +49,6 @@ to be attached in the \R environment evaluating the future.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
-
-\item{local}{(deprecated) If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
 }
 \value{
 \code{UniprocessFuture()} returns an object of class \code{UniprocessFuture}.

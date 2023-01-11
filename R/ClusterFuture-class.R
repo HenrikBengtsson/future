@@ -27,7 +27,7 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, persistent = FALSE, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
@@ -48,7 +48,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   ## which should be passed to makeClusterPSOCK()?
   future_args <- !is.element(names(args), makeClusterPSOCK_args())
   
-  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
 

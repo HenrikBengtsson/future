@@ -14,7 +14,6 @@ ClusterFuture(
   envir = parent.frame(),
   globals = TRUE,
   packages = NULL,
-  local = !persistent,
   persistent = FALSE,
   workers = NULL,
   ...
@@ -45,11 +44,6 @@ in the help for \code{\link[=future]{future()}}.}
 
 \item{packages}{(optional) a character vector specifying packages
 to be attached in the \R environment evaluating the future.}
-
-\item{local}{(deprecated) If TRUE, the expression is evaluated such that
-all assignments are done to local temporary environment, otherwise
-the assignments are done to the global environment of the \R process
-evaluating the future.}
 
 \item{persistent}{If FALSE, the evaluation environment is cleared
 from objects prior to the evaluation of the future.}

@@ -68,11 +68,6 @@
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
-#' @param local (deprecated) If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done to the global environment of the \R process
-#' evaluating the future.
-#'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) only after the value of the future is collected.
 #' Exactly when the values are collected may depend on various factors such
@@ -105,7 +100,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (is.null(seed)) {
@@ -140,10 +135,14 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   }
   
   args <- list(...)
-
-  if (!local && !isTRUE(args[["persistent"]])) {
-    .Defunct(msg = "Using 'local = FALSE' for a future is defunct in future (>= 1.28.0)", package = .packageName)
+  ## 'local' is now defunct
+  if ("local" %in% names(args)) {
+    .Defunct("Argument 'local' is defunct as of future 1.31.0 (2023-??-??)")
   }
+
+  ## 'local' is now always TRUE, unless persistent = TRUE,
+  ## which in turn may only be used for cluster futures. /HB 2023-01-11
+  local <- !isTRUE(args[["persistent"]])
 
   core <- new.env(parent = emptyenv())
 
@@ -372,18 +371,12 @@ run.Future <- function(future, ...) {
   ## AD HOC/WORKAROUND: /HB 2020-12-21
   globals <- future$globals
   packages <- future$packages
-  local <- future$local
-  if (!is.logical(local)) local <- TRUE
   persistent <- future$persistent
   if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUNDS: /HB 2020-12-25
   if (inherits(makeFuture, "cluster")) {
-    ## Make persistent=TRUE cluster futures default to local=FALSE
-    if (isTRUE(formals(makeFuture)$persistent)) {
-      persistent <- TRUE
-      if (future$.defaultLocal) local <- FALSE
-    }
+    if (isTRUE(formals(makeFuture)$persistent)) persistent <- TRUE
   }
 
   tmpFuture <- makeFuture(
@@ -397,7 +390,6 @@ run.Future <- function(future, ...) {
     seed = future$seed,
     label = future$label,
     calls = future$calls,
-    local = local,
     persistent = persistent
   )
 
