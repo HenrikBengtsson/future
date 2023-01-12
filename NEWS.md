@@ -18,7 +18,9 @@
 
  * Argument `local` is defunct and has been removed.  Previously only
    `local = FALSE` was defunct.
- 
+
+ * Removed defunct argument `value` from all `resolve()` methods.
+
 
 # Version 1.30.0 [2022-12-15]
 

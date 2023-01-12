@@ -27,8 +27,6 @@
 #' @param sleep Number of seconds to wait before checking if futures have been
 #' resolved since last time.
 #'
-#' @param value (DEFUNCT) Use argument `result` instead.
-#' 
 #' @param \dots Not used.
 #'
 #' @return Returns `x` (regardless of subsetting or not).
@@ -44,16 +42,16 @@
 #' `resolve(futureOf(x))`.
 #'
 #' @export
-resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) UseMethod("resolve")
+resolve <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), ...) UseMethod("resolve")
 
 #' @export
 resolve.default <- function(x, ...) x
 
 #' @export
-resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) {
+resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), ...) {
   ## BACKWARD COMPATIBILITY
-  if (value && missing(result)) {
-    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
+  if (missing(result) && "value" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -117,10 +115,10 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
 
 
 #' @export
-resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) {
+resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), ...) {
   ## BACKWARD COMPATIBILITY
-  if (value && missing(result)) {
-    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
+  if (missing(result) && "value" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -245,10 +243,10 @@ resolve.list <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout =
 
 
 #' @export
-resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) {
+resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), ...) {
   ## BACKWARD COMPATIBILITY
-  if (value && missing(result)) {
-    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
+  if (missing(result) && "value" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
@@ -368,10 +366,10 @@ resolve.environment <- function(x, idxs = NULL, recursive = 0, result = FALSE, s
 
 
 #' @export
-resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), value = result, ...) {
+resolve.listenv <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout = FALSE, signal = FALSE, force = FALSE, sleep = getOption("future.wait.interval", 0.01), ...) {
   ## BACKWARD COMPATIBILITY
-  if (value && missing(result)) {
-    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0). Use 'result' instead.", package = .packageName)
+  if (missing(result) && "value" %in% names(list(...))) {
+    .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
   }
 
   if (is.logical(recursive)) {
