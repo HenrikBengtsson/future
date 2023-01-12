@@ -30,7 +30,7 @@ Run `revdep_details(, "AIPW")` for more info
 * GitHub: https://github.com/HenrikBengtsson/aroma.core
 * Source code: https://github.com/cran/aroma.core
 * Date/Publication: 2022-11-15 18:30:13 UTC
-* Number of recursive dependencies: 70
+* Number of recursive dependencies: 71
 
 Run `revdep_details(, "aroma.core")` for more info
 
@@ -75,7 +75,7 @@ Run `revdep_details(, "BAMBI")` for more info
 * GitHub: https://github.com/mllg/batchtools
 * Source code: https://github.com/cran/batchtools
 * Date/Publication: 2021-01-11 12:40:03 UTC
-* Number of recursive dependencies: 81
+* Number of recursive dependencies: 82
 
 Run `revdep_details(, "batchtools")` for more info
 
@@ -97,10 +97,10 @@ Run `revdep_details(, "batchtools")` for more info
 
 <details>
 
-* Version: 1.4.0
+* Version: 1.4.1
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-11-08 20:40:02 UTC
+* Date/Publication: 2022-12-18 16:40:14 UTC
 * Number of recursive dependencies: 99
 
 Run `revdep_details(, "BEKKs")` for more info
@@ -156,7 +156,7 @@ Run `revdep_details(, "bigDM")` for more info
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
 * Date/Publication: 2022-03-22 13:40:02 UTC
-* Number of recursive dependencies: 90
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "bistablehistory")` for more info
 
@@ -350,6 +350,33 @@ Run `revdep_details(, "civis")` for more info
 
 </details>
 
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+          ▆
+       1. ├─utils::capture.output(res <- mock_run(quote(2 + 3))) at test_civis_future.R:61:2
+       2. │ └─base::withVisible(...elt(i))
+       3. └─civis (local) mock_run(quote(2 + 3))
+       4.   └─civis::CivisFuture(expr) at test_civis_future.R:46:2
+       5.     └─future::Future(...)
+    ...
+      See help("Defunct")
+      Backtrace:
+          ▆
+       1. └─civis::CivisFuture(quote(2 + 2)) at test_civis_future.R:118:2
+       2.   └─future::Future(...)
+       3.     └─base::.Defunct("Argument 'local' is defunct as of future 1.31.0 (2023-??-??)")
+      
+      [ FAIL 8 | WARN 4 | SKIP 0 | PASS 1041 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 ## In both
 
 *   checking LazyData ... NOTE
@@ -461,11 +488,11 @@ Run `revdep_details(, "CSGo")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.2
 * GitHub: https://github.com/DeclareDesign/DeclareDesign
 * Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2022-06-20 18:30:07 UTC
-* Number of recursive dependencies: 133
+* Date/Publication: 2023-01-10 07:13:10 UTC
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "DeclareDesign")` for more info
 
@@ -569,11 +596,11 @@ Run `revdep_details(, "dragon")` for more info
 
 <details>
 
-* Version: 0.4.3
+* Version: 0.4.4
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2022-10-02 15:40:05 UTC
-* Number of recursive dependencies: 90
+* Date/Publication: 2023-01-06 14:50:40 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -645,47 +672,6 @@ Run `revdep_details(, "epitweetr")` for more info
       All declared Imports should be used.
     ```
 
-# fabletools
-
-<details>
-
-* Version: 0.3.2
-* GitHub: https://github.com/tidyverts/fabletools
-* Source code: https://github.com/cran/fabletools
-* Date/Publication: 2021-11-29 05:50:02 UTC
-* Number of recursive dependencies: 102
-
-Run `revdep_details(, "fabletools")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(dplyr)
-      
-      Attaching package: 'dplyr'
-      
-      The following object is masked from 'package:testthat':
-    ...
-      ── Failure ('test-generate.R:12'): generate ────────────────────────────────────
-      gen_multi$index not equal to yearmonth("1979 Jan") + rep(0:23, 2).
-      'is.NA' value mismatch: 20 in current 0 in target
-      ── Failure ('test-generate.R:17'): generate ────────────────────────────────────
-      gen_complex$index not equal to yearmonth("1979 Jan") + rep(0:23, 2 * 2 * 3).
-      'is.NA' value mismatch: 120 in current 0 in target
-      
-      [ FAIL 3 | WARN 5 | SKIP 1 | PASS 292 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # fect
 
 <details>
@@ -723,7 +709,7 @@ Run `revdep_details(, "fect")` for more info
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "flowGraph")` for more info
 
@@ -794,11 +780,11 @@ Run `revdep_details(, "forecastML")` for more info
 
 <details>
 
-* Version: 0.3.1
+* Version: 0.3.2
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2022-10-16 00:23:35 UTC
-* Number of recursive dependencies: 198
+* Date/Publication: 2023-01-08 21:40:02 UTC
+* Number of recursive dependencies: 197
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -808,12 +794,11 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.2Mb
+      installed size is 14.4Mb
       sub-directories of 1Mb or more:
-        data      2.3Mb
         doc       1.7Mb
-        extdata   1.1Mb
-        libs      7.4Mb
+        extdata   3.0Mb
+        libs      8.1Mb
     ```
 
 # googleComputeEngineR
@@ -868,7 +853,7 @@ Run `revdep_details(, "googleTagManageR")` for more info
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
 * Date/Publication: 2022-10-03 22:00:05 UTC
-* Number of recursive dependencies: 95
+* Number of recursive dependencies: 96
 
 Run `revdep_details(, "greed")` for more info
 
@@ -962,7 +947,7 @@ Run `revdep_details(, "hackeRnews")` for more info
 * GitHub: https://github.com/tlverse/hal9001
 * Source code: https://github.com/cran/hal9001
 * Date/Publication: 2022-02-09 22:50:02 UTC
-* Number of recursive dependencies: 97
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "hal9001")` for more info
 
@@ -1175,7 +1160,7 @@ Run `revdep_details(, "ISAnalytics")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 109
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1192,10 +1177,10 @@ Run `revdep_details(, "ivmte")` for more info
 
 <details>
 
-* Version: 0.4.1
+* Version: 0.4.2
 * GitHub: https://github.com/keyATM/keyATM
 * Source code: https://github.com/cran/keyATM
-* Date/Publication: 2022-06-11 15:40:05 UTC
+* Date/Publication: 2023-01-06 18:50:52 UTC
 * Number of recursive dependencies: 107
 
 Run `revdep_details(, "keyATM")` for more info
@@ -1206,30 +1191,9 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 24.1Mb
+      installed size is 24.2Mb
       sub-directories of 1Mb or more:
-        libs  23.7Mb
-    ```
-
-# lava
-
-<details>
-
-* Version: 1.7.0
-* GitHub: https://github.com/kkholst/lava
-* Source code: https://github.com/cran/lava
-* Date/Publication: 2022-10-25 05:52:57 UTC
-* Number of recursive dependencies: 138
-
-Run `revdep_details(, "lava")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: 'gof', 'lava.tobit'
+        libs  23.8Mb
     ```
 
 # lidR
@@ -1275,7 +1239,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  5376 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 15244 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -1311,7 +1275,7 @@ Run `revdep_details(, "lidR")` for more info
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
 * Date/Publication: 2022-05-14 13:50:02 UTC
-* Number of recursive dependencies: 76
+* Number of recursive dependencies: 77
 
 Run `revdep_details(, "lightr")` for more info
 
@@ -1381,7 +1345,7 @@ Run `revdep_details(, "metabolomicsR")` for more info
 * GitHub: https://github.com/amices/mice
 * Source code: https://github.com/cran/mice
 * Date/Publication: 2022-11-19 13:00:02 UTC
-* Number of recursive dependencies: 132
+* Number of recursive dependencies: 133
 
 Run `revdep_details(, "mice")` for more info
 
@@ -1662,7 +1626,7 @@ Run `revdep_details(, "mslp")` for more info
 * GitHub: https://github.com/Boehringer-Ingelheim/oncomsm
 * Source code: https://github.com/cran/oncomsm
 * Date/Publication: 2022-12-09 14:40:09 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "oncomsm")` for more info
 
@@ -1802,11 +1766,11 @@ Run `revdep_details(, "phylolm")` for more info
 
 <details>
 
-* Version: 0.11.7
+* Version: 1.0.0
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
-* Date/Publication: 2022-08-25 10:32:38 UTC
-* Number of recursive dependencies: 174
+* Date/Publication: 2023-01-06 13:20:06 UTC
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "PLNmodels")` for more info
 
@@ -1816,20 +1780,20 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 21.0Mb
+      installed size is 21.9Mb
       sub-directories of 1Mb or more:
-        doc    2.0Mb
-        libs  17.9Mb
+        doc    2.1Mb
+        libs  18.5Mb
     ```
 
 # portvine
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/EmanuelSommer/portvine
 * Source code: https://github.com/cran/portvine
-* Date/Publication: 2022-05-31 11:00:02 UTC
+* Date/Publication: 2023-01-06 09:40:04 UTC
 * Number of recursive dependencies: 129
 
 Run `revdep_details(, "portvine")` for more info
@@ -1907,7 +1871,7 @@ Run `revdep_details(, "ppcseq")` for more info
 * GitHub: https://github.com/Snitkin-Lab-Umich/prewas
 * Source code: https://github.com/cran/prewas
 * Date/Publication: 2021-04-02 12:20:05 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "prewas")` for more info
 
@@ -1925,10 +1889,10 @@ Run `revdep_details(, "prewas")` for more info
 
 <details>
 
-* Version: 2.2.2
+* Version: 2.3.0
 * GitHub: https://github.com/stan-dev/projpred
 * Source code: https://github.com/cran/projpred
-* Date/Publication: 2022-11-09 11:10:02 UTC
+* Date/Publication: 2023-01-10 15:00:03 UTC
 * Number of recursive dependencies: 143
 
 Run `revdep_details(, "projpred")` for more info
@@ -1971,7 +1935,7 @@ Run `revdep_details(, "promises")` for more info
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -2113,7 +2077,7 @@ Run `revdep_details(, "robotstxt")` for more info
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
 * Date/Publication: 2021-11-19 15:10:02 UTC
-* Number of recursive dependencies: 80
+* Number of recursive dependencies: 81
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2190,6 +2154,45 @@ Run `revdep_details(, "sdmApp")` for more info
     ```
     Namespace in Imports field not imported from: ‘sp’
       All declared Imports should be used.
+    ```
+
+# sdmTMB
+
+<details>
+
+* Version: 0.2.1
+* GitHub: https://github.com/pbs-assess/sdmTMB
+* Source code: https://github.com/cran/sdmTMB
+* Date/Publication: 2023-01-10 18:50:02 UTC
+* Number of recursive dependencies: 167
+
+Run `revdep_details(, "sdmTMB")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘INLA’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 79.3Mb
+      sub-directories of 1Mb or more:
+        data   1.7Mb
+        libs  75.9Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘INLA’
+    ```
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 2 marked Latin-1 strings
     ```
 
 # sentopics
@@ -2525,7 +2528,7 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 * GitHub: https://github.com/FridleyLab/spatialTIME
 * Source code: https://github.com/cran/spatialTIME
 * Date/Publication: 2022-11-22 17:30:02 UTC
-* Number of recursive dependencies: 90
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "spatialTIME")` for more info
 
@@ -2607,7 +2610,7 @@ Run `revdep_details(, "sphunif")` for more info
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
 * Date/Publication: 2022-11-11 08:10:02 UTC
-* Number of recursive dependencies: 150
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -2622,6 +2625,30 @@ Run `revdep_details(, "spNetwork")` for more info
         doc       1.0Mb
         extdata   2.6Mb
         libs     20.4Mb
+    ```
+
+# squat
+
+<details>
+
+* Version: 0.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/squat
+* Date/Publication: 2022-12-22 11:20:02 UTC
+* Number of recursive dependencies: 123
+
+Run `revdep_details(, "squat")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 18.7Mb
+      sub-directories of 1Mb or more:
+        data   1.1Mb
+        libs  16.7Mb
     ```
 
 # ssdtools
@@ -2681,10 +2708,10 @@ Run `revdep_details(, "stars")` for more info
 
 <details>
 
-* Version: 3.6.0
+* Version: 3.6.2
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-11-01
+* Date/Publication: 2022-12-22
 * Number of recursive dependencies: 191
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -2699,31 +2726,6 @@ Run `revdep_details(, "synergyfinder")` for more info
     Namespaces in Imports field not imported from:
       ‘future’ ‘gstat’ ‘nleqslv’ ‘sp’ ‘tidyverse’
       All declared Imports should be used.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    Codoc mismatches from documentation object 'PlotDoseResponse':
-    PlotDoseResponse
-      Code: function(data, block_ids = c(1), drugs = c(1, 2), adjusted =
-                     TRUE, statistic = NULL, summary_statistic = "mean",
-                     high_value_color = "#FF0000", low_value_color =
-                     "#00FF00", point_color = "#C24B40", curve_color =
-                     "black", curve_ylim = NULL, curve_grid = TRUE,
-                     text_size_scale = 1, heatmap_text_label_size_scale =
-                     1, heatmap_text_label_color = "#000000",
-                     heatmap_color_range = NULL, curve_plot_title = NULL,
-    ...
-                     high_value_color = "#A90217", low_value_color =
-                     "#2166AC", text_size_scale = 1,
-                     heatmap_text_label_size_scale = 1,
-                     heatmap_text_label_color = "#000000", grid = TRUE,
-                     dynamic = FALSE, display = TRUE, save_file = FALSE,
-                     file_type = "pdf", file_name = NULL, file_path = NULL,
-                     height = 6, width = 6, units = "in")
-      Mismatches in argument default values:
-        Name: 'high_value_color' Code: "#FF0000" Docs: "#A90217"
-        Name: 'low_value_color' Code: "#00FF00" Docs: "#2166AC"
     ```
 
 *   checking installed package size ... NOTE
@@ -2787,7 +2789,7 @@ Run `revdep_details(, "tableschema.r")` for more info
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
 * Date/Publication: 2022-10-25 20:30:02 UTC
-* Number of recursive dependencies: 93
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -2855,7 +2857,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "TriDimRegression")` for more info
 
