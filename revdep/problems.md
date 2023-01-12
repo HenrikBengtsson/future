@@ -358,19 +358,19 @@ Run `revdep_details(, "civis")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-          ▆
-       1. ├─utils::capture.output(res <- mock_run(quote(2 + 3))) at test_civis_future.R:61:2
-       2. │ └─base::withVisible(...elt(i))
-       3. └─civis (local) mock_run(quote(2 + 3))
-       4.   └─civis::CivisFuture(expr) at test_civis_future.R:46:2
-       5.     └─future::Future(...)
+       1. └─civis::CivisFuture(quote(2 + 3)) at test_civis_future.R:24:2
+       2.   └─future::Future(...)
+       3.     └─base (local) dfcn(...)
+      ── Error ('test_civis_future.R:61'): run and value work ────────────────────────
+      <defunctError/error/condition>
+      Error: Argument 'local' is defunct as of future 1.31.0 (2023-??-??)
     ...
-      See help("Defunct")
+      Error: Argument 'local' is defunct as of future 1.31.0 (2023-??-??)
       Backtrace:
           ▆
        1. └─civis::CivisFuture(quote(2 + 2)) at test_civis_future.R:118:2
        2.   └─future::Future(...)
-       3.     └─base::.Defunct("Argument 'local' is defunct as of future 1.31.0 (2023-??-??)")
+       3.     └─base (local) dfcn(...)
       
       [ FAIL 8 | WARN 4 | SKIP 0 | PASS 1041 ]
       Error: Test failures
@@ -1239,7 +1239,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 15244 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 15445 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -2011,6 +2011,47 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
+    ```
+
+# reproducible
+
+<details>
+
+* Version: 1.2.16
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2022-12-22 09:50:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 43061 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/Rtmpke4dLj/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/Rtmpke4dLj/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x41, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
