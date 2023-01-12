@@ -722,6 +722,7 @@ post_mortem_cluster_failure <- function(ex, when, node, future) {
   ## (a) Did a localhost worker process terminate?
   if (!is.null(host)) {
     if (localhost && is.numeric(pid)) {
+      pid_exists <- import_parallelly("pid_exists")
       alive <- pid_exists(pid)
       if (is.na(alive)) {
         msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not"

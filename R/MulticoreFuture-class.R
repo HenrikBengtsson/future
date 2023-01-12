@@ -212,6 +212,7 @@ result.MulticoreFuture <- function(future, ...) {
     
       ## (a) Did a localhost worker process terminate?
       if (is.numeric(pid)) {
+        pid_exists <- import_parallelly("pid_exists")
         alive <- pid_exists(pid)
         if (is.na(alive)) {
           msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not"
