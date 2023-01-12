@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9012</span>
       </span>
     </div>
 
@@ -156,6 +156,11 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
 <div class="section level3">
+<h3 id="signficant-changes-development-version">Signficant Changes<a class="anchor" aria-label="anchor" href="#signficant-changes-development-version"></a></h3>
+<ul><li><p>Remove function <code>remote()</code>. Note that <code>plan(remote, ...)</code> has been deprecated since <strong>future</strong> 1.24.0 [2022-02-19] and defunct since <strong>future</strong> 1.3.0 (2022-12-15).</p></li>
+<li><p>Remove defunct functions <code>transparent()</code> and <code>TransparentFuture()</code>.</p></li>
+</ul></div>
+<div class="section level3">
 <h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
 <ul><li>Add example to the ‘Common Issues with Solutions’ vignette on how <strong>magrittr</strong> pipes can result in an error when used with the future assignment operator and how to fix it.</li>
 </ul></div>
@@ -206,7 +211,7 @@
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-28-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-28-0"></a></h3>
 <ul><li><p>Previously deprecated use of <code>local = FALSE</code> with futures is now defunct.</p></li>
-<li><p>The R option to temporarily allow <code>plan(transparent)</code> although it was declared defunct has now been removed; <code>plan(transparent)</code>, together with functions <code><a href="../reference/remote.html">transparent()</a></code> and <code><a href="../reference/UniprocessFuture-class.html">TransparentFuture()</a></code> are now formally defunct.</p></li>
+<li><p>The R option to temporarily allow <code>plan(transparent)</code> although it was declared defunct has now been removed; <code>plan(transparent)</code>, together with functions <code>transparent()</code> and <code>TransparentFuture()</code> are now formally defunct.</p></li>
 <li><p>Using argument <code>persistent</code> with multisession futures is now defunct. Previously only <code>persistent = TRUE</code> was defunct.</p></li>
 </ul></div>
 <div class="section level3">
@@ -369,7 +374,7 @@
 <li><p>Resolving a ‘sequential’ future without globals would result in internal several <code>...future.*</code> objects being written to the calling environment, which might be the global environment.</p></li>
 <li><p>Environment variable <code>R_FUTURE_PLAN</code> would propagate down with nested futures, forcing itself onto also nested future plans. Now it is unset in nested futures, resulting in a sequential future strategy unless another was explicitly set by <code><a href="../reference/plan.html">plan()</a></code>.</p></li>
 <li><p>Transparent futures no longer warn about <code>local = FALSE</code> being deprecated. Although <code>local = FALSE</code> is being deprecated, it is still used internally by ‘transparent’ futures for a while longer. Please do not use ‘transparent’ futures in production code and never in a package.</p></li>
-<li><p><code><a href="../reference/remote.html">remote()</a></code> could produce an error on “object ‘homogeneous’ not found”.</p></li>
+<li><p><code>remote()</code> could produce an error on “object ‘homogeneous’ not found”.</p></li>
 <li><p><code><a href="../reference/nbrOfWorkers.html">nbrOfFreeWorkers()</a></code> for ‘cluster’ futures assumed that the current plan is set to cluster too.</p></li>
 </ul></div>
 </div>
@@ -1038,7 +1043,7 @@
 <h3 id="bug-fixes-1-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-2-0"></a></h3>
 <ul><li><p><code>values()</code> for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
 <li><p><code><a href="../reference/value.html">value()</a></code> for <code>ClusterFuture</code> would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of <code>ClusterFuture</code> from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection”.</p></li>
-<li><p>Argument <code>user</code> to <code><a href="../reference/remote.html">remote()</a></code> was ignored (since 1.1.0).</p></li>
+<li><p>Argument <code>user</code> to <code>remote()</code> was ignored (since 1.1.0).</p></li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -1052,9 +1057,9 @@
 <h2 class="page-header" data-toc-text="1.1.0" id="version-110">Version 1.1.0<small>2016-10-10</small><a class="anchor" aria-label="anchor" href="#version-110"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-1-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-1-0"></a></h3>
-<ul><li><p>REMOTE CLUSTERS: It is now very simple to use <code><a href="../reference/cluster.html">cluster()</a></code> and <code><a href="../reference/remote.html">remote()</a></code> to connect to remote clusters / machines. As long as you can connect via SSH to those machines, it works also with these future. The new code completely avoids incoming firewall and incoming port forwarding issues previously needed. This is done by using reverse SSH tunneling. There is also no need to worry about internal or external IP numbers.</p></li>
+<ul><li><p>REMOTE CLUSTERS: It is now very simple to use <code><a href="../reference/cluster.html">cluster()</a></code> and <code>remote()</code> to connect to remote clusters / machines. As long as you can connect via SSH to those machines, it works also with these future. The new code completely avoids incoming firewall and incoming port forwarding issues previously needed. This is done by using reverse SSH tunneling. There is also no need to worry about internal or external IP numbers.</p></li>
 <li><p>Added optional argument <code>label</code> to all futures, e.g. <code>f &lt;- future(42, label = "answer")</code> and <code>v %&lt;-% { 42 } %label% "answer"</code>.</p></li>
-<li><p>Added argument <code>user</code> to <code><a href="../reference/cluster.html">cluster()</a></code> and <code><a href="../reference/remote.html">remote()</a></code>.</p></li>
+<li><p>Added argument <code>user</code> to <code><a href="../reference/cluster.html">cluster()</a></code> and <code>remote()</code>.</p></li>
 <li><p>Now all <code>Future</code> classes supports <code><a href="../reference/run.html">run()</a></code> for launching the future and <code><a href="../reference/value.html">value()</a></code> calls <code><a href="../reference/run.html">run()</a></code> if the future has not been launched.</p></li>
 <li><p>MEMORY: Now <code>plan(cluster, gc = TRUE)</code> causes the background R session to be garbage collected immediately after the value is collected. Since multisession and remote futures are special cases of cluster futures, the same is true for these as well.</p></li>
 <li><p>ROBUSTNESS: Now the default future strategy is explicitly set when no strategies are set, e.g. when used nested futures. Previously, only mc.cores was set so that only a single core was used, but now also <code>plan("default")</code> set.</p></li>
