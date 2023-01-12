@@ -189,32 +189,6 @@ message("*** importParallel() ... DONE")
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# myInternalIP() and myExternalIP()
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** myInternalIP() ...")
-ips <- myInternalIP(mustWork = FALSE)
-message("myInternalIP(): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "first", mustWork = FALSE)
-message("myInternalIP(which = 'first'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "last", mustWork = FALSE)
-message("myInternalIP(which = 'last'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "all", mustWork = FALSE)
-message("myInternalIP(which = 'all'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-message("*** myExternalIP() ...")
-ip <- myExternalIP(mustWork = FALSE)
-message("myExternalIP(): ", ip)
-message("*** myExternalIP() ... DONE")
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # pid_exists()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 message("*** pid_exists() ...")

@@ -74,8 +74,6 @@ inRCmdCheck <- future:::inRCmdCheck
 importParallel <- future:::importParallel
 mdebug <- future:::mdebug
 mdebugf <- future:::mdebugf
-myExternalIP <- future:::myExternalIP
-myInternalIP <- future:::myInternalIP
 parseCmdArgs <- future:::parseCmdArgs
 requestCore <- future:::requestCore
 requestNode <- future:::requestNode
