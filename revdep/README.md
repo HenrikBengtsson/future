@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2023-01-11                                                  |
+|date     |2023-01-12                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.30.0 |1.30.0-9010 |*  |
+|future     |1.30.0 |1.30.0-9012 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -26,12 +26,11 @@
 
 # Revdeps
 
-## New problems (2)
+## New problems (1)
 
-|package      |version |error  |warning |note |
-|:------------|:-------|:------|:-------|:----|
+|package |version |error  |warning |note |
+|:-------|:-------|:------|:-------|:----|
 |[civis](problems.md#civis)|3.0.0   |__+1__ |        |1    |
-|[reproducible](problems.md#reproducible)|1.2.16  |__+1__ |        |     |
 
 ## All (270)
 
@@ -234,7 +233,7 @@
 |refineR                  |1.5.1     |       |        |     |
 |[regmedint](problems.md#regmedint)|1.0.0     |       |        |1    |
 |remiod                   |1.0.2     |       |        |     |
-|[reproducible](problems.md#reproducible)|1.2.16    |__+1__ |        |     |
+|[reproducible](problems.md#reproducible)|1.2.16    |1      |        |     |
 |reval                    |3.1-0     |       |        |     |
 |[rgee](problems.md#rgee) |1.1.5     |       |        |2    |
 |[robotstxt](problems.md#robotstxt)|0.7.13    |       |        |2    |
