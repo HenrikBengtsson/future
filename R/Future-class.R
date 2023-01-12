@@ -150,10 +150,6 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
          package = .packageName)
   }
 
-  ## 'local' is now always TRUE, unless persistent = TRUE,
-  ## which in turn may only be used for cluster futures. /HB 2023-01-11
-  local <- !isTRUE(args[["persistent"]])
-
   core <- new.env(parent = emptyenv())
 
   ## Version of future
@@ -169,9 +165,13 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$globals <- globals
   core$packages <- packages
   core$seed <- seed
-  core$local <- local
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+
+  ## 'local' is now defunct and always TRUE, unless persistent = TRUE,
+  ## which in turn may only be used for cluster futures. /HB 2023-01-11
+  core$persistent <- isTRUE(args[["persistent"]])
+  core$local <- !core$persistent
 
   ## Result
   core$result <- NULL
@@ -382,7 +382,6 @@ run.Future <- function(future, ...) {
   globals <- future$globals
   packages <- future$packages
   persistent <- future$persistent
-  if (!is.logical(persistent)) persistent <- FALSE
 
   ## WORKAROUNDS: /HB 2020-12-25
   if (inherits(makeFuture, "cluster")) {
