@@ -135,9 +135,18 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   }
   
   args <- list(...)
-  
+  names <- names(args)
+
+  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
+  ## there might still be legacy code out there that rely on it.  By
+  ## assert it is not set here, it is more likely to be caught.  This
+  ## check will eventually be removed
+  if ("value" %in% names) {
+    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
+  }
+
   ## 'local' is now defunct
-  if ("local" %in% names(args)) {
+  if ("local" %in% names) {
     dfcn <- .Defunct
     if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "false") == "true") {
       caller <- sys.call(which = 1L)
@@ -190,16 +199,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$state <- "created"
 
   ## Additional named arguments
-  names <- names(args)
   for (key in names) core[[key]] <- args[[key]]
-
-  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
-  ## there might still be legacy code out there that rely on it.  By
-  ## assert it is not set here, it is more likely to be caught.  This
-  ## check will eventually be removed
-  if ("value" %in% names) {
-    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
-  }
 
   structure(core, class = c("Future", class(core)))
 }
