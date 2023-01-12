@@ -60,7 +60,6 @@
 #' ' See below for example on how `remote` and `cluster` are related.
 #'
 #' @keywords internal
-#' @export
 remote <- function(..., workers = NULL, revtunnel = TRUE, myip = NULL, persistent = TRUE, homogeneous = TRUE, envir = parent.frame()) {
   if (is.function(workers)) workers <- workers()
   stop_if_not(length(workers) >= 1L, !anyNA(workers))

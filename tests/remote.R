@@ -1,6 +1,8 @@
 source("incl/start.R")
 library("listenv")
 
+remote <- future:::remote
+
 message("*** remote() ...")
 
 message("- remote() is defunct")

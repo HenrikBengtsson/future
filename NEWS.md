@@ -1,5 +1,11 @@
 # Version (development version)
 
+## Signficant Changes
+
+ * Removed function `remote()`.  Note that `plan(remote, ...)` has
+   been deprecated since **future** 1.24.0 [2022-02-19] and defunct
+   since **future** 1.3.0 (2022-12-15).
+
 ## Documentation
 
  * Add example to the 'Common Issues with Solutions' vignette on how

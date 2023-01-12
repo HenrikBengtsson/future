@@ -179,7 +179,7 @@ plan <- local({
   }
 
   warn_about_remote <- function(stack) {
-    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", defunct = "remote")
+    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", ignore = "", defunct = "remote")
   }
 
   warn_about_transparent <- function(stack) {
