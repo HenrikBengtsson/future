@@ -187,10 +187,6 @@ stopifnot(inherits(res, "try-error"))
 
 message("*** importParallel() ... DONE")
 
-message("*** inRCmdCheck() ...")
-cat(sprintf("R CMD check is running: %s\n", inRCmdCheck()))
-message("*** inRCmdCheck() ... DONE")
-
 message("*** utils ... DONE")
 
 source("incl/end.R")

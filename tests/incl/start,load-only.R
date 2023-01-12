@@ -70,7 +70,6 @@ get_future <- future:::get_future
 geval <- future:::geval
 grmall <- future:::grmall
 hpaste <- future:::hpaste
-inRCmdCheck <- future:::inRCmdCheck
 importParallel <- future:::importParallel
 mdebug <- future:::mdebug
 mdebugf <- future:::mdebugf
