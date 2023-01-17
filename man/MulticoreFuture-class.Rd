@@ -5,14 +5,7 @@
 \alias{MulticoreFuture}
 \title{A multicore future is a future whose value will be resolved asynchronously in a parallel process}
 \usage{
-MulticoreFuture(
-  expr = NULL,
-  substitute = TRUE,
-  envir = parent.frame(),
-  globals = TRUE,
-  lazy = FALSE,
-  ...
-)
+MulticoreFuture(expr = NULL, substitute = TRUE, envir = parent.frame(), ...)
 }
 \arguments{
 \item{expr}{An \R \link[base]{expression}.}
@@ -22,14 +15,6 @@ MulticoreFuture(
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
-
-\item{globals}{(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link[=future]{future()}}.}
-
-\item{lazy}{If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.}
 
 \item{...}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 }
