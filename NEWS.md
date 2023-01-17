@@ -21,6 +21,9 @@
 
  * Remove defunct functions `transparent()` and `TransparentFuture()`.
 
+ * Deprecated `plan(multiprocess, ...)` now equals `plan(sequential)`,
+   while still producing one warning each time a future is created.
+
 
 # Version 1.30.0 [2022-12-15]
 

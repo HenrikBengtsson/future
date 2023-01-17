@@ -13,12 +13,7 @@ multicore(
 \arguments{
 \item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
-\item{workers}{A positive numeric scalar or a function specifying the
-maximum number of parallel futures that can be active at the same time
-before blocking.
-If a function, it is called without arguments \emph{when the future
-is created} and its value is used to configure the workers.
-The function should return a numeric scalar.}
+\item{workers}{Ignored in \strong{future} (>= 1.31.0).}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}

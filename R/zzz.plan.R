@@ -175,7 +175,7 @@ plan <- local({
   }
 
   warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"))
+    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-??], 'multiprocess' is the same as 'sequential'."))
   }
 
   warn_about_remote <- function(stack) {
@@ -484,8 +484,7 @@ plan <- local({
 
 
 supportedStrategies <- function(strategies = c("sequential", "multicore",
-                                               "multisession", "multiprocess",
-                                               "cluster")) {
+                                               "multisession", "cluster")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }
