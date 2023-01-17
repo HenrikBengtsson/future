@@ -1,8 +1,5 @@
 source("incl/start.R")
 
-## WORKAROUND: https://github.com/HenrikBengtsson/parallelly/issues/94
-has_hiccup <- (getRversion() < "4.0.0" && packageVersion("parallelly") == "1.33.0")
-
 message("*** rng ...")
 
 okind <- RNGkind()
@@ -164,16 +161,14 @@ for (cores in 1:availCores) {
         }, warning = identity, error = identity)
         print(y3)
         if (misuse %in% c("warning", "error")) {
-          if (!has_hiccup) {
-            stopifnot(
-              inherits(y3, misuse),
-              inherits(y3, "RngFutureCondition"),
-              inherits(y3, switch(misuse,
-                warning = "RngFutureWarning",
-                error   = "RngFutureError"
-              ))
-            )
-          }
+          stopifnot(
+            inherits(y3, misuse),
+            inherits(y3, "RngFutureCondition"),
+            inherits(y3, switch(misuse,
+              warning = "RngFutureWarning",
+              error   = "RngFutureError"
+            ))
+          )
         }
 
         ## seed = NULL equals seed = FALSE but without the check of misuse

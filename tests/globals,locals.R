@@ -58,14 +58,8 @@ for (strategy in supportedStrategies()) {
     v <- value(f)
     stopifnot(v == 2)
   } else {
-    if (packageVersion("future") > "1.25.0-9017") {
-      v <- value(f)
-      stopifnot(v == 2)
-    } else {
-      res <- tryCatch(v <- value(f), error = identity)
-      print(res)
-      stopifnot(inherits(res, "error"))
-    }
+    v <- value(f)
+    stopifnot(v == 2)
   }
 
 
