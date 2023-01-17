@@ -11,7 +11,7 @@ Future(
   substitute = TRUE,
   stdout = TRUE,
   conditions = "condition",
-  globals = NULL,
+  globals = list(),
   packages = NULL,
   seed = FALSE,
   lazy = FALSE,

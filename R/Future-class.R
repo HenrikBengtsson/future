@@ -100,7 +100,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = list(), packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (is.null(seed)) {
@@ -118,7 +118,23 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   if (!is.null(conditions)) {
     stop_if_not(is.character(conditions), !anyNA(conditions))
   }
+
+  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
+  if (!inherits(globals, "Globals") ||
+      !isTRUE(attr(globals, "already-done", exact = TRUE))) {
+    ## Global objects?
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+    globals <- gp$globals
+    expr <- gp$expr
   
+    ## Record packages?
+    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
+      packages <- unique(c(gp$packages, packages))
+    }
+    
+    gp <- NULL
+  }
+
   if (!is.null(globals)) {
     stop_if_not(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))

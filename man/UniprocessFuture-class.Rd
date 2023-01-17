@@ -6,15 +6,7 @@
 \alias{SequentialFuture}
 \title{An uniprocess future is a future whose value will be resolved synchronously in the current process}
 \usage{
-UniprocessFuture(
-  expr = NULL,
-  substitute = TRUE,
-  envir = parent.frame(),
-  globals = TRUE,
-  packages = NULL,
-  lazy = FALSE,
-  ...
-)
+UniprocessFuture(expr = NULL, substitute = TRUE, envir = parent.frame(), ...)
 
 SequentialFuture(
   expr = NULL,
@@ -34,18 +26,15 @@ SequentialFuture(
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
 
-\item{globals}{(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for \code{\link[=future]{future()}}.}
-
-\item{packages}{(optional) a character vector specifying packages
-to be attached in the \R environment evaluating the future.}
+\item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}
 
-\item{\dots}{Additional named elements passed to \code{\link[=Future]{Future()}}.}
+\item{globals}{(optional) a logical, a character vector, or a named list
+to control how globals are handled.
+For details, see section 'Globals used by future expressions'
+in the help for \code{\link[=future]{future()}}.}
 }
 \value{
 \code{UniprocessFuture()} returns an object of class \code{UniprocessFuture}.
