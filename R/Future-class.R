@@ -396,9 +396,6 @@ run.Future <- function(future, ...) {
   if (debug) mdebug("- Future backend: ", paste(sQuote(class(makeFuture)), collapse = ", "))
 
   ## AD HOC/WORKAROUND: /HB 2020-12-21
-  globals <- future$globals
-  packages <- future$packages
-
   args <- list(
     quote(future$expr),
     substitute = FALSE,
@@ -406,8 +403,8 @@ run.Future <- function(future, ...) {
     lazy = TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
-    globals = globals,
-    packages = packages,
+    globals = future$globals,
+    packages = future$packages,
     seed = future$seed,
     label = future$label,
     calls = future$calls

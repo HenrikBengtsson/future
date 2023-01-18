@@ -17,11 +17,11 @@
  * Argument `local` is defunct and has been removed.  Previously only
    `local = FALSE` was defunct.
 
- * Removed defunct argument `value` from all `resolve()` methods.
+ * Remove defunct argument `value` from all `resolve()` methods.
 
  * Remove defunct functions `transparent()` and `TransparentFuture()`.
 
- * Deprecated `plan(multiprocess, ...)` now equals `plan(sequential)`,
+ * Deprecate `plan(multiprocess, ...)` now equals `plan(sequential)`,
    while still producing one warning each time a future is created.
 
 
