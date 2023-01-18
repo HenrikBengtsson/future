@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9021</span>
       </span>
     </div>
 
@@ -159,14 +159,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MulticoreFuture</span><span class="op">(</span></span>
-<span>  expr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  substitute <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  globals <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">MulticoreFuture</span><span class="op">(</span>expr <span class="op">=</span> <span class="cn">NULL</span>, substitute <span class="op">=</span> <span class="cn">TRUE</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -183,18 +176,6 @@
 <dt>envir</dt>
 <dd><p>The <a href="https://rdrr.io/r/base/environment.html" class="external-link">environment</a> from where global objects should be
 identified.</p></dd>
-
-
-<dt>globals</dt>
-<dd><p>(optional) a logical, a character vector, or a named list
-to control how globals are handled.
-For details, see section 'Globals used by future expressions'
-in the help for <code><a href="future.html">future()</a></code>.</p></dd>
-
-
-<dt>lazy</dt>
-<dd><p>If FALSE (default), the future is resolved
-eagerly (starting immediately), otherwise not.</p></dd>
 
 
 <dt>...</dt>

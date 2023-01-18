@@ -25,7 +25,7 @@ parallel in another process."><meta property="og:image" content="https://future.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9013</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9021</span>
       </span>
     </div>
 
@@ -163,13 +163,23 @@ parallel in another process</em>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cluster</span><span class="op">(</span><span class="va">...</span>, workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableWorkers</a></span><span class="op">(</span><span class="op">)</span>, envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cluster</span><span class="op">(</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  persistent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  workers <span class="op">=</span> <span class="fu"><a href="re-exports.html">availableWorkers</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>...</dt>
 <dd><p>Additional named elements passed to <code><a href="ClusterFuture-class.html">ClusterFuture()</a></code>.</p></dd>
+
+
+<dt>persistent</dt>
+<dd><p>If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.</p></dd>
 
 
 <dt>workers</dt>
