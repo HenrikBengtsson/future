@@ -10,29 +10,30 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2023-01-12                                                  |
+|date     |2023-01-17                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.30.0 |1.30.0-9012 |*  |
+|future     |1.30.0 |1.30.0-9021 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
 |listenv    |0.9.0  |0.9.0       |   |
-|parallelly |1.33.0 |1.33.0      |   |
+|parallelly |1.34.0 |1.34.0      |   |
 
 # Revdeps
 
-## New problems (1)
+## New problems (2)
 
 |package |version |error  |warning |note |
 |:-------|:-------|:------|:-------|:----|
 |[civis](problems.md#civis)|3.0.0   |__+1__ |        |1    |
+|[ipc](problems.md#ipc)|0.1.3   |__+1__ |        |1    |
 
-## All (270)
+## All (273)
 
 |package                  |version   |error  |warning |note |
 |:------------------------|:---------|:------|:-------|:----|
@@ -72,7 +73,7 @@
 |[codebook](problems.md#codebook)|0.9.2     |       |        |3    |
 |conformalInference.fd    |1.1.1     |       |        |     |
 |conformalInference.multi |1.1.1     |       |        |     |
-|[crossmap](problems.md#crossmap)|0.3.3     |       |        |1    |
+|crossmap                 |0.4.0     |       |        |     |
 |CSCNet                   |0.1.2     |       |        |     |
 |[cSEM](problems.md#csem) |0.5.0     |       |        |1    |
 |[CSGo](problems.md#csgo) |0.6.7     |       |        |1    |
@@ -91,7 +92,7 @@
 |drimmR                   |1.0.1     |       |        |     |
 |drtmle                   |1.1.2     |       |        |     |
 |dsos                     |0.1.1     |       |        |     |
-|DT                       |0.26      |       |        |     |
+|DT                       |0.27      |       |        |     |
 |easyalluvial             |0.3.1     |       |        |     |
 |[EFAtools](problems.md#efatools)|0.4.4     |       |        |2    |
 |elevatr                  |0.4.2     |       |        |     |
@@ -145,7 +146,7 @@
 |[inlinedocs](problems.md#inlinedocs)|2019.12.5 |       |        |1    |
 |[InPAS](problems.md#inpas)|2.6.0     |       |        |1    |
 |[interflex](problems.md#interflex)|1.2.6     |       |        |1    |
-|[ipc](problems.md#ipc)   |0.1.3     |       |        |1    |
+|[ipc](problems.md#ipc)   |0.1.3     |__+1__ |        |1    |
 |[ISAnalytics](problems.md#isanalytics)|1.8.1     |       |        |2    |
 |isopam                   |1.1.0     |       |        |     |
 |[ivmte](problems.md#ivmte)|1.4.0     |       |        |1    |
@@ -176,7 +177,7 @@
 |[microservices](problems.md#microservices)|0.2.0     |1      |        |     |
 |microSTASIS              |0.1.0     |       |        |     |
 |migraph                  |0.13.2    |       |        |     |
-|mikropml                 |1.4.0     |       |        |     |
+|mikropml                 |1.5.0     |       |        |     |
 |[MineICA](problems.md#mineica)|1.38.0    |       |3       |4    |
 |[missSBM](problems.md#misssbm)|1.0.3     |       |        |1    |
 |mistyR                   |1.6.0     |       |        |     |
@@ -191,6 +192,7 @@
 |[mslp](problems.md#mslp) |1.0.1     |1      |        |     |
 |multiverse               |0.6.1     |       |        |     |
 |netShiny                 |1.0       |       |        |     |
+|NetSimR                  |0.1.2     |       |        |     |
 |nfl4th                   |1.0.2     |       |        |     |
 |nflfastR                 |4.5.1     |       |        |     |
 |nflseedR                 |1.2.0     |       |        |     |
@@ -201,9 +203,11 @@
 |origami                  |1.0.7     |       |        |     |
 |[partR2](problems.md#partr2)|0.9.1     |       |        |1    |
 |[pavo](problems.md#pavo) |2.8.0     |       |1       |     |
+|pbapply                  |1.7-0     |       |        |     |
 |PCRedux                  |1.1-2     |       |        |     |
 |PeakSegDisk              |2022.2.1  |       |        |     |
 |penaltyLearning          |2020.5.13 |       |        |     |
+|pGRN                     |0.3.5     |       |        |     |
 |[photosynthesis](problems.md#photosynthesis)|2.1.1     |       |        |2    |
 |[phylolm](problems.md#phylolm)|2.6.2     |       |        |1    |
 |PINstimation             |0.1.1     |       |        |     |

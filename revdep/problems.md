@@ -417,28 +417,6 @@ Run `revdep_details(, "codebook")` for more info
       Note: found 65 marked UTF-8 strings
     ```
 
-# crossmap
-
-<details>
-
-* Version: 0.3.3
-* GitHub: https://github.com/rossellhayes/crossmap
-* Source code: https://github.com/cran/crossmap
-* Date/Publication: 2022-08-12 17:30:05 UTC
-* Number of recursive dependencies: 63
-
-Run `revdep_details(, "crossmap")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘utils’
-      All declared Imports should be used.
-    ```
-
 # cSEM
 
 <details>
@@ -1103,6 +1081,25 @@ Run `revdep_details(, "ipc")` for more info
 
 </details>
 
+## Newly broken
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘shinymp.Rmd’ using rmarkdown
+    Quitting from lines 253-275 (shinymp.Rmd) 
+    Error: processing vignette 'shinymp.Rmd' failed with diagnostics:
+    argument 1 (type 'list') cannot be handled by 'cat'
+    --- failed re-building ‘shinymp.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘shinymp.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 ## In both
 
 *   checking LazyData ... NOTE
@@ -1239,7 +1236,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 92626 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 286782 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -2031,16 +2028,16 @@ Run `revdep_details(, "reproducible")` for more info
 
 *   checking tests ...
     ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  7861 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 95656 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/test-all.R’ failed.
     Last 50 lines of output:
-        adding: scratch/henrik/RtmpG5DZI7/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/RtmpG5DZI7/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+        adding: scratch/henrik/1102088/Rtmpvsfxdp/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/1102088/Rtmpvsfxdp/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
       
        *** caught segfault ***
-      address 0x8, cause 'memory not mapped'
+      address 0x40, cause 'memory not mapped'
     ...
       36: doTryCatch(return(expr), name, parentenv, handler)
       37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
