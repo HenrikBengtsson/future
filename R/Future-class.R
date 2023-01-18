@@ -119,11 +119,16 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     stop_if_not(is.character(conditions), !anyNA(conditions))
   }
 
+  args <- list(...)
+  args_names <- names(args)
+
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
   if (!inherits(globals, "Globals") ||
       !isTRUE(attr(globals, "already-done", exact = TRUE))) {
     ## Global objects?
-    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
+    ## 'persistent' is only allowed for ClusterFuture:s, which will be
+    ## asserted when run() is called /HB 2023-01-17
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals, persistent = isTRUE(args$persistent))
     globals <- gp$globals
     expr <- gp$expr
   
@@ -150,19 +155,16 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     stop_if_not(is.character(label))
   }
   
-  args <- list(...)
-  names <- names(args)
-
   ## IMPORTANT: Do *not* set 'value' because that field is defunct but
   ## there might still be legacy code out there that rely on it.  By
   ## assert it is not set here, it is more likely to be caught.  This
   ## check will eventually be removed
-  if ("value" %in% names) {
+  if ("value" %in% args_names) {
     .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
   }
 
   ## 'local' is now defunct
-  if ("local" %in% names) {
+  if ("local" %in% args_names) {
     dfcn <- .Defunct
     if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "false") == "true") {
       caller <- sys.call(which = 1L)
@@ -195,8 +197,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
 
   ## 'local' is now defunct and always TRUE, unless persistent = TRUE,
   ## which in turn may only be used for cluster futures. /HB 2023-01-11
-  core$persistent <- isTRUE(args[["persistent"]])
-  core$local <- !core$persistent
+  core$local <- TRUE
 
   ## Result
   core$result <- NULL
@@ -215,7 +216,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$state <- "created"
 
   ## Additional named arguments
-  for (key in names) core[[key]] <- args[[key]]
+  for (key in args_names) core[[key]] <- args[[key]]
 
   structure(core, class = c("Future", class(core)))
 }
@@ -397,15 +398,10 @@ run.Future <- function(future, ...) {
   ## AD HOC/WORKAROUND: /HB 2020-12-21
   globals <- future$globals
   packages <- future$packages
-  persistent <- future$persistent
 
-  ## WORKAROUNDS: /HB 2020-12-25
-  if (inherits(makeFuture, "cluster")) {
-    if (isTRUE(formals(makeFuture)$persistent)) persistent <- TRUE
-  }
-
-  tmpFuture <- makeFuture(
-    future$expr, substitute = FALSE,
+  args <- list(
+    quote(future$expr),
+    substitute = FALSE,
     envir = future$envir,
     lazy = TRUE,
     stdout = future$stdout,
@@ -414,9 +410,24 @@ run.Future <- function(future, ...) {
     packages = packages,
     seed = future$seed,
     label = future$label,
-    calls = future$calls,
-    persistent = persistent
+    calls = future$calls
   )
+
+  ## SPECIAL: 'cluster' takes argument 'persistent' for now /HB 2023-01-17
+  has_persistent <- ("persistent" %in% names(future))
+  if (has_persistent) args$persistent <- future$persistent
+  
+  tmpFuture <- do.call(makeFuture, args = args)
+
+  ## SPECIAL: 'cluster' takes argument 'persistent' for now /HB 2023-01-17
+  if (has_persistent) {
+    if (inherits(makeFuture, "cluster") &&
+        !inherits(makeFuture, "multisession")) {
+      tmpFuture$local <- !tmpFuture$persistent
+    } else {
+      .Defunct(msg = "Future field 'persistent' is defunct and must not be set", package = .packageName)
+    }
+  }
 
   if (debug) mdebug("- Future class: ", paste(sQuote(class(tmpFuture)), collapse = ", "))
 
