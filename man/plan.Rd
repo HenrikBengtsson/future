@@ -51,32 +51,47 @@ configured by option \option{future.plan} and, if that is not set,
 system environment variable \env{R_FUTURE_PLAN}.
 To reset the strategy back to the default, use \code{plan("default")}.
 }
-\section{Implemented evaluation strategies}{
+\section{Built-in evaluation strategies}{
+
+The \pkg{future} package provides the following built-in backends:
 
 \itemize{
 \item{\code{\link{sequential}}:}{
-Resolves futures sequentially in the current \R process.
+Resolves futures sequentially in the current \R process, e.g.
+\code{plan(sequential)}.
 }
 \item{\code{\link{multisession}}:}{
 Resolves futures asynchronously (in parallel) in separate
-\R sessions running in the background on the same machine.
+\R sessions running in the background on the same machine, e.g.
+\code{plan(multisession)} and \code{plan(multisession, workers = 2)}.
 }
 \item{\code{\link{multicore}}:}{
 Resolves futures asynchronously (in parallel) in separate
 \emph{forked} \R processes running in the background on
-the same machine.  Not supported on Windows.
+the same machine, e.g.
+\code{plan(multicore)} and \code{plan(multicore, workers = 2)}.
+This backend is not supported on Windows.
 }
 \item{\code{\link{cluster}}:}{
 Resolves futures asynchronously (in parallel) in separate
-\R sessions running typically on one or more machines.
-}
+\R sessions running typically on one or more machines, e.g.
+\code{plan(cluster)}, \code{plan(cluster, workers = 2)}, and
+\code{plan(cluster, workers = c("n1", "n1", "n2", "server.remote.org"))}.
 }
 }
 
-\section{Deprecated evaluation strategies}{
+Other package provide additional evaluation strategies.
+For example, the \pkg{future.callr} package implements an alternative
+to the \code{multisession} backend on top of the \pkg{callr} package, e.g.
+\code{plan(future.callr::callr, workers = 2)}.
+Another example is the \pkg{future.batchtools} package, which implements,
+on top of the \pkg{batchtools} package, e.g.
+\code{plan(future.batchtools::batchtools_slurm)}.
+These types of futures are resolved via job schedulers, which typically
+are available on high-performance compute (HPC) clusters, e.g. LSF,
+Slurm, TORQUE/PBS, Sun Grid Engine, and OpenLava.
 
-The following future strategies are deprecated.  Please use
-the recommended alternatives instead.
+The following future strategies are \emph{deprecated} and must not be used:
 
 \itemize{
 \item{\code{\link{multiprocess}}:}{(DEPRECATED since future 1.20.0)
@@ -85,13 +100,6 @@ otherwise multisession evaluation will be used.
 \emph{Please use \code{multisession}, or possibly \code{multicore} instead.}
 }
 }
-
-Other package may provide additional evaluation strategies.
-Notably, the \pkg{future.batchtools} package implements a
-type of futures that will be resolved via job schedulers
-that are typically available on high-performance compute
-(HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
-and OpenLava.
 
 To "close" any background workers (e.g. \code{multisession}), change
 the plan to something different; \code{plan(sequential)} is recommended
