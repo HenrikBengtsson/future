@@ -12,6 +12,14 @@
    **magrittr** pipes can result in an error when used with the future
    assignment operator and how to fix it.
 
+## Bug Fixes
+
+ * Error messages that contain a deparsed version of the future
+   expression could become very large in cases where the expression
+   comprise expanded, large objects. Now only the first 100 lines
+   of the expression is deparsed.
+   
+
 ## Deprecated and Defunct
 
  * Argument `local` is defunct and has been removed.  Previously only

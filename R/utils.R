@@ -76,7 +76,7 @@ comma <- function(x, sep = ", ") paste(x, collapse = sep)
 commaq <- function(x, sep = ", ") paste(sQuote(x), collapse = sep)
 
 hexpr <- function(expr, trim = TRUE, collapse = "; ", maxHead = 6L, maxTail = 3L, ...) {
-  code <- deparse(expr)
+  code <- deparse(expr, width.cutoff = 60L, nlines = getOption("future.hexpr.nlines", 100L))
   if (trim) code <- trim(code)
   hpaste(code, collapse = collapse, maxHead = maxHead, maxTail = maxTail, ...)
 } # hexpr()
