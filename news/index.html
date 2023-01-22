@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9022</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
       </span>
     </div>
 
@@ -162,6 +162,10 @@
 <div class="section level3">
 <h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
 <ul><li>Add example to the ‘Common Issues with Solutions’ vignette on how <strong>magrittr</strong> pipes can result in an error when used with the future assignment operator and how to fix it.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<ul><li>Error messages that contain a deparsed version of the future expression could become very large in cases where the expression comprise expanded, large objects. Now only the first 100 lines of the expression is deparsed.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
