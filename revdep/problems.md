@@ -1052,7 +1052,7 @@ Run `revdep_details(, "InPAS")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/interflex
 * Date/Publication: 2021-05-18 11:40:02 UTC
-* Number of recursive dependencies: 103
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "interflex")` for more info
 
@@ -1236,7 +1236,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 35524 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 180635 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -1566,7 +1566,7 @@ Run `revdep_details(, "missSBM")` for more info
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
 * Date/Publication: 2022-10-18 20:52:35 UTC
-* Number of recursive dependencies: 146
+* Number of recursive dependencies: 142
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -1814,7 +1814,7 @@ Run `revdep_details(, "portvine")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 118
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2028,13 +2028,13 @@ Run `revdep_details(, "reproducible")` for more info
 
 *   checking tests ...
     ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 69549 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 241674 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/test-all.R’ failed.
     Last 50 lines of output:
-        adding: scratch/henrik/1102088/RtmpbKFWAV/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/1102088/RtmpbKFWAV/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+        adding: scratch/henrik/1103582/RtmpW2Po52/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/1103582/RtmpW2Po52/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
       
        *** caught segfault ***
       address 0x40, cause 'memory not mapped'
@@ -2373,10 +2373,10 @@ Run `revdep_details(, "shiny.worker")` for more info
 
 <details>
 
-* Version: 2.0.1
+* Version: 2.0.2
 * GitHub: https://github.com/rvalieris/signeR
 * Source code: https://github.com/cran/signeR
-* Date/Publication: 2022-12-14
+* Date/Publication: 2023-01-19
 * Number of recursive dependencies: 242
 
 Run `revdep_details(, "signeR")` for more info
@@ -2387,10 +2387,10 @@ Run `revdep_details(, "signeR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
         R     1.1Mb
-        doc   4.7Mb
+        doc   4.6Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -2441,7 +2441,7 @@ Run `revdep_details(, "signeR")` for more info
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
 * Date/Publication: 2022-07-14 10:50:05 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -3020,7 +3020,7 @@ Run `revdep_details(, "updog")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 121
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "vmeasur")` for more info
 

@@ -10,7 +10,7 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2023-01-17                                                  |
+|date     |2023-01-20                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
@@ -33,7 +33,7 @@
 |[civis](problems.md#civis)|3.0.0   |__+1__ |        |1    |
 |[ipc](problems.md#ipc)|0.1.3   |__+1__ |        |1    |
 
-## All (273)
+## All (274)
 
 |package                  |version   |error  |warning |note |
 |:------------------------|:---------|:------|:-------|:----|
@@ -165,7 +165,7 @@
 |[lidR](problems.md#lidr) |4.0.2     |2      |        |1    |
 |[lightr](problems.md#lightr)|1.7.0     |       |        |2    |
 |lmtp                     |1.3.1     |       |        |     |
-|LWFBrook90R              |0.5.0     |       |        |     |
+|LWFBrook90R              |0.5.2     |       |        |     |
 |[MAI](problems.md#mai)   |1.4.0     |       |        |1    |
 |MAMS                     |2.0.0     |       |        |     |
 |marginaleffects          |0.8.1     |       |        |     |
@@ -223,7 +223,7 @@
 |[projpred](problems.md#projpred)|2.3.0     |       |        |1    |
 |[promises](problems.md#promises)|1.2.0.1   |       |        |1    |
 |Prostar                  |1.30.2    |       |        |     |
-|protti                   |0.5.0     |       |        |     |
+|protti                   |0.6.0     |       |        |     |
 |PSCBS                    |0.66.0    |       |        |     |
 |PUMP                     |1.0.1     |       |        |     |
 |qape                     |2.0       |       |        |     |
@@ -259,7 +259,7 @@
 |[shiny.worker](problems.md#shinyworker)|0.0.1     |       |        |2    |
 |sigminer                 |2.1.9     |       |        |     |
 |Signac                   |1.9.0     |       |        |     |
-|[signeR](problems.md#signer)|2.0.1     |       |        |3    |
+|[signeR](problems.md#signer)|2.0.2     |       |        |3    |
 |simfinapi                |0.2.0     |       |        |     |
 |simglm                   |0.8.9     |       |        |     |
 |simhelpers               |0.1.2     |       |        |     |
@@ -275,6 +275,7 @@
 |[SPARSEMODr](problems.md#sparsemodr)|1.2.0     |       |        |1    |
 |[spatialTIME](problems.md#spatialtime)|1.2.2     |       |        |1    |
 |[spatialwarnings](problems.md#spatialwarnings)|3.0.3     |       |1       |1    |
+|specr                    |1.0.0     |       |        |     |
 |sperrorest               |3.0.5     |       |        |     |
 |spFSR                    |2.0.3     |       |        |     |
 |[sphunif](problems.md#sphunif)|1.0.1     |       |        |2    |
