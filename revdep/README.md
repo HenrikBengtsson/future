@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                                 |
 |ctype    |en_US.UTF-8                                                 |
 |tz       |America/Los_Angeles                                         |
-|date     |2023-01-20                                                  |
+|date     |2023-01-26                                                  |
 |pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.30.0 |1.30.0-9021 |*  |
+|future     |1.30.0 |1.30.0-9023 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -26,14 +26,13 @@
 
 # Revdeps
 
-## New problems (2)
+## New problems (1)
 
 |package |version |error  |warning |note |
 |:-------|:-------|:------|:-------|:----|
 |[civis](problems.md#civis)|3.0.0   |__+1__ |        |1    |
-|[ipc](problems.md#ipc)|0.1.3   |__+1__ |        |1    |
 
-## All (274)
+## All (276)
 
 |package                  |version   |error  |warning |note |
 |:------------------------|:---------|:------|:-------|:----|
@@ -82,11 +81,11 @@
 |[DeclareDesign](problems.md#declaredesign)|1.0.2     |       |        |1    |
 |delayed                  |0.4.0     |       |        |     |
 |dhReg                    |0.1.1     |       |        |     |
-|[dipsaus](problems.md#dipsaus)|0.2.5     |       |        |1    |
+|[dipsaus](problems.md#dipsaus)|0.2.6     |       |        |1    |
 |disk.frame               |0.7.2     |       |        |     |
 |[dispositionEffect](problems.md#dispositioneffect)|1.0.1     |1      |        |     |
 |doFuture                 |0.12.2    |       |        |     |
-|DQAstats                 |0.3.1     |       |        |     |
+|DQAstats                 |0.3.2     |       |        |     |
 |[dragon](problems.md#dragon)|1.2.1     |       |        |1    |
 |drake                    |7.13.4    |       |        |     |
 |drimmR                   |1.0.1     |       |        |     |
@@ -111,7 +110,7 @@
 |[forecastML](problems.md#forecastml)|0.9.0     |       |        |1    |
 |fst4pg                   |1.0.0     |       |        |     |
 |fundiversity             |1.1.1     |       |        |     |
-|funGp                    |0.3.0     |       |        |     |
+|funGp                    |0.3.1     |       |        |     |
 |furrr                    |0.3.1     |       |        |     |
 |future.apply             |1.10.0    |       |        |     |
 |future.batchtools        |0.11.0    |       |        |     |
@@ -146,7 +145,7 @@
 |[inlinedocs](problems.md#inlinedocs)|2019.12.5 |       |        |1    |
 |[InPAS](problems.md#inpas)|2.6.0     |       |        |1    |
 |[interflex](problems.md#interflex)|1.2.6     |       |        |1    |
-|[ipc](problems.md#ipc)   |0.1.3     |__+1__ |        |1    |
+|ipc                      |0.1.4     |       |        |     |
 |[ISAnalytics](problems.md#isanalytics)|1.8.1     |       |        |2    |
 |isopam                   |1.1.0     |       |        |     |
 |[ivmte](problems.md#ivmte)|1.4.0     |       |        |1    |
@@ -201,6 +200,7 @@
 |onemapsgapi              |1.1.0     |       |        |     |
 |[OOS](problems.md#oos)   |1.0.0     |       |        |1    |
 |origami                  |1.0.7     |       |        |     |
+|paramsim                 |0.1.0     |       |        |     |
 |[partR2](problems.md#partr2)|0.9.1     |       |        |1    |
 |[pavo](problems.md#pavo) |2.8.0     |       |1       |     |
 |pbapply                  |1.7-0     |       |        |     |
@@ -243,7 +243,7 @@
 |[robotstxt](problems.md#robotstxt)|0.7.13    |       |        |2    |
 |robust2sls               |0.2.2     |       |        |     |
 |RTransferEntropy         |0.2.14    |       |        |     |
-|[sapfluxnetr](problems.md#sapfluxnetr)|0.1.3     |       |        |1    |
+|[sapfluxnetr](problems.md#sapfluxnetr)|0.1.4     |       |        |1    |
 |scBubbletree             |1.0.0     |       |        |     |
 |[scDiffCom](problems.md#scdiffcom)|0.1.0     |       |        |1    |
 |SCtools                  |0.3.2.1   |       |        |     |
@@ -260,6 +260,7 @@
 |sigminer                 |2.1.9     |       |        |     |
 |Signac                   |1.9.0     |       |        |     |
 |[signeR](problems.md#signer)|2.0.2     |       |        |3    |
+|[SimDesign](problems.md#simdesign)|2.10      |       |        |2    |
 |simfinapi                |0.2.0     |       |        |     |
 |simglm                   |0.8.9     |       |        |     |
 |simhelpers               |0.1.2     |       |        |     |

@@ -487,11 +487,11 @@ Run `revdep_details(, "DeclareDesign")` for more info
 
 <details>
 
-* Version: 0.2.5
+* Version: 0.2.6
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2022-10-22 07:05:06 UTC
-* Number of recursive dependencies: 72
+* Date/Publication: 2023-01-21 12:30:02 UTC
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "dipsaus")` for more info
 
@@ -501,10 +501,10 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  5.8Mb
       sub-directories of 1Mb or more:
         doc    1.1Mb
-        libs   3.6Mb
+        libs   3.3Mb
     ```
 
 # dispositionEffect
@@ -658,7 +658,7 @@ Run `revdep_details(, "epitweetr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/fect
 * Date/Publication: 2022-10-14 09:52:32 UTC
-* Number of recursive dependencies: 66
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "fect")` for more info
 
@@ -859,7 +859,7 @@ Run `revdep_details(, "greed")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/gsynth
 * Date/Publication: 2021-08-06 07:50:05 UTC
-* Number of recursive dependencies: 63
+* Number of recursive dependencies: 65
 
 Run `revdep_details(, "gsynth")` for more info
 
@@ -1065,46 +1065,6 @@ Run `revdep_details(, "interflex")` for more info
       installed size is  5.9Mb
       sub-directories of 1Mb or more:
         libs   5.2Mb
-    ```
-
-# ipc
-
-<details>
-
-* Version: 0.1.3
-* GitHub: https://github.com/fellstat/ipc
-* Source code: https://github.com/cran/ipc
-* Date/Publication: 2019-06-23 06:00:03 UTC
-* Number of recursive dependencies: 69
-
-Run `revdep_details(, "ipc")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘shinymp.Rmd’ using rmarkdown
-    Quitting from lines 253-275 (shinymp.Rmd) 
-    Error: processing vignette 'shinymp.Rmd' failed with diagnostics:
-    argument 1 (type 'list') cannot be handled by 'cat'
-    --- failed re-building ‘shinymp.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘shinymp.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # ISAnalytics
@@ -1695,7 +1655,7 @@ Run `revdep_details(, "partR2")` for more info
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
 * Date/Publication: 2022-08-16 13:00:20 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -2111,10 +2071,10 @@ Run `revdep_details(, "robotstxt")` for more info
 
 <details>
 
-* Version: 0.1.3
+* Version: 0.1.4
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
-* Date/Publication: 2021-11-19 15:10:02 UTC
+* Date/Publication: 2023-01-25 15:30:02 UTC
 * Number of recursive dependencies: 81
 
 Run `revdep_details(, "sapfluxnetr")` for more info
@@ -2433,6 +2393,34 @@ Run `revdep_details(, "signeR")` for more info
     prepare_Rd: tcga_tumors.Rd:27-28: Dropping empty section \examples
     ```
 
+# SimDesign
+
+<details>
+
+* Version: 2.10
+* GitHub: https://github.com/philchalmers/SimDesign
+* Source code: https://github.com/cran/SimDesign
+* Date/Publication: 2023-01-24 17:10:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "SimDesign")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘doMPI’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.7Mb
+      sub-directories of 1Mb or more:
+        doc   6.2Mb
+    ```
+
 # skpr
 
 <details>
@@ -2520,7 +2508,7 @@ Run `revdep_details(, "spaMM")` for more info
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
 * Date/Publication: 2022-12-02 09:40:09 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "sparrpowR")` for more info
 
