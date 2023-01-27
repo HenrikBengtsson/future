@@ -166,13 +166,18 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   ## 'local' is now defunct
   if ("local" %in% args_names) {
     dfcn <- .Defunct
-    if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "false") == "true") {
+
+    ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
+    ## 'local' for a tad longer, although it has zero effect since a
+    ## long time (https://github.com/civisanalytics/civis-r/issues/244)
+    ## /HB 2023-01-26
+    if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
       caller <- sys.call(which = 1L)
       if (any(grepl("CivisFuture$", deparse(caller[[1]])))) {
         dfcn <- .Deprecated
       }
     }
-    print(dfcn)
+
     dfcn(msg = "Argument 'local' is defunct as of future 1.31.0 (2023-??-??)",
          package = .packageName)
   }
