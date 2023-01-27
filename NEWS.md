@@ -19,8 +19,10 @@
    comprise expanded, large objects. Now only the first 100 lines
    of the expression is deparsed.
    
-
 ## Deprecated and Defunct
+
+ * Deprecated `plan(multiprocess, ...)` now equals `plan(sequential)`,
+   while still producing one warning each time a future is created.
 
  * Argument `local` is defunct and has been removed.  Previously only
    `local = FALSE` was defunct.
@@ -28,9 +30,6 @@
  * Remove defunct argument `value` from all `resolve()` methods.
 
  * Remove defunct functions `transparent()` and `TransparentFuture()`.
-
- * Deprecate `plan(multiprocess, ...)` now equals `plan(sequential)`,
-   while still producing one warning each time a future is created.
 
 
 # Version 1.30.0 [2022-12-15]
