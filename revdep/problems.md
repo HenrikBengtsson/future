@@ -22,6 +22,47 @@ Run `revdep_details(, "AIPW")` for more info
       All declared Imports should be used.
     ```
 
+# AlpsNMR
+
+<details>
+
+* Version: 4.0.2
+* GitHub: https://github.com/sipss/AlpsNMR
+* Source code: https://github.com/cran/AlpsNMR
+* Date/Publication: 2022-11-10
+* Number of recursive dependencies: 169
+
+Run `revdep_details(, "AlpsNMR")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
+    Warning in has_utility("pdfcrop") :
+      pdfcrop not installed or not in PATH
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    ...
+    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
+    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
+    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
+    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # aroma.core
 
 <details>
@@ -65,6 +106,47 @@ Run `revdep_details(, "BAMBI")` for more info
       installed size is  7.2Mb
       sub-directories of 1Mb or more:
         libs   6.7Mb
+    ```
+
+# baseballr
+
+<details>
+
+* Version: 1.3.0
+* GitHub: https://github.com/BillPetti/baseballr
+* Source code: https://github.com/cran/baseballr
+* Date/Publication: 2022-09-09 07:52:55 UTC
+* Number of recursive dependencies: 117
+
+Run `revdep_details(, "baseballr")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘baseballr.Rmd’ using rmarkdown
+    --- finished re-building ‘baseballr.Rmd’
+    
+    --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
+    --- finished re-building ‘ncaa_scraping.Rmd’
+    
+    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
+    --- finished re-building ‘plotting_statcast.Rmd’
+    ...
+    Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
+    Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
+    HTTP error 404.
+    --- failed re-building ‘using_statcast_pitch_data.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘using_statcast_pitch_data.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # batchtools
@@ -111,9 +193,9 @@ Run `revdep_details(, "BEKKs")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.5Mb
+      installed size is 18.4Mb
       sub-directories of 1Mb or more:
-        libs  17.6Mb
+        libs  17.5Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -168,7 +250,7 @@ Run `revdep_details(, "bistablehistory")` for more info
     ```
       installed size is 50.3Mb
       sub-directories of 1Mb or more:
-        libs  49.5Mb
+        libs  49.4Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -299,7 +381,7 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.3Mb
+      installed size is  8.2Mb
       sub-directories of 1Mb or more:
         data   1.4Mb
         doc    2.9Mb
@@ -349,33 +431,6 @@ Run `revdep_details(, "ChromSCape")` for more info
 Run `revdep_details(, "civis")` for more info
 
 </details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       1. └─civis::CivisFuture(quote(2 + 3)) at test_civis_future.R:24:2
-       2.   └─future::Future(...)
-       3.     └─base (local) dfcn(...)
-      ── Error ('test_civis_future.R:61'): run and value work ────────────────────────
-      <defunctError/error/condition>
-      Error: Argument 'local' is defunct as of future 1.31.0 (2023-??-??)
-    ...
-      Error: Argument 'local' is defunct as of future 1.31.0 (2023-??-??)
-      Backtrace:
-          ▆
-       1. └─civis::CivisFuture(quote(2 + 2)) at test_civis_future.R:118:2
-       2.   └─future::Future(...)
-       3.     └─base (local) dfcn(...)
-      
-      [ FAIL 8 | WARN 4 | SKIP 0 | PASS 1041 ]
-      Error: Test failures
-      Execution halted
-    ```
 
 ## In both
 
@@ -668,7 +723,7 @@ Run `revdep_details(, "fect")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.0Mb
+      installed size is 13.9Mb
       sub-directories of 1Mb or more:
         libs  12.7Mb
     ```
@@ -772,11 +827,11 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.4Mb
+      installed size is 14.3Mb
       sub-directories of 1Mb or more:
         doc       1.7Mb
         extdata   3.0Mb
-        libs      8.1Mb
+        libs      8.0Mb
     ```
 
 # googleComputeEngineR
@@ -841,9 +896,9 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 37.0Mb
+      installed size is 36.8Mb
       sub-directories of 1Mb or more:
-        libs  34.8Mb
+        libs  34.6Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -958,9 +1013,9 @@ Run `revdep_details(, "hwep")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 68.7Mb
+      installed size is 68.6Mb
       sub-directories of 1Mb or more:
-        libs  68.2Mb
+        libs  68.1Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -1062,9 +1117,9 @@ Run `revdep_details(, "interflex")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  5.8Mb
       sub-directories of 1Mb or more:
-        libs   5.2Mb
+        libs   5.1Mb
     ```
 
 # ISAnalytics
@@ -1148,9 +1203,9 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 24.2Mb
+      installed size is 23.9Mb
       sub-directories of 1Mb or more:
-        libs  23.8Mb
+        libs  23.6Mb
     ```
 
 # lidR
@@ -1196,32 +1251,36 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 180635 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > Sys.setenv("R_TESTS" = "")
-      > 
-      > library(testthat)
-      > library(lidR)
-      > test_check("lidR")
-      Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 32 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
+    Last 50 lines of output:
+       3.   └─lidR (local) algorithm(st_bbox(las))
+       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       5.       └─lidR:::raster_crop(chm, bbox)
+       6.         ├─sf::st_crop(raster, bbox)
+       7.         └─stars:::st_crop.stars(raster, bbox)
+      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
+    ...
+        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
+        8.   └─lidR (local) algorithm(st_bbox(las))
+        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       10.       └─lidR:::raster_crop(chm, bbox)
+       11.         ├─sf::st_crop(raster, bbox)
+       12.         └─stars:::st_crop.stars(raster, bbox)
+      
+      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
+      Error: Test failures
+      Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.8Mb
+      installed size is 19.7Mb
       sub-directories of 1Mb or more:
         R         1.2Mb
         extdata   1.1Mb
-        libs     16.0Mb
+        libs     15.8Mb
     ```
 
 # lightr
@@ -1513,7 +1572,7 @@ Run `revdep_details(, "missSBM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.8Mb
+      installed size is  9.7Mb
       sub-directories of 1Mb or more:
         libs   7.8Mb
     ```
@@ -1536,11 +1595,11 @@ Run `revdep_details(, "momentuHMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.2Mb
+      installed size is 10.1Mb
       sub-directories of 1Mb or more:
         R      1.2Mb
         doc    1.7Mb
-        libs   6.7Mb
+        libs   6.6Mb
     ```
 
 # mslp
@@ -1737,10 +1796,10 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 21.9Mb
+      installed size is 21.7Mb
       sub-directories of 1Mb or more:
         doc    2.1Mb
-        libs  18.5Mb
+        libs  18.3Mb
     ```
 
 # portvine
@@ -1761,7 +1820,7 @@ Run `revdep_details(, "portvine")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 51.4Mb
+      installed size is 51.3Mb
       sub-directories of 1Mb or more:
         libs  50.6Mb
     ```
@@ -1943,9 +2002,9 @@ Run `revdep_details(, "RAINBOWR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 37.8Mb
+      installed size is 37.7Mb
       sub-directories of 1Mb or more:
-        libs  36.6Mb
+        libs  36.5Mb
     ```
 
 # regmedint
@@ -1968,47 +2027,6 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
-    ```
-
-# reproducible
-
-<details>
-
-* Version: 1.2.16
-* GitHub: https://github.com/PredictiveEcology/reproducible
-* Source code: https://github.com/cran/reproducible
-* Date/Publication: 2022-12-22 09:50:02 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(, "reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 241674 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 50 lines of output:
-        adding: scratch/henrik/1103582/RtmpW2Po52/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/1103582/RtmpW2Po52/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
-      
-       *** caught segfault ***
-      address 0x40, cause 'memory not mapped'
-    ...
-      36: doTryCatch(return(expr), name, parentenv, handler)
-      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      38: tryCatchList(expr, classes, parentenv, handlers)
-      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
-      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
-      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
-      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
-      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
-      44: test_check("reproducible")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -2177,10 +2195,10 @@ Run `revdep_details(, "sdmTMB")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 79.3Mb
+      installed size is 81.2Mb
       sub-directories of 1Mb or more:
         data   1.7Mb
-        libs  75.9Mb
+        libs  77.9Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -2211,7 +2229,7 @@ Run `revdep_details(, "sentopics")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.1Mb
+      installed size is  8.0Mb
       sub-directories of 1Mb or more:
         data   1.2Mb
         libs   6.1Mb
@@ -2439,9 +2457,9 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 56.9Mb
+      installed size is 56.7Mb
       sub-directories of 1Mb or more:
-        libs  55.3Mb
+        libs  55.2Mb
     ```
 
 # solitude
@@ -2494,10 +2512,10 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.6Mb
+      installed size is 55.5Mb
       sub-directories of 1Mb or more:
         R      2.5Mb
-        libs  51.9Mb
+        libs  51.8Mb
     ```
 
 # sparrpowR
@@ -2595,9 +2613,9 @@ Run `revdep_details(, "spatialwarnings")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.9Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        libs   5.9Mb
+        libs   5.8Mb
     ```
 
 # sphunif
@@ -2620,7 +2638,7 @@ Run `revdep_details(, "sphunif")` for more info
     ```
       installed size is 24.2Mb
       sub-directories of 1Mb or more:
-        libs  23.4Mb
+        libs  23.3Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -2646,11 +2664,11 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 25.4Mb
+      installed size is 25.2Mb
       sub-directories of 1Mb or more:
         doc       1.0Mb
         extdata   2.6Mb
-        libs     20.4Mb
+        libs     20.3Mb
     ```
 
 # squat
@@ -2671,10 +2689,10 @@ Run `revdep_details(, "squat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.7Mb
+      installed size is 18.6Mb
       sub-directories of 1Mb or more:
         data   1.1Mb
-        libs  16.7Mb
+        libs  16.6Mb
     ```
 
 # ssdtools
@@ -2695,7 +2713,7 @@ Run `revdep_details(, "ssdtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.1Mb
+      installed size is 23.0Mb
       sub-directories of 1Mb or more:
         doc    1.2Mb
         libs  20.6Mb
@@ -2825,9 +2843,9 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.9Mb
+      installed size is 16.8Mb
       sub-directories of 1Mb or more:
-        libs  15.8Mb
+        libs  15.7Mb
     ```
 
 # text
@@ -2872,7 +2890,7 @@ Run `revdep_details(, "TreeSearch")` for more info
       installed size is  6.3Mb
       sub-directories of 1Mb or more:
         datasets   1.6Mb
-        libs       2.5Mb
+        libs       2.4Mb
     ```
 
 # TriDimRegression
@@ -2893,9 +2911,9 @@ Run `revdep_details(, "TriDimRegression")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 47.4Mb
+      installed size is 47.3Mb
       sub-directories of 1Mb or more:
-        libs  46.9Mb
+        libs  46.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -2997,7 +3015,7 @@ Run `revdep_details(, "updog")` for more info
     ```
       installed size is  7.9Mb
       sub-directories of 1Mb or more:
-        libs   7.2Mb
+        libs   7.1Mb
     ```
 
 # vmeasur
@@ -3044,7 +3062,7 @@ Run `revdep_details(, "wru")` for more info
       installed size is  5.6Mb
       sub-directories of 1Mb or more:
         data   3.5Mb
-        libs   2.0Mb
+        libs   1.9Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -3071,9 +3089,9 @@ Run `revdep_details(, "XNAString")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.3Mb
+      installed size is 11.2Mb
       sub-directories of 1Mb or more:
-        libs   9.6Mb
+        libs   9.5Mb
     ```
 
 *   checking top-level files ... NOTE
