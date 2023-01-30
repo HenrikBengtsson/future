@@ -82,13 +82,11 @@ makeExpression <- local({
       removed <- setdiff(old_names, names)
       
       ## (a) Update environment variables that have changed
-      keep <- (...future.oldEnvVars != envs[common])
-      envs <- envs[keep]
-      names <- names[keep]
-      NAMES <- toupper(names)
+      changed <- common[...future.oldEnvVars[common] != envs[common]]
+      NAMES <- toupper(changed)
       args <- list()
-      for (kk in seq_along(names)) {
-        name <- names[[kk]]
+      for (kk in seq_along(NAMES)) {
+        name <- changed[[kk]]
         NAME <- NAMES[[kk]]
         ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
         if (name != NAME && is.element(NAME, old_names)) next
@@ -96,18 +94,20 @@ makeExpression <- local({
       }
 
       ## (b) Remove newly added environment variables
-      for (kk in seq_along(added)) {
+      NAMES <- toupper(added)
+      for (kk in seq_along(NAMES)) {
         name <- added[[kk]]
-        NAME <- toupper(name)
+        NAME <- NAMES[[kk]]
         ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
         if (name != NAME && is.element(NAME, old_names)) next
         args[[name]] <- ""
       }
 
       ## (c) Add removed environment variables
-      for (kk in seq_along(removed)) {
+      NAMES <- toupper(removed)
+      for (kk in seq_along(NAMES)) {
         name <- removed[[kk]]
-        NAME <- toupper(name)
+        NAME <- NAMES[[kk]]
         ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
         if (name != NAME && is.element(NAME, old_names)) next
         args[[name]] <- ...future.oldEnvVars[[name]]
