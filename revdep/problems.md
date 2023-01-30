@@ -38,29 +38,54 @@ Run `revdep_details(, "AlpsNMR")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... ERROR
+*   checking examples ... ERROR
     ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    Warning in has_utility("pdfcrop") :
-      pdfcrop not installed or not in PATH
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
+    Running examples in ‘AlpsNMR-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: models_stability_plot_plsda
+    > ### Title: Models stability plot
+    > ### Aliases: models_stability_plot_plsda
+    > 
+    > ### ** Examples
+    > 
+    > # Data analysis for a table of integrated peaks
     ...
-    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
-    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
-    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
-    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
-    
-    Error: Vignette re-building failed.
+     18.   └─vctrs::vec_default_cast(...)
+     19.     ├─base::withRestarts(...)
+     20.     │ └─base (local) withOneRestart(expr, restarts[[1L]])
+     21.     │   └─base (local) doWithOneRestart(return(expr), restart)
+     22.     └─vctrs::stop_incompatible_cast(...)
+     23.       └─vctrs::stop_incompatible_type(...)
+     24.         └─vctrs:::stop_incompatible(...)
+     25.           └─vctrs:::stop_vctrs(...)
+     26.             └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
     Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(AlpsNMR)
+      Loading required package: future
+      
+      Attaching package: 'AlpsNMR'
+      
+    ...
+          still_improving = dplyr::cumall(.data$auc_diff_above_thres), 
+          good_ncomp = (.data$still_improving == TRUE & dplyr::lead(.data$still_improving, 
+              default = FALSE) == FALSE))`: ℹ In argument: `good_ncomp = (...)`.
+      ℹ In group 2: `cv_outer_iteration = 1`, `cv_inner_iteration = 2`.
+      Caused by error in `vec_c()`:
+      ! Can't convert `..2` <logical> to <vctrs_unspecified>.
+      
+      [ FAIL 1 | WARN 2 | SKIP 1 | PASS 90 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # aroma.core
@@ -562,6 +587,47 @@ Run `revdep_details(, "dipsaus")` for more info
         libs   3.3Mb
     ```
 
+# disk.frame
+
+<details>
+
+* Version: 0.7.2
+* GitHub: https://github.com/DiskFrame/disk.frame
+* Source code: https://github.com/cran/disk.frame
+* Date/Publication: 2022-03-07 11:40:02 UTC
+* Number of recursive dependencies: 103
+
+Run `revdep_details(, "disk.frame")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘disk.frame-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: anti_join.disk.frame
+    > ### Title: Performs join/merge for disk.frames
+    > ### Aliases: anti_join.disk.frame full_join.disk.frame
+    > ###   inner_join.disk.frame left_join.disk.frame semi_join.disk.frame
+    > 
+    > ### ** Examples
+    > 
+    ...
+    Appending disk.frames: 
+    Error in anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite) : 
+      `...` must be empty.
+    ✖ Problematic arguments:
+    • ..1 = xch
+    • ..2 = ych
+    • overwrite = overwrite
+    ℹ Did you forget to name an argument?
+    Calls: anti_join ... resolve.list -> signalConditionsASAP -> signalConditions
+    Execution halted
+    ```
+
 # dispositionEffect
 
 <details>
@@ -598,7 +664,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
       1/4 mismatches
       [1] 34 - 28 == 6
       
-      [ FAIL 36 | WARN 0 | SKIP 0 | PASS 331 ]
+      [ FAIL 36 | WARN 1 | SKIP 0 | PASS 331 ]
       Error: Test failures
       Execution halted
     ```
@@ -1138,6 +1204,79 @@ Run `revdep_details(, "ISAnalytics")` for more info
 
 ## In both
 
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘ISAnalytics-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: import_Vispa2_stats
+    > ### Title: Import Vispa2 stats given the aligned association file.
+    > ### Aliases: import_Vispa2_stats
+    > 
+    > ### ** Examples
+    > 
+    > fs_path <- generate_default_folder_structure(type = "correct")
+    ...
+      2. │ ├─ISAnalytics:::.manage_association_file(...)
+      3. │ │ └─ISAnalytics:::.check_file_system_alignment(...)
+      4. │ │   └─proj_fold_col %in% colnames(df)
+      5. │ └─dplyr::if_else(...)
+      6. │   └─dplyr:::vec_case_when(...)
+      7. │     └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
+      8. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
+      9.   └─vctrs:::stop_vctrs(...)
+     10.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(ISAnalytics)
+      Loading required package: magrittr
+      
+      Attaching package: 'magrittr'
+      
+    ...
+       13. │                       ├─ISAnalytics:::.manage_association_file(...)
+       14. │                       │ └─ISAnalytics:::.check_file_system_alignment(...)
+       15. │                       │   └─proj_fold_col %in% colnames(df)
+       16. │                       └─dplyr::if_else(...)
+       17. │                         └─dplyr:::vec_case_when(...)
+       18. │                           └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
+       19. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
+       20.   └─vctrs:::stop_vctrs(...)
+       21.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘ISAnalytics.Rmd’ using rmarkdown
+    --- finished re-building ‘ISAnalytics.Rmd’
+    
+    --- re-building ‘sharing_analyses.Rmd’ using rmarkdown
+    --- finished re-building ‘sharing_analyses.Rmd’
+    
+    --- re-building ‘workflow_start.Rmd’ using rmarkdown
+    Quitting from lines 466-470 (workflow_start.Rmd) 
+    Error: processing vignette 'workflow_start.Rmd' failed with diagnostics:
+    `false` must be a vector, not `NULL`.
+    --- failed re-building ‘workflow_start.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘workflow_start.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is  7.9Mb
@@ -1251,27 +1390,23 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 42821 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 16 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
@@ -1330,6 +1465,47 @@ Run `revdep_details(, "MAI")` for more info
     File
       LICENSE
     is not mentioned in the DESCRIPTION file.
+    ```
+
+# marginaleffects
+
+<details>
+
+* Version: 0.8.1
+* GitHub: https://github.com/vincentarelbundock/marginaleffects
+* Source code: https://github.com/cran/marginaleffects
+* Date/Publication: 2022-11-23 22:20:06 UTC
+* Number of recursive dependencies: 348
+
+Run `revdep_details(, "marginaleffects")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘marginaleffects-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: plot_cco
+    > ### Title: Plot Conditional Contrasts
+    > ### Aliases: plot_cco
+    > 
+    > ### ** Examples
+    > 
+    > mod <- lm(mpg ~ hp * drat * factor(am), data = mtcars)
+    ...
+    > plot_cco(mod, effect = "hp", condition = "drat")
+    > 
+    > plot_cco(mod, effect = "hp", condition = c("drat", "am"))
+    > 
+    > plot_cco(mod, effect = "hp", condition = list("am", "drat" = 3:5))
+    Error: Unable to compute predicted values with this model. You can try to
+      supply a different dataset to the `newdata` argument. If this does not
+      work, you can file a report on the Github Issue Tracker:
+      https://github.com/vincentarelbundock/marginaleffects/issues
+    Execution halted
     ```
 
 # metabolomicsR
@@ -2029,6 +2205,47 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
+# reproducible
+
+<details>
+
+* Version: 1.2.16
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2022-12-22 09:50:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 38301 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/RtmpHcmK4b/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/RtmpHcmK4b/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x40, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
+    ```
+
 # rgee
 
 <details>
@@ -2176,11 +2393,11 @@ Run `revdep_details(, "sdmApp")` for more info
 
 <details>
 
-* Version: 0.2.1
+* Version: 0.3.0
 * GitHub: https://github.com/pbs-assess/sdmTMB
 * Source code: https://github.com/cran/sdmTMB
-* Date/Publication: 2023-01-10 18:50:02 UTC
-* Number of recursive dependencies: 167
+* Date/Publication: 2023-01-28 07:30:02 UTC
+* Number of recursive dependencies: 116
 
 Run `revdep_details(, "sdmTMB")` for more info
 
@@ -2195,20 +2412,14 @@ Run `revdep_details(, "sdmTMB")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 81.2Mb
+      installed size is 78.3Mb
       sub-directories of 1Mb or more:
-        data   1.7Mb
-        libs  77.9Mb
+        libs  76.6Mb
     ```
 
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘INLA’
-    ```
-
-*   checking data for non-ASCII characters ... NOTE
-    ```
-      Note: found 2 marked Latin-1 strings
     ```
 
 # sentopics
@@ -2884,6 +3095,31 @@ Run `revdep_details(, "TreeSearch")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘custom.Rmd’ using rmarkdown
+    Error reading bibliography file ../inst/REFERENCES.bib:
+    (line 348, column 1):
+    unexpected '@'
+    Error: processing vignette 'custom.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 25
+    --- failed re-building ‘custom.Rmd’
+    
+    --- re-building ‘getting-started.Rmd’ using rmarkdown
+    ...
+    unexpected '@'
+    Error: processing vignette 'tree-search.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 25
+    --- failed re-building ‘tree-search.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘custom.Rmd’ ‘profile-scores.Rmd’ ‘profile.Rmd’ ‘tree-search.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```

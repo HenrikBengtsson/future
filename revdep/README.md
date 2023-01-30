@@ -1,23 +1,23 @@
 # Platform
 
-|field    |value                                                       |
-|:--------|:-----------------------------------------------------------|
-|version  |R version 4.2.2 (2022-10-31)                                |
-|os       |CentOS Linux 7 (Core)                                       |
-|system   |x86_64, linux-gnu                                           |
-|ui       |X11                                                         |
-|language |en                                                          |
-|collate  |en_US.UTF-8                                                 |
-|ctype    |en_US.UTF-8                                                 |
-|tz       |America/Los_Angeles                                         |
-|date     |2023-01-27                                                  |
-|pandoc   |2.19.2 @ /software/c4/cbi/software/pandoc-2.19.2/bin/pandoc |
+|field    |value                                                 |
+|:--------|:-----------------------------------------------------|
+|version  |R version 4.2.2 (2022-10-31)                          |
+|os       |CentOS Linux 7 (Core)                                 |
+|system   |x86_64, linux-gnu                                     |
+|ui       |X11                                                   |
+|language |en                                                    |
+|collate  |en_US.UTF-8                                           |
+|ctype    |en_US.UTF-8                                           |
+|tz       |America/Los_Angeles                                   |
+|date     |2023-01-30                                            |
+|pandoc   |3.0 @ /software/c4/cbi/software/pandoc-3.0/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.30.0 |1.30.0-9024 |*  |
+|future     |1.30.0 |1.30.0-9026 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -33,7 +33,7 @@
 |[AIPW](problems.md#aipw) |0.6.3.2   |      |        |1    |
 |alookr                   |0.3.7     |      |        |     |
 |alphaci                  |1.0.0     |      |        |     |
-|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |1     |        |     |
+|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |2     |        |     |
 |arkdb                    |0.0.16    |      |        |     |
 |aroma.affymetrix         |3.2.1     |      |        |     |
 |aroma.cn                 |1.7.0     |      |        |     |
@@ -76,7 +76,7 @@
 |delayed                  |0.4.0     |      |        |     |
 |dhReg                    |0.1.1     |      |        |     |
 |[dipsaus](problems.md#dipsaus)|0.2.6     |      |        |1    |
-|disk.frame               |0.7.2     |      |        |     |
+|[disk.frame](problems.md#diskframe)|0.7.2     |1     |        |     |
 |[dispositionEffect](problems.md#dispositioneffect)|1.0.1     |1     |        |     |
 |doFuture                 |0.12.2    |      |        |     |
 |DQAstats                 |0.3.2     |      |        |     |
@@ -140,7 +140,7 @@
 |[InPAS](problems.md#inpas)|2.6.0     |      |        |1    |
 |[interflex](problems.md#interflex)|1.2.6     |      |        |1    |
 |ipc                      |0.1.4     |      |        |     |
-|[ISAnalytics](problems.md#isanalytics)|1.8.1     |      |        |2    |
+|[ISAnalytics](problems.md#isanalytics)|1.8.1     |3     |        |2    |
 |isopam                   |1.1.0     |      |        |     |
 |[ivmte](problems.md#ivmte)|1.4.0     |      |        |1    |
 |JointAI                  |1.0.4     |      |        |     |
@@ -161,7 +161,7 @@
 |LWFBrook90R              |0.5.2     |      |        |     |
 |[MAI](problems.md#mai)   |1.4.0     |      |        |1    |
 |MAMS                     |2.0.0     |      |        |     |
-|marginaleffects          |0.8.1     |      |        |     |
+|[marginaleffects](problems.md#marginaleffects)|0.8.1     |1     |        |     |
 |mcmcensemble             |3.0.0     |      |        |     |
 |mcp                      |0.3.2     |      |        |     |
 |merTools                 |0.5.2     |      |        |     |
@@ -231,7 +231,7 @@
 |refineR                  |1.5.1     |      |        |     |
 |[regmedint](problems.md#regmedint)|1.0.0     |      |        |1    |
 |remiod                   |1.0.2     |      |        |     |
-|reproducible             |1.2.16    |      |        |     |
+|[reproducible](problems.md#reproducible)|1.2.16    |1     |        |     |
 |reval                    |3.1-0     |      |        |     |
 |[rgee](problems.md#rgee) |1.1.5     |      |        |2    |
 |[robotstxt](problems.md#robotstxt)|0.7.13    |      |        |2    |
@@ -243,7 +243,7 @@
 |SCtools                  |0.3.2.1   |      |        |     |
 |[sctransform](problems.md#sctransform)|0.3.5     |      |        |1    |
 |[sdmApp](problems.md#sdmapp)|0.0.2     |      |        |1    |
-|[sdmTMB](problems.md#sdmtmb)|0.2.1     |      |        |4    |
+|[sdmTMB](problems.md#sdmtmb)|0.3.0     |      |        |3    |
 |seer                     |1.1.8     |      |        |     |
 |semtree                  |0.9.18    |      |        |     |
 |[sentopics](problems.md#sentopics)|0.7.1     |      |        |3    |
@@ -293,7 +293,7 @@
 |tglkmeans                |0.3.5     |      |        |     |
 |tidyqwi                  |0.1.2     |      |        |     |
 |TKCat                    |1.0.6     |      |        |     |
-|[TreeSearch](problems.md#treesearch)|1.2.0     |      |        |1    |
+|[TreeSearch](problems.md#treesearch)|1.2.0     |1     |        |1    |
 |[TriDimRegression](problems.md#tridimregression)|1.0.1     |      |        |3    |
 |tsfeatures               |1.1       |      |        |     |
 |[TSstudio](problems.md#tsstudio)|0.1.6     |      |        |1    |
