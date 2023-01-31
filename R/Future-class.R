@@ -166,7 +166,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   ## 'local' is now defunct
   if ("local" %in% args_names) {
     dfcn <- .Defunct
-    msg <- "Argument 'local' is defunct as of future 1.31.0 (2023-??-??)"
+    msg <- "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)"
 
     ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
     ## 'local' for a tad longer, although it has zero effect since a
