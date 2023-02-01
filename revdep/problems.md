@@ -1467,47 +1467,6 @@ Run `revdep_details(, "MAI")` for more info
     is not mentioned in the DESCRIPTION file.
     ```
 
-# marginaleffects
-
-<details>
-
-* Version: 0.8.1
-* GitHub: https://github.com/vincentarelbundock/marginaleffects
-* Source code: https://github.com/cran/marginaleffects
-* Date/Publication: 2022-11-23 22:20:06 UTC
-* Number of recursive dependencies: 348
-
-Run `revdep_details(, "marginaleffects")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘marginaleffects-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: plot_cco
-    > ### Title: Plot Conditional Contrasts
-    > ### Aliases: plot_cco
-    > 
-    > ### ** Examples
-    > 
-    > mod <- lm(mpg ~ hp * drat * factor(am), data = mtcars)
-    ...
-    > plot_cco(mod, effect = "hp", condition = "drat")
-    > 
-    > plot_cco(mod, effect = "hp", condition = c("drat", "am"))
-    > 
-    > plot_cco(mod, effect = "hp", condition = list("am", "drat" = 3:5))
-    Error: Unable to compute predicted values with this model. You can try to
-      supply a different dataset to the `newdata` argument. If this does not
-      work, you can file a report on the Github Issue Tracker:
-      https://github.com/vincentarelbundock/marginaleffects/issues
-    Execution halted
-    ```
-
 # metabolomicsR
 
 <details>
@@ -2626,10 +2585,10 @@ Run `revdep_details(, "signeR")` for more info
 
 <details>
 
-* Version: 2.10
+* Version: 2.10.1
 * GitHub: https://github.com/philchalmers/SimDesign
 * Source code: https://github.com/cran/SimDesign
-* Date/Publication: 2023-01-24 17:10:02 UTC
+* Date/Publication: 2023-02-01 15:30:02 UTC
 * Number of recursive dependencies: 104
 
 Run `revdep_details(, "SimDesign")` for more info

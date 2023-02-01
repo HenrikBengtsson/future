@@ -1,23 +1,23 @@
 # Platform
 
-|field    |value                                                 |
-|:--------|:-----------------------------------------------------|
-|version  |R version 4.2.2 (2022-10-31)                          |
-|os       |CentOS Linux 7 (Core)                                 |
-|system   |x86_64, linux-gnu                                     |
-|ui       |X11                                                   |
-|language |en                                                    |
-|collate  |en_US.UTF-8                                           |
-|ctype    |en_US.UTF-8                                           |
-|tz       |America/Los_Angeles                                   |
-|date     |2023-01-30                                            |
-|pandoc   |3.0 @ /software/c4/cbi/software/pandoc-3.0/bin/pandoc |
+|field    |value                                                     |
+|:--------|:---------------------------------------------------------|
+|version  |R version 4.2.2 (2022-10-31)                              |
+|os       |CentOS Linux 7 (Core)                                     |
+|system   |x86_64, linux-gnu                                         |
+|ui       |X11                                                       |
+|language |en                                                        |
+|collate  |en_US.UTF-8                                               |
+|ctype    |en_US.UTF-8                                               |
+|tz       |America/Los_Angeles                                       |
+|date     |2023-02-01                                                |
+|pandoc   |3.0.1 @ /software/c4/cbi/software/pandoc-3.0.1/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.30.0 |1.30.0-9026 |*  |
+|future     |1.31.0 |1.30.0-9026 |*  |
 |codetools  |0.2-18 |0.2-18      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -161,7 +161,7 @@
 |LWFBrook90R              |0.5.2     |      |        |     |
 |[MAI](problems.md#mai)   |1.4.0     |      |        |1    |
 |MAMS                     |2.0.0     |      |        |     |
-|[marginaleffects](problems.md#marginaleffects)|0.8.1     |1     |        |     |
+|marginaleffects          |0.9.0     |      |        |     |
 |mcmcensemble             |3.0.0     |      |        |     |
 |mcp                      |0.3.2     |      |        |     |
 |merTools                 |0.5.2     |      |        |     |
@@ -216,7 +216,7 @@
 |progressr                |0.13.0    |      |        |     |
 |[projpred](problems.md#projpred)|2.3.0     |      |        |1    |
 |[promises](problems.md#promises)|1.2.0.1   |      |        |1    |
-|Prostar                  |1.30.2    |      |        |     |
+|Prostar                  |1.30.3    |      |        |     |
 |protti                   |0.6.0     |      |        |     |
 |PSCBS                    |0.66.0    |      |        |     |
 |PUMP                     |1.0.1     |      |        |     |
@@ -236,7 +236,7 @@
 |[rgee](problems.md#rgee) |1.1.5     |      |        |2    |
 |[robotstxt](problems.md#robotstxt)|0.7.13    |      |        |2    |
 |robust2sls               |0.2.2     |      |        |     |
-|RTransferEntropy         |0.2.14    |      |        |     |
+|RTransferEntropy         |0.2.21    |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)|0.1.4     |      |        |1    |
 |scBubbletree             |1.0.0     |      |        |     |
 |[scDiffCom](problems.md#scdiffcom)|0.1.0     |      |        |1    |
@@ -254,7 +254,7 @@
 |sigminer                 |2.1.9     |      |        |     |
 |Signac                   |1.9.0     |      |        |     |
 |[signeR](problems.md#signer)|2.0.2     |      |        |3    |
-|[SimDesign](problems.md#simdesign)|2.10      |      |        |2    |
+|[SimDesign](problems.md#simdesign)|2.10.1    |      |        |2    |
 |simfinapi                |0.2.0     |      |        |     |
 |simglm                   |0.8.9     |      |        |     |
 |simhelpers               |0.1.2     |      |        |     |
