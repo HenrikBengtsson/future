@@ -22,7 +22,22 @@
 #'
 #' @export
 multiprocess <- function(..., workers = availableCores(), envir = parent.frame()) {
-  .Deprecated(msg = sprintf("Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
+
+  fmtstr <- "Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is %s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'."
+  defunct <- getOption("future.deprecated.defunct")
+  if (is.element("multiprocess", defunct)) {
+    msg <- sprintf(fmtstr, "defunct")
+    ## Need to wrap .Defunct() in another frame to avoid:
+    ## Error in as.vector(x, "character") : 
+    ##   cannot coerce type 'closure' to vector of type 'character'
+    dfcn <- function(...) .Defunct(...)
+  } else {
+    msg <- sprintf(fmtstr, "deprecated")
+    msg <- paste(msg, "Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'.")
+    dfcn <- .Deprecated
+  }
+  dfcn(msg = msg, package = .packageName)
+  
   sequential(..., envir = envir)
 }
 class(multiprocess) <- c("sequential", "uniprocess", "future", "function")
