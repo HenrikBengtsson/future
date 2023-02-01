@@ -29,7 +29,7 @@ for (cores in 1:availCores) {
     b <- 3
     c <- 2
     a * b * c
-  })
+  }, globals = TRUE)
   print(f)
 
 
@@ -47,7 +47,7 @@ for (cores in 1:availCores) {
   x <- listenv()
   for (ii in 2:1) {
     message(sprintf(" - Creating multisession future #%d ...", ii))
-    x[[ii]] <- multisession({ ii })
+    x[[ii]] <- multisession({ ii }, globals = TRUE)
   }
   message(sprintf(" - Resolving %d multisession futures", length(x)))
   v <- sapply(x, FUN = value)
@@ -121,7 +121,7 @@ for (workers in unique(c(1L, availableCores()))) {
   yTruth <- sum(a)
   size <- object.size(a)
   cat(sprintf("a: %g bytes\n", size))
-  f <- multisession({ sum(a) }, workers = workers)
+  f <- multisession({ sum(a) }, globals = TRUE, workers = workers)
   print(f)
   rm(list = "a")
   v <- value(f)
@@ -134,7 +134,7 @@ for (workers in unique(c(1L, availableCores()))) {
   yTruth <- sum(a)
   size <- object.size(a)
   cat(sprintf("a: %g bytes\n", size))
-  res <- try(f <- multisession({ sum(a) }, workers = workers), silent = TRUE)
+  res <- try(f <- multisession({ sum(a) }, globals = TRUE, workers = workers), silent = TRUE)
   rm(list = "a")
   stopifnot(inherits(res, "try-error"))
 } ## for (workers in ...)
@@ -150,7 +150,7 @@ a <- 2
 b <- 3
 yTruth <- a * b
 
-f <- multisession({ a * b }, workers = 1L)
+f <- multisession({ a * b }, globals = TRUE, workers = 1L)
 rm(list = c("a", "b"))
 
 v <- value(f)

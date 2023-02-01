@@ -51,30 +51,70 @@ makeExpression <- local({
 
     ## (d) Reset environment variables
     if (.Platform$OS.type == "windows") {
-      ## On MS Windows, you cannot have empty environment variables. When one
-      ## is assigned an empty string, MS Windows interpretes that as it should
-      ## be removed. That is, if we do Sys.setenv(ABC = ""), it'll have the
+      ## On MS Windows, there are two special cases to consider:
+      ##
+      ## (1) You cannot have empty environment variables. When one is assigned
+      ## an empty string, MS Windows interprets that as it should be removed.
+      ## That is, if we do Sys.setenv(ABC = ""), it'll have the
       ## same effect as Sys.unsetenv("ABC").
-      ## However, when running MS Windows as a guest OS on a Linux host, then
-      ## we might see empty environment variables also MS Windows. We can
-      ## observe this on GitHub Actions and when running R via Wine.
+      ## However, when running MS Windows on msys2, we might see empty
+      ## environment variables also MS Windows. We can also observe this on
+      ## GitHub Actions and when running R via Wine.
       ## Because of this, we need to take extra care to preserve empty ("")
       ## environment variables.
+      ##
+      ## (2) Environment variable names are case insensitive. However, it is
+      ## still possible to have two or more environment variables that have
+      ## the exact same toupper() names, e.g. 'TEMP', 'temp', and 'tEmP'.
+      ## This can happen if 'temp' and 'tEmP' are inherited from the host
+      ## environment (e.g. msys2), and 'TEMP' is set by MS Windows.
+      ## What complicates our undoing here is that Sys.setenv() is non-case
+      ## sensitive.  This means, if we do Sys.setenv(temp = "abc") when
+      ## both 'temp' and 'TEMP' exists, then we'll lose 'TEMP'.  So, we
+      ## should on undo an environment variable if the upper-case version
+      ## does not exist.
 
-      ##  (i) Non-empty (the most common case)
-      nonempty <- base::nzchar(...future.oldEnvVars)
-      base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars[nonempty]))
+      old_names <- names(...future.oldEnvVars)
+      envs <- base::Sys.getenv()
+      names <- names(envs)
+      common <- intersect(names, old_names)
+      added <- setdiff(names, old_names)
+      removed <- setdiff(old_names, names)
       
-      ## (ii) Empty (special case): Update only the ones that are no longer
-      ##      empty, which means they'll be removed. That is the minimal
-      ##      damage we can do.
-      if (!base::all(nonempty)) {
-        names <- base::names(...future.oldEnvVars[!nonempty])
-        envs <- base::Sys.getenv()[names]
-        names <- names[base::nzchar(envs)]
-        envs[names] <- ""
-        base::do.call(base::Sys.setenv, args = base::as.list(envs))
+      ## (a) Update environment variables that have changed
+      changed <- common[...future.oldEnvVars[common] != envs[common]]
+      NAMES <- toupper(changed)
+      args <- list()
+      for (kk in seq_along(NAMES)) {
+        name <- changed[[kk]]
+        NAME <- NAMES[[kk]]
+        ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
+        if (name != NAME && is.element(NAME, old_names)) next
+        args[[name]] <- ...future.oldEnvVars[[name]]
       }
+
+      ## (b) Remove newly added environment variables
+      NAMES <- toupper(added)
+      for (kk in seq_along(NAMES)) {
+        name <- added[[kk]]
+        NAME <- NAMES[[kk]]
+        ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
+        if (name != NAME && is.element(NAME, old_names)) next
+        args[[name]] <- ""
+      }
+
+      ## (c) Add removed environment variables
+      NAMES <- toupper(removed)
+      for (kk in seq_along(NAMES)) {
+        name <- removed[[kk]]
+        NAME <- NAMES[[kk]]
+        ## Skip if Case (2), e.g. 'temp' when 'TEMP' also exists?
+        if (name != NAME && is.element(NAME, old_names)) next
+        args[[name]] <- ...future.oldEnvVars[[name]]
+      }
+
+      if (length(args) > 0) base::do.call(base::Sys.setenv, args = args)
+      base::rm(list = c("args", "names", "old_names", "NAMES", "envs", "common", "added", "removed"))
     } else {
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }

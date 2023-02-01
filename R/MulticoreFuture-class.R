@@ -12,32 +12,10 @@
 #' @export
 #' @name MulticoreFuture-class
 #' @keywords internal
-MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, lazy = FALSE, ...) {
+MulticoreFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
-    ## Global objects
-    assignToTarget <- (is.list(globals) || inherits(globals, "Globals"))
-    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-    
-    ## Assign?
-    if (length(gp) > 0L) {
-      if (lazy || assignToTarget || !identical(expr, gp$expr)) {
-        expr <- gp$expr
-        globals <- gp$globals
-        envir <- new.env(parent = envir)
-        envir <- assign_globals(envir, globals = globals)
-        globals <- NULL
-      }
-    }
-    gp <- NULL
-  } else {
-    envir <- new.env(parent = envir)
-    envir <- assign_globals(envir, globals = globals)
-  }
-
-  future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, ...)
+  future <- MultiprocessFuture(expr = expr, substitute = FALSE, envir = envir, ...)
 
   future <- as_MulticoreFuture(future, ...)
 
@@ -72,6 +50,12 @@ run.MulticoreFuture <- function(future, ...) {
 
   expr <- getExpression(future)
   envir <- future$envir
+
+  ## Assign globals
+  envir <- new.env(parent = envir)
+  if (length(future$globals) > 0L) {
+    envir <- assign_globals(envir, globals = future$globals)
+  }
 
   reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
@@ -212,6 +196,7 @@ result.MulticoreFuture <- function(future, ...) {
     
       ## (a) Did a localhost worker process terminate?
       if (is.numeric(pid)) {
+        pid_exists <- import_parallelly("pid_exists")
         alive <- pid_exists(pid)
         if (is.na(alive)) {
           msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not"
@@ -303,30 +288,7 @@ getExpression.MulticoreFuture <- local({
       }
     }
 
-
     .(expr)
-  })
-  
-  tmpl_expr_conditions <- bquote_compile({
-    withCallingHandlers({
-      .(expr)
-    }, immediateCondition = function(cond) {
-      ## Send condition wrapped in an object with a timestamp
-      obj <- list(time = Sys.time(), condition = cond)
-      file <- tempfile(
-        class(cond)[1],
-        tmpdir = .(immediateConditionsPath()),
-        fileext = ".rds"
-      )
-      ## save_rds <- future:::save_rds
-      save_rds <- .(save_rds)
-      save_rds(obj, file)
-
-      ## Avoid condition from being signaled more than once
-      ## muffleCondition <- future:::muffleCondition
-      muffleCondition <- .(muffleCondition)
-      muffleCondition(cond)
-    })
   })
 
   function(future, expr = future$expr, mc.cores = 1L, immediateConditions = TRUE, conditionClasses = future$conditions, resignalImmediateConditions = getOption("future.multicore.relay.immediate", immediateConditions), ...) {
@@ -356,8 +318,8 @@ getExpression.MulticoreFuture <- local({
       conditionClasses <- unique(c(conditionClasses, immediateConditionClasses))
   
       if (length(conditionClasses) > 0L) {
-        ## Communicate via the local file system
-        expr <- bquote_apply(tmpl_expr_conditions)
+        ## Communicate via the file system
+        expr <- bquote_apply(tmpl_expr_send_immediateConditions_via_file)
       } ## if (length(conditionClasses) > 0)
       
       ## Set condition classes to be ignored in case changed

@@ -36,29 +36,46 @@
 #' system environment variable \env{R_FUTURE_PLAN}.
 #' To reset the strategy back to the default, use `plan("default")`.
 #'
-#' @section Implemented evaluation strategies:
+#' @section Built-in evaluation strategies:
+#' The \pkg{future} package provides the following built-in backends:
+#'
 #' \itemize{
 #'  \item{[`sequential`]:}{
-#'    Resolves futures sequentially in the current \R process.
+#'    Resolves futures sequentially in the current \R process, e.g.
+#'    `plan(sequential)`.
 #'  }
 #'  \item{[`multisession`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \R sessions running in the background on the same machine.
+#'    \R sessions running in the background on the same machine, e.g.
+#'    `plan(multisession)` and `plan(multisession, workers = 2)`.
 #'  }
 #'  \item{[`multicore`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
 #'    _forked_ \R processes running in the background on
-#'    the same machine.  Not supported on Windows.
+#'    the same machine, e.g.
+#'    `plan(multicore)` and `plan(multicore, workers = 2)`.
+#'    This backend is not supported on Windows.
 #'  }
 #'  \item{[`cluster`]:}{
 #'    Resolves futures asynchronously (in parallel) in separate
-#'    \R sessions running typically on one or more machines.
+#'    \R sessions running typically on one or more machines, e.g.
+#'    `plan(cluster)`, `plan(cluster, workers = 2)`, and
+#'    `plan(cluster, workers = c("n1", "n1", "n2", "server.remote.org"))`.
 #'  }
 #' }
 #'
-#' @section Deprecated evaluation strategies:
-#' The following future strategies are deprecated.  Please use
-#' the recommended alternatives instead.
+#' Other package provide additional evaluation strategies.
+#' For example, the \pkg{future.callr} package implements an alternative
+#' to the `multisession` backend on top of the \pkg{callr} package, e.g.
+#' `plan(future.callr::callr, workers = 2)`.
+#' Another example is the \pkg{future.batchtools} package, which implements,
+#' on top of the \pkg{batchtools} package, e.g.
+#' `plan(future.batchtools::batchtools_slurm)`.
+#' These types of futures are resolved via job schedulers, which typically
+#' are available on high-performance compute (HPC) clusters, e.g. LSF,
+#' Slurm, TORQUE/PBS, Sun Grid Engine, and OpenLava.
+#'
+#' The following future strategies are _deprecated_ and must not be used:
 #'
 #' \itemize{
 #'  \item{[`multiprocess`]:}{(DEPRECATED since future 1.20.0)
@@ -68,13 +85,6 @@
 #'  }
 #' }
 #' 
-#' Other package may provide additional evaluation strategies.
-#' Notably, the \pkg{future.batchtools} package implements a
-#' type of futures that will be resolved via job schedulers
-#' that are typically available on high-performance compute
-#' (HPC) clusters, e.g. LSF, Slurm, TORQUE/PBS, Sun Grid Engine,
-#' and OpenLava.
-#'
 #' To "close" any background workers (e.g. `multisession`), change
 #' the plan to something different; `plan(sequential)` is recommended
 #' for this.
@@ -175,11 +185,11 @@ plan <- local({
   }
 
   warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals '%s'.", if (supportsMulticore()) "multicore" else "multisession"))
+    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
   }
 
   warn_about_remote <- function(stack) {
-    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", defunct = "remote")
+    warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", ignore = "", defunct = "remote")
   }
 
   warn_about_transparent <- function(stack) {
@@ -484,8 +494,7 @@ plan <- local({
 
 
 supportedStrategies <- function(strategies = c("sequential", "multicore",
-                                               "multisession", "multiprocess",
-                                               "cluster")) {
+                                               "multisession", "cluster")) {
   if (!supportsMulticore()) strategies <- setdiff(strategies, "multicore")
   strategies
 }

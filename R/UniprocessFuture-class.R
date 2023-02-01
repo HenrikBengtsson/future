@@ -10,25 +10,10 @@
 #' @export
 #' @name UniprocessFuture-class
 #' @keywords internal
-UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, lazy = FALSE, ...) {
+UniprocessFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), ...) {
   if (substitute) expr <- substitute(expr)
 
-  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
-    ## Global objects?
-    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
-    globals <- gp$globals
-    expr <- gp$expr
-  
-    ## Record packages?
-    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
-      packages <- unique(c(gp$packages, packages))
-    }
-    
-    gp <- NULL
-  }
- 
-  future <- Future(expr = expr, substitute = FALSE, envir = envir, lazy = lazy, asynchronous = FALSE, globals = globals, packages = packages, ...)
+  future <- Future(expr = expr, substitute = FALSE, envir = envir, asynchronous = FALSE, ...)
   future <- structure(future, class = c("UniprocessFuture", class(future)))
   future
 }
@@ -154,8 +139,8 @@ function(future, immediateConditions = TRUE, exit = NULL, ...) {
 #'
 #' @rdname UniprocessFuture-class
 #' @export
-SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, local = TRUE, ...) {
+SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, lazy = FALSE, globals = TRUE, ...) {
   if (substitute) expr <- substitute(expr)
-  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, local = local, ...)
+  f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, ...)
   structure(f, class = c("SequentialFuture", class(f)))
 }

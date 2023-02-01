@@ -23,6 +23,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 ### Missing globals (false negatives)
 
 If a global variable is used in a future expression that _conditionally_ overrides this global variable with a local one, the future framework fails to identify the global variable and therefore fails to export it, resulting in a run-time error.  For example, although this works:
+
 ```r
 plan(multisession)
 
@@ -32,7 +33,9 @@ y %<-% { if (reset) x <- 0; x + 1 }
 y
 ## [1] 1
 ```
+
 the following does _not_ work:
+
 ```r
 reset <- FALSE
 x <- 1
@@ -42,6 +45,7 @@ y
 ```
 
 It is recommended to avoid above constructs where it is ambiguous whether a variable is global or local.  To force variable `x` to always be global, insert it at the very being of the future expression, e.g.
+
 ```r
 reset <- FALSE
 x <- 1
@@ -56,15 +60,20 @@ _Comment:_ The goal is to in a future version of the package detect globals also
 #### do.call() - function not found
 
 When calling a function using `do.call()` make sure to specify the function as the object itself and not by name.  This will help identify the function as a global object in the future expression.  For instance, use
+
 ```r
 do.call(file_ext, list("foo.txt"))
 ```
+
 instead of
+
 ```r
 do.call("file_ext", list("foo.txt"))
 ```
+
 so that `file_ext()` is properly located and exported.  Although you may not notice a difference when evaluating futures in the same R session, it may become a problem if you use a character string instead of a function object when futures are evaluated in external R sessions, such as on a cluster.
 It may also become a problem with futures evaluated with lazy evaluation if the intended function is redefined after the future is resolved.  For example,
+
 ```r
 > library(future)
 > library(listenv)
@@ -96,6 +105,7 @@ The base R function `get()` can be used to get the value of a object by its name
 ```
 
 If we attempt to call `my_sum()` via a future, we will get an error (if the future is resolved in an external R process);
+
 ```r
 > library(future)
 > plan(multisession)
@@ -108,13 +118,16 @@ This is because the static code inspection done on the future expression `my_sum
 In order for `a` to be identified, the future framework would need to have a built-in understanding on how `get(var)` works, which would be a daunting task, especially if it need to know it acts for different data types of `var` and various choices on arguments `envir` and `enclos`.  In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code.  In short, it is not possible to automatically identify global variables specified via a character string.
 
 The workaround is to tell the future framework what _additional_ globals are needed.  This can be done via argument `globals` using:
+
 ```r
 > f <- future(my_sum("a"), globals = structure(TRUE, add = "a"))
 > y <- value(f)
 > y
 [1] 6
 ```
+
 or ny injecting variable `a` at the beginning of the future expression, e.g.
+
 ```r
 > f <- future({ a; my_sum("a") })
 > y <- value(f)
@@ -159,7 +172,7 @@ This will in turn allow us to perform the same calculations without having to us
 
 #### glue::glue() - object not found
 
-The future framework will fail to identify globals that are declared via character strings.  The above section gives an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the glue package to generate strings dynamically, e.g.
+The future framework will fail to identify globals that are declared via character strings.  The above section gives an example of this where `get()` is used and explains why it is not feasible to automatically identify string-embedded globals from such code.  Another example, is when using `glue()` from the **[glue]** package to generate strings dynamically, e.g.
 
 ```r
 > library(glue)
@@ -183,6 +196,7 @@ Error in eval(parse(text = text, keep.source = FALSE), envir) :
 ```
 
 As explained in the previous section, the workaround is to specify what additional global variables there are, which can be done as:
+
 ```
 > s %<-% glue("The value of a is {a}.") %globals% structure(TRUE, add = "a")
 > s
@@ -201,7 +215,8 @@ The value of a is 42.
 
 ### Missing packages (false negatives)
 
-Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the data.table package.  However, the future and global packages fail to identify data.table as a required package, which results in an evaluation error:
+Occasionally, the static-code inspection of the future expression fails to identify packages needed to evaluated the expression.  This may occur when an expression uses S3 generic functions part of one package whereas the required S3 method is in another package.  For example, in the below future generic function `[` is used on data.table object `DT`, which requires S3 method `[.data.table` from the **[data.table]** package.  However, the **future** and **[globals]** packages fail to identify **data.table** as a required package, which results in an evaluation error:
+
 ```r
 > library(future)
 > plan(multisession)
@@ -212,15 +227,19 @@ Occasionally, the static-code inspection of the future expression fails to ident
 > y
 Error: object 'b' not found
 ```
-The above error occurs because, contrary to the master R process, the R worker that evaluated the future expression does not have data.table loaded.  Instead the evaluation falls back to the `[.data.frame` method, which is not what we want.
 
-Until the future framework manages to identify data.table as a required package (which is the goal), we can guide future by specifying additional packages needed:
+The above error occurs because, contrary to the master R process, the R worker that evaluated the future expression does not have **data.table** loaded.  Instead the evaluation falls back to the `[.data.frame` method, which is not what we want.
+
+Until the future framework manages to identify **data.table** as a required package (which is the goal), we can guide future by specifying additional packages needed:
+
 ```r
 > y %<-% DT[, sum(b)] %packages% "data.table"
 > y
 [1] 6
 ```
+
 or equivalently
+
 ```r
 > f <- future(DT[, sum(b)], packages = "data.table")
 > value(f)
@@ -232,7 +251,8 @@ Note, do _not_ use `library()` or `loadNamespace()` to resolve these problems. I
 
 ## Non-exportable objects
 
-Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the xml2 package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
+Certain types of objects are tied to a given R session and cannot be passed along to another R process (a "worker").  An example of a non-exportable object is is XML objects of the **[xml2]** package.  If we attempt to use those in parallel processing, we may get a error when the future is evaluated (or just invalid results depending on how they are used), e.g.
+
 ```r
 > library(future)
 > plan(multisession)
@@ -244,6 +264,7 @@ Error: external pointer is not valid
 ```
 
 The future framework can help detect this _before_ sending off the future to the worker;
+
 ```r
 > options(future.globals.onReference = "error")
 > f <- future(xml_children(xml))
@@ -258,6 +279,7 @@ For additional details on non-exportable objects and examples of other R package
 ## Trying to pass an unresolved future to another future
 
 It is not possible for a future to resolve another one unless it was created by the future trying to resolve it.  For instance, the following gives an error:
+
 ```r
 > library(future)
 > plan(multisession)
@@ -271,9 +293,11 @@ Error: Invalid usage of futures: A future whose value has not yet been collected
  1276 on MyMachine) that created it, not by any other R processes (5579f789-e7b6
  -bace-c50d-6c7a23ddb5a3; pid 2352 on MyMachine): {; Sys.getpid(); }
 ```
+
 This is because the main R process creates two futures, but then the second future tries to retrieve the value of the first one.  This is an invalid request because the second future has no channel to communicate with the first future; it is only the process that created a future who can communicate with it(*).
 
 Note that it is only _unresolved_ futures that cannot be queried this way.  Thus, the solution to the above problem is to make sure all futures are resolved before they are passed to other futures, e.g.
+
 ```r
 > f1 <- future({ Sys.getpid() })
 > v1 <- value(f1)
@@ -284,9 +308,11 @@ Note that it is only _unresolved_ futures that cannot be queried this way.  Thus
 > v2
 [1] 7464
 ```
+
 This works because the value has already been collected and stored inside future `f1` before future `f2` is created.  Since the value is already stored internally, `value(f1)` is readily available everywhere.  Of course, instead of using `value(f1)` for the second future, it would be more readable and cleaner to simply use `v1`.
 
 The above is typically not a problem when future assignments are used.  For example:
+
 ```r
 > v1 %<-% { Sys.getpid() })
 > v2 %<-% { v1 }
@@ -295,9 +321,11 @@ The above is typically not a problem when future assignments are used.  For exam
 > v2
 [1] 2352
 ```
+
 The reason that this approach works out of the box is because in the second future assignment `v1` is identified as a global variable, which is retrieved.  Up to this point, `v1` is a promise ("delayed assignment" in R), but when it is retrieved as a global variable its value is resolved and `v1` becomes a regular variable.
 
 However, there are cases where future assignments can be passed via global variables without being resolved.  This can happen if the future assignment is done to an element of an environment (including list environments).  For instance,
+
 ```r
 > library(listenv)
 > x <- listenv()
@@ -311,6 +339,7 @@ Error: Invalid usage of futures: A future whose value has not yet been collected
  1276 on localhost) that created it, not by any other R processes (2ce86ccd-5854
  -7a05-1373-e1b20022e4d8; pid 7464 on localhost): {; Sys.getpid(); }
 ```
+
 As previously, this can be avoided by making sure `x$a` is resolved first, which can be one in various ways, e.g. `dummy <- x$a`, `resolve(x$a)` and `force(x$a)`.
 
 _Footnote_: (*) Although sequential futures could be passed on to other futures part of the same R process and be resolved there because they share the same evaluation process, by definition of the Future API it is invalid to do so regardless of future type.  This conservative approach is taken in order to make future expressions behave consistently regardless of the type of future used.
@@ -333,7 +362,6 @@ res <- tryCatch({
 Here, `res` takes the value of `unstable_calc(x)`, unless it produces an error, in case it takes value `NA_real_`.
 
 In addition to the above, we could produce a warning whenever we get an error and replace it with a missing value. We can do this as:
-
 
 ```r
 res <- tryCatch({
@@ -376,7 +404,8 @@ This is because `source()` defaults to `local = FALSE`, which has side effects. 
 
 ### Clashes with other packages
 
-Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the future package, their objects will mask the ones of the future package.  For instance, the igraph package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
+Sometimes other packages have functions or operators with the same name as the future package, and if those packages are attached _after_ the **future** package, their objects will mask the ones of the **future** package.  For instance, the **[igraph]** package also defines a `%<-%` operator which clashes with the one in future _if used at the prompt or in a script_ (it is not a problem inside package because there we explicitly import objects in a known order).  Here is what we might get:
+
 ```r
 > library(future)
 > library(igraph)
@@ -399,13 +428,16 @@ The following object is masked from 'package:base':
 Error in get(".igraph.from", parent.frame()) : 
   object '.igraph.from' not found
 ```
-Here we get an error because `%<-%` is from igraph and not the future assignment operator as we wanted.  This can be confirmed as:
+
+Here we get an error because `%<-%` is from **igraph** and not the future assignment operator as we wanted.  This can be confirmed as:
+
 ```r
 > environment(`%<-%`)
 <environment: namespace:igraph>
 ```
 
-To avoid this problem, attach the two packages in opposite order such that future comes last and thereby overrides igraph, i.e.
+To avoid this problem, attach the two packages in opposite order such that **future** comes last and thereby overrides **igraph**, i.e.
+
 ```r
 > library(igraph)
 > library(future)
@@ -421,19 +453,22 @@ The following objects are masked from 'package:igraph':
 [1] 42
 ```
 
-An alternative is to detach the future package and re-attach it, which will achieve the same thing:
+An alternative is to detach the **future** package and re-attach it, which will achieve the same thing:
+
 ```r
 > detach("package:future")
 > library(future)
 ```
 
 Yet another alternative is to explicitly override the object by importing it to the global environment, e.g.
+
 ```r
 > `%<-%` <- future::`%<-%`
 > y %<-% { 42 }
 > y
 [1] 42
 ```
+
 In this case, it does not matter in what order the packages are attached because we will always use the copy of `` future::`%<-%` ``.
 
 
@@ -441,22 +476,46 @@ In this case, it does not matter in what order the packages are attached because
 ### Syntax error: "non-numeric argument to binary operator"
 
 The future assignment operator `%<-%` is a _binary infix operator_, which means it has higher precedence than most other binary operators but also higher than some of the unary operators in R.  For instance, this explains why we get the following error:
+
 ```r
 > x %<-% 2 * runif(1)
 Error in x %<-% 2 * runif(1) : non-numeric argument to binary operator
 ```
+
 What effectively is happening here is that because of the higher priority of `%<-%`, we first create a future `x %<-% 2` and then we try to multiply the future (not its value) with the value of `runif(1)` - which makes no sense.  In order to properly assign the future variable, we need to put the future expression within curly brackets;
+
 ```r
 > x %<-% { 2 * runif(1) }
 > x
 [1] 1.030209
 ```
+
 Parentheses will also do.  For details on precedence on operators in R, see Section 'Infix and prefix operators' in the 'R Language Definition' document.
+
+
+### Error: invalid 'type' (environment) of argument with magrittr
+
+Another example where the future assignment operator `%<-%` requires curly brackets is when using the **[magrittr]** infix operator `%>%`, e.g.
+
+```r
+> library(magrittr)
+> x %<-% 1:100 %>% sum
+Error in sum(.) : invalid 'type' (environment) of argument
+```
+
+The reason for this error is that `x %<-% 1:100` is passed to `sum()` by `%>%`.  To fix this, use:
+
+```r
+> x %<-% { 1:100 %>% sum }
+> x
+[1] 5050
+```
 
 
 ### R CMD check NOTEs
 
 The code inspection run by `R CMD check` will not recognize the future assignment operator `%<-%` as an assignment operator, which is not surprising because `%<-%` is technically an infix operator.  This means that if you for instance use the following code in your package:
+
 ```r
 foo <- function() {
   b <- 3.14
@@ -464,14 +523,18 @@ foo <- function() {
   a
 }
 ```
+
 then `R CMD check` will produce a NOTE saying:
+
 ```sh
 * checking R code for possible problems ... NOTE
 foo: no visible binding for global variable 'a'
 Undefined global functions or variables:
   a
 ```
+
 In order to avoid this, we can add a dummy assignment of the missing global at the top of the function, i.e.
+
 ```r
 foo <- function() {
   a <- NULL ## To please R CMD check
@@ -485,3 +548,8 @@ foo <- function() {
 [future]: https://cran.r-project.org/package=future
 [globals]: https://cran.r-project.org/package=globals
 [listenv]: https://cran.r-project.org/package=listenv
+[data.table]: https://cran.r-project.org/package=data.table
+[igraph]: https://cran.r-project.org/package=igraph
+[glue]: https://cran.r-project.org/package=glue
+[magrittr]: https://cran.r-project.org/package=magrittr
+[xml2]: https://cran.r-project.org/package=xml2

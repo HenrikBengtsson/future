@@ -68,11 +68,6 @@
 #' @param lazy If FALSE (default), the future is resolved
 #' eagerly (starting immediately), otherwise not.
 #'
-#' @param local (deprecated) If TRUE, the expression is evaluated such that
-#' all assignments are done to local temporary environment, otherwise
-#' the assignments are done to the global environment of the \R process
-#' evaluating the future.
-#'
 #' @param gc If TRUE, the garbage collector run (in the process that
 #' evaluated the future) only after the value of the future is collected.
 #' Exactly when the values are collected may depend on various factors such
@@ -105,7 +100,7 @@
 #' @export
 #' @keywords internal
 #' @name Future-class
-Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = NULL, packages = NULL, seed = FALSE, lazy = FALSE, local = TRUE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
+Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = list(), packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
 
   if (is.null(seed)) {
@@ -123,7 +118,28 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   if (!is.null(conditions)) {
     stop_if_not(is.character(conditions), !anyNA(conditions))
   }
+
+  args <- list(...)
+  args_names <- names(args)
+
+  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
+  if (!inherits(globals, "Globals") ||
+      !isTRUE(attr(globals, "already-done", exact = TRUE))) {
+    ## Global objects?
+    ## 'persistent' is only allowed for ClusterFuture:s, which will be
+    ## asserted when run() is called /HB 2023-01-17
+    gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals, persistent = isTRUE(args$persistent))
+    globals <- gp$globals
+    expr <- gp$expr
   
+    ## Record packages?
+    if (length(packages) > 0 || (length(gp$packages) > 0 && lazy)) {
+      packages <- unique(c(gp$packages, packages))
+    }
+    
+    gp <- NULL
+  }
+
   if (!is.null(globals)) {
     stop_if_not(is.list(globals),
               length(globals) == 0 || inherits(globals, "Globals"))
@@ -139,10 +155,36 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     stop_if_not(is.character(label))
   }
   
-  args <- list(...)
+  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
+  ## there might still be legacy code out there that rely on it.  By
+  ## assert it is not set here, it is more likely to be caught.  This
+  ## check will eventually be removed
+  if ("value" %in% args_names) {
+    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
+  }
 
-  if (!local && !isTRUE(args[["persistent"]])) {
-    .Defunct(msg = "Using 'local = FALSE' for a future is defunct in future (>= 1.28.0)", package = .packageName)
+  ## 'local' is now defunct
+  if ("local" %in% args_names) {
+    dfcn <- .Defunct
+    msg <- "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)"
+
+    ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
+    ## 'local' for a tad longer, although it has zero effect since a
+    ## long time (https://github.com/civisanalytics/civis-r/issues/244)
+    ## Only allow for this is local = TRUE.
+    ## /HB 2023-01-27
+    if (isTRUE(args$local) &&
+        Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
+       for (call in sys.calls()) {
+         if ("CivisFuture" %in% as.character(call[[1]])) {
+           msg <- sprintf("%s. In this case it was because civis::CivisFuture() was used. Please contact the maintainers of the 'civis' package about this problem.", msg)
+           dfcn <- .Deprecated
+           break
+         }
+      }
+    }
+
+    dfcn(msg = msg, package = .packageName)
   }
 
   core <- new.env(parent = emptyenv())
@@ -160,9 +202,12 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$globals <- globals
   core$packages <- packages
   core$seed <- seed
-  core$local <- local
   core$lazy <- lazy
   core$asynchronous <- TRUE  ## Reserved for future version (Issue #109)
+
+  ## 'local' is now defunct and always TRUE, unless persistent = TRUE,
+  ## which in turn may only be used for cluster futures. /HB 2023-01-11
+  core$local <- TRUE
 
   ## Result
   core$result <- NULL
@@ -181,16 +226,7 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   core$state <- "created"
 
   ## Additional named arguments
-  names <- names(args)
-  for (key in names) core[[key]] <- args[[key]]
-
-  ## IMPORTANT: Do *not* set 'value' because that field is defunct but
-  ## there might still be legacy code out there that rely on it.  By
-  ## assert it is not set here, it is more likely to be caught.  This
-  ## check will eventually be removed
-  if ("value" %in% names) {
-    .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
-  }
+  for (key in args_names) core[[key]] <- args[[key]]
 
   structure(core, class = c("Future", class(core)))
 }
@@ -370,36 +406,35 @@ run.Future <- function(future, ...) {
   if (debug) mdebug("- Future backend: ", paste(sQuote(class(makeFuture)), collapse = ", "))
 
   ## AD HOC/WORKAROUND: /HB 2020-12-21
-  globals <- future$globals
-  packages <- future$packages
-  local <- future$local
-  if (!is.logical(local)) local <- TRUE
-  persistent <- future$persistent
-  if (!is.logical(persistent)) persistent <- FALSE
-
-  ## WORKAROUNDS: /HB 2020-12-25
-  if (inherits(makeFuture, "cluster")) {
-    ## Make persistent=TRUE cluster futures default to local=FALSE
-    if (isTRUE(formals(makeFuture)$persistent)) {
-      persistent <- TRUE
-      if (future$.defaultLocal) local <- FALSE
-    }
-  }
-
-  tmpFuture <- makeFuture(
-    future$expr, substitute = FALSE,
+  args <- list(
+    quote(future$expr),
+    substitute = FALSE,
     envir = future$envir,
     lazy = TRUE,
     stdout = future$stdout,
     conditions = future$conditions,
-    globals = globals,
-    packages = packages,
+    globals = future$globals,
+    packages = future$packages,
     seed = future$seed,
     label = future$label,
-    calls = future$calls,
-    local = local,
-    persistent = persistent
+    calls = future$calls
   )
+
+  ## SPECIAL: 'cluster' takes argument 'persistent' for now /HB 2023-01-17
+  has_persistent <- ("persistent" %in% names(future))
+  if (has_persistent) args$persistent <- future$persistent
+  
+  tmpFuture <- do.call(makeFuture, args = args)
+
+  ## SPECIAL: 'cluster' takes argument 'persistent' for now /HB 2023-01-17
+  if (has_persistent) {
+    if (inherits(makeFuture, "cluster") &&
+        !inherits(makeFuture, "multisession")) {
+      tmpFuture$local <- !tmpFuture$persistent
+    } else {
+      .Defunct(msg = "Future field 'persistent' is defunct and must not be set", package = .packageName)
+    }
+  }
 
   if (debug) mdebug("- Future class: ", paste(sQuote(class(tmpFuture)), collapse = ", "))
 

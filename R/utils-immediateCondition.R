@@ -1,21 +1,23 @@
 #' @importFrom utils file_test
 #' @keywords internal
 immediateConditionsPath <- local({
-  path <- NULL
+  .cache <- list()
   
-  function() {
+  function(rootPath = tempdir()) {
+    rootPath <- normalizePath(rootPath, mustWork = FALSE)
+    path <- .cache[[rootPath]]
     if (is.null(path)) {
-      tpath <- file.path(tempdir(), ".future", "immediateConditions")
-      dir.create(tpath, recursive = TRUE, showWarnings = FALSE)
-      stop_if_not(file_test("-d", tpath))
-      path <<- tpath
+      path <- file.path(rootPath, ".future", "immediateConditions")
+      dir.create(path, recursive = TRUE, showWarnings = FALSE)
+      stop_if_not(file_test("-d", path))
+      .cache[[rootPath]] <<- path
     }
     path
   }
 })
 
 
-#' Read All 'immediateCondition' RDS Files
+#' Writes and Reads 'immediateCondition' RDS Files
 #'
 #' @param path (character string) The folder where the RDS files are.
 #'
@@ -29,12 +31,18 @@ immediateConditionsPath <- local({
 #'
 #' @param remove (logical) If TRUE, the RDS files used are removed on exit.
 #'
-#' @return Returns a [base::list] of immediateCondition objects.
+#' @return
+#' `readImmediateConditions()` returns a [base::list] of
+#' `immediateCondition` objects.
 #'
+#' @importFrom utils file_test
 #' @keywords internal
-readImmediateConditions <- function(path = immediateConditionsPath(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
+readImmediateConditions <- function(path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir(), pattern = "[.]rds$", include = getOption("future.relay.immediate", "immediateCondition"), signal = FALSE, remove = TRUE) {
   stop_if_not(is.character(include), !anyNA(include))
   stop_if_not(is.logical(remove), length(remove) == 1L, !is.na(remove))
+
+  ## Nothing to do?
+  if (!file_test("-d", path)) return(list())
   
   files <- dir(path = path, pattern = "[.]rds$", full.names = TRUE)
 
@@ -91,6 +99,24 @@ readImmediateConditions <- function(path = immediateConditionsPath(), pattern = 
 }
 
 
+#' @param cond A condition of class `immediateCondition`.
+#'
+#' @return
+#' `saveImmediateCondition()` returns, invisibly, the pathname of
+#' the RDS written.
+#'
+#' @rdname readImmediateConditions
+saveImmediateCondition <- function(cond, path = immediateConditionsPath(rootPath = rootPath), rootPath = tempdir()) {
+  ## Wrap condition in an object with a timestamp
+  obj <- list(time = Sys.time(), condition = cond)
+  file <- tempfile(
+    pattern = class(cond)[1],
+     tmpdir = path,
+    fileext = ".rds"
+  )
+  save_rds(obj, file)
+}
+
 
 #' Robustly Saves an Object to RDS File Atomically
 #'
@@ -141,3 +167,28 @@ save_rds <- function(object, pathname, ...) {
 
   invisible(pathname)
 }
+
+
+
+tmpl_expr_send_immediateConditions_via_file <- bquote_compile({
+  withCallingHandlers({
+    .(expr)
+  }, immediateCondition = function(cond) {
+    ## saveImmediateCondition <- future:::saveImmediateCondition,
+    ## which in turn uses future:::save_rds
+    save_rds <- .(future:::save_rds)
+    saveImmediateCondition <- .(future:::saveImmediateCondition)
+    saveImmediateCondition(cond, path = .(
+        if (exists("saveImmediateCondition_path", mode = "character")) {
+          get("saveImmediateCondition_path", mode = "character")
+        } else {
+          future:::immediateConditionsPath(rootPath = tempdir())
+        }
+      )
+    )
+    ## Avoid condition from being signaled more than once
+    ## muffleCondition <- future:::muffleCondition
+    muffleCondition <- .(future:::muffleCondition)
+    muffleCondition(cond)
+  })
+})

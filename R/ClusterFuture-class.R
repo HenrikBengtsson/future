@@ -27,20 +27,11 @@
 #' @importFrom digest digest
 #' @name ClusterFuture-class
 #' @keywords internal
-ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), globals = TRUE, packages = NULL, local = !persistent, persistent = FALSE, workers = NULL, ...) {
+ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame(), persistent = FALSE, workers = NULL, ...) {
   if (substitute) expr <- substitute(expr)
   
   stop_if_not(is.logical(persistent), length(persistent) == 1L,
               !is.na(persistent))
-
-  ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
-  if (!isTRUE(attr(globals, "already-done", exact = TRUE))) {
-    gp <- getGlobalsAndPackages(expr, envir = envir, persistent = persistent, globals = globals)
-    globals <- gp$globals
-    packages <- c(packages, gp$packages)
-    expr <- gp$expr
-    gp <- NULL
-  }
 
   args <- list(...)
 
@@ -48,7 +39,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   ## which should be passed to makeClusterPSOCK()?
   future_args <- !is.element(names(args), makeClusterPSOCK_args())
   
-  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, globals = globals, packages = packages, local = local, node = NA_integer_, persistent = persistent), args[future_args]), quote = FALSE)
+  future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, persistent = persistent, node = NA_integer_), args[future_args]), quote = FALSE)
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
 
@@ -113,7 +104,7 @@ run.ClusterFuture <- function(future, ...) {
 
   workers <- future$workers
   expr <- getExpression(future)
-  persistent <- future$persistent
+  persistent <- isTRUE(future$persistent)
 
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
@@ -563,7 +554,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 #' @export
 getExpression.ClusterFuture <- local({
   tmpl_expr_conditions <- bquote_compile({
-    ...future.sendCondition <- local({
+    ...future.makeSendCondition <- local({
       sendCondition <- NULL
 
       function(frame = 1L) {
@@ -601,7 +592,7 @@ getExpression.ClusterFuture <- local({
     withCallingHandlers({
       .(expr)
     }, immediateCondition = function(cond) {
-      sendCondition <- ...future.sendCondition()
+      sendCondition <- ...future.makeSendCondition()
       sendCondition(cond)
 
       ## Avoid condition from being signaled more than once
@@ -722,6 +713,7 @@ post_mortem_cluster_failure <- function(ex, when, node, future) {
   ## (a) Did a localhost worker process terminate?
   if (!is.null(host)) {
     if (localhost && is.numeric(pid)) {
+      pid_exists <- import_parallelly("pid_exists")
       alive <- pid_exists(pid)
       if (is.na(alive)) {
         msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether localhost worker is alive or not"

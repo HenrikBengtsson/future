@@ -53,6 +53,7 @@ Hello world!
 ```
 
 Note that the captured standard output (stdout) will be relayed _each_ time `value()` is called, e.g.
+
 ```r
 > a <- value(fa)
 Hello world!
@@ -93,6 +94,7 @@ Hello world!
 ```
 
 Note how the captured output is relayed followed by the printing of the value.  Also, since the future value is only queried once when using future assignments, or more specifically when using promises, the output is only relayed once.  For example, querying `a` again will only print its value, because it is now a regular R object:
+
 ```r
 > a
 [1] 42
@@ -112,7 +114,6 @@ Hello world!
 ```
 
 Note that contrary to the captured stdout, which is captured as one single block output, messages are conditions that are captured separately.  Unfortunately, it is _not_ possible to preserve the ordering of interweaved stdout and message output.  When using futures, stdout output will always be relayed first followed by each of the individual conditions captured.  For example,
-
 
 ```r
 > library(future)

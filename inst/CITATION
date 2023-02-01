@@ -1,11 +1,11 @@
-citHeader("Please cite 'future' and the future framework using the following references:")
+utils::bibentry(
+  header = "Please cite 'future' and the future framework using the following references:",
 
-citEntry(
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # BibTeX entry:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  bibtype = "article",
   key = "RJ-2021-048",
-  entry = "article",
   author = "Henrik Bengtsson",
   title = "A Unifying Framework for Parallel and Distributed Processing in R using Futures",
   year = "2021",
@@ -19,7 +19,7 @@ citEntry(
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # Plain-text citation:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  textVersion = paste(sep="",
+  textVersion = paste0(
     "Henrik Bengtsson, ",
     "A Unifying Framework for Parallel and Distributed Processing in R using Futures, ",
     "The R Journal (2021) 13:2, pages 208-227, ",
